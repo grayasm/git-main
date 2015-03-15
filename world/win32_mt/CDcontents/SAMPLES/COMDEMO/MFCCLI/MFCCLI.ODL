@@ -1,0 +1,18 @@
+//
+// MfcCli.odl : type library source for MfcCli.exe
+//
+// Sample code for "Multitheading Applications in Win32"
+// This is from Chapter 17
+// 
+
+
+// This file will be processed by the Make Type Library (mktyplib) tool to
+// produce the type library (MfcCli.tlb).
+
+[ uuid(8C7589A9-1EF9-11D0-B142-DCC519000000), version(1.0) ]
+library MfcCli
+{
+	importlib("stdole32.tlb");
+	
+	//{{AFX_APPEND_ODL}}
+};

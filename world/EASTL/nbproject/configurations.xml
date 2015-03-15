@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configurationDescriptor version="84">
+  <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
+    <df name="EASTL" root=".">
+      <df name="contrib">
+        <df name="example">
+          <in>example.cpp</in>
+        </df>
+      </df>
+      <df name="include">
+        <df name="EABase">
+          <df name="config">
+            <in>eacompiler.h</in>
+            <in>eacompilertraits.h</in>
+            <in>eaplatform.h</in>
+          </df>
+          <in>eabase.h</in>
+          <in>earesult.h</in>
+        </df>
+        <df name="EASTL">
+          <df name="bonus">
+            <in>sort_extra.h</in>
+          </df>
+          <df name="internal">
+            <in>config.h</in>
+            <in>eastl_rw.h</in>
+            <in>fixed_pool.h</in>
+            <in>generic_iterator.h</in>
+            <in>hashtable.h</in>
+            <in>red_black_tree.h</in>
+            <in>type_compound.h</in>
+            <in>type_fundamental.h</in>
+            <in>type_pod.h</in>
+            <in>type_properties.h</in>
+            <in>type_transformations.h</in>
+          </df>
+          <in>algorithm.h</in>
+          <in>allocator.h</in>
+          <in>bitset.h</in>
+          <in>core_allocator_adapter.h</in>
+          <in>fixed_allocator.h</in>
+          <in>fixed_hash_map.h</in>
+          <in>fixed_hash_set.h</in>
+          <in>fixed_list.h</in>
+          <in>fixed_map.h</in>
+          <in>fixed_set.h</in>
+          <in>fixed_string.h</in>
+          <in>fixed_substring.h</in>
+          <in>fixed_vector.h</in>
+          <in>functional.h</in>
+          <in>hash_map.h</in>
+          <in>hash_set.h</in>
+          <in>heap.h</in>
+          <in>iterator.h</in>
+          <in>list.h</in>
+          <in>map.h</in>
+          <in>memory.h</in>
+          <in>set.h</in>
+          <in>sort.h</in>
+          <in>string.h</in>
+          <in>type_traits.h</in>
+          <in>utility.h</in>
+          <in>vector.h</in>
+        </df>
+      </df>
+      <df name="src">
+        <in>allocator.cpp</in>
+        <in>assert.cpp</in>
+        <in>fixed_pool.cpp</in>
+        <in>hashtable.cpp</in>
+        <in>main.cpp</in>
+        <in>red_black_tree.cpp</in>
+        <in>string.cpp</in>
+      </df>
+      <df name="vcbuild">
+      </df>
+    </df>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false"
+                   kind="IMPORTANT_FILES_FOLDER">
+      <itemPath>Makefile</itemPath>
+    </logicalFolder>
+  </logicalFolder>
+  <sourceFolderFilter>^(nbproject)$</sourceFolderFilter>
+  <sourceRootList>
+    <Elem>.</Elem>
+  </sourceRootList>
+  <projectmakefile>Makefile</projectmakefile>
+  <confs>
+    <conf name="Default" type="0">
+      <toolsSet>
+        <remote-sources-mode>LOCAL_SOURCES</remote-sources-mode>
+        <compilerSet>default</compilerSet>
+      </toolsSet>
+      <codeAssistance>
+      </codeAssistance>
+      <makefileType>
+        <makeTool>
+          <buildCommandWorkingDir>.</buildCommandWorkingDir>
+          <buildCommand>${MAKE} -f Makefile</buildCommand>
+          <cleanCommand>${MAKE} -f Makefile clean</cleanCommand>
+          <executablePath></executablePath>
+          <ccTool>
+            <incDir>
+              <pElem>src</pElem>
+              <pElem>include</pElem>
+            </incDir>
+          </ccTool>
+        </makeTool>
+      </makefileType>
+      <item path="contrib/example/example.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="include/EABase/earesult.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/EASTL/bitset.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/EASTL/bonus/sort_extra.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/EASTL/core_allocator_adapter.h"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="include/EASTL/fixed_allocator.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/EASTL/fixed_hash_map.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/EASTL/fixed_hash_set.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/EASTL/fixed_list.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/EASTL/fixed_map.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/EASTL/fixed_set.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/EASTL/fixed_string.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/EASTL/fixed_substring.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/EASTL/fixed_vector.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/EASTL/hash_map.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/EASTL/hash_set.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/EASTL/heap.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/EASTL/internal/eastl_rw.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/EASTL/internal/fixed_pool.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/EASTL/internal/hashtable.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/EASTL/internal/red_black_tree.h"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="include/EASTL/list.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/EASTL/map.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/EASTL/memory.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/EASTL/set.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/EASTL/sort.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/EASTL/vector.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="src/allocator.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="src/assert.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="src/fixed_pool.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="src/hashtable.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="src/red_black_tree.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="src/string.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+    </conf>
+  </confs>
+</configurationDescriptor>

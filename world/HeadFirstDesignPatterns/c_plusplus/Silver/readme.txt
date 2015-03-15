@@ -1,0 +1,1 @@
+HeadFirstDesignPatterns.sln is provided separately.

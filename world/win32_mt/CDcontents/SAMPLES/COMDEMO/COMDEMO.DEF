@@ -1,0 +1,15 @@
+; 
+; ComDemo.def : Declares the module parameters.
+; Sample code for "Multitasking in Win32"
+; This is from Chapter 16???
+; 
+; Implements a FreeThreaded COM Object
+; 
+
+LIBRARY      COMDEMO.DLL
+
+EXPORTS
+	DllCanUnloadNow     @1 PRIVATE
+	DllGetClassObject   @2 PRIVATE
+	DllRegisterServer   @3 PRIVATE
+	DllUnregisterServer	@4 PRIVATE

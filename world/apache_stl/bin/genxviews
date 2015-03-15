@@ -1,0 +1,689 @@
+#!/bin/sh
+#
+# $Id: genxviews 792174 2009-07-08 15:03:40Z sebor $
+#
+########################################################################
+#
+#  Licensed to the Apache Software  Foundation (ASF) under one or more
+#  contributor  license agreements.  See  the NOTICE  file distributed
+#  with  this  work  for  additional information  regarding  copyright
+#  ownership.   The ASF  licenses this  file to  you under  the Apache
+#  License, Version  2.0 (the  "License"); you may  not use  this file
+#  except in  compliance with the License.   You may obtain  a copy of
+#  the License at
+#
+#  http://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the  License is distributed on an  "AS IS" BASIS,
+#  WITHOUT  WARRANTIES OR CONDITIONS  OF ANY  KIND, either  express or
+#  implied.   See  the License  for  the  specific language  governing
+#  permissions and limitations under the License.
+#
+########################################################################
+
+if [ "$BASH" = "" ]; then
+    # this is not Bash; try to invoke it
+    if [ -x /usr/local/bin/bash ]; then
+        /usr/local/bin/bash $0 "$@"
+        exit $?
+    fi
+fi
+
+readonly www_stdcxx_dir="/www/stdcxx.apache.org/builds"
+
+# current date and time to compute log ages
+readonly now=`date`
+
+XBUILDGEN=`which xbuildgen 2>/dev/null`
+
+if [ "$XBUILDGEN" = "" ]; then
+    XBUILDGEN=`dirname $0`/xbuildgen
+fi
+
+# default directory where to look for build logs to process
+logdir=.
+
+# show the command line to invoke xbuildgen without actually
+# invoking the script
+dryrun=0
+
+# write verbose progress output to stdout?
+verbose=0
+
+# process command line options
+while getopts "dvD:L:o:V:" opt_name; do
+    case $opt_name in
+        # options with no arguments
+
+        d)  # dry run (do not invoke xbuildgen)
+            dryrun=1
+            ;;
+
+        v) # verbose mode
+           verbose=1
+           ;;
+
+        # options with arguments
+
+        D)  # argument names the directory where to create output files
+            outdir=$OPTARG
+            ;;
+
+        L)  # argument names the directory containing build logs
+            logdir=$OPTARG
+            ;;
+
+        o)  # argument is the name of output file (stdout by default)
+            outfile=$OPTARG
+
+            # temporary output file (will replace outfile when done)
+            tmpout=$outfile.$$
+            ;;
+
+        V)  # specify stdcxx branch/version to generate cross-build
+            # result views for (trunk by default)
+            version=$OPTARG
+            ;;
+
+     esac;
+done
+
+
+# set the Subversion and output directories based on version
+if [ "$version" = "" ]; then
+
+    # Subversion (sub)directory under stdcxx/
+    svndir="trunk"
+
+    # set output directory unless already set on the command line
+    if [ "$outdir" = "" -a -w $www_stdcxx_dir ]; then
+        outdir="/www/stdcxx.apache.org/builds/$svndir"
+    fi
+else
+    # Subversion (sub)directory under stdcxx/
+    svndir="branches/$version"
+
+    # set output directory unless already set on the command line
+    if [ "$outdir" = "" -a -w $www_stdcxx_dir ]; then
+        outdir="/www/stdcxx.apache.org/builds/$version"
+    fi
+
+    verarg="-V$version"
+fi
+
+
+# extract the script's revision number
+myrev='$Revision: 792174 $'
+myrev=${myrev#'$Revision: '}   # strip leading text
+myrev=${myrev%' $'}            # strip trailing text
+
+# form the URL to this version of the script in the repository
+myurl='$HeadURL: http://svn.apache.org/repos/asf/stdcxx/trunk/bin/genxviews $'
+myurl=${myurl#'$HeadURL: '}   # strip leading text
+myurl=${myurl##*asf/}         # strip svn prefix
+myurl=${myurl%' $'}           # strip trailing text
+
+# prepend ViewVC prefix
+myurl="http://svn.apache.org/viewvc/$myurl"
+
+# extract program name from the url (used in diagnostic messages)
+readonly myname=${myurl##*/}
+
+myurl="$myurl?view=markup&rev=$myrev"
+
+######################################################################
+# validate arguments
+
+if [ ! -x $XBUILDGEN ]; then
+    echo "$myname $error: cannot find xbuildgen" >&1
+    exit 2
+fi
+
+
+if [ ! -d "$logdir" -o ! -r "$logdir" ]; then
+    echo "$myname error: \"$logdir\" does not exist or isn't readable" >&2
+    exit 2
+fi
+
+
+if [ $verbose -ne 0 ]; then
+    echo "$myname: using output directory: \"$outdir\""
+    echo "$myname: reading logs from: \"$logdir\""
+fi
+
+######################################################################
+
+# write to output file when specified or to stdout otherwise
+output ()
+{
+    if [ $# -eq 0 ]; then
+        # no arguments provided, copy its own stdin to tmpout
+        if [ -z $tmpout ]; then
+            cat
+        else
+            cat >>$tmpout
+        fi
+    elif [ -z $tmpout ]; then
+        echo "$*"
+    else
+        echo "$*" >>$tmpout
+    fi
+}
+
+######################################################################
+
+# start the clock measuring the amount of wall clock time to process
+# all logs and generate the page
+readonly start_time=`LC_ALL=C date`
+
+
+readonly scripturl="<a href=\"$myurl\"><code>$myname</code></a>"
+
+cat<<EOF | output
+<html>
+  <body>
+    <style type="text/css">
+
+      table {
+          border-width:0px;
+          background:#000000;
+          font-size:smaller;
+      }
+      th {
+          font-size:smaller;
+          background:#cccccc;
+          text-align:center;
+      }
+      td {
+          font-size:smaller;
+          padding: 3px;
+          text-align: center;
+          background-color: lightblue;
+      }
+    </style>
+    <h1>Available Multi-platform Build Result Views</h1>
+    Generated `date` by $scripturl on `hostname` running `uname -sr`
+    <hr>
+    <table>
+      <thead>
+        <tr>
+          <th>Operating System</td>
+          <th>Architecture</td>
+          <th>Compiler</td>
+          <th title="Cross-build result page">Build Results</td>
+          <th title="Total number of logs">Logs</td>
+          <th title="Number of logs added since the last run">New</td>
+          <th title="Timestamp of oldest log">Age</td>
+          <th title="Time to process all logs">Time<br>(sec)</td>
+        </tr>
+      </thead>
+      <tbody>
+EOF
+
+
+process_results ()
+{
+    osname="$1"
+    arch="$2"
+    compiler="$3"
+    alllogs="$4"
+    xfile="$5"
+
+    if [ $verbose -ne 0 ]; then
+        echo "$myname: processing logs for $compiler on $osname, $arch"
+        echo "$myname: searching for files matching \"$alllogs\""
+    fi
+
+    cat<<EOF | output
+        <tr>
+          <td>$osname</td>
+          <td>$arch</td>
+          <td>$compiler</td>
+EOF
+
+    # build types:
+    #    8: not reentrant, optimized, no debugging info
+    #   11: not reentrant, not optimized with debugging info
+    #   12: reentrant, optimized, no debugging info
+    #   15: reentrant, not optimized, with debugging info
+    btypes="8 11 12 15"
+
+    # a, A: AIX shared archive (32-bit and 64-bit, respectively)
+    # d, D: shared library (.sl, .so, or .dll)
+    # s, S: archive library (.a or .lib)
+    suffixes="a A d D s S"
+
+    unset buildlogs
+    unset oldest_age
+    unset oldest_time
+
+    count=0
+
+    for b in $btypes; do
+        for s in $suffixes; do
+            log=`  echo $logdir/$alllogs | tr ' ' '\n' \
+                 | grep "[-]$b$s-" | sort | tail -n 1`
+
+            if [ "$log" != "" ]; then
+                buildlogs="$buildlogs $log"
+                count=`expr $count + 1`
+            fi
+        done
+    done
+
+    if [ -e $outdir/$xfile ]; then
+        # count the number of logs that are newer than the cross-build file
+        newlogs=`find $logdir/ -name "$alllogs" -newer $outdir/$xfile | wc -l`
+    else
+        # cross-build file doesn't exist yet, all logs are considered new
+        newlogs=$count
+    fi
+
+    if [ $verbose -ne 0 ]; then
+        echo "$myname: found $count logs ($newlogs new): $buildlogs"
+    fi
+
+    # create a title for the page
+    title="$compiler results on $osname/$arch"
+
+    # start the clock
+    duration=`expr \( $(date +%M) \* 60 \) + $(date +%S)`
+
+    if [ "$buildlogs" = "" ]; then
+        # format missing logs in italics
+        output "          <td><i>$xfile</i></td>"
+    else
+        output "          <td><a href=\"$xfile\">$xfile</a></td>"
+
+        oldest_time=`  cd $logdir && LANG=C ls -lrt $buildlogs | head -n 1 \
+                    | awk '{ print $6 " " $7 " " $8 }'`
+
+        if [ $newlogs -gt 0 ]; then
+
+            # only invoken xbuildgen when there are new logs to proecess
+            # otherwise simply point at the previously generated cross
+            # build file
+
+            if [ $verbose -ne 0 ]; then
+                echo "$myname: $XBUILDGEN $verarg -s -o$outdir/$xfile -T\"$title\" $buildlogs"
+            fi
+
+            if [ $dryrun -eq 0 ]; then
+                $XBUILDGEN $verarg -s -o$outdir/$xfile -T"$title" $buildlogs
+            fi
+        fi
+    fi
+
+    # compute the number of seconds it took to process the logs
+    end=`expr \( \( $(date +%M) \* 60 \) + $(date +%S) \)`
+
+    if [ $end -lt $duration ]; then
+        # adjust for overflow
+        end=`expr $end + 60`
+    fi
+
+    # compute the amount of time it took to process this batch
+    duration=`expr $end - $duration`
+
+    # compute the age of the oldest log
+    if [ "$oldest_time" != "" ]; then
+        oldest_age=`duration "$oldest_time" "$now"`
+    fi
+
+    cat<<EOF | output
+          <td>$count</td>
+          <td>$newlogs</td>
+          <td title="$oldest_time">$oldest_age</td>
+          <td>$duration</td>
+        </tr>
+EOF
+}
+
+########################################################################
+# operating systems and compilers below are listed alphabetically
+# starting with the most recent version first
+
+# AIX ##################################################################
+process_results "AIX 5.3" "PowerPC" "IBM XLC++ 9.0" \
+                "aix-5.3-ppc-vacpp-9.0-*-*-log.gz.txt" \
+                aix-5.3-ppc-vacpp-9.0.html
+
+process_results "AIX 5.3" "PowerPC" "IBM XLC++ 8.0" \
+                "aix-5.3-ppc-vacpp-8.0-*-*-log.gz.txt" \
+                aix-5.3-ppc-vacpp-8.0.html
+
+process_results "AIX 5.3" "PowerPC" "IBM XLC++ 7.0" \
+                "aix-5.3-ppc-vacpp-7.0-*-*-log.gz.txt" \
+                aix-5.3-ppc-vacpp-7.0.html
+
+process_results "AIX 5.2" "PowerPC" "IBM VisualAge C++ 6.0" \
+                "aix-5.2-ppc-vacpp-6.0-*-*-log.gz.txt" \
+                aix-5.2-ppc-vacpp-6.0.html
+
+# FreeBSD ##############################################################
+process_results "FreeBSD 6.2" "x86" "gcc 3.4.4" \
+                "freebsd-6.2-x86-gcc-3.4.4-*-*-log.gz.txt" \
+                freebsd-6.2-x86-gcc-3.4.4.html
+
+# HP-UX ################################################################
+process_results "HP-UX 11.31" "IPF" "HP aCC 6.16" \
+                "hpux-11.31-ia64-acc-6.16-*-*-log.gz.txt" \
+                hpux-11.31-ia64-6.16.html
+
+process_results "HP-UX 11.31" "IPF" "HP aCC 6.15" \
+                "hpux-11.31-ia64-acc-6.15-*-*-log.gz.txt" \
+                hpux-11.31-ia64-6.15.html
+
+process_results "HP-UX 11.31" "PA-RISC" "HP aCC 3.74" \
+                "hpux-11.31-pa-acc-3.74-*-*-log.gz.txt" \
+                hpux-11.31-pa-acc-3.74.html
+
+process_results "HP-UX 11.31" "PA-RISC" "HP aCC 3.73" \
+                "hpux-11.31-pa-acc-3.73-*-*-log.gz.txt" \
+                hpux-11.31-pa-acc-3.73.html
+
+process_results "HP-UX 11.23" "IPF" "HP aCC 6.13" \
+                "hpux-11.23-ia64-acc-6.13-*-*-log.gz.txt" \
+                hpux-11.23-ia64-acc-6.13.html
+
+process_results "HP-UX 11.23" "IPF" "HP aCC 6.00" \
+                "hpux-11.23-ia64-acc-6.00-*-*-log.gz.txt" \
+                hpux-11.23-ia64-acc-6.00.html
+
+process_results "HP-UX 11.23" "IPF" "HP aCC 5.57" \
+                "hpux-11.23-ia64-acc-5.57-*-*-log.gz.txt" \
+                hpux-11.23-ia64-acc-5.57.html
+
+process_results "HP-UX 11.23" "PA-RISC" "HP aCC 3.80" \
+                "hpux-11.23-pa-acc-3.80-*-*-log.gz.txt" \
+                hpux-11.23-pa-acc-3.80.html
+
+process_results "HP-UX 11.23" "PA-RISC" "HP aCC 3.73" \
+                "hpux-11.23-pa-acc-3.73-*-*-log.gz.txt" \
+                hpux-11.23-pa-acc-3.73.html
+
+process_results "HP-UX 11.23" "PA-RISC" "HP aCC 3.63" \
+                "hpux-11.23-pa-acc-3.63-*-*-log.gz.txt" \
+                hpux-11.23-pa-acc-3.63.html
+
+process_results "HP-UX 11.11" "PA-RISC" "HP aCC 3.73" \
+                "hpux-11.11-pa-acc-3.73-*-*-log.gz.txt" \
+                hpux-11.11-pa-acc-3.73.html
+
+process_results "HP-UX 11.11" "PA-RISC" "HP aCC 3.63" \
+                "hpux-11.11-pa-acc-3.63-*-*-log.gz.txt" \
+                hpux-11.11-pa-acc-3.63.html
+
+# IRIX #################################################################
+process_results "IRIX 6.5" "MIPS" "SGI MIPSpro 7.41" \
+                "irix-6.5-mips-mipspro-7.41-*-*-log.gz.txt" \
+                irix-6.5-mips-mipspro-7.41.html
+
+# Red Hat Linux ########################################################
+# Red Hat Enterprise Linux 5.0
+process_results "Red Hat Enterprise Linux 5.0" "EM64T" "EDG eccp 3.9" \
+                "linux_redhat_el-5.0-em64t-eccp-3.9-*-*-log.gz.txt" \
+                linux_redhat_el-5.0-em64t-eccp-3.9.html
+
+process_results "Red Hat Enterprise Linux 5.0" "EM64T" "gcc 4.3.0" \
+                "linux_redhat_el-5.0-em64t-gcc-4.3.0-*-*-log.gz.txt" \
+                linux_redhat_el-5.0-em64t-gcc-4.3.0.html
+
+process_results "Red Hat Enterprise Linux 5.0" "EM64T" "gcc 4.1.1" \
+                "linux_redhat_el-5.0-em64t-gcc-4.1.1-*-*-log.gz.txt" \
+                linux_redhat_el-5.0-em64t-gcc-4.1.1.html
+
+process_results "Red Hat Enterprise Linux 5.0" "EM64T" "Intel C++ 11.0" \
+                "linux_redhat_el-5.0-em64t-icc-11.0-*-*-log.gz.txt" \
+                linux_redhat_el-5.0-em64t-icc-11.0.html
+
+process_results "Red Hat Enterprise Linux 5.0" "EM64T" "Intel C++ 10.0" \
+                "linux_redhat_el-5.0-em64t-icc-10.0-*-*-log.gz.txt" \
+                linux_redhat_el-5.0-em64t-icc-10.0.html
+
+process_results "Red Hat Enterprise Linux 5.0" "EM64T" "Intel C++ 9.1" \
+                "linux_redhat_el-5.0-em64t-icc-9.1-*-*-log.gz.txt" \
+                linux_redhat_el-5.0-em64t-icc-9.1.html
+
+# Red Hat Enterprise Linux 4 Update 4
+process_results "Red Hat Enterprise Linux 4 Update 4" "AMD64" "gcc 4.3.0" \
+                "linux_redhat_el-4.4-amd64-gcc-4.3.0-*-*-log.gz.txt" \
+                linux_redhat_el-4.4-amd64-gcc-4.3.0.html
+
+process_results "Red Hat Enterprise Linux 4 Update 4" "AMD64" "gcc 3.4.6" \
+                "linux_redhat_el-4.4-amd64-gcc-3.4.6-*-*-log.gz.txt" \
+                linux_redhat_el-4.4-amd64-gcc-3.4.6.html
+
+process_results "Red Hat Enterprise Linux 4 Update 4" "EM64T" "Intel C++ 10.0" \
+                "linux_redhat_el-4.4-em64t-icc-10.0-*-*-log.gz.txt" \
+                linux_redhat_el-4.4-em64t-icc-10.0.html
+
+process_results "Red Hat Enterprise Linux 4 Update 4" "EM64T" "Intel C++ 9.1" \
+                "linux_redhat_el-4.4-em64t-icc-9.1-*-*-log.gz.txt" \
+                linux_redhat_el-4.4-em64t-icc-9.1.html
+
+# Red Hat Enterprise Linux 4 Update 2
+process_results "Red Hat Enterprise Linux 4 Update 4" "AMD64" "gcc 3.4.6" \
+                "linux_redhat_el-4.4-amd64-gcc-3.4.6-*-*-log.gz.txt" \
+                linux_redhat_el-4.4-amd64-gcc-3.4.6.html
+
+process_results "Red Hat Enterprise Linux 4 Update 2" "IA64" "gcc 3.4.4" \
+                "linux_redhat_el-4.2-ia64-gcc-3.4.4-*-*-log.gz.txt" \
+                linux_redhat_el-4.2-ia64-gcc-3.4.4.html
+
+process_results "Red Hat Enterprise Linux 4 Update 2" "IA64" "Intel C++ 9.1" \
+                "linux_redhat_el-4.2-ia64-icc-9.1-*-*-log.gz.txt" \
+                linux_redhat_el-4.2-ia64-icc-9.1.html
+
+# Red Hat Enterprise Linux 3 Update 8
+process_results "Red Hat Enterprise Linux 3 Update 8" "EM64T" "gcc 3.2.3" \
+                "linux_redhat_el-3.8-em64t-gcc-3.2.3-*-*-log.gz.txt" \
+                linux_redhat_el-3.8-em64t-gcc-3.2.3.html
+
+# Solaris ##############################################################
+process_results "Solaris 10" "SPARC" "EDG eccp 3.9" \
+                "solaris-10-sparc-eccp-3.9-*-*-log.gz.txt" \
+                solaris-10-sparc-eccp-3.9.html
+
+process_results "Solaris 10" "SPARC" "gcc 4.3.0" \
+                "solaris-10-sparc-gcc-4.3.0-*-*-log.gz.txt" \
+                solaris-10-sparc-gcc-4.3.0.html
+
+process_results "Solaris 10" "SPARC" "gcc 4.1.1" \
+                "solaris-10-sparc-gcc-4.1.1-*-*-log.gz.txt" \
+                solaris-10-sparc-gcc-4.1.1.html
+
+process_results "Solaris 10" "SPARC" "Sun C++ 5.9" \
+                "solaris-10-sparc-sunpro-5.9-*-*-log.gz.txt" \
+                solaris-10-sparc-sunpro-5.9.html
+
+process_results "Solaris 10" "SPARC" "Sun C++ 5.8" \
+                "solaris-10-sparc-sunpro-5.8-*-*-log.gz.txt" \
+                solaris-10-sparc-sunpro-5.8.html
+
+process_results "Solaris 10" "SPARC" "Sun C++ 5.7" \
+                "solaris-10-sparc-sunpro-5.7-*-*-log.gz.txt" \
+                solaris-10-sparc-sunpro-5.7.html
+
+process_results "Solaris 9" "SPARC" "EDG eccp 3.9" \
+                "solaris-9-sparc-eccp-3.9-*-*-log.gz.txt" \
+                solaris-9-sparc-eccp-3.9.html
+
+process_results "Solaris 9" "SPARC" "Sun C++ 5.9" \
+                "solaris-9-sparc-sunpro-5.9-*-*-log.gz.txt" \
+                solaris-9-sparc-sunpro-5.9.html
+
+process_results "Solaris 9" "SPARC" "Sun C++ 5.6" \
+                "solaris-9-sparc-sunpro-5.6-*-*-log.gz.txt" \
+                solaris-9-sparc-sunpro-5.6.html
+
+process_results "Solaris 8" "SPARC" "Sun C++ 5.8" \
+                "solaris-8-sparc-sunpro-5.8-*-*-log.gz.txt" \
+                solaris-8-sparc-sunpro-5.8.html
+
+process_results "Solaris 8" "SPARC" "Sun C++ 5.3" \
+                "solaris-8-sparc-sunpro-5.3-*-*-log.gz.txt" \
+                solaris-8-sparc-sunpro-5.3.html
+
+process_results "Solaris 10" "AMD64" "Sun C++ 5.9" \
+                "solaris-10-amd64-sunpro-5.9-*-*-log.gz.txt" \
+                solaris-10-amd64-sunpro-5.9.html
+
+process_results "Solaris 10" "AMD64" "Sun C++ 5.8" \
+                "solaris-10-amd64-sunpro-5.8-*-*-log.gz.txt" \
+                solaris-10-amd64-sunpro-5.8.html
+
+# SuSE Linux ###########################################################
+# SuSE Enterprise Server 10
+process_results "SuSE Enterprise Server 10.0" "EM64T" "EDG eccp 3.9" \
+                "linux_suse-10.0-em64t-eccp-3.9-*-*-log.gz.txt" \
+                linux_suse-10.0-em64t-eccp-3.9.html
+
+process_results "SuSE Enterprise Server 10.0" "EM64T" "gcc 4.3.0" \
+                "linux_suse-10.0-em64t-gcc-4.3.0-*-*-log.gz.txt" \
+                linux_suse-10.0-em64t-gcc-4.3.0.html
+
+process_results "SuSE Enterprise Server 10.0" "EM64T" "gcc 4.1.0" \
+                "linux_suse-10.0-em64t-gcc-4.1.0-*-*-log.gz.txt" \
+                linux_suse-10.0-em64t-gcc-4.1.0.html
+
+process_results "SuSE Enterprise Server 10.0" "EM64T" "Intel C++ 10.0" \
+                "linux_suse-10.0-em64t-icc-10.0-*-*-log.gz.txt" \
+                linux_suse-10.0-em64t-icc-10.0.html
+
+process_results "SuSE Enterprise Server 10.0" "EM64T" "Intel C++ 9.1" \
+                "linux_suse-10.0-em64t-icc-9.1-*-*-log.gz.txt" \
+                linux_suse-10.0-em64t-icc-9.1.html
+
+# SuSE Enterprise Server 9.1
+process_results "SuSE Enterprise Server 9.1" "AMD64" "gcc 3.3.3" \
+                "linux_suse-9.1-amd64-gcc-3.3.3-*-*-log.gz.txt" \
+                linux_suse-9.1-amd64-gcc-3.3.3.html
+
+process_results "SuSE Enterprise Server 9.1" "AMD64" "Intel C++ 10.0" \
+                "linux_suse-9.1-amd64-icc-10.0-*-*-log.gz.txt" \
+                linux_suse-9.1-amd64-icc-10.0.html
+
+process_results "SuSE Enterprise Server 9.1" "AMD64" "Intel C++ 9.1" \
+                "linux_suse-9.1-amd64-icc-9.1-*-*-log.gz.txt" \
+                linux_suse-9.1-amd64-icc-9.1.html
+
+process_results "SuSE Enterprise Server 9.1" "AMD64" "EDG eccp 3.9" \
+                "linux_suse-9.1-amd64-eccp-3.9-*-*-log.gz.txt" \
+                linux_suse-9.1-amd64-eccp-3.9.html
+
+process_results "SuSE Enterprise Server 9.1" "AMD64" "Sun C++ 5.9" \
+                "linux_suse-9.1-amd64-sunpro-5.9-*-*-log.gz.txt" \
+                linux_suse-9.1-amd64-sunpro-5.9.html
+
+# Tru64 UNIX ###########################################################
+
+process_results "Tru64 UNIX 5.1" "Alpha" "HP C++ 7.1" \
+                "tru64-5.1-alpha-compaq-7.1-*-*-log.gz.txt" \
+                tru64-5.1-alpha-compaq-7.1.html
+
+# CygWin ###############################################################
+process_results "CygWin/Windows XP" "x86" "gcc 3.4.4" \
+                "win_xp-2-x86-gcc-3.4.4-*-*-log.gz.txt" \
+                 win_xp-2-x86-gcc-3.4.4.html
+
+# Windows ##############################################################
+
+process_results "Windows 2008" "EM64T" "MSVC 9.0" \
+                "win_2008-0-em64t-msvc-9.0-*-*-log.gz.txt" \
+                 win_2008_0-em64t-msvc-9.0.html
+
+process_results "Windows 2008" "EM64T" "MSVC 8.0" \
+                "win_2008-0-em64t-msvc-8.0-*-*-log.gz.txt" \
+                 win_2008_0-em64t-msvc-8.0.html
+
+process_results "Windows 2008" "EM64T" "Intel C++ 11.0" \
+                "win_2008-0-em64t-icl-11.0-*-*-log.gz.txt" \
+                 win_2008_0-em64t-icl-11.0.html
+
+process_results "Windows Vista" "EM64T" "MSVC 9.0" \
+                "win_vista-0-em64t-msvc-9.0-*-*-log.gz.txt" \
+                 win_vista_0-em64t-msvc-9.0.html
+
+process_results "Windows Vista" "EM64T" "MSVC 8.0" \
+                "win_vista-0-em64t-msvc-8.0-*-*-log.gz.txt" \
+                 win_vista_0-em64t-msvc-8.0.html
+
+process_results "Windows Vista" "EM64T" "Intel C++ 11.0" \
+                "win_vista-0-em64t-icl-11.0-*-*-log.gz.txt" \
+                 win_vista_0-em64t-icl-11.0.html
+
+process_results "Windows Vista" "EM64T" "Intel C++ 10.0" \
+                "win_vista-0-em64t-icl-10.0-*-*-log.gz.txt" \
+                 win_vista_0-em64t-icl-10.0.html
+
+process_results "Windows XP, SP2" "x86" "MSVC 8.0" \
+                "win_xp-2-x86-msvc-8.0-*-*-log.gz.txt" \
+                 win_xp_2-x86-msvc-8.0.html
+
+process_results "Windows XP, SP2" "x86" "MSVC 7.1" \
+                "win_xp-2-x86-msvc-7.1-*-*-log.gz.txt" \
+                 win_xp_2-x86-msvc-7.1.html
+
+process_results "Windows XP, SP2" "x86" "Intel C++ 11.0" \
+                "win_xp-2-x86-icl-11.0-*-*-log.gz.txt" \
+                 win_xp_2-x86-icl-11.0.html
+
+process_results "Windows XP, SP2" "x86" "Intel C++ 10.0" \
+                "win_xp-2-x86-icl-10.0-*-*-log.gz.txt" \
+                 win_xp_2-x86-icl-10.0.html
+
+process_results "Windows XP, SP2" "x86" "Intel C++ 9.1" \
+                "win_xp-2-x86-icl-9.1-*-*-log.gz.txt" \
+                 win_xp_2-x86-icl-9.1.html
+
+process_results "Windows XP, SP1" "EM64T" "MSVC 9.0" \
+                "win_xp-1-em64t-msvc-9.0-*-*-log.gz.txt" \
+                 win_xp_1-em64t-msvc-9.0.html
+
+process_results "Windows XP, SP1" "EM64T" "MSVC 8.0" \
+                "win_xp-1-em64t-msvc-8.0-*-*-log.gz.txt" \
+                 win_xp_1-em64t-msvc-8.0.html
+
+process_results "Windows XP, SP1" "EM64T" "Intel C++ 10.0" \
+                "win_xp-1-em64t-icl-10.0-*-*-log.gz.txt" \
+                 win_xp_1-em64t-icl-10.0.html
+
+process_results "Windows 2003, SP1" "EM64T" "MSVC 9.0" \
+                "win_2003-1-em64t-msvc-9.0-*-*-log.gz.txt" \
+                 win_2003_1-em64t-msvc-9.0.html
+
+process_results "Windows 2003, SP1" "EM64T" "MSVC 8.0" \
+                "win_2003-1-em64t-msvc-8.0-*-*-log.gz.txt" \
+                 win_2003_1-em64t-msvc-8.0.html
+
+process_results "Windows 2003, SP1" "EM64T" "Intel C++ 10.0" \
+                "win_2003-1-em64t-icl-10.0-*-*-log.gz.txt" \
+                 win_2003_1-em64t-icl-10.0.html
+
+process_results "Windows 2000, SP4" "x86" "MSVC 7.1" \
+                "win_2000-4-x86-msvc-7.1-*-*-log.gz.txt" \
+                 win_2000_4-x86-msvc-7.1.html
+
+process_results "Windows 2000, SP4" "x86" "Intel C++ 9.1" \
+                "win_2000-4-x86-icl-9.1-*-*-log.gz.txt" \
+                 win_2000_4-x86-icl-9.1.html
+
+
+# compute the number of seconds it took to process all logs
+processing_time=`duration "$start_time" "$now"`
+
+cat<<EOF | output
+    </table>
+    <hr>
+    <i>Generated in $processing_time.</i>
+  </body>
+</html>
+EOF
+
+# rerame the temporary output file to $outfile, possibly replacing
+# the original $outfile if it exists
+if [ -f "$tmpout" ]; then
+    mv $tmpout $outfile
+fi

@@ -1,0 +1,4256 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configurationDescriptor version="84">
+  <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
+    <df name="apache_stl" root=".">
+      <df name="bin">
+      </df>
+      <df name="doc">
+        <df name="stdlibref">
+          <df name="images">
+          </df>
+        </df>
+        <df name="stdlibug">
+          <df name="images">
+          </df>
+        </df>
+      </df>
+      <df name="etc">
+        <df name="config">
+          <df name="src">
+            <in>ABS_OVERLOADS.cpp</in>
+            <in>ATOMIC_OPS.cpp</in>
+            <in>BAD_ALLOC_ASSIGNMENT.cpp</in>
+            <in>BAD_ALLOC_COPY_CTOR.cpp</in>
+            <in>BAD_ALLOC_DEFAULT_CTOR.cpp</in>
+            <in>BAD_ALLOC_DTOR.cpp</in>
+            <in>BAD_ALLOC_WHAT.cpp</in>
+            <in>BAD_CAST_ASSIGNMENT.cpp</in>
+            <in>BAD_CAST_COPY_CTOR.cpp</in>
+            <in>BAD_CAST_DEFAULT_CTOR.cpp</in>
+            <in>BAD_CAST_DTOR.cpp</in>
+            <in>BAD_CAST_WHAT.cpp</in>
+            <in>BAD_EXCEPTION_ASSIGNMENT.cpp</in>
+            <in>BAD_EXCEPTION_COPY_CTOR.cpp</in>
+            <in>BAD_EXCEPTION_DEFAULT_CTOR.cpp</in>
+            <in>BAD_EXCEPTION_DTOR.cpp</in>
+            <in>BAD_EXCEPTION_WHAT.cpp</in>
+            <in>BAD_TYPEID_ASSIGNMENT.cpp</in>
+            <in>BAD_TYPEID_COPY_CTOR.cpp</in>
+            <in>BAD_TYPEID_DEFAULT_CTOR.cpp</in>
+            <in>BAD_TYPEID_DTOR.cpp</in>
+            <in>BAD_TYPEID_WHAT.cpp</in>
+            <in>BOOL.cpp</in>
+            <in>CLASS_PARTIAL_SPEC.cpp</in>
+            <in>COLLAPSE_STATIC_LOCALS.cpp</in>
+            <in>COLLAPSE_TEMPLATE_LOCALS.cpp</in>
+            <in>COLLAPSE_TEMPLATE_STATICS.cpp</in>
+            <in>CONST_CAST.cpp</in>
+            <in>CTYPE_BITS.cpp</in>
+            <in>CV_VOID_SPECIALIZATIONS.cpp</in>
+            <in>DAYLIGHT.cpp</in>
+            <in>DEFAULT_TEMPLATE_ARGS.cpp</in>
+            <in>DEPENDENT_TEMPLATE.cpp</in>
+            <in>DEPRECATED_LIBC_IN_STD.cpp</in>
+            <in>DIV_OVERLOADS.cpp</in>
+            <in>DUMMY_DEFAULT_ARG.cpp</in>
+            <in>DYNAMIC_CAST.cpp</in>
+            <in>EMPTY_MEM_INITIALIZER.cpp</in>
+            <in>EQUAL_CTYPE_MASK.cpp</in>
+            <in>EXCEPTIONS.cpp</in>
+            <in>EXCEPTION_ASSIGNMENT.cpp</in>
+            <in>EXCEPTION_COPY_CTOR.cpp</in>
+            <in>EXCEPTION_DEFAULT_CTOR.cpp</in>
+            <in>EXCEPTION_DTOR.cpp</in>
+            <in>EXCEPTION_SPECIFICATION.cpp</in>
+            <in>EXCEPTION_SPECIFICATION_ON_NEW.cpp</in>
+            <in>EXCEPTION_WHAT.cpp</in>
+            <in>EXPLICIT_ARG.cpp</in>
+            <in>EXPLICIT_CTOR_INSTANTIATION.cpp</in>
+            <in>EXPLICIT_FUNC_INSTANTIATION.cpp</in>
+            <in>EXPLICIT_INSTANTIATION.cpp</in>
+            <in>EXPLICIT_INSTANTIATION_BEFORE_DEFINITION.cpp</in>
+            <in>EXPLICIT_INSTANTIATION_WITH_IMPLICIT_INCLUSION.cpp</in>
+            <in>EXPLICIT_MEMBER_INSTANTIATION.cpp</in>
+            <in>EXPLICIT_MEMBER_SPECIALIZATION.cpp</in>
+            <in>EXPORT.cpp</in>
+            <in>EXPORT_KEYWORD.cpp</in>
+            <in>EXTERN_C_COMPATIBILITY.cpp</in>
+            <in>EXTERN_C_EXCEPTIONS.cpp</in>
+            <in>EXTERN_C_OVERLOAD.cpp</in>
+            <in>EXTERN_FUNCTION_TEMPLATE.cpp</in>
+            <in>EXTERN_INLINE.cpp</in>
+            <in>EXTERN_MEMBER_TEMPLATE.cpp</in>
+            <in>EXTERN_TEMPLATE.cpp</in>
+            <in>EXTERN_TEMPLATE_BEFORE_DEFINITION.cpp</in>
+            <in>FLOAT.cpp</in>
+            <in>FPOS_T.cpp</in>
+            <in>FRIEND_TEMPLATE.cpp</in>
+            <in>FUNC.cpp</in>
+            <in>FUNCTION_TRY_BLOCK.cpp</in>
+            <in>FUNC_PARTIAL_SPEC.cpp</in>
+            <in>GLOBAL_BAD_ALLOC.cpp</in>
+            <in>GLOBAL_BAD_CAST.cpp</in>
+            <in>GLOBAL_BAD_EXCEPTION.cpp</in>
+            <in>GLOBAL_BAD_TYPEID.cpp</in>
+            <in>GLOBAL_EXCEPTION.cpp</in>
+            <in>GLOBAL_NOTHROW.cpp</in>
+            <in>GLOBAL_NOTHROW_T.cpp</in>
+            <in>GLOBAL_SET_NEW_HANDLER.cpp</in>
+            <in>GLOBAL_SET_TERMINATE.cpp</in>
+            <in>GLOBAL_SET_UNEXPECTED.cpp</in>
+            <in>GLOBAL_TERMINATE.cpp</in>
+            <in>GLOBAL_TYPE_INFO.cpp</in>
+            <in>GLOBAL_UNCAUGHT_EXCEPTION.cpp</in>
+            <in>GLOBAL_UNEXPECTED.cpp</in>
+            <in>HONOR_STD.cpp</in>
+            <in>ICONV.cpp</in>
+            <in>ICONV_CONST_CHAR.cpp</in>
+            <in>IMPLICIT_INCLUSION.cpp</in>
+            <in>IMPLICIT_INSTANTIATION.cpp</in>
+            <in>INFINITY.cpp</in>
+            <in>INITIALIZER_LIST.cpp</in>
+            <in>INSTANTIATE_DEFAULT_ARGS.cpp</in>
+            <in>LCONV.cpp</in>
+            <in>LCONV_INT_FMAT.cpp</in>
+            <in>LDBL_PRINTF_PREFIX.cpp</in>
+            <in>LIBC_EXCEPTION_SPEC.cpp</in>
+            <in>LIBC_IN_STD.cpp</in>
+            <in>LIB_EXCEPTIONS.cpp</in>
+            <in>LIMITS.cpp</in>
+            <in>LLONG_PRINTF_PREFIX.cpp</in>
+            <in>LOCALE_NAME_FMAT.cpp</in>
+            <in>LONG_DOUBLE.cpp</in>
+            <in>LONG_LONG.cpp</in>
+            <in>MADVISE.cpp</in>
+            <in>MATH_EXCEPTION.cpp</in>
+            <in>MATH_OVERLOADS.cpp</in>
+            <in>MBSTATE_T.cpp</in>
+            <in>MMAP.cpp</in>
+            <in>MUNMAP.cpp</in>
+            <in>NAMESPACE.cpp</in>
+            <in>NATIVE_WCHAR_T.cpp</in>
+            <in>NESTED_CLASS_ACCESS.cpp</in>
+            <in>NEWLINE.cpp</in>
+            <in>NEW_CLASS_TEMPLATE_SYNTAX.cpp</in>
+            <in>NEW_FUNC_TEMPLATE_SYNTAX.cpp</in>
+            <in>NEW_HEADER.cpp</in>
+            <in>NEW_OFLOW_SAFE.cpp</in>
+            <in>NEW_THROWS.cpp</in>
+            <in>NL_LANGINFO.cpp</in>
+            <in>NL_TYPES_H.cpp</in>
+            <in>NONCLASS_ARROW_RETURN.cpp</in>
+            <in>NONDEDUCED_CONTEXT.cpp</in>
+            <in>NO_DBL_TRAPS.cpp</in>
+            <in>NO_FOR_LOCAL_SCOPE.cpp</in>
+            <in>NO_INT_TRAPS.cpp</in>
+            <in>NO_OBJECT_MANGLING.cpp</in>
+            <in>NO_SIGNALING_NAN.cpp</in>
+            <in>OFFSETOF.cpp</in>
+            <in>OPERATOR_DELETE_ARRAY.cpp</in>
+            <in>OPERATOR_DELETE_ARRAY_NOTHROW.cpp</in>
+            <in>OPERATOR_DELETE_ARRAY_PLACEMENT.cpp</in>
+            <in>OPERATOR_DELETE_NOTHROW.cpp</in>
+            <in>OPERATOR_DELETE_PLACEMENT.cpp</in>
+            <in>OPERATOR_NEW_ARRAY.cpp</in>
+            <in>OPERATOR_NEW_ARRAY_NOTHROW.cpp</in>
+            <in>OPERATOR_NEW_ARRAY_PLACEMENT.cpp</in>
+            <in>OPERATOR_NEW_NOTHROW.cpp</in>
+            <in>OPERATOR_NEW_PLACEMENT.cpp</in>
+            <in>OVERLOAD_OF_TEMPLATE_FUNCTION.cpp</in>
+            <in>PART_SPEC_OVERLOAD.cpp</in>
+            <in>PLACEMENT_DELETE.cpp</in>
+            <in>POD_ZERO_INIT.cpp</in>
+            <in>PRETTY_FUNCTION.cpp</in>
+            <in>PTR_EXCEPTION_SPEC.cpp</in>
+            <in>PUTENV_CONST_CHAR.cpp</in>
+            <in>QUIET_NAN.cpp</in>
+            <in>REINTERPRET_CAST.cpp</in>
+            <in>RUNTIME_IN_STD.cpp</in>
+            <in>RVALUE_REFERENCES.cpp</in>
+            <in>SETLOCALE.cpp</in>
+            <in>SETRLIMIT.cpp</in>
+            <in>SIG_ATOMIC_T.cpp</in>
+            <in>SIZE_T.cpp</in>
+            <in>SPECIALIZATION_ON_RETURN_TYPE.cpp</in>
+            <in>SPECIALIZED_FRIEND.cpp</in>
+            <in>STATICS_IN_TEMPLATE.cpp</in>
+            <in>STATIC_ASSERT.cpp</in>
+            <in>STATIC_CAST.cpp</in>
+            <in>STATIC_CONST_MEMBER_EXPR_CONST.cpp</in>
+            <in>STATIC_CONST_MEMBER_INIT.cpp</in>
+            <in>STATIC_TEMPLATE_MEMBER_INIT.cpp</in>
+            <in>STD_BAD_ALLOC.cpp</in>
+            <in>STD_BAD_CAST.cpp</in>
+            <in>STD_BAD_EXCEPTION.cpp</in>
+            <in>STD_BAD_TYPEID.cpp</in>
+            <in>STD_EXCEPTION.cpp</in>
+            <in>STD_MBSTATE_T.cpp</in>
+            <in>STD_NOTHROW.cpp</in>
+            <in>STD_NOTHROW_T.cpp</in>
+            <in>STD_SET_NEW_HANDLER.cpp</in>
+            <in>STD_SET_TERMINATE.cpp</in>
+            <in>STD_SET_UNEXPECTED.cpp</in>
+            <in>STD_TERMINATE.cpp</in>
+            <in>STD_TYPE_INFO.cpp</in>
+            <in>STD_UNCAUGHT_EXCEPTION.cpp</in>
+            <in>STD_UNEXPECTED.cpp</in>
+            <in>STRUCT_TM.cpp</in>
+            <in>STRUCT_TM_IN_WCHAR_H.cpp</in>
+            <in>TEMPLATE_DEFAULT_ARG_CONVERSION.cpp</in>
+            <in>TEMPLATE_ON_RETURN_TYPE.cpp</in>
+            <in>THREAD_SAFE_ERRNO.cpp</in>
+            <in>THREAD_SAFE_EXCEPTIONS.cpp</in>
+            <in>THREAD_SAFE_LOCALE.cpp</in>
+            <in>TIMEZONE.cpp</in>
+            <in>TLS.cpp</in>
+            <in>TYPE_INFO_BEFORE.cpp</in>
+            <in>TYPE_INFO_DTOR.cpp</in>
+            <in>TYPE_INFO_EQUALITY.cpp</in>
+            <in>TYPE_INFO_INEQUALITY.cpp</in>
+            <in>TYPE_INFO_NAME.cpp</in>
+            <in>UNAME.cpp</in>
+            <in>UNISTD_DECL.cpp</in>
+            <in>VARIADIC_TEMPLATES.cpp</in>
+            <in>VA_LIST.cpp</in>
+            <in>VA_LIST_FUNC_MACRO.cpp</in>
+            <in>VSNPRINTF_RETURN.cpp</in>
+            <in>WCHAR_T.cpp</in>
+            <in>WCSFTIME_WCHAR_T_FMAT.cpp</in>
+            <in>WCTRANS_T.cpp</in>
+            <in>WCTYPE_T.cpp</in>
+            <in>WINT_T.cpp</in>
+            <in>collapse_static_locals.lib.cpp</in>
+            <in>collapse_template_locals.lib.cpp</in>
+            <in>collapse_template_statics.lib.cpp</in>
+            <in>extern_function_template_imp.cpp</in>
+            <in>extern_function_template_imp.h</in>
+            <in>extern_inline.lib.cpp</in>
+            <in>extern_template_before_definition_imp.cpp</in>
+            <in>extern_template_imp.cpp</in>
+            <in>extern_template_imp.h</in>
+            <in>float_defs.h</in>
+            <in>implicit_inclusion_imp.c</in>
+            <in>implicit_inclusion_imp.cc</in>
+            <in>implicit_inclusion_imp.h</in>
+            <in>instantiation_before_definition.c</in>
+            <in>instantiation_before_definition.cc</in>
+            <in>instantiation_before_definition.h</in>
+            <in>instantiation_with_implicit_inclusion.c</in>
+            <in>instantiation_with_implicit_inclusion.cc</in>
+            <in>instantiation_with_implicit_inclusion.h</in>
+            <in>lib_exceptions.lib.cpp</in>
+            <in>locale_names.h</in>
+            <in>nodbg.h</in>
+            <in>object_mangling_imp.cpp</in>
+            <in>proclimits.h</in>
+            <in>terminate.h</in>
+            <in>thread.h</in>
+            <in>types.h</in>
+          </df>
+          <df name="windows">
+            <in>fun_present_check.cpp</in>
+          </df>
+        </df>
+        <df name="nls">
+          <df name="charmaps">
+          </df>
+          <df name="posix">
+            <df name="charmaps">
+            </df>
+            <df name="src">
+            </df>
+          </df>
+          <df name="src">
+          </df>
+        </df>
+      </df>
+      <df name="examples">
+        <df name="include">
+          <in>alg3.h</in>
+          <in>codecvte.h</in>
+          <in>examples.h</in>
+          <in>memfunref.h</in>
+          <in>replace.h</in>
+          <in>rwstdmessages.h</in>
+          <in>stocks.h</in>
+          <in>teller.h</in>
+          <in>valarray.h</in>
+          <in>widwork.h</in>
+        </df>
+        <df name="manual">
+          <df name="in">
+          </df>
+          <df name="out">
+          </df>
+          <in>accumulate.cpp</in>
+          <in>adj_diff.cpp</in>
+          <in>advance.cpp</in>
+          <in>auto_ptr.cpp</in>
+          <in>binary_search.cpp</in>
+          <in>binders.cpp</in>
+          <in>bitset.cpp</in>
+          <in>codecvt.cpp</in>
+          <in>codecvt1.cpp</in>
+          <in>collate.cpp</in>
+          <in>complex.cpp</in>
+          <in>copyex.cpp</in>
+          <in>count.cpp</in>
+          <in>ctype.cpp</in>
+          <in>deque.cpp</in>
+          <in>distance.cpp</in>
+          <in>equal.cpp</in>
+          <in>equal_range.cpp</in>
+          <in>failure.cpp</in>
+          <in>filebuf.cpp</in>
+          <in>fill.cpp</in>
+          <in>find.cpp</in>
+          <in>find_end.cpp</in>
+          <in>find_first_of.cpp</in>
+          <in>fmtflags_manip.cpp</in>
+          <in>for_each.cpp</in>
+          <in>fstream.cpp</in>
+          <in>funct_ob.cpp</in>
+          <in>generate.cpp</in>
+          <in>gslice.cpp</in>
+          <in>gslice_array.cpp</in>
+          <in>has_facet.cpp</in>
+          <in>heap_ops.cpp</in>
+          <in>ifstream.cpp</in>
+          <in>includes.cpp</in>
+          <in>indirect_array.cpp</in>
+          <in>inner_product.cpp</in>
+          <in>insert_iterator.cpp</in>
+          <in>insert_wchar.cpp</in>
+          <in>isalnum.cpp</in>
+          <in>istream1.cpp</in>
+          <in>istreambuf_iterator.cpp</in>
+          <in>istringstream.cpp</in>
+          <in>istrstream.cpp</in>
+          <in>lex_compare.cpp</in>
+          <in>limits.cpp</in>
+          <in>list.cpp</in>
+          <in>locale.cpp</in>
+          <in>map.cpp</in>
+          <in>mask_array.cpp</in>
+          <in>max.cpp</in>
+          <in>max_elem.cpp</in>
+          <in>mbsrtowcs.cpp</in>
+          <in>memfunc.cpp</in>
+          <in>memfunref.cpp</in>
+          <in>merge.cpp</in>
+          <in>messages.cpp</in>
+          <in>mismatch.cpp</in>
+          <in>money_get.cpp</in>
+          <in>money_manip.cpp</in>
+          <in>moneypunct.cpp</in>
+          <in>moneyput.cpp</in>
+          <in>multimap.cpp</in>
+          <in>multiset.cpp</in>
+          <in>mutex.cpp</in>
+          <in>negator.cpp</in>
+          <in>nthelem.cpp</in>
+          <in>num_get.cpp</in>
+          <in>num_put.cpp</in>
+          <in>numpunct.cpp</in>
+          <in>ostream.cpp</in>
+          <in>ostreambuf_iterator.cpp</in>
+          <in>partial_sort.cpp</in>
+          <in>partial_sum.cpp</in>
+          <in>partition.cpp</in>
+          <in>permutation.cpp</in>
+          <in>pnt2fnct.cpp</in>
+          <in>priority_queue.cpp</in>
+          <in>queue.cpp</in>
+          <in>random_shuffle.cpp</in>
+          <in>remove.cpp</in>
+          <in>replace.cpp</in>
+          <in>reverse.cpp</in>
+          <in>reverse_iterator.cpp</in>
+          <in>rotate.cpp</in>
+          <in>rwexcept.cpp</in>
+          <in>rwstdmessages.cpp</in>
+          <in>search.cpp</in>
+          <in>set_diff.cpp</in>
+          <in>set_intr.cpp</in>
+          <in>set_sym_diff.cpp</in>
+          <in>set_union.cpp</in>
+          <in>setex.cpp</in>
+          <in>slice.cpp</in>
+          <in>slice_array.cpp</in>
+          <in>sort.cpp</in>
+          <in>stack.cpp</in>
+          <in>stream_iterator.cpp</in>
+          <in>string.cpp</in>
+          <in>stringbuf.cpp</in>
+          <in>strstream.cpp</in>
+          <in>strstreambuf.cpp</in>
+          <in>swap.cpp</in>
+          <in>time_get.cpp</in>
+          <in>time_manip.cpp</in>
+          <in>time_put.cpp</in>
+          <in>toupper.cpp</in>
+          <in>transform.cpp</in>
+          <in>ul_bound.cpp</in>
+          <in>unique.cpp</in>
+          <in>use_facet.cpp</in>
+          <in>valarray.cpp</in>
+          <in>vector.cpp</in>
+          <in>wctype.cpp</in>
+          <in>wostream.cpp</in>
+          <in>wstringstream.cpp</in>
+        </df>
+        <df name="tutorial">
+          <df name="in">
+          </df>
+          <df name="out">
+          </df>
+          <in>alg1.cpp</in>
+          <in>alg2.cpp</in>
+          <in>alg3.cpp</in>
+          <in>alg4.cpp</in>
+          <in>alg5.cpp</in>
+          <in>alg6.cpp</in>
+          <in>alg7.cpp</in>
+          <in>calc.cpp</in>
+          <in>complx.cpp</in>
+          <in>concord.cpp</in>
+          <in>dynatype.cpp</in>
+          <in>graph.cpp</in>
+          <in>icecream.cpp</in>
+          <in>radix.cpp</in>
+          <in>sieve.cpp</in>
+          <in>spell.cpp</in>
+          <in>stdexcept.cpp</in>
+          <in>stocks.cpp</in>
+          <in>tele.cpp</in>
+          <in>teller.cpp</in>
+          <in>widwork.cpp</in>
+        </df>
+      </df>
+      <df name="include">
+        <df name="ansi">
+          <in>_cassert.h</in>
+          <in>_cctype.h</in>
+          <in>_cerrno.h</in>
+          <in>_cfloat.h</in>
+          <in>_clocale.h</in>
+          <in>_cmath.h</in>
+          <in>_csetjmp.h</in>
+          <in>_csignal.h</in>
+          <in>_cstdarg.h</in>
+          <in>_cstddef.h</in>
+          <in>_cstdint.h</in>
+          <in>_cstdio.h</in>
+          <in>_cstdlib.h</in>
+          <in>_cstring.h</in>
+          <in>_ctime.h</in>
+          <in>_cwchar.h</in>
+          <in>_cwctype.h</in>
+          <in>assert.h</in>
+          <in>ctype.h</in>
+          <in>errno.h</in>
+          <in>float.h</in>
+          <in>limits.h</in>
+          <in>locale.h</in>
+          <in>math.h</in>
+          <in>setjmp.h</in>
+          <in>signal.h</in>
+          <in>stdarg.h</in>
+          <in>stddef.h</in>
+          <in>stdint.h</in>
+          <in>stdio.h</in>
+          <in>stdlib.h</in>
+          <in>string.h</in>
+          <in>time.h</in>
+          <in>wchar.h</in>
+          <in>wctype.h</in>
+        </df>
+        <df name="loc">
+          <in>_codecvt.c</in>
+          <in>_codecvt.cc</in>
+          <in>_codecvt.h</in>
+          <in>_collate.c</in>
+          <in>_collate.cc</in>
+          <in>_collate.h</in>
+          <in>_convenience.h</in>
+          <in>_ctype.c</in>
+          <in>_ctype.cc</in>
+          <in>_ctype.h</in>
+          <in>_facet.h</in>
+          <in>_locale.h</in>
+          <in>_localedef.h</in>
+          <in>_messages.c</in>
+          <in>_messages.cc</in>
+          <in>_messages.h</in>
+          <in>_money_get.c</in>
+          <in>_money_get.cc</in>
+          <in>_money_get.h</in>
+          <in>_money_put.c</in>
+          <in>_money_put.cc</in>
+          <in>_money_put.h</in>
+          <in>_moneypunct.c</in>
+          <in>_moneypunct.cc</in>
+          <in>_moneypunct.h</in>
+          <in>_num_get.c</in>
+          <in>_num_get.cc</in>
+          <in>_num_get.h</in>
+          <in>_num_put.c</in>
+          <in>_num_put.cc</in>
+          <in>_num_put.h</in>
+          <in>_numpunct.c</in>
+          <in>_numpunct.cc</in>
+          <in>_numpunct.h</in>
+          <in>_punct.c</in>
+          <in>_punct.cc</in>
+          <in>_punct.h</in>
+          <in>_time_get.c</in>
+          <in>_time_get.cc</in>
+          <in>_time_get.h</in>
+          <in>_time_put.c</in>
+          <in>_time_put.cc</in>
+          <in>_time_put.h</in>
+        </df>
+        <df name="rw">
+          <in>_algobase.c</in>
+          <in>_algobase.cc</in>
+          <in>_algobase.h</in>
+          <in>_allocator.h</in>
+          <in>_array.h</in>
+          <in>_atomic-deccxx.h</in>
+          <in>_atomic-mipspro.h</in>
+          <in>_atomic-mutex.h</in>
+          <in>_atomic-parisc.h</in>
+          <in>_atomic-sparc.h</in>
+          <in>_atomic-sync.h</in>
+          <in>_atomic-x64.h</in>
+          <in>_atomic-x86.h</in>
+          <in>_atomic-xlc.h</in>
+          <in>_atomic.h</in>
+          <in>_autoptr.h</in>
+          <in>_basic_ios.c</in>
+          <in>_basic_ios.cc</in>
+          <in>_basic_ios.h</in>
+          <in>_bitmask.h</in>
+          <in>_config-acc.h</in>
+          <in>_config-deccxx.h</in>
+          <in>_config-eccp.h</in>
+          <in>_config-gcc.h</in>
+          <in>_config-icc.h</in>
+          <in>_config-mipspro.h</in>
+          <in>_config-msvc.h</in>
+          <in>_config-msvcrt.h</in>
+          <in>_config-sunpro.h</in>
+          <in>_config-xlc.h</in>
+          <in>_config.h</in>
+          <in>_defs.h</in>
+          <in>_error.h</in>
+          <in>_exception.h</in>
+          <in>_file.h</in>
+          <in>_forward.h</in>
+          <in>_funcbase.h</in>
+          <in>_heap.c</in>
+          <in>_heap.cc</in>
+          <in>_heap.h</in>
+          <in>_ioinsert.c</in>
+          <in>_ioinsert.cc</in>
+          <in>_ioinsert.h</in>
+          <in>_ioiter.h</in>
+          <in>_iosbase.h</in>
+          <in>_iosfailure.h</in>
+          <in>_iosfwd.h</in>
+          <in>_iterator.h</in>
+          <in>_iterbase.h</in>
+          <in>_math.h</in>
+          <in>_mbstate.h</in>
+          <in>_meta_arr.h</in>
+          <in>_meta_cat.h</in>
+          <in>_meta_comp.h</in>
+          <in>_meta_cv.h</in>
+          <in>_meta_help.h</in>
+          <in>_meta_other.h</in>
+          <in>_meta_prop.h</in>
+          <in>_meta_ptr.h</in>
+          <in>_meta_ref.h</in>
+          <in>_meta_rel.h</in>
+          <in>_meta_sign.h</in>
+          <in>_mutex-dce.h</in>
+          <in>_mutex-os2.h</in>
+          <in>_mutex-pthread.h</in>
+          <in>_mutex-solaris.h</in>
+          <in>_mutex-win32.h</in>
+          <in>_mutex.h</in>
+          <in>_new.h</in>
+          <in>_pair.h</in>
+          <in>_rawiter.h</in>
+          <in>_ref_wrap.h</in>
+          <in>_relops.h</in>
+          <in>_select.h</in>
+          <in>_smartptr.h</in>
+          <in>_specialized.h</in>
+          <in>_static_assert.h</in>
+          <in>_streamiter.h</in>
+          <in>_stringio.c</in>
+          <in>_stringio.cc</in>
+          <in>_stringio.h</in>
+          <in>_strref.h</in>
+          <in>_traits.h</in>
+          <in>_tree.c</in>
+          <in>_tree.cc</in>
+          <in>_tree.h</in>
+          <in>_tuple.h</in>
+          <in>_tuple_traits.h</in>
+          <in>_typetraits.h</in>
+        </df>
+        <in>algorithm.c</in>
+        <in>algorithm.cc</in>
+        <in>bitset.c</in>
+        <in>bitset.cc</in>
+        <in>complex.c</in>
+        <in>complex.cc</in>
+        <in>deque.c</in>
+        <in>deque.cc</in>
+        <in>fstream.c</in>
+        <in>fstream.cc</in>
+        <in>istream.c</in>
+        <in>istream.cc</in>
+        <in>limits.c</in>
+        <in>limits.cc</in>
+        <in>list.c</in>
+        <in>list.cc</in>
+        <in>ostream.c</in>
+        <in>ostream.cc</in>
+        <in>sstream.c</in>
+        <in>sstream.cc</in>
+        <in>streambuf.c</in>
+        <in>streambuf.cc</in>
+        <in>string.c</in>
+        <in>string.cc</in>
+        <in>valarray.c</in>
+        <in>valarray.cc</in>
+        <in>vector.c</in>
+        <in>vector.cc</in>
+      </df>
+      <df name="slick">
+      </df>
+      <df name="src">
+        <df name="ia64">
+          <in>atomic-64.s</in>
+          <in>atomic.s</in>
+        </df>
+        <df name="parisc">
+          <in>atomic-64.s</in>
+          <in>atomic.s</in>
+        </df>
+        <df name="sparc">
+          <in>atomic-64.s</in>
+          <in>atomic.s</in>
+        </df>
+        <df name="x86">
+          <in>atomic.s</in>
+        </df>
+        <df name="x86_64">
+          <in>atomic.s</in>
+        </df>
+        <in>access.h</in>
+        <in>assert.cpp</in>
+        <in>atomic-cxx.S</in>
+        <in>atomic.asm</in>
+        <in>atomic.s</in>
+        <in>bitset.cpp</in>
+        <in>catalog.cpp</in>
+        <in>catalog.h</in>
+        <in>codecvt.cpp</in>
+        <in>collate.cpp</in>
+        <in>ctype.cpp</in>
+        <in>ctype_bits.cpp</in>
+        <in>domain_error.cpp</in>
+        <in>exception.cpp</in>
+        <in>export.cpp</in>
+        <in>facet.cpp</in>
+        <in>file.cpp</in>
+        <in>fpclass.h</in>
+        <in>instance.cpp</in>
+        <in>invalid_argument.cpp</in>
+        <in>ios.cpp</in>
+        <in>ios_bits.cpp</in>
+        <in>iosdata.h</in>
+        <in>iostore.cpp</in>
+        <in>iostream.cpp</in>
+        <in>iso2022.cpp</in>
+        <in>iso2022.h</in>
+        <in>length_error.cpp</in>
+        <in>limits.cpp</in>
+        <in>limits_bits.cpp</in>
+        <in>locale_bits.cpp</in>
+        <in>locale_body.cpp</in>
+        <in>locale_body.h</in>
+        <in>locale_classic.cpp</in>
+        <in>locale_combine.cpp</in>
+        <in>locale_core.cpp</in>
+        <in>locale_eq.cpp</in>
+        <in>locale_global.cpp</in>
+        <in>locale_name.cpp</in>
+        <in>logic_error.cpp</in>
+        <in>memattr.cpp</in>
+        <in>memory.cpp</in>
+        <in>messages.cpp</in>
+        <in>mman.cpp</in>
+        <in>mman.h</in>
+        <in>num_get.cpp</in>
+        <in>num_put.cpp</in>
+        <in>once.cpp</in>
+        <in>once.h</in>
+        <in>out_of_range.cpp</in>
+        <in>overflow_error.cpp</in>
+        <in>podarray.c</in>
+        <in>podarray.cc</in>
+        <in>podarray.h</in>
+        <in>punct.cpp</in>
+        <in>punct.h</in>
+        <in>random.cpp</in>
+        <in>range_error.cpp</in>
+        <in>runtime_error.cpp</in>
+        <in>rwstderr.cpp</in>
+        <in>setlocale.cpp</in>
+        <in>setlocale.h</in>
+        <in>string.cpp</in>
+        <in>strstream.cpp</in>
+        <in>strtol.cpp</in>
+        <in>strtol.h</in>
+        <in>ti_collate.cpp</in>
+        <in>ti_filebuf.cpp</in>
+        <in>ti_insert_dbl.cpp</in>
+        <in>ti_insert_int.cpp</in>
+        <in>ti_insert_ptr.cpp</in>
+        <in>ti_ios.cpp</in>
+        <in>ti_istream.cpp</in>
+        <in>ti_messages.cpp</in>
+        <in>ti_money_get.cpp</in>
+        <in>ti_money_put.cpp</in>
+        <in>ti_moneypunct.cpp</in>
+        <in>ti_num_get.cpp</in>
+        <in>ti_num_put.cpp</in>
+        <in>ti_numpunct.cpp</in>
+        <in>ti_ostream.cpp</in>
+        <in>ti_podarray.cpp</in>
+        <in>ti_streambuf.cpp</in>
+        <in>ti_string.cpp</in>
+        <in>ti_stringbuf.cpp</in>
+        <in>ti_time_get.cpp</in>
+        <in>ti_time_put.cpp</in>
+        <in>ti_wcollate.cpp</in>
+        <in>ti_wfilebuf.cpp</in>
+        <in>ti_winsert_dbl.cpp</in>
+        <in>ti_winsert_int.cpp</in>
+        <in>ti_winsert_ptr.cpp</in>
+        <in>ti_wios.cpp</in>
+        <in>ti_wistream.cpp</in>
+        <in>ti_wmessages.cpp</in>
+        <in>ti_wmoney_get.cpp</in>
+        <in>ti_wmoney_put.cpp</in>
+        <in>ti_wmoneypunct.cpp</in>
+        <in>ti_wnum_get.cpp</in>
+        <in>ti_wnum_put.cpp</in>
+        <in>ti_wnumpunct.cpp</in>
+        <in>ti_wostream.cpp</in>
+        <in>ti_wstreambuf.cpp</in>
+        <in>ti_wstring.cpp</in>
+        <in>ti_wstringbuf.cpp</in>
+        <in>ti_wtime_get.cpp</in>
+        <in>ti_wtime_put.cpp</in>
+        <in>time_get.cpp</in>
+        <in>time_put.cpp</in>
+        <in>tmpbuf.cpp</in>
+        <in>typeinfo.cpp</in>
+        <in>underflow_error.cpp</in>
+        <in>use_facet.h</in>
+        <in>valarray.cpp</in>
+        <in>vecbool.cpp</in>
+        <in>version.cpp</in>
+        <in>wcodecvt.cpp</in>
+        <in>wctype.cpp</in>
+      </df>
+      <df name="tests">
+        <df name="algorithms">
+          <in>25.adjacent.find.cpp</in>
+          <in>25.binary.search.cpp</in>
+          <in>25.copy.cpp</in>
+          <in>25.equal.cpp</in>
+          <in>25.equal.range.cpp</in>
+          <in>25.fill.cpp</in>
+          <in>25.find.cpp</in>
+          <in>25.find.end.cpp</in>
+          <in>25.find.first.cpp</in>
+          <in>25.for.each.cpp</in>
+          <in>25.generate.cpp</in>
+          <in>25.heap.cpp</in>
+          <in>25.includes.cpp</in>
+          <in>25.lex.comparison.cpp</in>
+          <in>25.libc.cpp</in>
+          <in>25.lower.bound.cpp</in>
+          <in>25.merge.cpp</in>
+          <in>25.min.max.cpp</in>
+          <in>25.mismatch.cpp</in>
+          <in>25.nth.element.cpp</in>
+          <in>25.partial.sort.cpp</in>
+          <in>25.partitions.cpp</in>
+          <in>25.permutation.cpp</in>
+          <in>25.random.shuffle.cpp</in>
+          <in>25.remove.cpp</in>
+          <in>25.replace.cpp</in>
+          <in>25.reverse.cpp</in>
+          <in>25.rotate.cpp</in>
+          <in>25.search.cpp</in>
+          <in>25.set.difference.cpp</in>
+          <in>25.set.intersection.cpp</in>
+          <in>25.set.sym.difference.cpp</in>
+          <in>25.set.union.cpp</in>
+          <in>25.sort.cpp</in>
+          <in>25.swap.cpp</in>
+          <in>25.transform.cpp</in>
+          <in>25.unique.cpp</in>
+          <in>25.upper.bound.cpp</in>
+        </df>
+        <df name="containers">
+          <in>23.bitset.cons.cpp</in>
+          <in>23.bitset.cpp</in>
+          <in>23.deque.iterators.cpp</in>
+          <in>23.deque.modifiers.cpp</in>
+          <in>23.deque.special.cpp</in>
+          <in>23.list.assign.cpp</in>
+          <in>23.list.capacity.cpp</in>
+          <in>23.list.cons.cpp</in>
+          <in>23.list.erase.cpp</in>
+          <in>23.list.insert.cpp</in>
+          <in>23.list.iterators.cpp</in>
+          <in>23.list.special.cpp</in>
+          <in>23.vector.allocator.cpp</in>
+          <in>23.vector.capacity.cpp</in>
+          <in>23.vector.cons.cpp</in>
+          <in>23.vector.modifiers.cpp</in>
+        </df>
+        <df name="diagnostics">
+          <in>19.cerrno.cpp</in>
+          <in>19.exceptions.mt.cpp</in>
+          <in>19.std.exceptions.cpp</in>
+        </df>
+        <df name="include">
+          <in>rw_alarm.h</in>
+          <in>rw_alg_test.h</in>
+          <in>rw_alloc.h</in>
+          <in>rw_allocator.h</in>
+          <in>rw_any.h</in>
+          <in>rw_braceexp.h</in>
+          <in>rw_char.h</in>
+          <in>rw_cmdopt.h</in>
+          <in>rw_containers.h</in>
+          <in>rw_ctype.h</in>
+          <in>rw_driver.h</in>
+          <in>rw_environ.h</in>
+          <in>rw_exception.h</in>
+          <in>rw_file.h</in>
+          <in>rw_fnmatch.h</in>
+          <in>rw_lists.h</in>
+          <in>rw_locale.h</in>
+          <in>rw_new.h</in>
+          <in>rw_printf.h</in>
+          <in>rw_process.h</in>
+          <in>rw_rand.h</in>
+          <in>rw_sigdefs.h</in>
+          <in>rw_streambuf.h</in>
+          <in>rw_strings.h</in>
+          <in>rw_testdefs.h</in>
+          <in>rw_thread.h</in>
+          <in>rw_valcmp.h</in>
+          <in>rw_value.h</in>
+        </df>
+        <df name="intro">
+          <in>17.extensions.cpp</in>
+          <in>17.names.cpp</in>
+        </df>
+        <df name="iostream">
+          <in>27.basic.ios.cpp</in>
+          <in>27.filebuf.codecvt.cpp</in>
+          <in>27.filebuf.cpp</in>
+          <in>27.forward.cpp</in>
+          <in>27.ios.members.static.cpp</in>
+          <in>27.istream.fmat.arith.cpp</in>
+          <in>27.istream.get.cpp</in>
+          <in>27.istream.manip.cpp</in>
+          <in>27.istream.readsome.cpp</in>
+          <in>27.istream.sentry.cpp</in>
+          <in>27.istream.unformatted.get.cpp</in>
+          <in>27.objects.cpp</in>
+          <in>27.ostream.cpp</in>
+          <in>27.std.manip.cpp</in>
+          <in>27.stringbuf.virtuals.cpp</in>
+        </df>
+        <df name="iterators">
+          <in>24.istream.iterator.cpp</in>
+        </df>
+        <df name="localization">
+          <in>22.locale.codecvt.cpp</in>
+          <in>22.locale.codecvt.length.cpp</in>
+          <in>22.locale.codecvt.mt.cpp</in>
+          <in>22.locale.codecvt.out.cpp</in>
+          <in>22.locale.collate.cpp</in>
+          <in>22.locale.cons.mt.cpp</in>
+          <in>22.locale.ctype.cpp</in>
+          <in>22.locale.ctype.is.cpp</in>
+          <in>22.locale.ctype.mt.cpp</in>
+          <in>22.locale.ctype.narrow.cpp</in>
+          <in>22.locale.ctype.scan.cpp</in>
+          <in>22.locale.ctype.tolower.cpp</in>
+          <in>22.locale.ctype.toupper.cpp</in>
+          <in>22.locale.globals.mt.cpp</in>
+          <in>22.locale.messages.cpp</in>
+          <in>22.locale.messages.mt.cpp</in>
+          <in>22.locale.money.get.cpp</in>
+          <in>22.locale.money.get.mt.cpp</in>
+          <in>22.locale.money.put.cpp</in>
+          <in>22.locale.money.put.mt.cpp</in>
+          <in>22.locale.moneypunct.cpp</in>
+          <in>22.locale.moneypunct.mt.cpp</in>
+          <in>22.locale.num.get.cpp</in>
+          <in>22.locale.num.get.mt.cpp</in>
+          <in>22.locale.num.put.cpp</in>
+          <in>22.locale.num.put.mt.cpp</in>
+          <in>22.locale.numpunct.cpp</in>
+          <in>22.locale.numpunct.mt.cpp</in>
+          <in>22.locale.statics.mt.cpp</in>
+          <in>22.locale.synopsis.cpp</in>
+          <in>22.locale.time.get.cpp</in>
+          <in>22.locale.time.get.mt.cpp</in>
+          <in>22.locale.time.put.cpp</in>
+          <in>22.locale.time.put.mt.cpp</in>
+        </df>
+        <df name="numerics">
+          <in>26.accumulate.cpp</in>
+          <in>26.adjacent.diff.cpp</in>
+          <in>26.c.math.cpp</in>
+          <in>26.class.gslice.cpp</in>
+          <in>26.gslice.array.cassign.cpp</in>
+          <in>26.indirect.array.cpp</in>
+          <in>26.inner.product.cpp</in>
+          <in>26.mask.array.cpp</in>
+          <in>26.partial.sum.cpp</in>
+          <in>26.valarray.cassign.cpp</in>
+          <in>26.valarray.cons.cpp</in>
+          <in>26.valarray.transcend.cpp</in>
+        </df>
+        <df name="regress">
+          <in>18.c.limits.stdcxx-988.cpp</in>
+          <in>18.limits.stdcxx-436.cpp</in>
+          <in>18.limits.stdcxx-937.cpp</in>
+          <in>18.limits.traps.stdcxx-624.cpp</in>
+          <in>20.specialized.stdcxx-390.cpp</in>
+          <in>21.c.strings.stdcxx-843.cpp</in>
+          <in>21.char.traits.find.stdcxx-541.cpp</in>
+          <in>21.string.append.stdcxx-438.cpp</in>
+          <in>21.string.assign.stdcxx-629.cpp</in>
+          <in>21.string.find.stdcxx-1035.cpp</in>
+          <in>21.string.insert.stdcxx-632.cpp</in>
+          <in>21.string.io.stdcxx-206.cpp</in>
+          <in>21.string.io.stdcxx-250.cpp</in>
+          <in>21.string.replace.stdcxx-170.cpp</in>
+          <in>21.string.replace.stdcxx-175.cpp</in>
+          <in>21.string.stdcxx-1009.cpp</in>
+          <in>21.string.stdcxx-162.cpp</in>
+          <in>21.string.stdcxx-231.cpp</in>
+          <in>21.string.stdcxx-466.cpp</in>
+          <in>22.locale.codecvt.stdcxx-435.cpp</in>
+          <in>22.locale.cons.stdcxx-485.cpp</in>
+          <in>22.locale.messages.stdcxx-542.cpp</in>
+          <in>22.locale.money.get.stdcxx-62.cpp</in>
+          <in>22.locale.num.put.stdcxx-2.cpp</in>
+          <in>22.locale.stdcxx-554.cpp</in>
+          <in>23.associative.stdcxx-16.cpp</in>
+          <in>23.bitset.cons.stdcxx-297.cpp</in>
+          <in>23.containers.stdcxx-152.cpp</in>
+          <in>23.deque.special.stdcxx-127.cpp</in>
+          <in>23.list.cons.stdcxx-268.cpp</in>
+          <in>23.list.insert.stdcxx-331.cpp</in>
+          <in>23.list.special.stdcxx-334.cpp</in>
+          <in>23.set.stdcxx-216.cpp</in>
+          <in>23.vector.bool.stdcxx-235.cpp</in>
+          <in>23.vector.cons.stdcxx-294.cpp</in>
+          <in>23.vector.modifiers.stdcxx-495.cpp</in>
+          <in>23.vector.stdcxx-1037.cpp</in>
+          <in>23.vector.stdcxx-494.cpp</in>
+          <in>23.vector.stdcxx-611.cpp</in>
+          <in>23.vector.stdcxx-972.cpp</in>
+          <in>24.istream.iterator.cons.stdcxx-645.cpp</in>
+          <in>24.istream.iterator.ops.stdcxx-321.cpp</in>
+          <in>24.operations.stdcxx-234.cpp</in>
+          <in>25.random.shuffle.stdcxx-126.cpp</in>
+          <in>25.uninitialized.copy.stdcxx-976.cpp</in>
+          <in>26.valarray.binary.stdcxx-237.cpp</in>
+          <in>26.valarray.cshift.stdcxx-316.cpp</in>
+          <in>26.valarray.members.stdcxx-313.cpp</in>
+          <in>26.valarray.members.stdcxx-318.cpp</in>
+          <in>26.valarray.sub.stdcxx-224.cpp</in>
+          <in>26.valarray.sub.stdcxx-309.cpp</in>
+          <in>26.valarray.sub.stdcxx-448.cpp</in>
+          <in>26.valarray.sub.stdcxx-955.cpp</in>
+          <in>26.valarray.transcend.stdcxx-315.cpp</in>
+          <in>26.valarray.unary.stdcxx-314.cpp</in>
+          <in>27.basic.ios.copyfmt.stdcxx-766.cpp</in>
+          <in>27.basic.ios.tie.stdcxx-804.cpp</in>
+          <in>27.cstdio.stdcxx-195.cpp</in>
+          <in>27.filebuf.close.stdcxx-969.cpp</in>
+          <in>27.filebuf.members.stdcxx-308.cpp</in>
+          <in>27.filebuf.sgetn.stdcxx-161.cpp</in>
+          <in>27.filebuf.virtuals.stdcxx-522.cpp</in>
+          <in>27.istream.get.stdcxx-60.cpp</in>
+          <in>27.istream.getline.stdcxx-59.cpp</in>
+          <in>27.istream.getline.stdcxx-67.cpp</in>
+          <in>27.ostream.inserters.stdcxx-51.cpp</in>
+          <in>27.ostream.unformatted.stdcxx-626.cpp</in>
+          <in>27.streambuf.buffer.stdcxx-808.cpp</in>
+          <in>27.streambuf.imbue.stdcxx-307.cpp</in>
+          <in>27.streambuf.sgetn.stdcxx-1026.cpp</in>
+          <in>27.stringbuf.members.stdcxx-427.cpp</in>
+          <in>27.stringbuf.overflow.stdcxx-149.cpp</in>
+          <in>27.stringbuf.overflow.stdcxx-795.cpp</in>
+          <in>27.stringbuf.seekoff.stdcxx-295.cpp</in>
+          <in>27.stringbuf.str.stdcxx-514.cpp</in>
+          <in>27.stringbuf.xsputn.stdcxx-515.cpp</in>
+          <in>27.stringbuf.xsputn.stdcxx-576.cpp</in>
+        </df>
+        <df name="self">
+          <in>0.alloc.cpp</in>
+          <in>0.braceexp.cpp</in>
+          <in>0.char.cpp</in>
+          <in>0.cmdopts.cpp</in>
+          <in>0.ctype.cpp</in>
+          <in>0.fnmatch.cpp</in>
+          <in>0.inputiter.cpp</in>
+          <in>0.locale.cpp</in>
+          <in>0.new.cpp</in>
+          <in>0.outputiter.cpp</in>
+          <in>0.printf.cpp</in>
+          <in>0.process.cpp</in>
+          <in>0.strncmp.cpp</in>
+          <in>0.valcmp.cpp</in>
+        </df>
+        <df name="src">
+          <in>21.strings.cpp</in>
+          <in>23.containers.cpp</in>
+          <in>alarm.cpp</in>
+          <in>alg_test.cpp</in>
+          <in>alloc.cpp</in>
+          <in>allocator.cpp</in>
+          <in>any.cpp</in>
+          <in>braceexp.cpp</in>
+          <in>char.cpp</in>
+          <in>cmdopt.cpp</in>
+          <in>ctype.cpp</in>
+          <in>driver.cpp</in>
+          <in>environ.cpp</in>
+          <in>exception.cpp</in>
+          <in>file.cpp</in>
+          <in>fmt_bits.cpp</in>
+          <in>fmt_defs.h</in>
+          <in>fnmatch.cpp</in>
+          <in>locale.cpp</in>
+          <in>new.cpp</in>
+          <in>opt_diags.cpp</in>
+          <in>opt_diags.h</in>
+          <in>opt_lines.cpp</in>
+          <in>opt_lines.h</in>
+          <in>opt_trace.cpp</in>
+          <in>opt_trace.h</in>
+          <in>opt_types.cpp</in>
+          <in>opt_types.h</in>
+          <in>printf.cpp</in>
+          <in>process.cpp</in>
+          <in>rand.cpp</in>
+          <in>thread.cpp</in>
+          <in>valcmp.cpp</in>
+          <in>value.cpp</in>
+        </df>
+        <df name="strings">
+          <in>21.cctype.cpp</in>
+          <in>21.cwchar.cpp</in>
+          <in>21.cwctype.cpp</in>
+          <in>21.string.access.cpp</in>
+          <in>21.string.append.cpp</in>
+          <in>21.string.assign.cpp</in>
+          <in>21.string.capacity.cpp</in>
+          <in>21.string.compare.cpp</in>
+          <in>21.string.cons.cpp</in>
+          <in>21.string.cons.mt.cpp</in>
+          <in>21.string.copy.cpp</in>
+          <in>21.string.erase.cpp</in>
+          <in>21.string.exceptions.cpp</in>
+          <in>21.string.find.cpp</in>
+          <in>21.string.find.first.not.of.cpp</in>
+          <in>21.string.find.first.of.cpp</in>
+          <in>21.string.find.last.not.of.cpp</in>
+          <in>21.string.find.last.of.cpp</in>
+          <in>21.string.insert.cpp</in>
+          <in>21.string.io.cpp</in>
+          <in>21.string.iterators.cpp</in>
+          <in>21.string.op.plus.cpp</in>
+          <in>21.string.op.plus.equal.cpp</in>
+          <in>21.string.operators.cpp</in>
+          <in>21.string.push_back.mt.cpp</in>
+          <in>21.string.replace.cpp</in>
+          <in>21.string.rfind.cpp</in>
+          <in>21.string.substr.cpp</in>
+          <in>21.string.swap.cpp</in>
+        </df>
+        <df name="support">
+          <in>18.csetjmp.cpp</in>
+          <in>18.cstdint.cpp</in>
+          <in>18.exception.cpp</in>
+          <in>18.limits.cvqual.cpp</in>
+          <in>18.limits.traps.cpp</in>
+          <in>18.numeric.special.float.cpp</in>
+          <in>18.numeric.special.int.cpp</in>
+          <in>18.setjmp.cpp</in>
+          <in>18.support.dynamic.cpp</in>
+          <in>18.support.rtti.cpp</in>
+          <in>atomic_add.cpp</in>
+          <in>atomic_xchg.cpp</in>
+        </df>
+        <df name="utilities">
+          <in>20.auto.ptr.cpp</in>
+          <in>20.forward.cpp</in>
+          <in>20.function.objects.cpp</in>
+          <in>20.meta.help.cpp</in>
+          <in>20.meta.rel.cpp</in>
+          <in>20.meta.trans.arr.cpp</in>
+          <in>20.meta.trans.cv.cpp</in>
+          <in>20.meta.trans.other.cpp</in>
+          <in>20.meta.trans.ptr.cpp</in>
+          <in>20.meta.trans.ref.cpp</in>
+          <in>20.meta.trans.sign.cpp</in>
+          <in>20.meta.unary.cat.cpp</in>
+          <in>20.meta.unary.comp.cpp</in>
+          <in>20.meta.unary.nothrow.cpp</in>
+          <in>20.meta.unary.prop.cpp</in>
+          <in>20.operators.cpp</in>
+          <in>20.pairs.cpp</in>
+          <in>20.smartptr.shared.cpp</in>
+          <in>20.smartptr.weak.cpp</in>
+          <in>20.specialized.cpp</in>
+          <in>20.temp.buffer.cpp</in>
+          <in>20.temp.buffer.mt.cpp</in>
+          <in>20.tuple.cnstr.cpp</in>
+          <in>20.tuple.creation.cpp</in>
+          <in>20.tuple.elem.cpp</in>
+          <in>20.tuple.h</in>
+          <in>20.tuple.helpers.cpp</in>
+          <in>20.tuple.rel.cpp</in>
+        </df>
+      </df>
+      <df name="util">
+        <in>aliases.cpp</in>
+        <in>aliases.h</in>
+        <in>charmap.cpp</in>
+        <in>charmap.h</in>
+        <in>cmdopt.cpp</in>
+        <in>cmdopt.h</in>
+        <in>codecvt.cpp</in>
+        <in>collate.cpp</in>
+        <in>ctype.cpp</in>
+        <in>def.cpp</in>
+        <in>def.h</in>
+        <in>diagnostic.cpp</in>
+        <in>diagnostic.h</in>
+        <in>display.cpp</in>
+        <in>display.h</in>
+        <in>exec.cpp</in>
+        <in>exec.h</in>
+        <in>gencat.cpp</in>
+        <in>iconv.cpp</in>
+        <in>loc_exception.h</in>
+        <in>locale.cpp</in>
+        <in>locale_stub.cpp</in>
+        <in>localedef.cpp</in>
+        <in>localedef.h</in>
+        <in>memchk.cpp</in>
+        <in>memchk.h</in>
+        <in>messages.cpp</in>
+        <in>monetary.cpp</in>
+        <in>numeric.cpp</in>
+        <in>output.cpp</in>
+        <in>output.h</in>
+        <in>path.cpp</in>
+        <in>path.h</in>
+        <in>runall.cpp</in>
+        <in>scanner.cpp</in>
+        <in>scanner.h</in>
+        <in>target.h</in>
+        <in>time.cpp</in>
+        <in>util.cpp</in>
+        <in>util.h</in>
+      </df>
+      <df name="vcbuild">
+      </df>
+    </df>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false"
+                   kind="IMPORTANT_FILES_FOLDER">
+      <itemPath>GNUmakefile</itemPath>
+    </logicalFolder>
+  </logicalFolder>
+  <sourceFolderFilter>^(nbproject)$</sourceFolderFilter>
+  <sourceRootList>
+    <Elem>.</Elem>
+  </sourceRootList>
+  <projectmakefile>GNUmakefile</projectmakefile>
+  <confs>
+    <conf name="Default" type="0">
+      <toolsSet>
+        <remote-sources-mode>LOCAL_SOURCES</remote-sources-mode>
+        <compilerSet>default</compilerSet>
+      </toolsSet>
+      <codeAssistance>
+      </codeAssistance>
+      <makefileType>
+        <makeTool>
+          <buildCommandWorkingDir>.</buildCommandWorkingDir>
+          <buildCommand>${MAKE} -f Makefile</buildCommand>
+          <cleanCommand>${MAKE} -f Makefile clean</cleanCommand>
+          <executablePath></executablePath>
+          <ccTool>
+            <incDir>
+              <pElem>build/include</pElem>
+              <pElem>include/ansi</pElem>
+              <pElem>build/lib</pElem>
+              <pElem>include</pElem>
+            </incDir>
+          </ccTool>
+        </makeTool>
+      </makefileType>
+      <item path="etc/config/src/ABS_OVERLOADS.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="etc/config/src/ATOMIC_OPS.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="etc/config/src/BAD_ALLOC_ASSIGNMENT.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/BAD_ALLOC_COPY_CTOR.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/BAD_ALLOC_DEFAULT_CTOR.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/BAD_ALLOC_DTOR.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="etc/config/src/BAD_ALLOC_WHAT.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="etc/config/src/BAD_CAST_ASSIGNMENT.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/BAD_CAST_COPY_CTOR.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/BAD_CAST_DEFAULT_CTOR.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/BAD_CAST_DTOR.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="etc/config/src/BAD_CAST_WHAT.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="etc/config/src/BAD_EXCEPTION_ASSIGNMENT.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/BAD_EXCEPTION_COPY_CTOR.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/BAD_EXCEPTION_DEFAULT_CTOR.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/BAD_EXCEPTION_DTOR.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/BAD_EXCEPTION_WHAT.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/BAD_TYPEID_ASSIGNMENT.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/BAD_TYPEID_COPY_CTOR.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/BAD_TYPEID_DEFAULT_CTOR.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/BAD_TYPEID_DTOR.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="etc/config/src/BAD_TYPEID_WHAT.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="etc/config/src/BOOL.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="etc/config/src/CLASS_PARTIAL_SPEC.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/COLLAPSE_STATIC_LOCALS.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/COLLAPSE_TEMPLATE_LOCALS.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/COLLAPSE_TEMPLATE_STATICS.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/CONST_CAST.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="etc/config/src/CTYPE_BITS.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="etc/config/src/CV_VOID_SPECIALIZATIONS.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/DAYLIGHT.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="etc/config/src/DEFAULT_TEMPLATE_ARGS.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/DEPENDENT_TEMPLATE.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/DEPRECATED_LIBC_IN_STD.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/DIV_OVERLOADS.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="etc/config/src/DUMMY_DEFAULT_ARG.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/DYNAMIC_CAST.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="etc/config/src/EMPTY_MEM_INITIALIZER.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/EQUAL_CTYPE_MASK.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="etc/config/src/EXCEPTIONS.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="etc/config/src/EXCEPTION_ASSIGNMENT.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/EXCEPTION_COPY_CTOR.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/EXCEPTION_DEFAULT_CTOR.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/EXCEPTION_DTOR.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="etc/config/src/EXCEPTION_SPECIFICATION.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/EXCEPTION_SPECIFICATION_ON_NEW.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/EXCEPTION_WHAT.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="etc/config/src/EXPLICIT_ARG.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="etc/config/src/EXPLICIT_CTOR_INSTANTIATION.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/EXPLICIT_FUNC_INSTANTIATION.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/EXPLICIT_INSTANTIATION.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/EXPLICIT_INSTANTIATION_BEFORE_DEFINITION.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/EXPLICIT_INSTANTIATION_WITH_IMPLICIT_INCLUSION.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/EXPLICIT_MEMBER_INSTANTIATION.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/EXPLICIT_MEMBER_SPECIALIZATION.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/EXPORT.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="etc/config/src/EXPORT_KEYWORD.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="etc/config/src/EXTERN_C_COMPATIBILITY.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/EXTERN_C_EXCEPTIONS.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/EXTERN_C_OVERLOAD.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/EXTERN_FUNCTION_TEMPLATE.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/EXTERN_INLINE.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="etc/config/src/EXTERN_MEMBER_TEMPLATE.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/EXTERN_TEMPLATE.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="etc/config/src/EXTERN_TEMPLATE_BEFORE_DEFINITION.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/FLOAT.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="etc/config/src/FPOS_T.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="etc/config/src/FRIEND_TEMPLATE.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="etc/config/src/FUNC.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="etc/config/src/FUNCTION_TRY_BLOCK.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/FUNC_PARTIAL_SPEC.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/GLOBAL_BAD_ALLOC.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="etc/config/src/GLOBAL_BAD_CAST.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="etc/config/src/GLOBAL_BAD_EXCEPTION.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/GLOBAL_BAD_TYPEID.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/GLOBAL_EXCEPTION.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="etc/config/src/GLOBAL_NOTHROW.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="etc/config/src/GLOBAL_NOTHROW_T.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="etc/config/src/GLOBAL_SET_NEW_HANDLER.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/GLOBAL_SET_TERMINATE.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/GLOBAL_SET_UNEXPECTED.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/GLOBAL_TERMINATE.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="etc/config/src/GLOBAL_TYPE_INFO.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="etc/config/src/GLOBAL_UNCAUGHT_EXCEPTION.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/GLOBAL_UNEXPECTED.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/HONOR_STD.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="etc/config/src/ICONV.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="etc/config/src/ICONV_CONST_CHAR.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="etc/config/src/IMPLICIT_INCLUSION.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/IMPLICIT_INSTANTIATION.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/INFINITY.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="etc/config/src/INITIALIZER_LIST.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="etc/config/src/INSTANTIATE_DEFAULT_ARGS.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/LCONV.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="etc/config/src/LCONV_INT_FMAT.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="etc/config/src/LDBL_PRINTF_PREFIX.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/LIBC_EXCEPTION_SPEC.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/LIBC_IN_STD.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="etc/config/src/LIB_EXCEPTIONS.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="etc/config/src/LIMITS.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="etc/config/src/LLONG_PRINTF_PREFIX.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/LOCALE_NAME_FMAT.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="etc/config/src/LONG_DOUBLE.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="etc/config/src/LONG_LONG.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="etc/config/src/MADVISE.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="etc/config/src/MATH_EXCEPTION.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="etc/config/src/MATH_OVERLOADS.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="etc/config/src/MBSTATE_T.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="etc/config/src/MMAP.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="etc/config/src/MUNMAP.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="etc/config/src/NAMESPACE.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="etc/config/src/NATIVE_WCHAR_T.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="etc/config/src/NESTED_CLASS_ACCESS.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/NEWLINE.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="etc/config/src/NEW_CLASS_TEMPLATE_SYNTAX.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/NEW_FUNC_TEMPLATE_SYNTAX.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/NEW_HEADER.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="etc/config/src/NEW_OFLOW_SAFE.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="etc/config/src/NEW_THROWS.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="etc/config/src/NL_LANGINFO.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="etc/config/src/NL_TYPES_H.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="etc/config/src/NONCLASS_ARROW_RETURN.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/NONDEDUCED_CONTEXT.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/NO_DBL_TRAPS.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="etc/config/src/NO_FOR_LOCAL_SCOPE.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/NO_INT_TRAPS.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="etc/config/src/NO_OBJECT_MANGLING.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/NO_SIGNALING_NAN.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="etc/config/src/OFFSETOF.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="etc/config/src/OPERATOR_DELETE_ARRAY.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/OPERATOR_DELETE_ARRAY_NOTHROW.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/OPERATOR_DELETE_ARRAY_PLACEMENT.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/OPERATOR_DELETE_NOTHROW.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/OPERATOR_DELETE_PLACEMENT.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/OPERATOR_NEW_ARRAY.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/OPERATOR_NEW_ARRAY_NOTHROW.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/OPERATOR_NEW_ARRAY_PLACEMENT.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/OPERATOR_NEW_NOTHROW.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/OPERATOR_NEW_PLACEMENT.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/OVERLOAD_OF_TEMPLATE_FUNCTION.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/PART_SPEC_OVERLOAD.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/PLACEMENT_DELETE.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="etc/config/src/POD_ZERO_INIT.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="etc/config/src/PRETTY_FUNCTION.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="etc/config/src/PTR_EXCEPTION_SPEC.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/PUTENV_CONST_CHAR.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/QUIET_NAN.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="etc/config/src/REINTERPRET_CAST.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="etc/config/src/RUNTIME_IN_STD.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="etc/config/src/RVALUE_REFERENCES.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/SETLOCALE.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="etc/config/src/SETRLIMIT.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="etc/config/src/SIG_ATOMIC_T.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="etc/config/src/SIZE_T.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="etc/config/src/SPECIALIZATION_ON_RETURN_TYPE.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/SPECIALIZED_FRIEND.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/STATICS_IN_TEMPLATE.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/STATIC_ASSERT.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="etc/config/src/STATIC_CAST.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="etc/config/src/STATIC_CONST_MEMBER_EXPR_CONST.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/STATIC_CONST_MEMBER_INIT.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/STATIC_TEMPLATE_MEMBER_INIT.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/STD_BAD_ALLOC.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="etc/config/src/STD_BAD_CAST.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="etc/config/src/STD_BAD_EXCEPTION.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/STD_BAD_TYPEID.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="etc/config/src/STD_EXCEPTION.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="etc/config/src/STD_MBSTATE_T.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="etc/config/src/STD_NOTHROW.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="etc/config/src/STD_NOTHROW_T.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="etc/config/src/STD_SET_NEW_HANDLER.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/STD_SET_TERMINATE.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/STD_SET_UNEXPECTED.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/STD_TERMINATE.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="etc/config/src/STD_TYPE_INFO.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="etc/config/src/STD_UNCAUGHT_EXCEPTION.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/STD_UNEXPECTED.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="etc/config/src/STRUCT_TM.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="etc/config/src/STRUCT_TM_IN_WCHAR_H.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/TEMPLATE_DEFAULT_ARG_CONVERSION.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/TEMPLATE_ON_RETURN_TYPE.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/THREAD_SAFE_ERRNO.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/THREAD_SAFE_EXCEPTIONS.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/THREAD_SAFE_LOCALE.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/TIMEZONE.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="etc/config/src/TLS.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="etc/config/src/TYPE_INFO_BEFORE.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="etc/config/src/TYPE_INFO_DTOR.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="etc/config/src/TYPE_INFO_EQUALITY.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/TYPE_INFO_INEQUALITY.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/TYPE_INFO_NAME.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="etc/config/src/UNAME.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="etc/config/src/UNISTD_DECL.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="etc/config/src/VARIADIC_TEMPLATES.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/VA_LIST.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="etc/config/src/VA_LIST_FUNC_MACRO.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/VSNPRINTF_RETURN.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="etc/config/src/WCHAR_T.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="etc/config/src/WCSFTIME_WCHAR_T_FMAT.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/WCTRANS_T.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="etc/config/src/WCTYPE_T.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="etc/config/src/WINT_T.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="etc/config/src/collapse_static_locals.lib.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/collapse_template_locals.lib.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/collapse_template_statics.lib.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/extern_function_template_imp.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/extern_function_template_imp.h"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/extern_inline.lib.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/extern_template_before_definition_imp.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/extern_template_imp.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/extern_template_imp.h"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/float_defs.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="etc/config/src/implicit_inclusion_imp.c"
+            ex="true"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/implicit_inclusion_imp.cc"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/implicit_inclusion_imp.h"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/instantiation_before_definition.c"
+            ex="true"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/instantiation_before_definition.cc"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/instantiation_before_definition.h"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/instantiation_with_implicit_inclusion.c"
+            ex="true"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/instantiation_with_implicit_inclusion.cc"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/instantiation_with_implicit_inclusion.h"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/lib_exceptions.lib.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/locale_names.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="etc/config/src/nodbg.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="etc/config/src/object_mangling_imp.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="etc/config/src/proclimits.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="etc/config/src/terminate.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="etc/config/src/thread.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="etc/config/src/types.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="etc/config/windows/fun_present_check.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="examples/include/alg3.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="examples/include/codecvte.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="examples/include/examples.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="examples/include/memfunref.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="examples/include/replace.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="examples/include/rwstdmessages.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="examples/include/stocks.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="examples/include/teller.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="examples/include/valarray.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="examples/include/widwork.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="examples/manual/accumulate.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/manual/adj_diff.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/manual/advance.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/manual/auto_ptr.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/manual/binary_search.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/manual/binders.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/manual/bitset.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/manual/codecvt.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/manual/codecvt1.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/manual/collate.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/manual/complex.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/manual/copyex.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/manual/count.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/manual/ctype.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/manual/deque.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/manual/distance.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/manual/equal.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/manual/equal_range.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/manual/failure.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/manual/filebuf.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/manual/fill.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/manual/find.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/manual/find_end.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/manual/find_first_of.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/manual/fmtflags_manip.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/manual/for_each.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/manual/fstream.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/manual/funct_ob.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/manual/generate.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/manual/gslice.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/manual/gslice_array.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/manual/has_facet.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/manual/heap_ops.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/manual/ifstream.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/manual/includes.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/manual/indirect_array.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/manual/inner_product.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/manual/insert_iterator.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/manual/insert_wchar.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/manual/isalnum.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/manual/istream1.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/manual/istreambuf_iterator.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="examples/manual/istringstream.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/manual/istrstream.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/manual/lex_compare.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/manual/limits.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/manual/list.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/manual/locale.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/manual/map.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/manual/mask_array.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/manual/max.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/manual/max_elem.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/manual/mbsrtowcs.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/manual/memfunc.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/manual/memfunref.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/manual/merge.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/manual/messages.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/manual/mismatch.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/manual/money_get.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/manual/money_manip.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/manual/moneypunct.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/manual/moneyput.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/manual/multimap.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/manual/multiset.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/manual/mutex.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/manual/negator.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/manual/nthelem.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/manual/num_get.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/manual/num_put.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/manual/numpunct.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/manual/ostream.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/manual/ostreambuf_iterator.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="examples/manual/partial_sort.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/manual/partial_sum.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/manual/partition.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/manual/permutation.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/manual/pnt2fnct.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/manual/priority_queue.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/manual/queue.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/manual/random_shuffle.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/manual/remove.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/manual/replace.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/manual/reverse.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/manual/reverse_iterator.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="examples/manual/rotate.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/manual/rwexcept.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/manual/rwstdmessages.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/manual/search.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/manual/set_diff.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/manual/set_intr.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/manual/set_sym_diff.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/manual/set_union.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/manual/setex.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/manual/slice.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/manual/slice_array.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/manual/sort.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/manual/stack.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/manual/stream_iterator.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/manual/string.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/manual/stringbuf.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/manual/strstream.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/manual/strstreambuf.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/manual/swap.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/manual/time_get.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/manual/time_manip.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/manual/time_put.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/manual/toupper.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/manual/transform.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/manual/ul_bound.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/manual/unique.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/manual/use_facet.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/manual/valarray.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/manual/vector.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/manual/wctype.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/manual/wostream.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/manual/wstringstream.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/tutorial/alg1.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/tutorial/alg2.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/tutorial/alg3.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/tutorial/alg4.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/tutorial/alg5.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/tutorial/alg6.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/tutorial/alg7.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/tutorial/calc.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/tutorial/complx.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/tutorial/concord.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/tutorial/dynatype.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/tutorial/graph.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/tutorial/icecream.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/tutorial/radix.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/tutorial/sieve.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/tutorial/spell.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/tutorial/stdexcept.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/tutorial/stocks.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/tutorial/tele.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/tutorial/teller.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="examples/tutorial/widwork.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="include/algorithm.c" ex="true" tool="0" flavor2="0">
+      </item>
+      <item path="include/algorithm.cc" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="include/ansi/_cassert.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/ansi/_cctype.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/ansi/_cerrno.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/ansi/_cfloat.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/ansi/_clocale.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/ansi/_cmath.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/ansi/_csetjmp.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/ansi/_csignal.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/ansi/_cstdarg.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/ansi/_cstddef.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/ansi/_cstdint.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/ansi/_cstdio.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/ansi/_cstdlib.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/ansi/_cstring.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/ansi/_ctime.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/ansi/_cwchar.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/ansi/_cwctype.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/ansi/assert.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/ansi/ctype.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/ansi/errno.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/ansi/float.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/ansi/limits.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/ansi/locale.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/ansi/math.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/ansi/setjmp.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/ansi/signal.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/ansi/stdint.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/ansi/string.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/ansi/wctype.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/bitset.c" ex="true" tool="0" flavor2="0">
+      </item>
+      <item path="include/bitset.cc" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="include/complex.c" ex="true" tool="0" flavor2="0">
+      </item>
+      <item path="include/complex.cc" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="include/deque.c" ex="true" tool="0" flavor2="0">
+      </item>
+      <item path="include/deque.cc" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="include/fstream.c" ex="true" tool="0" flavor2="0">
+      </item>
+      <item path="include/fstream.cc" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="include/istream.c" ex="true" tool="0" flavor2="0">
+      </item>
+      <item path="include/istream.cc" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="include/limits.c" ex="true" tool="0" flavor2="0">
+      </item>
+      <item path="include/limits.cc" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="include/list.c" ex="true" tool="0" flavor2="0">
+      </item>
+      <item path="include/list.cc" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="include/loc/_codecvt.c" ex="true" tool="0" flavor2="0">
+      </item>
+      <item path="include/loc/_codecvt.cc" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="include/loc/_codecvt.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/loc/_collate.c" ex="true" tool="0" flavor2="0">
+      </item>
+      <item path="include/loc/_collate.cc" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="include/loc/_collate.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/loc/_convenience.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/loc/_ctype.c" ex="true" tool="0" flavor2="0">
+      </item>
+      <item path="include/loc/_ctype.cc" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="include/loc/_ctype.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/loc/_facet.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/loc/_locale.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/loc/_localedef.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/loc/_messages.c" ex="true" tool="0" flavor2="0">
+      </item>
+      <item path="include/loc/_messages.cc" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="include/loc/_messages.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/loc/_money_get.c" ex="true" tool="0" flavor2="0">
+      </item>
+      <item path="include/loc/_money_get.cc" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="include/loc/_money_get.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/loc/_money_put.c" ex="true" tool="0" flavor2="0">
+      </item>
+      <item path="include/loc/_money_put.cc" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="include/loc/_money_put.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/loc/_moneypunct.c" ex="true" tool="0" flavor2="0">
+      </item>
+      <item path="include/loc/_moneypunct.cc" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="include/loc/_moneypunct.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/loc/_num_get.c" ex="true" tool="0" flavor2="0">
+      </item>
+      <item path="include/loc/_num_get.cc" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="include/loc/_num_get.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/loc/_num_put.c" ex="true" tool="0" flavor2="0">
+      </item>
+      <item path="include/loc/_num_put.cc" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="include/loc/_num_put.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/loc/_numpunct.c" ex="true" tool="0" flavor2="0">
+      </item>
+      <item path="include/loc/_numpunct.cc" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="include/loc/_numpunct.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/loc/_punct.c" ex="true" tool="0" flavor2="0">
+      </item>
+      <item path="include/loc/_punct.cc" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="include/loc/_punct.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/loc/_time_get.c" ex="true" tool="0" flavor2="0">
+      </item>
+      <item path="include/loc/_time_get.cc" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="include/loc/_time_get.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/loc/_time_put.c" ex="true" tool="0" flavor2="0">
+      </item>
+      <item path="include/loc/_time_put.cc" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="include/loc/_time_put.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/ostream.c" ex="true" tool="0" flavor2="0">
+      </item>
+      <item path="include/ostream.cc" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="include/rw/_algobase.c" ex="true" tool="0" flavor2="0">
+      </item>
+      <item path="include/rw/_algobase.cc" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="include/rw/_algobase.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/rw/_allocator.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/rw/_array.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/rw/_atomic-deccxx.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/rw/_atomic-mipspro.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/rw/_atomic-mutex.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/rw/_atomic-parisc.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/rw/_atomic-sparc.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/rw/_atomic-sync.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/rw/_atomic-x64.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/rw/_atomic-x86.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/rw/_atomic-xlc.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/rw/_atomic.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/rw/_autoptr.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/rw/_basic_ios.c" ex="true" tool="0" flavor2="0">
+      </item>
+      <item path="include/rw/_basic_ios.cc" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="include/rw/_basic_ios.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/rw/_bitmask.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/rw/_config-acc.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/rw/_config-deccxx.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/rw/_config-eccp.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/rw/_config-icc.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/rw/_config-mipspro.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/rw/_config-msvc.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/rw/_config-msvcrt.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/rw/_config-sunpro.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/rw/_config-xlc.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/rw/_error.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/rw/_exception.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/rw/_file.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/rw/_forward.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/rw/_funcbase.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/rw/_heap.c" ex="true" tool="0" flavor2="0">
+      </item>
+      <item path="include/rw/_heap.cc" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="include/rw/_heap.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/rw/_ioinsert.c" ex="true" tool="0" flavor2="0">
+      </item>
+      <item path="include/rw/_ioinsert.cc" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="include/rw/_ioinsert.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/rw/_ioiter.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/rw/_iosbase.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/rw/_iosfailure.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/rw/_iosfwd.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/rw/_iterator.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/rw/_iterbase.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/rw/_math.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/rw/_meta_arr.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/rw/_meta_cat.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/rw/_meta_comp.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/rw/_meta_cv.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/rw/_meta_help.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/rw/_meta_other.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/rw/_meta_prop.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/rw/_meta_ptr.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/rw/_meta_ref.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/rw/_meta_rel.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/rw/_meta_sign.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/rw/_mutex-dce.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/rw/_mutex-os2.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/rw/_mutex-pthread.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/rw/_mutex-solaris.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/rw/_mutex-win32.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/rw/_mutex.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/rw/_new.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/rw/_pair.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/rw/_rawiter.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/rw/_ref_wrap.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/rw/_relops.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/rw/_select.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/rw/_smartptr.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/rw/_specialized.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/rw/_static_assert.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/rw/_streamiter.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/rw/_stringio.c" ex="true" tool="0" flavor2="0">
+      </item>
+      <item path="include/rw/_stringio.cc" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="include/rw/_stringio.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/rw/_strref.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/rw/_traits.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/rw/_tree.c" ex="true" tool="0" flavor2="0">
+      </item>
+      <item path="include/rw/_tree.cc" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="include/rw/_tree.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/rw/_tuple.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/rw/_tuple_traits.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/rw/_typetraits.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="include/sstream.c" ex="true" tool="0" flavor2="0">
+      </item>
+      <item path="include/sstream.cc" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="include/streambuf.c" ex="true" tool="0" flavor2="0">
+      </item>
+      <item path="include/streambuf.cc" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="include/string.c" ex="true" tool="0" flavor2="0">
+      </item>
+      <item path="include/string.cc" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="include/valarray.c" ex="true" tool="0" flavor2="0">
+      </item>
+      <item path="include/valarray.cc" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="include/vector.c" ex="true" tool="0" flavor2="0">
+      </item>
+      <item path="include/vector.cc" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="src/access.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="src/atomic-cxx.S" ex="true" tool="4" flavor2="0">
+      </item>
+      <item path="src/atomic.asm" ex="true" tool="4" flavor2="0">
+      </item>
+      <item path="src/atomic.s" ex="true" tool="4" flavor2="0">
+      </item>
+      <item path="src/bitset.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="src/catalog.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="src/catalog.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="src/codecvt.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="src/collate.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="src/ctype.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="src/ctype_bits.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="src/domain_error.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="src/exception.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="src/export.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="src/facet.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="src/file.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="src/fpclass.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="src/ia64/atomic-64.s" ex="true" tool="4" flavor2="0">
+      </item>
+      <item path="src/ia64/atomic.s" ex="true" tool="4" flavor2="0">
+      </item>
+      <item path="src/instance.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="src/invalid_argument.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="src/ios.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="src/ios_bits.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="src/iosdata.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="src/iostore.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="src/iostream.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="src/iso2022.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="src/iso2022.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="src/length_error.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="src/limits.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="src/limits_bits.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="src/locale_bits.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="src/locale_body.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="src/locale_body.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="src/locale_classic.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="src/locale_combine.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="src/locale_core.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="src/locale_eq.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="src/locale_global.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="src/locale_name.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="src/logic_error.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="src/memattr.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="src/memory.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="src/messages.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="src/mman.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="src/mman.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="src/num_get.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="src/num_put.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="src/once.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="src/once.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="src/out_of_range.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="src/overflow_error.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="src/parisc/atomic-64.s" ex="true" tool="4" flavor2="0">
+      </item>
+      <item path="src/parisc/atomic.s" ex="true" tool="4" flavor2="0">
+      </item>
+      <item path="src/podarray.c" ex="true" tool="0" flavor2="0">
+      </item>
+      <item path="src/podarray.cc" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="src/podarray.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="src/punct.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="src/punct.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="src/random.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="src/range_error.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="src/runtime_error.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="src/rwstderr.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="src/setlocale.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="src/setlocale.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="src/sparc/atomic-64.s" ex="true" tool="4" flavor2="0">
+      </item>
+      <item path="src/sparc/atomic.s" ex="true" tool="4" flavor2="0">
+      </item>
+      <item path="src/string.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="src/strstream.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="src/strtol.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="src/strtol.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="src/ti_collate.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="src/ti_filebuf.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="src/ti_insert_dbl.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="src/ti_insert_int.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="src/ti_insert_ptr.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="src/ti_ios.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="src/ti_istream.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="src/ti_messages.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="src/ti_money_get.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="src/ti_money_put.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="src/ti_moneypunct.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="src/ti_num_get.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="src/ti_num_put.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="src/ti_numpunct.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="src/ti_ostream.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="src/ti_podarray.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="src/ti_streambuf.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="src/ti_string.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="src/ti_stringbuf.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="src/ti_time_get.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="src/ti_time_put.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="src/ti_wcollate.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="src/ti_wfilebuf.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="src/ti_winsert_dbl.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="src/ti_winsert_int.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="src/ti_winsert_ptr.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="src/ti_wios.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="src/ti_wistream.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="src/ti_wmessages.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="src/ti_wmoney_get.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="src/ti_wmoney_put.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="src/ti_wmoneypunct.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="src/ti_wnum_get.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="src/ti_wnum_put.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="src/ti_wnumpunct.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="src/ti_wostream.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="src/ti_wstreambuf.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="src/ti_wstring.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="src/ti_wstringbuf.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="src/ti_wtime_get.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="src/ti_wtime_put.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="src/time_get.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="src/time_put.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="src/tmpbuf.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="src/typeinfo.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="src/underflow_error.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="src/use_facet.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="src/valarray.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="src/vecbool.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="src/version.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="src/wcodecvt.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="src/wctype.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="src/x86/atomic.s" ex="true" tool="4" flavor2="0">
+      </item>
+      <item path="src/x86_64/atomic.s" ex="true" tool="4" flavor2="0">
+      </item>
+      <item path="tests/algorithms/25.adjacent.find.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/algorithms/25.binary.search.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/algorithms/25.copy.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/algorithms/25.equal.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/algorithms/25.equal.range.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/algorithms/25.fill.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/algorithms/25.find.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/algorithms/25.find.end.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/algorithms/25.find.first.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/algorithms/25.for.each.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/algorithms/25.generate.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/algorithms/25.heap.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/algorithms/25.includes.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/algorithms/25.lex.comparison.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/algorithms/25.libc.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/algorithms/25.lower.bound.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/algorithms/25.merge.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/algorithms/25.min.max.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/algorithms/25.mismatch.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/algorithms/25.nth.element.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/algorithms/25.partial.sort.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/algorithms/25.partitions.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/algorithms/25.permutation.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/algorithms/25.random.shuffle.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/algorithms/25.remove.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/algorithms/25.replace.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/algorithms/25.reverse.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/algorithms/25.rotate.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/algorithms/25.search.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/algorithms/25.set.difference.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/algorithms/25.set.intersection.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/algorithms/25.set.sym.difference.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/algorithms/25.set.union.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/algorithms/25.sort.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/algorithms/25.swap.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/algorithms/25.transform.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/algorithms/25.unique.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/algorithms/25.upper.bound.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/containers/23.bitset.cons.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/containers/23.bitset.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/containers/23.deque.iterators.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/containers/23.deque.modifiers.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/containers/23.deque.special.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/containers/23.list.assign.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/containers/23.list.capacity.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/containers/23.list.cons.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/containers/23.list.erase.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/containers/23.list.insert.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/containers/23.list.iterators.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/containers/23.list.special.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/containers/23.vector.allocator.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/containers/23.vector.capacity.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/containers/23.vector.cons.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/containers/23.vector.modifiers.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/diagnostics/19.cerrno.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/diagnostics/19.exceptions.mt.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/diagnostics/19.std.exceptions.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/include/rw_alarm.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="tests/include/rw_alg_test.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="tests/include/rw_alloc.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="tests/include/rw_allocator.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="tests/include/rw_any.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="tests/include/rw_braceexp.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="tests/include/rw_char.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="tests/include/rw_cmdopt.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="tests/include/rw_containers.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="tests/include/rw_ctype.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="tests/include/rw_driver.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="tests/include/rw_environ.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="tests/include/rw_exception.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="tests/include/rw_file.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="tests/include/rw_fnmatch.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="tests/include/rw_lists.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="tests/include/rw_locale.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="tests/include/rw_new.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="tests/include/rw_printf.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="tests/include/rw_process.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="tests/include/rw_rand.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="tests/include/rw_sigdefs.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="tests/include/rw_streambuf.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="tests/include/rw_strings.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="tests/include/rw_testdefs.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="tests/include/rw_thread.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="tests/include/rw_valcmp.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="tests/include/rw_value.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="tests/intro/17.extensions.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/intro/17.names.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/iostream/27.basic.ios.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/iostream/27.filebuf.codecvt.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/iostream/27.filebuf.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/iostream/27.forward.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/iostream/27.ios.members.static.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/iostream/27.istream.fmat.arith.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/iostream/27.istream.get.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/iostream/27.istream.manip.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/iostream/27.istream.readsome.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/iostream/27.istream.sentry.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/iostream/27.istream.unformatted.get.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/iostream/27.objects.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/iostream/27.ostream.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/iostream/27.std.manip.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/iostream/27.stringbuf.virtuals.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/iterators/24.istream.iterator.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/localization/22.locale.codecvt.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/localization/22.locale.codecvt.length.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/localization/22.locale.codecvt.mt.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/localization/22.locale.codecvt.out.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/localization/22.locale.collate.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/localization/22.locale.cons.mt.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/localization/22.locale.ctype.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/localization/22.locale.ctype.is.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/localization/22.locale.ctype.mt.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/localization/22.locale.ctype.narrow.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/localization/22.locale.ctype.scan.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/localization/22.locale.ctype.tolower.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/localization/22.locale.ctype.toupper.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/localization/22.locale.globals.mt.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/localization/22.locale.messages.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/localization/22.locale.messages.mt.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/localization/22.locale.money.get.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/localization/22.locale.money.get.mt.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/localization/22.locale.money.put.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/localization/22.locale.money.put.mt.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/localization/22.locale.moneypunct.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/localization/22.locale.moneypunct.mt.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/localization/22.locale.num.get.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/localization/22.locale.num.get.mt.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/localization/22.locale.num.put.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/localization/22.locale.num.put.mt.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/localization/22.locale.numpunct.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/localization/22.locale.numpunct.mt.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/localization/22.locale.statics.mt.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/localization/22.locale.synopsis.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/localization/22.locale.time.get.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/localization/22.locale.time.get.mt.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/localization/22.locale.time.put.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/localization/22.locale.time.put.mt.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/numerics/26.accumulate.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/numerics/26.adjacent.diff.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/numerics/26.c.math.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/numerics/26.class.gslice.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/numerics/26.gslice.array.cassign.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/numerics/26.indirect.array.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/numerics/26.inner.product.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/numerics/26.mask.array.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/numerics/26.partial.sum.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/numerics/26.valarray.cassign.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/numerics/26.valarray.cons.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/numerics/26.valarray.transcend.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/regress/18.c.limits.stdcxx-988.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/regress/18.limits.stdcxx-436.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/regress/18.limits.stdcxx-937.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/regress/18.limits.traps.stdcxx-624.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/regress/20.specialized.stdcxx-390.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/regress/21.c.strings.stdcxx-843.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/regress/21.char.traits.find.stdcxx-541.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/regress/21.string.append.stdcxx-438.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/regress/21.string.assign.stdcxx-629.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/regress/21.string.find.stdcxx-1035.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/regress/21.string.insert.stdcxx-632.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/regress/21.string.io.stdcxx-206.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/regress/21.string.io.stdcxx-250.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/regress/21.string.replace.stdcxx-170.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/regress/21.string.replace.stdcxx-175.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/regress/21.string.stdcxx-1009.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/regress/21.string.stdcxx-162.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/regress/21.string.stdcxx-231.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/regress/21.string.stdcxx-466.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/regress/22.locale.codecvt.stdcxx-435.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/regress/22.locale.cons.stdcxx-485.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/regress/22.locale.messages.stdcxx-542.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/regress/22.locale.money.get.stdcxx-62.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/regress/22.locale.num.put.stdcxx-2.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/regress/22.locale.stdcxx-554.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/regress/23.associative.stdcxx-16.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/regress/23.bitset.cons.stdcxx-297.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/regress/23.containers.stdcxx-152.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/regress/23.deque.special.stdcxx-127.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/regress/23.list.cons.stdcxx-268.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/regress/23.list.insert.stdcxx-331.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/regress/23.list.special.stdcxx-334.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/regress/23.set.stdcxx-216.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/regress/23.vector.bool.stdcxx-235.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/regress/23.vector.cons.stdcxx-294.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/regress/23.vector.modifiers.stdcxx-495.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/regress/23.vector.stdcxx-1037.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/regress/23.vector.stdcxx-494.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/regress/23.vector.stdcxx-611.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/regress/23.vector.stdcxx-972.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/regress/24.istream.iterator.cons.stdcxx-645.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/regress/24.istream.iterator.ops.stdcxx-321.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/regress/24.operations.stdcxx-234.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/regress/25.random.shuffle.stdcxx-126.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/regress/25.uninitialized.copy.stdcxx-976.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/regress/26.valarray.binary.stdcxx-237.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/regress/26.valarray.cshift.stdcxx-316.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/regress/26.valarray.members.stdcxx-313.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/regress/26.valarray.members.stdcxx-318.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/regress/26.valarray.sub.stdcxx-224.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/regress/26.valarray.sub.stdcxx-309.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/regress/26.valarray.sub.stdcxx-448.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/regress/26.valarray.sub.stdcxx-955.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/regress/26.valarray.transcend.stdcxx-315.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/regress/26.valarray.unary.stdcxx-314.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/regress/27.basic.ios.copyfmt.stdcxx-766.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/regress/27.basic.ios.tie.stdcxx-804.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/regress/27.cstdio.stdcxx-195.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/regress/27.filebuf.close.stdcxx-969.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/regress/27.filebuf.members.stdcxx-308.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/regress/27.filebuf.sgetn.stdcxx-161.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/regress/27.filebuf.virtuals.stdcxx-522.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/regress/27.istream.get.stdcxx-60.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/regress/27.istream.getline.stdcxx-59.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/regress/27.istream.getline.stdcxx-67.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/regress/27.ostream.inserters.stdcxx-51.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/regress/27.ostream.unformatted.stdcxx-626.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/regress/27.streambuf.buffer.stdcxx-808.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/regress/27.streambuf.imbue.stdcxx-307.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/regress/27.streambuf.sgetn.stdcxx-1026.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/regress/27.stringbuf.members.stdcxx-427.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/regress/27.stringbuf.overflow.stdcxx-149.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/regress/27.stringbuf.overflow.stdcxx-795.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/regress/27.stringbuf.seekoff.stdcxx-295.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/regress/27.stringbuf.str.stdcxx-514.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/regress/27.stringbuf.xsputn.stdcxx-515.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/regress/27.stringbuf.xsputn.stdcxx-576.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/self/0.alloc.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/self/0.braceexp.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/self/0.char.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/self/0.cmdopts.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/self/0.ctype.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/self/0.fnmatch.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/self/0.inputiter.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/self/0.locale.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/self/0.new.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/self/0.outputiter.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/self/0.printf.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/self/0.process.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/self/0.strncmp.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/self/0.valcmp.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/src/21.strings.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/src/23.containers.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/src/alarm.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/src/alg_test.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/src/alloc.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/src/allocator.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/src/any.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/src/braceexp.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/src/char.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/src/cmdopt.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/src/ctype.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/src/driver.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/src/environ.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/src/exception.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/src/file.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/src/fmt_bits.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/src/fmt_defs.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="tests/src/fnmatch.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/src/locale.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/src/new.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/src/opt_diags.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/src/opt_diags.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="tests/src/opt_lines.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/src/opt_lines.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="tests/src/opt_trace.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/src/opt_trace.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="tests/src/opt_types.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/src/opt_types.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="tests/src/printf.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/src/process.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/src/rand.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/src/thread.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/src/valcmp.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/src/value.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/strings/21.cctype.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/strings/21.cwchar.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/strings/21.cwctype.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/strings/21.string.access.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/strings/21.string.append.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/strings/21.string.assign.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/strings/21.string.capacity.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/strings/21.string.compare.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/strings/21.string.cons.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/strings/21.string.cons.mt.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/strings/21.string.copy.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/strings/21.string.erase.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/strings/21.string.exceptions.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/strings/21.string.find.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/strings/21.string.find.first.not.of.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/strings/21.string.find.first.of.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/strings/21.string.find.last.not.of.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/strings/21.string.find.last.of.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/strings/21.string.insert.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/strings/21.string.io.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/strings/21.string.iterators.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/strings/21.string.op.plus.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/strings/21.string.op.plus.equal.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/strings/21.string.operators.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/strings/21.string.push_back.mt.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/strings/21.string.replace.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/strings/21.string.rfind.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/strings/21.string.substr.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/strings/21.string.swap.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/support/18.csetjmp.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/support/18.cstdint.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/support/18.exception.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/support/18.limits.cvqual.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/support/18.limits.traps.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/support/18.numeric.special.float.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/support/18.numeric.special.int.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/support/18.setjmp.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/support/18.support.dynamic.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/support/18.support.rtti.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/support/atomic_add.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/support/atomic_xchg.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/utilities/20.auto.ptr.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/utilities/20.forward.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/utilities/20.function.objects.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/utilities/20.meta.help.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/utilities/20.meta.rel.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/utilities/20.meta.trans.arr.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/utilities/20.meta.trans.cv.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/utilities/20.meta.trans.other.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/utilities/20.meta.trans.ptr.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/utilities/20.meta.trans.ref.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/utilities/20.meta.trans.sign.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/utilities/20.meta.unary.cat.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/utilities/20.meta.unary.comp.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/utilities/20.meta.unary.nothrow.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/utilities/20.meta.unary.prop.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/utilities/20.operators.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/utilities/20.pairs.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/utilities/20.smartptr.shared.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/utilities/20.smartptr.weak.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/utilities/20.specialized.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/utilities/20.temp.buffer.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/utilities/20.temp.buffer.mt.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/utilities/20.tuple.cnstr.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/utilities/20.tuple.creation.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/utilities/20.tuple.elem.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="tests/utilities/20.tuple.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="tests/utilities/20.tuple.helpers.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="tests/utilities/20.tuple.rel.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="util/aliases.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="util/aliases.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="util/charmap.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="util/charmap.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="util/cmdopt.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="util/cmdopt.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="util/codecvt.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="util/collate.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="util/ctype.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="util/def.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="util/def.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="util/diagnostic.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="util/diagnostic.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="util/display.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="util/display.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="util/exec.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="util/exec.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="util/gencat.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="util/iconv.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="util/loc_exception.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="util/locale.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="util/locale_stub.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="util/localedef.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="util/localedef.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="util/memchk.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="util/memchk.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="util/messages.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="util/monetary.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="util/numeric.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="util/output.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="util/output.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="util/path.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="util/path.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="util/runall.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="util/scanner.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="util/scanner.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="util/target.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="util/time.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="util/util.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="util/util.h" ex="true" tool="3" flavor2="0">
+      </item>
+    </conf>
+  </confs>
+</configurationDescriptor>

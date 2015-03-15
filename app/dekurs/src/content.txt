@@ -1,0 +1,552 @@
+die Angabe@Indicatia
+
+
+
+
+-------------------------------------------------------------------------
+der Koerper@Corpul
+der Kopf@Capul
+der Hals@Gatul
+die Schulter@Umarul
+die Brust@Pieptul
+der Bauch@Stomacul
+die Hand@Mana
+der Finger@Degetul de la mana
+die Scheide@Vaginul
+der Fuss@Laba piciorului
+der Zeh@Degetul de la picior
+der Nacken@Gatul
+der Ruecken@Spatele
+der Arm@Bratul
+der Ellenbogen@Cotul
+der Po@Fundul
+das Glied@Penisul
+das Bein@Piciorul
+das Knie@Genunchiul
+die Ferse@Calcaiul
+-------------------------------------------------------------------------
+das Gesicht@Fata
+die Haare@Parul
+die Stirn@Fruntea
+das Ohr@Urechea
+die Wange@Obrazul
+der Mund@Gura
+die Zunge@Limba
+das Kinn@Barbia
+der Zahn@Dintele
+die Lippe@Buza
+die Nase@Nasul
+das Auge@Ochiul
+die Augenbraue@Spranceana
+-------------------------------------------------------------------------
+die Kleidung@Imbracamintea
+das Unterhemd@Maieul
+das Hemd@Camasa
+die Hose@Pantalonul
+der Pullover@Puloverul
+die kurze Hose@Pantalonul scurt
+der Struempf@Ciorapul
+der Knopf@Nasturele
+die Latzhose@Pantalonul cu bretele
+der Guertel@Cureaua
+die Jeans@Blugul
+die Unterhose@Chilotul
+die Socke@Soseta
+das Nachthemd@Camasa de noapte
+die Strumpfhose@Dresul
+der Schlafanzug@Pijamaua
+der Trainingsanzug@Treningul
+die Bluse@Bluza
+der Rock@Fusta
+das T-Shirt@Camasa cu maneca scurta
+die Strickjacke@Canadiana
+der Reissverschluss@Fermoarul
+die Jacke@Jacheta
+der Schuh@Pantoful
+die Sandale@Sandala
+der Trunschuh@Pantoful de tenis
+der Hausschuh@Papucul
+der Stiefel@Cizma
+der Bikini@Bikini
+die Badehose@Slipul
+die Muetze@Caciula
+der Badeanzug@Costumul de baie
+die Brille@Ochelarii
+die Armbanduhr@Ceasul de mana
+das Armband@Bratara
+die Halskette@Lantul de gat
+der Ring@Inelul
+der Ohrring@Cercelul
+der Mantel@Paltonul
+der Schal@Fularul
+der Anorak@Hanoracul
+der Handschuh@Manusa
+der Kleiderbuegel@Umerasul
+der Regenschirm@Umbrela
+die Regenjacke@Geaca de ploaie
+-------------------------------------------------------------------------
+die Schuessel@Castron
+der Topflappen@Carpa de bucatarie
+der Schwamm@Buretele
+die Buerste@Peria
+das Spuelmittel@Detergentul de vase
+die Zitronenpresse@Storcatorul de lamai
+die Kuchenform@Forma de prajituri
+das Nudelholz@Placintarul
+das Sieb@Sita
+die Reibe@Razatoarea
+der Dosenoeffner@Desfacatorul de conserve
+der Korkenzieher@Tirbusonul
+die Suppenkelle@Polonicul
+der Pfannenwender@Paleta de cartofi
+der Kochloeffel@Lingura de gatit
+der Schneebesen@Tel
+der Teeloeffel@Lingurita
+der Essloeffel@Lingura
+die Gabel@Furculita
+das Messer@Cutitul
+das Glas@Paharul
+der Eierbecher@Paharul de ou
+der Becher@Cana
+die Tasse@Ceasca
+die Untertasse@Farfurioara
+der Suppenteller@Farfuria de supa
+der Teller@Farfuria
+die Pfanne@Tigaia
+der Topf@Oala
+der Deckel@Capacul
+die Kuechenrolle@Rola de bucatarie
+die Spuele@Chiuveta
+der Geschirrspuelmachine@Masina de spalat vase
+das Geschirrtuch@Carpa de vase
+der Muelleimer@Galeata de gunoi
+der Herd@Aragazul
+der Backofen@Cuptorul
+das Brett@Fundul de bucatarie
+der Mikrowellenherd@Cuptorul cu microunde
+die Gewuerze@Condimente
+das Kuechenmesser@Cutitul de bucatarie
+das Backblech@Tava
+die Kaffeemachine@Filtrul de cafea
+der Toaster@Prajitorul de paine
+die Dose@Conserva
+das Geschirr@Vesela
+der Kuehlschrank@Frigiderul
+der Gefrierschrank@Congelatorul
+-------------------------------------------------------------------------
+das Esszimmer@Camera de masa
+das Essen@Mancarea
+die Suppe@Supa
+die Sosse@Sosul
+der Fisch@Pestele
+die Fischtaebchen@Baghetele de peste
+der Braten@Friptura
+das Haehnchen@Puiul
+das Schnitzel@Snitzelul
+die Bratwurst@Carnaciourul
+der Hamburger@Hamburgerul
+die Pommes frites@Cartofii prajiti
+der Ketschup@Checkupul
+der Senf@Mustarul
+der Salzstreuer@Solnita de sare
+die Serviette@Servetul
+die Pfeffermuehle@Risnita de piper
+der Saft@Sucul
+das Eis@Inghetata
+der Kuchen@Prajitura
+der Pudding@Pudingul
+der Salat@Salata
+das Gemuese@Legume
+die Bratkartoffeln@Cartofii prajiti
+der Reis@Orezul
+die Spagetti@Pastele
+das Spiegelei@Oul ochi
+die Pizza@Pizza
+der Toast@Painea prajita
+das Brot@Painea
+der Tee@Ceaiul
+das Tablett@Tava
+das Broetchen@Chifla
+der Kaese@Branza
+die Milch@Laptele
+der Kakao@Cacao
+das Muesli@Musli
+der Honig@Mierea
+die Wurst@Carnatul
+die Zuckerdose@Zaharnita
+die Brezel@Covrigul
+das Ei@Oul
+die Butter@Untul
+das Milchkaennchen@Cana de lapte
+die Marmelade@
+der Kaffee
+der Quark
+die Kanne
+-------------------------------------------------------------------------
+das Badezimmer@Camera de baie
+der Abfluss
+der Stoepsel
+der Waschbeutel
+das Nageletui
+die Waermflasche
+das Schminkzeug
+der Lippenstift
+das Parfuem
+das Deodorant
+das Rasierwasser
+der Rasierapparat
+das Haarspray
+das Shampoo
+das Schaumbad
+das Duschgel
+die Seife
+die Kreme
+die Watte
+die Zahnpasta
+die Zahnbuerste
+der Zahnputzbecher
+die Buerste
+der Kamm
+das Haargummi
+die Haarspange
+die Toilettenbuerste
+die Brause
+der Wasserhahn
+der Waeschetrockner
+die Waschmaschine
+der Waschlappen
+die Badewanne
+der Duschvorhang
+die Dusche
+die Fliesen
+das Toilettenpapier
+der Foehn
+die Toilette
+das Handtuch
+die Waage
+der Spiegel
+der Bademantel
+das Waschbecken
+die Waesche
+-------------------------------------------------------------------------
+das Wohnzimmer@Camera de zi
+der Videorekorder
+die Videokassette
+der Schallplattenspieler
+die Schallplatte
+der CD-Spieler
+das Radio
+der Kassettenrekorder
+die Kassette
+der Schrank
+der Fernseher
+die Stereoanlage
+die Kerze
+der Kerzenstaender
+der Tisch
+der Vogelkaefig
+das Holz
+die CD
+der Teppich
+der Stuhl
+das Bild
+das Foto
+der Kamin
+das Feuer
+die Vase
+das Telefon
+die Lampe
+der Mann
+das Sofa
+der Vorhang
+die Frau
+der Sessel
+die Fernbedienung
+die Gluehbirne
+die Steckdose
+die Zeitung
+das Buch
+das Kissen
+die Streichhoelzer
+-------------------------------------------------------------------------
+das Kinderzimmer
+die Puppe
+der Puppenwagen
+die Handpuppe
+die Marionette
+das Kuscheltier
+das Spielzeugauto
+der Gameboy
+das Kartenspiel
+das Puzzle
+die Baukloetze
+die Legosteine
+das Spielbrett
+die Spielsteine
+der Wuerfel
+die Gitarre
+die Blockfloete
+das Xylofon
+das Steckenpferd
+der Luftballon
+das Poster
+das Kopfkissen
+der Teddy
+die Leiter
+die Bettdecke
+das Bett
+der Kaufmannsladen
+der Wecker
+das Puppenhaus
+der Ball
+das Fenster
+der Computer
+der Schreibtisch
+die Sielzeugkiste
+die Eisenbahn
+die Trommel
+die Murmeln
+der Comic
+das Regal
+-------------------------------------------------------------------------
+die Schule
+das Pausenbrot
+die Garderobe
+das Zeugnis
+der Schulranzen
+das Schulbuch
+der Ordner
+der Farbkastern
+der Pinsel
+das Lineal
+das Klebeband
+der Klebstoff
+das Federmaeppchen
+der Radiergummi
+die Schere
+der Zirkel
+der Anspitzer
+die Patrone
+der Fueller
+der Kugelschreiber
+der Filzstift
+der Wachsmalstift
+der Buntstift
+der Bleistift
+der Schulhof
+die Buecher
+der Setzkasten
+der Buchstabe
+das Blatt
+das Klassenzimmer
+die Tafel
+die Zahl
+die Kreide
+das Klassenbuch
+der Papierkorb
+der Schwamm
+die Lehrerin
+die Schuelerin
+die Zeichnung
+die Landkarte
+die Wand
+das Wort
+das Alphabet
+das Heft
+der Zeichenblock
+der Schueler
+-------------------------------------------------------------------------
+die Stadt
+die Reklame
+der Brifkasten
+die Telefonzelle
+der Strassenmaler
+der Strassenmusiker
+die Muellcontainer
+die Strasse
+die Kirche
+das Taxi
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Sfarsit@Sfarsit
+===================================================================
+der Ausweis@Buletinul de identitate
+der Vater@Tata
+die Mutter@Mama
+das Kind@Copilul
+der Abend@Seara
+das Abendessen@Cina
+die Abfahrt@Plecarea
+die Ankunft@Sosirea
+das Abteil@Compartimentul
+die Achtung@Atentia
+das Alter@Varsta
+der Angestellte@Salariatul
+die Antwort@Raspunsul
+die Apotheke@Farmacia
+die Arbeit@Munca
+das Auge@Ochiul
+der Augenblick@Momentul
+der Auslaender@Strainul
+das Badezimmer@Camera de baie
+der Bahnhof@Gara
+der Bauer@Fermierul
+die Begeisterung@Entuziasmul
+das Beispiel@Exemplul
+der Besucher@Vizitatorul
+das Bett@Patul
+das Bild@Tabloul
+das Brot@Painea
+das Buch@Cartea
+der Buecherschrank@Biblioteca
+der Dank@Multumire
+das Deutsch@Limba Germana
+die Ecke@Coltul
+das Eis@Inghetata
+die Eltern@Parintii
+der Empfangschef@Seful de receptie
+der Enkel@Nepotul
+die Erinnerung@Amintirea
+die Fahrkarte@Biletul de calatorie
+das Fahrrad@Bicicleta
+die Farbe@Culoarea
+der Fehler@Greseala
+das Fenster@Fereastra
+der Finger@Degetul
+der Fisch@Pestele
+die Frage@Intrebarea
+die Frau@Femeia
+das Fraeulein@Domnisoara
+die Fremdsprache@Limba straina
+der Freund@Prietenul
+die Freundin@Prietena
+der Fruehling@Primavara
+der Fuss@Laba piciorului
+der Fussgaenger@Pietonul
+die Gabel@Furculita
+der Gast@Musafirul
+das Gebaeude@Cladirea
+der Geburstag@Ziua de nastere
+das Geschenk@Cadoul
+die Gesellschaft@Societatea
+das Gespraech@Conversatia
+das Glas@Paharul
+das Glueck@Norocul
+die Grosseltern@Bunicii
+der Grund@Motivul
+der Gruss@Salutul
+der Herbst@Toamna
+der Herr@Domnul
+der Himmel@Cerul
+der Hoerer@Cursantul
+das Jahr@Anul
+die Jahreszeit@Anotimpul
+das Jahrhundert@Secolul
+die Karte@Biletul
+der Kaefer@Cumparatorul
+die Kirche@Biserica
+der Koffer@Geamantanul
+der Kopf@Capul
+die Kraft@Puterea
+die Kueche@Bucataria
+der Kuehlschrank@Frigiderul
+der Kunde@Clientul
+die Kunst@Arta
+das Kunstleben@Viata artistica
+der Kunstler@Artistul
+das Kunstwerk@Opera de arta
+die Landschaft@Peisajul
+das Leben@Viata
+der Lehrer@Invatatorul
+der Loeffel@Lingura
+die Luft@Aerul
+die Luftpost@Posta aeriana
+das Maedchen@Fata
+der Mann@Barbatul
+die Mappe@Servieta
+das Meisterwerk@Capodopera
+das Messer@Cutitul
+die Milch@Laptele
+das Mittagessen@Masa de pranz
+die Mitte@Mijlocul
+der Mittwoch@Miercuri
+die Moeglichkeit@Posibilitatea
+der Montag@Luni
+der Morgen@Dimineata
+die Muehe@Silinta
+der Nachmittag@Dupa amiaza
+die Nachricht@Stirea
+die Nacht@Noaptea
+die Nase@Nasul
+der Onkel@Unchiul
+der Ort@Locul
+die Ordnung@Ordinea
+das Papier@Hartia
+der Patient@Pacientul
+der Personenkraftwagen@Autoturismul
+der Personenzug@Trenul personal
+der Pfennig@Pfenigul
+der Platz@Piata
+die Postanweisung@Mandatul postal
+die Postkarte@Cartea postala
+die Rechnung@Socoteala
+die Reise@Calatoria
+der Reisefuehrer@Ghidul turistic
+der Reisende@Calatorul
+das Rot@Culoarea rosie
+der Samstag@Sambata
+der Schluessel@Cheia
+der Schmerz@Durerea
+der Sonntag@Duminica
+der Spaziergang@Plimbarea
+die Sprache@Limba
+die Staatsangehoerigkeit@Cetatenia
+das Streichholz@Chibritul
+der Stuhl@Scaunul
+die Tafel@Tabla
+der Tag@Ziua
+der Tisch@Masa
+die Tochter@Fiica
+der Urlaub@Concediul
+der Vater@Tatal
+der Verkehr@Circulatia
+der Verwalter@Administratorul
+das Viertel@Sfertul
+die Viertelstunde@Sfertul de ora
+der Vogel@Pasarea
+das Volk@Poporul
+der Vormittag@Dimineata
+der Wagen@Automobilul
+der Wald@Padurea
+das Warenhaus@Cald
+der Weckler@Desteptatorul
+der Winter@Iarna
+die Woche@Saptamana
+die Wohnung@Locuinta
+das Wohnzimmer@Camera de zi
+das Wort@Cuvantul
+das Woerterbuch@Dictionarul
+der Wortschatz@Vocabularul
+der Zauber@Farmecul
+die Zeit@Timpul
+die Zeitschrift@Revista
+die Zeitung@Ziarul
+das Zimmer@Camera
+der Zustand@Starea
+das Zweibettzimmer@Camera cu doua paturi

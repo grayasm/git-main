@@ -1,0 +1,14 @@
+#!/bin/sh
+
+su - mihk << ENDCOMMANDS
+echo "Running as: "
+whoami
+cd /home/mihk/Code/svn-trunk/script/mywww/
+svn update
+echo "done now ..."
+ENDCOMMANDS
+
+cp -afRv /home/mihk/Code/svn-trunk/script/mywww/*  /srv/http/
+rm -v /srv/http/httpd.update
+chown -Rv apache:apache /srv/http
+chcon -u system_u -r object_r -t httpd_sys_content_t -Rv /srv/http

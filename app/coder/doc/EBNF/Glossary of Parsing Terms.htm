@@ -1,0 +1,1203 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0038)http://www.parsifalsoft.com/gloss.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Glossary of Parsing Terms</title>
+
+<meta name="description" content="Parser actions, context-free 
+grammars, LALR parsing, terminal and nonterminal tokens, parsing engine, 
+shift-reduce conflict, lexical scanner, etc.">
+
+<meta name="keywords" content="glossary, parsing, parser, lex, yacc,
+parser generator, parsing engine, precedence, grammar, terminal token,
+nonterminal token, grammar rule, shift-reduce conflict, reduce-reduce,
+formal parsing, reduction, semantic action, syntax, compiler compiler,
+syntactic rule, Backus-Naur form, context free, event-driven,
+bottom-up, LR(k), LALR, binary operator, parser stack, top-down,
+parsing software, lexer, script, recursion, lexical scanner, flex, 
+bison, semantic function, domain specific, little language, DSL">
+
+
+
+<script src="chrome-extension://lifbcibllhkdhoafpjfnlhfpfgnpldfl/document_iterator.js"></script><script src="chrome-extension://lifbcibllhkdhoafpjfnlhfpfgnpldfl/find_proxy.js"></script><script src="chrome-extension://lifbcibllhkdhoafpjfnlhfpfgnpldfl/get_html_text.js"></script><script src="chrome-extension://lifbcibllhkdhoafpjfnlhfpfgnpldfl/global_constants.js"></script><script src="chrome-extension://lifbcibllhkdhoafpjfnlhfpfgnpldfl/name_injection_builder.js"></script><script src="chrome-extension://lifbcibllhkdhoafpjfnlhfpfgnpldfl/number_injection_builder.js"></script><script src="chrome-extension://lifbcibllhkdhoafpjfnlhfpfgnpldfl/string_finder.js"></script><meta name="document_iterator.js"><meta name="find_proxy.js"><meta name="get_html_text.js"><meta name="global_constants.js"><meta name="name_injection_builder.js"><meta name="number_injection_builder.js"><meta name="string_finder.js"></head>
+<body bgcolor="#ffffff" background="./Glossary of Parsing Terms_files/tilbl6h.gif" text="#000000" link="#0033CC" vlink="#CC0033" alink="#CC0099">
+<table width="100%" cellpadding="8">
+  <tbody><tr>
+  <td width="130" valign="top" bgcolor="#ddf3ff">
+
+  <a href="http://www.parsifalsoft.com/"><img align="left" src="./Glossary of Parsing Terms_files/psssl6a.gif" alt="Parsifal Software" width="100" height="45" vspace="8" border="0"></a>
+  <br clear="all">
+  <br>
+<font size="-1"><a href="http://www.parsifalsoft.com/"><strong>Home</strong></a><br><br><a href="http://www.parsifalsoft.com/tryag.html"><strong>Trial Copy</strong></a><br><br> <a href="http://www.parsifalsoft.com/isdp.html">Intro. to Parsing</a><br><br><a href="http://www.parsifalsoft.com/saying.html">Users Say...</a><br><br><a href="http://www.parsifalsoft.com/special.html">Special Features</a><br><br><a href="http://www.parsifalsoft.com/notate.html">Notation Summary</a><br><br><a href="http://www.parsifalsoft.com/new201.html">New 2.01 Features</a><br><br><a href="http://www.parsifalsoft.com/ftrace.html">File Trace</a><br><br><a href="http://www.parsifalsoft.com/gtrace.html">Grammar Trace</a><br><br><a href="./Glossary of Parsing Terms_files/Glossary of Parsing Terms.htm">Glossary</a><br><br> <a href="http://www.parsifalsoft.com/examples/index.html">Examples</a><br><br><a href="http://www.parsifalsoft.com/examples/evalexpression/index.html">Expression evaluator (freeware)</a>
+
+<br><br><a href="http://www.parsifalsoft.com/examples/xidek/index.html">XIDEK interpreter kit (freeware)</a>
+
+<br><br><a href="http://www.parsifalsoft.com/yaccdif.html">Lex/Yacc Comparison</a><br><br><a href="http://www.parsifalsoft.com/ifelse.html">If-else ambiguity</a><br><br><a href="http://www.parsifalsoft.com/#CompanyInfo"><strong>Contact
+Parsifal</strong></a><br><br>
+</font>
+
+  </td>
+
+<td>
+
+<p><a href="http://www.parsifalsoft.com/"><img align="right" src="./Glossary of Parsing Terms_files/agrsl6c.gif" alt="AnaGram" width="124" height="30" border="0" hspace="20"></a>
+   <br clear="RIGHT"></p>
+
+<hr>
+<h2>Glossary of Parsing Terms</h2>
+
+<hr>
+
+<p>
+<table width="100%" align="center" cellpadding="15" cellspacing="15">
+<tbody><tr align="left">
+
+<td valign="TOP" nowrap="">
+
+
+
+<a href="http://www.parsifalsoft.com/gloss.html#ParserAction">Action</a><br>
+<a href="http://www.parsifalsoft.com/gloss.html#AcceptAction">Accept Action</a><br>
+<a href="http://www.parsifalsoft.com/gloss.html#Associativity">Associativity</a><br>
+<a href="http://www.parsifalsoft.com/gloss.html#Backtracking">Backtracking</a><br>
+<a href="http://www.parsifalsoft.com/gloss.html#BNF">Backus-Naur Form</a><br>
+<a href="http://www.parsifalsoft.com/gloss.html#BinaryOperator">Binary operator</a><br>
+<a href="http://www.parsifalsoft.com/gloss.html#Binding">Binding</a><br>
+<a href="http://www.parsifalsoft.com/gloss.html#CharacterSets">Character sets</a><br>
+<a href="http://www.parsifalsoft.com/gloss.html#Universe">Character Universe</a><br>
+<a href="http://www.parsifalsoft.com/gloss.html#CharacteristicRule">Characteristic Rule</a><br>
+<a href="http://www.parsifalsoft.com/gloss.html#CharacteristicToken">Characteristic Token</a><br>
+<a href="http://www.parsifalsoft.com/gloss.html#SetComplement">Complement of a set</a><br>
+<a href="http://www.parsifalsoft.com/gloss.html#CompletedRule">Completed Rule</a><br>
+<a href="http://www.parsifalsoft.com/gloss.html#Conflict">Conflict</a><br>
+<a href="http://www.parsifalsoft.com/gloss.html#ContextFreeGrammar">Context Free Grammars</a><br>
+<a href="http://www.parsifalsoft.com/gloss.html#DefaultReduction">Default reductions</a><br>
+<a href="http://www.parsifalsoft.com/gloss.html#SetDifference">Difference of two sets</a><br>
+<a href="http://www.parsifalsoft.com/gloss.html#ErrorAction">Error Action</a><br>
+<a href="http://www.parsifalsoft.com/gloss.html#EventDriven">Event Driven Parser</a><br>
+<a href="http://www.parsifalsoft.com/gloss.html#ExpansionRule">Expansion Rule</a><br>
+<a href="http://www.parsifalsoft.com/gloss.html#Grammar">Grammar</a><br>
+<a href="http://www.parsifalsoft.com/gloss.html#GrammarAnalysis">Grammar Analysis</a><br>
+<a href="http://www.parsifalsoft.com/gloss.html#GrammarRule">Grammar Rule</a><br>
+<a href="http://www.parsifalsoft.com/gloss.html#GrammarToken">Grammar Token</a><br>
+<a href="http://www.parsifalsoft.com/gloss.html#SetIntersection">Intersection</a><br>
+<a href="http://www.parsifalsoft.com/gloss.html#LALRParsing">LALR parsing</a><br>
+<a href="http://www.parsifalsoft.com/gloss.html#LexicalScanner">Lexical Scanner</a><br>
+<a href="http://www.parsifalsoft.com/gloss.html#Lookahead">Lookahead Token</a><br>
+<a href="http://www.parsifalsoft.com/gloss.html#LRParsing">LR Parsing</a><br>
+<a href="http://www.parsifalsoft.com/gloss.html#MarkedRule">Marked Rule</a><br>
+<a href="http://www.parsifalsoft.com/gloss.html#NonAssociative">Non-associative</a><br>
+</td>
+
+<td valign="TOP" nowrap="">
+<a href="http://www.parsifalsoft.com/gloss.html#Nonterminal">Nonterminal Token</a><br>
+<a href="http://www.parsifalsoft.com/gloss.html#NullProduction">Null Production</a><br>
+<a href="http://www.parsifalsoft.com/gloss.html#ParameterAssignment">Parameter Assignment</a><br>
+<a href="http://www.parsifalsoft.com/gloss.html#Parser">Parser</a><br>
+<a href="http://www.parsifalsoft.com/gloss.html#ParserControlBlock">Parser ControlBlock</a><br>
+<a href="http://www.parsifalsoft.com/gloss.html#ParserGenerator">Parser Generator</a><br>
+<a href="http://www.parsifalsoft.com/gloss.html#ParserStateStack">Parser State Stack</a><br>
+<a href="http://www.parsifalsoft.com/gloss.html#ParserValueStack">Parser Value Stack</a><br>
+<a href="http://www.parsifalsoft.com/gloss.html#ParsingEngine">Parsing Engine</a><br>
+<a href="http://www.parsifalsoft.com/gloss.html#SetPartition">Partition</a><br>
+<a href="http://www.parsifalsoft.com/gloss.html#Precedence">Precedence</a><br>
+<a href="http://www.parsifalsoft.com/gloss.html#Production">Production</a><br>
+<a href="http://www.parsifalsoft.com/gloss.html#ReduceAction">Reduce Action</a><br>
+<a href="http://www.parsifalsoft.com/gloss.html#ReduceReduce">Reduce-Reduce Conflict</a><br>
+<a href="http://www.parsifalsoft.com/gloss.html#ReducingToken">Reducing Token</a><br>
+<a href="http://www.parsifalsoft.com/gloss.html#ReductionProcedure">Reduction Procedure</a><br>
+<a href="http://www.parsifalsoft.com/gloss.html#ReductionToken">Reduction Token</a><br>
+<a href="http://www.parsifalsoft.com/gloss.html#Resynchronization">Resynchronization</a><br>
+<a href="http://www.parsifalsoft.com/gloss.html#RuleElement">Rule Element</a><br>
+<a href="http://www.parsifalsoft.com/gloss.html#SemanticAction">Semantic Action</a><br>
+<a href="http://www.parsifalsoft.com/gloss.html#SemanticValue">Semantic Value</a><br>
+<a href="http://www.parsifalsoft.com/gloss.html#SemanticallyDetermined">Semantically Determined Production</a><br>
+<a href="http://www.parsifalsoft.com/gloss.html#SetExpression">Set Expression</a><br>
+<a href="http://www.parsifalsoft.com/gloss.html#ShiftAction">Shift Action</a><br>
+<a href="http://www.parsifalsoft.com/gloss.html#ShiftReduce">Shift-Reduce Conflict</a><br>
+<a href="http://www.parsifalsoft.com/gloss.html#SyntaxDirectedParsing">Syntax Directed Parsing</a><br>
+<a href="http://www.parsifalsoft.com/gloss.html#Terminal">Terminal Token</a><br>
+<a href="http://www.parsifalsoft.com/gloss.html#Token">Token</a><br>
+<a href="http://www.parsifalsoft.com/gloss.html#UnaryOperator">Unary Operator</a><br>
+<a href="http://www.parsifalsoft.com/gloss.html#SetUnion">Union</a><br>
+<a href="http://www.parsifalsoft.com/gloss.html#VirtualProduction">Virtual Production</a><br>
+
+</td>
+
+</tr></tbody></table>
+
+</p><hr>
+
+
+
+<dl>
+<dt><b><a name="ParserAction">Action</a></b></dt>
+<dd>A "parser action" is one of the basic executable elements of a
+<a href="http://www.parsifalsoft.com/gloss.html#ParsingEngine">parsing engine</a>. In a traditional parsing engine
+there are four actions: the
+<a href="http://www.parsifalsoft.com/gloss.html#ShiftAction">shift action</a>, the <a href="http://www.parsifalsoft.com/gloss.html#ReduceAction">reduce
+action</a>, the <a href="http://www.parsifalsoft.com/gloss.html#AcceptAction">accept action</a>, and the
+<a href="http://www.parsifalsoft.com/gloss.html#ErrorAction">error action</a>. The parsing engines which AnaGram
+generates use a substantially greater number of actions, in order to provide
+certain short cuts in the interest of greater speed and greater compactness of
+the tables which control the action of the parsing engine.
+<p></p>
+</dd>
+
+<dt><b><a name="AcceptAction">Accept Action</a></b></dt>
+<dd> The accept <a href="http://www.parsifalsoft.com/gloss.html#ParserAction">action</a> is one of the four actions
+of a traditional <a href="http://www.parsifalsoft.com/gloss.html#ParsingEngine">parsing engine</a>. The accept action
+is performed when the <a href="http://www.parsifalsoft.com/gloss.html#Parser">parser</a> has succeeded in identifying
+the <a href="http://www.parsifalsoft.com/gloss.html#GrammarToken">goal token</a> for the <a href="http://www.parsifalsoft.com/gloss.html#Grammar">grammar</a>.
+When the parser executes the accept action, it returns to the calling program.
+The accept action is thus the last action of
+the parsing engine and occurs only once for each successful execution
+of the parser.
+
+<p></p>
+</dd>
+
+<dt><b><a name="Associativity">Associativity</a></b></dt>
+<dd> This is a term used to describe <a href="http://www.parsifalsoft.com/gloss.html#BinaryOperator">binary
+operators </a>. It describes how you interpret a sequence of operations which
+all involve the same operator. Consider a - b - c, for instance. Here the
+convention is that we subtract b from a, and then c from the difference. We say
+that subtraction is <b>left associative</b>, since if there is a sequence of
+subtraction operations, the leftmost one is to be performed first. As a second
+example, consider exponentiation. FORTRAN uses ** as an operator to indicate
+exponentiation. In order to conform as closely as possible to ordinary
+mathematical notation, the expression a**b**c is interpreted to mean that first
+b is raised to the power c, and then the resultant value is used as the power to
+which a is raised. We say that exponentiation is <b>right associative</b> since the
+rightmost of a sequence of exponentiation operations is to be performed first.
+If a programming language does not allow for unparenthesized sequences of a
+particular operator, the operator is said to be non-associative.<p>
+Another way to view left and right associativity is as implied parenthesization.
+Left associative operators are parenthesized from the left. Right associative
+operators are parenthesized from the right. Thus a - b - c = ((a-b) - c) and
+a**b**c = (a**(b**c))</p><p>
+AnaGram offers two ways to specify associativity of
+ <a href="http://www.parsifalsoft.com/gloss.html#BinaryOperator">binary operators</a>. The first
+way is to use conventional <a href="http://www.parsifalsoft.com/gloss.html#BNF">Backus-Naur Form</a> syntax
+descriptions. You would use recursion to describe both subtraction and
+exponentiation. Subtraction, since it is left associative, uses left recursion,
+and exponentiation, being right associative, uses right recursion. Thus</p><p>
+</p><pre>    difference  -&gt; value | difference, '-', value
+    exponential -&gt; value | value, "**", exponential
+</pre>  could be used to describe differences and exponents.<p>
+The second way to specify associativity is to use an ambiguous <a href="http://www.parsifalsoft.com/gloss.html#Grammar">grammar</a> and
+precedence declarations. (See Chapter 9, AnaGram User's Guide.)</p><p>
+</p></dd>
+
+<dt><b><a name="Backtracking">Backtracking</a></b></dt>
+<dd> In order to make parse tables more compact and <a href="http://www.parsifalsoft.com/gloss.html#Parser">parsers</a> faster, it is
+common to use <a href="http://www.parsifalsoft.com/gloss.html#DefaultReduction">default reductions</a>. In case of
+error, it is necessary to undo default reductions before diagnostics can be
+properly determined. In AnaGram, this undo operation is called backtracking.<p>
+
+</p></dd>
+
+<dt><b><a name="BNF">Backus-Naur Form</a></b></dt>
+<dd> Backus-Naur Form, or BNF, is a conventional notation for describing
+<a href="http://www.parsifalsoft.com/gloss.html#ContextFreeGrammar">context free grammars</a>. AnaGram uses an
+extended notation for <a href="http://www.parsifalsoft.com/gloss.html#Grammar">grammars</a>, which, except for
+<a href="http://www.parsifalsoft.com/gloss.html#SemanticallyDetermined">semantically determined
+productions</a>, can be shown to be equivalent to BNF. The term "BNF" is
+often used colloquially to refer to a grammar specification.<p>
+AnaGram's syntax specification language differs from BNF in the following
+respects:
+</p><ol>
+<li>In conventional BNF, a symbol not enclosed in angle brackets (&lt; &gt;) is
+taken to represent itself literally. In AnaGram, literal character
+representations must be enclosed in single quotes and literal strings within
+double quotes.
+</li>
+<li>In BNF, the right side of a <a href="http://www.parsifalsoft.com/gloss.html#Production">production</a> is simply a list of symbols without
+any delimiters or punctuation. AnaGram requires that the <a href="http://www.parsifalsoft.com/gloss.html#RuleElement">rule elements</a> which
+make up a <a href="http://www.parsifalsoft.com/gloss.html#GrammarRule">grammar rule</a>, or right side, be joined by commas.
+</li>
+<li>BNF makes no provision for identifying <a href="http://www.parsifalsoft.com/gloss.html#ReductionProcedure">reduction procedures</a> or their
+arguments. AnaGram provides both reduction procedures, introduced by an "="
+at the end of the production, and named arguments, introduced by a ":"
+at the end of any <a href="http://www.parsifalsoft.com/gloss.html#Token">token</a> on the right side of the production.
+</li>
+<li>AnaGram allows <a href="http://www.parsifalsoft.com/gloss.html#VirtualProduction">virtual productions</a> to be used freely.
+</li>
+<li>BNF is "pure" in that if you wish to define a <a href="http://www.parsifalsoft.com/gloss.html#Nonterminal">nonterminal token</a>
+called "digit" to represent the digits from zero to nine, you must
+provide ten explicit productions to define it. AnaGram treats the concept of <a href="http://www.parsifalsoft.com/gloss.html#Terminal">"terminal
+token"</a> as used in language theory as an abstraction, and interposes
+<a href="http://www.parsifalsoft.com/gloss.html#CharacterSets">character set</a> functionality between actual character input and the terminal
+tokens of BNF. You can define digit to be the character range '0-9', for
+instance, and AnaGram will determine and define precisely the minimum number of
+productions necessary, taking into account any other usage of the characters
+'0-9' in your grammar. This makes your grammar more compact, more manageable,
+and easier to modify.
+</li>
+<li>AnaGram allows for <a href="http://www.parsifalsoft.com/gloss.html#SemanticallyDetermined">
+semantically determined productions</a>, which provide a
+significant mechanism for melding semantic analysis with syntactic
+analysis.
+
+</li>
+</ol>
+<p></p>
+</dd>
+
+<dt><b><a name="BinaryOperator">Binary operator</a></b></dt>
+<dd> A binary operator is an operator that works on two operands to create a
+result. It is often written between its operands and is sometimes called an
+infix operator. In ordinary programming languages "+" and "-"
+are binary operators.
+<p></p>
+</dd>
+
+<dt><b><a name="Binding">Binding</a></b></dt>
+<dd> Most programming languages, rather than executing arithmetic operators in
+simple left to right order, conform to the traditional conventions of ordinary
+algebra, which dictate that, except where parenthesis indicate otherwise,
+exponentiation is done before multiplication, multiplication before addition,
+and addition before comparison. One says that exponentiation is "more
+tightly binding" than multiplication, multiplication is more tightly
+binding than addition, and so on. The sense of the word here is that the
+operator binds together its operands into a single entity. An operand which
+falls between two different operators is "bound" by the more tightly
+binding operator. An operator that is more tightly binding than another is also
+said to have higher <a href="http://www.parsifalsoft.com/gloss.html#Precedence">precedence</a>.
+<p></p>
+</dd>
+
+<dt><b><a name="CharacterSets">Character sets</a></b></dt>
+<dd> One of the traditional problems with syntax directed programming is that
+caused by the fact that most formal language specifications have productions of
+the form:
+<pre>    letter -&gt; a | b | c | d ... | z
+</pre>  Since the letters are not often distinguished in the <a href="http://www.parsifalsoft.com/gloss.html#Grammar">grammar</a>, this large
+number of essentially identical <a href="http://www.parsifalsoft.com/gloss.html#Production">productions</a> causes a correspondingly large
+number of states in the <a href="http://www.parsifalsoft.com/gloss.html#Parser">parser</a>. This problem is often attacked by using a<a href="http://www.parsifalsoft.com/gloss.html#LexicalScanner"> "lexical scanner"</a> which simply specifies
+a "letter token" whose value indicates precisely which letter is
+intended. This works fine as long as there is nothing in the grammar which
+distinguishes any letter at all. If there is, and there is usually some special
+use of h, x, q, o, e, or even a-f, the situation gets more complicated. Often the
+result is to abandon the use of syntax directed programming for elemental units
+of the language and use a more complex lexical scanner which identifies names,
+numbers, key words and operators. Such lexical scanners are often built using
+conventional programming languages or simple pattern recognizing languages such
+as LEX.<p>
+AnaGram avoids this problem by incorporation the notion of character set into
+its input specifications. Briefly, the way it works is the following: You
+specify the set of characters which make up any ostensibly <a href="http://www.parsifalsoft.com/gloss.html#Terminal">terminal token</a>.
+AnaGram then analyzes the overlaps among these definitions and creates a minimal
+set of <a href="http://www.parsifalsoft.com/gloss.html#Token">tokens</a> which match your specifications exactly. For instance, suppose you
+have the following definitions:
+</p><pre>    letter = 'a-z' + 'A-Z'
+    hex digit = '0-9' + 'a-f' + 'A-F'
+</pre>  AnaGram will define a token for letter which has two productions:
+<pre>    letter -&gt; 'a-f' + 'A-F' | 'g-z' + 'G-Z'
+</pre>  With this technique, you have the freedom to specify your grammar in the
+easiest possible manner, without the penalty of an absurdly large, slow parser.<p>
+Character sets may be specified in terms of ranges of characters, as in the
+above example, as <a href="http://www.parsifalsoft.com/gloss.html#SetUnion">unions</a>, denoted by "+", as
+<a href="http://www.parsifalsoft.com/gloss.html#SetIntersection">intersections</a>, denoted by "&amp;", as
+<a href="http://www.parsifalsoft.com/gloss.html#SetDifference">differences,</a> denoted by "-", and as
+<a href="http://www.parsifalsoft.com/gloss.html#SetComplement">complements</a>, using "~". You may also
+specify a set consisting of a single character either with a literal character
+or with a numeric specification. If you specify a character numerically, you may
+use either decimal, octal or hexadecimal notation, as in C.
+</p><p></p>
+</dd>
+
+<dt><b><a name="Universe">Character Universe</a></b></dt>
+<dd> In ordinary set theory, the "universe" is the set of all
+entities which may be elements of a set. It must be defined so that the
+complement of a set can mean something unambiguous. In AnaGram, the character
+universe normally comprises the ascii characters and the IBM extended character
+set, that is, all characters in the range from 0 through 255. If, however, you
+have defined input characters outside this range, the character universe will be
+extended to the least character you have used and to the greatest character you
+have used in your <a href="http://www.parsifalsoft.com/gloss.html#Grammar">grammar</a>.
+<p></p>
+</dd>
+
+<dt><b><a name="CharacteristicRule">Characteristic Rule</a></b></dt>
+<dd> Each parser state is characterized by a particular set of <a href="http://www.parsifalsoft.com/gloss.html#GrammarRule">grammar rules</a>,
+and for each such rule, a marked token which is the next <a href="http://www.parsifalsoft.com/gloss.html#Token">token</a> expected. These
+rules are called the characteristic rules for the state. In the course of doing
+<a href="http://www.parsifalsoft.com/gloss.html#GrammarAnalysis">grammar analysis</a>, AnaGram determines the characteristic rules for each parser
+state. After analyzing your grammar, you may inspect the State Definition Table
+to see the characteristic rules for any state in your <a href="http://www.parsifalsoft.com/gloss.html#Parser">parser</a>.
+<p></p>
+</dd>
+
+<dt><b><a name="CharacteristicToken">Characteristic Token</a></b></dt>
+<dd> Every state in a <a href="http://www.parsifalsoft.com/gloss.html#Parser">parser</a>, except state zero, can be characterized by the
+one, unique <a href="http://www.parsifalsoft.com/gloss.html#Token">token</a> which causes a jump to that state. That token is called the
+characteristic token of the state, because to get to that parser state you must
+have just seen precisely that token in the input. Note that several states could
+have the same characteristic token.<p>
+When you have a list of states, such as is given by the parser state stack, it
+is equivalent to a list of characteristic tokens. This list of tokens is the
+list of tokens that have been recognized so far by the parser. Some of these
+tokens, of course, may be <a href="http://www.parsifalsoft.com/gloss.html#Nonterminal">nonterminal tokens</a> and may thus represent the result
+of reducing a sequence of previously recognized tokens.
+</p>
+<p></p>
+</dd>
+
+<dt><b><a name="SetComplement">Complement of a set</a></b></dt>
+<dd> In set theory, the complement of a set, S, is the collection of all
+elements of the <a href="http://www.parsifalsoft.com/gloss.html#Universe">character universe</a> which are not elements of S. Using AnaGram's
+notation, the complement of S is written ~S. The complement operator has higher
+<a href="http://www.parsifalsoft.com/gloss.html#Precedence">precedence</a> than the
+<a href="http://www.parsifalsoft.com/gloss.html#SetDifference">difference</a>, <a href="http://www.parsifalsoft.com/gloss.html#SetIntersection">intersection</a>, or <a href="http://www.parsifalsoft.com/gloss.html#SetUnion">union</a> operators.
+<p></p>
+</dd>
+
+<dt><b><a name="CompletedRule">Completed Rule</a></b></dt>
+<dd> A "completed rule" is a <a href="http://www.parsifalsoft.com/gloss.html#CharacteristicRule">characteristic rule</a> whose index is
+pointing beyond the last <a href="http://www.parsifalsoft.com/gloss.html#RuleElement">rule element</a>. In other words, it has been completely
+matched and will be <a href="http://www.parsifalsoft.com/gloss.html#ReduceAction">reduced</a> by the next input.
+<p>
+If a state has more than one completed rule, the decision as to which to reduce
+is made based on the next input <a href="http://www.parsifalsoft.com/gloss.html#Token">token</a>. If there is only one completed rule in a
+state, it will be reduced by default unless the default reductions switch has
+been reset, i.e., turned off.
+</p></dd>
+<dt><b><a name="Conflict">Conflict</a></b></dt>
+<dd> Conflicts arise during a <a href="http://www.parsifalsoft.com/gloss.html#GrammarAnalysis">grammar analysis</a> when AnaGram cannot determine
+how to treat a given input <a href="http://www.parsifalsoft.com/gloss.html#Token">token</a>. There are two sorts of conflicts: <a href="http://www.parsifalsoft.com/gloss.html#ShiftReduce">shift-reduce
+conflicts</a> and <a href="http://www.parsifalsoft.com/gloss.html#ReduceReduce">reduce-reduce conflicts</a>. Conflicts may arise either because the
+<a href="http://www.parsifalsoft.com/gloss.html#Grammar">grammar</a> is inherently ambiguous, or simply because the grammar analyzer cannot
+look far enough ahead to resolve the conflict. In the latter case, it is often
+possible to rewrite the grammar in such a way as to eliminate the conflict. <a href="http://www.parsifalsoft.com/gloss.html#NullProduction">Null
+productions</a> are a common source of conflict.
+<p>
+There are a number of ways to deal with conflicts. If you understand the
+conflict well, you may simply choose to ignore it. When AnaGram encounters a
+shift-reduce conflict while building parse tables it resolves it by choosing the
+<a href="http://www.parsifalsoft.com/gloss.html#ShiftAction">shift action</a>. When AnaGram encounters a reduce-reduce conflict while building
+parse tables, it resolves it by selecting the <a href="http://www.parsifalsoft.com/gloss.html#GrammarRule">grammar rule</a> which occurred first
+in the grammar.
+</p><p>
+A second way to deal with conflicts is to set operator <a href="http://www.parsifalsoft.com/gloss.html#Precedence">precedence</a> parameters. If
+you set these parameters, AnaGram will use them preferentially to resolve
+conflicts. Any conflicts so resolved will be listed in the Resolved Conflicts
+window.
+</p><p>
+A third way to resolve a conflict is to declare some tokens as sticky or as
+subgrammars. This is particularly useful for <a href="http://www.parsifalsoft.com/gloss.html#Production">productions</a> whose sole purpose is
+to skip over uninteresting input.</p><p>
+</p><p>
+The fourth way to deal with conflicts is to rewrite the grammar to eliminate
+them. Many people prefer this approach since it yields the highest level of
+confidence in the resulting program.
+</p></dd>
+<dt><b><a name="ContextFreeGrammar">Context Free Grammars</a></b></dt>
+<dd> Context free grammars are <a href="http://www.parsifalsoft.com/gloss.html#Grammar">grammars</a> wherein the definition of a grammar
+unit, or <a href="http://www.parsifalsoft.com/gloss.html#Nonterminal">nonterminal token</a>, does not depend on the context in which the
+nonterminal is used. That means that if you define "widget" in a
+certain way, that definition is valid in all contexts in which "widget"
+might occur. Context free grammars can be represented in <a href="http://www.parsifalsoft.com/gloss.html#BNF">Backus-Naur Form</a>.
+AnaGram's syntax specification language has no facility for representing
+grammars which are not context free.
+<p></p>
+</dd>
+<dt><b><a name="DefaultReduction">Default reductions</a></b></dt>
+<dd> A "default reduction" is a parser action which may be used in
+your <a href="http://www.parsifalsoft.com/gloss.html#Parser">parser</a> in any state which has precisely one <a href="http://www.parsifalsoft.com/gloss.html#CompletedRule">completed rule</a>.
+<p>
+If a given parser state has, among its <a href="http://www.parsifalsoft.com/gloss.html#CharacteristicRule">characteristic rules</a>, exactly one
+completed rule, it is usually faster to reduce it on any input than to check
+specifically for correct input before reducing it. The only time this default
+reduction causes trouble is in the event of a syntax error. In this situation
+you may get an erroneous reduction. Normally when you are parsing a file, this
+is inconsequential because you are not going to continue performing
+<a href="http://www.parsifalsoft.com/gloss.html#SemanticAction">semantic actions</a> in the presence of
+errors. But, if you are using your parser to handle real-time
+interactive input, you have to be able to continue semantic
+processing after notifying your user that he has entered erroneous
+input. In this case you would want default reductions to have been
+turned off so that <a href="http://www.parsifalsoft.com/gloss.html#Production">production</a>s are reduced
+only when there is correct input.
+
+</p></dd>
+
+<dt><b><a name="SetDifference">Difference of two sets</a></b></dt>
+<dd> In set theory, the difference of two sets, A and B, is defined to be the
+set of all elements of A that are not elements of B. In an AnaGram syntax file,
+you represent the difference of two <a href="http://www.parsifalsoft.com/gloss.html#CharacterSets">character sets</a> by using the "-"
+operator. Thus the difference of A and B is A - B. The difference operator is
+<a href="http://www.parsifalsoft.com/gloss.html#Associativity">left associative</a>.
+<p></p>
+</dd>
+
+<dt><b><a name="ErrorAction">Error Action</a></b></dt>
+<dd> The error action is one of the four <a href="http://www.parsifalsoft.com/gloss.html#ParserAction">actions</a> of a traditional <a href="http://www.parsifalsoft.com/gloss.html#ParsingEngine">parsing
+engine</a>. The error action is performed when the <a href="http://www.parsifalsoft.com/gloss.html#Parser">parser</a> has encountered an input
+<a href="http://www.parsifalsoft.com/gloss.html#Token">token</a> which is not admissible in the current state. The further behavior of a
+traditional parser is undefined.
+<p></p>
+</dd>
+
+<dt><b><a name="EventDriven">Event Driven Parser</a></b></dt>
+<dd>
+An <i>event driven</i> <a href="http://www.parsifalsoft.com/gloss.html#Parser">parser</a> is one in which
+the relationship between the host program and the parser is turned
+inside out. In a conventional parser, the host program calls the
+parser, the parser analyzes the complete input text and returns to
+the host program only when it has finished with the entire input.
+<p>In an event driven parser, the parser does not read its input
+directly from a file or from memory. Instead, the host program, after
+initializing the parser, calls it once for each input token. Each
+time the parser is called, it updates its state
+appropriately, calls any <a href="http://www.parsifalsoft.com/gloss.html#ReductionProcedure">reduction
+procedures</a> that need to be called and finally when it needs more
+input, returns to the host program. The effect is that parsing can
+occur in parallel with other processing performed by the host
+program. This technique is especially useful in situations where the
+token stream to be parsed is developed on the fly, as when using <a href="http://www.parsifalsoft.com/gloss.html#LexicalScanner">lexical scanners</a>, for instance.
+</p><p></p>
+</dd>
+
+
+<dt><b><a name="ExpansionRule">Expansion Rule</a></b></dt>
+<dd> In analyzing a <a href="http://www.parsifalsoft.com/gloss.html#Grammar">grammar</a>, we are often interested in the full range of input
+that can be expected at a certain point. The expansion of a <a href="http://www.parsifalsoft.com/gloss.html#Token">token</a> or state shows
+us all the expected input. An expansion yields a set of <a href="http://www.parsifalsoft.com/gloss.html#MarkedRule">marked rules</a>. Looking
+at the marked token shows us what input to expect.
+<p>
+The set of expansion rules of a <a href="http://www.parsifalsoft.com/gloss.html#Nonterminal">nonterminal token</a> shows all the expected input
+that can occur whenever the token appears in the grammar. The set consists of
+all the <a href="http://www.parsifalsoft.com/gloss.html#GrammarRule">grammar rules</a> produced by the token, plus all the rules produced by the
+first token of any rule in the set. The marked tokens for the expansion rules of a
+token are always the first element in the rule.
+</p><p>
+The expansion of a state consists of its <a href="http://www.parsifalsoft.com/gloss.html#CharacteristicRule">characteristic rules</a> plus the expansion
+rules of the marked token in each characteristic rule.
+</p>
+</dd>
+
+
+<dt><b><a name="Grammar">Grammar</a></b></dt>
+<dd> Traditionally, a grammar is a set of <a href="http://www.parsifalsoft.com/gloss.html#Production">productions</a> which taken together
+specify precisely a set of acceptable input sequences in terms of an abstract
+set of <a href="http://www.parsifalsoft.com/gloss.html#Terminal">terminal tokens</a>. The set of acceptable input sequences is often called
+the "language" defined by the grammar.
+<p>
+In AnaGram, the term grammar also includes configuration segments, definitions
+of <a href="http://www.parsifalsoft.com/gloss.html#CharacterSets">character sets</a>, <a href="http://www.parsifalsoft.com/gloss.html#VirtualProduction">virtual productions</a>, etc. that augment the collection of
+productions. A grammar is often called a "syntax", and the <a href="http://www.parsifalsoft.com/gloss.html#GrammarRule">rules of
+the grammar</a> are often called syntactic rules.
+</p>
+<p></p>
+</dd>
+
+<dt><b><a name="GrammarAnalysis">Grammar Analysis</a></b></dt>
+<dd> The major function of AnaGram is the analysis of <a href="http://www.parsifalsoft.com/gloss.html#ContextFreeGrammar">context free grammars</a>
+written in a particular variant of <a href="http://www.parsifalsoft.com/gloss.html#BNF">Backus-Naur Form</a>.
+<p>
+The analysis of a <a href="http://www.parsifalsoft.com/gloss.html#Grammar">grammar</a> proceeds in four stages. In the first, the input
+grammar is analyzed and a number of tables are built which describe all of the
+<a href="http://www.parsifalsoft.com/gloss.html#Production">productions</a> and components of the grammar.
+</p><p>
+In the second stage, AnaGram analyzes all of the <a href="http://www.parsifalsoft.com/gloss.html#CharacterSets">character sets</a> defined in the
+grammar, and where necessary, defines auxiliary <a href="http://www.parsifalsoft.com/gloss.html#Token">tokens</a> and productions.
+</p><p>
+In the third stage, AnaGram identifies all of the states of the <a href="http://www.parsifalsoft.com/gloss.html#Parser">parser</a> and
+builds the go-to table for the parser.
+</p><p>
+In the fourth stage, Anagram identifies <a href="http://www.parsifalsoft.com/gloss.html#ReductionToken">reduction tokens</a> for each completed
+<a href="http://www.parsifalsoft.com/gloss.html#GrammarRule">grammar rule</a> in each state and checks for <a href="http://www.parsifalsoft.com/gloss.html#Conflict">conflicts</a>.
+</p>
+<p></p>
+</dd>
+
+<dt><b><a name="GrammarRule">Grammar Rule</a></b></dt>
+<dd> A "grammar rule" is the right side of a <a href="http://www.parsifalsoft.com/gloss.html#Production">production</a>. It consists
+of a sequence of <a href="http://www.parsifalsoft.com/gloss.html#RuleElement">rule elements</a>. Each rule element identifies some <a href="http://www.parsifalsoft.com/gloss.html#Token">token</a>, which
+can be either a <a href="http://www.parsifalsoft.com/gloss.html#Terminal">terminal token</a> or <a href="http://www.parsifalsoft.com/gloss.html#Nonterminal">nonterminal token</a>. It is "matched"
+by a corresponding sequence of tokens in the input stream to the <a href="http://www.parsifalsoft.com/gloss.html#Parser">parser</a>. The
+left side of the production identifies one or more nonterminal tokens, or
+<a href="http://www.parsifalsoft.com/gloss.html#ReductionToken">reduction tokens</a>, to which the rule reduces when matched. If there is more than
+one reduction token, there should be a <a href="http://www.parsifalsoft.com/gloss.html#ReductionProcedure">reduction procedure</a> to make the choice.
+<p></p>
+</dd>
+
+<dt><b><a name="GrammarToken">Grammar Token</a></b></dt>
+<dd> The grammar <a href="http://www.parsifalsoft.com/gloss.html#Token">token</a> is the token which represents the "top level"
+in your grammar. Some people refer to it as the "goal" or "goal
+token" and others as the "start token". Whatever it is called, it
+is the single token which describes the complete input to your <a href="http://www.parsifalsoft.com/gloss.html#Parser">parser</a>.
+<p></p>
+</dd>
+
+<dt><b><a name="SetIntersection">Intersection</a></b></dt>
+<dd> In set theory, the intersection of two sets, A and B, is defined to be the
+set of all elements of A which are also elements of B. In an AnaGram syntax
+file, the intersection of two <a href="http://www.parsifalsoft.com/gloss.html#CharacterSets">character sets</a> is represented with the "&amp;"
+operator. The intersection operator has lower <a href="http://www.parsifalsoft.com/gloss.html#Precedence">precedence</a> than the complement
+operator, but higher precedence than the <a href="http://www.parsifalsoft.com/gloss.html#SetUnion">union</a> and <a href="http://www.parsifalsoft.com/gloss.html#SetDifference">difference</a> operators. The
+intersection operator is <a href="http://www.parsifalsoft.com/gloss.html#Associativity">left associative</a>.
+<p></p>
+</dd>
+
+<dt><b><a name="LALRParsing">LALR parsing</a></b></dt>
+<dd> LALR, or "lookahead LR" parsing, a slightly less powerful
+variant of <a href="http://www.parsifalsoft.com/gloss.html#LRParsing">LR parsing</a>, produces much smaller parsing tables. Thus an LALR
+<a href="http://www.parsifalsoft.com/gloss.html#Parser">parser</a> has very significant advantages in size over its LR counterpart. It is
+possible to construct <a href="http://www.parsifalsoft.com/gloss.html#Grammar">grammar</a>s which can be parsed by an LR parser but cannot be
+parsed by an LALR parser. That is, the LALR parser will find these grammars to
+be ambiguous and the LR parser will not. In practice, however, such grammars
+seem to be rare and the ambiguities can usually be eliminated by minor revisions.
+<p>
+AnaGram generates LALR parsers and, in addition, uses LALR parsing to interpret
+syntax files.
+</p><p></p>
+</dd>
+
+<dt><b><a name="LexicalScanner">Lexical Scanner</a></b></dt>
+<dd> A lexical scanner is a program or procedure used as a preprocessor for a
+<a href="http://www.parsifalsoft.com/gloss.html#Parser">parser</a>. It scans input characters and lumps them together into <a href="http://www.parsifalsoft.com/gloss.html#Token">tokens</a>. Many
+systems for generating parsers, most notably YACC, can scarcely be used without
+a lexical scanner.
+<p>
+AnaGram, although it can support the use of a lexical scanner, does not need a
+lexical scanner for most practical problems. AnaGram avoids the need for a
+lexical scanner by using <a href="http://www.parsifalsoft.com/gloss.html#CharacterSets">character sets</a> and disregard and lexeme statements.
+</p><p>
+If your problem does in fact need a lexical scanner, you can use AnaGram itself
+to write it, so you don't need to know different languages for the scanner and
+for the parser.
+</p>
+<p></p>
+</dd>
+
+<dt><b><a name="Lookahead">Lookahead Token</a></b></dt>
+<dd> The current input <a href="http://www.parsifalsoft.com/gloss.html#Token">token</a> to a <a href="http://www.parsifalsoft.com/gloss.html#Parser">parser</a> is often called the "lookahead"
+token. In many situations, it is not shifted into the input buffer immediately,
+but acts like a catalyst to cause a number of rules to be reduced before it is
+eventually shifted in.
+<p></p>
+</dd>
+
+<dt><b><a name="LRParsing">LR Parsing</a></b></dt>
+<dd> An LR(k) <a href="http://www.parsifalsoft.com/gloss.html#Parser">parser</a> is a type of deterministic bottom-up shift-reduce parser
+using at most k lookahead symbols to determine its next <a href="http://www.parsifalsoft.com/gloss.html#ParserAction">action</a> at any point in
+the parse. If (k) is omitted, then k is assumed to be 1. Discussion of the
+technical details of LR(k) parsing is beyond the scope of this manual. The
+interested reader may consult any of a variety of works covering the subject.
+<p>
+AnaGram produces parsers which employ a variant of LR parsing known as LALR
+parsing. It is not necessary to understand the details of LR and LALR parsing
+theory in order to use AnaGram.
+</p>
+<p></p>
+</dd>
+
+<dt><b><a name="MarkedRule">Marked Rule</a></b></dt>
+<dd> A "marked rule" is a <a href="http://www.parsifalsoft.com/gloss.html#GrammarRule">grammar rule</a> together with a "marked token"
+that indicates how much of the rule has already been matched and what input
+should be expected, starting with the marked token, if the remainder of the rule is to be matched. Each <a href="http://www.parsifalsoft.com/gloss.html#Parser">parser</a>
+state is defined by a small number of <a href="http://www.parsifalsoft.com/gloss.html#CharacteristicRule">characteristic rules</a> which indicate what
+matches have already been made and what input can be expected. Note that when a
+state has more than one characteristic rule, any two characteristic rules with
+the same number of <a href="http://www.parsifalsoft.com/gloss.html#Token">tokens</a> to the left of the marked token match identically up to the
+marked token. Even if one has fewer tokens to the left than the other, its tokens
+match the other exactly up to the marked token.
+<p>
+When marked rules are displayed in AnaGram windows, the marked token is displayed in
+a distinctive font which the developer can select.
+</p>
+<p></p>
+</dd>
+
+<dt><b><a name="NonAssociative">Non-associative</a></b></dt>
+<dd> A <a href="http://www.parsifalsoft.com/gloss.html#BinaryOperator">binary operator</a>, say #, is said to be non-associative if the sequence x
+# y # z is not permissible. If this sequence is to be interpreted as (x#y)#z,
+the operator is said to be <b>left associative</b>. If the sequence is to be
+interpreted as x#(y#z), the operator is said to be <b>right associative</b>. (See
+<a href="http://www.parsifalsoft.com/gloss.html#Associativity">associativity</a>.)
+<p></p>
+</dd>
+
+<dt><b><a name="Nonterminal">Nonterminal Token</a></b></dt>
+<dd> A "nonterminal token" is a <a href="http://www.parsifalsoft.com/gloss.html#Token">token</a> which results from reducing the
+sequence of tokens which match a <a href="http://www.parsifalsoft.com/gloss.html#GrammarRule">grammar rule</a> and replacing them with the
+appropriate <a href="http://www.parsifalsoft.com/gloss.html#ReductionToken">reduction token</a>. Nonterminal tokens are to be distinguished from
+<a href="http://www.parsifalsoft.com/gloss.html#Terminal">terminal tokens</a> or input tokens.
+<p></p>
+</dd>
+
+<dt><b><a name="NullProduction">Null Production</a></b></dt>
+<dd> A "null production" is one that has no <a href="http://www.parsifalsoft.com/gloss.html#Token">tokens</a> on the right side
+whatsoever. Null <a href="http://www.parsifalsoft.com/gloss.html#Production">production</a>s essentially are identified by the first following
+input token. Null productions are extremely convenient syntactic elements when
+you wish to make some input optional. For example, suppose that you wish to
+allow an optional semicolon at some point in your <a href="http://www.parsifalsoft.com/gloss.html#Grammar">grammar</a>. You could write the
+following pair of productions:
+<pre>    optional semicolon -&gt; | ';'
+</pre> Note that a null production can never follow a '|'.  The above could also
+be written on multiple lines thus:
+<pre>    optional semicolon
+      -&gt;
+      -&gt; ';'
+</pre>  You can always rewrite your grammar to eliminate null productions if you
+wish, but you usually pay a price in conciseness and clarity. Sometimes,
+however, it is necessary to do such a rewrite in order to avoid <a href="http://www.parsifalsoft.com/gloss.html#Conflict">conflicts</a>, to
+which null productions are especially prone.
+<p>
+If you have a null production with no <a href="http://www.parsifalsoft.com/gloss.html#ReductionProcedure">reduction procedure</a> specified, your <a href="http://www.parsifalsoft.com/gloss.html#Parser">parser</a>
+will automatically assign the value zero to the <a href="http://www.parsifalsoft.com/gloss.html#ReductionToken">reduction token</a>.
+</p><p>
+Null productions can be generated by <a href="http://www.parsifalsoft.com/gloss.html#VirtualProduction">virtual productions</a>.
+</p>
+<p></p>
+</dd>
+
+<dt><b><a name="ParameterAssignment">Parameter Assignment</a></b></dt>
+<dd>In any <a href="http://www.parsifalsoft.com/gloss.html#GrammarRule">rule</a> in an AnaGram grammar, the
+<a href="http://www.parsifalsoft.com/gloss.html#SemanticValue">semantic value</a> of any <a href="http://www.parsifalsoft.com/gloss.html#RuleElement">rule element</a> may be
+passed to a <a href="http://www.parsifalsoft.com/gloss.html#ReductionProcedure">reduction procedure</a> by
+means of a parameter assignment. Simply follow the <a href="http://www.parsifalsoft.com/gloss.html#RuleElement">rule element</a> with a colon and a C variable name.
+The C variable name can then be used in the reduction procedure to
+refer to the semantic value of the token it is attached to. AnaGram
+will automatically provide necessary declarations.
+<p>
+Here are some examples of rule elements with parameter
+assignments:
+</p><pre>  '0-9':d
+  integer:n
+  expression:x
+  declaration : declaration_descriptor
+</pre>
+</dd>
+<p></p>
+
+<dt><b><a name="Parser">Parser</a></b></dt>
+<dd> A parser is a program, or more likely a procedure within a program, which
+scans a sequence of input characters or input <a href="http://www.parsifalsoft.com/gloss.html#Token">tokens</a> and accumulates them in an
+input buffer or stack as determined by a set of <a href="http://www.parsifalsoft.com/gloss.html#Production">productions</a> which constitute a
+<a href="http://www.parsifalsoft.com/gloss.html#Grammar">grammar</a>. When the parser discovers a sequence of tokens as defined by a <a href="http://www.parsifalsoft.com/gloss.html#GrammarRule">grammar
+rule</a>, or right side of a production, it "reduces" the sequence to a
+single <a href="http://www.parsifalsoft.com/gloss.html#ReductionToken">reduction token</a> as defined by the left side of the <a href="http://www.parsifalsoft.com/gloss.html#GrammarRule">grammar rule</a>. This
+<a href="http://www.parsifalsoft.com/gloss.html#Nonterminal">nonterminal token</a> now replaces the tokens which matched the grammar rule and the
+search for matches continues. If an input token is encountered which will not
+yield a match for any rule, it is considered a syntax error and some kind of
+error recovery may be required to continue. If a match, or reduction action,
+yields the grammar token, sometimes called the goal token or start token, the
+parser deems its work complete and returns to whatever procedure may have called
+it.
+<p>
+Tokens may have <a href="http://www.parsifalsoft.com/gloss.html#SemanticValue">semantic values</a>. If the
+input values configuration switch is on, your parser will expect
+semantic values to be provided by the input process along with the
+token identification code. If the input values switch is off, your
+parser will take the ascii value of the input character, that is, the
+actual input code, as the value of the character. When the parser <a href="http://www.parsifalsoft.com/gloss.html#ReduceAction">reduces</a> a <a href="http://www.parsifalsoft.com/gloss.html#Production">production</a>, it can call a <a href="http://www.parsifalsoft.com/gloss.html#ReductionProcedure">reduction procedure</a> or <a href="http://www.parsifalsoft.com/gloss.html#SemanticAction">semantic action</a> to analyze the values of
+the constituent tokens. This reduction procedure can then return a
+value which characterizes the reduced token.
+</p>
+<p></p>
+</dd>
+
+<dt><b><a name="ParserControlBlock">Parser Control Block</a></b>
+</dt><dd>
+A "Parser Control Block" is a structure which contains
+all of the data necessary to describe the instantaneous
+state of an AnaGram parser.
+<p>
+A programmer may may add declarations to the parser control
+block in an AnaGram grammar by using the <i>extend pcb</i> statement.
+</p></dd>
+<p></p>
+
+<dt><b><a name="ParserGenerator">Parser Generator</a></b></dt>
+<dd>
+A parser generator, such as AnaGram, is a program that
+converts a <a href="http://www.parsifalsoft.com/gloss.html#Grammar">grammar</a>, a rule-based description of the
+input to a program, into a conventional, procedural
+module called a <a href="http://www.parsifalsoft.com/gloss.html#Parser">parser</a>. The parsers AnaGram generates
+are simple C modules which can be compiled on almost
+any platform. AnaGram parsers are also compatible with
+C++.
+<p></p>
+</dd>
+
+<dt><b><a name="ParserStateStack">Parser State Stack</a></b></dt>
+<dd>
+The parser state stack is a stack maintained by an AnaGram
+<a href="http://www.parsifalsoft.com/gloss.html#Parser">parser</a> and which is an integral part of the parsing
+process. At any point in the parse of your input
+stream, the parser state stack provides a summary of
+what has been found so far. In an AnaGram parser, the parser state stack is
+stored in the <a href="http://www.parsifalsoft.com/gloss.html#ParserControlBlock">Parser Control Block</a>.
+</dd>
+<p></p>
+
+<dt><b><a name="ParserValueStack">Parser Value Stack</a></b></dt>
+<dd>
+In parallel with the <a href="http://www.parsifalsoft.com/gloss.html#ParserStateStack">parser state stack</a>,
+an AnaGram parser
+maintains a "value stack", each entry of
+which corresponds to the <a href="http://www.parsifalsoft.com/gloss.html#SemanticValue">semantic value</a> of the token
+identified at that state. Since the semantic values of
+different tokens might well have different data types,
+AnaGram provides the opportunity to define the data type for any token.
+AnaGram then builds a typedef statement creating a data type which is a union
+of the all the types you have defined. AnaGram uses this data type to define
+the value stack. </dd> <p></p>
+
+<dt><b><a name="ParsingEngine">Parsing Engine</a></b></dt>
+<dd> A <a href="http://www.parsifalsoft.com/gloss.html#Parser">parser</a> consists of three basic components: A set of syntax tables, a set
+of <a href="http://www.parsifalsoft.com/gloss.html#ReductionProcedure">reduction procedures</a> and a parsing engine. The parsing engine is the body of
+code that interprets the parsing table, invokes input functions, and calls the
+reduction procedures. The Build Parser command configures a parsing engine
+according to the implicit requirements of the syntax specification and according
+to the explicit values of the configuration parameters.
+<p>
+The parsing engine itself is a simple automaton, characterized by a set of
+states and a set of inputs. The inputs are the <a href="http://www.parsifalsoft.com/gloss.html#Token">tokens</a> of your <a href="http://www.parsifalsoft.com/gloss.html#Grammar">grammar</a>. Each
+state is represented by a list of tokens which are admissible in that state and
+for each token an <a href="http://www.parsifalsoft.com/gloss.html#ParserAction">action</a> to perform and a parameter which further defines the
+action. In a traditional <a href="http://www.parsifalsoft.com/gloss.html#LALRParsing">LALR parser</a>, there are only four <a href="http://www.parsifalsoft.com/gloss.html#ParserAction">actions</a>: the <a href="http://www.parsifalsoft.com/gloss.html#ShiftAction">shift
+action</a>, the <a href="http://www.parsifalsoft.com/gloss.html#ReduceAction">reduce action</a>, the <a href="http://www.parsifalsoft.com/gloss.html#AcceptAction">accept action</a> and the <a href="http://www.parsifalsoft.com/gloss.html#ErrorAction">error action</a>. AnaGram, in
+doing its <a href="http://www.parsifalsoft.com/gloss.html#GrammarAnalysis">grammar analysis</a>, identifies a number of special cases, and creates a
+number of extra actions which make for faster processing, but which can be
+represented as combinations of these primitive actions.
+</p><p>
+When a shift action is performed, the current state number is pushed onto the
+parser state stack and the new state number is determined by the current state
+number and the current lookahead token. Different tokens cause different new
+states.
+</p><p>
+When a reduce action is performed, the length of the rule being reduced is
+subtracted from the parser stack index and the new state number is read from the
+top of the parser state stack. The <a href="http://www.parsifalsoft.com/gloss.html#ReductionToken">reduction token</a> for the rule being reduced is
+then used as an input token.
+</p><p>
+Each state in the grammar, with the exception of state zero, has a
+<a href="http://www.parsifalsoft.com/gloss.html#CharacteristicToken">characteristic token</a> which must have been recognized in order to jump to that
+state. Therefore, the parser state stack, which is essentially a list of state
+numbers, can also be thought of as a list of token numbers. This is the list of
+tokens that have been seen so far in the parse of your input stream. Some of
+these tokens, of course, may be <a href="http://www.parsifalsoft.com/gloss.html#Nonterminal">nonterminal tokens</a> which have resulted from
+reducing other sequences of tokens.
+</p>
+<p></p>
+</dd>
+
+<dt><b><a name="SetPartition">Partition</a></b></dt>
+<dd> If you use <a href="http://www.parsifalsoft.com/gloss.html#CharacterSets">character sets</a> in your <a href="http://www.parsifalsoft.com/gloss.html#Grammar">grammar</a>, AnaGram will compute a "partition"
+of the <a href="http://www.parsifalsoft.com/gloss.html#Universe">character universe</a>. This partition is a collection of non-overlapping
+character sets such that every one of the sets you have defined can be written
+as a <a href="http://www.parsifalsoft.com/gloss.html#SetUnion">union</a> of partition sets. Each partition set is identified by a unique
+reference number called the partition set number.
+<p>
+Each partition set is assigned a unique <a href="http://www.parsifalsoft.com/gloss.html#Token">token</a>. If one of your character sets
+requires more than one partition set to represent it, AnaGram will create
+appropriate <a href="http://www.parsifalsoft.com/gloss.html#Production">productions</a> and add them to your grammar so your <a href="http://www.parsifalsoft.com/gloss.html#Parser">parser</a> can make the
+necessary distinctions.
+</p>
+<p></p>
+</dd>
+
+<dt><b><a name="Precedence">Precedence</a></b></dt>
+<dd> "Precedence" is an attribute of <a href="http://www.parsifalsoft.com/gloss.html#BinaryOperator">binary operators</a> and
+<a href="http://www.parsifalsoft.com/gloss.html#UnaryOperator">unary
+operators</a> which can be used to resolve <a href="http://www.parsifalsoft.com/gloss.html#Conflict">conflicts</a>. Operator precedence is also
+referred to as <a href="http://www.parsifalsoft.com/gloss.html#Binding">binding</a>. Suppose that # and @ are two binary operators. The
+question is how to interpret x # y @ z. If # has higher precedence than @, it is
+interpreted as (x#y)@z. On the other hand if # has lower precedence than @, it
+would be x#(y@z). If # and @ have the same precedence then the question must be
+resolved by <a href="http://www.parsifalsoft.com/gloss.html#Associativity">associativity</a>.
+<p>
+Note that all operators at the same precedence level must have the same
+associativity.
+</p><p>
+The situation is somewhat simpler for unary operators. If # and @ were both
+prefix operators, or both suffix operators, there would be no ambiguity in
+interpretation, since neither # @ x and x # @ offer more than one possible
+interpretation. The only difficulty arises when both a prefix and a suffix
+operator are applied to the same operand.
+</p><p>
+Suppose that # is a prefix operator and @ is a suffix operator. The question
+then is how to interpret # x @. If # has higher precedence than @, it would be
+interpreted as (# x) @. On the other hand, if # has lower precedence than @, it
+would be interpreted as # (x @). If # and @ have the same precedence then the
+question must be resolved by associativity.
+</p>
+<p></p>
+</dd>
+
+<dt><b><a name="Production">Production</a></b></dt>
+<dd> Productions are the mechanism used to describe how complex input
+structures are built up out of simpler ones. Each production has a left side and
+a right side. The right side, or <a href="http://www.parsifalsoft.com/gloss.html#GrammarRule">grammar rule</a>, is a sequence of <a href="http://www.parsifalsoft.com/gloss.html#RuleElement">rule elements</a>,
+which may represent either <a href="http://www.parsifalsoft.com/gloss.html#Terminal">terminal tokens</a> or <a href="http://www.parsifalsoft.com/gloss.html#Nonterminal">nonterminal tokens</a>. The left side
+is a list of <a href="http://www.parsifalsoft.com/gloss.html#ReductionToken">reduction tokens</a>. In most cases there would be only a single
+reduction token. Productions with more than one <a href="http://www.parsifalsoft.com/gloss.html#Token">token</a> on the left side are
+called <a href="http://www.parsifalsoft.com/gloss.html#SemanticallyDetermined">semantically determined productions</a>. The
+"<code>-&gt;</code>" symbol is used
+to separate the left side from the right side.
+<p></p>
+</dd>
+
+<dt><b><a name="ReduceAction">Reduce Action</a></b></dt>
+<dd> The reduce action is one of the four <a href="http://www.parsifalsoft.com/gloss.html#ParserAction">actions</a> of a traditional parsing
+engine. The reduce action is performed when the <a href="http://www.parsifalsoft.com/gloss.html#Parser">parser</a> has succeeded in matching
+all the elements of a <a href="http://www.parsifalsoft.com/gloss.html#GrammarRule">grammar rule</a> and the next input <a href="http://www.parsifalsoft.com/gloss.html#Token">token</a> is not erroneous.
+Reducing the grammar rule amounts to subtracting the length of the rule from the
+parser stack index, identifying the <a href="http://www.parsifalsoft.com/gloss.html#ReductionToken">reduction token</a>, stacking its
+<a href="http://www.parsifalsoft.com/gloss.html#SemanticValue">semantic value</a>
+and then doing a <a href="http://www.parsifalsoft.com/gloss.html#ShiftAction">shift action</a> with the reduction token as though it had been
+input directly.
+<p></p>
+</dd>
+
+<dt><b><a name="ReduceReduce">Reduce-Reduce Conflict</a></b></dt>
+<dd> A <a href="http://www.parsifalsoft.com/gloss.html#Grammar">grammar</a> has a "reduce-reduce" conflict at some state if a
+single <a href="http://www.parsifalsoft.com/gloss.html#Token">token</a> turns out to be a <a href="http://www.parsifalsoft.com/gloss.html#ReducingToken">reducing token</a> for more than one <a href="http://www.parsifalsoft.com/gloss.html#CompletedRule">completed rule</a>.
+<p></p>
+</dd>
+
+<dt><b><a name="ReducingToken">Reducing Token</a></b></dt>
+<dd> In a state with more than one <a href="http://www.parsifalsoft.com/gloss.html#CompletedRule">completed rule</a>, your <a href="http://www.parsifalsoft.com/gloss.html#Parser">parser</a> must be able to
+determine which one was actually found. AnaGram deals with this problem by
+looking at all the states the parser will branch to once each rule is reduced.
+The acceptable input <a href="http://www.parsifalsoft.com/gloss.html#Token">tokens</a> for those states are the "reducing tokens"
+for the completed rules in the state under investigation. If there is a single
+token which is a reducing token for more than one rule, then the <a href="http://www.parsifalsoft.com/gloss.html#Grammar">grammar</a> is said
+to have a <a href="http://www.parsifalsoft.com/gloss.html#ReduceReduce">reduce-reduce conflict</a> at that state. If in a particular state there
+is both a <a href="http://www.parsifalsoft.com/gloss.html#ShiftAction">shift action</a> and a <a href="http://www.parsifalsoft.com/gloss.html#ReduceAction">reduce action</a> for the same token the grammar is
+said to have a <a href="http://www.parsifalsoft.com/gloss.html#ShiftReduce">shift-reduce conflict</a> in that state.
+<p>
+A reducing token is not the same as a <a href="http://www.parsifalsoft.com/gloss.html#ReductionToken">reduction token</a>.
+</p>
+<p></p>
+</dd>
+
+<dt><b><a name="ReductionProcedure">Reduction Procedure</a></b></dt>
+<dd> A "reduction procedure" is a function you write which your
+<a href="http://www.parsifalsoft.com/gloss.html#Parser">parser</a> executes when it has identified the <a href="http://www.parsifalsoft.com/gloss.html#GrammarRule">grammar rule</a> to which the reduction
+procedure is attached in your <a href="http://www.parsifalsoft.com/gloss.html#Grammar">grammar</a>. There
+are two formats for reduction
+procedures, depending on the size and complexity of the procedure. A
+reduction procedure is often referred to as a "semantic action".
+<p></p>
+</dd>
+
+<dt><b><a name="ReductionToken">Reduction Token</a></b></dt>
+<dd> A <a href="http://www.parsifalsoft.com/gloss.html#Token">token</a> which appears on the left side of a <a href="http://www.parsifalsoft.com/gloss.html#Production">production</a> is called a
+reduction token. It is so called because when the <a href="http://www.parsifalsoft.com/gloss.html#GrammarRule">grammar rule</a> on the right side
+of the production is matched in the input stream, your <a href="http://www.parsifalsoft.com/gloss.html#Parser">parser</a> will <a href="http://www.parsifalsoft.com/gloss.html#ReduceAction">"reduce"</a>
+the sequence of tokens which matches the rule by replacing the sequence of
+tokens with the reduction token. Note that, if more than one reduction token is
+specified, your <a href="http://www.parsifalsoft.com/gloss.html#ReductionProcedure">reduction procedure</a> should choose the exact one. If it does not,
+your parser will use the leftmost syntactically correct one in the list as the default.
+<p>
+A reduction token is not the same as a <a href="http://www.parsifalsoft.com/gloss.html#ReducingToken">reducing token</a>.
+</p>
+<p></p>
+</dd>
+
+<dt><b><a name="Resynchronization">Resynchronization</a></b></dt>
+<dd> "Resynchronization" is the process of getting your <a href="http://www.parsifalsoft.com/gloss.html#Parser">parser</a> back
+in step with its input after encountering a syntax error. As such, it is one
+method of error recovery. Of course, you would resynchronize only if it
+is necessary to continue after the error. There are several options available
+when using AnaGram. You could use the auto resynch option, which causes AnaGram
+to incorporate an automatic resynchronizing procedure into your parser, or you
+could use the error resynch option, which is similar to the technique used by
+YACC programmers.
+</dd>
+
+<dt><b><a name="RuleElement">Rule Element</a></b></dt>
+<dd> A <a href="http://www.parsifalsoft.com/gloss.html#GrammarRule">grammar rule</a> is a list of "rule elements", separated by
+commas. Rule elements may be <a href="http://www.parsifalsoft.com/gloss.html#Token">token</a> names, <a href="http://www.parsifalsoft.com/gloss.html#CharacterSets">character sets</a>, keywords, immediate
+actions, or <a href="http://www.parsifalsoft.com/gloss.html#VirtualProduction">virtual productions</a>. When AnaGram encounters a rule element for
+which no token presently exists, it creates one.
+<p></p>
+</dd>
+
+<dt><b><a name="SemanticAction">Semantic Action</a></b></dt>
+<dd>
+A semantic action is a piece of C or C++ code that is executed when
+a <a href="http://www.parsifalsoft.com/gloss.html#GrammarRule">grammar rule</a> has been identified by a
+<a href="http://www.parsifalsoft.com/gloss.html#Parser">parser</a>. Semantic actions are also called
+<a href="http://www.parsifalsoft.com/gloss.html#ReductionProcedure">reduction procedures</a>, since they
+are executed when a grammar rule is <a href="http://www.parsifalsoft.com/gloss.html#ReduceAction">reduced</a> to the token on the left side of the
+<a href="http://www.parsifalsoft.com/gloss.html#Production">production.</a>
+<p></p>
+</dd>
+
+<dt><b><a name="SemanticValue">Semantic Value</a></b></dt>
+<dd>
+<a href="http://www.parsifalsoft.com/gloss.html#Token">Tokens</a>, whether <a href="http://www.parsifalsoft.com/gloss.html#Terminal">terminal</a>
+or <a href="http://www.parsifalsoft.com/gloss.html#Nonterminal">nonterminal</a>, may have a semantic value.
+In the case of terminal tokens, this may be a value assigned by the
+<a href="http://www.parsifalsoft.com/gloss.html#LexicalScanner">lexical scanner</a> or, if the parser is
+using direct character input, it will be the ascii value of the
+character itself. The values of nonterminal tokens are created by
+<a href="http://www.parsifalsoft.com/gloss.html#ReductionProcedure">reduction procedures</a>. As a parse
+progresses, token values are <a href="http://www.parsifalsoft.com/gloss.html#ShiftAction">shifted</a>
+onto the stack, so that in a reduction procedure, the values of the
+tokens that comprise the <a href="http://www.parsifalsoft.com/gloss.html#GrammarRule">grammar rule</a> that
+is being <a href="http://www.parsifalsoft.com/gloss.html#ReduceAction">reduced</a> are available
+for inspection.
+<p></p>
+</dd>
+
+<dt><b><a name="SemanticallyDetermined">Semantically Determined Production</a></b></dt>
+<dd> A "semantically determined production" is one which has more
+than one <a href="http://www.parsifalsoft.com/gloss.html#ReductionToken">reduction token</a> specified on the left side of the production. You would
+write such a <a href="http://www.parsifalsoft.com/gloss.html#Production">production</a> when the reduction tokens are syntactically
+indistinguishable. The <a href="http://www.parsifalsoft.com/gloss.html#ReductionProcedure">reduction procedure</a> may then specify which of the listed
+reduction tokens the <a href="http://www.parsifalsoft.com/gloss.html#GrammarRule">grammar rule</a> is to reduce to based on semantic
+considerations. If there is no reduction procedure, or the reduction procedure
+does not specify a reduction token, the <a href="http://www.parsifalsoft.com/gloss.html#Parser">parser</a> will use the leftmost syntactically correct token.
+
+<p></p>
+</dd>
+
+<dt><b><a name="SetExpression">Set Expression</a></b></dt>
+<dd> A set expression is an algebraic expression used to define a <a href="http://www.parsifalsoft.com/gloss.html#CharacterSets">character set</a>
+in terms of individual characters, ranges of characters, and/or other sets of
+characters as constructed using <a href="http://www.parsifalsoft.com/gloss.html#SetComplement">complements</a>, <a href="http://www.parsifalsoft.com/gloss.html#SetUnion">unions</a>, <a href="http://www.parsifalsoft.com/gloss.html#SetIntersection">intersections</a>, and
+<a href="http://www.parsifalsoft.com/gloss.html#SetDifference">differences</a>.
+<p></p>
+</dd>
+
+<dt><b><a name="ShiftAction">Shift Action</a></b></dt>
+<dd> The shift action is one of the four <a href="http://www.parsifalsoft.com/gloss.html#ParserAction">actions</a> of a traditional parsing
+engine. The shift action is performed when the input <a href="http://www.parsifalsoft.com/gloss.html#Token">token</a> matches one of the
+acceptable input tokens for the current parser state. The
+<a href="http://www.parsifalsoft.com/gloss.html#SemanticValue">semantic value</a> of the
+token and the current state number are stacked, the parser stack index is
+incremented and the state number is set to a value determined by the previous
+state and the input token.
+<p></p>
+</dd>
+
+<dt><b><a name="ShiftReduce">Shift-Reduce Conflict</a></b></dt>
+<dd> A "shift-reduce" conflict occurs if in some state there is a
+single <a href="http://www.parsifalsoft.com/gloss.html#Token">token</a> that should be shifted, because it is legitimate input for one of
+the rules of the state, but should also be used to reduce some other rule
+because it is a <a href="http://www.parsifalsoft.com/gloss.html#ReducingToken">reducing token</a> for that rule.
+<p></p>
+</dd>
+<dt><b><a name="SyntaxDirectedParsing">Syntax Directed Parsing</a></b></dt>
+<dd>
+<p>Syntax directed parsing, or formal parsing, is an
+approach to building <a href="http://www.parsifalsoft.com/gloss.html#Parser">parsers</a> based on formal language
+theory. Given a suitable description of a language,
+called a <a href="http://www.parsifalsoft.com/gloss.html#Grammar">grammar</a>, there are algorithms which can be
+used to create parsers for the language automatically.
+In this context, the set of all possible inputs to a
+program may be considered to constitute a language, and
+the rules for formulating the input to the program
+constitute the grammar for the language.
+
+</p><p>The parsers built from a grammar have the advantage
+that they can recognize any input that conforms to the
+rules, and can reject as erroneous any input that fails
+to conform.
+
+</p><p>Since the program logic necessary to parse input is
+often extremely intricate, programs which use formal
+parsing are usually much more reliable than those built
+by hand. They are also much easier to maintain, since
+it is much easier to modify a grammar specification
+than it is to modify complex program logic.
+
+</p><p></p>
+</dd>
+
+<dt><b><a name="Terminal">Terminal Token</a></b></dt>
+<dd> A "terminal token" is a <a href="http://www.parsifalsoft.com/gloss.html#Token">token</a> which does not appear on the left
+side of a <a href="http://www.parsifalsoft.com/gloss.html#Production">production</a>. It represents, therefore, a basic unit of input to your
+<a href="http://www.parsifalsoft.com/gloss.html#Parser">parser</a>. If the input to your parser consists of ascii characters, you may define
+terminal tokens explicitly as ascii characters or as <a href="http://www.parsifalsoft.com/gloss.html#CharacterSets">sets of ascii characters</a>.
+If you have an input procedure which produces numeric codes, you may define the
+terminal tokens directly in terms of these numeric codes.
+<p></p>
+</dd>
+
+<dt><b><a name="Token">Token</a></b></dt>
+<dd> Tokens are the units with which your <a href="http://www.parsifalsoft.com/gloss.html#Parser">parser</a> works. There are two kinds of
+tokens: <a href="http://www.parsifalsoft.com/gloss.html#Terminal">terminal tokens</a> and <a href="http://www.parsifalsoft.com/gloss.html#Nonterminal">nonterminal tokens</a>. These latter are identified by
+the parser as sequences of tokens. The grouping of tokens into more complex
+tokens is governed by the <a href="http://www.parsifalsoft.com/gloss.html#GrammarRule">grammar rules</a>, or <a href="http://www.parsifalsoft.com/gloss.html#Production">productions</a> in your <a href="http://www.parsifalsoft.com/gloss.html#Grammar">grammar</a>. In your
+grammar, tokens may be denoted by token names, by <a href="http://www.parsifalsoft.com/gloss.html#VirtualProduction">virtual productions</a>, by
+immediate actions, by explicit character representations, or by expressions
+which yield <a href="http://www.parsifalsoft.com/gloss.html#CharacterSets">character sets</a>.
+<p>
+A "token" should be thought of more or less as being something like a
+cloakroom token. Imagine you had taken a kindergarten class to the museum and
+all the kids checked their coats. Each one gets a token. What is the probability
+of losing one? You take all of the tokens from the children, put them in a paper
+bag, tie it up, and check it. You get one token in return. We would say that the
+kids' coats represent the actual input to the system, their individual tokens
+are the <a href="http://www.parsifalsoft.com/gloss.html#Terminal">terminal tokens</a>, and your one token which enables you to redeem the
+paper bag is a <a href="http://www.parsifalsoft.com/gloss.html#Nonterminal">nonterminal token</a>. Nonterminal tokens are just single token
+numbers to represent the result of compacting a sequence of more primitive
+tokens.
+</p><p>
+Actually, the word "token" is commonly used to refer to a number of
+apparently different things. The tokens you use in a grammar are abstract. The
+tokens identified by a parser are concrete instances of the abstract tokens in
+the grammar. Furthermore, we have to identify tokens in some manner, so we have
+token names and token numbers with which to refer to particular tokens. As a
+result the word "token", in any particular context, may refer directly
+to either an abstract token, or a concrete instance of an abstract token, or may
+refer only indirectly to the token by means of a token name or token number.
+</p><p>
+As an example, consider a C compiler which has a lexical scanner to identify
+input tokens. According to Kernighan and Ritchie, there are six classes of C
+tokens: identifiers, keywords, constants, string literals, operators, and other
+separators. Consider a particular token, a hexadecimal constant, 0XF00. When the
+lexical scanner hands this over to the parser, it has to provide an
+identification code which says what kind of token it is, a hexadecimal constant,
+as well as the
+<a href="http://www.parsifalsoft.com/gloss.html#SemanticValue">"semantic value"</a> of the token,
+3840.  The identification code is usually an integer value,
+determined by the designer of the lexical scanner, which by agreement
+with the designer of the parser uniquely represents a hexadecimal
+constant.  This identification code can be thought of as an external
+token number.
+
+</p><p>
+The grammar for the parser, on the other hand, has a token, "HEXconstant",
+let us say, to represent the abstract usage of hexadecimal constants in the C
+language. When AnaGram, or any other parser generator for that matter, analyzes
+the grammar, it assigns its own reference number to identify "HEXconstant".
+This reference number can be thought of as an internal token number to contrast
+it with the external token number provided by the lexical scanner. The parsers
+AnaGram builds contain a table, ag_ tcv, which provides a translation from the
+external to the internal token number. Both of these token numbers, of course,
+differ from the semantic value of the token, in this case, 3840.
+</p><p>
+Even when an AnaGram parser is using simple character input, the word "token"
+may represent several different things. Suppose a grammar has a token 'A-Z',
+which represents the set of upper case letters. There will be an internal token
+number, assigned by AnaGram, which identifies the (abstract) token in parser
+tables. The actual (concrete) input token to a parser will, however, be a single
+letter, say "Q". In this case, the ascii value of the character "Q",
+81, is used both as the external token number and as the semantic value of the
+token.
+</p><p></p>
+</dd>
+
+<dt><b><a name="UnaryOperator">Unary Operator</a></b></dt>
+<dd>A "unary operator" is a <a href="http://www.parsifalsoft.com/gloss.html#Token">token</a> which represents
+some sort of operation which operates on a single entity to produce a new
+resultant entity. It is normally represented by a symbol which is written either
+preceding the operand or following the operand. In the first case it is called a
+"prefix operator" and in the second case a "suffix operator".
+<p></p>
+</dd>
+
+<dt><b><a name="SetUnion">Union</a></b></dt>
+<dd>
+The union of two sets is the set of all elements that are to be found in one or
+another of the two sets. In an AnaGram syntax file the union of two <a href="http://www.parsifalsoft.com/gloss.html#CharacterSets">character
+sets</a> A and B is represented using the plus sign, as in A + B. The union operator
+has the same <a href="http://www.parsifalsoft.com/gloss.html#Precedence">precedence</a> as the <a href="http://www.parsifalsoft.com/gloss.html#SetDifference">difference</a> operator: lower than that of
+<a href="http://www.parsifalsoft.com/gloss.html#SetIntersection">intersection</a> and <a href="http://www.parsifalsoft.com/gloss.html#SetComplement">complement</a>. The union operator is <a href="http://www.parsifalsoft.com/gloss.html#Associativity">left associative</a>.
+<p></p>
+</dd>
+
+<dt><b><a name="VirtualProduction">Virtual Production</a></b></dt>
+<dd>
+<p>Virtual productions are a special short hand
+representation of <a href="http://www.parsifalsoft.com/gloss.html#GrammarRule">grammar rules</a> which can be used to
+indicate a choice of inputs. They are an important
+convenience, especially useful when you are first
+building a <a href="http://www.parsifalsoft.com/gloss.html#Grammar">grammar</a>.
+
+</p><p>AnaGram rewrites virtual productions, so that when you
+look at the syntax tables in AnaGram, there will be
+actual <a href="http://www.parsifalsoft.com/gloss.html#Production">productions</a> replacing the virtual productions.
+
+</p><p>A virtual production appears as one of the <a href="http://www.parsifalsoft.com/gloss.html#RuleElement">rule
+elements</a> in a <a href="http://www.parsifalsoft.com/gloss.html#GrammarRule">grammar rule</a>, i.e. as one of the members
+of the list on the right side of a production.
+
+</p><p>The simplest virtual production is the "optional"
+<a href="http://www.parsifalsoft.com/gloss.html#Token">token</a>. If x is an arbitrary token, x? can be used to
+indicate an optional x.
+
+</p><p>Related virtual productions are x... and x?...  where
+the three dots indicate repetition. x... represents an
+arbitrary number of occurrences of x, but at least one.
+x?... represents zero or more occurrences of x.
+
+</p><p>The remaining virtual productions use curly or square
+brackets to enclose a sequence of rules. The brackets
+may be followed variously by nothing, a string of three
+dots, or a slash, to indicate the choices to be made
+from the rules. Note that rules may be used, not merely
+tokens.
+
+</p><p>If r1 through rn are a set of grammar rules, then
+</p><pre>   {r1 | r2 | ... | rn}  </pre>
+is a virtual production that allows a choice of exactly
+one of the rules. Similarly,
+<pre>   {r1 | r2 | ... | rn}...  </pre>
+is a virtual production that allows a choice of one or
+more of the rules. And, finally,
+<pre>   {r1 | r2 | ... | rn}/...  </pre>
+is a virtual production that allows a choice of one or
+more of the rules subject to the side condition that
+rules must alternate, that is, that no rule can follow
+itself immediately without the interposition of some
+other rule. This is a case that is not particularly
+easy to write by hand, but is quite useful in a number
+of contexts.
+
+<p>If the above virtual productions are written with [ ]
+instead of { }, they all become optional. [ ] is an
+optional choice, [ ]... is zero or more choices, and
+[ ]/... is zero or more alternating choices.
+
+</p><p><a href="http://www.parsifalsoft.com/gloss.html#NullProduction">Null productions</a> are not permitted in virtual
+productions in those cases where they would cause an
+intrinsic ambiguity.
+
+</p><p>You may use a definition statement to assign a name to
+a virtual production.
+
+</p></dd>
+
+</dl>
+
+
+<p>
+<br>
+
+  </p></td>
+  </tr>
+ </tbody></table>
+  <br>
+<address><font size="-1">
+        AnaGram parser generator<br>
+        Copyright ©1993-2002, Parsifal Software. <br>
+        All Rights Reserved.<br>
+</font></address>
+<p>
+</p><hr>
+<p>
+
+<a href="http://www.parsifalsoft.com/"><img align="right" src="./Glossary of Parsing Terms_files/pslrb6f.gif" alt="Parsifal Software" width="158" height="25" border="0"></a>
+<br clear="right">
+Links to: <a href="http://www.parsifalsoft.com/">Home page</a> | <a href="http://www.parsifalsoft.com/tryag.html">Trial Copy</a>  | <a href="http://www.parsifalsoft.com/isdp.html"> Syntax Directed Parsing</a>  | <a href="./Glossary of Parsing Terms_files/Glossary of Parsing Terms.htm"> Glossary</a>
+</p><p>
+
+
+
+
+
+
+
+
+
+
+</p></body><span id="skype_highlighting_settings" display="none" autoextractnumbers="1"></span><object id="skype_plugin_object" location.href="http://www.parsifalsoft.com/gloss.html" location.hostname="www.parsifalsoft.com" style="position: absolute; visibility: hidden; left: -100px; top: -100px; " width="0" height="0" type="application/x-vnd.skype.toolbars.npplugin.4.2.0"></object></html>

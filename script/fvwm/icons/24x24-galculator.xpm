@@ -1,0 +1,37 @@
+/* XPM */
+static char *__x___galculator[] = {
+/* columns rows colors chars-per-pixel */
+"24 24 7 1",
+"  c #4A7879DDBBBC",
+". c #4B0979E7BBA7",
+"X c #4B4A7A79BB37",
+"o c #4B4B7B39BAFA",
+"O c #4B4A7A7CBBB4",
+"+ c #4B867B0CBB52",
+"@ c None",
+/* pixels */
+"@@@@@@@@@@@@@@@@@@@@@@@@",
+"@...++++++OOOOOOOOOOOOO@",
+"@..+@@@@@@@@@@@@@@@@OOO@",
+"@+.@@@++OOOOOOOOOO@@@OO@",
+"@+@@++++OOOOOOOOOOOO@OO@",
+"@+@@+@@@@@@@@@@@@@@O@OO@",
+"@+@@+@@@@@@@@@@@@@@O@OO@",
+"@+@@+@@@@@@@@@@@@@@O@OO@",
+"@O@@OOOOOOOOOOOOOOOO@OO@",
+"@OO@@OOOOOOOOOOOOOO@@OO@",
+"@OO@@OO@@OO@@O+@@+O@@OO@",
+"@OO@OOO@@OO@@OO@@OOO@OO@",
+"@OO@@OO@@OO@@OO@@OO@@OO@",
+"@OO@@@@@@@@@@@@@@@@@@OO@",
+"@OO@@OO@@OO@@OO@@OO@@OO@",
+"@OO@OOO@@OO@@OO@@O+O@OO@",
+"@OO@@OO@@OO@@OO@O@++@OO@",
+"@OO@@O+@@OO@@OO@O@+O@+O@",
+"@OO@@++@@OO@@OO@O@++@OO@",
+"@OO@O+O@@OO@@OO@@O+O@OO@",
+"@OO@@@@@@@@@@@@@@@@@@OO@",
+"@O+O@@@@@@@@@@@@@@@@O+O@",
+"@OOOOOOOOOOOOOOOOOOOOOO@",
+"@@@@@@@@@@@@@@@@@@@@@@@@"
+};

@@ -1,0 +1,61 @@
+/*
+ * ComDemo.idl : IDL source for ComDemo.dll
+ *
+ * Sample code for "Multitasking in Win32"
+ * This is from Chapter 16???
+ *
+ */
+
+// This file will be processed by the MIDL tool to
+// produce the type library (ComDemo.tlb) and marshalling code.
+
+//
+// Define constants and types here
+//
+#define DISPID_NEWENUM -4
+
+	[
+		object,
+		uuid(8C758992-1EF9-11D0-B142-DCC519000000),
+		dual,
+		helpstring("IAutoIncr Interface"),
+		pointer_default(unique)
+	]
+	interface IAutoIncr : IDispatch
+	{
+		import "oaidl.idl";
+
+		// 
+		// Add property definitions here
+		// 
+		[propget, id(0), helpstring("Returns counter value after 15 second delay.")]
+			HRESULT SlowCounter([out, retval] WORD* pValue);
+
+		[propget, id(1), helpstring("Returns counter value after 2 second delay.")]
+			HRESULT FastCounter([out, retval] WORD* pValue);
+
+		[propget, restricted, id(DISPID_NEWENUM)]   // Must be propget.
+		HRESULT _NewEnum([out, retval] IUnknown** retval);
+	};
+
+
+
+[
+	uuid(8C758990-1EF9-11D0-B142-DCC519000000),
+	version(1.0),
+	helpstring("ComDemo 1.0 Type Library")
+]
+library COMDEMOLib
+{
+	importlib("stdole32.tlb");
+
+	[
+		uuid(8C758996-1EF9-11D0-B142-DCC519000000),
+		helpstring("AutoIncr Class")
+	]
+	coclass CAutoIncr
+	{
+		[default] interface IAutoIncr;
+	};
+
+};

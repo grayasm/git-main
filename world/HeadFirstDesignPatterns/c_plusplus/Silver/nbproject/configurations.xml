@@ -1,0 +1,1908 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configurationDescriptor version="84">
+  <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
+    <df name="Silver" root=".">
+      <df name="Adapter">
+        <df name="Ducks">
+          <in>Duck.hpp</in>
+          <in>DuckAdapter.hpp</in>
+          <in>Ducks.cpp</in>
+          <in>Ducks.hpp</in>
+          <in>MallardDuck.hpp</in>
+          <in>Turkey.hpp</in>
+          <in>TurkeyAdapter.hpp</in>
+          <in>WildTurkey.hpp</in>
+        </df>
+      </df>
+      <df name="Bridge">
+        <df name="Remotes">
+          <in>RCA.hpp</in>
+          <in>RCAControl.hpp</in>
+          <in>Radio.hpp</in>
+          <in>RemoteControl.hpp</in>
+          <in>Remotes.cpp</in>
+          <in>Remotes.hpp</in>
+          <in>Sony.hpp</in>
+          <in>SonyControl.hpp</in>
+          <in>TV.hpp</in>
+        </df>
+      </df>
+      <df name="Builder">
+        <df name="Planner">
+          <in>Builder.hpp</in>
+          <in>Client.hpp</in>
+          <in>Day.hpp</in>
+          <in>Event.hpp</in>
+          <in>EventComponent.hpp</in>
+          <in>EventException.hpp</in>
+          <in>EventItem.hpp</in>
+          <in>Planner.cpp</in>
+          <in>Planner.hpp</in>
+          <in>Vacation.hpp</in>
+          <in>VacationBuilder.hpp</in>
+        </df>
+      </df>
+      <df name="ChainOfResponsibility">
+        <df name="GumballEMailHandler">
+          <in>Client.hpp</in>
+          <in>ComplaintHandler.hpp</in>
+          <in>FanHandler.hpp</in>
+          <in>GumballEMailHandler.cpp</in>
+          <in>GumballEMailHandler.hpp</in>
+          <in>Handler.hpp</in>
+          <in>LastHandler.hpp</in>
+          <in>NewLocationHandler.hpp</in>
+          <in>SpamHandler.hpp</in>
+        </df>
+      </df>
+      <df name="Command">
+        <df name="Remote">
+          <in>CeilingFan.hpp</in>
+          <in>CeilingFanOffCommand.hpp</in>
+          <in>CeilingFanOnCommand.hpp</in>
+          <in>Command.hpp</in>
+          <in>GarageDoor.hpp</in>
+          <in>GarageDoorDownCommand.hpp</in>
+          <in>GarageDoorUpCommand.hpp</in>
+          <in>HottubOffCommand.hpp</in>
+          <in>HottubOnCommand.hpp</in>
+          <in>Light.hpp</in>
+          <in>LightOffCommand.hpp</in>
+          <in>LightOnCommand.hpp</in>
+          <in>LivingroomLightOffCommand.hpp</in>
+          <in>LivingroomLightOnCommand.hpp</in>
+          <in>NoCommand.hpp</in>
+          <in>Remote.cpp</in>
+          <in>Remote.hpp</in>
+          <in>RemoteControl.hpp</in>
+          <in>Stereo.hpp</in>
+          <in>StereoOffCommand.hpp</in>
+          <in>StereoOnWithCDCommand.hpp</in>
+          <in>TV.hpp</in>
+          <in>hottub.hpp</in>
+        </df>
+        <df name="SimpleRemote">
+          <in>Command.hpp</in>
+          <in>GarageDoor.hpp</in>
+          <in>GarageDoorOpenCommand.hpp</in>
+          <in>Light.hpp</in>
+          <in>LightOffCommand.hpp</in>
+          <in>LightOnCommand.hpp</in>
+          <in>SimpleRemote.cpp</in>
+          <in>SimpleRemote.hpp</in>
+          <in>SimpleRemoteControl.hpp</in>
+        </df>
+        <df name="Undo">
+          <in>CeilingFan.hpp</in>
+          <in>CeilingFanHighCommand.hpp</in>
+          <in>CeilingFanLowCommand.hpp</in>
+          <in>CeilingFanMediumCommand.hpp</in>
+          <in>CeilingFanOffCommand.hpp</in>
+          <in>Command.hpp</in>
+          <in>DimmerLightOffCommand.hpp</in>
+          <in>DimmerLightOnCommand.hpp</in>
+          <in>Light.hpp</in>
+          <in>LightOffCommand.hpp</in>
+          <in>LightOnCommand.hpp</in>
+          <in>NoCommand.hpp</in>
+          <in>RemoteControlWithUndo.hpp</in>
+          <in>Undo.cpp</in>
+          <in>Undo.hpp</in>
+          <in>stdafx.cpp</in>
+          <in>stdafx.h</in>
+        </df>
+      </df>
+      <df name="Composite">
+        <df name="Menus">
+          <in>Menu.hpp</in>
+          <in>MenuComponent.hpp</in>
+          <in>MenuException.hpp</in>
+          <in>MenuItem.hpp</in>
+          <in>Menus.cpp</in>
+          <in>Menus.hpp</in>
+          <in>Waitress.hpp</in>
+        </df>
+      </df>
+      <df name="Compound">
+        <df name="Adapter">
+          <df name="DuckSimulator">
+            <in>DuckCall.hpp</in>
+            <in>DuckSimulator.cpp</in>
+            <in>DuckSimulator.hpp</in>
+            <in>Goose.hpp</in>
+            <in>GooseAdapter.hpp</in>
+            <in>MallardDuck.hpp</in>
+            <in>Quackable.hpp</in>
+            <in>RedHeadDuck.hpp</in>
+            <in>RubberDuck.hpp</in>
+          </df>
+        </df>
+        <df name="Composite">
+          <df name="DuckSimulator">
+            <in>AbstractDuckFactory.hpp</in>
+            <in>CountingDuckFactory.hpp</in>
+            <in>DuckCall.hpp</in>
+            <in>DuckSimulator.cpp</in>
+            <in>DuckSimulator.hpp</in>
+            <in>Flock.hpp</in>
+            <in>Goose.hpp</in>
+            <in>GooseAdapter.hpp</in>
+            <in>MallardDuck.hpp</in>
+            <in>QuackCounter.hpp</in>
+            <in>Quackable.hpp</in>
+            <in>RedHeadDuck.hpp</in>
+            <in>RubberDuck.hpp</in>
+          </df>
+        </df>
+        <df name="Decorator">
+          <df name="DuckSimulator">
+            <in>DuckCall.hpp</in>
+            <in>DuckSimulator.cpp</in>
+            <in>DuckSimulator.hpp</in>
+            <in>Goose.hpp</in>
+            <in>GooseAdapter.hpp</in>
+            <in>MallardDuck.hpp</in>
+            <in>QuackCounter.hpp</in>
+            <in>Quackable.hpp</in>
+            <in>RedHeadDuck.hpp</in>
+            <in>RubberDuck.hpp</in>
+          </df>
+        </df>
+        <df name="Ducks">
+          <df name="DuckSimulator">
+            <in>DuckCall.hpp</in>
+            <in>DuckSimulator.cpp</in>
+            <in>DuckSimulator.hpp</in>
+            <in>MallardDuck.hpp</in>
+            <in>Quackable.hpp</in>
+            <in>RedHeadDuck.hpp</in>
+            <in>RubberDuck.hpp</in>
+          </df>
+        </df>
+        <df name="Factory">
+          <df name="DuckSimulator">
+            <in>AbstractDuckFactory.hpp</in>
+            <in>CountingDuckFactory.hpp</in>
+            <in>DuckCall.hpp</in>
+            <in>DuckSimulator.cpp</in>
+            <in>DuckSimulator.hpp</in>
+            <in>Goose.hpp</in>
+            <in>GooseAdapter.hpp</in>
+            <in>MallardDuck.hpp</in>
+            <in>QuackCounter.hpp</in>
+            <in>Quackable.hpp</in>
+            <in>RedHeadDuck.hpp</in>
+            <in>RubberDuck.hpp</in>
+          </df>
+        </df>
+        <df name="Observer">
+          <df name="DuckSimulator">
+            <in>AbstractDuckFactory.hpp</in>
+            <in>CountingDuckFactory.hpp</in>
+            <in>DuckCall.hpp</in>
+            <in>DuckSimulator.cpp</in>
+            <in>DuckSimulator.hpp</in>
+            <in>Flock.hpp</in>
+            <in>Goose.hpp</in>
+            <in>GooseAdapter.hpp</in>
+            <in>MallardDuck.hpp</in>
+            <in>Observable.hpp</in>
+            <in>Observer.hpp</in>
+            <in>QuackCounter.hpp</in>
+            <in>QuackObservable.hpp</in>
+            <in>Quackable.hpp</in>
+            <in>Quackologist.hpp</in>
+            <in>RedheadDuck.hpp</in>
+            <in>RubberDuck.hpp</in>
+          </df>
+        </df>
+      </df>
+      <df name="Decorator">
+        <in>Beverage.hpp</in>
+        <in>CondimentDecorator.hpp</in>
+        <in>DarkRoast.hpp</in>
+        <in>Decaf.hpp</in>
+        <in>Espresso.hpp</in>
+        <in>HouseBlend.hpp</in>
+        <in>Milk.hpp</in>
+        <in>Mocha.hpp</in>
+        <in>Soy.hpp</in>
+        <in>Starbuzz.cpp</in>
+        <in>Starbuzz.hpp</in>
+        <in>Whip.hpp</in>
+      </df>
+      <df name="Facade">
+        <df name="HomeTheater">
+          <in>Amplifier.hpp</in>
+          <in>CdPlayer.hpp</in>
+          <in>DvdPlayer.hpp</in>
+          <in>HomeTheater.cpp</in>
+          <in>HomeTheater.hpp</in>
+          <in>HomeTheaterFacade.hpp</in>
+          <in>PopcornPopper.hpp</in>
+          <in>Projector.hpp</in>
+          <in>Screen.hpp</in>
+          <in>TheaterLights.hpp</in>
+          <in>Tuner.hpp</in>
+        </df>
+      </df>
+      <df name="Factory">
+        <df name="Pizzaaf">
+          <in>BlackOlives.hpp</in>
+          <in>Cheese.hpp</in>
+          <in>CheesePizza.hpp</in>
+          <in>ChicagoPizzaIngredientFactory.hpp</in>
+          <in>ChicagoPizzaStore.hpp</in>
+          <in>ClamPizza.hpp</in>
+          <in>Clams.hpp</in>
+          <in>Dough.hpp</in>
+          <in>EggPlant.hpp</in>
+          <in>FreshClams.hpp</in>
+          <in>FrozenClams.hpp</in>
+          <in>Garlic.hpp</in>
+          <in>MarinaraSauce.hpp</in>
+          <in>MozzarellaCheese.hpp</in>
+          <in>Mushroom.hpp</in>
+          <in>NYPizzaIngredientFactory.hpp</in>
+          <in>NYPizzaStore.hpp</in>
+          <in>Onion.hpp</in>
+          <in>ParmesanCheese.hpp</in>
+          <in>Pepperoni.hpp</in>
+          <in>PepperoniPizza.hpp</in>
+          <in>Pizza.hpp</in>
+          <in>PizzaIngredientFactory.hpp</in>
+          <in>PizzaStore.hpp</in>
+          <in>Pizzaaf.cpp</in>
+          <in>Pizzaaf.hpp</in>
+          <in>PlumTomatoSauce.hpp</in>
+          <in>RedPepper.hpp</in>
+          <in>RegginanoCheese.hpp</in>
+          <in>Sauce.hpp</in>
+          <in>SlicedPepperoni.hpp</in>
+          <in>Spinach.hpp</in>
+          <in>ThickCrustDough.hpp</in>
+          <in>ThinCrustDough.hpp</in>
+          <in>VeggiePizza.hpp</in>
+          <in>Veggies.hpp</in>
+        </df>
+        <df name="Pizzafm">
+          <in>ChicagoPizzaStore.hpp</in>
+          <in>ChicagoStyleCheesePizza.hpp</in>
+          <in>ChicagoStyleClamPizza.hpp</in>
+          <in>ChicagoStylePepperoniPizza.hpp</in>
+          <in>ChicagoStyleVeggiePizza.hpp</in>
+          <in>NYPizzaStore.hpp</in>
+          <in>NYStyleCheesePizza.hpp</in>
+          <in>NYStyleClamPizza.hpp</in>
+          <in>NYStylePepperoniPizza.hpp</in>
+          <in>NYStyleVeggiePizza.hpp</in>
+          <in>Pizza.hpp</in>
+          <in>PizzaStore.hpp</in>
+          <in>Pizzafm.cpp</in>
+          <in>Pizzafm.hpp</in>
+        </df>
+        <df name="Pizzas">
+          <in>CheesePizza.hpp</in>
+          <in>ClamPizza.hpp</in>
+          <in>PepperoniPizza.hpp</in>
+          <in>Pizza.hpp</in>
+          <in>PizzaStore.hpp</in>
+          <in>Pizzas.cpp</in>
+          <in>Pizzas.hpp</in>
+          <in>SimplePizzaFactory.hpp</in>
+          <in>VeggiePizza.hpp</in>
+        </df>
+      </df>
+      <df name="Flyweight">
+        <df name="FowlWeight">
+          <in>Bird.hpp</in>
+          <in>Fowl.hpp</in>
+          <in>FowlFactory.hpp</in>
+          <in>FowlWeight.cpp</in>
+          <in>FowlWeight.hpp</in>
+          <in>MallardDuck.hpp</in>
+          <in>ModelDuck.hpp</in>
+          <in>RedHeadDuck.hpp</in>
+          <in>RubberDuck.hpp</in>
+          <in>Turkey.hpp</in>
+          <in>TurkeyAdapter.hpp</in>
+          <in>WildTurkey.hpp</in>
+        </df>
+      </df>
+      <df name="Interpreter">
+        <df name="MiniDuckSimulator">
+          <in>Context.hpp</in>
+          <in>DecoyDuck.hpp</in>
+          <in>DisplayCommand.hpp</in>
+          <in>Duck.hpp</in>
+          <in>DuckFactory.hpp</in>
+          <in>EndCommand.hpp</in>
+          <in>Expression.hpp</in>
+          <in>FakeQuack.hpp</in>
+          <in>FlyBehavior.hpp</in>
+          <in>FlyCommand.hpp</in>
+          <in>FlyNoWay.hpp</in>
+          <in>FlyRocketPowered.hpp</in>
+          <in>FlyWithWings.hpp</in>
+          <in>Interpreter.hpp</in>
+          <in>Iterator.hpp</in>
+          <in>LeftCommand.hpp</in>
+          <in>MallardDuck.hpp</in>
+          <in>MiniDuckSimulator.cpp</in>
+          <in>MiniDuckSimulator.hpp</in>
+          <in>ModelDuck.hpp</in>
+          <in>MuteQuack.hpp</in>
+          <in>NullCommand.hpp</in>
+          <in>Quack.hpp</in>
+          <in>QuackBehavior.hpp</in>
+          <in>QuackCommand.hpp</in>
+          <in>RedHeadDuck.hpp</in>
+          <in>Repetitive.hpp</in>
+          <in>RightCommand.hpp</in>
+          <in>RubberDuck.hpp</in>
+          <in>Squeak.hpp</in>
+          <in>SwimCommand.hpp</in>
+          <in>Variable.hpp</in>
+          <in>Visitor.hpp</in>
+          <in>WhileCommand.hpp</in>
+        </df>
+      </df>
+      <df name="Iterator">
+        <df name="DinerMerger">
+          <in>DinerMenu.hpp</in>
+          <in>DinerMenuIterator.hpp</in>
+          <in>DinerMerger.cpp</in>
+          <in>DinerMerger.hpp</in>
+          <in>Iterator.hpp</in>
+          <in>Menu.hpp</in>
+          <in>MenuItem.hpp</in>
+          <in>Object.hpp</in>
+          <in>PancakeHouseMenu.hpp</in>
+          <in>PancakeHouseMenuIterator.hpp</in>
+          <in>Waitress.hpp</in>
+        </df>
+        <df name="DinerMergerI">
+          <in>DinerMenu.hpp</in>
+          <in>DinerMenuIterator.hpp</in>
+          <in>DinerMergerI.cpp</in>
+          <in>DinerMergerI.hpp</in>
+          <in>Iterator.hpp</in>
+          <in>Menu.hpp</in>
+          <in>MenuItem.hpp</in>
+          <in>PancakeHouseMenu.hpp</in>
+          <in>PancakeHouseMenuIterator.hpp</in>
+          <in>Waitress.hpp</in>
+        </df>
+      </df>
+      <df name="Mediator">
+        <df name="AutoHouse">
+          <in>Alarm.hpp</in>
+          <in>Appliance.hpp</in>
+          <in>AutoHouse.cpp</in>
+          <in>AutoHouse.hpp</in>
+          <in>Calendar.hpp</in>
+          <in>CoffeePot.hpp</in>
+          <in>Mediator.cpp</in>
+          <in>Mediator.hpp</in>
+          <in>Shower.hpp</in>
+          <in>Sprinkler.hpp</in>
+          <in>WeatherStation.hpp</in>
+        </df>
+      </df>
+      <df name="Observer">
+        <in>CurrentConditionsDisplay.hpp</in>
+        <in>DisplayElement.hpp</in>
+        <in>ForecastDisplay.hpp</in>
+        <in>HeatIndexDisplay.hpp</in>
+        <in>Observer.hpp</in>
+        <in>StatisticsDisplay.hpp</in>
+        <in>Subject.hpp</in>
+        <in>WeatherData.hpp</in>
+        <in>WeatherStation.cpp</in>
+        <in>WeatherStation.hpp</in>
+        <in>stdafx.cpp</in>
+        <in>stdafx.h</in>
+      </df>
+      <df name="Singleton">
+        <df name="Chocolate">
+          <in>Chocolate.hpp</in>
+          <in>ChocolateBoiler.hpp</in>
+          <in>chocolate.cpp</in>
+        </df>
+      </df>
+      <df name="State">
+        <df name="GumballStateWinner">
+          <in>GumballMachine.cpp</in>
+          <in>GumballMachine.hpp</in>
+          <in>GumballStateWinner.cpp</in>
+          <in>GumballStateWinner.hpp</in>
+          <in>HasQuarterState.hpp</in>
+          <in>NoQuarterState.hpp</in>
+          <in>SoldOutState.hpp</in>
+          <in>SoldState.hpp</in>
+          <in>State.hpp</in>
+          <in>WinnerState.hpp</in>
+        </df>
+      </df>
+      <df name="Strategy">
+        <in>DecoyDuck.hpp</in>
+        <in>Duck.hpp</in>
+        <in>FakeQuack.hpp</in>
+        <in>FlyBehavior.hpp</in>
+        <in>FlyNoWay.hpp</in>
+        <in>FlyRocketPowered.hpp</in>
+        <in>FlyWithWings.hpp</in>
+        <in>MallardDuck.hpp</in>
+        <in>MiniDuckSimulator.cpp</in>
+        <in>MiniDuckSimulator.hpp</in>
+        <in>ModelDuck.hpp</in>
+        <in>MuteQuack.hpp</in>
+        <in>Quack.hpp</in>
+        <in>QuackBehavior.hpp</in>
+        <in>RedHeadDuck.hpp</in>
+        <in>RubberDuck.hpp</in>
+        <in>Squeak.hpp</in>
+      </df>
+      <df name="Template">
+        <df name="Barista">
+          <in>Barista.cpp</in>
+          <in>Barista.hpp</in>
+          <in>CaffeineBeverage.hpp</in>
+          <in>CaffeineBeverageWithHook.hpp</in>
+          <in>Coffee.hpp</in>
+          <in>CoffeeWithHook.hpp</in>
+          <in>Tea.hpp</in>
+          <in>TeaWithHook.hpp</in>
+        </df>
+      </df>
+      <df name="Visitor">
+        <df name="Menus">
+          <in>Bacon.hpp</in>
+          <in>Bagel.hpp</in>
+          <in>Beef.hpp</in>
+          <in>BlueBerries.hpp</in>
+          <in>Bread.hpp</in>
+          <in>Butter.hpp</in>
+          <in>Cheese.hpp</in>
+          <in>Chicken.hpp</in>
+          <in>Egg.hpp</in>
+          <in>Fish.hpp</in>
+          <in>Fried.hpp</in>
+          <in>HotDog.hpp</in>
+          <in>Ingredient.hpp</in>
+          <in>IngredientDecorator.hpp</in>
+          <in>Lettus.hpp</in>
+          <in>Mayonnaise.hpp</in>
+          <in>Menu.hpp</in>
+          <in>MenuComponent.hpp</in>
+          <in>MenuException.hpp</in>
+          <in>MenuItem.hpp</in>
+          <in>Menus.cpp</in>
+          <in>Menus.hpp</in>
+          <in>Milk.hpp</in>
+          <in>MixedVegetables.hpp</in>
+          <in>Oil.hpp</in>
+          <in>Pancake.hpp</in>
+          <in>Pasta.hpp</in>
+          <in>Potato.hpp</in>
+          <in>Rice.hpp</in>
+          <in>Salad.hpp</in>
+          <in>Sauerkraut.hpp</in>
+          <in>Sausage.hpp</in>
+          <in>Scrambled.hpp</in>
+          <in>Soup.hpp</in>
+          <in>Steamed.hpp</in>
+          <in>Stock.hpp</in>
+          <in>Substitute.hpp</in>
+          <in>Toast.hpp</in>
+          <in>Tomato.hpp</in>
+          <in>Visitor.hpp</in>
+          <in>Waitress.hpp</in>
+        </df>
+      </df>
+      <in>Standard.h</in>
+    </df>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false"
+                   kind="IMPORTANT_FILES_FOLDER">
+      <itemPath>Makefile</itemPath>
+    </logicalFolder>
+  </logicalFolder>
+  <sourceFolderFilter>^(nbproject)$</sourceFolderFilter>
+  <sourceRootList>
+    <Elem>.</Elem>
+  </sourceRootList>
+  <projectmakefile>Makefile</projectmakefile>
+  <confs>
+    <conf name="Default" type="0">
+      <toolsSet>
+        <remote-sources-mode>LOCAL_SOURCES</remote-sources-mode>
+        <compilerSet>default</compilerSet>
+      </toolsSet>
+      <codeAssistance>
+      </codeAssistance>
+      <makefileType>
+        <makeTool>
+          <buildCommandWorkingDir>.</buildCommandWorkingDir>
+          <buildCommand>${MAKE} -f Makefile</buildCommand>
+          <cleanCommand>${MAKE} -f Makefile clean</cleanCommand>
+          <executablePath></executablePath>
+          <ccTool>
+            <incDir>
+              <pElem>Adapter/Ducks</pElem>
+            </incDir>
+          </ccTool>
+        </makeTool>
+      </makefileType>
+      <item path="Adapter/Ducks/DuckAdapter.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Adapter/Ducks/Ducks.cpp" ex="false" tool="1" flavor2="4">
+        <ccTool>
+        </ccTool>
+      </item>
+      <item path="Bridge/Remotes/RCA.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Bridge/Remotes/RCAControl.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Bridge/Remotes/Radio.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Bridge/Remotes/RemoteControl.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Bridge/Remotes/Remotes.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="Bridge/Remotes/Remotes.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Bridge/Remotes/Sony.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Bridge/Remotes/SonyControl.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Bridge/Remotes/TV.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Builder/Planner/Builder.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Builder/Planner/Client.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Builder/Planner/Day.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Builder/Planner/Event.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Builder/Planner/EventComponent.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Builder/Planner/EventException.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Builder/Planner/EventItem.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Builder/Planner/Planner.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="Builder/Planner/Planner.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Builder/Planner/Vacation.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Builder/Planner/VacationBuilder.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="ChainOfResponsibility/GumballEMailHandler/Client.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="ChainOfResponsibility/GumballEMailHandler/ComplaintHandler.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="ChainOfResponsibility/GumballEMailHandler/FanHandler.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="ChainOfResponsibility/GumballEMailHandler/GumballEMailHandler.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="ChainOfResponsibility/GumballEMailHandler/GumballEMailHandler.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="ChainOfResponsibility/GumballEMailHandler/Handler.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="ChainOfResponsibility/GumballEMailHandler/LastHandler.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="ChainOfResponsibility/GumballEMailHandler/NewLocationHandler.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="ChainOfResponsibility/GumballEMailHandler/SpamHandler.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Command/Remote/CeilingFan.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Command/Remote/CeilingFanOffCommand.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Command/Remote/CeilingFanOnCommand.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Command/Remote/Command.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Command/Remote/GarageDoor.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Command/Remote/GarageDoorDownCommand.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Command/Remote/GarageDoorUpCommand.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Command/Remote/HottubOffCommand.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Command/Remote/HottubOnCommand.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Command/Remote/Light.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Command/Remote/LightOffCommand.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Command/Remote/LightOnCommand.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Command/Remote/LivingroomLightOffCommand.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Command/Remote/LivingroomLightOnCommand.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Command/Remote/NoCommand.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Command/Remote/Remote.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="Command/Remote/Remote.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Command/Remote/RemoteControl.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Command/Remote/Stereo.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Command/Remote/StereoOffCommand.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Command/Remote/StereoOnWithCDCommand.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Command/Remote/TV.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Command/Remote/hottub.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Command/SimpleRemote/Command.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Command/SimpleRemote/GarageDoor.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Command/SimpleRemote/GarageDoorOpenCommand.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Command/SimpleRemote/Light.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Command/SimpleRemote/LightOffCommand.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Command/SimpleRemote/LightOnCommand.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Command/SimpleRemote/SimpleRemote.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="Command/SimpleRemote/SimpleRemote.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Command/SimpleRemote/SimpleRemoteControl.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Command/Undo/CeilingFan.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Command/Undo/CeilingFanHighCommand.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Command/Undo/CeilingFanLowCommand.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Command/Undo/CeilingFanMediumCommand.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Command/Undo/CeilingFanOffCommand.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Command/Undo/Command.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Command/Undo/DimmerLightOffCommand.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Command/Undo/DimmerLightOnCommand.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Command/Undo/Light.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Command/Undo/LightOffCommand.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Command/Undo/LightOnCommand.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Command/Undo/NoCommand.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Command/Undo/RemoteControlWithUndo.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Command/Undo/Undo.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="Command/Undo/Undo.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Command/Undo/stdafx.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="Command/Undo/stdafx.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Composite/Menus/Menu.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Composite/Menus/MenuComponent.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Composite/Menus/MenuException.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Composite/Menus/MenuItem.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Composite/Menus/Menus.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="Composite/Menus/Menus.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Composite/Menus/Waitress.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Compound/Adapter/DuckSimulator/DuckCall.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Compound/Adapter/DuckSimulator/DuckSimulator.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="Compound/Adapter/DuckSimulator/DuckSimulator.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Compound/Adapter/DuckSimulator/Goose.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Compound/Adapter/DuckSimulator/GooseAdapter.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Compound/Adapter/DuckSimulator/MallardDuck.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Compound/Adapter/DuckSimulator/Quackable.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Compound/Adapter/DuckSimulator/RedHeadDuck.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Compound/Adapter/DuckSimulator/RubberDuck.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Compound/Composite/DuckSimulator/AbstractDuckFactory.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Compound/Composite/DuckSimulator/CountingDuckFactory.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Compound/Composite/DuckSimulator/DuckCall.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Compound/Composite/DuckSimulator/DuckSimulator.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="Compound/Composite/DuckSimulator/DuckSimulator.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Compound/Composite/DuckSimulator/Flock.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Compound/Composite/DuckSimulator/Goose.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Compound/Composite/DuckSimulator/GooseAdapter.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Compound/Composite/DuckSimulator/MallardDuck.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Compound/Composite/DuckSimulator/QuackCounter.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Compound/Composite/DuckSimulator/Quackable.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Compound/Composite/DuckSimulator/RedHeadDuck.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Compound/Composite/DuckSimulator/RubberDuck.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Compound/Decorator/DuckSimulator/DuckCall.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Compound/Decorator/DuckSimulator/DuckSimulator.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="Compound/Decorator/DuckSimulator/DuckSimulator.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Compound/Decorator/DuckSimulator/Goose.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Compound/Decorator/DuckSimulator/GooseAdapter.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Compound/Decorator/DuckSimulator/MallardDuck.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Compound/Decorator/DuckSimulator/QuackCounter.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Compound/Decorator/DuckSimulator/Quackable.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Compound/Decorator/DuckSimulator/RedHeadDuck.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Compound/Decorator/DuckSimulator/RubberDuck.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Compound/Ducks/DuckSimulator/DuckCall.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Compound/Ducks/DuckSimulator/DuckSimulator.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="Compound/Ducks/DuckSimulator/DuckSimulator.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Compound/Ducks/DuckSimulator/MallardDuck.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Compound/Ducks/DuckSimulator/Quackable.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Compound/Ducks/DuckSimulator/RedHeadDuck.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Compound/Ducks/DuckSimulator/RubberDuck.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Compound/Factory/DuckSimulator/AbstractDuckFactory.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Compound/Factory/DuckSimulator/CountingDuckFactory.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Compound/Factory/DuckSimulator/DuckCall.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Compound/Factory/DuckSimulator/DuckSimulator.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="Compound/Factory/DuckSimulator/DuckSimulator.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Compound/Factory/DuckSimulator/Goose.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Compound/Factory/DuckSimulator/GooseAdapter.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Compound/Factory/DuckSimulator/MallardDuck.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Compound/Factory/DuckSimulator/QuackCounter.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Compound/Factory/DuckSimulator/Quackable.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Compound/Factory/DuckSimulator/RedHeadDuck.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Compound/Factory/DuckSimulator/RubberDuck.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Compound/Observer/DuckSimulator/AbstractDuckFactory.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Compound/Observer/DuckSimulator/CountingDuckFactory.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Compound/Observer/DuckSimulator/DuckCall.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Compound/Observer/DuckSimulator/DuckSimulator.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="Compound/Observer/DuckSimulator/DuckSimulator.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Compound/Observer/DuckSimulator/Flock.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Compound/Observer/DuckSimulator/Goose.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Compound/Observer/DuckSimulator/GooseAdapter.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Compound/Observer/DuckSimulator/MallardDuck.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Compound/Observer/DuckSimulator/Observable.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Compound/Observer/DuckSimulator/Observer.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Compound/Observer/DuckSimulator/QuackCounter.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Compound/Observer/DuckSimulator/QuackObservable.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Compound/Observer/DuckSimulator/Quackable.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Compound/Observer/DuckSimulator/Quackologist.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Compound/Observer/DuckSimulator/RedheadDuck.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Compound/Observer/DuckSimulator/RubberDuck.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Decorator/Beverage.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Decorator/CondimentDecorator.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Decorator/DarkRoast.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Decorator/Decaf.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Decorator/Espresso.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Decorator/HouseBlend.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Decorator/Milk.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Decorator/Mocha.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Decorator/Soy.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Decorator/Starbuzz.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="Decorator/Starbuzz.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Decorator/Whip.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Facade/HomeTheater/Amplifier.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Facade/HomeTheater/CdPlayer.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Facade/HomeTheater/DvdPlayer.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Facade/HomeTheater/HomeTheater.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="Facade/HomeTheater/HomeTheater.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Facade/HomeTheater/HomeTheaterFacade.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Facade/HomeTheater/PopcornPopper.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Facade/HomeTheater/Projector.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Facade/HomeTheater/Screen.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Facade/HomeTheater/TheaterLights.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Facade/HomeTheater/Tuner.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Factory/Pizzaaf/BlackOlives.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Factory/Pizzaaf/Cheese.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Factory/Pizzaaf/CheesePizza.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Factory/Pizzaaf/ChicagoPizzaIngredientFactory.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Factory/Pizzaaf/ChicagoPizzaStore.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Factory/Pizzaaf/ClamPizza.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Factory/Pizzaaf/Clams.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Factory/Pizzaaf/Dough.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Factory/Pizzaaf/EggPlant.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Factory/Pizzaaf/FreshClams.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Factory/Pizzaaf/FrozenClams.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Factory/Pizzaaf/Garlic.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Factory/Pizzaaf/MarinaraSauce.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Factory/Pizzaaf/MozzarellaCheese.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Factory/Pizzaaf/Mushroom.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Factory/Pizzaaf/NYPizzaIngredientFactory.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Factory/Pizzaaf/NYPizzaStore.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Factory/Pizzaaf/Onion.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Factory/Pizzaaf/ParmesanCheese.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Factory/Pizzaaf/Pepperoni.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Factory/Pizzaaf/PepperoniPizza.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Factory/Pizzaaf/Pizza.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Factory/Pizzaaf/PizzaIngredientFactory.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Factory/Pizzaaf/PizzaStore.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Factory/Pizzaaf/Pizzaaf.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="Factory/Pizzaaf/Pizzaaf.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Factory/Pizzaaf/PlumTomatoSauce.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Factory/Pizzaaf/RedPepper.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Factory/Pizzaaf/RegginanoCheese.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Factory/Pizzaaf/Sauce.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Factory/Pizzaaf/SlicedPepperoni.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Factory/Pizzaaf/Spinach.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Factory/Pizzaaf/ThickCrustDough.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Factory/Pizzaaf/ThinCrustDough.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Factory/Pizzaaf/VeggiePizza.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Factory/Pizzaaf/Veggies.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Factory/Pizzafm/ChicagoPizzaStore.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Factory/Pizzafm/ChicagoStyleCheesePizza.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Factory/Pizzafm/ChicagoStyleClamPizza.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Factory/Pizzafm/ChicagoStylePepperoniPizza.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Factory/Pizzafm/ChicagoStyleVeggiePizza.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Factory/Pizzafm/NYPizzaStore.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Factory/Pizzafm/NYStyleCheesePizza.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Factory/Pizzafm/NYStyleClamPizza.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Factory/Pizzafm/NYStylePepperoniPizza.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Factory/Pizzafm/NYStyleVeggiePizza.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Factory/Pizzafm/Pizza.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Factory/Pizzafm/PizzaStore.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Factory/Pizzafm/Pizzafm.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="Factory/Pizzafm/Pizzafm.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Factory/Pizzas/CheesePizza.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Factory/Pizzas/ClamPizza.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Factory/Pizzas/PepperoniPizza.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Factory/Pizzas/Pizza.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Factory/Pizzas/PizzaStore.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Factory/Pizzas/Pizzas.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="Factory/Pizzas/Pizzas.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Factory/Pizzas/SimplePizzaFactory.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Factory/Pizzas/VeggiePizza.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Flyweight/FowlWeight/Bird.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Flyweight/FowlWeight/Fowl.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Flyweight/FowlWeight/FowlFactory.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Flyweight/FowlWeight/FowlWeight.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="Flyweight/FowlWeight/FowlWeight.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Flyweight/FowlWeight/MallardDuck.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Flyweight/FowlWeight/ModelDuck.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Flyweight/FowlWeight/RedHeadDuck.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Flyweight/FowlWeight/RubberDuck.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Flyweight/FowlWeight/Turkey.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Flyweight/FowlWeight/TurkeyAdapter.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Flyweight/FowlWeight/WildTurkey.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Interpreter/MiniDuckSimulator/Context.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Interpreter/MiniDuckSimulator/DecoyDuck.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Interpreter/MiniDuckSimulator/DisplayCommand.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Interpreter/MiniDuckSimulator/Duck.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Interpreter/MiniDuckSimulator/DuckFactory.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Interpreter/MiniDuckSimulator/EndCommand.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Interpreter/MiniDuckSimulator/Expression.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Interpreter/MiniDuckSimulator/FakeQuack.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Interpreter/MiniDuckSimulator/FlyBehavior.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Interpreter/MiniDuckSimulator/FlyCommand.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Interpreter/MiniDuckSimulator/FlyNoWay.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Interpreter/MiniDuckSimulator/FlyRocketPowered.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Interpreter/MiniDuckSimulator/FlyWithWings.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Interpreter/MiniDuckSimulator/Interpreter.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Interpreter/MiniDuckSimulator/Iterator.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Interpreter/MiniDuckSimulator/LeftCommand.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Interpreter/MiniDuckSimulator/MallardDuck.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Interpreter/MiniDuckSimulator/MiniDuckSimulator.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="Interpreter/MiniDuckSimulator/MiniDuckSimulator.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Interpreter/MiniDuckSimulator/ModelDuck.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Interpreter/MiniDuckSimulator/MuteQuack.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Interpreter/MiniDuckSimulator/NullCommand.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Interpreter/MiniDuckSimulator/Quack.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Interpreter/MiniDuckSimulator/QuackBehavior.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Interpreter/MiniDuckSimulator/QuackCommand.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Interpreter/MiniDuckSimulator/RedHeadDuck.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Interpreter/MiniDuckSimulator/Repetitive.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Interpreter/MiniDuckSimulator/RightCommand.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Interpreter/MiniDuckSimulator/RubberDuck.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Interpreter/MiniDuckSimulator/Squeak.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Interpreter/MiniDuckSimulator/SwimCommand.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Interpreter/MiniDuckSimulator/Variable.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Interpreter/MiniDuckSimulator/Visitor.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Interpreter/MiniDuckSimulator/WhileCommand.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Iterator/DinerMerger/DinerMenu.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Iterator/DinerMerger/DinerMenuIterator.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Iterator/DinerMerger/DinerMerger.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="Iterator/DinerMerger/DinerMerger.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Iterator/DinerMerger/Iterator.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Iterator/DinerMerger/Menu.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Iterator/DinerMerger/MenuItem.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Iterator/DinerMerger/Object.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Iterator/DinerMerger/PancakeHouseMenu.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Iterator/DinerMerger/PancakeHouseMenuIterator.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Iterator/DinerMerger/Waitress.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Iterator/DinerMergerI/DinerMenu.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Iterator/DinerMergerI/DinerMenuIterator.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Iterator/DinerMergerI/DinerMergerI.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="Iterator/DinerMergerI/DinerMergerI.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Iterator/DinerMergerI/Iterator.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Iterator/DinerMergerI/Menu.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Iterator/DinerMergerI/MenuItem.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Iterator/DinerMergerI/PancakeHouseMenu.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Iterator/DinerMergerI/PancakeHouseMenuIterator.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Iterator/DinerMergerI/Waitress.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Mediator/AutoHouse/Alarm.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Mediator/AutoHouse/Appliance.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Mediator/AutoHouse/AutoHouse.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="Mediator/AutoHouse/AutoHouse.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Mediator/AutoHouse/Calendar.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Mediator/AutoHouse/CoffeePot.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Mediator/AutoHouse/Mediator.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="Mediator/AutoHouse/Mediator.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Mediator/AutoHouse/Shower.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Mediator/AutoHouse/Sprinkler.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Mediator/AutoHouse/WeatherStation.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Observer/CurrentConditionsDisplay.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Observer/DisplayElement.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Observer/ForecastDisplay.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Observer/HeatIndexDisplay.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Observer/Observer.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Observer/StatisticsDisplay.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Observer/Subject.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Observer/WeatherData.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Observer/WeatherStation.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="Observer/WeatherStation.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Observer/stdafx.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="Observer/stdafx.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Singleton/Chocolate/Chocolate.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Singleton/Chocolate/ChocolateBoiler.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Singleton/Chocolate/chocolate.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="State/GumballStateWinner/GumballMachine.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="State/GumballStateWinner/GumballMachine.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="State/GumballStateWinner/GumballStateWinner.cpp"
+            ex="true"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="State/GumballStateWinner/GumballStateWinner.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="State/GumballStateWinner/HasQuarterState.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="State/GumballStateWinner/NoQuarterState.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="State/GumballStateWinner/SoldOutState.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="State/GumballStateWinner/SoldState.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="State/GumballStateWinner/State.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="State/GumballStateWinner/WinnerState.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Strategy/DecoyDuck.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Strategy/Duck.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Strategy/FakeQuack.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Strategy/FlyBehavior.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Strategy/FlyNoWay.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Strategy/FlyRocketPowered.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Strategy/FlyWithWings.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Strategy/MallardDuck.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Strategy/MiniDuckSimulator.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="Strategy/MiniDuckSimulator.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Strategy/ModelDuck.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Strategy/MuteQuack.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Strategy/Quack.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Strategy/QuackBehavior.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Strategy/RedHeadDuck.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Strategy/RubberDuck.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Strategy/Squeak.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Template/Barista/Barista.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="Template/Barista/Barista.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Template/Barista/CaffeineBeverage.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Template/Barista/CaffeineBeverageWithHook.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Template/Barista/Coffee.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Template/Barista/CoffeeWithHook.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Template/Barista/Tea.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Template/Barista/TeaWithHook.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Visitor/Menus/Bacon.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Visitor/Menus/Bagel.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Visitor/Menus/Beef.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Visitor/Menus/BlueBerries.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Visitor/Menus/Bread.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Visitor/Menus/Butter.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Visitor/Menus/Cheese.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Visitor/Menus/Chicken.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Visitor/Menus/Egg.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Visitor/Menus/Fish.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Visitor/Menus/Fried.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Visitor/Menus/HotDog.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Visitor/Menus/Ingredient.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Visitor/Menus/IngredientDecorator.hpp"
+            ex="true"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="Visitor/Menus/Lettus.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Visitor/Menus/Mayonnaise.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Visitor/Menus/Menu.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Visitor/Menus/MenuComponent.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Visitor/Menus/MenuException.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Visitor/Menus/MenuItem.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Visitor/Menus/Menus.cpp" ex="true" tool="1" flavor2="0">
+      </item>
+      <item path="Visitor/Menus/Menus.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Visitor/Menus/Milk.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Visitor/Menus/MixedVegetables.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Visitor/Menus/Oil.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Visitor/Menus/Pancake.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Visitor/Menus/Pasta.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Visitor/Menus/Potato.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Visitor/Menus/Rice.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Visitor/Menus/Salad.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Visitor/Menus/Sauerkraut.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Visitor/Menus/Sausage.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Visitor/Menus/Scrambled.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Visitor/Menus/Soup.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Visitor/Menus/Steamed.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Visitor/Menus/Stock.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Visitor/Menus/Substitute.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Visitor/Menus/Toast.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Visitor/Menus/Tomato.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Visitor/Menus/Visitor.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="Visitor/Menus/Waitress.hpp" ex="true" tool="3" flavor2="0">
+      </item>
+    </conf>
+  </confs>
+</configurationDescriptor>

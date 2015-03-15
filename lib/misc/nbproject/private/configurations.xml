@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configurationDescriptor version="95">
+  <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
+    <df root="." name="0">
+      <df name="slick">
+      </df>
+      <df name="src">
+        <in>algobase.hpp</in>
+        <in>algorithm.hpp</in>
+        <in>audit.cpp</in>
+        <in>audit.hpp</in>
+        <in>autocritical_section.cpp</in>
+        <in>autocritical_section.hpp</in>
+        <in>autoptr.hpp</in>
+        <in>bistream.cpp</in>
+        <in>bistream.hpp</in>
+        <in>bostream.cpp</in>
+        <in>bostream.hpp</in>
+        <in>calendar.cpp</in>
+        <in>calendar.hpp</in>
+        <in>cpu_timer.cpp</in>
+        <in>cpu_timer.hpp</in>
+        <in>critical_section.cpp</in>
+        <in>critical_section.hpp</in>
+        <in>date.hpp</in>
+        <in>debug.hpp</in>
+        <in>deque.hpp</in>
+        <in>event.cpp</in>
+        <in>event.hpp</in>
+        <in>exception.cpp</in>
+        <in>exception.hpp</in>
+        <in>filename.cpp</in>
+        <in>filename.hpp</in>
+        <in>functional.hpp</in>
+        <in>generic_array.hpp</in>
+        <in>generic_string.hpp</in>
+        <in>iniserv.cpp</in>
+        <in>iniserv.hpp</in>
+        <in>iterator.hpp</in>
+        <in>list.hpp</in>
+        <in>math.hpp</in>
+        <in>memmanip.hpp</in>
+        <in>memory.hpp</in>
+        <in>multi_lock.cpp</in>
+        <in>multi_lock.hpp</in>
+        <in>mutex.cpp</in>
+        <in>mutex.hpp</in>
+        <in>numeric.hpp</in>
+        <in>queue.hpp</in>
+        <in>semaphore.cpp</in>
+        <in>semaphore.hpp</in>
+        <in>single_lock.cpp</in>
+        <in>single_lock.hpp</in>
+        <in>stack.hpp</in>
+        <in>stdio.hpp</in>
+        <in>strconv.cpp</in>
+        <in>strconv.hpp</in>
+        <in>stream.hpp</in>
+        <in>string.hpp</in>
+        <in>strtok.cpp</in>
+        <in>strtok.hpp</in>
+        <in>sync_base.cpp</in>
+        <in>sync_base.hpp</in>
+        <in>sync_debug.hpp</in>
+        <in>thread.cpp</in>
+        <in>thread.hpp</in>
+        <in>tree.hpp</in>
+        <in>unistd.cpp</in>
+        <in>unistd.hpp</in>
+        <in>utility.hpp</in>
+        <in>vector.hpp</in>
+      </df>
+      <df name="vcbuild">
+      </df>
+    </df>
+  </logicalFolder>
+  <projectmakefile>Makefile</projectmakefile>
+  <confs>
+    <conf name="Default" type="0">
+      <toolsSet>
+        <developmentServer>localhost</developmentServer>
+        <platform>2</platform>
+      </toolsSet>
+      <compile>
+        <compiledirpicklist>
+          <compiledirpicklistitem>.</compiledirpicklistitem>
+          <compiledirpicklistitem>${AUTO_FOLDER}</compiledirpicklistitem>
+        </compiledirpicklist>
+        <compiledir>${AUTO_FOLDER}</compiledir>
+        <compilecommandpicklist>
+          <compilecommandpicklistitem>${MAKE} ${ITEM_NAME}.o</compilecommandpicklistitem>
+          <compilecommandpicklistitem>${AUTO_COMPILE}</compilecommandpicklistitem>
+        </compilecommandpicklist>
+        <compilecommand>${AUTO_COMPILE}</compilecommand>
+      </compile>
+      <dbx_gdbdebugger version="1">
+        <gdb_pathmaps>
+        </gdb_pathmaps>
+        <gdb_interceptlist>
+          <gdbinterceptoptions gdb_all="false" gdb_unhandled="true" gdb_unexpected="true"/>
+        </gdb_interceptlist>
+        <gdb_options>
+          <DebugOptions>
+          </DebugOptions>
+        </gdb_options>
+        <gdb_buildfirst gdb_buildfirst_overriden="false" gdb_buildfirst_old="false"/>
+      </dbx_gdbdebugger>
+      <nativedebugger version="1">
+        <engine>gdb</engine>
+      </nativedebugger>
+      <runprofile version="9">
+        <runcommandpicklist>
+          <runcommandpicklistitem>"${OUTPUT_PATH}"</runcommandpicklistitem>
+        </runcommandpicklist>
+        <runcommand>"${OUTPUT_PATH}"</runcommand>
+        <rundir>.</rundir>
+        <buildfirst>true</buildfirst>
+        <terminal-type>0</terminal-type>
+        <remove-instrumentation>0</remove-instrumentation>
+        <environment>
+        </environment>
+      </runprofile>
+    </conf>
+  </confs>
+</configurationDescriptor>

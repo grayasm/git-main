@@ -1,0 +1,78 @@
+# .bash_aliases
+# cp $HOME/.bash_aliases $HOME/Code/svn-trunk/script/bash/bash_aliases
+# svn status $HOME/Code/svn-trunk
+# svn diff   $HOME/Code/svn-trunk
+# svn commit $HOME/Code/svn-trunk
+
+
+if [ -f $HOME/.bash_nosave ]; then
+. $HOME/.bash_nosave
+fi
+
+
+# If id command returns zero, you've root access.
+if [ $(id -u) -eq 0 ]; then # you are root, set red colour prompt
+   # root on the server
+   # PS1="\\[$(tput setaf 1)\\u$(tput bold)$(tput setaf 3)@\\h$(tput sgr0)$(tput setaf 1):\\w #$(tput sgr0)\\] "
+   # root on binary
+   PS1="\\[$(tput setaf 1)\\u@\\h:\\w #$(tput sgr0)\\] "
+   alias mv='mv -iv'
+   alias cp='cp -aRiv'
+   alias rm='rm -iv'
+else
+   # user on the server
+   # PS1="[\u$(tput bold)$(tput setaf 3)@\h$(tput sgr0): \W]\$ "
+   # user on binary
+   PS1="[\u@\h: \W]\$ "
+   alias mv='mv -v'
+   alias cp='cp -aRv'
+   alias rm='rm -v'
+fi
+
+alias mkdir='mkdir -pv'
+alias rmdir='rm -rfv'
+
+alias ls='ls --color=auto'
+alias ll='ls -lh'
+alias la='ls -a'
+alias lla='ll -a'
+alias L='ll'
+alias l='ll'
+alias grep='grep --color=auto'
+alias psgrep='ps -aef | grep'
+alias scron="xset -dpms; xset s off"
+alias du='du -chs'
+
+alias ..='cd ..'
+alias ...='cd ..; cd ..'
+
+#utilities
+# alias calc='galculator'
+# alias edit='emacs'
+alias diff='meld'
+# alias view='gthumb'
+# alias fileman='thunar'
+# alias term='xterm bash'
+
+
+#subversion
+export SVN_EDITOR=emacs # canonical
+export SVN_ROOT=https://svn-mihai.googlecode.com/svn # shortcut
+alias svn='svn --username $SVN_USER --password $SVN_PASS'
+alias svnlu="svn status --no-ignore | grep '^\?' | sed 's/^\? //'"
+alias svnru="svn status --no-ignore | grep '^\?' | sed 's/^\? //' | xargs -Ixx rm -rvf xx"
+
+
+# https://bugzilla.redhat.com/show_bug.cgi?id=1043686
+# Emacs bug with invalid color name: WINDOW_FOREGROUND/BACKGROUND
+xrdb -load /dev/null
+
+
+# ssh client
+alias sshsrv='ssh -X -l mihk -i $HOME/.ssh/id_rsa_home_key 192.168.0.128'
+alias office='ssh -i $HOME/.ssh/id_dsa_office -l mihai -L 13389:10.1.1.200:3389 $OFFICE'
+
+
+# BUILT FROM SOURCE
+#export PATH=/opt/wxWidgets-3.0/bin:/opt/jdk1.8.0_25/bin:$PATH
+#export LD_LIBRARY_PATH=/opt/wxWidgets-3.0/lib:/lib64:/usr/lib64:/usr/local/lib64:/lib:/usr/local/lib

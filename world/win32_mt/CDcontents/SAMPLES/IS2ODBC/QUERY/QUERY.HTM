@@ -1,0 +1,41 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+   <TITLE>
+      IS2ODBC Demo Page
+   </TITLE>
+   <META NAME="Author" CONTENT="Jim Beveridge & Robert Wiener">
+   <META NAME="GENERATOR" CONTENT="Mozilla/3.0Gold (WinNT; I) [Netscape]">
+</HEAD>
+<BODY>
+<h2 align=center>
+
+	IS2ODBC Demo Page
+</h2>
+<P align=center><I>Multithreading Applications in Win32</I>
+</P>
+
+<P>This page will demonstrate how you can access a JET database
+using ODBC by making requests one at a time using another process.
+</P>
+
+<P>To use this demo, you must have correctly installed IS2ODBC.DLL
+and DBSERVER.EXE as described in 00README.DOC.
+</P>
+
+<P>The <A HREF="http:/scripts/Is2odbc.dll">Default Query</A> sends
+a request to the server to call the default procedure in IS2ODBC.DLL.
+This call has no parameters.
+</P>
+
+<P>The <A HREF="http:/scripts/Is2odbc.dll?Sort=Title">
+Sort by Title Query</A> includes a parameter that will be
+included in the SORT section of the SQL query.
+</P>
+
+<P>Finally, <A HREF="http://localhost/scripts/Is2odbc.dll?Filter=Category='Networking'">
+Filter by Category</A> selects only a subset of the available
+records, filtered by the category of the book.
+</P>
+
+</HTML>

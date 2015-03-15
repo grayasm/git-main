@@ -1,0 +1,454 @@
+################################################################################
+#  ____________________________
+# (   _________________________)
+#  ) (__  _  _  _    _
+# (   __)( \/ )( \/\/ )/\/\
+#  ) (    \  /  \    //    \
+# (___)    \/    \/\/(_/\/\_) 2.5.10
+#
+# My personal fvwm2rc file
+#
+################################################################################
+
+# http://www.fvwm.org/doc/unstable/fvwm/fvwm.man.html
+# http://zensites.net/fvwm/guide/menu.html
+# http://cloford.com/resources/colours/namedcol.htm
+# set virtualbox mouse/key capture to explicit.
+
+# cp ~/.fvwm/.fvwm2rc ~/Code/svn-trunk/script/fvwm/fvwm2rc
+# cp ~/.fvwm/icons    ~/Code/svn-trunk/script/fvwm/
+# cp ~/.fvwm/wallpapers ~/Code/svn-trunk/script/fvwm/
+# svn status ~/Code/svn-trunk/
+# svn commit ~/Code/svn-trunk/
+
+
+################################################################################
+# Global Variables
+################################################################################
+SetEnv fvwm_wallpapers          $[FVWM_USERDIR]/wallpapers
+SetEnv fvwm_icons               $[FVWM_USERDIR]/icons
+SetEnv fvwm_sound               $[HOME]/1TB/sounds/Electrical_Sweep-Sweeper-1760111493.wav
+
+
+################################################################################
+# Colorset
+################################################################################
+Colorset                        1  fg coral, bg coral
+Colorset                        2  fg rgb:00/00/00, hi rgb:00/00/00, sh rgb:00/00/00, bg rgb:e9/e9/d9
+Colorset                        3  fg rgb:00/00/00, hi rgb:dd/00/00, sh rgb:dd/00/00, bg rgb:fb/fc/ec
+
+
+################################################################################
+# Virtual Desktops
+################################################################################
+DesktopSize                     2x1
+DesktopName                     0  Desk-1
+DesktopName                     1  Desk-2
+EdgeScroll                      100 100
+EdgeResistance                  150 150
+EdgeThickness                   7
+ClickTime                       750
+MoveThreshold                   7
+ColormapFocus                   FollowsMouse
+
+
+
+################################################################################
+# Global Window style and options
+################################################################################
+
+Style                           * SloppyFocus, MouseFocusClickRaises
+Style                           * Font -adobe-courier-bold-r-*-*-14-*-*-*-*-*-*-*
+Style                           * HilightFore Black, HilightBack coral
+Style                           * BorderWidth 7, HandleWidth 7
+Style                           * Icon unknown1.xpm, Color lightgrey/dimgrey
+Style                           * DecorateTransient, !UsePPosition
+Style                           * IconBox 0 -10 -280 -1
+Style                           * FocusFollowsMouse
+Style                           * TileCascadePlacement
+Style                           * ResizeOutline
+HideGeometryWindow              Never
+Style                           * SnapAttraction 20 SameType Screen
+Style                           * SnapGrid 10 10
+Style                           * WindowShadeShrinks, WindowShadeSteps 20, WindowShadeLazy
+SetAnimation                    10  -.01 0 .01 .03 .08 .18 .3 .45 .6 .75 .85 .90 .94 .97 .99 1.0
+Style                           * MwmDecor
+Style                           FvwmPager StaysOnTop, Sticky, BorderColorset 1
+
+
+
+################################################################################
+# Mouse and Key bindings - basic
+################################################################################
+#
+# http://zensites.net/fvwm/guide/bindings.html
+#
+# Key   X Context Modifier Action
+# Mouse X Context Modifier Action
+
+#   for the root window:
+Mouse                           1 R N   Menu FvwmRootMenu
+Mouse                           2 R N   WindowList
+Mouse                           3 R N   Menu FvwmWindowOpsMenu
+
+Mouse                           0 1 N   Menu FvwmWindowOpsMenu
+Mouse                           0 2 N   Maximize
+Mouse                           0 4 N   Iconify
+
+
+
+
+################################################################################
+# Menu Section
+################################################################################
+
+MenuStyle * fvwm, Foreground black, Background coral
+MenuStyle * Font -adobe-courier-*-r-normal-*-14-*-*-*-*-*-*-*
+
+DestroyMenu                     FvwmRootMenu
+AddToMenu                       FvwmRootMenu "Root Menu" Title
++ "Internet"                    Popup FvwmInternetMenu
++ "Media"                       Popup FvwmMediaMenu
++ "Image"                       Popup FvwmImageMenu
++ "Programming"                 Popup FvwmProgrammingMenu
++ "Office"                      Popup FvwmOfficeMenu
++ "Accessories"                 Popup FvwmAccessoriesMenu
++ "xterm"                       FvwmXTerm
++ "FVWM Console"                Module FvwmConsole
++ ""                            Nop
++ "Help"                        Popup FvwmManPagesMenu
++ "Restart FVWM"                Restart
++ "Quit FVWM"                   Quit
+
+
+
+DestroyMenu                     FvwmInternetMenu
+AddToMenu                       FvwmInternetMenu "Internet" Title
++ "%$[fvwm_icons]/24x24-firefox.png%firefox"                       FvwmFirefox
++ "%$[fvwm_icons]/24x24-thunderbird.png%thunderbird"               FvwmThunderbird
++ "%$[fvwm_icons]/24x24-skype.png%skype"                           FvwmSkype
++ "%$[fvwm_icons]/24x24-pidgin.png%pidgin"                         FvwmPidgin
++ "%$[fvwm_icons]/24x24-xchat.png%xchat"                           FvwmXChat
++ "%$[fvwm_icons]/24x24-google-chrome.png%chrome"                  FvwmChrome
++ "%$[fvwm_icons]/24x24-dukascopy-live.png%dukascopy-live"         FvwmDukascopy
+
+DestroyMenu                     FvwmMediaMenu
+AddToMenu                       FvwmMediaMenu "MMedia" Title
++ "%$[fvwm_icons]/24x24-vlc.xpm%vlc"                               FvwmVlc
++ "%$[fvwm_icons]/24x24-xmms.xpm%xmms"                             FvwmXmms
++ "%$[fvwm_icons]/24x24-smplayer.png%smplayer"                     FvwmSMPlayer
++ "%$[fvwm_icons]/24x24-tvmaxe.png%tv-maxe"                        FvwmTvMaxe
+
+
+DestroyMenu                     FvwmImageMenu
+AddToMenu                       FvwmImageMenu "Image" Title
++ "%$[fvwm_icons]/24x24-gwenview.png%gwenview"                     FvwmGwenview
++ "%$[fvwm_icons]/24x24-gimp.png%gimp"                             FvwmGimp
++ "%$[fvwm_icons]/24x24-pinta.png%pinta"                           FvwmPinta
++ "%$[fvwm_icons]/24x24-ksnapshot.png%ksnapshot"                   FvwmKsnapshot
++ "%$[fvwm_icons]/24x24-simplescreenrecorder.png%simplescreenrecorder" FvwmSimplescreenrecorder
+
+
+DestroyMenu                     FvwmProgrammingMenu
+AddToMenu                       FvwmProgrammingMenu "Programming"  Title
++ "%$[fvwm_icons]/24x24-kate.png%kate"                             FvwmKate
++ "%$[fvwm_icons]/24x24-emacs22.png%emacs"                         FvwmEmacs
++ "%$[fvwm_icons]/24x24-accessories-text-editor.png%kwrite"        FvwmKwrite
++ "%$[fvwm_icons]/24x24-netbeans.png%netbeans"                     FvwmNetbeans
++ "%$[fvwm_icons]/24x24-ddd.png%ddd"                               FvwmDdd
+
+
+DestroyMenu                     FvwmOfficeMenu
+AddToMenu                       FvwmOfficeMenu "Office" Title
++ "%$[fvwm_icons]/24x24-libreoffice-startcenter.png%libreoffice"   FvwmLibreoffice
++ "%$[fvwm_icons]/24x24-AdobeReader9.png%pdf reader"               FvwmAdobeReader
+
+
+DestroyMenu                     FvwmAccessoriesMenu
+AddToMenu                       FvwmAccessoriesMenu "Accessories" Title
++ "%$[fvwm_icons]/24x24-system-file-manager.png%dolphin"           FvwmDolphin
++ "%$[fvwm_icons]/24x24-utilities-terminal.png%xterm"              FvwmXTerm
++ "%$[fvwm_icons]/24x24-htop.png%htop"                             FvwmHtop
++ "%$[fvwm_icons]/24x24-accessories-calculator.png%mate-calc"      FvwmMateCalc
++ "%$[fvwm_icons]/24x24-krdc.png%krdc"                             FvwmKrdc
++ "%$[fvwm_icons]/24x24-virtualbox.png%virtualbox"                 FvwmVirtualBox
++ "%$[fvwm_icons]/24x24-multimedia-volume-control.png%pavucontrol" FvwmPavucontrol
++ "%$[fvwm_icons]/24x24-preferences-desktop.png%paprefs"           FvwmPaprefs
++ "%$[fvwm_icons]/24x24-preferences-desktop-font.png%xfontsel"     FvwmXfontsel
++ "%$[fvwm_icons]/24x24-ktimer.png%xclock"                         FvwmXclock
+
+
+DestroyMenu                     FvwmWindowOpsMenu
+AddToMenu                       FvwmWindowOpsMenu
++ "Move"                        Move
++ "Resize"                      Resize
++ "(De)Iconify"                 Iconify
++ "(Un)Maximize"                Maximize
++ "(Un)Shade"                   WindowShade
++ "(Un)Stick"                   Stick
++ " "                           Nop
++ "Close"                       Close
++ "Delete"                      Delete
++ "Destroy"                     Destroy
++ " "                           Nop
++ "StaysOnTop"                  Pick (CircularHit) Layer 0 6
++ "Layer +1"                    Pick (CircularHit) Layer +1
++ "StaysPut"                    Pick (CircularHit) Layer 0 4
++ "Layer -1"                    Pick (CircularHit) Layer -1
++ "StaysOnBottom"               Pick (CircularHit) Layer 0 2
++ " "                           Nop
++ "Identify"                    Module FvwmIdent
+
+
+DestroyMenu                     FvwmManPagesMenu
+AddToMenu                       FvwmManPagesMenu "FVWM Man Pages" Title
++ "fvwm"                        FvwmViewManPage  fvwm
++ "FvwmAnimate"                 FvwmViewManPage  FvwmAnimate
++ "FvwmBacker"                  FvwmViewManPage  FvwmBacker
++ "FvwmBanner"                  FvwmViewManPage  FvwmBanner
++ "FvwmButtons"                 FvwmViewManPage  FvwmButtons
++ "FvwmCommand"                 FvwmViewManPage  FvwmCommand
++ "FvwmConsole"                 FvwmViewManPage  FvwmConsole
++ "FvwmConsoleC.pl"             FvwmViewManPage  FvwmConsoleC.pl
++ "FvwmCpp"                     FvwmViewManPage  FvwmCpp
++ "FvwmDebug"                   FvwmViewManPage  FvwmDebug
++ "FvwmDragWell"                FvwmViewManPage  FvwmDragWell
++ "FvwmEvent"                   FvwmViewManPage  FvwmEvent
++ "FvwmForm"                    FvwmViewManPage  FvwmForm
++ "FvwmGtk"                     FvwmViewManPage  FvwmGtk
++ "FvwmGtkDebug"                FvwmViewManPage  FvwmGtkDebug
++ "FvwmIconBox"                 FvwmViewManPage  FvwmIconBox
++ "FvwmIconMan"                 FvwmViewManPage  FvwmIconMan
++ "FvwmIdent"                   FvwmViewManPage  FvwmIdent
++ "FvwmM4"                      FvwmViewManPage  FvwmM4
++ "FvwmPager"                   FvwmViewManPage  FvwmPager
++ "FvwmPerl"                    FvwmViewManPage  FvwmPerl
++ "FvwmProxy"                   FvwmViewManPage  FvwmProxy
++ "FvwmRearrange"               FvwmViewManPage  FvwmRearrange
++ "FvwmSave"                    FvwmViewManPage  FvwmSave
++ "FvwmSaveDesk"                FvwmViewManPage  FvwmSaveDesk
++ "FvwmScript"                  FvwmViewManPage  FvwmScript
++ "FvwmScroll"                  FvwmViewManPage  FvwmScroll
++ "FvwmTaskBar"                 FvwmViewManPage  FvwmTaskBar
++ "FvwmTheme"                   FvwmViewManPage  FvwmTheme
++ "FvwmWharf"                   FvwmViewManPage  FvwmWharf
++ "FvwmWinList"                 FvwmViewManPage  FvwmWinList
++ "FvwmWindowMenu"              FvwmViewManPage  FvwmWindowMenu
++ "" Nop
++ "fvwm-config"                 FvwmViewManPage  fvwm-config
++ "fvwm-perllib"                FvwmViewManPage  fvwm-perllib
++ "fvwm-root"                   FvwmViewManPage  fvwm-root
++ "fvwm-bug"                    FvwmViewManPage  fvwm-bug
++ "fvwm-convert-2.2"            FvwmViewManPage  fvwm-convert-2.2
++ "fvwm-convert-2.4"            FvwmViewManPage  fvwm-convert-2.4
++ "" Nop
++ "fvwm-menu-desktop"           FvwmViewManPage  fvwm-menu-desktop
++ "fvwm-menu-directory"         FvwmViewManPage  fvwm-menu-directory
++ "fvwm-menu-headlines"         FvwmViewManPage  fvwm-menu-headlines
++ "fvwm-menu-xlock"             FvwmViewManPage  fvwm-menu-xlock
+
+
+
+
+################################################################################
+# Startup Functions
+################################################################################
+
+DestroyFunc                     StartFunction
+AddToFunc                       StartFunction
++ I Module                      FvwmPager 0 1
++ I Exec                        aplay $[fvwm_sound]
+
+DestroyFunc                     InitFunction
+AddToFunc                       InitFunction
++ I Exec                        exec fvwm-root -r $[fvwm_wallpapers]/background.png
++ I                             FvwmXTerm
+
+
+DestroyFunc                     RestartFunction
+AddToFunc                       RestartFunction
++ I                             Nop
+
+
+
+################################################################################
+# Program Launching Functions
+################################################################################
+DestroyFunc                     FvwmXTerm
+AddToFunc                       FvwmXTerm
++ I Exec                        exec xterm
+
+DestroyFunc                     FvwmDolphin
+AddToFunc                       FvwmDolphin
++ I Exec                        exec dolphin
+
+DestroyFunc                     FvwmVirtualBox
+AddToFunc                       FvwmVirtualBox
++ I Exec                        exec virtualbox
+
+DestroyFunc                     FvwmWebBrowser
+AddToFunc                       FvwmWebBrowser
++ I Exec                        exec firefox
+
+DestroyFunc                     FvwmThunderbird
+AddToFunc                       FvwmThunderbird
++ I Exec                        exec thunderbird
+
+DestroyFunc                     FvwmEmacs
+AddToFunc                       FvwmEmacs
++ I Exec                        exec emacs
+
+DestroyFunc                     FvwmKcalc
+AddToFunc                       FvwmKcalc
++ I Exec                        exec kcalc
+
+DestroyFunc                     FvwmMateCalc
+AddToFunc                       FvwmMateCalc
++ I Exec                        exec mate-calc
+
+DestroyFunc                     FvwmPidgin
+AddToFunc                       FvwmPidgin
++ I Exec                        exec pidgin
+
+DestroyFunc                     FvwmXChat
+AddToFunc                       FvwmXChat
++ I Exec                        exec xchat
+
+DestroyFunc                     FvwmSkype
+AddToFunc                       FvwmSkype
++ I Exec                        exec skype
+
+DestroyFunc                     FvwmLibreOffice
+AddToFunc                       FvwmLibreOffice
++ I Exec                        exec libreoffice
+
+DestroyFunc                     FvwmAdobeReader
+AddToFunc                       FvwmAdobeReader
++ I Exec                        exec acroread
+
+DestroyFunc                     FvwmHtop
+AddToFunc                       FvwmHtop
++ I Exec                        exec xterm htop
+
+DestroyFunc                     FvwmXfontsel
+AddToFunc                       FvwmXfontsel
++ I Exec                        exec xfontsel
+
+DestroyFunc                     FvwmVlc
+AddToFunc                       FvwmVlc
++ I Exec                        exec vlc
+
+DestroyFunc                     FvwmXclock
+AddToFunc                       FvwmXclock
++ I Exec                        exec xclock -digital -font -adobe-times-bold-r-*-*-14-*-*-*-*-*-*-* -update 1
+
+DestroyFunc                     FvwmFirefox
+AddToFunc                       FvwmFirefox
++ I Exec                        exec firefox
+
+DestroyFunc                     FvwmChrome
+AddToFunc                       FvwmChrome
++ I Exec                        exec google-chrome
+
+DestroyFunc                     FvwmXmms
+AddToFunc                       FvwmXmms
++ I Exec                        exec xmms
+
+DestroyFunc                     FvwmSMPlayer
+AddToFunc                       FvwmSMPlayer
++ I Exec                        exec smplayer
+
+DestroyFunc                     FvwmTvMaxe
+AddToFunc                       FvwmTvMaxe
++ I Exec                        exec tvmaxe
+
+DestroyFunc                     FvwmGimp
+AddToFunc                       FvwmGimp
++ I Exec                        exec gimp
+
+DestroyFunc                     FvwmPinta
+AddToFunc                       FvwmPinta
++ I Exec                        exec pinta
+
+DestroyFunc                     FvwmKsnapshot
+AddToFunc                       FvwmKsnapshot
++ I Exec                        exec ksnapshot
+
+DestroyFunc                     FvwmGwenview
+AddToFunc                       FvwmGwenview
++ I Exec                        exec gwenview
+
+DestroyFunc                     FvwmSimplescreenrecorder
+AddToFunc                       FvwmSimplescreenrecorder
++ I Exec                        exec simplescreenrecorder
+
+DestroyFunc                     FvwmKate
+AddToFunc                       FvwmKate
++ I Exec                        exec kate
+
+DestroyFunc                     FvwmKWrite
+AddToFunc                       FvwmKWrite
++ I Exec                        exec kwrite
+
+DestroyFunc                     FvwmMeld
+AddToFunc                       FvwmMeld
++ I Exec                        exec /opt/meld-1.8.6/bin/meld
+
+DestroyFunc                     FvwmNetbeans
+AddToFunc                       FvwmNetbeans
++ I Exec                        exec /opt/netbeans-8.0.2/bin/netbeans
+
+DestroyFunc                     FvwmDdd
+AddToFunc                       FvwmDdd
++ I Exec                        exec ddd
+
+DestroyFunc                     FvwmKrdc
+AddToFunc                       FvwmKrdc
++ I Exec                        exec krdc
+
+DestroyFunc                     FvwmLibreoffice
+AddToFunc                       FvwmLibreoffice
++ I Exec                        exec libreoffice
+
+DestroyFunc                     FvwmPavucontrol
+AddToFunc                       FvwmPavucontrol
++ I Exec                        exec pavucontrol
+
+DestroyFunc                     FvwmPaprefs
+AddToFunc                       FvwmPaprefs
++ I Exec                        exec paprefs
+
+DestroyFunc                     FvwmDukascopy
+AddToFunc                       FvwmDukascopy
++ I Exec                        exec $[HOME]/JForex/start.sh
+
+DestroyFunc                     FvwmViewManPage
+AddToFunc                       FvwmViewManPage
++ I Exec                        exec xterm -fg White -bg DarkBlue -g 80x40 \
+                                -fn 7x14 -fb 7x14bold -n "Manual Page - $0" \
+                                -T "Manual Page - $0" -e man "$0"
+
+
+################################################################################
+# Modules section
+################################################################################
+
+# FvwmIdent --------------------------------------------------------------------
+DestroyModuleConfig              FvwmIdent: *
+*FvwmIdent:                      Colorset 2
+*FvwmIdent:                      Font -adobe-courier-bold-r-*-*-14-*-*-*-*-*-*-*
+
+
+
+# FvwmPager --------------------------------------------------------------------
+DestroyModuleConfig              FvwmPager: *
+*FvwmPager:                      HilightColorset * 3
+*FvwmPager:                      Geometry 225x60-0-0
+
+
+################################################################################
+# Others
+################################################################################
+
+# Ater turning on numlock all keybindings stop working
+IgnoreModifiers                  L25

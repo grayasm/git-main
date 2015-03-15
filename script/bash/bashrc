@@ -1,0 +1,19 @@
+# .bashrc
+# cp $HOME/.bashrc  $HOME/Code/svn-trunk/script/bash/bashrc
+# svn status $HOME/Code/svn-trunk
+
+
+# Source global definitions
+if [ -f /etc/bashrc ]; then
+	. /etc/bashrc
+fi
+
+# User specific aliases and functions
+# If not running interactively, don't do anything
+[[ $- != *i* ]] && return
+
+
+
+if [ -f $HOME/.bash_aliases ]; then
+	. $HOME/.bash_aliases
+fi

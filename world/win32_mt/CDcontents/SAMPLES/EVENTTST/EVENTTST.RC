@@ -1,0 +1,203 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#ifdef RC_INVOKED
+#ifndef _INC_WINDOWS
+#define _INC_WINDOWS
+    #include "winres.h"           // extract from windows header
+#endif
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+GENICO                  ICON    DISCARDABLE     "EventTst.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+EVENTTSTMENU MENU DISCARDABLE 
+BEGIN
+    POPUP "&File"
+    BEGIN
+        MENUITEM "&About",                      IDM_ABOUT
+        MENUITEM SEPARATOR
+        MENUITEM "E&xit",                       IDM_EXIT
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+ABOUTBOX DIALOG DISCARDABLE  22, 17, 144, 83
+STYLE DS_MODALFRAME | WS_CAPTION | WS_SYSMENU
+CAPTION "About EventTst"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CTEXT           "Event Objects Demonstration App",IDC_STATIC,0,5,144,8
+    CTEXT           "Multithreading Applications  in Win32",IDC_STATIC,0,14,
+                    144,8
+    CTEXT           "Chapter 4",IDC_STATIC,0,23,144,8
+    DEFPUSHBUTTON   "OK",IDOK,56,59,32,14,WS_GROUP
+    CTEXT           "Copyright  © 1996 James E. Beveridge.\nAll rights reserved.",
+                    IDC_STATIC,0,36,144,18
+END
+
+IDD_EVENT DIALOGEX 0, 0, 279, 137
+STYLE WS_CHILD
+EXSTYLE WS_EX_CLIENTEDGE
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    CONTROL         "&Automatic",IDC_AUTOMATIC,"Button",BS_AUTORADIOBUTTON | 
+                    WS_GROUP | WS_TABSTOP,18,21,71,10
+    CONTROL         "&Manual",IDC_MANUAL,"Button",BS_AUTORADIOBUTTON,18,33,
+                    50,10
+    GROUPBOX        "Type of Event Object",IDC_STATIC,7,7,99,42,WS_GROUP
+    PUSHBUTTON      "&PulseEvent",IDC_PULSE,30,57,55,14
+    PUSHBUTTON      "&SetEvent",IDC_SIGNAL,30,74,55,14
+    PUSHBUTTON      "&ResetEvent",IDC_RESET,30,90,55,14
+    PUSHBUTTON      "&Clear Results",IDC_CLEAR,7,116,99,14
+    LISTBOX         IDC_RESULTS,119,7,153,123,LBS_NOSEL | WS_VSCROLL | 
+                    WS_TABSTOP
+END
+
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#ifdef RC_INVOKED\r\n"
+    "#ifndef _INC_WINDOWS\r\n"
+    "#define _INC_WINDOWS\r\n"
+    "    #include ""winres.h""           // extract from windows header\r\n"
+    "#endif\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    "ABOUTBOX", DIALOG
+    BEGIN
+        BOTTOMMARGIN, 75
+    END
+
+    IDD_EVENT, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 272
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 130
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+#ifndef _MAC
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904b0"
+        BEGIN
+            VALUE "Comments", "Sample program for Multithreading Applications in Win32\0"
+            VALUE "CompanyName", "\0"
+            VALUE "FileDescription", "EVENTTST MFC Application\0"
+            VALUE "FileVersion", "1, 0, 0, 1\0"
+            VALUE "InternalName", "EVENTTST\0"
+            VALUE "LegalCopyright", "Copyright © 1996 James E. Beveridge. All rights reserved.\0"
+            VALUE "OriginalFilename", "EVENTTST.EXE\0"
+            VALUE "ProductName", "EVENTTST Application\0"
+            VALUE "ProductVersion", "1, 0, 0, 1\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+#endif    // !_MAC
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

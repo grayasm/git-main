@@ -1,0 +1,7 @@
+; IS2ODBC.def : declares the module parameters for the DLL.
+
+LIBRARY	     "IS2ODBC"
+
+EXPORTS
+	HttpExtensionProc
+	GetExtensionVersion

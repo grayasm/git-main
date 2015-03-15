@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configurationDescriptor version="94">
+  <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
+    <df root="." name="0">
+      <df name="src">
+        <in>buletin_meteo.cpp</in>
+        <in>buletin_meteo.h</in>
+        <in>caroiaj.cpp</in>
+        <in>caroiaj.h</in>
+        <in>cfdnart.cpp</in>
+        <in>citire_distanta.cpp</in>
+        <in>citire_distanta.h</in>
+        <in>conditii_balistice_transport_de_foc.cpp</in>
+        <in>conditii_balistice_transport_de_foc.h</in>
+        <in>conditii_meteo_balistice.cpp</in>
+        <in>conditii_meteo_balistice.h</in>
+        <in>conducerea_focului.cpp</in>
+        <in>conducerea_focului.h</in>
+        <in>control_lucru.cpp</in>
+        <in>control_lucru.h</in>
+        <in>dispozitiv_de_lupta.cpp</in>
+        <in>dispozitiv_de_lupta.h</in>
+        <in>foc_de_baraj.cpp</in>
+        <in>foc_de_baraj.h</in>
+        <in>gisment_distanta.cpp</in>
+        <in>gisment_distanta.h</in>
+        <in>harta_codificata.cpp</in>
+        <in>harta_codificata.h</in>
+        <in>obiectiv.cpp</in>
+        <in>obiectiv.h</in>
+        <in>observare_conjugata.cpp</in>
+        <in>observare_conjugata.h</in>
+        <in>pregatire_completa.cpp</in>
+        <in>pregatire_completa.h</in>
+        <in>principal_afx.h</in>
+        <in>rectangular.cpp</in>
+        <in>rectangular.h</in>
+        <in>structura_elementelor.cpp</in>
+        <in>structura_elementelor.h</in>
+        <in>tabla_tragere.cpp</in>
+        <in>tabla_tragere.h</in>
+        <in>transport_de_foc.cpp</in>
+        <in>transport_de_foc.h</in>
+      </df>
+    </df>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false"
+                   kind="IMPORTANT_FILES_FOLDER">
+      <itemPath>Makefile</itemPath>
+    </logicalFolder>
+  </logicalFolder>
+  <sourceFolderFilter>^(nbproject)$</sourceFolderFilter>
+  <sourceRootList>
+    <Elem>.</Elem>
+  </sourceRootList>
+  <projectmakefile>Makefile</projectmakefile>
+  <confs>
+    <conf name="Default" type="0">
+      <toolsSet>
+        <compilerSet>default</compilerSet>
+        <dependencyChecking>false</dependencyChecking>
+        <rebuildPropChanged>false</rebuildPropChanged>
+      </toolsSet>
+      <codeAssistance>
+      </codeAssistance>
+      <makefileType>
+        <makeTool>
+          <buildCommandWorkingDir>.</buildCommandWorkingDir>
+          <buildCommand>${MAKE} -f Makefile</buildCommand>
+          <cleanCommand>${MAKE} -f Makefile clean</cleanCommand>
+          <executablePath>src/uxcfart</executablePath>
+          <ccTool>
+            <incDir>
+              <pElem>src</pElem>
+              <pElem>../../lib/misc/src</pElem>
+            </incDir>
+            <preprocessorList>
+              <Elem>_GLIBCXX_DEBUG</Elem>
+              <Elem>_GLIBCXX_DEBUG_PEDANTIC</Elem>
+            </preprocessorList>
+          </ccTool>
+        </makeTool>
+      </makefileType>
+      <item path="src/buletin_meteo.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/buletin_meteo.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/caroiaj.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/caroiaj.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/cfdnart.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/citire_distanta.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/citire_distanta.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/conditii_balistice_transport_de_foc.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="src/conditii_balistice_transport_de_foc.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="src/conditii_meteo_balistice.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/conditii_meteo_balistice.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/conducerea_focului.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/conducerea_focului.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/control_lucru.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/control_lucru.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/dispozitiv_de_lupta.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/dispozitiv_de_lupta.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/foc_de_baraj.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/foc_de_baraj.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/gisment_distanta.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/gisment_distanta.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/harta_codificata.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/harta_codificata.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/obiectiv.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/obiectiv.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/observare_conjugata.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/observare_conjugata.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/pregatire_completa.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/pregatire_completa.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/principal_afx.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/rectangular.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/rectangular.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/structura_elementelor.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/structura_elementelor.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/tabla_tragere.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/tabla_tragere.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/transport_de_foc.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/transport_de_foc.h" ex="false" tool="3" flavor2="0">
+      </item>
+    </conf>
+  </confs>
+</configurationDescriptor>

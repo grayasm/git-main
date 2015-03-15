@@ -1,0 +1,115 @@
+ISO C/C++ grammars version 1.2
+
+This package contains the grammar for the ISO C language as specified
+by the ISO 9899:1990 standard and the grammar for the ISO C++ language
+as specified by the September 1996 ISO draft standard.
+
+Every grammar is composed by the lexical analyzer and the parser.
+The lexical analyzer (lexer.l) must be preprocessed by the ``flex'' utility
+while the parser (parser.y) by the ``yacc'' utility or a compatible
+replacement (e.g. ``bison'').
+
+-- Some notes ----------------------------------------------------------------
+
+Neither the C grammar nor the C++ grammar implement the preprocessing
+features.  This is because:
+(1) The preprocessor is usually implemented as a separated program and
+    implementing both the preprocessor and the compiler into a single program
+    is not a Good Thing;
+(2) Writing a preprocessor using lex/yacc is ugly and useless.
+
+The lexical analyzers of the two languages don't currently handle the
+``#line'', and ``#pragma'' *compiler* directives
+(the ``#line'' directives are usually converted into ``# <something>'' by
+the preprocessor, but this is another story...).
+This is so because the implementation is different on every compiler
+and depends on the developers ideas.  Anyway this feature is really
+easy to implement and is left as an exercise for the developer. <grin>
+
+The difference between an identifier and a type name must be resolved
+by the developer code and can't be handled without writing the symbol
+table routines.  In the meantime, for just testing the parser functionality,
+a skeleton function is available in the lexical analyzers:
+
+static int
+check_identifier(const char *s)
+{
+	if (isupper(s[0]))
+		return TYPEDEF_NAME;
+
+	return IDENTIFIER;
+}
+
+This returns the ``TYPEDEF_NAME'' token if the first character of the
+identifier is uppercase, otherwise the ``IDENTIFIER'' token.
+In other words, if you want to parse correctly the following code:
+
+typedef int *intp;
+
+intp foo, bar;
+
+you may give to the parser the following input:
+
+typedef int *intp;
+
+INTP foo, bar;
+
+-- The ISO C grammar ---------------------------------------------------------
+
+The ISO C grammar is clean because generates only one conflict
+(the usual ``shift/reduce'' conflict on the dangling ``else'' in the
+``if-if-else'' constructs).
+The optional non-terminals described in the standard are expanded
+inline, e.g.:
+
+declaration_specifiers:
+	storage_class_specifier_opt declaration_specifiers
+	| type_specifier_opt declaration_specifiers
+	| type_qualifier_opt declaration_specifiers
+	;
+
+is expanded into:
+
+declaration_specifiers:
+	storage_class_specifier declaration_specifiers
+	| storage_class_specifier
+	| type_specifier declaration_specifiers
+	| type_specifier
+	| type_qualifier declaration_specifiers
+	| type_qualifier
+	;
+
+The non standard but useful support for empty source files is easy, just
+replace the following:
+
+translation_unit:
+	external_declaration
+	| translation_unit external_declaration
+	;
+
+with:
+
+translation_unit:
+	/* epsilon */
+	| nonempty_translation_unit
+	;
+
+nonempty_translation_unit:
+	external_declaration
+	| nonempty_translation_unit external_declaration
+	;
+
+-- The ISO C++ grammar -------------------------------------------------------
+
+The ISO C++ grammar contains *many* conflicts because it is a
+literal copy of the grammar published in the draft standard and no
+correction is made for working around the complexity and ambiguity
+of the language.  I will track down the conflicts in the future;
+please consider this grammar only for informational purposes until I
+fix the problems.
+
+Naturally, any suggestion and bug report is welcome.
+
+---
+Sandro Sigala
+ssigala@globalnet.it

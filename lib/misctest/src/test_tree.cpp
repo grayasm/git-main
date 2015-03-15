@@ -1,0 +1,1380 @@
+/*
+  Copyright (C) 2012 Mihai Vasilian
+
+  This program is free software; you can redistribute it and/or modify it
+  under the terms of the GNU General Public License as published by the
+  Free Software Foundation; either version 2 of the License, or (at your
+  option) any later version.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  See the GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License along
+  with this program. If not, see http://www.gnu.org/licenses/.
+
+  contact: grayasm@gmail.com
+*/
+
+
+
+//this
+#include "test_tree.hpp"
+
+
+//c++
+#include <iostream>
+
+
+//CppUnit
+#include <cppunit/CompilerOutputter.h>
+#include <cppunit/extensions/TestFactoryRegistry.h>
+#include <cppunit/ui/text/TestRunner.h>
+
+//libraries
+#include "exception.hpp"
+#include "string.hpp"
+#include "stream.hpp"
+#include "misctest_util.hpp"
+#include "tree.hpp"
+
+
+
+
+void test_tree::setUp()
+{
+}
+
+void test_tree::tearDown()
+{
+}
+
+//########################################################################
+// test suite
+
+void test_tree::test_00()
+{
+	typedef misc::tree<misc::string> Tree;
+	typedef Tree::iterator It;
+	Tree mtree1;
+	typedef misc::tree<misc::string>::preorder_iterator preIt;
+	typedef misc::tree<misc::string>::preorder_const_iterator preCIt;
+
+
+
+	misc::string tree_data[]={
+		U("1"),U("4"),U("5"),U("6"),U("7"),U("8"),U("2"),U("9"),
+		U("10"),U("11"),U("3"),U("12"),U("13"),U("14")
+	};
+
+	/*
+                    root
+                     |
+       1------------ 2 --------------- 3
+       |             |                 |
+    4 --- 7          9                12
+    |     |          |                 |
+  5---6   8         10            13 ----- 14
+                     |
+                    11
+
+	*/
+
+	It i1 = mtree1.push_back(U("1"));
+	It i2 = mtree1.push_back(U("2"));
+	It i3 = mtree1.push_back(U("3"));
+
+	It i4 = mtree1.push_back_child(i1, U("4"));
+	It i7 = mtree1.push_back_child(i1, U("7"));
+
+	It i5 = mtree1.push_back_child(i4, U("5"));
+	It i6 = mtree1.push_back_child(i4, U("6"));
+	It i8 = mtree1.push_back_child(i7, U("8"));
+
+	It i9 = mtree1.push_back_child(i2, U("9"));
+	It i10 = mtree1.push_back_child(i9, U("10"));
+	It i11 = mtree1.push_back_child(i10, U("11"));
+
+	It i12 = mtree1.push_back_child(i3, U("12"));
+	It i13 = mtree1.push_back_child(i12, U("13"));
+	It i14 = mtree1.push_back_child(i12, U("14"));
+
+
+
+	size_t i=0;
+
+	//////////////////////////////////////////////////////////////////////////
+	//begin tests
+
+	const Tree ctree1 = mtree1;
+
+
+	preCIt cbeg = ctree1.preorder_begin();
+	preCIt cend = ctree1.preorder_end();
+
+	// const_preorder_iterator& operator++();
+	for(i=0; cbeg != cend && i < 7; ++cbeg, ++i)
+	{
+		bool res = (*cbeg == tree_data[i]);
+		CPPUNIT_ASSERT(res);
+	}//for
+
+	// const_preorder_iterator operator++(int);
+	for(; cbeg != cend; cbeg++, ++i)
+	{
+		bool res = ((*cbeg) == tree_data[i]);
+		CPPUNIT_ASSERT(res); 
+	}//for
+
+	--cbeg;
+	preCIt cbeg2 = ctree1.preorder_begin();
+	i=13;
+
+	// const_preorder_iterator& operator--();
+	for(; cbeg != cbeg2 && i > 7; --cbeg, --i)
+	{
+		bool res = ((*cbeg) == tree_data[i]);
+		CPPUNIT_ASSERT(res);
+	}//for
+
+
+	//  const_preorder_iterator operator--(int);
+	for(; cbeg != cbeg2; cbeg--, --i)
+	{
+		bool res = (*cbeg == tree_data[i]);
+		CPPUNIT_ASSERT(res);
+	}//for
+
+	CPPUNIT_ASSERT(i == 0 && *cbeg == tree_data[i] && *cbeg == *cbeg2);
+
+	//////////////////////////////////////////////////////////////////////////
+
+
+
+	preIt beg = mtree1.preorder_begin();
+	preIt end = mtree1.preorder_end();
+
+	
+	// preorder_iterator& operator++();
+	for(i=0; beg != end && i < 7; ++beg, ++i)
+	{
+		bool res = ((*beg) == tree_data[i]);
+		CPPUNIT_ASSERT(res);
+	}//for
+
+	// preorder_iterator operator++(int);
+	for(; beg != end; beg++, ++i)
+	{
+		bool res = ((*beg) == tree_data[i]);
+		CPPUNIT_ASSERT(res);
+	}//for
+
+	--beg;
+	preIt beg2 = mtree1.preorder_begin();
+	
+	i=13;
+	//	preorder_iterator& operator--();
+	for(; beg != beg2 && i > 7; --beg, --i)
+	{
+		bool res = ((*beg) == tree_data[i]);
+		CPPUNIT_ASSERT(res);
+	}//for
+
+
+	// preorder_iterator operator--(int);
+	for(; beg != beg2; beg--, --i)
+	{
+		bool res = ((*beg) == tree_data[i]);
+		CPPUNIT_ASSERT(res);
+	}//for
+
+	CPPUNIT_ASSERT(i == 0 && *beg == tree_data[i] && *beg == *beg2);
+
+
+	/*
+	  preorder_iterator tree<T>::preorder_begin(iterator);
+	  preorder_iterator tree<T>::preorder_end(iterator);
+	*/
+
+
+	misc::string recursive_data2[]={U("3"), U("12"), U("13"), U("14")};
+	beg = mtree1.preorder_begin(i3);
+	beg2 = mtree1.preorder_begin(i3);
+	end = mtree1.preorder_end(i3);
+	i=0;
+	for(; beg != end; ++beg, ++i)
+	{
+		bool res = (*beg == recursive_data2[i]);
+		CPPUNIT_ASSERT(res);
+	}//for
+
+	--beg;
+	--i;
+	for(; beg != beg2; --beg, --i)
+	{
+		bool res = (*beg == recursive_data2[i]);
+		CPPUNIT_ASSERT(res);
+	}//for
+
+
+
+
+	Tree mtree2 = mtree1;
+	Tree mtree3 ;
+	mtree3 = mtree2 ;
+
+//TODO: "gcc error: no match for ‘operator!=’ (operand types are ‘misc::podstring<char>’ and ‘misc::podstring<char>’ "
+#define FIXED_CAN_REMOVE_THIS
+#ifdef FIXED_CAN_REMOVE_THIS
+	CPPUNIT_ASSERT(mtree2 == mtree1);
+	CPPUNIT_ASSERT(mtree3 == mtree2);
+#endif
+
+
+	//////////////////////////////////////////////////////////////////////////
+	//checking first_branch_iterator
+	misc::string first_branch_data[]={U("1"), U("4"), U("5")};
+	Tree::first_branch_iterator fbbeg = mtree3.first_branch_begin();
+	Tree::first_branch_iterator fbbeg2 = mtree3.first_branch_begin();
+	Tree::first_branch_iterator fbend = mtree3.first_branch_end();
+	i=0;
+
+	/*
+	  first_branch_iterator& first_branch_iterrator::operator++();
+	*/
+	for(; fbbeg != fbend; ++fbbeg, ++i)
+	{
+		bool res = (*fbbeg == first_branch_data[i]);
+		CPPUNIT_ASSERT(res);
+	}//for
+
+	/*
+	  first_branch_iterator& first_branch_iterator::operator--();
+	*/
+	--fbbeg;
+	--i;
+	for(; fbbeg != fbbeg2; --fbbeg, --i)
+	{
+		bool res = (*fbbeg == first_branch_data[i]);
+		CPPUNIT_ASSERT(res);
+	}//for
+
+
+	misc::string first_branch_data2[]={ U("7"), U("8") };
+	fbbeg = mtree1.first_branch_begin(i7);
+	fbbeg2 = mtree1.first_branch_begin(i7);
+	fbend = mtree1.first_branch_end(i7);
+
+
+
+	//	first_branch_iterator first_branch_iterator::operator++(int);
+	for(i=0; fbbeg != fbend; fbbeg++, i++)
+	{
+		bool res = (*fbbeg == first_branch_data2[i]);
+		CPPUNIT_ASSERT(res);
+	}//for
+
+	fbbeg--;
+	i--;
+
+	//	first_branch_iterator first_branch_iterator::operator--(int);
+	for(; fbbeg != fbbeg2; fbbeg--, i--)
+	{
+		bool res = (*fbbeg == first_branch_data2[i]);
+		CPPUNIT_ASSERT(res);
+	}//for
+
+
+	misc::string first_branch_data3[]={ U("2"), U("9"), U("10"), U("11") };
+	fbbeg = mtree1.first_branch_begin(i2);
+	fbbeg2 = mtree1.first_branch_begin(i2);
+	fbend = mtree1.first_branch_end(i2);
+
+	//	first_branch_iterator first_branch_iterator::operator++(int);
+	for(i=0; fbbeg != fbend; ++fbbeg, ++i)
+	{
+		bool res = (*fbbeg == first_branch_data3[i]);
+		CPPUNIT_ASSERT(res);
+	}//for
+
+	--fbbeg;
+	--i;
+
+	/*
+	  first_branch_iterator first_branch_iterator::operator--(int);
+	*/
+	for(; fbbeg != fbbeg2; --fbbeg, --i)
+	{
+		CPPUNIT_ASSERT(*fbbeg == first_branch_data3[i]);
+	}//for
+
+
+	misc::string first_branch_data4[]={U("3"), U("12"), U("13") };
+	fbbeg = mtree1.first_branch_begin(i3);
+	fbbeg2 = mtree1.first_branch_begin(i3);
+	fbend = mtree1.first_branch_end(i3);
+
+	/*
+	  first_branch_iterator first_branch_iterator::operator++(int);
+	*/
+	for(i=0; fbbeg != fbend; fbbeg++, i++)
+	{
+		CPPUNIT_ASSERT(*fbbeg == first_branch_data4[i]);
+	}//for
+
+	fbbeg--;
+	i--;
+
+	/*
+	  first_branch_iterator first_branch_iterator::operator--(int);
+	*/
+	for(; fbbeg != fbbeg2; fbbeg--, i--)
+	{
+		CPPUNIT_ASSERT(*fbbeg == first_branch_data4[i]);
+	}//for
+
+
+	misc::string first_branch_data5[]={U("14")};
+	fbbeg = mtree1.first_branch_begin(i14);
+	fbbeg2 = mtree1.first_branch_begin(i14);
+	fbend = mtree1.first_branch_end(i14);
+
+	/*
+	  first_branch_iterator first_branch_iterator::operator++(int);
+	*/
+	for(i=0; fbbeg != fbend; ++fbbeg, ++i)
+	{
+		CPPUNIT_ASSERT(*fbbeg == first_branch_data5[i]);
+	}//for
+
+	--fbbeg;
+	--i;
+
+	/*
+	  first_branch_iterator first_branch_iterator::operator--(int);
+	*/
+	for(; fbbeg != fbbeg2; --fbbeg, --i)
+	{
+		CPPUNIT_ASSERT(*fbbeg == first_branch_data5[i]);
+	}//for
+
+
+	misc::string rev_rec_data1[]={U("5"),U("6"),U("4"),U("8"),U("7"),U("1"),U("11"),U("10"),U("9"),U("2"),U("13"),U("14"),U("12"),U("3")};
+	Tree::postorder_iterator rribeg = mtree1.postorder_begin();
+	Tree::postorder_iterator rriend = mtree1.postorder_end();
+	for(i=0; rribeg != rriend; ++rribeg, ++i)
+	{
+		CPPUNIT_ASSERT(*rribeg == rev_rec_data1[i]);
+	}//for
+}
+
+
+// -- iterators --
+void test_tree::preorder_it()
+{
+	misc::cout << "\n\n\t*******************************************************";
+	misc::cout <<   "\n\t* TESTING HEADER: tree.hpp                            *";
+	misc::cout <<   "\n\t*******************************************************";
+	
+	misc::cout << "\n\n\tpreorder_it--------------------------------------------";
+
+	preorder_it<misc::tree<misc::string> >("\n\tpreorder_it<misc::string>          ");
+	preorder_it<misc::tree<std::string> > ("\n\tpreorder_it<std::string>           ");
+}
+
+void test_tree::preorder_const_it()
+{
+
+	misc::cout << "\n\n\tpreorder_const_it--------------------------------------";
+
+	preorder_const_it<misc::tree<misc::string> >("\n\tpreorder_const_it<misc::string>    ");
+	preorder_const_it<misc::tree<std::string> > ("\n\tpreorder_const_it<std::string>     ");
+}
+
+void test_tree::postorder_it()
+{
+	misc::cout << "\n\n\tpostorder_it-------------------------------------------";
+
+	postorder_it<misc::tree<misc::string> >("\n\tpostorder_it<misc::string>         ");
+	postorder_it<misc::tree<std::string> > ("\n\tpostorder_it<std::string>          ");
+}
+
+void test_tree::postorder_const_it()
+{
+	misc::cout << "\n\n\tpostorder_const_it-------------------------------------";
+
+	postorder_const_it<misc::tree<misc::string> >("\n\tpostorder_const_it<misc::string>   ");
+	postorder_const_it<misc::tree<std::string> > ("\n\tpostorder_const_it<std::string>    ");
+}
+
+void test_tree::first_branch_it()
+{
+	misc::cout << "\n\n\tfirst_branch_it----------------------------------------";
+
+	first_branch_it<misc::tree<misc::string> >("\n\tfirst_branch_it<misc::string>      ");
+	first_branch_it<misc::tree<std::string> > ("\n\tfirst_branch_it<std::string>       ");
+}
+
+void test_tree::first_branch_const_it()
+{
+	misc::cout << "\n\n\tfirst_branch_const_it----------------------------------";
+
+	first_branch_const_it<misc::tree<misc::string> >("\n\tfirst_branch_const_it<misc::string>");
+	first_branch_const_it<misc::tree<std::string> > ("\n\tfirst_branch_const_it<std::string> ");
+}
+
+void test_tree::child_it()
+{
+	misc::cout << "\n\n\tchild_it-----------------------------------------------";
+
+	child_it<misc::tree<misc::string> >("\n\tchild_it<misc::string>             ");
+	child_it<misc::tree<std::string> > ("\n\tchild_it<std::string>              ");
+}
+
+void test_tree::child_const_it()
+{
+	misc::cout << "\n\n\tchild_const_it-----------------------------------------";
+
+	child_const_it<misc::tree<misc::string> >("\n\tchild_const_it<misc::string>       ");
+	child_const_it<misc::tree<std::string> > ("\n\tchild_const_it<std::string>        ");
+}
+
+
+
+// -- main class --
+void test_tree::ctor()
+{
+	misc::cout << "\n\n\tctor---------------------------------------------------";
+
+	ctor<misc::tree<misc::string> >("\n\tctor<misc::string>                 ");
+	ctor<misc::tree<std::string> > ("\n\tctor<std::string>                  ");
+}
+
+void test_tree::dtor()
+{
+	misc::cout << "\n\n\tdtor---------------------------------------------------";
+
+	dtor<misc::tree<misc::string> >("\n\tdtor<misc::string>                 ");
+	dtor<misc::tree<std::string> > ("\n\tdtor<std::string>                  ");
+}
+
+void test_tree::copy_ctor()
+{
+	misc::cout << "\n\n\tcopy_ctor----------------------------------------------";
+
+	copy_ctor<misc::tree<misc::string> >("\n\tcopy_ctor<misc::string>            ");
+	copy_ctor<misc::tree<std::string> > ("\n\tcopy_ctor<std::string>             ");
+}
+
+void test_tree::copy_op()
+{
+	misc::cout << "\n\n\tcopy_op------------------------------------------------";
+
+	copy_op<misc::tree<misc::string> >("\n\tcopy_op<misc::string>              ");
+	copy_op<misc::tree<std::string> > ("\n\tcopy_op<std::string>               ");
+}
+
+void test_tree::get_it()
+{
+	misc::cout << "\n\n\tget_it-------------------------------------------------";
+
+	get_it<misc::tree<misc::string> >("\n\tget_it<misc::string>               ");
+	get_it<misc::tree<std::string> > ("\n\tget_it<std::string>                ");
+}
+
+void test_tree::push_back_val()
+{
+	misc::cout << "\n\n\tpush_back_val------------------------------------------";
+
+	push_back_val<misc::tree<misc::string> >("\n\tpush_back_val<misc::string>        ");
+	push_back_val<misc::tree<std::string> > ("\n\tpush_back_val<std::string>         ");
+}
+
+void test_tree::push_front_val()
+{
+	misc::cout << "\n\n\tpush_front_val-----------------------------------------";
+
+	push_front_val<misc::tree<misc::string> >("\n\tpush_front_val<misc::string>       ");
+	push_front_val<misc::tree<std::string> > ("\n\tpush_front_val<std::string>        ");
+}
+
+void test_tree::insert_sibling_before_val()
+{
+	misc::cout << "\n\n\tinsert_sibling_before_val------------------------------";
+
+	insert_sibling_before_val<misc::tree<misc::string> >("\n\tinsert_sibling_before_val<misc>    ");
+	insert_sibling_before_val<misc::tree<std::string> > ("\n\tinsert_sibling_before_val<std>     ");
+}
+
+void test_tree::insert_sibling_after_val()
+{
+	misc::cout << "\n\n\tinsert_sibling_after_val-------------------------------";
+
+	insert_sibling_after_val<misc::tree<misc::string> >("\n\tinsert_sibling_after_val<misc>     ");
+	insert_sibling_after_val<misc::tree<std::string> > ("\n\tinsert_sibling_after_val<std>      ");
+}
+
+void test_tree::push_back_child_val()
+{
+	misc::cout << "\n\n\tpush_back_child_val------------------------------------";
+
+	push_back_child_val<misc::tree<misc::string> >("\n\tpush_back_child_val<misc::string>  ");
+	push_back_child_val<misc::tree<std::string> > ("\n\tpush_back_child_val<std::string>   ");
+}
+
+void test_tree::push_front_child_val()
+{
+	misc::cout << "\n\n\tpush_front_child_val-----------------------------------";
+
+	push_front_child_val<misc::tree<misc::string> >("\n\tpush_front_child_val<misc::string> ");
+	push_front_child_val<misc::tree<std::string> > ("\n\tpush_front_child_val<std::string>  ");
+}
+
+void test_tree::push_back_tree()
+{
+	misc::cout << "\n\n\tpush_back_tree-----------------------------------------";
+
+	push_back_tree<misc::tree<misc::string> >("\n\tpush_back_tree<misc::string>       ");
+	push_back_tree<misc::tree<std::string> > ("\n\tpush_back_tree<std::string>        ");
+}
+
+void test_tree::push_front_tree()
+{
+	misc::cout << "\n\n\tpush_front_tree----------------------------------------";
+
+	push_front_tree<misc::tree<misc::string> >("\n\tpush_front_tree<misc::string>      ");
+	push_front_tree<misc::tree<std::string> > ("\n\tpush_front_tree<std::string>       ");
+}
+
+void test_tree::insert_sibling_before_tree()
+{
+	misc::cout << "\n\n\tinsert_sibling_before_tree-----------------------------";
+
+	insert_sibling_before_tree<misc::tree<misc::string> >("\n\tinsert_sibling_before_tree<misc>   ");
+	insert_sibling_before_tree<misc::tree<std::string> > ("\n\tinsert_sibling_before_tree<std>    ");
+}
+
+void test_tree::insert_sibling_after_tree()
+{
+	misc::cout << "\n\n\tinsert_sibling_after_tree------------------------------";
+
+	insert_sibling_after_tree<misc::tree<misc::string> >("\n\tinsert_sibling_after_tree<misc>    ");
+	insert_sibling_after_tree<misc::tree<std::string> > ("\n\tinsert_sibling_after_tree<std>     ");
+}
+
+void test_tree::push_back_child_tree()
+{
+	misc::cout << "\n\n\tpush_back_child_tree-----------------------------------";
+
+	push_back_child_tree<misc::tree<misc::string> >("\n\tpush_back_child_tree<misc::string> ");
+	push_back_child_tree<misc::tree<std::string> > ("\n\tpush_back_child_tree<std::string>  ");
+}
+
+void test_tree::push_front_child_tree()
+{
+	misc::cout << "\n\n\tpush_front_child_tree----------------------------------";
+
+	push_front_child_tree<misc::tree<misc::string> >("\n\tpush_front_child_tree<misc::string>");
+	push_front_child_tree<misc::tree<std::string> > ("\n\tpush_front_child_tree<std::string> ");
+}
+
+void test_tree::preorder_begin()
+{
+	misc::cout << "\n\n\tpreorder_begin-----------------------------------------";
+
+	preorder_begin<misc::tree<misc::string> >("\n\tpreorder_begin<misc::string>       ");
+	preorder_begin<misc::tree<std::string> > ("\n\tpreorder_begin<std::string>        ");
+}
+
+void test_tree::preorder_end()
+{
+	misc::cout << "\n\n\tpreorder_end-------------------------------------------";
+
+	preorder_end<misc::tree<misc::string> >("\n\tpreorder_end<misc::string>         ");
+	preorder_end<misc::tree<std::string> > ("\n\tpreorder_end<std::string>          ");
+}
+
+void test_tree::preorder_begin_it()
+{
+	misc::cout << "\n\n\tpreorder_begin_it--------------------------------------";
+
+	preorder_begin_it<misc::tree<misc::string> >("\n\tpreorder_begin_it<misc::string>    ");
+	preorder_begin_it<misc::tree<std::string> > ("\n\tpreorder_begin_it<std::string>     ");
+}
+
+void test_tree::preorder_end_it()
+{
+	misc::cout << "\n\n\tpreorder_end_it----------------------------------------";
+
+	preorder_end_it<misc::tree<misc::string> >("\n\tpreorder_end_it<misc::string>      ");
+	preorder_end_it<misc::tree<std::string> > ("\n\tpreorder_end_it<std::string>       ");
+}
+
+void test_tree::postorder_begin()
+{
+	misc::cout << "\n\n\tpostorder_begin----------------------------------------";
+
+	postorder_begin<misc::tree<misc::string> >("\n\tpostorder_begin<misc::string>      ");
+	postorder_begin<misc::tree<std::string> > ("\n\tpostorder_begin<std::string>       ");
+}
+
+void test_tree::postorder_end()
+{
+	misc::cout << "\n\n\tpostorder_end------------------------------------------";
+
+	postorder_end<misc::tree<misc::string> >("\n\tpostorder_end<misc::string>        ");
+	postorder_end<misc::tree<std::string> > ("\n\tpostorder_end<std::string>         ");
+}
+
+void test_tree::postorder_begin_it()
+{
+	misc::cout << "\n\n\tpostorder_begin_it-------------------------------------";
+
+	postorder_begin_it<misc::tree<misc::string> >("\n\tpostorder_begin_it<misc::string>   ");
+	postorder_begin_it<misc::tree<std::string> > ("\n\tpostorder_begin_it<std::string>    ");
+}
+
+void test_tree::postorder_end_it()
+{
+	misc::cout << "\n\n\tpostorder_end_it---------------------------------------";
+
+	postorder_end_it<misc::tree<misc::string> >("\n\tpostorder_end_it<misc::string>     ");
+	postorder_end_it<misc::tree<std::string> > ("\n\tpostorder_end_it<std::string>      ");
+}
+
+void test_tree::first_branch_begin()
+{
+	misc::cout << "\n\n\tfirst_branch_begin-------------------------------------";
+
+	first_branch_begin<misc::tree<misc::string> >("\n\tfirst_branch_begin<misc::string>   ");
+	first_branch_begin<misc::tree<std::string> > ("\n\tfirst_branch_begin<std::string>    ");
+}
+
+void test_tree::first_branch_end()
+{
+	misc::cout << "\n\n\tfirst_branch_end---------------------------------------";
+
+	first_branch_end<misc::tree<misc::string> >("\n\tfirst_branch_end<misc::string>     ");
+	first_branch_end<misc::tree<std::string> > ("\n\tfirst_branch_end<std::string>      ");
+}
+
+void test_tree::first_branch_begin_it()
+{
+	misc::cout << "\n\n\tfirst_branch_begin_it----------------------------------";
+
+	first_branch_begin_it<misc::tree<misc::string> >("\n\tfirst_branch_begin_it<misc::string>");
+	first_branch_begin_it<misc::tree<std::string> > ("\n\tfirst_branch_begin_it<std::string> ");
+}
+
+void test_tree::first_branch_end_it()
+{
+	misc::cout << "\n\n\tfirst_branch_end_it------------------------------------";
+
+	first_branch_end_it<misc::tree<misc::string> >("\n\tfirst_branch_end_it<misc::string>  ");
+	first_branch_end_it<misc::tree<std::string> > ("\n\tfirst_branch_end_it<std::string>   ");
+}
+
+void test_tree::child_begin()
+{
+	misc::cout << "\n\n\tchild_begin--------------------------------------------";
+
+	child_begin<misc::tree<misc::string> >("\n\tchild_begin<misc::string>          ");
+	child_begin<misc::tree<std::string> > ("\n\tchild_begin<std::string>           ");
+}
+
+void test_tree::child_end()
+{
+	misc::cout << "\n\n\tchild_end----------------------------------------------";
+
+	child_end<misc::tree<misc::string> >("\n\tchild_end<misc::string>            ");
+	child_end<misc::tree<std::string> > ("\n\tchild_end<std::string>             ");
+}
+
+void test_tree::child_begin_it()
+{
+	misc::cout << "\n\n\tchild_begin_it-----------------------------------------";
+
+	child_begin_it<misc::tree<misc::string> >("\n\tchild_begin_it<misc::string>       ");
+	child_begin_it<misc::tree<std::string> > ("\n\tchild_begin_it<std::string>        ");
+}
+
+void test_tree::child_end_it()
+{
+	misc::cout << "\n\n\tchild_end_it-------------------------------------------";
+
+	child_end_it<misc::tree<misc::string> >("\n\tchild_end_it<misc::string>         ");
+	child_end_it<misc::tree<std::string> > ("\n\tchild_end_it<std::string>          ");
+}
+
+void test_tree::siblings_begin()
+{
+	misc::cout << "\n\n\tsiblings_begin-----------------------------------------";
+
+	siblings_begin<misc::tree<misc::string> >("\n\tsiblings_begin<misc::string>       ");
+	siblings_begin<misc::tree<std::string> > ("\n\tsiblings_begin<std::string>        ");
+}
+
+void test_tree::siblings_end()
+{
+	misc::cout << "\n\n\tsiblings_end-------------------------------------------";
+
+	siblings_end<misc::tree<misc::string> >("\n\tsiblings_end<misc::string>         ");
+	siblings_end<misc::tree<std::string> > ("\n\tsiblings_end<std::string>          ");
+}
+
+void test_tree::siblings_begin_it()
+{
+	misc::cout << "\n\n\tsiblings_begin_it--------------------------------------";
+
+	siblings_begin_it<misc::tree<misc::string> >("\n\tsiblings_begin_it<misc::string>    ");
+	siblings_begin_it<misc::tree<std::string> > ("\n\tsiblings_begin_it<std::string>     ");
+}
+
+void test_tree::siblings_end_it()
+{
+	misc::cout << "\n\n\tsiblings_end_it----------------------------------------";
+
+	siblings_end_it<misc::tree<misc::string> >("\n\tsiblings_end_it<misc::string>      ");
+	siblings_end_it<misc::tree<std::string> > ("\n\tsiblings_end_it<std::string>       ");
+}
+
+void test_tree::empty()
+{
+	misc::cout << "\n\n\tempty--------------------------------------------------";
+
+	empty<misc::tree<misc::string> >("\n\tempty<misc::string>                ");
+	empty<misc::tree<std::string> > ("\n\tempty<std::string>                 ");
+}
+
+void test_tree::size()
+{
+	misc::cout << "\n\n\tsize---------------------------------------------------";
+
+	size<misc::tree<misc::string> >("\n\tsize<misc::string>                 ");
+	size<misc::tree<std::string> > ("\n\tsize<std::string>                  ");
+}
+
+void test_tree::clear()
+{
+	misc::cout << "\n\n\tclear--------------------------------------------------";
+
+	clear<misc::tree<misc::string> >("\n\tclear<misc::string>                ");
+	clear<misc::tree<std::string> > ("\n\tclear<std::string>                 ");
+}
+
+void test_tree::erase()
+{
+	misc::cout << "\n\n\terase--------------------------------------------------";
+
+	erase<misc::tree<misc::string> >("\n\terase<misc::string>                ");
+	erase<misc::tree<std::string> > ("\n\terase<std::string>                 ");
+}
+
+
+//////////////////////////////////////////////////////////////////////////
+// template version
+template<typename container>
+void test_tree::preorder_it(const char* msg)
+{
+	//tree<string> template needed to make this work.
+	typedef container Tree;	
+	typedef typename Tree::value_type Tval;
+	Tree tree0;
+		
+
+	/*
+                    root
+                     |
+       1------------ 2 --------------- 3
+       |             |                 |
+    4 --- 7          9                12
+    |     |          |                 |
+  5---6   8         10            13 ----- 14
+                     |
+                    11
+
+	*/
+
+	typename Tree::iterator i1 = tree0.push_back(Tval("1"));
+	typename Tree::iterator i2 = tree0.push_back(Tval("2"));
+	typename Tree::iterator i3 = tree0.push_back(Tval("3"));
+
+	typename Tree::iterator i4 = tree0.push_back_child(i1, Tval("4"));
+	typename Tree::iterator i7 = tree0.push_back_child(i1, Tval("7"));
+
+	typename Tree::iterator i5 = tree0.push_back_child(i4, Tval("5"));
+	typename Tree::iterator i6 = tree0.push_back_child(i4, Tval("6"));
+	typename Tree::iterator i8 = tree0.push_back_child(i7, Tval("8"));
+
+	typename Tree::iterator i9 = tree0.push_back_child(i2, Tval("9"));
+	typename Tree::iterator i10 = tree0.push_back_child(i9, Tval("10"));
+	typename Tree::iterator i11 = tree0.push_back_child(i10, Tval("11"));
+
+	typename Tree::iterator i12 = tree0.push_back_child(i3, Tval("12"));
+	typename Tree::iterator i13 = tree0.push_back_child(i12, Tval("13"));
+	typename Tree::iterator i14 = tree0.push_back_child(i12, Tval("14"));
+
+	//TEST
+	{
+		time_printer tp(msg, m_print_time);
+
+	}
+
+
+	// tree complete
+	CPPUNIT_ASSERT(tree0.size() == 14);
+
+	// checking preorder_iterator functions
+	Tval ctrlVal[] =
+	{
+		U("1"),U("4"),U("5"),U("6"),U("7"),U("8"),U("2"),U("9"),
+		U("10"),U("11"),U("3"),U("12"),U("13"),U("14")
+	};
+
+	// default ctor()
+	typename Tree::preorder_iterator* poptr = new typename Tree::preorder_iterator();
+	// dtor
+	delete poptr;
+
+	// default ctor, copy operator
+	typename Tree::preorder_iterator pob0, poe0;
+
+	pob0 = tree0.preorder_begin();
+	poe0 = tree0.preorder_end();
+
+	for(size_t i=0; i < tree0.size() && pob0 != poe0; pob0++, i++)//post-increment
+	{
+		CPPUNIT_ASSERT(*pob0 == ctrlVal[i]);
+	}
+	
+	// increment operator
+	typename Tree::preorder_iterator pob2 = tree0.preorder_begin();
+	typename Tree::preorder_iterator poe2 = tree0.preorder_end();
+	for(size_t i=0; i < tree0.size() && pob2 != poe2; ++pob2, ++i)//pre-increment
+	{
+		CPPUNIT_ASSERT(*pob2 == ctrlVal[i]);
+	}
+
+	typename Tree::preorder_iterator pob3 = tree0.preorder_begin();
+	typename Tree::preorder_iterator poe3 = tree0.preorder_end();
+	for(size_t i=0; i < tree0.size() && !(pob3 == poe3); ++pob3, ++i)//equal operator
+	{
+		CPPUNIT_ASSERT(*pob3 == ctrlVal[i]);
+	}
+
+
+	// decrement operator
+	typename Tree::preorder_iterator pob4 = tree0.preorder_begin();
+	typename Tree::preorder_iterator poe4 = tree0.preorder_end();
+	//poe4--;
+	--poe4;
+	for(int i=tree0.size()-1; i >= 0 && poe4 != pob4; pob4--, i--)//post-decrement
+	{
+		CPPUNIT_ASSERT(*poe4 == ctrlVal[i]);
+	}
+
+	typename Tree::preorder_iterator pob5 = tree0.preorder_begin();
+	typename Tree::preorder_iterator poe5 = tree0.preorder_end();
+	--poe5;
+	for(int i=tree0.size()-1; i >=0 && !(poe5 == pob5); --poe5, --i)//pre-decrement
+	{
+		CPPUNIT_ASSERT(*poe5 == ctrlVal[i]);
+		CPPUNIT_ASSERT(*(poe5.operator->()) == ctrlVal[i]);
+	}
+
+	typename Tree::preorder_iterator pob6 = tree0.preorder_begin();
+	for(size_t i=0; i < tree0.size() && pob6 != tree0.preorder_end(); ++pob6, ++i)
+	{
+		CPPUNIT_ASSERT(*pob6 == ctrlVal[i]);
+
+		typename Tree::iterator ib6 = tree0.get_iterator(pob6);
+		typename Tree::preorder_iterator pob6_2(ib6);
+		CPPUNIT_ASSERT(pob6_2 == pob6);
+	}
+
+	CPPUNIT_ASSERT(pob6 == pob6);
+	CPPUNIT_ASSERT(pob6 == tree0.preorder_end());
+}
+
+template<typename container>
+void test_tree::preorder_const_it(const char* msg)
+{
+	//TEST
+	{
+		time_printer tp(msg, m_print_time);
+
+	}
+}
+
+template<typename container>
+void test_tree::postorder_it(const char* msg)
+{
+	//TEST
+	{
+		time_printer tp(msg, m_print_time);
+
+	}
+}
+
+template<typename container>
+void test_tree::postorder_const_it(const char* msg)
+{
+	//TEST
+	{
+		time_printer tp(msg, m_print_time);
+
+	}
+}
+
+template<typename container>
+void test_tree::first_branch_it(const char* msg)
+{
+	//TEST
+	{
+		time_printer tp(msg, m_print_time);
+
+	}
+}
+
+template<typename container>
+void test_tree::first_branch_const_it(const char* msg)
+{
+	//TEST
+	{
+		time_printer tp(msg, m_print_time);
+
+	}
+}
+
+template<typename container>
+void test_tree::child_it(const char* msg)
+{
+	//TEST
+	{
+		time_printer tp(msg, m_print_time);
+
+	}
+}
+
+template<typename container>
+void test_tree::child_const_it(const char* msg)
+{
+	//TEST
+	{
+		time_printer tp(msg, m_print_time);
+
+	}
+}
+
+
+// -- main class --
+template<typename container>
+void test_tree::ctor(const char* msg)
+{
+	//TEST
+	{
+		time_printer tp(msg, m_print_time);
+
+	}
+}
+
+template<typename container>
+void test_tree::dtor(const char* msg)
+{
+	//TEST
+	{
+		time_printer tp(msg, m_print_time);
+
+	}
+}
+
+template<typename container>
+void test_tree::copy_ctor(const char* msg)
+{
+	//TEST
+	{
+		time_printer tp(msg, m_print_time);
+
+	}
+}
+
+template<typename container>
+void test_tree::copy_op(const char* msg)
+{
+	//TEST
+	{
+		time_printer tp(msg, m_print_time);
+
+	}
+}
+
+template<typename container>
+void test_tree::get_it(const char* msg)
+{
+	//TEST
+	{
+		time_printer tp(msg, m_print_time);
+
+	}
+}
+
+template<typename container>
+void test_tree::push_back_val(const char* msg)
+{
+	//TEST
+	{
+		time_printer tp(msg, m_print_time);
+
+	}
+}
+
+template<typename container>
+void test_tree::push_front_val(const char* msg)
+{
+	//TEST
+	{
+		time_printer tp(msg, m_print_time);
+
+	}
+}
+
+template<typename container>
+void test_tree::insert_sibling_before_val(const char* msg)
+{
+	//TEST
+	{
+		time_printer tp(msg, m_print_time);
+
+	}
+}
+
+template<typename container>
+void test_tree::insert_sibling_after_val(const char* msg)
+{
+	//TEST
+	{
+		time_printer tp(msg, m_print_time);
+
+	}
+}
+
+template<typename container>
+void test_tree::push_back_child_val(const char* msg)
+{
+	//TEST
+	{
+		time_printer tp(msg, m_print_time);
+
+	}
+}
+
+template<typename container>
+void test_tree::push_front_child_val(const char* msg)
+{
+	//TEST
+	{
+		time_printer tp(msg, m_print_time);
+
+	}
+}
+
+template<typename container>
+void test_tree::push_back_tree(const char* msg)
+{
+	//TEST
+	{
+		time_printer tp(msg, m_print_time);
+
+	}
+}
+
+template<typename container>
+void test_tree::push_front_tree(const char* msg)
+{
+	//TEST
+	{
+		time_printer tp(msg, m_print_time);
+
+	}
+}
+
+template<typename container>
+void test_tree::insert_sibling_before_tree(const char* msg)
+{
+	//TEST
+	{
+		time_printer tp(msg, m_print_time);
+
+	}
+}
+
+template<typename container>
+void test_tree::insert_sibling_after_tree(const char* msg)
+{
+	//TEST
+	{
+		time_printer tp(msg, m_print_time);
+
+	}
+}
+
+template<typename container>
+void test_tree::push_back_child_tree(const char* msg)
+{
+	//TEST
+	{
+		time_printer tp(msg, m_print_time);
+
+	}
+}
+
+template<typename container>
+void test_tree::push_front_child_tree(const char* msg)
+{
+	//TEST
+	{
+		time_printer tp(msg, m_print_time);
+
+	}
+}
+
+template<typename container>
+void test_tree::preorder_begin(const char* msg)
+{
+	//TEST
+	{
+		time_printer tp(msg, m_print_time);
+
+	}
+}
+
+template<typename container>
+void test_tree::preorder_end(const char* msg)
+{
+	//TEST
+	{
+		time_printer tp(msg, m_print_time);
+
+	}
+}
+
+template<typename container>
+void test_tree::preorder_begin_it(const char* msg)
+{
+	//TEST
+	{
+		time_printer tp(msg, m_print_time);
+
+	}
+}
+
+template<typename container>
+void test_tree::preorder_end_it(const char* msg)
+{
+	//TEST
+	{
+		time_printer tp(msg, m_print_time);
+
+	}
+}
+
+template<typename container>
+void test_tree::postorder_begin(const char* msg)
+{
+	//TEST
+	{
+		time_printer tp(msg, m_print_time);
+
+	}
+}
+
+template<typename container>
+void test_tree::postorder_end(const char* msg)
+{
+	//TEST
+	{
+		time_printer tp(msg, m_print_time);
+
+	}
+}
+
+template<typename container>
+void test_tree::postorder_begin_it(const char* msg)
+{
+	//TEST
+	{
+		time_printer tp(msg, m_print_time);
+
+	}
+}
+
+template<typename container>
+void test_tree::postorder_end_it(const char* msg)
+{
+	//TEST
+	{
+		time_printer tp(msg, m_print_time);
+
+	}
+}
+
+template<typename container>
+void test_tree::first_branch_begin(const char* msg)
+{
+	//TEST
+	{
+		time_printer tp(msg, m_print_time);
+
+	}
+}
+
+template<typename container>
+void test_tree::first_branch_end(const char* msg)
+{
+	//TEST
+	{
+		time_printer tp(msg, m_print_time);
+
+	}
+}
+
+template<typename container>
+void test_tree::first_branch_begin_it(const char* msg)
+{
+	//TEST
+	{
+		time_printer tp(msg, m_print_time);
+
+	}
+}
+
+template<typename container>
+void test_tree::first_branch_end_it(const char* msg)
+{
+	//TEST
+	{
+		time_printer tp(msg, m_print_time);
+
+	}
+}
+
+template<typename container>
+void test_tree::child_begin(const char* msg)
+{
+	//TEST
+	{
+		time_printer tp(msg, m_print_time);
+
+	}
+}
+
+template<typename container>
+void test_tree::child_end(const char* msg)
+{
+	//TEST
+	{
+		time_printer tp(msg, m_print_time);
+
+	}
+}
+
+template<typename container>
+void test_tree::child_begin_it(const char* msg)
+{
+	//TEST
+	{
+		time_printer tp(msg, m_print_time);
+
+	}
+}
+
+template<typename container>
+void test_tree::child_end_it(const char* msg)
+{
+	//TEST
+	{
+		time_printer tp(msg, m_print_time);
+
+	}
+}
+
+template<typename container>
+void test_tree::siblings_begin(const char* msg)
+{
+	//TEST
+	{
+		time_printer tp(msg, m_print_time);
+
+	}
+}
+
+template<typename container>
+void test_tree::siblings_end(const char* msg)
+{
+	//TEST
+	{
+		time_printer tp(msg, m_print_time);
+
+	}
+}
+
+template<typename container>
+void test_tree::siblings_begin_it(const char* msg)
+{
+	//TEST
+	{
+		time_printer tp(msg, m_print_time);
+
+	}
+}
+
+template<typename container>
+void test_tree::siblings_end_it(const char* msg)
+{
+	//TEST
+	{
+		time_printer tp(msg, m_print_time);
+
+	}
+}
+
+template<typename container>
+void test_tree::empty(const char* msg)
+{
+	//TEST
+	{
+		time_printer tp(msg, m_print_time);
+
+	}
+}
+
+template<typename container>
+void test_tree::size(const char* msg)
+{
+	//TEST
+	{
+		time_printer tp(msg, m_print_time);
+
+	}
+}
+
+template<typename container>
+void test_tree::clear(const char* msg)
+{
+	//TEST
+	{
+		time_printer tp(msg, m_print_time);
+
+	}
+}
+
+template<typename container>
+void test_tree::erase(const char* msg)
+{
+	//TEST
+	{
+		time_printer tp(msg, m_print_time);
+
+	}
+}

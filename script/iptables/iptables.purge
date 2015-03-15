@@ -1,0 +1,19 @@
+#!/bin/sh
+
+# cp iptables.purge $HOME/Code/svn-trunk/script/iptables/iptables.purge
+# svn status $HOME/Code/svn-trunk
+# svn diff   $HOME/Code/svn-trunk
+# svn commit $HOME/Code/svn-trunk
+
+
+echo "Stopping firewall and allowing everyone..."
+iptables -F
+iptables -X
+iptables -t nat -F
+iptables -t nat -X
+iptables -t mangle -F
+iptables -t mangle -X
+iptables -P INPUT ACCEPT
+iptables -P FORWARD ACCEPT
+iptables -P OUTPUT ACCEPT
+iptables -L

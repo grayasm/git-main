@@ -1,0 +1,540 @@
+<!DOCTYPE Project SYSTEM "http://www.slickedit.com/dtd/vse/10.0/vpj.dtd">
+<Project
+    Version="10.0"
+    VendorName="SlickEdit"
+    TemplateName="GNU C/C++"
+    WorkingDir=".">
+    <Config
+        Name="Debug"
+        Type="gnuc"
+        DebugCallbackName="gdb"
+        Version="1"
+        OutputFile="%bdapache_stl.so"
+        CompilerConfigName="Latest Version">
+        <Menu>
+            <Target
+                Name="Compile"
+                MenuCaption="&amp;Compile"
+                Dialog="_gnuc_options_form Compile"
+                CaptureOutputWith="ProcessBuffer"
+                Deletable="0"
+                OutputExts="*.o"
+                SaveOption="SaveCurrent"
+                RunFromDir="%rw">
+                <Exec CmdLine='g++ -c %xup  %defd -g -o "%bd%n%oe" %i "%f"'/>
+            </Target>
+            <Target
+                Name="Link"
+                MenuCaption="&amp;Link"
+                ShowOnMenu="Never"
+                Dialog="_gnuc_options_form Link"
+                CaptureOutputWith="ProcessBuffer"
+                Deletable="0"
+                SaveOption="SaveCurrent"
+                RunFromDir="%rw">
+                <Exec CmdLine='g++ %xup -g -o "%o" %f %libs -shared -fPIC'/>
+            </Target>
+            <Target
+                Name="Build"
+                MenuCaption="&amp;Build"
+                CaptureOutputWith="ProcessBuffer"
+                Deletable="0"
+                SaveOption="SaveWorkspaceFiles"
+                RunFromDir="%rw">
+                <Exec CmdLine="make"/>
+            </Target>
+            <Target
+                Name="Rebuild"
+                MenuCaption="&amp;Rebuild"
+                CaptureOutputWith="ProcessBuffer"
+                Deletable="0"
+                SaveOption="SaveWorkspaceFiles"
+                RunFromDir="%rw">
+                <Exec CmdLine=""/>
+            </Target>
+            <Target
+                Name="Debug"
+                MenuCaption="&amp;Debug"
+                Dialog="_gnuc_options_form Run/Debug"
+                BuildFirst="1"
+                CaptureOutputWith="ProcessBuffer"
+                Deletable="0"
+                SaveOption="SaveNone"
+                RunFromDir="%rw">
+                <Exec CmdLine=""/>
+            </Target>
+            <Target
+                Name="Execute"
+                MenuCaption="E&amp;xecute"
+                Dialog="_gnuc_options_form Run/Debug"
+                BuildFirst="1"
+                CaptureOutputWith="ProcessBuffer"
+                Deletable="0"
+                SaveOption="SaveWorkspaceFiles"
+                RunFromDir="%rw">
+                <Exec CmdLine=""/>
+            </Target>
+            <Target
+                Name="dash"
+                MenuCaption="-"
+                Deletable="0">
+                <Exec/>
+            </Target>
+            <Target
+                Name="GNU C Options"
+                MenuCaption="GNU C &amp;Options..."
+                ShowOnMenu="HideIfNoCmdLine"
+                Deletable="0"
+                SaveOption="SaveNone">
+                <Exec
+                    CmdLine="gnucoptions"
+                    Type="Slick-C"/>
+            </Target>
+        </Menu>
+        <List Name="GNUC Options">
+            <Item
+                Name="LinkerOutputType"
+                Value="SharedLibrary"/>
+        </List>
+    </Config>
+    <Config
+        Name="Release"
+        Type="gnuc"
+        DebugCallbackName="gdb"
+        Version="1"
+        OutputFile="%bdapache_stl.so"
+        CompilerConfigName="Latest Version">
+        <Menu>
+            <Target
+                Name="Compile"
+                MenuCaption="&amp;Compile"
+                Dialog="_gnuc_options_form Compile"
+                CaptureOutputWith="ProcessBuffer"
+                Deletable="0"
+                OutputExts="*.o"
+                SaveOption="SaveCurrent"
+                RunFromDir="%rw">
+                <Exec CmdLine='g++ -c %xup %defd -o "%bd%n%oe" %i "%f"'/>
+            </Target>
+            <Target
+                Name="Link"
+                MenuCaption="&amp;Link"
+                ShowOnMenu="Never"
+                Dialog="_gnuc_options_form Link"
+                CaptureOutputWith="ProcessBuffer"
+                Deletable="0"
+                SaveOption="SaveCurrent"
+                RunFromDir="%rw">
+                <Exec CmdLine='g++ %xup -o "%o" %f %libs -shared -fPIC'/>
+            </Target>
+            <Target
+                Name="Build"
+                MenuCaption="&amp;Build"
+                CaptureOutputWith="ProcessBuffer"
+                Deletable="0"
+                SaveOption="SaveWorkspaceFiles"
+                RunFromDir="%rw">
+                <Exec CmdLine="make"/>
+            </Target>
+            <Target
+                Name="Rebuild"
+                MenuCaption="&amp;Rebuild"
+                CaptureOutputWith="ProcessBuffer"
+                Deletable="0"
+                SaveOption="SaveWorkspaceFiles"
+                RunFromDir="%rw">
+                <Exec CmdLine=""/>
+            </Target>
+            <Target
+                Name="Debug"
+                MenuCaption="&amp;Debug"
+                Dialog="_gnuc_options_form Run/Debug"
+                BuildFirst="1"
+                CaptureOutputWith="ProcessBuffer"
+                Deletable="0"
+                SaveOption="SaveNone"
+                RunFromDir="%rw">
+                <Exec CmdLine=""/>
+            </Target>
+            <Target
+                Name="Execute"
+                MenuCaption="E&amp;xecute"
+                Dialog="_gnuc_options_form Run/Debug"
+                BuildFirst="1"
+                CaptureOutputWith="ProcessBuffer"
+                Deletable="0"
+                SaveOption="SaveWorkspaceFiles"
+                RunFromDir="%rw">
+                <Exec CmdLine=""/>
+            </Target>
+            <Target
+                Name="dash"
+                MenuCaption="-"
+                Deletable="0">
+                <Exec/>
+            </Target>
+            <Target
+                Name="GNU C Options"
+                MenuCaption="GNU C &amp;Options..."
+                ShowOnMenu="HideIfNoCmdLine"
+                Deletable="0"
+                SaveOption="SaveNone">
+                <Exec
+                    CmdLine="gnucoptions"
+                    Type="Slick-C"/>
+            </Target>
+        </Menu>
+        <List Name="GNUC Options">
+            <Item
+                Name="LinkerOutputType"
+                Value="SharedLibrary"/>
+        </List>
+    </Config>
+    <Files>
+        <Folder
+            Name="Source Files"
+            Filters="*.c;*.C;*.cc;*.cpp;*.cp;*.cxx;*.c++;*.prg;*.pas;*.dpr;*.asm;*.s;*.bas;*.java;*.cs;*.sc;*.e;*.cob;*.html;*.rc;*.tcl;*.py;*.pl;*.d;*.m;*.mm">
+            <F N="../include/rw/_algobase.c"/>
+            <F N="../include/rw/_algobase.cc"/>
+            <F N="../include/rw/_basic_ios.c"/>
+            <F N="../include/rw/_basic_ios.cc"/>
+            <F N="../include/loc/_codecvt.c"/>
+            <F N="../include/loc/_codecvt.cc"/>
+            <F N="../include/loc/_collate.c"/>
+            <F N="../include/loc/_collate.cc"/>
+            <F N="../include/loc/_ctype.c"/>
+            <F N="../include/loc/_ctype.cc"/>
+            <F N="../include/rw/_heap.c"/>
+            <F N="../include/rw/_heap.cc"/>
+            <F N="../include/rw/_ioinsert.c"/>
+            <F N="../include/rw/_ioinsert.cc"/>
+            <F N="../include/loc/_messages.c"/>
+            <F N="../include/loc/_messages.cc"/>
+            <F N="../include/loc/_money_get.c"/>
+            <F N="../include/loc/_money_get.cc"/>
+            <F N="../include/loc/_money_put.c"/>
+            <F N="../include/loc/_money_put.cc"/>
+            <F N="../include/loc/_moneypunct.c"/>
+            <F N="../include/loc/_moneypunct.cc"/>
+            <F N="../include/loc/_num_get.c"/>
+            <F N="../include/loc/_num_get.cc"/>
+            <F N="../include/loc/_num_put.c"/>
+            <F N="../include/loc/_num_put.cc"/>
+            <F N="../include/loc/_numpunct.c"/>
+            <F N="../include/loc/_numpunct.cc"/>
+            <F N="../include/loc/_punct.c"/>
+            <F N="../include/loc/_punct.cc"/>
+            <F N="../include/rw/_stringio.c"/>
+            <F N="../include/rw/_stringio.cc"/>
+            <F N="../include/loc/_time_get.c"/>
+            <F N="../include/loc/_time_get.cc"/>
+            <F N="../include/loc/_time_put.c"/>
+            <F N="../include/loc/_time_put.cc"/>
+            <F N="../include/rw/_tree.c"/>
+            <F N="../include/rw/_tree.cc"/>
+            <F N="../include/algorithm.c"/>
+            <F N="../include/algorithm.cc"/>
+            <F N="../src/assert.cpp"/>
+            <F N="../src/ia64/atomic-64.s"/>
+            <F N="../src/parisc/atomic-64.s"/>
+            <F N="../src/sparc/atomic-64.s"/>
+            <F N="../src/atomic-cxx.S"/>
+            <F N="../src/atomic.asm"/>
+            <F N="../src/atomic.s"/>
+            <F N="../src/ia64/atomic.s"/>
+            <F N="../src/parisc/atomic.s"/>
+            <F N="../src/sparc/atomic.s"/>
+            <F N="../src/x86/atomic.s"/>
+            <F N="../src/x86_64/atomic.s"/>
+            <F N="../include/bitset.c"/>
+            <F N="../include/bitset.cc"/>
+            <F N="../src/bitset.cpp"/>
+            <F N="../src/catalog.cpp"/>
+            <F N="../src/codecvt.cpp"/>
+            <F N="../src/collate.cpp"/>
+            <F N="../include/complex.c"/>
+            <F N="../include/complex.cc"/>
+            <F N="../src/ctype.cpp"/>
+            <F N="../src/ctype_bits.cpp"/>
+            <F N="../include/deque.c"/>
+            <F N="../include/deque.cc"/>
+            <F N="../src/domain_error.cpp"/>
+            <F N="../src/exception.cpp"/>
+            <F N="../src/export.cpp"/>
+            <F N="../src/facet.cpp"/>
+            <F N="../src/file.cpp"/>
+            <F N="../include/fstream.c"/>
+            <F N="../include/fstream.cc"/>
+            <F N="../src/instance.cpp"/>
+            <F N="../src/invalid_argument.cpp"/>
+            <F N="../src/ios.cpp"/>
+            <F N="../src/ios_bits.cpp"/>
+            <F N="../src/iostore.cpp"/>
+            <F N="../src/iostream.cpp"/>
+            <F N="../src/iso2022.cpp"/>
+            <F N="../include/istream.c"/>
+            <F N="../include/istream.cc"/>
+            <F N="../src/length_error.cpp"/>
+            <F N="../include/limits.c"/>
+            <F N="../include/limits.cc"/>
+            <F N="../src/limits.cpp"/>
+            <F N="../src/limits_bits.cpp"/>
+            <F N="../include/list.c"/>
+            <F N="../include/list.cc"/>
+            <F N="../src/locale_bits.cpp"/>
+            <F N="../src/locale_body.cpp"/>
+            <F N="../src/locale_classic.cpp"/>
+            <F N="../src/locale_combine.cpp"/>
+            <F N="../src/locale_core.cpp"/>
+            <F N="../src/locale_eq.cpp"/>
+            <F N="../src/locale_global.cpp"/>
+            <F N="../src/locale_name.cpp"/>
+            <F N="../src/logic_error.cpp"/>
+            <F N="../src/memattr.cpp"/>
+            <F N="../src/memory.cpp"/>
+            <F N="../src/messages.cpp"/>
+            <F N="../src/mman.cpp"/>
+            <F N="../src/num_get.cpp"/>
+            <F N="../src/num_put.cpp"/>
+            <F N="../src/once.cpp"/>
+            <F N="../include/ostream.c"/>
+            <F N="../include/ostream.cc"/>
+            <F N="../src/out_of_range.cpp"/>
+            <F N="../src/overflow_error.cpp"/>
+            <F N="../src/podarray.c"/>
+            <F N="../src/podarray.cc"/>
+            <F N="../src/punct.cpp"/>
+            <F N="../src/random.cpp"/>
+            <F N="../src/range_error.cpp"/>
+            <F N="../src/runtime_error.cpp"/>
+            <F N="../src/rwstderr.cpp"/>
+            <F N="../src/rwstderr.rc"/>
+            <F N="../src/setlocale.cpp"/>
+            <F N="../include/sstream.c"/>
+            <F N="../include/sstream.cc"/>
+            <F N="../include/streambuf.c"/>
+            <F N="../include/streambuf.cc"/>
+            <F N="../include/string.c"/>
+            <F N="../include/string.cc"/>
+            <F N="../src/string.cpp"/>
+            <F N="../src/strstream.cpp"/>
+            <F N="../src/strtol.cpp"/>
+            <F N="../src/ti_collate.cpp"/>
+            <F N="../src/ti_filebuf.cpp"/>
+            <F N="../src/ti_insert_dbl.cpp"/>
+            <F N="../src/ti_insert_int.cpp"/>
+            <F N="../src/ti_insert_ptr.cpp"/>
+            <F N="../src/ti_ios.cpp"/>
+            <F N="../src/ti_istream.cpp"/>
+            <F N="../src/ti_messages.cpp"/>
+            <F N="../src/ti_money_get.cpp"/>
+            <F N="../src/ti_money_put.cpp"/>
+            <F N="../src/ti_moneypunct.cpp"/>
+            <F N="../src/ti_num_get.cpp"/>
+            <F N="../src/ti_num_put.cpp"/>
+            <F N="../src/ti_numpunct.cpp"/>
+            <F N="../src/ti_ostream.cpp"/>
+            <F N="../src/ti_podarray.cpp"/>
+            <F N="../src/ti_streambuf.cpp"/>
+            <F N="../src/ti_string.cpp"/>
+            <F N="../src/ti_stringbuf.cpp"/>
+            <F N="../src/ti_time_get.cpp"/>
+            <F N="../src/ti_time_put.cpp"/>
+            <F N="../src/ti_wcollate.cpp"/>
+            <F N="../src/ti_wfilebuf.cpp"/>
+            <F N="../src/ti_winsert_dbl.cpp"/>
+            <F N="../src/ti_winsert_int.cpp"/>
+            <F N="../src/ti_winsert_ptr.cpp"/>
+            <F N="../src/ti_wios.cpp"/>
+            <F N="../src/ti_wistream.cpp"/>
+            <F N="../src/ti_wmessages.cpp"/>
+            <F N="../src/ti_wmoney_get.cpp"/>
+            <F N="../src/ti_wmoney_put.cpp"/>
+            <F N="../src/ti_wmoneypunct.cpp"/>
+            <F N="../src/ti_wnum_get.cpp"/>
+            <F N="../src/ti_wnum_put.cpp"/>
+            <F N="../src/ti_wnumpunct.cpp"/>
+            <F N="../src/ti_wostream.cpp"/>
+            <F N="../src/ti_wstreambuf.cpp"/>
+            <F N="../src/ti_wstring.cpp"/>
+            <F N="../src/ti_wstringbuf.cpp"/>
+            <F N="../src/ti_wtime_get.cpp"/>
+            <F N="../src/ti_wtime_put.cpp"/>
+            <F N="../src/time_get.cpp"/>
+            <F N="../src/time_put.cpp"/>
+            <F N="../src/tmpbuf.cpp"/>
+            <F N="../src/typeinfo.cpp"/>
+            <F N="../src/underflow_error.cpp"/>
+            <F N="../include/valarray.c"/>
+            <F N="../include/valarray.cc"/>
+            <F N="../src/valarray.cpp"/>
+            <F N="../src/vecbool.cpp"/>
+            <F N="../include/vector.c"/>
+            <F N="../include/vector.cc"/>
+            <F N="../src/version.cpp"/>
+            <F N="../src/wcodecvt.cpp"/>
+            <F N="../src/wctype.cpp"/>
+        </Folder>
+        <Folder
+            Name="Header Files"
+            Filters="*.h;*.H;*.hh;*.hpp;*.hxx;*.inc;*.sh;*.cpy;*.if">
+            <F N="../include/rw/_algobase.h"/>
+            <F N="../include/rw/_allocator.h"/>
+            <F N="../include/rw/_array.h"/>
+            <F N="../include/rw/_atomic-deccxx.h"/>
+            <F N="../include/rw/_atomic-mipspro.h"/>
+            <F N="../include/rw/_atomic-mutex.h"/>
+            <F N="../include/rw/_atomic-parisc.h"/>
+            <F N="../include/rw/_atomic-sparc.h"/>
+            <F N="../include/rw/_atomic-sync.h"/>
+            <F N="../include/rw/_atomic-x64.h"/>
+            <F N="../include/rw/_atomic-x86.h"/>
+            <F N="../include/rw/_atomic-xlc.h"/>
+            <F N="../include/rw/_atomic.h"/>
+            <F N="../include/rw/_autoptr.h"/>
+            <F N="../include/rw/_basic_ios.h"/>
+            <F N="../include/rw/_bitmask.h"/>
+            <F N="../include/ansi/_cassert.h"/>
+            <F N="../include/ansi/_cctype.h"/>
+            <F N="../include/ansi/_cerrno.h"/>
+            <F N="../include/ansi/_cfloat.h"/>
+            <F N="../include/ansi/_clocale.h"/>
+            <F N="../include/ansi/_cmath.h"/>
+            <F N="../include/loc/_codecvt.h"/>
+            <F N="../include/loc/_collate.h"/>
+            <F N="../include/rw/_config-acc.h"/>
+            <F N="../include/rw/_config-deccxx.h"/>
+            <F N="../include/rw/_config-eccp.h"/>
+            <F N="../include/rw/_config-gcc.h"/>
+            <F N="../include/rw/_config-icc.h"/>
+            <F N="../include/rw/_config-mipspro.h"/>
+            <F N="../include/rw/_config-msvc.h"/>
+            <F N="../include/rw/_config-msvcrt.h"/>
+            <F N="../include/rw/_config-sunpro.h"/>
+            <F N="../include/rw/_config-xlc.h"/>
+            <F N="../include/rw/_config.h"/>
+            <F N="../include/loc/_convenience.h"/>
+            <F N="../include/ansi/_csetjmp.h"/>
+            <F N="../include/ansi/_csignal.h"/>
+            <F N="../include/ansi/_cstdarg.h"/>
+            <F N="../include/ansi/_cstddef.h"/>
+            <F N="../include/ansi/_cstdint.h"/>
+            <F N="../include/ansi/_cstdio.h"/>
+            <F N="../include/ansi/_cstdlib.h"/>
+            <F N="../include/ansi/_cstring.h"/>
+            <F N="../include/ansi/_ctime.h"/>
+            <F N="../include/loc/_ctype.h"/>
+            <F N="../include/ansi/_cwchar.h"/>
+            <F N="../include/ansi/_cwctype.h"/>
+            <F N="../include/rw/_defs.h"/>
+            <F N="../include/rw/_error.h"/>
+            <F N="../include/rw/_exception.h"/>
+            <F N="../include/loc/_facet.h"/>
+            <F N="../include/rw/_file.h"/>
+            <F N="../include/rw/_forward.h"/>
+            <F N="../include/rw/_funcbase.h"/>
+            <F N="../include/rw/_heap.h"/>
+            <F N="../include/rw/_ioinsert.h"/>
+            <F N="../include/rw/_ioiter.h"/>
+            <F N="../include/rw/_iosbase.h"/>
+            <F N="../include/rw/_iosfailure.h"/>
+            <F N="../include/rw/_iosfwd.h"/>
+            <F N="../include/rw/_iterator.h"/>
+            <F N="../include/rw/_iterbase.h"/>
+            <F N="../include/loc/_locale.h"/>
+            <F N="../include/loc/_localedef.h"/>
+            <F N="../include/rw/_math.h"/>
+            <F N="../include/rw/_mbstate.h"/>
+            <F N="../include/loc/_messages.h"/>
+            <F N="../include/rw/_meta_arr.h"/>
+            <F N="../include/rw/_meta_cat.h"/>
+            <F N="../include/rw/_meta_comp.h"/>
+            <F N="../include/rw/_meta_cv.h"/>
+            <F N="../include/rw/_meta_help.h"/>
+            <F N="../include/rw/_meta_other.h"/>
+            <F N="../include/rw/_meta_prop.h"/>
+            <F N="../include/rw/_meta_ptr.h"/>
+            <F N="../include/rw/_meta_ref.h"/>
+            <F N="../include/rw/_meta_rel.h"/>
+            <F N="../include/rw/_meta_sign.h"/>
+            <F N="../include/loc/_money_get.h"/>
+            <F N="../include/loc/_money_put.h"/>
+            <F N="../include/loc/_moneypunct.h"/>
+            <F N="../include/rw/_mutex-dce.h"/>
+            <F N="../include/rw/_mutex-os2.h"/>
+            <F N="../include/rw/_mutex-pthread.h"/>
+            <F N="../include/rw/_mutex-solaris.h"/>
+            <F N="../include/rw/_mutex-win32.h"/>
+            <F N="../include/rw/_mutex.h"/>
+            <F N="../include/rw/_new.h"/>
+            <F N="../include/loc/_num_get.h"/>
+            <F N="../include/loc/_num_put.h"/>
+            <F N="../include/loc/_numpunct.h"/>
+            <F N="../include/rw/_pair.h"/>
+            <F N="../include/loc/_punct.h"/>
+            <F N="../include/rw/_rawiter.h"/>
+            <F N="../include/rw/_ref_wrap.h"/>
+            <F N="../include/rw/_relops.h"/>
+            <F N="../include/rw/_select.h"/>
+            <F N="../include/rw/_smartptr.h"/>
+            <F N="../include/rw/_specialized.h"/>
+            <F N="../include/rw/_static_assert.h"/>
+            <F N="../include/rw/_streamiter.h"/>
+            <F N="../include/rw/_stringio.h"/>
+            <F N="../include/rw/_strref.h"/>
+            <F N="../include/loc/_time_get.h"/>
+            <F N="../include/loc/_time_put.h"/>
+            <F N="../include/rw/_traits.h"/>
+            <F N="../include/rw/_tree.h"/>
+            <F N="../include/rw/_tuple.h"/>
+            <F N="../include/rw/_tuple_traits.h"/>
+            <F N="../include/rw/_typetraits.h"/>
+            <F N="../src/access.h"/>
+            <F N="../include/ansi/assert.h"/>
+            <F N="../src/x86/atomic.inc"/>
+            <F N="../src/x86_64/atomic.inc"/>
+            <F N="../src/catalog.h"/>
+            <F N="../include/ansi/ctype.h"/>
+            <F N="../include/ansi/errno.h"/>
+            <F N="../include/ansi/float.h"/>
+            <F N="../src/fpclass.h"/>
+            <F N="../src/iosdata.h"/>
+            <F N="../src/iso2022.h"/>
+            <F N="../include/ansi/limits.h"/>
+            <F N="../include/ansi/locale.h"/>
+            <F N="../src/locale_body.h"/>
+            <F N="../include/ansi/math.h"/>
+            <F N="../src/mman.h"/>
+            <F N="../src/once.h"/>
+            <F N="../src/podarray.h"/>
+            <F N="../src/punct.h"/>
+            <F N="../include/ansi/setjmp.h"/>
+            <F N="../src/setlocale.h"/>
+            <F N="../include/ansi/signal.h"/>
+            <F N="../include/ansi/stdarg.h"/>
+            <F N="../include/ansi/stddef.h"/>
+            <F N="../include/ansi/stdint.h"/>
+            <F N="../include/ansi/stdio.h"/>
+            <F N="../include/ansi/stdlib.h"/>
+            <F N="../include/ansi/string.h"/>
+            <F N="../src/strtol.h"/>
+            <F N="../include/ansi/time.h"/>
+            <F N="../src/use_facet.h"/>
+            <F N="../include/ansi/wchar.h"/>
+            <F N="../include/ansi/wctype.h"/>
+        </Folder>
+        <Folder
+            Name="Resource Files"
+            Filters="*.ico;*.cur;*.dlg"/>
+        <Folder
+            Name="Bitmaps"
+            Filters="*.bmp"/>
+        <Folder
+            Name="Other Files"
+            Filters="">
+            <F N="../src/mapfile.gcc"/>
+            <F N="../src/mapfile.gcc-2"/>
+            <F N="../src/rwstderr.msg"/>
+        </Folder>
+    </Files>
+</Project>
