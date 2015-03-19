@@ -521,11 +521,11 @@ void test_algorithm::stable_partition()
 	stable_partition<std::vector<int> >("");
 	stable_partition<std::vector<int> >																		("\n\tstd::vector       ");
 	stable_partition<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	stable_partition<misc::vector<int> >																	("\n\tmisc::vector      ");
-	stable_partition<misc::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	stable_partition<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
-	stable_partition<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	stable_partition<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	stable_partition2<misc::vector<int> >																	("\n\tmisc::vector      ");
+	stable_partition2<misc::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
+	stable_partition2<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
+	stable_partition2<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
+	stable_partition2<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
 }
 
 //Sorting:
@@ -545,12 +545,11 @@ void test_algorithm::stable_sort()
 {
 	misc::cout << "\n\n\tstable_sort--------------------------------------------";	
 	stable_sort<std::vector<double> >																		("\n\tstd::vector       ");
-	stable_sort<std::vector<double, misc::allocator<double> > >												("\n\tstd::vector<A>    ");
-	stable_sort<misc::vector<double> >																		("\n\tmisc::vector      ");
-	stable_sort<misc::vector<double, std::allocator<double> > >												("\n\tstd::vector       ");
-	stable_sort<misc::vector<double, misc::allocator<double>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
-	stable_sort<misc::vector<double, misc::allocator<double>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	stable_sort<misc::vector<double, misc::allocator<double>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	stable_sort2<misc::vector<double> >																		("\n\tmisc::vector      ");
+	stable_sort2<misc::vector<double, std::allocator<double> > >												("\n\tstd::vector       ");
+	stable_sort2<misc::vector<double, misc::allocator<double>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
+	stable_sort2<misc::vector<double, misc::allocator<double>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
+	stable_sort2<misc::vector<double, misc::allocator<double>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
 }
 
 void test_algorithm::partial_sort()
@@ -630,11 +629,11 @@ void test_algorithm::binary_search()
 	misc::cout << "\n\n\tbinary_search------------------------------------------";
 	binary_search<std::vector<int> >																	("\n\tstd::vector       ");
 	binary_search<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	binary_search<misc::vector<int> >																	("\n\tmisc::vector      ");
-	binary_search<misc::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	binary_search<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
-	binary_search<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	binary_search<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	binary_search2<misc::vector<int> >																	("\n\tmisc::vector      ");
+	binary_search2<misc::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
+	binary_search2<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
+	binary_search2<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
+	binary_search2<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
 }
 
 //Merge (operating on sorted ranges):
@@ -655,11 +654,11 @@ void test_algorithm::inplace_merge()
 	misc::cout << "\n\n\tinplace_merge------------------------------------------";
 	inplace_merge<std::vector<int> >																	("\n\tstd::vector       ");
 	inplace_merge<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	inplace_merge<misc::vector<int> >																	("\n\tmisc::vector      ");
-	inplace_merge<misc::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	inplace_merge<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
-	inplace_merge<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	inplace_merge<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	inplace_merge2<misc::vector<int> >																	("\n\tmisc::vector      ");
+	inplace_merge2<misc::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
+	inplace_merge2<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
+	inplace_merge2<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
+	inplace_merge2<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
 }
 
 void test_algorithm::includes()
@@ -667,11 +666,11 @@ void test_algorithm::includes()
 	misc::cout << "\n\n\tincludes-----------------------------------------------";
 	includes<std::vector<int> >																		("\n\tstd::vector       ");
 	includes<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	includes<misc::vector<int> >																	("\n\tmisc::vector      ");
-	includes<misc::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	includes<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
-	includes<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	includes<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	includes2<misc::vector<int> >																	("\n\tmisc::vector      ");
+	includes2<misc::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
+	includes2<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
+	includes2<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
+	includes2<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
 }
 
 void test_algorithm::set_union()
@@ -679,11 +678,11 @@ void test_algorithm::set_union()
 	misc::cout << "\n\n\tset_union----------------------------------------------";
 	set_union<std::vector<int> >																	("\n\tstd::vector       ");
 	set_union<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	set_union<misc::vector<int> >																	("\n\tmisc::vector      ");
-	set_union<misc::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	set_union<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
-	set_union<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	set_union<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	set_union2<misc::vector<int> >																	("\n\tmisc::vector      ");
+	set_union2<misc::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
+	set_union2<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
+	set_union2<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
+	set_union2<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
 }
 
 void test_algorithm::set_intersection()
@@ -691,11 +690,11 @@ void test_algorithm::set_intersection()
 	misc::cout << "\n\n\tset_intersection---------------------------------------";
 	set_intersection<std::vector<int> >																		("\n\tstd::vector       ");
 	set_intersection<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	set_intersection<misc::vector<int> >																	("\n\tmisc::vector      ");
-	set_intersection<misc::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	set_intersection<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
-	set_intersection<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	set_intersection<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	set_intersection2<misc::vector<int> >																	("\n\tmisc::vector      ");
+	set_intersection2<misc::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
+	set_intersection2<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
+	set_intersection2<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
+	set_intersection2<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
 }
 
 void test_algorithm::set_difference()
@@ -715,11 +714,11 @@ void test_algorithm::set_symmetric_difference()
 	misc::cout << "\n\n\tset_symmetric_difference-------------------------------";
 	set_symmetric_difference<std::vector<int> >																		("\n\tstd::vector       ");
 	set_symmetric_difference<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	set_symmetric_difference<misc::vector<int> >																	("\n\tmisc::vector      ");
-	set_symmetric_difference<misc::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	set_symmetric_difference<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
-	set_symmetric_difference<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	set_symmetric_difference<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	set_symmetric_difference2<misc::vector<int> >																	("\n\tmisc::vector      ");
+	set_symmetric_difference2<misc::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
+	set_symmetric_difference2<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
+	set_symmetric_difference2<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
+	set_symmetric_difference2<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
 }
 
 //Heap:
@@ -728,11 +727,11 @@ void test_algorithm::push_heap()
 	misc::cout << "\n\n\tpush_heap----------------------------------------------";
 	push_heap<std::vector<int> >																	("\n\tstd::vector       ");
 	push_heap<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	push_heap<misc::vector<int> >																	("\n\tmisc::vector      ");
-	push_heap<misc::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	push_heap<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
-	push_heap<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	push_heap<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	push_heap2<misc::vector<int> >																	("\n\tmisc::vector      ");
+	push_heap2<misc::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
+	push_heap2<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
+	push_heap2<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
+	push_heap2<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
 }
 
 void test_algorithm::pop_heap()
@@ -837,11 +836,11 @@ void test_algorithm::next_permutation()
 	misc::cout << "\n\n\tnext_permutation---------------------------------------";
 	next_permutation<std::vector<int> >																		("\n\tstd::vector       ");
 	next_permutation<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	next_permutation<misc::vector<int> >																	("\n\tmisc::vector      ");
-	next_permutation<misc::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	next_permutation<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
-	next_permutation<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	next_permutation<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	next_permutation2<misc::vector<int> >																	("\n\tmisc::vector      ");
+	next_permutation2<misc::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
+	next_permutation2<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
+	next_permutation2<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
+	next_permutation2<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
 }
 
 void test_algorithm::prev_permutation()
@@ -849,11 +848,11 @@ void test_algorithm::prev_permutation()
 	misc::cout << "\n\n\tprev_permutation---------------------------------------";
 	prev_permutation<std::vector<int> >																		("\n\tstd::vector       ");
 	prev_permutation<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	prev_permutation<misc::vector<int> >																	("\n\tmisc::vector      ");
-	prev_permutation<misc::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	prev_permutation<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
-	prev_permutation<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	prev_permutation<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	prev_permutation2<misc::vector<int> >																	("\n\tmisc::vector      ");
+	prev_permutation2<misc::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
+	prev_permutation2<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
+	prev_permutation2<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
+	prev_permutation2<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
 }
 
 //test end
@@ -3530,7 +3529,69 @@ void test_algorithm::stable_partition(const char* msg)
 	{
 		time_printer tp(msg, m_print_time);
 		
-		//	MISC
+		//	STD (the entire method)
+		/*	Classifies elements in a range into two disjoint sets, with those 
+			elements satisfying a unary predicate preceding those that fail 
+			to satisfy it, preserving the relative order of equivalent elements.
+		*/
+		bound = std::stable_partition(v1.begin(), v1.end(), IsOdd_stable_partition);
+
+		//odd members: 1 3 5 7 9
+		//even members: 2 4 6 8
+
+		//odd members:
+		Cval mycheck_odd[]={1, 3, 5, 7, 9};
+		for (it=v1.begin(), i0 = 0; it != bound; ++it, ++i0)
+		{
+			CPPUNIT_ASSERT(mycheck_odd[i0] == *it);
+		}
+
+		//even members:
+		Cval mycheck_even[]={2, 4, 6, 8};
+		for (it = bound, i0 = 0; it != v1.end(); ++it, ++i0)
+		{
+			CPPUNIT_ASSERT(mycheck_even[i0] == *it);			
+		}
+		
+		//odd members: 1 3 5 7 9 ... 199999
+		bound = std::stable_partition(v2.begin(), v2.end(), IsOdd_stable_partition);
+		for(it = v2.begin(), i0 = 1; it != bound; ++it, i0+=2)
+		{
+			CPPUNIT_ASSERT(*it == Cval(i0));
+		}
+		//even members: 2 4 6 8 ... 200000
+		for(it = bound, i0 = 2; it != v2.end(); ++it, i0+=2)
+		{
+			CPPUNIT_ASSERT(*it == Cval(i0));
+		}
+	}
+}
+
+template<typename Container>
+void test_algorithm::stable_partition2(const char* msg)
+{
+	typedef typename Container::value_type Cval;
+	typedef typename Container::iterator It;
+
+
+	Container v1;
+	// set some values:
+	for (size_t i = 1; i < 10; ++i) v1.push_back(Cval(i)); // 1 2 3 4 5 6 7 8 9
+	
+	It it, bound;
+	size_t i0;
+
+	Container v2(m_container_size); //v2: 1 2 3 4 5 .... 199999 200000
+	for(i0 = 1, it = v2.begin(); it != v2.end(); ++it, ++i0) *it = Cval(i0);
+
+	Container v3(v2);
+
+
+	//	TEST
+	{
+		time_printer tp(msg, m_print_time);
+		
+		//	MISC (the entire method)
 		/*	Classifies elements in a range into two disjoint sets, with those 
 			elements satisfying a unary predicate preceding those that fail 
 			to satisfy it, preserving the relative order of equivalent elements.
@@ -3565,24 +3626,9 @@ void test_algorithm::stable_partition(const char* msg)
 		{
 			CPPUNIT_ASSERT(*it == Cval(i0));
 		}
-
-/*
-		//	STD
-		//	Cannot deduce iterator category.
-		//odd members: 1 3 5 7 9 ... 199999
-		bound = std::stable_partition(v3.begin(), v3.end(), IsOdd_stable_partition);
-		for(it = v3.begin(), i0 = 1; it != bound; ++it, i0+=2)
-		{
-			CPPUNIT_ASSERT(*it == Cval(i0));
-		}
-		//even members: 2 4 6 8 ... 200000
-		for(it = bound, i0 = 2; it != v3.end(); ++it, i0+=2)
-		{
-			CPPUNIT_ASSERT(*it == Cval(i0));
-		}
-*/
 	}
 }
+
 
 //Sorting:
 
@@ -3684,7 +3730,65 @@ void test_algorithm::stable_sort(const char* msg)
 	{
 		time_printer tp(msg, m_print_time);
 		
-		//	MISC
+		//	STD  (the entire method)
+		/*	Arranges the elements in a specified range 
+			into a non-descending order or according to an ordering criterion
+			specified by a binary predicate and preserves the relative ordering
+			of equivalent elements.
+		*/
+		
+		// using default comparison:
+		std::stable_sort(v1.begin(), v1.end());
+		Cval mycheck[]={1.32, 1.41, 1.62, 1.73, 2.58, 2.72, 3.14, 4.67};
+		for (it = v1.begin(), i0 = 0; it != v1.end(); ++it, ++i0)
+		{
+			CPPUNIT_ASSERT(mycheck[i0] == *it);			
+		}
+
+		// reset to initial vaues
+		v1.assign(mydoubles, mydoubles + 8);		
+
+		// using 'compare_as_ints':
+		std::stable_sort(v1.begin(), v1.end(), compare_as_ints_stable_sort);
+
+		Cval mycheck2[]={1.41, 1.73, 1.32, 1.62, 2.72, 2.58, 3.14, 4.67};
+		for (it = v1.begin(), i0 = 0; it != v1.end(); ++it, ++i0)
+		{
+			CPPUNIT_ASSERT(mycheck2[it-v1.begin()] == *it);			
+		}
+
+		std::stable_sort(v2.begin(), v2.end());
+		for(it = v2.begin()+1; it != v2.end(); ++it)
+			CPPUNIT_ASSERT(*it >= *(it-1)); // ::rand may have created duplicates;
+	}	
+}
+
+template<typename Container>
+void test_algorithm::stable_sort2(const char* msg)
+{
+	typedef typename Container::value_type Cval;
+	typedef typename Container::iterator It;
+
+	Cval mydoubles[] = {3.14, 1.41, 2.72, 4.67, 1.73, 1.32, 1.62, 2.58};
+
+	Container v1(8);
+	v1.assign(mydoubles,mydoubles+8);
+	
+	It it;
+	size_t i0;	
+
+	Container v2(m_container_size);
+	::srand((unsigned)::time(NULL));
+	for(it = v2.begin(); it != v2.end(); ++it)
+		*it = Cval( ::rand() % m_container_size + 1); // 1 to 200000;
+
+
+
+	//	TEST
+	{
+		time_printer tp(msg, m_print_time);
+		
+		//	MISC  (the entire method)
 		/*	Arranges the elements in a specified range 
 			into a non-descending order or according to an ordering criterion
 			specified by a binary predicate and preserves the relative ordering
@@ -3699,7 +3803,7 @@ void test_algorithm::stable_sort(const char* msg)
 			CPPUNIT_ASSERT(mycheck[i0] == *it);			
 		}
 
-		// reset to initial vaues
+		// reset to initial values
 		v1.assign(mydoubles, mydoubles + 8);		
 
 		// using 'compare_as_ints':
@@ -3714,16 +3818,8 @@ void test_algorithm::stable_sort(const char* msg)
 		misc::stable_sort(v2.begin(), v2.end());
 		for(it = v2.begin()+1; it != v2.end(); ++it)
 			CPPUNIT_ASSERT(*it >= *(it-1)); // ::rand may have created duplicates;
-		
-		//	STD
-/*		Cannot deduce the iterator category.
-		std::stable_sort(v3.begin(), v3.end());
-		for(it = v3.begin()+1; it != v3.end(); ++it)
-			CPPUNIT_ASSERT(*it > *(it-1));
-*/
 	}	
 }
-
 
 //////////////////////////////////////////////////////////////////////////
 bool myfunction_partial_sort (int i,int j) { return (i<j); }
@@ -4173,7 +4269,51 @@ void test_algorithm::binary_search(const char* msg)
 		time_printer tp(msg, m_print_time);
 		
 		
-		//	MISC
+		//	STD (the entire method)
+		// using default comparison:
+		std::sort(v1.begin(), v1.end());
+
+		//cout << "looking for a 3... ";
+		bool res = std::binary_search<It, Cval>(v1.begin(), v1.end(), 3);
+		CPPUNIT_ASSERT(res);
+
+		// using myfunction as comp:
+		std::sort(v1.begin(), v1.end(), myfunction_binary_search);
+
+		//cout << "looking for a 6... ";
+		res = std::binary_search<It, Cval>(v1.begin(), v1.end(), 6, myfunction_binary_search);
+		CPPUNIT_ASSERT(!res);
+
+		res = std::binary_search<It, Cval>(v2.begin(), v2.end(), m_container_size/2);
+		CPPUNIT_ASSERT(res);
+		res = std::binary_search<It, Cval>(v2.begin(), v2.end(), 2*m_container_size, myfunction_binary_search);
+		CPPUNIT_ASSERT(!res);
+	}
+}
+
+template<typename Container>
+void test_algorithm::binary_search2(const char* msg)
+{
+	typedef typename Container::value_type Cval;
+	typedef typename Container::iterator It;
+
+
+	Cval myints[] = {1,2,3,4,5,4,3,2,1};
+	Container v1(myints, myints + 9); // 1 2 3 4 5 4 3 2 1
+
+	It it;
+	size_t i0;
+
+	Container v2(m_container_size);
+	for(it = v2.begin(), i0 = 1; it != v2.end(); ++it, ++i0)
+		*it = Cval(i0);
+
+	//	TEST
+	{
+		time_printer tp(msg, m_print_time);
+		
+		
+		//	MISC (the entire method)
 		// using default comparison:
 		misc::sort(v1.begin(), v1.end());
 
@@ -4192,18 +4332,8 @@ void test_algorithm::binary_search(const char* msg)
 		CPPUNIT_ASSERT(res);
 		res = misc::binary_search<It, Cval>(v2.begin(), v2.end(), 2*m_container_size, myfunction_binary_search);
 		CPPUNIT_ASSERT(!res);
-
-/*
-		//	Cannot deduce the iterator category.
-		//	STD
-		res = std::binary_search(v2.begin(), v2.end(), m_container_size/2);
-		CPPUNIT_ASSERT(res);
-		res = std::binary_search(v2.begin(), v2.end(), 2*m_container_size, myfunction_binary_search);
-		CPPUNIT_ASSERT(!res);
-*/
 	}
 }
-
 
 //Merge (operating on sorted ranges):
 template<typename Container>
@@ -4339,16 +4469,70 @@ void test_algorithm::inplace_merge(const char* msg)
 
 	Container v4(m_container_size);
 
-	//std
-	Container sv2(v2), sv3(v3), sv4(v4);
-
-
 
 	//	TEST
 	{
 		time_printer tp(msg, m_print_time);
 
-		//	MISC
+		//	STD  (the entire method)
+		std::sort(first, first + 5);
+		std::sort(second, second + 5);
+
+		std::copy(first, first + 5, v1.begin());
+		std::copy(second, second + 5, v1.begin() + 5);
+
+		/*	Combines the elements from two consecutive sorted ranges 
+			into a single sorted range, where the ordering criterion 
+			may be specified by a binary predicate.
+		*/
+		std::inplace_merge(v1.begin(), v1.begin() + 5, v1.end());
+
+		//cout << "The resulting vector contains:";
+		int mycheck[]={5, 10, 10, 15, 20, 20, 25, 30, 40, 50};
+		for (it=v1.begin(); it!=v1.end(); ++it)
+		{
+			CPPUNIT_ASSERT(mycheck[it-v1.begin()] == *it);
+			//cout << " " << *it;
+		}
+		//The resulting vector contains: 5 10 10 15 20 20 25 30 40 50
+
+
+		std::copy(v2.begin(), v2.end(), v4.begin());
+		std::copy(v3.begin(), v3.end(), v4.begin() + v2.size());
+		std::inplace_merge(v4.begin(), v4.begin() + m_container_size/2, v4.end());
+		for(it = v4.begin(), i0 = 0; it != v4.end(); ++it, ++i0)
+			CPPUNIT_ASSERT(*it == Cval(i0));
+	}
+}
+
+template<typename Container>
+void test_algorithm::inplace_merge2(const char* msg)
+{
+	typedef typename Container::value_type Cval;
+	typedef typename Container::iterator It;
+
+	Cval first[] = {5,10,15,20,25};
+	Cval second[] = {50,40,30,20,10};
+	Container v1(10);
+	
+	It it;
+	size_t i0;
+
+	Container v2(m_container_size/2); //0 2 4 6 8 ...
+	for(it = v2.begin(), i0 = 0; it != v2.end(); ++it, i0+=2)
+		*it = Cval(i0);
+
+	Container v3(m_container_size/2); //1 3 5 7 9 ...
+	for(it = v3.begin(), i0 = 1; it != v3.end(); ++it, i0+=2)
+		*it = Cval(i0);
+
+	Container v4(m_container_size);
+
+	//	TEST
+	{
+		time_printer tp(msg, m_print_time);
+
+		//	MISC (the entire method)
 		misc::sort(first, first + 5);
 		misc::sort(second, second + 5);
 
@@ -4376,16 +4560,8 @@ void test_algorithm::inplace_merge(const char* msg)
 		misc::inplace_merge(v4.begin(), v4.begin() + m_container_size/2, v4.end());
 		for(it = v4.begin(), i0 = 0; it != v4.end(); ++it, ++i0)
 			CPPUNIT_ASSERT(*it == Cval(i0));
-
-		//	STD
-		misc::copy(sv2.begin(), sv2.end(), sv4.begin());
-		misc::copy(sv3.begin(), sv3.end(), sv4.begin() + sv2.size());
-		misc::inplace_merge(sv4.begin(), sv4.begin() + m_container_size/2, sv4.end());
-		for(it = v4.begin(), i0 = 0; it != v4.end(); ++it, ++i0)
-			CPPUNIT_ASSERT(*it == Cval(i0));
 	}
 }
-
 
 //////////////////////////////////////////////////////////////////////////
 bool myfunction_includes(int i, int j) { return i < j; }
@@ -4416,7 +4592,58 @@ void test_algorithm::includes(const char* msg)
 	{
 		time_printer tp(msg, m_print_time);
 		
-		//	MISC
+		//	STD (the entire method)
+		std::sort(c1, c1 + 10);       //5,10,15,20,25,30,35,40,45,50,
+		std::sort(c2, c2 + 4);        //  10,   20,   30,   40
+
+		/*	Tests whether one sorted range contains all the elements contained
+			in a second sorted range, where the ordering or equivalence 
+			criterion between elements may be specified by a binary predicate.
+		*/
+		// using default comparison:
+		res = std::includes(c1, c1+10, c2, c2+4);
+		CPPUNIT_ASSERT( res );
+		//cout << "c1 includes c2!" << endl;
+		
+		// using myfunction as comp:
+		res = std::includes(c1, c1+10, c2, c2+4, myfunction_includes);
+		CPPUNIT_ASSERT( res );
+
+		//c1 includes c2!
+		//c1 includes c2!
+
+		res = std::includes(v1.begin(), v1.end(), v2.begin(), v2.end());
+		CPPUNIT_ASSERT( res );
+	}
+}
+
+template<typename Container>
+void test_algorithm::includes2(const char* msg)
+{
+	typedef typename Container::value_type Cval;
+	typedef typename Container::iterator It;
+
+	Cval c1[] = {5,10,15,20,25,30,35,40,45,50};
+	Cval c2[] = {40,30,20,10};
+
+	It it;
+	size_t i0;
+	bool res;
+
+	Container v1(m_container_size);
+	for(it = v1.begin(), i0 = 0; it != v1.end(); ++it, ++i0)
+		*it = Cval(i0);
+
+	Container v2(m_container_size/4);
+	for(it = v2.begin(), i0 = 0; it != v2.end(); ++it, i0+=2)
+		*it = Cval(i0);
+	
+
+	//	TEST
+	{
+		time_printer tp(msg, m_print_time);
+		
+		//	MISC (the entire method)
 		misc::sort(c1, c1 + 10);       //5,10,15,20,25,30,35,40,45,50,
 		misc::sort(c2, c2 + 4);        //  10,   20,   30,   40
 
@@ -4437,10 +4664,6 @@ void test_algorithm::includes(const char* msg)
 		//c1 includes c2!
 
 		res = misc::includes(v1.begin(), v1.end(), v2.begin(), v2.end());
-		CPPUNIT_ASSERT( res );
-
-		//	STD
-		res = std::includes(v1.begin(), v1.end(), v2.begin(), v2.end());
 		CPPUNIT_ASSERT( res );
 	}
 }
@@ -4476,7 +4699,65 @@ void test_algorithm::set_union(const char* msg)
 		time_printer tp(msg, m_print_time);
 		
 		
-		//	MISC
+		//	STD (the entire method)
+		std::sort(first, first + 5);                //  5 10 15 20 25
+		std::sort(second, second + 5);              // 10 20 30 40 50
+
+		/*	Unites all of the elements that belong to at least one of two 
+			sorted source ranges into a single, sorted destination range, 
+			where the ordering criterion may be specified by a binary predicate.
+		*/
+		it = std::set_union (first, first+5, second, second+5, v1.begin());
+		// 5 10 15 20 25 30 40 50  0  0
+
+		Cval mycheck[]={5, 10, 15, 20, 25, 30, 40, 50,  0,  0};
+		for(size_t i=0; i < v1.size(); ++i)
+		{
+			CPPUNIT_ASSERT(mycheck[i] == v1[i]);
+		}
+
+		//cout << "union has " << int(it - v1.begin()) << " elements.\n";
+		CPPUNIT_ASSERT((it-v1.begin()) == 8);
+		//union has 8 elements
+
+		std::set_union(v2.begin(), v2.end(), v3.begin(), v3.end(), v4.begin());
+		for(it = v4.begin(), i0 = 0; it != v4.end(); ++it, ++i0)
+			CPPUNIT_ASSERT(*it == Cval(i0));
+	}
+}
+
+template<typename Container>
+void test_algorithm::set_union2(const char* msg)
+{
+	typedef typename Container::value_type Cval;
+	typedef typename Container::iterator It;
+
+
+	Cval first[]  = {5, 10,15,20,25};
+	Cval second[] = {50,40,30,20,10};
+	Container v1(10); // 0  0  0  0  0  0  0  0  0  0
+	
+	It it;
+	size_t i0;
+
+	Container v2(m_container_size/2); // 0 2 4 6 8 ...
+	for(it = v2.begin(), i0 = 0; it != v2.end(); ++it, i0 += 2)
+		*it = Cval(i0);
+
+	Container v3(m_container_size/2); // 1 3 5 7 9 ...
+	for(it = v3.begin(), i0 = 1; it != v3.end(); ++it, i0 += 2)
+		*it = Cval(i0);
+	
+	Container v4(m_container_size); // 0 0 0 0 ...
+
+
+
+	//	TEST
+	{
+		time_printer tp(msg, m_print_time);
+		
+		
+		//	MISC (the entire method)
 		misc::sort(first, first + 5);                //  5 10 15 20 25
 		misc::sort(second, second + 5);              // 10 20 30 40 50
 
@@ -4500,14 +4781,8 @@ void test_algorithm::set_union(const char* msg)
 		misc::set_union(v2.begin(), v2.end(), v3.begin(), v3.end(), v4.begin());
 		for(it = v4.begin(), i0 = 0; it != v4.end(); ++it, ++i0)
 			CPPUNIT_ASSERT(*it == Cval(i0));
-
-		//	STD
-		std::set_union(v2.begin(), v2.end(), v3.begin(), v3.end(), v4.begin());
-		for(it = v4.begin(), i0 = 0; it != v4.end(); ++it, ++i0)
-			CPPUNIT_ASSERT(*it == Cval(i0));
 	}
 }
-
 
 template<typename Container>
 void test_algorithm::set_intersection(const char* msg)
@@ -4536,7 +4811,64 @@ void test_algorithm::set_intersection(const char* msg)
 		time_printer tp(msg, m_print_time);
 		
 		
-		//	MISC
+		//	STD (the entire method)
+		std::sort(first, first + 5);                //  5 10 15 20 25
+		std::sort(second, second + 5);              // 10 20 30 40 50
+
+		/*	Unites all of the elements that belong to both sorted source ranges
+			into a single, sorted destination range, where the ordering 
+			criterion may be specified by a binary predicate.
+		*/
+
+		it = std::set_intersection (first, first+5, second, second+5, v1.begin());
+		// 10 20 0  0  0  0  0  0  0  0
+
+		Cval mycheck[]={10, 20, 0,  0,  0,  0,  0,  0,  0,  0};
+
+		for(size_t i=0; i < v1.size(); ++i)
+		{
+			CPPUNIT_ASSERT(mycheck[i] == v1[i]);
+		}
+
+		//cout << "intersection has " << int(it - v1.begin()) << " elements.\n";
+		CPPUNIT_ASSERT((int)(it-v1.begin()) == 2);
+		//intersection has 2 elements
+		
+		it = std::set_intersection(v2.begin(), v2.end(), v3.begin(), v3.end(), v4.begin());
+		CPPUNIT_ASSERT(it - v4.begin() == m_container_size);
+		for(it = v4.begin(), i0 = 0; it != v4.end(); ++it, ++i0)
+			CPPUNIT_ASSERT(*it == Cval(i0));
+	}
+}
+
+template<typename Container>
+void test_algorithm::set_intersection2(const char* msg)
+{
+	typedef typename Container::value_type Cval;
+	typedef typename Container::iterator It;
+
+
+	Cval first[]  = {5, 10,15,20,25};
+	Cval second[] = {50,40,30,20,10};
+	Container v1(10); // 0  0  0  0  0  0  0  0  0  0
+	
+	It it;
+	size_t i0;
+
+	Container v2(m_container_size);
+	for(it = v2.begin(), i0 = 0; it != v2.end(); ++it, ++i0)
+		*it = Cval(i0);
+
+	Container v3(v2);
+	Container v4(v2);
+	
+
+	//	TEST
+	{
+		time_printer tp(msg, m_print_time);
+		
+		
+		//	MISC (the entire method)
 		misc::sort(first, first + 5);                //  5 10 15 20 25
 		misc::sort(second, second + 5);              // 10 20 30 40 50
 
@@ -4560,12 +4892,6 @@ void test_algorithm::set_intersection(const char* msg)
 		//intersection has 2 elements
 		
 		it = misc::set_intersection(v2.begin(), v2.end(), v3.begin(), v3.end(), v4.begin());
-		CPPUNIT_ASSERT(it - v4.begin() == m_container_size);
-		for(it = v4.begin(), i0 = 0; it != v4.end(); ++it, ++i0)
-			CPPUNIT_ASSERT(*it == Cval(i0));
-		
-		//	STD
-		it = std::set_intersection(v2.begin(), v2.end(), v3.begin(), v3.end(), v4.begin());
 		CPPUNIT_ASSERT(it - v4.begin() == m_container_size);
 		for(it = v4.begin(), i0 = 0; it != v4.end(); ++it, ++i0)
 			CPPUNIT_ASSERT(*it == Cval(i0));
@@ -4665,7 +4991,66 @@ void test_algorithm::set_symmetric_difference(const char* msg)
 	{
 		time_printer tp(msg, m_print_time);
 
-		//	MISC
+		//	STD (the entire method)
+		std::sort (first, first + 5);    //  5 10 15 20 25
+		std::sort (second, second + 5);  // 10 20 30 40 50
+
+
+		/*	Unites all of the elements that belong to one, but not both, 
+			of the sorted source ranges into a single, sorted destination range,
+			where the ordering criterion may be specified by a binary predicate.
+		*/
+		it = std::set_symmetric_difference (first, first+5, second, second+5, v1.begin());
+		// 5 15 25 30 40 50  0  0  0  0
+
+		Cval mycheck[]={5, 15, 25, 30, 40, 50,  0,  0,  0,  0};
+		for(size_t i=0; i<v1.size(); ++i)
+		{
+			CPPUNIT_ASSERT(mycheck[i] == v1[i]);
+		}
+
+		//cout << "symmetric difference has " << int(it - v1.begin()) << " elements.\n";
+
+		CPPUNIT_ASSERT((int)(it-v1.begin()) == 6);
+		//symmetric difference has 6 elements
+
+		it = std::set_symmetric_difference(v2.begin(), v2.end(), v3.begin(), v3.end(), v4.begin(), std::less<Cval>());
+		for(it2 = v4.begin(), i0 = 1; it2 != it; ++it2, i0 += 2)
+			CPPUNIT_ASSERT(*it2 == Cval(i0));
+	}
+}
+
+template<typename Container>
+void test_algorithm::set_symmetric_difference2(const char* msg)
+{
+	typedef typename Container::value_type Cval;
+	typedef typename Container::iterator It;
+
+
+	Cval first[] =  { 5,10,15,20,25};
+	Cval second[] = {50,40,30,20,10};
+	Container v1(10); // 0  0  0  0  0  0  0  0  0  0
+	
+	It it, it2;
+	size_t i0;
+
+	Container v2(m_container_size);
+	for(it = v2.begin(), i0 = 0; it != v2.end(); ++it, ++i0)
+		*it = Cval(i0);
+
+	Container v3(m_container_size / 2);
+	for(it = v3.begin(), i0 = 0; it != v3.end(); ++it, i0 += 2)
+		*it = Cval(i0);
+
+	Container v4(m_container_size);
+
+
+
+	//	TEST
+	{
+		time_printer tp(msg, m_print_time);
+
+		//	MISC (the entire method)
 		misc::sort (first, first + 5);    //  5 10 15 20 25
 		misc::sort (second, second + 5);  // 10 20 30 40 50
 
@@ -4691,19 +5076,135 @@ void test_algorithm::set_symmetric_difference(const char* msg)
 		it = misc::set_symmetric_difference(v2.begin(), v2.end(), v3.begin(), v3.end(), v4.begin(), misc::less<Cval>());
 		for(it2 = v4.begin(), i0 = 1; it2 != it; ++it2, i0 += 2)
 			CPPUNIT_ASSERT(*it2 == Cval(i0));
-
-		//	STD
-		it = std::set_symmetric_difference(v2.begin(), v2.end(), v3.begin(), v3.end(), v4.begin(), std::less<Cval>());
-		for(it2 = v4.begin(), i0 = 1; it2 != it; ++it2, i0 += 2)
-			CPPUNIT_ASSERT(*it2 == Cval(i0));
 	}
 }
-
 
 
 //Heap:
 template<typename Container>
 void test_algorithm::push_heap(const char* msg)
+{
+	typedef typename Container::value_type Cval;
+	typedef typename Container::iterator It;
+
+
+	Cval myints[] = {10,20,30,5,15};
+
+	Container v1(myints, myints + 5);
+
+	It it;
+	size_t i0;
+
+	Container v2(m_container_size);
+	for(it = v2.begin(), i0 = 0; it != v2.end(); ++it, ++i0)
+		*it = Cval(i0);
+	
+	::srand((unsigned)::time(NULL));
+	std::random_shuffle(v2.begin(), v2.end());
+
+	Container v3(v2);
+
+
+	//	TEST
+	{
+		time_printer tp(msg, m_print_time);
+		
+		//	STD (entire method)
+		/*	make_heap
+			Converts elements from a specified range into a heap in which 
+			the first element is the largest and for which a sorting criterion 
+			may be specified with a binary predicate.
+		*/
+
+		std::make_heap (v1.begin(), v1.end());
+		//initial max heap : 30 (10 20 5 15)
+		CPPUNIT_ASSERT(v1.front() == 30);
+
+		/*	pop_heap
+			Removes the largest element from the front of a heap to 
+			the next-to-last position in the range and then forms a new heap 
+			from the remaining elements.
+		*/
+		std::pop_heap (v1.begin(), v1.end());
+		// v1: 20 (10 5 15 30)
+		v1.pop_back();
+		// v1: 20 (10 5 15)
+
+		//cout << "max heap after pop : " << v1.front() << endl;
+		CPPUNIT_ASSERT(v1.front() == 20);
+
+
+		/*	push_heap
+			Adds an element that is at the end of a range to an existing heap 
+			consisting of the prior elements in the range.
+		*/
+		v1.push_back(99);
+		std::push_heap (v1.begin(), v1.end());
+		// v1: 99 (20 10 5 15)
+
+		//cout << "max heap after push: " << v1.front() << endl;
+		CPPUNIT_ASSERT(v1.front() == 99);
+
+		//Converts a heap into a sorted range.
+		std::sort_heap (v1.begin(), v1.end());
+
+		//cout << "final sorted range :";
+		int mycheck[]={5, 10, 15, 20, 99};
+		for (unsigned i=0; i<v1.size(); i++)
+		{
+			CPPUNIT_ASSERT(mycheck[i] == v1[i]);
+			//cout << " " << v[i];
+		}
+
+
+		//v2: 0 1 2 3 ... 199999
+		std::make_heap(v2.begin(), v2.end(), std::less<Cval>());
+		//v2: 199999 (0 1 2 3 ... 199998)
+		CPPUNIT_ASSERT(*v2.begin() == Cval(m_container_size-1));
+
+		std::pop_heap(v2.begin(), v2.end(), std::less<Cval>());
+		//v2: 199998 (0 1 2 3 ... 199999)
+		CPPUNIT_ASSERT(*v2.begin() == m_container_size-2);
+		CPPUNIT_ASSERT(*v2.rbegin() == m_container_size-1);
+
+		v2.pop_back();
+		//v2: 199998 (0 1 2 3 ... 199997)
+		v2.push_back(m_container_size);
+		std::push_heap(v2.begin(), v2.end(), std::less<Cval>());
+		//v2: 200000 (199998 0 1 2 3 ... 199997)
+		CPPUNIT_ASSERT(v2.front() == Cval(m_container_size));
+
+		std::sort_heap(v2.begin(), v2.end());
+		//v2: 0 1 2 3 ...
+		for(it = v2.begin()+1; it != v2.end(); ++it)
+			CPPUNIT_ASSERT(*it > *(it-1));
+
+		//v3: 0 1 2 3 ... 199999
+		std::make_heap(v3.begin(), v3.end(), std::less<Cval>());
+		//v3: 199999 (0 1 2 3 ... 199998)
+		CPPUNIT_ASSERT(*v3.begin() == Cval(m_container_size-1));
+
+		std::pop_heap(v3.begin(), v3.end(), std::less<Cval>());
+		//v3: 199998 (0 1 2 3 ... 199999)
+		CPPUNIT_ASSERT(*v3.begin() == m_container_size-2);
+		CPPUNIT_ASSERT(*v3.rbegin() == m_container_size-1);
+
+		v3.pop_back();
+		//v3: 199998 (0 1 2 3 ... 199997)
+		v3.push_back(m_container_size);
+		std::push_heap(v3.begin(), v3.end(), std::less<Cval>());
+		//v3: 200000 (199998 0 1 2 3 ... 199997)
+		CPPUNIT_ASSERT(v3.front() == Cval(m_container_size));
+
+		std::sort_heap(v3.begin(), v3.end());
+		//v3: 0 1 2 3 ...
+		for(it = v3.begin()+1; it != v3.end(); ++it)
+			CPPUNIT_ASSERT(*it > *(it-1));
+	}
+}
+
+template<typename Container>
+void test_algorithm::push_heap2(const char* msg)
 {
 	typedef typename Container::value_type Cval;
 	typedef typename Container::iterator It;
@@ -4730,7 +5231,7 @@ void test_algorithm::push_heap(const char* msg)
 	{
 		time_printer tp(msg, m_print_time);
 		
-		//	MISC
+		//	MISC (the entire method)
 		/*	make_heap
 			Converts elements from a specified range into a heap in which 
 			the first element is the largest and for which a sorting criterion 
@@ -4799,16 +5300,13 @@ void test_algorithm::push_heap(const char* msg)
 		//v2: 0 1 2 3 ...
 		for(it = v2.begin()+1; it != v2.end(); ++it)
 			CPPUNIT_ASSERT(*it > *(it-1));
-
 		
-
-		//	STD
 		//v3: 0 1 2 3 ... 199999
-		std::make_heap(v3.begin(), v3.end(), std::less<Cval>());
+		misc::make_heap(v3.begin(), v3.end(), misc::less<Cval>());
 		//v3: 199999 (0 1 2 3 ... 199998)
 		CPPUNIT_ASSERT(*v3.begin() == Cval(m_container_size-1));
 
-		std::pop_heap(v3.begin(), v3.end(), std::less<Cval>());
+		misc::pop_heap(v3.begin(), v3.end(), misc::less<Cval>());
 		//v3: 199998 (0 1 2 3 ... 199999)
 		CPPUNIT_ASSERT(*v3.begin() == m_container_size-2);
 		CPPUNIT_ASSERT(*v3.rbegin() == m_container_size-1);
@@ -4816,11 +5314,11 @@ void test_algorithm::push_heap(const char* msg)
 		v3.pop_back();
 		//v3: 199998 (0 1 2 3 ... 199997)
 		v3.push_back(m_container_size);
-		std::push_heap(v3.begin(), v3.end(), std::less<Cval>());
+		misc::push_heap(v3.begin(), v3.end(), misc::less<Cval>());
 		//v3: 200000 (199998 0 1 2 3 ... 199997)
 		CPPUNIT_ASSERT(v3.front() == Cval(m_container_size));
 
-		std::sort_heap(v3.begin(), v3.end());
+		misc::sort_heap(v3.begin(), v3.end());
 		//v3: 0 1 2 3 ...
 		for(it = v3.begin()+1; it != v3.end(); ++it)
 			CPPUNIT_ASSERT(*it > *(it-1));
@@ -5050,8 +5548,76 @@ void test_algorithm::next_permutation(const char* msg)
 
 	//	TEST
 	{
+		// STD (the entire method)
 		time_printer tp(msg, m_print_time);
-		//	MISC
+					
+		//cout << "The 3! possible permutations with 3 elements:\n";
+		std::sort(myints, myints + 3);
+
+		/*	next_permutation:
+			Reorders the elements in a range so that the original ordering 
+			is replaced by the lexicographically next greater permutation 
+			if it exists, where the sense of next may be specified 
+			with a binary predicate.
+		*/
+		i0 = 0;
+		do
+		{
+			CPPUNIT_ASSERT(mycheck[i0][0] == myints[0]);
+			CPPUNIT_ASSERT(mycheck[i0][1] == myints[1]);
+			CPPUNIT_ASSERT(mycheck[i0][2] == myints[2]);
+			i0++;
+			//cout << myints[0] << " " << myints[1] << " " << myints[2] << endl;
+		}
+		while(std::next_permutation(myints, myints + 3));
+
+
+		/*
+		  The 3! possible permutations with 3 elements:
+		  1 2 3
+		  1 3 2
+		  2 1 3
+		  2 3 1
+		  3 1 2
+		  3 2 1
+		*/
+
+		//	STD
+		while(std::next_permutation(v1.begin(), v1.end()) &&
+			  std::next_permutation(v2.begin(), v2.end()) )
+		{
+			It it1 = v1.begin();
+			It it2 = v2.begin();
+			for(; it1 != v1.end(); ++it1, ++it2)
+				CPPUNIT_ASSERT(*it1 == *it2);
+		}
+	}
+}
+
+template<typename Container>
+void test_algorithm::next_permutation2(const char* msg)
+{
+	typedef typename Container::value_type Cval;
+	typedef typename Container::iterator It;
+
+	Cval myints[] = {1,2,3};
+	Cval mycheck[6][3] = {{1, 2, 3}, {1, 3, 2,}, {2, 1, 3}, {2, 3, 1}, {3, 1, 2}, {3, 2, 1}};
+
+	It it;
+	size_t i0;
+
+	Container v1(5);
+	for(it = v1.begin(), i0 = 0; it != v1.end(); ++it, ++i0)
+		*it = Cval(i0);
+
+	Container v2(v1);
+
+
+	//	TEST
+	{
+		//	MISC (the entire method)
+		time_printer tp(msg, m_print_time);
+		
 			
 		//cout << "The 3! possible permutations with 3 elements:\n";
 		misc::sort(myints, myints + 3);
@@ -5086,8 +5652,7 @@ void test_algorithm::next_permutation(const char* msg)
 
 		//	STD
 		while(misc::next_permutation(v1.begin(), v1.end()) &&
-			std::next_permutation(v2.begin(), v2.end())
-			)
+			  misc::next_permutation(v2.begin(), v2.end()) )
 		{
 			It it1 = v1.begin();
 			It it2 = v2.begin();
@@ -5117,9 +5682,73 @@ void test_algorithm::prev_permutation(const char* msg)
 
 	//	TEST
 	{
-		time_printer tp(msg, m_print_time);
-		//	MISC
+		//	STD (the entire method)
+		time_printer tp(msg, m_print_time);		
 
+		//cout << "The 3! possible permutations with 3 elements:\n";
+		std::sort(myints, myints + 3);
+		std::reverse(myints, myints + 3);
+
+		/*	prev_permutation:
+			Reorders the elements in a range so that the original ordering 
+			is replaced by the lexicographically next greater permutation 
+			if it exists, where the sense of next may be specified with 
+			a binary predicate.
+		*/
+		i0 = 0;
+		do
+		{
+			CPPUNIT_ASSERT(mycheck[i0][0] == myints[0]);
+			CPPUNIT_ASSERT(mycheck[i0][1] == myints[1]);
+			CPPUNIT_ASSERT(mycheck[i0][2] == myints[2]);
+			i0++;
+			//cout << myints[0] << " " << myints[1] << " " << myints[2] << endl;
+		}
+		while ( std::prev_permutation(myints, myints+3) );
+
+		/*
+		  3 2 1
+		  3 1 2
+		  2 3 1
+		  2 1 3
+		  1 3 2
+		  1 2 3
+		*/
+		
+		while(std::prev_permutation(v1.begin(), v1.end()) && 
+			  std::prev_permutation(v2.begin(), v2.end()) )
+		{
+			It it1 = v1.begin();
+			It it2 = v2.begin();
+			for(; it1 != v1.end(); ++it1, ++it2)
+				CPPUNIT_ASSERT(*it1 == *it2);
+		}
+	}
+}
+
+template<typename Container>
+void test_algorithm::prev_permutation2(const char* msg)
+{
+	typedef typename Container::value_type Cval;
+	typedef typename Container::iterator It;
+
+	Cval myints[] = {1,2,3};
+	Cval mycheck[6][3]={{3,2,1},{3,1,2},{2,3,1},{2,1,3},{1,3,2},{1,2,3}};	
+	
+	It it;
+	size_t i0;
+
+	Container v1(5);
+	for(it = v1.begin(), i0 = 0; it != v1.end(); ++it, ++i0)
+		*it = Cval(i0);
+	Container v2(v1);
+
+
+	//	TEST
+	{
+		//	MISC (the entire method)
+		time_printer tp(msg, m_print_time);
+		
 		//cout << "The 3! possible permutations with 3 elements:\n";
 		misc::sort(myints, myints + 3);
 		misc::reverse(myints, myints + 3);
@@ -5150,11 +5779,8 @@ void test_algorithm::prev_permutation(const char* msg)
 		  1 2 3
 		*/
 
-
-		//	STD
 		while(misc::prev_permutation(v1.begin(), v1.end()) && 
-			std::prev_permutation(v2.begin(), v2.end())
-			)
+			  misc::prev_permutation(v2.begin(), v2.end()) )
 		{
 			It it1 = v1.begin();
 			It it2 = v2.begin();

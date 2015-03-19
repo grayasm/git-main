@@ -287,11 +287,15 @@ public:
 	void partition2(const char* msg);
 	template<typename Container>
 	void stable_partition(const char* msg);
+	template<typename Container>
+	void stable_partition2(const char* msg);
 	//Sorting:
 	template<typename Container>
 	void sort(const char* msg);
 	template<typename Container>
 	void stable_sort(const char* msg);
+	template<typename Container>
+	void stable_sort2(const char* msg);
 	template<typename Container>
 	void partial_sort(const char* msg);
 	template<typename Container>
@@ -311,6 +315,8 @@ public:
 	void equal_range2(const char* msg);
 	template<typename Container>
 	void binary_search(const char* msg);
+	template<typename Container>
+	void binary_search2(const char* msg);
 	//Merge (operating on sorted ranges):
 	template<typename Container>
 	void merge(const char* msg);
@@ -319,18 +325,30 @@ public:
 	template<typename Container>
 	void inplace_merge(const char* msg);
 	template<typename Container>
+	void inplace_merge2(const char* msg);
+	template<typename Container>
 	void includes(const char* msg);
+	template<typename Container>
+	void includes2(const char* msg);
 	template<typename Container>
 	void set_union(const char* msg);
 	template<typename Container>
+	void set_union2(const char* msg);
+	template<typename Container>
 	void set_intersection(const char* msg);
+	template<typename Container>
+	void set_intersection2(const char* msg);
 	template<typename Container>
 	void set_difference(const char* msg);
 	template<typename Container>
 	void set_symmetric_difference(const char* msg);
+	template<typename Container>
+	void set_symmetric_difference2(const char* msg);
 	//Heap:
 	template<typename Container>
 	void push_heap(const char* msg);
+	template<typename Container>
+	void push_heap2(const char* msg);
 	template<typename Container>
 	void pop_heap(const char* msg);
 	template<typename Container>
@@ -351,7 +369,11 @@ public:
 	template<typename Container>
 	void next_permutation(const char* msg);
 	template<typename Container>
+	void next_permutation2(const char* msg);
+	template<typename Container>
 	void prev_permutation(const char* msg);
+	template<typename Container>
+	void prev_permutation2(const char* msg);
 	//////////////////////////////////////////////////////////////////////////
 };
 

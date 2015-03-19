@@ -146,9 +146,13 @@ public:
 	template<typename Container>
 	void unary_function(const char* msg);
 	template<typename Container>
+	void unary_function2(const char* msg);
+	template<typename Container>
 	void binary_function(const char* msg);
 	template<typename Container>
 	void plus(const char* msg);
+	template<typename Container>
+	void plus2(const char* msg);
 	template<typename Container>
 	void minus(const char* msg);
 	template<typename Container>

@@ -65,9 +65,9 @@ void test_functional::unary_function()
 	misc::cout <<   "\n\t*******************************************************";
 	misc::cout << "\n\n\tunary_function-----------------------------------------";
 	unary_function<std::vector<int> > ("\n\tstd::vector       ");
-	unary_function<misc::vector<int> >("\n\tmisc::vector      ");
+	unary_function2<misc::vector<int> >("\n\tmisc::vector      ");
 	unary_function<std::list<int> >   ("\n\tstd::list         ");
-	unary_function<misc::list<int> >  ("\n\tmisc::list        ");
+	unary_function2<misc::list<int> >  ("\n\tmisc::list        ");
 }
 
 void test_functional::binary_function()
@@ -83,9 +83,9 @@ void test_functional::plus()
 {
 	misc::cout << "\n\n\tplus---------------------------------------------------";
 	plus<std::vector<int> > ("\n\tstd::vector       ");
-	plus<misc::vector<int> >("\n\tmisc::vector      ");
+	plus2<misc::vector<int> >("\n\tmisc::vector      ");
 	plus<std::list<int> >   ("\n\tstd::list         ");
-	plus<misc::list<int> >  ("\n\tmisc::list        ");
+	plus2<misc::list<int> >  ("\n\tmisc::list        ");
 }
 
 void test_functional::minus()
@@ -511,16 +511,33 @@ void test_functional::unary_function(const char* msg)
 	{
 		time_printer tp(msg, m_print_time);
 
-		//  MISC
-		misc::for_each(v1.begin(), v1.end(), IsOdd_0<Cval>());
-		misc::for_each(v1.begin(), v1.end(), IsOdd_2<Cval>());
-
-		//  STD
+		//  STD (the entire method)
 		std::for_each(v1.begin(), v1.end(), IsOdd_0<Cval>());
 		std::for_each(v1.begin(), v1.end(), IsOdd_2<Cval>());
 	}
 }
 
+template<typename Container>
+void test_functional::unary_function2(const char* msg)
+{
+	typedef typename Container::value_type Cval;
+	typedef typename Container::iterator It;
+
+	It it;
+	size_t i0;
+
+	Container v1(m_container_size);
+	for( it = v1.begin(), i0 = 0; it != v1.end(); ++it, ++i0) *it = Cval(i0);
+
+	//  TEST
+	{
+		time_printer tp(msg, m_print_time);
+
+		//  MISC (entire method)
+		misc::for_each(v1.begin(), v1.end(), IsOdd_0<Cval>());
+		misc::for_each(v1.begin(), v1.end(), IsOdd_2<Cval>());
+	}
+}
 
 
 //GNU(-std=c++98): take the definitions outside test_functional::binary_function
@@ -582,6 +599,41 @@ void test_functional::plus(const char* msg)
 	//  TEST
 	{
 		time_printer tp(msg, m_print_time);
+		//  STD
+		std::transform(v1.begin(), v1.end(), v2.begin(), v3.begin(), std::plus<Cval>());
+		for(it = v3.begin(), i0 = 0; it != v3.end(); ++it, ++i0)
+			CPPUNIT_ASSERT(*it == Cval(2*i0));
+		std::transform(v1.begin(), v1.end(), v2.begin(), v3.begin(), std::plus<Cval>());
+		for(it = v3.begin(), i0 = 0; it != v3.end(); ++it, ++i0)
+			CPPUNIT_ASSERT(*it == Cval(2*i0));
+
+
+		//  STD
+		std::transform(v1.begin(), v1.end(), v2.begin(), v3.begin(), std::plus<Cval>());
+		for(it = v3.begin(), i0 = 0; it != v3.end(); ++it, ++i0)
+			CPPUNIT_ASSERT(*it == Cval(2*i0));
+		std::transform(v1.begin(), v1.end(), v2.begin(), v3.begin(), std::plus<Cval>());
+		for(it = v3.begin(), i0 = 0; it != v3.end(); ++it, ++i0)
+			CPPUNIT_ASSERT(*it == Cval(2*i0));
+	}
+}
+
+template<typename Container>
+void test_functional::plus2(const char* msg)
+{
+	typedef typename Container::value_type Cval;
+	typedef typename Container::iterator It;
+
+	It it;
+	size_t i0;
+
+	Container v1(m_container_size);
+	for( it = v1.begin(), i0 = 0; it != v1.end(); ++it, ++i0) *it = Cval(i0);
+	Container v2(v1), v3(m_container_size);
+
+	//  TEST
+	{
+		time_printer tp(msg, m_print_time);
 		//  MISC
 		misc::transform(v1.begin(), v1.end(), v2.begin(), v3.begin(), misc::plus<Cval>());
 		for(it = v3.begin(), i0 = 0; it != v3.end(); ++it, ++i0)
@@ -591,11 +643,11 @@ void test_functional::plus(const char* msg)
 			CPPUNIT_ASSERT(*it == Cval(2*i0));
 
 
-		//  STD
-		std::transform(v1.begin(), v1.end(), v2.begin(), v3.begin(), std::plus<Cval>());
+		//  MISC
+		misc::transform(v1.begin(), v1.end(), v2.begin(), v3.begin(), misc::plus<Cval>());
 		for(it = v3.begin(), i0 = 0; it != v3.end(); ++it, ++i0)
 			CPPUNIT_ASSERT(*it == Cval(2*i0));
-		std::transform(v1.begin(), v1.end(), v2.begin(), v3.begin(), misc::plus<Cval>());
+		misc::transform(v1.begin(), v1.end(), v2.begin(), v3.begin(), std::plus<Cval>());
 		for(it = v3.begin(), i0 = 0; it != v3.end(); ++it, ++i0)
 			CPPUNIT_ASSERT(*it == Cval(2*i0));
 	}
