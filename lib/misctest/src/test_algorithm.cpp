@@ -521,11 +521,11 @@ void test_algorithm::stable_partition()
 	stable_partition<std::vector<int> >("");
 	stable_partition<std::vector<int> >																		("\n\tstd::vector       ");
 	stable_partition<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	stable_partition<misc::vector<int> >																	("\n\tmisc::vector      ");
-	stable_partition<misc::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	stable_partition<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
-	stable_partition<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	stable_partition<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	stable_partition2<misc::vector<int> >																	("\n\tmisc::vector      ");
+	stable_partition2<misc::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
+	stable_partition2<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
+	stable_partition2<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
+	stable_partition2<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
 }
 
 //Sorting:
@@ -728,11 +728,11 @@ void test_algorithm::push_heap()
 	misc::cout << "\n\n\tpush_heap----------------------------------------------";
 	push_heap<std::vector<int> >																	("\n\tstd::vector       ");
 	push_heap<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	push_heap<misc::vector<int> >																	("\n\tmisc::vector      ");
-	push_heap<misc::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	push_heap<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
-	push_heap<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	push_heap<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	push_heap2<misc::vector<int> >																	("\n\tmisc::vector      ");
+	push_heap2<misc::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
+	push_heap2<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
+	push_heap2<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
+	push_heap2<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
 }
 
 void test_algorithm::pop_heap()
@@ -3530,7 +3530,69 @@ void test_algorithm::stable_partition(const char* msg)
 	{
 		time_printer tp(msg, m_print_time);
 		
-		//	MISC
+		//	STD (the entire method)
+		/*	Classifies elements in a range into two disjoint sets, with those 
+			elements satisfying a unary predicate preceding those that fail 
+			to satisfy it, preserving the relative order of equivalent elements.
+		*/
+		bound = std::stable_partition(v1.begin(), v1.end(), IsOdd_stable_partition);
+
+		//odd members: 1 3 5 7 9
+		//even members: 2 4 6 8
+
+		//odd members:
+		Cval mycheck_odd[]={1, 3, 5, 7, 9};
+		for (it=v1.begin(), i0 = 0; it != bound; ++it, ++i0)
+		{
+			CPPUNIT_ASSERT(mycheck_odd[i0] == *it);
+		}
+
+		//even members:
+		Cval mycheck_even[]={2, 4, 6, 8};
+		for (it = bound, i0 = 0; it != v1.end(); ++it, ++i0)
+		{
+			CPPUNIT_ASSERT(mycheck_even[i0] == *it);			
+		}
+		
+		//odd members: 1 3 5 7 9 ... 199999
+		bound = std::stable_partition(v2.begin(), v2.end(), IsOdd_stable_partition);
+		for(it = v2.begin(), i0 = 1; it != bound; ++it, i0+=2)
+		{
+			CPPUNIT_ASSERT(*it == Cval(i0));
+		}
+		//even members: 2 4 6 8 ... 200000
+		for(it = bound, i0 = 2; it != v2.end(); ++it, i0+=2)
+		{
+			CPPUNIT_ASSERT(*it == Cval(i0));
+		}
+	}
+}
+
+template<typename Container>
+void test_algorithm::stable_partition2(const char* msg)
+{
+	typedef typename Container::value_type Cval;
+	typedef typename Container::iterator It;
+
+
+	Container v1;
+	// set some values:
+	for (size_t i = 1; i < 10; ++i) v1.push_back(Cval(i)); // 1 2 3 4 5 6 7 8 9
+	
+	It it, bound;
+	size_t i0;
+
+	Container v2(m_container_size); //v2: 1 2 3 4 5 .... 199999 200000
+	for(i0 = 1, it = v2.begin(); it != v2.end(); ++it, ++i0) *it = Cval(i0);
+
+	Container v3(v2);
+
+
+	//	TEST
+	{
+		time_printer tp(msg, m_print_time);
+		
+		//	MISC (the entire method)
 		/*	Classifies elements in a range into two disjoint sets, with those 
 			elements satisfying a unary predicate preceding those that fail 
 			to satisfy it, preserving the relative order of equivalent elements.
@@ -3565,24 +3627,9 @@ void test_algorithm::stable_partition(const char* msg)
 		{
 			CPPUNIT_ASSERT(*it == Cval(i0));
 		}
-
-/*
-		//	STD
-		//	Cannot deduce iterator category.
-		//odd members: 1 3 5 7 9 ... 199999
-		bound = std::stable_partition(v3.begin(), v3.end(), IsOdd_stable_partition);
-		for(it = v3.begin(), i0 = 1; it != bound; ++it, i0+=2)
-		{
-			CPPUNIT_ASSERT(*it == Cval(i0));
-		}
-		//even members: 2 4 6 8 ... 200000
-		for(it = bound, i0 = 2; it != v3.end(); ++it, i0+=2)
-		{
-			CPPUNIT_ASSERT(*it == Cval(i0));
-		}
-*/
 	}
 }
+
 
 //Sorting:
 
@@ -4173,7 +4220,51 @@ void test_algorithm::binary_search(const char* msg)
 		time_printer tp(msg, m_print_time);
 		
 		
-		//	MISC
+		//	STD (the entire method)
+		// using default comparison:
+		std::sort(v1.begin(), v1.end());
+
+		//cout << "looking for a 3... ";
+		bool res = std::binary_search<It, Cval>(v1.begin(), v1.end(), 3);
+		CPPUNIT_ASSERT(res);
+
+		// using myfunction as comp:
+		std::sort(v1.begin(), v1.end(), myfunction_binary_search);
+
+		//cout << "looking for a 6... ";
+		res = std::binary_search<It, Cval>(v1.begin(), v1.end(), 6, myfunction_binary_search);
+		CPPUNIT_ASSERT(!res);
+
+		res = std::binary_search<It, Cval>(v2.begin(), v2.end(), m_container_size/2);
+		CPPUNIT_ASSERT(res);
+		res = std::binary_search<It, Cval>(v2.begin(), v2.end(), 2*m_container_size, myfunction_binary_search);
+		CPPUNIT_ASSERT(!res);
+	}
+}
+
+template<typename Container>
+void test_algorithm::binary_search2(const char* msg)
+{
+	typedef typename Container::value_type Cval;
+	typedef typename Container::iterator It;
+
+
+	Cval myints[] = {1,2,3,4,5,4,3,2,1};
+	Container v1(myints, myints + 9); // 1 2 3 4 5 4 3 2 1
+
+	It it;
+	size_t i0;
+
+	Container v2(m_container_size);
+	for(it = v2.begin(), i0 = 1; it != v2.end(); ++it, ++i0)
+		*it = Cval(i0);
+
+	//	TEST
+	{
+		time_printer tp(msg, m_print_time);
+		
+		
+		//	MISC (the entire method)
 		// using default comparison:
 		misc::sort(v1.begin(), v1.end());
 
@@ -4203,7 +4294,6 @@ void test_algorithm::binary_search(const char* msg)
 */
 	}
 }
-
 
 //Merge (operating on sorted ranges):
 template<typename Container>
@@ -4721,6 +4811,128 @@ void test_algorithm::push_heap(const char* msg)
 		*it = Cval(i0);
 	
 	::srand((unsigned)::time(NULL));
+	std::random_shuffle(v2.begin(), v2.end());
+
+	Container v3(v2);
+
+
+	//	TEST
+	{
+		time_printer tp(msg, m_print_time);
+		
+		//	STD (entire method)
+		/*	make_heap
+			Converts elements from a specified range into a heap in which 
+			the first element is the largest and for which a sorting criterion 
+			may be specified with a binary predicate.
+		*/
+
+		std::make_heap (v1.begin(), v1.end());
+		//initial max heap : 30 (10 20 5 15)
+		CPPUNIT_ASSERT(v1.front() == 30);
+
+		/*	pop_heap
+			Removes the largest element from the front of a heap to 
+			the next-to-last position in the range and then forms a new heap 
+			from the remaining elements.
+		*/
+		std::pop_heap (v1.begin(), v1.end());
+		// v1: 20 (10 5 15 30)
+		v1.pop_back();
+		// v1: 20 (10 5 15)
+
+		//cout << "max heap after pop : " << v1.front() << endl;
+		CPPUNIT_ASSERT(v1.front() == 20);
+
+
+		/*	push_heap
+			Adds an element that is at the end of a range to an existing heap 
+			consisting of the prior elements in the range.
+		*/
+		v1.push_back(99);
+		std::push_heap (v1.begin(), v1.end());
+		// v1: 99 (20 10 5 15)
+
+		//cout << "max heap after push: " << v1.front() << endl;
+		CPPUNIT_ASSERT(v1.front() == 99);
+
+		//Converts a heap into a sorted range.
+		std::sort_heap (v1.begin(), v1.end());
+
+		//cout << "final sorted range :";
+		int mycheck[]={5, 10, 15, 20, 99};
+		for (unsigned i=0; i<v1.size(); i++)
+		{
+			CPPUNIT_ASSERT(mycheck[i] == v1[i]);
+			//cout << " " << v[i];
+		}
+
+
+		//v2: 0 1 2 3 ... 199999
+		std::make_heap(v2.begin(), v2.end(), std::less<Cval>());
+		//v2: 199999 (0 1 2 3 ... 199998)
+		CPPUNIT_ASSERT(*v2.begin() == Cval(m_container_size-1));
+
+		std::pop_heap(v2.begin(), v2.end(), std::less<Cval>());
+		//v2: 199998 (0 1 2 3 ... 199999)
+		CPPUNIT_ASSERT(*v2.begin() == m_container_size-2);
+		CPPUNIT_ASSERT(*v2.rbegin() == m_container_size-1);
+
+		v2.pop_back();
+		//v2: 199998 (0 1 2 3 ... 199997)
+		v2.push_back(m_container_size);
+		std::push_heap(v2.begin(), v2.end(), std::less<Cval>());
+		//v2: 200000 (199998 0 1 2 3 ... 199997)
+		CPPUNIT_ASSERT(v2.front() == Cval(m_container_size));
+
+		std::sort_heap(v2.begin(), v2.end());
+		//v2: 0 1 2 3 ...
+		for(it = v2.begin()+1; it != v2.end(); ++it)
+			CPPUNIT_ASSERT(*it > *(it-1));
+
+		//v3: 0 1 2 3 ... 199999
+		std::make_heap(v3.begin(), v3.end(), std::less<Cval>());
+		//v3: 199999 (0 1 2 3 ... 199998)
+		CPPUNIT_ASSERT(*v3.begin() == Cval(m_container_size-1));
+
+		std::pop_heap(v3.begin(), v3.end(), std::less<Cval>());
+		//v3: 199998 (0 1 2 3 ... 199999)
+		CPPUNIT_ASSERT(*v3.begin() == m_container_size-2);
+		CPPUNIT_ASSERT(*v3.rbegin() == m_container_size-1);
+
+		v3.pop_back();
+		//v3: 199998 (0 1 2 3 ... 199997)
+		v3.push_back(m_container_size);
+		std::push_heap(v3.begin(), v3.end(), std::less<Cval>());
+		//v3: 200000 (199998 0 1 2 3 ... 199997)
+		CPPUNIT_ASSERT(v3.front() == Cval(m_container_size));
+
+		std::sort_heap(v3.begin(), v3.end());
+		//v3: 0 1 2 3 ...
+		for(it = v3.begin()+1; it != v3.end(); ++it)
+			CPPUNIT_ASSERT(*it > *(it-1));
+	}
+}
+
+template<typename Container>
+void test_algorithm::push_heap2(const char* msg)
+{
+	typedef typename Container::value_type Cval;
+	typedef typename Container::iterator It;
+
+
+	Cval myints[] = {10,20,30,5,15};
+
+	Container v1(myints, myints + 5);
+
+	It it;
+	size_t i0;
+
+	Container v2(m_container_size);
+	for(it = v2.begin(), i0 = 0; it != v2.end(); ++it, ++i0)
+		*it = Cval(i0);
+	
+	::srand((unsigned)::time(NULL));
 	misc::random_shuffle(v2.begin(), v2.end());
 
 	Container v3(v2);
@@ -4730,7 +4942,7 @@ void test_algorithm::push_heap(const char* msg)
 	{
 		time_printer tp(msg, m_print_time);
 		
-		//	MISC
+		//	MISC (the entire method)
 		/*	make_heap
 			Converts elements from a specified range into a heap in which 
 			the first element is the largest and for which a sorting criterion 
@@ -4799,16 +5011,13 @@ void test_algorithm::push_heap(const char* msg)
 		//v2: 0 1 2 3 ...
 		for(it = v2.begin()+1; it != v2.end(); ++it)
 			CPPUNIT_ASSERT(*it > *(it-1));
-
 		
-
-		//	STD
 		//v3: 0 1 2 3 ... 199999
-		std::make_heap(v3.begin(), v3.end(), std::less<Cval>());
+		misc::make_heap(v3.begin(), v3.end(), misc::less<Cval>());
 		//v3: 199999 (0 1 2 3 ... 199998)
 		CPPUNIT_ASSERT(*v3.begin() == Cval(m_container_size-1));
 
-		std::pop_heap(v3.begin(), v3.end(), std::less<Cval>());
+		misc::pop_heap(v3.begin(), v3.end(), misc::less<Cval>());
 		//v3: 199998 (0 1 2 3 ... 199999)
 		CPPUNIT_ASSERT(*v3.begin() == m_container_size-2);
 		CPPUNIT_ASSERT(*v3.rbegin() == m_container_size-1);
@@ -4816,11 +5025,11 @@ void test_algorithm::push_heap(const char* msg)
 		v3.pop_back();
 		//v3: 199998 (0 1 2 3 ... 199997)
 		v3.push_back(m_container_size);
-		std::push_heap(v3.begin(), v3.end(), std::less<Cval>());
+		misc::push_heap(v3.begin(), v3.end(), misc::less<Cval>());
 		//v3: 200000 (199998 0 1 2 3 ... 199997)
 		CPPUNIT_ASSERT(v3.front() == Cval(m_container_size));
 
-		std::sort_heap(v3.begin(), v3.end());
+		misc::sort_heap(v3.begin(), v3.end());
 		//v3: 0 1 2 3 ...
 		for(it = v3.begin()+1; it != v3.end(); ++it)
 			CPPUNIT_ASSERT(*it > *(it-1));

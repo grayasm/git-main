@@ -287,6 +287,8 @@ public:
 	void partition2(const char* msg);
 	template<typename Container>
 	void stable_partition(const char* msg);
+	template<typename Container>
+	void stable_partition2(const char* msg);
 	//Sorting:
 	template<typename Container>
 	void sort(const char* msg);
@@ -311,6 +313,8 @@ public:
 	void equal_range2(const char* msg);
 	template<typename Container>
 	void binary_search(const char* msg);
+	template<typename Container>
+	void binary_search2(const char* msg);
 	//Merge (operating on sorted ranges):
 	template<typename Container>
 	void merge(const char* msg);
@@ -331,6 +335,8 @@ public:
 	//Heap:
 	template<typename Container>
 	void push_heap(const char* msg);
+	template<typename Container>
+	void push_heap2(const char* msg);
 	template<typename Container>
 	void pop_heap(const char* msg);
 	template<typename Container>
