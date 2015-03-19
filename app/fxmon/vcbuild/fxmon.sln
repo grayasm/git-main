@@ -1,0 +1,43 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "fxmon", "fxmon.vcproj", "{16588D40-D055-4031-A3DA-0C5F9E0DFE61}"
+	ProjectSection(ProjectDependencies) = postProject
+		{5F74E21E-D63E-4812-A3CB-7038789D0202} = {5F74E21E-D63E-4812-A3CB-7038789D0202}
+		{0DAF8D93-8D0D-4B04-8D92-18BB6BCBC97E} = {0DAF8D93-8D0D-4B04-8D92-18BB6BCBC97E}
+		{7A846AD6-CDE9-4110-BFF1-2FE13641F0DB} = {7A846AD6-CDE9-4110-BFF1-2FE13641F0DB}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "fxcmAdapter", "..\..\..\lib\fxcmAdapter\vcbuild\fxcmAdapter.vcproj", "{7A846AD6-CDE9-4110-BFF1-2FE13641F0DB}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "fxcore", "..\..\..\lib\fxcore\vcbuild\fxcore.vcproj", "{0DAF8D93-8D0D-4B04-8D92-18BB6BCBC97E}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "misc", "..\..\..\lib\misc\vcbuild\misc.vcproj", "{5F74E21E-D63E-4812-A3CB-7038789D0202}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{16588D40-D055-4031-A3DA-0C5F9E0DFE61}.Debug|Win32.ActiveCfg = Debug|Win32
+		{16588D40-D055-4031-A3DA-0C5F9E0DFE61}.Debug|Win32.Build.0 = Debug|Win32
+		{16588D40-D055-4031-A3DA-0C5F9E0DFE61}.Release|Win32.ActiveCfg = Release|Win32
+		{16588D40-D055-4031-A3DA-0C5F9E0DFE61}.Release|Win32.Build.0 = Release|Win32
+		{7A846AD6-CDE9-4110-BFF1-2FE13641F0DB}.Debug|Win32.ActiveCfg = Debug|Win32
+		{7A846AD6-CDE9-4110-BFF1-2FE13641F0DB}.Debug|Win32.Build.0 = Debug|Win32
+		{7A846AD6-CDE9-4110-BFF1-2FE13641F0DB}.Release|Win32.ActiveCfg = Release|Win32
+		{7A846AD6-CDE9-4110-BFF1-2FE13641F0DB}.Release|Win32.Build.0 = Release|Win32
+		{0DAF8D93-8D0D-4B04-8D92-18BB6BCBC97E}.Debug|Win32.ActiveCfg = Debug|Win32
+		{0DAF8D93-8D0D-4B04-8D92-18BB6BCBC97E}.Debug|Win32.Build.0 = Debug|Win32
+		{0DAF8D93-8D0D-4B04-8D92-18BB6BCBC97E}.Release|Win32.ActiveCfg = Release|Win32
+		{0DAF8D93-8D0D-4B04-8D92-18BB6BCBC97E}.Release|Win32.Build.0 = Release|Win32
+		{5F74E21E-D63E-4812-A3CB-7038789D0202}.Debug|Win32.ActiveCfg = Debug|Win32
+		{5F74E21E-D63E-4812-A3CB-7038789D0202}.Debug|Win32.Build.0 = Debug|Win32
+		{5F74E21E-D63E-4812-A3CB-7038789D0202}.Release|Win32.ActiveCfg = Release|Win32
+		{5F74E21E-D63E-4812-A3CB-7038789D0202}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

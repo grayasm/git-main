@@ -315,6 +315,8 @@ public:
 	template<typename Container>
 	void merge(const char* msg);
 	template<typename Container>
+	void merge2(const char* msg);
+	template<typename Container>
 	void inplace_merge(const char* msg);
 	template<typename Container>
 	void includes(const char* msg);

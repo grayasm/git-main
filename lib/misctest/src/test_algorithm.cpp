@@ -618,7 +618,6 @@ void test_algorithm::equal_range()
 {
 	misc::cout << "\n\n\tequal_range--------------------------------------------";	
 	equal_range2<std::vector<int> >																		("\n\tstd::vector       ");
-	equal_range2<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
 	equal_range<misc::vector<int> >																		("\n\tmisc::vector      ");
 	equal_range<misc::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
 	equal_range<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >				("\n\tmisc::vector<POD> ");
@@ -644,11 +643,11 @@ void test_algorithm::merge()
 	misc::cout << "\n\n\tmerge--------------------------------------------------";
 	merge<std::vector<int> >																	("\n\tstd::vector       ");
 	merge<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	merge<misc::vector<int> >																	("\n\tmisc::vector      ");
-	merge<misc::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	merge<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
-	merge<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	merge<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	merge2<misc::vector<int> >																	("\n\tmisc::vector      ");
+	merge2<misc::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
+	merge2<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
+	merge2<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
+	merge2<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
 }
 
 void test_algorithm::inplace_merge()
@@ -4232,8 +4231,60 @@ void test_algorithm::merge(const char* msg)
 
 	Container v4(m_container_size);
 
-	//std
-	Container sv2(v2), sv3(v3), sv4(v4);
+	//	TEST
+	{
+		time_printer tp(msg, m_print_time);
+		
+		
+		//	STD
+		std::sort(first, first + 5);
+		std::sort(second, second + 5);
+
+		/*	Combines all the elements from two sorted source ranges 
+			into a single, sorted destination range, where the ordering 
+			criterion may be specified by a binary predicate.
+		*/
+
+		std::merge (first, first + 5, second, second + 5, v1.begin());
+
+		//cout << "The resulting vector contains:";
+		Cval mycheck[]={5, 10, 10, 15, 20, 20, 25, 30, 40, 50};
+		for(it = v1.begin(), i0 = 0; it != v1.end(); ++it, ++i0)
+		{
+			CPPUNIT_ASSERT(mycheck[i0] == *it);
+		}
+		//The resulting vector contains: 5 10 10 15 20 20 25 30 40 50
+
+		std::sort(v2.begin(), v2.end());
+		std::sort(v3.begin(), v3.end());
+		std::merge(v2.begin(), v2.end(), v3.begin(), v3.end(), v4.begin());
+	}
+}
+
+template<typename Container>
+void test_algorithm::merge2(const char* msg)
+{
+	typedef typename Container::value_type Cval;
+	typedef typename Container::iterator It;
+
+
+	Cval first[]  = {5, 10,15,20,25};
+	Cval second[] = {50,40,30,20,10};
+	
+	Container v1(10);
+
+	It it;
+	size_t i0;
+
+	Container v2(m_container_size/2); // 0 1 2 3 ...
+	for(it = v2.begin(), i0 = 0; it != v2.end(); ++it, ++i0)
+		*it = Cval(i0);
+
+	Container v3(m_container_size/2); // 100000 100001 100002 ...
+	for(it = v3.begin(); it != v3.end(); ++it, ++i0)
+		*it = Cval(i0);
+
+	Container v4(m_container_size);
 
 	//	TEST
 	{
@@ -4262,11 +4313,6 @@ void test_algorithm::merge(const char* msg)
 		misc::sort(v2.begin(), v2.end());
 		misc::sort(v3.begin(), v3.end());
 		misc::merge(v2.begin(), v2.end(), v3.begin(), v3.end(), v4.begin());
-
-		//	STD
-		std::sort(sv2.begin(), sv2.end());
-		std::sort(sv3.begin(), sv3.end());
-		std::merge(sv2.begin(), sv2.end(), sv3.begin(), sv3.end(), sv4.begin());
 	}
 }
 
