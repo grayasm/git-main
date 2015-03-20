@@ -156,13 +156,23 @@ public:
 	template<typename Container>
 	void minus(const char* msg);
 	template<typename Container>
+	void minus2(const char* msg);
+	template<typename Container>
 	void multiplies(const char* msg);
+	template<typename Container>
+	void multiplies2(const char* msg);
 	template<typename Container>
 	void devides(const char* msg);
 	template<typename Container>
+	void devides2(const char* msg);
+	template<typename Container>
 	void modulus(const char* msg);
 	template<typename Container>
+	void modulus2(const char* msg);
+	template<typename Container>
 	void negate(const char* msg);
+	template<typename Container>
+	void negate2(const char* msg);
 	template<typename Container>
 	void equal_to(const char* msg);
 	template<typename Container>
@@ -170,29 +180,53 @@ public:
 	template<typename Container>
 	void greater(const char* msg);
 	template<typename Container>
+	void greater2(const char* msg);
+	template<typename Container>
 	void less(const char* msg);
+	template<typename Container>
+	void less2(const char* msg);
 	template<typename Container>
 	void greater_equal(const char* msg);
 	template<typename Container>
+	void greater_equal2(const char* msg);
+	template<typename Container>
 	void less_equal(const char* msg);
+	template<typename Container>
+	void less_equal2(const char* msg);
 	template<typename Container>
 	void logical_and(const char* msg);
 	template<typename Container>
+	void logical_and2(const char* msg);
+	template<typename Container>
 	void logical_or(const char* msg);
+	template<typename Container>
+	void logical_or2(const char* msg);
 	template<typename Container>
 	void logical_not(const char* msg);
 	template<typename Container>
+	void logical_not2(const char* msg);
+	template<typename Container>
 	void unary_negate(const char* msg);
 	template<typename Container>
+	void unary_negate2(const char* msg);
+	template<typename Container>
 	void binary_negate(const char* msg);
+	template<typename Container>
+	void binary_negate2(const char* msg);
 	template<typename Container>
 	void binder1st(const char* msg);
 	template<typename Container>
 	void binder2nd(const char* msg);
 	template<typename Container>
+	void binder2nd_2(const char* msg);
+	template<typename Container>
 	void pointer_to_unary_function(const char* msg);
 	template<typename Container>
+	void pointer_to_unary_function2(const char* msg);
+	template<typename Container>
 	void pointer_to_binary_function(const char* msg);
+	template<typename Container>
+	void pointer_to_binary_function2(const char* msg);
 	template<typename Container>
 	void mem_fun_t(const char* msg);
 	template<typename Container>
@@ -212,17 +246,31 @@ public:
 	template<typename Container>
 	void not1(const char* msg);
 	template<typename Container>
+	void not1_2(const char* msg);
+	template<typename Container>
 	void not2(const char* msg);
+	template<typename Container>
+	void not2_2(const char* msg);
 	template<typename Container>
 	void bind1st(const char* msg);
 	template<typename Container>
+	void bind1st_2(const char* msg);
+	template<typename Container>
 	void bind2nd(const char* msg);
+	template<typename Container>
+	void bind2nd_2(const char* msg);
 	template<typename Container>
 	void ptr_fun(const char* msg);
 	template<typename Container>
+	void ptr_fun_2(const char* msg);
+	template<typename Container>
 	void mem_fun(const char* msg);
 	template<typename Container>
+	void mem_fun_2(const char* msg);
+	template<typename Container>
 	void mem_fun_ref(const char* msg);
+	template<typename Container>
+	void mem_fun_ref_2(const char* msg);
 
     //////////////////////////////////////////////////////////////////////////
 };

@@ -192,21 +192,17 @@ void test_generic_array::ctor()
 	ctor<charray2> ("\n\tgeneric_array<char,A,POD>               ");
 	ctor<wcharray2>("\n\tgeneric_array<wchar_t,A,POD>            ");
 
-
-	typedef std::vector<float, std::allocator<float> > fgarray3;
+	
 	typedef std::basic_string<char, std::char_traits<char>, std::allocator<char> >      charray3;
 	typedef std::basic_string<wchar_t, std::char_traits<wchar_t>, std::allocator<wchar_t> >  wcharray3;
 
 
-	ctor<fgarray3> ("\n\tstd::vector<float>                      ");
 	ctor<charray3> ("\n\tstd::basic_string<char>                 ");
 	ctor<wcharray3>("\n\tstd::wbasic_string<wchar_t>             ");
 
-	typedef std::vector<float, misc::allocator<float> >            fgarray4;
 	typedef std::basic_string<char, std::char_traits<char>, misc::allocator<char> >  charray4;
 	typedef std::basic_string<wchar_t, std::char_traits<wchar_t>, misc::allocator<wchar_t> >  wcharray4;
 
-	ctor<fgarray4> ("\n\tstd::vector<float,A>                    ");
 	ctor<charray4> ("\n\tstd::basic_string<char,A>               ");
 	ctor<wcharray4>("\n\tstd::wbasic_string<wchar_t,A>           ");
 }
@@ -238,20 +234,16 @@ void test_generic_array::dtor()
 	dtor<wcharray2>("\n\tgeneric_array<wchar_t,A,POD>            ");
 
 
-	typedef std::vector<float, std::allocator<float> > fgarray3;
 	typedef std::basic_string<char, std::char_traits<char>, std::allocator<char> >      charray3;
 	typedef std::basic_string<wchar_t, std::char_traits<wchar_t>, std::allocator<wchar_t> >  wcharray3;
 
 
-	dtor<fgarray3> ("\n\tstd::vector<float>                      ");
 	dtor<charray3> ("\n\tstd::basic_string<char>                 ");
 	dtor<wcharray3>("\n\tstd::wbasic_string<wchar_t>             ");
 
-	typedef std::vector<float, misc::allocator<float> >            fgarray4;
 	typedef std::basic_string<char, std::char_traits<char>, misc::allocator<char> >  charray4;
 	typedef std::basic_string<wchar_t, std::char_traits<wchar_t>, misc::allocator<wchar_t> >  wcharray4;
 
-	dtor<fgarray4> ("\n\tstd::vector<float,A>                    ");
 	dtor<charray4> ("\n\tstd::basic_string<char,A>               ");
 	dtor<wcharray4>("\n\tstd::wbasic_string<wchar_t,A>           ");
 }
@@ -332,20 +324,16 @@ void test_generic_array::assignament_op()
 	assignament_op<wcharray2>("\n\tgeneric_array<wchar_t,A,POD>            ");
 
 
-	typedef std::vector<float, std::allocator<float> > fgarray3;
 	typedef std::basic_string<char, std::char_traits<char>, std::allocator<char> >      charray3;
 	typedef std::basic_string<wchar_t, std::char_traits<wchar_t>, std::allocator<wchar_t> >  wcharray3;
 
 
-	assignament_op<fgarray3> ("\n\tstd::vector<float>                      ");
 	assignament_op<charray3> ("\n\tstd::basic_string<char>                 ");
 	assignament_op<wcharray3>("\n\tstd::wbasic_string<wchar_t>             ");
 
-	typedef std::vector<float, misc::allocator<float> >            fgarray4;
 	typedef std::basic_string<char, std::char_traits<char>, misc::allocator<char> >  charray4;
 	typedef std::basic_string<wchar_t, std::char_traits<wchar_t>, misc::allocator<wchar_t> >  wcharray4;
 
-	assignament_op<fgarray4> ("\n\tstd::vector<float,A>                    ");
 	assignament_op<charray4> ("\n\tstd::basic_string<char,A>               ");
 	assignament_op<wcharray4>("\n\tstd::wbasic_string<wchar_t,A>           ");
 }
@@ -1953,9 +1941,6 @@ void test_generic_array::erase()
 	}
 
 	misc::cout << "\n\n\terase-------------------------------------------------";
-	erase<std::vector<non_pod_v0, std::allocator<non_pod_v0> > >                                          ("\n\tstd::vector<non_pod_v0>                 ");
-	erase<std::vector<non_pod_v0, misc::allocator<non_pod_v0> > >                                         ("\n\tstd::vector<non_pod_v0,A>               ");
-	
 	erase<misc::generic_array<non_pod_v0, misc::allocator<non_pod_v0> > >                                 ("\n\tgeneric_array<non_pod_v0>               ");
 	erase<misc::generic_array<non_pod_v0, std::allocator<non_pod_v0> > >                                  ("\n\tgeneric_array<non_pod_v0,std::A>        ");
 	erase<misc::generic_array<non_pod_v0, misc::allocator<non_pod_v0>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >("\n\tgeneric_array<non_pod_v0,POD>           ");
@@ -3435,7 +3420,6 @@ void test_generic_array::push_back(const char* msg)
 template<typename Container>
 void test_generic_array::assign(const char* msg)
 {
-
 	Container charr0(m_container_size, 'x');
 
 	//  TEST
@@ -3464,21 +3448,14 @@ void test_generic_array::assign(const char* msg)
 			charr2.assign(charr0.data());
 		}
 
-		// only for std::vector
-		// have 1 function with and 1 without
-		Cval np;
-		np.val=-100;
-		np.fval=-1e3;
-		np.ucval = 100;
-		np.f = non_pod_f;
-
+		
 		// time of: container& assign(size_type count, const value_type& val);
 		// time of: container& assign(InputIterator first, InputIterator last);
 		for(size_t i=0; i < m_container_size; ++i)
 		{
 			Container nparr0;
 			Container nparr2;
-			nparr0.assign(m_container_size, np);
+			nparr0.assign(m_container_size, 'x');
 			nparr2.assign(nparr0.begin(), nparr0.end());
 		}
 	}

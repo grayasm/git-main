@@ -92,45 +92,45 @@ void test_functional::minus()
 {
 	misc::cout << "\n\n\tminus--------------------------------------------------";
 	minus<std::vector<int> > ("\n\tstd::vector       ");
-	minus<misc::vector<int> >("\n\tmisc::vector      ");
+	minus2<misc::vector<int> >("\n\tmisc::vector      ");
 	minus<std::list<int> >   ("\n\tstd::list         ");
-	minus<misc::list<int> >  ("\n\tmisc::list        ");
+	minus2<misc::list<int> >  ("\n\tmisc::list        ");
 }
 
 void test_functional::multiplies()
 {
 	misc::cout << "\n\n\tmultiplies---------------------------------------------";
 	multiplies<std::vector<int> > ("\n\tstd::vector       ");
-	multiplies<misc::vector<int> >("\n\tmisc::vector      ");
+	multiplies2<misc::vector<int> >("\n\tmisc::vector      ");
 	multiplies<std::list<int> >   ("\n\tstd::list         ");
-	multiplies<misc::list<int> >  ("\n\tmisc::list        ");
+	multiplies2<misc::list<int> >  ("\n\tmisc::list        ");
 }
 
 void test_functional::devides()
 {
 	misc::cout << "\n\n\tdevides------------------------------------------------";
 	devides<std::vector<int> > ("\n\tstd::vector       ");
-	devides<misc::vector<int> >("\n\tmisc::vector      ");
+	devides2<misc::vector<int> >("\n\tmisc::vector      ");
 	devides<std::list<int> >   ("\n\tstd::list         ");
-	devides<misc::list<int> >  ("\n\tmisc::list        ");
+	devides2<misc::list<int> >  ("\n\tmisc::list        ");
 }
 
 void test_functional::modulus()
 {
 	misc::cout << "\n\n\tmodulus------------------------------------------------";
 	modulus<std::vector<int> > ("\n\tstd::vector       ");
-	modulus<misc::vector<int> >("\n\tmisc::vector      ");
+	modulus2<misc::vector<int> >("\n\tmisc::vector      ");
 	modulus<std::list<int> >   ("\n\tstd::list         ");
-	modulus<misc::list<int> >  ("\n\tmisc::list        ");
+	modulus2<misc::list<int> >  ("\n\tmisc::list        ");
 }
 
 void test_functional::negate()
 {
 	misc::cout << "\n\n\tnegate-------------------------------------------------";
 	negate<std::vector<int> > ("\n\tstd::vector       ");
-	negate<misc::vector<int> >("\n\tmisc::vector      ");
+	negate2<misc::vector<int> >("\n\tmisc::vector      ");
 	negate<std::list<int> >   ("\n\tstd::list         ");
-	negate<misc::list<int> >  ("\n\tmisc::list        ");
+	negate2<misc::list<int> >  ("\n\tmisc::list        ");
 }
 
 void test_functional::equal_to()
@@ -155,81 +155,81 @@ void test_functional::greater()
 {
 	misc::cout << "\n\n\tgreater------------------------------------------------";
 	greater<std::vector<int> > ("\n\tstd::vector       ");
-	greater<misc::vector<int> >("\n\tmisc::vector      ");
+	greater2<misc::vector<int> >("\n\tmisc::vector      ");
 	greater<std::list<int> >   ("\n\tstd::list         ");
-	greater<misc::list<int> >  ("\n\tmisc::list        ");
+	greater2<misc::list<int> >  ("\n\tmisc::list        ");
 }
 
 void test_functional::less()
 {
 	misc::cout << "\n\n\tless---------------------------------------------------";
 	less<std::vector<int> > ("\n\tstd::vector       ");
-	less<misc::vector<int> >("\n\tmisc::vector      ");
+	less2<misc::vector<int> >("\n\tmisc::vector      ");
 	less<std::list<int> >   ("\n\tstd::list         ");
-	less<misc::list<int> >  ("\n\tmisc::list        ");
+	less2<misc::list<int> >  ("\n\tmisc::list        ");
 }
 
 void test_functional::greater_equal()
 {
 	misc::cout << "\n\n\tgreater_equal------------------------------------------";
 	greater_equal<std::vector<int> > ("\n\tstd::vector       ");
-	greater_equal<misc::vector<int> >("\n\tmisc::vector      ");
+	greater_equal2<misc::vector<int> >("\n\tmisc::vector      ");
 	greater_equal<std::list<int> >   ("\n\tstd::list         ");
-	greater_equal<misc::list<int> >  ("\n\tmisc::list        ");
+	greater_equal2<misc::list<int> >  ("\n\tmisc::list        ");
 }
 
 void test_functional::less_equal()
 {
 	misc::cout << "\n\n\tless_equal---------------------------------------------";
 	less_equal<std::vector<int> > ("\n\tstd::vector       ");
-	less_equal<misc::vector<int> >("\n\tmisc::vector      ");
+	less_equal2<misc::vector<int> >("\n\tmisc::vector      ");
 	less_equal<std::list<int> >   ("\n\tstd::list         ");
-	less_equal<misc::list<int> >  ("\n\tmisc::list        ");
+	less_equal2<misc::list<int> >  ("\n\tmisc::list        ");
 }
 
 void test_functional::logical_and()
 {
 	misc::cout << "\n\n\tlogical_and--------------------------------------------";
 	logical_and<std::vector<int> > ("\n\tstd::vector       ");
-	logical_and<misc::vector<int> >("\n\tmisc::vector      ");
+	logical_and2<misc::vector<int> >("\n\tmisc::vector      ");
 	logical_and<std::list<int> >   ("\n\tstd::list         ");
-	logical_and<misc::list<int> >  ("\n\tmisc::list        ");
+	logical_and2<misc::list<int> >  ("\n\tmisc::list        ");
 }
 
 void test_functional::logical_or()
 {
 	misc::cout << "\n\n\tlogical_or---------------------------------------------";
 	logical_or<std::vector<int> > ("\n\tstd::vector       ");
-	logical_or<misc::vector<int> >("\n\tmisc::vector      ");
+	logical_or2<misc::vector<int> >("\n\tmisc::vector      ");
 	logical_or<std::list<int> >   ("\n\tstd::list         ");
-	logical_or<misc::list<int> >  ("\n\tmisc::list        ");
+	logical_or2<misc::list<int> >  ("\n\tmisc::list        ");
 }
 
 void test_functional::logical_not()
 {
 	misc::cout << "\n\n\tlogical_not--------------------------------------------";
 	logical_not<std::vector<int> > ("\n\tstd::vector       ");
-	logical_not<misc::vector<int> >("\n\tmisc::vector      ");
+	logical_not2<misc::vector<int> >("\n\tmisc::vector      ");
 	logical_not<std::list<int> >   ("\n\tstd::list         ");
-	logical_not<misc::list<int> >  ("\n\tmisc::list        ");
+	logical_not2<misc::list<int> >  ("\n\tmisc::list        ");
 }
 
 void test_functional::unary_negate()
 {
 	misc::cout << "\n\n\tunary_negate-------------------------------------------";
 	unary_negate<std::vector<int> > ("\n\tstd::vector       ");
-	unary_negate<misc::vector<int> >("\n\tmisc::vector      ");
+	unary_negate2<misc::vector<int> >("\n\tmisc::vector      ");
 	unary_negate<std::list<int> >   ("\n\tstd::list         ");
-	unary_negate<misc::list<int> >  ("\n\tmisc::list        ");
+	unary_negate2<misc::list<int> >  ("\n\tmisc::list        ");
 }
 
 void test_functional::binary_negate()
 {
 	misc::cout << "\n\n\tunary_function-----------------------------------------";
 	binary_negate<std::vector<int> > ("\n\tstd::vector       ");
-	binary_negate<misc::vector<int> >("\n\tmisc::vector      ");
+	binary_negate2<misc::vector<int> >("\n\tmisc::vector      ");
 	binary_negate<std::list<int> >   ("\n\tstd::list         ");
-	binary_negate<misc::list<int> >  ("\n\tmisc::list        ");
+	binary_negate2<misc::list<int> >  ("\n\tmisc::list        ");
 }
 
 void test_functional::binder1st()
@@ -245,27 +245,27 @@ void test_functional::binder2nd()
 {
 	misc::cout << "\n\n\tbinder2nd----------------------------------------------";
 	binder2nd<std::vector<int> > ("\n\tstd::vector       ");
-	binder2nd<misc::vector<int> >("\n\tmisc::vector      ");
+	binder2nd_2<misc::vector<int> >("\n\tmisc::vector      ");
 	binder2nd<std::list<int> >   ("\n\tstd::list         ");
-	binder2nd<misc::list<int> >  ("\n\tmisc::list        ");
+	binder2nd_2<misc::list<int> >  ("\n\tmisc::list        ");
 }
 
 void test_functional::pointer_to_unary_function()
 {
 	misc::cout << "\n\n\tpointer_to_unary_function------------------------------";
 	pointer_to_unary_function<std::vector<double> > ("\n\tstd::vector       ");
-	pointer_to_unary_function<misc::vector<double> >("\n\tmisc::vector      ");
+	pointer_to_unary_function2<misc::vector<double> >("\n\tmisc::vector      ");
 	pointer_to_unary_function<std::list<double> >   ("\n\tstd::list         ");
-	pointer_to_unary_function<misc::list<double> >  ("\n\tmisc::list        ");
+	pointer_to_unary_function2<misc::list<double> >  ("\n\tmisc::list        ");
 }
 
 void test_functional::pointer_to_binary_function()
 {
 	misc::cout << "\n\n\tpointer_to_binary_function-----------------------------";
 	pointer_to_binary_function<std::vector<double> > ("\n\tstd::vector       ");
-	pointer_to_binary_function<misc::vector<double> >("\n\tmisc::vector      ");
+	pointer_to_binary_function2<misc::vector<double> >("\n\tmisc::vector      ");
 	pointer_to_binary_function<std::list<double> >   ("\n\tstd::list         ");
-	pointer_to_binary_function<misc::list<double> >  ("\n\tmisc::list        ");
+	pointer_to_binary_function2<misc::list<double> >  ("\n\tmisc::list        ");
 }
 
 struct MemFunT
@@ -411,45 +411,45 @@ void test_functional::not1()
 {
 	misc::cout << "\n\n\tnot1---------------------------------------------------";
 	not1<std::vector<int> > ("\n\tstd::vector       ");
-	not1<misc::vector<int> >("\n\tmisc::vector      ");
+	not1_2<misc::vector<int> >("\n\tmisc::vector      ");
 	not1<std::list<int> >   ("\n\tstd::list         ");
-	not1<misc::list<int> >  ("\n\tmisc::list        ");
+	not1_2<misc::list<int> >  ("\n\tmisc::list        ");
 }
 
 void test_functional::not2()
 {
 	misc::cout << "\n\n\tnot2---------------------------------------------------";
 	not2<std::vector<int> > ("\n\tstd::vector       ");
-	not2<misc::vector<int> >("\n\tmisc::vector      ");
+	not2_2<misc::vector<int> >("\n\tmisc::vector      ");
 	not2<std::list<int> >   ("\n\tstd::list         ");
-	not2<misc::list<int> >  ("\n\tmisc::list        ");
+	not2_2<misc::list<int> >  ("\n\tmisc::list        ");
 }
 
 void test_functional::bind1st()
 {
 	misc::cout << "\n\n\tbind1st------------------------------------------------";
 	bind1st<std::vector<int> > ("\n\tstd::vector       ");
-	bind1st<misc::vector<int> >("\n\tmisc::vector      ");
+	bind1st_2<misc::vector<int> >("\n\tmisc::vector      ");
 	bind1st<std::list<int> >   ("\n\tstd::list         ");
-	bind1st<misc::list<int> >  ("\n\tmisc::list        ");
+	bind1st_2<misc::list<int> >  ("\n\tmisc::list        ");
 }
 
 void test_functional::bind2nd()
 {
 	misc::cout << "\n\n\tbind2nd------------------------------------------------";
 	bind2nd<std::vector<int> > ("\n\tstd::vector       ");
-	bind2nd<misc::vector<int> >("\n\tmisc::vector      ");
+	bind2nd_2<misc::vector<int> >("\n\tmisc::vector      ");
 	bind2nd<std::list<int> >   ("\n\tstd::list         ");
-	bind2nd<misc::list<int> >  ("\n\tmisc::list        ");
+	bind2nd_2<misc::list<int> >  ("\n\tmisc::list        ");
 }
 
 void test_functional::ptr_fun()
 {
 	misc::cout << "\n\n\tptr_fun------------------------------------------------";
 	ptr_fun<std::vector<double> > ("\n\tstd::vector       ");
-	ptr_fun<misc::vector<double> >("\n\tmisc::vector      ");
+	ptr_fun_2<misc::vector<double> >("\n\tmisc::vector      ");
 	ptr_fun<std::list<double> >   ("\n\tstd::list         ");
-	ptr_fun<misc::list<double> >  ("\n\tmisc::list        ");
+	ptr_fun_2<misc::list<double> >  ("\n\tmisc::list        ");
 }
 
 struct MemFunS1{
@@ -463,18 +463,18 @@ void test_functional::mem_fun()
 {
 	misc::cout << "\n\n\tmem_fun------------------------------------------------";
 	mem_fun<std::vector<MemFunS1*> > ("\n\tstd::vector       ");
-	mem_fun<misc::vector<MemFunS1*> >("\n\tmisc::vector      ");
+	mem_fun_2<misc::vector<MemFunS1*> >("\n\tmisc::vector      ");
 	mem_fun<std::list<MemFunS1*> >   ("\n\tstd::list         ");
-	mem_fun<misc::list<MemFunS1*> >  ("\n\tmisc::list        ");
+	mem_fun_2<misc::list<MemFunS1*> >  ("\n\tmisc::list        ");
 }
 
 void test_functional::mem_fun_ref()
 {
 	misc::cout << "\n\n\tmem_fun_ref--------------------------------------------";
 	mem_fun_ref<std::vector<MemFunS1> > ("\n\tstd::vector       ");
-	mem_fun_ref<misc::vector<MemFunS1> >("\n\tmisc::vector      ");
+	mem_fun_ref_2<misc::vector<MemFunS1> >("\n\tmisc::vector      ");
 	mem_fun_ref<std::list<MemFunS1> >   ("\n\tstd::list         ");
-	mem_fun_ref<misc::list<MemFunS1> >  ("\n\tmisc::list        ");
+	mem_fun_ref_2<misc::list<MemFunS1> >  ("\n\tmisc::list        ");
 }
 
 //test end
@@ -670,6 +670,42 @@ void test_functional::minus(const char* msg)
 	//  TEST
 	{
 		time_printer tp(msg, m_print_time);
+		//  STD
+		std::transform(v1.begin(), v1.end(), v2.begin(), v3.begin(), std::minus<Cval>());
+		for(it = v3.begin(), i0 = 0; it != v3.end(); ++it, ++i0)
+			CPPUNIT_ASSERT(*it == Cval(0));
+		std::transform(v1.begin(), v1.end(), v2.begin(), v3.begin(), std::minus<Cval>());
+		for(it = v3.begin(), i0 = 0; it != v3.end(); ++it, ++i0)
+			CPPUNIT_ASSERT(*it == Cval(0));
+
+
+		//  STD
+		std::transform(v1.begin(), v1.end(), v2.begin(), v3.begin(), misc::minus<Cval>());
+		for(it = v3.begin(), i0 = 0; it != v3.end(); ++it, ++i0)
+			CPPUNIT_ASSERT(*it == Cval(0));
+		std::transform(v1.begin(), v1.end(), v2.begin(), v3.begin(), misc::minus<Cval>());
+		for(it = v3.begin(), i0 = 0; it != v3.end(); ++it, ++i0)
+			CPPUNIT_ASSERT(*it == Cval(0));
+	}
+}
+
+template<typename Container>
+void test_functional::minus2(const char* msg)
+{
+	typedef typename Container::value_type Cval;
+	typedef typename Container::iterator It;
+
+
+	It it;
+	size_t i0;
+
+	Container v1(m_container_size);
+	for( it = v1.begin(), i0 = 0; it != v1.end(); ++it, ++i0) *it = Cval(i0);
+	Container v2(v1), v3(m_container_size, Cval(-1));
+
+	//  TEST
+	{
+		time_printer tp(msg, m_print_time);
 		//  MISC
 		misc::transform(v1.begin(), v1.end(), v2.begin(), v3.begin(), misc::minus<Cval>());
 		for(it = v3.begin(), i0 = 0; it != v3.end(); ++it, ++i0)
@@ -680,10 +716,10 @@ void test_functional::minus(const char* msg)
 
 
 		//  STD
-		std::transform(v1.begin(), v1.end(), v2.begin(), v3.begin(), std::minus<Cval>());
+		misc::transform(v1.begin(), v1.end(), v2.begin(), v3.begin(), std::minus<Cval>());
 		for(it = v3.begin(), i0 = 0; it != v3.end(); ++it, ++i0)
 			CPPUNIT_ASSERT(*it == Cval(0));
-		std::transform(v1.begin(), v1.end(), v2.begin(), v3.begin(), misc::minus<Cval>());
+		misc::transform(v1.begin(), v1.end(), v2.begin(), v3.begin(), misc::minus<Cval>());
 		for(it = v3.begin(), i0 = 0; it != v3.end(); ++it, ++i0)
 			CPPUNIT_ASSERT(*it == Cval(0));
 	}
@@ -691,6 +727,42 @@ void test_functional::minus(const char* msg)
 
 template<typename Container>
 void test_functional::multiplies(const char* msg)
+{
+	typedef typename Container::value_type Cval;
+	typedef typename Container::iterator It;
+
+
+	It it;
+	size_t i0;
+
+	Container v1(m_container_size);
+	for( it = v1.begin(), i0 = 0; it != v1.end(); ++it, ++i0) *it = Cval(i0);
+	Container v2(v1), v3(m_container_size);
+
+	//  TEST
+	{
+		time_printer tp(msg, m_print_time);
+		//  STD
+		std::transform(v1.begin(), v1.end(), v2.begin(), v3.begin(), misc::multiplies<Cval>());
+		for(it = v3.begin(), i0 = 0; it != v3.end(); ++it, ++i0)
+			CPPUNIT_ASSERT(*it == Cval(i0*i0));
+		std::transform(v1.begin(), v1.end(), v2.begin(), v3.begin(), std::multiplies<Cval>());
+		for(it = v3.begin(), i0 = 0; it != v3.end(); ++it, ++i0)
+			CPPUNIT_ASSERT(*it == Cval(i0*i0));
+
+
+		//  STD
+		std::transform(v1.begin(), v1.end(), v2.begin(), v3.begin(), std::multiplies<Cval>());
+		for(it = v3.begin(), i0 = 0; it != v3.end(); ++it, ++i0)
+			CPPUNIT_ASSERT(*it == Cval(i0*i0));
+		std::transform(v1.begin(), v1.end(), v2.begin(), v3.begin(), misc::multiplies<Cval>());
+		for(it = v3.begin(), i0 = 0; it != v3.end(); ++it, ++i0)
+			CPPUNIT_ASSERT(*it == Cval(i0*i0));
+	}
+}
+
+template<typename Container>
+void test_functional::multiplies2(const char* msg)
 {
 	typedef typename Container::value_type Cval;
 	typedef typename Container::iterator It;
@@ -715,11 +787,11 @@ void test_functional::multiplies(const char* msg)
 			CPPUNIT_ASSERT(*it == Cval(i0*i0));
 
 
-		//  STD
-		std::transform(v1.begin(), v1.end(), v2.begin(), v3.begin(), std::multiplies<Cval>());
+		//  MISC
+		misc::transform(v1.begin(), v1.end(), v2.begin(), v3.begin(), std::multiplies<Cval>());
 		for(it = v3.begin(), i0 = 0; it != v3.end(); ++it, ++i0)
 			CPPUNIT_ASSERT(*it == Cval(i0*i0));
-		std::transform(v1.begin(), v1.end(), v2.begin(), v3.begin(), misc::multiplies<Cval>());
+		misc::transform(v1.begin(), v1.end(), v2.begin(), v3.begin(), misc::multiplies<Cval>());
 		for(it = v3.begin(), i0 = 0; it != v3.end(); ++it, ++i0)
 			CPPUNIT_ASSERT(*it == Cval(i0*i0));
 	}
@@ -727,6 +799,42 @@ void test_functional::multiplies(const char* msg)
 
 template<typename Container>
 void test_functional::devides(const char* msg)
+{
+	typedef typename Container::value_type Cval;
+	typedef typename Container::iterator It;
+
+
+	It it;
+	size_t i0;
+
+	Container v1(m_container_size);
+	for( it = v1.begin(), i0 = 1; it != v1.end(); ++it, ++i0) *it = Cval(i0);
+	Container v2(v1), v3(m_container_size);
+
+	//  TEST
+	{
+		time_printer tp(msg, m_print_time);
+		//  STD
+		std::transform(v1.begin(), v1.end(), v2.begin(), v3.begin(), misc::divides<Cval>());
+		for(it = v3.begin(), i0 = 1; it != v3.end(); ++it, ++i0)
+			CPPUNIT_ASSERT(*it == Cval(i0/i0));
+		std::transform(v1.begin(), v1.end(), v2.begin(), v3.begin(), std::divides<Cval>());
+		for(it = v3.begin(), i0 = 1; it != v3.end(); ++it, ++i0)
+			CPPUNIT_ASSERT(*it == Cval(i0/i0));
+
+
+		//  STD
+		std::transform(v1.begin(), v1.end(), v2.begin(), v3.begin(), std::divides<Cval>());
+		for(it = v3.begin(), i0 = 1; it != v3.end(); ++it, ++i0)
+			CPPUNIT_ASSERT(*it == Cval(i0/i0));
+		std::transform(v1.begin(), v1.end(), v2.begin(), v3.begin(), misc::divides<Cval>());
+		for(it = v3.begin(), i0 = 1; it != v3.end(); ++it, ++i0)
+			CPPUNIT_ASSERT(*it == Cval(i0/i0));
+	}
+}
+
+template<typename Container>
+void test_functional::devides2(const char* msg)
 {
 	typedef typename Container::value_type Cval;
 	typedef typename Container::iterator It;
@@ -751,11 +859,11 @@ void test_functional::devides(const char* msg)
 			CPPUNIT_ASSERT(*it == Cval(i0/i0));
 
 
-		//  STD
-		std::transform(v1.begin(), v1.end(), v2.begin(), v3.begin(), std::divides<Cval>());
+		//  MISC
+		misc::transform(v1.begin(), v1.end(), v2.begin(), v3.begin(), std::divides<Cval>());
 		for(it = v3.begin(), i0 = 1; it != v3.end(); ++it, ++i0)
 			CPPUNIT_ASSERT(*it == Cval(i0/i0));
-		std::transform(v1.begin(), v1.end(), v2.begin(), v3.begin(), misc::divides<Cval>());
+		misc::transform(v1.begin(), v1.end(), v2.begin(), v3.begin(), misc::divides<Cval>());
 		for(it = v3.begin(), i0 = 1; it != v3.end(); ++it, ++i0)
 			CPPUNIT_ASSERT(*it == Cval(i0/i0));
 	}
@@ -763,6 +871,44 @@ void test_functional::devides(const char* msg)
 
 template<typename Container>
 void test_functional::modulus(const char* msg)
+{
+	typedef typename Container::value_type Cval;
+	typedef typename Container::iterator It;
+
+
+	It it;
+	size_t i0;
+
+	Container v1(m_container_size);
+	for( it = v1.begin(), i0 = 1; it != v1.end(); ++it, ++i0) *it = Cval(i0);
+	Container v2(v1), v3(m_container_size);
+
+	//  TEST
+	{
+		time_printer tp(msg, m_print_time);
+
+		//  STD
+		std::transform(v1.begin(), v1.end(), v2.begin(), v3.begin(), misc::modulus<Cval>());
+		for(it = v3.begin(), i0 = 1; it != v3.end(); ++it, ++i0)
+			CPPUNIT_ASSERT(*it == Cval(i0%i0));
+		std::transform(v1.begin(), v1.end(), v2.begin(), v3.begin(), std::modulus<Cval>());
+		for(it = v3.begin(), i0 = 1; it != v3.end(); ++it, ++i0)
+			CPPUNIT_ASSERT(*it == Cval(i0%i0));
+
+
+		//  STD
+		std::transform(v1.begin(), v1.end(), v2.begin(), v3.begin(), std::modulus<Cval>());
+		for(it = v3.begin(), i0 = 1; it != v3.end(); ++it, ++i0)
+			CPPUNIT_ASSERT(*it == Cval(i0%i0));
+		std::transform(v1.begin(), v1.end(), v2.begin(), v3.begin(), misc::modulus<Cval>());
+		for(it = v3.begin(), i0 = 1; it != v3.end(); ++it, ++i0)
+			CPPUNIT_ASSERT(*it == Cval(i0%i0));
+	}
+}
+
+
+template<typename Container>
+void test_functional::modulus2(const char* msg)
 {
 	typedef typename Container::value_type Cval;
 	typedef typename Container::iterator It;
@@ -788,11 +934,11 @@ void test_functional::modulus(const char* msg)
 			CPPUNIT_ASSERT(*it == Cval(i0%i0));
 
 
-		//  STD
-		std::transform(v1.begin(), v1.end(), v2.begin(), v3.begin(), std::modulus<Cval>());
+		//  MISC
+		misc::transform(v1.begin(), v1.end(), v2.begin(), v3.begin(), std::modulus<Cval>());
 		for(it = v3.begin(), i0 = 1; it != v3.end(); ++it, ++i0)
 			CPPUNIT_ASSERT(*it == Cval(i0%i0));
-		std::transform(v1.begin(), v1.end(), v2.begin(), v3.begin(), misc::modulus<Cval>());
+		misc::transform(v1.begin(), v1.end(), v2.begin(), v3.begin(), misc::modulus<Cval>());
 		for(it = v3.begin(), i0 = 1; it != v3.end(); ++it, ++i0)
 			CPPUNIT_ASSERT(*it == Cval(i0%i0));
 	}
@@ -800,6 +946,41 @@ void test_functional::modulus(const char* msg)
 
 template<typename Container>
 void test_functional::negate(const char* msg)
+{
+	typedef typename Container::value_type Cval;
+	typedef typename Container::iterator It;
+
+	It it;
+	size_t i0;
+
+	Container v1(m_container_size), v2(m_container_size);
+	for( it = v1.begin(), i0 = 0; it != v1.end(); ++it, ++i0) *it = Cval(i0);
+
+	//  TEST
+	{
+		time_printer tp(msg, m_print_time);
+		//  STD
+		std::transform(v1.begin(), v1.end(), v2.begin(), misc::negate<Cval>());
+		for(it = v2.begin(), i0 = 0; it != v2.end(); ++it, ++i0)
+			CPPUNIT_ASSERT(*it == Cval(-1*i0));
+		std::transform(v1.begin(), v1.end(), v2.begin(), std::negate<Cval>());
+		for(it = v2.begin(), i0 = 0; it != v2.end(); ++it, ++i0)
+			CPPUNIT_ASSERT(*it == Cval(-1*i0));
+
+
+		//  STD
+		std::transform(v1.begin(), v1.end(), v2.begin(), std::negate<Cval>());
+		for(it = v2.begin(), i0 = 0; it != v2.end(); ++it, ++i0)
+			CPPUNIT_ASSERT(*it == Cval(-1*i0));
+		std::transform(v1.begin(), v1.end(), v2.begin(), misc::negate<Cval>());
+		for(it = v2.begin(), i0 = 0; it != v2.end(); ++it, ++i0)
+			CPPUNIT_ASSERT(*it == Cval(-1*i0));
+	}
+}
+
+
+template<typename Container>
+void test_functional::negate2(const char* msg)
 {
 	typedef typename Container::value_type Cval;
 	typedef typename Container::iterator It;
@@ -822,11 +1003,11 @@ void test_functional::negate(const char* msg)
 			CPPUNIT_ASSERT(*it == Cval(-1*i0));
 
 
-		//  STD
-		std::transform(v1.begin(), v1.end(), v2.begin(), std::negate<Cval>());
+		//  MISC
+		misc::transform(v1.begin(), v1.end(), v2.begin(), std::negate<Cval>());
 		for(it = v2.begin(), i0 = 0; it != v2.end(); ++it, ++i0)
 			CPPUNIT_ASSERT(*it == Cval(-1*i0));
-		std::transform(v1.begin(), v1.end(), v2.begin(), misc::negate<Cval>());
+		misc::transform(v1.begin(), v1.end(), v2.begin(), misc::negate<Cval>());
 		for(it = v2.begin(), i0 = 0; it != v2.end(); ++it, ++i0)
 			CPPUNIT_ASSERT(*it == Cval(-1*i0));
 	}
@@ -911,14 +1092,46 @@ void test_functional::greater(const char* msg)
 	//  TEST
 	{
 		time_printer tp(msg, m_print_time);
-		//  MISC
-		misc::transform(v1.begin(), v1.end(), v2.begin(), v3.begin(), misc::greater<Cval>());
+		//  STD
+		std::transform(v1.begin(), v1.end(), v2.begin(), v3.begin(), misc::greater<Cval>());
 		for(size_t j=0; j < v3.size(); ++j)
 			CPPUNIT_ASSERT(v3[j] == true);
 
 
 		//  STD
 		std::transform(v1.begin(), v1.end(), v2.begin(), v3.begin(), std::greater<Cval>());
+		for(size_t j=0; j < v3.size(); ++j)
+			CPPUNIT_ASSERT(v3[j] == true);
+	}
+}
+
+template<typename Container>
+void test_functional::greater2(const char* msg)
+{
+	typedef typename Container::value_type Cval;
+	typedef typename Container::iterator It;
+
+	It it;
+	size_t i0;
+
+	Container v1(m_container_size), v2(m_container_size);
+	for( it = v1.begin(), i0 = 1; it != v1.end(); ++it, ++i0) *it = Cval(i0);
+	for( it = v2.begin(), i0 = 0; it != v2.end(); ++it, ++i0) *it = Cval(i0);
+	std::vector<bool> v3(m_container_size, false);
+
+
+
+	//  TEST
+	{
+		time_printer tp(msg, m_print_time);
+		//  MISC
+		misc::transform(v1.begin(), v1.end(), v2.begin(), v3.begin(), misc::greater<Cval>());
+		for(size_t j=0; j < v3.size(); ++j)
+			CPPUNIT_ASSERT(v3[j] == true);
+
+
+		//  MISC
+		misc::transform(v1.begin(), v1.end(), v2.begin(), v3.begin(), std::greater<Cval>());
 		for(size_t j=0; j < v3.size(); ++j)
 			CPPUNIT_ASSERT(v3[j] == true);
 	}
@@ -943,14 +1156,46 @@ void test_functional::less(const char* msg)
 	//  TEST
 	{
 		time_printer tp(msg, m_print_time);
-		//  MISC
-		misc::transform(v1.begin(), v1.end(), v2.begin(), v3.begin(), misc::less<Cval>());
+		//  STD
+		std::transform(v1.begin(), v1.end(), v2.begin(), v3.begin(), misc::less<Cval>());
 		for(size_t j=0; j < v3.size(); ++j)
 			CPPUNIT_ASSERT(v3[j] == true);
 
 
 		//  STD
 		std::transform(v1.begin(), v1.end(), v2.begin(), v3.begin(), std::less<Cval>());
+		for(size_t j=0; j < v3.size(); ++j)
+			CPPUNIT_ASSERT(v3[j] == true);
+	}
+}
+
+template<typename Container>
+void test_functional::less2(const char* msg)
+{
+	typedef typename Container::value_type Cval;
+	typedef typename Container::iterator It;
+
+	It it;
+	size_t i0;
+
+	Container v1(m_container_size), v2(m_container_size);
+	for( it = v1.begin(), i0 = 0; it != v1.end(); ++it, ++i0) *it = Cval(i0);
+	for( it = v2.begin(), i0 = 1; it != v2.end(); ++it, ++i0) *it = Cval(i0);
+	misc::vector<bool> v3(m_container_size, false);
+
+
+
+	//  TEST
+	{
+		time_printer tp(msg, m_print_time);
+		//  MISC
+		misc::transform(v1.begin(), v1.end(), v2.begin(), v3.begin(), misc::less<Cval>());
+		for(size_t j=0; j < v3.size(); ++j)
+			CPPUNIT_ASSERT(v3[j] == true);
+
+
+		//  MISC
+		misc::transform(v1.begin(), v1.end(), v2.begin(), v3.begin(), std::less<Cval>());
 		for(size_t j=0; j < v3.size(); ++j)
 			CPPUNIT_ASSERT(v3[j] == true);
 	}
@@ -975,14 +1220,46 @@ void test_functional::greater_equal(const char* msg)
 	//  TEST
 	{
 		time_printer tp(msg, m_print_time);
-		//  MISC
-		misc::transform(v1.begin(), v1.end(), v2.begin(), v3.begin(), misc::greater_equal<Cval>());
+		//  STD
+		std::transform(v1.begin(), v1.end(), v2.begin(), v3.begin(), misc::greater_equal<Cval>());
 		for(size_t j=0; j < v3.size(); ++j)
 			CPPUNIT_ASSERT(v3[j] == true);
 
 
 		//  STD
 		std::transform(v1.begin(), v1.end(), v2.begin(), v3.begin(), std::greater_equal<Cval>());
+		for(size_t j=0; j < v3.size(); ++j)
+			CPPUNIT_ASSERT(v3[j] == true);
+	}
+}
+
+template<typename Container>
+void test_functional::greater_equal2(const char* msg)
+{
+	typedef typename Container::value_type Cval;
+	typedef typename Container::iterator It;
+
+	It it;
+	size_t i0;
+
+	Container v1(m_container_size), v2(m_container_size);
+	for( it = v1.begin(), i0 = 1; it != v1.end(); ++it, ++i0) *it = Cval(i0);
+	for( it = v2.begin(), i0 = 0; it != v2.end(); ++it, ++i0) *it = Cval(i0);
+	std::vector<bool> v3(m_container_size, false);
+
+
+
+	//  TEST
+	{
+		time_printer tp(msg, m_print_time);
+		//  MISC
+		misc::transform(v1.begin(), v1.end(), v2.begin(), v3.begin(), misc::greater_equal<Cval>());
+		for(size_t j=0; j < v3.size(); ++j)
+			CPPUNIT_ASSERT(v3[j] == true);
+
+
+		//  MISC
+		misc::transform(v1.begin(), v1.end(), v2.begin(), v3.begin(), std::greater_equal<Cval>());
 		for(size_t j=0; j < v3.size(); ++j)
 			CPPUNIT_ASSERT(v3[j] == true);
 	}
@@ -1007,14 +1284,46 @@ void test_functional::less_equal(const char* msg)
 	//  TEST
 	{
 		time_printer tp(msg, m_print_time);
-		//  MISC
-		misc::transform(v1.begin(), v1.end(), v2.begin(), v3.begin(), misc::less_equal<Cval>());
+		//  STD
+		std::transform(v1.begin(), v1.end(), v2.begin(), v3.begin(), misc::less_equal<Cval>());
 		for(size_t j=0; j < v3.size(); ++j)
 			CPPUNIT_ASSERT(v3[j] == true);
 
 
 		//  STD
 		std::transform(v1.begin(), v1.end(), v2.begin(), v3.begin(), std::less_equal<Cval>());
+		for(size_t j=0; j < v3.size(); ++j)
+			CPPUNIT_ASSERT(v3[j] == true);
+	}
+}
+
+template<typename Container>
+void test_functional::less_equal2(const char* msg)
+{
+	typedef typename Container::value_type Cval;
+	typedef typename Container::iterator It;
+
+	It it;
+	size_t i0;
+
+	Container v1(m_container_size), v2(m_container_size);
+	for( it = v1.begin(), i0 = 0; it != v1.end(); ++it, ++i0) *it = Cval(i0);
+	for( it = v2.begin(), i0 = 1; it != v2.end(); ++it, ++i0) *it = Cval(i0);
+	std::vector<bool> v3(m_container_size, false);
+
+
+
+	//  TEST
+	{
+		time_printer tp(msg, m_print_time);
+		//  MISC
+		misc::transform(v1.begin(), v1.end(), v2.begin(), v3.begin(), misc::less_equal<Cval>());
+		for(size_t j=0; j < v3.size(); ++j)
+			CPPUNIT_ASSERT(v3[j] == true);
+
+
+		//  MISC
+		misc::transform(v1.begin(), v1.end(), v2.begin(), v3.begin(), std::less_equal<Cval>());
 		for(size_t j=0; j < v3.size(); ++j)
 			CPPUNIT_ASSERT(v3[j] == true);
 	}
@@ -1039,14 +1348,46 @@ void test_functional::logical_and(const char* msg)
 	//  TEST
 	{
 		time_printer tp(msg, m_print_time);
-		//  MISC
-		misc::transform(v1.begin(), v1.end(), v2.begin(), v3.begin(), misc::logical_and<Cval>());
+		//  STD
+		std::transform(v1.begin(), v1.end(), v2.begin(), v3.begin(), misc::logical_and<Cval>());
 		for(size_t j=0; j < v3.size(); ++j)
 			CPPUNIT_ASSERT(v3[j] == true);
 
 
 		//  STD
 		std::transform(v1.begin(), v1.end(), v2.begin(), v3.begin(), std::logical_and<Cval>());
+		for(size_t j=0; j < v3.size(); ++j)
+			CPPUNIT_ASSERT(v3[j] == true);
+	}
+}
+
+template<typename Container>
+void test_functional::logical_and2(const char* msg)
+{
+	typedef typename Container::value_type Cval;
+	typedef typename Container::iterator It;
+
+	It it;
+	size_t i0;
+
+	Container v1(m_container_size), v2(m_container_size);
+	for( it = v1.begin(), i0 = 1; it != v1.end(); ++it, ++i0) *it = Cval(i0);
+	for( it = v2.begin(), i0 = 1; it != v2.end(); ++it, ++i0) *it = Cval(i0);
+	std::vector<bool> v3(m_container_size, false);
+
+
+
+	//  TEST
+	{
+		time_printer tp(msg, m_print_time);
+		//  MISC
+		misc::transform(v1.begin(), v1.end(), v2.begin(), v3.begin(), misc::logical_and<Cval>());
+		for(size_t j=0; j < v3.size(); ++j)
+			CPPUNIT_ASSERT(v3[j] == true);
+
+
+		//  MISC
+		misc::transform(v1.begin(), v1.end(), v2.begin(), v3.begin(), std::logical_and<Cval>());
 		for(size_t j=0; j < v3.size(); ++j)
 			CPPUNIT_ASSERT(v3[j] == true);
 	}
@@ -1071,14 +1412,46 @@ void test_functional::logical_or(const char* msg)
 	//  TEST
 	{
 		time_printer tp(msg, m_print_time);
-		//  MISC
-		misc::transform(v1.begin(), v1.end(), v2.begin(), v3.begin(), misc::logical_or<Cval>());
+		//  STD
+		std::transform(v1.begin(), v1.end(), v2.begin(), v3.begin(), misc::logical_or<Cval>());
 		for(size_t j=0; j < v3.size(); ++j)
 			CPPUNIT_ASSERT(v3[j] == true);
 
 
 		//  STD
 		std::transform(v1.begin(), v1.end(), v2.begin(), v3.begin(), std::logical_or<Cval>());
+		for(size_t j=0; j < v3.size(); ++j)
+			CPPUNIT_ASSERT(v3[j] == true);
+	}
+}
+
+template<typename Container>
+void test_functional::logical_or2(const char* msg)
+{
+	typedef typename Container::value_type Cval;
+	typedef typename Container::iterator It;
+
+	It it;
+	size_t i0;
+
+	Container v1(m_container_size), v2(m_container_size);
+	for( it = v1.begin(), i0 = 1; it != v1.end(); ++it, ++i0) *it = Cval(i0);
+	for( it = v2.begin(), i0 = 1; it != v2.end(); ++it, ++i0) *it = Cval(i0);
+	std::vector<bool> v3(m_container_size, false);
+
+
+
+	//  TEST
+	{
+		time_printer tp(msg, m_print_time);
+		//  MISC
+		misc::transform(v1.begin(), v1.end(), v2.begin(), v3.begin(), misc::logical_or<Cval>());
+		for(size_t j=0; j < v3.size(); ++j)
+			CPPUNIT_ASSERT(v3[j] == true);
+
+
+		//  MISC
+		misc::transform(v1.begin(), v1.end(), v2.begin(), v3.begin(), std::logical_or<Cval>());
 		for(size_t j=0; j < v3.size(); ++j)
 			CPPUNIT_ASSERT(v3[j] == true);
 	}
@@ -1101,13 +1474,42 @@ void test_functional::logical_not(const char* msg)
 	//  TEST
 	{
 		time_printer tp(msg, m_print_time);
-		//  MISC
-		misc::transform(v1.begin(), v1.end(), v2.begin(), misc::logical_not<Cval>());
+		//  STD
+		std::transform(v1.begin(), v1.end(), v2.begin(), misc::logical_not<Cval>());
 		for(size_t j=0; j < v2.size(); ++j)
 			CPPUNIT_ASSERT(v2[j] == (j%2 != 0));
 
 		//  STD
 		std::transform(v1.begin(), v1.end(), v2.begin(), std::logical_not<Cval>());
+		for(size_t j=0; j < v2.size(); ++j)
+			CPPUNIT_ASSERT(v2[j] == (j%2 != 0));
+	}
+}
+
+template<typename Container>
+void test_functional::logical_not2(const char* msg)
+{
+	typedef typename Container::value_type Cval;
+	typedef typename Container::iterator It;
+
+	It it;
+	size_t i0;
+
+	Container v1(m_container_size);
+	for( it = v1.begin(), i0 = 1; it != v1.end(); ++it, ++i0) *it = Cval(i0%2);
+	std::vector<bool> v2(m_container_size, false);
+
+
+	//  TEST
+	{
+		time_printer tp(msg, m_print_time);
+		//  MISC
+		misc::transform(v1.begin(), v1.end(), v2.begin(), misc::logical_not<Cval>());
+		for(size_t j=0; j < v2.size(); ++j)
+			CPPUNIT_ASSERT(v2[j] == (j%2 != 0));
+
+		//  MISC
+		misc::transform(v1.begin(), v1.end(), v2.begin(), std::logical_not<Cval>());
 		for(size_t j=0; j < v2.size(); ++j)
 			CPPUNIT_ASSERT(v2[j] == (j%2 != 0));
 	}
@@ -1141,13 +1543,13 @@ void test_functional::unary_negate(const char* msg)
 	{
 		time_printer tp(msg, m_print_time);
 
-		//  MISC
+		//  STD
 		misc::unary_negate<IsOdd_class<Cval> > IsEven_m(IsOdd_object);
-		i0 = misc::count_if(v1.begin(), v1.end(), IsEven_m );
+		i0 = std::count_if(v1.begin(), v1.end(), IsEven_m );
 		CPPUNIT_ASSERT(i0 == m_container_size/2);
 
 		std::unary_negate<IsOdd_class<Cval> > IsEven_s(IsOdd_object);
-		i0 = misc::count_if(v1.begin(), v1.end(), IsEven_s);
+		i0 = std::count_if(v1.begin(), v1.end(), IsEven_s);
 		CPPUNIT_ASSERT(i0 == m_container_size/2);
 
 		//  STD
@@ -1159,7 +1561,81 @@ void test_functional::unary_negate(const char* msg)
 }
 
 template<typename Container>
+void test_functional::unary_negate2(const char* msg)
+{
+	typedef typename Container::value_type Cval;
+	typedef typename Container::iterator It;
+
+	It it;
+	size_t i0;
+
+	Container v1(m_container_size);
+	for( it = v1.begin(), i0 = 0; it != v1.end(); ++it, ++i0) *it = Cval(i0);
+
+	IsOdd_class<Cval> IsOdd_object;
+
+	//  TEST
+	{
+		time_printer tp(msg, m_print_time);
+
+		//  MISC
+		misc::unary_negate<IsOdd_class<Cval> > IsEven_m(IsOdd_object);
+		i0 = misc::count_if(v1.begin(), v1.end(), IsEven_m );
+		CPPUNIT_ASSERT(i0 == m_container_size/2);
+
+		std::unary_negate<IsOdd_class<Cval> > IsEven_s(IsOdd_object);
+		i0 = misc::count_if(v1.begin(), v1.end(), IsEven_s);
+		CPPUNIT_ASSERT(i0 == m_container_size/2);
+
+		//  STD
+		i0 = misc::count_if(v1.begin(), v1.end(), IsEven_s);
+		CPPUNIT_ASSERT(i0 == m_container_size/2);
+		i0 = misc::count_if(v1.begin(), v1.end(), IsEven_m );
+		CPPUNIT_ASSERT(i0 == m_container_size/2);
+	}
+}
+
+template<typename Container>
 void test_functional::binary_negate(const char* msg)
+{
+	typedef typename Container::value_type Cval;
+	typedef typename Container::iterator It;
+
+	It it;
+	Cval i0;
+
+	Container v1(m_container_size), v2(m_container_size);
+	for( it = v1.begin(), i0 = -1*(Cval)m_container_size + 1; it != v1.end(); ++it, ++i0) *it = Cval(i0);
+	for( it = v2.begin(), i0 = 0; it != v2.end(); ++it, ++i0) *it = Cval(i0);
+
+
+	//  TEST
+	{
+		time_printer tp(msg, m_print_time);
+
+		//  STD
+		misc::equal_to<Cval> equal_m;
+		misc::binary_negate<misc::equal_to<Cval> > nonequal_m(equal_m);
+		std::pair<It,It> firstmatch_m, firstmismatch_m;
+		firstmatch_m = std::mismatch(v1.begin(), v1.end(), v2.begin(), nonequal_m);
+		firstmismatch_m = std::mismatch(v1.begin(), v1.end(), v2.begin(), equal_m);
+		CPPUNIT_ASSERT(firstmatch_m.first == v1.end());
+		CPPUNIT_ASSERT(firstmismatch_m.first== v1.begin());
+
+
+		//  STD
+		std::equal_to<Cval> equal_s;
+		std::binary_negate<std::equal_to<Cval> > nonequal_s(equal_s);
+		std::pair<It,It> firstmatch_s, firstmismatch_s;
+		firstmatch_s = std::mismatch(v1.begin(), v1.end(), v2.begin(), nonequal_s);
+		firstmismatch_s = std::mismatch(v1.begin(), v1.end(), v2.begin(), equal_s);
+		CPPUNIT_ASSERT(firstmatch_s.first== v1.end());
+		CPPUNIT_ASSERT(firstmismatch_s.first == v1.begin());
+	}
+}
+
+template<typename Container>
+void test_functional::binary_negate2(const char* msg)
 {
 	typedef typename Container::value_type Cval;
 	typedef typename Container::iterator It;
@@ -1186,12 +1662,12 @@ void test_functional::binary_negate(const char* msg)
 		CPPUNIT_ASSERT(firstmismatch_m.first== v1.begin());
 
 
-		//  STD
+		//  MISC
 		std::equal_to<Cval> equal_s;
 		std::binary_negate<std::equal_to<Cval> > nonequal_s(equal_s);
-		std::pair<It,It> firstmatch_s, firstmismatch_s;
-		firstmatch_s = std::mismatch(v1.begin(), v1.end(), v2.begin(), nonequal_s);
-		firstmismatch_s = std::mismatch(v1.begin(), v1.end(), v2.begin(), equal_s);
+		misc::pair<It,It> firstmatch_s, firstmismatch_s;
+		firstmatch_s = misc::mismatch(v1.begin(), v1.end(), v2.begin(), nonequal_s);
+		firstmismatch_s = misc::mismatch(v1.begin(), v1.end(), v2.begin(), equal_s);
 		CPPUNIT_ASSERT(firstmatch_s.first== v1.end());
 		CPPUNIT_ASSERT(firstmismatch_s.first == v1.begin());
 	}
@@ -1250,12 +1726,39 @@ void test_functional::binder2nd(const char* msg)
 	{
 		time_printer tp(msg, m_print_time);
 
+		//  STD
+		i0 = std::count_if(v1.begin(), v1.end(), std::bind2nd(misc::less<Cval>(), m_container_size));
+		CPPUNIT_ASSERT(i0 == m_container_size);
+
+		//  STD
+		i0 = std::count_if(v1.begin(), v1.end(), std::bind2nd(std::less<Cval>(), m_container_size));
+		CPPUNIT_ASSERT(i0 == m_container_size);
+	}
+}
+
+template<typename Container>
+void test_functional::binder2nd_2(const char* msg)
+{
+	typedef typename Container::value_type Cval;
+	typedef typename Container::iterator It;
+
+	It it;
+	size_t i0;
+
+	Container v1(m_container_size);
+	for( it = v1.begin(), i0 = 0; it != v1.end(); ++it, ++i0) *it = Cval(i0);
+
+
+	//  TEST
+	{
+		time_printer tp(msg, m_print_time);
+
 		//  MISC
 		i0 = misc::count_if(v1.begin(), v1.end(), misc::bind2nd(misc::less<Cval>(), m_container_size));
 		CPPUNIT_ASSERT(i0 == m_container_size);
 
-		//  STD
-		i0 = std::count_if(v1.begin(), v1.end(), misc::bind2nd(std::less<Cval>(), m_container_size));
+		//  MISC
+		i0 = misc::count_if(v1.begin(), v1.end(), misc::bind2nd(std::less<Cval>(), m_container_size));
 		CPPUNIT_ASSERT(i0 == m_container_size);
 	}
 }
@@ -1277,9 +1780,9 @@ void test_functional::pointer_to_unary_function(const char* msg)
 	{
 		time_printer tp(msg, m_print_time);
 
-		//  MISC
+		//  STD
 		misc::pointer_to_unary_function<double,double> ptrfn(log);
-		misc::transform(v1.begin(), v1.end(), v2.begin(), ptrfn);
+		std::transform(v1.begin(), v1.end(), v2.begin(), ptrfn);
 		for(It it1 = v1.begin(), it2 = v2.begin(); it1 != v1.end(); ++it1, ++it2)
 			CPPUNIT_ASSERT( math::is_eq(*it2, log(*it1)) );
 
@@ -1292,7 +1795,69 @@ void test_functional::pointer_to_unary_function(const char* msg)
 }
 
 template<typename Container>
+void test_functional::pointer_to_unary_function2(const char* msg)
+{
+	typedef typename Container::value_type Cval;
+	typedef typename Container::iterator It;
+
+	It it;
+	size_t i0;
+
+	Container v1(m_container_size), v2(m_container_size);
+	for( it = v1.begin(), i0 = 1; it != v1.end(); ++it, ++i0) *it = Cval(i0);
+
+
+	//  TEST
+	{
+		time_printer tp(msg, m_print_time);
+
+		//  MISC
+		misc::pointer_to_unary_function<double,double> ptrfn(log);
+		misc::transform(v1.begin(), v1.end(), v2.begin(), ptrfn);
+		for(It it1 = v1.begin(), it2 = v2.begin(); it1 != v1.end(); ++it1, ++it2)
+			CPPUNIT_ASSERT( math::is_eq(*it2, log(*it1)) );
+
+		//  MISC
+		std::pointer_to_unary_function<double,double> ptrfn2(log);
+		misc::transform(v1.begin(), v1.end(), v2.begin(), ptrfn2);
+		for(It it1 = v1.begin(), it2 = v2.begin(); it1 != v1.end(); ++it1, ++it2)
+			CPPUNIT_ASSERT( math::is_eq(*it2, log(*it1)) );
+	}
+}
+
+template<typename Container>
 void test_functional::pointer_to_binary_function(const char* msg)
+{
+	typedef typename Container::value_type Cval;
+	typedef typename Container::iterator It;
+
+	It it;
+	size_t i0;
+
+	Container v1(m_container_size), v2(m_container_size);
+	for( it = v1.begin(), i0 = 1; it != v1.end(); ++it, ++i0) *it = Cval(i0);
+
+
+	//  TEST
+	{
+		time_printer tp(msg, m_print_time);
+
+		//  STD
+		misc::pointer_to_binary_function<double,double,double> powfn(pow);
+		std::transform(v1.begin(), v1.end(), v2.begin(), misc::bind2nd(powfn,2) );
+		for(It it1 = v1.begin(), it2 = v2.begin(); it1 != v1.end(); ++it1, ++it2)
+			CPPUNIT_ASSERT( math::is_eq(*it2, pow(*it1, 2.)) );
+
+		//  STD
+		misc::pointer_to_binary_function<double,double,double> powfn2(pow);
+		std::transform(v1.begin(), v1.end(), v2.begin(), std::bind2nd(powfn2,2) );
+		for(It it1 = v1.begin(), it2 = v2.begin(); it1 != v1.end(); ++it1, ++it2)
+			CPPUNIT_ASSERT( math::is_eq(*it2, pow(*it1, 2)) );
+	}
+}
+
+template<typename Container>
+void test_functional::pointer_to_binary_function2(const char* msg)
 {
 	typedef typename Container::value_type Cval;
 	typedef typename Container::iterator It;
@@ -1316,7 +1881,7 @@ void test_functional::pointer_to_binary_function(const char* msg)
 
 		//  STD
 		misc::pointer_to_binary_function<double,double,double> powfn2(pow);
-		std::transform(v1.begin(), v1.end(), v2.begin(), std::bind2nd(powfn2,2) );
+		misc::transform(v1.begin(), v1.end(), v2.begin(), std::bind2nd(powfn2,2) );
 		for(It it1 = v1.begin(), it2 = v2.begin(); it1 != v1.end(); ++it1, ++it2)
 			CPPUNIT_ASSERT( math::is_eq(*it2, pow(*it1, 2)) );
 	}
@@ -1620,12 +2185,39 @@ void test_functional::not1(const char* msg)
 	{
 		time_printer tp(msg, m_print_time);
 
+		//  STD
+		i0 = std::count_if(v1.begin(), v1.end(), std::not1(IsOdd_not1<Cval>()));
+		CPPUNIT_ASSERT(i0 == m_container_size/2);
+
+		//  STD
+		i0 = std::count_if(v1.begin(), v1.end(), std::not1(IsOdd_not1<Cval>()));
+		CPPUNIT_ASSERT(i0 == m_container_size/2);
+	}
+}
+
+template<typename Container>
+void test_functional::not1_2(const char* msg)
+{
+	typedef typename Container::value_type Cval;
+	typedef typename Container::iterator It;
+
+	It it;
+	size_t i0;
+
+	Container v1(m_container_size);
+	for( it = v1.begin(), i0 = 0; it != v1.end(); ++it, ++i0) *it = Cval(i0);
+
+
+	//  TEST
+	{
+		time_printer tp(msg, m_print_time);
+
 		//  MISC
 		i0 = misc::count_if(v1.begin(), v1.end(), misc::not1(IsOdd_not1<Cval>()));
 		CPPUNIT_ASSERT(i0 == m_container_size/2);
 
-		//  STD
-		i0 = std::count_if(v1.begin(), v1.end(), misc::not1(IsOdd_not1<Cval>()));
+		//  MISC
+		i0 = misc::count_if(v1.begin(), v1.end(), misc::not1(IsOdd_not1<Cval>()));
 		CPPUNIT_ASSERT(i0 == m_container_size/2);
 	}
 }
@@ -1649,14 +2241,45 @@ void test_functional::not2(const char* msg)
 	{
 		time_printer tp(msg, m_print_time);
 
-		//  MISC
-		misc::pair<It,It> firstmatch =
-			misc::mismatch(v1.begin(), v1.end(), v2.begin(), misc::not2(misc::equal_to<int>()));
+		//  STD
+		std::pair<It,It> firstmatch =
+			std::mismatch(v1.begin(), v1.end(), v2.begin(), std::not2(misc::equal_to<int>()));
 		CPPUNIT_ASSERT(firstmatch.first == v1.begin() && firstmatch.second == v2.begin());
 
 		//  STD
 		std::pair<It,It> firstmatch2 =
-			std::mismatch(v1.begin(), v1.end(), v2.begin(), misc::not2(std::equal_to<int>()));
+			std::mismatch(v1.begin(), v1.end(), v2.begin(), std::not2(std::equal_to<int>()));
+		CPPUNIT_ASSERT(firstmatch2.first == v1.begin() && firstmatch2.second == v2.begin());
+	}
+}
+
+template<typename Container>
+void test_functional::not2_2(const char* msg)
+{
+	typedef typename Container::value_type Cval;
+	typedef typename Container::iterator It;
+
+	It it;
+	size_t i0;
+
+	Container v1(m_container_size);
+	for( it = v1.begin(), i0 = 0; it != v1.end(); ++it, ++i0) *it = Cval(i0);
+	Container v2(v1);
+
+
+
+	//  TEST
+	{
+		time_printer tp(msg, m_print_time);
+
+		//  MISC
+		misc::pair<It,It> firstmatch =
+			misc::mismatch(v1.begin(), v1.end(), v2.begin(), std::not2(misc::equal_to<int>()));
+		CPPUNIT_ASSERT(firstmatch.first == v1.begin() && firstmatch.second == v2.begin());
+
+		//  MISC
+		misc::pair<It,It> firstmatch2 =
+			misc::mismatch(v1.begin(), v1.end(), v2.begin(), misc::not2(std::equal_to<int>()));
 		CPPUNIT_ASSERT(firstmatch2.first == v1.begin() && firstmatch2.second == v2.begin());
 	}
 }
@@ -1678,12 +2301,39 @@ void test_functional::bind1st(const char* msg)
 	{
 		time_printer tp(msg, m_print_time);
 
-		//  MISC
-		i0 = misc::count_if(v1.begin(), v1.end(), misc::bind1st(misc::equal_to<Cval>(), m_container_size));
+		//  STD
+		i0 = std::count_if(v1.begin(), v1.end(), std::bind1st(misc::equal_to<Cval>(), m_container_size));
 		CPPUNIT_ASSERT(i0 == 1);
 
 		//  STD
 		i0 = std::count_if(v1.begin(), v1.end(), misc::bind1st(std::equal_to<Cval>(), m_container_size));
+		CPPUNIT_ASSERT(i0 == 1);
+	}
+}
+
+template<typename Container>
+void test_functional::bind1st_2(const char* msg)
+{
+	typedef typename Container::value_type Cval;
+	typedef typename Container::iterator It;
+
+	It it;
+	size_t i0;
+
+	Container v1(m_container_size);
+	for( it = v1.begin(), i0 = 1; it != v1.end(); ++it, ++i0) *it = Cval(i0);
+
+
+	//  TEST
+	{
+		time_printer tp(msg, m_print_time);
+
+		//  MISC
+		i0 = misc::count_if(v1.begin(), v1.end(), std::bind1st(misc::equal_to<Cval>(), m_container_size));
+		CPPUNIT_ASSERT(i0 == 1);
+
+		//  MISC
+		i0 = misc::count_if(v1.begin(), v1.end(), misc::bind1st(std::equal_to<Cval>(), m_container_size));
 		CPPUNIT_ASSERT(i0 == 1);
 	}
 }
@@ -1705,12 +2355,39 @@ void test_functional::bind2nd(const char* msg)
 	{
 		time_printer tp(msg, m_print_time);
 
-		//  MISC
-		i0 = misc::count_if(v1.begin(), v1.end(), misc::bind2nd(misc::less<int>(), m_container_size));
+		//  STD
+		i0 = std::count_if(v1.begin(), v1.end(), std::bind2nd(misc::less<int>(), m_container_size));
 		CPPUNIT_ASSERT(i0 == m_container_size);
 
 		//  STD
 		i0 = std::count_if(v1.begin(), v1.end(), misc::bind2nd(std::less<int>(), m_container_size));
+		CPPUNIT_ASSERT(i0 == m_container_size);
+	}
+}
+
+template<typename Container>
+void test_functional::bind2nd_2(const char* msg)
+{
+	typedef typename Container::value_type Cval;
+	typedef typename Container::iterator It;
+
+	It it;
+	size_t i0;
+
+	Container v1(m_container_size);
+	for( it = v1.begin(), i0 = 0; it != v1.end(); ++it, ++i0) *it = Cval(i0);
+
+
+	//  TEST
+	{
+		time_printer tp(msg, m_print_time);
+
+		//  MISC
+		i0 = misc::count_if(v1.begin(), v1.end(), std::bind2nd(misc::less<int>(), m_container_size));
+		CPPUNIT_ASSERT(i0 == m_container_size);
+
+		//  MISC
+		i0 = misc::count_if(v1.begin(), v1.end(), misc::bind2nd(std::less<int>(), m_container_size));
 		CPPUNIT_ASSERT(i0 == m_container_size);
 	}
 }
@@ -1732,13 +2409,42 @@ void test_functional::ptr_fun(const char* msg)
 	{
 		time_printer tp(msg, m_print_time);
 
-		//  MISC
-		misc::transform(v1.begin(), v1.end(), v2.begin(), misc::ptr_fun<Cval,Cval>(fabs));
+		//  STD
+		std::transform(v1.begin(), v1.end(), v2.begin(), std::ptr_fun<Cval,Cval>(fabs));
 		for(it = v2.begin(), i0 = 1; it != v2.end(); ++it, ++i0)
 			CPPUNIT_ASSERT(*it == Cval(i0));
 
 		//  STD
 		std::transform(v1.begin(), v1.end(), v2.begin(), misc::ptr_fun<Cval,Cval>(fabs));
+		for(it = v2.begin(), i0 = 1; it != v2.end(); ++it, ++i0)
+			CPPUNIT_ASSERT(*it == Cval(i0));
+	}
+}
+
+template<typename Container>
+void test_functional::ptr_fun_2(const char* msg)
+{
+	typedef typename Container::value_type Cval;
+	typedef typename Container::iterator It;
+
+	It it;
+	int i0;
+
+	Container v1(m_container_size), v2(m_container_size);
+	for( it = v1.begin(), i0 = -1; it != v1.end(); ++it, --i0) *it = Cval(i0);
+
+
+	//  TEST
+	{
+		time_printer tp(msg, m_print_time);
+
+		//  MISC
+		misc::transform(v1.begin(), v1.end(), v2.begin(), std::ptr_fun<Cval,Cval>(fabs));
+		for(it = v2.begin(), i0 = 1; it != v2.end(); ++it, ++i0)
+			CPPUNIT_ASSERT(*it == Cval(i0));
+
+		//  MISC
+		misc::transform(v1.begin(), v1.end(), v2.begin(), misc::ptr_fun<Cval,Cval>(fabs));
 		for(it = v2.begin(), i0 = 1; it != v2.end(); ++it, ++i0)
 			CPPUNIT_ASSERT(*it == Cval(i0));
 	}
@@ -1763,8 +2469,8 @@ void test_functional::mem_fun(const char* msg)
 	{
 		time_printer tp(msg, m_print_time);
 
-		//  MISC
-		misc::transform(v1.begin(), v1.end(), v2.begin(), misc::mem_fun<double,MemFunS1>(&MemFunS1::Sqrt));
+		//  STD
+		std::transform(v1.begin(), v1.end(), v2.begin(), std::mem_fun<double,MemFunS1>(&MemFunS1::Sqrt));
 		for(it = v1.begin(), i0 = 0, i1 = 1; it != v1.end(); ++it, ++i0, ++i1)
 		{
 			double v1val = sqrt((*it)->m_val);
@@ -1774,6 +2480,45 @@ void test_functional::mem_fun(const char* msg)
 
 		//  STD
 		std::transform(v1.begin(), v1.end(), v2.begin(), misc::mem_fun<double,MemFunS1>(&MemFunS1::Sqrt));
+		for(it = v1.begin(), i0 = 0, i1 = 1; it != v1.end(); ++it, ++i0, ++i1)
+		{
+			double v1val = sqrt((*it)->m_val);
+			double v2val = v2[i0];
+			CPPUNIT_ASSERT( math::is_eq(v1val, v2val) );
+		}
+	}
+}
+
+template<typename Container>
+void test_functional::mem_fun_2(const char* msg)
+{
+	// Container::value_type -> MemFunS1* class
+	typedef typename Container::value_type	Cval;	//MemFunS1*
+	typedef typename Container::iterator It;
+
+	It it;
+	size_t i0, i1;
+
+	Container v1(m_container_size);
+	for( it = v1.begin(), i0 = 1; it != v1.end(); ++it, ++i0) *it = new MemFunS1(i0);
+	misc::vector<double> v2(m_container_size); // result
+
+
+	//  TEST
+	{
+		time_printer tp(msg, m_print_time);
+
+		//  MISC
+		misc::transform(v1.begin(), v1.end(), v2.begin(), std::mem_fun<double,MemFunS1>(&MemFunS1::Sqrt));
+		for(it = v1.begin(), i0 = 0, i1 = 1; it != v1.end(); ++it, ++i0, ++i1)
+		{
+			double v1val = sqrt((*it)->m_val);
+			double v2val = v2[i0];
+			CPPUNIT_ASSERT( math::is_eq(v1val, v2val) );
+		}
+
+		//  MISC
+		misc::transform(v1.begin(), v1.end(), v2.begin(), misc::mem_fun<double,MemFunS1>(&MemFunS1::Sqrt));
 		for(it = v1.begin(), i0 = 0, i1 = 1; it != v1.end(); ++it, ++i0, ++i1)
 		{
 			double v1val = sqrt((*it)->m_val);
@@ -1800,8 +2545,8 @@ void test_functional::mem_fun_ref(const char* msg)
 	//  TEST
 	{
 		time_printer tp(msg, m_print_time);
-		//  MISC
-		misc::transform(v1.begin(), v1.end(), v2.begin(), misc::mem_fun_ref(&MemFunS1::Sqrt));
+		//  STD
+		std::transform(v1.begin(), v1.end(), v2.begin(), std::mem_fun_ref(&MemFunS1::Sqrt));
 		for(it = v1.begin(), i0 = 0, i1 = 1; it != v1.end(); ++it, ++i0, ++i1)
 		{
 			double v1val = sqrt((*it).m_val);
@@ -1820,5 +2565,41 @@ void test_functional::mem_fun_ref(const char* msg)
 	}
 }
 
+template<typename Container>
+void test_functional::mem_fun_ref_2(const char* msg)
+{
+	typedef typename Container::value_type Cval;    // MemFunRefS1
+	typedef typename Container::iterator It;
+
+	It it;
+	size_t i0, i1;
+
+	Container v1(m_container_size);
+	for( it = v1.begin(), i0 = 0; it != v1.end(); ++it, ++i0) *it = Cval(i0);
+	misc::vector<double> v2(m_container_size);// store the results of Cval::Sqrt(double)
+
+
+	//  TEST
+	{
+		time_printer tp(msg, m_print_time);
+		//  MISC
+		misc::transform(v1.begin(), v1.end(), v2.begin(), std::mem_fun_ref(&MemFunS1::Sqrt));
+		for(it = v1.begin(), i0 = 0, i1 = 1; it != v1.end(); ++it, ++i0, ++i1)
+		{
+			double v1val = sqrt((*it).m_val);
+			double v2val = v2[i0];
+			CPPUNIT_ASSERT( math::is_eq(v1val, v2val) );
+		}
+
+		//  MISC
+		misc::transform(v1.begin(), v1.end(), v2.begin(), misc::mem_fun_ref(&MemFunS1::Sqrt));
+		for(it = v1.begin(), i0 = 0, i1 = 1; it != v1.end(); ++it, ++i0, ++i1)
+		{
+			double v1val = sqrt((*it).m_val);
+			double v2val = v2[i0];
+			CPPUNIT_ASSERT( math::is_eq(v1val, v2val) );
+		}
+	}
+}
 
 //////////////////////////////////////////////////////////////////////////
