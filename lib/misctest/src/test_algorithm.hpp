@@ -225,6 +225,8 @@ public:
 	template<typename Container>
 	void search(const char* msg);
 	template<typename Container>
+	void search2(const char* msg);
+	template<typename Container>
 	void search_n(const char* msg);
 	template<typename Container>
 	void search_n2(const char* msg);

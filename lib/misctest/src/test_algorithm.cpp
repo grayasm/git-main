@@ -183,23 +183,23 @@ void test_algorithm::search()
 	misc::cout << "\n\n\tsearch-------------------------------------------------";
 	search<std::vector<int> >																		("\n\tstd::vector       ");
 	search<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	search<misc::vector<int> >																		("\n\tmisc::vector      ");
-	search<misc::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	search<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >				("\n\tmisc::vector<POD> ");
-	search<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	search<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	search2<misc::vector<int> >																		("\n\tmisc::vector      ");
+	search2<misc::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
+	search2<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >				("\n\tmisc::vector<POD> ");
+	search2<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
+	search2<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
 }
 
 void test_algorithm::search_n()
 {
 	misc::cout << "\n\n\tsearch_n-----------------------------------------------";
-	search_n2<std::vector<int> >																	("\n\tstd::vector       ");
-	search_n2<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	search_n<misc::vector<int> >																	("\n\tmisc::vector      ");
-	search_n<misc::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	search_n<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
-	search_n<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	search_n<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	search_n<std::vector<int> >																	("\n\tstd::vector       ");
+	search_n<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
+	search_n2<misc::vector<int> >																	("\n\tmisc::vector      ");
+	search_n2<misc::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
+	search_n2<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
+	search_n2<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
+	search_n2<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
 }
 
 //Modifying sequence operations:
@@ -1597,6 +1597,45 @@ void test_algorithm::search(const char* msg)
 	{
 		time_printer tp(msg, m_print_time);
 
+		// STD
+		// using default comparison:
+		it = std::search (v1.begin(), v1.end(), match1, match1+4);	
+		CPPUNIT_ASSERT( (int)(it - v1.begin()) == 3 );
+		// using predicate comparison:
+		it = std::search (v1.begin(), v1.end(), match2, match2+3, mypredicate_search);
+		CPPUNIT_ASSERT( it == v1.end() );
+
+		it = std::search (v2.begin(), v2.end(), v3.begin(), v3.end());	
+		CPPUNIT_ASSERT( (it - v2.begin()) == m_container_size / 2);
+
+		it = std::search (v2.begin(), v2.end(), match4, match4+3, mypredicate_search);
+		CPPUNIT_ASSERT( (it - v2.begin()) == m_container_size - 3);
+	}
+}
+
+template<typename Container>
+void test_algorithm::search2(const char* msg)
+{
+	typedef typename Container::value_type Cval;
+	typedef typename Container::iterator It;
+
+	Container v1, v2, v3;
+	It it;
+
+	// set some values:        v1: 10 20 30 40 50 60 70 80 90
+	for (size_t i=1; i < 10; i++) v1.push_back ((Cval)i*10);
+	Cval match1[] = {40,50,60,70};
+	Cval match2[] = {20,30,50};
+
+	for(size_t i=0; i < m_container_size; ++i)	v2.push_back ((Cval)i);
+	for(size_t i=m_container_size/2; i < m_container_size; ++i)	v3.push_back ((Cval)i);
+	Cval match4[] = {m_container_size-3, m_container_size-2, m_container_size-1};
+
+
+	// TEST
+	{
+		time_printer tp(msg, m_print_time);
+
 		// MISC
 		// using default comparison:
 		it = misc::search (v1.begin(), v1.end(), match1, match1+4);	
@@ -1610,83 +1649,13 @@ void test_algorithm::search(const char* msg)
 
 		it = misc::search (v2.begin(), v2.end(), match4, match4+3, mypredicate_search);
 		CPPUNIT_ASSERT( (it - v2.begin()) == m_container_size - 3);
-
-
-#if !defined(DEBUG)		// debug iterator + cannot deduce the iterator category
-		// STD
-		// using default comparison:
-//		it = std::search (v1.begin(), v1.end(), match1, match1+4);
-//		CPPUNIT_ASSERT( (int)(it - v1.begin()) == 3 );
-		// using predicate comparison:
-//		it = std::search (v1.begin(), v1.end(), match2, match2+3, mypredicate_search);
-//		CPPUNIT_ASSERT( it == v1.end() );
-
-//		it = std::search (v2.begin(), v2.end(), v3.begin(), v3.end());
-//		CPPUNIT_ASSERT( (it - v2.begin()) == m_container_size - 3);
-//		it = std::search (v2.begin(), v2.end(), match4, match4+3, mypredicate_search);
-//		CPPUNIT_ASSERT( (it - v2.begin()) == m_container_size - 3);
-#endif
 	}
-
-
-	
 }
-
 //////////////////////////////////////////////////////////////////////////
 bool mypredicate_search_n (int i, int j){ return (i==j); }
 
 template<typename Container>
 void test_algorithm::search_n(const char* msg)
-{
-	typedef typename Container::iterator It;
-	typedef typename Container::value_type Cval;
-
-	Cval myints[]={10,20,30,30,20,10,10,20};
-
-	Container v1(myints,myints+8);
-	Container v2;
-	for(size_t i=0; i < m_container_size-1; ++i)	v2.push_back ((Cval)i);
-	v2.push_back (v2.back());
-		
-	It it;
-
-
-	// TEST
-	{
-		time_printer tp(msg, m_print_time);
-
-
-		// MISC
-		/*	search_n(begin, end, how_many_consecutive, having_value)
-			Searches for the first subsequence in a range that of a 
-			specified number of elements having a particular value or 
-			a relation to that value as specified by a binary predicate.
-		*/
-		// using default comparison:
-		it = misc::search_n (v1.begin(), v1.end(), 2, 30);
-		//cout << "two 30s found at position 2" << int(it-v1.begin()) << endl;
-		CPPUNIT_ASSERT((int)(it-v1.begin()) == 2);
-
-		// using predicate comparison:
-		it = misc::search_n (v1.begin(), v1.end(), 2, 10, mypredicate_search_n);
-		//cout << "two 10s found at position 5" << int(it-v1.begin()) << endl;
-		CPPUNIT_ASSERT((int)(it-v1.begin()) == 5);
-		//Two 30s found at position 2
-		//Two 10s found at position 5
-
-		it = misc::search_n (v2.begin(), v2.end(), 2, m_container_size - 2);		
-		CPPUNIT_ASSERT((int)(it-v2.begin()) == m_container_size);
-
-		it = misc::search_n (v2.begin(), v2.end(), 2, m_container_size - 2, mypredicate_search_n);
-		CPPUNIT_ASSERT((int)(it-v2.begin()) == m_container_size);
-
-		// STD - see search_n2(...)
-	}
-}
-
-
-template<typename Container>
-void test_algorithm::search_n2(const char* msg)
 {
 	typedef typename Container::iterator It;
 	typedef typename Container::value_type Cval;
@@ -1725,10 +1694,58 @@ void test_algorithm::search_n2(const char* msg)
 		//Two 10s found at position 5
 
 		it = std::search_n (v2.begin(), v2.end(), 2, m_container_size - 2);		
-		CPPUNIT_ASSERT((int)(it-v2.begin()) == m_container_size);
+		CPPUNIT_ASSERT((int)(it-v2.begin()) == m_container_size - 2);
 
 		it = std::search_n (v2.begin(), v2.end(), 2, m_container_size - 2, mypredicate_search_n);
-		CPPUNIT_ASSERT((int)(it-v2.begin()) == m_container_size);
+		CPPUNIT_ASSERT((int)(it-v2.begin()) == m_container_size - 2);
+	}
+}
+
+
+template<typename Container>
+void test_algorithm::search_n2(const char* msg)
+{
+	typedef typename Container::iterator It;
+	typedef typename Container::value_type Cval;
+
+	Cval myints[]={10,20,30,30,20,10,10,20};
+
+	Container v1(myints,myints+8);
+	Container v2;
+	for(size_t i=0; i < m_container_size-1; ++i)	v2.push_back ((Cval)i);
+	v2.push_back (v2.back());
+		
+	It it;
+
+
+	// TEST
+	{
+		time_printer tp(msg, m_print_time);
+
+
+		// MISC
+		/*	search_n(begin, end, how_many_consecutive, having_value)
+			Searches for the first subsequence in a range that of a 
+			specified number of elements having a particular value or 
+			a relation to that value as specified by a binary predicate.
+		*/
+		// using default comparison:
+		it = misc::search_n (v1.begin(), v1.end(), 2, 30);
+		//cout << "two 30s found at position 2" << int(it-v1.begin()) << endl;
+		CPPUNIT_ASSERT((int)(it-v1.begin()) == 2);
+
+		// using predicate comparison:
+		it = misc::search_n (v1.begin(), v1.end(), 2, 10, mypredicate_search_n);
+		//cout << "two 10s found at position 5" << int(it-v1.begin()) << endl;
+		CPPUNIT_ASSERT((int)(it-v1.begin()) == 5);
+		//Two 30s found at position 2
+		//Two 10s found at position 5
+
+		it = misc::search_n (v2.begin(), v2.end(), 2, m_container_size - 2);	
+		CPPUNIT_ASSERT((int)(it-v2.begin()) == m_container_size - 2);
+
+		it = misc::search_n (v2.begin(), v2.end(), 2, m_container_size - 2, mypredicate_search_n);
+		CPPUNIT_ASSERT((int)(it-v2.begin()) == m_container_size - 2);
 	}
 }
 

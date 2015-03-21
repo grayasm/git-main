@@ -246,7 +246,10 @@ void test_generic_string::push_back()
 void test_generic_string::assign() 
 {
 	misc::cout << "\n\n\tassign-------------------------------------------------";
+	
 	assign<misc::generic_string<char> >                                             ("\n\tgeneric_string            ");
+
+	/* some methods are safe with misc::generic_string and trigger undefined behaviour with std::string */
 //	assign<std::basic_string<char> >                                                ("\n\tstd::basic_string         ");
 //	assign<std::basic_string<char, std::char_traits<char>, misc::allocator<char> > >("\n\tstd::basic_string<char,A> ");
 }
@@ -1587,7 +1590,7 @@ void test_generic_string::assign(const char* msg)
 
 		//setting 'n' characters
 		s0.assign(10, '\0');
-		CPPUNIT_ASSERT( s0 == "" );
+		CPPUNIT_ASSERT( s0 != "" ); // s0 has a bigger size
 
 		s0.assign(10, '\n');
 		CPPUNIT_ASSERT( s0 == "\n\n\n\n\n\n\n\n\n\n" );

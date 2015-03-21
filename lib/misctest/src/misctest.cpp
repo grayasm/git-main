@@ -92,7 +92,7 @@ int main(int argc, char** argv)
       tree
     */
 	
-#if 0
+#if 1
     CPPUNIT_TEST_SUITE_REGISTRATION(test_autoptr);
     CPPUNIT_TEST_SUITE_REGISTRATION(test_exception);
     CPPUNIT_TEST_SUITE_REGISTRATION(test_generic_array);
@@ -105,6 +105,7 @@ int main(int argc, char** argv)
     CPPUNIT_TEST_SUITE_REGISTRATION(test_priority_queue);
 //    CPPUNIT_TEST_SUITE_REGISTRATION(test_tree); -- exception test_tree::preorder_it (E)
 #endif
+
 
     //////////////////////////////////////////////////////////////////////////
     //misc libraries

@@ -224,35 +224,7 @@ namespace misc
 	inline ForwardIterator1 search ( ForwardIterator1 first1, ForwardIterator1 last1,
 									 ForwardIterator2 first2, ForwardIterator2 last2)
 	{
-		if (first2==last2)
-		{
-			return first1;
-		}
-
-		while (first1 != last1)
-		{
-			ForwardIterator1 it1 = first1;
-			ForwardIterator2 it2 = first2;
-
-			while (*it1 == *it2)
-			{
-				++it1;
-				++it2;
-
-				if (it2 == last2)
-				{
-					return first1;
-				}
-
-				if (it1 == last1)
-				{
-					return last1;
-				}
-			}
-			++first1;
-		}
-
-		return last1;
+		return misc::algobase::search(first1, last1, first2, last2);
 	}
 
 
@@ -261,35 +233,7 @@ namespace misc
 									 ForwardIterator2 first2, ForwardIterator2 last2,
 									 BinaryPredicate pred )
 	{
-		if (first2==last2)
-		{
-			return first1;
-		}
-
-		while (first1 != last1)
-		{
-			ForwardIterator1 it1 = first1;
-			ForwardIterator2 it2 = first2;
-
-			while (pred(*it1, *it2))
-			{
-				++it1;
-				++it2;
-
-				if (it2 == last2)
-				{
-					return first1;
-				}
-
-				if (it1 == last1)
-				{
-					return last1;
-				}
-			}
-			++first1;
-		}
-
-		return last1;
+		return misc::algobase::search(first1, last1, first2, last2, pred);
 	}
 
 
@@ -299,31 +243,7 @@ namespace misc
 	inline ForwardIterator search_n ( ForwardIterator first, ForwardIterator last,
 									  Size count, const T& value )
 	{
-		ForwardIterator it, limit;
-		Size i;
-
-		limit=first;
-		misc::advance(limit, misc::distance(first,last) - count);
-
-		while (first != limit)
-		{
-			it = first;
-			i=0;
-
-			while (*it == value)
-			{
-				++it;
-
-				if (++i == count)
-				{
-					return first;
-				}
-			}
-
-			++first;
-		}
-
-		return last;
+		return misc::algobase::search_n(first, last, count, value);
 	}
 
 
@@ -331,31 +251,7 @@ namespace misc
 	inline ForwardIterator search_n ( ForwardIterator first, ForwardIterator last,
 									  Size count, const T& value, BinaryPredicate pred )
 	{
-		ForwardIterator it, limit;
-		Size i;
-
-		limit=first;
-		misc::advance(limit, misc::distance(first,last) - count);
-
-		while (first != limit)
-		{
-			it = first;
-			i=0;
-
-			while (pred(*it, value))
-			{
-				++it;
-
-				if (++i == count)
-				{
-					return first;
-				}
-			}
-
-			++first;
-		}
-
-		return last;
+		return misc::algobase::search_n(first, last, count, value, pred);
 	}
 
 	//////////////////////////////////////////////////////////////////////////

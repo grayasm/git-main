@@ -1676,7 +1676,7 @@ void test_generic_array::assign()
 
 		//setting 'n' characters
 		s0.assign(10, '\0');
-		CPPUNIT_ASSERT( s0 == "" );
+		CPPUNIT_ASSERT( s0 != "" ); // s0 has a bigger size
 
 		s0.assign(10, '\n');
 		CPPUNIT_ASSERT( s0 == "\n\n\n\n\n\n\n\n\n\n" );
