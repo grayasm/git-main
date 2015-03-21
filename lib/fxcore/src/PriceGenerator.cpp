@@ -156,7 +156,7 @@ namespace fx
 		return m_volatility;
 	}
 
-//#if 0
+#if 1
 	void PriceGenerator::GetPrice(Price& quote)
 	{
 		int trendChance = (m_trendChance + 2); //[2,12]
@@ -178,39 +178,38 @@ namespace fx
 		
 		--m_trendCounter;
 	}
-//#endif
+#endif
 
-#if 0	
+#if 0
 	void PriceGenerator::GetPrice(Price& quote)
 	{
-		const size_t count=21;//49;
-		// sell tab
+		const size_t count=21;
 		double tab[count] = {
-			1.36000,
-			1.36020,
-			1.36040,
-			1.36060,
-			1.36080,
-			1.36050,
-			1.36030,
-			1.36070,
-			1.36090,
-			1.36110,
-			1.36080,
-			1.36060,
-			1.36020,
-			1.36080,
-			1.36120,
-			1.36140,
-			1.36160,
-			1.36150,
-			1.36130,
-			1.36110,
-			1.36090
-		};
+			1.08000,
+			1.08020,
+			1.08060,
+			1.08080,
+			1.08120,
+			1.08080,
+			1.08000,
+			1.07920,
+			1.07980,
+			1.08000,
+			1.08020,
+			1.08060,
+			1.08080,
+			1.08120,
+			1.08080,
+			1.08000,
+			1.07920,
+			1.07980,
+			1.08000,
+			1.08020,
+			1.08060
+		}; // 188-208
 
 		static int sCounter = 0;
-		if(sCounter > count) sCounter = 0;
+		if(sCounter >= count) sCounter = 0;
 		double buy = tab[sCounter];
 		double sell = buy - m_spread * (1/m_rate2pip);
 		quote = Price(buy, sell);

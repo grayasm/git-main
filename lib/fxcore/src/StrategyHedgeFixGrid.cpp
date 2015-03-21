@@ -596,13 +596,14 @@ namespace fx
 		 */
 		bool isBuy = m_ep.IsBuy();
 
-		// market plugin updates only the open price (2nd parameter is FLT_MAX)
+		// market plugin updates only the real open price (2nd parameter is FLT_MAX)
 		double eopen = (isBuy == true ? m_enter.GetBuy() : m_enter.GetSell());
 		double pip2rate = 1 / m_ep.GetCurrency().GetRate2Pip();
 
 		double h0p = (isBuy == true ? eopen - m_dh * pip2rate : eopen + m_dh * pip2rate);
-		double hno = ceil(m_ep.GetAmount() / m_ha); // number of hedges
-		double d2h = m_dg / hno;		// distance between 2 hedges in pips
+		double hno = ceil(m_ep.GetAmount() / m_ha);   // number of hedges
+		double intvl = std::min<double>(hno - 1, 1);  // number of intervals
+		double d2h = m_dg / intvl;		// distance between 2 hedges in pips
 		double d2hp = d2h * pip2rate;	// distance between 2 hedges as price
 
 		double sumamt = 0;			// sum of total amount

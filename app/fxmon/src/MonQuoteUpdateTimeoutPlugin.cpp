@@ -41,6 +41,9 @@ void MonQuoteUpdateTimeoutPlugin::SetTimeOut(double sec)
 
 void MonQuoteUpdateTimeoutPlugin::OnUpdate()
 {
-	Sleep(m_timeout);
+	if(m_timeout > 0)
+	{
+		Sleep(m_timeout);
+	}	
 }
 

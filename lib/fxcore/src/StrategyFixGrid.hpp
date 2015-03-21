@@ -31,19 +31,19 @@ namespace fx
 	/*
 	 *	We enter the market at its price (Buy or Sell Market Order), or wait
 	 *	until it bounces over the entry level (optional).	 
-	 *	Below or above the entry at the distance to the first hedge position starts the grid.
-	 *	In the grid, all hedging positions are displaced at equal distance.
-	 *	In the grid, a hedge position is added if the price reached its entry.
-	 *	Each hedging position is closed in negative at the distance to exit.
-	 *	If the price reacts negative and reaches again the hedge position
+	 *	The entry is also the first position of the grid.
+	 *	In the grid, all positions are displaced at equal distance.
+	 *	Each position is opened when the market reaches its calculated price,
+	 *	and is closed in negative at the distance to exit.
+	 *	If the price reacts positive and reaches again the grid position
 	 *	it will be opened again.
 	 *
-	 *	The draw down limit is established for entry position: 50k, -20pips = -1000 pips
+	 *	The draw down limit is established for total grid size: 50k, -20pips = -1000 pips
 	 *	and the strategy stops when all closed and open positions have in total 
 	 *	this PL number.
 	 *	
-	 *	The profit limit is established for entry position: 30k, +10pips = +300 pips
-	 *	and the strategy stop when all closed and open positions have in total
+	 *	The profit limit is established for total grid size: 30k, +10pips = +300 pips
+	 *	and the strategy stops when all closed and open positions have in total
 	 *	this PL number.
 	 *	
 	 *	        [profit]
@@ -70,7 +70,7 @@ namespace fx
 		StrategyFixGrid& operator=(const StrategyFixGrid& tc);
 
 		StrategyFixGrid(
-			const fx::Position& ep,		// where to enter the market and total grid amount
+			const fx::Position& ep,		// where to enter the market and total grid size
 			bool wait,					// wait until price bounces over the entry
 			double dg,					// distance of the grid in pips
 			double pa,					// amount of each position in the grid
@@ -97,6 +97,7 @@ namespace fx
 		void Reset();
 		void Validate();
 
+		bool CanEnterMarket();
 		bool CanCreateGrid();
 		bool CreateGrid();
 		bool UpdateGrid();

@@ -112,6 +112,10 @@ namespace fx
 			m_prev_rate.GetSell() == FLT_MAX)
 			m_prev_rate = m_rate;
 
+		if(!CanEnterMarket())
+			// waiting to enter the market, should try again
+			return true;
+
 		if(CanCreateGrid())
 		{
 			CreateGrid();
@@ -119,7 +123,6 @@ namespace fx
 		
 		UpdateGrid();
 		ShowStatus();
-
 
 
 		double trPL = m_ct.GetPL(m_ep.GetCurrency().GetSymbol(), m_rate);		// PL of entire transaction
@@ -241,7 +244,7 @@ namespace fx
 		if(m_dg <= 1)
 			valid = false;
 
-		if(m_pa <= 0 || ceil(m_pa) != m_pa) // natural no
+		if(m_pa <= 0 || ceil(m_pa) != m_pa) // natural number
 			valid = false;
 
 		if(m_de <= 0)
@@ -250,8 +253,8 @@ namespace fx
 		if(m_maxn <= 0)
 			valid = false;
 
-		if(m_maxn < m_dg)		// ensure we use the grid
-			valid = false;
+		// if(m_maxn < m_dg)		// ensure we use the grid
+		//	valid = false;
 
 		if(m_maxp <= 0)			// profit must > 0
 			valid = false;
@@ -275,6 +278,40 @@ namespace fx
 			throw misc::exception("Strategy is not valid.");		
 	}
 
+	bool StrategyFixGrid::CanEnterMarket()
+	{
+		// if already in the market then continue
+		if(!m_ct.IsEmpty())
+			return true;
+
+		// should wait for market to reach certain level ?
+		if(!m_wait)
+			return true;
+
+		// determine entry condition
+		bool isBuy = m_ep.IsBuy();
+		const fx::Currency& curr = m_ep.GetCurrency();
+		const fx::Price& price = curr.GetPrice();
+
+		double prevmarket = (isBuy == true ? m_prev_rate.GetBuy() : m_prev_rate.GetSell());
+		double currmarket = (isBuy == true ? m_rate.GetBuy() : m_rate.GetSell());
+		double entry = (isBuy == true ? price.GetBuy() : price.GetSell());
+
+		bool allow = false;
+		if(isBuy)
+		{
+			// price bounces from below to above the entry position.
+			allow = (prevmarket <= entry && currmarket >= entry);
+		}
+		else
+		{
+			// price bounces from above to below the entry position.
+			allow = (prevmarket >= entry && currmarket <= entry);
+		}
+
+		return allow;
+	}
+
 	bool StrategyFixGrid::CanCreateGrid()
 	{
 		return m_grid.empty();
@@ -290,7 +327,7 @@ namespace fx
 		 */
 		bool isBuy = m_ep.IsBuy();
 
-		// market plugin updates only the open price (2nd parameter is FLT_MAX)
+		// market plugin updates only the real open price (2nd parameter is FLT_MAX)
 		double eopen = 0;
 		if(m_wait)
 		{
@@ -304,7 +341,8 @@ namespace fx
 		double pip2rate = 1 / m_ep.GetCurrency().GetRate2Pip();
 
 		double posno = ceil(m_ep.GetAmount() / m_pa);	// number of grid positions
-		double d2ppl = m_dg / posno;		// distance between 2 positions in pips
+		double intvl = std::min<double>(posno - 1, 1);  // number of intervals
+		double d2ppl = m_dg / intvl;		// distance between 2 positions in pips
 		double d2ppr = d2ppl * pip2rate;	// distance between 2 positions as price
 
 		double sumamt = 0;			// sum of total amount
@@ -324,12 +362,12 @@ namespace fx
 			double gpsell= (isBuy == true ? FLT_MAX : openp);
 
 			/*
-			        BUY  (eopen, x)      SELL (prev)
+			        BUY  (open, x)      SELL (prev)
 			         o                    o
 			         |                    |
 			         |                    |
 			         o                    o
-			        BUY  (prev)          SELL (x, eopen)
+			        BUY  (prev)          SELL (x, open)
 			*/
 			gprice = fx::Price(gpbuy, gpsell);
 

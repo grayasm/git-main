@@ -45,7 +45,7 @@ namespace fx
 		//! Returns true if market order is opened.
 		virtual bool OpenMarketOrder(
 			const fx::Position& request,			// requested position to be opened
-			misc::vector<fx::Position>& market,		// opens 1 ore more trades (liquidity)
+			misc::vector<fx::Position>& market,		// opened with 1 ore more trades (liquidity)
 			misc::string& error						// error message if failed
 			) = 0;
 
