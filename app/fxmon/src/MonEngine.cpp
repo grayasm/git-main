@@ -165,6 +165,11 @@ public:
 		m_serializer << tv;
 	}
 
+	void Visit(fx::Strategy2FixGrid& tv)
+	{
+		m_serializer << tv;
+	}
+
 private:
 	//! non copyable
 	StrategyWriterVisitor(const StrategyWriterVisitor&);
@@ -244,5 +249,3 @@ void MonEngine::OnExit()
 		strategy->AcceptVisitor(visitor);
 	}	
 }
-
-

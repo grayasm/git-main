@@ -85,6 +85,12 @@ namespace fx
 					Deserialize(*fgs);
 					m_data.push_back(fgs);
 				}
+				else if(sname == "2fg")
+				{
+					fx::Strategy2FixGrid::Ptr _2fgs = new fx::Strategy2FixGrid();
+					Deserialize(*_2fgs);
+					m_data.push_back(_2fgs);
+				}
 				else
 				{
 					throw misc::exception("Unknown strategy.");
@@ -710,6 +716,143 @@ namespace fx
 			ptr->m_ct = &(fgs.m_ct);
 		}
 		fgs.m_blocked = mblocked;
+
+		// done!
+	}
+
+	void Deserializer::Deserialize(fx::Strategy2FixGrid& _2fgs)
+	{
+		fx::Position ep;
+		bool wait = false;
+		double dbg = 0;
+		double dg = 0;
+		double pa = 0;
+		double de = 0;
+		double maxn = 0;
+		double maxp = 0;
+		MarketPlugin::Ptr plugin;
+		// private
+		fx::Transaction		mct;
+		fx::Price			menter;
+		fx::Price			mrate;
+		fx::Price			mprev_rate;
+		typedef misc::vector<FixGridPositionStub::Ptr> Grid;
+		Grid				mgrid;
+		bool				mblocked = true;
+
+
+		// begin deserialization
+		Deserialize(ep);
+
+		misc::string sline;
+		std::string  stdline;
+		bool bsuccess = false;
+
+		while(!m_out->eof())
+		{
+			std::getline(*m_out, stdline);
+			sline = stdline.c_str();
+
+			misc::trim(sline);
+			if(sline.empty())
+				continue;
+
+			misc::strtok tokenizer(sline, ";");
+			const misc::strtok::Tokens& elems = tokenizer.tokens();
+			misc::string id(elems[0]);
+			misc::trim(id);
+			if(id == "wait")
+			{
+				misc::string swait(elems[1]); misc::trim(swait);
+				wait = (swait == "true");
+			}
+			else if(id == "dbg")
+			{
+				misc::string sdbg(elems[1]); misc::trim(sdbg); misc::to_value(sdbg, dbg);
+			}
+			else if(id == "dg")
+			{
+				misc::string sdg(elems[1]); misc::trim(sdg); misc::to_value(sdg, dg);
+			}
+			else if(id == "pa")
+			{
+				misc::string spa(elems[1]); misc::trim(spa); misc::to_value(spa, pa);
+			}
+			else if(id == "de")
+			{
+				misc::string sde(elems[1]); misc::trim(sde); misc::to_value(sde, de);
+			}
+			else if(id == "maxn")
+			{
+				misc::string smaxn(elems[1]); misc::trim(smaxn); misc::to_value(smaxn, maxn);
+			}
+			else if(id == "maxp")
+			{
+				misc::string smaxp(elems[1]); misc::trim(smaxp); misc::to_value(smaxp, maxp);
+			}
+			else if(id == "plugin")
+			{
+				misc::string smplugin(elems[1]); misc::trim(smplugin);
+				if(m_plugin.IsNull())
+					throw misc::exception("Null plugin.");
+				if(m_plugin->GetID() != smplugin)
+					throw misc::exception("Plugin does not match.");
+
+				plugin = m_plugin;
+			}
+			else if(id == "T")
+			{
+				size_t tsize = 0;
+				misc::to_value(elems[1], tsize);				
+				Deserialize(mct, tsize);
+			}
+			else if(id == "rate")
+			{
+				misc::string sBuy = elems[1]; misc::trim(sBuy);
+				misc::string sSell = elems[2]; misc::trim(sSell);
+				double dbuy; misc::to_value(sBuy, dbuy);
+				double dsell; misc::to_value(sSell, dsell);
+				mrate = fx::Price(dbuy, dsell);
+			}
+			else if(id == "prev_rate")
+			{
+				misc::string sBuy = elems[1]; misc::trim(sBuy);
+				misc::string sSell = elems[2]; misc::trim(sSell);
+				double dbuy; misc::to_value(sBuy, dbuy);
+				double dsell; misc::to_value(sSell, dsell);
+				mprev_rate = fx::Price(dbuy, dsell);
+			}
+			else if(id == "grid")
+			{
+				size_t tsize = 0;
+				misc::to_value(elems[1], tsize);
+				Deserialize(mgrid, tsize);
+			}
+			else if(id == "blocked")
+			{
+				misc::string sblocked(elems[1]); misc::trim(sblocked);
+				mblocked = (sblocked == "true");
+				bsuccess = true;
+				break;
+			}
+		}
+
+		if(!bsuccess)
+			throw misc::exception("Enf of file");		
+
+		// initialize strategy
+		_2fgs = fx::Strategy2FixGrid(ep, wait, dbg, dg, pa, de, maxn, maxp, plugin);
+		_2fgs.m_ct = mct;
+		_2fgs.m_rate = mrate;
+		_2fgs.m_prev_rate = mprev_rate;
+		_2fgs.m_grid = mgrid;		
+		for(size_t i = 0; i < _2fgs.m_grid.size(); ++i)
+		{
+			fx::FixGridPositionStub::Ptr ptr = mgrid[i];
+			ptr->m_plugin = plugin;
+			ptr->m_ct = &(_2fgs.m_ct);
+		}
+		_2fgs.m_blocked = mblocked;
 
 		// done!
 	}

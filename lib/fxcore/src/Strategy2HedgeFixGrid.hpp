@@ -23,7 +23,8 @@
 #define __Strategy2HedgeFixGrid_hpp__
 
 
-#include "StrategyHedgeFixGrid.hpp"
+#include "StrategyBase.hpp"
+#include "FixGridPositionStub.hpp"
 
 namespace fx
 {

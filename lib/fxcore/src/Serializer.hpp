@@ -30,7 +30,7 @@
 #include "StrategyHedgeFixGrid.hpp"
 #include "Strategy2HedgeFixGrid.hpp"
 #include "StrategyFixGrid.hpp"
-
+#include "Strategy2FixGrid.hpp"
 
 namespace fx
 {
@@ -42,6 +42,7 @@ namespace fx
 		Serializer& operator<<(const StrategyHedgeFixGrid& s);
 		Serializer& operator<<(const Strategy2HedgeFixGrid& s);
 		Serializer& operator<<(const StrategyFixGrid& s);
+		Serializer& operator<<(const Strategy2FixGrid& s);
 
 	private:
 		Serializer(const Serializer&);

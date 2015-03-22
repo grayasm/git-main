@@ -21,8 +21,8 @@
 #ifndef __StrategyFixGrid_hpp__
 #define __StrategyFixGrid_hpp__
 
-
-#include "StrategyHedgeFixGrid.hpp"
+#include "StrategyBase.hpp"
+#include "FixGridPositionStub.hpp"
 
 
 namespace fx

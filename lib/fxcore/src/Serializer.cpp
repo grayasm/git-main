@@ -139,6 +139,40 @@ namespace fx
 		return *this;
 	}
 
+	Serializer& Serializer::operator<<(const Strategy2FixGrid& s)
+	{
+		if(!m_out->is_open())
+			return *this;
+
+		*m_out << "\nS; " << "2fg";
+		(*this) << s.m_ep;			// entry position
+		*m_out << "\nwait; " << (s.m_wait == true ? "true" : "false");
+		*m_out << "\n dbg; " << s.m_dbg;
+		*m_out << "\n dg; " << s.m_dg;
+		*m_out << "\n pa; " << s.m_pa;
+		*m_out << "\n de; " << s.m_de;
+		*m_out << "\n maxn; " << s.m_maxn;
+		*m_out << "\n maxp; " << s.m_maxp;
+		*m_out << "\n plugin; " << s.m_plugin->GetID().c_str();
+
+		(*this) << s.m_ct;
+
+		*m_out << "\nrate; "; *this << s.m_rate;	// at that time, not important;
+		*m_out << "\nprev_rate; "; *this << s.m_prev_rate;	// previous price
+
+		*m_out << "\ngrid; " << s.m_grid.size(); 
+
+		for(size_t i = 0; i < s.m_grid.size(); ++i)
+		{
+			const FixGridPositionStub& stub = *(s.m_grid[i]);
+			*this << stub;			
+		}
+
+		*m_out << "\nblocked; " << (s.m_blocked == true ? "true" : "false");
+
+		return *this;
+	}
+
 	Serializer& Serializer::operator<<(const Price& price)
 	{
 		*m_out << price.GetBuy() << " ; ";

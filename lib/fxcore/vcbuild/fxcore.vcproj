@@ -169,6 +169,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\src\FixGridPositionStub.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\FixGridPositionStub.hpp"
+				>
+			</File>
+			<File
 				RelativePath="..\src\MarketDummyPlugin.cpp"
 				>
 			</File>
@@ -214,6 +222,14 @@
 			</File>
 			<File
 				RelativePath="..\src\Serializer.hpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\Strategy2FixGrid.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\Strategy2FixGrid.hpp"
 				>
 			</File>
 			<File

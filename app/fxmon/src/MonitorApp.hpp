@@ -57,6 +57,7 @@ private:
 	void CreateNewHFGStrategies();
 	void CreateNew2HFGStrategy();
 	void CreateNewFGStrategy();
+	void CreateNew2FGStrategy();
 	void ShowNewStrategies();
 	void EraseNewStrategy();
 	
@@ -85,6 +86,7 @@ public:
 	void Visit(fx::StrategyHedgeFixGrid& tv);
 	void Visit(fx::Strategy2HedgeFixGrid& tv);
 	void Visit(fx::StrategyFixGrid& tv);
+	void Visit(fx::Strategy2FixGrid& tv);
 	//! --- end of vtable ---
 
 private:

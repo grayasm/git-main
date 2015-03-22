@@ -281,7 +281,7 @@ namespace fx
 	bool StrategyFixGrid::CanEnterMarket()
 	{
 		// if already in the market then continue
-		if(!m_ct.IsEmpty())
+		if(!m_grid.empty())
 			return true;
 
 		// should wait for market to reach certain level ?
@@ -327,7 +327,6 @@ namespace fx
 		 */
 		bool isBuy = m_ep.IsBuy();
 
-		// market plugin updates only the real open price (2nd parameter is FLT_MAX)
 		double eopen = 0;
 		if(m_wait)
 		{
@@ -341,7 +340,7 @@ namespace fx
 		double pip2rate = 1 / m_ep.GetCurrency().GetRate2Pip();
 
 		double posno = ceil(m_ep.GetAmount() / m_pa);	// number of grid positions
-		double intvl = std::min<double>(posno - 1, 1);  // number of intervals
+		double intvl = std::max<double>(posno - 1, 1);  // number of intervals
 		double d2ppl = m_dg / intvl;		// distance between 2 positions in pips
 		double d2ppr = d2ppl * pip2rate;	// distance between 2 positions as price
 

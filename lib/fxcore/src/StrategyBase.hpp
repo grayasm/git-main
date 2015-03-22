@@ -33,6 +33,7 @@ namespace fx
 	class StrategyHedgeFixGrid;
 	class Strategy2HedgeFixGrid;
 	class StrategyFixGrid;
+	class Strategy2FixGrid;
 	class Price;
 
 	class StrategyVisitor
@@ -42,6 +43,7 @@ namespace fx
 		virtual void Visit(StrategyHedgeFixGrid& tv) = 0;
 		virtual void Visit(Strategy2HedgeFixGrid& tv) = 0;
 		virtual void Visit(StrategyFixGrid& tv) = 0;
+		virtual void Visit(Strategy2FixGrid& tv) = 0;
 	};
 	
 	class StrategyBase

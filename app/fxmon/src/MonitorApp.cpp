@@ -245,6 +245,7 @@ void MonitorApp::CreateNewStrategy()
 	misc::cout << "\ncreate Hedge Fix Grid * Grid (b)";
 	misc::cout << "\ncreate Double Hedge Fix Grid (c)";
 	misc::cout << "\ncreate Fix Grid              (d)";
+	misc::cout << "\ncreate Double Fix Grid       (e)";
 	misc::cout << "\noption = ";
 	misc::string val;
 	GetOption(val);
@@ -266,6 +267,9 @@ void MonitorApp::CreateNewStrategy()
 
 	if(val[0] == 'd' || val[0] == 'D')
 		return CreateNewFGStrategy();
+
+	if(val[0] == 'e' || val[0] == 'E')
+		return CreateNew2FGStrategy();
 
 	misc::cout << "\ninvalid option, wait 2 seconds";
 	Sleep(2000);	
@@ -631,6 +635,86 @@ void MonitorApp::CreateNewFGStrategy()
 	m_new_strategies.push_back(fg);
 }
 
+void MonitorApp::CreateNew2FGStrategy()
+{
+	std::map<misc::string, fx::Price> quotes;
+	if(!m_session->GetOffer(quotes))
+	{
+		misc::cout << "\nCannot retrieve market offer.";
+		ConfirmOption('y', 'y'); // stop after message
+	}
+
+	if(quotes.find("EUR/USD") == quotes.end())
+	{
+		misc::cout << "\nInstrument 'EUR/USD' invalid.";
+		ConfirmOption('y', 'y'); // stop after message
+		return;
+	}
+
+
+	// market entry level
+	fx::Price price = quotes["EUR/USD"];	
+	fx::Currency currency("EUR/USD", price, 5, 0.08, 10000);
+	fx::Position ep;
+	bool isBuy = false;
+	double amount = 0;
+	// strategy
+	bool wait = false;
+	double dbg = 0;
+	double dg = 0;
+	double pa = 0;
+	double de = 0;
+	double maxn = 0;
+	double maxp = 0;
+	fx::MarketPlugin::Ptr plugin = m_session->GetMarketPlugin();
+
+	misc::string val;
+
+	misc::cout << "\nCreate a new 2(Double) Fix Grid strategy";
+	misc::cout << "\nInstrument       = " << currency.GetSymbol().c_str();
+	misc::cout << "\nBuy/Sell ? I choose !"; isBuy = true;
+	misc::cout << "\nAmount (k)       = "; GetOption(val); misc::to_value(val, amount);
+	misc::cout << "\nPrice            = " << 
+		" B: " << misc::from_value(price.GetBuy(), 5) <<
+		" S: " << misc::from_value(price.GetSell(), 5);
+
+	misc::cout << "\nWant to enter at different price y/N = ";
+	if(ConfirmOption('y', 'Y'))
+	{
+		wait = true;
+		misc::cout << "\nOpen price = "; GetOption(val);
+		double open = 0;
+		misc::to_value(val, open);
+		double pdiff = fabs(open - price.GetBuy()) * currency.GetRate2Pip();
+		if(pdiff > 100)
+		{
+			misc::cout << "\nPrice rejected as too far from current level.";
+			GetOption(val); // stop after message
+			return;
+		}
+		price = fx::Price(open, open);
+		currency = fx::Currency("EUR/USD", price, 5, 0.08, 10000);
+	}
+
+	double commission = 0;
+	double interest = 0;
+
+	ep = fx::Position("", "", currency, isBuy, amount, commission, interest);
+
+	misc::cout << "\ndist between grids(dbg)= "; GetOption(val); misc::to_value(val, dbg);
+	misc::cout << "\ndist of one grid   (dg)= "; GetOption(val); misc::to_value(val, dg);
+	misc::cout << "\nposition amount    (pa)= "; GetOption(val); misc::to_value(val, pa);
+	misc::cout << "\ndist to exit       (de)= "; GetOption(val); misc::to_value(val, de);
+	misc::cout << "\nmax negative       (mn)= "; GetOption(val); misc::to_value(val, maxn);
+	misc::cout << "\nmax positive       (mp)= "; GetOption(val); misc::to_value(val, maxp);
+
+
+	fx::Strategy2FixGrid::Ptr hfg = 
+		new fx::Strategy2FixGrid(ep, wait, dbg, dg, pa, de, maxn, maxp, plugin);
+
+	m_new_strategies.push_back(hfg);
+}
+
 void MonitorApp::ShowNewStrategies()
 {
 	StrategyOutputVisitor visitor(misc::cout);
@@ -702,6 +786,11 @@ void StrategyOutputVisitor::Visit(fx::Strategy2HedgeFixGrid& tv)
 }
 
 void StrategyOutputVisitor::Visit(fx::StrategyFixGrid& tv)
+{
+	m_out << tv.ToString().c_str();
+}
+
+void StrategyOutputVisitor::Visit(fx::Strategy2FixGrid& tv)
 {
 	m_out << tv.ToString().c_str();
 }

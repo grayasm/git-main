@@ -22,65 +22,12 @@
 
 
 #include "StrategyBase.hpp"
-#include "Transaction.hpp"
-#include "MarketDummyPlugin.hpp"
-
+#include "FixGridPositionStub.hpp"
 
 namespace fx
 {
 	class Serializer;
 	class Deserializer;
-	class StrategyHedgeFixGrid;
-	class Strategy2HedgeFixGrid;
-	class StrategyFixGrid;
-
-	//##########################################################################
-	/*	This class takes care of one position in the grid.
-	 *	It opens or closes the corresponding position as needed.	
-	 */
-	class FixGridPositionStub
-	{
-	public:
-		typedef misc::autoptr<FixGridPositionStub> Ptr;
-		friend class Serializer;
-		friend class Deserializer;
-		friend class StrategyHedgeFixGrid;
-		friend class Strategy2HedgeFixGrid;
-		friend class StrategyFixGrid;
-
-	public:
-		FixGridPositionStub();
-		~FixGridPositionStub();
-		FixGridPositionStub(const FixGridPositionStub& tc);
-		FixGridPositionStub& operator=(const FixGridPositionStub& tc);
-
-		FixGridPositionStub(
-			const fx::Position& gp,			// fix grid's hedge position to be monitored
-			double de,						// distance to exit
-			MarketPlugin::Ptr plugin,		// market execution plugin
-			fx::Transaction* ct				// parent transaction
-			);
-
-		bool Update(const Price& rate);
-		bool IsActive() const;
-
-
-	private:
-		void Reset();
-		void Validate();
-		bool CanOpenOrder();
-		bool OpenOrder();
-		bool CanCloseOrder();
-		bool CloseOrder();
-
-	private:
-		fx::Position		m_gp;				// grid position - position where to hedge
-		double				m_de;				// distance to exit
-		MarketPlugin::Ptr	m_plugin;			// market execution plugin
-		fx::Transaction*	m_ct;				// parent transaction with all opened and closed positions at any time
-		fx::Transaction		m_gt;				// all positions opened for this grid position (liquidity)
-		fx::Price			m_rate;
-	};
 
 	//##########################################################################
 	/*

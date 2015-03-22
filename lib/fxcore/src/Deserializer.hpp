@@ -31,6 +31,7 @@
 #include "StrategyHedgeFixGrid.hpp"
 #include "Strategy2HedgeFixGrid.hpp"
 #include "StrategyFixGrid.hpp"
+#include "Strategy2FixGrid.hpp"
 
 
 namespace fx
@@ -62,6 +63,7 @@ namespace fx
 		void Deserialize(fx::FixGridPositionStub& ps);
 		void Deserialize(fx::Strategy2HedgeFixGrid& h2fgs);
 		void Deserialize(fx::StrategyFixGrid& fgs);
+		void Deserialize(fx::Strategy2FixGrid& _2fgs);
 				
 		misc::string				m_file;
 		misc::ifstream*				m_out;
