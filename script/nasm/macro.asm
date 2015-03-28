@@ -10,6 +10,8 @@
 		; - inside macro body %1 is the 1st parameter, %2 the second, etc
 		; - "calling" a macro from inside a macro is allowed
 		; - a macro without parameters must have explicit 0: %macro Exit 0
+		;
+		; - a local label to a macro is prefixed by %% (e.g.   %%exit:  )
 
 section .bss
 section .data
