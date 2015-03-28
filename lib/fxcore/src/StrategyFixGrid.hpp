@@ -46,17 +46,20 @@ namespace fx
 	 *	and the strategy stops when all closed and open positions have in total
 	 *	this PL number.
 	 *	
-	 *	        [profit]
 	 *
 	 *
-	 *	           |
-	 *	          ...
-	 *	  [grid buy positions]
-	 *	          ...
-	 *	           |
-	 *	        o-buy-o   [entry]
-	 *	           |
-	 *	        x-sell-x  [exit]
+	 *               O  [profit]
+	 *               |
+	 *               |
+	 *               |
+	 *               |
+	 *               |
+	 *               |
+	 *               |
+	 *               x
+	 *               x   [grid]
+	 *               x
+	 *
 	 */
 	class StrategyFixGrid : public StrategyBase
 	{
@@ -79,7 +82,7 @@ namespace fx
 			double maxp,				// maxim positive - total profit for total grid amount
 			MarketPlugin::Ptr plugin	// market execution plugin
 			);
-
+	
 		~StrategyFixGrid();
 
 		// --- virtual table ---
@@ -115,7 +118,7 @@ namespace fx
 		double				m_maxn;		// maxim negative - total draw down for total grid amount
 		double				m_maxp;		// maxim positive - total profit for total grid amount
 		MarketPlugin::Ptr	m_plugin;	// market execution plugin
-
+	
 		fx::Transaction		m_ct;		// current transaction
 		fx::Price			m_rate;		// latest updated price
 		fx::Price			m_prev_rate;// previous price value
