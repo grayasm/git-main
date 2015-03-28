@@ -3,6 +3,9 @@
 		; redifine a single-line macro without parameters but converts the
 		; entire righ-hand side, after macro expansion to a quoted string
 		; before definition
+		;
+		; %defstr test TEST          is equivalent to
+		; %define test 'TEST'
 section .bss
 section .data
 		%defstr TEXT  Macro replaces 'TEXT' with this text
