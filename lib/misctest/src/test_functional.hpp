@@ -150,6 +150,8 @@ public:
 	template<typename Container>
 	void binary_function(const char* msg);
 	template<typename Container>
+	void binary_function2(const char* msg);
+	template<typename Container>
 	void plus(const char* msg);
 	template<typename Container>
 	void plus2(const char* msg);
@@ -176,7 +178,11 @@ public:
 	template<typename Container>
 	void equal_to(const char* msg);
 	template<typename Container>
+	void equal_to2(const char* msg);
+	template<typename Container>
 	void not_equal_to(const char* msg);
+	template<typename Container>
+	void not_equal_to2(const char* msg);
 	template<typename Container>
 	void greater(const char* msg);
 	template<typename Container>

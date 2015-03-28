@@ -2051,7 +2051,7 @@ void test_generic_string::swap(const char* msg)
 	}
 
 	{
-		misc::generic_string<char> s1;
+		misc::generic_string<char> s1("");
 		misc::generic_string<char> s2("");
 		s1.swap(s2);
 		misc::generic_string<char> s3;

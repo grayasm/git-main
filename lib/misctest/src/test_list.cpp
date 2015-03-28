@@ -2691,7 +2691,6 @@ template<typename Container>
 void test_list::ctor(const char* msg)
 {
     typedef typename Container::value_type Cval;
-	typedef typename Container::iterator It;
 
     Container* list;
     //  TEST
@@ -2840,7 +2839,6 @@ template<typename Container>
 void test_list::assign(const char* msg)
 {
     typedef typename Container::value_type Cval;
-	typedef typename Container::iterator It;
 
     Container list_0, list_2;
     for(size_t i=0; i < m_container_size; ++i)
@@ -2860,7 +2858,6 @@ template<typename Container>
 void test_list::push_front(const char* msg)
 {
     typedef typename Container::value_type Cval;
-	typedef typename Container::iterator It;
 
     Container list_0;
     //  TEST
@@ -2876,7 +2873,6 @@ template<typename Container>
 void test_list::pop_front(const char* msg)
 {
     typedef typename Container::value_type Cval;
-	typedef typename Container::iterator It;
 
     Container list_0(m_container_size, Cval(0));
 
@@ -2908,7 +2904,6 @@ template<typename Container>
 void test_list::pop_back(const char* msg)
 {
     typedef typename Container::value_type Cval;
-	typedef typename Container::iterator It;
 
     Container list_0(m_container_size, Cval(0));
     //  TEST
@@ -2924,7 +2919,6 @@ template<typename Container>
 void test_list::insert(const char* msg)
 {
     typedef typename Container::value_type Cval;
-	typedef typename Container::iterator It;
 
     Container list_0;
     //  TEST
@@ -2943,7 +2937,6 @@ template<typename Container>
 void test_list::erase(const char* msg)
 {
     typedef typename Container::value_type Cval;
-	typedef typename Container::iterator It;
 
     Container list_0(m_container_size/4, Cval(-1));
     //  TEST

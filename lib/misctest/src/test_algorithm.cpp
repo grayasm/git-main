@@ -518,7 +518,6 @@ void test_algorithm::partition()
 void test_algorithm::stable_partition()
 {
 	misc::cout << "\n\n\tstable_partition---------------------------------------";	
-	stable_partition<std::vector<int> >("");
 	stable_partition<std::vector<int> >																		("\n\tstd::vector       ");
 	stable_partition<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
 	stable_partition2<misc::vector<int> >																	("\n\tmisc::vector      ");

@@ -74,9 +74,9 @@ void test_functional::binary_function()
 {
 	misc::cout << "\n\n\tbinary_function----------------------------------------";
 	binary_function<std::vector<int> > ("\n\tstd::vector       ");
-	binary_function<misc::vector<int> >("\n\tmisc::vector      ");
+	binary_function2<misc::vector<int> >("\n\tmisc::vector      ");
 	binary_function<std::list<int> >   ("\n\tstd::list         ");
-	binary_function<misc::list<int> >  ("\n\tmisc::list        ");
+	binary_function2<misc::list<int> >  ("\n\tmisc::list        ");
 }
 
 void test_functional::plus()
@@ -137,18 +137,18 @@ void test_functional::equal_to()
 {
 	misc::cout << "\n\n\tequal_to-----------------------------------------------";
 	equal_to<std::vector<int> > ("\n\tstd::vector       ");
-	equal_to<misc::vector<int> >("\n\tmisc::vector      ");
+	equal_to2<misc::vector<int> >("\n\tmisc::vector      ");
 	equal_to<std::list<int> >   ("\n\tstd::list         ");
-	equal_to<misc::list<int> >  ("\n\tmisc::list        ");
+	equal_to2<misc::list<int> >  ("\n\tmisc::list        ");
 }
 
 void test_functional::not_equal_to()
 {
 	misc::cout << "\n\n\tnot_equal_to-------------------------------------------";
 	not_equal_to<std::vector<int> > ("\n\tstd::vector       ");
-	not_equal_to<misc::vector<int> >("\n\tmisc::vector      ");
+	not_equal_to2<misc::vector<int> >("\n\tmisc::vector      ");
 	not_equal_to<std::list<int> >   ("\n\tstd::list         ");
-	not_equal_to<misc::list<int> >  ("\n\tmisc::list        ");
+	not_equal_to2<misc::list<int> >  ("\n\tmisc::list        ");
 }
 
 void test_functional::greater()
@@ -571,14 +571,43 @@ void test_functional::binary_function(const char* msg)
 	//  TEST
 	{
 		time_printer tp(msg, m_print_time);
-		//  MISC
-		bool r1 = misc::equal<typename Container::iterator, typename Container::iterator, Compare_0<int> > (v1.begin(), v1.end(), v2.begin(), Compare_0<Cval>());
-		bool r2 = misc::equal<typename Container::iterator, typename Container::iterator, Compare_2<int> > (v1.begin(), v1.end(), v2.begin(), Compare_2<Cval>());
+		//  STD
+		bool r1 = std::equal<typename Container::iterator, typename Container::iterator, Compare_0<int> > (v1.begin(), v1.end(), v2.begin(), Compare_0<Cval>());
+		bool r2 = std::equal<typename Container::iterator, typename Container::iterator, Compare_2<int> > (v1.begin(), v1.end(), v2.begin(), Compare_2<Cval>());
 		CPPUNIT_ASSERT(r1 == true && r2 == true);
 
 		//  STD
 		bool sr1 = std::equal(v1.begin(), v1.end(), v2.begin(), Compare_2<Cval>());
 		bool sr2 = std::equal(v1.begin(), v1.end(), v2.begin(), Compare_0<Cval>());
+		CPPUNIT_ASSERT(sr1 == true && sr2 == true);
+	}
+}
+
+template<typename Container>
+void test_functional::binary_function2(const char* msg)
+{
+	typedef typename Container::value_type Cval;
+	typedef typename Container::iterator It;
+
+	It it;
+	size_t i0;
+
+	Container v1(m_container_size);
+	for( it = v1.begin(), i0 = 0; it != v1.end(); ++it, ++i0) *it = Cval(i0);
+	Container v2(v1);
+
+
+	//  TEST
+	{
+		time_printer tp(msg, m_print_time);
+		//  MISC
+		bool r1 = misc::equal<typename Container::iterator, typename Container::iterator, Compare_0<int> > (v1.begin(), v1.end(), v2.begin(), Compare_0<Cval>());
+		bool r2 = misc::equal<typename Container::iterator, typename Container::iterator, Compare_2<int> > (v1.begin(), v1.end(), v2.begin(), Compare_2<Cval>());
+		CPPUNIT_ASSERT(r1 == true && r2 == true);
+
+		//  MISC
+		bool sr1 = misc::equal(v1.begin(), v1.end(), v2.begin(), Compare_2<Cval>());
+		bool sr2 = misc::equal(v1.begin(), v1.end(), v2.begin(), Compare_0<Cval>());
 		CPPUNIT_ASSERT(sr1 == true && sr2 == true);
 	}
 }
@@ -1031,14 +1060,44 @@ void test_functional::equal_to(const char* msg)
 	{
 		time_printer tp(msg, m_print_time);
 
+		//  STD
+		bool r1 = std::equal(v1.begin(), v1.end(), v2.begin(), misc::equal_to<Cval>());
+		bool r2 = std::equal(v1.begin(), v1.end(), v2.begin(), std::equal_to<Cval>());
+		CPPUNIT_ASSERT(r1 == true && r2 == true);
+
+		//  STD
+		bool sr1 = std::equal(v1.begin(), v1.end(), v2.begin(), std::equal_to<Cval>());
+		bool sr2 = std::equal(v1.begin(), v1.end(), v2.begin(), misc::equal_to<Cval>());
+		CPPUNIT_ASSERT(sr1 == true && sr2 == true);
+	}
+}
+
+template<typename Container>
+void test_functional::equal_to2(const char* msg)
+{
+	typedef typename Container::value_type Cval;
+	typedef typename Container::iterator It;
+
+	It it;
+	size_t i0;
+
+	Container v1(m_container_size);
+	for( it = v1.begin(), i0 = 0; it != v1.end(); ++it, ++i0) *it = Cval(i0);
+	Container v2(v1);
+
+
+	//  TEST
+	{
+		time_printer tp(msg, m_print_time);
+
 		//  MISC
 		bool r1 = misc::equal(v1.begin(), v1.end(), v2.begin(), misc::equal_to<Cval>());
 		bool r2 = misc::equal(v1.begin(), v1.end(), v2.begin(), std::equal_to<Cval>());
 		CPPUNIT_ASSERT(r1 == true && r2 == true);
 
 		//  STD
-		bool sr1 = std::equal(v1.begin(), v1.end(), v2.begin(), std::equal_to<Cval>());
-		bool sr2 = std::equal(v1.begin(), v1.end(), v2.begin(), misc::equal_to<Cval>());
+		bool sr1 = misc::equal(v1.begin(), v1.end(), v2.begin(), std::equal_to<Cval>());
+		bool sr2 = misc::equal(v1.begin(), v1.end(), v2.begin(), misc::equal_to<Cval>());
 		CPPUNIT_ASSERT(sr1 == true && sr2 == true);
 	}
 }
@@ -1061,14 +1120,44 @@ void test_functional::not_equal_to(const char* msg)
 	//  TEST
 	{
 		time_printer tp(msg, m_print_time);
-		//  MISC
-		bool r1 = misc::equal(v1.begin(), v1.end(), v2.begin(), misc::not_equal_to<Cval>());
-		bool r2 = misc::equal(v1.begin(), v1.end(), v2.begin(), std::not_equal_to<Cval>());
+		//  STD
+		bool r1 = std::equal(v1.begin(), v1.end(), v2.begin(), misc::not_equal_to<Cval>());
+		bool r2 = std::equal(v1.begin(), v1.end(), v2.begin(), std::not_equal_to<Cval>());
 		CPPUNIT_ASSERT(r1 == true && r2 == true);
 
 		//  STD
 		bool sr1 = std::equal(v1.begin(), v1.end(), v2.begin(), std::not_equal_to<Cval>());
 		bool sr2 = std::equal(v1.begin(), v1.end(), v2.begin(), misc::not_equal_to<Cval>());
+		CPPUNIT_ASSERT(sr1 == true && sr2 == true);
+	}
+}
+
+template<typename Container>
+void test_functional::not_equal_to2(const char* msg)
+{
+	typedef typename Container::value_type Cval;
+	typedef typename Container::iterator It;
+
+	It it;
+	size_t i0;
+
+	Container v1(m_container_size), v2(m_container_size);
+	for( it = v1.begin(), i0 = 0; it != v1.end(); ++it, i0 += 2) *it = Cval(i0);
+	for( it = v2.begin(), i0 = 1; it != v2.end(); ++it, i0 += 2) *it = Cval(i0);
+
+
+
+	//  TEST
+	{
+		time_printer tp(msg, m_print_time);
+		//  MISC
+		bool r1 = misc::equal(v1.begin(), v1.end(), v2.begin(), misc::not_equal_to<Cval>());
+		bool r2 = misc::equal(v1.begin(), v1.end(), v2.begin(), std::not_equal_to<Cval>());
+		CPPUNIT_ASSERT(r1 == true && r2 == true);
+
+		//  MISC
+		bool sr1 = misc::equal(v1.begin(), v1.end(), v2.begin(), std::not_equal_to<Cval>());
+		bool sr2 = misc::equal(v1.begin(), v1.end(), v2.begin(), misc::not_equal_to<Cval>());
 		CPPUNIT_ASSERT(sr1 == true && sr2 == true);
 	}
 }
@@ -2453,8 +2542,6 @@ void test_functional::ptr_fun_2(const char* msg)
 template<typename Container>
 void test_functional::mem_fun(const char* msg)
 {
-	// Container::value_type -> MemFunS1* class
-	typedef typename Container::value_type	Cval;	//MemFunS1*
 	typedef typename Container::iterator It;
 
 	It it;
@@ -2492,8 +2579,6 @@ void test_functional::mem_fun(const char* msg)
 template<typename Container>
 void test_functional::mem_fun_2(const char* msg)
 {
-	// Container::value_type -> MemFunS1* class
-	typedef typename Container::value_type	Cval;	//MemFunS1*
 	typedef typename Container::iterator It;
 
 	It it;
