@@ -1,0 +1,168 @@
+# Nouveau Bluecurve
+
+style "bluecurve-default"
+{
+  GtkMenuItem::selected_shadow_type = out
+  GtkWidget::interior_focus = 1
+  GtkButton::default_border = { 0, 0, 0, 0 }
+  GtkButton::default_outside_border = { 0, 0, 0, 0 }
+  GtkRange::trough_border = 0
+
+  GtkWidget::focus_padding = 1
+
+  GtkPaned::handle_size = 6
+
+  GtkRange::slider_width = 15
+  GtkRange::stepper_size = 15
+  GtkScrollbar::min_slider_length = 30
+  GtkCheckButton::indicator_size = 12
+  GtkMenuBar::internal-padding = 0
+
+  #GtkOptionMenu::indicator_size = { 11, 6 }
+  #GtkOptionMenu::indicator_spacing = { 4, 5, 2, 2 }
+
+  GtkTreeView::expander_size = 14
+  GtkExpander::expander_size = 16
+
+  xthickness = 1
+  ythickness = 1
+
+  bg[NORMAL]        = "#e0d5d3"    #bg of all buttons/menus except selected
+  bg[PRELIGHT]      = "#e0d9d7"    #bg of current button/menu selected
+  bg[ACTIVE]        = "#ccc6c6"    #bg of pressed button/menu item
+  bg[SELECTED]      = "#962f18"    #bg of active   window title bar
+  bg[INSENSITIVE]   = "#eeeeee"    #bg of inactive window title bar
+
+  base[NORMAL]      = "#ffffff"    #bg of all list items except selected (also on mouse over)
+  base[PRELIGHT]    = "#eeeeee"    #bg of check/radio buttons on mouse over
+  base[ACTIVE]      = "#9c5c4e"    #bg of inactive list selected item
+  base[SELECTED]    = "#b8452c"    #bg of active   list selected item
+  base[INSENSITIVE] = "#f0f0f0"    #bg of disabled edit box
+
+  text[NORMAL]      = "#00000f"    #fg of all explorer items exept the selected
+  text[PRELIGHT]    = "#b8452c"    #fg of check/radio buttons on mouse over 
+  text[ACTIVE]      = "#00004f"    #fg of inactive list selected item
+  text[SELECTED]    = "#00000f"    #fg of active list selected item
+  text[INSENSITIVE] = "#00000f"    #fg of disabled edit box (chrome empty bookmark)
+
+  fg[NORMAL]        = "#00000f"    #fg of all buttons/menus except selected
+  fg[PRELIGHT]      = "#00000f"    #fg of current button/menu selected
+  fg[ACTIVE]        = "#00000f"    #fg of pressed button/menu item
+  fg[SELECTED]      = "#00000f"    #fg of current button/menu selected (firefox)
+  fg[INSENSITIVE]   = "#6d6a69"    #fg of disabled edit box (inactive window title)
+
+  engine "bluecurve" 
+  {
+    contrast = 1.0
+  }
+}
+
+style "clearlooks-wide" = "clearlooks-default"
+{
+  xthickness = 2
+  ythickness = 2
+}
+
+style "clearlooks-button" = "clearlooks-default"
+{
+  xthickness = 2
+  ythickness = 2
+}
+
+style "clearlooks-check" = "clearlooks-button"
+{
+}
+
+style "clearlooks-notebook" = "clearlooks-wide"
+{
+}
+
+style "clearlooks-tasklist" = "clearlooks-default"
+{
+  xthickness = 5
+  ythickness = 3
+}
+
+style "clearlooks-menu" = "clearlooks-default"
+{
+  xthickness = 2
+  ythickness = 2
+}
+
+style "clearlooks-menu-item" = "clearlooks-default"
+{
+  xthickness = 2
+  ythickness = 3
+}
+
+style "clearlooks-menu-itembar" = "clearlooks-default"
+{
+  xthickness = 3
+  ythickness = 3
+}
+
+style "clearlooks-tree" = "clearlooks-default"
+{
+  xthickness = 2
+  ythickness = 2
+}
+
+style "clearlooks-frame-title" = "clearlooks-default"
+{
+  fg[NORMAL] = "#404040"
+}
+
+style "clearlooks-tooltips" = "clearlooks-default"
+{
+  xthickness = 4
+  ythickness = 4
+}
+
+style "clearlooks-progressbar" = "clearlooks-default"
+{
+  xthickness = 1
+  ythickness = 1
+}
+
+style "clearlooks-combo" = "clearlooks-default"
+{
+  xthickness = 2
+  ythickness = 3
+}
+
+# widget styles
+class "GtkWidget" style "bluecurve-default"
+class "GtkButton" style "clearlooks-button"
+class "GtkCombo"  style "clearlooks-button"
+class "GtkRange"  style "clearlooks-wide"
+class "GtkFrame"  style "clearlooks-wide"
+class "GtkMenu"   style "clearlooks-menu"
+class "GtkEntry"  style "clearlooks-button"
+class "GtkMenuItem"    style "clearlooks-menu-item"
+class "GtkStatusbar"   style "clearlooks-wide"
+class "GtkNotebook"    style "clearlooks-notebook"
+class "GtkProgressBar" style "clearlooks-progressbar"
+class "GtkCheckButton" style "clearlooks-check"
+class "GtkRadioButton" style "clearlooks-check"
+
+widget_class "*MenuItem.*" style "clearlooks-menu-item"
+
+# combobox stuff
+widget_class "*.GtkComboBox.GtkButton" style "clearlooks-combo"
+widget_class "*.GtkCombo.GtkButton"    style "clearlooks-combo"
+
+# tooltips stuff
+widget_class "*.tooltips.*.GtkToggleButton" style "clearlooks-tasklist"
+widget "gtk-tooltips" style "clearlooks-tooltips"
+
+# treeview stuff
+widget_class "*.GtkTreeView.GtkButton" style "clearlooks-tree"
+widget_class "*.GtkCTree.GtkButton" style "clearlooks-tree"
+widget_class "*.GtkList.GtkButton" style "clearlooks-tree"
+widget_class "*.GtkCList.GtkButton" style "clearlooks-tree"
+widget_class "*.GtkFrame.GtkLabel" style "clearlooks-frame-title"
+
+# notebook stuff
+widget_class "*.GtkNotebook.*.GtkEventBox" style "clearlooks-notebook"
+widget_class "*.GtkNotebook.*.GtkViewport" style "clearlooks-notebook"
+
