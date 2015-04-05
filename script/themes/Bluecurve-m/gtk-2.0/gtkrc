@@ -43,7 +43,7 @@ style "bluecurve-default"
   text[PRELIGHT]    = "#0000ff"    #fg of check/radio buttons on mouse over 
   text[ACTIVE]      = "#00004f"    #fg of inactive list selected item
   text[SELECTED]    = "#00000f"    #fg of active list selected item
-  text[INSENSITIVE] = "#ff0000"    # ??
+  text[INSENSITIVE] = "#00000f"    #fg of disabled edit box (chrome empty bookmark)
 
   fg[NORMAL]        = "#000000"    #fg of all buttons/menus except selected
   fg[PRELIGHT]      = "#000000"    #fg of current button/menu selected
