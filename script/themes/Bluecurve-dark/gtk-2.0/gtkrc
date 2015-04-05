@@ -27,29 +27,29 @@ style "bluecurve-default"
   xthickness = 1
   ythickness = 1
 
-  bg[NORMAL]        = "#e0d5d3"    #bg of all buttons/menus except selected
-  bg[PRELIGHT]      = "#e0d9d7"    #bg of current button/menu selected
-  bg[ACTIVE]        = "#ccc6c6"    #bg of pressed button/menu item
-  bg[SELECTED]      = "#962f18"    #bg of active   window title bar
-  bg[INSENSITIVE]   = "#eeeeee"    #bg of inactive window title bar
+  bg[NORMAL]        = "#5f5f61"    #bg of all buttons/menus except selected
+  bg[PRELIGHT]      = "#6b6c6e"    #bg of current button/menu selected
+  bg[ACTIVE]        = "#808080"    #bg of pressed button/menu item
+  bg[SELECTED]      = "#004ac9"    #bg of active   window title bar
+  bg[INSENSITIVE]   = "#dbdbdb"    #bg of inactive window title bar
 
-  base[NORMAL]      = "#ffffff"    #bg of all list items except selected (also on mouse over)
-  base[PRELIGHT]    = "#eeeeee"    #bg of check/radio buttons on mouse over
-  base[ACTIVE]      = "#9c5c4e"    #bg of inactive list selected item
-  base[SELECTED]    = "#b8452c"    #bg of active   list selected item
-  base[INSENSITIVE] = "#f0f0f0"    #bg of disabled edit box
+  base[NORMAL]      = "#69696b"    #bg of all list items except selected (also on mouse over)
+  base[PRELIGHT]    = "#6d6d6e"    #bg of check/radio buttons on mouse over
+  base[ACTIVE]      = "#0084d6"    #bg of inactive list selected item
+  base[SELECTED]    = "#0053ab"    #bg of active   list selected item
+  base[INSENSITIVE] = "#8a8a8a"    #bg of disabled edit box
 
-  text[NORMAL]      = "#00000f"    #fg of all explorer items exept the selected
-  text[PRELIGHT]    = "#b8452c"    #fg of check/radio buttons on mouse over 
-  text[ACTIVE]      = "#00004f"    #fg of inactive list selected item
-  text[SELECTED]    = "#00000f"    #fg of active list selected item
-  text[INSENSITIVE] = "#00000f"    #fg of disabled edit box (chrome empty bookmark)
+  text[NORMAL]      = "#ffffff"    #fg of all explorer items exept the selected
+  text[PRELIGHT]    = "#ffffff"    #fg of check/radio buttons on mouse over 
+  text[ACTIVE]      = "#ffffff"    #fg of inactive list selected item
+  text[SELECTED]    = "#ffffff"    #fg of active list selected item
+  text[INSENSITIVE] = "#ffffff"    #fg of disabled edit box (chrome empty bookmark)
 
-  fg[NORMAL]        = "#00000f"    #fg of all buttons/menus except selected
-  fg[PRELIGHT]      = "#00000f"    #fg of current button/menu selected
-  fg[ACTIVE]        = "#00000f"    #fg of pressed button/menu item
-  fg[SELECTED]      = "#00000f"    #fg of current button/menu selected (firefox)
-  fg[INSENSITIVE]   = "#6d6a69"    #fg of disabled edit box (inactive window title)
+  fg[NORMAL]        = "#ffffff"    #fg of all buttons/menus except selected
+  fg[PRELIGHT]      = "#ffffff"    #fg of current button/menu selected
+  fg[ACTIVE]        = "#ffffff"    #fg of pressed button/menu item
+  fg[SELECTED]      = "#ffffff"    #fg of current button/menu selected (firefox)
+  fg[INSENSITIVE]   = "#363636"    #fg of disabled edit box (inactive window title)
 
   engine "bluecurve" 
   {
@@ -109,7 +109,7 @@ style "clearlooks-tree" = "clearlooks-default"
 
 style "clearlooks-frame-title" = "clearlooks-default"
 {
-  fg[NORMAL] = "#404040"
+  # fg[NORMAL] = "#404040"
 }
 
 style "clearlooks-tooltips" = "clearlooks-default"
