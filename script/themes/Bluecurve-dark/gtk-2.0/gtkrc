@@ -35,7 +35,7 @@ style "bluecurve-default"
 
   base[NORMAL]      = "#69696b"    #bg of all list items except selected (also on mouse over)
   base[PRELIGHT]    = "#6d6d6e"    #bg of check/radio buttons on mouse over
-  base[ACTIVE]      = "#0084d6"    #bg of inactive list selected item
+  base[ACTIVE]      = "#8a773a"    #bg of inactive list selected item
   base[SELECTED]    = "#0053ab"    #bg of active   list selected item
   base[INSENSITIVE] = "#8a8a8a"    #bg of disabled edit box
 
