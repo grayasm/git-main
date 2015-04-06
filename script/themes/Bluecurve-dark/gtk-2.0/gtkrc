@@ -30,8 +30,8 @@ style "bluecurve-default"
   bg[NORMAL]        = "#5f5f61"    #bg of all buttons/menus except selected
   bg[PRELIGHT]      = "#6b6c6e"    #bg of current button/menu selected
   bg[ACTIVE]        = "#808080"    #bg of pressed button/menu item
-  bg[SELECTED]      = "#004ac9"    #bg of active   window title bar
-  bg[INSENSITIVE]   = "#dbdbdb"    #bg of inactive window title bar
+  bg[SELECTED]      = "#2e55d1"    #bg of active   window title bar
+  bg[INSENSITIVE]   = "#5e4d16"    #bg of inactive window title bar
 
   base[NORMAL]      = "#69696b"    #bg of all list items except selected (also on mouse over)
   base[PRELIGHT]    = "#6d6d6e"    #bg of check/radio buttons on mouse over
@@ -49,7 +49,7 @@ style "bluecurve-default"
   fg[PRELIGHT]      = "#ffffff"    #fg of current button/menu selected
   fg[ACTIVE]        = "#ffffff"    #fg of pressed button/menu item
   fg[SELECTED]      = "#ffffff"    #fg of current button/menu selected (firefox)
-  fg[INSENSITIVE]   = "#363636"    #fg of disabled edit box (inactive window title)
+  fg[INSENSITIVE]   = "#ffffff"    #fg of disabled edit box (inactive window title)
 
   engine "bluecurve" 
   {
