@@ -15,11 +15,11 @@
 # http://cloford.com/resources/colours/namedcol.htm
 # set virtualbox mouse/key capture to explicit.
 
-# cp ~/.fvwm/.fvwm2rc ~/Code/svn-trunk/script/fvwm/fvwm2rc
-# cp ~/.fvwm/icons    ~/Code/svn-trunk/script/fvwm/
-# cp ~/.fvwm/wallpapers ~/Code/svn-trunk/script/fvwm/
-# svn status ~/Code/svn-trunk/
-# svn commit ~/Code/svn-trunk/
+# cp ~/.fvwm/.fvwm2rc ~/Code/git-main/script/fvwm/fvwm2rc
+# cp ~/.fvwm/icons    ~/Code/git-main/script/fvwm/
+# cp ~/.fvwm/wallpapers ~/Code/git-main/script/fvwm/
+# git status ~/Code/git-main/
+# git commit ~/Code/git-main/
 
 
 ################################################################################
@@ -156,6 +156,7 @@ AddToMenu                       FvwmProgrammingMenu "Programming"  Title
 + "%$[fvwm_icons]/24x24-accessories-text-editor.png%kwrite"        FvwmKwrite
 + "%$[fvwm_icons]/24x24-netbeans.png%netbeans"                     FvwmNetbeans
 + "%$[fvwm_icons]/24x24-ddd.png%ddd"                               FvwmDdd
++ "%$[fvwm_icons]/24x24-smartgit.png%smartgit"                     FvwmSmartgit
 
 
 DestroyMenu                     FvwmOfficeMenu
@@ -297,6 +298,10 @@ AddToFunc                       FvwmThunderbird
 DestroyFunc                     FvwmEmacs
 AddToFunc                       FvwmEmacs
 + I Exec                        exec emacs
+
+DestroyFunc                     FvwmSmartgit
+AddToFunc                       FvwmSmartgit
++ I Exec                        exec /opt/smartgit/bin/smartgit.sh
 
 DestroyFunc                     FvwmKcalc
 AddToFunc                       FvwmKcalc
