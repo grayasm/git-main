@@ -1,8 +1,8 @@
 # .bash_aliases
-# cp $HOME/.bash_aliases $HOME/Code/svn-trunk/script/bash/bash_aliases
-# svn status $HOME/Code/svn-trunk
-# svn diff   $HOME/Code/svn-trunk
-# svn commit $HOME/Code/svn-trunk
+# cp $HOME/.bash_aliases $HOME/Code/git-main/script/bash/bash_aliases
+# git status $HOME/Code/git-main
+# git diff   $HOME/Code/git-main
+# git commit $HOME/Code/git-main
 
 
 if [ -f $HOME/.bash_nosave ]; then

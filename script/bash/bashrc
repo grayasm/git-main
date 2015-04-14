@@ -1,6 +1,6 @@
 # .bashrc
-# cp $HOME/.bashrc  $HOME/Code/svn-trunk/script/bash/bashrc
-# svn status $HOME/Code/svn-trunk
+# cp $HOME/.bashrc  $HOME/Code/git-main/script/bash/bashrc
+# git status $HOME/Code/git-main
 
 
 # Source global definitions

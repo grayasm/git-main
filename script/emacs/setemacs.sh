@@ -1,9 +1,9 @@
 #!/bin/bash
 
-# cp $PWD/setemacs.sh $HOME/Code/svn-trunk/script/emacs/setemacs.sh
-# svn status $HOME/Code/svn-trunk
-# svn diff   $HOME/Code/svn-trunk
-# svn commit $HOME/Code/svn-trunk
+# cp $PWD/setemacs.sh $HOME/Code/git-main/script/emacs/setemacs.sh
+# svn status $HOME/Code/git-main
+# svn diff   $HOME/Code/git-main
+# svn commit $HOME/Code/git-main
 
 
 # lusty explorer
@@ -33,4 +33,4 @@ rm /tmp/color-theme-6.6.0.tar.gz
 
 
 # copy .emacs
-cp $HOME/Code/svn-trunk/script/emacs/emacs  $HOME/.emacs
+cp $HOME/Code/git-main/script/emacs/emacs  $HOME/.emacs
