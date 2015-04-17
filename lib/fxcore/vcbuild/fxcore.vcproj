@@ -169,6 +169,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\src\ExponentialMovingAverage.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\ExponentialMovingAverage.hpp"
+				>
+			</File>
+			<File
 				RelativePath="..\src\FixGridPositionStub.cpp"
 				>
 			</File>
@@ -225,6 +233,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\src\SimpleMovingAverage.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\SimpleMovingAverage.hpp"
+				>
+			</File>
+			<File
 				RelativePath="..\src\Strategy2FixGrid.cpp"
 				>
 			</File>
@@ -258,6 +274,14 @@
 			</File>
 			<File
 				RelativePath="..\src\StrategyHedgeFixGrid.hpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\StrategyJNemRenko.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\StrategyJNemRenko.hpp"
 				>
 			</File>
 			<File

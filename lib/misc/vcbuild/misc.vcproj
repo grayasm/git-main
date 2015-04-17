@@ -388,6 +388,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\src\time.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\time.hpp"
+				>
+			</File>
+			<File
 				RelativePath="..\src\tree.hpp"
 				>
 			</File>
