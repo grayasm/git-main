@@ -59,6 +59,8 @@
         <in>test_strtok.hpp</in>
         <in>test_thread.cpp</in>
         <in>test_thread.hpp</in>
+        <in>test_time.cpp</in>
+        <in>test_time.hpp</in>
         <in>test_tree.cpp</in>
         <in>test_tree.hpp</in>
         <in>test_utility.cpp</in>

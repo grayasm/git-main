@@ -64,6 +64,8 @@
         <in>sync_debug.hpp</in>
         <in>thread.cpp</in>
         <in>thread.hpp</in>
+        <in>time.cpp</in>
+        <in>time.hpp</in>
         <in>tree.hpp</in>
         <in>unistd.cpp</in>
         <in>unistd.hpp</in>
