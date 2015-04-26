@@ -40,51 +40,44 @@ namespace misc
 	class thread
 	{
 	public:
-		//! ctor
+		//! thread is not running.
 		thread();
 		
-		//!	dtor
+		//!	detaches only if joinable and frees the resources.
 		virtual ~thread();
 
-		/*!	run
-			Thread starting function.
-		*/
+		//! thread start method
 		virtual int run() = 0;
 
-		/*!	resume
-			Decrements a thread's suspend count. When the suspend count 
-			is decremented to zero, the execution of the thread is resumed.
-			\return value of the thread's previous suspend count. 
-			If the function fails, the return value is -1. 
-		*/
+		//! starts the thread and returns 0 if successful or 1 otherwise.
 		int resume();
 		
-		/*!	join
-			Waits until the thread is in the signaled state or the time-out 
-			interval elapses.
-		*/
+		//! joins a finished thread and returns 0 or 1 if timeout.
 		unsigned long join(unsigned long timeout = INFINITE);
 
-		/*!	get_exit_code
-		*/
+		//! copies thread returned value to retval and returns 0 or 1 otherwise.
 		int get_exit_code(unsigned long* retval);
-
-
-	protected:
-#ifdef _WIN32		
-		HANDLE			m_handle;
-		unsigned int	m_threadID;
-#endif
-		
 
 	private:
 		//! non-copyable
 		thread(const thread&);
 		thread& operator=(const thread&);
 
+		//! Thread start function
 #ifdef _WIN32
-		//!	 start up function
 		static unsigned int __stdcall ThreadFunc(void* lpParameter);
+#else
+		static void* start_routine(void* p);
+#endif
+
+	protected:
+#ifdef _WIN32		
+		HANDLE			m_handle;
+		unsigned int	m_threadID;
+#else
+		pthread_t		m_thread;
+		bool			m_terminated; //TODO: protect it with a critical_section
+		int				m_retval;
 #endif
 	};
 

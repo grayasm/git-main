@@ -16,8 +16,6 @@
         <in>bistream.hpp</in>
         <in>bostream.cpp</in>
         <in>bostream.hpp</in>
-        <in>calendar.cpp</in>
-        <in>calendar.hpp</in>
         <in>cpu_timer.cpp</in>
         <in>cpu_timer.hpp</in>
         <in>critical_section.cpp</in>

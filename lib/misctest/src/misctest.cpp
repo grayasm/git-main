@@ -49,6 +49,7 @@
 #include "test_tree.hpp"
 #include "test_utility.hpp"
 #include "test_vector.hpp"
+#include "test_time.hpp"
 
 
 int main(int argc, char** argv)
@@ -122,7 +123,8 @@ int main(int argc, char** argv)
       multi_lock
       single_lock
       thread
-    */
+      time 
+   */
 
 #if 1
     CPPUNIT_TEST_SUITE_REGISTRATION(test_filename);
@@ -133,9 +135,10 @@ int main(int argc, char** argv)
     CPPUNIT_TEST_SUITE_REGISTRATION(test_multi_lock);
     CPPUNIT_TEST_SUITE_REGISTRATION(test_single_lock);
     CPPUNIT_TEST_SUITE_REGISTRATION(test_thread);
+	CPPUNIT_TEST_SUITE_REGISTRATION(test_time);
 #endif
-
-
+	
+	
 
     //////////////////////////////////////////////////////////////////////////
     CppUnit::TestFactoryRegistry& registry = CppUnit::TestFactoryRegistry::getRegistry();

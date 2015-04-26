@@ -35,6 +35,11 @@ class test_thread : public CppUnit::TestFixture
 {
 	CPPUNIT_TEST_SUITE(test_thread);
 	CPPUNIT_TEST(ctor);
+	CPPUNIT_TEST(dtor);
+	CPPUNIT_TEST(run);
+	CPPUNIT_TEST(resume);
+	CPPUNIT_TEST(join);
+	CPPUNIT_TEST(get_exit_code);
 	CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -43,6 +48,11 @@ public:
 
 	//begin test suite
 	void ctor();
+	void dtor();
+	void run();
+	void resume();
+	void join();
+	void get_exit_code();
 };
 
 

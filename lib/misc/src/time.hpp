@@ -36,6 +36,10 @@ namespace misc
 	 *	is a calendar date and time broken down into its components.
 	 *	tm values are in UTC/GMT system.
 	 *
+	 *	Dates previous to UTC: 01-JAN-1900 cannot be represented by this class.
+	 *	Date after UTC: 19-JAN-2038 03:14:08 cannot be represented by time_t type
+	 *	signed 32 bit integer. The entire lib must be compiled as 64bit.
+	 *  http://en.wikipedia.org/wiki/Year_2038_problem
 	 */
 	class time
 	{
@@ -45,12 +49,18 @@ namespace misc
 		{
 			JAN=0,FEB,MAR,APR,MAY,JUN,JUL,AUG,SEP,OCT,NOV,DEC
 		};
+		
+		/* Day of the week. */
+		enum WDay
+		{
+			SUN=0,MON,TUE,WED,THU,FRI,SAT
+		};
 
 		time();				/* UTC: 1970-JAN-1 00:00:00 */
 		time(time_t t);
 		
 		/*	UTC time format.
-		 *	year	Year. 1970 or greater
+		 *	year	Year. 1900 or greater
 		 *  mon		Month. [JAN-DEC]
 		 *  day		Day.   [1-31]
 		 *  hour	Hours. [0-23]
@@ -74,9 +84,15 @@ namespace misc
 		bool operator<=(const time& t) const;
 		bool operator>=(const time& t) const;
 		
-		time& operator+=(int sec);
+		void operator+=(int sec);
+		void operator-=(int sec);
 		
 		misc::string tostring() const;
+		misc::string tolocaltime() const;
+		
+		enum WDay wday() const;		// day of week
+		int yday() const;			// day of the year
+		
 		
 		static const int daySEC = 86400;
 		static const int hourSEC=  3600;
@@ -84,7 +100,7 @@ namespace misc
 		
 	private:
 		/*	UTC time format.
-		 *	year	Year. 1970 or greater
+		 *	year	Year. 1900 or greater
 		 *  mon		Month. [0-11]
 		 *  day		Day.   [1-31]
 		 *  hour	Hours. [0-23]
@@ -96,6 +112,13 @@ namespace misc
 		void init(time_t t);
 		void init(struct tm t);
 		void reduce(double sec, int& days, int& hours, int& minutes, int& seconds) const;
+		int	yisleap(int year);
+		/*	day		[1-31]
+		 *  mon		[JAN-DEC]
+		 *	year	[1900 - ...]
+		 *	return	[0-365]
+		 */
+		int get_yday(int day, enum Month mon, int year);
 		
 	private:
 		time_t		m_t;

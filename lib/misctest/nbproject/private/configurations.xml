@@ -17,8 +17,8 @@
         <in>test_bistream.hpp</in>
         <in>test_bostream.cpp</in>
         <in>test_bostream.hpp</in>
-        <in>test_calendar.cpp</in>
-        <in>test_calendar.hpp</in>
+        <in>test_cpu_timer.cpp</in>
+        <in>test_cpu_timer.hpp</in>
         <in>test_critical_section.cpp</in>
         <in>test_critical_section.hpp</in>
         <in>test_deque.cpp</in>

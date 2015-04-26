@@ -7,6 +7,8 @@
         <in>exception.cpp</in>
         <in>filename.cpp</in>
         <in>strconv.cpp</in>
+        <in>thread.cpp</in>
+        <in>time.cpp</in>
         <in>unistd.cpp</in>
       </df>
     </df>
@@ -29,6 +31,9 @@
         <dependencyChecking>false</dependencyChecking>
         <rebuildPropChanged>false</rebuildPropChanged>
       </toolsSet>
+      <flagsDictionary>
+        <element flagsID="0" commonFlags="-std=c++98 -m64"/>
+      </flagsDictionary>
       <codeAssistance>
       </codeAssistance>
       <makefileType>
@@ -46,14 +51,32 @@
         </makeTool>
       </makefileType>
       <item path="src/cpu_timer.cpp" ex="false" tool="1" flavor2="4">
+        <ccTool flags="0">
+        </ccTool>
       </item>
       <item path="src/exception.cpp" ex="false" tool="1" flavor2="4">
+        <ccTool flags="0">
+        </ccTool>
       </item>
       <item path="src/filename.cpp" ex="false" tool="1" flavor2="4">
+        <ccTool flags="0">
+        </ccTool>
       </item>
       <item path="src/strconv.cpp" ex="false" tool="1" flavor2="4">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="src/thread.cpp" ex="false" tool="1" flavor2="4">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="src/time.cpp" ex="false" tool="1" flavor2="4">
+        <ccTool flags="0">
+        </ccTool>
       </item>
       <item path="src/unistd.cpp" ex="false" tool="1" flavor2="4">
+        <ccTool flags="0">
+        </ccTool>
       </item>
     </conf>
   </confs>

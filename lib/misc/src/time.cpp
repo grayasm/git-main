@@ -47,7 +47,7 @@ namespace misc
 	
 	time::time(int year, enum Month mon, int day, int hour, int min, int sec)
 	{
-		if( year < 1970 || mon < JAN || mon > DEC ||
+		if( year < 1900 || mon < JAN || mon > DEC ||
 			day < 1 || hour < 0 || min < 0 || sec < 0 )
 			throw misc::exception("time is invalid");
 
@@ -62,7 +62,7 @@ namespace misc
 		init( initm );
 	}
 	
-	/*	year	Year. 1970 or greater
+	/*	year	Year. 1900 or greater
 	 *  mon		Month. [0-11]
 	 *  day		Day.   [1-31]
 	 *  hour	Hours. [0-23]
@@ -71,7 +71,7 @@ namespace misc
 	 */
 	time::time(int year, int mon, int day, int hour, int min, int sec)
 	{
-		if(year < 1970 || mon < 0 || day < 1 || hour < 0 || min < 0 || sec < 0)
+		if(year < 1900 || mon < 0 || day < 1 || hour < 0 || min < 0 || sec < 0)
 			throw misc::exception("time is invalid");
 
 		struct tm initm;
@@ -160,11 +160,16 @@ namespace misc
 		return sec >= 0;
 	}
 	
-	time& time::operator+=(int sec)
+	void time::operator+=(int sec)
 	{
-		m_tm.tm_sec += sec;
-		init( m_tm );
-		return *this;
+		time_t newt = m_t + sec;
+		init( newt );
+	}
+	
+	void time::operator-=(int sec)
+	{
+		time_t newt = m_t - sec;
+		init( newt );
 	}
 
 	misc::string time::tostring() const
@@ -185,6 +190,38 @@ namespace misc
 		stime += misc::from_value( m_tm.tm_sec );
 		return stime;
 	}
+	
+	misc::string time::tolocaltime() const
+	{
+		char  smon[12][4]={ "JAN","FEB","MAR","APR","MAY","JUN",
+							"JUL","AUG","SEP","OCT","NOV","DEC"};
+		
+		struct tm loctm = *localtime(&m_t);
+		
+		misc::string stime;
+		stime += misc::from_value( loctm.tm_year + 1900 );
+		stime += U("-");
+		stime += smon[loctm.tm_mon];
+		stime += U("-");
+		stime += misc::from_value( loctm.tm_mday );
+		stime += U(" ");
+		stime += misc::from_value( loctm.tm_hour );
+		stime += U(":");
+		stime += misc::from_value( loctm.tm_min );
+		stime += U(":");
+		stime += misc::from_value( loctm.tm_sec );
+		return stime;		
+	}
+	
+	enum time::WDay time::wday() const
+	{
+		return (WDay) (SUN + m_tm.tm_wday); // SUN + [0-6]
+	}
+	
+	int time::yday() const
+	{
+		return m_tm.tm_yday;
+	}
 
 	void time::init(time_t t)
 	{
@@ -195,16 +232,19 @@ namespace misc
 	
 	void time::init(struct tm t)
 	{
-		struct tm tmcpy = t;
-		time_t loct = mktime(&tmcpy);	// modify copy of tmval
-		struct tm tmcalc = *localtime(&loct); // calculate tm_yday
+		// For UTC: 1-JAN-1900 00:00:00
+		// we need a 8 bytes signed integer.		
+		long tm_year = t.tm_year;
+		long tm_yday = 0;
+		{
+			int tm_mday = t.tm_mday;
+			int tm_mon = t.tm_mon;			
+			tm_yday = get_yday(tm_mday, (enum Month)tm_mon, tm_year + 1900);
+		}
 		
-		/* calculate unix time time_t for t */
-		int tm_year = t.tm_year;
-		int tm_yday = tmcalc.tm_yday;
-		int tm_hour = t.tm_hour;
-		int tm_min = t.tm_min;
-		int tm_sec = t.tm_sec;	
+		long tm_hour = t.tm_hour;
+		long tm_min = t.tm_min;
+		long tm_sec = t.tm_sec;	
 	
 		/* Seconds since the Epoch.
 		 * http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap04.html#tag_04_15
@@ -214,7 +254,7 @@ namespace misc
 			(tm_year-70)*31536000 + ((tm_year-69)/4)*86400 -
 			((tm_year-1)/100)*86400 + ((tm_year+299)/400)*86400;
 
-		/* same time in UTC format */
+		/* time in UTC format */
 		m_tm = *gmtime(&m_t);	
 	}
 	
@@ -225,5 +265,31 @@ namespace misc
 		minutes = (int)((sec - days * 86400 - hours * 3600) / 60.);
 		seconds = (int)(sec - days * 86400 - hours * 3600 - minutes * 60);
 	}
+
+	int time::yisleap(int year)
+	{
+		return (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0);
+	}
+
+	int time::get_yday(int day, enum Month mon, int year)
+	{
+		if(day < 1 || mon < JAN || mon > DEC || year < 1900)
+			throw misc::exception("time is invalid");
+		
+		int leap = yisleap(year);
+		int month = (mon - JAN);
+		
+		int dcheck[12] = {31,28 + leap,31,30,31,30,31,31,30,31,30,31};
+		if(day > dcheck[month])
+			throw misc::exception("time is invalid");
+		
+		static const int days[2][12] = {
+			{0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334},
+			{0, 31, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335}
+		};
+		
+		return days[leap][month] + day - 1; // [0-365]
+	}
+
 
 } // namespace
