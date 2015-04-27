@@ -196,14 +196,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\src\calendar.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\src\calendar.hpp"
-				>
-			</File>
-			<File
 				RelativePath="..\src\cpu_timer.cpp"
 				>
 			</File>

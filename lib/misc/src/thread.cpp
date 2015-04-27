@@ -123,14 +123,15 @@ namespace misc
 #endif		
 	}
 	
-	unsigned long thread::join(unsigned long timeout)
+	int thread::join(double seconds)
 	{		
 #ifdef _WIN32
-		DWORD dwRet = ::WaitForSingleObject(m_handle, timeout);
-		if (dwRet == WAIT_OBJECT_0 || dwRet == WAIT_ABANDONED)
+		DWORD milliseconds = (DWORD)( 1000 * seconds );
+		DWORD dwRet = ::WaitForSingleObject(m_handle, milliseconds);
+		if (dwRet == WAIT_OBJECT_0)
 			return 0;
 		else
-			return 1;	// WAIT_TIMEOUT
+			return 1;	// WAIT_TIMEOUT, WAIT_FAILED, WAIT_ABANDONED
 #else
 		void* retval;
 		if(timeout == (unsigned long)INFINITE || m_terminated)
@@ -145,7 +146,7 @@ namespace misc
 			struct timespec req, rem;
 			req.tv_sec = 0;
 			req.tv_nsec = 1e9/5; // 0.2 sec
-			double dtimeout = timeout;
+			double dtimeout = seconds;
 			while(dtimeout > 0 && !m_terminated)
 			{
 				nanosleep(&req, &rem);
@@ -166,11 +167,11 @@ namespace misc
 
 	int thread::get_exit_code(unsigned long* retval)
 	{
-#ifdef _WIN32		
-		if( ::GetExitCodeThread(m_handle, retval) != 0)
-			return 0;
-		else
+#ifdef _WIN32
+		if(WaitForSingleObject(m_handle, 0) != WAIT_OBJECT_0)// WAIT_TIMEOUT
 			return 1;
+		::GetExitCodeThread(m_handle, retval);
+		return 0;
 #else
 		if(!m_terminated)
 			return 1;

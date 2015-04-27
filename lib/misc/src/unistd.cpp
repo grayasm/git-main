@@ -22,9 +22,20 @@
 #include "unistd.hpp"
 //c
 #include <stdlib.h>     // system
+#include <windows.h>
 //c++
 //misc
 
+#ifdef _WIN32
+unsigned int sleep(unsigned int seconds)
+{
+	/*	Returns zero if the requested time has elapsed, or the number of seconds
+		left to sleep, if the call was interrupted by a signal handler.
+	*/
+	Sleep(seconds * 1000);
+	return 0; // remainder not supported on Win32
+}
+#endif
 
 
 

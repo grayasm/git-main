@@ -62,6 +62,8 @@
 #define fcvt _fcvt
 #define gcvt _gcvt
 
+// sleep for the specified number of seconds
+unsigned int sleep(unsigned int seconds);
 
 
 #define ssize_t int
@@ -84,6 +86,7 @@ typedef unsigned __int64  uint64_t;
 
 //clears the console screen
 void clrscr();
+
 
 
 #endif // __unistd_hpp__

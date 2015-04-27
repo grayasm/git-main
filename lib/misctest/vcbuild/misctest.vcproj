@@ -219,14 +219,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\src\test_calendar.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\src\test_calendar.hpp"
-				>
-			</File>
-			<File
 				RelativePath="..\src\test_critical_section.cpp"
 				>
 			</File>
@@ -384,6 +376,14 @@
 			</File>
 			<File
 				RelativePath="..\src\test_thread.hpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\test_time.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\test_time.hpp"
 				>
 			</File>
 			<File
