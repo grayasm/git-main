@@ -134,7 +134,7 @@ namespace misc
 			return 1;	// WAIT_TIMEOUT, WAIT_FAILED, WAIT_ABANDONED
 #else
 		void* retval;
-		if(timeout == (unsigned long)INFINITE || m_terminated)
+		if(seconds == INFINITE || m_terminated)
 		{
 			int error = pthread_join(m_thread, &retval);
 			if(error)

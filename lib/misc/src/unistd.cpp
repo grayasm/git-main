@@ -22,7 +22,11 @@
 #include "unistd.hpp"
 //c
 #include <stdlib.h>     // system
+
+#ifdef _WIN32
 #include <windows.h>
+#endif
+
 //c++
 //misc
 
