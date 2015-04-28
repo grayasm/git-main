@@ -29,6 +29,9 @@
 #include <windows.h>
 #else
 #include <pthread.h>
+#ifndef INFINITE		// see thread.hpp
+#define INFINITE -1
+#endif
 #endif
 
 
@@ -76,6 +79,7 @@ namespace misc
 	protected:
 #ifdef _WIN32
 		HANDLE			m_handle;
+#else
 #endif
 		misc::string	m_name;
 

@@ -68,7 +68,7 @@ namespace misc
 			Waits until the mutex is in the signaled state or the time-out 
 			interval elapses.
 		*/
-		int trylock(unsigned long milliseconds = 0);		
+		int trylock(unsigned long milliseconds = INFINITE);		
 
 		/*!	unlock
 			Releases ownership of the mutex.
@@ -79,7 +79,12 @@ namespace misc
 	private:
 		//non-copyable
 		mutex(const mutex& tc);
-		mutex& operator=(const mutex& tc);		
+		mutex& operator=(const mutex& tc);	
+		
+#ifdef _WIN32
+#else
+		pthread_mutex_t mutex;
+#endif
 	};
 }  // namespace
 

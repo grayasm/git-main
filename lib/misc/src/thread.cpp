@@ -19,10 +19,9 @@
 
 
 
-
-
 #include "thread.hpp"
 #include "exception.hpp"
+#include "algorithm.hpp"
 
 #include <string>
 #include <time.h>
@@ -33,7 +32,7 @@
 #include <pthread.h>
 #endif
 
-#include <stdio.h>
+
 
 namespace misc
 {
@@ -123,10 +122,9 @@ namespace misc
 #endif		
 	}
 	
-	int thread::join(double seconds)
+	int thread::join(unsigned long milliseconds)
 	{		
 #ifdef _WIN32
-		DWORD milliseconds = (DWORD)( 1000 * seconds );
 		DWORD dwRet = ::WaitForSingleObject(m_handle, milliseconds);
 		if (dwRet == WAIT_OBJECT_0)
 			return 0;
@@ -134,7 +132,7 @@ namespace misc
 			return 1;	// WAIT_TIMEOUT, WAIT_FAILED, WAIT_ABANDONED
 #else
 		void* retval;
-		if(seconds == INFINITE || m_terminated)
+		if(milliseconds == (unsigned long)INFINITE || m_terminated)
 		{
 			int error = pthread_join(m_thread, &retval);
 			if(error)
@@ -143,14 +141,17 @@ namespace misc
 		}
 		else
 		{
+			unsigned long nanosec = milliseconds * 1e6;
+			unsigned long nslice = 1e9/5;//0.2
+			
 			struct timespec req, rem;
 			req.tv_sec = 0;
-			req.tv_nsec = 1e9/5; // 0.2 sec
-			double dtimeout = seconds;
+			req.tv_nsec = misc::min<unsigned long>(nslice, nanosec);
+			double dtimeout = nanosec;
 			while(dtimeout > 0 && !m_terminated)
 			{
 				nanosleep(&req, &rem);
-				dtimeout -= (req.tv_nsec / 1e9);
+				dtimeout -= req.tv_nsec;
 			}
 			if(!m_terminated)
 			{

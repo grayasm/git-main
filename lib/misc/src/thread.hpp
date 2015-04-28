@@ -53,7 +53,7 @@ namespace misc
 		int resume();
 		
 		//! joins a finished thread and returns 0 or 1 if timeout.
-		int join(double seconds = INFINITE);
+		int join(unsigned long milliseconds = INFINITE);
 
 		//! copies thread returned value to retval and returns 0 or 1 otherwise.
 		int get_exit_code(unsigned long* retval);

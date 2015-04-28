@@ -263,7 +263,7 @@ void test_thread::join()
 		// sleep 10 sec and join TIMEOUT
 		tthread t10(10);
 		CPPUNIT_ASSERT( t10.resume() == 0 );
-		CPPUNIT_ASSERT( t10.join(8) != 0 ); // TIMEOUT
+		CPPUNIT_ASSERT( t10.join(8 * 1e3) != 0 ); // TIMEOUT
 		CPPUNIT_ASSERT( t10.geta() == 10 );
 		CPPUNIT_ASSERT( t10.getrun() == true );
 	}
@@ -272,7 +272,7 @@ void test_thread::join()
 		// sleep 10 sec and join @12 sec ok
 		tthread t10(10);
 		CPPUNIT_ASSERT( t10.resume() == 0 );
-		CPPUNIT_ASSERT( t10.join(12) == 0 ); // OK
+		CPPUNIT_ASSERT( t10.join(12 * 1e3) == 0 ); // OK
 		CPPUNIT_ASSERT( t10.geta() == 10 );
 		CPPUNIT_ASSERT( t10.getrun() == true );
 	}
@@ -315,7 +315,7 @@ void test_thread::join()
 		// check finished threads
 		for(int i=0; i < THMAX; ++i)
 		{
-			CPPUNIT_ASSERT( t[i]->join(THMAX+2) == 0 );
+			CPPUNIT_ASSERT( t[i]->join( (THMAX+2) * 1e3 ) == 0 );
 			misc::cout << "\n\t\t th: " << i << " joined";
 		}
 		
@@ -334,7 +334,7 @@ void test_thread::get_exit_code()
 		tthread t10(10);
 		unsigned long retval = 0;
 		CPPUNIT_ASSERT( t10.resume() == 0 );
-		CPPUNIT_ASSERT( t10.join(5) != 0 ); // TIMEOUT
+		CPPUNIT_ASSERT( t10.join(5 * 1e3) != 0 ); // TIMEOUT
 		CPPUNIT_ASSERT( t10.get_exit_code(&retval) != 0 ); // STILL RUNNING
 		CPPUNIT_ASSERT( t10.geta() == 10 );
 		CPPUNIT_ASSERT( t10.getrun() == true );
@@ -345,7 +345,7 @@ void test_thread::get_exit_code()
 		tthread t10(10);
 		unsigned long retval = 0;
 		CPPUNIT_ASSERT( t10.resume() == 0 );
-		CPPUNIT_ASSERT( t10.join(12) == 0 ); // OK
+		CPPUNIT_ASSERT( t10.join(12 * 1e3) == 0 ); // OK
 		CPPUNIT_ASSERT( t10.get_exit_code(&retval) == 0 ); // OK
 		CPPUNIT_ASSERT( retval == 10 ); // OK
 		CPPUNIT_ASSERT( t10.geta() == 10 );
@@ -396,7 +396,7 @@ void test_thread::get_exit_code()
 		for(int i=0; i < THMAX; ++i)
 		{
 			unsigned long retval = 0;
-			CPPUNIT_ASSERT( t[i]->join(THMAX+2) == 0 );
+			CPPUNIT_ASSERT( t[i]->join((THMAX+2)*1e3) == 0 );
 			CPPUNIT_ASSERT( t[i]->get_exit_code(&retval) == 0 );
 			CPPUNIT_ASSERT( retval == (unsigned long) i );
 			misc::cout << "\n\t\t th: " << i << " exit code: " << retval;
