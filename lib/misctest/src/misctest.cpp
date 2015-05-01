@@ -54,6 +54,9 @@
 
 int main(int argc, char** argv)
 {
+	// disable stdout buffer
+	setvbuf(stdout, NULL, _IONBF, 0);
+	
     //http://cppunit.sourceforge.net/doc/lastest/cppunit_cookbook.html
 
     //////////////////////////////////////////////////////////////////////////
@@ -137,7 +140,7 @@ int main(int argc, char** argv)
     CPPUNIT_TEST_SUITE_REGISTRATION(test_thread);
 	CPPUNIT_TEST_SUITE_REGISTRATION(test_time);
 #endif
-	CPPUNIT_TEST_SUITE_REGISTRATION(test_thread);
+	CPPUNIT_TEST_SUITE_REGISTRATION(test_mutex);
 	
 	
 

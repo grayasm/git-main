@@ -5,10 +5,10 @@ all: misc
 CC=g++
 AR=ar
 SRC = cpu_timer.cpp exception.cpp filename.cpp strconv.cpp unistd.cpp time.cpp	\
-	thread.cpp
+	thread.cpp sync_base.cpp mutex.cpp 
 	
 OBJ = cpu_timer.o exception.o filename.o strconv.o unistd.o time.o \
-	thread.o
+	thread.o sync_base.o mutex.o
 	
 CXXFLAGS= -g -O0 -Wall -Wno-long-long -std=c++98 -pedantic -DDEBUG -D_GLIBCXX_DEBUG -m64
 # -pedantic-errors

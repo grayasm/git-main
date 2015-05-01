@@ -35,6 +35,10 @@ class test_mutex : public CppUnit::TestFixture
 {
 	CPPUNIT_TEST_SUITE(test_mutex);
 	CPPUNIT_TEST(ctor);
+	CPPUNIT_TEST(dtor);
+	CPPUNIT_TEST(lock);
+	CPPUNIT_TEST(trylock);
+	CPPUNIT_TEST(unlock);
 	CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -43,6 +47,10 @@ public:
 
 	//begin test suite
 	void ctor();
+	void dtor();
+	void lock();
+	void trylock();
+	void unlock();
 };
 
 #endif // __test_mutex_hpp__

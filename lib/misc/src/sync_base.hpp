@@ -22,9 +22,6 @@
 #define __sync_base_hpp__
 
 
-
-#include "string.hpp"
-
 #ifdef _WIN32
 #include <windows.h>
 #else
@@ -42,29 +39,12 @@ namespace misc
 	class sync_base
 	{		
 	public:
-		//!	sync_base
-		sync_base(const char_t* name);
+		sync_base();
 
-		//!	virtual destructor
 		virtual ~sync_base();
-	
-		/*!	lock
-			The function will return only when the object is signaled.
-			\return If the state of the object is signaled the
-			return value is nonzero.
-		*/
+
 		virtual int lock() = 0;
-
-		/*!	trylock
-			Waits until the object is in the signaled state or the time-out 
-			interval elapses.
-		*/
 		virtual int trylock(unsigned long milliseconds) = 0;
-
-		/*!	unlock
-			Releases ownership of the object.
-			\return If the function succeeds, the return value is nonzero.
-		*/
 		virtual int unlock() = 0;
 
 	private:
@@ -72,8 +52,8 @@ namespace misc
 		sync_base(const sync_base&);
 		sync_base& operator=(const sync_base&);
 		
-		friend class single_lock;
-		friend class multi_lock;
+		// friend class single_lock;
+		// friend class multi_lock;
 
 
 	protected:
@@ -81,12 +61,10 @@ namespace misc
 		HANDLE			m_handle;
 #else
 #endif
-		misc::string	m_name;
 
 	private:
 	};
 } // namespace
-
 
 
 

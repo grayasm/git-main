@@ -24,6 +24,11 @@
 
 #include "sync_base.hpp"
 
+#ifdef _WIN32
+#else
+#include <pthread.h>
+#endif
+
 
 namespace misc
 {
@@ -51,29 +56,19 @@ namespace misc
 	class mutex : public sync_base
 	{
 	public:
-		/*!	ctor			
-		*/
-		mutex(bool initiallyOwned = false, const char_t* name="");
-		//! dtor
+		//! Creates an unlocked mutex.
+		mutex();
+		
+		//! Destructor
 		~mutex();
 
-		/*!	lock
-			The function will return only when the mutex is signaled.
-			\return If the state of the mutex is signaled the
-			return value is nonzero.
-		*/
+		//! Locks the mutex and returns 0 or otherwise 1.
 		int lock();
 
-		/*!	trylock
-			Waits until the mutex is in the signaled state or the time-out 
-			interval elapses.
-		*/
-		int trylock(unsigned long milliseconds = INFINITE);		
+		//! Locks the mutex and returns 0 or 1 if timeout.
+		int trylock(unsigned long milliseconds = INFINITE);
 
-		/*!	unlock
-			Releases ownership of the mutex.
-			\return If the function succeeds, the return value is nonzero.
-		*/
+		//! Unlocks the mutex and returns 0 or 1 otherwise.
 		int unlock();
 
 	private:
@@ -83,7 +78,7 @@ namespace misc
 		
 #ifdef _WIN32
 #else
-		pthread_mutex_t mutex;
+		pthread_mutex_t m_mtx;
 #endif
 	};
 }  // namespace

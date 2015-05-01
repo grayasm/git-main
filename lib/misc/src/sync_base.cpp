@@ -25,10 +25,9 @@
 
 namespace misc
 {    
-	sync_base::sync_base(const char_t* name)
+	sync_base::sync_base()
 #ifdef _WIN32
 		: m_handle(NULL)
-		, m_name(name)
 #endif
 	{
 	}

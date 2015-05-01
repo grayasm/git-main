@@ -20,16 +20,22 @@
 
 
 #include "mutex.hpp"
+#include <errno.h>
+#include "exception.hpp"
+#include "algorithm.hpp"
 
+
+
+#include <stdio.h> // for printf
 
 namespace misc
 {
-	mutex::mutex(bool initiallyOwned, const char_t* name)
-		: sync_base(name)
+	mutex::mutex()
+		: sync_base()
 	{
 #ifdef _WIN32
-		// Creates or opens a named or unnamed mutex object.
-		m_handle = ::CreateMutex(NULL, initiallyOwned, name);
+		// For the moment sharing the mutex across processes is not done/tested.
+		m_handle = ::CreateMutex(NULL, false, "");
 		if(m_handle == NULL)
 			throw misc::exception("Cannot create the mutex!");					
 #else
@@ -47,24 +53,17 @@ namespace misc
 		 *	mutex will return with an error.
 		 */
 		pthread_mutexattr_settype(&attr, PTHREAD_MUTEX_RECURSIVE);
-		/*	PTHREAD_PROCESS_SHARED:
-		 *	Permits a mutex to be operated upon by any thread that has access to
-		 *	the memory where the mutex is allocated, even if the mutex is
-		 *	allocated in memory that is shared by multiple processes.
+		/*	PTHREAD_PROCESS_PRIVATE:
+		 *	The mutex will only be operated upon by threads created within 
+		 *	the same process as the thread that initialised the mutex.
 		 */
-		pthread_mutexattr_setpshared(&attr, PTHREAD_PROCESS_SHARED);
+		pthread_mutexattr_setpshared(&attr, PTHREAD_PROCESS_PRIVATE);
 		
-		int error = pthread_mutex_init(&mutex, &attr); // initialized and unlocked
+		int error = pthread_mutex_init(&m_mtx, &attr); // initialized and unlocked
 		if(error)
 			throw misc::exception("pthread_mutex_init error");
-		pthread_mutexattr_destroy(&attr);
 		
-		if(initiallyOwned)
-		{
-			error = pthread_mutex_lock(&mutex);
-			if(error)
-				throw misc::exception("pthread_mutex_lock error");
-		}			
+		pthread_mutexattr_destroy(&attr);
 #endif
 	}
 
@@ -86,6 +85,13 @@ namespace misc
 			m_handle = NULL;
 		}
 #else
+		/*	It is safe to destroy an initialised mutex that is unlocked. 
+		 *	Attempting to destroy a locked mutex results in undefined behaviour.
+		 */
+		pthread_mutex_unlock(&m_mtx);
+		int error = pthread_mutex_destroy(&m_mtx);
+		if(error)
+			throw misc::exception("pthread_mutex_destroy error");
 #endif		
 	}
 
@@ -98,7 +104,7 @@ namespace misc
 		else
 			return 1;	// WAIT_TIMEOUT, WAIT_FAILED, WAIT_ABANDONED
 #else
-		error = pthread_mutex_lock(&mutex);
+		int error = pthread_mutex_lock(&m_mtx);
 		if(error)
 			throw misc::exception("pthread_mutex_lock error");
 		return 0;
@@ -118,47 +124,56 @@ namespace misc
 		 *	(by any thread, including the current thread), the call returns 
 		 *	immediately.
 		 */
-		int error = pthread_mutex_trylock(&mutex);
-		if(EBUSY)
-			return 1;
-		
-		if(error)
-			throw misc::exception("pthread_mutex_trylock error");
-		////////////////////////////////////////////////////////////////////////
-		throw error; // work in progress
-		void* retval;
 		if(milliseconds == (unsigned long)INFINITE)
 		{
-			int error = pthread_join(m_thread, &retval);
+			int error = pthread_mutex_lock(&m_mtx);
 			if(error)
-				throw misc::exception("pthread_join error");
+			{
+				throw misc::exception("pthread_mutex_lock error");
+			}
+			//printf("\n\t\ttrylock(INFINITE) ret 0");
 			return 0;
 		}
 		else
 		{
+			int error = pthread_mutex_trylock(&m_mtx);
+			if(error == 0)	// succeeded
+			{
+				//printf("\n\t\ttrylock(%lu) ret 0", milliseconds);
+				return 0;	// LOCKED
+			}
+			
 			unsigned long nanosec = milliseconds * 1e6;
-			unsigned long nslice = 1e9/5;//0.2
+			unsigned long nslice = 1e9/5;//0.2 sec
 			
 			struct timespec req, rem;
 			req.tv_sec = 0;
 			req.tv_nsec = misc::min<unsigned long>(nslice, nanosec);
+			
 			double dtimeout = nanosec;
-			while(dtimeout > 0 && !m_terminated)
+			while(dtimeout > 0 && error == EBUSY)
 			{
+				//printf("\n\t\ttrylock(%lu) ret EBUSY", milliseconds);
 				nanosleep(&req, &rem);
 				dtimeout -= req.tv_nsec;
+				error = pthread_mutex_trylock(&m_mtx);
 			}
-			if(!m_terminated)
+			
+			if(error == 0)
 			{
+				//printf("\n\t\ttrylock(%lu) ret 0", milliseconds);
+				return 0; // LOCKED
+			}
+			
+			if(error == EBUSY)
+			{
+				//printf("\n\t\ttrylock(%lu) ret EBUSY", milliseconds);
 				return 1; // WAIT_TIMEOUT
 			}
 			
-			int error = pthread_join(m_thread, &retval);
-			if(error)
-				throw misc::exception("pthread_join error");
-			return 0;
+			//printf("\n\t\ttrylock(%lu) throw!!", milliseconds);
+			throw misc::exception("pthread_mutex_trylock error");
 		}		
-		////////////////////////////////////////////////////////////////////////
 #endif	
 	}
 
@@ -167,9 +182,13 @@ namespace misc
 #ifdef _WIN32		
 		return ::ReleaseMutex(m_handle);
 #else
+		int error = pthread_mutex_unlock(&m_mtx);
+		if(error)
+			throw misc::exception("pthread_mutex_unlock error");
+		return 0;
 #endif		
 	}
 
-}; // namespace
+} // namespace
 
 
