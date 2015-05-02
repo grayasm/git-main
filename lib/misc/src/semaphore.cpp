@@ -19,71 +19,146 @@
 
 
 #include "semaphore.hpp"
+#include "exception.hpp"
 
+#ifdef _WIN32
+#else
+#include <time.h>
+#include <errno.h>
+#endif
 
 namespace misc
 {	
-	semaphore::semaphore(long available, long maxallowed, const char_t* name)
-		: sync_base(name)
+	semaphore::semaphore(unsigned int maxlocks)
+		: sync_base()
 	{
-		m_handle = ::CreateSemaphore(NULL, available, maxallowed, name);
-
+		if(maxlocks == 0)
+			throw misc::exception("semaphore maxlocks must be > 0");
+		
+#ifdef _WIN32
+		m_handle = CreateSemaphore(NULL, maxlocks, maxlocks, "");
 		if(m_handle == NULL)
-			throw misc::exception("Cannot create semaphore!");
+			throw misc::exception("CreateSemaphore error");
+#else
+		int pshared = 0; // not shared with other processes atm
+		int error = sem_init(&m_sem, pshared, maxlocks);
+		if(error)
+			throw misc::exception("sem_init error");
+#endif
 	}
 
 	semaphore::~semaphore()
 	{
-		if (m_handle != NULL)
-		{
-			/*
-			CloseHandle invalidates the specified object handle, decrements 
-			the object's handle count, and performs object retention checks. 
-			After the last handle to an object is closed, the object is removed 
-			from the system.
-			Closing a thread handle does not terminate the associated thread. 
-			To remove a thread object, you must terminate the thread, 
-			then close all handles to the thread.
-			*/
-			::CloseHandle(m_handle);
-			m_handle = NULL;
-		}
+#ifdef _WIN32
+		/*
+		CloseHandle invalidates the specified object handle, decrements 
+		the object's handle count, and performs object retention checks. 
+		After the last handle to an object is closed, the object is removed 
+		from the system.
+		Closing a thread handle does not terminate the associated thread. 
+		To remove a thread object, you must terminate the thread, 
+		then close all handles to the thread.
+		*/
+		::CloseHandle(m_handle);
+		m_handle = NULL;
+#else
+		int error = sem_destroy(&m_sem);
+		if(error)
+			throw misc::exception("sem_destroy error");
+#endif
 	}
 
 	int semaphore::lock()
 	{
+#ifdef _WIN32
 		DWORD dwRet = ::WaitForSingleObject(m_handle, INFINITE);
-		
-		if (dwRet == WAIT_OBJECT_0 || dwRet == WAIT_ABANDONED)
-			return 1;
+		if (dwRet == WAIT_OBJECT_0)
+			return 0;
 		else
-			return 0;	// WAIT_TIMEOUT
+			return 1;	// WAIT_TIMEOUT, WAIT_FAILED, WAIT_ABANDONED
+#else
+		int error;
+		
+		// mutex cannot be interrupted by signals.
+		// semaphore gets the same treatment here.		
+		while((error = sem_wait(&m_sem)) == -1 && errno == EINTR)
+			continue;
+		
+		if(error == 0)
+			return 0;
+
+		throw misc::exception("sem_wait error");
+#endif
 	}
 
 	int semaphore::trylock(unsigned long milliseconds)
 	{
+#ifdef _WIN32		
 		DWORD dwRet = ::WaitForSingleObject(m_handle, milliseconds);
-		
-		if (dwRet == WAIT_OBJECT_0 || dwRet == WAIT_ABANDONED)
-			return 1;
+		if (dwRet == WAIT_OBJECT_0)
+			return 0;
 		else
-			return 0;	// WAIT_TIMEOUT
-
-		/*	In the SEMAPHORE context:
+			return 1;	// WAIT_TIMEOUT, WAIT_FAILED, WAIT_ABANDONED
+#else
+		int error;
+		if(milliseconds == (unsigned long)INFINITE)
+		{
+			// mutex cannot be interrupted by signals.
+			// semaphore gets the same treatment here.		
+			while((error = sem_wait(&m_sem)) == -1 && errno == EINTR)
+				continue;
+		
+			if(error == 0)
+				return 0;
 			
-			The function pthread_mutex_trylock() is identical to 
-			pthread_mutex_lock() except that if the mutex object referenced 
-			by mutex is currently locked (by any thread, including 
-			the current thread), the call returns immediately. 
-		*/		
+			throw misc::exception("sem_wait error");
+		}
+		else
+		{
+			struct timespec ts;
+			if(clock_gettime(CLOCK_REALTIME, &ts) == -1)
+				throw misc::exception("clock_gettime error");
+			
+			ts.tv_sec += (time_t) (milliseconds / 1000);// seconds
+			ts.tv_nsec += (milliseconds % 1000) * 1e6;	// nanoseconds
+		
+			// mutex cannot be interrupted by signals.
+			// semaphore gets the same treatment here.
+			while((error = sem_timedwait(&m_sem, &ts)) == -1 && errno == EINTR)
+				continue;
+			
+			if(error == 0)
+				return 0;	// success
+			if(error == -1 && errno == ETIMEDOUT)
+				return 1;	// timeout
+			
+			throw misc::exception("sem_timedwait error");
+		}
+#endif		
 	}
 
 	int semaphore::unlock()
 	{
+#ifdef _WIN32
 		/*	Increases the count of the specified semaphore object
 			by a specified amount.
 		*/
 		return ::ReleaseSemaphore(m_handle, 1, NULL);
+#else
+		/*	http://linux.die.net/man/3/sem_post
+		 *	sem_post() increments (unlocks) the semaphore pointed to by sem.
+		 * 
+		 *	Currently in linux we can increment sem_t value above initial given
+		 *	counter which is a bit strange.
+		 *	Ex:
+		 *	sem_init(&sem, 0, 0);	// locked, value=0
+		 *  sem_post(&sem);			// unlocked, value=1 (1 thread may lock it)
+		 *  sem_post(&sem);			// unlocked, value=2 (2 threads may lock it)
+		 */
+		int error = sem_post(&m_sem);
+		if(error)
+			throw misc::exception("sem_post error");
+		return 0;
+#endif
 	}
-
-}; // namespace
+} // namespace

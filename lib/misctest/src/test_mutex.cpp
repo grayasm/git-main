@@ -198,6 +198,8 @@ void test_mutex::lock()
 			t[i]->resume();
 		for(int i=0; i < THNO; ++i)
 			t[i]->join(INFINITE);
+		for(int i=0; i < THNO; ++i)
+			delete t[i];
 
 		misc::time t2( time(0) );
 		int minsec = (int) ((THNO-1)*THNO/2); // waiting time in total

@@ -12,6 +12,7 @@
         <group>
             <file>file:/home/mihk/Code/git-main/lib/misctest/src/test_mutex.cpp</file>
             <file>file:/home/mihk/Code/git-main/lib/misctest/src/misctest.cpp</file>
+            <file>file:/home/mihk/Code/git-main/lib/misctest/src/test_semaphore.cpp</file>
         </group>
     </open-files>
 </project-private>

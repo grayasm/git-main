@@ -24,56 +24,48 @@
 
 #include "sync_base.hpp"
 
+#ifdef _WIN32
+#else
+#include <semaphore.h>
+#endif
+
 
 
 namespace misc
 {
+	/*
+	 *	Locking a semaphore sem(1) 2 times from the same thread will result in
+	 *	deadlock.
+	 */
 	class semaphore : public sync_base
 	{
 	public:
-		/*!	semaphore
-			\param available the initial count for the semaphore.
-			This value must be greater than or equal to zero and less than 
-			or equal to maxallowed. The state of a semaphore is signaled 
-			when its count is greater than zero and non-signaled when it is zero.
-			The count is decreased by one whenever a lock function releases
-			a thread that was waiting for the semaphore.
-			The count is increased by one by calling the unlock function.
-			\param maxallowed the maximum count for the semaphore object.
-			This value must be greater than zero.
-			\param name the name of the semaphore. It is limited to MAX_PATH
-			and name comparison is case sensitive.
-		*/
-		semaphore(long available, long maxallowed, const char_t* name="");
-
-		/*!	destroys (releases) the semaphore. No threads should be waiting
-			on the semaphore if its destruction is to succeed.
-		*/
+		//! Semaphore supports maxlocks (>0) locks.
+		semaphore(unsigned int maxlocks);
+		
+		//! Semaphore resource is released back to OS.
 		~semaphore();		
 		
-		/*!	lock
-			The function will return only when the semaphore is signaled.
-			\return If the state of the specified object is signaled the
-			return value is nonzero.
-		*/
+		//! Aquire a lock on the semaphore and returns 0 or 1 if interrupted by signal.
 		int lock();
-
-		/*!	trylock
-			Waits until the semaphore is in the signaled state or the time-out 
-			interval elapses.
-		*/
-		int trylock(unsigned long milliseconds = 0);		
-
-		/*!	unlock
-			Increments the count of the semaphore by 1.
-			\return If the function succeeds, the return value is nonzero.
-		*/
+		
+		//! Aquire a lock on the semaphore and returns 0 or 1 if timeout or interrupted by signal.
+		int trylock(unsigned long milliseconds = INFINITE);
+		
+		//! Unlock a previous lock on the semaphore and returns 0 or throw otherwise.
 		int unlock();
+		
+		// get lock count would be nice here.
 
 	private:
 		//non-copyable
 		semaphore(const semaphore& tc);
-		semaphore& operator=(const semaphore& tc);		
+		semaphore& operator=(const semaphore& tc);
+
+#ifdef _WIN32
+#else
+		sem_t m_sem;
+#endif
 	};
 } // namespace
 

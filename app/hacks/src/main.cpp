@@ -16,70 +16,38 @@
 #include "time.hpp"
 #include "thread.hpp"
 #include "cpu_timer.hpp"
+#include <semaphore.h>
 
-class mythread : public misc::thread
+
+void unlock(sem_t* sem)
 {
-public:
-	mythread(int i) : m_i(i){}
-	int run()
-	{
-		printf("\n\tStarted thread %d", m_i);
-		sleep(rand()%15);
-		printf("\n\tExiting thread %d", m_i);
-		return m_i;
-	}
-private:
-	int m_i;
-};
+	int error = sem_post(sem);	
+	if(error != 0 )
+		printf("\nsem_post error");
+	else
+		printf("\nsem_post ok");
+}
+void lock(sem_t* sem)
+{
+	int error = sem_wait(sem);
+	if(error == 0)
+		printf("\nsem_wait ok");
+	else
+		printf("\nsem_wait error");
+}
 
 int main(int, char**)
 {
 	setvbuf(stdout, NULL, _IONBF, 0);
-		
-	mythread* t[5];
-	for(int i=0; i<5; ++i)
-	{
-		t[i] = new mythread(i);
-	}
 	
-	printf("\n\tAll thread are created. Stay tuned to start them...");
-	sleep(2);
-	for(int i=0; i<5; ++i)
-		t[i]->resume();
+	sem_t sem;
+	sem_init(&sem, 0, 0);
 	
-	printf("\n\tJoining threads ...");
-	for(int i=0; i<5; ++i)
-	{
-		if( t[i]->join(2) == 0 )
-		{
-			printf("\n\t thread %d joined", i);
-		}
-		else
-		{
-			printf("\n\t thread %d timeout", i);
-		}
-	}
+	//unlock(&sem);
 	
-	printf("\n\tRetrieve exit code...");
-	for(int i=0; i<5; ++i)
-	{
-		unsigned long retval = 0;
-		if( t[i]->get_exit_code(&retval) == 0 )
-		{
-			printf("\n\t thread %d returned %lu", i, retval);
-		}
-		else
-		{
-			printf("\n\t thread %d did not finish", i);
-		}
-	}
+	lock(&sem);	
 	
-	printf("\n\tDeleting all threads");
-	for(int i=0; i<5; ++i)
-	{
-		delete t[i];
-		t[i] = 0;
-	}
+	
 	
 	return 0;
 }
