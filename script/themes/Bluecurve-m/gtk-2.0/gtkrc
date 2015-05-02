@@ -40,7 +40,7 @@ style "bluecurve-default"
   base[INSENSITIVE] = "#f0f0f0"    #bg of disabled edit box
 
   text[NORMAL]      = "#00000f"    #fg of all explorer items exept the selected
-  text[PRELIGHT]    = "#0000ff"    #fg of check/radio buttons on mouse over 
+  text[PRELIGHT]    = "#00000f"    #fg of check/radio buttons on mouse over 
   text[ACTIVE]      = "#00004f"    #fg of inactive list selected item
   text[SELECTED]    = "#00000f"    #fg of active list selected item
   text[INSENSITIVE] = "#00000f"    #fg of disabled edit box (chrome empty bookmark)
