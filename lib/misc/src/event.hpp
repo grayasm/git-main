@@ -31,8 +31,7 @@ namespace misc
 	class event : public sync_base
 	{
 	public:
-		event(bool bSignaled = false, bool bManualReset = false,
-				const char_t* name = "");
+		event(bool bSignaled = false, bool bManualReset = false);
 
 		~event();
 

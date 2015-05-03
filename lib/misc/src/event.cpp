@@ -23,33 +23,40 @@
 
 namespace misc
 {
-	event::event(bool bSignaled, bool bManualReset, const char_t* name)
-		: sync_base(name)
+	event::event(bool bSignaled, bool bManualReset)
+		: sync_base()
 	{
+#ifdef _WIN32
 		// Creates or opens a named or unnamed event object.
 		m_handle = ::CreateEvent(
 			NULL, 
 			bManualReset,
 			bSignaled, 
-			name);
+			"");
 
 		if(m_handle == NULL)
 			throw misc::exception("Cannot create the event!");
+#else
+#endif
 	}
 
 
 	event::~event()
 	{
+#ifdef _WIN32
 		if(m_handle != NULL)
 		{
 			::CloseHandle(m_handle);
 			m_handle = NULL;
 		}
+#else
+#endif
 	}
 
 
 	int event::lock()
 	{
+#ifdef _WIN32
 		DWORD dwRet = ::WaitForSingleObject(m_handle, INFINITE);
 		// cannot get WAIT_TIMEOUT with INIFINITE
 		// cannot get WAIT_ABANDONED (only for Mutexes)		
@@ -57,45 +64,59 @@ namespace misc
 			return 1;
 		else
 			return 0;
+#else
+		return 0;
+#endif
 	}
 
 	int event::trylock(unsigned long milliseconds)
 	{
+#ifdef _WIN32
 		DWORD dwRet = ::WaitForSingleObject(m_handle, milliseconds);
 		// cannot get WAIT_ABANDONED (only for Mutexes)		
 		if (dwRet == WAIT_OBJECT_0)
 			return 1;
 		else
 			return 0; // WAIT_TIMEOUT
-
-		/*	In the EVENT context:
-			
-			The function pthread_mutex_trylock() is identical to 
-			pthread_mutex_lock() except that if the mutex object referenced 
-			by mutex is currently locked (by any thread, including 
-			the current thread), the call returns immediately. 
-		*/		
+#else
+		return 0;
+#endif
 	}
 
 	int event::unlock()
-	{		
-		return ::SetEvent(m_handle);		
+	{
+#ifdef _WIN32
+		return ::SetEvent(m_handle);
+#else
+		return 0;
+#endif
 	}
 
 
 	int event::setevent()
-	{		
+	{
+#ifdef _WIN32
 		return ::SetEvent(m_handle);
+#else
+		return 0;
+#endif
 	}
 
 	int event::pulseevent()
-	{		
+	{
+#ifdef _WIN32		
 		return ::PulseEvent(m_handle);
+#else
+		return 0;
+#endif
 	}
 
 	int event::resetevent()
 	{
+#ifdef _WIN32
 		return ::ResetEvent(m_handle);
-	}
-	
-}; // namespace
+#else
+		return 0;
+#endif
+	}	
+} // namespace
