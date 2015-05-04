@@ -50,4 +50,39 @@ void test_event::ctor()
 {
 
 }
+
+void test_event::dtor()
+{
+	
+}
+
+void test_event::lock()
+{
+	
+}
+
+void test_event::trylock()
+{
+	
+}
+
+void test_event::unlock()
+{
+	
+}
+// maybe one of the 2 needed only
+void test_event::setevent()
+{
+	
+}
+
+void test_event::pulseevent()
+{
+	
+}
+
+void test_event::resetevent()
+{
+	
+}
 //##########################END  TEST  SUITE######################################
