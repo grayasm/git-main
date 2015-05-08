@@ -34,6 +34,8 @@ namespace misc
 	 *	automatically to non-signaled after waking up a single thread or it 
 	 *	needs manually ResetEvent() in which case all waiting threads 
 	 *	WaitForSingleObject/similar will be woken up until event is reset.
+	 * 
+	 *	Pthreads (linux): 
 	 */
 	class event : public sync_base
 	{
@@ -44,8 +46,6 @@ namespace misc
 		int trylock(unsigned long milliseconds = INFINITE);		
 		int unlock();
 		int setevent();
-		// int pulseevent();
-		// int resetevent();
 
 	private:		
 		event(const event& tc);

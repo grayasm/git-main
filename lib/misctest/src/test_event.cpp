@@ -83,8 +83,33 @@ public:
 	}
 private:
 	misc::event*	m_ev;
+	int				m_sec;	
+};
+
+class thread3 : public misc::thread
+{
+public:
+	thread3(misc::event* ev, int sec)
+	: m_ev(ev), m_sec(sec) {}
+	~thread3(){}
+	int run()
+	{
+		printf("\n\t\tthread %d: wait(%d)", m_sec, m_sec);
+		if(m_ev->trylock(m_sec * 1e3) == 0)
+		{
+			printf("\n\t\tthread %d: woke up", m_sec);
+			printf("\n\t\tthread %d: working", m_sec);
+			sleep(m_sec);
+		}
+		else
+		{
+			printf("\n\t\tthread %d: missed wake up!!", m_sec);
+		}
+		return m_sec;
+	}
+private:
+	misc::event*	m_ev;
 	int				m_sec;
-	
 };
 void test_event::ctor()
 {
@@ -92,15 +117,15 @@ void test_event::ctor()
 	// waiting in a thread and signaling the event from main thread
 	{
 		misc::event ev;
-		thread2* t[2];
+		thread3* t[2];
 		for(int i=0; i < 2; ++i)
-			t[i] = new thread2(&ev, i+1);
+			t[i] = new thread3(&ev, i+5);
 
 		for(int i=0; i < 2; ++i)
 			CPPUNIT_ASSERT( t[i]->resume() == 0 );
 		
-		printf("\n\tmain: sleep 4");
-		sleep(4);
+		printf("\n\tmain: sleep 2");
+		sleep(2);
 		
 		CPPUNIT_ASSERT( ev.setevent() == 0 );
 
@@ -110,8 +135,8 @@ void test_event::ctor()
 		for(int i=0; i < 2; ++i)
 			CPPUNIT_ASSERT( t[i]->resume() == 0 );
 		
-		printf("\n\tmain: sleep 4");
-		sleep(4);
+		printf("\n\tmain: sleep 2");
+		sleep(2);
 		
 
 		CPPUNIT_ASSERT( ev.setevent() == 0 );
