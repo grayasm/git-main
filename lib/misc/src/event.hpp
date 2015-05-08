@@ -27,18 +27,25 @@
 
 namespace misc
 {	
+	/*	Win32: The most flexible type of synchronization object in Win32 is
+	 *	the EVENT OBJECT. The event object is a kernel object whose only purpose
+	 *	is to be either signaled or non-signaled.
+	 *	With CreateEvent() it is specified whether the event resets itself
+	 *	automatically to non-signaled after waking up a single thread or it 
+	 *	needs manually ResetEvent() in which case all waiting threads 
+	 *	WaitForSingleObject/similar will be woken up until event is reset.
+	 */
 	class event : public sync_base
 	{
 	public:
-
 		event();
 		~event();
 		int lock();
 		int trylock(unsigned long milliseconds = INFINITE);		
 		int unlock();
 		int setevent();
-		int pulseevent();
-		int resetevent();
+		// int pulseevent();
+		// int resetevent();
 
 	private:		
 		event(const event& tc);

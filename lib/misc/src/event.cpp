@@ -55,7 +55,7 @@ namespace misc
 		 *	(2) unlock a mutex which another thread has locked will return with an error. 
 		 *	(3) unlock an unlocked mutex will return with an error.
 		 */
-		pthread_mutexattr_settype(&attr, PTHREAD_MUTEX_DEFAULT);//PTHREAD_MUTEX_ERRORCHECK);
+		pthread_mutexattr_settype(&attr, PTHREAD_MUTEX_ERRORCHECK);
 			
 		// Initialize the mutex associated to the condition variable.
 		error = pthread_mutex_init(&m_mtx, &attr);
@@ -67,12 +67,6 @@ namespace misc
 		if(error)
 			throw misc::exception("pthread_cond_init error");
 		
-		/*	Waiting on a condition variable expects a locked mutex as parameter.
-		 */
-		error = pthread_mutex_lock(&m_mtx);
-		if(error)
-			throw misc::exception("pthread_mutex_lock error");
-		
 		pthread_mutexattr_destroy(&attr);
 #endif
 	}
@@ -81,11 +75,8 @@ namespace misc
 	event::~event()
 	{
 #ifdef _WIN32
-		if(m_handle != NULL)
-		{
-			::CloseHandle(m_handle);
-			m_handle = NULL;
-		}
+		::CloseHandle(m_handle);
+		m_handle = NULL;
 #else
 		/*	The implementation has detected an attempt to destroy the object 
 		 *	referenced by cond while it is referenced, for example while being
@@ -115,15 +106,21 @@ namespace misc
 		// cannot get WAIT_TIMEOUT with INIFINITE
 		// cannot get WAIT_ABANDONED (only for Mutexes)		
 		if (dwRet == WAIT_OBJECT_0)
-			return 1;
-		else
 			return 0;
+		else
+			return 1;
 #else
+		/*	Waiting on a condition variable expects a locked mutex as parameter.
+		 */
+		int error = pthread_mutex_lock(&m_mtx);
+		if(error)
+			throw misc::exception("pthread_mutex_lock error");
+		
 		/*	pthread_cond_wait is used to block on a condition variable. 
 		 *	It is called with mutex locked by the calling thread or 
 		 *	undefined behaviour will result.
 		 */
-		int error = pthread_cond_wait(&m_cond, &m_mtx);
+		error = pthread_cond_wait(&m_cond, &m_mtx);
 		if(error)
 			throw misc::exception("pthread_cond_wait error");
 		
@@ -146,10 +143,17 @@ namespace misc
 		DWORD dwRet = ::WaitForSingleObject(m_handle, milliseconds);
 		// cannot get WAIT_ABANDONED (only for Mutexes)		
 		if (dwRet == WAIT_OBJECT_0)
-			return 1;
+			return 0;
 		else
-			return 0; // WAIT_TIMEOUT
+			return 1; // WAIT_TIMEOUT
 #else
+		/*	Waiting on a condition variable expects a locked mutex as parameter.
+		 */
+		int error = pthread_mutex_lock(&m_mtx);
+		if(error)
+			throw misc::exception("pthread_mutex_lock error");
+
+		
 		struct timespec ts;
 		if(clock_gettime(CLOCK_REALTIME, &ts) == -1)
 			throw misc::exception("clock_gettime error");
@@ -161,7 +165,7 @@ namespace misc
 		 * It is called with mutex locked by the calling thread or 
 		 * undefined behaviour will result.
 		 */
-		int error = pthread_cond_timedwait(&m_cond, &m_mtx, &ts);
+		error = pthread_cond_timedwait(&m_cond, &m_mtx, &ts);
 		if(error == 0)
 		{
 			/*	pthread_cond_timedwait returned due to condition variable 
@@ -178,7 +182,10 @@ namespace misc
 		
 		// The time specified by ts has passed.
 		if(error == ETIMEDOUT)
+		{
 			return 1;
+		}
+			
 		
 		throw misc::exception("pthread_cond_timedwait error");
 #endif
@@ -200,9 +207,9 @@ namespace misc
 		
 		/*	Release the mutex to allow condition variable state broadcasting.
 		 */
-		error = pthread_mutex_unlock(&m_mtx);
-		if(error)
-			throw misc::exception("pthread_mutex_unlock error");
+		//error = pthread_mutex_unlock(&m_mtx);
+		//if(error)
+		//	throw misc::exception("pthread_mutex_unlock error");
 		return 0;
 #endif
 	}
@@ -217,34 +224,37 @@ namespace misc
 #endif
 	}
 
-	int event::pulseevent()
-	{
-#ifdef _WIN32		
-		return ::PulseEvent(m_handle);
-#else
-		return unlock();
-#endif
-	}
 
-	int event::resetevent()
-	{
-#ifdef _WIN32
-		return ::ResetEvent(m_handle);
-#else
-		/*	Recreate the conditions of the class constructor.
-		 *	The condition variable is not referenced in any pthread_cond_wait()
-		 *	or pthread_cond_timedwait().
-		 *	The mutex is not referenced in any pthread_cond_wait() or
-		 *	pthread_cond_timedwait().
-		 * 
-		 *	PTHREAD_MUTEX_ERRORCHECK: 
-		 *	If this thread attempts to relock a mutex that it has already locked, 
-		 *	an error will be returned. 
-		 */
-		int error = pthread_mutex_trylock(&m_mtx);
-		if(error)
-			throw misc::exception("pthread_mutex_trylock error");
-		return 0;
-#endif
-	}	
+//	int event::pulseevent()
+//	{
+//#ifdef _WIN32		
+//		return ::PulseEvent(m_handle);
+//#else
+//		return unlock();
+//#endif
+//	}
+
+//
+//	int event::resetevent()
+//	{
+//#ifdef _WIN32
+//		return ::ResetEvent(m_handle);
+//#else
+//		/*	Recreate the conditions of the class constructor.
+//		 *	The condition variable is not referenced in any pthread_cond_wait()
+//		 *	or pthread_cond_timedwait().
+//		 *	The mutex is not referenced in any pthread_cond_wait() or
+//		 *	pthread_cond_timedwait().
+//		 * 
+//		 *	PTHREAD_MUTEX_ERRORCHECK: 
+//		 *	If this thread attempts to relock a mutex that it has already locked, 
+//		 *	an error will be returned. 
+//		 */
+//		//int error = pthread_mutex_trylock(&m_mtx);
+//		//if(error)
+//		//	throw misc::exception("pthread_mutex_trylock error");
+//		return 0;
+//#endif
+//	}	
+	
 } // namespace
