@@ -35,16 +35,43 @@ namespace misc
 	 *	needs manually ResetEvent() in which case all waiting threads 
 	 *	WaitForSingleObject/similar will be woken up until event is reset.
 	 * 
-	 *	Pthreads (linux): 
+	 *	Pthreads (linux): A condition variable is a synchronization object that
+	 *	can be signaled or non-signaled.
+	 *	A condition variable resets itself automatically to non-signaled after
+	 *	waking up one or more threads.
+	 *	Waiting on a condition variable involves an additional mutex that can
+	 *	be used in synchronization although it is not necessary.
+	 *	The requirement is to pass to pthread_cond_wait, pthread_cond_timedwait
+	 *	a locked mutex.
+	 *	Signaling a condition variable is done with pthread_cond_signal (1 thread)
+	 *	or pthread_cond_braodcast (wakes up all threads).
+	 * 
+	 *	The common ground is to use:
+	 *	- a non-signaled initialized event/condition
+	 *	- the event is reseting itself automatically after waking up
+	 *	- lock is not interrupted by signals
+	 *	- the event is not shared between processes
 	 */
 	class event : public sync_base
 	{
 	public:
+		//! Creates a non-signaled event
 		event();
+		//! Destructor
 		~event();
+		/*! Locks the calling thread until event is signaled.
+		 *! If event is signaled it returns 0 otherwise 1.
+		 */
 		int lock();
-		int trylock(unsigned long milliseconds = INFINITE);		
+		/*!	Locks the calling thread until event is signaled or time expires.
+		 *! If event is signaled it returns 0 or 1 for time out.
+		 */
+		int trylock(unsigned long milliseconds = INFINITE);
+		/*!	Signals the event and if successful return 0 or 1 otherwise.	
+		 */		
 		int unlock();
+		
+		//! Similar with unlock.
 		int setevent();
 
 	private:		
