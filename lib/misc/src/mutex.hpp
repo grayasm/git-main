@@ -79,8 +79,10 @@ namespace misc
 		//! Locks the mutex and returns 0 or otherwise 1.
 		int lock();
 
-		//! Locks the mutex and returns 0 or 1 if timeout.
-		int trylock(unsigned long milliseconds = INFINITE);
+		/*! Locks the mutex and returns 0 or 1 if timeout.
+		 *!	milliseconds possible values are: any > 0 or -1 for INFINITE
+		 */
+		int trylock(unsigned long milliseconds = 0);
 
 		//! Unlocks the mutex and returns 0 or 1 otherwise.
 		int unlock();

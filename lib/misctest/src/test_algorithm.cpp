@@ -59,6 +59,11 @@ void test_algorithm::tearDown()
 //Non-modifying sequence operations:
 void test_algorithm::for_each()
 {	
+    misc::cout << "\n\n\t*******************************************************";
+    misc::cout <<   "\n\t* TESTING HEADER: algorithm.hpp                       *";
+    misc::cout <<   "\n\t*******************************************************";
+
+	
 	misc::cout << "\n\n\tfor_each-----------------------------------------------";
 	for_each<std::vector<int> >																		("\n\tstd::vector       ");
 	for_each<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");

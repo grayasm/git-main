@@ -23,7 +23,12 @@
 
 
 #include "sync_base.hpp"
+#include "mutex.hpp"
 
+#ifdef _WIN32
+#else
+#include <pthread.h>
+#endif
 
 
 
@@ -96,12 +101,12 @@ namespace misc
 		critical_section(const critical_section&);
 		critical_section& operator=(const critical_section&);
 
-	protected:		
+	private:
 #ifdef _WIN32
-		/* Windows implementation. */
 		CRITICAL_SECTION	m_section;
+#else
+		pthread_mutex_t		m_mtx;
 #endif
-
 	};
 } // namespace
 

@@ -53,13 +53,17 @@ void test_utility::tearDown()
 //##########################BEGIN TEST SUITE######################################
 void test_utility::pair_ctor()
 {
+	misc::cout << "\n\n\t*******************************************************";
+    misc::cout <<   "\n\t* TESTING HEADER: utility.hpp                         *";
+    misc::cout <<   "\n\t*******************************************************";
+
+	
+	
     typedef misc::pair<int,int> Pair;
     typedef misc::vector<Pair> Vec;
     typedef misc::list<Pair> Lst;
 
-    misc::cout << "\n\n\t*******************************************************";
-    misc::cout <<   "\n\t* TESTING HEADER \"utility.hpp\"                      *";
-    misc::cout <<   "\n\t*******************************************************";
+    
     misc::cout << "\n\n\tmisc::pair ctor----------------------------------------";
 
     pair_ctor<Vec,Pair>("\n\tpair_ctor<misc::vector<misc::pair> >   ");
@@ -264,7 +268,7 @@ void test_utility::it_traits(const char* msg)
     {
         time_printer tp(msg, m_print_time);
 
-        Container v0(m_container_size, 0);
+        Container v0(m_container_size, Cval(0));
 
         It it = v0.begin();
         typename misc::iterator_traits<It>::value_type val = *it;
@@ -342,9 +346,6 @@ void test_utility::distance(const char* msg)
 template<typename Container>
 void test_utility::back_insert_it(const char* msg)
 {
-	typedef typename Container::value_type Cval;
-	typedef typename Container::iterator It;
-
     //  TEST
     {
         time_printer tp(msg, m_print_time);
@@ -366,9 +367,6 @@ void test_utility::back_insert_it(const char* msg)
 template<typename Container>
 void test_utility::front_insert_it(const char* msg)
 {
-	typedef typename Container::value_type Cval;
-	typedef typename Container::iterator It;
-
     //  TEST
     {
         time_printer tp(msg, m_print_time);
@@ -390,9 +388,6 @@ void test_utility::front_insert_it(const char* msg)
 template<typename Container>
 void test_utility::insert_it(const char* msg)
 {
-	typedef typename Container::value_type Cval;
-	typedef typename Container::iterator It;
-
     //  TEST
     {
         time_printer tp(msg, m_print_time);

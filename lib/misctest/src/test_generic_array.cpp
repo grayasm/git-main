@@ -109,7 +109,11 @@ void non_pod_f_v0(int, ...){}
 // begin test suite
 void test_generic_array::ctor()
 {
+    misc::cout << "\n\n\t*******************************************************";
+    misc::cout <<   "\n\t* TESTING HEADER: generic_array.hpp                   *";
+    misc::cout <<   "\n\t*******************************************************";
 
+	
 	{/* using template type misc::generic_array<char> */
 		typedef misc::generic_array<char> string;
 

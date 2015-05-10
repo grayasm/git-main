@@ -57,16 +57,21 @@ namespace misc
 	public:
 		//! Creates a non-signaled event
 		event();
+		
 		//! Destructor
 		~event();
+		
 		/*! Locks the calling thread until event is signaled.
 		 *! If event is signaled it returns 0 otherwise 1.
 		 */
-		int lock();
+		int lock();	
+		
 		/*!	Locks the calling thread until event is signaled or time expires.
+		 *!	milliseconds possible values are: any > 0 or -1 for INFINITE
 		 *! If event is signaled it returns 0 or 1 for time out.
 		 */
-		int trylock(unsigned long milliseconds = INFINITE);
+		int trylock(unsigned long milliseconds = 0);
+		
 		/*!	Signals the event and if successful return 0 or 1 otherwise.	
 		 */		
 		int unlock();

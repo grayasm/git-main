@@ -26,9 +26,6 @@
 #include <windows.h>
 #else
 #include <pthread.h>
-#ifndef INFINITE		// see thread.hpp
-#define INFINITE -1
-#endif
 #endif
 
 
@@ -44,6 +41,9 @@ namespace misc
 		virtual ~sync_base();
 
 		virtual int lock() = 0;
+		
+		/*	milliseconds can have any > 0 value of -1 for INFINITE
+		 */
 		virtual int trylock(unsigned long milliseconds) = 0;
 		virtual int unlock() = 0;
 

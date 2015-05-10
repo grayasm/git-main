@@ -69,6 +69,7 @@ void test_mutex::ctor()
 	}
 	{
 		misc::mutex m[3];
+		(m[0]);
 		CPPUNIT_ASSERT( true );			
 	}
 	{
@@ -93,6 +94,7 @@ void test_mutex::dtor()
 	}
 	{
 		misc::mutex m[3];
+		(m[0]);
 		CPPUNIT_ASSERT( true );			
 	}
 	{
@@ -111,7 +113,7 @@ public:
 		: m_mtx(mtx), m_sec(sec) { }
 	~lthread() { }
 	// --vtable--
-	int run()
+	unsigned long run()
 	{
 		m_mtx->lock();
 		printf("\n\t\tthread %d locked mutex", m_sec);
@@ -197,7 +199,7 @@ void test_mutex::lock()
 		for(int i=0; i < THNO; ++i)
 			t[i]->resume();
 		for(int i=0; i < THNO; ++i)
-			t[i]->join(INFINITE);
+			t[i]->join(-1);
 		for(int i=0; i < THNO; ++i)
 			delete t[i];
 
@@ -222,7 +224,7 @@ public:
 		: m_mtx(mtx), m_sec(sec), m_count(0) { }
 	~trythread() { }
 	// --vtable--
-	int run()
+	unsigned long run()
 	{
 		while( m_mtx->trylock(1 * 1e3) != 0 )
 			m_count++;
@@ -315,7 +317,7 @@ void test_mutex::trylock()
 		mtx.unlock();
 		
 		for(int i=0; i < THNO; ++i)
-			t[i]->join(INFINITE);
+			t[i]->join(-1);
 
 		misc::time t2( time(0) );
 		int minsec = (int) ((THNO-1)*THNO/2);

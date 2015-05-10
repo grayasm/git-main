@@ -54,6 +54,7 @@ namespace misc
 		// in the thread start_routine.
 		m_thread = 0;
 		m_terminated = false;
+		m_retval = 0;
 #endif
 	}
 
@@ -132,7 +133,7 @@ namespace misc
 			return 1;	// WAIT_TIMEOUT, WAIT_FAILED, WAIT_ABANDONED
 #else
 		void* retval;
-		if(milliseconds == (unsigned long)INFINITE || m_terminated)
+		if(milliseconds == (unsigned long)-1 || m_terminated)
 		{
 			int error = pthread_join(m_thread, &retval);
 			if(error)
@@ -169,8 +170,8 @@ namespace misc
 	int thread::get_exit_code(unsigned long* retval)
 	{
 #ifdef _WIN32
-		if(WaitForSingleObject(m_handle, 0) != WAIT_OBJECT_0)// WAIT_TIMEOUT
-			return 1;
+		if(WaitForSingleObject(m_handle, 0) != WAIT_OBJECT_0)
+			return 1;	// WAIT_TIMEOUT
 		::GetExitCodeThread(m_handle, retval);
 		return 0;
 #else
@@ -192,11 +193,16 @@ namespace misc
 	void* thread::start_routine(void* p)
 	{
 		thread* _this = (thread*)p;
-		int ret = _this->run();
-		
-		//TODO: implement a condition_variable (has locking access)
-		_this->m_terminated = true;
+		unsigned long ret = _this->run();
+
+		/*	If the destructor for _this has been called everything after this
+		 *	point is undefined behaviour.
+		 *	For this reason a mutex or event cannot be implemented to protect
+		 *	internal variables or do a better wait with timeout.
+		 */
 		_this->m_retval = ret;
+		_this->m_terminated = true;
+
 		return 0;
 	}
 #endif

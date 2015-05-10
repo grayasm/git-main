@@ -72,6 +72,12 @@ const size_t iSize = 120000;
 //test begin
 void test_list::ctor()
 {
+	misc::cout << "\n\n\t*******************************************************";
+    misc::cout <<   "\n\t* TESTING HEADER: list.hpp                            *";
+    misc::cout <<   "\n\t*******************************************************";
+
+	
+	
     typedef misc::list<int, misc::allocator<int> > list;
 
     srand(100);
@@ -229,12 +235,7 @@ void test_list::ctor()
     CPPUNIT_ASSERT(bmisc_16);
 
 
-
-
-    misc::cout << "\n\n\t*******************************************************";
-    misc::cout <<   "\n\t* TESTING HEADER: list.hpp                            *";
-    misc::cout <<   "\n\t*******************************************************";
-
+	
     misc::cout << "\n\n\tctor---------------------------------------------------";
     ctor<misc::list<double, misc::allocator<double> > >("\n\tmisc::list   ");
     ctor<std::list<double> >                           ("\n\tstd::list    ");

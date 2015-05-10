@@ -101,7 +101,7 @@ namespace misc
 			return 1;	// WAIT_TIMEOUT, WAIT_FAILED, WAIT_ABANDONED
 #else
 		int error;
-		if(milliseconds == (unsigned long)INFINITE)
+		if(milliseconds == (unsigned long)-1)
 		{
 			// mutex cannot be interrupted by signals.
 			// semaphore gets the same treatment here.		

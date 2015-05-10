@@ -28,12 +28,10 @@ namespace misc
 		: m_critical_section(cs)
 	{
 		m_critical_section.lock();
-//		misc::cout << "\nautoCS-LOCKED\n";
 	}
 
 	autocritical_section::~autocritical_section()
 	{
 		m_critical_section.unlock();
-//		misc::cout << "\nautoCS-UN_LOCKED\n";
 	}
 } // namespace

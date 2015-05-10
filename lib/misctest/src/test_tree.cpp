@@ -55,6 +55,12 @@ void test_tree::tearDown()
 
 void test_tree::test_00()
 {
+	misc::cout << "\n\n\t*******************************************************";
+    misc::cout <<   "\n\t* TESTING HEADER: tree.hpp                            *";
+    misc::cout <<   "\n\t*******************************************************";
+
+	
+	
 	typedef misc::tree<misc::string> Tree;
 	typedef Tree::iterator It;
 	Tree mtree1;

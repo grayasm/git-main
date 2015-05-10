@@ -182,7 +182,7 @@ void test_autoptr::tearDown()
 void test_autoptr::test_assignment_with_different_type()
 {
 	misc::cout << "\n\n\t*******************************************************";
-	misc::cout <<   "\n\t* TESTING HEADER \"autoptr.hpp\"                      *";
+	misc::cout <<   "\n\t* TESTING HEADER: autoptr.hpp                         *";
 	misc::cout <<   "\n\t*******************************************************";	
 	
 	{

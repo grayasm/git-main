@@ -29,7 +29,6 @@
 #include <windows.h>
 #else
 #include <pthread.h>
-#define INFINITE -1
 #endif
 
 
@@ -40,22 +39,24 @@ namespace misc
 	class thread
 	{
 	public:
-		//! thread is not running.
+		//! Thread is not running.
 		thread();
 		
-		//!	detaches only if joinable and frees the resources.
+		//!	Detaches only if joinable and frees the resources.
 		virtual ~thread();
 
-		//! thread start method
-		virtual int run() = 0;
+		//! Thread start method
+		virtual unsigned long run() = 0;
 
-		//! starts the thread and returns 0 if successful or 1 otherwise.
+		//! Starts the thread and returns 0 if successful or 1 otherwise.
 		int resume();
 		
-		//! joins a finished thread and returns 0 or 1 if timeout.
-		int join(unsigned long milliseconds = INFINITE);
+		/*! Joins a finished thread and returns 0 or 1 if timeout.
+		 *! milliseconds possible values are: any > 0 or -1 for INFINITE
+		 */
+		int join(unsigned long milliseconds = (unsigned long)-1);
 
-		//! copies thread returned value to retval and returns 0 or 1 otherwise.
+		//! Copies thread returned value to retval and returns 0 or 1 otherwise.
 		int get_exit_code(unsigned long* retval);
 
 	private:
@@ -76,8 +77,8 @@ namespace misc
 		unsigned int	m_threadID;
 #else
 		pthread_t		m_thread;
-		bool			m_terminated; //TODO: protect it with a critical_section
-		int				m_retval;
+		bool			m_terminated;
+		unsigned long	m_retval;
 #endif
 	};
 

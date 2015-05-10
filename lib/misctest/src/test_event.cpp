@@ -36,6 +36,8 @@
 #include "exception.hpp"
 #include "thread.hpp"
 #include "unistd.hpp"
+#include "stream.hpp"
+
 
 //###########################BEGIN TEST CLASS ####################################
 void test_event::setUp()
@@ -47,140 +49,411 @@ void test_event::tearDown()
 }
 
 //##########################BEGIN TEST SUITE######################################
-class thread0 : public misc::thread
-{
-public:
-	thread0(misc::event* ev, int sec)
-	: m_ev(ev) , m_sec(sec) {}
-	~thread0(){}
-	int run()
-	{
-		printf("\n\t\tthread %d: sleep", m_sec);
-		sleep(m_sec);
-		printf("\n\t\tthread %d: setevent", m_sec);
-		m_ev->setevent();
-		return m_sec;
-	}
-private:
-	misc::event*	m_ev;
-	int				m_sec;
-};
-
-class thread2 : public misc::thread
-{
-public:
-	thread2(misc::event* ev, int sec)
-	: m_ev(ev), m_sec(sec) {}
-	~thread2() {}
-	int run()
-	{
-		printf("\n\t\tthread %d: wait", m_sec);
-		m_ev->lock();
-		printf("\n\t\tthread %d: woke up", m_sec);
-		printf("\n\t\tthread %d: working", m_sec);
-		sleep(m_sec);
-		return m_sec;
-	}
-private:
-	misc::event*	m_ev;
-	int				m_sec;	
-};
-
-class thread3 : public misc::thread
-{
-public:
-	thread3(misc::event* ev, int sec)
-	: m_ev(ev), m_sec(sec) {}
-	~thread3(){}
-	int run()
-	{
-		printf("\n\t\tthread %d: wait(%d)", m_sec, m_sec);
-		if(m_ev->trylock(m_sec * 1e3) == 0)
-		{
-			printf("\n\t\tthread %d: woke up", m_sec);
-			printf("\n\t\tthread %d: working", m_sec);
-			sleep(m_sec);
-		}
-		else
-		{
-			printf("\n\t\tthread %d: missed wake up!!", m_sec);
-		}
-		return m_sec;
-	}
-private:
-	misc::event*	m_ev;
-	int				m_sec;
-};
 void test_event::ctor()
 {
-	// waiting in the main thread + signaling the event from a separate thread.
-	// waiting in a thread and signaling the event from main thread
+	misc::cout << "\n\n\t*******************************************************";
+    misc::cout <<   "\n\t* TESTING HEADER: event.hpp                           *";
+    misc::cout <<   "\n\t*******************************************************";
+
+#if 0
+	misc::cout << "\n\n\tctor---------------------------------------------------";
+	// simple test for calling class constructor
 	{
 		misc::event ev;
-		thread3* t[2];
-		for(int i=0; i < 2; ++i)
-			t[i] = new thread3(&ev, i+5);
-
-		for(int i=0; i < 2; ++i)
-			CPPUNIT_ASSERT( t[i]->resume() == 0 );
-		
-		printf("\n\tmain: sleep 2");
-		sleep(2);
-		
-		CPPUNIT_ASSERT( ev.setevent() == 0 );
-
-		for(int i=0; i < 2; ++i)
-			CPPUNIT_ASSERT( t[i]->join() == 0 );
-
-		for(int i=0; i < 2; ++i)
-			CPPUNIT_ASSERT( t[i]->resume() == 0 );
-		
-		printf("\n\tmain: sleep 2");
-		sleep(2);
-		
-
-		CPPUNIT_ASSERT( ev.setevent() == 0 );
-
-		for(int i=0; i < 2; ++i)
-		{
-			CPPUNIT_ASSERT( t[i]->join() == 0 );
-			delete t[i];
-		}
+		CPPUNIT_ASSERT( true );
 	}
+	{
+		misc::event* ev = new misc::event();
+		delete ev;
+		CPPUNIT_ASSERT( true );
+	}
+	{
+		const int EVNO=10;
+		misc::event ev[EVNO];
+		for(int i=0; i < EVNO; ++i)
+			(ev[i]);
+		CPPUNIT_ASSERT( true );
+	}
+	{
+		const int EVNO=10;
+		misc::event* ev[EVNO];
+		for(int i=0; i < EVNO; ++i)
+			ev[i] = new misc::event();
+		for(int i=0; i < EVNO; ++i)
+			delete ev[i];
+	}
+#endif
 }
 
 void test_event::dtor()
 {
-	
+#if 0
+	misc::cout << "\n\n\tdtor---------------------------------------------------";
+	// copy of ::ctor() test function
+	{
+		misc::event ev;
+		CPPUNIT_ASSERT( true );
+	}
+	{
+		misc::event* ev = new misc::event();
+		delete ev;
+		CPPUNIT_ASSERT( true );
+	}
+	{
+		const int EVNO=10;
+		misc::event ev[EVNO];
+		for(int i=0; i < EVNO; ++i)
+			(ev[i]);
+		CPPUNIT_ASSERT( true );
+	}
+	{
+		const int EVNO=10;
+		misc::event* ev[EVNO];
+		for(int i=0; i < EVNO; ++i)
+			ev[i] = new misc::event();
+		for(int i=0; i < EVNO; ++i)
+			delete ev[i];
+	}
+#endif
 }
 
+//! Class: A thread waiting for the event to be signaled
+class WaitForEventThread : public misc::thread
+{
+public:
+	WaitForEventThread(misc::event* ev, int sec)
+	: m_ev(ev), m_sec(sec){}
+	~WaitForEventThread() {}
+	unsigned long run()
+	{
+		printf("\n\t\tthread %d: wait event", m_sec);
+		CPPUNIT_ASSERT( m_ev->lock() == 0 );
+		printf("\n\t\tthread %d: woke up-working", m_sec);
+		sleep(m_sec);
+		return m_sec;
+	}
+private:
+	misc::event*	m_ev;
+	int				m_sec;
+};
+
+//! Class: A thread signaling an event.
+class SignalEventThread : public misc::thread
+{
+public:
+	SignalEventThread(misc::event* ev, int sec)
+	: m_ev(ev), m_sec(sec){}
+	~SignalEventThread(){}
+	unsigned long run()
+	{
+		printf("\n\t\tthread %d: wait", m_sec);
+		sleep(m_sec);
+		printf("\n\t\tthread %d: setevent", m_sec);
+		CPPUNIT_ASSERT( m_ev->setevent() == 0 );
+		return m_sec;		
+	}
+private:
+	misc::event*	m_ev;
+	int				m_sec;
+};
 void test_event::lock()
 {
-	
+	misc::cout << "\n\n\tlock---------------------------------------------------";
+	misc::cout << "\n\n";
+	{
+		// 1 thread wait for signal
+		misc::event ev;
+		WaitForEventThread t(&ev, 1);
+		CPPUNIT_ASSERT( t.resume() == 0 );
+		printf("\n\tmain: wait for thread to resume");
+		sleep(1);
+		CPPUNIT_ASSERT( ev.unlock() == 0 );
+		int jres = t.join(10*1e3);
+		if(jres == 0)
+			printf("\n\tmain: joined thread");
+		else
+			printf("\n\tmain: failed to join thread");
+		CPPUNIT_ASSERT( jres == 0 );
+	}
+	misc::cout << "\n\n";
+	{
+		// more threads waiting for signal
+		misc::event ev;
+		const int THNO = 6;
+		WaitForEventThread* t[THNO];
+		for(size_t i=0; i < THNO; ++i)
+			t[i] = new WaitForEventThread(&ev, i);
+		for(size_t i=0; i < THNO; ++i)
+			CPPUNIT_ASSERT( t[i]->resume() == 0 );
+		printf("\n\tmain: wait for threads to resume");
+		sleep(2);
+		CPPUNIT_ASSERT( ev.unlock() == 0 );
+		// joining thread, presumably they got the signal 
+		for(size_t i=0; i < THNO; ++i)
+		{
+			CPPUNIT_ASSERT( t[i]->join(10*1e3) == 0 );
+			printf("\n\tmain: joined thread %lu", i);
+		}
+		for(size_t i=0; i < THNO; ++i)
+			delete t[i];
+	}
+	misc::cout << "\n\n";
+	{
+		misc::event ev;
+		SignalEventThread t(&ev, 2);
+		printf("\n\tmain: wait for signal");
+		CPPUNIT_ASSERT( t.resume() == 0 );
+		CPPUNIT_ASSERT( ev.lock() == 0 );
+		printf("\n\tmain: signaled");
+		CPPUNIT_ASSERT( t.join() == 0 );
+		printf("\n\tmain: joined thread");
+	}
+	misc::cout << "\n\n";
+	{
+		misc::event ev;
+		const int THNO=6;
+		SignalEventThread* t[THNO];
+		for(int i=0; i < THNO; ++i)
+			t[i] = new SignalEventThread(&ev, i+6);
+		printf("\n\tmain: resuming %d threads", THNO);
+		for(int i=0; i < THNO; ++i)
+			CPPUNIT_ASSERT( t[i]->resume() == 0 );
+		printf("\n\tmain: waiting for %d signals", THNO);
+		for(int i=0; i < THNO; ++i)
+		{
+			CPPUNIT_ASSERT(ev.lock() == 0);
+			printf("\n\tmain: signal");
+		}
+		for(int i=0; i < THNO; ++i)
+		{
+			CPPUNIT_ASSERT( t[i]->join() == 0 );
+			printf("\n\tmain: joined thread %d", i);
+		}
+		for(int i=0; i < THNO; ++i)
+			delete t[i];
+	}
 }
+
+//! Class: A thread waiting with timeout for an event;
+class TimedWaitForEventThread : public misc::thread
+{
+public:
+	TimedWaitForEventThread(misc::event* ev, int sec)
+	: m_ev(ev), m_sec(sec), m_signaled(false) {}
+	~TimedWaitForEventThread() {}
+	unsigned long run()
+	{
+		printf("\n\t\tthread %d: timedwait", m_sec);
+		if( m_ev->trylock(m_sec*1e3) == 0 )
+		{
+			printf("\n\t\tthread %d: woke up", m_sec);
+			sleep(1);
+			m_signaled = true;
+		}
+		else
+		{
+			printf("\n\t\tthread %d: failed to wake up", m_sec);
+		}
+		return m_sec;
+	}
+	bool get_signaled() const { return m_signaled; }	
+private:
+	misc::event*	m_ev;
+	int				m_sec;
+	bool			m_signaled;
+};
 
 void test_event::trylock()
 {
-	
+	misc::cout << "\n\n\ttrylock------------------------------------------------";	
+	misc::cout << "\n\n";
+	{
+		/*	Thread will wait for an event that is not signaled from main thread
+			ever. */
+		misc::event ev;
+		TimedWaitForEventThread t(&ev, 0);
+		CPPUNIT_ASSERT( t.resume() == 0 );
+		CPPUNIT_ASSERT( t.join() == 0 );
+		CPPUNIT_ASSERT( t.get_signaled() == false );
+	}
+	misc::cout << "\n\n";
+	{
+		/*	Thread will wait for an event that is signaled from main thread. */
+		misc::event ev;
+		TimedWaitForEventThread t(&ev, 5);
+		CPPUNIT_ASSERT( t.resume() == 0 );
+		sleep(1);
+		printf("\n\tmain: signaling");
+		CPPUNIT_ASSERT( ev.setevent() == 0 );
+		CPPUNIT_ASSERT( t.join() == 0 );
+		CPPUNIT_ASSERT( t.get_signaled() == true );
+		printf("\n\tmain: joined thread");
+	}
+	misc::cout << "\n\n";
+	{
+		/* Few threads will wait for an event that will not get signaled. */
+		misc::event ev;
+		const int THNO=6;
+		TimedWaitForEventThread* t[THNO];
+		for(int i=0; i < THNO; ++i)
+			t[i] = new TimedWaitForEventThread(&ev, i);
+		for(int i=0; i < THNO; ++i)
+			CPPUNIT_ASSERT( t[i]->resume() == 0 );
+		printf("\n\tmain: threads resumed, no event will be signaled");
+		for(int i=0; i < THNO; ++i)
+		{
+			CPPUNIT_ASSERT( t[i]->join() == 0 );
+			CPPUNIT_ASSERT( t[i]->get_signaled() == false );
+			printf("\n\tmain: joined thread %d", i);
+		}
+		for(int i=0; i < THNO; ++i)
+			delete t[i];
+	}
+	misc::cout << "\n\n";
+	{
+		/* Few threads will wait for an event that will get signaled from main. */
+		misc::event ev;
+		const int THNO=6;
+		TimedWaitForEventThread* t[THNO];
+		for(int i=0; i < THNO; ++i)
+			t[i] = new TimedWaitForEventThread(&ev, i+10);
+		for(int i=0; i < THNO; ++i)
+			CPPUNIT_ASSERT( t[i]->resume() == 0 );
+		printf("\n\tmain: all threads started");
+		sleep(2);
+		printf("\n\tmain: signaling");
+		CPPUNIT_ASSERT( ev.setevent() == 0 );		
+		for(int i=0; i < THNO; ++i)
+		{
+			CPPUNIT_ASSERT( t[i]->join() == 0 );
+			CPPUNIT_ASSERT( t[i]->get_signaled() == true );
+			printf("\n\tmain: joined thread %d", i);
+		}
+		for(int i=0; i < THNO; ++i)
+			delete t[i];
+	}
+	misc::cout << "\n\n";
+	{
+		misc::event ev;
+		SignalEventThread t(&ev, 2);
+		printf("\n\tmain: wait for event");
+		CPPUNIT_ASSERT( t.resume() == 0 );
+		CPPUNIT_ASSERT( ev.trylock(10*1e3) == 0 );
+		printf("\n\tmain: got the signal");
+		CPPUNIT_ASSERT( t.join() == 0 );
+		printf("\n\tmain: joined thread");
+	}
+	misc::cout << "\n\n";
+	{
+		/*	Starting THNO threads and will get in main a signal from each of them. */
+		misc::event ev;
+		const int THNO=6;
+		SignalEventThread* t[THNO];
+		for(int i=0; i < THNO; ++i)
+			t[i] = new SignalEventThread(&ev, i+6);
+		printf("\n\tmain: resuming %d threads", THNO);
+		for(int i=0; i < THNO; ++i)
+			CPPUNIT_ASSERT( t[i]->resume() == 0 );
+		printf("\n\tmain: waiting for %d signals", THNO);
+		for(int i=0; i < THNO; ++i)
+		{
+			CPPUNIT_ASSERT(ev.trylock(20*1e3) == 0);
+			printf("\n\tmain: signal");
+		}
+		for(int i=0; i < THNO; ++i)
+		{
+			CPPUNIT_ASSERT( t[i]->join() == 0 );
+			printf("\n\tmain: joined thread %d", i);
+		}
+		for(int i=0; i < THNO; ++i)
+			delete t[i];
+	}
 }
+
+class WaitForEventThread2 : public misc::thread
+{
+public:
+	WaitForEventThread2(misc::event* ev, int sec)
+	: m_ev(ev), m_sec(sec) {}
+	~WaitForEventThread2() {}
+	misc::event* get_event() const { return m_ev; }
+	unsigned long run()
+	{
+		printf("\n\t\tthread %d: waiting", m_sec);
+		CPPUNIT_ASSERT( m_ev->lock() == 0 );
+		printf("\n\t\tthread %d: signaled, working", m_sec);
+		sleep(m_sec);
+		return m_sec;
+	}
+private:
+	misc::event*	m_ev;
+	int				m_sec;
+};
 
 void test_event::unlock()
 {
-	
+	misc::cout << "\n\n\tunlock-------------------------------------------------";
+	misc::cout << "\n\n";
+	{
+		/* No thread locked on the event. */
+		misc::event ev;
+		TimedWaitForEventThread t(&ev, 1);
+		printf("\n\tmain: thread resume");
+		CPPUNIT_ASSERT( t.resume() == 0 );
+		sleep(3);
+		CPPUNIT_ASSERT( ev.unlock() == 0 );
+		CPPUNIT_ASSERT( t.join() == 0 );
+		printf("\n\tmain: joined thread");
+		CPPUNIT_ASSERT( t.get_signaled() == false );		
+	}
+	misc::cout << "\n\n";
+	{
+		/* 1 thread locked on the event. */
+		misc::event ev;
+		TimedWaitForEventThread t(&ev, 10);
+		printf("\n\tmain: thread resume");
+		CPPUNIT_ASSERT( t.resume() == 0 );
+		sleep(2);		
+		CPPUNIT_ASSERT( ev.unlock() == 0 );
+		CPPUNIT_ASSERT( t.join() == 0 );
+		printf("\n\tmain: joined thread");
+		CPPUNIT_ASSERT( t.get_signaled() == true );	
+	}
+	misc::cout << "\n\n";
+	{
+		const int THNO=6;
+		WaitForEventThread2* t[THNO];
+		for(int i=0; i < THNO; ++i)
+			t[i] = new WaitForEventThread2(new misc::event(), i);
+		printf("\n\tmain: starting %d threads", THNO);
+		for(int i=0; i < THNO; ++i)
+			CPPUNIT_ASSERT( t[i]->resume() == 0 );
+		sleep(2);
+		printf("\n\tmain: signaling");
+		for(int i=0; i < THNO; ++i)
+		{
+			misc::event* ev = t[i]->get_event();
+			CPPUNIT_ASSERT( ev->unlock() == 0 );
+		}
+		for(int i=0; i < THNO; ++i)
+		{
+			CPPUNIT_ASSERT( t[i]->join() == 0 );
+			printf("\n\tmain: joined thread %d", i);
+		}
+		for(int i=0; i < THNO; ++i)
+		{
+			misc::event* ev = t[i]->get_event();
+			delete ev;
+			delete t[i];
+		}
+	}
 }
 // maybe one of the 2 needed only
 void test_event::setevent()
 {
-	
+	misc::cout << "\n\n\tsetevent-----------------------------------------------";
+	CPPUNIT_ASSERT( true ); // all similar with unlock
 }
 
-void test_event::pulseevent()
-{
-	
-}
 
-void test_event::resetevent()
-{
-	
-}
 //##########################END  TEST  SUITE######################################

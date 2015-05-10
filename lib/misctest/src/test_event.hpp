@@ -40,9 +40,7 @@ class test_event : public CppUnit::TestFixture
 	CPPUNIT_TEST(lock);
 	CPPUNIT_TEST(trylock);
 	CPPUNIT_TEST(unlock);
-	CPPUNIT_TEST(setevent);  // maybe one of the 2 needed only
-	CPPUNIT_TEST(pulseevent);
-	CPPUNIT_TEST(resetevent);	
+	CPPUNIT_TEST(setevent);
 	CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -55,9 +53,7 @@ public:
 	void lock();
 	void trylock();
 	void unlock();
-	void setevent();  // maybe one of the 2 needed only
-	void pulseevent();
-	void resetevent();	
+	void setevent();
 };
 
 #endif // __test_event_hpp__

@@ -33,6 +33,11 @@
 #include <cppunit/ui/text/TestRunner.h>
 
 
+//libraries
+#include "stream.hpp"
+
+
+
 //###########################FILENAME TEST CLASS ####################################
 void test_filename::setUp()
 {
@@ -54,6 +59,10 @@ void test_filename::tearDown()
 
 void test_filename::test0()
 {
+    misc::cout << "\n\n\t*******************************************************";
+    misc::cout <<   "\n\t* TESTING HEADER: filename.hpp                        *";
+    misc::cout <<   "\n\t*******************************************************";
+
 
     // 0 0 0 -> 0 0 0
     misc::string dir(U(""));

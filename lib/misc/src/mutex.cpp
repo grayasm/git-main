@@ -124,14 +124,13 @@ namespace misc
 		 *	(by any thread, including the current thread), the call returns 
 		 *	immediately.
 		 */
-		if(milliseconds == (unsigned long)INFINITE)
+		if(milliseconds == (unsigned long)-1)
 		{
 			int error = pthread_mutex_lock(&m_mtx);
 			if(error)
 			{
 				throw misc::exception("pthread_mutex_lock error");
 			}
-			//printf("\n\t\ttrylock(INFINITE) ret 0");
 			return 0;
 		}
 		else
@@ -139,7 +138,6 @@ namespace misc
 			int error = pthread_mutex_trylock(&m_mtx);
 			if(error == 0)	// succeeded
 			{
-				//printf("\n\t\ttrylock(%lu) ret 0", milliseconds);
 				return 0;	// LOCKED
 			}
 			
@@ -153,7 +151,6 @@ namespace misc
 			double dtimeout = nanosec;
 			while(dtimeout > 0 && error == EBUSY)
 			{
-				//printf("\n\t\ttrylock(%lu) ret EBUSY", milliseconds);
 				nanosleep(&req, &rem);
 				dtimeout -= req.tv_nsec;
 				error = pthread_mutex_trylock(&m_mtx);
@@ -161,19 +158,16 @@ namespace misc
 			
 			if(error == 0)
 			{
-				//printf("\n\t\ttrylock(%lu) ret 0", milliseconds);
 				return 0; // LOCKED
 			}
 			
 			if(error == EBUSY)
 			{
-				//printf("\n\t\ttrylock(%lu) ret EBUSY", milliseconds);
 				return 1; // WAIT_TIMEOUT
 			}
 			
-			//printf("\n\t\ttrylock(%lu) throw!!", milliseconds);
 			throw misc::exception("pthread_mutex_trylock error");
-		}		
+		}
 #endif	
 	}
 

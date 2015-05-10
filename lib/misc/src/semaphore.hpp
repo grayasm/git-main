@@ -49,8 +49,10 @@ namespace misc
 		//! Aquire a lock on the semaphore and returns 0 or 1 if interrupted by signal.
 		int lock();
 		
-		//! Aquire a lock on the semaphore and returns 0 or 1 if timeout or interrupted by signal.
-		int trylock(unsigned long milliseconds = INFINITE);
+		/*! Aquire a lock on the semaphore and returns 0 or 1 if timeout.
+		 *! milliseconds possible values are: any > 0 or -1 for INFINITE
+		 */
+		int trylock(unsigned long milliseconds = 0);
 		
 		//! Unlock a previous lock on the semaphore and returns 0 or throw otherwise.
 		int unlock();

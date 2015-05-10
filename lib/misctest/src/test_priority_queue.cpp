@@ -117,7 +117,8 @@ void test_priority_queue::ctor(const char* msg)
 
 	
 	// initialization data		
-	Cval chtab[255]; /*NULL terminated*/ chtab[254]=0;
+	Cval chtab[255];
+	chtab[254]=0;
 	for(size_t i = 0; i < 254; ++i)
 	{
 		chtab[i] = Cval(i+1); // we iterate also with float,double,etc			
@@ -243,10 +244,7 @@ void test_priority_queue::size(const char* msg)
 template<typename Container, typename Compare>
 void test_priority_queue::top(const char* msg)
 {
-	typedef typename Container::container_type	TCont;
     typedef typename Container::value_type CVal;
-	typedef Compare						TCmp;
-
     {
         time_printer tp(msg, m_print_time);
 
@@ -263,11 +261,8 @@ void test_priority_queue::top(const char* msg)
 template<typename Container, typename Compare>
 void test_priority_queue::push(const char* msg)
 {
-	typedef typename Container::container_type	TCont;
     typedef typename Container::value_type       CVal;
-	typedef Compare						TCmp;
-
-    {
+	{
         time_printer tp(msg, m_print_time);
 
         Container cont;
@@ -283,10 +278,7 @@ void test_priority_queue::push(const char* msg)
 template<typename Container, typename Compare>
 void test_priority_queue::pop(const char* msg)
 {
-	typedef typename Container::container_type	TCont;
     typedef typename Container::value_type     CVal;
-	typedef Compare						TCmp;
-
     {
         time_printer tp(msg, m_print_time);
 

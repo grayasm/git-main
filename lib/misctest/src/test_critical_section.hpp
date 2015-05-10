@@ -37,6 +37,9 @@ class test_critical_section : public CppUnit::TestFixture
 {
 	CPPUNIT_TEST_SUITE(test_critical_section);
 	CPPUNIT_TEST(ctor);
+	CPPUNIT_TEST(dtor);
+	CPPUNIT_TEST(lock);
+	CPPUNIT_TEST(unlock);
 	CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -45,6 +48,9 @@ public:
 
 	//begin test suite
 	void ctor();
+	void dtor();
+	void lock();
+	void unlock();
 
 };
 

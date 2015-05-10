@@ -61,8 +61,10 @@ void test_functional::tearDown()
 void test_functional::unary_function()
 {
 	misc::cout << "\n\n\t*******************************************************";
-	misc::cout <<   "\n\t* TESTING HEADER \"functional.hpp\"                   *";
+	misc::cout <<   "\n\t* TESTING HEADER:  functional.hpp                     *";
 	misc::cout <<   "\n\t*******************************************************";
+	
+	
 	misc::cout << "\n\n\tunary_function-----------------------------------------";
 	unary_function<std::vector<int> > ("\n\tstd::vector       ");
 	unary_function2<misc::vector<int> >("\n\tmisc::vector      ");

@@ -94,7 +94,7 @@ public:
 		: m_sem(sem), m_sec(sec) {}
 	~slthread() {}
 	// --vtable--
-	int run()
+	unsigned long run()
 	{
 		m_sem->lock();
 		printf("\n\t\tthread %d locked semaphore", m_sec);
@@ -141,7 +141,7 @@ void test_semaphore::lock()
 		for(int i=0; i < THNO; ++i)
 			t[i]->resume();
 		for(int i=0; i < THNO; ++i)
-			t[i]->join(INFINITE);
+			t[i]->join(-1);
 		for(int i=0; i < THNO; ++i)
 			delete t[i];
 
@@ -172,7 +172,7 @@ void test_semaphore::lock()
 		for(int i=0; i < THNO; ++i)
 			t[i]->resume();
 		for(int i=0; i < THNO; ++i)
-			t[i]->join(INFINITE);
+			t[i]->join(-1);
 		for(int i=0; i < THNO; ++i)
 			delete t[i];
 
@@ -196,7 +196,7 @@ public:
 		: m_sem(sem), m_sec(sec), m_count(0) {}
 	~stthread() {}
 	// --vtable--
-	int run()
+	unsigned long run()
 	{
 		while(m_sem->trylock(1 * 1e3) != 0)
 			m_count++;

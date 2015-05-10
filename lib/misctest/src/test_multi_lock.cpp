@@ -33,6 +33,8 @@
 //libraries
 #include "string.hpp"
 #include "exception.hpp"
+#include "stream.hpp"
+
 
 
 
@@ -48,6 +50,9 @@ void test_multi_lock::tearDown()
 //##########################BEGIN TEST SUITE######################################
 void test_multi_lock::ctor()
 {
+    misc::cout << "\n\n\t*******************************************************";
+    misc::cout <<   "\n\t* TESTING HEADER: multi_lock.hpp                      *";
+    misc::cout <<   "\n\t*******************************************************";
 
 }
 //##########################END  TEST  SUITE######################################

@@ -5,6 +5,7 @@ SRC=misctest.cpp \
     test_algorithm.cpp \
     test_autoptr.cpp \
     test_critical_section.cpp \
+    test_autocritical_section.cpp \
     test_deque.cpp \
     test_event.cpp \
     test_exception.cpp \

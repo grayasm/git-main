@@ -28,6 +28,7 @@
 #include "test_algorithm.hpp"
 #include "test_autoptr.hpp"
 #include "test_critical_section.hpp"
+#include "test_autocritical_section.hpp"
 #include "test_deque.hpp"
 #include "test_event.hpp"
 #include "test_exception.hpp"
@@ -132,6 +133,7 @@ int main(int argc, char** argv)
 #if 0
     CPPUNIT_TEST_SUITE_REGISTRATION(test_filename);
     CPPUNIT_TEST_SUITE_REGISTRATION(test_critical_section);
+	CPPUNIT_TEST_SUITE_REGISTRATION(test_autocritical_section);
     CPPUNIT_TEST_SUITE_REGISTRATION(test_mutex);
     CPPUNIT_TEST_SUITE_REGISTRATION(test_semaphore);
     CPPUNIT_TEST_SUITE_REGISTRATION(test_event);
@@ -141,10 +143,11 @@ int main(int argc, char** argv)
     CPPUNIT_TEST_SUITE_REGISTRATION(test_time);
 #endif
 
-    CPPUNIT_TEST_SUITE_REGISTRATION(test_thread);
-    CPPUNIT_TEST_SUITE_REGISTRATION(test_mutex);
-    CPPUNIT_TEST_SUITE_REGISTRATION(test_semaphore);
-    CPPUNIT_TEST_SUITE_REGISTRATION(test_event);
+	
+	CPPUNIT_TEST_SUITE_REGISTRATION(test_critical_section);
+	CPPUNIT_TEST_SUITE_REGISTRATION(test_autocritical_section);
+	
+    
 	
 	
 

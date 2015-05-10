@@ -55,7 +55,7 @@ public:
 	tthread():m_a(-1), m_run(false) {}
 	tthread(int a):m_a(a), m_run(false) {}
 	~tthread() {}
-	int run()
+	unsigned long run()
 	{
 		m_run = true;
 		if(m_a > 0) // max sleep time
@@ -281,7 +281,7 @@ void test_thread::join()
 		// sleep 10 sec and join INFINITE ok
 		tthread t10(10);
 		CPPUNIT_ASSERT( t10.resume() == 0 );
-		CPPUNIT_ASSERT( t10.join(INFINITE) == 0 ); // OK
+		CPPUNIT_ASSERT( t10.join(-1) == 0 ); // OK
 		CPPUNIT_ASSERT( t10.geta() == 10 );
 		CPPUNIT_ASSERT( t10.getrun() == true );
 	}
@@ -357,7 +357,7 @@ void test_thread::get_exit_code()
 		tthread t10(10);
 		unsigned long retval = 0;
 		CPPUNIT_ASSERT( t10.resume() == 0 );
-		CPPUNIT_ASSERT( t10.join(INFINITE) == 0 ); // OK
+		CPPUNIT_ASSERT( t10.join(-1) == 0 ); // OK
 		CPPUNIT_ASSERT( t10.get_exit_code(&retval) == 0 ); // OK
 		CPPUNIT_ASSERT( retval == 10 ); // OK
 		CPPUNIT_ASSERT( t10.geta() == 10 );

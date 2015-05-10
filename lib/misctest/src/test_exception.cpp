@@ -51,6 +51,11 @@ void test_exception::tearDown()
 //test begin
 void test_exception::ctor()
 {
+	misc::cout << "\n\n\t*******************************************************";
+    misc::cout <<   "\n\t* TESTING HEADER: exception.hpp                       *";
+    misc::cout <<   "\n\t*******************************************************";
+
+	
 	misc::cout << "\n\n\tctor---------------------------------------------------";
 	ctor<misc::exception>("\n\tmisc::exception");
 	ctor<std::bad_alloc>("\n\tstd::bad_alloc");

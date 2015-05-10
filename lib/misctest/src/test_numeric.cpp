@@ -152,8 +152,7 @@ template<typename Container>
 void test_numeric::inner_product(const char* msg)
 {
     typedef typename Container::value_type Cval;
-	typedef typename Container::iterator It;
-
+	
     Container list0, list2;
     for(size_t j=1; j <= m_container_size; ++j)
     {
