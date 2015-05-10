@@ -143,10 +143,6 @@ int main(int argc, char** argv)
     CPPUNIT_TEST_SUITE_REGISTRATION(test_time);
 #endif
 
-	
-	CPPUNIT_TEST_SUITE_REGISTRATION(test_critical_section);
-	CPPUNIT_TEST_SUITE_REGISTRATION(test_autocritical_section);
-	
     
 	
 	

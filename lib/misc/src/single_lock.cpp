@@ -23,20 +23,16 @@
 
 namespace misc
 {
-	single_lock::single_lock(misc::sync_base* object, bool lockitnow)
+	single_lock::single_lock(misc::sync_base* object)
 	{		
 		if(object == NULL)
-			throw misc::exception("Invalid argument");
+			throw misc::exception("single_lock invalid parameter");
 		m_object = object;
-		if(lockitnow)
-			m_object->lock();
 	}
 
 	single_lock::~single_lock()
 	{
-		/*	unlock() may freeze temporarly the stack unwinding. 
-			Most probably we need a timed-out, safe unlock attempt.
-		*/
+		// *this has no ownership of m_object.
 	}
 
 	int single_lock::lock()
@@ -54,4 +50,4 @@ namespace misc
 		return m_object->unlock();
 	}
 
-}; // namespace
+} // namespace

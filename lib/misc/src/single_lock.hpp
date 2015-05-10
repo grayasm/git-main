@@ -29,34 +29,19 @@ namespace misc
 	class single_lock
 	{		
 	public:
-		/*!	ctor
-			\param object the synchronization object to be accessed.
-			Cannot be NULL.
-			\param lockitnow specifies whether to initially attempt to access 
-			the supplied object.
-		*/
-		explicit single_lock(sync_base* object, bool lockitnow = false);
+		//! Creates a wrapper around a valid synchronization object.
+		single_lock(sync_base* object);
 
-		//!	dtor
+		//!	Destructor
 		~single_lock();
 		
-		/*!	lock
-			The function will return only when the object is signaled.
-			\return If the state of the object is signaled the
-			return value is nonzero.
-		*/
+		//! Locks the object and returns 0 if successful or 1 otherwise.
 		int lock();
 
-		/*!	trylock
-			Waits until the object is in the signaled state or the time-out 
-			interval elapses.
-		*/
+		//! Locks the object and returns 0 if successful or 1 if timeout.
 		int trylock(unsigned long milliseconds);
 
-		/*!	unlock
-			Releases ownership of the object.
-			\return If the function succeeds, the return value is nonzero.
-		*/
+		//! Unlocks the object and returns 0 or 1 otherwise.
 		int unlock();		
 		
 	private:
@@ -67,7 +52,6 @@ namespace misc
 	protected:
 		sync_base* m_object;
 	};
-
 }  // namespace
 
 

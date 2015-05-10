@@ -42,6 +42,10 @@ public:
 
 	// begin test suite
 	void ctor();
+	void dtor();
+	void lock();
+	void trylock();
+	void unlock();
 };
 
 
