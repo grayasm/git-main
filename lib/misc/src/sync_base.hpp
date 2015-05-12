@@ -36,15 +36,21 @@ namespace misc
 	class sync_base
 	{		
 	public:
+		//! Constructor
 		sync_base();
 
+		//! Destructor
 		virtual ~sync_base();
 
+		//! Locks the object and returns 0 or otherwise throws misc::exception.
 		virtual int lock() = 0;
 		
-		/*	milliseconds can have any > 0 value of -1 for INFINITE
+		/*! Locks the object and returns 0 or 1 if timeout.
+		 *!	milliseconds possible values are: any > 0 or -1 for INFINITE
 		 */
-		virtual int trylock(unsigned long milliseconds) = 0;
+		virtual int trylock(unsigned long milliseconds = 0) = 0;
+		
+		//! Unlocks the object and returns 0 or otherwise throws misc::exception.
 		virtual int unlock() = 0;
 
 	private:
@@ -52,9 +58,7 @@ namespace misc
 		sync_base(const sync_base&);
 		sync_base& operator=(const sync_base&);
 		
-		// friend class single_lock;
 		// friend class multi_lock;
-
 
 	protected:
 #ifdef _WIN32

@@ -34,6 +34,10 @@ class test_single_lock : public CppUnit::TestFixture
 {
 	CPPUNIT_TEST_SUITE(test_single_lock);
 	CPPUNIT_TEST(ctor);
+	CPPUNIT_TEST(dtor);
+	CPPUNIT_TEST(lock);
+	CPPUNIT_TEST(trylock);
+	CPPUNIT_TEST(unlock);
 	CPPUNIT_TEST_SUITE_END();
 
 public:

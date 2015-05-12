@@ -16,37 +16,40 @@
 #include "time.hpp"
 #include "thread.hpp"
 #include "cpu_timer.hpp"
-#include <semaphore.h>
-#include <errno.h>
+#include "mutex.hpp"
+#include "semaphore.hpp"
+#include "event.hpp"
+#include "single_lock.hpp"
 
 
-class mythread : public misc::thread
+class mthread : public misc::thread
 {
 public:
-	mythread(int sec)
-	: m_sec(sec){}
-	~mythread(){}
+	mthread(misc::single_lock* sl, int sec)
+	: m_sl(sl), m_sec(sec) {} 
 	unsigned long run()
 	{
-		sleep(m_sec);
+		m_sl->lock();
+		m_sl->unlock();
 		return m_sec;
 	}
-private:	
-	int		m_sec;
+private:
+	misc::single_lock*	m_sl;
+	int					m_sec;
 };
-
 int main(int, char**)
 {
 	setvbuf(stdout, NULL, _IONBF, 0);
+
+	misc::mutex m;
+	misc::single_lock sl(&m);
 	
-	{
-		mythread t(5);
-		t.resume();
-		t.join(1*1e3);
-	}
-	printf("\n\tmain: sleep(10)");
-	sleep(10);
+	sl.lock();
+	mthread t(&sl, 2);
+	t.resume();
+	sleep(2);
+	sl.unlock();
+	t.join();
 	
-	printf("\n\tmain: return 0");
 	return 0;
 }

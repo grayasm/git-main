@@ -35,13 +35,14 @@ namespace misc
 		//!	Destructor
 		~single_lock();
 		
-		//! Locks the object and returns 0 if successful or 1 otherwise.
+		//! Locks the object and returns 0 if successful or otherwise throws
+		//!	misc::exception.
 		int lock();
 
 		//! Locks the object and returns 0 if successful or 1 if timeout.
 		int trylock(unsigned long milliseconds);
 
-		//! Unlocks the object and returns 0 or 1 otherwise.
+		//! Unlocks the object and returns 0 or otherwise throws misc::exception.
 		int unlock();		
 		
 	private:
