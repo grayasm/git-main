@@ -114,12 +114,12 @@ void test_event::dtor()
 }
 
 //! Class: A thread waiting for the event to be signaled
-class WaitForEventThread : public misc::thread
+class EWaitForEventThread : public misc::thread
 {
 public:
-	WaitForEventThread(misc::event* ev, int sec)
+	EWaitForEventThread(misc::event* ev, int sec)
 	: m_ev(ev), m_sec(sec){}
-	~WaitForEventThread() {}
+	~EWaitForEventThread() {}
 	unsigned long run()
 	{
 		printf("\n\t\tthread %d: wait event", m_sec);
@@ -134,12 +134,12 @@ private:
 };
 
 //! Class: A thread signaling an event.
-class SignalEventThread : public misc::thread
+class ESignalEventThread : public misc::thread
 {
 public:
-	SignalEventThread(misc::event* ev, int sec)
+	ESignalEventThread(misc::event* ev, int sec)
 	: m_ev(ev), m_sec(sec){}
-	~SignalEventThread(){}
+	~ESignalEventThread(){}
 	unsigned long run()
 	{
 		printf("\n\t\tthread %d: wait", m_sec);
@@ -159,7 +159,7 @@ void test_event::lock()
 	{
 		// 1 thread wait for signal
 		misc::event ev;
-		WaitForEventThread t(&ev, 1);
+		EWaitForEventThread t(&ev, 1);
 		CPPUNIT_ASSERT( t.resume() == 0 );
 		printf("\n\tmain: wait for thread to resume");
 		sleep(1);
@@ -176,9 +176,9 @@ void test_event::lock()
 		// more threads waiting for signal
 		misc::event ev;
 		const int THNO = 600;
-		WaitForEventThread* t[THNO];
+		EWaitForEventThread* t[THNO];
 		for(size_t i=0; i < THNO; ++i)
-			t[i] = new WaitForEventThread(&ev, i%6);
+			t[i] = new EWaitForEventThread(&ev, i%6);
 		for(size_t i=0; i < THNO; ++i)
 			CPPUNIT_ASSERT( t[i]->resume() == 0 );
 		printf("\n\tmain: wait for threads to resume");
@@ -196,7 +196,7 @@ void test_event::lock()
 	misc::cout << "\n\n";
 	{
 		misc::event ev;
-		SignalEventThread t(&ev, 2);
+		ESignalEventThread t(&ev, 2);
 		printf("\n\tmain: wait for signal");
 		CPPUNIT_ASSERT( t.resume() == 0 );
 		CPPUNIT_ASSERT( ev.lock() == 0 );
@@ -208,9 +208,9 @@ void test_event::lock()
 	{
 		misc::event ev;
 		const int THNO=6;
-		SignalEventThread* t[THNO];
+		ESignalEventThread* t[THNO];
 		for(int i=0; i < THNO; ++i)
-			t[i] = new SignalEventThread(&ev, i+6);
+			t[i] = new ESignalEventThread(&ev, i+6);
 		printf("\n\tmain: resuming %d threads", THNO);
 		for(int i=0; i < THNO; ++i)
 			CPPUNIT_ASSERT( t[i]->resume() == 0 );
@@ -231,12 +231,12 @@ void test_event::lock()
 }
 
 //! Class: A thread waiting with timeout for an event;
-class TimedWaitForEventThread : public misc::thread
+class ETimedWaitForEventThread : public misc::thread
 {
 public:
-	TimedWaitForEventThread(misc::event* ev, int sec)
+	ETimedWaitForEventThread(misc::event* ev, int sec)
 	: m_ev(ev), m_sec(sec), m_signaled(false) {}
-	~TimedWaitForEventThread() {}
+	~ETimedWaitForEventThread() {}
 	unsigned long run()
 	{
 		printf("\n\t\tthread %d: timedwait", m_sec);
@@ -267,7 +267,7 @@ void test_event::trylock()
 		/*	Thread will wait for an event that is not signaled from main thread
 			ever. */
 		misc::event ev;
-		TimedWaitForEventThread t(&ev, 0);
+		ETimedWaitForEventThread t(&ev, 0);
 		CPPUNIT_ASSERT( t.resume() == 0 );
 		CPPUNIT_ASSERT( t.join() == 0 );
 		CPPUNIT_ASSERT( t.get_signaled() == false );
@@ -276,7 +276,7 @@ void test_event::trylock()
 	{
 		/*	Thread will wait for an event that is signaled from main thread. */
 		misc::event ev;
-		TimedWaitForEventThread t(&ev, 5);
+		ETimedWaitForEventThread t(&ev, 5);
 		CPPUNIT_ASSERT( t.resume() == 0 );
 		sleep(1);
 		printf("\n\tmain: signaling");
@@ -290,9 +290,9 @@ void test_event::trylock()
 		/* Few threads will wait for an event that will not get signaled. */
 		misc::event ev;
 		const int THNO=600;
-		TimedWaitForEventThread* t[THNO];
+		ETimedWaitForEventThread* t[THNO];
 		for(int i=0; i < THNO; ++i)
-			t[i] = new TimedWaitForEventThread(&ev, i%6);
+			t[i] = new ETimedWaitForEventThread(&ev, i%6);
 		for(int i=0; i < THNO; ++i)
 			CPPUNIT_ASSERT( t[i]->resume() == 0 );
 		printf("\n\tmain: threads resumed, no event will be signaled");
@@ -310,9 +310,9 @@ void test_event::trylock()
 		/* Few threads will wait for an event that will get signaled from main. */
 		misc::event ev;
 		const int THNO=600;
-		TimedWaitForEventThread* t[THNO];
+		ETimedWaitForEventThread* t[THNO];
 		for(int i=0; i < THNO; ++i)
-			t[i] = new TimedWaitForEventThread(&ev, i+10);
+			t[i] = new ETimedWaitForEventThread(&ev, i+10);
 		for(int i=0; i < THNO; ++i)
 			CPPUNIT_ASSERT( t[i]->resume() == 0 );
 		printf("\n\tmain: all threads started");
@@ -331,7 +331,7 @@ void test_event::trylock()
 	misc::cout << "\n\n";
 	{
 		misc::event ev;
-		SignalEventThread t(&ev, 2);
+		ESignalEventThread t(&ev, 2);
 		printf("\n\tmain: wait for event");
 		CPPUNIT_ASSERT( t.resume() == 0 );
 		CPPUNIT_ASSERT( ev.trylock(10*1e3) == 0 );
@@ -344,9 +344,9 @@ void test_event::trylock()
 		/*	Starting THNO threads and will get in main a signal from each of them. */
 		misc::event ev;
 		const int THNO=6;
-		SignalEventThread* t[THNO];
+		ESignalEventThread* t[THNO];
 		for(int i=0; i < THNO; ++i)
-			t[i] = new SignalEventThread(&ev, i+6);
+			t[i] = new ESignalEventThread(&ev, i+6);
 		printf("\n\tmain: resuming %d threads", THNO);
 		for(int i=0; i < THNO; ++i)
 			CPPUNIT_ASSERT( t[i]->resume() == 0 );
@@ -366,12 +366,12 @@ void test_event::trylock()
 	}
 }
 
-class WaitForEventThread2 : public misc::thread
+class EWaitForEventThread2 : public misc::thread
 {
 public:
-	WaitForEventThread2(misc::event* ev, int sec)
+	EWaitForEventThread2(misc::event* ev, int sec)
 	: m_ev(ev), m_sec(sec) {}
-	~WaitForEventThread2() {}
+	~EWaitForEventThread2() {}
 	misc::event* get_event() const { return m_ev; }
 	unsigned long run()
 	{
@@ -393,7 +393,7 @@ void test_event::unlock()
 	{
 		/* No thread locked on the event. */
 		misc::event ev;
-		TimedWaitForEventThread t(&ev, 1);
+		ETimedWaitForEventThread t(&ev, 1);
 		printf("\n\tmain: thread resume");
 		CPPUNIT_ASSERT( t.resume() == 0 );
 		sleep(3);
@@ -406,7 +406,7 @@ void test_event::unlock()
 	{
 		/* 1 thread locked on the event. */
 		misc::event ev;
-		TimedWaitForEventThread t(&ev, 10);
+		ETimedWaitForEventThread t(&ev, 10);
 		printf("\n\tmain: thread resume");
 		CPPUNIT_ASSERT( t.resume() == 0 );
 		sleep(2);		
@@ -418,9 +418,9 @@ void test_event::unlock()
 	misc::cout << "\n\n";
 	{
 		const int THNO=600;
-		WaitForEventThread2* t[THNO];
+		EWaitForEventThread2* t[THNO];
 		for(int i=0; i < THNO; ++i)
-			t[i] = new WaitForEventThread2(new misc::event(), i%6);
+			t[i] = new EWaitForEventThread2(new misc::event(), i%6);
 		printf("\n\tmain: starting %d threads", THNO);
 		for(int i=0; i < THNO; ++i)
 			CPPUNIT_ASSERT( t[i]->resume() == 0 );

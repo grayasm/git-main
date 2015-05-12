@@ -87,12 +87,12 @@ void test_semaphore::dtor()
 	}
 }
 
-class slthread : public misc::thread
+class Sslthread : public misc::thread
 {
 public:
-	slthread(misc::semaphore* sem, int sec)
+	Sslthread(misc::semaphore* sem, int sec)
 		: m_sem(sem), m_sec(sec) {}
-	~slthread() {}
+	~Sslthread() {}
 	// --vtable--
 	unsigned long run()
 	{
@@ -135,9 +135,9 @@ void test_semaphore::lock()
 
 		misc::semaphore sem(1);
 		const int THNO = 7;
-		slthread* t[THNO];
+		Sslthread* t[THNO];
 		for(int i=0; i < THNO; ++i)
-			t[i] = new slthread(&sem, i);
+			t[i] = new Sslthread(&sem, i);
 		for(int i=0; i < THNO; ++i)
 			t[i]->resume();
 		for(int i=0; i < THNO; ++i)
@@ -166,9 +166,9 @@ void test_semaphore::lock()
 
 		const int THNO = 7;
 		misc::semaphore sem( THNO );		
-		slthread* t[THNO];
+		Sslthread* t[THNO];
 		for(int i=0; i < THNO; ++i)
-			t[i] = new slthread(&sem, i);
+			t[i] = new Sslthread(&sem, i);
 		for(int i=0; i < THNO; ++i)
 			t[i]->resume();
 		for(int i=0; i < THNO; ++i)
@@ -189,12 +189,12 @@ void test_semaphore::lock()
 	}
 }
 
-class stthread : public misc::thread
+class Sstthread : public misc::thread
 {
 public:
-	stthread(misc::semaphore* sem, int sec)
+	Sstthread(misc::semaphore* sem, int sec)
 		: m_sem(sem), m_sec(sec), m_count(0) {}
-	~stthread() {}
+	~Sstthread() {}
 	// --vtable--
 	unsigned long run()
 	{
@@ -237,9 +237,9 @@ void test_semaphore::trylock()
 		
 		const int THNO = 7;
 		misc::semaphore sem(1);
-		stthread*  t[THNO];
+		Sstthread*  t[THNO];
 		for(int i=0; i < THNO; ++i)
-			t[i] = new stthread(&sem, i);
+			t[i] = new Sstthread(&sem, i);
 		
 		
 		CPPUNIT_ASSERT( sem.lock() == 0 );// get at least 1 trylock in each thread
@@ -276,9 +276,9 @@ void test_semaphore::trylock()
 		
 		const int THNO = 7;
 		misc::semaphore sem(THNO);
-		stthread*  t[THNO];
+		Sstthread*  t[THNO];
 		for(int i=0; i < THNO; ++i)
-			t[i] = new stthread(&sem, i);// max 6 sec for i=6
+			t[i] = new Sstthread(&sem, i);// max 6 sec for i=6
 		for(int i=0; i < THNO; ++i)
 			t[i]->resume();
 		for(int i=0; i < THNO; ++i)

@@ -28,58 +28,30 @@
 namespace misc
 {	
 
-	//class multi_lock
-	//{
-	//public:
-	//	/*!	ctor
-	//		\param objects[] array of pointers to the synchronization objects 
-	//		to be waited on. Cannot be NULL.
-	//		\param objcount number of objects in objects[] array. It must be
-	//		greater than zero.
-	//		\param lockitnow specifies whether to attempt locking objects 
-	//		immediately.
-	//	*/
-	//	multi_lock(sync_base* objects[], unsigned long objcount, bool lockitnow = false);
+	class multi_lock
+	{
+	public:
+		multi_lock(sync_base* objects[], unsigned long objcount);
+		
+		~multi_lock();
 
-	//	//!	dtor
-	//	~multi_lock();
+		int lock();
 
-	//	/*!	lock
-	//		The function will return only when the objects are signaled.
-	//		\return	if the state of the objects is signaled the
-	//		return value is nonzero.
-	//	*/
-	//	int lock();
+		int trylock(unsigned long milliseconds, bool wait_for_all);
 
-	//	/*!	trylock
-	//		Waits until the objects are in the signaled state or the time-out 
-	//		interval elapses.
-	//		\return if the function succeeded the return value is nonzero.
-	//	*/
-	//	int trylock(unsigned long milliseconds, bool wait_for_all);
+		int unlock();
 
-	//	/*!	unlock
-	//		Releases ownership of the objects.
-	//		\return if the function succeeds, the return value is nonzero.
-	//	*/
-	//	int unlock();
-
-	//private:
-	//	//! non-copyable
-	//	multi_lock(const multi_lock&);
-	//	multi_lock& operator=(const multi_lock&);
-	//	
-	//protected:
-	//	sync_base**		m_objects;
-	//	unsigned long	m_count;
-	//};
+	private:
+		//! non-copyable
+		multi_lock(const multi_lock&);
+		multi_lock& operator=(const multi_lock&);
+		
+	protected:
+		sync_base**		m_objects;
+		unsigned long		m_count;
+	};
 
 }  // namespace
 
 
 #endif // __multi_lock_hpp__
-
-
-
-
-

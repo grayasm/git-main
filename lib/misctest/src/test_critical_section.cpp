@@ -93,12 +93,12 @@ void test_critical_section::dtor()
 
 
 // testing lock
-class LockThread : public misc::thread
+class CSLockThread : public misc::thread
 {
 public:
-	LockThread(misc::critical_section* cs, int sec)
+	CSLockThread(misc::critical_section* cs, int sec)
 		: m_cs(cs), m_sec(sec) { }
-	~LockThread() { }
+	~CSLockThread() { }
 	unsigned long run()
 	{
 		m_cs->lock();
@@ -152,9 +152,9 @@ void test_critical_section::lock()
 
 		misc::critical_section cs;
 		const int THNO = 7;
-		LockThread* t[THNO];
+		CSLockThread* t[THNO];
 		for(int i=0; i < THNO; ++i)
-			t[i] = new LockThread(&cs, i);
+			t[i] = new CSLockThread(&cs, i);
 		for(int i=0; i < THNO; ++i)
 			t[i]->resume();
 		for(int i=0; i < THNO; ++i)

@@ -49,12 +49,12 @@ void test_thread::tearDown()
 }
 
 //##########################BEGIN TEST SUITE######################################
-class tthread : public misc::thread
+class Ttthread : public misc::thread
 {
 public:
-	tthread():m_a(-1), m_run(false) {}
-	tthread(int a):m_a(a), m_run(false) {}
-	~tthread() {}
+	Ttthread():m_a(-1), m_run(false) {}
+	Ttthread(int a):m_a(a), m_run(false) {}
+	~Ttthread() {}
 	unsigned long run()
 	{
 		m_run = true;
@@ -83,7 +83,7 @@ void test_thread::ctor()
 	
 	{
 		// default ctor - thread is not running.
-		tthread t0, t1, t2;
+		Ttthread t0, t1, t2;
 		CPPUNIT_ASSERT(t0.geta() == -1);
 		CPPUNIT_ASSERT(t0.getrun() == false);
 		CPPUNIT_ASSERT(t1.geta() == -1);
@@ -93,7 +93,7 @@ void test_thread::ctor()
 	}
 	{
 		// parameterized ctor - thread is not running.
-		tthread t0(0), t1(1), t2(2);
+		Ttthread t0(0), t1(1), t2(2);
 		CPPUNIT_ASSERT(t0.geta() == 0);
 		CPPUNIT_ASSERT(t0.getrun() == false);
 		CPPUNIT_ASSERT(t1.geta() == 1);
@@ -104,9 +104,9 @@ void test_thread::ctor()
 	{
 		// parameterized ctor - thread is not running.
 		static const int THMAX=10;
-		tthread* t[THMAX];
+		Ttthread* t[THMAX];
 		for(int i=0; i < THMAX; ++i)
-			t[i] = new tthread(i);
+			t[i] = new Ttthread(i);
 		
 		for(int i=0; i < THMAX; ++i)
 		{
@@ -126,7 +126,7 @@ void test_thread::dtor()
 	
 	{
 		// on the stack
-		tthread t0, t1, t2;
+		Ttthread t0, t1, t2;
 		CPPUNIT_ASSERT(t0.geta() == -1);
 		CPPUNIT_ASSERT(t0.getrun() == false);
 		CPPUNIT_ASSERT(t1.geta() == -1);
@@ -137,9 +137,9 @@ void test_thread::dtor()
 	{
 		// dynamic allocated
 		static const int THMAX=10;
-		tthread* t[THMAX];
+		Ttthread* t[THMAX];
 		for(int i=0; i < THMAX; ++i)
-			t[i] = new tthread(i);
+			t[i] = new Ttthread(i);
 		
 		for(int i=0; i < THMAX; ++i)
 		{
@@ -158,7 +158,7 @@ void test_thread::run()
 	misc::cout << "\n\n\t run -------------------------------------------------";
 	
 	{
-		tthread t0, t1, t2;
+		Ttthread t0, t1, t2;
 		CPPUNIT_ASSERT( t0.resume() == 0 );
 		CPPUNIT_ASSERT( t1.resume() == 0 );
 		CPPUNIT_ASSERT( t2.resume() == 0 );
@@ -175,9 +175,9 @@ void test_thread::run()
 	{
 		// dynamic allocated
 		static const int THMAX=10;
-		tthread* t[THMAX];
+		Ttthread* t[THMAX];
 		for(int i=0; i < THMAX; ++i)
-			t[i] = new tthread(i);
+			t[i] = new Ttthread(i);
 		
 		for(int i=0; i < THMAX; ++i)
 		{
@@ -209,7 +209,7 @@ void test_thread::resume()
 	misc::cout << "\n\n\t resume ----------------------------------------------";
 	
 	{
-		tthread t0(0), t1(1), t2(2);
+		Ttthread t0(0), t1(1), t2(2);
 		CPPUNIT_ASSERT( t0.resume() == 0 );
 		CPPUNIT_ASSERT( t1.resume() == 0 );
 		CPPUNIT_ASSERT( t2.resume() == 0 );
@@ -226,9 +226,9 @@ void test_thread::resume()
 	{
 		// dynamic allocated
 		static const int THMAX=10;
-		tthread* t[THMAX];
+		Ttthread* t[THMAX];
 		for(int i=0; i < THMAX; ++i)
-			t[i] = new tthread(i);
+			t[i] = new Ttthread(i);
 		
 		for(int i=0; i < THMAX; ++i)
 		{
@@ -261,7 +261,7 @@ void test_thread::join()
 	
 	{
 		// sleep 10 sec and join TIMEOUT
-		tthread t10(10);
+		Ttthread t10(10);
 		CPPUNIT_ASSERT( t10.resume() == 0 );
 		CPPUNIT_ASSERT( t10.join(8 * 1e3) != 0 ); // TIMEOUT
 		CPPUNIT_ASSERT( t10.geta() == 10 );
@@ -270,7 +270,7 @@ void test_thread::join()
 	misc::cout << "\n\t\t join TIMEOUT (ok)";
 	{
 		// sleep 10 sec and join @12 sec ok
-		tthread t10(10);
+		Ttthread t10(10);
 		CPPUNIT_ASSERT( t10.resume() == 0 );
 		CPPUNIT_ASSERT( t10.join(12 * 1e3) == 0 ); // OK
 		CPPUNIT_ASSERT( t10.geta() == 10 );
@@ -279,7 +279,7 @@ void test_thread::join()
 	misc::cout << "\n\t\t join @12sec (ok)";
 	{
 		// sleep 10 sec and join INFINITE ok
-		tthread t10(10);
+		Ttthread t10(10);
 		CPPUNIT_ASSERT( t10.resume() == 0 );
 		CPPUNIT_ASSERT( t10.join(-1) == 0 ); // OK
 		CPPUNIT_ASSERT( t10.geta() == 10 );
@@ -290,9 +290,9 @@ void test_thread::join()
 	{
 		// dynamic allocated
 		static const int THMAX=10;
-		tthread* t[THMAX];
+		Ttthread* t[THMAX];
 		for(int i=0; i < THMAX; ++i)
-			t[i] = new tthread(i);
+			t[i] = new Ttthread(i);
 		
 		// check thread is not running
 		for(int i=0; i < THMAX; ++i)
@@ -331,7 +331,7 @@ void test_thread::get_exit_code()
 	
 	{
 		// sleep 10 sec and join TIMEOUT
-		tthread t10(10);
+		Ttthread t10(10);
 		unsigned long retval = 0;
 		CPPUNIT_ASSERT( t10.resume() == 0 );
 		CPPUNIT_ASSERT( t10.join(5 * 1e3) != 0 ); // TIMEOUT
@@ -342,7 +342,7 @@ void test_thread::get_exit_code()
 	misc::cout << "\n\t\t exitcode @TIMEOUT (ok)";
 	{
 		// sleep 10 sec and join @12 sec ok
-		tthread t10(10);
+		Ttthread t10(10);
 		unsigned long retval = 0;
 		CPPUNIT_ASSERT( t10.resume() == 0 );
 		CPPUNIT_ASSERT( t10.join(12 * 1e3) == 0 ); // OK
@@ -354,7 +354,7 @@ void test_thread::get_exit_code()
 	misc::cout << "\n\t\t exitcode @12sec (ok)";
 	{
 		// sleep 10 sec and join INFINITE ok
-		tthread t10(10);
+		Ttthread t10(10);
 		unsigned long retval = 0;
 		CPPUNIT_ASSERT( t10.resume() == 0 );
 		CPPUNIT_ASSERT( t10.join(-1) == 0 ); // OK
@@ -368,9 +368,9 @@ void test_thread::get_exit_code()
 	{
 		// dynamic allocated
 		static const int THMAX=10;
-		tthread* t[THMAX];
+		Ttthread* t[THMAX];
 		for(int i=0; i < THMAX; ++i)
-			t[i] = new tthread(i);
+			t[i] = new Ttthread(i);
 		
 		// check thread is not running
 		for(int i=0; i < THMAX; ++i)

@@ -106,12 +106,12 @@ void test_mutex::dtor()
 }
 
 // testing lock
-class lthread : public misc::thread
+class Mlthread : public misc::thread
 {
 public:
-	lthread(misc::mutex* mtx, int sec)
+	Mlthread(misc::mutex* mtx, int sec)
 		: m_mtx(mtx), m_sec(sec) { }
-	~lthread() { }
+	~Mlthread() { }
 	// --vtable--
 	unsigned long run()
 	{
@@ -170,7 +170,7 @@ void test_mutex::lock()
 	{
 		// lock mutex in a separate thread and unlock it in this thread (exception)
 		misc::mutex m;
-		lthread t(&m, 5);
+		Mlthread t(&m, 5);
 		CPPUNIT_ASSERT( t.resume() == 0 );
 		sleep(2);
 		bool cond = false;
@@ -193,9 +193,9 @@ void test_mutex::lock()
 
 		misc::mutex mtx;
 		const int THNO = 7;
-		lthread* t[THNO];
+		Mlthread* t[THNO];
 		for(int i=0; i < THNO; ++i)
-			t[i] = new lthread(&mtx, i);
+			t[i] = new Mlthread(&mtx, i);
 		for(int i=0; i < THNO; ++i)
 			t[i]->resume();
 		for(int i=0; i < THNO; ++i)
@@ -217,12 +217,12 @@ void test_mutex::lock()
 }
 
 // testing lock
-class trythread : public misc::thread
+class Mtrythread : public misc::thread
 {
 public:
-	trythread(misc::mutex* mtx, int sec)
+	Mtrythread(misc::mutex* mtx, int sec)
 		: m_mtx(mtx), m_sec(sec), m_count(0) { }
-	~trythread() { }
+	~Mtrythread() { }
 	// --vtable--
 	unsigned long run()
 	{
@@ -277,7 +277,7 @@ void test_mutex::trylock()
 		// execute a trylock in a separate thread and lock the mutex
 		// then unlock it from main thread
 		misc::mutex m;
-		trythread t(&m, 5);
+		Mtrythread t(&m, 5);
 		CPPUNIT_ASSERT( t.resume() == 0 );
 		sleep(2);
 		bool cond = false;
@@ -305,9 +305,9 @@ void test_mutex::trylock()
 		mtx.lock();	
 		
 		const int THNO = 7;
-		trythread* t[THNO];
+		Mtrythread* t[THNO];
 		for(int i=0; i < THNO; ++i)
-			t[i] = new trythread(&mtx, i);
+			t[i] = new Mtrythread(&mtx, i);
 		 // start all threads
 		for(int i=0; i < THNO; ++i)
 			t[i]->resume();
@@ -365,7 +365,7 @@ void test_mutex::unlock()
 	{
 		// attempt to unlock a mutex not locked by this thread
 		misc::mutex m;
-		lthread t(&m, 5);
+		Mlthread t(&m, 5);
 		CPPUNIT_ASSERT( t.resume() == 0 );
 		sleep(2);
 		bool cond = false;

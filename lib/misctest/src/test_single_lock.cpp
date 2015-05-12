@@ -90,51 +90,206 @@ void test_single_lock::dtor()
 	}
 }
 
-class LockThread : public misc::thread
+class SLLockThread : public misc::thread
 {
 public:
-	LockThread(misc::single_lock* sl, int sec)
+	SLLockThread(misc::single_lock* sl, int sec)
 	: m_sl(sl), m_sec(sec) {} 
-	~LockThread() {}
+	~SLLockThread() {}
 	unsigned long run()
 	{
-		//printf("\n\t\tthread %d: wait in single_lock::lock", m_sec);
-		m_sl->lock();
-		//printf("\n\t\tthread %d: locked - working", m_sec);
-		//sleep(m_sec);
-		m_sl->unlock();
-		//printf("\n\t\tthread %d: unlocked", m_sec);
+		CPPUNIT_ASSERT( m_sl->lock() == 0 );
+		printf("\n\t\tthread %d: locked", m_sec);
+		sleep(m_sec);
+		CPPUNIT_ASSERT( m_sl->unlock() == 0 );
+		printf("\n\t\tthread %d: unlocked", m_sec);
 		return m_sec;
 	}
 private:
 	misc::single_lock*	m_sl;
 	int					m_sec;
 };
+
 void test_single_lock::lock()
 {
 	misc::cout << "\n\n\tlock---------------------------------------------------";
 	{
 		misc::mutex mt;
 		misc::single_lock sl(&mt);
-		LockThread t(&sl, 1);
+		SLLockThread t(&sl, 1);
 		CPPUNIT_ASSERT( sl.lock() == 0 );
 		CPPUNIT_ASSERT( t.resume() == 0 );
+		printf("\n\tmain: resumed thread");
 		sleep(1);
 		CPPUNIT_ASSERT( sl.unlock() == 0 );
 		CPPUNIT_ASSERT( t.join() == 0 );
+		printf("\n\tmain: joined thread");
+	}
+	{
+		printf("\n\tmain: single_lock(&mutex)");
+		misc::mutex mt;
+		misc::single_lock sl(&mt);
+		const int THNO = 10;
+		SLLockThread* t[THNO];
+		for(int i=0; i < THNO; ++i)
+			t[i] = new SLLockThread(&sl, i%2);
+		CPPUNIT_ASSERT( sl.lock() == 0 );
+		printf("\n\tmain: resuming %d threads", THNO);
+		for(int i=0; i < THNO; ++i)
+			CPPUNIT_ASSERT( t[i]->resume() == 0 );
+		CPPUNIT_ASSERT( sl.unlock() == 0 );
+		printf("\n\tmain: unlocked single_lock");
+		for(int i=0; i < THNO; ++i)
+		{
+			CPPUNIT_ASSERT( t[i]->join() == 0 );
+			printf("\n\tmain: joined thread %d", i);
+			delete t[i];
+		}		
+	}
+	{
+		printf("\n\tmain: single_lock(&semaphore)");
+		misc::semaphore sem(10);
+		misc::single_lock sl(&sem);
+		const int THNO = 100;
+		SLLockThread* t[THNO];
+		for(int i=0; i < THNO; ++i)
+			t[i] = new SLLockThread(&sl, i%2);
+		CPPUNIT_ASSERT( sl.lock() == 0 );
+		printf("\n\tmain: resuming %d threads", THNO);
+		for(int i=0; i < THNO; ++i)
+			CPPUNIT_ASSERT( t[i]->resume() == 0 );
+		CPPUNIT_ASSERT( sl.unlock() == 0 );
+		printf("\n\tmain: unlocked single_lock");
+		for(int i=0; i < THNO; ++i)
+		{
+			CPPUNIT_ASSERT( t[i]->join() == 0 );
+			printf("\n\tmain: joined thread %d", i);
+			delete t[i];
+		}		
+	}
+	{
+		printf("\n\tmain: single_lock(&event)");
+		misc::event ev;
+		misc::single_lock sl(&ev);
+		const int THNO = 100;
+		SLLockThread* t[THNO];
+		for(int i=0; i < THNO; ++i)
+			t[i] = new SLLockThread(&sl, i%2);
+		
+		printf("\n\tmain: resuming threads");
+		for(int i=0; i < THNO; ++i)
+			CPPUNIT_ASSERT( t[i]->resume() == 0 );
+		sleep(2);
+		CPPUNIT_ASSERT( sl.unlock() == 0 );
+		printf("\n\tmain: unlocked single_lock");
+		for(int i=0; i < THNO; ++i)
+		{
+			CPPUNIT_ASSERT( t[i]->join() == 0 );
+			printf("\n\tmain: joined thread %d", i);
+			delete t[i];
+		}		
 	}
 }
+
+class SLTrylockThread : public misc::thread
+{
+public:
+	SLTrylockThread(misc::single_lock* sl, int sec)
+	: m_sl(sl), m_sec(sec) {} 
+	~SLTrylockThread() {}
+	unsigned long run()
+	{
+		if( m_sl->trylock(m_sec * 1e3) == 0 )
+		{
+			printf("\n\t\tthread %d: (try)locked-working", m_sec);
+			sleep(1);
+			CPPUNIT_ASSERT( m_sl->unlock() == 0 );
+			printf("\n\t\tthread %d: unlocked", m_sec);
+		}
+		else
+		{
+			printf("\n\t\tthread %d: failed-return", m_sec);
+		}
+		return m_sec;
+	}
+private:
+	misc::single_lock*	m_sl;
+	int					m_sec;
+};
 
 void test_single_lock::trylock()
 {
 	misc::cout << "\n\n\ttrylock------------------------------------------------";
 	{
+		printf("\n\tmain: single_lock(&mutex)");
+		misc::mutex mt;
+		misc::single_lock sl(&mt);
+		const int THNO = 40;
+		SLTrylockThread* t[THNO];
+		for(int i=0; i < THNO; ++i)
+			t[i] = new SLTrylockThread(&sl, 50);
+		CPPUNIT_ASSERT( sl.lock() == 0 );
+		printf("\n\tmain: resuming %d threads", THNO);
+		for(int i=0; i < THNO; ++i)
+			CPPUNIT_ASSERT( t[i]->resume() == 0 );
+		CPPUNIT_ASSERT( sl.unlock() == 0 );
+		printf("\n\tmain: unlocked single_lock");
+		for(int i=0; i < THNO; ++i)
+		{
+			CPPUNIT_ASSERT( t[i]->join() == 0 );
+			printf("\n\tmain: joined thread %d", i);
+			delete t[i];
+		}		
+	}
+	{
+		printf("\n\tmain: single_lock(&semaphore)");
+		misc::semaphore sem(10);
+		misc::single_lock sl(&sem);
+		const int THNO = 100;
+		SLTrylockThread* t[THNO];
+		for(int i=0; i < THNO; ++i)
+			t[i] = new SLTrylockThread(&sl, 14);
+		
+		printf("\n\tmain: resuming %d threads", THNO);
+		for(int i=0; i < THNO; ++i)
+			CPPUNIT_ASSERT( t[i]->resume() == 0 );
+		
+		printf("\n\tmain: unlocked single_lock");
+		for(int i=0; i < THNO; ++i)
+		{
+			CPPUNIT_ASSERT( t[i]->join() == 0 );
+			printf("\n\tmain: joined thread %d", i);
+			delete t[i];
+		}		
+	}
+	{
+		printf("\n\tmain: single_lock(&event)");
+		misc::event ev;
+		misc::single_lock sl(&ev);
+		const int THNO = 100;
+		SLLockThread* t[THNO];
+		for(int i=0; i < THNO; ++i)
+			t[i] = new SLLockThread(&sl, 5);
+		
+		printf("\n\tmain: resuming threads");
+		for(int i=0; i < THNO; ++i)
+			CPPUNIT_ASSERT( t[i]->resume() == 0 );
+		sleep(2);
+		CPPUNIT_ASSERT( sl.unlock() == 0 );
+		printf("\n\tmain: unlocked single_lock");
+		for(int i=0; i < THNO; ++i)
+		{
+			CPPUNIT_ASSERT( t[i]->join() == 0 );
+			printf("\n\tmain: joined thread %d", i);
+			delete t[i];
+		}		
 	}
 }
 
 void test_single_lock::unlock()
 {
 	misc::cout << "\n\n\tunlock-------------------------------------------------";
+	// based on lock + trylock tests.
 }
 	
 //##########################END  TEST  SUITE######################################
