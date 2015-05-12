@@ -76,7 +76,7 @@ namespace misc
 		//! Destructor
 		~mutex();
 
-		//! Locks the mutex and returns 0 or otherwise 1.
+		//! Locks the mutex and returns 0 or otherwise throws misc::exception.
 		int lock();
 
 		/*! Locks the mutex and returns 0 or 1 if timeout.
@@ -84,7 +84,7 @@ namespace misc
 		 */
 		int trylock(unsigned long milliseconds = 0);
 
-		//! Unlocks the mutex and returns 0 or 1 otherwise.
+		//! Unlocks the mutex and returns 0 or otherwise throws misc::exception.
 		int unlock();
 
 	private:

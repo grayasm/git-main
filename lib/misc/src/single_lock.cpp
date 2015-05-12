@@ -19,7 +19,7 @@
 
 
 #include "single_lock.hpp"
-
+#include "exception.hpp"
 
 namespace misc
 {

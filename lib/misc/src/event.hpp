@@ -62,7 +62,7 @@ namespace misc
 		~event();
 		
 		/*! Locks the calling thread until event is signaled.
-		 *! If event is signaled it returns 0 otherwise 1.
+		 *! If event is signaled it returns 0 or otherwise throws misc::exception.
 		 */
 		int lock();	
 		
@@ -72,7 +72,8 @@ namespace misc
 		 */
 		int trylock(unsigned long milliseconds = 0);
 		
-		/*!	Signals the event and if successful return 0 or 1 otherwise.	
+		/*!	Signals the event and if successful return 0 or otherwise throws
+		 *! misc::exception
 		 */		
 		int unlock();
 		

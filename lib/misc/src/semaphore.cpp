@@ -36,7 +36,7 @@ namespace misc
 			throw misc::exception("semaphore maxlocks must be > 0");
 		
 #ifdef _WIN32
-		m_handle = CreateSemaphore(NULL, maxlocks, maxlocks, "");
+		m_handle = ::CreateSemaphore(NULL, maxlocks, maxlocks, "");
 		if(m_handle == NULL)
 			throw misc::exception("CreateSemaphore error");
 #else
@@ -59,7 +59,8 @@ namespace misc
 		To remove a thread object, you must terminate the thread, 
 		then close all handles to the thread.
 		*/
-		::CloseHandle(m_handle);
+		if( ::CloseHandle(m_handle) == 0 )
+			throw misc::exception("CloseHandle error");
 		m_handle = NULL;
 #else
 		int error = sem_destroy(&m_sem);
@@ -72,10 +73,9 @@ namespace misc
 	{
 #ifdef _WIN32
 		DWORD dwRet = ::WaitForSingleObject(m_handle, INFINITE);
-		if (dwRet == WAIT_OBJECT_0)
-			return 0;
-		else
-			return 1;	// WAIT_TIMEOUT, WAIT_FAILED, WAIT_ABANDONED
+		if(dwRet != WAIT_OBJECT_0) // WAIT_TIMEOUT, WAIT_FAILED, WAIT_ABANDONED
+			throw misc::exception("WaitForSingleObject error");
+		return 0;
 #else
 		int error;
 		
@@ -94,7 +94,7 @@ namespace misc
 	int semaphore::trylock(unsigned long milliseconds)
 	{
 #ifdef _WIN32		
-		DWORD dwRet = ::WaitForSingleObject(m_handle, milliseconds);
+		DWORD dwRet = ::WaitForSingleObject(m_handle, milliseconds);		
 		if (dwRet == WAIT_OBJECT_0)
 			return 0;
 		else
@@ -143,7 +143,9 @@ namespace misc
 		/*	Increases the count of the specified semaphore object
 			by a specified amount.
 		*/
-		return ::ReleaseSemaphore(m_handle, 1, NULL);
+		if( ::ReleaseSemaphore(m_handle, 1, NULL) == 0 )
+			throw misc::exception("ReleaseSemaphore error");
+		return 0;
 #else
 		/*	http://linux.die.net/man/3/sem_post
 		 *	sem_post() increments (unlocks) the semaphore pointed to by sem.

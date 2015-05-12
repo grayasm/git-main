@@ -72,7 +72,8 @@ namespace misc
 			To remove a thread object, you must terminate the thread, 
 			then close all handles to the thread.
 			*/
-			::CloseHandle(m_handle);
+			if( ::CloseHandle(m_handle) == 0 )
+				throw misc::exception("CloseHandle error");
 			m_handle	= NULL;
 			m_threadID		= 0;
 		}
@@ -99,10 +100,9 @@ namespace misc
 	int thread::resume()
 	{
 #ifdef _WIN32		
-		if(::ResumeThread(m_handle) != -1)
-			return 0;
-		else
-			return 1; // ERROR
+		if(::ResumeThread(m_handle) == (DWORD)-1)
+			throw misc::exception("ResumeThread error");
+		return 0;
 #else
 		// Default attribute set.
 		pthread_attr_t attr;
@@ -172,7 +172,8 @@ namespace misc
 #ifdef _WIN32
 		if(WaitForSingleObject(m_handle, 0) != WAIT_OBJECT_0)
 			return 1;	// WAIT_TIMEOUT
-		::GetExitCodeThread(m_handle, retval);
+		if( ::GetExitCodeThread(m_handle, retval) == 0 )
+			throw misc::exception("GetExitCodeThread error");
 		return 0;
 #else
 		if(!m_terminated)
@@ -187,7 +188,7 @@ namespace misc
 	unsigned int __stdcall thread::ThreadFunc(void* n)
 	{
 		thread* _this = (thread*)n;
-		return _this->run();
+		return (unsigned int) _this->run();
 	}
 #else
 	void* thread::start_routine(void* p)

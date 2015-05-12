@@ -195,6 +195,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\src\test_autocritical_section.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\test_autocritical_section.hpp"
+				>
+			</File>
+			<File
 				RelativePath="..\src\test_autoptr.cpp"
 				>
 			</File>

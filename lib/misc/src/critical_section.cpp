@@ -29,7 +29,7 @@ namespace misc
 	critical_section::critical_section()
 	{
 #ifdef _WIN32
-		::InitializeCriticalSection(&m_section);
+		/*void*/::InitializeCriticalSection(&m_section);
 #else
 		pthread_mutexattr_t attr;
 		pthread_mutexattr_init(&attr);
@@ -60,7 +60,7 @@ namespace misc
 	critical_section::~critical_section()
 	{
 #ifdef _WIN32
-		::DeleteCriticalSection(&m_section);
+		/*void*/::DeleteCriticalSection(&m_section);
 #else
 		/*	It is safe to destroy an initialised mutex that is unlocked. 
 		 *	Attempting to destroy a locked mutex results in undefined behaviour.
@@ -75,7 +75,7 @@ namespace misc
 	int critical_section::lock()
 	{
 #ifdef _WIN32
-		::EnterCriticalSection(&m_section);
+		/*void*/::EnterCriticalSection(&m_section);
 		return 0;
 #else
 		int error = pthread_mutex_lock(&m_mtx);
@@ -88,7 +88,7 @@ namespace misc
 	int critical_section::unlock()
 	{
 #ifdef _WIN32
-		::LeaveCriticalSection(&m_section);
+		/*void*/::LeaveCriticalSection(&m_section);
 		return 0;
 #else
 		int error = pthread_mutex_unlock(&m_mtx);

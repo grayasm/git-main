@@ -34,7 +34,8 @@ namespace misc
 		: sync_base()
 	{
 #ifdef _WIN32
-		// For the moment sharing the mutex across processes is not done/tested.
+		// Create a mutex: now owned (unlocked) and unnamed (not shared with
+		// other processes).
 		m_handle = ::CreateMutex(NULL, false, "");
 		if(m_handle == NULL)
 			throw misc::exception("Cannot create the mutex!");					
@@ -70,20 +71,19 @@ namespace misc
 	mutex::~mutex()
 	{
 #ifdef _WIN32		
-		if (m_handle != NULL)
-		{
-			/*
-			CloseHandle invalidates the specified object handle, decrements 
-			the object's handle count, and performs object retention checks. 
-			After the last handle to an object is closed, the object is removed 
-			from the system.
-			Closing a thread handle does not terminate the associated thread. 
-			To remove a thread object, you must terminate the thread, 
-			then close all handles to the thread.
-			*/			
-			::CloseHandle(m_handle);
-			m_handle = NULL;
-		}
+		/*
+		CloseHandle invalidates the specified object handle, decrements 
+		the object's handle count, and performs object retention checks. 
+		After the last handle to an object is closed, the object is removed 
+		from the system.
+		Closing a thread handle does not terminate the associated thread. 
+		To remove a thread object, you must terminate the thread, 
+		then close all handles to the thread.
+		*/			
+		if( ::CloseHandle(m_handle) == 0 )
+			throw misc::exception("CloseHandle error");
+		m_handle = NULL;
+	
 #else
 		/*	It is safe to destroy an initialised mutex that is unlocked. 
 		 *	Attempting to destroy a locked mutex results in undefined behaviour.
@@ -99,10 +99,9 @@ namespace misc
 	{
 #ifdef _WIN32		
 		DWORD dwRet = ::WaitForSingleObject(m_handle, INFINITE);
-		if (dwRet == WAIT_OBJECT_0)
-			return 0;
-		else
-			return 1;	// WAIT_TIMEOUT, WAIT_FAILED, WAIT_ABANDONED
+		if(dwRet != WAIT_OBJECT_0) // WAIT_TIMEOUT, WAIT_FAILED, WAIT_ABANDONED
+			throw misc::exception("WaitForSingleObject error");
+		return 0;
 #else
 		int error = pthread_mutex_lock(&m_mtx);
 		if(error)
@@ -174,7 +173,9 @@ namespace misc
 	int mutex::unlock()
 	{
 #ifdef _WIN32		
-		return ::ReleaseMutex(m_handle);
+		if( ::ReleaseMutex(m_handle) == 0 )
+			throw misc::exception("ReleaseMutex error");
+		return 0;
 #else
 		int error = pthread_mutex_unlock(&m_mtx);
 		if(error)

@@ -33,10 +33,16 @@ namespace misc
         : sync_base()
     {
 #ifdef _WIN32
-        bool bSignaled = false;
-        bool bManualReset = false;
-
-        // Creates or opens a named or unnamed event object.
+		/*	Create an event that:
+			(1) use manual reset and call ResetEvent after SetEvent (see unlock)
+				because with automatic ResetEvent (bManualReset=false)
+					- PulseEvent does not wake up all waiting threads
+					- SetEvent will wake only 1 thread out of all waiting
+			(2) not-signaled (unlocked) initially
+			(3) not-named, not shared with other processes.
+		*/
+		bool bManualReset = true;
+		bool bSignaled = false;        
         m_handle = ::CreateEvent(
                 NULL, 
                 bManualReset,
@@ -75,8 +81,9 @@ namespace misc
     event::~event()
     {
 #ifdef _WIN32
-        ::CloseHandle(m_handle);
-        m_handle = NULL;
+		if( ::CloseHandle(m_handle) == 0 )
+			throw misc::exception("CloseHandle error");
+		m_handle = NULL;
 #else
         /*  The implementation has detected an attempt to destroy the object 
          *  referenced by cond while it is referenced, for example while being
@@ -103,12 +110,11 @@ namespace misc
     {
 #ifdef _WIN32
         DWORD dwRet = ::WaitForSingleObject(m_handle, INFINITE);
-        // cannot get WAIT_TIMEOUT with INIFINITE
-        // cannot get WAIT_ABANDONED (only for Mutexes)		
-        if (dwRet == WAIT_OBJECT_0)
-            return 0;
-        else
-            return 1;
+		// cannot get WAIT_TIMEOUT with INIFINITE
+		// cannot get WAIT_ABANDONED (only for Mutexes)		
+		if(dwRet != WAIT_OBJECT_0) //WAIT_FAILED
+			throw misc::exception("WaitForSingleObject error");
+		return 0;
 #else
         /*  Waiting on a condition variable expects a locked mutex as parameter.
          */
@@ -198,10 +204,20 @@ namespace misc
     int event::unlock()
     {
 #ifdef _WIN32
-        if( ::SetEvent(m_handle) != 0 )
-            return 0;
-        
-        throw misc::exception("SetEvent error");
+		/*	The state of a manual-reset event object remains signaled until 
+			it is set explicitly to the nonsignaled state by the ResetEvent function.
+			Any number of waiting threads, or threads that subsequently begin
+			wait operations for the specified event object by calling one of the
+			wait functions, can be released while the object's state is signaled.
+		*/
+        if( ::SetEvent(m_handle) == 0 )
+			throw misc::exception("PulseEvent error");
+
+		// Hopefully no idling is needed here.
+		// Tested with 600 threads waiting at the same time.
+		if( ::ResetEvent(m_handle) == 0 )
+			throw misc::exception("ResetEvent error");
+		return 0;
 #else
         /*  pthread_cond_broadcast unblocks all threads currently blocked on 
          *  the specified condition variable, one at a time, each returning
@@ -215,7 +231,6 @@ namespace misc
         return 0;
 #endif
     }
-
 
     int event::setevent()
     {

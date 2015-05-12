@@ -46,8 +46,7 @@ public:
 
 	//begin test suite
 	void ctor();
-	void dtor();
-	
+	void dtor();	
 };
 
 
