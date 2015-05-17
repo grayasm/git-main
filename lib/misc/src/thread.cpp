@@ -58,6 +58,9 @@ namespace misc
 #ifdef _WIN32
 		if(m_handle)
 		{
+			if(!m_terminated)
+				throw misc::exception("cannot destroy running thread");
+
 			/*
 			CloseHandle invalidates the specified object handle, decrements 
 			the object's handle count, and performs object retention checks. 
@@ -98,12 +101,12 @@ namespace misc
 	int thread::resume()
 	{
 #ifdef _WIN32
-		if(m_handle)
+		if( m_handle )
 		{
 			// _this can start a new thread only if the current one has
 			// finished and was joined so the returned value is known.
-			if(!m_joined)
-				throw misc::exception("thread resume error");
+			if( !m_joined )
+				throw misc::exception("resume not joined thread error");
 	
 			if( ::CloseHandle(m_handle) == 0 )
 				throw misc::exception("CloseHandle error");
@@ -113,7 +116,7 @@ namespace misc
 			m_retval = 0;
 		}
 
-		m_handle = (HANDLE)_beginthreadex(NULL, 
+		m_handle = (HANDLE) ::_beginthreadex(NULL, 
 			0,
 			ThreadFunc,
 			(void*)this,
@@ -156,6 +159,9 @@ namespace misc
 	int thread::join(unsigned long milliseconds)
 	{		
 #ifdef _WIN32
+		if(milliseconds == -1)
+			milliseconds = INFINITE; // to be sure it has the correct value.
+
 		DWORD dwRet = ::WaitForSingleObject(m_handle, milliseconds);
 		if (dwRet == WAIT_OBJECT_0)
 		{
@@ -208,7 +214,7 @@ namespace misc
 	int thread::get_exit_code(unsigned long* retval)
 	{
 #ifdef _WIN32
-		if(WaitForSingleObject(m_handle, 0) != WAIT_OBJECT_0)
+		if( ::WaitForSingleObject(m_handle, 0) != WAIT_OBJECT_0 )
 			return 1;	// WAIT_TIMEOUT
 		
 		*retval = m_retval;
@@ -229,11 +235,8 @@ namespace misc
 		thread* _this = (thread*)lpParameter;
 		unsigned long ret = _this->run();
 
-		/*	If the destructor for _this has been called everything after this
-		 *	point is undefined behavior.
-		 *	For this reason a mutex or event cannot be implemented to protect
-		 *	internal variables or do a better wait with timeout.
-		 */
+		//	If _this is already destroyed then the following 
+		//	will access invalid memory
 		_this->m_retval = ret;
 		_this->m_terminated = true;
 

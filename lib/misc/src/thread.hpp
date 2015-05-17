@@ -42,13 +42,15 @@ namespace misc
 		//! Thread is not running.
 		thread();
 		
-		//!	Detaches only if joinable and frees the resources.
+		//! Destroys a thread that is not running, otherwise throws misc::exception.
 		virtual ~thread();
 
-		//! Thread start method
+		//! Called from the new thread.
 		virtual unsigned long run() = 0;
 
-		//! Starts the thread and returns 0 if successful or 1 otherwise.
+		//! Starts a new thread and returns 0 if successful or otherwise throws
+		//! misc::exception. 
+		//! It can resume an old thread only if it was joined previously.
 		int resume();
 		
 		/*! Joins a finished thread and returns 0 or 1 if timeout.
@@ -58,6 +60,8 @@ namespace misc
 
 		//! Copies thread returned value to retval and returns 0 or 1 otherwise.
 		int get_exit_code(unsigned long* retval);
+
+		//! Cancellation of a thread is not supported.
 
 	private:
 		//! non-copyable
