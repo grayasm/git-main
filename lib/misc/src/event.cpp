@@ -211,7 +211,7 @@ namespace misc
 			wait functions, can be released while the object's state is signaled.
 		*/
         if( ::SetEvent(m_handle) == 0 )
-			throw misc::exception("PulseEvent error");
+			throw misc::exception("SetEvent error");
 
 		// Hopefully no idling is needed here.
 		// Tested with 600 threads waiting at the same time.
@@ -231,6 +231,11 @@ namespace misc
         return 0;
 #endif
     }
+	
+	void event::accept(sync_visitor& visitor)
+	{
+		visitor.visit(*this);
+	}
 
     int event::setevent()
     {

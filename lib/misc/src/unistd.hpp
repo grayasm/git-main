@@ -65,7 +65,6 @@
 // sleep for the specified number of seconds
 unsigned int sleep(unsigned int seconds);
 
-
 #define ssize_t int
 
 #define STDIN_FILENO 0
@@ -86,6 +85,10 @@ typedef unsigned __int64  uint64_t;
 
 //clears the console screen
 void clrscr();
+
+// sleep for the specified number of milliseconds
+int	msleep(unsigned long milliseconds);
+
 
 
 

@@ -6,11 +6,13 @@ CC=g++
 AR=ar
 SRC = cpu_timer.cpp exception.cpp filename.cpp strconv.cpp unistd.cpp time.cpp	\
 	thread.cpp sync_base.cpp mutex.cpp semaphore.cpp event.cpp \
-	critical_section.cpp autocritical_section.cpp single_lock.cpp
+	critical_section.cpp autocritical_section.cpp single_lock.cpp \
+	multi_lock.cpp
 	
 OBJ = cpu_timer.o exception.o filename.o strconv.o unistd.o time.o \
 	thread.o sync_base.o mutex.o semaphore.o event.o \
-	critical_section.o autocritical_section.o single_lock.o
+	critical_section.o autocritical_section.o single_lock.o \
+	multi_lock.o
 	
 CXXFLAGS= -g -O0 -Wall -Wno-long-long -std=c++98 -pedantic -DDEBUG -D_GLIBCXX_DEBUG -m64
 # -pedantic-errors

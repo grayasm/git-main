@@ -63,7 +63,8 @@ namespace misc
 		//! non-copyable
 		thread(const thread&);
 		thread& operator=(const thread&);
-
+		
+		
 		//! Thread start function
 #ifdef _WIN32
 		static unsigned int __stdcall ThreadFunc(void* lpParameter);
@@ -78,6 +79,7 @@ namespace misc
 #else
 		pthread_t		m_thread;
 		bool			m_terminated;
+		bool			m_joined;
 		unsigned long	m_retval;
 #endif
 	};

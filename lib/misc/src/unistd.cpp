@@ -25,6 +25,8 @@
 
 #ifdef _WIN32
 #include <windows.h>
+#else
+#include <time.h>		// nanosleep
 #endif
 
 //c++
@@ -53,3 +55,18 @@ void clrscr()
     system("clear");
 #endif
 }
+
+// sleep for the specified number of milliseconds
+int	msleep(unsigned long milliseconds)
+{
+#ifdef _WIN32
+	Sleep(milliseconds);
+	return 0;	// error code not supported on WIN32
+#else
+	struct timespec req, rem;
+	req.tv_sec = (time_t) (milliseconds / 1000);	// seconds
+	req.tv_nsec = (milliseconds % 1000) * 1e6;		// nanoseconds
+	return ::nanosleep(&req, &rem);
+#endif
+}
+

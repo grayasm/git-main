@@ -163,4 +163,9 @@ namespace misc
 		return 0;
 #endif
 	}
+	
+	void semaphore::accept(sync_visitor& visitor)
+	{
+		visitor.visit(*this);
+	}
 } // namespace

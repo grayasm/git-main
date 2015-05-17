@@ -22,34 +22,65 @@
 #include "single_lock.hpp"
 
 
-class mthread : public misc::thread
+
+class A
 {
 public:
-	mthread(misc::single_lock* sl, int sec)
-	: m_sl(sl), m_sec(sec) {} 
-	unsigned long run()
+	A(int s) : m_s(s) {}
+	~A() {}
+	int get() const { return m_s; }
+private:
+	int m_s;
+};
+
+class B
+{
+public:
+	B(A** aa, int count)
 	{
-		m_sl->lock();
-		m_sl->unlock();
-		return m_sec;
+		m_aa = aa;
+		m_count = count;
+	}
+	void f() 
+	{
+		for(int i=0; i < m_count; ++i)
+		{
+			A** aa = m_aa + i;
+			printf("\n\tB::f(%d) = %d", i, (*aa)->get());
+		}
 	}
 private:
-	misc::single_lock*	m_sl;
-	int					m_sec;
+	A** m_aa;
+	int m_count;
 };
 int main(int, char**)
 {
 	setvbuf(stdout, NULL, _IONBF, 0);
-
-	misc::mutex m;
-	misc::single_lock sl(&m);
+	A** p = 0;
+	p = (A**)calloc(5, sizeof(A*));
+	for(int i=0; i < 5; ++i)
+	{
+		A** a = p+i;
+		*a = new A(i);
+		
+		A** b = p+i;
+		printf("\np+%d = %d", i, a);
+		printf("\nb(%d)=%d", i, (*b)->get());
+			
+		//new(a)A(i);
+	}
 	
-	sl.lock();
-	mthread t(&sl, 2);
-	t.resume();
-	sleep(2);
-	sl.unlock();
-	t.join();
+	B b(p, 5);
+	b.f();
+	
+	for(int i=0; i < 5; ++i)
+	{
+		A** a = p + i;
+		delete (*a);
+	}
+	
+	free(p);
+	
 	
 	return 0;
 }

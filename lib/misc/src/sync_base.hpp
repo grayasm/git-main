@@ -33,6 +33,28 @@
 
 namespace misc
 {	
+	//! Forward declarations
+	class sync_base;
+	class mutex;
+	class semaphore;
+	class event;
+	
+	//! Visitor class.
+	class sync_visitor
+	{
+	public:
+		sync_visitor();
+		virtual ~sync_visitor();
+		virtual void visit(misc::sync_base& visit) = 0;
+		virtual void visit(misc::mutex& visit) = 0;
+		virtual void visit(misc::semaphore& visit) = 0;
+		virtual void visit(misc::event& visit) = 0;
+	};
+	
+	/*!	Base class for (some) synchronization objects.
+	 *! All types deriving from this class have a corresponding visit function
+	 *! in the sync_visitor.
+	 */
 	class sync_base
 	{		
 	public:
@@ -52,6 +74,10 @@ namespace misc
 		
 		//! Unlocks the object and returns 0 or otherwise throws misc::exception.
 		virtual int unlock() = 0;
+		
+		//! Accepts a visitor
+		virtual void accept(sync_visitor& visitor) = 0;
+		
 
 	private:
 		//! non-copyable

@@ -33,9 +33,11 @@
 
 //libraries
 #include "string.hpp"
+#include "vector.hpp"
 #include "exception.hpp"
 #include "unistd.hpp"
 #include "stream.hpp"
+
 
 
 
@@ -52,12 +54,12 @@ void test_thread::tearDown()
 class Ttthread : public misc::thread
 {
 public:
-	Ttthread():m_a(-1), m_run(false) {}
-	Ttthread(int a):m_a(a), m_run(false) {}
+	Ttthread():m_a(-1), m_started(false) {}
+	Ttthread(int a):m_a(a), m_started(false) {}
 	~Ttthread() {}
 	unsigned long run()
 	{
-		m_run = true;
+		m_started = true;
 		if(m_a > 0) // max sleep time
 		{
 			sleep(m_a);
@@ -66,10 +68,10 @@ public:
 	}//run
 	void seta(int a){ m_a = a; }
 	int geta() const { return m_a; }
-	bool getrun() const { return m_run; }
+	bool getstarted() const { return m_started; }
 private:
 	int m_a;
-	bool m_run;
+	bool m_started;
 };
 
 void test_thread::ctor()
@@ -85,21 +87,21 @@ void test_thread::ctor()
 		// default ctor - thread is not running.
 		Ttthread t0, t1, t2;
 		CPPUNIT_ASSERT(t0.geta() == -1);
-		CPPUNIT_ASSERT(t0.getrun() == false);
+		CPPUNIT_ASSERT(t0.getstarted() == false);
 		CPPUNIT_ASSERT(t1.geta() == -1);
-		CPPUNIT_ASSERT(t1.getrun() == false);
+		CPPUNIT_ASSERT(t1.getstarted() == false);
 		CPPUNIT_ASSERT(t2.geta() == -1);
-		CPPUNIT_ASSERT(t2.getrun() == false);
+		CPPUNIT_ASSERT(t2.getstarted() == false);
 	}
 	{
 		// parameterized ctor - thread is not running.
 		Ttthread t0(0), t1(1), t2(2);
 		CPPUNIT_ASSERT(t0.geta() == 0);
-		CPPUNIT_ASSERT(t0.getrun() == false);
+		CPPUNIT_ASSERT(t0.getstarted() == false);
 		CPPUNIT_ASSERT(t1.geta() == 1);
-		CPPUNIT_ASSERT(t1.getrun() == false);
+		CPPUNIT_ASSERT(t1.getstarted() == false);
 		CPPUNIT_ASSERT(t2.geta() == 2);
-		CPPUNIT_ASSERT(t2.getrun() == false);
+		CPPUNIT_ASSERT(t2.getstarted() == false);
 	}
 	{
 		// parameterized ctor - thread is not running.
@@ -111,7 +113,7 @@ void test_thread::ctor()
 		for(int i=0; i < THMAX; ++i)
 		{
 			CPPUNIT_ASSERT( t[i]->geta() == i );
-			CPPUNIT_ASSERT( t[i]->getrun() == false );
+			CPPUNIT_ASSERT( t[i]->getstarted() == false );
 		}
 		
 		// deallocate the memory
@@ -128,11 +130,11 @@ void test_thread::dtor()
 		// on the stack
 		Ttthread t0, t1, t2;
 		CPPUNIT_ASSERT(t0.geta() == -1);
-		CPPUNIT_ASSERT(t0.getrun() == false);
+		CPPUNIT_ASSERT(t0.getstarted() == false);
 		CPPUNIT_ASSERT(t1.geta() == -1);
-		CPPUNIT_ASSERT(t1.getrun() == false);
+		CPPUNIT_ASSERT(t1.getstarted() == false);
 		CPPUNIT_ASSERT(t2.geta() == -1);
-		CPPUNIT_ASSERT(t2.getrun() == false);
+		CPPUNIT_ASSERT(t2.getstarted() == false);
 	}
 	{
 		// dynamic allocated
@@ -144,7 +146,7 @@ void test_thread::dtor()
 		for(int i=0; i < THMAX; ++i)
 		{
 			CPPUNIT_ASSERT( t[i]->geta() == i );
-			CPPUNIT_ASSERT( t[i]->getrun() == false );
+			CPPUNIT_ASSERT( t[i]->getstarted() == false );
 		}
 		
 		// call destructor
@@ -166,11 +168,11 @@ void test_thread::run()
 		sleep(1);//wait for threads to resume
 		
 		CPPUNIT_ASSERT(t0.geta() == -1);
-		CPPUNIT_ASSERT(t0.getrun() == true);
+		CPPUNIT_ASSERT(t0.getstarted() == true);
 		CPPUNIT_ASSERT(t1.geta() == -1);
-		CPPUNIT_ASSERT(t1.getrun() == true);
+		CPPUNIT_ASSERT(t1.getstarted() == true);
 		CPPUNIT_ASSERT(t2.geta() == -1);
-		CPPUNIT_ASSERT(t2.getrun() == true);
+		CPPUNIT_ASSERT(t2.getstarted() == true);
 	}
 	{
 		// dynamic allocated
@@ -182,7 +184,7 @@ void test_thread::run()
 		for(int i=0; i < THMAX; ++i)
 		{
 			CPPUNIT_ASSERT( t[i]->geta() == i );
-			CPPUNIT_ASSERT( t[i]->getrun() == false );
+			CPPUNIT_ASSERT( t[i]->getstarted() == false );
 		}
 		
 		for(int i=0; i < THMAX; ++i)
@@ -195,7 +197,7 @@ void test_thread::run()
 		for(int i=0; i < THMAX; ++i)
 		{
 			CPPUNIT_ASSERT(t[i]->geta() == i);
-			CPPUNIT_ASSERT(t[i]->getrun() == true);
+			CPPUNIT_ASSERT(t[i]->getstarted() == true);
 		}
 		
 		// call destructor
@@ -217,11 +219,11 @@ void test_thread::resume()
 		sleep(1); // wait for threads to resume
 		
 		CPPUNIT_ASSERT(t0.geta() == 0);
-		CPPUNIT_ASSERT(t0.getrun() == true);
+		CPPUNIT_ASSERT(t0.getstarted() == true);
 		CPPUNIT_ASSERT(t1.geta() == 1);
-		CPPUNIT_ASSERT(t1.getrun() == true);
+		CPPUNIT_ASSERT(t1.getstarted() == true);
 		CPPUNIT_ASSERT(t2.geta() == 2);
-		CPPUNIT_ASSERT(t2.getrun() == true);
+		CPPUNIT_ASSERT(t2.getstarted() == true);
 	}
 	{
 		// dynamic allocated
@@ -233,7 +235,7 @@ void test_thread::resume()
 		for(int i=0; i < THMAX; ++i)
 		{
 			CPPUNIT_ASSERT( t[i]->geta() == i );
-			CPPUNIT_ASSERT( t[i]->getrun() == false );
+			CPPUNIT_ASSERT( t[i]->getstarted() == false );
 		}
 		
 		for(int i=0; i < THMAX; ++i)
@@ -246,12 +248,63 @@ void test_thread::resume()
 		for(int i=0; i < THMAX; ++i)
 		{
 			CPPUNIT_ASSERT(t[i]->geta() == i);
-			CPPUNIT_ASSERT(t[i]->getrun() == true);
+			CPPUNIT_ASSERT(t[i]->getstarted() == true);
 		}
 		
 		// call destructor
 		for(int i=0; i < THMAX; ++i)
 			delete t[i];
+	}
+	
+	printf("\n\t\t test: join thread and resume again");
+	{
+		const int THNO = 5;
+		misc::vector<Ttthread*> thvec;
+		for(int i=0; i < THNO; ++i)
+			thvec.push_back(new Ttthread(i));
+		for(int i=0; i < THNO; ++i)
+			CPPUNIT_ASSERT( thvec[i]->resume() == 0 );
+		for(int i=0; i < THNO; ++i)
+		{
+			CPPUNIT_ASSERT( thvec[i]->join() == 0 );
+			CPPUNIT_ASSERT( thvec[i]->geta() == i );
+		}
+		for(int i=0; i < THNO; ++i)
+		{
+			thvec[i]->seta(i+1);
+			CPPUNIT_ASSERT( thvec[i]->resume() == 0 );
+		}
+		for(int i=0; i < THNO; ++i)
+		{
+			CPPUNIT_ASSERT( thvec[i]->join() == 0 );
+			CPPUNIT_ASSERT( thvec[i]->geta() == i+1 );
+		}		
+	}
+	printf("\n\t\t test: resume thread and resume again while running");
+	{
+		const int THNO = 5;
+		misc::vector<Ttthread*> thvec;
+		for(int i=0; i < THNO; ++i)
+			thvec.push_back(new Ttthread(i+10));
+		for(int i=0; i < THNO; ++i)
+		{
+			CPPUNIT_ASSERT( thvec[i]->resume() == 0 );
+			bool _2ndresume_fail = false;
+			try
+			{
+				thvec[i]->resume();
+			}
+			catch(misc::exception&)
+			{
+				_2ndresume_fail = true;
+			}
+			CPPUNIT_ASSERT( _2ndresume_fail == true );
+		}
+		for(int i=0; i < THNO; ++i)
+		{
+			CPPUNIT_ASSERT( thvec[i]->join() == 0 );
+			CPPUNIT_ASSERT( thvec[i]->geta() == i+10 );
+		}		
 	}
 }
 
@@ -265,7 +318,7 @@ void test_thread::join()
 		CPPUNIT_ASSERT( t10.resume() == 0 );
 		CPPUNIT_ASSERT( t10.join(8 * 1e3) != 0 ); // TIMEOUT
 		CPPUNIT_ASSERT( t10.geta() == 10 );
-		CPPUNIT_ASSERT( t10.getrun() == true );
+		CPPUNIT_ASSERT( t10.getstarted() == true );
 	}
 	misc::cout << "\n\t\t join TIMEOUT (ok)";
 	{
@@ -274,7 +327,7 @@ void test_thread::join()
 		CPPUNIT_ASSERT( t10.resume() == 0 );
 		CPPUNIT_ASSERT( t10.join(12 * 1e3) == 0 ); // OK
 		CPPUNIT_ASSERT( t10.geta() == 10 );
-		CPPUNIT_ASSERT( t10.getrun() == true );
+		CPPUNIT_ASSERT( t10.getstarted() == true );
 	}
 	misc::cout << "\n\t\t join @12sec (ok)";
 	{
@@ -283,7 +336,7 @@ void test_thread::join()
 		CPPUNIT_ASSERT( t10.resume() == 0 );
 		CPPUNIT_ASSERT( t10.join(-1) == 0 ); // OK
 		CPPUNIT_ASSERT( t10.geta() == 10 );
-		CPPUNIT_ASSERT( t10.getrun() == true );
+		CPPUNIT_ASSERT( t10.getstarted() == true );
 	}
 	misc::cout << "\n\t\t join @INFINITE (ok)";
 	
@@ -298,7 +351,7 @@ void test_thread::join()
 		for(int i=0; i < THMAX; ++i)
 		{
 			CPPUNIT_ASSERT( t[i]->geta() == i );
-			CPPUNIT_ASSERT( t[i]->getrun() == false );
+			CPPUNIT_ASSERT( t[i]->getstarted() == false );
 		}
 		
 		// check start all threads
@@ -337,7 +390,7 @@ void test_thread::get_exit_code()
 		CPPUNIT_ASSERT( t10.join(5 * 1e3) != 0 ); // TIMEOUT
 		CPPUNIT_ASSERT( t10.get_exit_code(&retval) != 0 ); // STILL RUNNING
 		CPPUNIT_ASSERT( t10.geta() == 10 );
-		CPPUNIT_ASSERT( t10.getrun() == true );
+		CPPUNIT_ASSERT( t10.getstarted() == true );
 	}
 	misc::cout << "\n\t\t exitcode @TIMEOUT (ok)";
 	{
@@ -349,7 +402,7 @@ void test_thread::get_exit_code()
 		CPPUNIT_ASSERT( t10.get_exit_code(&retval) == 0 ); // OK
 		CPPUNIT_ASSERT( retval == 10 ); // OK
 		CPPUNIT_ASSERT( t10.geta() == 10 );
-		CPPUNIT_ASSERT( t10.getrun() == true );
+		CPPUNIT_ASSERT( t10.getstarted() == true );
 	}
 	misc::cout << "\n\t\t exitcode @12sec (ok)";
 	{
@@ -361,7 +414,7 @@ void test_thread::get_exit_code()
 		CPPUNIT_ASSERT( t10.get_exit_code(&retval) == 0 ); // OK
 		CPPUNIT_ASSERT( retval == 10 ); // OK
 		CPPUNIT_ASSERT( t10.geta() == 10 );
-		CPPUNIT_ASSERT( t10.getrun() == true );
+		CPPUNIT_ASSERT( t10.getstarted() == true );
 	}
 	misc::cout << "\n\t\t exitcode @INFINITE (ok)";
 	
@@ -376,7 +429,7 @@ void test_thread::get_exit_code()
 		for(int i=0; i < THMAX; ++i)
 		{
 			CPPUNIT_ASSERT( t[i]->geta() == i );
-			CPPUNIT_ASSERT( t[i]->getrun() == false );
+			CPPUNIT_ASSERT( t[i]->getstarted() == false );
 		}
 		
 		// check start all threads

@@ -46,6 +46,7 @@ namespace misc
 		//! Semaphore resource is released back to OS.
 		~semaphore();		
 		
+		//! --- vtable begin ---
 		//! Aquire a lock on the semaphore and returns 0 or 1 if interrupted by signal.
 		int lock();
 		
@@ -57,7 +58,9 @@ namespace misc
 		//! Unlock a previous lock on the semaphore and returns 0 or throw otherwise.
 		int unlock();
 		
-		// get lock count would be nice here.
+		//! Accepts a visitor
+		void accept(sync_visitor& visitor);
+		//! --- vtable end ---
 
 	private:
 		//non-copyable

@@ -19,19 +19,19 @@
 
 
 
-#include "thread.hpp"
-#include "exception.hpp"
-#include "algorithm.hpp"
-
-#include <string>
-#include <time.h>
-
 #ifdef _WIN32
 #include <process.h>
 #else
-#include <pthread.h>
 #endif
 
+// c/c++
+#include <time.h>	//nanosleep
+
+
+// libraries
+#include "thread.hpp"
+#include "exception.hpp"
+#include "algorithm.hpp"	// min
 
 
 namespace misc
@@ -54,6 +54,7 @@ namespace misc
 		// in the thread start_routine.
 		m_thread = 0;
 		m_terminated = false;
+		m_joined = false;
 		m_retval = 0;
 #endif
 	}
@@ -88,8 +89,10 @@ namespace misc
 			thread that an application creates, so that system resources for the
 			thread can be released.
 		*/
-		if(m_thread && !m_terminated)
+		if(m_thread)
 		{
+			if(m_joined)
+				return;
 			int ret = pthread_detach(m_thread);
 			if(ret)
 				throw misc::exception("pthread_detach error");
@@ -99,11 +102,21 @@ namespace misc
 
 	int thread::resume()
 	{
-#ifdef _WIN32		
+#ifdef _WIN32
+		// create the thread here instead in constructor
 		if(::ResumeThread(m_handle) == (DWORD)-1)
 			throw misc::exception("ResumeThread error");
 		return 0;
 #else
+		if(m_thread && !m_joined)
+			throw misc::exception("thread resume error");
+		
+		// This can resume, join and resume again.
+		m_thread = 0;
+		m_terminated = false;
+		m_joined = false;
+		m_retval = 0;
+		
 		// Default attribute set.
 		pthread_attr_t attr;
 		pthread_attr_init(&attr);
@@ -132,12 +145,14 @@ namespace misc
 		else
 			return 1;	// WAIT_TIMEOUT, WAIT_FAILED, WAIT_ABANDONED
 #else
+		
 		void* retval;
 		if(milliseconds == (unsigned long)-1 || m_terminated)
 		{
 			int error = pthread_join(m_thread, &retval);
 			if(error)
 				throw misc::exception("pthread_join error");
+			m_joined = true;
 			return 0;
 		}
 		else
@@ -162,6 +177,7 @@ namespace misc
 			int error = pthread_join(m_thread, &retval);
 			if(error)
 				throw misc::exception("pthread_join error");
+			m_joined = true;
 			return 0;
 		}		
 #endif		
@@ -176,6 +192,7 @@ namespace misc
 			throw misc::exception("GetExitCodeThread error");
 		return 0;
 #else
+	
 		if(!m_terminated)
 			return 1;
 		
@@ -184,6 +201,7 @@ namespace misc
 #endif		
 	}
 
+	
 #ifdef _WIN32
 	unsigned int __stdcall thread::ThreadFunc(void* n)
 	{

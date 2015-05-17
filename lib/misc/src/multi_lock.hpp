@@ -23,15 +23,20 @@
 
 
 #include "sync_base.hpp"
+#include "vector.hpp"
+
 
 
 namespace misc
-{	
+{
+	class object_locker;
 
+	//! It will attempt to lock all passed objects, avoiding as much as possible
+	//! a dead-lock.
 	class multi_lock
 	{
 	public:
-		multi_lock(sync_base* objects[], unsigned long objcount);
+		multi_lock(sync_base** objects, unsigned long count);
 		
 		~multi_lock();
 
@@ -47,10 +52,10 @@ namespace misc
 		multi_lock& operator=(const multi_lock&);
 		
 	protected:
-		sync_base**		m_objects;
-		unsigned long		m_count;
+		sync_base**						m_objects;
+		unsigned long					m_count;
+		misc::vector<object_locker*>	m_locks;
 	};
-
 }  // namespace
 
 

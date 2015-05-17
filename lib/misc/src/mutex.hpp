@@ -76,6 +76,7 @@ namespace misc
 		//! Destructor
 		~mutex();
 
+		//! --- vtable begin ---
 		//! Locks the mutex and returns 0 or otherwise throws misc::exception.
 		int lock();
 
@@ -86,6 +87,10 @@ namespace misc
 
 		//! Unlocks the mutex and returns 0 or otherwise throws misc::exception.
 		int unlock();
+		
+		//! Accepts a visitor
+		void accept(sync_visitor& visitor);
+		//! --- vtable end ---
 
 	private:
 		//non-copyable

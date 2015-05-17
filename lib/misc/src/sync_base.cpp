@@ -25,18 +25,24 @@
 
 namespace misc
 {    
+	sync_visitor::sync_visitor()
+	{
+	}
+	
+	sync_visitor::~sync_visitor()
+	{
+	}
+	
 	sync_base::sync_base()
 #ifdef _WIN32
 		: m_handle(NULL)
+#else
 #endif
 	{
 	}
 
 	sync_base::~sync_base()
 	{
-		/*	Cannot ::CloseHandle on a criticalsection.
-			Let each derived class to clean its own resources.
-		*/
 	}
 
 } // namespace

@@ -61,6 +61,7 @@ namespace misc
 		//! Destructor
 		~event();
 		
+		//! --- vtable begin ---
 		/*! Locks the calling thread until event is signaled.
 		 *! If event is signaled it returns 0 or otherwise throws misc::exception.
 		 */
@@ -76,6 +77,10 @@ namespace misc
 		 *! misc::exception
 		 */		
 		int unlock();
+		
+		//! Accepts a visitor
+		void accept(sync_visitor& visitor);
+		//! --- vtable end ---
 		
 		//! Similar with unlock.
 		int setevent();

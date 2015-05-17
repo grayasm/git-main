@@ -183,6 +183,11 @@ namespace misc
 		return 0;
 #endif		
 	}
+	
+	void mutex::accept(sync_visitor& visitor)
+	{
+		visitor.visit(*this);
+	}
 
 } // namespace
 
