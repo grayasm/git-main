@@ -39,24 +39,18 @@ namespace misc
 	thread::thread()
 	{
 #ifdef _WIN32
-		m_handle = (HANDLE)_beginthreadex(NULL, 
-			0, 
-			ThreadFunc, 
-			(void*)this, 
-			CREATE_SUSPENDED, 
-			&m_threadID);
-
-		if(m_handle == 0)
-			throw misc::exception("_beginthreadex error");
+		m_handle = 0;
+		m_threadID = 0;
 #else
-		// No API to create it in suspended mode. 
+		// pthread_t: No API to create it in suspended mode. 
 		// Suspend and resume require user implementation of condition variable
 		// in the thread start_routine.
 		m_thread = 0;
+#endif
+
 		m_terminated = false;
 		m_joined = false;
 		m_retval = 0;
-#endif
 	}
 
 	thread::~thread()
@@ -75,8 +69,9 @@ namespace misc
 			*/
 			if( ::CloseHandle(m_handle) == 0 )
 				throw misc::exception("CloseHandle error");
-			m_handle	= NULL;
-			m_threadID		= 0;
+
+			m_handle	= 0;
+			m_threadID	= 0;
 		}
 #else
 		/*
@@ -103,14 +98,36 @@ namespace misc
 	int thread::resume()
 	{
 #ifdef _WIN32
-		// create the thread here instead in constructor
-		if(::ResumeThread(m_handle) == (DWORD)-1)
-			throw misc::exception("ResumeThread error");
+		if(m_handle)
+		{
+			// _this can start a new thread only if the current one has
+			// finished and was joined so the returned value is known.
+			if(!m_joined)
+				throw misc::exception("thread resume error");
+	
+			if( ::CloseHandle(m_handle) == 0 )
+				throw misc::exception("CloseHandle error");
+
+			m_terminated = false;
+			m_joined = false;
+			m_retval = 0;
+		}
+
+		m_handle = (HANDLE)_beginthreadex(NULL, 
+			0,
+			ThreadFunc,
+			(void*)this,
+			0,	// 0 to start immediately or CREATE_SUSPENDED
+			&m_threadID);
+
+		if(m_handle == 0)
+			throw misc::exception("_beginthreadex error");
+
 		return 0;
 #else
 		if(m_thread && !m_joined)
 			throw misc::exception("thread resume error");
-		
+
 		// This can resume, join and resume again.
 		m_thread = 0;
 		m_terminated = false;
@@ -141,9 +158,14 @@ namespace misc
 #ifdef _WIN32
 		DWORD dwRet = ::WaitForSingleObject(m_handle, milliseconds);
 		if (dwRet == WAIT_OBJECT_0)
+		{
+			m_joined = true;
 			return 0;
+		}
 		else
+		{
 			return 1;	// WAIT_TIMEOUT, WAIT_FAILED, WAIT_ABANDONED
+		}
 #else
 		
 		void* retval;
@@ -188,11 +210,10 @@ namespace misc
 #ifdef _WIN32
 		if(WaitForSingleObject(m_handle, 0) != WAIT_OBJECT_0)
 			return 1;	// WAIT_TIMEOUT
-		if( ::GetExitCodeThread(m_handle, retval) == 0 )
-			throw misc::exception("GetExitCodeThread error");
+		
+		*retval = m_retval;
 		return 0;
 #else
-	
 		if(!m_terminated)
 			return 1;
 		
@@ -203,10 +224,20 @@ namespace misc
 
 	
 #ifdef _WIN32
-	unsigned int __stdcall thread::ThreadFunc(void* n)
+	unsigned int __stdcall thread::ThreadFunc(void* lpParameter)
 	{
-		thread* _this = (thread*)n;
-		return (unsigned int) _this->run();
+		thread* _this = (thread*)lpParameter;
+		unsigned long ret = _this->run();
+
+		/*	If the destructor for _this has been called everything after this
+		 *	point is undefined behavior.
+		 *	For this reason a mutex or event cannot be implemented to protect
+		 *	internal variables or do a better wait with timeout.
+		 */
+		_this->m_retval = ret;
+		_this->m_terminated = true;
+
+		return 0;
 	}
 #else
 	void* thread::start_routine(void* p)
@@ -215,7 +246,7 @@ namespace misc
 		unsigned long ret = _this->run();
 
 		/*	If the destructor for _this has been called everything after this
-		 *	point is undefined behaviour.
+		 *	point is undefined behavior.
 		 *	For this reason a mutex or event cannot be implemented to protect
 		 *	internal variables or do a better wait with timeout.
 		 */

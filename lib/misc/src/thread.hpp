@@ -72,16 +72,16 @@ namespace misc
 		static void* start_routine(void* p);
 #endif
 
-	protected:
+	private:
 #ifdef _WIN32		
 		HANDLE			m_handle;
 		unsigned int	m_threadID;
 #else
 		pthread_t		m_thread;
+#endif
 		bool			m_terminated;
 		bool			m_joined;
 		unsigned long	m_retval;
-#endif
 	};
 
 }  // namespace
