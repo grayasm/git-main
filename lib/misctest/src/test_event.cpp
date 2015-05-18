@@ -179,10 +179,11 @@ void test_event::lock()
 		EWaitForEventThread* t[THNO];
 		for(size_t i=0; i < THNO; ++i)
 			t[i] = new EWaitForEventThread(&ev, i%6);
+		printf("\n\tmain: resuming %d threads", THNO);
 		for(size_t i=0; i < THNO; ++i)
 			CPPUNIT_ASSERT( t[i]->resume() == 0 );
 		printf("\n\tmain: wait for threads to resume");
-		sleep(2);
+		sleep(5);
 		CPPUNIT_ASSERT( ev.unlock() == 0 );
 		// joining thread, presumably they got the signal 
 		for(size_t i=0; i < THNO; ++i)

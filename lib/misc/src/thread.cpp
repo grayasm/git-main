@@ -89,6 +89,8 @@ namespace misc
 		*/
 		if(m_thread)
 		{
+			if(!m_terminated)
+				throw misc::exception("cannot destroy running thread");
 			if(m_joined)
 				return;
 			int ret = pthread_detach(m_thread);
@@ -128,15 +130,20 @@ namespace misc
 
 		return 0;
 #else
-		if(m_thread && !m_joined)
-			throw misc::exception("thread resume error");
+		if(m_thread)
+		{
+			// _this can start a new thread only if the current one has
+			// finished and was joined so the returned value is known.
+			if( !m_joined )
+				throw misc::exception("resume not joined thread error");
+	
+			// resource is already released (pthread_join)
 
-		// This can resume, join and resume again.
-		m_thread = 0;
-		m_terminated = false;
-		m_joined = false;
-		m_retval = 0;
-		
+			m_terminated = false;
+			m_joined = false;
+			m_retval = 0;
+		}
+				
 		// Default attribute set.
 		pthread_attr_t attr;
 		pthread_attr_init(&attr);
@@ -173,7 +180,6 @@ namespace misc
 			return 1;	// WAIT_TIMEOUT, WAIT_FAILED, WAIT_ABANDONED
 		}
 #else
-		
 		void* retval;
 		if(milliseconds == (unsigned long)-1 || m_terminated)
 		{
@@ -248,11 +254,8 @@ namespace misc
 		thread* _this = (thread*)p;
 		unsigned long ret = _this->run();
 
-		/*	If the destructor for _this has been called everything after this
-		 *	point is undefined behavior.
-		 *	For this reason a mutex or event cannot be implemented to protect
-		 *	internal variables or do a better wait with timeout.
-		 */
+		//	If _this is already destroyed then the following 
+		//	will access invalid memory.
 		_this->m_retval = ret;
 		_this->m_terminated = true;
 

@@ -78,6 +78,13 @@ namespace misc
 	class object_locker : public misc::thread
 	{
 	public:
+		enum lock_state
+		{
+			NOT_RUNNING=1,
+			NOT_LOCKED,
+			LOCKED,
+			UNLOCKED
+		};
 		object_locker(
 			misc::sync_base* obj,		// to be locked
 			misc::event* ev,			// signal to release the lock
@@ -86,7 +93,7 @@ namespace misc
 			m_obj = obj;
 			m_ev = ev;
 			m_msec = milliseconds;
-			m_locked = false;
+		//	m_locked = false;
 		}
 		~object_locker() { }
 		unsigned long run()
@@ -95,37 +102,32 @@ namespace misc
 			int ret = m_obj->trylock(m_msec);
 			if(ret == 0) // locked
 			{
-				set_lock(true);
-				printf("\n\t\tobject_locker locked, wait for signal");
-				m_ev->lock();
-				printf("\n\t\tobject_locker released lock");
-			}
-			printf("\n\t\tobject_locker ret %d", ret);
 				
-			return ret;
-		}
-		void set_lock(bool lock)
-		{
-			misc::autocritical_section acs(m_cs);
-			m_locked = lock;
-		}
-		bool get_lock()
-		{
-			misc::autocritical_section acs(m_cs);
-			bool ret = m_locked;
+				printf("\n\t\tobj-locker wait for signal");
+				
+				m_ev->lock();		// wait for signal to unlock
+				
+				m_obj->unlock();	// unlock
+				
+				printf("\n\t\tobj-locker unlocked");
+				
+			}							
 			return ret;
 		}
 		misc::event* get_event()
 		{
 			return m_ev;
-		}		
+		}
+		lock_state get_state() const
+		{
+			return m_state;
+		}
 	private:
 		misc::sync_base*		m_obj;
 		misc::event*			m_ev;
-		unsigned long			m_msec; // 1e3
-		// internal
+		unsigned long			m_msec; // in milliseconds
 		misc::critical_section	m_cs;
-		bool					m_locked;
+		lock_state				m_state;
 	};
 	//##########################################################################
 	multi_lock::multi_lock(sync_base** objects, unsigned long count)
@@ -210,8 +212,8 @@ namespace misc
 			// 
 			for(size_t i=0; i < sm_locks.size(); ++i)
 			{
-				object_locker* ol = sm_locks[i];
-				if( !ol->get_lock() )
+		//		object_locker* ol = sm_locks[i];
+		//		if( ol->get_lock() == false ) // failed to lock
 				{
 					all_locked = false;
 					break;
@@ -230,6 +232,15 @@ namespace misc
 				}
 			}
 		}
+		
+		// prove all events are locked
+		for(size_t i=0; i < ev_locks.size(); ++i)
+		{
+			object_locker* ol = ev_locks[i];
+			ol->join();
+		}
+		
+		
 		
 		
 		return 0;
