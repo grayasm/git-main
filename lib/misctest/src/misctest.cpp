@@ -152,9 +152,10 @@ int main(int argc, char** argv)
 	CPPUNIT_TEST_SUITE_REGISTRATION(test_event);
 //	CPPUNIT_TEST_SUITE_REGISTRATION(test_multi_lock);
 	CPPUNIT_TEST_SUITE_REGISTRATION(test_single_lock);
-//	CPPUNIT_TEST_SUITE_REGISTRATION(test_thread);
+	CPPUNIT_TEST_SUITE_REGISTRATION(test_thread);
 	CPPUNIT_TEST_SUITE_REGISTRATION(test_time);
 
+	
 	
 	
 	

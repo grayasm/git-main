@@ -45,12 +45,18 @@ namespace misc
 	 *	a locked mutex.
 	 *	Signaling a condition variable is done with pthread_cond_signal (1 thread)
 	 *	or pthread_cond_braodcast (wakes up all threads).
+	 *  http://austingroupbugs.net/view.php?id=609
+	 *  Summary: It is not clear what threads are considered blocked with respect 
+	 *			 to a call to pthread_cond_signal() or pthread_cond_broadcast()
+	 * 
 	 * 
 	 *	The common ground is to use:
 	 *	- a non-signaled initialized event/condition
 	 *	- the event is reseting itself automatically after waking up
 	 *	- lock is not interrupted by signals
 	 *	- the event is not shared between processes
+	 *  - caution is recommended when putting > 50 threads to wait on a
+	 *		pthread_cond_t on linux. Not all of them may wake up.
 	 */
 	class event : public sync_base
 	{
