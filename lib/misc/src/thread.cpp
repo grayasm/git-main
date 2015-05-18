@@ -95,7 +95,7 @@ namespace misc
 				return;
 			int ret = pthread_detach(m_thread);
 			if(ret)
-				throw misc::exception("pthread_detach error");
+				throw misc::exception("~dtor: pthread_detach error");
 		}
 #endif
 	}
@@ -137,7 +137,7 @@ namespace misc
 			if( !m_joined )
 				throw misc::exception("resume not joined thread error");
 	
-			// resource is already released (pthread_join)
+			//pthread_detach(m_thread); -> SEGFAULT
 
 			m_terminated = false;
 			m_joined = false;
@@ -159,6 +159,7 @@ namespace misc
 			throw misc::exception("pthread_create error");
 			
 		pthread_attr_destroy(&attr);
+
 		return 0;
 #endif		
 	}
