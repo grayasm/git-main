@@ -20,6 +20,7 @@
 
 #include "event.hpp"
 #include "exception.hpp"
+#include "unistd.hpp"
 
 
 #ifdef _WIN32
@@ -52,6 +53,7 @@ namespace misc
         if(m_handle == NULL)
                 throw misc::exception("Cannot create the event!");
 #else
+		m_count = 0;
         int error = 0;
         pthread_mutexattr_t attr;
         pthread_mutexattr_init(&attr);
@@ -85,6 +87,10 @@ namespace misc
 			throw misc::exception("CloseHandle error");
 		m_handle = NULL;
 #else
+		if(m_count > 0)
+			throw misc::exception("cannot destroy event: there is at least"
+								" one thread in locked state");
+		
         /*  The implementation has detected an attempt to destroy the object 
          *  referenced by cond while it is referenced, for example while being
          *  used in a pthread_cond_wait() or pthread_cond_timedwait()
@@ -121,6 +127,10 @@ namespace misc
         int error = pthread_mutex_lock(&m_mtx);
         if(error)
             throw misc::exception("pthread_mutex_lock error");
+		
+		// increment thread counter
+		++m_count;
+
 
         /*  pthread_cond_wait is used to block on a condition variable. 
          *  It is called with mutex locked by the calling thread or 
@@ -130,6 +140,10 @@ namespace misc
         if(error)
             throw misc::exception("pthread_cond_wait error");
 
+		// returned from wait state
+		--m_count;
+
+		
         /*  pthread_cond_wait returns when condition variable is signaled in
          *  another thread (pthread_cond_signal, pthread_cond_braodcast).
          *  At this point the mutex is locked (kernel), and should be unlocked
@@ -162,6 +176,10 @@ namespace misc
             throw misc::exception("pthread_mutex_lock error");
 
 
+		//increment thread counter
+		++m_count;
+		
+		
         struct timespec ts;
         if(clock_gettime(CLOCK_REALTIME, &ts) == -1)
             throw misc::exception("clock_gettime error");
@@ -174,6 +192,9 @@ namespace misc
          * undefined behaviour will result.
          */
         int cond_error = pthread_cond_timedwait(&m_cond, &m_mtx, &ts);
+		
+		// decrement thread counter
+		--m_count;
 
         /*  Unlock independent of condition signal.
          *  Consecutive attempt to trylock will also attempt to lock the mutex,
@@ -219,14 +240,35 @@ namespace misc
 			throw misc::exception("ResetEvent error");
 		return 0;
 #else
-        /*  pthread_cond_broadcast unblocks all threads currently blocked on 
-         *  the specified condition variable, one at a time, each returning
-         *  from the pthread_cond_wait() or pthread_cond_timedwait(),
-         *  as the owner of the associated mutex, with the mutex in locked state.
-         */
-        int error = pthread_cond_broadcast(&m_cond);
-        if(error)
-            throw misc::exception("pthread_cond_broadcast error");
+		bool all_up = false;
+		while (!all_up)
+		{
+			/*	Lock the associated mutex. */
+			int error = pthread_mutex_lock(&m_mtx);
+			if(error)
+				throw misc::exception("pthread_mutex_lock error");
+
+			all_up = (m_count == 0);
+			
+			if (!all_up)
+			{
+				/*  pthread_cond_broadcast unblocks all threads currently blocked on 
+				 *  the specified condition variable, one at a time, each returning
+				 *  from the pthread_cond_wait() or pthread_cond_timedwait(),
+				 *  as the owner of the associated mutex, with the mutex in locked state.
+				 */
+				error = pthread_cond_broadcast(&m_cond);
+				if(error)
+					throw misc::exception("pthread_cond_broadcast error");
+			}
+			
+			/*	To release the signal we need to unlock the associated mutex. */
+			error = pthread_mutex_unlock(&m_mtx);
+			if(error)
+				throw misc::exception("pthread_mutex_unlock error");
+
+			msleep(200);//0.2sec
+		}
 
         return 0;
 #endif
@@ -240,5 +282,5 @@ namespace misc
     int event::setevent()
     {
         return unlock();
-    }	
+    }
 } // namespace

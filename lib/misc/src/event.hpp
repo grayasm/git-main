@@ -24,6 +24,7 @@
 
 
 #include "sync_base.hpp"
+#include "critical_section.hpp"
 
 namespace misc
 {	
@@ -55,8 +56,6 @@ namespace misc
 	 *	- the event is reseting itself automatically after waking up
 	 *	- lock is not interrupted by signals
 	 *	- the event is not shared between processes
-	 *  - caution is recommended when putting > 50 threads to wait on a
-	 *		pthread_cond_t on linux. Not all of them may wake up.
 	 */
 	class event : public sync_base
 	{
@@ -100,6 +99,7 @@ namespace misc
 #else
 		pthread_mutex_t		m_mtx;
 		pthread_cond_t		m_cond;
+		unsigned long		m_count;
 #endif	
 	};
 
