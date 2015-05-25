@@ -65,9 +65,13 @@ public:
 	{
 		m_ml->lock();
 		printf("\n\t\tthread %d: locked", m_sec);
-		sleep(m_sec);
-		m_ml->unlock();
-		printf("\n\t\tthread %d: unlocked", m_sec);
+		for(int i=0; i < m_sec; ++i)
+		{
+			printf("\n\t\tthread %d: sleep(1)", m_sec);
+			sleep(1);
+		}
+		printf("\n\t\tthread %d: unlocking", m_sec);
+		m_ml->unlock();		
 		return m_sec;
 	}
 private:
@@ -83,23 +87,45 @@ void test_multi_lock::ctor()
 	
 	misc::cout << "\n\n\tctor---------------------------------------------------";
 	
-	misc::mutex m1,m2;
-	CPPUNIT_ASSERT( m1.lock() == 0 );
-	CPPUNIT_ASSERT( m2.lock() == 0 );
-	misc::sync_base* so[2];
-	so[0] = &m1;
-	so[1] = &m2;
-	
-	misc::multi_lock multi(so, 2);
+	{
+		misc::mutex m1,m2;
+		misc::semaphore s1(1), s2(2);
+		misc::event e1, e2;
+		CPPUNIT_ASSERT( m1.lock() == 0 );
+		CPPUNIT_ASSERT( m2.lock() == 0 );
+		CPPUNIT_ASSERT( s1.lock() == 0 );
+		CPPUNIT_ASSERT( s2.lock() == 0 );
+		
+		misc::sync_base* so[6];
+		so[0] = &m1;
+		so[1] = &m2;
+		so[2] = &s1;
+		so[3] = &s2;
+		so[4] = &e1;
+		so[5] = &e2;
 
-	MLLockThread t(&multi, 2);
-	CPPUNIT_ASSERT( t.resume() == 0 );
-	printf("\n\tmain: thread resumed, wait 2 sec");
-	sleep(2);
-	CPPUNIT_ASSERT( m1.unlock() == 0 );
-	CPPUNIT_ASSERT( m2.unlock() == 0 );
-	CPPUNIT_ASSERT( t.join() == 0 );
-	printf("\n\tmain: thread joined");
+		misc::multi_lock multi(so, 6);
+
+		MLLockThread t(&multi, 5);
+		CPPUNIT_ASSERT( t.resume() == 0 );
+		printf("\n\tmain: thread resumed, wait 2 sec");
+		msleep(2521);
+		CPPUNIT_ASSERT( m1.unlock() == 0 );
+		msleep(1521);
+		CPPUNIT_ASSERT( m2.unlock() == 0 );
+		msleep(1521);
+		CPPUNIT_ASSERT( s1.unlock() == 0 );
+		msleep(1521);
+		CPPUNIT_ASSERT( s2.unlock() == 0 );
+		msleep(1521);
+		CPPUNIT_ASSERT( e1.setevent() == 0 );
+		msleep(1521);
+		CPPUNIT_ASSERT( e2.setevent() == 0 );
+		printf("\n\tmain: all signaled");
+		
+		CPPUNIT_ASSERT( t.join() == 0 );
+		printf("\n\tmain: thread joined");
+	}
 }
 //##########################END  TEST  SUITE######################################
 

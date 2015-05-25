@@ -104,7 +104,17 @@ namespace misc
 		{
 			m_state = NOT_LOCKED;
 			printf("\n\t\t\tOL wait for %lu", m_msec);
-			int ret = m_obj->trylock(m_msec);
+			
+			int ret = 0;
+			if(m_msec == (unsigned long)-1) // INFINITE
+			{
+				ret = m_obj->lock();
+			}
+			else
+			{
+				ret = m_obj->trylock(m_msec);
+			}
+			
 			if(ret == 0) // locked
 			{
 				m_state = LOCKED;
@@ -242,7 +252,7 @@ namespace misc
 			}
 			
 			// if one event is not locked then retry
-			for(size_t i=0; i < ev_locks.size(); ++i)
+			for(size_t i=0; i < ev_locks.size() && all_locked; ++i)
 			{
 				object_locker* ol = ev_locks[i];
 				if( ol->get_state() != object_locker::LOCKED ) // failed to lock
@@ -263,16 +273,19 @@ namespace misc
 				
 				for(size_t i=0; i < nonev_locks.size(); ++i)
 				{
+					printf("\n\t\ti=%lu", i);
 					object_locker* ol = nonev_locks[i];
 					misc::event* ev = ol->get_event();
-					ev->setevent();
-					ol->join();
+					
+					// avoid dead lock condition
+					while( ol->join(0) != 0 )
+						ev->setevent();
+					
+					printf("\n\t\tthread is joined");
 				}				
 				
 				printf("\n\t\tretrying");
-			}
-			
-			
+			}			
 		}
 		
 		printf("\n\t\tALL LOCKED SUCCESSFULY");
@@ -306,8 +319,10 @@ namespace misc
 		{
 			object_locker* ol = m_locks[i];
 			misc::event* ev = ol->get_event();
-			ev->setevent();
-			ol->join();
+			// avoid dead lock condition
+			while( ol->join(0) != 0 )
+				ev->setevent();
+
 			delete ev;
 			delete ol;
 			

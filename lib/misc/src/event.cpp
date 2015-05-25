@@ -186,6 +186,11 @@ namespace misc
 
         ts.tv_sec += (time_t) (milliseconds / 1000);// seconds
         ts.tv_nsec += (milliseconds % 1000) * 1e6;	// nanoseconds
+		if(ts.tv_nsec >= 1e9)
+		{
+			ts.tv_sec += 1;
+			ts.tv_nsec -= 1e9;
+		}
 
         /* pthread_cond_timedwait is used to block on a condition variable. 
          * It is called with mutex locked by the calling thread or 

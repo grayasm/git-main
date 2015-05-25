@@ -121,6 +121,12 @@ namespace misc
 			
 			ts.tv_sec += (time_t) (milliseconds / 1000);// seconds
 			ts.tv_nsec += (milliseconds % 1000) * 1e6;	// nanoseconds
+			if(ts.tv_nsec >= 1e9)
+			{
+				ts.tv_sec += 1;
+				ts.tv_nsec -= 1e9;
+			}
+			
 		
 			// mutex cannot be interrupted by signals.
 			// semaphore gets the same treatment here.
