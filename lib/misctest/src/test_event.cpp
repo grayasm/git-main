@@ -173,7 +173,7 @@ void test_event::lock()
 	{
 		// more threads waiting for signal
 		misc::event ev;
-		const int THNO = 400;
+		const int THNO = 600;
 		misc::vector<EWaitForEventThread*> t;
 		for(size_t i=0; i < THNO; ++i)
 			t.push_back(new EWaitForEventThread(&ev, i%6));
@@ -291,7 +291,7 @@ void test_event::trylock()
 	{
 		/* Few threads will wait for an event that will not get signaled. */
 		misc::event ev;
-		const int THNO=400;
+		const int THNO=600;
 		ETimedWaitForEventThread* t[THNO];
 		for(int i=0; i < THNO; ++i)
 			t[i] = new ETimedWaitForEventThread(&ev, i%6);
@@ -311,16 +311,16 @@ void test_event::trylock()
 	{
 		/* Few threads will wait for an event that will get signaled from main. */
 		misc::event ev;
-		const int THNO=400;
+		const int THNO=600;
 		ETimedWaitForEventThread* t[THNO];
 		for(int i=0; i < THNO; ++i)
 			t[i] = new ETimedWaitForEventThread(&ev, 60); // wait reasonable time
 		for(int i=0; i < THNO; ++i)
 			CPPUNIT_ASSERT( t[i]->resume() == 0 );
 		printf("\n\tmain: resumed %d threads", THNO);
-		sleep(2);
+		sleep(5);								// hope all are scheduled
 		printf("\n\tmain: signaling");
-		CPPUNIT_ASSERT( ev.setevent() == 0 ); // are all threads listening ? if not, bad luck.
+		CPPUNIT_ASSERT( ev.setevent() == 0 );	// are all threads listening ? if not, bad luck.
 		for(int i=0; i < THNO; ++i)
 		{
 			CPPUNIT_ASSERT( t[i]->join() == 0 );
@@ -419,14 +419,14 @@ void test_event::unlock()
 	}
 	misc::cout << "\n\n";
 	{
-		const int THNO=60;
+		const int THNO=600;
 		EWaitForEventThread2* t[THNO];
 		for(int i=0; i < THNO; ++i)
 			t[i] = new EWaitForEventThread2(new misc::event(), 2);
 		printf("\n\tmain: starting %d threads", THNO);
 		for(int i=0; i < THNO; ++i)
 			CPPUNIT_ASSERT( t[i]->resume() == 0 );
-		sleep(5);
+		sleep(5);								// hope all are scheduled
 		printf("\n\tmain: signaling");
 		for(int i=0; i < THNO; ++i)
 		{

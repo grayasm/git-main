@@ -99,7 +99,6 @@ namespace misc
 #else
 		pthread_mutex_t		m_mtx;
 		pthread_cond_t		m_cond;
-		unsigned long		m_count;
 #endif	
 	};
 

@@ -36,6 +36,29 @@
 
 namespace misc
 {
+	/*	Abstract base class for a thread.
+	 *	Derive own class from this and instantiate it with preferred constructor.
+	 *	Implement own run() method for the separate thread entry point.
+	 *	Call resume() to start the thread which will call back the run().
+	 *	Thread cannot be:
+	 *		- canceled
+	 *		- detached
+	 *
+	 *	To cancel a thread implement your own cancellation mechanism which is
+	 *	easy and safer than TerminateThread, pthread_cancel, etc.  
+	 *		- add to the derived class a method "void cancel(bool enable)"
+	 *		- set an internal member to true or false
+	 *		- check it at convenient time from the thread
+	 *		- if true then abort calculations and return as quick as possible
+	 * 
+	 *	Detaching is not supported because of the object oriented paradigm used
+	 *	for this class. It requires to:
+	 *		- control the life of this resource, thus
+	 *		- join always the thread before deleting it
+	 * 
+	 *	A joined thread can be resumed again, if needed. It is not required to
+	 *	delete this object and create another one to start it again.
+	 */
 	class thread
 	{
 	public:
