@@ -176,7 +176,7 @@ namespace misc
 		printf("\n\t\tlock()");
 		
 		if( !m_locks.empty() )
-			throw misc::exception("multi_lock::lock error");
+			throw misc::exception("multi_lock error");
 		
 		// separate the synchronization objects by their type
 		type_visitor synctype;		
@@ -201,7 +201,9 @@ namespace misc
 		printf("\n\t\tlock() events=%lu", events.size());
 		printf("\n\t\tlock() non-ev=%lu", nonevents.size());
 		
-		const unsigned long MSEC=200; // 0.2 sec
+		unsigned long MSEC=50;	// 0.05 sec
+		MSEC += (events.size() + nonevents.size()) * 2;
+		
 		// put all event objects in waiting state
 		misc::vector<object_locker*> ev_locks;
 		for(size_t i=0; i < events.size(); ++i)
@@ -305,9 +307,157 @@ namespace misc
 		return 0;
 	}
 
-	int multi_lock::trylock(unsigned long milliseconds, bool wait_for_all)
+	int multi_lock::trylock(unsigned long milliseconds)
 	{
-		throw misc::exception("Not implemented");
+		printf("\n\t\ttrylock()");
+		
+		if(milliseconds == (unsigned long)-1)
+			return lock();
+		
+		if( !m_locks.empty() )
+			throw misc::exception("multi_lock error");
+		
+		// separate the synchronization objects by their type
+		type_visitor synctype;		
+		misc::vector<sync_base**> events;
+		misc::vector<sync_base**> nonevents;
+		
+		for(unsigned long i=0; i < m_count; ++i)
+		{
+			sync_base** p = m_objects + i;
+			(*p)->accept(synctype);
+			
+			if( synctype.is_mutex() )
+				nonevents.push_back(p);
+			else if( synctype.is_semaphore() )
+				nonevents.push_back(p);
+			else if( synctype.is_event() )
+				events.push_back(p);
+			else
+				throw misc::exception("type not implemented");
+		}
+		
+		printf("\n\t\ttrylock() events=%lu", events.size());
+		printf("\n\t\ttrylock() non-ev=%lu", nonevents.size());
+		
+		
+		unsigned long MSEC=50;	// 0.05 sec
+		MSEC += (events.size() + nonevents.size()) * 2;
+		MSEC = misc::min<unsigned long>(MSEC, milliseconds);
+				
+		// put all event objects in waiting state
+		misc::vector<object_locker*> ev_locks;
+		for(size_t i=0; i < events.size(); ++i)
+		{
+			sync_base** p = events[i];
+			ev_locks.push_back(new object_locker(*p, new misc::event(), milliseconds));
+			ev_locks[i]->resume();
+		}
+		
+		if(ev_locks.size())
+			printf("\n\t\ttrylock() resumed %lu events", ev_locks.size());
+		
+		// put all non-event objects in a single array
+		misc::vector<object_locker*> nonev_locks;
+		for(size_t i=0; i < nonevents.size(); ++i)
+		{
+			sync_base** p = nonevents[i];
+			nonev_locks.push_back(new object_locker(*p, new misc::event(), MSEC));
+		}
+		
+		// lock and unlock until all of them are locked
+		bool all_locked = false;
+		unsigned long elapsed=0;
+		while( !all_locked && elapsed < milliseconds)
+		{
+			// if 1 lock fails, this variable will be reset to false
+			all_locked = true;
+			
+			//1) resume threads for getting the locks
+			for(size_t i=0; i < nonev_locks.size(); ++i)
+				nonev_locks[i]->resume();
+			
+			printf("\n\t\ttrylock() resumed %lu non-events", nonev_locks.size());
+						
+			msleep(MSEC);
+			elapsed += MSEC;
+			
+			// if one mutex or semaphore is not locked then retry
+			for(size_t i=0; i < nonev_locks.size(); ++i)
+			{
+				object_locker* ol = nonev_locks[i];
+				if( ol->get_state() != object_locker::LOCKED ) // failed to lock
+				{
+					all_locked = false;
+					
+					printf("\n\t\tnon-event %lu is not locked", i);
+					
+					break;
+				}
+			}
+			
+			// if one event is not locked then retry
+			for(size_t i=0; i < ev_locks.size() && all_locked; ++i)
+			{
+				object_locker* ol = ev_locks[i];
+				if( ol->get_state() != object_locker::LOCKED ) // failed to lock
+				{
+					all_locked = false;
+					
+					printf("\n\t\t    event %lu is not locked", i);
+					
+					break;
+				}
+			}
+
+			// event threads will remain in wait state
+			// mutexes and semaphores will be unlocked for retry
+			if( !all_locked )
+			{
+				printf("\n\t\tbailing out");
+				
+				for(size_t i=0; i < nonev_locks.size(); ++i)
+				{
+					printf("\n\t\ti=%lu", i);
+					object_locker* ol = nonev_locks[i];
+					misc::event* ev = ol->get_event();
+					
+					// avoid dead lock condition
+					while( ol->join(0) != 0 )
+						ev->setevent();
+					
+					printf("\n\t\tthread is joined");
+				}				
+				
+				printf("\n\t\tretrying");
+			}			
+		}
+		
+		// save all objects to be found by unlock method
+		for(size_t i=0; i < ev_locks.size(); ++i)
+		{
+			object_locker* ol = ev_locks[i];
+			m_locks.push_back(ol);
+		}
+		for(size_t i=0; i < nonev_locks.size(); ++i)
+		{
+			object_locker* ol = nonev_locks[i];
+			m_locks.push_back(ol);
+		}
+
+		
+		if(all_locked)
+		{
+			printf("\n\t\tALL LOCKED SUCCESSFULY");
+			return 0;
+		}
+		else
+		{
+			printf("\n\t\tFAILED TO LOCK ALL OBJECTS");
+			printf("\n\t\tunlocking to return clean");
+			unlock();
+			return 1;
+		}
 	}
 
 	int multi_lock::unlock()

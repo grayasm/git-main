@@ -40,9 +40,13 @@ namespace misc
 		
 		~multi_lock();
 
+		//! Locks all objects and returns 0 or otherwise throws misc::exception.
 		int lock();
 
-		int trylock(unsigned long milliseconds, bool wait_for_all);
+		/*! Locks all objects and returns 0 or 1 if timeout.
+		 *!	milliseconds possible values are: any > 0 or -1 for INFINITE
+		 */
+		int trylock(unsigned long milliseconds);
 
 		int unlock();
 

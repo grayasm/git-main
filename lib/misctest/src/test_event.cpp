@@ -173,7 +173,7 @@ void test_event::lock()
 	{
 		// more threads waiting for signal
 		misc::event ev;
-		const int THNO = 600;
+		const int THNO = 400;				// ulimits enforced proc limit
 		misc::vector<EWaitForEventThread*> t;
 		for(size_t i=0; i < THNO; ++i)
 			t.push_back(new EWaitForEventThread(&ev, i%6));
@@ -291,7 +291,7 @@ void test_event::trylock()
 	{
 		/* Few threads will wait for an event that will not get signaled. */
 		misc::event ev;
-		const int THNO=600;
+		const int THNO=400;				// ulimits enforced proc limit
 		ETimedWaitForEventThread* t[THNO];
 		for(int i=0; i < THNO; ++i)
 			t[i] = new ETimedWaitForEventThread(&ev, i%6);
@@ -311,7 +311,7 @@ void test_event::trylock()
 	{
 		/* Few threads will wait for an event that will get signaled from main. */
 		misc::event ev;
-		const int THNO=600;
+		const int THNO=400;						// ulimits enforced proc limit
 		ETimedWaitForEventThread* t[THNO];
 		for(int i=0; i < THNO; ++i)
 			t[i] = new ETimedWaitForEventThread(&ev, 60); // wait reasonable time
@@ -419,7 +419,7 @@ void test_event::unlock()
 	}
 	misc::cout << "\n\n";
 	{
-		const int THNO=600;
+		const int THNO=400;						// ulimits enforced proc limit
 		EWaitForEventThread2* t[THNO];
 		for(int i=0; i < THNO; ++i)
 			t[i] = new EWaitForEventThread2(new misc::event(), 2);
