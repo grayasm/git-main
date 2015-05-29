@@ -103,7 +103,7 @@ namespace misc
 		unsigned long run()
 		{
 			m_state = NOT_LOCKED;
-			printf("\n\t\t\tOL wait for %lu", m_msec);
+//			printf("\n\t\t\tOL wait for %lu", m_msec);
 			
 			int ret = 0;
 			if(m_msec == (unsigned long)-1) // INFINITE
@@ -117,20 +117,16 @@ namespace misc
 			
 			if(ret == 0) // locked
 			{
-				m_state = LOCKED;
-				
-				printf("\n\t\t\tOL locked");
-				
+				m_state = LOCKED;				
+//				printf("\n\t\t\tOL locked");				
 				m_ev->lock();		// wait for signal to unlock				
-				m_obj->unlock();	// unlock
-				
-				printf("\n\t\t\tOL unlocked");
-				
+				m_obj->unlock();	// unlock				
+//				printf("\n\t\t\tOL unlocked");				
 				m_state = UNLOCKED;				
 			}
 			else
 			{
-				printf("\n\t\t\tOL timeout");
+//				printf("\n\t\t\tOL timeout");
 			}
 			// else TIMEOUT
 			return ret; 
@@ -146,7 +142,7 @@ namespace misc
 	private:
 		misc::sync_base*		m_obj;
 		misc::event*			m_ev;
-		unsigned long			m_msec; // in milliseconds
+		unsigned long			m_msec;
 		lock_state				m_state;
 	};
 	//##########################################################################
@@ -155,7 +151,7 @@ namespace misc
 		if(objects == NULL || count == 0)
 			throw misc::exception("Invalid argument.");
 
-		printf("\n\t\tmulti_lock(..)");
+//		printf("\n\t\tmulti_lock(..)");
 		
 		m_objects = objects;
 		m_count = count;
@@ -163,17 +159,16 @@ namespace misc
 
 	multi_lock::~multi_lock()
 	{
-		printf("\n\t\t~multi_lock(..)");
+//		printf("\n\t\t~multi_lock(..)");
 		if(m_locks.size())
-			throw misc::exception("cannot destroy multi_lock with "
-								  "objects in locked state");
+			throw misc::exception("~multi_lock: there are objects unlocked");
 		m_objects = NULL;
 		m_count = 0;
 	}
 
 	int multi_lock::lock()
 	{
-		printf("\n\t\tlock()");
+//		printf("\n\t\tlock()");
 		
 		if( !m_locks.empty() )
 			throw misc::exception("multi_lock error");
@@ -198,10 +193,10 @@ namespace misc
 				throw misc::exception("type not implemented");
 		}
 		
-		printf("\n\t\tlock() events=%lu", events.size());
-		printf("\n\t\tlock() non-ev=%lu", nonevents.size());
+//		printf("\n\t\tlock() events=%lu", events.size());
+//		printf("\n\t\tlock() non-ev=%lu", nonevents.size());
 		
-		unsigned long MSEC=50;	// 0.05 sec
+		unsigned long MSEC=10;	// 0.01 sec
 		MSEC += (events.size() + nonevents.size()) * 2;
 		
 		// put all event objects in waiting state
@@ -213,8 +208,8 @@ namespace misc
 			ev_locks[i]->resume();
 		}
 		
-		if(ev_locks.size())
-			printf("\n\t\tlock() resumed %lu events", ev_locks.size());
+//		if(ev_locks.size())
+//			printf("\n\t\tlock() resumed %lu events", ev_locks.size());
 		
 		// put all non-event objects in a single array
 		misc::vector<object_locker*> nonev_locks;
@@ -235,7 +230,7 @@ namespace misc
 			for(size_t i=0; i < nonev_locks.size(); ++i)
 				nonev_locks[i]->resume();
 			
-			printf("\n\t\tlock() resumed %lu non-events", nonev_locks.size());
+//			printf("\n\t\tlock() resumed %lu non-events", nonev_locks.size());
 			
 			msleep(MSEC);
 			
@@ -247,7 +242,7 @@ namespace misc
 				{
 					all_locked = false;
 					
-					printf("\n\t\tnon-event %lu is not locked", i);
+//					printf("\n\t\tnon-event %lu is not locked", i);
 					
 					break;
 				}
@@ -261,7 +256,7 @@ namespace misc
 				{
 					all_locked = false;
 					
-					printf("\n\t\t    event %lu is not locked", i);
+//					printf("\n\t\t    event %lu is not locked", i);
 					
 					break;
 				}
@@ -271,11 +266,11 @@ namespace misc
 			// mutexes and semaphores will be unlocked for retry
 			if( !all_locked )
 			{
-				printf("\n\t\tbailing out");
+//				printf("\n\t\tbailing out");
 				
 				for(size_t i=0; i < nonev_locks.size(); ++i)
 				{
-					printf("\n\t\ti=%lu", i);
+//					printf("\n\t\ti=%lu", i);
 					object_locker* ol = nonev_locks[i];
 					misc::event* ev = ol->get_event();
 					
@@ -283,14 +278,14 @@ namespace misc
 					while( ol->join(0) != 0 )
 						ev->setevent();
 					
-					printf("\n\t\tthread is joined");
+//					printf("\n\t\tthread is joined");
 				}				
 				
-				printf("\n\t\tretrying");
+//				printf("\n\t\tretrying");
 			}			
 		}
 		
-		printf("\n\t\tALL LOCKED SUCCESSFULY");
+//		printf("\n\t\tALL LOCKED SUCCESSFULY");
 		
 		// save all objects to be found by unlock method
 		for(size_t i=0; i < ev_locks.size(); ++i)
@@ -309,7 +304,7 @@ namespace misc
 
 	int multi_lock::trylock(unsigned long milliseconds)
 	{
-		printf("\n\t\ttrylock()");
+//		printf("\n\t\ttrylock()");
 		
 		if(milliseconds == (unsigned long)-1)
 			return lock();
@@ -337,11 +332,11 @@ namespace misc
 				throw misc::exception("type not implemented");
 		}
 		
-		printf("\n\t\ttrylock() events=%lu", events.size());
-		printf("\n\t\ttrylock() non-ev=%lu", nonevents.size());
+//		printf("\n\t\ttrylock() events=%lu", events.size());
+//		printf("\n\t\ttrylock() non-ev=%lu", nonevents.size());
 		
 		
-		unsigned long MSEC=50;	// 0.05 sec
+		unsigned long MSEC=10;	// 0.01 sec
 		MSEC += (events.size() + nonevents.size()) * 2;
 		MSEC = misc::min<unsigned long>(MSEC, milliseconds);
 				
@@ -354,8 +349,8 @@ namespace misc
 			ev_locks[i]->resume();
 		}
 		
-		if(ev_locks.size())
-			printf("\n\t\ttrylock() resumed %lu events", ev_locks.size());
+//		if(ev_locks.size())
+//			printf("\n\t\ttrylock() resumed %lu events", ev_locks.size());
 		
 		// put all non-event objects in a single array
 		misc::vector<object_locker*> nonev_locks;
@@ -377,7 +372,7 @@ namespace misc
 			for(size_t i=0; i < nonev_locks.size(); ++i)
 				nonev_locks[i]->resume();
 			
-			printf("\n\t\ttrylock() resumed %lu non-events", nonev_locks.size());
+//			printf("\n\t\ttrylock() resumed %lu non-events", nonev_locks.size());
 						
 			msleep(MSEC);
 			elapsed += MSEC;
@@ -390,7 +385,7 @@ namespace misc
 				{
 					all_locked = false;
 					
-					printf("\n\t\tnon-event %lu is not locked", i);
+//					printf("\n\t\tnon-event %lu is not locked", i);
 					
 					break;
 				}
@@ -404,7 +399,7 @@ namespace misc
 				{
 					all_locked = false;
 					
-					printf("\n\t\t    event %lu is not locked", i);
+//					printf("\n\t\t    event %lu is not locked", i);
 					
 					break;
 				}
@@ -414,11 +409,11 @@ namespace misc
 			// mutexes and semaphores will be unlocked for retry
 			if( !all_locked )
 			{
-				printf("\n\t\tbailing out");
+//				printf("\n\t\tbailing out");
 				
 				for(size_t i=0; i < nonev_locks.size(); ++i)
 				{
-					printf("\n\t\ti=%lu", i);
+//					printf("\n\t\ti=%lu", i);
 					object_locker* ol = nonev_locks[i];
 					misc::event* ev = ol->get_event();
 					
@@ -426,10 +421,10 @@ namespace misc
 					while( ol->join(0) != 0 )
 						ev->setevent();
 					
-					printf("\n\t\tthread is joined");
+//					printf("\n\t\tthread is joined");
 				}				
 				
-				printf("\n\t\tretrying");
+//				printf("\n\t\tretrying");
 			}			
 		}
 		
@@ -448,13 +443,13 @@ namespace misc
 		
 		if(all_locked)
 		{
-			printf("\n\t\tALL LOCKED SUCCESSFULY");
+//			printf("\n\t\tALL LOCKED SUCCESSFULY");
 			return 0;
 		}
 		else
 		{
-			printf("\n\t\tFAILED TO LOCK ALL OBJECTS");
-			printf("\n\t\tunlocking to return clean");
+//			printf("\n\t\tFAILED TO LOCK ALL OBJECTS");
+//			printf("\n\t\tunlocking to return clean");
 			unlock();
 			return 1;
 		}
@@ -476,7 +471,7 @@ namespace misc
 			delete ev;
 			delete ol;
 			
-			printf("\n\t\t\tunlock() object %lu", i);
+//			printf("\n\t\t\tunlock() object %lu", i);
 		}
 		
 		m_locks.clear();

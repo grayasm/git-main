@@ -122,6 +122,8 @@ void test_multi_lock::ctor()
 
 void test_multi_lock::dtor()
 {
+	misc::cout << "\n\n\tdtor---------------------------------------------------";
+	
 	{
 		misc::mutex m1,m2;
 		misc::semaphore s1(1), s2(2);
@@ -190,12 +192,8 @@ public:
 	unsigned long run()
 	{
 		m_ml->lock();
-		printf("\n\t\tthread %d: locked", m_sec);
-		for(int i=0; i < m_sec; ++i)
-		{
-			printf("\n\t\tthread %d: sleep(1)", m_sec);
-			sleep(1);
-		}
+		printf("\n\t\tthread %d: locked, sleeping %d sec", m_sec, m_sec);
+		sleep(m_sec);
 		printf("\n\t\tthread %d: unlocking", m_sec);
 		m_ml->unlock();		
 		return m_sec;
@@ -207,46 +205,110 @@ private:
 
 void test_multi_lock::lock()
 {
+	misc::cout << "\n\n\tlock --------------------------------------------------";
+	
 	{
-		misc::mutex m1,m2;
-		misc::semaphore s1(1), s2(2);
-		misc::event e1, e2;
+		misc::cout << "\n\n\t main:2 locked mutex";
+		misc::mutex m1, m2;
 		CPPUNIT_ASSERT( m1.lock() == 0 );
 		CPPUNIT_ASSERT( m2.lock() == 0 );
-		CPPUNIT_ASSERT( s1.lock() == 0 );
-		CPPUNIT_ASSERT( s2.lock() == 0 );
-		
-		misc::sync_base* so[6];
+		misc::sync_base* so[2];
 		so[0] = &m1;
 		so[1] = &m2;
-		so[2] = &s1;
-		so[3] = &s2;
-		so[4] = &e1;
-		so[5] = &e2;
-
-		misc::multi_lock multi(so, 6);
-
-		MLLockThread t(&multi, 5);
+		misc::multi_lock ml(so, 2);
+		MLLockThread t(&ml, 1);
 		CPPUNIT_ASSERT( t.resume() == 0 );
-		printf("\n\tmain: thread resumed, wait 2 sec");
-		msleep(2521);
+		
+		printf("\n\t main: sleep(2) before releasing objects");
+		sleep(2);
+		
 		CPPUNIT_ASSERT( m1.unlock() == 0 );
-		msleep(1521);
+		CPPUNIT_ASSERT( m2.unlock() == 0 );	
+		CPPUNIT_ASSERT( t.join() == 0 );
+		printf("\n\t main: thread joined");
+	}
+	{
+		misc::cout << "\n\n\t main:1 mutex, 1 event";
+		misc::mutex m1;
+		misc::event e1;
+		CPPUNIT_ASSERT( m1.lock() == 0 );
+		
+		misc::sync_base* so[2];
+		so[0] = &m1;
+		so[1] = &e1;
+		misc::multi_lock ml(so, 2);
+		MLLockThread t(&ml, 1);
+		CPPUNIT_ASSERT( t.resume() == 0 );
+		
+		printf("\n\t main: sleep(2) before releasing objects");
+		sleep(2);
+		
+		CPPUNIT_ASSERT( m1.unlock() == 0 );
+		CPPUNIT_ASSERT( e1.setevent() == 0 );	
+		CPPUNIT_ASSERT( t.join() == 0 );
+		printf("\n\t main: thread joined");
+	}
+	{
+		misc::cout << "\n\n\t main: more objects";
+		misc::mutex m1, m2, m3, m4, m5;
+		misc::event e1, e2, e3, e4, e5;
+		misc::semaphore s1(1), s2(2), s3(3), s4(4), s5(5);
+				
+		CPPUNIT_ASSERT( m1.lock() == 0 );
+		CPPUNIT_ASSERT( m2.lock() == 0 );
+		CPPUNIT_ASSERT( m3.lock() == 0 );
+		CPPUNIT_ASSERT( m4.lock() == 0 );
+		CPPUNIT_ASSERT( m5.lock() == 0 );
+		
+		CPPUNIT_ASSERT( s1.lock() == 0 );
+		
+		misc::sync_base* so[15];
+		so[0] = &m1;
+		so[1] = &m2;
+		so[2] = &m3;
+		so[3] = &m4;
+		so[4] = &m5;
+		
+		so[5] = &e1;
+		so[6] = &e2;
+		so[7] = &e3;
+		so[8] = &e4;
+		so[9] = &e5;
+		
+		so[10] = &s1;
+		so[11] = &s2;
+		so[12] = &s3;
+		so[13] = &s4;
+		so[14] = &s5;
+		
+		misc::multi_lock ml(so, 15);
+		MLLockThread t(&ml, 2);
+		CPPUNIT_ASSERT( t.resume() == 0 );
+		
+		printf("\n\t main: sleep(2) before releasing objects");
+		sleep(2);
+		
+		CPPUNIT_ASSERT( m1.unlock() == 0 );
 		CPPUNIT_ASSERT( m2.unlock() == 0 );
-		msleep(1521);
+		CPPUNIT_ASSERT( m3.unlock() == 0 );
+		CPPUNIT_ASSERT( m4.unlock() == 0 );
+		CPPUNIT_ASSERT( m5.unlock() == 0 );
+		
+		CPPUNIT_ASSERT( e1.unlock() == 0 );
+		CPPUNIT_ASSERT( e2.unlock() == 0 );
+		CPPUNIT_ASSERT( e3.unlock() == 0 );
+		CPPUNIT_ASSERT( e4.unlock() == 0 );
+		CPPUNIT_ASSERT( e5.unlock() == 0 );
+		
 		CPPUNIT_ASSERT( s1.unlock() == 0 );
-		msleep(1521);
-		CPPUNIT_ASSERT( s2.unlock() == 0 );
-		msleep(1521);
-		CPPUNIT_ASSERT( e1.setevent() == 0 );
-		msleep(1521);
-		CPPUNIT_ASSERT( e2.setevent() == 0 );
-		printf("\n\tmain: all signaled");
 		
 		CPPUNIT_ASSERT( t.join() == 0 );
-		printf("\n\tmain: thread joined");
+		printf("\n\t main: thread joined");
 	}
-	
+	{
+		misc::cout << "\n\n\t main: concurent multi-lock";
+		
+	}
 }
 
 class MLTimedLockThread : public misc::thread
@@ -281,6 +343,8 @@ private:
 
 void test_multi_lock::trylock()
 {
+	misc::cout << "\n\n\ttrylock -----------------------------------------------";
+	
 	{
 		misc::mutex m1,m2;
 		misc::semaphore s1(1), s2(2);
@@ -319,6 +383,8 @@ void test_multi_lock::trylock()
 
 void test_multi_lock::unlock()
 {
+	misc::cout << "\n\n\tunlock ------------------------------------------------";
+	
 	
 }
 //##########################END  TEST  SUITE######################################
