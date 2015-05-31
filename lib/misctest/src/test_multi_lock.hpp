@@ -37,8 +37,8 @@ class test_multi_lock : public CppUnit::TestFixture
 	CPPUNIT_TEST(ctor);
 	CPPUNIT_TEST(dtor);
 	CPPUNIT_TEST(lock);
-//	CPPUNIT_TEST(trylock);
-//	CPPUNIT_TEST(unlock);
+	CPPUNIT_TEST(trylock);
+	CPPUNIT_TEST(unlock);
 	CPPUNIT_TEST_SUITE_END();
 
 public:

@@ -31,8 +31,7 @@
 // libraries
 #include "thread.hpp"
 #include "exception.hpp"
-#include "algorithm.hpp"	// min
-
+#include "algorithm.hpp"
 
 namespace misc
 {
@@ -181,6 +180,9 @@ namespace misc
 			return 1;	// WAIT_TIMEOUT, WAIT_FAILED, WAIT_ABANDONED
 		}
 #else
+		if(m_joined)
+			throw misc::exception("pthread_join already joined");
+		
 		void* retval;
 		if(milliseconds == (unsigned long)-1 || m_terminated)
 		{

@@ -72,8 +72,7 @@ namespace misc
 		virtual unsigned long run() = 0;
 
 		//! Starts a new thread and returns 0 if successful or otherwise throws
-		//! misc::exception. 
-		//! It can resume an old thread only if it was joined previously.
+		//! misc::exception. A joined thread can be resumed again.
 		int resume();
 		
 		/*! Joins a finished thread and returns 0 or 1 if timeout.

@@ -146,8 +146,6 @@ int main(int argc, char** argv)
 	//
 	//
 	//
-	//
-	//
 	CPPUNIT_TEST_SUITE_REGISTRATION(test_multi_lock);
 
 
