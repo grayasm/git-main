@@ -66,5 +66,5 @@ namespace misc
 	{
 		return m_tokens;
 	}
-}; // namespace
+} // namespace
 

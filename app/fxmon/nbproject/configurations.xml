@@ -43,7 +43,7 @@
           <buildCommandWorkingDir>.</buildCommandWorkingDir>
           <buildCommand>${MAKE} -f Makefile</buildCommand>
           <cleanCommand>${MAKE} -f Makefile clean</cleanCommand>
-          <executablePath></executablePath>
+          <executablePath>src/fxmon</executablePath>
         </makeTool>
       </makefileType>
       <item path="src/MonConsoleHandlerPlugin.cpp" ex="false" tool="1" flavor2="4">

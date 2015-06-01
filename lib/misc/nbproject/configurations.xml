@@ -9,8 +9,10 @@
         <in>event.cpp</in>
         <in>exception.cpp</in>
         <in>filename.cpp</in>
+        <in>multi_lock.cpp</in>
         <in>mutex.cpp</in>
         <in>semaphore.cpp</in>
+        <in>single_lock.cpp</in>
         <in>strconv.cpp</in>
         <in>sync_base.cpp</in>
         <in>thread.cpp</in>
@@ -45,7 +47,7 @@
       <makefileType>
         <makeTool>
           <buildCommandWorkingDir>.</buildCommandWorkingDir>
-          <buildCommand>${MAKE} -f Makefile</buildCommand>
+          <buildCommand>${MAKE} -j8  -f Makefile</buildCommand>
           <cleanCommand>${MAKE} -f Makefile clean</cleanCommand>
           <executablePath></executablePath>
           <ccTool>
@@ -80,11 +82,19 @@
         <ccTool flags="0">
         </ccTool>
       </item>
+      <item path="src/multi_lock.cpp" ex="false" tool="1" flavor2="4">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
       <item path="src/mutex.cpp" ex="false" tool="1" flavor2="4">
         <ccTool flags="0">
         </ccTool>
       </item>
       <item path="src/semaphore.cpp" ex="false" tool="1" flavor2="4">
+        <ccTool flags="0">
+        </ccTool>
+      </item>
+      <item path="src/single_lock.cpp" ex="false" tool="1" flavor2="4">
         <ccTool flags="0">
         </ccTool>
       </item>

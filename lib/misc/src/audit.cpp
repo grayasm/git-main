@@ -23,8 +23,6 @@
 #include "exception.hpp"
 #include "stream.hpp"
 
-#include <windows.h>
-
 
 namespace misc
 {
@@ -79,7 +77,7 @@ namespace misc
 			throw misc::exception("Cannot open audit file for writing.");
 
 		fout << "\nTIME: " << buff;
-		fout << "\n\tFILE: " << file << ":" << lineno << " " << fn << " " << GetCurrentThreadId();
+		fout << "\n\tFILE: " << file << ":" << lineno << " " << fn ;//<< " " << GetCurrentThreadId();
 		fout << "\n\tMSG : " << msg << ";";
 		fout.close();
 	}
@@ -93,7 +91,7 @@ namespace misc
 		if(!fout.is_open())
 			throw misc::exception("Cannot open audit file for writing.");
 
-		fout << "\n\tFILE: " << file << ":" << lineno << " " << fn << " " << GetCurrentThreadId();
+		fout << "\n\tFILE: " << file << ":" << lineno << " " << fn ;//<< " " << GetCurrentThreadId();
 		fout << "\n\tMSG : " << msg << ";";
 		fout.close();
 	}

@@ -18,11 +18,11 @@
 */
 
 
-#include <time.h>
 #include <math.h>
 #include "MonEngine.hpp"
 #include "stream.hpp"
 #include "strconv.hpp"
+#include "time.hpp"
 #include "Serializer.hpp"
 #include "StrategyBase.hpp"
 #include "StrategyHedgeFixGrid.hpp"
@@ -191,13 +191,15 @@ void MonEngine::OnUpdateFailed(Strategies& strategies, Strategies::iterator& it)
 	if(dumpStrategyOutcome)
 	{
 		time_t rawtime;
-		//struct tm* timeinfo;
-		struct tm timeinfo;
+		struct tm* timeinfo;
+		//struct tm timeinfo;
 		char buffer[80];
 		time(&rawtime);
-		//timeinfo = localtime(&rawtime);
-		localtime_s(&timeinfo, &rawtime);
-		strftime(buffer, 80, "%Y-%m-%d-%H-%M-%S", &timeinfo);
+		timeinfo = localtime(&rawtime);
+		//localtime_s(&timeinfo, &rawtime);
+		//strftime(buffer, 80, "%Y-%m-%d-%H-%M-%S", &timeinfo);
+		strftime(buffer, 80, "%Y-%m-%d-%H-%M-%S", timeinfo);
+		
 		
 		misc::string fout(buffer);
 		if(bInProfit)

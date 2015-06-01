@@ -310,4 +310,4 @@ namespace misc
 		return false;
 	}
 
-}; // namespace
+} // namespace

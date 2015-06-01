@@ -131,7 +131,7 @@ namespace misc
 		mutable Map		m_values;
 	};
 
-}; // namespace
+} // namespace
 
 
 

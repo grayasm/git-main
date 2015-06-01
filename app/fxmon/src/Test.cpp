@@ -22,7 +22,7 @@
 #include "MonitorIni.hpp"
 #include "fxcmSession.hpp"
 #include "stream.hpp"
-#include <windows.h>
+
 
 void test()
 {
@@ -45,9 +45,9 @@ void test()
 		fx::Currency curr(currencies[j]);
 		
 		
-		double margin = curr.GetMargin();	margin;
-		double pipcost= curr.GetPipCost();	pipcost;
-		double rate2pip=curr.GetRate2Pip();	rate2pip;
+//		double margin = curr.GetMargin();
+//		double pipcost= curr.GetPipCost();
+//		double rate2pip=curr.GetRate2Pip();
 
 		fx::Position pos("", "", curr, (i%2==0), 5, 0, 0);
 

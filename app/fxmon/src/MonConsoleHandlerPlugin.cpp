@@ -24,13 +24,21 @@
 
 // control handler
 MonConsoleHandlerPlugin* _thisMonConsoleHandlerPlugin;
+
+#ifdef WIN32
 BOOL ControlHandler(DWORD dwControlEvent);
+#else
+#endif
 
 MonConsoleHandlerPlugin::MonConsoleHandlerPlugin()
 {
 	m_CtrlC = false;
 	_thisMonConsoleHandlerPlugin = this;
+	
+#ifdef WIN32
 	SetConsoleCtrlHandler((PHANDLER_ROUTINE)ControlHandler, TRUE);
+#else
+#endif
 
 	//
 	m_engine = 0;
@@ -61,6 +69,7 @@ void MonConsoleHandlerPlugin::SetEngine(MonEngine* engine)
 }
 
 //##############################################################################
+#ifdef WIN32
 BOOL ControlHandler(DWORD dwControlEvent) 
 { 
 	switch (dwControlEvent) 
@@ -81,3 +90,5 @@ BOOL ControlHandler(DWORD dwControlEvent)
 		return FALSE; 
 	} 
 } 
+#else
+#endif

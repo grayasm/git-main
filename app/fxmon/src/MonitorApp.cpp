@@ -143,7 +143,7 @@ bool MonitorApp::ProcessOption()
 	if(stdline.empty())
 	{
 		misc::cout << "\nempty option, retry in 2 sec";
-		Sleep(2000);
+		sleep(2);
 		return true;
 	}
 
@@ -252,7 +252,7 @@ void MonitorApp::CreateNewStrategy()
 	if(val.empty())
 	{
 		misc::cout << "\nempty option, wait 2 seconds";
-		Sleep(2000);
+		sleep(2);
 		return ;
 	}
 	
@@ -272,7 +272,7 @@ void MonitorApp::CreateNewStrategy()
 		return CreateNew2FGStrategy();
 
 	misc::cout << "\ninvalid option, wait 2 seconds";
-	Sleep(2000);	
+	sleep(2);	
 }
 
 void MonitorApp::CreateNewHFGStrategy()

@@ -41,7 +41,7 @@ public:
 
 
 private:
-	int			m_timeout;
+	int			m_timeout; // seconds
 };
 
 #endif // __MonQuoteUpdateTimeoutPlugin_hpp__

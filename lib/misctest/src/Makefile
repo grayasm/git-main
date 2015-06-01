@@ -30,7 +30,7 @@ SRC=misctest.cpp \
 
 OBJ=$(SRC:.cpp=.o)
 INCLUDE= -I. -I../../misc/src -I$(HOME)/local/cppunit/include
-CXXFLAGS= -c -std=c++98 -O2 -Wall -Wno-long-long -pedantic -DDEBUG -D_GLIBCXX_DEBUG -m64
+CXXFLAGS= -g -O0 -c -std=c++98 -Wall -Wno-long-long -pedantic -DDEBUG -D_GLIBCXX_DEBUG -m64
 LDFLAGS= -L$(HOME)/local/cppunit/lib -l:libcppunit.a -L../../misc/src -l:libmisc.a -lm -ldl -lpthread
 TARGET=misctest
 

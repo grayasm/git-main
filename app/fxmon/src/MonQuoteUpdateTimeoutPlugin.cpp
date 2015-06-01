@@ -20,8 +20,7 @@
 
 
 #include "MonQuoteUpdateTimeoutPlugin.hpp"
-#include <windows.h>
-
+#include "unistd.hpp"
 
 MonQuoteUpdateTimeoutPlugin::MonQuoteUpdateTimeoutPlugin()
 {
@@ -35,7 +34,7 @@ MonQuoteUpdateTimeoutPlugin::~MonQuoteUpdateTimeoutPlugin()
 
 void MonQuoteUpdateTimeoutPlugin::SetTimeOut(double sec)
 {
-	m_timeout = (int)(sec * 1000);
+	m_timeout = (int)sec;
 }
 
 
@@ -43,7 +42,7 @@ void MonQuoteUpdateTimeoutPlugin::OnUpdate()
 {
 	if(m_timeout > 0)
 	{
-		Sleep(m_timeout);
+		sleep(m_timeout); // sleep seconds
 	}	
 }
 

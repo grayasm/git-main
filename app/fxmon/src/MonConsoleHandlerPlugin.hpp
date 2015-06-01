@@ -46,8 +46,12 @@ private:
 	MonConsoleHandlerPlugin(const MonConsoleHandlerPlugin&);
 	MonConsoleHandlerPlugin& operator=(const MonConsoleHandlerPlugin&);
 
+#ifdef _WIN32
 	// control handler
 	friend BOOL ControlHandler(DWORD dwControlEvent);
+#else
+#endif
+	
 	misc::critical_section		m_critical_section;
 	bool						m_CtrlC;
 	// engine
