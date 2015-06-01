@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configurationDescriptor version="95">
+  <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
+    <df root="." name="0">
+      <df name="src">
+        <in>Currency.cpp</in>
+        <in>Currency.hpp</in>
+        <in>Deserializer.cpp</in>
+        <in>Deserializer.hpp</in>
+        <in>ExponentialMovingAverage.cpp</in>
+        <in>ExponentialMovingAverage.hpp</in>
+        <in>FixGridPositionStub.cpp</in>
+        <in>FixGridPositionStub.hpp</in>
+        <in>MarketDummyPlugin.cpp</in>
+        <in>MarketDummyPlugin.hpp</in>
+        <in>MarketPlugin.cpp</in>
+        <in>MarketPlugin.hpp</in>
+        <in>Position.cpp</in>
+        <in>Position.hpp</in>
+        <in>Price.cpp</in>
+        <in>Price.hpp</in>
+        <in>PriceGenerator.cpp</in>
+        <in>PriceGenerator.hpp</in>
+        <in>Serializer.cpp</in>
+        <in>Serializer.hpp</in>
+        <in>SimpleMovingAverage.cpp</in>
+        <in>SimpleMovingAverage.hpp</in>
+        <in>Strategy2FixGrid.cpp</in>
+        <in>Strategy2FixGrid.hpp</in>
+        <in>Strategy2HedgeFixGrid.cpp</in>
+        <in>Strategy2HedgeFixGrid.hpp</in>
+        <in>StrategyBase.hpp</in>
+        <in>StrategyFixGrid.cpp</in>
+        <in>StrategyFixGrid.hpp</in>
+        <in>StrategyHedgeFixGrid.cpp</in>
+        <in>StrategyHedgeFixGrid.hpp</in>
+        <in>StrategyJNemRenko.cpp</in>
+        <in>StrategyJNemRenko.hpp</in>
+        <in>Transaction.cpp</in>
+        <in>Transaction.hpp</in>
+      </df>
+      <df name="vcbuild">
+      </df>
+    </df>
+  </logicalFolder>
+  <projectmakefile>Makefile</projectmakefile>
+  <confs>
+    <conf name="Default" type="0">
+      <toolsSet>
+        <developmentServer>localhost</developmentServer>
+        <platform>2</platform>
+      </toolsSet>
+      <compile>
+        <compiledirpicklist>
+          <compiledirpicklistitem>.</compiledirpicklistitem>
+          <compiledirpicklistitem>${AUTO_FOLDER}</compiledirpicklistitem>
+        </compiledirpicklist>
+        <compiledir>${AUTO_FOLDER}</compiledir>
+        <compilecommandpicklist>
+          <compilecommandpicklistitem>${MAKE} ${ITEM_NAME}.o</compilecommandpicklistitem>
+          <compilecommandpicklistitem>${AUTO_COMPILE}</compilecommandpicklistitem>
+        </compilecommandpicklist>
+        <compilecommand>${AUTO_COMPILE}</compilecommand>
+      </compile>
+      <dbx_gdbdebugger version="1">
+        <gdb_pathmaps>
+        </gdb_pathmaps>
+        <gdb_interceptlist>
+          <gdbinterceptoptions gdb_all="false" gdb_unhandled="true" gdb_unexpected="true"/>
+        </gdb_interceptlist>
+        <gdb_options>
+          <DebugOptions>
+          </DebugOptions>
+        </gdb_options>
+        <gdb_buildfirst gdb_buildfirst_overriden="false" gdb_buildfirst_old="false"/>
+      </dbx_gdbdebugger>
+      <nativedebugger version="1">
+        <engine>gdb</engine>
+      </nativedebugger>
+      <runprofile version="9">
+        <runcommandpicklist>
+          <runcommandpicklistitem>"${OUTPUT_PATH}"</runcommandpicklistitem>
+        </runcommandpicklist>
+        <runcommand>"${OUTPUT_PATH}"</runcommand>
+        <rundir>.</rundir>
+        <buildfirst>false</buildfirst>
+        <terminal-type>0</terminal-type>
+        <remove-instrumentation>0</remove-instrumentation>
+        <environment>
+        </environment>
+      </runprofile>
+    </conf>
+  </confs>
+</configurationDescriptor>
