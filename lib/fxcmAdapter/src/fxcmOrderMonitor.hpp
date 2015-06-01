@@ -106,7 +106,7 @@ namespace fxcm
 		OrderResult							m_result;
 		misc::audit							m_audit;
 	};
-}; // namespace
+} // namespace
 
 
 

@@ -62,7 +62,7 @@ namespace fxcm
 	private:
 		Session* m_session;
 	};
-}; // namespace
+} // namespace
 
 
 #endif // __fxcmMarketPlugin_hpp__

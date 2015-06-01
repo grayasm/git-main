@@ -59,6 +59,6 @@ namespace fxcm
 
 		std::map<misc::string, double>	m_nonCalculable;
 	};
-}; // namespace
+} // namespace
 
 #endif // __fxcmPipCost_hpp__

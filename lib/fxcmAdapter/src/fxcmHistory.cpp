@@ -145,4 +145,4 @@ namespace fxcm
 	{
 		return m_volume;
 	}
-}; // namespace
+} // namespace

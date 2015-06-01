@@ -30,13 +30,14 @@
 
 // fxcm
 #include "ForexConnect.h"
-#include "sample_tools.h"
+//#include "sample_tools.h"
 
 
 // local
 #include "math.hpp"
 #include "autocritical_section.hpp"
 #include "strconv.hpp"
+#include "unistd.hpp" // sleep
 #include "fxcmIniParams.hpp"
 #include "fxcmSessionListener.hpp"
 #include "fxcmResponseListener.hpp"
@@ -2152,7 +2153,7 @@ namespace fxcm
 		while(disconnected)
 		{
 			bool bLogOut = Logout();
-			Sleep(2000);
+			sleep(2);
 			disconnected = !Login();
 			
 

@@ -21,7 +21,7 @@ CXXFLAGS= -g -O0 -Wall -Wno-long-long -std=c++98 -pedantic -DDEBUG -D_GLIBCXX_DE
 
 fxcore: $(SRC)
 	$(CC)  $(INCLUDE) -c $(CXXFLAGS) $(SRC)
-	$(AR)  rcs libmisc.a $(OBJ)
+	$(AR)  rcs libfxcore.a $(OBJ)
 
 	$(CC)  $(INCLUDE) -c $(CXXFLAGS) -fPIC $(SRC)
 	$(CC)  $(INCLUDE) $(CXXFLAGS) -shared -Wl,-soname,libfxcore.so.1 -o libfxcore.so.1.0.1 $(OBJ)

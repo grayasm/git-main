@@ -77,7 +77,7 @@ namespace fxcm
 	
 	typedef misc::vector<HistoryPrice>	HistPriceData;
 	
-}; // namespace
+} // namespace
 
 
 #endif // __fxcmHistory_hpp__

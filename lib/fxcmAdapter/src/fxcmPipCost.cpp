@@ -33,7 +33,7 @@
 
 // fxcm
 #include "ForexConnect.h"
-#include "sample_tools.h"
+// #include "sample_tools.h"
 
 // local
 #include "strtok.hpp"
@@ -184,4 +184,4 @@ namespace fxcm
 		throw misc::exception("Cannot calculate PipCost.");
 	}
 
-}; // namespace
+} // namespace

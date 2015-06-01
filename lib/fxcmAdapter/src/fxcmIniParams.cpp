@@ -145,4 +145,4 @@ namespace fxcm
 	{
 		return m_inisrv.write();
 	}
-}; // namespace
+} // namespace

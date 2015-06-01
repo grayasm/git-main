@@ -124,6 +124,6 @@ namespace fxcm
 		Tradables				m_tradables;
 		misc::audit				m_audit;
 	};
-}; // namespace
+} // namespace
 
 #endif // __fxcmResponseListener_hpp__

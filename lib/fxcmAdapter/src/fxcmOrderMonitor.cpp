@@ -363,4 +363,4 @@ namespace fxcm
 		return currentTotalAmount == m_totalAmount;
 	}
 
-}; // namespace
+} // namespace

@@ -324,7 +324,7 @@ namespace fxcm
 			m_response = NULL;
 		}
 		m_requestStatus = RequestReady;
-		m_event.resetevent();
+//#mv	m_event.resetevent();
 	}
 
 	ResponseListener::RequestStatus ResponseListener::GetRequestStatus()
@@ -1036,4 +1036,4 @@ namespace fxcm
 		m_tradables.clear();
 		m_tradables.push_back("EUR/USD");
 	}
-}; // namespace
+} // namespace
