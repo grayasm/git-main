@@ -503,10 +503,10 @@ namespace fx
 
 		for(Transaction::PosIt itb = m_ct.GetBegin(); itb!= m_ct.GetEnd(); ++itb)
 		{
-			const fx::Position& pos = *itb; pos;			
-			bool bBuy = itb->IsBuy();
-			double kAmount = itb->GetAmount(); // k
-			bool bOpen = itb->IsOpen();
+			const fx::Position& pos = *itb;
+			bool bBuy = pos.IsBuy();
+			double kAmount = pos.GetAmount(); // k
+			bool bOpen = pos.IsOpen();
 
 			if(bOpen)
 			{

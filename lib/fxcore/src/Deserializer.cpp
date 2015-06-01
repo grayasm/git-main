@@ -857,4 +857,4 @@ namespace fx
 		// done!
 	}
 	
-}; // namespace
+} // namespace

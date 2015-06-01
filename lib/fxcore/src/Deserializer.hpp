@@ -72,7 +72,7 @@ namespace fx
 		// deserialized data
 		misc::vector<fx::StrategyBase::Ptr> m_data;
 	};
-}; // namespace
+} // namespace
 
 
 #endif // __Deserializer_hpp__

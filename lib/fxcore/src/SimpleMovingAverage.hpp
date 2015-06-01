@@ -25,6 +25,6 @@
 namespace fx
 {
 
-}; // namespace
+} // namespace
 
 #endif // __SimpleMovingAverage_hpp__

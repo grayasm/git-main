@@ -59,7 +59,7 @@ namespace fx
 		//! Returns a plugin identifier string.
 		virtual misc::string GetID() const = 0;
 	};
-}; // namespace
+} // namespace
 
 
 #endif // __MarketPlugin_hpp__

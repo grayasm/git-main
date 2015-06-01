@@ -47,7 +47,7 @@ namespace misc
 		Tokens	m_tokens;
 	};
 
-}; // namespace
+} // namespace
 
 
 

@@ -41,4 +41,4 @@ namespace fx
 		return *this;
 	}
 
-}; // namespace
+} // namespace

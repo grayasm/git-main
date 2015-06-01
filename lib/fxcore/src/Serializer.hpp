@@ -56,7 +56,7 @@ namespace fx
 		
 		misc::ofstream*	m_out;		
 	};
-}; // namespace
+} // namespace
 
 
 #endif // __Serializer_hpp__

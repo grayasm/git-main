@@ -84,7 +84,7 @@ namespace fx
 		Trades		m_trades;
 	};
 
-}; // namespace
+} // namespace
 
 
 

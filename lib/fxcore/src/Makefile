@@ -14,15 +14,17 @@ OBJ = Currency.o Deserializer.o ExponentialMovingAverage.o FixGridPositionStub.o
     SimpleMovingAverage.o Strategy2FixGrid.o Strategy2HedgeFixGrid.o StrategyFixGrid.o \
     StrategyHedgeFixGrid.o StrategyJNemRenko.o Transaction.o
 
+INCLUDE=-I. -I../../misc/src
+
 CXXFLAGS= -g -O0 -Wall -Wno-long-long -std=c++98 -pedantic -DDEBUG -D_GLIBCXX_DEBUG -m64
 # -pedantic-errors
 
 fxcore: $(SRC)
-	$(CC)  -c $(CXXFLAGS) $(SRC)
+	$(CC)  $(INCLUDE) -c $(CXXFLAGS) $(SRC)
 	$(AR)  rcs libmisc.a $(OBJ)
 
-	$(CC)  -c $(CXXFLAGS) -fPIC $(SRC)
-	$(CC)  $(CXXFLAGS) -shared -Wl,-soname,libfxcore.so.1 -o libfxcore.so.1.0.1 $(OBJ)
+	$(CC)  $(INCLUDE) -c $(CXXFLAGS) -fPIC $(SRC)
+	$(CC)  $(INCLUDE) $(CXXFLAGS) -shared -Wl,-soname,libfxcore.so.1 -o libfxcore.so.1.0.1 $(OBJ)
 	ln -sf libfxcore.so.1.0.1  libfxcore.so.1
 
 clean:
