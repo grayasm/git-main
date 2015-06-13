@@ -53,6 +53,7 @@ alias diff='meld'
 # alias view='gthumb'
 # alias fileman='thunar'
 # alias term='xterm bash'
+alias smartgit=/opt/smartgit/bin/
 
 
 #subversion
@@ -65,7 +66,7 @@ alias svnru="svn status --no-ignore | grep '^\?' | sed 's/^\? //' | xargs -Ixx r
 
 # https://bugzilla.redhat.com/show_bug.cgi?id=1043686
 # Emacs bug with invalid color name: WINDOW_FOREGROUND/BACKGROUND
-xrdb -load /dev/null
+# xrdb -load /dev/null
 
 
 # ssh client
@@ -76,3 +77,9 @@ alias office='ssh -i $HOME/.ssh/id_dsa_office -l mihai -L 13389:10.1.1.200:3389 
 # BUILT FROM SOURCE
 #export PATH=/opt/wxWidgets-3.0/bin:/opt/jdk1.8.0_25/bin:$PATH
 #export LD_LIBRARY_PATH=/opt/wxWidgets-3.0/lib:/lib64:/usr/lib64:/usr/local/lib64:/lib:/usr/local/lib
+#export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$HOME/Code/git-main/app/fxmon/src
+
+#git commands
+# git unstage(rm) recursive(r) without removing files(cached)
+alias gitun="git rm --cached"
+alias gitunr="gitun -r"
