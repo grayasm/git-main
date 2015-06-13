@@ -103,9 +103,6 @@ namespace fxcm
 		if(tokenizer.count() != 2)
 			throw misc::exception("Cannot calculate pipCost.");
 		
-		for(size_t i=0; i < tokenizer.count(); ++i)
-			misc::cout << "\n\ttoken[" << i << "]=" << (*(tokenizer.begin()+i)).c_str();
-
 		// SITUATION 1
 		//bool acccur_sameas_quote = false;		// acc USD, EUR/USD
 		//{

@@ -47,85 +47,70 @@
           <buildCommand>${MAKE} -f Makefile</buildCommand>
           <cleanCommand>${MAKE} -f Makefile clean</cleanCommand>
           <executablePath>src/fxmon</executablePath>
+          <ccTool>
+            <incDir>
+              <pElem>src</pElem>
+              <pElem>../../lib/misc/src</pElem>
+              <pElem>../../lib/fxcore/src</pElem>
+              <pElem>../../lib/fxcmAdapter/src</pElem>
+              <pElem>../../world/ForexConnectAPI/linux/include</pElem>
+            </incDir>
+            <preprocessorList>
+              <Elem>DEBUG</Elem>
+              <Elem>_GLIBCXX_DEBUG</Elem>
+            </preprocessorList>
+          </ccTool>
         </makeTool>
       </makefileType>
       <item path="src/MonConsoleHandlerPlugin.cpp" ex="false" tool="1" flavor2="4">
         <ccTool flags="0">
-          <incDir>
-            <pElem>src</pElem>
-            <pElem>../../lib/misc/src</pElem>
-            <pElem>../../lib/fxcore/src</pElem>
-            <pElem>../../lib/fxcmAdapter/src</pElem>
-            <pElem>../../world/ForexConnectAPI/linux/include</pElem>
-          </incDir>
-          <preprocessorList>
-            <Elem>DEBUG</Elem>
-            <Elem>_GLIBCXX_DEBUG</Elem>
-          </preprocessorList>
         </ccTool>
       </item>
       <item path="src/MonEngine.cpp" ex="false" tool="1" flavor2="4">
         <ccTool flags="0">
-          <incDir>
-            <pElem>src</pElem>
-            <pElem>../../lib/misc/src</pElem>
-            <pElem>../../lib/fxcore/src</pElem>
-            <pElem>../../lib/fxcmAdapter/src</pElem>
-            <pElem>../../world/ForexConnectAPI/linux/include</pElem>
-          </incDir>
-          <preprocessorList>
-            <Elem>DEBUG</Elem>
-            <Elem>_GLIBCXX_DEBUG</Elem>
-          </preprocessorList>
         </ccTool>
       </item>
       <item path="src/MonFXCMSession.cpp" ex="false" tool="1" flavor2="4">
+        <ccTool flags="0">
+        </ccTool>
       </item>
       <item path="src/MonHistoryPriceSession.cpp" ex="false" tool="1" flavor2="4">
+        <ccTool flags="0">
+        </ccTool>
       </item>
       <item path="src/MonNotificationPlugin.cpp" ex="false" tool="1" flavor2="4">
+        <ccTool flags="0">
+        </ccTool>
       </item>
       <item path="src/MonPriceGeneratorSession.cpp" ex="false" tool="1" flavor2="4">
+        <ccTool flags="0">
+        </ccTool>
       </item>
       <item path="src/MonQuoteUpdateTimeoutPlugin.cpp"
             ex="false"
             tool="1"
             flavor2="4">
+        <ccTool flags="0">
+        </ccTool>
       </item>
       <item path="src/MonSession.cpp" ex="false" tool="1" flavor2="4">
+        <ccTool flags="0">
+        </ccTool>
       </item>
       <item path="src/MonitorApp.cpp" ex="false" tool="1" flavor2="4">
+        <ccTool flags="0">
+        </ccTool>
       </item>
       <item path="src/MonitorIni.cpp" ex="false" tool="1" flavor2="4">
+        <ccTool flags="0">
+        </ccTool>
       </item>
       <item path="src/Test.cpp" ex="false" tool="1" flavor2="4">
         <ccTool flags="0">
-          <incDir>
-            <pElem>src</pElem>
-            <pElem>../../lib/misc/src</pElem>
-            <pElem>../../lib/fxcore/src</pElem>
-            <pElem>../../lib/fxcmAdapter/src</pElem>
-            <pElem>../../world/ForexConnectAPI/linux/include</pElem>
-          </incDir>
-          <preprocessorList>
-            <Elem>DEBUG</Elem>
-            <Elem>_GLIBCXX_DEBUG</Elem>
-          </preprocessorList>
         </ccTool>
       </item>
       <item path="src/main.cpp" ex="false" tool="1" flavor2="4">
         <ccTool flags="0">
-          <incDir>
-            <pElem>src</pElem>
-            <pElem>../../lib/misc/src</pElem>
-            <pElem>../../lib/fxcore/src</pElem>
-            <pElem>../../lib/fxcmAdapter/src</pElem>
-            <pElem>../../world/ForexConnectAPI/linux/include</pElem>
-          </incDir>
-          <preprocessorList>
-            <Elem>DEBUG</Elem>
-            <Elem>_GLIBCXX_DEBUG</Elem>
-          </preprocessorList>
         </ccTool>
       </item>
     </conf>

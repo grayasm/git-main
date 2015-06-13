@@ -693,7 +693,7 @@ namespace fxcm
 				break;
 				 */
 			default:
-				misc::cout << "\nOrderMonitor switch case not processed";
+				// linux warning
 				break;
 			}
 		}
