@@ -66,7 +66,8 @@ namespace fxcm
 
 	bool SessionListener::WaitEvents()
 	{
-		return (m_event.trylock(30000) == 1);
+		unsigned long MSEC = 30000;//30sec
+		return (m_event.trylock( MSEC ) == 0);
 	}
 
 	void SessionListener::onSessionStatusChanged(IO2GSessionStatus::O2GSessionStatus status)

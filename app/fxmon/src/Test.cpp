@@ -37,7 +37,7 @@ void test()
 	session.GetCurrencies(currencies);
 	 			
 	std::map<misc::string, fx::Price> quotes;	
-	for(size_t i = 0, j = 0; i < 20; ++i, ++j)
+	for(size_t i = 0, j = 0; i < 2; ++i, ++j)
 	{
 		if(j + 1 >  currencies.size())
 			j = 0;

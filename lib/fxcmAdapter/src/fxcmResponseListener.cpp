@@ -287,7 +287,7 @@ namespace fxcm
 
 	bool ResponseListener::WaitEvents()
 	{
-		return (m_event.trylock(RESPONSETIMEOUT) == 1);
+		return (m_event.trylock(RESPONSETIMEOUT) == 0);
 	}
 
 
@@ -672,6 +672,28 @@ namespace fxcm
 					PrintTrades(trades, orderID);
 					PrintClosedTrades(closedTrades, orderID);
 				}
+				break;
+				/*
+			case OrderMonitor::Waiting:
+			case OrderMonitor::InProcess:
+			case OrderMonitor::DealerIntervention:
+			case OrderMonitor::Requoted:
+			case OrderMonitor::PendingCalculated:
+			case OrderMonitor::Executing:
+			case OrderMonitor::Expired:
+			case OrderMonitor::NotAvailable:
+				{
+					misc::string txt("\nOrder= ");
+					txt += orderID;
+					txt += " ::Waiting/::InProcess/::DealerIntervention/::Requoted"
+						   "/::PendingCalculated/::Executing/::Expired/::NotAvailable";
+					misc::cout << txt.c_str();
+					AUDIT(m_audit, txt.c_str());
+				}
+				break;
+				 */
+			default:
+				misc::cout << "\nOrderMonitor switch case not processed";
 				break;
 			}
 		}

@@ -36,10 +36,14 @@
 
 int main(int /*argc*/, char** /*argv*/)
 {
+	// disable stdout buffer
+	setvbuf(stdout, NULL, _IONBF, 0);
+	
+	
 	MonitorApp app;	
 	app.Menu();
 	
-	//test();
+//	test();
 	return 0;
 }
 

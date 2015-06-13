@@ -66,7 +66,7 @@ namespace fxcm
 
 	void OrderMonitor::Reset()
 	{
-		MarketCondition = "5";
+		MarketCondition = (char*)"5";
 		m_result = OrderExecuting;
 		m_rejectMessage.clear();
 
@@ -249,9 +249,8 @@ namespace fxcm
 		// success		
 	}
 
-	void OrderMonitor::onMessageAdded(IO2GMessageRow *message)
+	void OrderMonitor::onMessageAdded(IO2GMessageRow* /*message*/)
 	{
-		message;
 		//if (m_result == OrderRejected ||
 		//	m_result == OrderExecuting)
 		//{

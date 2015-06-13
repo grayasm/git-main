@@ -25,6 +25,7 @@
         <spellchecker-wordlist xmlns="http://www.netbeans.org/ns/spellchecker-wordlist/1">
             <word>concurent</word>
             <word>mutex</word>
+            <word>mutexes</word>
         </spellchecker-wordlist>
     </configuration>
 </project>

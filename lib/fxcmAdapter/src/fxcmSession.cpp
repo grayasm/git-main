@@ -885,7 +885,7 @@ namespace fxcm
 				bool isOrder = (strcmp(trade->getOpenOrderID(), orderID.c_str()) == 0);
 	//			bool isTrade = (strcmp(trade->getTradeID(), tradeID.c_str()) == 0);
 	//			isTrade;
-				tradeID;
+	//			tradeID;
 
 				// TODO: add back tradeID identification
 				//		 also add detection for partial close amount
