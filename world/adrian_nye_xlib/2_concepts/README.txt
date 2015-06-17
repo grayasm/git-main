@@ -53,3 +53,7 @@ X Windows:
       parent, and so on. The very first window, the only one that has no parent
       is called the root window and fills the entire screen.
     - the root window is created by the X server as it starts up.
+
+Debugging:
+    - if you application generates protocol errors during debugging, it is easier
+      to locate teh error if you turn off Xlib's request buffering (XSynchronize)
