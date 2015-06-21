@@ -55,7 +55,7 @@ public:
 		fxcm::HistPriceData&	retPriceData);	// prices
 
 private:
-	//! Reset clean (lot out, etc)
+	//! Reset clean (log out, etc)
 	void Reset();
 	// session create
 	bool CreateFXCMSession();

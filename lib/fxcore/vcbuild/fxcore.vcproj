@@ -42,7 +42,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="..\..\misc\src"
-				PreprocessorDefinitions="WIN32;_DEBUG;_LIB"
+				PreprocessorDefinitions="WIN32;_DEBUG;_LIB;_CRT_SECURE_NO_WARNINGS;_SECURE_SCL=0"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -107,7 +107,7 @@
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
 				AdditionalIncludeDirectories="..\..\misc\src"
-				PreprocessorDefinitions="WIN32;NDEBUG;_LIB"
+				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;_CRT_SECURE_NO_WARNINGS;_SECURE_SCL=0"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
@@ -153,6 +153,18 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
+				RelativePath="..\src\Candle.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\Candle.hpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\CandleBase.hpp"
+				>
+			</File>
+			<File
 				RelativePath="..\src\Currency.cpp"
 				>
 			</File>
@@ -169,19 +181,19 @@
 				>
 			</File>
 			<File
-				RelativePath="..\src\ExponentialMovingAverage.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\src\ExponentialMovingAverage.hpp"
-				>
-			</File>
-			<File
 				RelativePath="..\src\FixGridPositionStub.cpp"
 				>
 			</File>
 			<File
 				RelativePath="..\src\FixGridPositionStub.hpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\HACandle.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\HACandle.hpp"
 				>
 			</File>
 			<File
@@ -225,19 +237,19 @@
 				>
 			</File>
 			<File
+				RelativePath="..\src\RenkoCandle.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\RenkoCandle.hpp"
+				>
+			</File>
+			<File
 				RelativePath="..\src\Serializer.cpp"
 				>
 			</File>
 			<File
 				RelativePath="..\src\Serializer.hpp"
-				>
-			</File>
-			<File
-				RelativePath="..\src\SimpleMovingAverage.cpp"
-				>
-			</File>
-			<File
-				RelativePath="..\src\SimpleMovingAverage.hpp"
 				>
 			</File>
 			<File
@@ -277,11 +289,11 @@
 				>
 			</File>
 			<File
-				RelativePath="..\src\StrategyJNemRenko.cpp"
+				RelativePath="..\src\StrategyTrendRenko.cpp"
 				>
 			</File>
 			<File
-				RelativePath="..\src\StrategyJNemRenko.hpp"
+				RelativePath="..\src\StrategyTrendRenko.hpp"
 				>
 			</File>
 			<File

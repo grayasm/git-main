@@ -18,36 +18,46 @@
 */
 
 
+#ifndef __StrategyTrendRenko_hpp__
+#define __StrategyTrendRenko_hpp__
 
-#ifndef __StrategyJNemRenko_hpp__
-#define __StrategyJNemRenko_hpp__
 
 
 namespace fx
 {
-	class StrategyJNemRenko : public StrategyBase
+	/*
+	 *	
+	 */
+	class StrategyTrendRenko : public StrategyBase
 	{
 	public:
-		StrategyJNemRenko(
-			bool UPtrend,			// true if trend is up, false otherwise.
-			//ema,
-			double pa,				// position amount
-			//renko
+		typedef misc::autoptr<StrategyTrendRenko> Ptr;
+		friend class Serializer;
+		friend class Deserializer;
+
+		StrategyTrendRenko();
+		~StrategyTrendRenko();
+		StrategyTrendRenko(const StrategyTrendRenko& tc);
+		StrategyTrendRenko& operator=(const StrategyTrendRenko& tc);
+
+		StrategyTrendRenko(
+			const fx::Position& ep,		// entry position - full data as valid
+			bool wait,					// wait for condition or enter immediately
+			double rs					// renko brick size
 			);
-		StrategyJNemRenko(const StrategyJNemRenko& tc);
-		~StrategyJNemRenko();
+
+
 		// --- virtual table ---
 		void AcceptVisitor(StrategyVisitor& visitor);
-		bool Update(const fx::Price& price);
+		bool Update(const Price& rate);
 		double GetPL() const;
 		double GetGPL() const;
 		bool ReInit();
 		// --- end of virtual ---
 
-		misc::string ToString() const;
-
-	private:
 
 	};
+
 } // namespace
-#endif // __StrategyJNemRenko_hpp__
+
+#endif // __StrategyTrendRenko_hpp__

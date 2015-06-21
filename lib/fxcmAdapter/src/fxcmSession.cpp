@@ -30,7 +30,7 @@
 
 // fxcm
 #include "ForexConnect.h"
-//#include "sample_tools.h"
+#include "sample_tools.h"
 
 
 // local
@@ -885,7 +885,8 @@ namespace fxcm
 				bool isOrder = (strcmp(trade->getOpenOrderID(), orderID.c_str()) == 0);
 	//			bool isTrade = (strcmp(trade->getTradeID(), tradeID.c_str()) == 0);
 	//			isTrade;
-	//			tradeID;
+				if( tradeID.empty() ) // no effect, to pass compile warning/error
+					tradeID.empty();
 
 				// TODO: add back tradeID identification
 				//		 also add detection for partial close amount
