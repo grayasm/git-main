@@ -1,0 +1,54 @@
+.TH "XrmCombineFileDatabase"
+.SH "Name"
+XrmCombineFileDatabase \(em combine the contents of a resource file and
+a resource database.
+.\"
+.\"
+.SH "Synopsis"
+Status XrmCombineFileDatabase(\f(CIfilename\fP, \f(CItarget_db\fP, \f(CIoverride\fP)
+     char *\f(CIfilename\fP;
+     XrmDatabase *\f(CItarget_db\fP;
+     Bool \f(CIoverride\fP;
+.\"
+.\"
+.SH "Arguments"
+.IP \f(CIfilename\fP 1i
+Specifies the name of the resource file.
+.IP \f(CItarget_db\fP 1i
+Specifies the address of the resource database with which
+the resource file is to be combined.
+.IP \f(CIoverride\fP 1i
+Specifies whether resources from the file should override
+matching resources in the database.
+.\"
+.\"
+.SH "Availablity"
+Release 5 and later.
+.\"
+.\"
+.SH "Description"
+\f(CWXrmCombineFileDatabase\fP merges the contents of a
+resource file into a database.  If the same resource
+specifier is used for an entry in both the file and the
+database, the entry in the file will replace the entry in
+the database if \f(CIoverride\fP is \f(CWTrue\fP; otherwise,
+the entry in the file is discarded.
+.LP
+If \f(CItarget_db\fP points to a \f(CWNULL\fP database,
+\f(CWXrmCombineFileDatabase\fP creates a new database, reads
+the file into it and stores this new database at the
+location pointed to by \f(CItarget_db\fP.  Otherwise, the
+database pointed to by \f(CItarget_db\fP is not destroyed by
+the merge.
+.LP
+If the file cannot be read a zero status is returned;
+otherwise a nonzero status is returned.
+.LP
+The file is parsed in the current locale.  The database
+entries are merged without changing values or types,
+regardless of the locale of the database, and the locale of
+the target database is not modified.
+.\"
+.\"
+.SH "Related Commands"
+\f(CWXrmCombineDatabase\fP, \f(CWXrmMergeDatabases\fP

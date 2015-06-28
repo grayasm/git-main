@@ -1,0 +1,86 @@
+
+
+
+		Programmer's Supplement for Release 5 
+			of the X Window System
+
+				ERRATA
+			   February 11, 1992
+
+
+pg 24, 3rd paragraph:
+	"CIExyY, CIExyY,"
+should be
+	"CIExyY,"
+
+pg 113: 
+The third and seventh fprintf() statements have had their formatting
+strings truncated where there were supposed to be embedded quote
+characters.  The third fprintf() should have the string:
+	"%s: X does not support locale \"%s\"\n"
+The seventh should have the string:
+	"%s: The string \"%s\" will be used in place of\n"
+
+pg 128, last sentence of section 6.5.3:
+	"associate a display"
+should be
+	"associate a database"
+
+pg 134, last sentence of 1st paragraph of section 7.1.1, and last line
+of the page:
+	_STDC_
+should be 
+	__STDC__
+
+pg 141, 4th paragraph:
+	XtnstartCallback and Xtncallback
+should be 
+	XtNstartCallback and XtNcallback
+
+pg 164 and 166:
+the #define directives on these pages need a space or tab inserted
+between the name of the symbol and its value.  
+
+pg 279, 4th line:
+	"the name of the host on which"
+should be
+	"the name of the host on which xrdb is running."
+
+pg 285:
+The "Structures" section should begin with the phrase:
+	"The legal values for the mode argument are the following:"
+
+pg 307:
+In the first and second paragraphs of the "Description" section,
+	"XmbLookupString" 
+should be 
+	"XwcLookupString".
+In the third paragraph,
+	"required size in characters"
+should be
+	"required size in wide characters"
+
+pg 308:
+In the first paragraph,
+	"string length is returned"
+should be
+	"string length in wide characters is returned"
+The entire 4th paragraph should be modified to read:
+    When XwcLookupString returns a string, the return value of the function
+    is the length, in wide characters, of that string.  The returned string
+    is a wide-character string in the encoding of the locale of the input
+    context. 
+
+pg 314:
+In the "Structures" section,
+	"The XICCEncodingStyle structure contains:"
+should be:
+	"The XICCEncodingStyle type has the following values:"
+
+pg 336:
+under the description of xterm, 
+	"titleInhibit"
+should be
+	"titeInhibit"
+(The current spelling seems to make more sense, but this resource
+inhibits the "TI/TE" escape sequences, not the title.)

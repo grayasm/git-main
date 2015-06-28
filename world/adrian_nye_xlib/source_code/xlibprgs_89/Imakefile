@@ -1,0 +1,13 @@
+#
+# example programs top level Imakefile
+#
+#
+
+#define IHaveSubdirs
+#define PassCDebugFlags 'CDEBUGFLAGS=$(CDEBUGFLAGS)'
+
+SUBDIRS = basicwin basecalc winman
+
+MakeSubdirs($(SUBDIRS))
+DependSubdirs($(SUBDIRS))
+CleanSubdirs($(SUBDIRS))

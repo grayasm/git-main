@@ -1,0 +1,49 @@
+.TH "XrmCombineDatabase"
+.SH "Name"
+XrmCombineDatabase \(em combine the contents of two resource databases.
+.\"
+.\"
+.SH "Synopsis"
+void XrmCombineDatabase(\f(CIsource_db\fP, \f(CItarget_db\fP, \f(CIoverride\fP)
+     XrmDatabase \f(CIsource_db\fP;
+     XrmDatabase *\f(CItarget_db\fP;
+     Bool \f(CIoverride\fP;
+.\"
+.\"
+.SH "Arguments"
+.IP \f(CIsource_db\fP 1i
+Specifies the resource database that is to be merged into
+the target database.
+.IP \f(CItarget_db\fP 1i
+Specifies the address of the resource database with which
+the resource file is to be combined.
+.IP \f(CIoverride\fP 1i
+Specifies whether resources from \f(CIsource_db\fP should override
+matching resources in \f(CItarget_db\fP.
+.\"
+.\"
+.SH "Availablity"
+Release 5 and later.
+.\"
+.\"
+.SH "Description"
+\f(CWXrmCombineDatabase\fP merges the contents of one
+database into another.  If the same resource specifier is
+used for an entry in both databases, the entry in
+\f(CIsource_db\fP will replace the entry in
+\f(CItarget_db\fP if \f(CIoverride\fP is \f(CWTrue\fP;
+otherwise, the entry in from \f(CIsource_db\fP is discarded.
+.LP
+If \f(CItarget_db\fP points to a \f(CWNULL\fP database,
+\f(CIXrmCombineDatabase\fP simply stores \f(CIsource_db\fP
+at the location pointed to by \f(CItarget_db\fP.  Otherwise,
+\f(CIsource_db\fP is destroyed by the merge, and the
+database pointed to by \f(CItarget_db\fP is not destroyed.
+.LP
+The database entries are merged without changing values or
+types, regardless of the locales of the databases.  The
+locale of the target database is not modified.
+.\"
+.\"
+.SH "Related Commands"
+\f(CWXrmCombineFileDatabase\fP, \f(CWXrmMergeDatabases\fP

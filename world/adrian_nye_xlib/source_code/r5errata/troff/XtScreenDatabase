@@ -1,0 +1,32 @@
+.TH "XtScreenDatabase"
+.SH "Name"
+XtScreenDatabase \(em obtain the resource database for a screen.
+.\"
+.SH "Synopsis"
+XrmDatabase XtScreenDatabase(\f(CIscreen\fP)
+    Screen *\f(CIscreen\fP;
+.\"
+.\"
+.SH "Arguments"
+.IP \f(CIscreen\fP 1i
+Specifies the screen for which the database should be obtained.
+.\"
+.\"
+.SH "Availablity"
+Release 5 and later.
+.\"
+.\"
+.SH "Description"
+\f(CWXtScreenDatabase\fP returns the fully merged resource database for
+the the specified screen.  If that database has not already been built
+(by \f(CWXtDisplayInitialize\fP, for example), \f(CWXtScreenDatabase\fP
+builds it.  If the specified screen does not belong to a display
+initialized by \f(CWXtDisplayInitialize\fP, the results are undefined.
+.LP
+\f(CWXtAppInitialize\fP, \f(CWXtGetResourceList\fP, and
+\f(CWXtGetSubresources\fP provide a more manageable approach to
+obtaining resources.
+.\"
+.\"
+.SH "Related Commands"
+\f(CWXtDatabase\fP

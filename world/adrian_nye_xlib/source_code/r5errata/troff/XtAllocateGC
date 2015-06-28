@@ -1,0 +1,190 @@
+.TH "XtAllocateGC"
+.SH "Name"
+XtAllocateGC \(em obtain a shareable GC with modifiable fields.
+.SH "Synopsis"
+GC XtAllocateGC(\f(CIobject\fP, \f(CIdepth\fP,
+\f(CIvalue_mask\fP, \f(CIvalues\fP, \f(CIdynamic_mask\fP,
+\f(CIdont_care_mask\fP) 
+    Widget \f(CIobject\fP;
+    Cardinal \f(CIdepth\fP;
+    XtGCMask \f(CIvalue_mask\fP;
+    XtGCValues *\f(CIvalues\fP;
+    XtGCMask \f(CIdynamic_mask\fP;
+    XtGCMask \f(CIdont_care_mask\fP;
+.SS "Inputs"
+.IP \f(CIobject\fP 1i
+Specifies an object; may be of class Object or any subclass thereof.
+.IP \f(CIdepth\fP 1i
+Specifies the depth for which the returned GC is valid, or 0.
+.IP \f(CIvalue_mask\fP 1i
+Specifies the fields of the GC which must have fixed values.
+.IP \f(CIvalues\fP 1i
+Specifies the values for the fields in \f(CIvalue_mask\fP.
+.IP \f(CIdynamic_mask\fP 1i
+Specifies fields of the GC which may be modified.
+.IP \f(CIdont_care_mask\fP 1i
+Specifies fields of the GC which will never be used.
+.SS "Returns"
+A GC with fields as specified in \f(CIvalue_mask\fP and
+\f(CIvalues\fP.
+.\"
+.SH "Availability"
+Release 5 and later.
+.\"
+.SH "Description"
+\f(CWXtAllocateGC()\fP returns a sharable GC with values as
+specified in \f(CIvalues\fP for each field set in
+\f(CIvalue_mask\fP.  The GC is valid for the screen of the
+specified object (the screen of the nearest widget ancestor
+if the specified object is not itself a widget) and for
+drawable depth \f(CIdepth\fP.  If \f(CIdepth\fP is 0, the
+depth is taken from the \f(CWXtNdepth\fP resource of the
+object (or from its nearest widget ancestor).  The
+\f(CIdynamic_mask\fP and \f(CIdont_care_mask\fP arguments
+specify more information about the intended usage of the GC
+which influences how the GC may be shared.  These
+arguments are explained below.
+.LP
+When returned, the GC may already be in use by other
+widgets, and it may be passed to other widgets in the
+future.  For this reason, none of the fields specified in
+\f(CIvalue_mask\fP should ever be modified.  The
+\f(CIdynamic_mask\fP argument specifies fields of the GC
+that may be modified by the widget.  Because this is a
+shared GC, other widgets may also modify those fields, and a
+widget cannot rely on them to remain unchanged.  For this
+reason, these fields must be explicitly set prior to every
+use.
+.LP
+The \f(CIdont_care_mask\fP argument specifies fields of the
+GC that the widget does not care about (ie. fields that will
+never be used by any of the graphic functions called with
+this GC).  The returned GC may have any values for these
+fields.
+.LP
+GC fields that are not specified in \f(CIvalue_mask\fP,
+\f(CIdynamic_mask\fP, or \f(CIdont_care_mask\fP will always
+have their default values in the returned GC.  If a field is
+specified in both \f(CIvalue_mask\fP, and in
+\f(CIdynamic_mask\fP, then the field is modifiable, but will
+also be initialized to the appropriate value specified in
+\f(CIvalues\fP.  If a field is set in \f(CIdont_care_mask\fP
+and is also set in one of the other masks, the
+\f(CIdont_care_mask\fP is ignored for that field.
+.\"
+.SH "Usage"
+\f(CWXtAllocateGC()\fP is a generalization of
+\f(CWXtGetGC()\fP.  Calling \f(CWXtAllocateGC()\fP with
+\f(CIdepth\fP, \f(CIdynamic_mask\fP, and
+\f(CIdont_care_mask\fP all 0 is equivalent to calling
+\f(CWXtGetGC()\fP with the remaining arguments.
+.LP
+There are several common situations in which a modifiable GC
+is necessary.  If you are drawing complex text with
+\f(CWXDrawText()\fP, the font field of your GC will be
+automatically changed to each of the font values in your
+text description.  Also, if you use clip masks to protect or
+speed up drawing in a widget's expose method, you will need
+to modify the clipping fields of the GC.  Using
+\f(CWXtAllocateGC()\fP with a \f(CIdynamic_mask\fP argument
+means that you can share a GC, with other instances of the
+same widget, at least, instead of allocating a private GC
+with \f(CWXCreateGC()\fP.
+.LP
+Furthermore, specifying a \f(CIdont_care_mask\fP when
+allocating a shared GC can make that GC much more sharable.
+For example, if a widget draws text with
+\f(CWXDrawString()\fP only, then it is only interested in
+the font and foreground fields of a GC.  If it allocates its
+GC and specifies that it doesn't care about the background
+field, then it can share its GC with another widget that
+uses the same font and foreground, but draws with
+\f(CWXDrawImageString()\fP and so \fIdoes\fR care about the
+background field.  This kind of sharing is not possible with
+\f(CWXtGetGC()\fP.  
+.LP
+Note that \f(CWXtAllocateGC()\fR is new in Release 5.  If
+you use it in a widget, you will lose portability to
+Release 4.  If you have a Release 4 widget that uses a
+private GC, you may be able to add conditional compilation
+directives to make it use the more efficient
+\f(CWXtAllocateGC()\fP when compiled with X11R5.
+.LP
+When done with a GC obtained with \f(CWXtAllocateGC()\fP, it
+should be freed with \f(CWXtReleaseGC()\fP.
+.\"
+.SH "Structures"
+The \f(CWXtGCMask\fP type is simply an unsigned long:
+.DS
+.nf
+\f(CWtypedef unsigned long  XtGCMask; /* Mask of values that are used by widget*/\fP
+.fi
+.DE
+.LP
+Each of the symbols in the table below sets a single bit in
+an \f(CWXtGCMask\fP.  The \f(CIvalue_mask\fP,
+\f(CIdynamic_mask\fP, and \f(CIdont_care_mask\fP arguments
+are formed by combining these symbols with the bitwise OR
+operator (\^\fB|\fP\^):
+.TS
+linesize(2),tab(@);
+lp8fCW | lp8fCW | lp8fCW.
+_
+.sp 5p
+GCArcMode@GCFillRule@GCLineWidth
+GCBackground@GCFillStyle@GCPlaneMask
+GCCapStyle@GCFont@GCStipple
+GCClipMask@GCForeground@GCSubwindowMode
+GCClipXOrigin@GCFunction@GCTile
+GCClipYOrigin@GCGraphicsExposures@GCTileStipXOrigin
+GCDashList@GCJoinStyle@GCTileStipYOrigin
+GCDashOffset@GCLineStyle@
+.sp 5p
+_
+.TE
+.LP
+The \f(CWXGCValues\fP structure has one field for each of
+the GC fields:
+.DS
+.nf
+.ps 8
+.vs 10
+.ta +4.5n +2i
+typedef struct {
+	int function;	/* logical operation */
+	unsigned long plane_mask;	/* plane mask */
+	unsigned long foreground;	/* foreground pixel */
+	unsigned long background;	/* background pixel */
+	int line_width;	/* line width */
+	int line_style;	/* LineSolid, LineOnOffDash, 
+		   LineDoubleDash */
+	int cap_style;	/* CapNotLast, CapButt, 
+		   CapRound, CapProjecting */
+	int join_style;	/* JoinMiter, JoinRound, JoinBevel */
+	int fill_style;	/* FillSolid, FillTiled, 
+		   FillStippled, FillOpaqueStippled */
+	int fill_rule;	/* EvenOddRule, WindingRule */
+	int arc_mode;	/* ArcChord, ArcPieSlice */
+	Pixmap tile;	/* tile pixmap for tiling operations */
+	Pixmap stipple;	/* stipple 1 plane pixmap for stipping */
+	int ts_x_origin;	/* offset for tile or 
+	int ts_y_origin;	 * stipple operations */
+	Font font;	/* default text font for text operations */
+	int subwindow_mode;	/* ClipByChildren, IncludeInferiors */
+	Bool graphics_exposures;	/* should exposures be generated? */
+	int clip_x_origin;	/* origin for clipping */
+	int clip_y_origin;
+	Pixmap clip_mask;	/* bitmap clipping; other calls for rects */
+	int dash_offset;	/* patterned/dashed line information */
+	char dashes;
+} XGCValues;
+.ps
+.vs
+.fi
+.DE
+.\"
+.SH "See Also"
+.na
+\f(CWXtGetGC\fP,
+\f(CWXtReleaseGC\fP.
+.ad

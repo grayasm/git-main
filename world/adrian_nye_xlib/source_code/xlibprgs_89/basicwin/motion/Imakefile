@@ -1,0 +1,22 @@
+#
+# example programs Imakefile
+#
+#
+
+#define PassCDebugFlags 'CDEBUGFLAGS=$(CDEBUGFLAGS)'
+
+SRCS1=	basicmot.c
+OBJS1=	basicmot.o
+
+SRCS2=	motionhint.c
+OBJS2=	motionhint.o
+
+PROGRAMS = basicmot motionhint
+
+all::  $(PROGRAMS)
+
+LOCAL_LIBRARIES = $(XLIB)
+
+NormalProgramTarget(basicmot,$(OBJS1),,$(LOCAL_LIBRARIES),)
+
+NormalProgramTarget(motionhint,$(OBJS2),,$(LOCAL_LIBRARIES),)

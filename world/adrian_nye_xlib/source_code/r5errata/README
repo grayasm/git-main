@@ -1,0 +1,42 @@
+						February 11, 1992
+
+The files in this directory are errata for first printing (November
+1991) of the book:
+
+		Programmer's Supplement for Release 5 
+			of the X Window System
+
+published by O'Reilly & Associates.
+
+There are four man pages that were accidentally omitted from this book.
+They are:
+
+	XrmCombineDatabase
+	XrmCombineFileDatabase
+	XtAllocateGC
+	XtScreenDatabase
+
+Postscript source for these man pages can be found in the subdirectory
+'postscript', and troff source can be found in the subdirectory 'troff'.
+If you do not have access to a postscript printer, you can format the
+troff versions of the man pages by using nroff or troff with the '-man'
+macros.  See the instructions in troff/README.
+
+The file 'errata' contains miscellaneous errata (mostly typos) that have
+been found so far.  You may want to incorporate these changes into your
+book by hand, or print the list out and keep it with the book.
+
+Please note that the man pages you find here are copyright (c) 1991,
+1992 by O'Reilly & Associates.  See the copyright notice in the R5
+Supplement for full details of this copyright.  You may distribute these
+man pages and errata freely, as long as you include this README file,
+but please note that they are provided for convenience of the owners of
+the X11R5 Supplement, and are not intended for general use.
+
+I hope that you've found my book useful, and I hope that the missing man
+pages have not been too much of an inconvenience to you.
+
+	Sincerely,
+
+	David Flanagan
+	O'Reilly & Associates

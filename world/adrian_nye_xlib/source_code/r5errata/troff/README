@@ -1,0 +1,12 @@
+The man pages in this directory are copyright (c) 1991, 1992 by O'Reilly
+& Associates.  See the file ../README for more information.
+
+The files in this directory are troff source for the man pages missing
+from O'Reilly & Associates' X11R5 Supplement.  If you are unable to
+print the files in ../postscript, you can format and print these using
+nroff or troff and the "-man" macros as appropriate for your system and
+your printer.  If you use troff, you must have the troff fonts CW and CI
+defined for courier and courier italic fonts.  The XtAllocateGC man page
+contains a table and must be run through tbl.  If you are using nroff on
+this page, you may need to pipe the output through "col -b".
+

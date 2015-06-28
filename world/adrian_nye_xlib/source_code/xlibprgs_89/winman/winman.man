@@ -1,0 +1,32 @@
+.\" Copyright (c) 1989 O'Reilly and Associates, Inc.
+.\" See ../Copyright for complete rights and liability information.
+.\"
+.TH WINMAN 1 "November 15, 1989"
+.UC 5
+.SH NAME
+winman \- simple window manager
+.SH SYNOPSIS
+winman
+.SH DESCRIPTION
+.I winman 
+is a very simple window manager.  It provides the basic window 
+manipulation commands to move, resize, circulate, and iconify window.
+It also allows you to designate a keyboard focos window, and
+to \fIexec\fR a new xterm.
+.LP
+.I winman
+is designed as an example of Xlib programming, demonstrating some of 
+the features of Xlib that are used only by window managers, such as
+how to draw rubber-band boxes, perform server grabs, etc.
+.LP
+.I winman
+maps a permanent menu which it refuses to allow the user to hide
+(because there is no way to bring it back into view).
+.SH AUTHOR
+Adrian Nye of O'Reilly and Associates, Inc.
+.SH BUGS
+One font, one size, no command-line options, no color handling, no 
+configurability, etc., etc.  
+Also, the menu can be confused and disabled by rapidly clicking 
+multiple buttons in several panes in quick succession.  This rarely
+occurs in use.

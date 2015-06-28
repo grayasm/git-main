@@ -1,0 +1,6 @@
+The man pages in this directory are copyright (c) 1991, 1992 by O'Reilly
+& Associates.  See the file ../README for more information.
+
+The files in this directory are PostScript source for man pages missing
+from O'Reilly & Associates' X11R5 Supplement.  You should be able to
+print them on any postscript printer.
