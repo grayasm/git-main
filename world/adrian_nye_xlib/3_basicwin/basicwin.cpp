@@ -37,18 +37,18 @@ int getGC(Window win, GC *gc, XFontStruct *font_info);
 int TooSmall(Window win, GC gc, XFontStruct *font_info);
 
 
-
 /*    Main. */
 int main(int argc, char **argv)
 {
+	/*    ====================== declarations ================================*/
 	Window win;
 	unsigned int width, height;    /* Window size */
 	int x, y;                      /* Window position*/
 	unsigned int border_width = 4; /* 4 pixels */
 	unsigned int display_width, display_height;
 	unsigned int icon_width, icon_height;
-	char *window_name = "Basic Window Program";
-	char *icon_name = "basicwin";
+	char* window_name = (char*)"Basic Window Program";
+	char* icon_name = (char*)"basicwin";
 	Pixmap icon_pixmap;
 	XSizeHints *size_hints;
 	XIconSize *size_list;
@@ -80,7 +80,15 @@ int main(int argc, char **argv)
 		exit(-1);
 	}
 
-	display_name = getenv("DISPLAY");
+	/*    ================ Open the Display ==================================*/
+	// alternatives for "display_name" var
+	{
+		// "host:server.screen" :0.0
+		const char* display_env = getenv("DISPLAY");
+		// what is X default
+		const char* display_x = XDisplayName(NULL);
+	}
+	
 	/*    Connect to X server. */
 	if ((display = XOpenDisplay(display_name)) == NULL)
 	{
@@ -89,29 +97,83 @@ int main(int argc, char **argv)
 		exit(-1);
 	}
 
-	/*    Get screen size from display structure macro.  */
+	
+	/*    =================== Screen Size ====================================*/
+	/*    (1) Get screen size from display structure macro.  */
 	screen_num = DefaultScreen(display);
 	display_width = DisplayWidth(display, screen_num);
 	display_height = DisplayHeight(display, screen_num);
-
 	/*    Note that in a real application, x and y would default to 0 but
 	 *    would be settable from command line or resource database.
 	 */
 	x = y = 0;
-
+	
 	/*    Size window with enough room for text. */
 	width = display_width/3, height = display_height/4;
 
+
+	/*    (2) Get screen size with XGetGeometry */
+	{
+		Window draw, root;
+		int x, y;
+		unsigned int width, height;
+		unsigned int border_width, depth;
+		Status ret;
+		
+		draw = RootWindow(display, screen_num);
+		ret = XGetGeometry(
+					display,
+					draw,
+					&root,
+					&x, &y,
+					&width, &height,
+					&border_width, &depth);
+		if (ret == False)
+		{
+			fprintf(stderr, "%s: cannot get root window geometry\n", progname);
+			exit(-1);
+		}
+	}
+	
+	/*    (3) Get screen size with XGetWindowAttributes */
+	{
+		XWindowAttributes attr;
+		Status ret;
+		Window root;
+		int x, y;
+		unsigned int width, height;
+				
+		root = RootWindow(display, screen_num);
+		ret = XGetWindowAttributes(display, root, &attr);
+		
+		if (ret == False)
+		{
+			fprintf(stderr, "%s: failed to get window attributes.\n", progname);
+			exit(-1);
+		}
+		
+		x = attr.x;
+		y = attr.y;
+		width = attr.width;
+		height = attr.height;
+		/* and a lot more data */
+	}
+	
+
+	/*    ================= Create the Window ================================*/
 	/*    Create opaque window. */
-	win = XCreateSimpleWindow(display, RootWindow(display, screen_num),
-	                          x, y, width, height, border_width,
-	                          BlackPixel(display, screen_num),
-	                          WhitePixel(display, screen_num));
+	win = XCreateSimpleWindow(	display, 
+								RootWindow(display, screen_num),
+								x, y, 
+								width, height, border_width,
+								BlackPixel(display, screen_num),
+								WhitePixel(display, screen_num));
 
 	/*    Get available icon sizes from window manager. */
-	if (XGetIconSizes(display,
-	                  RootWindow(display, screen_num),
-	                  &size_list, &count) == 0)
+	if (XGetIconSizes(	display,
+						RootWindow(display, screen_num),
+						&size_list, 
+						&count) == 0)
 	{
 		fprintf(stderr, "%s: Window manager didn't set icon sizes"
 		        " - using default.\n", progname);
@@ -127,7 +189,8 @@ int main(int argc, char **argv)
 	}
 
 	/*    Create pixmap of depth 1 (bitmap) for icon. */
-	icon_pixmap = XCreateBitmapFromData(display, win,
+	icon_pixmap = XCreateBitmapFromData(display, 
+										win,
 	                                    icon_bitmap_bits,
 	                                    icon_bitmap_width,
 	                                    icon_bitmap_height);
@@ -168,7 +231,7 @@ int main(int argc, char **argv)
 	wm_hints->icon_pixmap = icon_pixmap;
 	wm_hints->flags = StateHint | IconPixmapHint | InputHint;
 	class_hints->res_name = progname;
-	class_hints->res_class = "Basicwin";
+	class_hints->res_class = (char*)"Basicwin";
 	XSetWMProperties(display, win, &windowName, &iconName,
 	                 argv, argc, size_hints, wm_hints, class_hints);
 
@@ -286,7 +349,7 @@ int getGC(Window win, GC *gc, XFontStruct *font_info)
 
 int load_font(XFontStruct **font_info)
 {
-	char *fontname = "*"; //"9x15";
+	char* fontname = (char*)"*"; //"9x15";
 	
 	/*    Load font and get font information structure */
 	if ((*font_info = XLoadQueryFont(display, fontname)) == NULL)
@@ -300,10 +363,10 @@ int load_font(XFontStruct **font_info)
 int place_text(Window win, GC gc, XFontStruct* font_info,
 			   unsigned int win_width, unsigned int win_height)
 {
-	char* string1 = "Hi! I'm a window, who are you?";
-	char* string2 = "To terminate program; Press any key";
-	char* string3 = "or button while in this window.";
-	char* string4 = "Screen Dimensions:";
+	char* string1 = (char*)"Hi! I'm a window, who are you?";
+	char* string2 = (char*)"To terminate program; Press any key";
+	char* string3 = (char*)"or button while in this window.";
+	char* string4 = (char*)"Screen Dimensions:";
 	int len1, len2, len3, len4;
 	int width1, width2, width3;
 	char cd_height[50], cd_width[50], cd_depth[50];
@@ -378,7 +441,7 @@ int place_graphics(Window win, GC gc,
 
 int TooSmall(Window win, GC gc, XFontStruct* font_info)
 {
-	char* string1 = "Too Small";
+	char* string1 = (char*)"Too Small";
 	int y_offset, x_offset;
 	y_offset = font_info->ascent + 2;
 	x_offset = 2;
