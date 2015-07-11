@@ -83,3 +83,6 @@ alias office='ssh -i $HOME/.ssh/id_dsa_office -l mihai -L 13389:10.1.1.200:3389 
 # git unstage(rm) recursive(r) without removing files(cached)
 alias gitun="git rm --cached"
 alias gitunr="gitun -r"
+
+# X11
+alias xwininfo='xwininfo'   #window info
