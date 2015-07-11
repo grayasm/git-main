@@ -28,10 +28,14 @@ static char    *progname;
 
 /*    Declarations. */
 int load_font(XFontStruct **font_info);
-int place_text(Window win, GC gc, 
+int place_text(Window win,
+               GC gc,
                XFontStruct *font_info,
-               unsigned int win_width, unsigned int win_height);
-int place_graphics(Window win, GC gc, unsigned int window_width,
+               unsigned int win_width,
+               unsigned int win_height);
+int place_graphics(Window win,
+                   GC gc,
+                   unsigned int window_width,
                    unsigned int window_height);
 int getGC(Window win, GC *gc, XFontStruct *font_info);
 int TooSmall(Window win, GC gc, XFontStruct *font_info);
@@ -84,11 +88,11 @@ int main(int argc, char **argv)
 	// alternatives for "display_name" var
 	{
 		// "host:server.screen" :0.0
-		const char* display_env = getenv("DISPLAY");
+		const char* env_display_name = getenv("DISPLAY");
 		// what is X default
-		const char* display_x = XDisplayName(NULL);
+		const char* x___display_name = XDisplayName(NULL);
 	}
-	
+
 	/*    Connect to X server. */
 	if ((display = XOpenDisplay(display_name)) == NULL)
 	{
@@ -97,7 +101,6 @@ int main(int argc, char **argv)
 		exit(-1);
 	}
 
-	
 	/*    =================== Screen Size ====================================*/
 	/*    (1) Get screen size from display structure macro.  */
 	screen_num = DefaultScreen(display);
@@ -107,7 +110,7 @@ int main(int argc, char **argv)
 	 *    would be settable from command line or resource database.
 	 */
 	x = y = 0;
-	
+
 	/*    Size window with enough room for text. */
 	width = display_width/3, height = display_height/4;
 
@@ -119,7 +122,7 @@ int main(int argc, char **argv)
 		unsigned int width, height;
 		unsigned int border_width, depth;
 		Status ret;
-		
+
 		draw = RootWindow(display, screen_num);
 		ret = XGetGeometry(
 					display,
@@ -134,7 +137,7 @@ int main(int argc, char **argv)
 			exit(-1);
 		}
 	}
-	
+
 	/*    (3) Get screen size with XGetWindowAttributes */
 	{
 		XWindowAttributes attr;
@@ -142,29 +145,29 @@ int main(int argc, char **argv)
 		Window root;
 		int x, y;
 		unsigned int width, height;
-				
+
 		root = RootWindow(display, screen_num);
 		ret = XGetWindowAttributes(display, root, &attr);
-		
+
 		if (ret == False)
 		{
 			fprintf(stderr, "%s: failed to get window attributes.\n", progname);
 			exit(-1);
 		}
-		
+
 		x = attr.x;
 		y = attr.y;
 		width = attr.width;
 		height = attr.height;
 		/* and a lot more data */
 	}
-	
+
 
 	/*    ================= Create the Window ================================*/
 	/*    Create opaque window. */
-	win = XCreateSimpleWindow(	display, 
+	win = XCreateSimpleWindow(	display,
 								RootWindow(display, screen_num),
-								x, y, 
+								x, y,
 								width, height, border_width,
 								BlackPixel(display, screen_num),
 								WhitePixel(display, screen_num));
@@ -172,7 +175,7 @@ int main(int argc, char **argv)
 	/*    Get available icon sizes from window manager. */
 	if (XGetIconSizes(	display,
 						RootWindow(display, screen_num),
-						&size_list, 
+						&size_list,
 						&count) == 0)
 	{
 		fprintf(stderr, "%s: Window manager didn't set icon sizes"
@@ -189,7 +192,7 @@ int main(int argc, char **argv)
 	}
 
 	/*    Create pixmap of depth 1 (bitmap) for icon. */
-	icon_pixmap = XCreateBitmapFromData(display, 
+	icon_pixmap = XCreateBitmapFromData(display,
 										win,
 	                                    icon_bitmap_bits,
 	                                    icon_bitmap_width,
@@ -235,10 +238,21 @@ int main(int argc, char **argv)
 	XSetWMProperties(display, win, &windowName, &iconName,
 	                 argv, argc, size_hints, wm_hints, class_hints);
 
+
 	/*    Select event types wanted. */
 	XSelectInput(display, win,
-	             ExposureMask | KeyPressMask |
-	             ButtonPressMask | StructureNotifyMask);
+	             ExposureMask |            // when window becomes visible
+	             KeyPressMask |            // see also KeyReleaseMask
+	             ButtonPressMask |         // see also ButtonReleaseMask
+	             StructureNotifyMask       // selects CirculateNotify,
+		);                                 //         ConfigureNotify
+	                                       //         DestroyNotify
+	                                       //         GravityNotify
+                                           //         MapNotify
+                                           //         ReparentNotify
+	                                       //         UnmapNotify
+
+
 	load_font(&font_info);
 
 	/*    Create GC for text and drawing. */
@@ -247,7 +261,20 @@ int main(int argc, char **argv)
 	/*    Display window. */
 	XMapWindow(display, win);
 
-	/*    Get events, use first to display text and graphics. */
+
+    //    ==================== Events Loop ===================================*/
+
+	/*    Drawing anything in the window is delayed until a call to:
+	      XGetWindowAttributes
+	      XLoadQueryFont
+	      XQueryPointer
+	      XMaskEvent
+	      XNextEvent
+	      XPending
+	      XWindowEvent
+	      XFlush
+	      XSync
+	 */
 	while (1)
 	{
 		XNextEvent(display, &report);
@@ -326,21 +353,21 @@ int getGC(Window win, GC *gc, XFontStruct *font_info)
 	int dash_offset = 0;
 	static char dash_list[] = {12, 24};
 	int list_length = 2;
-	
+
 	/*    Create default Graphics Context */
 	*gc = XCreateGC(display, win, valuemask, &values);
-	
+
 	/*    Specify font */
 	XSetFont(display, *gc, font_info->fid);
-	
+
 	/*    Specify black foreground since default window background is
 	 *    white and default foreground is undefined
 	 */
 	XSetForeground(display, *gc, BlackPixel(display, screen_num));
-	
+
 	/*    Set line attributes */
 	XSetLineAttributes(display, *gc, line_width, line_style, cap_style, join_style);
-	
+
 	/*    Set dashes */
 	XSetDashes(display, *gc, dash_offset, dash_list, list_length);
 	return 0;
@@ -350,7 +377,7 @@ int getGC(Window win, GC *gc, XFontStruct *font_info)
 int load_font(XFontStruct **font_info)
 {
 	char* fontname = (char*)"*"; //"9x15";
-	
+
 	/*    Load font and get font information structure */
 	if ((*font_info = XLoadQueryFont(display, fontname)) == NULL)
 	{
@@ -372,18 +399,18 @@ int place_text(Window win, GC gc, XFontStruct* font_info,
 	char cd_height[50], cd_width[50], cd_depth[50];
 	int font_height;
 	int initial_y_offset, x_offset;
-	
+
 	/*    Need length for both XTextWidth and XDrawString */
 	len1 = strlen(string1);
 	len2 = strlen(string2);
 	len3 = strlen(string3);
-	
+
 	/*    Get string widths for centering */
 	width1 = XTextWidth(font_info, string1, len1);
 	width2 = XTextWidth(font_info, string2, len2);
 	width3 = XTextWidth(font_info, string3, len3);
 	font_height = font_info->ascent + font_info->descent;
-	
+
 	/*    Output text, centered on each line */
 	XDrawString(display, win, gc, (win_width - width1)/2,
 				font_height, string1, len1);
@@ -393,18 +420,18 @@ int place_text(Window win, GC gc, XFontStruct* font_info,
 	XDrawString(display, win, gc, (win_width - width3)/2,
 				(int)(win_height - font_height),
 				string3, len3);
-	
+
 	/*    Copy numbers into string variables */
 	sprintf(cd_height, " Height - %d pixels", DisplayHeight(display, screen_num));
 	sprintf(cd_width, " Width - %d pixels", DisplayWidth(display, screen_num));
 	sprintf(cd_depth, " Depth - %d plane(s)", DefaultDepth(display, screen_num));
-	
+
 	/*    Reuse these for same purpose */
 	len4 = strlen(string4);
 	len1 = strlen(cd_height);
 	len2 = strlen(cd_width);
 	len3 = strlen(cd_depth);
-	
+
 	/*    To center strings vertically, we place the first string
 	 *    so that the top of it is two font_heights above the center
 	 *    of the window; since the baseline of the string is what
@@ -425,8 +452,10 @@ int place_text(Window win, GC gc, XFontStruct* font_info,
 	return 0;
 }
 
-int place_graphics(Window win, GC gc, 
-					unsigned int window_width, unsigned int window_height)
+int place_graphics(Window win,
+                   GC gc,
+                   unsigned int window_width,
+                   unsigned int window_height)
 {
 	int x, y;
 	int width, height;
@@ -445,9 +474,8 @@ int TooSmall(Window win, GC gc, XFontStruct* font_info)
 	int y_offset, x_offset;
 	y_offset = font_info->ascent + 2;
 	x_offset = 2;
-	
+
 	/*    Output text, centered on each line */
 	XDrawString(display, win, gc, x_offset, y_offset, string1, strlen(string1));
 	return 0;
 }
-
