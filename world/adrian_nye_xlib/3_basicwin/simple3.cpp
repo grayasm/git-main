@@ -33,13 +33,22 @@ int main(int argc, char** argv)
 	XTextProperty winNameProp;
 	Status ret = XStringListToTextProperty(&winTitle, 1, &winNameProp);
 
+	XSizeHints szhints;
+	szhints.flags = USPosition | USSize;
+	szhints.x = 0;
+	szhints.y = 0;
+	szhints.width = win_width;
+	szhints.height = win_height;
+	szhints.min_width = 200;
+	szhints.min_height = 200;
+
 	XSetWMProperties(disp,
 	                 win,
 	                 &winNameProp,
 	                 NULL,          // icon property
 	                 argv,
 	                 argc,
-	                 NULL,          // hints about size
+	                 &szhints,      // hints about size
 	                 NULL,          // hints about window
 	                 NULL           // hints about class
 		);
