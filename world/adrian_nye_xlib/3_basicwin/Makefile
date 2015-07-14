@@ -1,4 +1,4 @@
-all: simple5
+all: simple6
 
 basicwin:
 	g++ -g -o basicwin basicwin.cpp -lX11
@@ -18,6 +18,9 @@ simple4:
 simple5:
 	g++ -g -o simple5 simple5.cpp -lX11
 
+simple6:
+	g++ -g -o simple6 simple6.cpp -lX11
+
 clean:
 	rm basicwin simple1 simple2 simple3 \
-       simple4 simple5
+       simple4 simple5 simple6
