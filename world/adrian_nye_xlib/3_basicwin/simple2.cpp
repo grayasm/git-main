@@ -1,3 +1,11 @@
+/*    Based on simple1.cpp
+ *
+ *    The additional steps in this code are:
+ *        - adding window title (see Xutil.h / XSetWMProperties)
+ *        - other functions or structure data:
+ *          Xutil.h/struct XTextProperty
+ *          Xutil.h/extern Status XStringListToTextProperty(...)
+ */
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
 
@@ -10,9 +18,6 @@
 
 int main(int argc, char** argv)
 {
-	// disable stdout buffer
-	setvbuf(stdout, NULL, _IONBF, 0);
-
 	Display* disp = XOpenDisplay(NULL);
 	if(!disp) return -1;
 

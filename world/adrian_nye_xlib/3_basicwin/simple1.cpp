@@ -1,3 +1,15 @@
+/*    Based on basicwin.
+ *    This program contains the minimal X11 functions to get a window running.
+ *    It's purpose is for learning only.
+ *
+ *    Basic steps are:
+ *    - open display                          (XOpenDisplay)
+ *    - create simple window                  (XCreateSimpleWindow)
+ *    - select input type for the window      (XSelectInput)
+ *    - map the window                        (XMapWindow)
+ *    - event loop                            (XNextEvent)
+ */
+
 #include <X11/Xlib.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -7,13 +19,8 @@
 
 int main(int argc, char** argv)
 {
-	// disable stdout buffer
-	setvbuf(stdout, NULL, _IONBF, 0);
-
 	Display* disp = XOpenDisplay(NULL);
 	if(!disp) return -1;
-
-	printf("display ok");
 
 	int screen_num = DefaultScreen(disp);
 	int screen_width = DisplayWidth(disp, screen_num);
