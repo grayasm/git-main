@@ -1,3 +1,9 @@
+/*    Based on simple2.cpp
+ *
+ *    When size hints (Xutil.h/XSizeHints/XSetWMProperties)
+ *    are set correctly the window cannot be resized under the minimun
+ *    size set, or maximized beyond max size (tested with fvwm)
+ */
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
 
@@ -34,13 +40,15 @@ int main(int argc, char** argv)
 	Status ret = XStringListToTextProperty(&winTitle, 1, &winNameProp);
 
 	XSizeHints szhints;
-	szhints.flags = USPosition | USSize;
+	szhints.flags = PPosition | PSize | PMinSize | PMaxSize;
 	szhints.x = 0;
 	szhints.y = 0;
 	szhints.width = win_width;
 	szhints.height = win_height;
 	szhints.min_width = 200;
 	szhints.min_height = 200;
+	szhints.max_width = screen_width - 200;
+	szhints.max_height = screen_height - 200;
 
 	XSetWMProperties(disp,
 	                 win,
