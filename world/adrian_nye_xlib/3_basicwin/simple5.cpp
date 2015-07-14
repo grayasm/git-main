@@ -43,7 +43,7 @@ int main(int argc, char** argv)
 	                                 WhitePixel(disp, screen_num));
 
 	/* Setting the window title. */
-	char* winTitle = (char*)"simple4 - XWMHints (input and state)";
+	char* winTitle = (char*)"simple5 - XWMHints (+icon Pixmap)";
 	XTextProperty winNameProp;
 	Status ret = XStringListToTextProperty(&winTitle, 1, &winNameProp);
 
