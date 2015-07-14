@@ -1,8 +1,7 @@
 /*    Based on simple2.cpp
  *
- *    When size hints (Xutil.h/XSizeHints/XSetWMProperties)
- *    are set correctly the window cannot be resized under the minimun
- *    size set, or maximized beyond max size (tested with fvwm)
+ *    Added window hints (Xutil.h/XWMHints/XSetWMProperties)
+ *    but only for Input and State (no Pixmap for icon or window).
  */
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
@@ -35,20 +34,17 @@ int main(int argc, char** argv)
 	                                 BlackPixel(disp, screen_num),
 	                                 WhitePixel(disp, screen_num));
 
-	char* winTitle = (char*)"simple3 - window size";
+	/* Setting the window title. */
+	char* winTitle = (char*)"simple4 - XWMHints (input and state)";
 	XTextProperty winNameProp;
 	Status ret = XStringListToTextProperty(&winTitle, 1, &winNameProp);
 
-	XSizeHints szhints;
-	szhints.flags = PPosition | PSize | PMinSize | PMaxSize;
-	szhints.x = 0;
-	szhints.y = 0;
-	szhints.width = win_width;
-	szhints.height = win_height;
-	szhints.min_width = 200;
-	szhints.min_height = 200;
-	szhints.max_width = screen_width - 200;
-	szhints.max_height = screen_height - 200;
+	XWMHints wmhints;
+	wmhints.flags = InputHint | StateHint;
+	wmhints.input = 1; // for true
+	wmhints.initial_state = NormalState;
+
+
 
 	XSetWMProperties(disp,
 	                 win,
@@ -56,8 +52,8 @@ int main(int argc, char** argv)
 	                 NULL,          // icon property
 	                 argv,
 	                 argc,
-	                 &szhints,      // hints about size
-	                 NULL,          // hints about window
+	                 NULL,          // hints about size
+	                 &wmhints,      // hints about window
 	                 NULL           // hints about class
 		);
 
@@ -90,4 +86,3 @@ int main(int argc, char** argv)
 
 	return 0;
 }
-
