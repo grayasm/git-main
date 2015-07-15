@@ -5,16 +5,11 @@
  *    Xlib.h/extern int    XChangeWindowAttributes(..., XSetWindowAttributes*)
  *
  *
- *    Set child window backgroud to a Pixmap.
- *    (XSetWindowAttributes*)->background_pixmap;
+ *    Set child window backgroud to an arbitrary color.
+ *    (XSetWindowAttributes*)->background_pixel;
  *
- *    I created a .xbm file with Gimp 10x10 RGB Scale to be set as background.
- *
- *    bitmaps/background_bitmap
- *    bitmaps/background_bitmap.xbm
- *
- *    As explained in the book, the pattern is tiled from 0,0 of child to the
- *    entire window.
+ *    We can use predefined macros as BlackPixel, WhitePixel but can also
+ *    create an RGB color value as 0xff0000 (RED)
  */
 
 #include <X11/Xlib.h>
@@ -23,7 +18,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <algorithm>
-#include "bitmaps/background_bitmap"
+
 
 
 
@@ -49,7 +44,7 @@ int main(int argc, char** argv)
 	                                 winborder,
 	                                 BlackPixel(dpy, scrno),
 	                                 WhitePixel(dpy, scrno));
-	char* wintitle = (char*) "winattr3 - background pixmap";
+	char* wintitle = (char*) "winattr4 - background pixel";
 	XTextProperty wintitleprop;
 	XStringListToTextProperty(&wintitle, 1, &wintitleprop);
 
@@ -69,26 +64,9 @@ int main(int argc, char** argv)
 	int depth = DefaultDepth(dpy, scrno);
 
 	XSetWindowAttributes childattr;
-	unsigned int bestwidth, bestheight;
-	XQueryBestTile(dpy,
-	               win,
-	               childwidth,
-	               childheight,
-	               &bestwidth,
-	               &bestheight);
-	printf("\nBest Pixmap size for tiling is %d x %d\n", bestwidth, bestheight);
-
-	Pixmap bgpixmap = XCreatePixmapFromBitmapData(dpy,
-	                                              win,
-	                                              background_bitmap_bits,
-	                                              background_bitmap_width,
-	                                              background_bitmap_height,
-	                                              BlackPixel(dpy, scrno),
-	                                              WhitePixel(dpy, scrno),
-	                                              depth);
-	childattr.background_pixmap = bgpixmap;
+	childattr.background_pixel = 0xff0000; // RED
 	childattr.border_pixel = BlackPixel(dpy, scrno);
-	unsigned long mask = CWBackPixmap | CWBorderPixel; // <X11/X.h>
+	unsigned long mask = CWBackPixel | CWBorderPixel; // <X11/X.h>
 
 	Window child = XCreateWindow(dpy,
 	                             win,

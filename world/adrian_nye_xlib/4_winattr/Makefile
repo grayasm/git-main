@@ -1,4 +1,4 @@
-all: winattr3
+all: winattr4
 
 
 winattr1: winattr1.cpp
@@ -9,3 +9,6 @@ winattr2: winattr2.cpp
 
 winattr3: winattr3.cpp
 	g++ -g -o winattr3 winattr3.cpp -lX11
+
+winattr4: winattr4.cpp
+	g++ -g -o winattr4 winattr4.cpp -lX11
