@@ -63,7 +63,8 @@ int main(int argc, char** argv)
 
 	XSelectInput(disp,
 	             win,
-	             ExposureMask | KeyPressMask | ButtonPressMask | StructureNotifyMask);
+	             ExposureMask | KeyPressMask | ButtonPressMask |
+	             StructureNotifyMask);
 
 	XMapWindow(disp, win);
 
