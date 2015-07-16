@@ -1,33 +1,6 @@
 /*    Cap 5. The Graphic Context
  *
- *    1. The GC is very much like the window attributes are set.
- *       The structure name is XGCValues and is made up of these symbols:
- *
- *       member
- *       --------------------------------------------------------------
- *       function
- *       plane_mask
- *       foreground
- *       background
- *       line_width
- *       line_style
- *       cap_style
- *       join_style
- *       fill_style
- *       fill_rule
- *       arc_mode
- *       tile
- *       stipple
- *       ts_x_origin
- *       ts_y_origin
- *       font
- *       subwindow_mode
- *       graphics_exposure
- *       clip_x_origin
- *       clip_y_origin
- *       clip_mask
- *       dash_offset
- *       dashes
+ *    Switching between 2 GC, means to create 2 GC and to use them sequentially.
  */
 
 #include <X11/Xlib.h>
@@ -35,7 +8,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-
+#include <algorithm>
 
 
 
@@ -64,7 +37,7 @@ int main(int argc, char **argv)
 	                                 WhitePixel(dpy, scrno));
 
 
-	char* title = (char*)"gc1 - simple GC";
+	char* title = (char*)"gc4 - switch GC";
 	XTextProperty titleprop;
 	XStringListToTextProperty(&title, 1, &titleprop);
 	XSetWMProperties(dpy,
@@ -77,23 +50,24 @@ int main(int argc, char **argv)
 	                 NULL,
 	                 NULL);
 
-	XSelectInput(dpy,
-	             win,
-	             ExposureMask |
-	             KeyPressMask |
-	             ButtonPressMask |
-	             StructureNotifyMask);
-
+	XSelectInput(dpy,win,ExposureMask);
 
 
 	XGCValues gcvalues;
-	gcvalues.line_width = 1;
-	unsigned long gcmask = GCLineWidth;
+	gcvalues.foreground = 0x00ff00;
+	gcvalues.background = 0xff0000;
+	unsigned long gcmask = GCForeground | GCBackground;
 
-	GC gc = XCreateGC(dpy,
-	                  win,
-	                  gcmask,
-	                  &gcvalues);
+	GC gc1 = XCreateGC(dpy,
+	                   win,
+	                   gcmask,
+	                   &gcvalues);
+	std::swap(gcvalues.foreground, gcvalues.background);
+
+	GC gc2 = XCreateGC(dpy,
+	                   win,
+	                   gcmask,
+	                   &gcvalues);
 
 	XMapWindow(dpy, win);
 
@@ -106,14 +80,16 @@ int main(int argc, char **argv)
 		{
 			XDrawRectangle(dpy,
 			               win,
-			               gc,
-			               winwidth/4, winheight/4,
+			               gc1,
+			               winwidth/4-30, winheight/4-30,
 			               winwidth/2, winheight/2);
-			printf("\nXDrawRectangle\n");
+			XDrawRectangle(dpy,
+			               win,
+			               gc2,
+			               winwidth/4+30, winheight/4+30,
+			               winwidth/2, winheight/2);
 		}
 	}
 
-	XFreeGC(dpy, gc);
-	XCloseDisplay(dpy);
 	return 0;
 }

@@ -1,33 +1,6 @@
 /*    Cap 5. The Graphic Context
  *
- *    1. The GC is very much like the window attributes are set.
- *       The structure name is XGCValues and is made up of these symbols:
- *
- *       member
- *       --------------------------------------------------------------
- *       function
- *       plane_mask
- *       foreground
- *       background
- *       line_width
- *       line_style
- *       cap_style
- *       join_style
- *       fill_style
- *       fill_rule
- *       arc_mode
- *       tile
- *       stipple
- *       ts_x_origin
- *       ts_y_origin
- *       font
- *       subwindow_mode
- *       graphics_exposure
- *       clip_x_origin
- *       clip_y_origin
- *       clip_mask
- *       dash_offset
- *       dashes
+ *    XGCValues.foreground
  */
 
 #include <X11/Xlib.h>
@@ -64,7 +37,7 @@ int main(int argc, char **argv)
 	                                 WhitePixel(dpy, scrno));
 
 
-	char* title = (char*)"gc1 - simple GC";
+	char* title = (char*)"gc2 - GC line_width=0, foreground";
 	XTextProperty titleprop;
 	XStringListToTextProperty(&title, 1, &titleprop);
 	XSetWMProperties(dpy,
@@ -77,18 +50,12 @@ int main(int argc, char **argv)
 	                 NULL,
 	                 NULL);
 
-	XSelectInput(dpy,
-	             win,
-	             ExposureMask |
-	             KeyPressMask |
-	             ButtonPressMask |
-	             StructureNotifyMask);
-
+	XSelectInput(dpy,win,ExposureMask);
 
 
 	XGCValues gcvalues;
-	gcvalues.line_width = 1;
-	unsigned long gcmask = GCLineWidth;
+	gcvalues.foreground = 0x00ff00;
+	unsigned long gcmask = GCForeground;
 
 	GC gc = XCreateGC(dpy,
 	                  win,
@@ -104,12 +71,8 @@ int main(int argc, char **argv)
 		if(event.type == Expose &&
 		   event.xexpose.count == 0)
 		{
-			XDrawRectangle(dpy,
-			               win,
-			               gc,
-			               winwidth/4, winheight/4,
-			               winwidth/2, winheight/2);
-			printf("\nXDrawRectangle\n");
+			XDrawLine(dpy, win, gc, 0, 0, winwidth, winheight);
+			XDrawLine(dpy, win, gc, winwidth, 0, 0, winheight);
 		}
 	}
 
