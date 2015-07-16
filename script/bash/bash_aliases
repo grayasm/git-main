@@ -42,6 +42,11 @@ alias grep='grep --color=auto'
 alias psgrep='ps -aef | grep'
 alias scron="xset -dpms; xset s off"
 alias du='du -chs'
+alias jdraw='java -jar /opt/jdraw/jdraw_v1.1.5.jar'
+alias netbeans='/opt/netbeans-8.0.2/bin/netbeans'
+alias xfe='xfe-xfe'
+alias se='/opt/slickedit/bin/vs'
+
 
 alias ..='cd ..'
 alias ...='cd ..; cd ..'
@@ -74,8 +79,8 @@ alias sshsrv='ssh -X -l mihk -i $HOME/.ssh/id_rsa_home_key 192.168.0.128'
 alias office='ssh -i $HOME/.ssh/id_dsa_office -l mihai -L 13389:10.1.1.200:3389 $OFFICE'
 
 
-# BUILT FROM SOURCE
-#export PATH=/opt/wxWidgets-3.0/bin:/opt/jdk1.8.0_25/bin:$PATH
+# INSTALLED IN OPT
+export PATH=:$PATH
 #export LD_LIBRARY_PATH=/opt/wxWidgets-3.0/lib:/lib64:/usr/lib64:/usr/local/lib64:/lib:/usr/local/lib
 #export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$HOME/Code/git-main/app/fxmon/src
 
@@ -86,3 +91,9 @@ alias gitunr="gitun -r"
 
 # X11
 alias xwininfo='xwininfo'   #window info
+
+#time-zone commands
+alias list_tz='timedatectl list-timezones'
+alias my_tz='timedatectl'
+alias set_tz_ro='timedatectl set-timezone Europe/Bucharest'
+alias set_tz_de='timedatectl set-timezone Europe/Berlin'
