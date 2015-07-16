@@ -1,4 +1,4 @@
-all: winattr10
+all: winattr11
 
 
 winattr1: winattr1.cpp
@@ -30,6 +30,11 @@ winattr9: winattr9.cpp
 
 winattr10: winattr10.cpp
 	g++ -g -o winattr10 winattr10.cpp -lX11
+
+winattr11: winattr11.cpp
+	g++ -g -o winattr11 winattr11.cpp -lX11
+
+
 
 clean:
 	rm winattr{1,2,3,4,5,6,7,8,9}
