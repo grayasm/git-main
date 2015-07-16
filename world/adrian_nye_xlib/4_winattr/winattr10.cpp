@@ -4,12 +4,11 @@
  *    Xlib.h/extern Window XCreateWindow(..., XSetWindowAttributes*)
  *    Xlib.h/extern int    XChangeWindowAttributes(..., XSetWindowAttributes*)
  *
- *    A backing store automatically maintains the contents of a window while
- *    it is obscured or even while it is unmapped.
- *    Backing is like having a copy of the window saved in a pixmap, automatically
- *    copied to the screen whenever necessary to keep the visible contents up to
- *    date. Backing store is only available on some servers, usually on high
- *    performance workstations.
+ *    save_under=may save portions of several windows beneath a window
+ *               for the duration of the apperance of the window on the screen
+ *               while the backing store saves the contents of a single window
+ *               while it is mapped or even when unmapped, depending on the
+ *               attributes.
  */
 
 #include <X11/Xlib.h>
@@ -44,7 +43,7 @@ int main(int argc, char** argv)
 	                                 winborder,
 	                                 BlackPixel(dpy, scrno),
 	                                 WhitePixel(dpy, scrno));
-	char* wintitle = (char*) "winattr9 - backing store";
+	char* wintitle = (char*) "winattr10 - save_under";
 	XTextProperty wintitleprop;
 	XStringListToTextProperty(&wintitle, 1, &wintitleprop);
 
@@ -71,7 +70,10 @@ int main(int argc, char** argv)
 	               childheight,
 	               &bestwidth,
 	               &bestheight);
-	printf("\nBest Pixmap size for tiling is %d x %d\n", bestwidth, bestheight);
+	printf("\nBest Pixmap size for tiling is %d x %d", bestwidth, bestheight);
+	Screen* scr = XScreenOfDisplay(dpy, scrno);
+	Bool bsaveunder = DoesSaveUnders(scr);
+	printf("\nXDoesSaveUnders = %d\n", bsaveunder);
 
 	Pixmap bgpixmap = XCreatePixmapFromBitmapData(dpy,
 	                                              win,
@@ -83,14 +85,8 @@ int main(int argc, char** argv)
 	                                              depth);
 	childattr.background_pixmap = bgpixmap;
 	childattr.border_pixel = BlackPixel(dpy, scrno);
-	// store=when and if a window's contents are preserved by the server
-	childattr.backing_store = WhenMapped;
-	// planes=which planes must be preserved
-	childattr.backing_planes = 0xffff;
-	// pixel=the pixel value used to fill planes not specified in backing_planes
-	childattr.backing_pixel = 0;
-	unsigned long mask = CWBackPixmap | CWBorderPixel |
-		CWBackingStore | CWBackingPlanes | CWBackingPixel;
+	childattr.save_under = True;
+	unsigned long mask = CWBackPixmap | CWBorderPixel | CWSaveUnder;
 
 	Window child = XCreateWindow(dpy,
 	                             win,
