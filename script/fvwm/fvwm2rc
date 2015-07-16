@@ -18,8 +18,10 @@
 # cp ~/.fvwm/.fvwm2rc ~/Code/git-main/script/fvwm/fvwm2rc
 # cp ~/.fvwm/icons    ~/Code/git-main/script/fvwm/
 # cp ~/.fvwm/wallpapers ~/Code/git-main/script/fvwm/
-# git status ~/Code/git-main/
-# git commit ~/Code/git-main/
+# cd ~/Code/git-main/script/fvwm
+# git status .
+# git add icons/*
+# git commit -m 'fvwm update' fvwm2rc icons/*
 
 
 ################################################################################
@@ -163,6 +165,7 @@ DestroyMenu                     FvwmOfficeMenu
 AddToMenu                       FvwmOfficeMenu "Office" Title
 + "%$[fvwm_icons]/24x24-libreoffice-startcenter.png%libreoffice"   FvwmLibreoffice
 + "%$[fvwm_icons]/24x24-AdobeReader9.png%pdf reader"               FvwmAdobeReader
++ "%$[fvwm_icons]/24x24-xpdf.png%xpdf"                             FvwmXpdf
 
 
 DestroyMenu                     FvwmAccessoriesMenu
@@ -426,6 +429,10 @@ AddToFunc                       FvwmPaprefs
 DestroyFunc                     FvwmDukascopy
 AddToFunc                       FvwmDukascopy
 + I Exec                        exec $[HOME]/JForex/start.sh
+
+DestroyFunc                     FvwmXpdf
+AddToFunc                       FvwmXpdf
++ I Exec                        exec xpdf
 
 DestroyFunc                     FvwmViewManPage
 AddToFunc                       FvwmViewManPage
