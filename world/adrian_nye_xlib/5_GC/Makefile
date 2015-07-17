@@ -21,6 +21,13 @@ gc6: gc6.cpp
 gc7: gc7.cpp
 	g++ -g -o gc7 gc7.cpp -lX11
 
+gc8: gc8.cpp
+	g++ -g -o gc8 gc8.cpp -lX11
+
+gc9: gc9.cpp
+	g++ -g -o gc9 gc9.cpp -lX11
+
+
 clean:
 	rm -v gc{1,2,3,4,5,6,7,8,9} \
           gc1{0,1,2,3,4,5,6,7,8,9}
