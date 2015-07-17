@@ -27,6 +27,10 @@ gc8: gc8.cpp
 gc9: gc9.cpp
 	g++ -g -o gc9 gc9.cpp -lX11
 
+gc10: gc10.cpp
+	g++ -g -o gc10 gc10.cpp -lX11
+
+
 
 clean:
 	rm -v gc{1,2,3,4,5,6,7,8,9} \
