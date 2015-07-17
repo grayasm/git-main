@@ -15,6 +15,11 @@ gc4: gc4.cpp
 gc5: gc5.cpp
 	g++ -g -o gc5 gc5.cpp -lX11
 
+gc6: gc6.cpp
+	g++ -g -o gc6 gc6.cpp -lX11
+
+gc7: gc7.cpp
+	g++ -g -o gc7 gc7.cpp -lX11
 
 clean:
 	rm -v gc{1,2,3,4,5,6,7,8,9} \

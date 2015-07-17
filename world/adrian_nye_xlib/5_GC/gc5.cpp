@@ -3,12 +3,15 @@
  *    5.3 Controlling pixel selection.
  *    5.3.1 Line Characteristics
  *
- *    XGCValues.line_width (0 fast, >= 1 with width)
- *    XGCValues.line_style (LineSolid, LineOnOffDash, LineDoubleDash)
- *    XGCValues.cap_style  (CapButt, CapNotLast, CapProjecting, CapRound)
- *    XGCValues.join_style (JoinBevel, JoinMiter, JoinRound)
- *    XGCValues.dashes
- *    XGCValues.dash_offset
+ *    XGCValues.line_width    (0 fast, >= 1 with width)
+ *    XGCValues.line_style    (LineSolid, LineOnOffDash, LineDoubleDash)
+ *    XGCValues.cap_style     (CapButt, CapNotLast, CapProjecting, CapRound)
+ *    XGCValues.join_style    (JoinBevel, JoinMiter, JoinRound)
+ *    XGCValues.dashes        (3 means 3 pxl black, 3 pxl white)
+ *    XGCValues.dash_offset   (0 usually)
+ *
+ *    In this example we use line_width, line_style and XSetDashes which can
+ *    create more complex line patterns than XGCValues's dashes.
  */
 
 #include <X11/Xlib.h>
