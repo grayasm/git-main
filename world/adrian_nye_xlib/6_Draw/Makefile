@@ -12,6 +12,11 @@ draw3: draw3.cpp
 draw4: draw4.cpp
 	g++ -g -o draw4 draw4.cpp -lX11
 
+draw5: draw5.cpp
+	g++ -g -o draw5 draw5.cpp -lX11
+
+draw6: draw6.cpp
+	g++ -g -o draw6 draw6.cpp -lX11
 
 
 clean:
