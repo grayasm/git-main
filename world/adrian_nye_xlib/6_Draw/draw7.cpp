@@ -1,7 +1,5 @@
 /*
- *    XReadBitmapFile - a bit more complex, requires additional steps compared
- *                      with XCreateBitmapFromData, because it does not have
- *                      the correct depth value.
+ *    XCopyArea, XClearArea
  */
 
 #include <X11/Xlib.h>
@@ -25,9 +23,9 @@ int main(int argc, char** argv)
 	int scrheight = DisplayHeight(dpy, scrno);
 	int depth = DefaultDepth(dpy, scrno);
 
-	int winwidth = scrwidth / 3;
-	int winheight = scrheight / 3;
-	int winborder = 4;
+	int winwidth = (int)(scrwidth / 1.5);
+	int winheight = (int)(scrheight / 1.5);
+	int winborder = 1;
 
 	Window win = XCreateSimpleWindow(dpy,
 	                                 RootWindow(dpy, scrno),
@@ -36,7 +34,7 @@ int main(int argc, char** argv)
 	                                 winborder,
 	                                 BlackPixel(dpy, scrno),
 	                                 WhitePixel(dpy, scrno));
-	char* wintitle = (char*) "draw6 - XReadBitmapFile";
+	char* wintitle = (char*) "draw7 - XCopyArea, XClearArea";
 	XTextProperty wintitleprop;
 	XStringListToTextProperty(&wintitle, 1, &wintitleprop);
 
@@ -52,13 +50,14 @@ int main(int argc, char** argv)
 
 	XSelectInput(dpy,
 	             win,
-	             ExposureMask);
+	             ExposureMask |
+	             ButtonPressMask |
+	             StructureNotifyMask);
 
 	XMapWindow(dpy, win);
 
 
-	/* Because XReadBitmapFile + steps require a GC we will create a GC
-	   now without tiling settings. */
+
 	XGCValues values;
 	values.line_width = 1;
 	values.foreground = 0x000000;
@@ -72,17 +71,7 @@ int main(int argc, char** argv)
 
 
 
-	/*    Depth of the data available as char[][] versus
-	      depth of the data read from a file.
-
-	      To create a pixmap with depth from included data, you can substitute
-	      XCreatePixmapFromBitmapData() for XCreateBitmapFromData() .
-
-	      To create a pixmap with depth from data read from a file,
-	      you must create a bitmap with XReadBitmapFile() , then create a pixmap
-	      with depth using XCreatePixmap(), then copy from the bitmap to the
-	      pixmap using XCopyPlane().
-	 */
+	// See draw6.cpp for XReadBitmapFile explanations
 	Pixmap pixmap;
 	unsigned int pix_width, pix_height;
 	int x_hot, y_hot;
@@ -113,7 +102,6 @@ int main(int argc, char** argv)
 	           0, 0,
 	           1);
 
-	/*    Finally we have a valid Pixmap for tiling operations. */
 	XSetTile(dpy,
 	         gc,
 	         tile);
@@ -127,6 +115,8 @@ int main(int argc, char** argv)
 	             0, 0);// x, y
 
 
+	bool bcopy = false;
+
 	XEvent event;
 	while(1)
 	{
@@ -135,6 +125,8 @@ int main(int argc, char** argv)
 		if(event.type == Expose &&
 		   event.xexpose.count == 0)
 		{
+			XClearWindow(dpy, win);
+
 			XDrawRectangle(dpy,
 			               win,
 			               gc,
@@ -147,7 +139,30 @@ int main(int argc, char** argv)
 			               70, 70,
 			               260, 260);
 
-			printf("\nXDrawRectangle\nXFillRectangle\n");
+			printf("\nXDrawRectangle, XFillRectangle");
+
+			/* Testing XCopyArea, XClearArea */
+			if(bcopy)
+			{
+				XCopyArea(dpy,
+				          win,
+				          win,
+				          gc,
+				          50, 50,
+				          150, 150,
+				          50, 450);
+				XClearArea(dpy,
+				           win,
+				           50, 50,
+				           150, 150,
+				           False);
+				printf("\nXCopyArea, XClearArea");
+			}
+		}
+
+		if(event.type == ButtonPress)
+		{
+			bcopy = !bcopy;
 		}
 	}
 

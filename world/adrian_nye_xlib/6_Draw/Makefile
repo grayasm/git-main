@@ -18,6 +18,10 @@ draw5: draw5.cpp
 draw6: draw6.cpp
 	g++ -g -o draw6 draw6.cpp -lX11
 
+draw7: draw7.cpp
+	g++ -g -o draw7 draw7.cpp -lX11
+
+
 
 clean:
 	rm -v draw{1,2,3,4,5,6,7,8,9} \
