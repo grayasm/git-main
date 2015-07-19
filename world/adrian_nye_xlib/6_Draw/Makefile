@@ -24,6 +24,12 @@ draw7: draw7.cpp
 draw8: draw8.cpp
 	g++ -g -o draw8 draw8.cpp -lX11
 
+draw9: draw9.cpp
+	g++ -g -o draw9 draw9.cpp -lX11
+
+draw10: draw10.cpp
+	g++ -g -o draw10 draw10.cpp -lX11
+
 
 
 clean:

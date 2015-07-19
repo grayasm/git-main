@@ -1,8 +1,8 @@
 /*
- *    XListFonts, XFreeFontNames
+ *    XListFontsWithInfo, XFreeFontInfo
  *
- *    Ask installed fonts and draw their names in the window.
- *    Free the font names allocated by the server.
+ *    Ask installed fonts on the system.
+ *    Iterate each font, set it, draw with it, and free all resource on exit.
  */
 
 #include <X11/Xlib.h>
@@ -12,7 +12,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <algorithm>
-
+#include <string>
+#include <sstream>
 
 
 int main(int argc, char **argv)
@@ -41,7 +42,7 @@ int main(int argc, char **argv)
 	                                 WhitePixel(dpy, scrno));
 
 
-	char* title = (char*)"draw8 - XListFonts";
+	char* title = (char*)"draw9 - XListFontsWithInfo";
 	XTextProperty titleprop;
 	XStringListToTextProperty(&title, 1, &titleprop);
 	XSetWMProperties(dpy,
@@ -79,21 +80,22 @@ int main(int argc, char **argv)
 
 
 	/* Ask what fonts are installed. */
-	const int MAXFONTS = 50;
+	const int MAXFONTS = 25;
 	Font fonts[MAXFONTS];
 	int fontret = 0;
-	char** fontlist = XListFonts(dpy,
-	                             "*",
-	                             MAXFONTS,   // maxnames
-	                             &fontret);  // actual_count_return
+	XFontStruct* fontinfos;
+	char** fontlist = XListFontsWithInfo(dpy,
+	                                     "*",
+	                                     MAXFONTS,   // maxnames
+	                                     &fontret,   // actual_count_return
+	                                     &fontinfos);// info_return
+
+	if(fontlist == NULL)
+		return -1;
 
 	const int fontcount = std::min(MAXFONTS, fontret);
 
-
-	/* Fonts are stored in the server, shared among programs, never duplicated,
-	   and alive as long as a program uses them. When a Font is not referenced
-	   anymore it is discarded.
-	*/
+	/* Load all fonts in the X server for now. */
 	for(int i=0; i < fontcount; ++i)
 		fonts[i] = XLoadFont(dpy, fontlist[i]);
 
@@ -108,26 +110,56 @@ int main(int argc, char **argv)
 		{
 			XClearWindow(dpy, win);
 
+			int y=50;
 
-			/* Draw current font name. The vertical displacement is
-			   not calculated. Hopefully 20 pixels are enough. */
-
+			/* Printing XFontStruct for each Font. */
 			for(int i=0; i < fontcount; ++i)
 			{
-				const char* fontname = fontlist[i];
+				if(i > 0) y += 10; // vertical displacement for text
 
-				XSetFont(dpy,
-				         gc,
-				         fonts[i]);
+				XSetFont(dpy, gc, fonts[i]);
 
-				XDrawString(dpy,
-				            win,
-				            gc,
-				            50, i*20,
-				            fontname,
-				            strlen(fontname));
+				XFontStruct* fi = &(fontinfos[i]);
+				int fsz = fi->ascent + fi->descent;
+
+				std::stringstream strm1, strm2, strm3, strm4;
+				strm1 << fontlist[i];
+				XDrawString(dpy, win, gc, 20, (y += fsz), strm1.str().c_str(), strm1.str().size());
+
+				strm2 << " direction=" << fi->direction;
+				strm2 << " min_char=" << fi->min_char_or_byte2;
+				strm2 << " max_char=" << fi->max_char_or_byte2;
+				strm2 << " min_byte=" << fi->min_byte1;
+				strm2 << " max_byte=" << fi->max_byte1;
+				strm2 << " all_exist=" << fi->all_chars_exist;
+				strm2 << " def_char=" << fi->default_char;
+				strm2 << " n prop=" << fi->n_properties;
+				XFontProp* fp = fi->properties; // XFontProp array
+				XCharStruct* minbs = &(fi->min_bounds);
+				XCharStruct* maxbs = &(fi->max_bounds);
+				XCharStruct* chari = fi->per_char; // XCharStruct array
+				strm2 << " log. ascent=" << fi->ascent;
+				strm2 << " log. descent=" << fi->descent;
+
+				XDrawString(dpy, win, gc, 20, (y += fsz), strm2.str().c_str(), strm2.str().size());
+
+				strm3 << " min bounds, lbearing:" << minbs->lbearing;
+				strm3 << " rbearing:" << minbs->rbearing;
+				strm3 << " width:" << minbs->width;
+				strm3 << " ascent:" << minbs->ascent;
+				strm3 << " descent:" << minbs->descent;
+				XDrawString(dpy, win, gc, 20, (y += fsz), strm3.str().c_str(), strm3.str().size());
+
+				strm4 << " max bounds, lbearing:" << maxbs->lbearing;
+				strm4 << " rbearing:" << maxbs->rbearing;
+				strm4 << " width:" << maxbs->width;
+				strm4 << " ascent:" << maxbs->ascent;
+				strm4 << " descent:" << maxbs->descent;
+				XDrawString(dpy, win, gc, 20, (y += fsz), strm4.str().c_str(), strm4.str().size());
 			}
 		}
+
+
 
 		if(event.type == ConfigureNotify)
 		{
@@ -146,12 +178,11 @@ int main(int argc, char **argv)
 		}
 	}
 
-
 	/* Exit */
 	for(int i=0; i < fontcount; ++i)
 		XUnloadFont(dpy, fonts[i]);
+	XFreeFontInfo(fontlist, fontinfos, fontret);
 
-	XFreeFontNames(fontlist);
 	XFreeGC(dpy, gc);
 	XDestroyWindow(dpy, win);
 	XCloseDisplay(dpy);

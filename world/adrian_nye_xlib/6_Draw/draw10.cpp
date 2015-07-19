@@ -1,8 +1,7 @@
 /*
- *    XListFonts, XFreeFontNames
- *
- *    Ask installed fonts and draw their names in the window.
- *    Free the font names allocated by the server.
+ *    Select from all installed fonts on the system a Font that is appropriate
+ *    for writing something on the screen.
+ *    Font must be: normal, ascent+descent between 14,24  medium, -r- regular
  */
 
 #include <X11/Xlib.h>
@@ -12,7 +11,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <algorithm>
-
+#include <string>
+#include <sstream>
 
 
 int main(int argc, char **argv)
@@ -41,7 +41,7 @@ int main(int argc, char **argv)
 	                                 WhitePixel(dpy, scrno));
 
 
-	char* title = (char*)"draw8 - XListFonts";
+	char* title = (char*)"draw10 - select some nice fonts";
 	XTextProperty titleprop;
 	XStringListToTextProperty(&title, 1, &titleprop);
 	XSetWMProperties(dpy,
@@ -79,25 +79,24 @@ int main(int argc, char **argv)
 
 
 	/* Ask what fonts are installed. */
-	const int MAXFONTS = 50;
+	const int MAXFONTS = 700;
 	Font fonts[MAXFONTS];
 	int fontret = 0;
-	char** fontlist = XListFonts(dpy,
-	                             "*",
-	                             MAXFONTS,   // maxnames
-	                             &fontret);  // actual_count_return
+	XFontStruct* fontinfos;
+	char** fontlist = XListFontsWithInfo(dpy,
+	                                     "*",
+	                                     MAXFONTS,   // maxnames
+	                                     &fontret,   // actual_count_return
+	                                     &fontinfos);// info_return
+
+	if(fontlist == NULL)
+		return -1;
 
 	const int fontcount = std::min(MAXFONTS, fontret);
 
-
-	/* Fonts are stored in the server, shared among programs, never duplicated,
-	   and alive as long as a program uses them. When a Font is not referenced
-	   anymore it is discarded.
-	*/
+	/* Load all fonts in the X server for now. */
 	for(int i=0; i < fontcount; ++i)
 		fonts[i] = XLoadFont(dpy, fontlist[i]);
-
-
 
 	XEvent event;
 	while (1)
@@ -108,26 +107,44 @@ int main(int argc, char **argv)
 		{
 			XClearWindow(dpy, win);
 
+			int y=50;
 
-			/* Draw current font name. The vertical displacement is
-			   not calculated. Hopefully 20 pixels are enough. */
-
+			/* Print only nice fonts. */
+			const int wantmin = 14, wantmax = 20;
 			for(int i=0; i < fontcount; ++i)
 			{
+				XFontStruct* fi = &(fontinfos[i]);
+				int fsz = fi->ascent + fi->descent;
+
+				if(fsz < wantmin || fsz > wantmax)
+					continue;
+
 				const char* fontname = fontlist[i];
+				const char* medium = "-medium-";
+				const char* normal = "-normal-";
+				const char* regular = "-r-";
+				const char* mono = "mono";
 
-				XSetFont(dpy,
-				         gc,
-				         fonts[i]);
+				if(strstr(fontname, medium) == 0)
+					continue;
 
-				XDrawString(dpy,
-				            win,
-				            gc,
-				            50, i*20,
-				            fontname,
-				            strlen(fontname));
+				if(strstr(fontname, normal) == 0)
+					continue;
+
+
+				if(strstr(fontname, regular) == 0)
+					continue;
+
+				//if(strstr(fontname, mono) == 0)
+				//	continue;
+
+				XSetFont(dpy, gc, fonts[i]);
+				XDrawString(dpy, win, gc, 20, y, fontname, strlen(fontname));
+				y += fsz;
 			}
 		}
+
+
 
 		if(event.type == ConfigureNotify)
 		{
@@ -146,12 +163,11 @@ int main(int argc, char **argv)
 		}
 	}
 
-
 	/* Exit */
 	for(int i=0; i < fontcount; ++i)
 		XUnloadFont(dpy, fonts[i]);
+	XFreeFontInfo(fontlist, fontinfos, fontret);
 
-	XFreeFontNames(fontlist);
 	XFreeGC(dpy, gc);
 	XDestroyWindow(dpy, win);
 	XCloseDisplay(dpy);
