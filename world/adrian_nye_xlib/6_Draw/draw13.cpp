@@ -1,4 +1,12 @@
 /*
+ *    Images:
+ *       - storing all data corresponding to a screen area or pixmap
+ *       - it is a structure on the client side, and image methods do not need
+ *         the X server to process data
+ *       - Xlib has few minimal routines for manipulating image structures:
+ *         create, initialize, destroy, get a pixel, set a pixel, extract a
+ *         subimage, and add a constant value to all pixels.
+ *       - routines are relatively slow because they work pixel by pixel
  */
 
 #include <X11/Xlib.h>
