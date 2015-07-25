@@ -1,4 +1,7 @@
 /*
+ *    Measuring the width of a text string.
+ *    Drawing additional text relatively to original one.
+ *
  *    XDrawImageString, XDrawString, XTextWidth
  */
 

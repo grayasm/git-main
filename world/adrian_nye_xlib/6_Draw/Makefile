@@ -33,6 +33,9 @@ draw10: draw10.cpp
 draw11: draw11.cpp
 	g++ -g -o draw11 draw11.cpp -lX11
 
+draw12: draw12.cpp
+	g++ -g -o draw12 draw12.cpp -lX11
+
 
 
 clean:
