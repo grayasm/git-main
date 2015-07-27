@@ -172,6 +172,7 @@ AddToMenu                       FvwmOfficeMenu "Office" Title
 DestroyMenu                     FvwmAccessoriesMenu
 AddToMenu                       FvwmAccessoriesMenu "Accessories" Title
 + "%$[fvwm_icons]/24x24-system-file-manager.png%dolphin"           FvwmDolphin
++ "%$[fvwm_icons]/24x24-xfe.png%xfe"                               FvwmXfe
 + "%$[fvwm_icons]/24x24-utilities-terminal.png%xterm"              FvwmXTerm
 + "%$[fvwm_icons]/24x24-htop.png%htop"                             FvwmHtop
 + "%$[fvwm_icons]/24x24-accessories-calculator.png%mate-calc"      FvwmMateCalc
@@ -286,6 +287,10 @@ AddToFunc                       FvwmXTerm
 DestroyFunc                     FvwmDolphin
 AddToFunc                       FvwmDolphin
 + I Exec                        exec dolphin
+
+DestroyFunc                     FvwmXfe
+AddToFunc                       FvwmXfe
++ I Exec                        exec xfe
 
 DestroyFunc                     FvwmVirtualBox
 AddToFunc                       FvwmVirtualBox
