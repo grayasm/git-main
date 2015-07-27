@@ -132,6 +132,7 @@ AddToMenu                       FvwmInternetMenu "Internet" Title
 + "%$[fvwm_icons]/24x24-pidgin.png%pidgin"                         FvwmPidgin
 + "%$[fvwm_icons]/24x24-xchat.png%xchat"                           FvwmXChat
 + "%$[fvwm_icons]/24x24-google-chrome.png%chrome"                  FvwmChrome
++ "%$[fvwm_icons]/24x24-midori.png%midori"                         FvwmMidori
 + "%$[fvwm_icons]/24x24-dukascopy-live.png%dukascopy-live"         FvwmDukascopy
 
 DestroyMenu                     FvwmMediaMenu
@@ -293,6 +294,10 @@ AddToFunc                       FvwmVirtualBox
 DestroyFunc                     FvwmWebBrowser
 AddToFunc                       FvwmWebBrowser
 + I Exec                        exec firefox
+
+DestroyFunc                     FvwmMidori
+AddToFunc                       FvwmMidori
++ I Exec                        exec midori
 
 DestroyFunc                     FvwmThunderbird
 AddToFunc                       FvwmThunderbird
