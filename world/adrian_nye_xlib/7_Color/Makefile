@@ -3,6 +3,9 @@ all: clr1
 clr1: clr1.cpp
 	g++ -g -o clr1 clr1.cpp -lX11
 
+clr2: clr2.cpp
+	g++ -g -o clr2 clr2.cpp -lX11
+
 
 
 clean:

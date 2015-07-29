@@ -1,6 +1,9 @@
 /*
  *    Colors:
- *      - allocating read-only colorcells
+ *       Colormap type is XID   (e.g. unsigned long, a tag stored in X server)
+ *       struct XSetWindowAttributes.colormap is Colormap assoc. to the window
+ *       Colormap* XListInstalledColormaps(dpy, win, (int*)&num_return);
+ *
  */
 
 #include <X11/Xlib.h>
@@ -9,6 +12,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 
 
 int main(int argc, char **argv)
@@ -28,123 +32,6 @@ int main(int argc, char **argv)
 	int winheight = scrheight * 3 / 4 ;
 	int winborder = 1;
 
-	/* Colors */
-	const int MAX_COLORS = 3;
-	int ncolors = 0;
-	int colors[MAX_COLORS];
-
-	/* This is just so we can print the visual class intelligibly. */
-	static const char* visual_class[] = {
-		"StaticGray",
-		"GrayScale",
-		"StaticColor",
-		"PseudoColor",
-		"TrueColor",
-		"DirectColor"
-	};
-
-	static const char* name[] = {"Red", "Yellow", "Green"};
-
-	/* Try to allocate colors for:
-	   PseudoColor, TrueColor, DirectColor, StaticColor
-	   Use black and white for:
-	   StaticGray, GrayScale
-	*/
-	int default_depth = DefaultDepth(dpy, scrno);
-	Visual* default_visual = DefaultVisual(dpy, scrno);
-	Colormap default_cmap = DefaultColormap(dpy, scrno);
-	unsigned long border_pixel = BlackPixel(dpy, scrno);
-	unsigned long background_pixel = WhitePixel(dpy, scrno);
-	unsigned long foreground_pixel = BlackPixel(dpy, scrno);
-	const char* progname = argv[0];
-
-	if(default_depth == 1)
-	{
-		/* Must be StaticGray, use black and white */
-		border_pixel = BlackPixel(dpy, scrno);
-		background_pixel = WhitePixel(dpy, scrno);
-		foreground_pixel = BlackPixel(dpy, scrno);
-	}
-	else
-	{
-		int i=5;
-		XVisualInfo visual_info;
-		XColor exact_def;
-
-		while(!XMatchVisualInfo(dpy,
-		                        scrno,
-		                        default_depth,
-		                        /* visual class */ i--,
-		                        &visual_info))
-		{
-		} // while
-		printf("%s: found a %s class visual at default depth.\n",
-		       progname, visual_class[++i]);
-
-		if(i < StaticColor)
-		{
-			/* Color visual classes are 2 to 5.
-			   No color visual available at default depth;
-			   some applications might call XMatchVisualInfo
-			   here to try for a GrayScale visual if they
-			   can use gray to advantage, before giving up
-			   and using black and white.
-			*/
-			border_pixel = BlackPixel(dpy, scrno);
-			background_pixel = WhitePixel(dpy, scrno);
-			foreground_pixel = BlackPixel(dpy, scrno);
-		}
-		else
-		{
-			/* Otherwise, got a color visual at default depth.
-			   The visual we found is not necessarily the default
-			   visual, and therefore it is not necessarily the one
-			   we used to crate our window; however, we now know
-			   for sure that color is supported, so the following
-			   code will work (or fail in a controlled way).
-			   Let's check just out of curiosity:
-			*/
-			if(visual_info.visual != default_visual)
-			{
-				printf("%s: %s class visual at default depth\n",
-				       progname, visual_class[i]);
-				printf("is not default visual! Continuing anyway ...\n");
-			}
-			for(i = 0; i < MAX_COLORS; i++)
-			{
-				printf("allocating %s\n", name[i]);
-				if(!XParseColor(dpy,
-				                default_cmap,
-				                name[i],
-				                &exact_def))
-				{
-					printf("%s: color name %s not in database",
-					       progname, name[i]);
-					exit(-1);
-				}
-				printf("The RGB values from the database are %d, %d, %d\n",
-				       exact_def.red, exact_def.green, exact_def.blue);
-				if(!XAllocColor(dpy,
-				                default_cmap,
-				                &exact_def))
-				{
-					printf("All colorcells allocated and\n");
-					printf("no matching cell found.\n");
-					exit(-1);
-				}
-				printf("The RGB values actually allocated are %d, %d, %d\n",
-				       exact_def.red, exact_def.green, exact_def.blue);
-				colors[i] = exact_def.pixel;
-				ncolors++;
-			}
-			printf("%s: allocated %d read-only color cells\n",
-			       progname, ncolors);
-			border_pixel = colors[0];
-			background_pixel = colors[1];
-			foreground_pixel = colors[2];
-		}
-	}
-
 
 	Window win = XCreateSimpleWindow(dpy,
 	                                 RootWindow(dpy, scrno),
@@ -155,7 +42,7 @@ int main(int argc, char **argv)
 	                                 WhitePixel(dpy, scrno));
 
 
-	char* title = (char*)"color - 7.4 Allocating read-only colorcells";
+	char* title = (char*)"color";
 	XTextProperty titleprop;
 	XStringListToTextProperty(&title, 1, &titleprop);
 	XSetWMProperties(dpy,
@@ -177,19 +64,126 @@ int main(int argc, char **argv)
 
 	XMapWindow(dpy, win);
 
-
 	XGCValues gcvalues;
 	gcvalues.line_width = 1;
-	gcvalues.foreground = foreground_pixel;
-	gcvalues.background = background_pixel;
-	gcvalues.font = XLoadFont(dpy, "fixed");
-	unsigned long gcmask = GCLineWidth | GCForeground | GCBackground | GCFont;
+	gcvalues.foreground = BlackPixel(dpy, scrno);
+	gcvalues.background = WhitePixel(dpy, scrno);
+	unsigned long gcmask = GCLineWidth | GCForeground | GCBackground;
 
 	GC gc = XCreateGC(dpy,
 	                  win,
 	                  gcmask,
 	                  &gcvalues);
 
+
+	/*    Test Colormap functions    */
+	int num_return;
+	Colormap* clrmaps = XListInstalledColormaps(dpy,
+	                                            win,
+	                                            &num_return);
+	printf("XListInstalledColormaps has found %d %s\n",
+	       num_return, (num_return > 1 ? "colormaps" : "colormap"));
+
+	Colormap clrmap_def = DefaultColormap(dpy, scrno);
+	for(int i=0; i < num_return; ++i)
+	{
+		printf("colormap tag = %d ", clrmaps[i]);
+		if(clrmaps[i] == clrmap_def)
+		{
+			printf(" [DefaultColormap]\n");
+		}
+		else
+		{
+			printf("\n");
+		}
+	}
+	/*    How many bits per pixels are in the colormap ?
+	      The terminology uses "planes", but here is a short calculation:
+
+	      2 ^ 2  = 4 colors
+	      2 ^ 4  = 16 colors
+	      2 ^ 8  = 256 colors
+	      2 ^ 16 = 65535 colors
+	      2 ^ 24 = 16777216 colors
+	      2 ^ 32 = 4294967296 colors
+	*/
+	unsigned long depth = DefaultDepth(dpy, scrno);
+	printf("default depth is: %d\n", depth);
+	double numOfColors = ::pow(2, depth);
+	printf("this screen supports 2 ^ %d = %.0f colors\n",
+	       depth, numOfColors);
+
+
+	/*    We request for a given RGB the hardware RGB from installed Colormap.
+	      Then if we compare the 2 values we see if they are equal or not.
+	      If not equal it means
+	      a) the hardware supports less color combinations than possible
+	      b) some gamma correction is involved (don't know yet).
+	*/
+	printf("searching for differences between hardware and real colors values\n");
+	printf("this may take a while, you can interrupt this process at any time\n");
+	unsigned long clrdiff = 0;
+	double clrCount = 0;
+	int rgb = 0;
+	XColor color;
+
+	for(int red = 0; red < 256; ++red)
+	{
+		for(int green = 0; green < 256; ++green)
+		{
+			for(int blue = 0; blue < 256; ++blue, ++clrCount)
+			{
+				rgb = 0x000000;
+				rgb |= (red << 16) & 0xff0000;
+				rgb |= (green << 8) & 0x00ff00;
+				rgb |= blue & 0x0000ff;
+
+				color.pixel = rgb;
+
+				/*    XQueryColor takes the pixel value and returns the
+				      red,green,blue values in range [0,65535]
+				*/
+
+				if(!XQueryColor(dpy,
+				                clrmap_def,
+				                &color))
+				{
+					printf("XQueryColor error at (%d,%d,%d)\n",
+					       red, green, blue);
+					++clrdiff;
+					continue;
+				}
+
+
+				int rred   = color.red   * 255 / 65535;
+				int rgreen = color.green * 255 / 65535;
+				int rblue  = color.blue  * 255 / 65535;
+
+				if(rred != red || rgreen != green || rblue != blue)
+				{
+					printf("Hardware (%d,%d,%d) mismatch for Real (%d,%d,%d)"
+					       " ***********************************************\n",
+					       rred, rgreen, rblue,
+					       red, green, blue);
+					++clrdiff;
+				}
+
+
+				/*    Update user with some progress. In virtual environment
+				      this program takes a lot of time.
+				*/
+
+				if((int)(numOfColors - clrCount) % 50000 == 0)
+				{
+					printf("%.0f colors left to query at (%d,%d,%d)"
+					       " - have found %d different colors in hardware's Colormap\n",
+					       numOfColors - clrCount, rred, rgreen, rblue,
+					       clrdiff);
+				}
+			}
+		}
+	}
+	printf("%d colors are approximated by hardware\n\n", clrdiff);
 
 
 	XEvent event;
