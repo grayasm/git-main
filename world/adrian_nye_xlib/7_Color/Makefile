@@ -6,6 +6,9 @@ clr1: clr1.cpp
 clr2: clr2.cpp
 	g++ -g -o clr2 clr2.cpp -lX11
 
+clr3: clr3.cpp
+	g++ -g -o clr3 clr3.cpp -lX11
+
 
 
 clean:
