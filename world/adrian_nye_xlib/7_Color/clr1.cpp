@@ -2,8 +2,21 @@
  *    Colors:
  *       Colormap type is XID   (e.g. unsigned long, a tag stored in X server)
  *       struct XSetWindowAttributes.colormap is Colormap assoc. to the window
+ *       To list all installed Colormaps :
  *       Colormap* XListInstalledColormaps(dpy, win, (int*)&num_return);
  *
+ *       In this program we use XQueryColor to get from the DefaultColormap()
+ *       a color. We provide 0xff0011 or any other color as pixel and get the
+ *       unsigned short red,green,blue corresponding values in range [0,65535]
+ *
+ *       We compare the returned color with the ammount of red,green,blue we
+ *       set in the pixel and see if they match. If so, it means the hardware
+ *       supports all possible color combinations.
+ *       At a glance: 256 * 256 * 256 = 16,777,216 colors
+ *                             2 ^ 24 = 16,777,216 colors
+ *
+ *       So if the DefaultDepth() or bits per pixel is 24 then the screen
+ *       supports 16 mil colors, enough to display all possible colors.
  */
 
 #include <X11/Xlib.h>
@@ -42,7 +55,7 @@ int main(int argc, char **argv)
 	                                 WhitePixel(dpy, scrno));
 
 
-	char* title = (char*)"color";
+	char* title = (char*)"color - XQueryColor";
 	XTextProperty titleprop;
 	XStringListToTextProperty(&title, 1, &titleprop);
 	XSetWMProperties(dpy,
