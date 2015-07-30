@@ -1,6 +1,8 @@
 /*
- *    Colors:
- *      - allocating read-only colorcells
+ *    Cap. 7.4.2 Code to Allocate Read-only Colors
+ *    Example 7-4. Allocating read-only colorcells
+ *
+ *
  */
 
 #include <X11/Xlib.h>

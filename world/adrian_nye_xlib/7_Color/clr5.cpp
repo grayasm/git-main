@@ -1,6 +1,8 @@
 /*
- *    Colors:
- *      - allocating read-write colorcells for dynamic colors
+ *    Cap. 7.5.1 Allocating Read/Write Colorcells for Dynamic Colors
+ *    Exaple 7-5. Allocating read/write colorcells for dynamic colors
+ *
+ *
  */
 
 #include <X11/Xlib.h>
