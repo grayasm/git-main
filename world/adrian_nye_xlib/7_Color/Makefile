@@ -9,6 +9,12 @@ clr2: clr2.cpp
 clr3: clr3.cpp
 	g++ -g -o clr3 clr3.cpp -lX11
 
+clr4: clr4.cpp
+	g++ -g -o clr4 clr4.cpp -lX11
+
+clr5: clr5.cpp
+	g++ -g -o clr5 clr5.cpp -lX11
+
 
 
 clean:
