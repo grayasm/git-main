@@ -24,6 +24,8 @@ clr7: clr7.cpp
 clr8: clr8.cpp
 	g++ -g -o clr8 clr8.cpp -lX11
 
+clr9: clr9.cpp
+	g++ -g -o clr9 clr9.cpp -lX11
 
 
 
