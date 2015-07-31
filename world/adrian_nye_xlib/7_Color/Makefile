@@ -18,6 +18,8 @@ clr5: clr5.cpp
 clr6: clr6.cpp
 	g++ -g -o clr6 clr6.cpp -lX11
 
+clr7: clr7.cpp
+	g++ -g -o clr7 clr7.cpp -lX11
 
 
 
