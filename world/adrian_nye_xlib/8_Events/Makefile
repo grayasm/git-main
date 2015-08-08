@@ -3,6 +3,8 @@ all: ev1
 ev1: ev1.cpp
 	g++ -g -o ev1 ev1.cpp -lX11
 
+ev2: ev2.cpp
+	g++ -g -o ev2 ev2.cpp -lX11
 
 
 

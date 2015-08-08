@@ -1,4 +1,5 @@
 /*
+ *    Events - printing all events
  */
 
 #include <X11/Xlib.h>
@@ -26,7 +27,7 @@ int main(int argc, char **argv)
 	int x = 10;
 	int y = 10;
 	int winwidth = scrwidth / 5;
-	int winheight = scrheight * 6 ;
+	int winheight = scrheight / 6 ;
 	int winborder = 1;
 
 
@@ -66,13 +67,11 @@ int main(int argc, char **argv)
 	XMapWindow(dpy, win);
 
 
-
 	XEvent event;
 	while (1)
 	{
 		XNextEvent(dpy, &event);
 		printEvent(&event);
-
 		// want to print them all
 	}
 
@@ -87,6 +86,39 @@ void printEvent(XEvent* event)
 {
 	switch(event->type)
 	{
-	case KeyPress: printf("\tKeyPress\n"); break;
+	case KeyPress:             printf("\tKeyPress\n"); break;
+	case KeyRelease:           printf("\tKeyRelease\n"); break;
+	case ButtonPress:          printf("\tButtonPress\n"); break;
+	case ButtonRelease:        printf("\tButtonRelease\n"); break;
+	case MotionNotify:         printf("\tMotionNotify\n"); break;
+	case EnterNotify:          printf("\tEnterNotify\n"); break;
+	case LeaveNotify:          printf("\tLeaveNotify\n"); break;
+	case FocusIn:              printf("\tFocusIn\n"); break;
+	case FocusOut:             printf("\tFocusOut\n"); break;
+	case KeymapNotify:         printf("\tKeymapNotify\n"); break;
+	case Expose:               printf("\tExpose\n"); break;
+	case GraphicsExpose:       printf("\tGraphicsExpose\n"); break;
+	case NoExpose:             printf("\tNoExpose\n"); break;
+	case VisibilityNotify:     printf("\tVisibilityNotify\n"); break;
+	case CreateNotify:         printf("\tCreateNotify\n"); break;
+	case DestroyNotify:        printf("\tDestroyNotify\n"); break;
+	case UnmapNotify:          printf("\tUnmapNotify\n"); break;
+	case MapNotify:            printf("\tMapNotify\n"); break;
+	case MapRequest:           printf("\tMapRequest\n"); break;
+	case ReparentNotify:       printf("\tReparentNotify\n"); break;
+	case ConfigureNotify:      printf("\tConfigureNotify\n"); break;
+	case ConfigureRequest:     printf("\tConfigureRequest\n"); break;
+	case GravityNotify:        printf("\tGravityNotify\n"); break;
+	case ResizeRequest:        printf("\tResizeRequest\n"); break;
+	case CirculateNotify:      printf("\tCirculateNotify\n"); break;
+	case CirculateRequest:     printf("\tCirculateRequest\n"); break;
+	case PropertyNotify:       printf("\tPropertyNotify\n"); break;
+	case SelectionClear:       printf("\tSelectionClear\n"); break;
+	case SelectionRequest:     printf("\tSelectionRequest\n"); break;
+	case SelectionNotify:      printf("\tSelectionNotify\n"); break;
+	case ColormapNotify:       printf("\tColormapNotify\n"); break;
+	case ClientMessage:        printf("\tClientMessage\n"); break;
+	case MappingNotify:        printf("\tMappingNotify\n"); break;
+	case GenericEvent:         printf("\tGenericEvent\n"); break;
 	}
 }
