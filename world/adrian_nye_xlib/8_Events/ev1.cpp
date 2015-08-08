@@ -10,6 +10,8 @@
 #include <math.h>
 
 
+void printEvent(XEvent* event);
+
 int main(int argc, char **argv)
 {
 	setvbuf(stdout, NULL, _IONBF, 0);
@@ -69,14 +71,22 @@ int main(int argc, char **argv)
 	while (1)
 	{
 		XNextEvent(dpy, &event);
+		printEvent(&event);
 
-		switch(event.
+		// want to print them all
 	}
-
 
 
 	XDestroyWindow(dpy, win);
 	XCloseDisplay(dpy);
 
 	return 0;
+}
+
+void printEvent(XEvent* event)
+{
+	switch(event->type)
+	{
+	case KeyPress: printf("\tKeyPress\n"); break;
+	}
 }
