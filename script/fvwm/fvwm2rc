@@ -23,13 +23,16 @@
 # git add icons/*
 # git commit -m 'fvwm update' fvwm2rc icons/*
 
+# to install fvmw resource from .git
+# cp ~/Code/git-main/script/fvwm/fvwm2rc ~/.fvwm/.fvwm2rc
+# cp ~/Code/git-main/script/fvwm/{wallpapers,icons,sounds} ~/.fvwm/
 
 ################################################################################
 # Global Variables
 ################################################################################
 SetEnv fvwm_wallpapers          $[FVWM_USERDIR]/wallpapers
 SetEnv fvwm_icons               $[FVWM_USERDIR]/icons
-SetEnv fvwm_sound               $[HOME]/1TB/sounds/Electrical_Sweep-Sweeper-1760111493.wav
+SetEnv fvwm_sound               $[FVWM_USERDIR]/sounds/startup.wav
 
 
 ################################################################################
