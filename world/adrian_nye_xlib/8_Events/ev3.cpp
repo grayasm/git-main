@@ -1,11 +1,10 @@
 /*
-  Events:
-  XAnyEvent is part of XEvent structure;  e.g. XEvent.xany
+  Events: printing structure XKeyEvent (XEvent.xkey member)
 
   typedef union _XEvent {
           int type;       //must not be changed; first element
-          XAnyEvent xany;                   <---- !!!!!
-          XKeyEvent xkey;
+          XAnyEvent xany;
+          XKeyEvent xkey;        <-------- !!!!!
           XButtonEvent xbutton;
           XMotionEvent xmotion;
           XCrossingEvent xcrossing;
@@ -50,8 +49,7 @@
 #include <math.h>
 
 
-
-
+void printEvent(XEvent* event);
 
 int main(int argc, char **argv)
 {
@@ -83,24 +81,7 @@ int main(int argc, char **argv)
 	/* X.h
 	   line: 150 to 175   Event definitions;
 	*/
-	long event_mask =
-		KeyPressMask | KeyReleaseMask |
-		ButtonPressMask | ButtonReleaseMask |
-		EnterWindowMask | LeaveWindowMask |
-		PointerMotionMask | PointerMotionHintMask |
-		Button1MotionMask | Button2MotionMask | Button3MotionMask |
-		Button5MotionMask | ButtonMotionMask |
-		KeymapStateMask |
-		ExposureMask |
-		VisibilityChangeMask |
-		StructureNotifyMask |
-		ResizeRedirectMask |
-		SubstructureNotifyMask |
-		SubstructureRedirectMask |
-		FocusChangeMask |
-		PropertyChangeMask |
-		ColormapChangeMask |
-		OwnerGrabButtonMask;
+	long event_mask = KeyPressMask | KeyReleaseMask;
 
 	/* Select all events for our top window. */
 	XSelectInput(dpy, win, event_mask);
@@ -112,13 +93,27 @@ int main(int argc, char **argv)
 	{
 		XNextEvent(dpy, &event);
 
-		XAnyEvent* xany = &(event.xany);
-		printf("XAnyEvent is component of XEvent; XEvent.xany\n");
-		printf("XEvent.xany.type      = %d\n", xany->type);
-		printf("XEvent.xany.serial    = %d\n", xany->serial);
-		printf("XEvent.xany.send_event= %d\n", xany->send_event);
-		printf("XEvent.xany.display   = %x\n", xany->display);
-		printf("XEvent.xany.window    = %x\n\n\n", xany->window);
+		if(event.type == KeyPress ||
+		   event.type == KeyRelease)
+		{
+			XKeyEvent* xkey = &(event.xkey);
+			printf("XKeyEvent is part of XEvent structure; XEvent.xkey\n");
+			printf("xkey.type           = %d  (%s)\n",
+			       xkey->type,
+			       (xkey->type == KeyPress ? "KeyPress" : "KeyRelease"));
+			printf("xkey.serial         = %d\n", xkey->serial);
+			printf("xkey.send_event     = %d\n", xkey->send_event);
+			printf("xkey.display        = %x\n", xkey->display);
+			printf("xkey.window         = %d\n", xkey->window);
+ 			printf("xkey.root           = %d\n", xkey->root);
+			printf("xkey.subwindow      = %d\n", xkey->subwindow);
+			printf("xkey.time           = %d milisec\n", xkey->time);
+			printf("xkey.x,y            = %d, %d\n", xkey->x, xkey->y);
+			printf("xkey.x_root,y_root  = %d, %d\n", xkey->x_root, xkey->y_root);
+			printf("xkey.state          = %d\n", xkey->state);
+			printf("xkey.keycode        = %d\n", xkey->keycode);
+			printf("xkey.same_screen    = %d\n\n\n", xkey->same_screen);
+		}
 	}
 
 

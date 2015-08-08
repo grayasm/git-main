@@ -1,12 +1,12 @@
 /*
-  Events:
-  XAnyEvent is part of XEvent structure;  e.g. XEvent.xany
+  ev4.cpp
+  XEvent.xbutton is XButtonEvent structure.
 
   typedef union _XEvent {
           int type;       //must not be changed; first element
-          XAnyEvent xany;                   <---- !!!!!
+          XAnyEvent xany;
           XKeyEvent xkey;
-          XButtonEvent xbutton;
+          XButtonEvent xbutton;        <-------- !!!!!
           XMotionEvent xmotion;
           XCrossingEvent xcrossing;
           XFocusChangeEvent xfocus;
@@ -50,8 +50,7 @@
 #include <math.h>
 
 
-
-
+void printEvent(XEvent* event);
 
 int main(int argc, char **argv)
 {
@@ -83,24 +82,7 @@ int main(int argc, char **argv)
 	/* X.h
 	   line: 150 to 175   Event definitions;
 	*/
-	long event_mask =
-		KeyPressMask | KeyReleaseMask |
-		ButtonPressMask | ButtonReleaseMask |
-		EnterWindowMask | LeaveWindowMask |
-		PointerMotionMask | PointerMotionHintMask |
-		Button1MotionMask | Button2MotionMask | Button3MotionMask |
-		Button5MotionMask | ButtonMotionMask |
-		KeymapStateMask |
-		ExposureMask |
-		VisibilityChangeMask |
-		StructureNotifyMask |
-		ResizeRedirectMask |
-		SubstructureNotifyMask |
-		SubstructureRedirectMask |
-		FocusChangeMask |
-		PropertyChangeMask |
-		ColormapChangeMask |
-		OwnerGrabButtonMask;
+	long event_mask = ButtonPressMask | ButtonReleaseMask;
 
 	/* Select all events for our top window. */
 	XSelectInput(dpy, win, event_mask);
@@ -112,13 +94,29 @@ int main(int argc, char **argv)
 	{
 		XNextEvent(dpy, &event);
 
-		XAnyEvent* xany = &(event.xany);
-		printf("XAnyEvent is component of XEvent; XEvent.xany\n");
-		printf("XEvent.xany.type      = %d\n", xany->type);
-		printf("XEvent.xany.serial    = %d\n", xany->serial);
-		printf("XEvent.xany.send_event= %d\n", xany->send_event);
-		printf("XEvent.xany.display   = %x\n", xany->display);
-		printf("XEvent.xany.window    = %x\n\n\n", xany->window);
+		if(event.type == ButtonPress ||
+		   event.type == ButtonRelease)
+		{
+			XButtonEvent* xbutton = &(event.xbutton);
+			printf("XButtonEvent member of XEvent; XEvent.xbutton\n");
+			printf("xbutton.type          = %d (%s)\n",
+			       xbutton->type,
+			       (xbutton->type == ButtonPress ? "ButtonPress" :
+			                                       "ButtonRelease"));
+			printf("xbutton.serial        = %d\n", xbutton->serial);
+			printf("xbutton.send_event    = %d\n", xbutton->send_event);
+			printf("xbutton.display       = %x\n", xbutton->display);
+			printf("xbutton.window        = %d\n", xbutton->window);
+			printf("xbutton.root          = %d\n", xbutton->root);
+			printf("xbutton.subwindow     = %d\n", xbutton->subwindow);
+			printf("xbutton.time          = %d milisec\n", xbutton->time);
+			printf("xbutton.x, y          = [%d,%d]\n", xbutton->x, xbutton->y);
+			printf("xbutton.x_root, y_root= [%d,%d]\n",
+			       xbutton->x_root, xbutton->y_root);
+			printf("xbutton.state         = %d\n", xbutton->state);
+			printf("xbutton.button        = %d\n", xbutton->button);
+			printf("xbutton.same_screen   = %d\n\n\n", xbutton->same_screen);
+		}
 	}
 
 
