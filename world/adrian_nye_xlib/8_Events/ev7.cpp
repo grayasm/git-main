@@ -1,19 +1,18 @@
 /*
-  ev5.cpp
-  XEvent.xmotion is XMotionEvent structure.
+  ev7.cpp
+  XEvent.xfocus is XFocusChangeEvent structure.
+  http://www.x.org/releases/current/doc/man/man3/XFocusChangeEvent.3.xhtml
 
-  There was a problem receiving MotionNotify between ButtonPress/Release.
-  If ButtonPress/Release are not processed, no MotionNotify is comming in
-  between these events.
+
 
   typedef union _XEvent {
           int type;       //must not be changed; first element
           XAnyEvent xany;
           XKeyEvent xkey;
           XButtonEvent xbutton;
-          XMotionEvent xmotion;        <-------- !!!!!
+          XMotionEvent xmotion;
           XCrossingEvent xcrossing;
-          XFocusChangeEvent xfocus;
+          XFocusChangeEvent xfocus;        <-------- !!!!!
           XExposeEvent xexpose;
           XGraphicsExposeEvent xgraphicsexpose;
           XNoExposeEvent xnoexpose;
@@ -56,7 +55,7 @@
 
 
 
-void printXMotionEvent(XMotionEvent* xmotion);
+void printXFocusChangeEvent(XFocusChangeEvent* xmotion);
 
 int main(int argc, char **argv)
 {
@@ -88,10 +87,9 @@ int main(int argc, char **argv)
 	/* X.h
 	   line: 150 to 175   Event definitions;
 	*/
-	long event_mask =
-		PointerMotionMask |
-		ButtonPressMask |
-		ButtonReleaseMask;
+	long event_mask = FocusChangeMask;
+
+
 
 	/* Select all events for our top window. */
 	XSelectInput(dpy, win, event_mask);
@@ -159,55 +157,23 @@ int main(int argc, char **argv)
 	{
 		XNextEvent(dpy, &event);
 
-		if(event.type == MotionNotify)
+		XFocusChangeEvent* xfocus = 0;
+		std::stringstream ss;
+		if(event.type == FocusIn || event.type == FocusOut)
 		{
-			XMotionEvent* xmotion = &(event.xmotion);
-			printXMotionEvent(xmotion);
-
-			std::stringstream ss;
-			ss << xmotion->x << "," << xmotion->y;
-			ss << " XMotionNotify";
-			const std::string& msg = ss.str();
-
-			XClearWindow(dpy, win);
-			XDrawImageString(dpy,
-			                 win,
-			                 gc,
-			                 xmotion->x, xmotion->y,
-			                 msg.c_str(),
-			                 msg.size());
+			xfocus = &(event.xfocus);
+			ss << (event.type == FocusIn ? "FocusIn" : "FocusOut");
 		}
 
-		if(event.type == ButtonPress)
+		if(xfocus)
 		{
-			XButtonEvent* xbutton = &(event.xbutton);
-			std::stringstream ss;
-			ss << xbutton->x << "," << xbutton->y;
-			ss << " ButtonPress";
+			printXFocusChangeEvent(xfocus);
 			const std::string& msg = ss.str();
-
 			XClearWindow(dpy, win);
 			XDrawImageString(dpy,
 			                 win,
 			                 gc,
-			                 xbutton->x, xbutton->y,
-			                 msg.c_str(),
-			                 msg.size());
-		}
-
-		if(event.type == ButtonRelease)
-		{
-			XButtonEvent* xbutton = &(event.xbutton);
-			std::stringstream ss;
-			ss << xbutton->x << "," << xbutton->y;
-			ss << " ButtonRelease";
-			const std::string& msg = ss.str();
-
-			XClearWindow(dpy, win);
-			XDrawImageString(dpy,
-			                 win,
-			                 gc,
-			                 xbutton->x, xbutton->y,
+			                 20, 50,
 			                 msg.c_str(),
 			                 msg.size());
 		}
@@ -221,22 +187,27 @@ int main(int argc, char **argv)
 }
 
 
-void printXMotionEvent(XMotionEvent* xmotion)
+void printXFocusChangeEvent(XFocusChangeEvent* xfocus)
 {
-	printf("XMotionEvent is XEvent.xmotion parameter;\n");
-	printf("xmotion.type          = %d (%s)\n",
-	       xmotion->type, "MotionNotify");
-	printf("xmotion.serial        = %d\n", xmotion->serial);
-	printf("xmotion.send_event    = %d\n", xmotion->send_event);
-	printf("xmotion.display       = 0x%x\n", xmotion->display);
-	printf("xmotion.window        = 0x%x\n", xmotion->window);
-	printf("xmotion.root          = 0x%x\n", xmotion->root);
-	printf("xmotion.subwindow     = 0x%x\n", xmotion->subwindow);
-	printf("xmotion.time          = %d milisec\n", xmotion->time);
-	printf("xmotion.x,y           = (%d,%d)\n", xmotion->x, xmotion->y);
-	printf("xmotion.x_root,y_root = (%d,%d)\n",
-	       xmotion->x_root, xmotion->y_root);
-	printf("xmotion.state         = %d\n", xmotion->state);
-	printf("xmotion.is_hint       = %d\n", xmotion->is_hint);
-	printf("xmotion.same_screen   = %d\n\n\n", xmotion->same_screen);
+	printf("XFocusChangeEvent is XEvent.xfocus parameter;\n");
+	printf("xfocus.type          = %d (%s)\n",
+	       xfocus->type, "XFocusChangeEvent");
+	printf("xfocus.serial        = %d\n", xfocus->serial);
+	printf("xfocus.send_event    = %d\n", xfocus->send_event);
+	printf("xfocus.display       = 0x%x\n", xfocus->display);
+	printf("xfocus.window        = 0x%x\n", xfocus->window);
+
+	printf("xfocus.mode          = %s\n",
+	       xfocus->mode == NotifyNormal ? "NotifyNormal" :
+	       (xfocus->mode == NotifyWhileGrabbed ? "NotifyWhileGrabbed" :
+	        (xfocus->mode == NotifyGrab ? "NotifyGrab" : "NotifyUngrab")));
+	printf("xfocus.detail        = %s\n\n\n",
+	       (xfocus->detail == NotifyAncestor ? "NotifyAncestor" :
+	        (xfocus->detail == NotifyVirtual ? "NotifyVirtual" :
+	         (xfocus->detail == NotifyInferior ? "NotifyInferior" :
+	          (xfocus->detail == NotifyNonlinear ? "NotifyNonlinear" :
+	           (xfocus->detail == NotifyNonlinearVirtual ? "NotifyNonlinearVirtual" :
+	            (xfocus->detail == NotifyPointer ? "NotifyPointer" :
+	             (xfocus->detail == NotifyPointerRoot ? "NotifyPointerRoot" :
+	              "NotifyDetailNone"))))))));
 }

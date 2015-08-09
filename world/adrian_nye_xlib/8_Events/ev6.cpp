@@ -1,18 +1,17 @@
 /*
-  ev5.cpp
-  XEvent.xmotion is XMotionEvent structure.
+  ev6.cpp
+  XEvent.xcrossing is XCrossingEvent structure.
 
-  There was a problem receiving MotionNotify between ButtonPress/Release.
-  If ButtonPress/Release are not processed, no MotionNotify is comming in
-  between these events.
+  This structure is filled on EnterWindow,LeaveWindow.
+  On button press & release a grab/ungrab is also present as WindowLeave/Enter.
 
   typedef union _XEvent {
           int type;       //must not be changed; first element
           XAnyEvent xany;
           XKeyEvent xkey;
           XButtonEvent xbutton;
-          XMotionEvent xmotion;        <-------- !!!!!
-          XCrossingEvent xcrossing;
+          XMotionEvent xmotion;
+          XCrossingEvent xcrossing;        <-------- !!!!!
           XFocusChangeEvent xfocus;
           XExposeEvent xexpose;
           XGraphicsExposeEvent xgraphicsexpose;
@@ -56,7 +55,7 @@
 
 
 
-void printXMotionEvent(XMotionEvent* xmotion);
+void printXCrossingEvent(XCrossingEvent* xmotion);
 
 int main(int argc, char **argv)
 {
@@ -89,9 +88,9 @@ int main(int argc, char **argv)
 	   line: 150 to 175   Event definitions;
 	*/
 	long event_mask =
-		PointerMotionMask |
-		ButtonPressMask |
-		ButtonReleaseMask;
+		EnterWindowMask | LeaveWindowMask;
+
+
 
 	/* Select all events for our top window. */
 	XSelectInput(dpy, win, event_mask);
@@ -159,55 +158,31 @@ int main(int argc, char **argv)
 	{
 		XNextEvent(dpy, &event);
 
-		if(event.type == MotionNotify)
+		XCrossingEvent* xcrossing = 0;
+		std::stringstream ss;
+
+		if(event.type == EnterNotify)
 		{
-			XMotionEvent* xmotion = &(event.xmotion);
-			printXMotionEvent(xmotion);
-
-			std::stringstream ss;
-			ss << xmotion->x << "," << xmotion->y;
-			ss << " XMotionNotify";
-			const std::string& msg = ss.str();
-
-			XClearWindow(dpy, win);
-			XDrawImageString(dpy,
-			                 win,
-			                 gc,
-			                 xmotion->x, xmotion->y,
-			                 msg.c_str(),
-			                 msg.size());
+			xcrossing = &(event.xcrossing);
+			ss << xcrossing->x << "," << xcrossing->y;
+			ss << " EnterNotify";
+		}
+		if(event.type == LeaveNotify)
+		{
+			xcrossing = &(event.xcrossing);
+			ss << xcrossing->x << "," << xcrossing->y;
+			ss << " LeaveNotify";
 		}
 
-		if(event.type == ButtonPress)
+		if(xcrossing)
 		{
-			XButtonEvent* xbutton = &(event.xbutton);
-			std::stringstream ss;
-			ss << xbutton->x << "," << xbutton->y;
-			ss << " ButtonPress";
+			printXCrossingEvent(xcrossing);
 			const std::string& msg = ss.str();
-
 			XClearWindow(dpy, win);
 			XDrawImageString(dpy,
 			                 win,
 			                 gc,
-			                 xbutton->x, xbutton->y,
-			                 msg.c_str(),
-			                 msg.size());
-		}
-
-		if(event.type == ButtonRelease)
-		{
-			XButtonEvent* xbutton = &(event.xbutton);
-			std::stringstream ss;
-			ss << xbutton->x << "," << xbutton->y;
-			ss << " ButtonRelease";
-			const std::string& msg = ss.str();
-
-			XClearWindow(dpy, win);
-			XDrawImageString(dpy,
-			                 win,
-			                 gc,
-			                 xbutton->x, xbutton->y,
+			                 xcrossing->x, xcrossing->y,
 			                 msg.c_str(),
 			                 msg.size());
 		}
@@ -221,22 +196,31 @@ int main(int argc, char **argv)
 }
 
 
-void printXMotionEvent(XMotionEvent* xmotion)
+void printXCrossingEvent(XCrossingEvent* xcrossing)
 {
-	printf("XMotionEvent is XEvent.xmotion parameter;\n");
-	printf("xmotion.type          = %d (%s)\n",
-	       xmotion->type, "MotionNotify");
-	printf("xmotion.serial        = %d\n", xmotion->serial);
-	printf("xmotion.send_event    = %d\n", xmotion->send_event);
-	printf("xmotion.display       = 0x%x\n", xmotion->display);
-	printf("xmotion.window        = 0x%x\n", xmotion->window);
-	printf("xmotion.root          = 0x%x\n", xmotion->root);
-	printf("xmotion.subwindow     = 0x%x\n", xmotion->subwindow);
-	printf("xmotion.time          = %d milisec\n", xmotion->time);
-	printf("xmotion.x,y           = (%d,%d)\n", xmotion->x, xmotion->y);
-	printf("xmotion.x_root,y_root = (%d,%d)\n",
-	       xmotion->x_root, xmotion->y_root);
-	printf("xmotion.state         = %d\n", xmotion->state);
-	printf("xmotion.is_hint       = %d\n", xmotion->is_hint);
-	printf("xmotion.same_screen   = %d\n\n\n", xmotion->same_screen);
+	printf("XCrossingEvent is XEvent.xcrossing parameter;\n");
+	printf("xcrossing.type          = %d (%s)\n",
+	       xcrossing->type, "XCrossingEvent");
+	printf("xcrossing.serial        = %d\n", xcrossing->serial);
+	printf("xcrossing.send_event    = %d\n", xcrossing->send_event);
+	printf("xcrossing.display       = 0x%x\n", xcrossing->display);
+	printf("xcrossing.window        = 0x%x\n", xcrossing->window);
+	printf("xcrossing.root          = 0x%x\n", xcrossing->root);
+	printf("xcrossing.subwindow     = 0x%x\n", xcrossing->subwindow);
+	printf("xcrossing.time          = %d milisec\n", xcrossing->time);
+	printf("xcrossing.x,y           = (%d,%d)\n", xcrossing->x, xcrossing->y);
+	printf("xcrossing.x_root,y_root = (%d,%d)\n",
+	       xcrossing->x_root, xcrossing->y_root);
+	printf("xcrossing.mode          = %s\n",
+	       xcrossing->mode == NotifyNormal ? "NotifyNormal" :
+	       (xcrossing->mode == NotifyGrab ? "NotifyGrab" : "NotifyUngrab"));
+	printf("xcrossing.detail        = %s\n",
+	       (xcrossing->detail == NotifyAncestor ? "NotifyAncestor" :
+	        (xcrossing->detail == NotifyVirtual ? "NotifyVirtual" :
+	         (xcrossing->detail == NotifyInferior ? "NotifyInferior" :
+	          (xcrossing->detail == NotifyNonlinear ? "NotifyNonlinear" :
+	           "NotifyNonlinearVirtual")))));
+	printf("xcrossing.same_screen   = %d\n", xcrossing->same_screen);
+	printf("xcrossing.focus         = %d\n", xcrossing->focus);
+	printf("xcrossing.state         = %d\n\n\n", xcrossing->state);
 }
