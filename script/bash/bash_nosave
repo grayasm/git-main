@@ -4,3 +4,4 @@
 
 export SVN_USER=grayasm@gmail.com
 export SVN_PASS=
+export GIT_PASS=
