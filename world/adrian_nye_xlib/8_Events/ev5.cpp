@@ -1,13 +1,13 @@
 /*
-  ev4.cpp
-  XEvent.xbutton is XButtonEvent structure.
+  ev5.cpp
+  XEvent.xmotion is XMotionEvent structure.
 
   typedef union _XEvent {
           int type;       //must not be changed; first element
           XAnyEvent xany;
           XKeyEvent xkey;
-          XButtonEvent xbutton;        <-------- !!!!!
-          XMotionEvent xmotion;
+          XButtonEvent xbutton;
+          XMotionEvent xmotion;        <-------- !!!!!
           XCrossingEvent xcrossing;
           XFocusChangeEvent xfocus;
           XExposeEvent xexpose;
@@ -51,7 +51,8 @@
 #include <sstream>
 
 
-void printXButtonEvent(XButtonEvent* xbutton);
+
+void printXMotionEvent(XMotionEvent* xmotion);
 
 int main(int argc, char **argv)
 {
@@ -83,7 +84,10 @@ int main(int argc, char **argv)
 	/* X.h
 	   line: 150 to 175   Event definitions;
 	*/
-	long event_mask = ButtonPressMask | ButtonReleaseMask;
+	long event_mask =
+		PointerMotionMask |
+		ButtonPressMask |
+		ButtonReleaseMask;
 
 	/* Select all events for our top window. */
 	XSelectInput(dpy, win, event_mask);
@@ -143,7 +147,6 @@ int main(int argc, char **argv)
 	                  gcmask,
 	                  &gcvalues);
 
-	// show window
 	XMapWindow(dpy, win);
 
 
@@ -152,22 +155,51 @@ int main(int argc, char **argv)
 	{
 		XNextEvent(dpy, &event);
 
-		if(event.type == ButtonPress ||
-		   event.type == ButtonRelease)
+		if(event.type == MotionNotify)
+		{
+			XMotionEvent* xmotion = &(event.xmotion);
+			printXMotionEvent(xmotion);
+
+			std::stringstream ss;
+			ss << xmotion->x << "," << xmotion->y;
+			ss << " XMotionNotify";
+			const std::string& msg = ss.str();
+
+			XClearWindow(dpy, win);
+			XDrawImageString(dpy,
+			                 win,
+			                 gc,
+			                 xmotion->x, xmotion->y,
+			                 msg.c_str(),
+			                 msg.size());
+		}
+
+		if(event.type == ButtonPress)
 		{
 			XButtonEvent* xbutton = &(event.xbutton);
-			printXButtonEvent(xbutton);
-
-			// print Button coordinates for window, not root.
-			if(event.type == ButtonPress) XClearWindow(dpy, win);
 			std::stringstream ss;
-			ss << "+ ";
-			ss << xbutton->x;
-			ss << ",";
-			ss << xbutton->y;
-			ss << " Button ";
-			ss << (event.type == ButtonPress ? "Press" : "Release");
+			ss << xbutton->x << "," << xbutton->y;
+			ss << " ButtonPress";
 			const std::string& msg = ss.str();
+
+			XClearWindow(dpy, win);
+			XDrawImageString(dpy,
+			                 win,
+			                 gc,
+			                 xbutton->x, xbutton->y,
+			                 msg.c_str(),
+			                 msg.size());
+		}
+
+		if(event.type == ButtonRelease)
+		{
+			XButtonEvent* xbutton = &(event.xbutton);
+			std::stringstream ss;
+			ss << xbutton->x << "," << xbutton->y;
+			ss << " ButtonRelease";
+			const std::string& msg = ss.str();
+
+			XClearWindow(dpy, win);
 			XDrawImageString(dpy,
 			                 win,
 			                 gc,
@@ -185,24 +217,22 @@ int main(int argc, char **argv)
 }
 
 
-void printXButtonEvent(XButtonEvent* xbutton)
+void printXMotionEvent(XMotionEvent* xmotion)
 {
-	printf("XButtonEvent member of XEvent; XEvent.xbutton\n");
-	printf("xbutton.type          = %d (%s)\n",
-	       xbutton->type,
-	       (xbutton->type == ButtonPress ? "ButtonPress" :
-	                                       "ButtonRelease"));
-	printf("xbutton.serial        = %d\n", xbutton->serial);
-	printf("xbutton.send_event    = %d\n", xbutton->send_event);
-	printf("xbutton.display       = %x\n", xbutton->display);
-	printf("xbutton.window        = %d\n", xbutton->window);
-	printf("xbutton.root          = %d\n", xbutton->root);
-	printf("xbutton.subwindow     = %d\n", xbutton->subwindow);
-	printf("xbutton.time          = %d milisec\n", xbutton->time);
-	printf("xbutton.x, y          = [%d,%d]\n", xbutton->x, xbutton->y);
-	printf("xbutton.x_root, y_root= [%d,%d]\n",
-	       xbutton->x_root, xbutton->y_root);
-	printf("xbutton.state         = %d\n", xbutton->state);
-	printf("xbutton.button        = %d\n", xbutton->button);
-	printf("xbutton.same_screen   = %d\n\n\n", xbutton->same_screen);
+	printf("XMotionEvent is XEvent.xmotion parameter;\n");
+	printf("xmotion.type          = %d (%s)\n",
+	       xmotion->type, "MotionNotify");
+	printf("xmotion.serial        = %d\n", xmotion->serial);
+	printf("xmotion.send_event    = %d\n", xmotion->send_event);
+	printf("xmotion.display       = 0x%x\n", xmotion->display);
+	printf("xmotion.window        = 0x%x\n", xmotion->window);
+	printf("xmotion.root          = 0x%x\n", xmotion->root);
+	printf("xmotion.subwindow     = 0x%x\n", xmotion->subwindow);
+	printf("xmotion.time          = %d milisec\n", xmotion->time);
+	printf("xmotion.x,y           = (%d,%d)\n", xmotion->x, xmotion->y);
+	printf("xmotion.x_root,y_root = (%d,%d)\n",
+	       xmotion->x_root, xmotion->y_root);
+	printf("xmotion.state         = %d\n", xmotion->state);
+	printf("xmotion.is_hint       = %d\n", xmotion->is_hint);
+	printf("xmotion.same_screen   = %d\n\n\n", xmotion->same_screen);
 }

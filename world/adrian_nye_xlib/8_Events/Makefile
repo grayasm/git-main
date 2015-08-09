@@ -12,6 +12,10 @@ ev3: ev3.cpp
 ev4: ev4.cpp
 	g++ -g -o ev4 ev4.cpp -lX11
 
+ev5: ev5.cpp
+	g++ -g -o ev5 ev5.cpp -lX11
+
+
 
 
 
