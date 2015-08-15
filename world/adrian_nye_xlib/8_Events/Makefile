@@ -27,6 +27,9 @@ ev8: ev8.cpp
 ev9: ev9.cpp
 	g++ -g -o ev9 ev9.cpp -lX11
 
+ev10: ev10.cpp
+	g++ -g -o ev10 ev10.cpp -lX11
+
 
 
 
