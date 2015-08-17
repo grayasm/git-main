@@ -1,4 +1,4 @@
-all: ev1
+all: ev11
 
 ev1: ev1.cpp
 	g++ -g -o ev1 ev1.cpp -lX11
@@ -30,6 +30,8 @@ ev9: ev9.cpp
 ev10: ev10.cpp
 	g++ -g -o ev10 ev10.cpp -lX11
 
+ev11: ev11.cpp
+	g++ -g -o ev11 ev11.cpp -lX11
 
 
 
