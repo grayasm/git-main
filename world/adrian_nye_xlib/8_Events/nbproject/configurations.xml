@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configurationDescriptor version="95">
+  <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
+    <df root="." name="0">
+      <in>ev1.cpp</in>
+      <in>ev10.cpp</in>
+      <in>ev11.cpp</in>
+      <in>ev2.cpp</in>
+      <in>ev3.cpp</in>
+      <in>ev4.cpp</in>
+      <in>ev5.cpp</in>
+      <in>ev6.cpp</in>
+      <in>ev7.cpp</in>
+      <in>ev8.cpp</in>
+      <in>ev9.cpp</in>
+    </df>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false"
+                   kind="IMPORTANT_FILES_FOLDER">
+      <itemPath>Makefile</itemPath>
+    </logicalFolder>
+  </logicalFolder>
+  <sourceFolderFilter>^(nbproject)$</sourceFolderFilter>
+  <sourceRootList>
+    <Elem>.</Elem>
+  </sourceRootList>
+  <projectmakefile>Makefile</projectmakefile>
+  <confs>
+    <conf name="Default" type="0">
+      <toolsSet>
+        <compilerSet>default</compilerSet>
+        <dependencyChecking>false</dependencyChecking>
+        <rebuildPropChanged>false</rebuildPropChanged>
+      </toolsSet>
+      <codeAssistance>
+      </codeAssistance>
+      <makefileType>
+        <makeTool>
+          <buildCommandWorkingDir>.</buildCommandWorkingDir>
+          <buildCommand>${MAKE} -f Makefile</buildCommand>
+          <cleanCommand>${MAKE} -f Makefile clean</cleanCommand>
+          <executablePath></executablePath>
+        </makeTool>
+      </makefileType>
+      <item path="ev1.cpp" ex="false" tool="1" flavor2="4">
+      </item>
+      <item path="ev10.cpp" ex="false" tool="1" flavor2="4">
+      </item>
+      <item path="ev11.cpp" ex="false" tool="1" flavor2="4">
+      </item>
+      <item path="ev2.cpp" ex="false" tool="1" flavor2="4">
+      </item>
+      <item path="ev3.cpp" ex="false" tool="1" flavor2="4">
+      </item>
+      <item path="ev4.cpp" ex="false" tool="1" flavor2="4">
+      </item>
+      <item path="ev5.cpp" ex="false" tool="1" flavor2="4">
+      </item>
+      <item path="ev6.cpp" ex="false" tool="1" flavor2="4">
+      </item>
+      <item path="ev7.cpp" ex="false" tool="1" flavor2="4">
+      </item>
+      <item path="ev8.cpp" ex="false" tool="1" flavor2="4">
+      </item>
+      <item path="ev9.cpp" ex="false" tool="1" flavor2="4">
+      </item>
+    </conf>
+  </confs>
+</configurationDescriptor>
