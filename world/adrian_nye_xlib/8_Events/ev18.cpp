@@ -1,7 +1,29 @@
 /*
 	ev18.cpp
 	XEvent.xconfigure is XConfigureEvent structure.
-	
+	http://tronche.com/gui/x/xlib/events/window-state-change/configure.html
+
+	The X server can report ConfigureNotify events to clients wanting
+	information about actual changes to a window's state, such as size,
+	position, border and stacking order. The X server generates this event
+	type whenever one of the following configure window requests made by a
+	client application actually completes:
+
+	* A window's size, position, border and/or stacking order is configured
+	  by calling XConfigureWindow()
+	* The window's position in the stacking order is changed by calling
+	  XLowerWindow(), XRaiseWindow() or XRestackWindows()
+	* A window is moved by XMoveWindow()
+	* A window size is changed by XResizeWindow()
+	* A window size and location is changed by XMoveResizeWindow()
+	* A window is mapped and its position in the stacking order is changed
+	  by XMapRaised()
+	* A window border is changed by XSetWindowBorderWidth()
+
+	To receive ConfigureNotify events, set the StructureNotifyMask bit in the
+	event-mask attribute of the window or the SubstructureNotifyMask bit in
+	the event-mask attribute of the parent window (in which case, configuring
+	any child generates an event).
 
 
   typedef union _XEvent {
@@ -82,16 +104,15 @@ int main(int argc, char **argv)
 	                    winborder,
 	                    BlackPixel(dpy, scrno),
 	                    WhitePixel(dpy, scrno));
-	
 
 	/* X.h
 	   line: 150 to 175   Event definitions;
 	*/
-	long event_mask =	StructureNotifyMask | ButtonPressMask;
-	
+	long event_mask = StructureNotifyMask | ButtonPressMask;
+
 	XSelectInput(dpy, win, event_mask);
 
-	
+
 	/* Select a nice font */
 	Font font;
 	int fontret = 0;
@@ -142,25 +163,14 @@ int main(int argc, char **argv)
 	unsigned long gcmask = GCLineWidth | GCForeground | GCBackground | GCFont;
 
 	GC gc = XCreateGC(dpy,
-	                parent1,
+	                win,
 	                gcmask,
 	                &gcvalues);
-	
+
 	XMapWindow(dpy, win);
-	
-	enum Methods
-	{
-		X_CONFIGURE_WINDOW=1,
-		X_LOWER_WINDOW,
-		X_MOVE_WINDOW,
-		X_RESIZE_WINDOW,
-		X_MOVE_RESIZE_WINDOW,
-		X_MAP_RAISED,
-		X_SET_WINDOW_BORDER_WIDTH
-	};
-	
-	Methods method = X_CONFIGURE_WINDOW;
-	
+
+
+	int count = 0;
 	XEvent event;
 	while (1)
 	{
@@ -175,35 +185,18 @@ int main(int argc, char **argv)
 			printXConfigureEvent(xconfigure);
 			const std::string& msg = ss.str();
 
-			XClearWindow(dpy, xconfigure->window);
+			XClearWindow(dpy, win);
 			XDrawImageString(dpy,
-			                xconfigure->window,
-			                (xconfigure->parent == parent1 ? gc1 : gc2),
-			                20, 20,
-			                msg.c_str(),
-			                msg.size());
+			                 win,
+			                 gc,
+			                 20, 20,
+			                 msg.c_str(),
+			                 msg.size());
 		}
 
 		if(event.type == ButtonPress)
 		{
-			switch(method)
-			{
-				case X_CONFIGURE_WINDOW:
-				{
-					unsigned int attrmask = 0;
-					XWindowChanges values = {0, 0, 200, 80, 2, 
-					
-					XConfigureWindow(dpy, win, attrmask, &values);
-				}
-				break;
-					
-				case X_LOWER_WINDOW: break;
-				case X_MOVE_WINDOW: break;
-				case X_RESIZE_WINDOW: break;
-				case X_MOVE_RESIZE_WINDOW: break;
-				case X_MAP_RAISED: break;
-				case X_SET_WINDOW_BORDER_WIDTH: break;
-			}
+			break;
 		}
 	}
 
@@ -221,8 +214,11 @@ void printXConfigureEvent(XConfigureEvent* xconfigure)
 	printf("xconfigure.display       = 0x%x\n", xconfigure->display);
 	printf("xconfigure.event         = 0x%x\n", xconfigure->event);
 	printf("xconfigure.window        = 0x%x\n", xconfigure->window);
-	printf("xconfigure.parent        = 0x%x\n", xconfigure->parent);
 	printf("xconfigure.[x,y]         = [%d,%d]\n",
-		xconfigure->x, xconfigure->y);
+	       xconfigure->x, xconfigure->y);
+	printf("xconfigure.[width,height]= [%d,%d]\n",
+	       xconfigure->width, xconfigure->height);
+	printf("xconfigure.border_width  = %d\n", xconfigure->border_width);
+	printf("xconfigure.above         = %x\n", xconfigure->above);
 	printf("xconfigure.override_redirect= %d\n\n\n", xconfigure->override_redirect);
 }
