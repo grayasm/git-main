@@ -60,6 +60,8 @@ ev19: ev19.cpp
 ev20: ev20.cpp
 	g++ -g -o ev20 ev20.cpp -lX11
 
+ev21: ev21.cpp
+	g++ -g -o ev21 ev21.cpp -lX11
 
 
 
