@@ -63,6 +63,9 @@ ev20: ev20.cpp
 ev21: ev21.cpp
 	g++ -g -o ev21 ev21.cpp -lX11
 
+ev22: ev22.cpp
+	g++ -g -o ev22 ev22.cpp -lX11
+
 
 
 clean:
