@@ -113,3 +113,11 @@
       character string.
       There is a special provision for a special Compose key available on some
       keyboards to type characters for languages other than English.
+
+      Note:
+      - some of the events explained in this chapter (the ones that contain
+        Request in their name, e.g.  XEvent.xresizerequest,
+        XEvent.xconfigurerequest) are send by X server to a different client
+        than the one that created the window informing about that window's size,
+        position, etc.  I did not know how to set up the window manager, so
+        these samples are not in this folder atm. 
