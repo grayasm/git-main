@@ -71,7 +71,7 @@ int main(int argc, char **argv)
 		XFontStruct* fs = &(fontinfos[i]);
 		XCharStruct* cs = &(fs->max_bounds);
 		fsz = cs->ascent + cs->descent;
-		if(fsz < 12 || fsz > 14)
+		if(fsz < 14 || fsz > 16)
 			continue;
 		const char* fname = fontlist[i];
 		// -medium-  -normal-  -r-
@@ -114,9 +114,10 @@ int main(int argc, char **argv)
 	std::string text;
 	int col = 0;
 	int row = 0;
-	int chars = (int) text.size(); // safety at boundary
+	int chars = (int) text.size();
 	int chars_per_line = (int) floor(winwidth / rbearing);
 	int total_lines = (int) ceil(chars / chars_per_line);
+
 
 	// Process key events
 	XEvent event;
@@ -126,7 +127,11 @@ int main(int argc, char **argv)
 
 		if (event.type == ConfigureNotify)
 		{
-			
+			XConfigureEvent* xconfigure = &(event.xconfigure);
+			x = xconfigure->x;
+			y = xconfigure->y;
+			winwidth = xconfigure->width;
+			winheight = xconfigure->height;
 		}
 
 		if (event.type == KeyPress)
@@ -140,9 +145,10 @@ int main(int argc, char **argv)
 			                         100,
 			                         &keysym,
 			                         &status);
+
 			// X11/keysymdef.h     has all keysym codes, now process only a few
 
-			// cursor changing position
+			// cursor changing position (not implemented)
 			if (keysym == XK_Home)
 			{
 				col = 0; row = 0;
@@ -197,36 +203,70 @@ int main(int argc, char **argv)
 				if (sz > 0)
 					text.resize(sz - 1);
 			}
+			else if (keysym == XK_Tab){}
+			else if (keysym == XK_Linefeed){}
+			else if (keysym == XK_Clear){}
+			else if (keysym == XK_Return)
+			{
+				text += '\n';
+			}
 
 			// append buffer to existing text
 			else if (XK_space <= keysym && keysym <= XK_asciitilde)
 			{
 				text += buff;
-				chars = (int) text.size();
-				chars_per_line = (int) floor(winwidth / rbearing);
-				total_lines = (int) ceil((float)chars / (float)chars_per_line);
 			}
+
+			// recalculate text parameters
+			chars = (int) text.size();
+			chars_per_line = (int) floor(winwidth / rbearing);
+			total_lines = (int) ceil((float)chars / (float)chars_per_line);
+
+			// avoid text mangling
+			XClearWindow(dpy, win);
 
 
 			// draw text
-			for (int i=0; i < total_lines; ++i)
+			int curr_line = 0; // < total_lines
+			for (int c=0; c < text.size(); /*no incr*/)
 			{
+				// buffer smaller than 1 line of screen text
 				int chars_to_display = chars_per_line;
-				if (chars - (i+1)*chars_per_line < 0)
-					chars_to_display = chars - i*chars_per_line;
+				if (c + chars_to_display > chars)
+					chars_to_display = chars - c;
 
-				std::string substr = text.substr(i * chars_per_line,
-				                                 chars_to_display);
+				// break line on 'Enter'
+				size_t ret = text.find('\n', c);
+				if (ret != std::string::npos)
+				{
+					if (chars_to_display > (ret - c + 1))
+						chars_to_display = (ret - c + 1);
+				}
 
-				XDrawString (dpy,
-				             win,
-				             gc,
-				             0,
-				             (i+1) * fsz,
-				             substr.c_str(),
-				             substr.size());
+				if (chars_to_display > 0)
+				{
+					// new line is consumed to allow consistent curr_line increment
+					// but it is not displayed (not a graph)
+					std::string substr = text.substr(c, chars_to_display);
+					if (substr[substr.size() - 1] == '\n')
+						substr.resize(substr.size() - 1);
+
+					if (!substr.empty())
+					{
+						XDrawString (dpy,
+						             win,
+						             gc,
+						             0,
+						             (curr_line + 1) * fsz,
+						             substr.c_str(),
+						             substr.size());
+					}
+				}
+
+				c += chars_to_display;
+				++curr_line;
 			}
-		}
+		} //KeyPress
 	}
 
 	return 0;
