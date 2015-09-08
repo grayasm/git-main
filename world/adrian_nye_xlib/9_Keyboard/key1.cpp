@@ -1,5 +1,21 @@
 /*
- * 
+ * key1 example
+ *
+ *      Select KeyPressMask to get keyboards events.
+ *      Convert event into XKeyEvent.
+ *      Use XLookupString to get a char* representation of the event and the
+ *          associated KeySym id integer for the pressed key.
+ *      Map keysym to a key code from X11/keysymdef.h and decide how this
+ *          affects the text buffer.
+ *      Use XDrawString to display the text buffer, one line at a time.
+ *          Track 'Enter' or equivalent 'Return' key code to break the line.
+ *          Track ConfigureNotify or window resize to redraw/reformat the text.
+ *
+ *      The sample would have been too big and take too much time to implement:
+ *          cursor position in the buffer and tracking PAD (left,right,arrows)
+ *          cursor pixmap for the window and its current position
+ *          tab with 2/4/8 space characters
+ *          other keys
  */
 
 #include <X11/Xlib.h>
