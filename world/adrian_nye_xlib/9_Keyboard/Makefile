@@ -6,6 +6,10 @@ key1: key1.cpp
 key2: key2.cpp
 	g++ -g -o key2 key2.cpp -lX11
 
+key3: key3.cpp
+	g++ -g -o key3 key3.cpp -lX11
+
+
 
 clean:
 	rm -v  key{1,2,3,4,5,6,7,8,9} \
