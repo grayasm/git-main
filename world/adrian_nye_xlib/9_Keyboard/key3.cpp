@@ -138,5 +138,23 @@ void printKeyEvent(XKeyEvent* xkey)
 	// char* to keysym
 	KeySym keysym4 = XStringToKeysym(str);
 	if (keysym4 != keysym) ss << " XStringToKeysym-error";
+
+
+	// lower to upper sym
+	KeySym keysym_lower, keysym_upper;
+	XConvertCase (keysym,
+	              &keysym_lower,
+	              &keysym_upper);
+	const char* str_lower = XKeysymToString(keysym_lower);
+	const char* str_upper = XKeysymToString(keysym_upper);
+	ss << " " << str_lower;
+	ss << " " << str_upper;
+
+	int min_keycodes_return, max_keycodes_return;
+	XDisplayKeycodes(dpy, &min_keycodes_return, &max_keycodes_return);
+	if (min_keycodes_return < 8 ||
+	    max_keycodes_return > 255)
+		ss << " XDisplayKeycodes-error";
+
 	printf("\n%s", ss.str().c_str());
 } // printXEvent()
