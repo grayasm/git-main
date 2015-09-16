@@ -12,6 +12,8 @@ key3: key3.cpp
 ms1: ms1.cpp
 	g++ -g -o ms1 ms1.cpp -lX11
 
+ms2: ms2.cpp
+	g++ -g -o ms2 ms2.cpp -lX11
 
 
 clean:
