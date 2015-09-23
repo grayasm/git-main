@@ -1,8 +1,10 @@
 /*
   ms3.cpp  - sample3 taken from the book.
+
   Tracking the pointer motion by
-  (2) getting current position using motion hints is the most efficient
-  method of handling pointer motion events.
+  (2) getting current position using motion hints.
+
+  To see the effect of this program one must resize/restore the window.
 */
 
 #include <X11/Xlib.h>
@@ -13,7 +15,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include <sstream>
-
+#include <vector>
 
 
 #define BUF_SIZE 2000
@@ -56,23 +58,24 @@ int main(int argc, char **argv)
 	/* Select all events for our top window. */
 	XSelectInput(dpy, win, event_mask);
 
-	// create a GC
-	GC gc = XCreateGC(dpy,
-	                  win,
-	                  0,
-	                  NULL);
-	XSetForeground(dpy, gc, BlackPixel(dpy, scrno));
-	XSetBackground(dpy, gc, WhitePixel(dpy, scrno));
+	/* create a GC */
+	GC gc = XCreateGC(dpy, win, 0, NULL);
+	XSetFunction (dpy, gc, GXxor);
+	XSetForeground (dpy, gc, BlackPixel(dpy, scrno));
+
+	/* display window */
 	XMapWindow(dpy, win);
 
 
-	int root_x=0, root_y=0;
+
+	/* data for drawing lines on screen */
+	int root_x, root_y;
 	Window root, child;
 	unsigned int keys_buttons;
 	XPoint points[BUF_SIZE];
 	int index = 1;
-	int pos_x=0, pos_y=0;
-	int prev_x=0, prev_y=0;
+	int pos_x, pos_y;
+	int prev_x, prev_y;
 
 
 	XEvent event;
@@ -80,6 +83,9 @@ int main(int argc, char **argv)
 	{
 		XNextEvent(dpy, &event);
 
+		// sample from the book is also not complete
+		// or seems not to work exactly as expected, as the drawing is
+		// not visible until resize or expose/restore.
 		switch (event.type)
 		{
 		case ButtonPress:
@@ -94,25 +100,23 @@ int main(int argc, char **argv)
 			break;
 
 		case MotionNotify:
-			printf("got a motion event\n");
+			printf ("got a motion event\n");
 			while (XCheckMaskEvent (dpy,
 			                        ButtonMotionMask,
 			                        &event));
-
-			if (!XQueryPointer(dpy,
-			                   event.xmotion.window,
-			                   &root,
-			                   &child,
-			                   &root_x,
-			                   &root_y,
-			                   &pos_x,
-			                   &pos_y,
-			                   &keys_buttons))
-				/* Pointer is on other screen */
+			if (!XQueryPointer (dpy,
+			                    event.xmotion.window,
+			                    &root,
+			                    &child,
+			                    &root_x,
+			                    &root_y,
+			                    &pos_x,
+			                    &pos_y,
+			                    &keys_buttons))
+				/* Pointer is on other screen. */
 				break;
 
-				/* Undraw previous line, only if not first */
-			XSetFunction (dpy, gc, GXxor);
+			/* Undraw previous line, only if not first. */
 			if (index != 1)
 				XDrawLine (dpy,
 				           win,
@@ -121,35 +125,25 @@ int main(int argc, char **argv)
 				           points[index].y,
 				           prev_x,
 				           prev_y);
-			XSetFunction (dpy, gc, GXcopy);
-
-			/* Draw current line */
-			XDrawLine(dpy,
-			          win,
-			          gc,
-			          points[index].x,
-			          points[index].y,
-			          pos_x,
-			          pos_y);
 			prev_x = pos_x;
 			prev_y = pos_y;
 			break;
 
 		case Expose:
-			printf("got expose event\n");
+			printf ("got expose event\n");
 			if (event.xexpose.window == win)
 			{
 				while (XCheckTypedWindowEvent (dpy,
 				                               win,
 				                               Expose,
 				                               &event));
-				XClearWindow(dpy, win);
-				XDrawLines (dpy,
-				            win,
-				            gc,
-				            points,
-				            index,
-				            CoordModeOrigin);
+				XSetFunction (dpy, gc, GXcopy);
+				XDrawLines (dpy, win, gc, points, index, CoordModeOrigin);
+				XSetFunction (dpy, gc, GXxor);
+			}
+			else
+			{
+				/* Same code as basic win. ??? */
 			}
 		} // switch
 	} // while
