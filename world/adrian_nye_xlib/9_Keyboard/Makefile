@@ -18,6 +18,9 @@ ms2: ms2.cpp
 ms3: ms3.cpp
 	g++ -g -o ms3 ms3.cpp -lX11
 
+ms4: ms4.cpp
+	g++ -g -o ms4 ms4.cpp -lX11
+
 
 clean:
 	rm -v  key{1,2,3,4,5,6,7,8,9} \
