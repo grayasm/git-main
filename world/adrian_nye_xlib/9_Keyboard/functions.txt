@@ -1,0 +1,54 @@
+
+         XChangeKeyboardControl
+         XGetKeyboardControl
+         X{Set,Get}ModifierMapping
+         XKeyEvent
+         XKeyEvent xkey;
+	     XButtonEvent xbutton;
+	     XMotionEvent xmotion;
+	     XCrossingEvent xcrossing;
+	     XFocusChangeEvent xfocus;
+	     XKeymapEvent xkeymap;
+
+         XIMHotKeyTrigger;
+         XDeleteModifiermapEntry
+         XGetModifierMapping
+         XInsertModifiermapEntry
+         XNewModifiermap
+         XKeysymToString
+         XKeycodeToKeysym
+         XLookupKeysym
+         XGetKeyboardMapping
+         XStringToKeysym
+         XChangeKeyboardControl
+         XChangeKeyboardMapping
+         XDisplayKeycodes
+         XFreeModifiermap
+         XGetKeyboardControl
+         XGrabKey
+         XGrabKeyboard
+         XKeysymToKeycode
+         XQueryKeymap
+         XRebindKeysym
+         XRefreshKeyboardMapping
+         XSetModifierMapping
+         XUngrabKey
+         XUngrabKeyboard
+         XmbLookupString
+         XwcLookupString
+         //--------------------------------
+         XGetMotionEvents
+         XDisplayMotionBufferSize
+         XGetMotionEvents
+         XChangeActivePointerGrab
+         XChangePointerControl
+         XGetPointerControl
+         XGetPointerMapping
+         XGrabButton
+         XGrabPointer
+         XQueryPointer
+         XSetPointerMapping
+         XUngrabButton
+         XUngrabPointer
+         XWarpPointer
+         //---------------------------------

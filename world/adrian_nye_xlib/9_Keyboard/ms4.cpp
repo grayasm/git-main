@@ -119,7 +119,6 @@ int main(int argc, char **argv)
 			{
 				while (XCheckTypedWindowEvent (dpy,
 				                               win,
-				                               0,
 				                               Expose,
 				                               &event));
 
