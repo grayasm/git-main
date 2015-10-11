@@ -40,33 +40,24 @@ alias L='ll'
 alias l='ll'
 alias grep='grep --color=auto'
 alias psgrep='ps -aef | grep'
-alias scron="xset -dpms; xset s off"
 alias du='du -chs'
-alias jdraw='java -jar /opt/jdraw/jdraw_v1.1.5.jar'
-alias netbeans='/opt/netbeans-8.0.2/bin/netbeans'
-alias xfe='xfe-xfe'
-alias se='/opt/slickedit/bin/vs'
-
-
 alias ..='cd ..'
 alias ...='cd ..; cd ..'
+alias diff='meld'
 
-#utilities
+
+# Inside a tiling window manager
+# alias jdraw='java -jar /opt/jdraw/jdraw_v1.1.5.jar'
+# alias netbeans='/opt/netbeans-8.0.2/bin/netbeans'
+# alias xfe='xfe-xfe'
+# alias se='/opt/slickedit/bin/vs'
 # alias calc='galculator'
 # alias edit='emacs'
-alias diff='meld'
 # alias view='gthumb'
 # alias fileman='thunar'
 # alias term='xterm bash'
-alias smartgit=/opt/smartgit/bin/
-
-
-#subversion
-export SVN_EDITOR=emacs # canonical
-export SVN_ROOT=https://svn-mihai.googlecode.com/svn # shortcut
-alias svn='svn --username $SVN_USER --password $SVN_PASS'
-alias svnlu="svn status --no-ignore | grep '^\?' | sed 's/^\? //'"
-alias svnru="svn status --no-ignore | grep '^\?' | sed 's/^\? //' | xargs -Ixx rm -rvf xx"
+# alias smartgit='/bin/sh /opt/smartgit/bin/smartgit.sh'
+# alias scron='xset -dpms; xset s off'
 
 
 # https://bugzilla.redhat.com/show_bug.cgi?id=1043686
@@ -79,21 +70,5 @@ alias sshsrv='ssh -X -l mihk -i $HOME/.ssh/id_rsa_home_key 192.168.0.128'
 alias office='ssh -i $HOME/.ssh/id_dsa_office -l mihai -L 13389:10.1.1.200:3389 $OFFICE'
 
 
-# INSTALLED IN OPT
-export PATH=:$PATH
-#export LD_LIBRARY_PATH=/opt/wxWidgets-3.0/lib:/lib64:/usr/lib64:/usr/local/lib64:/lib:/usr/local/lib
-#export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$HOME/Code/git-main/app/fxmon/src
-
-#git commands
-# git unstage(rm) recursive(r) without removing files(cached)
-alias gitun="git rm --cached"
-alias gitunr="gitun -r"
-
 # X11
 alias xwininfo='xwininfo'   #window info
-
-#time-zone commands
-alias list_tz='timedatectl list-timezones'
-alias my_tz='timedatectl'
-alias set_tz_ro='timedatectl set-timezone Europe/Bucharest'
-alias set_tz_de='timedatectl set-timezone Europe/Berlin'
