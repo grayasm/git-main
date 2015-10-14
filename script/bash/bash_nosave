@@ -2,6 +2,5 @@
 # must not be under revision control,
 # or at least not with sensitive data inside.
 
-export SVN_USER=grayasm@gmail.com
-export SVN_PASS=
 export GIT_PASS=
+export OFFICE=
