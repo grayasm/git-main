@@ -1,0 +1,17 @@
+
+MODKEY=Mod4
+
+#navigation
+UP=j
+DOWN=k
+LEFT=h
+RIGHT=l
+
+#Nice font
+export WMII_FONT='xft:Sans-9'
+
+#wmii Theme
+#Color tuples: "<text> <background> <border>"
+WMII_NORMCOLORS='#e0e0e0 #444444 #666666'
+WMII_FOCUSCOLORS='#A0FF00 #686363 #8c8c8c'
+WMII_BACKGROUND='#333333'
