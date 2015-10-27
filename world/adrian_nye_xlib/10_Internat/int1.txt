@@ -1,0 +1,19 @@
+$ for more details on file format please see:
+$ http://www.gnu.org/software/libc/manual/html_node/The-message-catalog-files.html
+
+$set 1
+1 Unknown exception
+2 File descriptor is invalid
+3 Invalid window number
+
+
+$set 2
+1 Неизвестное исключение
+2 Дескриптор является недействительным
+3 Неверный номер окна
+
+
+$set 3
+1 不明な例外
+2 ファイル記述子が無効です。
+3 無効なウィンドウ番号

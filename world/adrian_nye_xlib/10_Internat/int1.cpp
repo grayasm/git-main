@@ -1,139 +1,52 @@
 /*
- * key2 example
+ * int1 example
  *
- *      XLookupString - to convert XKeyEvent* into character buffer
- *      XK_KP_1 - reading keysym code (see keysymdef.h for defined values)
- *      mapping codes to a limited range (LATIN_1  , etc)
+ *      X/Open Message Catalog Handling
+ *      http://www.gnu.org/software/libc/manual/html_node/Message-catalogs-a-la-X_002fOpen.html
+ *
+ *      Cap 10.1 / pg 241
+ *      "The three functions catopen, catgets and catclose provide a simple
+ *      mechanism for retrieving numbered strings from a plain text file."
+ *
+ *      see int1.txt for messages/text file format
+ *      see Makefile int1 target for how to compile int1.txt into catalog format
+ *      see below link for catopen, catgets, catclose
+ *      http://www.gnu.org/software/libc/manual/html_node/The-catgets-Functions.html
+ *
  */
 
-#include <X11/Xlib.h>
-#include <X11/Xutil.h>
-
+#include <nl_types.h>
 #include <stdio.h>
-
-void printMessage();
+#include <string.h>
 
 int main(int argc, char **argv)
 {
-	setvbuf(stdout, NULL, _IONBF, 0);
-	Display* dpy = XOpenDisplay(NULL);
-	if(!dpy) return -1;
-
-	int scrno = DefaultScreen(dpy);
-	int scrwidth = DisplayWidth(dpy, scrno);
-	int scrheight = DisplayHeight(dpy, scrno);
+	printf("\n\tOpen catalog: %s.msg", argv[0]);
+	char catpath[250];
+	strcpy(catpath, argv[0]);
+	strcat(catpath, ".msg");
 
 
-	int x = 10;
-	int y = 10;
-	int winwidth = scrwidth / 5;
-	int winheight = scrheight / 6 ;
-	int winborder = 1;
-
-
-	Window win = XCreateSimpleWindow(dpy,
-	                                 RootWindow(dpy, scrno),
-	                                 x, y,
-	                                 winwidth, winheight,
-	                                 winborder,
-	                                 BlackPixel(dpy, scrno),
-	                                 WhitePixel(dpy, scrno));
-
-
-	/* X.h
-	   line: 150 to 175   Event definitions;
-	*/
-	long event_mask = ExposureMask | StructureNotifyMask | ButtonPressMask;
-	XSelectInput(dpy, win, event_mask);
-
-
-	/* Select a nice font */
-	Font font;
-	int fontret = 0;
-	XFontStruct* fontinfos;
-	char** fontlist = XListFontsWithInfo(dpy,
-	                                     "*",
-	                                     700,         // maxnames
-	                                     &fontret,    // actual_count_return
-	                                     &fontinfos); // info_return
-	if(fontlist == NULL)
-		return -1;
-
-	// Font details
-	int fsz =0, ascent=0, descent=0, lbearing=0, rbearing=0;
-	XFontStruct* fontinfo = 0;
-	for(int i=0; i < fontret; ++i)
+	nl_catd catd = catopen(catpath, 0);
+	if(catd == (nl_catd)-1)
 	{
-		XFontStruct* fs = &(fontinfos[i]);
-		XCharStruct* cs = &(fs->max_bounds);
-		fsz = cs->ascent + cs->descent;
-		if(fsz < 14 || fsz > 16)
-			continue;
-		const char* fname = fontlist[i];
-		// -medium-  -normal-  -r-
-		if(strstr(fname, "-medium-") == 0 ||
-		   strstr(fname, "-normal-") == 0 ||
-		   strstr(fname, "-r-") == 0)
-			continue;
-
-		// found a Font
-		font = XLoadFont(dpy, fname);        // load in the X server
-		ascent = cs->ascent;
-		descent = cs->descent;
-		lbearing = cs->lbearing;
-		rbearing = cs->rbearing;
-		fontinfo = fs;
-		break;
+		printf("\nCannot open catalog\n");
+		return 1;
 	}
 
-	if(ascent == 0)
-		return -1;
+	// normaly in all sets will be the same language (here is an exception
+	// to test displaying from different languages)
 
-
-	/* Create a GC. */
-	XGCValues gcvalues;
-	gcvalues.line_width = 1;
-	gcvalues.foreground = BlackPixel(dpy, scrno);
-	gcvalues.background = WhitePixel(dpy, scrno);
-	gcvalues.font = font;
-	unsigned long gcmask = GCLineWidth | GCForeground | GCBackground | GCFont;
-
-	GC gc = XCreateGC(dpy,
-	                  win,
-	                  gcmask,
-	                  &gcvalues);
-
-	/* Display window. */
-	XMapWindow(dpy, win);
-
-
-	// Process key events
-	XEvent event;
-	while (1)
+	for(int set=1; set <= 3; ++set)
 	{
-		XNextEvent(dpy, &event);
-
-		if (event.type == ButtonPress)
-			break;
-
-		if (event.type == Expose)
-			printMessage();
-
-		if (event.type == ConfigureNotify)
-			printMessage();
+		for(int id=1; id <= 3; ++id)
+		{
+			const char* msg = catgets(catd, set, id, "#unknown translation");
+			printf("\n\tset:%d id:%d text=%s", set, id, msg);
+		}
 	}
 
-
-	// exit clean
-	XUnmapWindow(dpy, win);
-	XDestroyWindow(dpy, win);
-	XCloseDisplay(dpy);
-
+	int ret = catclose(catd);
+	printf("\n\tCatalog closed %s\n\n", (ret == 0 ? "OK" : "with error!"));
 	return 0;
-}
-
-
-void printMessage()
-{
-	printf("message\n");
 }
