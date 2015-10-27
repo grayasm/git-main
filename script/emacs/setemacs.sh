@@ -7,20 +7,21 @@
 
 
 # lusty explorer
-cd $HOME/.emacs.d
+mkdir -pv $HOME/.emacs.d/lisp/
+cd $HOME/.emacs.d/lisp/
 wget http://www.emacswiki.org/emacs/download/lusty-explorer.el
 
 # auto-complete, fuzzy matching
 cd /tmp
 wget http://cx4a.org/pub/auto-complete/auto-complete-1.3.1.tar.bz2
 tar jxvf auto-complete-1.3.1.tar.bz2
-emacs --batch --eval '(load-file /tmp/auto-complete-1.3.1/etc/install.el)'
+# eval not working
+# emacs --batch --eval '(load-file /tmp/auto-complete-1.3.1/etc/install.el)'
 rm /tmp/auto-complete-1.3.1.tar.bz2
-rmdir /tmp/auto-complete-1.3.1
 
 
 # FillColumnIndicator
-cd ~/.emacs.d/
+cd ~/.emacs.d/lisp/
 wget http://www.emacswiki.org/emacs/download/fill-column-indicator.el
 
 

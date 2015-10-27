@@ -175,10 +175,10 @@
 ;; Lusty Explorer
 ;; http://www.emacswiki.org/emacs/LustyExplorer
 ; to install it do:
-; cd ~/.emacs.d/
+; cd ~/.emacs.d/lisp/
 ; wget http://www.emacswiki.org/emacs/download/lusty-explorer.el
 
-(add-to-list 'load-path "/home/mihk/.emacs.d/")
+(add-to-list 'load-path "/home/mihk/.emacs.d/lisp/")
 (require 'lusty-explorer)
 (global-set-key (kbd "M-e") 'lusty-file-explorer)
 
@@ -187,7 +187,7 @@
 ;; GCCSENSE-0.1
 ;; this is done following the instruction to compile and install gccsense
 ;(setq exec-path (append exec-path '("/home/mihk/local/gccsense-0.1/bin")))
-;(add-to-list 'load-path "~/.emacs.d")
+;(add-to-list 'load-path "~/.emacs.d/")
 ;(require 'gccsense)
 ;; to bind C-c .
 ;(add-hook 'c-mode-common-hook
@@ -211,18 +211,17 @@
 ; ~/Downloads/auto-complete-1.3.1/etc/install.el
 
 
-;; After installation of Auto Complete Mode for emacs the installation
+;; Install 'Auto Complete Mode' in ~/.emacs.d/lisp
 ;; script requires user to write in .emacs this:
 
-(add-to-list 'load-path "/home/mihk/.emacs.d/")
+(add-to-list 'load-path "/home/mihk/.emacs.d/lisp/")
 (require 'auto-complete-config)
-(add-to-list 'ac-dictionary-directories "/home/mihk/.emacs.d/ac-dict")
+(add-to-list 'ac-dictionary-directories "/home/mihk/.emacs.d/lisp/ac-dict")
 (ac-config-default)
 
 
 ; Auto Complete Mode -> install dictionary files
-
-(add-to-list 'ac-dictionary-directories "~/.emacs.d/dict")
+(add-to-list 'ac-dictionary-directories "~/.emacs.d/lisp/dict")
 (require 'auto-complete-config)
 (ac-config-default)
 
@@ -241,9 +240,9 @@
 
 ;; FillColumnIndicator
 ;; http://www.emacswiki.org/FillColumnIndicator
-; cd ~/.emacs.d/
+; cd ~/.emacs.d/lisp/
 ; wget http://www.emacswiki.org/emacs/download/fill-column-indicator.el
-; (add-to-list 'load-path "/home/mihk/.emacs.d/") ; if not added already
+; (add-to-list 'load-path "/home/mihk/.emacs.d/lisp/") ; if not added already
 
 ;(setq fci-rule-width 1)
 ;(setq fci-rule-color "darkblue")
