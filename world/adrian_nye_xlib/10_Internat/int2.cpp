@@ -4,6 +4,8 @@
  *    Let's assume we have a resource with non-english text and we have to
  *    display messages from this resource.
  *    See int1.cpp for details about the text resource.
+ *
+ *    The shit is not working at all!!! Crap
  */
 
 
@@ -23,7 +25,7 @@
 int main(int argc, char **argv)
 {
 	// X/Open Message Catalog
-	printf("\n\topen catalog: %s.msg", argv[0]);
+	printf("\nopen catalog: %s.msg\n", argv[0]);
 	char catpath[250];
 	strcpy(catpath, argv[0]);
 	strcat(catpath, ".msg");
@@ -31,7 +33,7 @@ int main(int argc, char **argv)
 	nl_catd catd = catopen(catpath, 0);
 	if(catd == (nl_catd)-1)
 	{
-		printf("\nCannot open catalog\n");
+		printf("Cannot open catalog\n");
 		return 1;
 	}
 
@@ -93,14 +95,13 @@ int main(int argc, char **argv)
 	    locale of the fontset, and correctly map wide or multi-byte characters
 	    to the corresponding font gplyphs.
 	*/
-	Font     latinFont;
-	XFontSet latinFontSet;
-	char **missing_charsets;
-	int num_missing_charsets;
-	char *default_string;
+
+	/* 1=Latin  2=Russian  3=Japanese */
+	int set = 2;
+	Font     font;
+	XFontSet fontSet;
 
 
-	// The Latin Font
 	for(int i=0; i < fontret; ++i)
 	{
 		XFontStruct* fs = &(fontinfos[i]);
@@ -112,89 +113,42 @@ int main(int argc, char **argv)
 		// -medium-  -normal-  -r-
 		if(strstr(fname, "-medium-") == 0 ||
 		   strstr(fname, "-normal-") == 0 ||
-		   strstr(fname, "-r-")      == 0 ||
-		   strstr(fname, "iso8859-1")== 0 )
+		   strstr(fname, "-r-")      == 0)
 			continue;
 
-		// found a Latin 8859-1 Font
-		printf("\nFound Latin Font: %s", fname);
+		printf("\n%s", fname);
 
-		latinFont = XLoadFont(dpy, fname);
-
-
-		// set locale before XCreateFontSet
-/*
-		setlocale(LC_ALL, "en_US.UTF-8");
-		if (!XSupportsLocale())
-			printf("\nX does not support locale en_US.UTF-8");
-		if (XSetLocaleModifiers("") == NULL)
-			printf("\nX cannot set en_US.UTF-8 locale modifiers");
-*/
-
-		// XFontSet for drawing strings in Latin-1
-		latinFontSet = XCreateFontSet(dpy,
-		                              fname,
-		                              &missing_charsets,
-		                              &num_missing_charsets,
-		                              &default_string);
-
-		if (num_missing_charsets > 0)
-		{
-			printf("\nThe following charsets are missing:");
-			for (int i=0; i < num_missing_charsets; ++i)
-			{
-				printf("\n%s", missing_charsets[i]);
-			}
-			XFreeStringList(missing_charsets);
-			num_missing_charsets = 0;
-		}
-
-		break;
-	}
-
-
-
-	Font     russianFont;
-	XFontSet russianFontSet;
-
-	// The Cyrillic Font
-	for(int i=0; i < fontret; ++i)
-	{
-		XFontStruct* fs = &(fontinfos[i]);
-		XCharStruct* cs = &(fs->max_bounds);
-		int fsz = cs->ascent + cs->descent;
-		if(fsz < 12 || fsz > 14)
-			continue;
-		const char* fname = fontlist[i];
-
-		// -medium-  -normal-  -r-
-		if(strstr(fname, "-medium-") == 0 ||
-		   strstr(fname, "-normal-") == 0 ||
-		   strstr(fname, "-r-")      == 0 ||
-		   strstr(fname, "koi8-r")   == 0)
+		if(set == 1 && strstr(fname, "iso8859-1") != 0)
+			; // allow
+		else if(set == 2 && strstr(fname, "koi8-r") != 0)
+			; // allow
+		else
 			continue;
 
-		// found a Cyrillic Russian koi8-r Font
-		printf("\nFound Cyrillic Font: %s", fname);
 
-		russianFont = XLoadFont(dpy, fname);
+		printf("\nFont: %s", fname);
+		font = XLoadFont(dpy, fname);
 
-
-		// $ localectl list-locale
-		// set locale before XCreateFontSet
-/*
+		// $ localectl list-locales
+		// setlocale(LC_ALL, "en_US.UTF-8");
 		setlocale(LC_ALL, "ru_RU.koi8r");
-		if (!XSupportsLocale())
-			printf("\nX does not support locale ru_RU.koi8r");
-		if (XSetLocaleModifiers("") == NULL)
-			printf("\nX cannot set ru_RU.koi8r locale modifiers");
-*/
 
-		russianFontSet = XCreateFontSet(dpy,
-		                                fname,
-		                                &missing_charsets,
-		                                &num_missing_charsets,
-		                                &default_string);
+		if (!XSupportsLocale())
+			printf("\nX does not support the locale.");
+
+		if (XSetLocaleModifiers("") == NULL)
+			printf("\nX cannot set locale modifiers");
+
+
+		char **missing_charsets;
+		int num_missing_charsets;
+		char *default_string;
+
+		fontSet = XCreateFontSet(dpy,
+		                         fname,
+		                         &missing_charsets,
+		                         &num_missing_charsets,
+		                         &default_string);
 
 		if (num_missing_charsets > 0)
 		{
@@ -216,7 +170,7 @@ int main(int argc, char **argv)
 	gcvalues.line_width = 1;
 	gcvalues.foreground = BlackPixel(dpy, scrno);
 	gcvalues.background = WhitePixel(dpy, scrno);
-	gcvalues.font = latinFont;
+	gcvalues.font = font;
 	unsigned long gcmask = GCLineWidth | GCForeground | GCBackground | GCFont;
 
 	GC gc = XCreateGC(dpy,
@@ -226,10 +180,7 @@ int main(int argc, char **argv)
 
 	XMapWindow(dpy, win);
 
-	// set={1,2,3}  id={1,2,3}
-	int set = 1, id = 1;
-
-
+	int id=1;
 	XEvent event;
 	while (1)
 	{
@@ -245,10 +196,7 @@ int main(int argc, char **argv)
 				int len = strlen(msg);
 				printf("\nset=%d  id=%d  [%d][%s]", set, id, len, msg);
 
-				if (set == 1)
-					XmbDrawImageString(dpy, win, latinFontSet, gc, 50, 100, msg, len);
-				else if (set == 2)
-					XmbDrawImageString(dpy, win, russianFontSet, gc, 50, 100, msg, len);
+				XmbDrawImageString(dpy, win, fontSet, gc, 50, 100, msg, len);
 			}
 		}
 
@@ -259,10 +207,7 @@ int main(int argc, char **argv)
 			int len = strlen(msg);
 			printf("\nset=%d  id=%d  [%d][%s]", set, id, len, msg);
 
-			if (set == 1)
-				XmbDrawImageString(dpy, win, latinFontSet, gc, 50, 100, msg, len);
-			else if (set == 2)
-				XmbDrawImageString(dpy, win, russianFontSet, gc, 50, 100, msg, len);
+			XmbDrawImageString(dpy, win, fontSet, gc, 50, 100, msg, len);
 		}
 
 
@@ -272,28 +217,12 @@ int main(int argc, char **argv)
 			if (id >= 4)
 			{
 				id = 1;
-				++set;
-				if (set >= 4)
-					set = 1;
-
-				if (set == 1)
-				{
-//					setlocale(LC_ALL, "en_US.UTF-8");
-					XSetFont(dpy, gc, latinFont);
-				}
-
-				if (set == 2)
-				{
-//					setlocale(LC_ALL, "ru_RU.koi8r");
-					XSetFont(dpy, gc, russianFont);
-				}
 			}
 		}
 	}
 
 
-	XFreeFontSet(dpy, latinFontSet);
-	XFreeFontSet(dpy, russianFontSet);
+	XFreeFontSet(dpy, fontSet);
 
 	XUnmapWindow(dpy, win);
 	XDestroyWindow(dpy, win);
