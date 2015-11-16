@@ -3,6 +3,8 @@ all: wm1
 wm1: wm1.cpp
 	g++ -g -o wm1 wm1.cpp -lX11
 
+wm2: wm2.cpp
+	g++ -g -o wm2 wm2.cpp -lX11
 
 
 clean:
