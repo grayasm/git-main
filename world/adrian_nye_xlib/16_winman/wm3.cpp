@@ -1,18 +1,17 @@
 /*
-  Copyright 1989 O'Reilly and Associates, Inc.
+ * Copyright 1989 O'Reilly and Associates, Inc.
 
-  The X Consortium, and any party obtaining a copy of these files from
-  the X Consortium, directly or indirectly, is granted, free of charge, a
-  full and unrestricted irrevocable, world-wide, paid up, royalty-free,
-  nonexclusive right and license to deal in this software and
-  documentation files (the "Software"), including without limitation the
-  rights to use, copy, modify, merge, publish, distribute, sublicense,
-  and/or sell copies of the Software, and to permit persons who receive
-  copies from any such party to do so.  This license includes without
-  limitation a license to do the foregoing actions under any patents of
-  the party supplying this software to the X Consortium.
-*/
-
+     The X Consortium, and any party obtaining a copy of these files from
+     the X Consortium, directly or indirectly, is granted, free of charge, a
+     full and unrestricted irrevocable, world-wide, paid up, royalty-free,
+     nonexclusive right and license to deal in this software and
+     documentation files (the "Software"), including without limitation the
+     rights to use, copy, modify, merge, publish, distribute, sublicense,
+     and/or sell copies of the Software, and to permit persons who receive
+     copies from any such party to do so.  This license includes without
+     limitation a license to do the foregoing actions under any patents of
+     the party supplying this software to the X Consortium.
+ */
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
 #include <X11/Xatom.h>
@@ -81,22 +80,22 @@ typedef struct WindowList_t
 
 WindowList Icons = NULL;
 
-void paint_pane(Window window, Window panes[], GC ngc, GC rgc, int mode);
+void paint_pane(Display* dpy, Window window, Window panes[], GC ngc, GC rgc, int mode);
 int  execute(const char* s);
-void move_resize(Window menuwin,Cursor hand_cursor,Bool move_or_resize);
-void draw_focus_frame();
-Window focus(Window menuwin) ;
-void iconify(Window menuwin);
-void raise_lower(Window menuwin, Bool raise_or_lower);
-void circdn(Window menuwin);
-void circup(Window menuwin);
-void draw_box(GC gc, int left,int top,int  right, int bottom);
-void undraw_box(GC gc, int left,int top, int right, int bottom);
-Bool isIcon(Window win, int x, int y, Window* assoc, char* icon_name, Bool makeicon);
-Window makeIcon(Window window, int x, int y, char* icon_name_return);
-void removeIcon(Window window);
-const char* getIconName(Window window);
-Window finishIcon(Window window, Window icon, Bool own, char* icon_name);
+void move_resize(Display* dpy, Window menuwin,Cursor hand_cursor,Bool move_or_resize);
+void draw_focus_frame(Display* dpy);
+Window focus(Display* dpy, Window menuwin) ;
+void iconify(Display* dpy, Window menuwin);
+void raise_lower(Display* dpy, Window menuwin, Bool raise_or_lower);
+void circdn(Display* dpy, Window menuwin);
+void circup(Display* dpy, Window menuwin);
+void draw_box(Display* dpy, GC gc, int left,int top,int  right, int bottom);
+void undraw_box(Display* dpy, GC gc, int left,int top, int right, int bottom);
+Bool isIcon(Display* dpy, Window win, int x, int y, Window* assoc, char* icon_name, Bool makeicon);
+Window makeIcon(Display* dpy, Window window, int x, int y, char* icon_name_return);
+void removeIcon(Display* dpy, Window window);
+const char* getIconName(Display* dpy, Window window);
+Window finishIcon(Display* dpy, Window window, Window icon, Bool own, char* icon_name);
 
 
 
@@ -130,11 +129,11 @@ static const char *menu_label[] =
 };
 
 
-Display *dpy;
+
 int screen_num;
 XFontStruct *font_info;
 char icon_name[50];
-
+Font font;
 
 int main(int argc, char** argv)
 {
@@ -144,7 +143,7 @@ int main(int argc, char** argv)
     int winindex;
     int cursor_shape;
     Cursor cursor, hand_cursor;
-    const char *font_name = "9x15";
+    const char* font_name = "9x15";
     int direction, ascent, descent;
     int char_count;
     const char *string;
@@ -160,7 +159,7 @@ int main(int argc, char** argv)
     unsigned int button;
 
 
-    dpy = XOpenDisplay(NULL);
+    Display* dpy = XOpenDisplay(NULL);
     if (dpy == NULL)
     {
 	    printf("\nCannot connect to X server %s\n", XDisplayName(NULL));
@@ -168,6 +167,49 @@ int main(int argc, char** argv)
     }
 
     screen_num = DefaultScreen(dpy);
+
+
+
+    // Select a nice Latin-1 font.
+    // Font font;
+    int fontret = 0;
+    XFontStruct* fontinfos;
+    char** fontlist = XListFontsWithInfo(dpy,
+                                         "*",
+                                         700,        // maxnames
+                                         &fontret,   // actual_count_return
+                                         &fontinfos);// info_return
+
+    if (fontlist == NULL)
+	    return -1;
+
+    for (int i=0; i < fontret; ++i)
+    {
+	    XFontStruct* fs = &(fontinfos[i]);
+	    XCharStruct* cs = &(fs->max_bounds);
+	    int fsz = cs->ascent + cs->descent;
+	    if (fsz < 16 || fsz > 18)
+		    continue;
+
+	    const char* fname = fontlist[i];
+
+	    // xlsfonts: list all fonts
+	    // -medium- -normal- -r- -iso8859-
+	    if (strstr(fname, "-medium-") == 0 ||
+	        strstr(fname, "-normal-") == 0 ||
+	        strstr(fname, "-r-")      == 0 ||
+	        strstr(fname, "-iso8859-")== 0)
+		    continue;
+
+	    // load 1 time in the X server, than shared.
+	    font = XLoadFont(dpy, fname);
+
+	    // update wm3 font name
+	    font_name = fname;
+	    break;
+    }
+
+
 
     /* Access font */
     font_info = XLoadQueryFont(dpy,font_name);
@@ -181,7 +223,7 @@ int main(int argc, char** argv)
     string = menu_label[6];
     char_count = strlen(string);
 
-    /* determine the extent of each menu pane based
+    /* determine the extent of each menu pane based 
      * on the font size */
     XTextExtents(font_info,
                  string,
@@ -260,19 +302,22 @@ int main(int argc, char** argv)
                    RootWindow(dpy, screen_num),
                    0,
                    NULL);
-
     XSetForeground(dpy,
                    gc,
                    BlackPixel(dpy, screen_num));
+    XSetFont(dpy, gc, font);
+
 
     rgc = XCreateGC(dpy,
                     RootWindow(dpy, screen_num),
                     0,
                     NULL);
-
     XSetForeground(dpy,
                    rgc,
                    WhitePixel(dpy, screen_num));
+    XSetFont(dpy, gc, font);
+
+
 
     /* map the menu window (and its subwindows) to the screen_num */
     XMapWindow(dpy, menuwin);
@@ -294,7 +339,8 @@ int main(int argc, char** argv)
         {
         case Expose:
         {
-	        if (isIcon(event.xexpose.window,
+	        if (isIcon(dpy,
+	                   event.xexpose.window,
 	                   event.xexpose.x,
 	                   event.xexpose.y,
 	                   &assoc_win,
@@ -313,7 +359,8 @@ int main(int argc, char** argv)
             {
 	            if (inverted_pane == event.xexpose.window)
 	            {
-		            paint_pane(event.xexpose.window,
+		            paint_pane(dpy,
+		                       event.xexpose.window,
 		                       panes,
 		                       gc,
 		                       rgc,
@@ -321,7 +368,8 @@ int main(int argc, char** argv)
 	            }
 	            else
 	            {
-	                paint_pane(event.xexpose.window,
+		            paint_pane(dpy,
+		                       event.xexpose.window,
 	                           panes,
 	                           gc,
 	                           rgc,
@@ -332,7 +380,8 @@ int main(int argc, char** argv)
         break;
         case ButtonPress:
         {
-            paint_pane(event.xbutton.window,
+	        paint_pane(dpy,
+	                   event.xbutton.window,
                        panes,
                        gc,
                        rgc,
@@ -402,28 +451,28 @@ int main(int argc, char** argv)
                 switch (winindex)
                 {
                 case 0:
-                    raise_lower(menuwin, RAISE);
+	                raise_lower(dpy, menuwin, RAISE);
                     break;
                 case 1:
-                    raise_lower(menuwin, LOWER);
+	                raise_lower(dpy, menuwin, LOWER);
                     break;
                 case 2:
-                    move_resize(menuwin, hand_cursor, MOVE);
+	                move_resize(dpy, menuwin, hand_cursor, MOVE);
                     break;
                 case 3:
-                    move_resize(menuwin, hand_cursor, RESIZE);
+	                move_resize(dpy, menuwin, hand_cursor, RESIZE);
                     break;
                 case 4:
-                    circup(menuwin);
+	                circup(dpy, menuwin);
                     break;
                 case 5:
-                    circdn(menuwin);
+	                circdn(dpy, menuwin);
                     break;
                 case 6:
-                    iconify(menuwin);
+	                iconify(dpy, menuwin);
                     break;
                 case 7:
-                    focus_window = focus(menuwin);
+	                focus_window = focus(dpy, menuwin);
                     break;
                 case 8:
                     execute("xterm&");
@@ -454,14 +503,15 @@ int main(int argc, char** argv)
             } /* end if */
 
             /* Invert Back Here (logical function is invert) */
-            paint_pane(event.xexpose.window,
+            paint_pane(dpy,
+                       event.xexpose.window,
                        panes,
                        gc,
                        rgc,
                        WHITE);
 
             inverted_pane = NONE;
-            draw_focus_frame();
+            draw_focus_frame(dpy);
             XUngrabPointer(dpy, CurrentTime);
             XFlush(dpy);
         }
@@ -471,14 +521,14 @@ int main(int argc, char** argv)
             /* window we have iconified has died, remove its icon.
              * Don't need to remove window from save set
              * because that is done automatically */
-            removeIcon(event.xdestroywindow.window);
+	        removeIcon(dpy, event.xdestroywindow.window);
         }
         break;
         case CirculateNotify:
         case ConfigureNotify:
         case UnmapNotify:
             /* all these uncover areas of screen_num */
-            draw_focus_frame();
+            draw_focus_frame(dpy);
             break;
         case CreateNotify:
         case GravityNotify:
@@ -503,7 +553,15 @@ int main(int argc, char** argv)
 } /* end main */
 
 
-void paint_pane(Window window, Window panes[], GC ngc, GC rgc, int mode)
+void paint_pane
+(
+	Display* dpy,
+	Window window,
+	Window panes[],
+	GC ngc,
+	GC rgc,
+	int mode
+)
 {
     int win;
     int x = 2, y;
@@ -523,6 +581,7 @@ void paint_pane(Window window, Window panes[], GC ngc, GC rgc, int mode)
                              WhitePixel(dpy, screen_num));
         gc = ngc;
     }
+    XSetFont(dpy, gc, font);
 
     /* clearing repaints the background */
     XClearWindow(dpy, window);
@@ -544,19 +603,19 @@ void paint_pane(Window window, Window panes[], GC ngc, GC rgc, int mode)
                 strlen( menu_label[win])); 
 }
 
-void circup(Window menuwin)
+void circup(Display* dpy, Window menuwin)
 {
 	XCirculateSubwindowsUp(dpy, RootWindow(dpy,screen_num));
 	XRaiseWindow(dpy, menuwin);
 }
 
-void circdn(Window menuwin)
+void circdn(Display* dpy, Window menuwin)
 {
 	XCirculateSubwindowsDown(dpy, RootWindow(dpy,screen_num));
 	XRaiseWindow(dpy, menuwin);
 }
 
-void raise_lower(Window menuwin, Bool raise_or_lower)
+void raise_lower(Display* dpy, Window menuwin, Bool raise_or_lower)
 {
     XEvent report;
     int root_x,root_y;
@@ -609,7 +668,7 @@ void raise_lower(Window menuwin, Bool raise_or_lower)
         ;
 }
 
-void iconify(Window menuwin)
+void iconify(Display* dpy, Window menuwin)
 {
     XEvent report;
     extern Window focus_window;
@@ -653,7 +712,7 @@ void iconify(Window menuwin)
     }
 
     /* returned value of isIcon not used here, but it is elsewhere in the code */
-    isIcon(child, press_x, press_y, &assoc_win, icon_name, True);
+    isIcon(dpy, child, press_x, press_y, &assoc_win, icon_name, True);
 
     /* window selected is unmapped, whether it is icon
      * or main window.  Associated window is then mapped. */
@@ -679,7 +738,7 @@ void iconify(Window menuwin)
         ;
 }
 
-Window focus(Window menuwin)
+Window focus(Display* dpy, Window menuwin)
 {
     XEvent report;
     int x,y;
@@ -715,7 +774,7 @@ Window focus(Window menuwin)
 
     if ((child == menuwin) ||
         (child == (Window)NULL) ||
-        (isIcon(child, x, y, &assoc_win, icon_name, True)))
+        (isIcon(dpy, child, x, y, &assoc_win, icon_name, True)))
     {
         focus_window = RootWindow(dpy, screen_num);
     }
@@ -768,7 +827,7 @@ Window focus(Window menuwin)
     return(focus_window);
 }
 
-void draw_focus_frame()
+void draw_focus_frame(Display* dpy)
 {
     XWindowAttributes win_attr;
     int frame_width = 4;
@@ -795,6 +854,7 @@ void draw_focus_frame()
         gc = XCreateGC(dpy, RootWindow(dpy,screen_num), 0, NULL);
         XSetFillStyle(dpy, gc, FillTiled);
         XSetTile(dpy, gc, focus_tile);
+        XSetFont(dpy, gc, font);
         first_time = False;
     }
 
@@ -816,7 +876,7 @@ void draw_focus_frame()
                    win_attr.height + 2 * (win_attr.border_width + frame_width));
 }
 
-void move_resize(Window menuwin,Cursor hand_cursor,Bool move_or_resize)
+void move_resize(Display* dpy, Window menuwin,Cursor hand_cursor,Bool move_or_resize)
 {
     XEvent report;
     XWindowAttributes win_attr;
@@ -840,6 +900,7 @@ void move_resize(Window menuwin,Cursor hand_cursor,Bool move_or_resize)
 	    gc = XCreateGC(dpy, RootWindow(dpy,screen_num), 0, NULL);
 	    XSetSubwindowMode(dpy, gc, IncludeInferiors);
 	    XSetForeground(dpy, gc, BlackPixel(dpy, screen_num));
+	    XSetFont(dpy, gc, font);
 	    XSetFunction(dpy, gc, GXxor);
 	    first_time = False;
     }
@@ -912,7 +973,7 @@ void move_resize(Window menuwin,Cursor hand_cursor,Bool move_or_resize)
             {
                  if (report.xbutton.button == pressed_button) {
                     if (box_drawn)
-                        undraw_box(gc, left, top, right, bottom);
+	                    undraw_box(dpy, gc, left, top, right, bottom);
 
                     XUngrabServer(dpy);
 
@@ -953,7 +1014,7 @@ void move_resize(Window menuwin,Cursor hand_cursor,Bool move_or_resize)
             case MotionNotify:
             {
                 if (box_drawn == True)
-                    undraw_box(gc, left, top, right, bottom);
+	                undraw_box(dpy, gc, left, top, right, bottom);
 
                 /* can get rid of all MotionNotify events in queue,
                  * since otherwise the round-trip  delays caused by
@@ -1016,7 +1077,7 @@ void move_resize(Window menuwin,Cursor hand_cursor,Bool move_or_resize)
                     bottom = top + temp_size + 2;
                 }
 
-                draw_box(gc, left, top, right, bottom);
+                draw_box(dpy, gc, left, top, right, bottom);
                 box_drawn = True;
             }
             break;
@@ -1072,17 +1133,18 @@ int execute(const char* s)
 }
 
 
-void undraw_box(GC gc, int left,int top, int right, int bottom)
+void undraw_box(Display* dpy, GC gc, int left,int top, int right, int bottom)
 {
-	draw_box(gc, left,top,right,bottom);
+	draw_box(dpy, gc, left,top,right,bottom);
 }
 
-void draw_box(GC gc, int left,int top,int  right, int bottom)
+void draw_box(Display* dpy, GC gc, int left,int top,int  right, int bottom)
 {
 
 	XSetForeground(dpy,
 	               gc,
 	               WhitePixel(dpy, screen_num) ^ BlackPixel(dpy, screen_num));
+	XSetFont(dpy, gc, font);
 
 	XDrawRectangle(dpy,
 	               RootWindow(dpy,screen_num),
@@ -1094,7 +1156,16 @@ void draw_box(GC gc, int left,int top,int  right, int bottom)
 }
 
 
-Bool isIcon(Window win, int x, int y, Window* assoc, char* icon_name, Bool makeicon)
+Bool isIcon
+(
+	Display* dpy,
+	Window win,
+	int x,
+	int y,
+	Window* assoc,
+	char* icon_name,
+	Bool makeicon
+)
 {
 	WindowList win_list;
 //	Window makeIcon();
@@ -1122,7 +1193,7 @@ Bool isIcon(Window win, int x, int y, Window* assoc, char* icon_name, Bool makei
      * in case window manager dies */
     if (makeicon)
     {
-	    *assoc = makeIcon(win, x, y, icon_name);
+	    *assoc = makeIcon(dpy, win, x, y, icon_name);
 	    XAddToSaveSet(dpy, win);
     }
     return(False);
@@ -1145,7 +1216,7 @@ clearIcons()
 }
 */
 
-void removeIcon(Window window)
+void removeIcon(Display* dpy, Window window)
 {
 	WindowList win_list, win_list1;
 
@@ -1178,7 +1249,7 @@ void removeIcon(Window window)
 	}
 }
 
-const char* getIconName(Window window)
+const char* getIconName(Display* dpy, Window window)
 {
     char *name;
     if (XGetIconName( dpy, window, &name ))
@@ -1188,12 +1259,12 @@ const char* getIconName(Window window)
     return "Icon";
 }
 
-const char* getDefaultIconSize(Window window, int* icon_w, int* icon_h)
+const char* getDefaultIconSize(Display* dpy, Window window, int* icon_w, int* icon_h)
 {
 	/* Determine the size of the icon window.  */
 	const char *icon_name;
 
-	icon_name = getIconName(window);
+	icon_name = getIconName(dpy, window);
 
 	*icon_h = font_info->ascent + font_info->descent + 4;
 	*icon_w = XTextWidth(font_info,
@@ -1204,7 +1275,7 @@ const char* getDefaultIconSize(Window window, int* icon_w, int* icon_h)
 }
 
 
-Window makeIcon(Window window, int x, int y, char* icon_name_return)
+Window makeIcon(Display* dpy, Window window, int x, int y, char* icon_name_return)
 {
 	int icon_x, icon_y;	/* Icon U. L. X and Y coordinates. */
 	int icon_w, icon_h;	/* Icon width and height. */
@@ -1231,7 +1302,8 @@ Window makeIcon(Window window, int x, int y, char* icon_name_return)
 		if (wmhints->flags & IconWindowHint)
 		{
 			/* icon window was passed; use it as is */
-			return finishIcon(window,
+			return finishIcon(dpy,
+			                  window,
 			                  wmhints->icon_window,
 			                  False,
 			                  (char*)icon_name);
@@ -1265,7 +1337,7 @@ Window makeIcon(Window window, int x, int y, char* icon_name_return)
 		/* else no window or pixmap passed */
 		else
 		{
-			icon_name = getDefaultIconSize(window, &icon_w, &icon_h);
+			icon_name = getDefaultIconSize(dpy, window, &icon_w, &icon_h);
 			icon_attrib_mask = CWBorderPixel | CWBackPixel;
 			icon_attrib.background_pixel =
 				(unsigned long) WhitePixel(dpy,screen_num);
@@ -1274,7 +1346,7 @@ Window makeIcon(Window window, int x, int y, char* icon_name_return)
 	/* else no hints at all exist */
 	else
 	{
-		icon_name = getDefaultIconSize(window, &icon_w, &icon_h);
+		icon_name = getDefaultIconSize(dpy, window, &icon_w, &icon_h);
 		icon_attrib_mask = CWBorderPixel | CWBackPixel;
 	}
 	/* Pad sizes. */
@@ -1306,7 +1378,8 @@ Window makeIcon(Window window, int x, int y, char* icon_name_return)
 	}
 
 	/* Create the icon window.  */
-	return  finishIcon(window,
+	return  finishIcon(dpy,
+	                   window,
 	                   XCreateWindow(dpy,
 	                                 RootWindow(dpy, screen_num),
 	                                 icon_x,
@@ -1324,7 +1397,7 @@ Window makeIcon(Window window, int x, int y, char* icon_name_return)
 }
 
 
-Window finishIcon(Window window, Window icon, Bool own, char* icon_name)
+Window finishIcon(Display* dpy, Window window, Window icon, Bool own, char* icon_name)
 {
 	WindowList win_list;
 	Cursor ManCursor;
