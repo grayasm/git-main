@@ -35,8 +35,25 @@
 	the file with name <modulename>.cmake is searched first in CMAKE_MODULE_PATH,
 	then in the CMake module directory.
 	
+7)	More on variables scope. Example: 03.5
+	set (foo 1)
+	add_subdirectory (dir1)
+	include (file1.cmake)
+	set (bar 2)
+	add_subdirectory (dir2)
+	include (file2.cmake)
 	
+	foo is defined for file1.cmake and file2.cmake but bar is defined only for file2.cmake
+
+8)	Example: 03.6
+	Variables in CMake have a scope in the current CMakeLists file or function, as well as any
+	subdirectory's CMakeLists files, any functions or macros that are invoked, and any files that
+	are included using the INCLUDE command.
+	When a new subdirectory is processed a new variable scope is created and initialized with the
+	current value of all variables in the calling scope. Any new variables created in the child scope,
+	or changes made to existing variables, will not impact the parent scope.
 	
+9)		
 	
 	
 	
