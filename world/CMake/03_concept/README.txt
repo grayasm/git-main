@@ -53,7 +53,31 @@
 	current value of all variables in the calling scope. Any new variables created in the child scope,
 	or changes made to existing variables, will not impact the parent scope.
 	
-9)		
+9)	To set a variable from CMake user interface, it must be a cache entry (aka option command).
+	Whenver CMake is run it produces a cache file in the directory where the binary files are to be written.
+	The values of this cache file are displayed by the CMake user interface.
+	Example: 03.7
+
+10)	The other purpose of the cache is to store key variables that are expensive to determine.
+	These variables may not be visible or adjustable by the user. Typically these values are system
+	dependent variables such as CMAKE_WORDS_BIGENDIAN, which require CMake to compile and run a program
+	to determine their value. Once these values are determined they are stored in the cache to avoid
+	having to recompute them every time CMake is run.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	
 	
 	
