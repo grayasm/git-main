@@ -22,4 +22,26 @@
 	for CMake to keep track of the libraries so they can be specified on the link line of
 	the executable being created.
 	
+4)	set (F00 1)
+	set (INC /usr/include /home/foo/include /usr/local/include)
+	Variables are used to store values for later use, and can be single value or a list.
+
+5)	add_subdirectory (dir1)
+	Add a subdirectory dir1 to the build.
+	dir1 specifies the directory in which the source CMakeLists.txt and code files are located.
+	
+6)	include (file1.cmake)
+	Load and run CMake code from a file or module. If a module is specified instead of a file,
+	the file with name <modulename>.cmake is searched first in CMAKE_MODULE_PATH,
+	then in the CMake module directory.
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
