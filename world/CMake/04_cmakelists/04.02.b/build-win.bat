@@ -9,5 +9,5 @@ set VS12="Visual Studio 12 2013 Win64"
 set VS14="Visual Studio 14 2015 Win64"
 
 
-cmake -G %VS9% ..\04.01\
+cmake -G %VS9% ..\04.02\
 pause
