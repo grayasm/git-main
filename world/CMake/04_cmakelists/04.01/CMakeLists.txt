@@ -75,9 +75,9 @@ endif ()
 
 # MATCHES
 set (var3 "../04.01/CMakeLists.txt")
-set (regex1 "*/*")
+set (regex1 "CMakeLists.txt$")
 
-if (var3 MATCHES regex1)
+if (${var3} MATCHES ${regex1})
 	message ("var3: ${var3} MATCHES regex1: ${regex1}")
 else ()
 	message ("var3: ${var3} does not matches regex1: ${regex1}")
@@ -138,7 +138,7 @@ function (PrintParams)
 	foreach (argv ${ARGV})
 		message ("current in ARGV: ${argv}")
 	endforeach()
-	
+
 	set (count 0)
 	while (count LESS ${ARGC})
 		message ("expand ARGV${count}: ${ARGV${count}}")
@@ -171,34 +171,10 @@ function (Count maxim)
 			return ()
 		endif ()
 		math (EXPR i "${i}+1") # increment
-	endwhile ()	
+	endwhile ()
 endfunction ()
 
 Count (10)
 
 
-
-
 message ("--------------------------------------------------------")
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
