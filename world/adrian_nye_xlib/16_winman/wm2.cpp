@@ -43,24 +43,6 @@ void MoveWindow (Display* dpy,
                  GC dbggc,
                  int fnheight);
 
-void DrawBox (Display* dpy,
-              int scrno,
-              Window win,
-              GC gc,
-              int left,
-              int top,
-              int right,
-              int bottom);
-
-void UndrawBox (Display* dpy,
-                int scrno,
-                Window win,
-                GC gc,
-                int left,
-                int top,
-                int right,
-                int bottom);
-
 void GetEventInfo (XEvent* event,
                    std::string& info);
 
@@ -103,12 +85,10 @@ int main(int argc, char* argv[])
 	long wallevents = ButtonPressMask | ButtonReleaseMask | PointerMotionMask;
 	XSelectInput (dpy, wallwin, wallevents);
 
-	/* Minimize the interference into root window events propagated from all
-	   other windows.
-	*/
 	XSetWindowAttributes wallattr;
 	wallattr.do_not_propagate_mask = wallevents;
 	XChangeWindowAttributes (dpy, wallwin, CWDontPropagate, &wallattr);
+
 
 	int dbgwidth = winwidth;
 	int dbgheight = scrheight / 3;
@@ -120,6 +100,16 @@ int main(int argc, char* argv[])
 	                                    bluepxl,
 	                                    yellowpxl);
 
+	/* There is a trick: if a window (e.g. debug win) does not select an event,
+	   by design X will propagate it to the parent window. The parent in the
+	   hierarcy that has selected the event type will get its ID assigned
+	   to the event's window member. If we do a grab we must see in which window
+	   the button was pressed. In case of debug or wall window we should refuse
+	   to move or resize or icondify etc these 2.
+	 */
+	XSelectInput (dpy, dbgwin, wallevents);
+
+	/* MotionNotify events are sent to this client application. Spam. */
 	long rootevents = SubstructureNotifyMask;
 	XSelectInput (dpy, rootwin, rootevents);
 
@@ -179,9 +169,9 @@ int main(int argc, char* argv[])
 	unsigned long gcmask = GCLineWidth | GCForeground | GCBackground | GCFont;
 
 	GC wallgc = XCreateGC (dpy,
-	                   wallwin,
-	                   gcmask,
-	                   &gcvalues);
+	                       wallwin,
+	                       gcmask,
+	                       &gcvalues);
 
 	gcvalues.foreground = bluepxl;
 	gcvalues.background = yellowpxl;
@@ -313,15 +303,16 @@ int main(int argc, char* argv[])
 				}
 
 
-				/* all events are sent to the grabbing
-				 * window regardless of
-				 * whether this is True or False.
-				 * owner events only affects the distribution of
-				 * events when the pointer is within this
-				 * application's windows. */
+				/* There've been a bit of struggle to get this correctly.
+				   I must grab the root window!
+				   The owner event must be True so we get on every grabbed
+				   event the correct window ID where the mouse action happened.
+				   We can than decide if to move/resize/iconify/etc the
+				   wall+debug windows of the win manager or not.
+				*/
 				XGrabPointer (dpy,
-				              wallwin,        // grab window
-				              False,          // owner events
+				              rootwin,        // grab window (must grab root!)
+				              True,           // owner events (must be True!)
 				              ButtonPressMask | ButtonReleaseMask | PointerMotionMask,
 				              GrabModeAsync,  // pointer mode
 				              GrabModeAsync,  // keyboard mode
@@ -329,26 +320,63 @@ int main(int argc, char* argv[])
 				              hand_cursor,
 				              CurrentTime);
 
-				printf("XGrabPointer\n");
+
+				{
+					/* Announce Grabbed Pointer */
+					std::stringstream ss;
+					ss << " Btn=" << xbutton->button;
+					ss << " Pointer grabbed. ACTION=MOVE started.";
+					LogText (xbutton->window,
+					         0,
+					         xbutton->subwindow,
+					         xbutton->root,
+					         xbutton->x,
+					         xbutton->y,
+					         fnheight,
+					         ss.str(),
+					         dpy,
+					         dbgwin,
+					         dbggc);
+				}
+
+
 
 				bool moveIsValid = false;
 				while (1)
 				{
 					XNextEvent (dpy, &event);
 
-					/* Left mouse click into a foreign window. */
+					{
+						std::string info;
+						GetEventInfo (&event, info);
+						LogText (0,0,0,0,0,0,
+						         fnheight,
+						         info,
+						         dpy,
+						         dbgwin,
+						         dbggc);
+					}
+
+					/* Discard all (motion) events until next ButtonPress. */
 					if (event.type != ButtonPress)
 						continue;
 
-					if (event.xbutton.button != 1 ||
-					    event.xbutton.window == wallwin ||
-					    event.xbutton.window == dbgwin)
-					{
-						printf("Will not move window, break;\n");
+					xbutton = &(event.xbutton);
 
+
+					/* Now this is SOMETHING!!
+					   When mouse moves over the wall and debug windows their
+					   IDs are at xbutton->window.
+					   When mouse moves over other windows their IDs are at
+					   xbutton->subwindow.
+					*/
+					if (xbutton->button != 1 ||
+					    xbutton->window == wallwin ||
+					    xbutton->window == dbgwin)
+					{
 						std::stringstream ss;
 						ss << " Btn=" << xbutton->button;
-						ss << " ButtonPress";
+						ss << " ButtonPress. Cannot move this window.";
 						LogText (xbutton->window,
 						         0,
 						         xbutton->subwindow,
@@ -366,21 +394,19 @@ int main(int argc, char* argv[])
 
 					xbutton = &(event.xbutton);
 					moveIsValid = true;
+					break;
 				}
 
 				if (moveIsValid)
 				{
-					printf("\nMove is valid, let's start move action.");
-
 					std::stringstream ss;
-					ss << " Btn=" << xbutton->button;
-					ss << " ACTION= MOVE started.";
+					ss << " ACTION=MOVE Calling MoveWindow procedure.";
 					LogText (xbutton->window,
 					         0,
 					         xbutton->subwindow,
 					         xbutton->root,
-					         xbutton->x,
-					         xbutton->y,
+					         xbutton->x_root,
+					         xbutton->y_root,
 					         fnheight,
 					         ss.str(),
 					         dpy,
@@ -389,26 +415,24 @@ int main(int argc, char* argv[])
 
 					MoveWindow (dpy,
 					            scrno,
-					            xbutton->window,
+					            xbutton->subwindow,
 					            wallgc,
 					            hand_cursor,
-					            xbutton->x,
-					            xbutton->y,
+					            xbutton->x_root,
+					            xbutton->y_root,
 					            dbgwin,
 					            dbggc,
 					            fnheight);
-
-					printf("\nReturned from MoveWindow, ungrab follows");
 				}
 
 				XUngrabPointer (dpy, CurrentTime);
-				XFlush (dpy);
+				// XFlush (dpy);
 
 				{
 					/* Announce Ungrab Pointer */
 					std::stringstream ss;
 					ss << " Btn=" << xbutton->button;
-					ss << " ACTION=MOVE ended.";
+					ss << " Pointer ungrabbed. ACTION=MOVE ended.";
 					LogText (xbutton->window,
 					         0,
 					         xbutton->subwindow,
@@ -900,10 +924,10 @@ void LogText( Window window,
 	std::stringstream ss;
 	ss << std::dec << line++ << " ";
 	ss << std::dec << "( " << x << "," << y << " )";
-	ss << std::hex << " W:0x" << window;
-	ss << std::hex << " P:0x" << parent;
-	ss << std::hex << " C:0x" << subwindow;
 	ss << std::hex << " R:0x" << root;
+	ss << std::hex << " P:0x" << parent;
+	ss << std::hex << " W:0x" << window;
+	ss << std::hex << " S:0x" << subwindow;
 	ss << std::hex << " T: " << text.c_str();
 
 	buffer.push_back(ss.str());
@@ -933,113 +957,60 @@ void MoveWindow (Display* dpy,          // default display
                  GC dbggc,              // debug GC
                  int fnheight)          // font height
 {
-	{
-		LogText (0,0,0,0,0,0,
-		         fnheight,
-		         " MoveWindow (1)",
-		         dpy,
-		         dbgwin,
-		         dbggc);
-	}
-
-
-	bool box_drawn = false;
-
-	XWindowAttributes winattr;
-	XGetWindowAttributes (dpy,
-	                      win,
-	                      &winattr);
-	int attrx = winattr.x;
-	int attry = winattr.y;
-	int width = winattr.width;
-	int height = winattr.height;
-
-	int offx = pointerx - attrx;
-	int offy = pointery - attry;
-
-	int x = pointerx - offx;
-	int y = pointery - offy;
-
 	XEvent event;
 	while (1)
 	{
 		XNextEvent (dpy, &event);
-
 		if (event.type == ButtonRelease)
 		{
 			XButtonEvent* xbutton = &(event.xbutton);
+			{
+				LogText (xbutton->window,
+				         0, // parent
+				         xbutton->subwindow,
+				         xbutton->root,
+				         xbutton->x,
+				         xbutton->y,
+				         fnheight,
+				         " ButtonRelease",
+				         dpy,
+				         dbgwin,
+				         dbggc);
+			}
 
-			if (box_drawn)
-				UndrawBox (dpy, scrno, win, gc, x, y, width, height);
-
-			x = xbutton->x - offx;
-			y = xbutton->y - offy;
-
-			XMoveWindow(dpy,
-			            win,
-			            x,
-			            y);
-
-			return;
+			break;
 		}
 		else if (event.type == MotionNotify)
 		{
 			XMotionEvent* xmotion = &(event.xmotion);
 
-			if (box_drawn == true)
-				UndrawBox (dpy, scrno, win, gc, x, y, width, height);
+			{
+				LogText (xmotion->window,
+				         0, // parent
+				         xmotion->subwindow,
+				         xmotion->root,
+				         xmotion->x,
+				         xmotion->y,
+				         fnheight,
+				         " MotionNotify",
+				         dpy,
+				         dbgwin,
+				         dbggc);
+			}
 
-			x = xmotion->x - offx;
-			y = xmotion->y - offy;
-
-			DrawBox (dpy, scrno, win, gc, x, y, width, height);
-
-			box_drawn = true;
-		}
-		else
-		{
-			/* StructureNotify events shouldn't appear here,
-			   because of the ChangeActivePointerGrab
-			   call, but they do for some reason.
-			   Anyway, it doesn't matter
+			/* In the grabbed events our window
+			   has the ID set as xmotion->subwindow.
 			*/
-			// printf("\nUnexpected event type %s\n", report.type);
+
+			if (xmotion->subwindow != win)
+				return;
+
+			XMoveWindow(dpy,
+			            win,
+			            xmotion->x,
+			            xmotion->y);
 		}
 	}
-}
-
-void DrawBox (Display* dpy,
-              int scrno,
-              Window win,
-              GC gc,
-              int x,
-              int y,
-              int width,
-              int height)
-{
-	XSetForeground (dpy,
-	                gc,
-	                WhitePixel (dpy, scrno) ^ BlackPixel (dpy, scrno));
-
-	XDrawRectangle (dpy,
-	                win,
-	                gc,
-	                x,
-	                y,
-	                width,
-	                height);
-}
-
-void UndrawBox (Display* dpy,
-                int scrno,
-                Window win,
-                GC gc,
-                int x,
-                int y,
-                int width,
-                int height)
-{
-	DrawBox (dpy, scrno, win, gc, x, y, width, height);
 }
 
 void GetEventInfo (XEvent* event, std::string& info)
@@ -1052,9 +1023,10 @@ void GetEventInfo (XEvent* event, std::string& info)
 	{
 		std::stringstream ss;
 		ss << " ButtonPress Btn=" << event->xbutton.button;
-		ss << " W=" << event->xbutton.window;
-		ss << " S=" << event->xbutton.subwindow;
-		ss << " R=" << event->xbutton.root;
+		ss << std::hex << " R:0x" << event->xbutton.root;
+		ss << std::hex << " P:0x" << 0;
+		ss << std::hex << " W:0x" << event->xbutton.window;
+		ss << std::hex << " S:0x" << event->xbutton.subwindow;
 		info = ss.str();
 	}
 	break;
@@ -1062,13 +1034,24 @@ void GetEventInfo (XEvent* event, std::string& info)
 	{
 		std::stringstream ss;
 		ss << " ButtonRelease Btn=" << event->xbutton.button;
-		ss << " W=" << event->xbutton.window;
-		ss << " S=" << event->xbutton.subwindow;
-		ss << " R=" << event->xbutton.root;
+		ss << std::hex << " R:0x" << event->xbutton.root;
+		ss << std::hex << " P:0x" << 0;
+		ss << std::hex << " W:0x" << event->xbutton.window;
+		ss << std::hex << " S:0x" << event->xbutton.subwindow;
 		info = ss.str();
 	}
 	break;
-	case MotionNotify: info = "MotionNotify"; break;
+	case MotionNotify:
+	{
+		std::stringstream ss;
+		ss << " MotionNotify ";
+		ss << std::hex << " R:0x" << event->xmotion.root;
+		ss << std::hex << " P:0x" << 0;
+		ss << std::hex << " W:0x" << event->xmotion.window;
+		ss << std::hex << " S:0x" << event->xmotion.subwindow;
+		info = ss.str();
+	}
+	break;
 	case EnterNotify: info = "EnterNotify"; break;
 	case LeaveNotify: info = "LeaveNotify"; break;
 	case FocusIn: info = "FocusIn"; break;
