@@ -61,9 +61,8 @@ void UndrawBox (Display* dpy,
                 int right,
                 int bottom);
 
-void DrawFocusFrame (Display* dpy,
-                     int scrno,
-                     Window focus_window);
+void GetEventInfo (XEvent* event,
+                   std::string& info);
 
 
 // program
@@ -77,6 +76,8 @@ int main(int argc, char* argv[])
 	int scrwidth = DisplayWidth(dpy, scrno);
 	int scrheight = DisplayHeight(dpy, scrno);
 	int depth = DefaultDepth(dpy, scrno);
+	Window rootwin = RootWindow(dpy, scrno);
+
 
 	int x = 0;
 	int y = 0;
@@ -84,12 +85,14 @@ int main(int argc, char* argv[])
 	int winheight = 2 * scrheight / 3;
 	int winborder = 1;
 
+
 	unsigned long whitepxl = 0xffffff;
 	unsigned long blackpxl = 0x000000;
 	unsigned long yellowpxl= 0xfffdcf; // light yellow
 	unsigned long bluepxl = 0x000d8d;  // dark blue
 
-	Window rootwin = RootWindow(dpy, scrno);
+
+
 	Window wallwin = XCreateSimpleWindow(dpy,
 	                                     rootwin,
 	                                     x, y,
@@ -97,6 +100,15 @@ int main(int argc, char* argv[])
 	                                     winborder,
 	                                     BlackPixel(dpy, scrno),
 	                                     WhitePixel(dpy, scrno));
+	long wallevents = ButtonPressMask | ButtonReleaseMask | PointerMotionMask;
+	XSelectInput (dpy, wallwin, wallevents);
+
+	/* Minimize the interference into root window events propagated from all
+	   other windows.
+	*/
+	XSetWindowAttributes wallattr;
+	wallattr.do_not_propagate_mask = wallevents;
+	XChangeWindowAttributes (dpy, wallwin, CWDontPropagate, &wallattr);
 
 	int dbgwidth = winwidth;
 	int dbgheight = scrheight / 3;
@@ -108,9 +120,8 @@ int main(int argc, char* argv[])
 	                                    bluepxl,
 	                                    yellowpxl);
 
-	XSelectInput (dpy,
-	              rootwin,
-	              ButtonPressMask | ButtonReleaseMask | SubstructureNotifyMask);
+	long rootevents = SubstructureNotifyMask;
+	XSelectInput (dpy, rootwin, rootevents);
 
 
 	/* Select a nice (Latin-1) font for drawing text. */
@@ -269,6 +280,12 @@ int main(int argc, char* argv[])
 			}
 			else if (xbutton->window == menu[0]) // xterm
 			{
+				// hide the menu
+				for (int i=0; i < menusz; ++i)
+				{
+					XUnmapWindow (dpy, menu[i]);
+				}
+
 				system ("xterm &");
 
 				LogText (xbutton->window,
@@ -289,12 +306,19 @@ int main(int argc, char* argv[])
 			}
 			else if (xbutton->window == menu[2]) // Move
 			{
+				// hide the menu
+				for (int i=0; i < menusz; ++i)
+				{
+					XUnmapWindow (dpy, menu[i]);
+				}
+
+
 				/* all events are sent to the grabbing
-                 * window regardless of
-                 * whether this is True or False.
-                 * owner events only affects the distribution of
-                 * events when the pointer is within this
-                 * application's windows. */
+				 * window regardless of
+				 * whether this is True or False.
+				 * owner events only affects the distribution of
+				 * events when the pointer is within this
+				 * application's windows. */
 				XGrabPointer (dpy,
 				              wallwin,        // grab window
 				              False,          // owner events
@@ -1016,4 +1040,64 @@ void UndrawBox (Display* dpy,
                 int height)
 {
 	DrawBox (dpy, scrno, win, gc, x, y, width, height);
+}
+
+void GetEventInfo (XEvent* event, std::string& info)
+{
+	switch (event->type)
+	{
+	case KeyPress: info="KeyPress"; break;
+	case KeyRelease: info = "KeyRelease"; break;
+	case ButtonPress:
+	{
+		std::stringstream ss;
+		ss << " ButtonPress Btn=" << event->xbutton.button;
+		ss << " W=" << event->xbutton.window;
+		ss << " S=" << event->xbutton.subwindow;
+		ss << " R=" << event->xbutton.root;
+		info = ss.str();
+	}
+	break;
+	case ButtonRelease:
+	{
+		std::stringstream ss;
+		ss << " ButtonRelease Btn=" << event->xbutton.button;
+		ss << " W=" << event->xbutton.window;
+		ss << " S=" << event->xbutton.subwindow;
+		ss << " R=" << event->xbutton.root;
+		info = ss.str();
+	}
+	break;
+	case MotionNotify: info = "MotionNotify"; break;
+	case EnterNotify: info = "EnterNotify"; break;
+	case LeaveNotify: info = "LeaveNotify"; break;
+	case FocusIn: info = "FocusIn"; break;
+	case FocusOut: info = "FocusOut"; break;
+	case KeymapNotify: info = "KeymapNotify"; break;
+	case Expose: info = "Expose"; break;
+	case GraphicsExpose: info = "GraphicsExpose"; break;
+	case NoExpose: info = "NoExpose"; break;
+	case VisibilityNotify: info = "VisibilityNotify"; break;
+	case CreateNotify: info = "CreateNotify"; break;
+	case DestroyNotify: info = "DestroyNotify"; break;
+	case UnmapNotify: info = "UnmapNotify"; break;
+	case MapNotify: info = "MapNotify"; break;
+	case MapRequest: info = "MapRequest"; break;
+	case ReparentNotify: info = "ReparentNotify"; break;
+	case ConfigureNotify: info = "ConfigureNotify"; break;
+	case ConfigureRequest: info = "ConfigureRequest"; break;
+	case GravityNotify: info = "GravityNotify"; break;
+	case ResizeRequest: info = "ResizeRequest"; break;
+	case CirculateNotify: info = "CirculateNotify"; break;
+	case CirculateRequest: info = "CirculateRequest"; break;
+	case PropertyNotify: info = "PropertyNotify"; break;
+	case SelectionClear: info = "SelectionClear"; break;
+	case SelectionRequest: info = "SelectionRequest"; break;
+	case SelectionNotify: info = "SelectionNotify"; break;
+	case ColormapNotify: info = "ColormapNotify"; break;
+	case ClientMessage: info = "ClientMessage"; break;
+	case MappingNotify: info = "MappingNotify"; break;
+	case GenericEvent: info = "GenericEvent"; break;
+	default: info = "Default"; break;
+	}
 }
