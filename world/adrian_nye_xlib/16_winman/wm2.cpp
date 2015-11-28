@@ -110,8 +110,7 @@ int main(int argc, char* argv[])
 
 	XSelectInput (dpy,
 	              rootwin,
-	              // ButtonPressMask | ButtonReleaseMask |
-	              SubstructureNotifyMask);
+	              ButtonPressMask | ButtonReleaseMask | SubstructureNotifyMask);
 
 
 	/* Select a nice (Latin-1) font for drawing text. */
