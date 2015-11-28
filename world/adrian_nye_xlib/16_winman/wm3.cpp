@@ -29,6 +29,7 @@
 #include "bitmaps/focus_frame_bi"
 
 
+
 static const char* event_names[] =
 {
 	"",
@@ -140,7 +141,6 @@ int main(int argc, char** argv)
     Window menuwin;
     Window panes[MAX_CHOICE];
     int menu_width, menu_height, x = 0, y = 0, border_width = 4;
-    int winindex;
     int cursor_shape;
     Cursor cursor, hand_cursor;
     const char* font_name = "9x15";
@@ -179,6 +179,7 @@ int main(int argc, char** argv)
                                          BlackPixel(dpy, scrno),
                                          WhitePixel(dpy, scrno));
     XMapWindow (dpy, wallwin);
+
 
     // Select a nice Latin-1 font.
     // Font font;
@@ -263,12 +264,12 @@ int main(int argc, char** argv)
                                   WhitePixel(dpy,scrno));
 
     /* create the choice windows for the text */
-    for (winindex = 0; winindex < MAX_CHOICE; winindex++)
+    for (int ii = 0; ii < MAX_CHOICE; ii++)
     {
-	    panes[winindex] = XCreateSimpleWindow(dpy,
+	    panes[ii] = XCreateSimpleWindow(dpy,
 	                                          menuwin,
 	                                          0,
-	                                          menu_height / MAX_CHOICE * winindex,
+	                                          menu_height / MAX_CHOICE * ii,
 	                                          menu_width,
 	                                          pane_height,
 	                                          border_width = 1,
@@ -276,7 +277,7 @@ int main(int argc, char** argv)
 	                                          WhitePixel(dpy,scrno));
 
 	    XSelectInput(dpy,
-	                 panes[winindex],
+	                 panes[ii],
 	                 ButtonPressMask | ButtonReleaseMask | ExposureMask);
     }
 
@@ -456,9 +457,10 @@ int main(int argc, char** argv)
             {
                 /* convert window ID to
                  * window array index  */
-                for (winindex = 0; inverted_pane != panes[winindex]; winindex++) 
+                int ii = 0;
+                for (ii = 0; inverted_pane != panes[ii]; ii++) 
                     ;
-                switch (winindex)
+                switch (ii)
                 {
                 case 0:
 	                raise_lower(dpy, menuwin, RAISE);
@@ -1055,6 +1057,7 @@ void move_resize(Display* dpy, Window menuwin,Cursor hand_cursor,Bool move_or_re
                 }
                 else
                 {
+                    // RESIZE
 	                if (move_x < win_attr.x) move_x = 0;
 	                if (move_y < win_attr.y ) move_y = 0;
 	                left = win_attr.x;
