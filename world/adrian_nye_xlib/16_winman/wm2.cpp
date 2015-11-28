@@ -962,17 +962,9 @@ void MoveWindow (Display* dpy,          // default display
 	{
 		XNextEvent (dpy, &event);
 
-		{
-			std::string info;
-			GetEventInfo (&event, info);
-			LogText (0,0,0,0,0,0,
-			         fnheight,
-			         info,
-			         dpy,
-			         dbgwin,
-			         dbggc);
-		}
-
+		/* In the grabbed events our window
+		   has the ID set as xmotion->subwindow.
+		*/
 		if (event.type == ButtonRelease)
 		{
 			XButtonEvent* xbutton = &(event.xbutton);
@@ -981,8 +973,8 @@ void MoveWindow (Display* dpy,          // default display
 				         0, // parent
 				         xbutton->subwindow,
 				         xbutton->root,
-				         xbutton->x,
-				         xbutton->y,
+				         xbutton->x_root,
+				         xbutton->y_root,
 				         fnheight,
 				         " ButtonRelease",
 				         dpy,
@@ -1002,8 +994,8 @@ void MoveWindow (Display* dpy,          // default display
 				         0, // parent
 				         xmotion->subwindow,
 				         xmotion->root,
-				         xmotion->x,
-				         xmotion->y,
+				         xmotion->x_root,
+				         xmotion->y_root,
 				         fnheight,
 				         " MotionNotify",
 				         dpy,
@@ -1011,20 +1003,14 @@ void MoveWindow (Display* dpy,          // default display
 				         dbggc);
 			}
 
-			/* In the grabbed events our window
-			   has the ID set as xmotion->subwindow.
-
-			   If we move the window, we may get there some other motion
-			   events that do not concern us.
+			/* No matter if the events are comming with different
+			   windows ID, we keep the motion going until a release occurs.
+			   The only thing that matters here are the pointer coordinates.
 			*/
-
-			if (xmotion->subwindow != win)
-				continue;
-
 			XMoveWindow(dpy,
 			            win,
-			            xmotion->x,
-			            xmotion->y);
+			            xmotion->x_root,
+			            xmotion->y_root);
 		}
 	}
 }
