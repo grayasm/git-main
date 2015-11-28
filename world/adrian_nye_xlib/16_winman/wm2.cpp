@@ -109,39 +109,9 @@ int main(int argc, char* argv[])
 	                                    yellowpxl);
 
 	XSelectInput (dpy,
-	              RootWindow(dpy, scrno),
+	              rootwin,
+	              // ButtonPressMask | ButtonReleaseMask |
 	              SubstructureNotifyMask);
-
-
-	long eventmask =
-//		KeyPressMask | KeyReleaseMask |
-		ButtonPressMask | ButtonReleaseMask |
-		EnterWindowMask | LeaveWindowMask |
-		PointerMotionMask |
-//		PointerMotionHintMask |
-//		Button1MotionMask |
-//		Button2MotionMask |
-//		Button3MotionMask |
-//		Button4MotionMask |
-//		Button5MotionMask |
-//		ButtonMotionMask |
-//		KeymapStateMask |
-		ExposureMask |
-//		VisibilityChangeMask |
-		StructureNotifyMask |
-//		ResizeRedirectMask |
-		SubstructureNotifyMask |
-//		SubstructureRedirectMask |
-		FocusChangeMask |
-		PropertyChangeMask |
-		ColormapChangeMask |
-		OwnerGrabButtonMask
-		;
-
-	XSelectInput (dpy,
-	              wallwin,
-	              eventmask);
-
 
 
 	/* Select a nice (Latin-1) font for drawing text. */
@@ -164,7 +134,7 @@ int main(int argc, char* argv[])
 		XFontStruct* fs = &(fontinfos[i]);
 		XCharStruct* cs = &(fs->max_bounds);
 		int fsz = cs->ascent + cs->descent;
-		if (fsz < 16 || fsz > 20)
+		if (fsz < 14 || fsz > 16)
 			continue;
 
 		const char* fname = fontlist[i];
