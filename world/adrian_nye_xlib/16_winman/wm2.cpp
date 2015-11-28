@@ -961,6 +961,18 @@ void MoveWindow (Display* dpy,          // default display
 	while (1)
 	{
 		XNextEvent (dpy, &event);
+
+		{
+			std::string info;
+			GetEventInfo (&event, info);
+			LogText (0,0,0,0,0,0,
+			         fnheight,
+			         info,
+			         dpy,
+			         dbgwin,
+			         dbggc);
+		}
+
 		if (event.type == ButtonRelease)
 		{
 			XButtonEvent* xbutton = &(event.xbutton);
@@ -980,7 +992,8 @@ void MoveWindow (Display* dpy,          // default display
 
 			break;
 		}
-		else if (event.type == MotionNotify)
+
+		if (event.type == MotionNotify)
 		{
 			XMotionEvent* xmotion = &(event.xmotion);
 
@@ -1000,10 +1013,13 @@ void MoveWindow (Display* dpy,          // default display
 
 			/* In the grabbed events our window
 			   has the ID set as xmotion->subwindow.
+
+			   If we move the window, we may get there some other motion
+			   events that do not concern us.
 			*/
 
 			if (xmotion->subwindow != win)
-				return;
+				continue;
 
 			XMoveWindow(dpy,
 			            win,
