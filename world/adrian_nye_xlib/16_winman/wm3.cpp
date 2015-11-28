@@ -130,7 +130,7 @@ static const char *menu_label[] =
 
 
 
-int screen_num;
+int scrno;
 XFontStruct *font_info;
 char icon_name[50];
 Font font;
@@ -166,9 +166,19 @@ int main(int argc, char** argv)
 	    exit(-1);
     }
 
-    screen_num = DefaultScreen(dpy);
+    scrno = DefaultScreen(dpy);
 
 
+    // New wall window
+    Window wallwin = XCreateSimpleWindow(dpy,
+                                         RootWindow(dpy, scrno),
+                                         x, y,
+                                         DisplayWidth(dpy, scrno),
+                                         DisplayHeight(dpy, scrno),
+                                         2,
+                                         BlackPixel(dpy, scrno),
+                                         WhitePixel(dpy, scrno));
+    XMapWindow (dpy, wallwin);
 
     // Select a nice Latin-1 font.
     // Font font;
@@ -238,19 +248,19 @@ int main(int argc, char** argv)
     menu_height = pane_height * MAX_CHOICE;
 
     /* place the window in upper right corner*/
-    x = DisplayWidth(dpy,screen_num) - menu_width - (2*border_width);
+    x = DisplayWidth(dpy,scrno) - menu_width - (2*border_width);
     y = 0;   /* appears at top */
 
     /* create opaque window */
     menuwin = XCreateSimpleWindow(dpy,
-                                  RootWindow(dpy, screen_num),
+                                  RootWindow(dpy, scrno),
                                   x,
                                   y,
                                   menu_width,
                                   menu_height,
                                   border_width,
-                                  BlackPixel(dpy,screen_num),
-                                  WhitePixel(dpy,screen_num));
+                                  BlackPixel(dpy,scrno),
+                                  WhitePixel(dpy,scrno));
 
     /* create the choice windows for the text */
     for (winindex = 0; winindex < MAX_CHOICE; winindex++)
@@ -262,8 +272,8 @@ int main(int argc, char** argv)
 	                                          menu_width,
 	                                          pane_height,
 	                                          border_width = 1,
-	                                          BlackPixel(dpy,screen_num),
-	                                          WhitePixel(dpy,screen_num));
+	                                          BlackPixel(dpy,scrno),
+	                                          WhitePixel(dpy,scrno));
 
 	    XSelectInput(dpy,
 	                 panes[winindex],
@@ -271,7 +281,7 @@ int main(int argc, char** argv)
     }
 
     XSelectInput (dpy,
-                  RootWindow(dpy, screen_num),
+                  RootWindow(dpy, scrno),
                   SubstructureNotifyMask);
 
     /* these don't appear until parent (menuwin) is mapped */
@@ -283,7 +293,7 @@ int main(int argc, char** argv)
 
     XDefineCursor(dpy, menuwin, cursor);
 
-    focus_window = RootWindow(dpy, screen_num);
+    focus_window = RootWindow(dpy, scrno);
 
     /* Create two Graphics Contexts for inverting panes (white on
      * black).  We invert the panes by changing the background
@@ -299,27 +309,27 @@ int main(int argc, char** argv)
      * easier way. */
 
     gc = XCreateGC(dpy,
-                   RootWindow(dpy, screen_num),
+                   RootWindow(dpy, scrno),
                    0,
                    NULL);
     XSetForeground(dpy,
                    gc,
-                   BlackPixel(dpy, screen_num));
+                   BlackPixel(dpy, scrno));
     XSetFont(dpy, gc, font);
 
 
     rgc = XCreateGC(dpy,
-                    RootWindow(dpy, screen_num),
+                    RootWindow(dpy, scrno),
                     0,
                     NULL);
     XSetForeground(dpy,
                    rgc,
-                   WhitePixel(dpy, screen_num));
+                   WhitePixel(dpy, scrno));
     XSetFont(dpy, gc, font);
 
 
 
-    /* map the menu window (and its subwindows) to the screen_num */
+    /* map the menu window (and its subwindows) to the scrno */
     XMapWindow(dpy, menuwin);
 
     /* Force child processes to disinherit the TCP file descriptor.
@@ -480,14 +490,14 @@ int main(int argc, char** argv)
 
                 case 9: /* exit */
                     XSetInputFocus(dpy,
-                                   RootWindow(dpy,screen_num),
+                                   RootWindow(dpy,scrno),
                                    RevertToPointerRoot,
                                    CurrentTime);
 
                     /* turn all icons back into windows */
                     /* must clear focus highlights */
                     XClearWindow(dpy,
-                                 RootWindow(dpy, screen_num));
+                                 RootWindow(dpy, scrno));
 
                     /* need to change focus border
                      * width back here */
@@ -527,7 +537,7 @@ int main(int argc, char** argv)
         case CirculateNotify:
         case ConfigureNotify:
         case UnmapNotify:
-            /* all these uncover areas of screen_num */
+            /* all these uncover areas of scrno */
             draw_focus_frame(dpy);
             break;
         case CreateNotify:
@@ -571,14 +581,14 @@ void paint_pane
     {
         XSetWindowBackground(dpy,
                              window,
-                             BlackPixel(dpy, screen_num));
+                             BlackPixel(dpy, scrno));
         gc = rgc;
     }
     else
     {
         XSetWindowBackground(dpy,
                              window,
-                             WhitePixel(dpy, screen_num));
+                             WhitePixel(dpy, scrno));
         gc = ngc;
     }
     XSetFont(dpy, gc, font);
@@ -605,13 +615,13 @@ void paint_pane
 
 void circup(Display* dpy, Window menuwin)
 {
-	XCirculateSubwindowsUp(dpy, RootWindow(dpy,screen_num));
+	XCirculateSubwindowsUp(dpy, RootWindow(dpy,scrno));
 	XRaiseWindow(dpy, menuwin);
 }
 
 void circdn(Display* dpy, Window menuwin)
 {
-	XCirculateSubwindowsDown(dpy, RootWindow(dpy,screen_num));
+	XCirculateSubwindowsDown(dpy, RootWindow(dpy,scrno));
 	XRaiseWindow(dpy, menuwin);
 }
 
@@ -628,7 +638,7 @@ void raise_lower(Display* dpy, Window menuwin, Bool raise_or_lower)
     XMaskEvent(dpy, ButtonPressMask, &report); 
     button = report.xbutton.button;
     XQueryPointer(dpy,
-                  RootWindow(dpy,screen_num),
+                  RootWindow(dpy,scrno),
                   &root,
                   &child,
                   &root_x,
@@ -686,7 +696,7 @@ void iconify(Display* dpy, Window menuwin)
 
     /* find out which subwindow the mouse was in */
     XQueryPointer(dpy,
-                  RootWindow(dpy,screen_num),
+                  RootWindow(dpy,scrno),
                   &root,
                   &child,
                   &press_x,
@@ -762,7 +772,7 @@ Window focus(Display* dpy, Window menuwin)
 
     /* find out which subwindow the mouse was in */
     XQueryPointer(dpy,
-                  RootWindow(dpy,screen_num),
+                  RootWindow(dpy,scrno),
                   &root,
                   &child,
                   &x,
@@ -776,7 +786,7 @@ Window focus(Display* dpy, Window menuwin)
         (child == (Window)NULL) ||
         (isIcon(dpy, child, x, y, &assoc_win, icon_name, True)))
     {
-        focus_window = RootWindow(dpy, screen_num);
+        focus_window = RootWindow(dpy, scrno);
     }
     else
     {
@@ -794,7 +804,7 @@ Window focus(Display* dpy, Window menuwin)
                        RevertToPointerRoot,
                        CurrentTime);
 
-        if (focus_window != RootWindow(dpy, screen_num))
+        if (focus_window != RootWindow(dpy, scrno))
         {
             /* get current border width and add one */
             if (!(status = XGetWindowAttributes(dpy, focus_window, &win_attr)))
@@ -833,8 +843,8 @@ void draw_focus_frame(Display* dpy)
     int frame_width = 4;
     Pixmap focus_tile;
     GC gc;
-    int foreground = BlackPixel(dpy, screen_num);
-    int background = WhitePixel(dpy, screen_num);
+    int foreground = BlackPixel(dpy, scrno);
+    int background = WhitePixel(dpy, scrno);
     extern Window focus_window;
     Bool first_time = True;
 
@@ -842,16 +852,16 @@ void draw_focus_frame(Display* dpy)
     {
         /* make Bitmap from bitmap data */
         focus_tile = XCreatePixmapFromBitmapData(dpy,
-                                                 RootWindow(dpy,screen_num),
+                                                 RootWindow(dpy,scrno),
                                                  focus_frame_bi_bits,
                                                  focus_frame_bi_width,
                                                  focus_frame_bi_height,
                                                  foreground,
                                                  background,
-                                                 DefaultDepth(dpy, screen_num));
+                                                 DefaultDepth(dpy, scrno));
 
         /* Create Graphics Context */
-        gc = XCreateGC(dpy, RootWindow(dpy,screen_num), 0, NULL);
+        gc = XCreateGC(dpy, RootWindow(dpy,scrno), 0, NULL);
         XSetFillStyle(dpy, gc, FillTiled);
         XSetTile(dpy, gc, focus_tile);
         XSetFont(dpy, gc, font);
@@ -859,16 +869,16 @@ void draw_focus_frame(Display* dpy)
     }
 
     /* get rid of old frames */
-    XClearWindow(dpy, RootWindow(dpy,screen_num));
+    XClearWindow(dpy, RootWindow(dpy,scrno));
 
     /* if focus is RootWindow, no frame drawn */
-    if (focus_window == RootWindow(dpy,screen_num)) return;
+    if (focus_window == RootWindow(dpy,scrno)) return;
 
     /* get dimensions and position of focus_window*/
     XGetWindowAttributes(dpy, focus_window, &win_attr);
 
     XFillRectangle(dpy,
-                   RootWindow(dpy,screen_num),
+                   RootWindow(dpy,scrno),
                    gc,
                    win_attr.x - frame_width,
                    win_attr.y - frame_width,
@@ -897,9 +907,9 @@ void move_resize(Display* dpy, Window menuwin,Cursor hand_cursor,Bool move_or_re
 
     if (first_time)
     {
-	    gc = XCreateGC(dpy, RootWindow(dpy,screen_num), 0, NULL);
+	    gc = XCreateGC(dpy, RootWindow(dpy,scrno), 0, NULL);
 	    XSetSubwindowMode(dpy, gc, IncludeInferiors);
-	    XSetForeground(dpy, gc, BlackPixel(dpy, screen_num));
+	    XSetForeground(dpy, gc, BlackPixel(dpy, scrno));
 	    XSetFont(dpy, gc, font);
 	    XSetFunction(dpy, gc, GXxor);
 	    first_time = False;
@@ -911,7 +921,7 @@ void move_resize(Display* dpy, Window menuwin,Cursor hand_cursor,Bool move_or_re
 
     /* which child of root was press in? */
     XQueryPointer(dpy,
-                  RootWindow(dpy,screen_num),
+                  RootWindow(dpy,scrno),
                   &root,
                   &child,
                   &press_x,
@@ -979,7 +989,7 @@ void move_resize(Display* dpy, Window menuwin,Cursor hand_cursor,Bool move_or_re
 
                     /* get final window position */
                     XQueryPointer(dpy,
-                                  RootWindow(dpy,screen_num),
+                                  RootWindow(dpy,scrno),
                                   &root,
                                   &child, &release_x,
                                   &release_y,
@@ -1027,7 +1037,7 @@ void move_resize(Display* dpy, Window menuwin,Cursor hand_cursor,Bool move_or_re
 
                 /* get current mouse position */
                 XQueryPointer(dpy,
-                              RootWindow(dpy,screen_num),
+                              RootWindow(dpy,scrno),
                               &root,
                               &child,
                               &move_x,
@@ -1143,11 +1153,11 @@ void draw_box(Display* dpy, GC gc, int left,int top,int  right, int bottom)
 
 	XSetForeground(dpy,
 	               gc,
-	               WhitePixel(dpy, screen_num) ^ BlackPixel(dpy, screen_num));
+	               WhitePixel(dpy, scrno) ^ BlackPixel(dpy, scrno));
 	XSetFont(dpy, gc, font);
 
 	XDrawRectangle(dpy,
-	               RootWindow(dpy,screen_num),
+	               RootWindow(dpy,scrno),
 	               gc,
 	               left,
 	               top,
@@ -1340,7 +1350,7 @@ Window makeIcon(Display* dpy, Window window, int x, int y, char* icon_name_retur
 			icon_name = getDefaultIconSize(dpy, window, &icon_w, &icon_h);
 			icon_attrib_mask = CWBorderPixel | CWBackPixel;
 			icon_attrib.background_pixel =
-				(unsigned long) WhitePixel(dpy,screen_num);
+				(unsigned long) WhitePixel(dpy,scrno);
 		}
 	}
 	/* else no hints at all exist */
@@ -1358,7 +1368,7 @@ Window makeIcon(Display* dpy, Window window, int x, int y, char* icon_name_retur
 	/* Set the icon border attributes.  */
 	icon_bdr = 2;
 	icon_attrib.border_pixel =
-		(unsigned long) BlackPixel(dpy,screen_num);
+		(unsigned long) BlackPixel(dpy,scrno);
 
 
 	/* If icon position hint exists, get it.
@@ -1381,7 +1391,7 @@ Window makeIcon(Display* dpy, Window window, int x, int y, char* icon_name_retur
 	return  finishIcon(dpy,
 	                   window,
 	                   XCreateWindow(dpy,
-	                                 RootWindow(dpy, screen_num),
+	                                 RootWindow(dpy, scrno),
 	                                 icon_x,
 	                                 icon_y,
 	                                 icon_w,
