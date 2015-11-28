@@ -214,8 +214,12 @@ int main(int argc, char* argv[])
 
 
 
-	const int menusz = 4;
-	std::string smenu[ menusz ] = {"New Xterm", "Exit", "Move", "Resize"};
+	const int menusz = 5;
+	std::string smenu[ menusz ] = {"New Xterm",
+	                               "Exit",
+	                               "Move",
+	                               "Resize",
+	                               "Raise"};
 	Window menu[ menusz ];
 	GC gcmenu[ menusz ];
 	for (int i=0; i < menusz; ++i)
@@ -352,7 +356,7 @@ int main(int argc, char* argv[])
 
 
 
-				bool moveIsValid = false;
+				bool actionIsValid = false;
 				while (1)
 				{
 					XNextEvent (dpy, &event);
@@ -404,11 +408,11 @@ int main(int argc, char* argv[])
 
 
 					xbutton = &(event.xbutton);
-					moveIsValid = true;
+					actionIsValid = true;
 					break;
 				}
 
-				if (moveIsValid)
+				if (actionIsValid)
 				{
 					std::stringstream ss;
 					ss << " ACTION=MOVE Calling MoveWindow procedure.";
@@ -503,7 +507,7 @@ int main(int argc, char* argv[])
 
 
 
-				bool moveIsValid = false;
+				bool actionIsValid = false;
 				while (1)
 				{
 					XNextEvent (dpy, &event);
@@ -555,14 +559,14 @@ int main(int argc, char* argv[])
 
 
 					xbutton = &(event.xbutton);
-					moveIsValid = true;
+					actionIsValid = true;
 					break;
 				}
 
-				if (moveIsValid)
+				if (actionIsValid)
 				{
 					std::stringstream ss;
-					ss << " ACTION=RESIZE Calling MoveWindow procedure.";
+					ss << " ACTION=RESIZE Calling ResizeWindow procedure.";
 					LogText (xbutton->window,
 					         0,
 					         xbutton->subwindow,
@@ -594,6 +598,148 @@ int main(int argc, char* argv[])
 					std::stringstream ss;
 					ss << " Btn=" << xbutton->button;
 					ss << " Pointer ungrabbed. ACTION=RESIZE ended.";
+					LogText (xbutton->window,
+					         0,
+					         xbutton->subwindow,
+					         xbutton->root,
+					         xbutton->x,
+					         xbutton->y,
+					         fnheight,
+					         ss.str(),
+					         dpy,
+					         dbgwin,
+					         dbggc);
+				}
+			}
+			else if (xbutton->window == menu[4]) // Raise
+			{
+				// hide the menu
+				for (int i=0; i < menusz; ++i)
+				{
+					XUnmapWindow (dpy, menu[i]);
+				}
+
+				/* Follow the pattern and comments from MOVE. */
+				/* There've been a bit of struggle to get this correctly.
+				   I must grab the root window!
+				   The owner event must be True so we get on every grabbed
+				   event the correct window ID where the mouse action happened.
+				   We can than decide if to move/resize/iconify/etc the
+				   wall+debug windows of the win manager or not.
+				*/
+				XGrabPointer (dpy,
+				              rootwin,        // grab window (must grab root!)
+				              True,           // owner events (must be True!)
+				              ButtonPressMask | ButtonReleaseMask | PointerMotionMask,
+				              GrabModeAsync,  // pointer mode
+				              GrabModeAsync,  // keyboard mode
+				              None,           // confine the cursor to
+				              hand_cursor,
+				              CurrentTime);
+
+
+				{
+					/* Announce Grabbed Pointer */
+					std::stringstream ss;
+					ss << " Btn=" << xbutton->button;
+					ss << " Pointer grabbed. ACTION=RAISE started.";
+					LogText (xbutton->window,
+					         0,
+					         xbutton->subwindow,
+					         xbutton->root,
+					         xbutton->x,
+					         xbutton->y,
+					         fnheight,
+					         ss.str(),
+					         dpy,
+					         dbgwin,
+					         dbggc);
+				}
+
+
+
+				bool actionIsValid = false;
+				while (1)
+				{
+					XNextEvent (dpy, &event);
+
+					{
+						std::string info;
+						GetEventInfo (&event, info);
+						LogText (0,0,0,0,0,0,
+						         fnheight,
+						         info,
+						         dpy,
+						         dbgwin,
+						         dbggc);
+					}
+
+					/* Discard all (motion) events until next ButtonPress. */
+					if (event.type != ButtonPress)
+						continue;
+
+					xbutton = &(event.xbutton);
+
+					/* Follow the pattern and comments from MOVE. */
+					/* Now this is SOMETHING!!
+					   When mouse moves over the wall and debug windows their
+					   IDs are at xbutton->window.
+					   When mouse moves over other windows their IDs are at
+					   xbutton->subwindow.
+					*/
+					if (xbutton->button != 1 ||
+					    xbutton->window == wallwin ||
+					    xbutton->window == dbgwin)
+					{
+						std::stringstream ss;
+						ss << " Btn=" << xbutton->button;
+						ss << " ButtonPress. Cannot raise this window.";
+						LogText (xbutton->window,
+						         0,
+						         xbutton->subwindow,
+						         xbutton->root,
+						         xbutton->x,
+						         xbutton->y,
+						         fnheight,
+						         ss.str(),
+						         dpy,
+						         dbgwin,
+						         dbggc);
+						break;
+					}
+
+
+					xbutton = &(event.xbutton);
+					actionIsValid = true;
+					break;
+				}
+
+				if (actionIsValid)
+				{
+					std::stringstream ss;
+					ss << " ACTION=RAISE Calling XRaiseWindow.";
+					LogText (xbutton->window,
+					         0,
+					         xbutton->subwindow,
+					         xbutton->root,
+					         xbutton->x_root,
+					         xbutton->y_root,
+					         fnheight,
+					         ss.str(),
+					         dpy,
+					         dbgwin,
+					         dbggc);
+
+					XRaiseWindow (dpy, xbutton->subwindow);
+				}
+
+				XUngrabPointer (dpy, CurrentTime);
+
+				{
+					/* Announce Ungrab Pointer */
+					std::stringstream ss;
+					ss << " Btn=" << xbutton->button;
+					ss << " Pointer ungrabbed. ACTION=RAISE ended.";
 					LogText (xbutton->window,
 					         0,
 					         xbutton->subwindow,
