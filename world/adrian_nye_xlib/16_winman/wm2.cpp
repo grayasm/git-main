@@ -1,10 +1,9 @@
 /*
-  Xlib Programming Manual.
-  Cap. 16 Window Management
+  The last task at the end of
+  "Xlib Programming Manual" by Adrian Nye.
 
   A simple window manager.
-*/
-
+ */
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
 #include <X11/cursorfont.h> // XC_arrow
@@ -81,8 +80,8 @@ int main(int argc, char* argv[])
 
 	unsigned long whitepxl = 0xffffff;
 	unsigned long blackpxl = 0x000000;
-	unsigned long yellowpxl= 0xfffdcf; // light yellow
-	unsigned long bluepxl = 0x000d8d;  // dark blue
+	unsigned long yellowpxl= 0xfffdcf;  // light yellow
+	unsigned long bluepxl  = 0x000d8d;  // dark blue
 
 
 
@@ -116,7 +115,7 @@ int main(int argc, char* argv[])
 	   hierarcy that has selected the event type will get its ID assigned
 	   to the event's window member. If we do a grab we must see in which window
 	   the button was pressed. In case of debug or wall window we should refuse
-	   to move or resize or icondify etc these 2.
+	   to move or resize or iconify etc these 2.
 	 */
 	XSelectInput (dpy, dbgwin, wallevents);
 
@@ -233,6 +232,9 @@ int main(int argc, char* argv[])
 		                              blackpxl,
 		                              whitepxl);
 		XSelectInput (dpy, menu[i], ExposureMask | ButtonPressMask);
+
+		gcvalues.foreground = blackpxl;
+		gcvalues.background = whitepxl;
 		gcmenu[i] = XCreateGC (dpy, menu[i], gcmask, &gcvalues);
 		XDefineCursor (dpy, menu[i], right_arrow);
 	}
