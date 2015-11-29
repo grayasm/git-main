@@ -4,6 +4,7 @@
 
   A simple window manager.
  */
+
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
 #include <X11/cursorfont.h> // XC_arrow
