@@ -30,20 +30,3 @@ set (items_to_buy apple orange pear beer)
 foreach (item ${items_to_buy})
 	message ("Don't forget to buy one ${item}")
 endforeach()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
