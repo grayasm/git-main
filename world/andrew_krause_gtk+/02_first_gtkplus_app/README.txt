@@ -3,7 +3,7 @@
     *** ===================================== ***
 
     Concepts:
-
+    --------
     1) The basic function calls required by all GTK+ applications
     2) How to compile GTK+ code with GCC
     3) The object-oriented nature of the GTK+ widget system
@@ -13,22 +13,42 @@
     7) How to use GtkButton widget to make a clickable GtkLabel
     8) How to get and set properties of objects using GObject methods
 
-    see:
+
+    GTK+ Headers:
+    -------------
+    <gtk.h>             > 180 headers
     <gtkmain.h>         gtk_init, gtk_main
     <gtkwindow.h>       gtk_window_new
     <gtkenum.h>         GtkWindowType
     <gtkwidget.h>       gtk_widget_show
+    <gtklabel.h>        gtk_label_new
+    <gtkcontainer.h>    gtk_container_add
 
-    hierarcy of GtkWindow:
+    <glib.h>            > 60 headers
+    <gsignal.h>         g_signal_connect
+
+
+    Widgets Hierarchy:
+    -----------------
     GObject -> GInitiallyUnowned -> GtkObject -> GtkWidget -> \
                GtkContainer -> GtkBin -> GtkWindow
 
     Casting GTK+ objects: GTK_OBJECT(), GTK_WIDGET(),
               GTK_CONTAINER(), GTK_BIN(), GTK_WINDOW()
 
-    GTK+-2.x API reference: https://developer.gnome.org/gtk2/stable/
+    API Reference:
+    --------------
+    GTK+-2.0 API reference: https://developer.gnome.org/gtk2/stable/
+    GLib-2.0 API reference: https://developer.gnome.org/glib/2.42/
 
-    see:
+    In the above link, in Search box type "gtk_label_new" and hit enter.
+    At the top of the page click on "Object Hierarchy".
+    Navigate step by step towards the desired item.
+
+
+
+    Compile GTK+ code:
+    ------------------
     pkg-config --cflags gtk+-2.0        expands to:
                -pthread
                -I/usr/include/gtk-2.0
@@ -59,3 +79,20 @@
                -lgobject-2.0
                -lglib-2.0
                -lfreetype
+
+    GtkContainer: allows a parent to contain one or more children.
+    GtkBin      : allows a parent to contain only one child.
+
+    gtk_container_set_border_width() prevents user from resizing to a smaller size.
+
+
+    GTK+ Signals:
+    -------------
+    g_signal_connect (, "destroy", ..)
+                go to API reference website
+                in the search type gtk_widget_new
+                click on "Signals"
+                click on [void destroy No Hooks] to see the reference for
+                The "destroy" signal.
+
+
