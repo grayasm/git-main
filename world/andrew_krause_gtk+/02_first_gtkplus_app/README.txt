@@ -96,3 +96,6 @@
                 The "destroy" signal.
 
 
+    GTK+ Properties:
+    ----------------
+    
