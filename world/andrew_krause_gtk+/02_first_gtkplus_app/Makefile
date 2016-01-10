@@ -1,4 +1,4 @@
-all: buttons
+all: helloworld helloworld2 aboutdialog buttons
 
 helloworld: helloworld.cpp
 	g++ -Wall -g helloworld.cpp -o helloworld \
