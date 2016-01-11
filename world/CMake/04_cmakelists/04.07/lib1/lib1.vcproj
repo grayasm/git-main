@@ -25,6 +25,7 @@
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
+				CommandLine="copy func1.h.in  func1.h"
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
