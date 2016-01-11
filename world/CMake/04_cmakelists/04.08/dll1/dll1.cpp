@@ -18,5 +18,5 @@ Dll1::~Dll1()
 
 int Dll1::func1(int l, int r)
 {
-	return lib1::func1(l, r) + 100;
+	return lib1::func1(l, r) + 10;
 }

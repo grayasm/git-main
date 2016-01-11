@@ -19,5 +19,5 @@ Dll2::~Dll2()
 int Dll2::func2(int l, int r)
 {
 	Dll1 d;
-	return d.func1(l, r) + 100;
+	return d.func1(l, r) + 10;
 }
