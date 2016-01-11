@@ -1,0 +1,42 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "lib1", "lib1\lib1.vcproj", "{888D733E-B19B-4B0E-943B-5ECC9C2E4F36}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "lib2", "lib2\lib2.vcproj", "{E86FC2AE-795D-4B7E-A51C-1B027D942A8B}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dll1", "dll1\dll1.vcproj", "{BFF08B41-2256-4568-BE90-588373847A01}"
+	ProjectSection(ProjectDependencies) = postProject
+		{888D733E-B19B-4B0E-943B-5ECC9C2E4F36} = {888D733E-B19B-4B0E-943B-5ECC9C2E4F36}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dll2", "dll2\dll2.vcproj", "{A4011467-B8BB-45FF-B90D-4C30FB92A712}"
+	ProjectSection(ProjectDependencies) = postProject
+		{BFF08B41-2256-4568-BE90-588373847A01} = {BFF08B41-2256-4568-BE90-588373847A01}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "app", "app\app.vcproj", "{43E8B1AC-F8C6-4E36-A383-64B138536CFF}"
+	ProjectSection(ProjectDependencies) = postProject
+		{A4011467-B8BB-45FF-B90D-4C30FB92A712} = {A4011467-B8BB-45FF-B90D-4C30FB92A712}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{888D733E-B19B-4B0E-943B-5ECC9C2E4F36}.Debug|Win32.ActiveCfg = Debug|Win32
+		{888D733E-B19B-4B0E-943B-5ECC9C2E4F36}.Debug|Win32.Build.0 = Debug|Win32
+		{E86FC2AE-795D-4B7E-A51C-1B027D942A8B}.Debug|Win32.ActiveCfg = Debug|Win32
+		{E86FC2AE-795D-4B7E-A51C-1B027D942A8B}.Debug|Win32.Build.0 = Debug|Win32
+		{BFF08B41-2256-4568-BE90-588373847A01}.Debug|Win32.ActiveCfg = Debug|Win32
+		{BFF08B41-2256-4568-BE90-588373847A01}.Debug|Win32.Build.0 = Debug|Win32
+		{A4011467-B8BB-45FF-B90D-4C30FB92A712}.Debug|Win32.ActiveCfg = Debug|Win32
+		{A4011467-B8BB-45FF-B90D-4C30FB92A712}.Debug|Win32.Build.0 = Debug|Win32
+		{43E8B1AC-F8C6-4E36-A383-64B138536CFF}.Debug|Win32.ActiveCfg = Debug|Win32
+		{43E8B1AC-F8C6-4E36-A383-64B138536CFF}.Debug|Win32.Build.0 = Debug|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
