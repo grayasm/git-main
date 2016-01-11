@@ -7,3 +7,4 @@
 2)	04.02 for regular expressions
 3)  04.03 for moudules and packages
 4)  04.04 for policies
+5)  04.07 visual studio projects with correct dependecies (specified on Linker Page)
