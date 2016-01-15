@@ -38,9 +38,11 @@ SetEnv fvwm_sound               $[FVWM_USERDIR]/sounds/startup.wav
 ################################################################################
 # Colorset
 ################################################################################
-Colorset                        1  fg coral, bg coral
-Colorset                        2  fg rgb:00/00/00, hi rgb:00/00/00, sh rgb:00/00/00, bg rgb:e9/e9/d9
-Colorset                        3  fg rgb:00/00/00, hi rgb:dd/00/00, sh rgb:dd/00/00, bg rgb:fb/fc/ec
+#Colorset                       fg=Fore bg=Back hi=Hilite sh=Shade
+Colorset                        1  fg rgb:ff/ff/ff, bg rgb:3e/74/74
+Colorset                        2  fg rgb:00/00/00, bg rgb:a7/a7/a7
+Colorset                        3  fg rgb:00/00/00, bg rgb:e9/e9/d9
+Colorset                        4  fg rgb:00/00/00, bg rgb:fb/fc/ec
 
 
 ################################################################################
@@ -61,12 +63,12 @@ ColormapFocus                   FollowsMouse
 ################################################################################
 # Global Window style and options
 ################################################################################
-
 Style                           * SloppyFocus, MouseFocusClickRaises
-Style                           * Font -adobe-courier-bold-r-*-*-14-*-*-*-*-*-*-*
-Style                           * HilightFore Black, HilightBack coral
-Style                           * BorderWidth 7, HandleWidth 7
-Style                           * Icon unknown1.xpm, Color lightgrey/dimgrey
+Style                           * Font -*-fixed-medium-r-normal-*-14-*-*-*-*-*-iso8859-*
+Style                           * Colorset 2
+Style                           * HilightFore White, HilightBack rgb:3e/74/74
+Style                           * BorderWidth 6, HandleWidth 6
+Style                           * Icon $[fvwm_icons]/64x64-unknown.xpm
 Style                           * DecorateTransient, !UsePPosition
 Style                           * IconBox 0 -10 -280 -1
 Style                           * FocusFollowsMouse
@@ -78,6 +80,7 @@ Style                           * SnapGrid 10 10
 Style                           * WindowShadeShrinks, WindowShadeSteps 20, WindowShadeLazy
 SetAnimation                    10  -.01 0 .01 .03 .08 .18 .3 .45 .6 .75 .85 .90 .94 .97 .99 1.0
 Style                           * MwmDecor
+Style                           * MwmBorder
 Style                           FvwmPager StaysOnTop, Sticky, BorderColorset 1
 
 
@@ -107,8 +110,8 @@ Mouse                           0 4 N   Iconify
 # Menu Section
 ################################################################################
 
-MenuStyle * fvwm, Foreground black, Background coral
-MenuStyle * Font -adobe-courier-*-r-normal-*-14-*-*-*-*-*-*-*
+MenuStyle * fvwm, Foreground white, Background rgb:3e/74/74
+MenuStyle * Font -*-fixed-medium-r-normal-*-14-*-*-*-*-*-iso8859-*
 
 DestroyMenu                     FvwmRootMenu
 AddToMenu                       FvwmRootMenu "Root Menu" Title
@@ -175,6 +178,7 @@ AddToMenu                       FvwmOfficeMenu "Office" Title
 DestroyMenu                     FvwmAccessoriesMenu
 AddToMenu                       FvwmAccessoriesMenu "Accessories" Title
 + "%$[fvwm_icons]/24x24-system-file-manager.png%dolphin"           FvwmDolphin
++ "%$[fvwm_icons]/24x24-thunar.png%thunar"                         FvwmThunar
 + "%$[fvwm_icons]/24x24-xfe.png%xfe"                               FvwmXfe
 + "%$[fvwm_icons]/24x24-utilities-terminal.png%xterm"              FvwmXTerm
 + "%$[fvwm_icons]/24x24-htop.png%htop"                             FvwmHtop
@@ -291,9 +295,13 @@ DestroyFunc                     FvwmDolphin
 AddToFunc                       FvwmDolphin
 + I Exec                        exec dolphin
 
+DestroyFunc                     FvwmThunar
+AddToFunc                       FvwmThunar
++ I Exec                        exec thunar
+
 DestroyFunc                     FvwmXfe
 AddToFunc                       FvwmXfe
-+ I Exec                        exec xfe
++ I Exec                        exec xfe-xfe
 
 DestroyFunc                     FvwmVirtualBox
 AddToFunc                       FvwmVirtualBox
@@ -361,7 +369,7 @@ AddToFunc                       FvwmVlc
 
 DestroyFunc                     FvwmXclock
 AddToFunc                       FvwmXclock
-+ I Exec                        exec xclock -digital -font -adobe-times-bold-r-*-*-14-*-*-*-*-*-*-* -update 1
++ I Exec                        exec xclock -digital -font -*-fixed-medium-r-normal-*-14-*-*-*-*-*-iso8859-* -update 1
 
 DestroyFunc                     FvwmFirefox
 AddToFunc                       FvwmFirefox
@@ -449,7 +457,7 @@ AddToFunc                       FvwmXpdf
 
 DestroyFunc                     FvwmViewManPage
 AddToFunc                       FvwmViewManPage
-+ I Exec                        exec xterm -fg White -bg DarkBlue -g 80x40 \
++ I Exec                        exec xterm -fg Black -bg White -g 80x40 \
                                 -fn 7x14 -fb 7x14bold -n "Manual Page - $0" \
                                 -T "Manual Page - $0" -e man "$0"
 
@@ -460,14 +468,14 @@ AddToFunc                       FvwmViewManPage
 
 # FvwmIdent --------------------------------------------------------------------
 DestroyModuleConfig              FvwmIdent: *
-*FvwmIdent:                      Colorset 2
-*FvwmIdent:                      Font -adobe-courier-bold-r-*-*-14-*-*-*-*-*-*-*
+*FvwmIdent:                      Colorset 3
+*FvwmIdent:                      Font -*-fixed-medium-r-normal-*-14-*-*-*-*-*-iso8859-*
 
 
 
 # FvwmPager --------------------------------------------------------------------
 DestroyModuleConfig              FvwmPager: *
-*FvwmPager:                      HilightColorset * 3
+*FvwmPager:                      HilightColorset * 4
 *FvwmPager:                      Geometry 225x60-0-0
 
 
