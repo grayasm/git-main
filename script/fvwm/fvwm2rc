@@ -369,8 +369,7 @@ AddToFunc                       FvwmVlc
 
 DestroyFunc                     FvwmXclock
 AddToFunc                       FvwmXclock
-+ I Exec                        exec xclock -digital -font -*-fixed-medium-r-normal-*-14-*-*-*-*-*-iso8859-* -update 1
-
++ I Exec                        exec xclock -d -face Monospace-11:bold -padding 2 -update 1
 DestroyFunc                     FvwmFirefox
 AddToFunc                       FvwmFirefox
 + I Exec                        exec firefox
