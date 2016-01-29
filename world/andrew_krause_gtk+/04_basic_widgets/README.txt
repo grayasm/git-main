@@ -182,10 +182,12 @@ behavior: an easy method to ask users to choose a file or a folder. It
           to browse and select one file or one folder, depending on the type
           of button you created.
 
-
------------
-hierarchy:
-hold:
-ctor:
-api:
-behavior:
+GtkFontButton:
+--------------
+hierarchy: ->GtkWidget->GtkContainer->GtkBin->GtkButton->GtkFontButton
+hold: a button widget which picks and displayes the currently selected font.
+ctor: gtk_font_button_new
+api: gtkfontbutton.h
+behavior: the font button allows to open a font chooser dialog to change the
+          font and displays the font. It is suitable widget for selecting
+          a font in a preference dialog.
