@@ -1,5 +1,6 @@
 all: stockitems togglebuttons checkbuttons radiobuttons entries \
-     spinbuttons scales colorbuttons filechooserbuttons fontbuttons
+     spinbuttons scales colorbuttons filechooserbuttons fontbuttons \
+     styles1
 
 stockitems: stockitems.cpp
 	g++ -g -o stockitems stockitems.cpp `pkg-config --cflags gtk+-2.0` \
@@ -42,6 +43,11 @@ fontbuttons: fontbuttons.cpp
 	g++ -g -o fontbuttons fontbuttons.cpp `pkg-config --cflags gtk+-2.0` \
                                           `pkg-config --libs gtk+-2.0`
 
+styles1: styles1.cpp
+	g++ -g -o styles1 styles1.cpp `pkg-config --cflags gtk+-2.0` \
+                                  `pkg-config --libs gtk+-2.0`
+
 clean:
 	rm -v *.o *~ stockitems togglebuttons checkbuttons radiobuttons entries \
-          spinbuttons scales colorbuttons filechooserbuttons fontbuttons
+          spinbuttons scales colorbuttons filechooserbuttons fontbuttons \
+          styles1
