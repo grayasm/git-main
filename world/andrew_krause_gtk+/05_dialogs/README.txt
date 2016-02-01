@@ -30,8 +30,26 @@ behavior: displays information about an application like name, copyright,
           translators. Every property is optional.
 
 
+GdkPixbuf:
+----------
+hierarchy: GObject->GdkPixbuf
+hold: an image in memory
+ctor: gdk_pixbuf_new
+api: /usr/include/gdk-pixbuf-2.0/gdk-pixbuf/gdk-pixbuf-core.h
+behavior: it contains information about an image stored in memory. It allows
+          you to build images manually b placing shapes or pixels or to load
+          a prebuilt image from a file. It is derived directly from GObject.
 
-GtkFileChooserDialog
+GtkFileChooserDialog:
+---------------------
+hierarchy:
+hold:
+ctor:
+api:
+behavior:
+
+
+
 GtkFontSelectionDialog
 GtkColorSelectionDialog
 
