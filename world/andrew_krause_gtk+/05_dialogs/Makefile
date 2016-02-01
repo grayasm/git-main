@@ -1,4 +1,4 @@
-all: dialogs dialogs2 dialogs3 messagedialogs
+all: dialogs dialogs2 dialogs3 messagedialogs aboutdialogs
 
 dialogs: dialogs.cpp
 	g++ -o dialogs dialogs.cpp `pkg-config --cflags gtk+-2.0` \
@@ -16,5 +16,9 @@ messagedialogs: messagedialogs.cpp
 	g++ -o messagedialogs messagedialogs.cpp `pkg-config --cflags gtk+-2.0` \
                                              `pkg-config --libs gtk+-2.0`
 
+aboutdialogs: aboutdialogs.cpp
+	g++ -o aboutdialogs aboutdialogs.cpp `pkg-config --cflags gtk+-2.0` \
+                                         `pkg-config --libs gtk+-2.0`
+
 clean:
-	rm -v dialogs dialogs2 dialogs3 messagedialogs
+	rm -v dialogs dialogs2 dialogs3 messagedialogs aboutdialogs

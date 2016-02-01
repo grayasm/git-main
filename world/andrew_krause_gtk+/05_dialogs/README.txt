@@ -19,7 +19,18 @@ ctor: gtk_message_dialog_new
 api: gtkmessagedialog.h
 behavior:
 
-GtkAboutDialog
+GtkAboutDialog:
+---------------
+hierarchy: ->GtkWidget->GtkContainer->GtkBin->GtkWindow->GtkDialog->GtkAboutDialog
+hold: packs multiple widgets to show info about a program (logo,name,website,etc)
+ctor: gtk_about_dialog_new
+api: gtkaboutdialog.h
+behavior: displays information about an application like name, copyright,
+          current version, license content, authors, documenters, artists and
+          translators. Every property is optional.
+
+
+
 GtkFileChooserDialog
 GtkFontSelectionDialog
 GtkColorSelectionDialog
