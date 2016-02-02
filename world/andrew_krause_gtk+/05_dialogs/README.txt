@@ -42,11 +42,19 @@ behavior: it contains information about an image stored in memory. It allows
 
 GtkFileChooserDialog:
 ---------------------
-hierarchy:
-hold:
-ctor:
-api:
-behavior:
+hierarchy: ->GtkWidget->GtkContainer->GtkBin->GtkWindow->GtkDialog->
+                                                            GtkFileChooserDialog
+hold: is a dialog box suitable for use with "File/Open" or "File/Save as" cmds.
+ctor: gtk_file_chooser_dialog_new
+api: gtkfilechooserdialog.h
+behavior: it is simply a dialog that uses a GtkFileChooserWidget
+          (see gtkfilechooserwidget.h) as its child. Since it implements the
+          GtkFileChooser interface, you do not ever have to directly access its
+          child widget.
+          GtkFileChooserWidget is the actual widget that allows the user to
+          choose a file or folder. It can also facilitate the creation of a
+          folder or saving of a file. When you use a GktFileChooserDialog,
+          you are actually using a file chooser widget packed into a GtkDialog.
 
 
 
