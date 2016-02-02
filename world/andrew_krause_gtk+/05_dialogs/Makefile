@@ -1,4 +1,5 @@
-all: dialogs dialogs2 dialogs3 messagedialogs aboutdialogs savefile
+all: dialogs dialogs2 dialogs3 messagedialogs aboutdialogs savefile \
+     createfolder multiplefiles
 
 dialogs: dialogs.cpp
 	g++ -o dialogs dialogs.cpp `pkg-config --cflags gtk+-2.0` \
@@ -24,5 +25,13 @@ savefile: savefile.cpp
 	g++ -o savefile savefile.cpp `pkg-config --cflags gtk+-2.0` \
                                  `pkg-config --libs gtk+-2.0`
 
+createfolder: createfolder.cpp
+	g++ -o createfolder createfolder.cpp `pkg-config --cflags gtk+-2.0` \
+                                         `pkg-config --libs gtk+-2.0`
+
+multiplefiles: multiplefiles.cpp
+	g++ -o multiplefiles multiplefiles.cpp `pkg-config --cflags gtk+-2.0` \
+                                           `pkg-config --libs gtk+-2.0`
 clean:
-	rm -v dialogs dialogs2 dialogs3 messagedialogs aboutdialogs savefile
+	rm -v dialogs dialogs2 dialogs3 messagedialogs aboutdialogs savefile \
+          createfolder multiplefiles
