@@ -57,9 +57,23 @@ behavior: it is simply a dialog that uses a GtkFileChooserWidget
           you are actually using a file chooser widget packed into a GtkDialog.
 
 
+GtkColorSelectionDialog:
+------------------------
+hierarchy: ->GtkWidget->GtkContainer->GtkBin->GtkWindow->GtkDialog->
+                                                        GtkColorSelectionDialog
+hold: provides a standard dialog which allows the user to select a color.
+ctor: gtk_color_selection_dialog_new
+api:  gtkcolorseldialog.h
+behavior: Similar to GtkFileChooserDialog, the color selection dialog is
+          actually a GtkDialog container with a GtkColorSelection widget packed
+          as its child widget. GtkColorSelection can easily be used on its own.
+          However, since a dialog is a natural way of presenting the widget,
+          GTK+ provides GtkColorSelectionDialog.
+
+
 
 GtkFontSelectionDialog
-GtkColorSelectionDialog
+
 
 
 -----------
