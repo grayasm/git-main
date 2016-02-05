@@ -72,7 +72,19 @@ behavior: Similar to GtkFileChooserDialog, the color selection dialog is
 
 
 
-GtkFontSelectionDialog
+GtkFontSelectionDialog:
+-----------------------
+hierarchy: ->GtkWidget->GtkContainer->GtkBin->GtkWindow->GtkDialog->
+                                                          GtkFontSelectionDialog
+hold: provides a standard dialog which allows the user to select a font.
+ctor: gtk_font_selection_dialog_new
+api: gtkfontsel.h
+behavior: The GtkFontSelectionDialog implementation of the GtkBuildable
+          interface exposes the embedded GtkFontSelection as internal child
+          with the name "font_selection". It also exposes the buttons with
+          the names "ok_button", "cancel_button" and "apply_button".
+
+
 
 
 
