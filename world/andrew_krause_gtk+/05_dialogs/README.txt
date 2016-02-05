@@ -85,6 +85,15 @@ behavior: The GtkFontSelectionDialog implementation of the GtkBuildable
           the names "ok_button", "cancel_button" and "apply_button".
 
 
+GtkAssitant:
+------------
+hierarchy: ->GtkWidget->GtkContainer->GtkBin->GtkWindow->GtkAssitant
+hold: dialogs with multiple pages often referred as wizards.
+ctor: gtk_assistant_new
+api: gtkassistant.h
+behavior: splits complex dialogs into steps that guide the user.
+          The parent dialog contains the widgets:
+          cancel, forward, back, apply, close, last.
 
 
 
