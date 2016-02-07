@@ -1,5 +1,6 @@
 all: dialogs dialogs2 dialogs3 messagedialogs aboutdialogs savefile \
-     createfolder multiplefiles colorselection fontselection assistant
+     createfolder multiplefiles colorselection fontselection assistant \
+     assistant2
 
 dialogs: dialogs.cpp
 	g++ -o dialogs dialogs.cpp `pkg-config --cflags gtk+-2.0` \
@@ -45,7 +46,12 @@ assistant: assistant.cpp
 	g++ -o assistant assistant.cpp `pkg-config --cflags gtk+-2.0` \
                                    `pkg-config --libs gtk+-2.0`
 
+assistant2: assistant2.cpp
+	g++ -o assistant2 assistant2.cpp `pkg-config --cflags gtk+-2.0` \
+                                     `pkg-config --libs gtk+-2.0`
+
 
 clean:
 	rm -v dialogs dialogs2 dialogs3 messagedialogs aboutdialogs savefile \
-          createfolder multiplefiles colorselection fontselection assistant
+          createfolder multiplefiles colorselection fontselection assistant \
+          assistant2
