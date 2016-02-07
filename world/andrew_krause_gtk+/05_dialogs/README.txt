@@ -94,12 +94,3 @@ api: gtkassistant.h
 behavior: splits complex dialogs into steps that guide the user.
           The parent dialog contains the widgets:
           cancel, forward, back, apply, close, last.
-
-
-
------------
-hierarchy:
-hold:
-ctor:
-api:
-behavior:
