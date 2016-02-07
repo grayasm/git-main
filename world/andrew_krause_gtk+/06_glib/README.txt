@@ -66,3 +66,8 @@ Standard Macros
 
 /usr/include/glib-2.0/glib/gprintf.h
         gint g_printf(gchar const *format, ...);
+
+/usr/include/glib-2.0/glib/gmem.h
+        #define g_new(struct_type, n_structs)
+        void g_free (gpointer mem);
+
