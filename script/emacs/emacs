@@ -178,7 +178,7 @@
 ; cd ~/.emacs.d/lisp/
 ; wget http://www.emacswiki.org/emacs/download/lusty-explorer.el
 
-(add-to-list 'load-path "/home/mihk/.emacs.d/lisp/")
+(add-to-list 'load-path "/home/mihai/.emacs.d/lisp/")
 (require 'lusty-explorer)
 (global-set-key (kbd "M-e") 'lusty-file-explorer)
 
@@ -186,7 +186,7 @@
 
 ;; GCCSENSE-0.1
 ;; this is done following the instruction to compile and install gccsense
-;(setq exec-path (append exec-path '("/home/mihk/local/gccsense-0.1/bin")))
+;(setq exec-path (append exec-path '("/home/mihai/local/gccsense-0.1/bin")))
 ;(add-to-list 'load-path "~/.emacs.d/")
 ;(require 'gccsense)
 ;; to bind C-c .
@@ -214,9 +214,9 @@
 ;; Install 'Auto Complete Mode' in ~/.emacs.d/lisp
 ;; script requires user to write in .emacs this:
 
-(add-to-list 'load-path "/home/mihk/.emacs.d/lisp/")
+(add-to-list 'load-path "/home/mihai/.emacs.d/lisp/")
 (require 'auto-complete-config)
-(add-to-list 'ac-dictionary-directories "/home/mihk/.emacs.d/lisp/ac-dict")
+(add-to-list 'ac-dictionary-directories "/home/mihai/.emacs.d/lisp/ac-dict")
 (ac-config-default)
 
 
@@ -242,7 +242,7 @@
 ;; http://www.emacswiki.org/FillColumnIndicator
 ; cd ~/.emacs.d/lisp/
 ; wget http://www.emacswiki.org/emacs/download/fill-column-indicator.el
-; (add-to-list 'load-path "/home/mihk/.emacs.d/lisp/") ; if not added already
+; (add-to-list 'load-path "/home/mihai/.emacs.d/lisp/") ; if not added already
 
 ;(setq fci-rule-width 1)
 ;(setq fci-rule-color "darkblue")
@@ -258,7 +258,7 @@
 ; tar zxvf color-theme-6.6.0.tar.gz
 ; mv color-theme-6.6.0 ~/.emacs.d/
 
-(add-to-list 'load-path "/home/mihk/.emacs.d/color-theme-6.6.0")
+(add-to-list 'load-path "/home/mihai/.emacs.d/color-theme-6.6.0")
 (require 'color-theme)
 (color-theme-initialize)
 

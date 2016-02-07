@@ -12,12 +12,13 @@ cd $HOME/.emacs.d/lisp/
 wget http://www.emacswiki.org/emacs/download/lusty-explorer.el
 
 # auto-complete, fuzzy matching
+# https://github.com/auto-complete/auto-complete.git
 cd /tmp
-wget http://cx4a.org/pub/auto-complete/auto-complete-1.3.1.tar.bz2
-tar jxvf auto-complete-1.3.1.tar.bz2
+wget https://github.com/auto-complete/auto-complete/archive/v1.3.1.tar.gz
+tar zxvf v1.3.1.tar.gz   # it will unzip into auto-complete-1.3.1
+rm v1.3.1.tar.gz
 # eval not working
 # emacs --batch --eval '(load-file /tmp/auto-complete-1.3.1/etc/install.el)'
-rm /tmp/auto-complete-1.3.1.tar.bz2
 
 
 # FillColumnIndicator
