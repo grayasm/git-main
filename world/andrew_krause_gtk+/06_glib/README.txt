@@ -1,4 +1,6 @@
 Chapter 6 Using GLib
+#include <glib.h>
+
 
 Basic Data Types
       gboolean          : TRUE or FALSE, no equivalent in C
@@ -91,3 +93,7 @@ Timer functions:
 
 File manipulation:
 /usr/include/glib-2.0/glib/gfileutils.h
+
+
+Directories:
+/usr/include/glib-2.0/glib/gdir.h
