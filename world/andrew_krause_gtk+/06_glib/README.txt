@@ -87,24 +87,17 @@ Utility functions:
         g_get_tmp_dir ()
         g_get_user_name (), etc.
 
-Timer functions:
-/usr/include/glib-2.0/glib/gtimer.h
+In /usr/include/glib-2.0/glib/
 
-
-File manipulation:
-/usr/include/glib-2.0/glib/gfileutils.h
-
-
-Directories:
-/usr/include/glib-2.0/glib/gdir.h
-
-
-Timeouts:
-/usr/include/glib-2.0/glib/gmain.h
-
-Strings:
-/usr/include/glib-2.0/glib/gstring.h
-        a bunch of methods gravitating aroung _GString structure.
-
-Single Linked Lists: /usr/include/glib-2.0/glib/gslist.h
-Double Linked Lists: /usr/include/glib-2.0/glib/glist.h
+Timer functions:                gtimer.h
+File manipulation:              gfileutils.h
+Directories:                    gdir.h
+Timeouts:                       gmain.h
+Strings:                        gstring.h               GString
+Single Linked Lists:            gslist.h                GSList
+Double Linked Lists:            glist.h                 GList
+Balanced Binary Trees:          {gtree,gnode}.h         GTree,GNode
+Pointer,Char,Byte Arrays:       garray.h                GArray,GByteArray,GPtrArray
+Quark (hash of a string):       gquark.h                GQuark
+Keyed Data Lists:               gdataset.h              GData
+Files,Pipes,Sockets:            giochannel.h            GIOChannel

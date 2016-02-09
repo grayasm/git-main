@@ -1,5 +1,5 @@
 all: slice_alloc1 slice_new1 memprofile timers files directories \
-     timeouts
+     timeouts files2
 
 slice_alloc1: slice_alloc1.cpp
 	g++ -g -o slice_alloc1 slice_alloc1.cpp `pkg-config --cflags gtk+-2.0` \
@@ -28,6 +28,10 @@ timeouts: timeouts.cpp
 	g++ -g -o timeouts timeouts.cpp `pkg-config --cflags gtk+-2.0` \
                                     `pkg-config --libs   gtk+-2.0`
 
+files2: files2.cpp
+	g++ -g -o files2 files2.cpp `pkg-config --cflags gtk+-2.0` \
+                                `pkg-config --libs   gtk+-2.0`
+
 clean:
 	rm -v slice_alloc1 slice_new1 memprofile timers files directories \
-          timeouts
+          timeouts files2
