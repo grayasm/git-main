@@ -16,7 +16,8 @@ Basic Data Types
       gshort (gushort)  : signed, unsigned C short
       gsize (gssize)    : signed, unsigned 32 bit integers
 
-Standard Macros
+Standard Macros:
+/usr/include/glib-2.0/glib/gversion.h
       GLIB_MAJOR_VERSION        : major version of GLib headers
       GLIB_MINOR_VERSION        : minor ...
       GLIB_MICRO_VERSION        : micro ...
@@ -71,3 +72,18 @@ Standard Macros
         #define g_new(struct_type, n_structs)
         void g_free (gpointer mem);
 
+        to profile memory usage:
+        g_mem_set_v_table + g_mem_profile (see sample memprofile.c)
+
+
+Utility functions:
+/usr/include/glib-2.0/glib/gutils.h
+        g_get_current_dir ()
+        g_get_home_dir ()
+        g_get_host_name ()
+        g_get_real_name ()
+        g_get_tmp_dir ()
+        g_get_user_name (), etc.
+
+Timer functions:
+/usr/include/glib-2.0/glib/gtimer.h
