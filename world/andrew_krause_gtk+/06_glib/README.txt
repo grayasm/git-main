@@ -87,3 +87,7 @@ Utility functions:
 
 Timer functions:
 /usr/include/glib-2.0/glib/gtimer.h
+
+
+File manipulation:
+/usr/include/glib-2.0/glib/gfileutils.h
