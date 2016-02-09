@@ -97,3 +97,14 @@ File manipulation:
 
 Directories:
 /usr/include/glib-2.0/glib/gdir.h
+
+
+Timeouts:
+/usr/include/glib-2.0/glib/gmain.h
+
+Strings:
+/usr/include/glib-2.0/glib/gstring.h
+        a bunch of methods gravitating aroung _GString structure.
+
+Single Linked Lists: /usr/include/glib-2.0/glib/gslist.h
+Double Linked Lists: /usr/include/glib-2.0/glib/glist.h
