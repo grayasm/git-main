@@ -37,6 +37,7 @@ iochannels: iochannels.cpp
                                         `pkg-config --libs   gtk+-2.0`
 
 
+# copy the shared object in LD_LIBRARY_PATH path.
 modules-plugin: modules-plugin.cpp
 	g++ -g -shared -fPIC -o modules-plugin.so modules-plugin.cpp \
                                              `pkg-config --cflags gtk+-2.0` \
