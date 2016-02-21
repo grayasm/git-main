@@ -1,5 +1,5 @@
 all: scrolledwindows textview textview2 textview3 textview4 iterators \
-     cutcopypaste find
+     cutcopypaste find texttags
 
 scrolledwindows: scrolledwindows.cpp
 	g++ -g -o scrolledwindows scrolledwindows.cpp \
@@ -27,6 +27,10 @@ cutcopypaste: cutcopypaste.cpp
 find: find.cpp
 	g++ -g -o find find.cpp           `pkg-config --cflags --libs gtk+-2.0`
 
+texttags: texttags.cpp
+	g++ -g -o texttags texttags.cpp   `pkg-config --cflags --libs gtk+-2.0`
+
+
 clean:
 	rm -v scrolledwindows textview textview2 textview3 textview4 iterators \
-          cutcopypaste find
+          cutcopypaste find texttags
