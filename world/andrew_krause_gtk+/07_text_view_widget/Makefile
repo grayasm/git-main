@@ -1,4 +1,5 @@
-all: scrolledwindows textview textview2 textview3
+all: scrolledwindows textview textview2 textview3 textview4 iterators \
+     cutcopypaste find
 
 scrolledwindows: scrolledwindows.cpp
 	g++ -g -o scrolledwindows scrolledwindows.cpp \
@@ -13,6 +14,19 @@ textview2: textview2.cpp
 textview3: textview3.cpp
 	g++ -g -o textview3 textview3.cpp `pkg-config --cflags --libs gtk+-2.0`
 
+textview4: textview4.cpp
+	g++ -g -o textview4 textview4.cpp `pkg-config --cflags --libs gtk+-2.0`
+
+iterators: iterators.cpp
+	g++ -g -o iterators iterators.cpp `pkg-config --cflags --libs gtk+-2.0`
+
+cutcopypaste: cutcopypaste.cpp
+	g++ -g -o cutcopypaste cutcopypaste.cpp \
+                                      `pkg-config --cflags --libs gtk+-2.0`
+
+find: find.cpp
+	g++ -g -o find find.cpp           `pkg-config --cflags --libs gtk+-2.0`
 
 clean:
-	rm -v scrolledwindows textview textview2 textview3
+	rm -v scrolledwindows textview textview2 textview3 textview4 iterators \
+          cutcopypaste find
