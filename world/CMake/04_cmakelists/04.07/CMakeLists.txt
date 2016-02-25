@@ -9,9 +9,8 @@
 # Each target will try to install its files into the CMAKE_INSTALL_PREFIX
 # which by default is either /usr/local or C:\Program Files\<ProjectName>
 #
-# After instalation purge build directory and keep only the install directory.
-# I have the feeling that app1 is linked agaist full path libshared.so which is
-# really bad.
+# app1 can run from its build location without any evn setup.
+# When installed, app1 will search libshared.so in the system or LD_LIBRARY_PATH
 
 cmake_minimum_required (VERSION 3.4)
 project ( how_to_install )
@@ -20,3 +19,10 @@ add_subdirectory (headers1)
 add_subdirectory (static1)
 add_subdirectory (shared1)
 add_subdirectory (app1)
+
+# Packaging is available only ONCE for the entire project with commands:
+# make package
+# make_package_source
+
+# CPack must be included only 1 time at the end of top file.
+include (CPack)

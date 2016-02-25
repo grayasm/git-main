@@ -3,11 +3,10 @@
 # a) must include header1.hpp from INTERFACE target (easy)
 # b) app1 links with static1 and shared1
 # c) NEW: installation commands
-#         I saw that app1 executable is linked against full path shared1 in its
-#         build directory (e.g. 04.07.b/shared1/libshared1.so) which makes me
-#         wonder if these executables can really run outside build directory,
-#         like from the installation directory. Keep install directory and purge
-#         the build structure, and then test.
+#         I saw that app1 executable is linked against full path libshared.so
+#         in its build directory (e.g. 04.07.b/shared1/libshared1.so)
+#         app1 can run from build location or when installed it will load
+#         libshared.so from the system or LD_LIBRARY_PATH.
 
 set (SRC app1.cpp)
 add_executable (app1 ${SRC})
