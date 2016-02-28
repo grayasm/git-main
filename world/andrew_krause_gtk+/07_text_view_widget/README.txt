@@ -113,6 +113,20 @@ api: gtktextmark.h
 behavior:
 
 
+GtkTextChildAnchor:
+-------------------
+hierarchy: GObject->GtkTextChildAnchor
+hold: a mark for the placement of a widget within the GtkTextBuffer.
+ctor: gtk_text_child_anchor_new
+api:  gtktextchild.h
+behavior: Inserting widgets (e.g. GtkButton) into a text buffer is a little more
+          complicated than pixbufs because you must notify both the text buffer
+          and the text view to embed the widget. You begin by creating a
+          GtkTextChildAnchor object, which will be used to mark the placement
+          of the widget within the GtkTextBuffer. Than you add the widget to
+          the GtkTextView widget.
+
+
 PangoFontDescription:
 ---------------------
 hierarchy: GBoxed->PangoFontDescription
@@ -153,8 +167,29 @@ behavior:
 
 GtkClipboard:
 -------------
-hierarchy:
-hold:
-ctor:
-api:
-behavior:
+hierarchy: GObject->GtkClipboard
+hold: a clipboard of data shared between different processes of widgets in the same process.
+ctor: gtk_clipboard_get()
+api:  gtkclipboard.h
+behavior: To support having a number of different formats on the clipboard at
+          the same time, the clipboard mechanism allows providing callbacks
+          instead of the actual data. When you set the contents of the clipboard,
+          you can either supply the data directly
+          (via functions like gtk_clipboard_set_text()), or you can supply a
+          callback to be called at a later time when the data is needed
+          (via gtk_clipboard_set_with_data() or gtk_clipboard_set_with_owner().)
+          Providing a callback also avoids having to make copies of the data
+          when it is not needed.
+
+GdkPixbuf:
+-----------
+hierarchy: GObject->GdkPixbuf
+hold: an image in memory
+ctor: gdk_pixbuf_new
+      gdk_pixbuf_new_from_bytes
+      gdk_pixbuf_new_from_xpm_data
+      gdk_pixbuf_new_from_data
+      gdk_pixbuf_new_from_inline
+      and others
+api:  /usr/include/gdk-pixbuf-2.0/{a bunch of files}
+behavior: you get a pixel buffer in memory.
