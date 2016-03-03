@@ -38,7 +38,7 @@ GroceryItem list[] =
 
 /* The implementation of this function is the same as in Listing 8-1. */
 void setup_tree_view (GtkWidget*);
-
+void add_product     (GtkButton *add, GtkTreeView* treeview);
 
 int main(int argc, char** argv)
 {
@@ -121,6 +121,10 @@ int main(int argc, char** argv)
 	gtk_container_add (GTK_CONTAINER(scrolled_win), treeview);
 
 	GtkWidget* button_add = gtk_button_new_from_stock (GTK_STOCK_ADD);
+	g_signal_connect (G_OBJECT(button_add),
+	                  "clicked",
+	                  G_CALLBACK(add_product),
+	                  GTK_TREE_VIEW(treeview));
 
 	GtkWidget* vbox = gtk_vbox_new (FALSE, 2);
 	gtk_box_pack_start (GTK_BOX(vbox), scrolled_win, TRUE, TRUE, 0);
@@ -173,4 +177,153 @@ void setup_tree_view (GtkWidget* treeview)
 	                                                   PRODUCT,
 	                                                   NULL);
 	gtk_tree_view_append_column (GTK_TREE_VIEW(treeview), column);
+}
+
+
+void add_product (GtkButton *add, GtkTreeView* treeview)
+{
+	GtkWidget* dialog = gtk_dialog_new_with_buttons ("Add a Product",
+	                                                 NULL,
+	                                                 GTK_DIALOG_MODAL,
+	                                                 GTK_STOCK_ADD,
+	                                                 GTK_RESPONSE_OK,
+	                                                 GTK_STOCK_CANCEL,
+	                                                 GTK_RESPONSE_CANCEL,
+	                                                 NULL);
+
+	/* Create widgets that will be packed into the dialog. */
+	GtkWidget* combobox = gtk_combo_box_new_text ();
+	GtkWidget* entry = gtk_entry_new ();
+	GtkWidget* spin = gtk_spin_button_new_with_range (0, 100, 1);
+	GtkWidget* check = gtk_check_button_new_with_mnemonic ("_Buy the Product");
+
+	gtk_spin_button_set_digits (GTK_SPIN_BUTTON(spin), 0);
+
+	/* Add all of the categories to the combo box. */
+	gint i = 0;
+	while (list[i].product != NULL)
+	{
+		if (list[i].product_type == PRODUCT_CATEGORY)
+			gtk_combo_box_append_text (GTK_COMBO_BOX(combobox), list[i].product);
+		++i;
+	}
+
+	GtkWidget* table = gtk_table_new (4, 2, FALSE);
+	gtk_table_set_row_spacings (GTK_TABLE(table), 5);
+	gtk_table_set_col_spacings (GTK_TABLE(table), 5);
+	gtk_container_set_border_width (GTK_CONTAINER(table), 5);
+
+
+
+	/* Pack the table that will hold the dialog widgets. */
+	gtk_table_attach (GTK_TABLE(table),
+	                  gtk_label_new("Category:"),
+	                  0,1,0,1,
+	                  GTK_SHRINK, // | GTK_FILL,
+	                  GTK_SHRINK, // | GTK_FILL,
+	                  0, 0);
+	gtk_table_attach (GTK_TABLE(table),
+	                  combobox,
+	                  1,2,0,1,
+	                  GTK_EXPAND, // | GTK_FILL,
+	                  GTK_SHRINK, // | GTK_FILL,
+	                  0, 0);
+	gtk_table_attach (GTK_TABLE(table),
+	                  gtk_label_new("Product:"),
+	                  0,1,1,2,
+	                  GTK_SHRINK, // | GTK_FILL,
+	                  GTK_SHRINK, // | GTK_FILL,
+	                  0, 0);
+	gtk_table_attach (GTK_TABLE(table),
+	                  entry,
+	                  1,2,1,2,
+	                  GTK_EXPAND, // | GTK_FILL,
+	                  GTK_SHRINK, // | GTK_FILL,
+	                  0, 0);
+	gtk_table_attach (GTK_TABLE(table),
+	                  gtk_label_new("Quantity:"),
+	                  0,1,2,3,
+	                  GTK_SHRINK, // | GTK_FILL,
+	                  GTK_SHRINK, // | GTK_FILL,
+	                  0, 0);
+	gtk_table_attach (GTK_TABLE(table),
+	                  spin,
+	                  1,2,2,3,
+	                  GTK_EXPAND, // | GTK_FILL,
+	                  GTK_SHRINK, // | GTK_FILL,
+	                  0, 0);
+	gtk_table_attach (GTK_TABLE(table),
+	                  check,
+	                  1,2,3,4,
+	                  GTK_EXPAND, // | GTK_FILL,
+	                  GTK_SHRINK, // | GTK_FILL,
+	                  0, 0);
+
+	gtk_box_pack_start_defaults (GTK_BOX(GTK_DIALOG(dialog)->vbox), table);
+	gtk_widget_show_all (dialog);
+
+
+	/* If the user presses OK, verify the entries and add the product. */
+	if (gtk_dialog_run (GTK_DIALOG(dialog)) == GTK_RESPONSE_OK)
+	{
+		gint quantity = (gint) gtk_spin_button_get_value (GTK_SPIN_BUTTON(spin));
+		const gchar* product = gtk_entry_get_text(GTK_ENTRY(entry));
+		gchar* category = gtk_combo_box_get_active_text (GTK_COMBO_BOX(combobox));
+		gboolean buy = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON(check));
+
+		if (g_ascii_strcasecmp (product, "") || category == NULL)
+		{
+			g_warning ("All of the fields were not correctly filled out!");
+			gtk_widget_destroy (dialog);
+
+			if (category != NULL)
+				g_free (category);
+			return;
+		}
+
+		GtkTreeModel* model = gtk_tree_view_get_model (treeview);
+		GtkTreeIter iter, child;
+		gtk_tree_model_get_iter_from_string (model, &iter, 0);
+
+		/* Retrieve an iterator pointing to the selected category. */
+		do
+		{
+			gchar* name;
+			gtk_tree_model_get (model, &iter, PRODUCT, &name, -1);
+			if (g_ascii_strcasecmp (name, category) == 0)
+			{
+				g_free (name);
+				break;
+			}
+
+			g_free (name);
+		}
+		while (gtk_tree_model_iter_next (model, &iter));
+
+		/* Convert the category iterator to a path so that it will not
+		   become invalid and add the new product as a child of the
+		   category. */
+		GtkTreePath* path = gtk_tree_model_get_path (model, &iter);
+		gtk_tree_store_append (GTK_TREE_STORE(model), &child, &iter);
+		gtk_tree_store_set (GTK_TREE_STORE(model),
+		                    &child,
+		                    BUY_IT, buy,
+		                    QUANTITY, quantity,
+		                    PRODUCT, product,
+		                    -1);
+
+		/* Add the quantity to the running total if it is to be purchased. */
+		if (buy)
+		{
+			gtk_tree_model_get_iter (model, &iter, path);
+			gtk_tree_model_get (model, &iter, QUANTITY, &i, -1);
+			i += quantity;
+			gtk_tree_store_set (GTK_TREE_STORE (model), &iter, QUANTITY, i, -1);
+		}
+
+		gtk_tree_path_free (path);
+		g_free (category);
+	}
+
+	gtk_widget_destroy (dialog);
 }
