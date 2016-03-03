@@ -1,4 +1,4 @@
-all: liststore treestore selections editable
+all: liststore treestore selections editable celldatafunctions
 
 
 liststore: liststore.cpp
@@ -13,5 +13,10 @@ selections: selections.cpp
 editable: editable.cpp
 	g++ -g -o editable editable.cpp     `pkg-config --cflags --libs gtk+-2.0`
 
+celldatafunctions: celldatafunctions.cpp
+	g++ -g -o celldatafunctions celldatafunctions.cpp \
+                                        `pkg-config --cflags --libs gtk+-2.0`
+
+
 clean:
-	rm -v liststore treestore selections editable
+	rm -v liststore treestore selections editable celldatafunctions
