@@ -2,6 +2,7 @@
 
 #include <gtk/gtk.h>
 #include <gdk/gdkkeysyms.h>
+#include <gdk/gdktypes.h>
 
 enum
 {
@@ -13,7 +14,7 @@ enum
 
 typedef struct
 {
-	gchar* action;
+	const gchar* action;
 	GdkModifierType mask;
 	guint value;
 } Accelerator;
@@ -26,7 +27,7 @@ const Accelerator list[] =
 	{ "New",   GDK_CONTROL_MASK, GDK_N },
 	{ "Open",  GDK_CONTROL_MASK, GDK_0 },
 	{ "Print", GDK_CONTROL_MASK, GDK_P },
-	{ NULL, NULL, NULL}
+	{ NULL,    GDK_CONTROL_MASK, 0}
 };
 
 
@@ -39,7 +40,7 @@ int main(int argc, char** argv)
 {
 	gtk_init (&argc, &argv);
 	GtkWidget* window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-	gtk_window_set_title (GKT_WINDOW(window), "Accelerator Keys");
+	gtk_window_set_title (GTK_WINDOW(window), "Accelerator Keys");
 	gtk_container_set_border_width (GTK_CONTAINER(window), 10);
 	gtk_widget_set_size_request (window, 250, 250);
 	g_signal_connect (G_OBJECT(window),"destroy",G_CALLBACK(gtk_main_quit),0);
@@ -53,6 +54,8 @@ int main(int argc, char** argv)
 	                                          G_TYPE_UINT);
 
 	/* Add all of the keyboard accelerators to the GtkListStore. */
+	guint i = 0;
+	GtkTreeIter iter;
 	while (list[i].action != NULL)
 	{
 		gtk_list_store_append (store, &iter);
@@ -65,9 +68,70 @@ int main(int argc, char** argv)
 	g_object_unref (store);
 
 	GtkWidget* scrolled_win = gtk_scrolled_window_new (NULL, NULL);
+	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW(scrolled_win),
+	                                GTK_POLICY_AUTOMATIC,
+	                                GTK_POLICY_AUTOMATIC);
+	gtk_container_add (GTK_CONTAINER(scrolled_win), treeview);
+	gtk_container_add (GTK_CONTAINER(window), scrolled_win);
+	gtk_widget_show_all (window);
+
+	gtk_main ();
+	return 0;
+}
 
 
+/* Create a tree view with 2 columns. The 1st is an action and the
+   2nd is a keyboard accelerator.
+*/
+void setup_tree_view (GtkWidget* treeview)
+{
+	GtkCellRenderer* renderer = gtk_cell_renderer_text_new ();
+	GtkTreeViewColumn* column = gtk_tree_view_column_new_with_attributes (
+		                                                      "Buy",
+		                                                      renderer,
+		                                                      "text",
+		                                                      ACTION,
+		                                                      NULL);
+	gtk_tree_view_append_column (GTK_TREE_VIEW (treeview), column);
 
+	renderer = gtk_cell_renderer_accel_new ();
+	g_object_set (renderer,
+	              "accel-mode",
+	              GTK_CELL_RENDERER_ACCEL_MODE_GTK,
+	              "editable",
+	              TRUE,
+	              NULL);
+
+	column = gtk_tree_view_column_new_with_attributes ("Buy",
+	                                                   renderer,
+	                                                   "accel-mods",
+	                                                   MASK,
+	                                                   "accel-key",
+	                                                   VALUE,
+	                                                   NULL);
+	gtk_tree_view_append_column (GTK_TREE_VIEW(treeview), column);
+	g_signal_connect (G_OBJECT(renderer),
+	                  "accel_edited",
+	                  G_CALLBACK(accel_edited),
+	                  (gpointer) treeview);
+}
+
+/* Apply the new keyboard accelerator key and mask to the cell. */
+void accel_edited (GtkCellRendererAccel* renderer,
+                   gchar* path,
+                   guint accel_key,
+                   GdkModifierType mask,
+                   guint hardware_keycode,
+                   GtkTreeView* treeview)
+{
+	GtkTreeModel* model = gtk_tree_view_get_model (treeview);
 	GtkTreeIter iter;
-	guint i = 0;
+	if (gtk_tree_model_get_iter_from_string (model, &iter, path))
+		gtk_list_store_set (GTK_LIST_STORE (model),
+		                    &iter,
+		                    MASK,
+		                    (gint) mask,
+		                    VALUE,
+		                    accel_key,
+		                    -1);
 }
