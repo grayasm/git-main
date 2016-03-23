@@ -16,7 +16,4 @@ target_include_directories (app1 PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/../shared1)
 target_link_libraries (app1 PRIVATE static1 shared1)
 
-set(target app1)
-include(${CMA KE_SOURCE_DIR}/packageDefinition/myPackage.cmake)
-
-#install (TARGETS app1 RUNTIME DESTINATION .)
+install (TARGETS app1 RUNTIME DESTINATION .)
