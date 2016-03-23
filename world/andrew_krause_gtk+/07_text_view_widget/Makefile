@@ -1,5 +1,5 @@
 all: scrolledwindows textview textview2 textview3 textview4 iterators \
-     cutcopypaste find texttags
+     cutcopypaste find texttags images childwidgets
 
 scrolledwindows: scrolledwindows.cpp
 	g++ -g -o scrolledwindows scrolledwindows.cpp \
@@ -30,7 +30,13 @@ find: find.cpp
 texttags: texttags.cpp
 	g++ -g -o texttags texttags.cpp   `pkg-config --cflags --libs gtk+-2.0`
 
+images: images.cpp
+	g++ -g -o images images.cpp       `pkg-config --cflags --libs gtk+-2.0`
+
+childwidgets: childwidgets.cpp
+	g++ -g -o childwidgets childwidgets.cpp \
+                                      `pkg-config --cflags --libs gtk+-2.0`
 
 clean:
 	rm -v scrolledwindows textview textview2 textview3 textview4 iterators \
-          cutcopypaste find texttags
+          cutcopypaste find texttags images childwidgets
