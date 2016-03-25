@@ -1,4 +1,4 @@
-all: popupmenus accelerators statusbarhints menubars toolbars
+all: popupmenus accelerators statusbarhints menubars toolbars uimanager
 
 
 popupmenus: popupmenus.cpp
@@ -16,5 +16,9 @@ menubars: menubars.cpp
 toolbars: toolbars.cpp
 	g++ -g -o toolbars toolbars.cpp         `pkg-config --cflags --libs gtk+-2.0`
 
+uimanager: uimanager.cpp
+	g++ -g -o uimanager uimanager.cpp       `pkg-config --cflags --libs gtk+-2.0`
+
+
 clean:
-	rm -v popupmenus accelerators statusbarhints menubars toolbars
+	rm -v popupmenus accelerators statusbarhints menubars toolbars uimanager
