@@ -47,7 +47,7 @@ alias diff='meld'
 
 
 # Inside a tiling window manager
-# alias jdraw='java -jar /opt/jdraw/jdraw_v1.1.5.jar'
+# alias jdraw='java -jar /opt/jdraw-1.1.5/jdraw_v1.1.5.jar'
 # alias netbeans='/opt/netbeans-8.0.2/bin/netbeans'
 # alias xfe='xfe-xfe'
 # alias se='/opt/slickedit/bin/vs'
@@ -67,7 +67,7 @@ alias diff='meld'
 
 # ssh client
 alias sshsrv='ssh -X -l mihk -i $HOME/.ssh/id_rsa_home_key 192.168.0.128'
-alias office='ssh -i $HOME/.ssh/id_dsa_office -l mihai -L 13389:10.1.1.200:3389 $OFFICE'
+alias office='ssh -i $HOME/.ssh/id_dsa_office -l mihai -L 13389:10.1.1.235:3389 $OFFICE'
 
 
 # X11
