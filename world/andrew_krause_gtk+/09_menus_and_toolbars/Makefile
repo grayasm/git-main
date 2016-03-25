@@ -1,4 +1,4 @@
-all: popupmenus accelerators statusbarhints
+all: popupmenus accelerators statusbarhints menubars toolbars
 
 
 popupmenus: popupmenus.cpp
@@ -10,5 +10,11 @@ accelerators: accelerators.cpp
 statusbarhints: statusbarhints.cpp
 	g++ -g -o statusbarhints statusbarhints.cpp `pkg-config --cflags --libs gtk+-2.0`
 
+menubars: menubars.cpp
+	g++ -g -o menubars menubars.cpp         `pkg-config --cflags --libs gtk+-2.0`
+
+toolbars: toolbars.cpp
+	g++ -g -o toolbars toolbars.cpp         `pkg-config --cflags --libs gtk+-2.0`
+
 clean:
-	rm -v popupmenus accelerators statusbarhints
+	rm -v popupmenus accelerators statusbarhints menubars toolbars
