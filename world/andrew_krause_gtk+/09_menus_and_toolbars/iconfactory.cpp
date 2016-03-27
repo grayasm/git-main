@@ -1,4 +1,8 @@
-/* Using GtkIconFactory. */
+/* Using GtkIconFactory.
+
+   It seems the GtkIconFactory is not working anymore for icons placed
+   outside theme directory.
+*/
 
 #include <gtk/gtk.h>
 
