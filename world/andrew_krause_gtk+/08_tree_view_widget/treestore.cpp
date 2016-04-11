@@ -81,15 +81,15 @@ int main(int argc, char** argv)
 
 			/* Add the category as a new root element. */
 			gtk_tree_store_append (store, &iter, NULL);
-			gtk_tree_store_set (store,
-			                    &iter,
-			                    BUY_IT,
-			                    list[i].buy,
-			                    QUANTITY,
-			                    list[i].quantity,
-			                    PRODUCT,
-			                    list[i].product,
-			                    -1);
+			gtk_tree_store_set (store,                     // store
+			                    &iter,                     // iterator
+			                    BUY_IT,                    // column index
+			                    list[i].buy,               // value
+			                    QUANTITY,                  // column index
+			                    list[i].quantity,          // value
+			                    PRODUCT,                   // column index
+			                    list[i].product,           // value
+			                    -1);                       // -1 -> end
 		}
 
 		/* Otherwise, add the product as a child of the category. */
