@@ -24,7 +24,7 @@ struct _MyIPAddress
 struct _MyIPAddressClass
 {
   GtkEntryClass parent_class;
-  
+
   void (* ip_changed) (MyIPAddress *ipaddress);
 };
 

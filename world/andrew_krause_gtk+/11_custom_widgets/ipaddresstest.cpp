@@ -3,8 +3,7 @@
 
 void ip_address_changed (MyIPAddress*);
 
-int main (int argc,
-          char *argv[])
+int main (int argc, char** argv)
 {
   gint address[4] = { 1, 20, 35, 255 };
 
