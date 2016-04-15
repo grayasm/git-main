@@ -26,15 +26,3 @@ add_subdirectory (app1)
 
 # CPack must be included only 1 time at the end of top file.
 include (CPack)
-
-
-# Some extra information about the process
-message ("processor          : ${CMAKE_HOST_SYSTEM_PROCESSOR}")
-message ("generator          : ${CMAKE_GENERATOR}")
-message ("compiler           : ${CMAKE_CXX_COMPILER}")
-message ("configuration types: ${CMAKE_CONFIGURATION_TYPES}")
-message ("build type(debug?) : ${CMAKE_BUILD_TYPE}")
-message ("CMAKE_C_FLAGS_DEBUG: ${CMAKE_C_FLAGS_DEBUG}")
-message ("CMAKE_C_FLAGS_RELEASE: ${CMAKE_C_FLAGS_RELEASE}")
-message ("CMAKE_CXX_FLAGS_DEBUG: ${CMAKE_CXX_FLAGS_DEBUG}")
-message ("CMAKE_CXX_FLAGS_RELEASE: ${CMAKE_CXX_FLAGS_RELEASE}")
