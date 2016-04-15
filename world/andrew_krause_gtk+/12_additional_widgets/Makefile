@@ -1,4 +1,4 @@
-all: drawingareas entrycompletion printing
+all: drawingareas entrycompletion printing recentfiles
 
 drawingareas: drawingareas.cpp
 	g++ -Wall -g drawingareas.cpp -o drawingareas \
@@ -12,5 +12,9 @@ printing: printing.cpp
 	g++ -Wall -g printing.cpp -o printing \
                  `pkg-config --cflags --libs gtk+-2.0`
 
+recentfiles: recentfiles.cpp
+	g++ -Wall -g recentfiles.cpp -o recentfiles \
+                 `pkg-config --cflags --libs gtk+-2.0`
+
 clean:
-	rm -fv drawingareas entrycompletion printing
+	rm -fv drawingareas entrycompletion printing recentfiles
