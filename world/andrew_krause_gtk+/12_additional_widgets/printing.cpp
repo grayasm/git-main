@@ -40,7 +40,7 @@ int main (int argc, char** argv)
 	gtk_window_set_title (GTK_WINDOW (w->window), "Printing");
 	gtk_container_set_border_width (GTK_CONTAINER (w->window), 10);
 	gtk_widget_set_size_request (w->window, 200, -1);
-	g_signal_connect (G_OBJECT(window),"destroy",G_CALLBACK(gtk_main_quit),0);
+	g_signal_connect (G_OBJECT(w->window),"destroy",G_CALLBACK(gtk_main_quit),0);
 
 	w->chooser = gtk_file_chooser_button_new ("Select a File",
 	                                          GTK_FILE_CHOOSER_ACTION_OPEN);
@@ -70,8 +70,8 @@ void print_file  (GtkButton* button, Widgets* w)
 	/*  Return if a file has not been selected
 	    because there is nothing to print.
 	*/
-	const gchar* filename = gtk_file_chooser_get_filename
-                                             (GTK_FILE_CHOOSER (w->chooser));
+	gchar* filename = gtk_file_chooser_get_filename
+                                       (GTK_FILE_CHOOSER (w->chooser));
 
 	if (filename == NULL)
 		return;
@@ -112,7 +112,9 @@ void print_file  (GtkButton* button, Widgets* w)
 	{
 		if (settings != NULL)
 			g_object_unref (settings);
-		settings = g_object_ref (gtk_print_operation_get_print_settings(operation));
+		settings = (GtkPrintSettings*) g_object_ref	(
+                                         gtk_print_operation_get_print_settings(
+	                                         operation));
 	}
 	/*  Otherwise, report that the print operation has failed. */
 	else if (error)
@@ -140,7 +142,7 @@ void begin_print (GtkPrintOperation* operation,
                   GtkPrintContext* context,
                   Widgets* w)
 {
-	const gchar* contents;
+	gchar* contents;
 	gsize length;
 
 	/* Retrieve the file contents and split it into lines of text. */
@@ -197,20 +199,22 @@ void draw_page (GtkPrintOperation* operation,
 	pango_layout_get_size (layout, &text_width, NULL);
 	pango_layout_set_alignment (layout, PANGO_ALIGN_RIGHT);
 
-	cairo_move_to (cr, width - (text_width / PANGO_SCALE), 
+	cairo_move_to (cr, width - (text_width / PANGO_SCALE),
 	               (HEADER_HEIGHT - text_height) / 2);
 	pango_cairo_show_layout (cr, layout);
-  
-	/* Render the page text with the specified font and size. */  
+
+	/* Render the page text with the specified font and size. */
 	cairo_move_to (cr, 0, HEADER_HEIGHT + HEADER_GAP);
 	gint line = page_nr * w->data->lines_per_page;
-	for (gint i = 0; i < w->data->lines_per_page && line < w->data->total_lines; i++) 
-  {
-	  pango_layout_set_text (layout, w->data->lines[line], -1);
-	  pango_cairo_show_layout (cr, layout);
-	  cairo_rel_move_to (cr, 0, w->data->font_size + 3);
-	  line++;
-  }
+	for (gint i = 0;
+	     i < w->data->lines_per_page && line < w->data->total_lines;
+	     i++)
+	{
+		pango_layout_set_text (layout, w->data->lines[line], -1);
+		pango_cairo_show_layout (cr, layout);
+		cairo_rel_move_to (cr, 0, w->data->font_size + 3);
+		line++;
+	}
 
 	g_free (page_str);
 	g_object_unref (layout);
@@ -218,4 +222,12 @@ void draw_page (GtkPrintOperation* operation,
 }
 
 
-void end_print   (GtkPrintOperation*, GtkPrintContext*, Widgets*);
+/*  Clean up after the printing operation since it is done. */
+void end_print (GtkPrintOperation* operation,
+                GtkPrintContext* context,
+                Widgets* w)
+{
+	g_strfreev (w->data->lines);
+	g_slice_free1 (sizeof(PrintData), w->data);
+	w->data = NULL;
+}
