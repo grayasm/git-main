@@ -2,8 +2,7 @@
 
 static void destroy (GtkWidget*, gpointer);
 
-int main (int argc, 
-          char *argv[])
+int main (int argc, char *argv[])
 {
   GtkWidget *window, *handle, *label;
 

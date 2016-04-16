@@ -9,7 +9,7 @@ typedef struct
 {
   gchar *filename;
   gdouble font_size;
-  gint lines_per_page;  
+  gint lines_per_page;
   gchar **lines;
   gint total_lines;
   gint total_pages;
@@ -28,8 +28,7 @@ static void begin_print (GtkPrintOperation*, GtkPrintContext*, Widgets*);
 static void draw_page (GtkPrintOperation*, GtkPrintContext*, gint, Widgets*);
 static void end_print (GtkPrintOperation*, GtkPrintContext*, Widgets*);
 
-int main (int argc, 
-          char *argv[])
+int main (int argc, char *argv[])
 {
   GtkWidget *hbox, *print;
   Widgets *w;
@@ -44,30 +43,30 @@ int main (int argc,
 
   g_signal_connect (G_OBJECT (w->window), "destroy",
                     G_CALLBACK (gtk_main_quit), NULL);
-  
+
   w->chooser = gtk_file_chooser_button_new ("Select a File",
                                             GTK_FILE_CHOOSER_ACTION_OPEN);
   gtk_file_chooser_set_current_folder (GTK_FILE_CHOOSER (w->chooser),
                                        g_get_home_dir ());
-  
+
   print = gtk_button_new_from_stock (GTK_STOCK_PRINT);
-  
+
   g_signal_connect (G_OBJECT (print), "clicked",
                     G_CALLBACK (print_file), (gpointer) w);
-  
+
   hbox = gtk_hbox_new (FALSE, 5);
   gtk_box_pack_start (GTK_BOX (hbox), w->chooser, TRUE, TRUE, 0);
   gtk_box_pack_start (GTK_BOX (hbox), print, FALSE, FALSE, 0);
 
   gtk_container_add (GTK_CONTAINER (w->window), hbox);
   gtk_widget_show_all (w->window);
-  
+
   gtk_main ();
   return 0;
 }
 
 /* Print the selected file with a font of "Monospace 10". */
-static void 
+static void
 print_file (GtkButton *button,
             Widgets *w)
 {
@@ -86,16 +85,16 @@ print_file (GtkButton *button,
   operation = gtk_print_operation_new ();
   if (settings != NULL)
     gtk_print_operation_set_print_settings (operation, settings);
-  
+
   w->data = g_slice_new (PrintData);
   w->data->filename = g_strdup (filename);
   w->data->font_size = 10.0;
 
-  g_signal_connect (G_OBJECT (operation), "begin_print", 
+  g_signal_connect (G_OBJECT (operation), "begin_print",
 		                G_CALLBACK (begin_print), (gpointer) w);
-  g_signal_connect (G_OBJECT (operation), "draw_page", 
+  g_signal_connect (G_OBJECT (operation), "draw_page",
 		                G_CALLBACK (draw_page), (gpointer) w);
-  g_signal_connect (G_OBJECT (operation), "end_print", 
+  g_signal_connect (G_OBJECT (operation), "end_print",
 		                G_CALLBACK (end_print), (gpointer) w);
 
   /* Run the default print operation that will print the selected file. */
@@ -112,16 +111,16 @@ print_file (GtkButton *button,
   /* Otherwise, report that the print operation has failed. */
   else if (error)
   {
-    dialog = gtk_message_dialog_new (GTK_WINDOW (w->window), 
+    dialog = gtk_message_dialog_new (GTK_WINDOW (w->window),
                                      GTK_DIALOG_DESTROY_WITH_PARENT,
                                      GTK_MESSAGE_ERROR, GTK_BUTTONS_CLOSE,
 				                             error->message);
-    
+
     g_error_free (error);
     gtk_dialog_run (GTK_DIALOG (dialog));
-    gtk_widget_destroy (dialog);     
+    gtk_widget_destroy (dialog);
   }
-  
+
   g_object_unref (operation);
   g_free (filename);
 }
@@ -129,7 +128,7 @@ print_file (GtkButton *button,
 /* Begin the printing by retrieving the contents of the selected files and
  * spliting it into single lines of text. */
 static void
-begin_print (GtkPrintOperation *operation, 
+begin_print (GtkPrintOperation *operation,
              GtkPrintContext *context,
              Widgets *w)
 {
@@ -145,7 +144,7 @@ begin_print (GtkPrintOperation *operation,
   w->data->total_lines = 0;
   while (w->data->lines[w->data->total_lines] != NULL)
     w->data->total_lines++;
-  
+
   /* Based on the height of the page and font size, calculate how many lines can be 
    * rendered on a single page. A padding of 3 is placed between lines as well. */
   height = gtk_print_context_get_height (context) - HEADER_HEIGHT - HEADER_GAP;
@@ -192,14 +191,14 @@ draw_page (GtkPrintOperation *operation,
   pango_layout_get_size (layout, &text_width, NULL);
   pango_layout_set_alignment (layout, PANGO_ALIGN_RIGHT);
 
-  cairo_move_to (cr, width - (text_width / PANGO_SCALE), 
+  cairo_move_to (cr, width - (text_width / PANGO_SCALE),
                  (HEADER_HEIGHT - text_height) / 2);
   pango_cairo_show_layout (cr, layout);
-  
-  /* Render the page text with the specified font and size. */  
+
+  /* Render the page text with the specified font and size. */
   cairo_move_to (cr, 0, HEADER_HEIGHT + HEADER_GAP);
   line = page_nr * w->data->lines_per_page;
-  for (i = 0; i < w->data->lines_per_page && line < w->data->total_lines; i++) 
+  for (i = 0; i < w->data->lines_per_page && line < w->data->total_lines; i++)
   {
     pango_layout_set_text (layout, w->data->lines[line], -1);
     pango_cairo_show_layout (cr, layout);
@@ -214,7 +213,7 @@ draw_page (GtkPrintOperation *operation,
 
 /* Clean up after the printing operation since it is done. */
 static void
-end_print (GtkPrintOperation *operation, 
+end_print (GtkPrintOperation *operation,
            GtkPrintContext *context,
            Widgets *w)
 {

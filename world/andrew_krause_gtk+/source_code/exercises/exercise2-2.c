@@ -7,14 +7,13 @@ static void destroy (GtkWidget*, gpointer);
 static gboolean key_press (GtkWidget*, GdkEventKey*, GtkLabel*);
 static void title_changed (GObject*, GParamSpec*, gpointer);
 
-int main (int argc, 
-          char *argv[])
+int main (int argc, char *argv[])
 {
   GtkWidget *window, *label;
 
   gtk_init (&argc, &argv);
 
-  window = gtk_window_new (GTK_WINDOW_TOPLEVEL); 
+  window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
   g_object_set (window, "title", FIRST_NAME, "width-request", 300,
                 "height-request", 100, "resizable", FALSE, NULL);
 
@@ -39,9 +38,9 @@ int main (int argc,
 /* This callback function is called every time key-press-event is emitted
  * from the main GtkWindow. By placing the third parameter as a GtkLabel,
  * the gpointer is already cast and ready for use. */
-static gboolean 
-key_press (GtkWidget *window, 
-           GdkEventKey *event, 
+static gboolean
+key_press (GtkWidget *window,
+           GdkEventKey *event,
            GtkLabel *label)
 {
   gchar *text;
@@ -62,9 +61,9 @@ key_press (GtkWidget *window,
 }
 
 /* Notify the user that the window title was changed. */
-static void 
-title_changed (GObject *window, 
-               GParamSpec *property, 
+static void
+title_changed (GObject *window,
+               GParamSpec *property,
                gpointer data)
 {
   gchar *text;

@@ -4,8 +4,7 @@ void on_delete_clicked (GtkToolButton*);
 static void setup_tree_view (GtkWidget*);
 static void setup_tree_model (GtkWidget*);
 
-int main (int argc, 
-          char *argv[])
+int main (int argc, char *argv[])
 {
   GtkWidget *window, *treeview, *statusbar;
 
@@ -18,7 +17,7 @@ int main (int argc,
   window = glade_xml_get_widget (xml, "window");
   treeview = glade_xml_get_widget (xml, "treeview");
   statusbar = glade_xml_get_widget (xml, "statusbar");
-  
+
   size_type[0] = "B";
   size_type[1] = "KiB";
   size_type[2] = "MiB";
@@ -26,15 +25,16 @@ int main (int argc,
 
   history = g_ptr_array_new ();
   g_ptr_array_add (history, (gpointer) g_strdup (G_DIR_SEPARATOR_S));
-  context_id = gtk_statusbar_get_context_id (GTK_STATUSBAR (statusbar), "Message");
-  
+  context_id = gtk_statusbar_get_context_id (GTK_STATUSBAR (statusbar),
+                                             "Message");
+
   glade_xml_signal_autoconnect (xml);
   setup_tree_view (treeview);
   setup_tree_model (treeview);
 
   gtk_widget_show_all (window);
   gtk_main ();
-  
+
   return 0;
 }
 
@@ -43,13 +43,13 @@ void
 file_manager_error (gchar *message)
 {
   GtkWidget *dialog, *window;
-  
+
   window = glade_xml_get_widget (xml, "window");
-  dialog = gtk_message_dialog_new (GTK_WINDOW (window), GTK_DIALOG_MODAL, 
+  dialog = gtk_message_dialog_new (GTK_WINDOW (window), GTK_DIALOG_MODAL,
                                    GTK_MESSAGE_ERROR, GTK_BUTTONS_OK,
                                    "File Manager Error");
   gtk_message_dialog_format_secondary_text (GTK_MESSAGE_DIALOG (dialog), message);
-  
+
   gtk_dialog_run (GTK_DIALOG (dialog));
   gtk_widget_destroy (dialog);
 }
@@ -61,21 +61,21 @@ setup_tree_view (GtkWidget *treeview)
 {
   GtkCellRenderer *renderer;
   GtkTreeViewColumn *column;
-  
+
   /* Create a tree view column with an icon and file name. */
   column = gtk_tree_view_column_new ();
   gtk_tree_view_column_set_title (column, "File Browser");
-  
+
   renderer = gtk_cell_renderer_pixbuf_new ();
   gtk_tree_view_column_pack_start (column, renderer, FALSE);
   gtk_tree_view_column_set_attributes (column, renderer, "pixbuf", ICON, NULL);
-  
+
   renderer = gtk_cell_renderer_text_new ();
   gtk_tree_view_column_pack_start (column, renderer, TRUE);
   gtk_tree_view_column_set_attributes (column, renderer, "text", FILENAME, NULL);
-  
+
   gtk_tree_view_append_column (GTK_TREE_VIEW (treeview), column);
-  
+
   /* Insert a second tree view column that displays the file size. */
   renderer = gtk_cell_renderer_text_new ();
   column = gtk_tree_view_column_new_with_attributes
@@ -101,18 +101,18 @@ path_to_string ()
     location = G_DIR_SEPARATOR_S;
   /* Otherwise, build the path out of the GList content. */
   else
-  {  
+  {
     temp = current_path;
     location = g_strconcat (G_DIR_SEPARATOR_S, (gchar*) temp->data, NULL);
     temp = temp->next;
-  
+
     while (temp != NULL)
     {
       location = g_strconcat (location, G_DIR_SEPARATOR_S, (gchar*) temp->data, NULL);
       temp = temp->next;
     }
   }
-  
+
   return location;
 }
 
@@ -130,11 +130,11 @@ populate_tree_model (GtkWidget *treeview)
   gfloat size, total_size = 0;
   gint i, items = 0;;
   GDir *dir;
-  
+
   store = GTK_LIST_STORE (gtk_tree_view_get_model (GTK_TREE_VIEW (treeview)));
   gtk_list_store_clear (store);
   location = path_to_string ();
-  
+
   /* If the current location is not the root directory, add the '..' entry. */
   if (g_list_length (current_path) > 0)
   {
@@ -142,7 +142,7 @@ populate_tree_model (GtkWidget *treeview)
     gtk_list_store_append (store, &iter);
     gtk_list_store_set (store, &iter, ICON, directory, FILENAME, "..", -1);
   }
-  
+
   /* Return if the path does not exist. */
   if (!g_file_test (location, G_FILE_TEST_IS_DIR))
   {
@@ -150,11 +150,11 @@ populate_tree_model (GtkWidget *treeview)
     g_free (location);
     return;
   }
-  
+
   /* Display the new location in the address bar. */
   entry = glade_xml_get_widget (xml, "location");
   gtk_entry_set_text (GTK_ENTRY (entry), location);
-  
+
   /* Add each file to the list along with the file size and modified date. */
   pixbuf_dir = gdk_pixbuf_new_from_file ("directory.png", NULL);
   pixbuf_file = gdk_pixbuf_new_from_file ("file.png", NULL);
@@ -162,7 +162,7 @@ populate_tree_model (GtkWidget *treeview)
   while ((file = (gchar*) g_dir_read_name (dir)))
   {
     gchar *fn, *filesize, *modified;
-    
+
     fn = g_strconcat (location, "/", file, NULL);
     if (g_stat (fn, &st) == 0)
     {
@@ -175,16 +175,16 @@ populate_tree_model (GtkWidget *treeview)
         size = size / 1024.0;
         i++;
       }
-      
+
       /* Create strings for the file size and last modified date. */
       filesize = g_strdup_printf ("%.1f %s", size, size_type[i]);
       modified = g_strdup (ctime (&st.st_mtime));
       modified[strlen(modified)-1] = '\0';
     }
-    
+
     /* Add the file and its properties as a new tree view row. */
     gtk_list_store_append (store, &iter);
-    
+
     if (g_file_test (fn, G_FILE_TEST_IS_DIR))
       gtk_list_store_set (store, &iter, ICON, pixbuf_dir, FILENAME, file,
                           SIZE, filesize, MODIFIED, modified, -1);
@@ -195,7 +195,7 @@ populate_tree_model (GtkWidget *treeview)
 
     g_free (fn);
   }
-  
+
   /* Calculate the total size of the directory content. */
   i = 0;
   while (total_size >= 1024.0)
@@ -203,7 +203,7 @@ populate_tree_model (GtkWidget *treeview)
     total_size = total_size / 1024.0;
     i++;
   }
-  
+
   /* Add the number of items and the total size of the directory content
    * to the status bar. */
   statusbar = glade_xml_get_widget (xml, "statusbar");
@@ -221,12 +221,12 @@ static void
 setup_tree_model (GtkWidget *treeview)
 {
   GtkListStore *store;
-  
+
   store = gtk_list_store_new (COLUMNS, GDK_TYPE_PIXBUF, G_TYPE_STRING,
                               G_TYPE_STRING, G_TYPE_STRING);
   gtk_tree_view_set_model (GTK_TREE_VIEW (treeview), GTK_TREE_MODEL (store));
   g_object_unref (store);
-  
+
   populate_tree_model (treeview);
 }
 
@@ -246,7 +246,7 @@ store_history ()
     previous = g_strconcat (previous, (gchar*) temp->data, "/", NULL);
     temp = temp->next;
   }
-  
+
   /* Remove all strings that occur after history_pos and append the new path. */
   if (strlen (previous) > 1)
     previous[strlen(previous)-1] = '\0';
@@ -255,12 +255,12 @@ store_history ()
   {
     if (history_pos + 1 != history->len)
     {
-      for (i = history_pos + 1; i <= (history->len - history_pos - 1); i++) 
+      for (i = history_pos + 1; i <= (history->len - history_pos - 1); i++)
         g_free (g_ptr_array_index (history, i));
-      g_ptr_array_remove_range (history, history_pos + 1, 
+      g_ptr_array_remove_range (history, history_pos + 1,
                                 history->len - history_pos - 1);
     }
-    
+
     g_ptr_array_add (history, (gpointer) g_strdup (previous));
     history_pos++;
   }
@@ -277,18 +277,18 @@ parse_location (GString *location)
   g_list_foreach (current_path, (GFunc) g_free, NULL);
   g_list_free (current_path);
   current_path = NULL;
-  
+
   /* Erase all forward slashes from the end of the string. */
   while (location->str[location->len - 1] == '/')
     g_string_erase (location, location->len - 1, 1);
-  
+
   /* Parse through the string, splitting it into a GList at the '/' character. */
   while (location->str[0] == '/')
   {
     while (location->str[0] == '/')
       g_string_erase (location, 0, 1);
     find = g_strstr_len (location->str, location->len, "/");
-    
+
     if (find == NULL)
       current_path = g_list_append (current_path, g_strdup (location->str));
     else
@@ -302,7 +302,7 @@ parse_location (GString *location)
 
 /* Delete the currently selected file or folder. Folders will only be removed if
  * it does not include any content. */
-void 
+void
 on_delete_clicked (GtkToolButton *item)
 {
   GtkWidget *entry, *treeview, *dialog, *window;
@@ -312,13 +312,13 @@ on_delete_clicked (GtkToolButton *item)
   GString *location;
   GList *temp;
   gchar *file;
-  
+
   entry = glade_xml_get_widget (xml, "location");
   treeview = glade_xml_get_widget (xml, "treeview");
   window = glade_xml_get_widget (xml, "window");
   location = g_string_new ("/");
   temp = current_path;
-  
+
   /* Create the current path out of the content of current_path. */
   while (temp != NULL)
   {
@@ -339,12 +339,12 @@ on_delete_clicked (GtkToolButton *item)
 
     gtk_entry_set_text (GTK_ENTRY (entry), location->str);
     g_string_append (location, file);
-    
+
     /* Ask the user if it is okay to remove the file or folder. */
-    dialog = gtk_message_dialog_new (GTK_WINDOW (window), GTK_DIALOG_MODAL, 
+    dialog = gtk_message_dialog_new (GTK_WINDOW (window), GTK_DIALOG_MODAL,
                                      GTK_MESSAGE_QUESTION, GTK_BUTTONS_YES_NO,
                                      "Do you really want to delete %s?", file);
-    
+
     /* If the user approves, remove the file or report if it can't be done. */
     if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_YES)
       if (g_remove (location->str) != 0)
@@ -352,7 +352,7 @@ on_delete_clicked (GtkToolButton *item)
     gtk_widget_destroy (dialog);
     populate_tree_model (NULL);
   }
-  
+
   g_string_free (location, TRUE);
 }
 
@@ -371,7 +371,7 @@ on_info_clicked (GtkToolButton *item)
 
   treeview = glade_xml_get_widget (xml, "treeview");
   selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (treeview));
-  
+
   if (gtk_tree_selection_get_selected (selection, &model, &iter))
   {
     dialog = glade_xml_get_widget (xml, "dialog");
@@ -382,7 +382,7 @@ on_info_clicked (GtkToolButton *item)
     mod = glade_xml_get_widget (xml, "modified");
     access = glade_xml_get_widget (xml, "accessed");
     gtk_tree_model_get (model, &iter, FILENAME, &file, -1);
-    
+
     /* Set the file name, location and whether it is a file or directory. */
     location = path_to_string ();
     gtk_label_set_text (GTK_LABEL (name), file);
@@ -392,7 +392,7 @@ on_info_clicked (GtkToolButton *item)
       gtk_label_set_text (GTK_LABEL (type), "Directory");
     else
       gtk_label_set_text (GTK_LABEL (type), "File");
-    
+
     /* Set the file size, last modified date and last accessed date. */
     if (g_stat (file, &st) == 0)
     {
@@ -403,15 +403,15 @@ on_info_clicked (GtkToolButton *item)
         file_size = file_size / 1024.0;
         i++;
       }
-    
+
       modified = g_strndup (ctime (&st.st_mtime), strlen (ctime (&st.st_mtime))-1);
       accessed = g_strndup (ctime (&st.st_atime), strlen (ctime (&st.st_atime))-1);
       gtk_label_set_text (GTK_LABEL (mod), modified);
       gtk_label_set_text (GTK_LABEL (access), accessed);
-      gtk_label_set_text (GTK_LABEL (size), 
+      gtk_label_set_text (GTK_LABEL (size),
                           g_strdup_printf ("%.1f %s", file_size, size_type[i]));
     }
-    
+
     gtk_dialog_run (GTK_DIALOG (dialog));
     gtk_widget_hide (dialog);
   }

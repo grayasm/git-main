@@ -2,10 +2,10 @@
 
 /* When a row is activated, either move to the desired location or show
  * more information if the file is not a directory. */
-void 
+void
 on_row_activated (GtkTreeView *treeview,
                   GtkTreePath *path,
-                  GtkTreeViewColumn *column) 
+                  GtkTreeViewColumn *column)
 {
   GtkTreeModel *model;
   GtkTreeIter iter;
@@ -15,7 +15,7 @@ on_row_activated (GtkTreeView *treeview,
   if (gtk_tree_model_get_iter (model, &iter, path))
   {
     gtk_tree_model_get (model, &iter, FILENAME, &file, -1);
-    
+
     /* Move to the parent directory. */
     if (g_ascii_strcasecmp ("..", file) == 0)
     {
@@ -28,7 +28,7 @@ on_row_activated (GtkTreeView *treeview,
     /* Move to the chosen directory or show more information about the file. */
     else
     {
-      gchar *location = path_to_string ();   
+      gchar *location = path_to_string ();
 
       if (g_file_test (g_strconcat (location, "/", file, NULL), G_FILE_TEST_IS_DIR))
       {
@@ -37,22 +37,22 @@ on_row_activated (GtkTreeView *treeview,
         populate_tree_model (GTK_WIDGET (treeview));
       }
       else
-        on_info_clicked (NULL);  
+        on_info_clicked (NULL);
     }
   }
 }
 
 /* Go to the address bar location when the button is clicked. */
-void 
-on_go_clicked (GtkButton *button) 
+void
+on_go_clicked (GtkButton *button)
 {
   GtkWidget *entry, *treeview;
   GString *location;
-  
+
   entry = glade_xml_get_widget (xml, "location");
   treeview = glade_xml_get_widget (xml, "treeview");
   location = g_string_new (gtk_entry_get_text (GTK_ENTRY (entry)));
-  
+
   /* If the directory exists, visit the entered location. */
   if (g_file_test (location->str, G_FILE_TEST_IS_DIR))
   {
@@ -62,12 +62,12 @@ on_go_clicked (GtkButton *button)
   }
   else
     file_manager_error ("The location does not exist!");
-  
+
   g_string_free (location, TRUE);
 }
 
 /* Visit the previous location in the history list. */
-void 
+void
 on_back_clicked (GtkToolButton *item)
 {
   GtkWidget *treeview;
@@ -106,20 +106,20 @@ on_forward_clicked (GtkToolButton *item)
 
 /* Go to the address bar location when the GtkEntry is activated. */
 void
-on_location_activate (GtkEntry *entry) 
+on_location_activate (GtkEntry *entry)
 {
   on_go_clicked (NULL);
 }
 
 /* Visit the parent directory of the current location. */
-void 
+void
 on_up_clicked (GtkToolButton *item)
 {
   GtkWidget *entry;
   GString *location;
   GList *temp;
-  
-  entry = glade_xml_get_widget (xml, "location");  
+
+  entry = glade_xml_get_widget (xml, "location");
   location = g_string_new ("/");
   temp = current_path;
 
@@ -135,18 +135,18 @@ on_up_clicked (GtkToolButton *item)
 }
 
 /* Visit the current user's home directory. */
-void 
-on_home_clicked (GtkToolButton *item) 
+void
+on_home_clicked (GtkToolButton *item)
 {
   GtkWidget *entry;
-  
+
   entry = glade_xml_get_widget (xml, "location");
   gtk_entry_set_text (GTK_ENTRY (entry), g_get_home_dir ());
   on_go_clicked (NULL);
 }
 
 /* Refresh the content of the current location. */
-void 
+void
 on_refresh_clicked (GtkToolButton *item)
 {
   GtkWidget *treeview = glade_xml_get_widget (xml, "treeview");

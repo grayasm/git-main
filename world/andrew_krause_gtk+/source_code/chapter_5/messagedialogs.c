@@ -2,8 +2,7 @@
 
 static void button_clicked (GtkButton*, GtkWindow*);
 
-int main (int argc, 
-          char *argv[])
+int main (int argc, char *argv[])
 {
   GtkWidget *window, *button;
 
@@ -29,13 +28,13 @@ int main (int argc,
   return 0;
 }
 
-/* Create a new message dialog that tells the user that the button was clicked. */
+/* Create a new message dialog that tells the user that the button was clicked.*/
 static void
 button_clicked (GtkButton *button,
                 GtkWindow *parent)
 {
   GtkWidget *dialog;
-  
+
   dialog = gtk_message_dialog_new (parent, GTK_DIALOG_MODAL,
                                    GTK_MESSAGE_INFO, GTK_BUTTONS_OK,
                                    "The button was clicked!");

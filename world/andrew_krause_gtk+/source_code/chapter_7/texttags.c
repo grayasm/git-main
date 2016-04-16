@@ -1,12 +1,12 @@
 #include <gtk/gtk.h>
 
-typedef struct 
+typedef struct
 {
   gchar *str;
   double scale;
 } text_to_double;
 
-const text_to_double text_scales[] = 
+const text_to_double text_scales[] =
 {
   { "Quarter Sized", (double) 0.25 },
   { "Double Extra Small", PANGO_SCALE_XX_SMALL},
@@ -17,7 +17,7 @@ const text_to_double text_scales[] =
   { "Extra Large", PANGO_SCALE_X_LARGE},
   { "Double Extra Large", PANGO_SCALE_XX_LARGE},
   { "Double Sized", (double) 2.0 },
-  { NULL, 0 } 
+  { NULL, 0 }
 };
 
 static void format (GtkWidget*, GtkTextView*);
@@ -31,24 +31,24 @@ int main (int argc,
   GtkWidget *bold, *italic, *underline, *strike, *scale, *clear;
   GtkTextBuffer *buffer;
   gint i = 0;
-  
+
   gtk_init (&argc, &argv);
-  
+
   window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
   gtk_window_set_title (GTK_WINDOW (window), "Text Tags");
   gtk_container_set_border_width (GTK_CONTAINER (window), 10);
   gtk_widget_set_size_request (window, 500, -1);
-  
+
   g_signal_connect (G_OBJECT (window), "destroy",
                     G_CALLBACK (gtk_main_quit), NULL);
-  
+
   textview = gtk_text_view_new ();
   buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (textview));
 
-  gtk_text_buffer_create_tag (buffer, "bold", "weight", PANGO_WEIGHT_BOLD, NULL);
-  gtk_text_buffer_create_tag (buffer, "italic", "style", PANGO_STYLE_ITALIC, NULL);
-  gtk_text_buffer_create_tag (buffer, "strike", "strikethrough", TRUE, NULL);
-  gtk_text_buffer_create_tag (buffer, "underline", "underline", 
+  gtk_text_buffer_create_tag (buffer, "bold","weight",PANGO_WEIGHT_BOLD, NULL);
+  gtk_text_buffer_create_tag (buffer, "italic","style",PANGO_STYLE_ITALIC, NULL);
+  gtk_text_buffer_create_tag (buffer, "strike","strikethrough", TRUE, NULL);
+  gtk_text_buffer_create_tag (buffer, "underline", "underline",
                               PANGO_UNDERLINE_SINGLE, NULL);
 
   bold = gtk_button_new_from_stock (GTK_STOCK_BOLD);
@@ -59,13 +59,13 @@ int main (int argc,
   scale = gtk_combo_box_new_text();
 
   /* Add choices to the GtkComboBox widget. */
-  for (i = 0; text_scales[i].str != NULL; i++) 
+  for (i = 0; text_scales[i].str != NULL; i++)
   {
     gtk_combo_box_append_text (GTK_COMBO_BOX (scale), text_scales[i].str);
-    gtk_text_buffer_create_tag (buffer, text_scales[i].str, "scale", 
+    gtk_text_buffer_create_tag (buffer, text_scales[i].str, "scale",
                                 text_scales[i].scale, NULL );
   }
-  
+
   /* Add the name of the text tag as a data parameter of the object. */
   g_object_set_data (G_OBJECT (bold), "tag", "bold");
   g_object_set_data (G_OBJECT (italic), "tag", "italic");
@@ -96,7 +96,7 @@ int main (int argc,
   gtk_box_pack_start (GTK_BOX (vbox), strike, FALSE, FALSE, 0);
   gtk_box_pack_start (GTK_BOX (vbox), scale, FALSE, FALSE, 0);
   gtk_box_pack_start (GTK_BOX (vbox), clear, FALSE, FALSE, 0);
-  
+
   scrolled_win = gtk_scrolled_window_new (NULL, NULL);
   gtk_container_add (GTK_CONTAINER (scrolled_win), textview);
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolled_win),
@@ -105,10 +105,10 @@ int main (int argc,
   hbox = gtk_hbox_new (FALSE, 5);
   gtk_box_pack_start (GTK_BOX (hbox), scrolled_win, TRUE, TRUE, 0);
   gtk_box_pack_start (GTK_BOX (hbox), vbox, FALSE, TRUE, 0);
-  
+
   gtk_container_add (GTK_CONTAINER (window), hbox);
   gtk_widget_show_all (window);
-  
+
   gtk_main();
   return 0;
 }

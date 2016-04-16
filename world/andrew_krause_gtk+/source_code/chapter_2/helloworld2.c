@@ -3,8 +3,7 @@
 static void destroy (GtkWidget*, gpointer);
 static gboolean delete_event (GtkWidget*, GdkEvent*, gpointer);
 
-int main (int argc, 
-          char *argv[])
+int main (int argc, char *argv[])
 {
   GtkWidget *window, *label;
 

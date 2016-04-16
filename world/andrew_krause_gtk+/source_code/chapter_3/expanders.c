@@ -2,8 +2,7 @@
 
 static void destroy (GtkWidget*, gpointer);
 
-int main (int argc, 
-          char *argv[])
+int main (int argc, char *argv[])
 {
   GtkWidget *window, *expander, *label;
 
@@ -16,10 +15,10 @@ int main (int argc,
 
   g_signal_connect (G_OBJECT (window), "destroy",
                     G_CALLBACK (destroy), NULL);
-  
+
   expander = gtk_expander_new_with_mnemonic ("Click _Me For More!");
   label = gtk_label_new ("Hide me or show me,\nthat is your choice.");
-  
+
   gtk_container_add (GTK_CONTAINER (expander), label);
   gtk_expander_set_expanded (GTK_EXPANDER (expander), TRUE);
   gtk_container_add (GTK_CONTAINER (window), expander);
@@ -35,4 +34,4 @@ destroy (GtkWidget *window,
          gpointer data)
 {
   gtk_main_quit ();
-} 
+}

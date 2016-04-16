@@ -6,7 +6,7 @@ static void my_marquee_class_init (MyMarqueeClass*);
 static void my_marquee_init (MyMarquee*);
 static void my_marquee_get_property (GObject*, guint, GValue*, GParamSpec*);
 static void my_marquee_set_property (GObject*, guint, const GValue*, GParamSpec*);
-         
+
 static void my_marquee_realize (GtkWidget*);
 static void my_marquee_size_request (GtkWidget*, GtkRequisition*);
 static void my_marquee_size_allocate (GtkWidget*, GtkAllocation*);
@@ -16,7 +16,7 @@ static gint my_marquee_expose (GtkWidget*, GdkEventExpose*);
 
 typedef struct _MyMarqueePrivate  MyMarqueePrivate;
 
-struct _MyMarqueePrivate 
+struct _MyMarqueePrivate
 {
   gchar *message;
   gint speed;
@@ -42,17 +42,17 @@ my_marquee_get_type ()
     static const GTypeInfo marquee_info =
     {
       sizeof (MyMarqueeClass),
-      NULL, 
+      NULL,
       NULL,
       (GClassInitFunc) my_marquee_class_init,
-      NULL, 
+      NULL,
       NULL,
       sizeof (MyMarquee),
       0,
       (GInstanceInitFunc) my_marquee_init,
     };
 
-    marquee_type = g_type_register_static (GTK_TYPE_WIDGET, "MyMarquee", 
+    marquee_type = g_type_register_static (GTK_TYPE_WIDGET, "MyMarquee",
                                            &marquee_info, 0);
   }
 
@@ -79,10 +79,10 @@ my_marquee_class_init (MyMarqueeClass *klass)
   widget_class->expose_event = my_marquee_expose;
   widget_class->size_request = my_marquee_size_request;
   widget_class->size_allocate = my_marquee_size_allocate;
-  
+
   /* Add MyMarqueePrivate as a private data class of MyMarqueeClass. */
   g_type_class_add_private (klass, sizeof (MyMarqueePrivate));
-  
+
   /* Register four GObject properties, the message and the speed. */
   g_object_class_install_property (gobject_class, PROP_MESSAGE,
               g_param_spec_string ("message",
@@ -90,7 +90,7 @@ my_marquee_class_init (MyMarqueeClass *klass)
                                    "The message to scroll",
                                    "",
                                    G_PARAM_READWRITE));
-  
+
   g_object_class_install_property (gobject_class, PROP_SPEED,
                  g_param_spec_int ("speed",
                                    "Speed of the Marquee",
@@ -193,7 +193,7 @@ my_marquee_realize (GtkWidget *widget)
   attributes.event_mask |= (GDK_EXPOSURE_MASK);
   attributes.visual = gtk_widget_get_visual (widget);
   attributes.colormap = gtk_widget_get_colormap (widget);
-  
+
   /* Create a new GdkWindow for the widget. */
   attr_mask = GDK_WA_X | GDK_WA_Y | GDK_WA_VISUAL | GDK_WA_COLORMAP;
   widget->window = gdk_window_new (widget->parent->window, &attributes, attr_mask);
@@ -207,12 +207,12 @@ my_marquee_realize (GtkWidget *widget)
 
 /* Handle size requests for the widget. This function forces the widget to have
  * an initial size set according to the predefined width and the font size. */
-static void 
+static void
 my_marquee_size_request (GtkWidget *widget,
                          GtkRequisition *requisition)
 {
   PangoFontDescription *fd;
-  
+
   g_return_if_fail (widget != NULL || requisition != NULL);
   g_return_if_fail (IS_MY_MARQUEE (widget));
 
@@ -237,7 +237,7 @@ my_marquee_size_allocate (GtkWidget *widget,
 
   if (GTK_WIDGET_REALIZED (widget))
   {
-    gdk_window_move_resize (widget->window, allocation->x, allocation->y, 
+    gdk_window_move_resize (widget->window, allocation->x, allocation->y,
                             allocation->width, allocation->height);
   }
 }
@@ -267,7 +267,7 @@ my_marquee_expose (GtkWidget *widget,
   context = gdk_pango_context_get ();
   layout = pango_layout_new (context);
   g_object_unref (context);
-  
+
   /* Create a new PangoLayout out of the message with the given font. */
   pango_layout_set_font_description (layout, fd);
   pango_layout_set_text (layout, priv->message, -1);
@@ -280,15 +280,15 @@ my_marquee_expose (GtkWidget *widget,
   /* Draw the PangoLayout on the widget, which is the message text. */
   gdk_draw_layout (widget->window,
                    widget->style->fg_gc[widget->state],
-                   priv->current_x, 
+                   priv->current_x,
                    (widget->allocation.height - (height / PANGO_SCALE)) / 2,
                    layout);
-  
+
   return TRUE;
 }
 
 /* Move the message "speed" pixels to the left or wrap the message around. */
-void 
+void
 my_marquee_slide (MyMarquee *marquee)
 {
   PangoFontDescription *fd;
@@ -297,17 +297,17 @@ my_marquee_slide (MyMarquee *marquee)
   PangoLayout *layout;
   PangoContext *context;
   gint width, height;
-  
+
   g_return_if_fail (marquee != NULL);
   g_return_if_fail (IS_MY_MARQUEE (marquee));
-  
+
   widget = GTK_WIDGET (marquee);
   priv = MY_MARQUEE_GET_PRIVATE (marquee);
   fd = widget->style->font_desc;
   context = gdk_pango_context_get ();
   layout = pango_layout_new (context);
   g_object_unref (context);
-  
+
   /* Create a new PangoLayout out of the message with the given font. */
   pango_layout_set_font_description (layout, fd);
   pango_layout_set_text (layout, priv->message, -1);
@@ -321,42 +321,42 @@ my_marquee_slide (MyMarquee *marquee)
   priv->current_x = priv->current_x - priv->speed;
   if ((priv->current_x + (width / PANGO_SCALE)) <= 0)
     priv->current_x = widget->allocation.width;
-  
+
   /* Draw the PangoLayout on the widget, which is the message text. */
   gdk_draw_layout (widget->window,
                    widget->style->fg_gc[widget->state],
-                   priv->current_x, 
+                   priv->current_x,
                    (widget->allocation.height - (height / PANGO_SCALE)) / 2,
                    layout);
 }
 
 /* Set the message that is displayed by the widget. */
 void
-my_marquee_set_message (MyMarquee *marquee, 
+my_marquee_set_message (MyMarquee *marquee,
                         const gchar *message)
 {
   MyMarqueePrivate *priv = MY_MARQUEE_GET_PRIVATE (marquee);
-  
+
   if (priv->message)
   {
     g_free (priv->message);
     priv->message = NULL;
   }
-  
+
   priv->message = g_strdup (message);
 }
 
 /* Retrieve the message that is displayed by the widget. You must free this
  * string after you are done using it! */
-gchar* 
+gchar*
 my_marquee_get_message (MyMarquee *marquee)
 {
   return g_strdup (MY_MARQUEE_GET_PRIVATE (marquee)->message);
 }
 
 /* Set the number of pixels that the message will scroll. */
-void 
-my_marquee_set_speed (MyMarquee *marquee, 
+void
+my_marquee_set_speed (MyMarquee *marquee,
                       gint speed)
 {
   MyMarqueePrivate *priv = MY_MARQUEE_GET_PRIVATE (marquee);
@@ -364,7 +364,7 @@ my_marquee_set_speed (MyMarquee *marquee,
 }
 
 /* Retrieve the number of pixels that the message will scroll. */
-gint 
+gint
 my_marquee_get_speed (MyMarquee *marquee)
 {
   return MY_MARQUEE_GET_PRIVATE (marquee)->speed;

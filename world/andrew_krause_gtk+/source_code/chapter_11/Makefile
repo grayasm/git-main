@@ -1,7 +1,7 @@
 CC = cc
 CFLAGS = -Wall -g `pkg-config --cflags --libs gtk+-2.0`
 
-all: 
+all:
 	$(MAKE) ipaddresstest marqueetest
 
 marqueetest: mymarquee.c marqueetest.c mymarquee.h

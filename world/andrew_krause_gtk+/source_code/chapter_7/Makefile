@@ -2,7 +2,7 @@ EXES = $(basename $(wildcard *.c))
 CC = cc
 CFLAGS = -Wall -g `pkg-config --cflags --libs gtk+-2.0`
 
-all: 
+all:
 	$(MAKE) $(EXES)
 
 %: %.c

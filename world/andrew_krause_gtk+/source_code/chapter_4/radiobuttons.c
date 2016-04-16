@@ -2,8 +2,7 @@
 
 static void destroy (GtkWidget*, gpointer);
 
-int main (int argc, 
-          char *argv[])
+int main (int argc, char *argv[])
 {
   GtkWidget *window, *vbox, *radio1, *radio2, *radio3, *radio4;
 
@@ -22,7 +21,7 @@ int main (int argc,
                                                         "Click me instead!");
   radio3 = gtk_radio_button_new_with_label_from_widget (GTK_RADIO_BUTTON (radio1),
                                                         "No! Click me!");
-  
+
   /* Note: The radio button you create the new widget from does not matter as
    *       long as it it already a member of the group! */
   radio4 = gtk_radio_button_new_with_label_from_widget (GTK_RADIO_BUTTON (radio3),

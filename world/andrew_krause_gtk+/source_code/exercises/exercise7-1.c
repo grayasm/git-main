@@ -19,21 +19,21 @@ int main (int argc,
   GtkWidget *window, *scrolled_win, *vbox, *table, *searchbar;
   GtkWidget *new, *open, *save, *cut, *copy, *paste, *find;
   TextEditor *editor = g_slice_new (TextEditor);
-  
+
   gtk_init (&argc, &argv);
-  
+
   window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
   gtk_window_set_title (GTK_WINDOW (window), "Exercise 7-1");
   gtk_container_set_border_width (GTK_CONTAINER (window), 10);
   gtk_widget_set_size_request (window, 600, -1);
-  
+
   g_signal_connect (G_OBJECT (window), "destroy",
                     G_CALLBACK (gtk_main_quit), NULL);
-  
+
   editor->textview = gtk_text_view_new ();
   editor->search = gtk_entry_new ();
   gtk_entry_set_text (GTK_ENTRY (editor->search), "Search for ...");
-  
+
   new = gtk_button_new_from_stock (GTK_STOCK_NEW);
   open = gtk_button_new_from_stock (GTK_STOCK_OPEN);
   save = gtk_button_new_from_stock (GTK_STOCK_SAVE);
@@ -41,32 +41,32 @@ int main (int argc,
   copy = gtk_button_new_from_stock (GTK_STOCK_COPY);
   paste = gtk_button_new_from_stock (GTK_STOCK_PASTE);
   find = gtk_button_new_from_stock (GTK_STOCK_FIND);
-  
+
   g_signal_connect (G_OBJECT (new), "clicked",
-                    G_CALLBACK (new_clicked), 
+                    G_CALLBACK (new_clicked),
                     (gpointer) editor);
   g_signal_connect (G_OBJECT (open), "clicked",
-                    G_CALLBACK (open_clicked), 
+                    G_CALLBACK (open_clicked),
                     (gpointer) editor);
   g_signal_connect (G_OBJECT (save), "clicked",
-                    G_CALLBACK (save_clicked), 
+                    G_CALLBACK (save_clicked),
                     (gpointer) editor);
   g_signal_connect (G_OBJECT (cut), "clicked",
-                    G_CALLBACK (cut_clicked), 
+                    G_CALLBACK (cut_clicked),
                     (gpointer) editor);
   g_signal_connect (G_OBJECT (copy), "clicked",
-                    G_CALLBACK (copy_clicked), 
+                    G_CALLBACK (copy_clicked),
                     (gpointer) editor);
   g_signal_connect (G_OBJECT (paste), "clicked",
-                    G_CALLBACK (paste_clicked), 
+                    G_CALLBACK (paste_clicked),
                     (gpointer) editor);
   g_signal_connect (G_OBJECT (find), "clicked",
-                    G_CALLBACK (find_clicked), 
+                    G_CALLBACK (find_clicked),
                     (gpointer) editor);
-  
+
   scrolled_win = gtk_scrolled_window_new (NULL, NULL);
   gtk_container_add (GTK_CONTAINER (scrolled_win), editor->textview);
-  
+
   vbox = gtk_vbox_new (TRUE, 5);
   gtk_box_pack_start (GTK_BOX (vbox), new, FALSE, FALSE, 0);
   gtk_box_pack_start (GTK_BOX (vbox), open, FALSE, FALSE, 0);
@@ -80,32 +80,32 @@ int main (int argc,
   gtk_box_pack_start (GTK_BOX (searchbar), find, FALSE, FALSE, 0);
 
   table = gtk_table_new (2, 2, FALSE);
-  gtk_table_attach (GTK_TABLE (table), scrolled_win, 0, 1, 0, 1, 
+  gtk_table_attach (GTK_TABLE (table), scrolled_win, 0, 1, 0, 1,
                     GTK_EXPAND | GTK_FILL, GTK_EXPAND | GTK_FILL, 5, 5);
-  gtk_table_attach (GTK_TABLE (table), vbox, 1, 2, 0, 1, 
+  gtk_table_attach (GTK_TABLE (table), vbox, 1, 2, 0, 1,
                     GTK_SHRINK, GTK_SHRINK, 5, 5);
   gtk_table_attach (GTK_TABLE (table), searchbar, 0, 1, 1, 2,
                     GTK_FILL, GTK_SHRINK, 5, 5);
-  
+
   gtk_container_add (GTK_CONTAINER (window), table);
   gtk_widget_show_all (window);
-  
+
   gtk_main();
   return 0;
 }
 
 /* Verify that the user want to create a new document. If so, delete
  * all of the text from the buffer. */
-static void 
-new_clicked (GtkButton *cut, 
+static void
+new_clicked (GtkButton *cut,
              TextEditor *editor)
 {
   GtkWidget *dialog;
   GtkTextBuffer *buffer;
   gint result;
 
-  dialog = gtk_message_dialog_new (NULL, GTK_DIALOG_MODAL, 
-                       GTK_MESSAGE_QUESTION, GTK_BUTTONS_YES_NO, 
+  dialog = gtk_message_dialog_new (NULL, GTK_DIALOG_MODAL,
+                       GTK_MESSAGE_QUESTION, GTK_BUTTONS_YES_NO,
                        "All changes will be lost. Do you want to continue?");
 
   result = gtk_dialog_run (GTK_DIALOG (dialog));
@@ -114,26 +114,26 @@ new_clicked (GtkButton *cut,
     buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (editor->textview));
     gtk_text_buffer_set_text (buffer, "", -1);
   }
-  
+
   gtk_widget_destroy (dialog);
 }
 
 /* Replace the content of the current buffer with the content of a file. */
-static void 
-open_clicked (GtkButton *cut, 
+static void
+open_clicked (GtkButton *cut,
               TextEditor *editor)
 {
   GtkWidget *dialog;
   gint result;
   GtkTextBuffer *buffer;
   gchar *content, *file;
-  
+
   dialog = gtk_file_chooser_dialog_new ("Choose a file ..", NULL,
                                         GTK_FILE_CHOOSER_ACTION_OPEN,
                                         GTK_STOCK_OPEN, GTK_RESPONSE_APPLY,
                                         GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
                                         NULL);
-  
+
   result = gtk_dialog_run (GTK_DIALOG (dialog));
   if (result == GTK_RESPONSE_APPLY)
   {
@@ -142,7 +142,7 @@ open_clicked (GtkButton *cut,
 
     g_file_get_contents (file, &content, NULL, NULL);
     gtk_text_buffer_set_text (buffer, content, -1);
-    
+
     g_free (content);
     g_free (file);
   }
@@ -151,8 +151,8 @@ open_clicked (GtkButton *cut,
 }
 
 /* Save the content of the current buffer to a file. */
-static void 
-save_clicked (GtkButton *cut, 
+static void
+save_clicked (GtkButton *cut,
               TextEditor *editor)
 {
   GtkWidget *dialog;
@@ -160,22 +160,22 @@ save_clicked (GtkButton *cut,
   GtkTextBuffer *buffer;
   gchar *content, *file;
   GtkTextIter start, end;
-  
+
   dialog = gtk_file_chooser_dialog_new ("Save the file ..", NULL,
                                         GTK_FILE_CHOOSER_ACTION_SAVE,
                                         GTK_STOCK_SAVE, GTK_RESPONSE_APPLY,
                                         GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
                                         NULL);
-  
+
   result = gtk_dialog_run (GTK_DIALOG (dialog));
   if (result == GTK_RESPONSE_APPLY)
   {
     buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (editor->textview));
     file = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (dialog));
-      
+
     gtk_text_buffer_get_bounds (buffer, &start, &end);
     content = gtk_text_buffer_get_text (buffer, &start, &end, TRUE);
-      
+
     g_file_set_contents (file, content, -1, NULL);
     g_free (content);
     g_free (file);
@@ -185,26 +185,26 @@ save_clicked (GtkButton *cut,
 }
 
 /* Copy the selection to the clipboard and remove it from the buffer. */
-static void 
-cut_clicked (GtkButton *cut, 
+static void
+cut_clicked (GtkButton *cut,
              TextEditor *editor)
 {
   GtkClipboard *clipboard;
   GtkTextBuffer *buffer;
-  
+
   clipboard = gtk_clipboard_get (GDK_SELECTION_CLIPBOARD);
   buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (editor->textview));
   gtk_text_buffer_cut_clipboard (buffer, clipboard, TRUE);
 }
 
 /* Copy the selection to the clipboard. */
-static void 
-copy_clicked (GtkButton *copy, 
+static void
+copy_clicked (GtkButton *copy,
               TextEditor *editor)
 {
   GtkClipboard *clipboard;
   GtkTextBuffer *buffer;
-  
+
   clipboard = gtk_clipboard_get (GDK_SELECTION_CLIPBOARD);
   buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (editor->textview));
   gtk_text_buffer_copy_clipboard (buffer, clipboard);
@@ -212,13 +212,13 @@ copy_clicked (GtkButton *copy,
 
 /* Delete any selected text and insert the clipboard content into
  * the document. */
-static void 
-paste_clicked (GtkButton *paste, 
+static void
+paste_clicked (GtkButton *paste,
                TextEditor *editor)
 {
   GtkClipboard *clipboard;
   GtkTextBuffer *buffer;
-  
+
   clipboard = gtk_clipboard_get (GDK_SELECTION_CLIPBOARD);
   buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (editor->textview));
   gtk_text_buffer_paste_clipboard (buffer, clipboard, NULL, TRUE);
@@ -226,8 +226,8 @@ paste_clicked (GtkButton *paste,
 
 /* Search for a text string from the current cursor position if there is no
  * selected text, or one character after the cursor if there is. */
-static void 
-find_clicked (GtkButton *cut, 
+static void
+find_clicked (GtkButton *cut,
               TextEditor *editor)
 {
   const gchar *find;
@@ -236,17 +236,17 @@ find_clicked (GtkButton *cut,
   GtkTextIter start, begin, end;
   GtkWidget *dialog;
   gboolean success;
-  
+
   find = gtk_entry_get_text (GTK_ENTRY (editor->search));
   buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW (editor->textview));
-  
+
   gtk_text_buffer_get_selection_bounds (buffer, &start, &end);
-  
+
   if (gtk_text_iter_compare (&start, &end) != 0)
     gtk_text_iter_forward_char (&start);
 
   success = gtk_text_iter_forward_search (&start, find, 0, &begin, &end, NULL);
-  
+
   /* Select the instance on the screen if the string is found. Otherwise, tell
    * the user it has failed. */
   if (success)
@@ -258,10 +258,10 @@ find_clicked (GtkButton *cut,
   }
   else
   {
-    dialog = gtk_message_dialog_new (NULL, GTK_DIALOG_MODAL, 
-                                     GTK_MESSAGE_INFO, GTK_BUTTONS_OK, 
+    dialog = gtk_message_dialog_new (NULL, GTK_DIALOG_MODAL,
+                                     GTK_MESSAGE_INFO, GTK_BUTTONS_OK,
                                      "The text was not found!");
-    
+
     gtk_dialog_run (GTK_DIALOG (dialog));
     gtk_widget_destroy (dialog);
   }

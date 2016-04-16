@@ -11,8 +11,7 @@ GladeXML *xml = NULL;
 gchar *content;
 gint word, state = 0;
 
-int main (int argc, 
-          char *argv[])
+int main (int argc, char *argv[])
 {
   GtkWidget *window, *area;
   GRand *random;
@@ -23,25 +22,25 @@ int main (int argc,
   xml = glade_xml_new ("hangman.glade", NULL, NULL);
   window = glade_xml_get_widget (xml, "window");
   area = glade_xml_get_widget (xml, "area");
-  
+
   /* Choose the word to use and fill a string with the same number of periods. */
   random = g_rand_new ();
   word = g_rand_int_range (random, 0, 2);
   content = g_strnfill (strlen (words[word]), '.');
-  
+
   /* Replace any periods in the solution with spaces. */
   for (i = 0; i < strlen (words[word]); i++)
     if (words[word][i] == ' ')
       content[i] = ' ';
-  
+
   GTK_WIDGET_SET_FLAGS (area, GTK_CAN_FOCUS);
-  g_signal_connect (G_OBJECT (area), "expose_event",  
+  g_signal_connect (G_OBJECT (area), "expose_event",
                     G_CALLBACK (draw_area), NULL);
-  
+
   glade_xml_signal_autoconnect (xml);
   gtk_widget_show_all (window);
   gtk_main ();
-  
+
   return 0;
 }
 
@@ -68,7 +67,6 @@ draw_hangman (GtkWidget *area,
     case 1:
       gdk_draw_polygon (area->window, gcontext, FALSE, head, 8);
   }
-  
 }
 
 /* Draw the game area without the actual man. This includes the border, the hanger
@@ -87,12 +85,12 @@ draw_area (GtkWidget *area,
   PangoLayout *layout;
   PangoContext *context;
   gint width, x;
-  
+
   /* Draw the border and hanger for the game area. */
   gdk_window_clear (area->window);
   gdk_draw_lines (area->window, gcontext, border, 5);
   gdk_draw_polygon (area->window, gcontext, TRUE, hanger, 13);
-  
+
   /* Create a PangoLayout for the string and display it in the drawing area. */
   context = gdk_pango_context_get ();
   layout = pango_layout_new (context);
@@ -102,11 +100,11 @@ draw_area (GtkWidget *area,
   pango_layout_set_font_description (layout, fd);
   pango_layout_get_size (layout, &width, NULL);
   x = (300 - (width / PANGO_SCALE)) / 2;
-  
+
   /* Draw the message on the GdkWindow and draw the current state of the man. */
   gdk_draw_layout (area->window, gcontext, x, 155, layout);
   draw_hangman (area, gcontext);
-  
+
   pango_font_description_free (fd);
   g_object_unref (context);
   return TRUE;
@@ -120,11 +118,11 @@ on_letter_clicked (GtkButton *button)
   gboolean set = FALSE;
   const gchar *label;
   gint i, finished = 0;
-  
+
   parent = glade_xml_get_widget (xml, "window");
   area = glade_xml_get_widget (xml, "area");
   label = gtk_button_get_label (GTK_BUTTON (button));
-  
+
   /* Loop through the word, checking upper and lower-case versions of the letter. */
   for (i = 0; i < strlen (words[word]); i++)
   {
@@ -138,20 +136,20 @@ on_letter_clicked (GtkButton *button)
       content[i] = label[0] + 32;
       set = TRUE;
     }
-    
+
     /* If finished is greater than 0, we know that the string is not complete. */
     if (content[i] == '.')
       finished++;
   }
-  
+
   /* If the letter was not found, add a new body part. */
   if (!set)
     state++;
-  
+
   /* Draw the game board and set the clicked button as disabled. */
   draw_area (area, NULL);
   gtk_widget_set_sensitive (GTK_WIDGET (button), FALSE);
-  
+
   /* If the full man is displayed, tell the user that he/she lost. */
   if (state >= 5)
   {
@@ -169,7 +167,7 @@ on_letter_clicked (GtkButton *button)
     dialog = gtk_message_dialog_new (GTK_WINDOW (parent), GTK_DIALOG_MODAL,
                                      GTK_MESSAGE_INFO, GTK_BUTTONS_OK,
                                      "You won Hangman!");
-    
+
     gtk_dialog_run (GTK_DIALOG (dialog));
     gtk_widget_destroy (dialog);
     gtk_main_quit ();

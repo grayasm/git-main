@@ -30,7 +30,7 @@ int main (int argc,
   return 0;
 }
 
-static void 
+static void
 handle_error (GError *error)
 {
   if (error != NULL)

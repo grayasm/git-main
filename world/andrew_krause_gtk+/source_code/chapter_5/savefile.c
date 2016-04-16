@@ -2,8 +2,7 @@
 
 static void button_clicked (GtkButton*, GtkWindow*);
 
-int main (int argc, 
-          char *argv[])
+int main (int argc, char *argv[])
 {
   GtkWidget *window, *button;
 
@@ -20,7 +19,7 @@ int main (int argc,
   button = gtk_button_new_with_label ("Save As ...");
 
   g_signal_connect (G_OBJECT (button), "clicked",
-                    G_CALLBACK (button_clicked), 
+                    G_CALLBACK (button_clicked),
                     (gpointer) window);
 
   gtk_container_add (GTK_CONTAINER (window), button);
@@ -38,7 +37,7 @@ button_clicked (GtkButton *button,
 {
   GtkWidget *dialog;
   gchar *filename;
-  
+
   dialog = gtk_file_chooser_dialog_new ("Save File As ...", window,
                                         GTK_FILE_CHOOSER_ACTION_SAVE,
                                         GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
@@ -51,6 +50,6 @@ button_clicked (GtkButton *button,
     filename = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (dialog));
     gtk_button_set_label (button, filename);
   }
-  
+
   gtk_widget_destroy (dialog);
 }

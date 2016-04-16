@@ -1,7 +1,7 @@
 CC = cc
 CFLAGS = -Wall -g -export-dynamic `pkg-config --cflags --libs gtk+-2.0 libglade-2.0`
 
-all: 
+all:
 	$(MAKE) browser calculator ping calendar hangman
 
 browser: browser.c navigation.c

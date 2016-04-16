@@ -3,7 +3,7 @@ EXES_GLADE = exercise10-1 exercise10-2 exercise12-1
 CC = cc
 CFLAGS = -Wall -export-dynamic -g `pkg-config --cflags --libs gtk+-2.0 libglade-2.0`
 
-all: 
+all:
 	$(MAKE) $(EXES_NOGLADE) $(EXES_GLADE) exercise11-1
 
 exercise11-1: exercise11-1.c mymarquee.c mymarquee.h

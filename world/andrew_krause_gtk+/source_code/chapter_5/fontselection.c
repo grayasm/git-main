@@ -2,8 +2,7 @@
 
 static void font_dialog_response (GtkFontSelectionDialog*, gint, gpointer);
 
-int main (int argc, 
-          char *argv[])
+int main (int argc, char *argv[])
 {
   GtkWidget *dialog;
 
@@ -14,7 +13,7 @@ int main (int argc,
   gtk_font_selection_dialog_set_font_name (GTK_FONT_SELECTION_DIALOG (dialog),
                                            "Sans Bold Italic 12");
   gtk_font_selection_dialog_set_preview_text (GTK_FONT_SELECTION_DIALOG (dialog),
-                                              "Foundations of GTK+ Development");
+                                             "Foundations of GTK+ Development");
 
   g_signal_connect (G_OBJECT (dialog), "destroy",
                     G_CALLBACK (gtk_main_quit), NULL);
@@ -27,9 +26,10 @@ int main (int argc,
   return 0;
 }
 
-/* If the user presses "Apply", display the font, but do not destroy the dialog. If
- * "OK" is pressed, display the font and destroy the dialog. Otherwise, just destroy
- * the dialog. */
+/* If the user presses "Apply", display the font, but do not destroy the dialog.
+   If "OK" is pressed, display the font and destroy the dialog.
+   Otherwise, just destroy the dialog.
+*/
 static void
 font_dialog_response (GtkFontSelectionDialog *dialog,
                       gint response,
@@ -37,7 +37,7 @@ font_dialog_response (GtkFontSelectionDialog *dialog,
 {
   gchar *font;
   GtkWidget *message;
-  
+
   switch (response)
   {
   case (GTK_RESPONSE_APPLY):
@@ -54,7 +54,7 @@ font_dialog_response (GtkFontSelectionDialog *dialog,
   default:
     gtk_widget_destroy (GTK_WIDGET (dialog));
   }
-  
+
   if (response == GTK_RESPONSE_OK)
     gtk_widget_destroy (GTK_WIDGET (dialog));
 }

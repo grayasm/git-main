@@ -2,8 +2,7 @@
 
 static void button_clicked (GtkButton*, GTimer*);
 
-int main (int argc, 
-          char *argv[])
+int main (int argc, char *argv[])
 {
   GtkWidget *window, *button;
   GTimer *timer;
@@ -34,8 +33,8 @@ int main (int argc,
 }
 
 /* Count the amount of elapsed time between two button clicks. */
-static void 
-button_clicked (GtkButton *button, 
+static void
+button_clicked (GtkButton *button,
                 GTimer *timer)
 {
   static gdouble start_time = 0.0;
@@ -53,6 +52,6 @@ button_clicked (GtkButton *button,
     gtk_button_set_label (button, "Start Timer");
     g_print ("Elapsed Time: %.2f\n", end_time - start_time);
   }
-  
+
   running = !running;
 }

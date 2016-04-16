@@ -13,17 +13,17 @@ int main (int argc,
 {
   GtkWidget *window, *scrolled_win, *hbox, *vbox, *insert, *retrieve;
   Widgets *w = g_slice_new (Widgets);
-  
+
   gtk_init (&argc, &argv);
-  
+
   window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
   gtk_window_set_title (GTK_WINDOW (window), "Text Iterators");
   gtk_container_set_border_width (GTK_CONTAINER (window), 10);
   gtk_widget_set_size_request (window, -1, 200);
-  
+
   g_signal_connect (G_OBJECT (window), "destroy",
                     G_CALLBACK (gtk_main_quit), NULL);
-  
+
   w->textview = gtk_text_view_new ();
   w->entry = gtk_entry_new ();
   insert = gtk_button_new_with_label ("Insert Text");
@@ -35,7 +35,7 @@ int main (int argc,
   g_signal_connect (G_OBJECT (retrieve), "clicked",
                     G_CALLBACK (retrieve_text),
                     (gpointer) w);
-    
+
   scrolled_win = gtk_scrolled_window_new (NULL, NULL);
   gtk_container_add (GTK_CONTAINER (scrolled_win), w->textview);
 
@@ -47,17 +47,17 @@ int main (int argc,
   vbox = gtk_vbox_new (FALSE, 5);
   gtk_box_pack_start (GTK_BOX (vbox), scrolled_win, TRUE, TRUE, 0);
   gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, TRUE, 0);
-  
+
   gtk_container_add (GTK_CONTAINER (window), vbox);
   gtk_widget_show_all (window);
-  
+
   gtk_main();
   return 0;
 }
 
 /* Insert the text from the GtkEntry into the GtkTextView. */
-static void 
-insert_text (GtkButton *button, 
+static void
+insert_text (GtkButton *button,
              Widgets *w)
 {
   GtkTextBuffer *buffer;
@@ -75,8 +75,8 @@ insert_text (GtkButton *button,
 
 /* Retrieve the selected text from the GtkTextView and display it
  * to the user. */
-static void 
-retrieve_text (GtkButton *button, 
+static void
+retrieve_text (GtkButton *button,
                Widgets *w)
 {
   GtkTextBuffer *buffer;

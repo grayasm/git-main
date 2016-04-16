@@ -2,8 +2,7 @@
 
 static void button_clicked (GtkButton*, GtkWindow*);
 
-int main (int argc, 
-          char *argv[])
+int main (int argc, char *argv[])
 {
   GtkWidget *window, *button;
 
@@ -19,7 +18,7 @@ int main (int argc,
   button = gtk_button_new_with_label ("Open Files");
 
   g_signal_connect (G_OBJECT (button), "clicked",
-                    G_CALLBACK (button_clicked), 
+                    G_CALLBACK (button_clicked),
                     (gpointer) window);
 
   gtk_container_add (GTK_CONTAINER (window), button);
@@ -36,7 +35,7 @@ button_clicked (GtkButton *button,
 {
   GtkWidget *dialog;
   GSList *filenames;
-  
+
   dialog = gtk_file_chooser_dialog_new ("Open File(s) ...", window,
                                         GTK_FILE_CHOOSER_ACTION_OPEN,
                                         GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
@@ -50,7 +49,7 @@ button_clicked (GtkButton *button,
   if (result == GTK_RESPONSE_ACCEPT)
   {
     filenames = gtk_file_chooser_get_filenames (GTK_FILE_CHOOSER (dialog));
-    
+
     while (filenames != NULL)
     {
       gchar *file = (gchar*) filenames->data;

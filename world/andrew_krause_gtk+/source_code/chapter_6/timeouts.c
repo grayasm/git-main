@@ -2,8 +2,7 @@
 
 static gboolean pulse_progress (GtkProgressBar*);
 
-int main (int argc, 
-          char *argv[])
+int main (int argc, char *argv[])
 {
   GtkWidget *window, *progress;
 
@@ -19,7 +18,7 @@ int main (int argc,
 
   progress = gtk_progress_bar_new ();
   gtk_progress_bar_set_pulse_step (GTK_PROGRESS_BAR (progress), 0.1);
-  
+
   g_timeout_add (100, (GSourceFunc) pulse_progress, (gpointer) progress);
 
   gtk_container_add (GTK_CONTAINER (window), progress);
@@ -30,7 +29,7 @@ int main (int argc,
 }
 
 /* Pulse the progress bar and return TRUE so the timeout is called again. */
-static gboolean 
+static gboolean
 pulse_progress (GtkProgressBar *progress)
 {
   static gint count = 0;

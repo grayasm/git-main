@@ -6,8 +6,7 @@ static void create_folder_clicked (GtkWindow*);
 static void open_clicked (GtkWindow*);
 static void select_folder_clicked (GtkWindow*);
 
-int main (int argc, 
-          char *argv[])
+int main (int argc, char *argv[])
 {
   GtkWidget *window, *vbox, *save, *create, *open, *select;
 
@@ -24,20 +23,20 @@ int main (int argc,
   create = gtk_button_new_with_label ("Create a New Folder");
   open = gtk_button_new_with_label ("Open One or More Files");
   select = gtk_button_new_with_label ("Select a Folder");
-  
+
   g_signal_connect_swapped (G_OBJECT (save), "clicked",
-                            G_CALLBACK (save_clicked), 
+                            G_CALLBACK (save_clicked),
                             (gpointer) window);
   g_signal_connect_swapped  (G_OBJECT (create), "clicked",
-                            G_CALLBACK (create_folder_clicked), 
+                            G_CALLBACK (create_folder_clicked),
                             (gpointer) window);
   g_signal_connect_swapped  (G_OBJECT (open), "clicked",
-                            G_CALLBACK (open_clicked), 
+                            G_CALLBACK (open_clicked),
                             (gpointer) window);
   g_signal_connect_swapped  (G_OBJECT (select), "clicked",
-                            G_CALLBACK (select_folder_clicked), 
+                            G_CALLBACK (select_folder_clicked),
                             (gpointer) window);
-  
+
   vbox = gtk_vbox_new (TRUE, 5);
   gtk_box_pack_start_defaults (GTK_BOX (vbox), save);
   gtk_box_pack_start_defaults (GTK_BOX (vbox), create);
@@ -57,7 +56,7 @@ save_clicked (GtkWindow *parent)
   GtkWidget *dialog, *chooser;
   gint result;
   gchar *filename;
-  
+
   dialog = gtk_dialog_new_with_buttons ("Save File As ...", NULL,
                                         GTK_DIALOG_NO_SEPARATOR,
                                         GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
@@ -79,7 +78,7 @@ save_clicked (GtkWindow *parent)
     g_print ("Saving file as: %s\n", filename);
     g_free (filename);
   }
-  
+
   gtk_widget_destroy (dialog);
 }
 
@@ -89,7 +88,7 @@ create_folder_clicked (GtkWindow *parent)
   GtkWidget *dialog, *chooser;
   gint result;
   gchar *filename;
-  
+
   dialog = gtk_dialog_new_with_buttons ("Create a Folder ...", NULL,
                                         GTK_DIALOG_NO_SEPARATOR,
                                         GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
@@ -97,7 +96,7 @@ create_folder_clicked (GtkWindow *parent)
                                         NULL);
   gtk_container_set_border_width (GTK_CONTAINER (dialog), 10);
   gtk_widget_set_size_request (dialog, 600, -1);
-  
+
   /* Create a file chooser dialog that is used to create a folder. */
   chooser = gtk_file_chooser_widget_new (GTK_FILE_CHOOSER_ACTION_CREATE_FOLDER);
 
@@ -112,7 +111,7 @@ create_folder_clicked (GtkWindow *parent)
     g_print ("Creating directory: %s\n", filename);
     g_free (filename);
   }
-  
+
   gtk_widget_destroy (dialog);
 }
 
@@ -122,7 +121,7 @@ open_clicked (GtkWindow *parent)
   GtkWidget *dialog, *chooser;
   gint result;
   GSList *filenames, *ptr;
-  
+
   dialog = gtk_dialog_new_with_buttons ("Open File(s) ...", NULL,
                                         GTK_DIALOG_NO_SEPARATOR,
                                         GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
@@ -130,7 +129,7 @@ open_clicked (GtkWindow *parent)
                                         NULL);
   gtk_container_set_border_width (GTK_CONTAINER (dialog), 10);
   gtk_widget_set_size_request (dialog, 600, 400);
-  
+
   /* Create a file chooser dialog that is used to select multiple files. */
   chooser = gtk_file_chooser_widget_new (GTK_FILE_CHOOSER_ACTION_OPEN);
   gtk_file_chooser_set_select_multiple (GTK_FILE_CHOOSER (chooser), TRUE);
@@ -142,17 +141,17 @@ open_clicked (GtkWindow *parent)
   if (result == GTK_RESPONSE_ACCEPT)
   {
     filenames = gtk_file_chooser_get_filenames (GTK_FILE_CHOOSER (chooser));
-    
+
     for (ptr = filenames; ptr != NULL; ptr = ptr->next)
     {
       gchar *file = (gchar*) ptr->data;
       g_print ("%s was selected.\n", file);
     }
-    
+
     g_slist_foreach (filenames, (GFunc) g_free, NULL);
     g_slist_free (filenames);
   }
-  
+
   gtk_widget_destroy (dialog);
 }
 
@@ -162,7 +161,7 @@ select_folder_clicked (GtkWindow *parent)
   GtkWidget *dialog, *chooser;
   gint result;
   gchar *filename;
-  
+
   dialog = gtk_dialog_new_with_buttons ("Select Folder ...", NULL,
                                         GTK_DIALOG_NO_SEPARATOR,
                                         GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
@@ -170,7 +169,7 @@ select_folder_clicked (GtkWindow *parent)
                                         NULL);
   gtk_container_set_border_width (GTK_CONTAINER (dialog), 10);
   gtk_widget_set_size_request (dialog, 600, 400);
-  
+
   /* Create a file chooser dialog that is used to select a folder. */
   chooser = gtk_file_chooser_widget_new (GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER);
 
@@ -184,6 +183,6 @@ select_folder_clicked (GtkWindow *parent)
     g_print ("Selected folder: %s\n", filename);
     g_free (filename);
   }
-  
+
   gtk_widget_destroy (dialog);
 }

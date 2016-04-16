@@ -2,8 +2,7 @@
 
 static void destroy (GtkWidget*, gpointer);
 
-int main (int argc, 
-          char *argv[])
+int main (int argc, char *argv[])
 {
   GtkWidget *window, *scale_int, *scale_float, *vbox;
 
@@ -17,15 +16,15 @@ int main (int argc,
   g_signal_connect (G_OBJECT (window), "destroy",
                     G_CALLBACK (destroy), NULL);
 
-  /* Create a scale that scrolls integers and one that scrolls floating ponit. */
+  /* Create a scale that scrolls integers and one that scrolls floating ponit.*/
   scale_int = gtk_hscale_new_with_range (0.0, 10.0, 1.0);
   scale_float = gtk_hscale_new_with_range (0.0, 1.0, 0.1);
-  
-  /* Set the number of decimal places to display for each widget. */
+
+  /* Set the number of decimal places to display for each widget.*/
   gtk_scale_set_digits (GTK_SCALE (scale_int), 0);
   gtk_scale_set_digits (GTK_SCALE (scale_float), 1);
-  
-  /* Set the position of the value with respect to the widget. */
+
+  /* Set the position of the value with respect to the widget.*/
   gtk_scale_set_value_pos (GTK_SCALE (scale_int), GTK_POS_RIGHT);
   gtk_scale_set_value_pos (GTK_SCALE (scale_float), GTK_POS_LEFT);
 

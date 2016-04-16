@@ -8,8 +8,8 @@
 #include <string.h>
 #include <unistd.h>
 
-enum 
-{ 
+enum
+{
   ICON = 0,
   FILENAME,
   SIZE,

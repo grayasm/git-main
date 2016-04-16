@@ -18,7 +18,7 @@ int main (int argc,
   handle_error (error);
   g_io_channel_write_chars (write, "Hello World!", -1, &bytes, NULL);
   g_io_channel_close (write);
-  
+
   if (!g_file_test (filename, G_FILE_TEST_EXISTS))
     g_error ("Error: File does not exist!\n");
 
@@ -27,7 +27,7 @@ int main (int argc,
   handle_error (error);
   g_io_channel_read_to_end (read, &content, &bytes, NULL);
   g_print ("%s\n", content);
-  
+
   g_io_channel_close (read);
   g_free (content);
   g_free (filename);
@@ -35,7 +35,7 @@ int main (int argc,
   return 0;
 }
 
-static void 
+static void
 handle_error (GError *error)
 {
   if (error != NULL)

@@ -14,7 +14,7 @@ G_BEGIN_DECLS
 typedef struct _MyIFace           MyIFace;
 typedef struct _MyIFaceInterface  MyIFaceInterface;
 
-struct _MyIFaceInterface 
+struct _MyIFaceInterface
 {
   GTypeInterface parent;
 

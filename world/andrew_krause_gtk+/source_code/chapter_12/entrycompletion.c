@@ -2,17 +2,16 @@
 
 #define NUM_ELEMENTS 4
 
-static gchar *widgets[] = { "GtkDialog", "GtkWindow", "GtkContainer", "GtkWidget" };
+static gchar *widgets[] = {"GtkDialog","GtkWindow","GtkContainer","GtkWidget"};
 
-int main (int argc, 
-          char *argv[])
+int main (int argc, char *argv[])
 {
   GtkWidget *window, *vbox, *label, *entry;
   GtkEntryCompletion *completion;
   GtkListStore *store;
   GtkTreeIter iter;
   unsigned int i;
-  
+
   gtk_init (&argc, &argv);
 
   window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
@@ -24,7 +23,7 @@ int main (int argc,
 
   label = gtk_label_new ("Enter a widget in the following GtkEntry:");
   entry = gtk_entry_new ();
-  
+
   /* Create a GtkListStore that will hold autocompletion possibilities. */
   store = gtk_list_store_new (1, G_TYPE_STRING);
   for (i = 0; i < NUM_ELEMENTS; i++)
@@ -37,17 +36,17 @@ int main (int argc,
   gtk_entry_set_completion (GTK_ENTRY (entry), completion);
   gtk_entry_completion_set_model (completion, GTK_TREE_MODEL (store));
   gtk_entry_completion_set_text_column (completion, 0);
-  
+
   vbox = gtk_vbox_new (FALSE, 5);
   gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
   gtk_box_pack_start (GTK_BOX (vbox), entry, FALSE, FALSE, 0);
 
   gtk_container_add (GTK_CONTAINER (window), vbox);
   gtk_widget_show_all (window);
-  
+
   g_object_unref (completion);
   g_object_unref (store);
-  
+
   gtk_main ();
   return 0;
 }

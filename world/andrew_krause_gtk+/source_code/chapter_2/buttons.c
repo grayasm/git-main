@@ -2,8 +2,7 @@
 
 static void destroy (GtkWidget*, gpointer);
 
-int main (int argc, 
-          char *argv[])
+int main (int argc, char *argv[])
 {
   GtkWidget *window, *button;
 
@@ -20,9 +19,11 @@ int main (int argc,
   /* Create a new button that has a mnemonic key of Alt+C. */
   button = gtk_button_new_with_mnemonic ("_Close");
   gtk_button_set_relief (GTK_BUTTON (button), GTK_RELIEF_NONE);
-  
-  /* Connect the button to the clicked signal. The callback function recieves the
-   * window followed by the button because the arguments are swapped. */
+
+  /* Connect the button to the clicked signal.
+     The callback function recieves the window followed by the button
+     because the arguments are swapped.
+  */
   g_signal_connect_swapped (G_OBJECT (button), "clicked",
                             G_CALLBACK (gtk_widget_destroy),
                             (gpointer) window);

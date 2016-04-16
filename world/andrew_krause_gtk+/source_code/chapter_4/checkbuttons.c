@@ -3,8 +3,7 @@
 static void destroy (GtkWidget*, gpointer);
 static void check_toggled (GtkToggleButton*, GtkWidget*);
 
-int main (int argc, 
-          char *argv[])
+int main (int argc, char *argv[])
 {
   GtkWidget *window, *vbox, *check1, *check2, *close;
 
@@ -19,23 +18,23 @@ int main (int argc,
 
   check1 = gtk_check_button_new_with_label ("I am the main option.");
   check2 = gtk_check_button_new_with_label ("I rely on the other guy.");
-  
+
   /* Only enable the second check button when the first is enabled. */
   gtk_widget_set_sensitive (check2, FALSE);
   g_signal_connect (G_OBJECT (check1), "toggled",
                     G_CALLBACK (check_toggled),
                     (gpointer) check2);
-  
+
   close = gtk_button_new_from_stock (GTK_STOCK_CLOSE);
   g_signal_connect_swapped (G_OBJECT (close), "clicked",
                             G_CALLBACK (gtk_widget_destroy),
                             (gpointer) window);
-  
+
   vbox = gtk_vbox_new (FALSE, 5);
   gtk_box_pack_start (GTK_BOX (vbox), check1, FALSE, TRUE, 0);
   gtk_box_pack_start (GTK_BOX (vbox), check2, FALSE, TRUE, 0);
   gtk_box_pack_start (GTK_BOX (vbox), close, FALSE, TRUE, 0);
-  
+
   gtk_container_add (GTK_CONTAINER (window), vbox);
   gtk_widget_show_all (window);
 

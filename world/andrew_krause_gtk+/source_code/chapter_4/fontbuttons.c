@@ -3,8 +3,7 @@
 static void destroy (GtkWidget*, gpointer);
 static void font_changed (GtkFontButton*, GtkWidget*);
 
-int main (int argc, 
-          char *argv[])
+int main (int argc, char *argv[])
 {
   GtkWidget *window, *vbox, *button, *label;
   PangoFontDescription *initial_font;
@@ -44,16 +43,16 @@ int main (int argc,
 
 /* When the font is changed, display the font both as the text of a label and as
  * the label's physical font. */
-static void 
-font_changed (GtkFontButton *button, 
+static void
+font_changed (GtkFontButton *button,
               GtkWidget *label)
 {
   const gchar *font, buffer[512];
   PangoFontDescription *desc;
-  
+
   font = gtk_font_button_get_font_name (button);
   desc = pango_font_description_from_string (font);
-  
+
   g_snprintf ((gchar*) buffer, sizeof (buffer), "Font: %s", font);
   gtk_label_set_text (GTK_LABEL (label), buffer);
   gtk_widget_modify_font (label, desc);

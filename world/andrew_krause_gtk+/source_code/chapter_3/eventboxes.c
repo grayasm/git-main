@@ -3,8 +3,7 @@
 static void destroy (GtkWidget*, gpointer);
 static gboolean button_pressed (GtkWidget*, GdkEventButton*, GtkLabel*);
 
-int main (int argc, 
-          char *argv[])
+int main (int argc, char *argv[])
 {
   GtkWidget *window, *eventbox, *label;
 
@@ -36,7 +35,7 @@ int main (int argc,
   gtk_widget_realize (eventbox);
   gdk_window_set_cursor (eventbox->window, gdk_cursor_new (GDK_HAND1));
   gtk_widget_show_all (window);
-  
+
   gtk_main ();
   return 0;
 }
@@ -49,15 +48,15 @@ destroy (GtkWidget *window,
 }
 
 /* This is called every time a button-press-event occurs on the GtkEventBox. */
-static gboolean 
-button_pressed (GtkWidget *eventbox, 
-                GdkEventButton *event, 
+static gboolean
+button_pressed (GtkWidget *eventbox,
+                GdkEventButton *event,
                 GtkLabel *label)
 {
   if (event->type == GDK_2BUTTON_PRESS)
   {
     const gchar *text = gtk_label_get_text (label);
-    
+
     if (text[0] == 'D')
       gtk_label_set_text (label, "I Was Double-Clicked!");
     else

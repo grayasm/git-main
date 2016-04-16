@@ -9,7 +9,7 @@ int main (int argc,
 
   if (!g_file_test (g_get_home_dir (), G_FILE_TEST_IS_DIR))
     g_error ("Error: You do not have a home directory!");
-    
+
   while ((file = g_dir_read_name (dir)))
     g_print ("%s\n", file);
 

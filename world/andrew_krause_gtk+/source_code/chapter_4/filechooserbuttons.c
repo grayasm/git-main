@@ -4,8 +4,7 @@ static void destroy (GtkWidget*, gpointer);
 static void folder_changed (GtkFileChooser*, GtkFileChooser*);
 static void file_changed (GtkFileChooser*, GtkLabel*);
 
-int main (int argc, 
-          char *argv[])
+int main (int argc, char *argv[])
 {
   GtkWidget *window, *chooser1, *chooser2, *label, *vbox;
   GtkFileFilter *filter1, *filter2;
@@ -20,7 +19,7 @@ int main (int argc,
                     G_CALLBACK (destroy), NULL);
 
   label = gtk_label_new ("");
-  
+
   /* Create two buttons, one to select a folder and one to select a file. */
   chooser1 = gtk_file_chooser_button_new ("Chooser a Folder",
                                           GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER);
@@ -36,9 +35,9 @@ int main (int argc,
                     (gpointer) label);
 
   /* Set both file chooser buttons to the location of the user's home directory. */
-  gtk_file_chooser_set_current_folder (GTK_FILE_CHOOSER (chooser1), 
+  gtk_file_chooser_set_current_folder (GTK_FILE_CHOOSER (chooser1),
                                        g_get_home_dir());
-  gtk_file_chooser_set_current_folder (GTK_FILE_CHOOSER (chooser2), 
+  gtk_file_chooser_set_current_folder (GTK_FILE_CHOOSER (chooser2),
                                        g_get_home_dir());
 
   /* Provide a filter to show all files and one to shown only 3 types of images. */
@@ -75,8 +74,8 @@ destroy (GtkWidget *window,
 }
 
 /* When a folder is selected, use that as the new location of the other chooser. */
-static void 
-folder_changed (GtkFileChooser *chooser1, 
+static void
+folder_changed (GtkFileChooser *chooser1,
                 GtkFileChooser *chooser2)
 {
   gchar *folder = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (chooser1));
@@ -84,8 +83,8 @@ folder_changed (GtkFileChooser *chooser1,
 }
 
 /* When a file is selected, display the full path in the GtkLabel widget. */
-static void 
-file_changed (GtkFileChooser *chooser2, 
+static void
+file_changed (GtkFileChooser *chooser2,
               GtkLabel *label)
 {
   gchar *file = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (chooser2));

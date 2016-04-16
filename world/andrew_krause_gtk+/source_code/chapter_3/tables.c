@@ -2,8 +2,7 @@
 
 static void destroy (GtkWidget*, gpointer);
 
-int main (int argc, 
-          char *argv[])
+int main (int argc, char *argv[])
 {
   GtkWidget *window, *table, *label, *label2, *name;
 
@@ -20,13 +19,13 @@ int main (int argc,
   label = gtk_label_new ("Enter the following information ...");
   label2 = gtk_label_new ("Name: ");
   name = gtk_entry_new ();
-  
+
   /* Attach the two labels and entry widget to their parent container. */
-  gtk_table_attach (GTK_TABLE (table), label, 0, 2, 0, 1, 
+  gtk_table_attach (GTK_TABLE (table), label, 0, 2, 0, 1,
                     GTK_EXPAND, GTK_SHRINK, 0, 0);
-  gtk_table_attach (GTK_TABLE (table), label2, 0, 1, 1, 2, 
+  gtk_table_attach (GTK_TABLE (table), label2, 0, 1, 1, 2,
                     GTK_EXPAND, GTK_SHRINK, 0, 0);
-  gtk_table_attach (GTK_TABLE (table), name, 1, 2, 1, 2, 
+  gtk_table_attach (GTK_TABLE (table), name, 1, 2, 1, 2,
                     GTK_EXPAND, GTK_SHRINK, 0, 0);
 
   /* Add five pixels of spacing between every row and every column. */

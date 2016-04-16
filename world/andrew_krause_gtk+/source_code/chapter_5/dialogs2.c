@@ -2,8 +2,7 @@
 
 static void button_clicked (GtkButton*, GtkWindow*);
 
-int main (int argc, 
-          char *argv[])
+int main (int argc, char *argv[])
 {
   GtkWidget *window, *button;
 
@@ -17,7 +16,7 @@ int main (int argc,
                     G_CALLBACK (gtk_main_quit), NULL);
 
   button = gtk_button_new_with_mnemonic ("_Click Me");
-  
+
   g_signal_connect (G_OBJECT (button), "clicked",
                     G_CALLBACK (button_clicked),
                     (gpointer) window);
@@ -29,13 +28,13 @@ int main (int argc,
   return 0;
 }
 
-/* Create a new GtkDialog that will tell the user that the button was clicked. */
+/* Create a new GtkDialog that will tell the user that the button was clicked.*/
 static void
 button_clicked (GtkButton *button,
                 GtkWindow *parent)
 {
   GtkWidget *dialog, *label, *image, *hbox;
-  
+
   /* Create a non-modal dialog with one OK button. */
   dialog = gtk_dialog_new_with_buttons ("Information", parent,
                                         GTK_DIALOG_DESTROY_WITH_PARENT,
@@ -43,9 +42,9 @@ button_clicked (GtkButton *button,
                                         NULL);
 
   gtk_dialog_set_has_separator (GTK_DIALOG (dialog), FALSE);
-  
+
   label = gtk_label_new ("The button was clicked!");
-  image = gtk_image_new_from_stock (GTK_STOCK_DIALOG_INFO, 
+  image = gtk_image_new_from_stock (GTK_STOCK_DIALOG_INFO,
                                     GTK_ICON_SIZE_DIALOG);
 
   hbox = gtk_hbox_new (FALSE, 5);

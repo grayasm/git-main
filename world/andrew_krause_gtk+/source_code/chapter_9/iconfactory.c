@@ -21,8 +21,7 @@ const NewStockIcon list[] =
 
 static void add_stock_icon (GtkIconFactory*, gchar*, gchar*);
 
-int main (int argc, 
-          char *argv[])
+int main (int argc, char *argv[])
 {
   GtkWidget *window, *toolbar;
   GtkIconFactory *factory;
@@ -39,12 +38,12 @@ int main (int argc,
 
   factory = gtk_icon_factory_new ();
   toolbar = gtk_toolbar_new ();
-  
+
   /* Loop through the list of items and add new stock items. */
   while (list[i].location != NULL)
   {
     GtkToolItem *item;
-    
+
     add_stock_icon (factory, list[i].location, list[i].stock_id);
     item = gtk_tool_button_new_from_stock (list[i].stock_id);
     gtk_tool_button_set_label (GTK_TOOL_BUTTON (item), list[i].label);
@@ -52,7 +51,7 @@ int main (int argc,
     gtk_toolbar_insert (GTK_TOOLBAR (toolbar), item, i);
     i++;
   }
-    
+
   gtk_icon_factory_add_default (factory);
   gtk_toolbar_set_style (GTK_TOOLBAR (toolbar), GTK_TOOLBAR_BOTH);
   gtk_toolbar_set_show_arrow (GTK_TOOLBAR (toolbar), FALSE);
@@ -64,17 +63,17 @@ int main (int argc,
 }
 
 /* Add a new stock icon from the given location and with the given stock id. */
-static void 
+static void
 add_stock_icon (GtkIconFactory *factory,
                 gchar *location,
                 gchar *stock_id)
 {
   GtkIconSource *source;
   GtkIconSet *set;
-  
+
   source = gtk_icon_source_new ();
   set = gtk_icon_set_new ();
-  
+
   gtk_icon_source_set_filename (source, location);
   gtk_icon_set_add_source (set, source);
   gtk_icon_factory_add (factory, stock_id, set);

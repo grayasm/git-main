@@ -6,7 +6,7 @@ static void my_marquee_class_init (MyMarqueeClass*);
 static void my_marquee_init (MyMarquee*);
 static void my_marquee_get_property (GObject*, guint, GValue*, GParamSpec*);
 static void my_marquee_set_property (GObject*, guint, const GValue*, GParamSpec*);
-                                         
+
 static void my_marquee_realize (GtkWidget*);
 static void my_marquee_size_request (GtkWidget*, GtkRequisition*);
 static void my_marquee_size_allocate (GtkWidget*, GtkAllocation*);
@@ -18,7 +18,7 @@ static gboolean my_marquee_leave_notify_event (GtkWidget*, GdkEventCrossing*);
 
 typedef struct _MyMarqueePrivate  MyMarqueePrivate;
 
-struct _MyMarqueePrivate 
+struct _MyMarqueePrivate
 {
   GSList *messages;
   gint current_message;
@@ -49,17 +49,17 @@ my_marquee_get_type ()
     static const GTypeInfo marquee_info =
     {
       sizeof (MyMarqueeClass),
-      NULL, 
+      NULL,
       NULL,
       (GClassInitFunc) my_marquee_class_init,
-      NULL, 
+      NULL,
       NULL,
       sizeof (MyMarquee),
       0,
       (GInstanceInitFunc) my_marquee_init,
     };
 
-    marquee_type = g_type_register_static (GTK_TYPE_WIDGET, "MyMarquee", 
+    marquee_type = g_type_register_static (GTK_TYPE_WIDGET, "MyMarquee",
                                            &marquee_info, 0);
   }
 
@@ -86,16 +86,16 @@ my_marquee_class_init (MyMarqueeClass *klass)
   widget_class->size_allocate = my_marquee_size_allocate;
   widget_class->enter_notify_event = my_marquee_enter_notify_event;
   widget_class->leave_notify_event = my_marquee_leave_notify_event;
-  
+
   g_type_class_add_private (klass, sizeof (MyMarqueePrivate));
-  
+
   g_object_class_install_property (gobject_class, PROP_SPEED,
                  g_param_spec_int ("speed",
                                    "Speed of the Marquee",
                                    "The percentage of movement every second",
                                    1, 50, 25,
                                    G_PARAM_READWRITE));
-  
+
   g_object_class_install_property (gobject_class, PROP_SCROLL_DIR,
                  g_param_spec_int ("scroll-direction",
                                    "Scroll direction of the Marquee",
@@ -178,7 +178,7 @@ my_marquee_new (const gchar *message)
 
   marquee = MY_MARQUEE (g_object_new (my_marquee_get_type (), NULL));
   priv = MY_MARQUEE_GET_PRIVATE (marquee);
-  
+
   priv->messages = g_slist_append (priv->messages, (gpointer) g_strdup (message));
 
   return GTK_WIDGET (marquee);
@@ -205,7 +205,7 @@ my_marquee_realize (GtkWidget *widget)
   attributes.height = widget->allocation.height;
   attributes.wclass = GDK_INPUT_OUTPUT;
   attributes.window_type = GDK_WINDOW_CHILD;
-  attributes.event_mask = gtk_widget_get_events (widget) | GDK_EXPOSURE_MASK | 
+  attributes.event_mask = gtk_widget_get_events (widget) | GDK_EXPOSURE_MASK |
                           GDK_ENTER_NOTIFY_MASK | GDK_LEAVE_NOTIFY_MASK;
   attributes.visual = gtk_widget_get_visual (widget);
   attributes.colormap = gtk_widget_get_colormap (widget);
@@ -223,12 +223,12 @@ my_marquee_realize (GtkWidget *widget)
 
 /* Handle size requests for the widget. This function forces the widget to have
  * an initial size set according to the predefined width and the font size. */
-static void 
+static void
 my_marquee_size_request (GtkWidget *widget,
                          GtkRequisition *requisition)
 {
   PangoFontDescription *fd;
-  
+
   g_return_if_fail (widget != NULL || requisition != NULL);
   g_return_if_fail (IS_MY_MARQUEE (widget));
 
@@ -252,14 +252,14 @@ my_marquee_size_allocate (GtkWidget *widget,
   marquee = MY_MARQUEE (widget);
 
   if (GTK_WIDGET_REALIZED (widget))
-    gdk_window_move_resize (widget->window, allocation->x, allocation->y, 
+    gdk_window_move_resize (widget->window, allocation->x, allocation->y,
                             allocation->width, allocation->height);
 }
 
 /* When the mouse cursor enters the proximity of the widget, stop the message
  * from scrolling at all. */
-static gboolean 
-my_marquee_enter_notify_event (GtkWidget *widget, 
+static gboolean
+my_marquee_enter_notify_event (GtkWidget *widget,
                                GdkEventCrossing *event)
 {
   MyMarquee *marquee;
@@ -267,18 +267,18 @@ my_marquee_enter_notify_event (GtkWidget *widget,
 
   g_return_val_if_fail (widget != NULL || event != NULL, FALSE);
   g_return_val_if_fail (IS_MY_MARQUEE (widget), FALSE);
-  
+
   marquee = MY_MARQUEE (widget);
   priv = MY_MARQUEE_GET_PRIVATE (marquee);
   priv->enable_scrolling = FALSE;
-  
+
   return FALSE;
 }
 
 /* When the mouse cursor leaves the proximity of the widget, continue scrolling
  * the message in the correct direction. */
-static gboolean 
-my_marquee_leave_notify_event (GtkWidget *widget, 
+static gboolean
+my_marquee_leave_notify_event (GtkWidget *widget,
                                GdkEventCrossing *event)
 {
   MyMarquee *marquee;
@@ -286,16 +286,16 @@ my_marquee_leave_notify_event (GtkWidget *widget,
 
   g_return_val_if_fail (widget != NULL || event != NULL, FALSE);
   g_return_val_if_fail (IS_MY_MARQUEE (widget), FALSE);
-  
+
   marquee = MY_MARQUEE (widget);
   priv = MY_MARQUEE_GET_PRIVATE (marquee);
   priv->enable_scrolling = TRUE;
-  
+
   return FALSE;
 }
 
 /* Move the message "speed" pixels to the left or wrap the message around. */
-void 
+void
 my_marquee_slide (MyMarquee *marquee)
 {
   GtkWidget *widget;
@@ -304,24 +304,24 @@ my_marquee_slide (MyMarquee *marquee)
   PangoContext *context;
   gint width, height, i;
   GSList *message;
-  
+
   g_return_if_fail (IS_MY_MARQUEE (marquee));
-  
+
   widget = GTK_WIDGET (marquee);
   priv = MY_MARQUEE_GET_PRIVATE (marquee);
-  
+
   message = priv->messages;
   context = gdk_pango_context_get ();
   layout = pango_layout_new (context);
   g_object_unref (context);
-  
+
   for (i = 0; i < priv->current_message; i++)
     message = message->next;
-  
+
   /* Create a new PangoLayout out of the message with the given font. */
   pango_layout_set_text (layout, (gchar*) message->data, -1);
   pango_layout_get_size (layout, &width, &height);
-  
+
   if (priv->enable_scrolling)
   {
     /* Calculate the new location of the message. */
@@ -329,7 +329,7 @@ my_marquee_slide (MyMarquee *marquee)
       priv->current_x = priv->current_x - priv->speed;
     else
       priv->current_x = priv->current_x + priv->speed;
-  
+
     /* Wrap through the messages and choose a new location if the message is done. */
     if ((priv->scroll_direction == MY_MARQUEE_SCROLL_LEFT &&
          (priv->current_x + (width / PANGO_SCALE)) <= 0) ||
@@ -341,7 +341,7 @@ my_marquee_slide (MyMarquee *marquee)
         priv->current_message = 0;
       else
         priv->current_message++;
-    
+
       /* If scrolling left, set the current position to the right side of the widget. */
       if (priv->scroll_direction == MY_MARQUEE_SCROLL_LEFT)
         priv->current_x = widget->allocation.width;
@@ -356,26 +356,26 @@ my_marquee_slide (MyMarquee *marquee)
       }
     }
   }
-  
+
   /* Clear the text from the background of the widget. */
   gdk_window_clear_area (widget->window, 0, 0, widget->allocation.width,
                          widget->allocation.height);
-  
+
   /* Draw the border and PangoLayout on the widget, which is the message text. */
   gdk_draw_rectangle (widget->window,
                       widget->style->fg_gc[widget->state], FALSE,
                       0, 0, widget->allocation.width-1, widget->allocation.height-1);
-  
+
   gdk_draw_layout (widget->window,
                    widget->style->fg_gc[widget->state],
-                   priv->current_x, 
+                   priv->current_x,
                    (widget->allocation.height - (height / PANGO_SCALE)) / 2,
                    layout);
 }
 
 /* Add a new message to the list of messages that will be scrolled. */
 void
-my_marquee_add_message (MyMarquee *marquee, 
+my_marquee_add_message (MyMarquee *marquee,
                         const gchar *message)
 {
   MyMarqueePrivate *priv = MY_MARQUEE_GET_PRIVATE (marquee);
@@ -383,7 +383,7 @@ my_marquee_add_message (MyMarquee *marquee,
 }
 
 /* Remove a message from the list if it exists. */
-void 
+void
 my_marquee_remove_message (MyMarquee *marquee,
                            const gchar *message)
 {
@@ -392,8 +392,8 @@ my_marquee_remove_message (MyMarquee *marquee,
 }
 
 /* Set the number of pixels that the message will scroll. */
-void 
-my_marquee_set_speed (MyMarquee *marquee, 
+void
+my_marquee_set_speed (MyMarquee *marquee,
                       gint speed)
 {
   MyMarqueePrivate *priv = MY_MARQUEE_GET_PRIVATE (marquee);
@@ -401,15 +401,15 @@ my_marquee_set_speed (MyMarquee *marquee,
 }
 
 /* Retrieve the number of pixels that the message will scroll. */
-gint 
+gint
 my_marquee_get_speed (MyMarquee *marquee)
 {
   return MY_MARQUEE_GET_PRIVATE (marquee)->speed;
 }
 
 /* Set the scroll direction of the message. */
-void 
-my_marquee_set_scroll_dir (MyMarquee *marquee, 
+void
+my_marquee_set_scroll_dir (MyMarquee *marquee,
                            gint scroll_dir)
 {
   MyMarqueePrivate *priv = MY_MARQUEE_GET_PRIVATE (marquee);
@@ -417,7 +417,7 @@ my_marquee_set_scroll_dir (MyMarquee *marquee,
 }
 
 /* Retrieve the scroll direction of the message. */
-gint 
+gint
 my_marquee_get_scroll_dir (MyMarquee *marquee)
 {
   return MY_MARQUEE_GET_PRIVATE (marquee)->scroll_direction;

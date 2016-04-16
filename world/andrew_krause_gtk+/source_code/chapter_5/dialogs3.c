@@ -1,14 +1,13 @@
 #include <gtk/gtk.h>
 
-int main (int argc, 
-          char *argv[])
+int main (int argc, char *argv[])
 {
   GtkWidget *dialog, *table, *user, *real, *home, *host;
   GtkWidget *lbl1, *lbl2, *lbl3, *lbl4;
   gint result;
 
   gtk_init (&argc, &argv);
-  
+
   dialog = gtk_dialog_new_with_buttons ("Edit User Information",
                                         NULL, GTK_DIALOG_MODAL,
                                         GTK_STOCK_OK, GTK_RESPONSE_OK,
@@ -47,10 +46,10 @@ int main (int argc,
   gtk_table_set_row_spacings (GTK_TABLE (table), 5);
   gtk_table_set_col_spacings (GTK_TABLE (table), 5);
   gtk_container_set_border_width (GTK_CONTAINER (table), 5);
-   
+
   gtk_box_pack_start_defaults (GTK_BOX (GTK_DIALOG (dialog)->vbox), table);
   gtk_widget_show_all (dialog);
-  
+
   /* Run the dialog and output the data if the user presses the OK button. */
   result = gtk_dialog_run (GTK_DIALOG (dialog));
   if (result == GTK_RESPONSE_OK)
@@ -60,7 +59,7 @@ int main (int argc,
     g_print ("Home Folder: %s\n", gtk_entry_get_text (GTK_ENTRY (home)));
     g_print ("Host Name: %s\n", gtk_entry_get_text (GTK_ENTRY (host)));
   }
-  
-  gtk_widget_destroy (dialog);  
+
+  gtk_widget_destroy (dialog);
   return 0;
 }

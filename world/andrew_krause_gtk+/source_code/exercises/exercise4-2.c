@@ -7,8 +7,7 @@ typedef struct
 
 static void value_changed (GtkWidget*, Widgets*);
 
-int main (int argc, 
-          char *argv[])
+int main (int argc, char *argv[])
 {
   Widgets *w = (Widgets*) g_malloc (sizeof (Widgets));
   GtkWidget *window, *vbox;
@@ -22,23 +21,23 @@ int main (int argc,
 
   g_signal_connect (G_OBJECT (window), "destroy",
                     G_CALLBACK (gtk_main_quit), NULL);
-  
+
   adj1 = GTK_ADJUSTMENT (gtk_adjustment_new (0.5, 0.0, 1.0, 0.01, 0.02, 0.02));
   adj2 = GTK_ADJUSTMENT (gtk_adjustment_new (0.5, 0.0, 1.02, 0.01, 0.02, 0.02));
-  
+
   w->spin = gtk_spin_button_new (adj1, 0.01, 2);
   w->scale = gtk_hscale_new (adj2);
   w->check = gtk_check_button_new_with_label ("Synchronize Spin and Scale");
-  
+
   gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (w->check), TRUE);
   gtk_scale_set_digits (GTK_SCALE (w->scale), 2);
   gtk_scale_set_value_pos (GTK_SCALE (w->scale), GTK_POS_RIGHT);
-  
+
   g_signal_connect (G_OBJECT (w->spin), "value_changed",
                     G_CALLBACK (value_changed), (gpointer) w);
   g_signal_connect (G_OBJECT (w->scale), "value_changed",
                     G_CALLBACK (value_changed), (gpointer) w);
-  
+
   vbox = gtk_vbox_new (FALSE, 5);
   gtk_box_pack_start (GTK_BOX (vbox), w->spin, FALSE, TRUE, 0);
   gtk_box_pack_start (GTK_BOX (vbox), w->scale, FALSE, TRUE, 0);
@@ -56,7 +55,7 @@ value_changed (GtkWidget *widget,
                Widgets *w)
 {
   gdouble val1, val2;
-  
+
   val1 = gtk_spin_button_get_value (GTK_SPIN_BUTTON (w->spin));
   val2 = gtk_range_get_value (GTK_RANGE (w->scale));
 

@@ -1,7 +1,7 @@
 #include <gtk/gtk.h>
 
-enum 
-{ 
+enum
+{
   BUY_IT = 0,
   QUANTITY,
   PRODUCT,
@@ -22,17 +22,17 @@ typedef struct
   gchar *product;
 } GroceryItem;
 
-GroceryItem list[] = 
-{ 
+GroceryItem list[] =
+{
   { PRODUCT_CATEGORY, TRUE, 0, "Cleaning Supplies" },
-  { PRODUCT_CHILD, TRUE, 1, "Paper Towels" }, 
+  { PRODUCT_CHILD, TRUE, 1, "Paper Towels" },
   { PRODUCT_CHILD, TRUE, 3, "Toilet Paper" },
   { PRODUCT_CATEGORY, TRUE, 0, "Food" },
   { PRODUCT_CHILD, TRUE, 2, "Bread" },
   { PRODUCT_CHILD, FALSE, 1, "Butter" },
   { PRODUCT_CHILD, TRUE, 1, "Milk" },
   { PRODUCT_CHILD, FALSE, 3, "Chips" },
-  { PRODUCT_CHILD, TRUE, 4, "Soda" }, 
+  { PRODUCT_CHILD, TRUE, 4, "Soda" },
   { PRODUCT_CATEGORY, FALSE, 0, NULL }
 };
 
@@ -48,22 +48,22 @@ int main (int argc,
   GtkTreeIter iter, child;
   GtkTreeSelection *selection;
   guint i = 0, j;
-  
+
   gtk_init (&argc, &argv);
-  
+
   window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
   gtk_window_set_title (GTK_WINDOW (window), "Grocery List");
   gtk_container_set_border_width (GTK_CONTAINER (window), 10);
   gtk_widget_set_size_request (window, 275, 300);
-  
+
   g_signal_connect (G_OBJECT (window), "destroy",
                     G_CALLBACK (gtk_main_quit), NULL);
-  
-  treeview = gtk_tree_view_new ();  
+
+  treeview = gtk_tree_view_new ();
   setup_tree_view (treeview);
-  
+
   store = gtk_tree_store_new (COLUMNS, G_TYPE_BOOLEAN, G_TYPE_INT, G_TYPE_STRING);
-  
+
   while (list[i].product != NULL)
   {
     /* If the product type is a category, count the quantity of all of the products
@@ -71,7 +71,7 @@ int main (int argc,
     if (list[i].product_type == PRODUCT_CATEGORY)
     {
       j = i + 1;
-      
+
       /* Calculate how many products will be bought in the category. */
       while (list[j].product != NULL && list[j].product_type != PRODUCT_CATEGORY)
       {
@@ -79,55 +79,57 @@ int main (int argc,
           list[i].quantity += list[j].quantity;
         j++;
       }
-      
+
       /* Add the category as a new root element. */
       gtk_tree_store_append (store, &iter, NULL);
-      gtk_tree_store_set (store, &iter, BUY_IT, list[i].buy, 
-                          QUANTITY, list[i].quantity, PRODUCT, list[i].product, -1);
+      gtk_tree_store_set (store, &iter, BUY_IT, list[i].buy,
+                          QUANTITY, list[i].quantity, PRODUCT,
+                          list[i].product, -1);
     }
     /* Otherwise, add the product as a child of the category. */
     else
     {
       gtk_tree_store_append (store, &child, &iter);
-      gtk_tree_store_set (store, &child, BUY_IT, list[i].buy, 
-                          QUANTITY, list[i].quantity, PRODUCT, list[i].product, -1);
+      gtk_tree_store_set (store, &child, BUY_IT, list[i].buy,
+                          QUANTITY, list[i].quantity, PRODUCT,
+                          list[i].product, -1);
     }
-    
+
     i++;
   }
-  
+
   gtk_tree_view_set_model (GTK_TREE_VIEW (treeview), GTK_TREE_MODEL (store));
   gtk_tree_view_expand_all (GTK_TREE_VIEW (treeview));
   g_object_unref (store);
-  
+
   /* Allow multiple rows to be selected at the same time. */
   selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (treeview));
   gtk_tree_selection_set_mode (selection, GTK_SELECTION_MULTIPLE);
-  
+
   scrolled_win = gtk_scrolled_window_new (NULL, NULL);
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolled_win),
                                   GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
-  
+
   add = gtk_button_new_from_stock (GTK_STOCK_ADD);
   remove = gtk_button_new_from_stock (GTK_STOCK_REMOVE);
-  
+
   g_signal_connect (G_OBJECT (add), "clicked",
                     G_CALLBACK (add_product), (gpointer) treeview);
   g_signal_connect (G_OBJECT (remove), "clicked",
                     G_CALLBACK (remove_products), (gpointer) treeview);
-  
+
   hbox = gtk_hbox_new (TRUE, 5);
   gtk_box_pack_start (GTK_BOX (hbox), add, FALSE, TRUE, 0);
   gtk_box_pack_start (GTK_BOX (hbox), remove, FALSE, TRUE, 0);
-  
+
   vbox = gtk_vbox_new (FALSE, 5);
   gtk_box_pack_start (GTK_BOX (vbox), scrolled_win, TRUE, TRUE, 0);
   gtk_box_pack_start (GTK_BOX (vbox), hbox, FALSE, TRUE, 0);
-  
+
   gtk_container_add (GTK_CONTAINER (scrolled_win), treeview);
   gtk_container_add (GTK_CONTAINER (window), vbox);
   gtk_widget_show_all (window);
-  
+
   gtk_main ();
   return 0;
 }
@@ -144,7 +146,7 @@ add_product (GtkButton *add,
   gchar *category, *name;
   gint quantity, i = 0;
   gboolean buy;
-  
+
   /* Create a dialog that will be used to create a new product. */
   dialog = gtk_dialog_new_with_buttons ("Add a Product", NULL,
                                         GTK_DIALOG_MODAL,
@@ -158,7 +160,7 @@ add_product (GtkButton *add,
   spin = gtk_spin_button_new_with_range (0, 100, 1);
   check = gtk_check_button_new_with_mnemonic ("_Buy the Product");
   gtk_spin_button_set_digits (GTK_SPIN_BUTTON (spin), 0);
-  
+
   /* Add all of the categories to the combo box. */
   while (list[i].product != NULL)
   {
@@ -166,28 +168,35 @@ add_product (GtkButton *add,
       gtk_combo_box_append_text (GTK_COMBO_BOX (combobox), list[i].product);
     i++;
   }
-  
+
   table = gtk_table_new (4, 2, FALSE);
   gtk_table_set_row_spacings (GTK_TABLE (table), 5);
   gtk_table_set_col_spacings (GTK_TABLE (table), 5);
   gtk_container_set_border_width (GTK_CONTAINER (table), 5);
-  
+
   /* Pack the table that will hold the dialog widgets. */
-  gtk_table_attach (GTK_TABLE (table), gtk_label_new ("Category:"), 0, 1, 0, 1, 
+  gtk_table_attach (GTK_TABLE (table), gtk_label_new ("Category:"),
+                    0, 1, 0, 1,
                     GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
-  gtk_table_attach (GTK_TABLE (table), combobox, 1, 2, 0, 1, GTK_EXPAND | GTK_FILL, 
+  gtk_table_attach (GTK_TABLE (table), combobox, 1, 2, 0, 1,
+                    GTK_EXPAND | GTK_FILL,
                     GTK_SHRINK | GTK_FILL, 0, 0);
-  gtk_table_attach (GTK_TABLE (table), gtk_label_new ("Product:"), 0, 1, 1, 2, 
+  gtk_table_attach (GTK_TABLE (table), gtk_label_new ("Product:"),
+                    0, 1, 1, 2,
                     GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
-  gtk_table_attach (GTK_TABLE (table), entry, 1, 2, 1, 2, GTK_EXPAND | GTK_FILL, 
+  gtk_table_attach (GTK_TABLE (table), entry, 1, 2, 1, 2,
+                    GTK_EXPAND | GTK_FILL,
                     GTK_SHRINK | GTK_FILL, 0, 0);
-  gtk_table_attach (GTK_TABLE (table), gtk_label_new ("Quantity:"), 0, 1, 2, 3, 
+  gtk_table_attach (GTK_TABLE (table), gtk_label_new ("Quantity:"),
+                    0, 1, 2, 3,
                     GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
-  gtk_table_attach (GTK_TABLE (table), spin, 1, 2, 2, 3, GTK_EXPAND | GTK_FILL, 
+  gtk_table_attach (GTK_TABLE (table), spin, 1, 2, 2, 3,
+                    GTK_EXPAND | GTK_FILL,
                     GTK_SHRINK | GTK_FILL, 0, 0);
-  gtk_table_attach (GTK_TABLE (table), check, 1, 2, 3, 4, GTK_EXPAND | GTK_FILL, 
+  gtk_table_attach (GTK_TABLE (table), check, 1, 2, 3, 4,
+                    GTK_EXPAND | GTK_FILL,
                     GTK_SHRINK | GTK_FILL, 0, 0);
-  
+
   gtk_box_pack_start_defaults (GTK_BOX (GTK_DIALOG (dialog)->vbox), table);
   gtk_widget_show_all (dialog);
 
@@ -198,41 +207,41 @@ add_product (GtkButton *add,
     product = gtk_entry_get_text (GTK_ENTRY (entry));
     category = gtk_combo_box_get_active_text (GTK_COMBO_BOX (combobox));
     buy = gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (check));
-    
+
     if (g_ascii_strcasecmp (product, "") == 0 || category == NULL)
     {
       g_warning ("All of the fields were not correctly filled out!");
       gtk_widget_destroy (dialog);
-      
+
       if (category != NULL)
         g_free (category);
       return;
     }
-    
+
     model = gtk_tree_view_get_model (treeview);
     gtk_tree_model_get_iter_from_string (model, &iter, "0");
-    
+
     /* Retrieve an iterator pointing to the selected category. */
     do
     {
       gtk_tree_model_get (model, &iter, PRODUCT, &name, -1);
-      
+
       if (g_ascii_strcasecmp (name, category) == 0)
       {
         g_free (name);
         break;
       }
-      
+
       g_free (name);
     } while (gtk_tree_model_iter_next (model, &iter));
-    
-    /* Convert the category iterator to a path so that it will not become invalid
-     * and add the new product as a child of the category. */
+
+    /* Convert the category iterator to a path so that it will not
+       become invalid and add the new product as a child of the category. */
     path = gtk_tree_model_get_path (model, &iter);
     gtk_tree_store_append (GTK_TREE_STORE (model), &child, &iter);
-    gtk_tree_store_set (GTK_TREE_STORE (model), &child, BUY_IT, buy, 
+    gtk_tree_store_set (GTK_TREE_STORE (model), &child, BUY_IT, buy,
                         QUANTITY, quantity, PRODUCT, product, -1);
-    
+
     /* Add the quantity to the running total if it is to be purchased. */
     if (buy)
     {
@@ -241,7 +250,7 @@ add_product (GtkButton *add,
       i += quantity;
       gtk_tree_store_set (GTK_TREE_STORE (model), &iter, QUANTITY, i, -1);
     }
-    
+
     gtk_tree_path_free (path);
     g_free (category);
   }
@@ -257,7 +266,7 @@ remove_row (GtkTreeRowReference *ref,
   GtkTreePath *path;
   gboolean buy;
   gint quantity, pnum;
-  
+
   path = gtk_tree_row_reference_get_path (ref);
   gtk_tree_model_get_iter (model, &iter, path);
 
@@ -266,19 +275,19 @@ remove_row (GtkTreeRowReference *ref,
   {
     gtk_tree_model_get (model, &iter, BUY_IT, &buy, QUANTITY, &quantity, -1);
     gtk_tree_model_get (model, &parent, QUANTITY, &pnum, -1);
-    
+
     if (buy)
     {
       pnum -= quantity;
       gtk_tree_store_set (GTK_TREE_STORE (model), &parent, QUANTITY, pnum, -1);
     }
-    
+
     gtk_tree_model_get_iter (model, &iter, path);
-    gtk_tree_store_remove (GTK_TREE_STORE (model), &iter);    
+    gtk_tree_store_remove (GTK_TREE_STORE (model), &iter);
   }
 }
 
-static void 
+static void
 remove_products (GtkButton *remove,
                  GtkTreeView *treeview)
 {
@@ -286,11 +295,11 @@ remove_products (GtkButton *remove,
   GtkTreeRowReference *ref;
   GtkTreeModel *model;
   GList *rows, *ptr, *references = NULL;
-  
+
   selection = gtk_tree_view_get_selection (treeview);
   model = gtk_tree_view_get_model (treeview);
   rows = gtk_tree_selection_get_selected_rows (selection, &model);
-  
+
   /* Create tree row references to all of the selected rows. */
   ptr = rows;
   while (ptr != NULL)
@@ -300,7 +309,7 @@ remove_products (GtkButton *remove,
     gtk_tree_row_reference_free (ref);
     ptr = ptr->next;
   }
-  
+
   /* Remove each of the selected rows pointed to by the row reference. */
   g_list_foreach (references, (GFunc) remove_row, model);
 
@@ -319,17 +328,17 @@ setup_tree_view (GtkWidget *treeview)
 {
   GtkCellRenderer *renderer;
   GtkTreeViewColumn *column;
-  
+
   renderer = gtk_cell_renderer_text_new ();
   column = gtk_tree_view_column_new_with_attributes
                          ("Buy", renderer, "text", BUY_IT, NULL);
   gtk_tree_view_append_column (GTK_TREE_VIEW (treeview), column);
-  
+
   renderer = gtk_cell_renderer_text_new ();
   column = gtk_tree_view_column_new_with_attributes
                          ("Count", renderer, "text", QUANTITY, NULL);
   gtk_tree_view_append_column (GTK_TREE_VIEW (treeview), column);
-  
+
   renderer = gtk_cell_renderer_text_new ();
   column = gtk_tree_view_column_new_with_attributes
                          ("Product", renderer, "text", PRODUCT, NULL);

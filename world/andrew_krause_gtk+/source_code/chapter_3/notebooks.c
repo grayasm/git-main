@@ -3,8 +3,7 @@
 static void destroy (GtkWidget*, gpointer);
 static void switch_page (GtkButton*, GtkNotebook*);
 
-int main (int argc, 
-          char *argv[])
+int main (int argc, char *argv[])
 {
   GtkWidget *window, *notebook;
   GtkWidget *label1, *label2, *child1, *child2;
@@ -24,7 +23,7 @@ int main (int argc,
   label2 = gtk_label_new ("Page Two");
   child1 = gtk_button_new_with_label ("Go to page 2 to find the answer.");
   child2 = gtk_button_new_with_label ("Go to page 1 to find the answer.");
-  
+
   /* Notice that two widgets were connected to the same callback function! */
   g_signal_connect (G_OBJECT (child1), "clicked",
                     G_CALLBACK (switch_page),
@@ -38,7 +37,7 @@ int main (int argc,
   gtk_notebook_append_page (GTK_NOTEBOOK (notebook), child2, label2);
 
   gtk_notebook_set_tab_pos (GTK_NOTEBOOK (notebook), GTK_POS_BOTTOM);
-  
+
   gtk_container_add (GTK_CONTAINER (window), notebook);
   gtk_widget_show_all (window);
 
@@ -47,12 +46,12 @@ int main (int argc,
 }
 
 /* Switch between the current GtkNotebook page. */
-static void 
-switch_page (GtkButton *button, 
+static void
+switch_page (GtkButton *button,
              GtkNotebook *notebook)
 {
   gint page = gtk_notebook_get_current_page (notebook);
-  
+
   if (page == 0)
     gtk_notebook_set_current_page (notebook, 1);
   else

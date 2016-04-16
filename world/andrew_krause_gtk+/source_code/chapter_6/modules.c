@@ -4,8 +4,7 @@
 typedef gboolean (* PrintMessageFunc) (gpointer data);
 typedef gboolean (* PrintAnotherFunc) (gpointer data);
 
-int main (int argc, 
-          char *argv[])
+int main (int argc, char *argv[])
 {
   GModule *module;
   PrintMessageFunc print_the_message;
@@ -25,15 +24,15 @@ int main (int argc,
   }
 
   /* Load the print_the_message() function. */
-  if (!g_module_symbol (module, "print_the_message", 
+  if (!g_module_symbol (module, "print_the_message",
                         (gpointer*) &print_the_message))
   {
     g_error ("Error: %s\n", (gchar*) g_module_error ());
     return -1;
-  } 
+  }
 
   /* Load the destroy_the_evidence() function. */
-  if (!g_module_symbol (module, "print_another_one", 
+  if (!g_module_symbol (module, "print_another_one",
                         (gpointer*) &print_another_one))
   {
     g_error ("Error: %s\n", (gchar*) g_module_error ());

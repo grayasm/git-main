@@ -6,16 +6,15 @@
 static void destroy (GtkWidget*, gpointer);
 static gboolean key_press (GtkWidget*, GdkEventKey*, GtkLabel*);
 
-int main (int argc, 
-          char *argv[])
+int main (int argc, char *argv[])
 {
   GtkWidget *window, *label;
 
   gtk_init (&argc, &argv);
 
-  window = gtk_window_new (GTK_WINDOW_TOPLEVEL); 
+  window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
   gtk_window_set_title (GTK_WINDOW (window), FIRST_NAME);
-  gtk_widget_set_size_request (window, 300, 100); 
+  gtk_widget_set_size_request (window, 300, 100);
   gtk_window_set_resizable (GTK_WINDOW (window), FALSE);
 
   g_signal_connect (G_OBJECT (window), "destroy",
@@ -37,9 +36,9 @@ int main (int argc,
 /* This callback function is called every time key-press-event is emitted
  * from the main GtkWindow. By placing the third parameter as a GtkLabel,
  * the gpointer is already cast and ready for use. */
-static gboolean 
-key_press (GtkWidget *window, 
-           GdkEventKey *event, 
+static gboolean
+key_press (GtkWidget *window,
+           GdkEventKey *event,
            GtkLabel *label)
 {
   const gchar *text = gtk_label_get_text (GTK_LABEL (label));

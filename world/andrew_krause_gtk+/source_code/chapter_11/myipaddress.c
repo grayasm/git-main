@@ -4,11 +4,12 @@
 #include <math.h>
 #include "myipaddress.h"
 
-#define MY_IP_ADDRESS_GET_PRIVATE(obj) (G_TYPE_INSTANCE_GET_PRIVATE ((obj), MY_IP_ADDRESS_TYPE, MyIPAddressPrivate))
+#define MY_IP_ADDRESS_GET_PRIVATE(obj) \
+(G_TYPE_INSTANCE_GET_PRIVATE ((obj), MY_IP_ADDRESS_TYPE, MyIPAddressPrivate))
 
 typedef struct _MyIPAddressPrivate  MyIPAddressPrivate;
 
-struct _MyIPAddressPrivate 
+struct _MyIPAddressPrivate
 {
   guint address[4];
 };
@@ -31,7 +32,7 @@ enum
 static void my_ip_address_class_init (MyIPAddressClass*);
 static void my_ip_address_init (MyIPAddress*);
 static void my_ip_address_get_property (GObject*, guint, GValue*, GParamSpec*);
-static void my_ip_address_set_property (GObject*, guint, 
+static void my_ip_address_set_property (GObject*, guint,
                                          const GValue*, GParamSpec*);
 
 static void my_ip_address_render (MyIPAddress*);
@@ -40,8 +41,10 @@ static gboolean my_ip_address_key_pressed (GtkEntry*, GdkEventKey*);
 
 static guint my_ip_address_signals[LAST_SIGNAL] = { 0 };
 
-/* Get a GType that corresponds to MyIPAddress. The first time this function is
- * called (on object instantiation), the type is registered. */
+/* Get a GType that corresponds to MyIPAddress.
+   The first time this function is called (on object instantiation),
+   the type is registered.
+*/
 GType
 my_ip_address_get_type (void)
 {
@@ -52,17 +55,17 @@ my_ip_address_get_type (void)
     static const GTypeInfo entry_info =
     {
       sizeof (MyIPAddressClass),
-      NULL, 
+      NULL,
       NULL,
       (GClassInitFunc) my_ip_address_class_init,
-      NULL, 
+      NULL,
       NULL,
       sizeof (MyIPAddress),
       0,
       (GInstanceInitFunc) my_ip_address_init,
     };
 
-    entry_type = g_type_register_static (GTK_TYPE_ENTRY, "MyIPAddress", 
+    entry_type = g_type_register_static (GTK_TYPE_ENTRY, "MyIPAddress",
                                          &entry_info, 0);
   }
 
@@ -84,12 +87,12 @@ my_ip_address_class_init (MyIPAddressClass *klass)
   g_type_class_add_private (klass, sizeof (MyIPAddressPrivate));
 
   /* Register the ip-changed signal, which will be emitted when the ip changes. */
-  my_ip_address_signals[CHANGED_SIGNAL] = 
+  my_ip_address_signals[CHANGED_SIGNAL] =
          g_signal_new ("ip-changed", G_TYPE_FROM_CLASS (klass),
                        G_SIGNAL_RUN_FIRST | G_SIGNAL_ACTION,
                        G_STRUCT_OFFSET (MyIPAddressClass, ip_changed),
                        NULL, NULL, g_cclosure_marshal_VOID__VOID, G_TYPE_NONE, 0);
-  
+
   /* Register four GObject properties, one for each ip address number. */
   g_object_class_install_property (gobject_class, PROP_IP1,
                  g_param_spec_int ("ip-number-1",
@@ -97,21 +100,21 @@ my_ip_address_class_init (MyIPAddressClass *klass)
                                    "The first IP address number",
                                    0, 255, 0,
                                    G_PARAM_READWRITE));
-  
+
   g_object_class_install_property (gobject_class, PROP_IP2,
                  g_param_spec_int ("ip-number-2",
                                    "IP Address Number 2",
                                    "The second IP address number",
                                    0, 255, 0,
                                    G_PARAM_READWRITE));
-  
+
   g_object_class_install_property (gobject_class, PROP_IP3,
                  g_param_spec_int ("ip-number-3",
                                    "IP Address Number 3",
                                    "The third IP address number",
                                    0, 255, 0,
                                    G_PARAM_READWRITE));
-  
+
   g_object_class_install_property (gobject_class, PROP_IP4,
                  g_param_spec_int ("ip-number-4",
                                    "IP Address Number 1",
@@ -194,15 +197,15 @@ my_ip_address_init (MyIPAddress *ipaddress)
   MyIPAddressPrivate *priv = MY_IP_ADDRESS_GET_PRIVATE (ipaddress);
   PangoFontDescription *fd;
   guint i;
-  
+
   for (i = 0; i < 4; i++)
     priv->address[i] = 0;
-  
+
   fd = pango_font_description_from_string ("Monospace");
   gtk_widget_modify_font (GTK_WIDGET (ipaddress), fd);
   my_ip_address_render (ipaddress);
   pango_font_description_free (fd);
-  
+
   /* The key-press-event signal will be used to filter out certain keys. We will
    * also monitory the cursor-position property so it can be moved correctly. */
   g_signal_connect (G_OBJECT (ipaddress), "key-press-event",
@@ -219,24 +222,24 @@ my_ip_address_new ()
 }
 
 /* Return a string that represents the currently displayed IP address. */
-gchar* 
+gchar*
 my_ip_address_get_address (MyIPAddress *ipaddress)
 {
   MyIPAddressPrivate *priv = MY_IP_ADDRESS_GET_PRIVATE (ipaddress);
-  
-  return g_strdup_printf ("%d.%d.%d.%d", priv->address[0], priv->address[1], 
+
+  return g_strdup_printf ("%d.%d.%d.%d", priv->address[0], priv->address[1],
                           priv->address[2], priv->address[3]);
 }
 
 /* Set the content of the IP address. Ignore any values that are out of bounds
  * so the programmer can provide a negative value for fields not to change. */
-void 
-my_ip_address_set_address (MyIPAddress *ipaddress, 
+void
+my_ip_address_set_address (MyIPAddress *ipaddress,
                            gint address[4])
 {
   MyIPAddressPrivate *priv = MY_IP_ADDRESS_GET_PRIVATE (ipaddress);
   guint i;
-  
+
   for (i = 0; i < 4; i++)
   {
     if (address[i] >= 0 && address[i] <= 255)
@@ -244,19 +247,19 @@ my_ip_address_set_address (MyIPAddress *ipaddress,
       priv->address[i] = address[i];
     }
   }
-  
+
   my_ip_address_render (ipaddress);
   g_signal_emit_by_name ((gpointer) ipaddress, "ip-changed");
 }
 
 /* Render the current content of the IP address in the GtkEntry widget. */
-static void 
+static void
 my_ip_address_render (MyIPAddress *ipaddress)
 {
   MyIPAddressPrivate *priv = MY_IP_ADDRESS_GET_PRIVATE (ipaddress);
   GString *text;
   guint i;
-  
+
   /* Create a string that displays the IP address content, adding spaces if a
    * number cannot fill three characters. */
   text = g_string_new (NULL);
@@ -266,7 +269,7 @@ my_ip_address_render (MyIPAddress *ipaddress)
     text = g_string_append (text, temp);
     g_free (temp);
   }
-  
+
   /* Remove the trailing decimal place and add the string to the GtkEntry. */
   text = g_string_truncate (text, 15);
   gtk_entry_set_text (GTK_ENTRY (ipaddress), text->str);
@@ -274,12 +277,12 @@ my_ip_address_render (MyIPAddress *ipaddress)
 }
 
 /* Force the cursor to always be at the end of one of the four numbers. */
-static void 
-my_ip_address_move_cursor (GObject *entry, 
+static void
+my_ip_address_move_cursor (GObject *entry,
                            GParamSpec *spec)
 {
   gint cursor = gtk_editable_get_position (GTK_EDITABLE (entry));
-  
+
   if (cursor <= 3)
     gtk_editable_set_position (GTK_EDITABLE (entry), 3);
   else if (cursor <= 7)
@@ -288,28 +291,28 @@ my_ip_address_move_cursor (GObject *entry,
     gtk_editable_set_position (GTK_EDITABLE (entry), 11);
   else
     gtk_editable_set_position (GTK_EDITABLE (entry), 15);
-    
 }
 
 /* Handle key presses of numbers, tabs, backspaces and returns. */
-static gboolean 
-my_ip_address_key_pressed (GtkEntry *entry, 
+static gboolean
+my_ip_address_key_pressed (GtkEntry *entry,
                            GdkEventKey *event)
 {
   MyIPAddressPrivate *priv = MY_IP_ADDRESS_GET_PRIVATE (entry);
   guint k = event->keyval;
   gint cursor, value;
-  
-  /* If the key is an integer, append the new number to the address. This is only
-   * done if the resulting number will be less than 255. */
+
+  /* If the key is an integer, append the new number to the address.
+     This is only done if the resulting number will be less than 255.
+  */
   if ((k >= GDK_0 && k <= GDK_9) || (k >= GDK_KP_0 && k <= GDK_KP_9))
   {
     cursor = floor (gtk_editable_get_position (GTK_EDITABLE (entry)) / 4);
     value = g_ascii_digit_value (event->string[0]);
-    
+
     if ((priv->address[cursor] == 25) && (value > 5))
       return TRUE;
-    
+
     if (priv->address[cursor] < 26)
     {
       priv->address[cursor] *= 10;
@@ -325,8 +328,10 @@ my_ip_address_key_pressed (GtkEntry *entry,
     cursor = (floor (gtk_editable_get_position (GTK_EDITABLE (entry)) / 4) + 1);
     gtk_editable_set_position (GTK_EDITABLE (entry), (4 * (cursor % 4)) + 3);
   }
-  /* Delete the last digit of the current number. This just divides the number by
-   * 10, relying on the fact that any remainder will be ignored. */
+  /* Delete the last digit of the current number.
+     This just divides the number by 10, relying on the fact that
+     any remainder will be ignored.
+  */
   else if (k == GDK_BackSpace)
   {
     cursor = floor (gtk_editable_get_position (GTK_EDITABLE (entry)) / 4);
@@ -338,6 +343,6 @@ my_ip_address_key_pressed (GtkEntry *entry,
   /* Activate the GtkEntry widget, which corresponds to the activate signal. */
   else if ((k == GDK_Return) || (k == GDK_KP_Enter))
     gtk_widget_activate (GTK_WIDGET (entry));
-  
+
   return TRUE;
 }

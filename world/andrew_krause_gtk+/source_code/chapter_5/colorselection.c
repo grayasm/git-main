@@ -8,8 +8,7 @@ static void dialog_response (GtkDialog*, gint, gpointer);
 static GdkColor global_color;
 static guint global_alpha = 65535;
 
-int main (int argc, 
-          char *argv[])
+int main (int argc, char *argv[])
 {
   GtkWidget *window, *hbox, *modal, *nonmodal;
   gint i;
@@ -17,7 +16,7 @@ int main (int argc,
   gtk_init (&argc, &argv);
 
   /* Loop through the parameters.  The first color name that is specified and
-   * successfully parsed, it will be used as the initial color of the selection. */
+   * successfully parsed, it will be used as the initial color of the selection.*/
   for (i=1; i < argc; i++)
     if (gdk_color_parse (argv[i], &global_color))
       break;
@@ -27,19 +26,19 @@ int main (int argc,
   gtk_container_set_border_width (GTK_CONTAINER (window), 10);
   gtk_widget_set_size_request (window, 200, 75);
 
-  g_signal_connect (G_OBJECT (window), "destroy", 
+  g_signal_connect (G_OBJECT (window), "destroy",
                     G_CALLBACK (gtk_main_quit), NULL);
 
   modal = gtk_button_new_with_label ("Modal");
   nonmodal = gtk_button_new_with_label ("Non-Modal");
-  
-  g_signal_connect (G_OBJECT (modal), "clicked", 
-                    G_CALLBACK (modal_clicked), 
+
+  g_signal_connect (G_OBJECT (modal), "clicked",
+                    G_CALLBACK (modal_clicked),
                     (gpointer) window);
-  g_signal_connect (G_OBJECT (nonmodal), "clicked", 
-                    G_CALLBACK (nonmodal_clicked), 
+  g_signal_connect (G_OBJECT (nonmodal), "clicked",
+                    G_CALLBACK (nonmodal_clicked),
                     (gpointer) window);
-  
+
   hbox = gtk_hbox_new (TRUE, 10);
   gtk_box_pack_start_defaults (GTK_BOX (hbox), modal);
   gtk_box_pack_start_defaults (GTK_BOX (hbox), nonmodal);
@@ -76,7 +75,7 @@ run_color_selection_dialog (GtkButton *button,
 {
   GtkWidget *dialog, *colorsel;
   gchar *title;
-  
+
   if (domodal)
     title = "Choose Color -- Modal";
   else
@@ -88,14 +87,14 @@ run_color_selection_dialog (GtkButton *button,
   colorsel = GTK_COLOR_SELECTION_DIALOG (dialog)->colorsel;
   gtk_color_selection_set_has_opacity_control (GTK_COLOR_SELECTION (colorsel), TRUE);
 
-  gtk_color_selection_set_current_color (GTK_COLOR_SELECTION (colorsel), 
+  gtk_color_selection_set_current_color (GTK_COLOR_SELECTION (colorsel),
                                          &global_color);
-  gtk_color_selection_set_current_alpha (GTK_COLOR_SELECTION (colorsel), 
+  gtk_color_selection_set_current_alpha (GTK_COLOR_SELECTION (colorsel),
                                          global_alpha);
 
   gtk_widget_show_all (dialog);
-  
-  g_signal_connect (G_OBJECT (dialog), "response", 
+
+  g_signal_connect (G_OBJECT (dialog), "response",
                     G_CALLBACK (dialog_response), NULL);
 }
 
@@ -120,7 +119,7 @@ dialog_response (GtkDialog *dialog,
     colorsel = GTK_COLOR_SELECTION_DIALOG (dialog)->colorsel;
     alpha = gtk_color_selection_get_current_alpha (GTK_COLOR_SELECTION (colorsel));
     gtk_color_selection_get_current_color (GTK_COLOR_SELECTION (colorsel), &color);
-    
+
     g_print ("#%04X%04X%04X%04X\n", color.red, color.green, color.blue, alpha);
 
     global_color = color;

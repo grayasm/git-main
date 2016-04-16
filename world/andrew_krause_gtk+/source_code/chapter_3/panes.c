@@ -2,8 +2,7 @@
 
 static void destroy (GtkWidget*, gpointer);
 
-int main (int argc, 
-          char *argv[])
+int main (int argc, char *argv[])
 {
   GtkWidget *window, *hpaned, *button1, *button2;
 
@@ -16,19 +15,19 @@ int main (int argc,
 
   g_signal_connect (G_OBJECT (window), "destroy",
                     G_CALLBACK (destroy), NULL);
-  
+
   hpaned = gtk_hpaned_new ();
   button1 = gtk_button_new_with_label ("Resize");
   button2 = gtk_button_new_with_label ("Me!");
-  
+
   g_signal_connect_swapped (G_OBJECT (button1), "clicked",
-                            G_CALLBACK (gtk_widget_destroy), 
+                            G_CALLBACK (gtk_widget_destroy),
                             (gpointer) window);
   g_signal_connect_swapped (G_OBJECT (button2), "clicked",
-                            G_CALLBACK (gtk_widget_destroy), 
+                            G_CALLBACK (gtk_widget_destroy),
                             (gpointer) window);
- 
-  /* Pack both buttons as the two children of the GtkHPaned widget. */ 
+
+  /* Pack both buttons as the two children of the GtkHPaned widget. */
   gtk_paned_add1 (GTK_PANED (hpaned), button1);
   gtk_paned_add2 (GTK_PANED (hpaned), button2);
 
