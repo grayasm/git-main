@@ -92,3 +92,6 @@
     CMAKE_WORDS_BIGENDIAN, which require CMake to compile and run a program
     to determine their value. Once these values are determined they are stored
     in the cache to avoid having to recompute them every time CMake is run.
+
+12) Asking properties of CMake classes: targets, source files, directories,
+                                        generators and tests.
