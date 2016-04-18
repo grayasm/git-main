@@ -3,7 +3,7 @@
 #
 # To filter out all undefined properties, run like this:
 #
-# $ cmake -DCMAKE_BUILD_TYPE=Release ../ >> cmake.log  2>&1
+# $ cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Release ../ >> cmake.log  2>&1
 # $ cat cmake.log | grep -v 'NOTFOUND'
 #
 #
