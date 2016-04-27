@@ -45,11 +45,15 @@ alias ..='cd ..'
 alias ...='cd ..; cd ..'
 alias diff='meld'
 
+alias yumnux='yum --enablerepo=nux-dextop'
+alias yumfed='yum --enablerepo=fedora19'
+alias yumall='yum --enablerepo=nux-dexop --enablerepo=fedora19'
+
 
 # Inside a tiling window manager
-# alias jdraw='java -jar /opt/jdraw-1.1.5/jdraw_v1.1.5.jar'
-# alias netbeans='/opt/netbeans-8.0.2/bin/netbeans'
-# alias xfe='xfe-xfe'
+alias jdraw='java -jar /opt/jdraw-1.1.5/jdraw_v1.1.5.jar'
+alias netbeans='/opt/netbeans-8.0.2/bin/netbeans'
+alias xfe='xfe-xfe'
 # alias se='/opt/slickedit/bin/vs'
 # alias calc='galculator'
 # alias edit='emacs'
@@ -66,9 +70,18 @@ alias diff='meld'
 
 
 # ssh client
-alias sshsrv='ssh -X -l mihk -i $HOME/.ssh/id_rsa_home_key 192.168.0.128'
+alias sshsrv='ssh -X -l mihai -i $HOME/.ssh/id_rsa_home_key 192.168.0.15'
 alias office='ssh -i $HOME/.ssh/id_dsa_office -l mihai -L 13389:10.1.1.235:3389 $OFFICE'
 
 
 # X11
 alias xwininfo='xwininfo'   #window info
+
+export PATH=/opt/make-4.0/bin:$PATH
+export LD_LIBRARY_PATH=/usr/local/lib64:/usr/lib64:/lib64:$HOME/.local/lib64:$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH=/opt/cegui-0.8.6/lib:$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH=/usr/local/lib:/usr/lib:/lib:$HOME/.local/lib:$LD_LIBRARY_PATH
+export PKG_CONFIG_PATH=/usr/local/lib64/pkgconfig:/usr/lib64/pkgconfig:$PKG_CONFIG_PATH
+export PKG_CONFIG_PATH=$HOME/.local/lib64/pkgconfig:$PKG_CONFIG_PATH
+export PKG_CONFIG_PATH=/opt/cegui-0.8.6/lib/pkgconfig:$PKG_CONFIG_PATH
+export PKG_CONFIG_PATH=/opt/cegui-0.8.6/lib64/pkgconfig:$PKG_CONFIG_PATH
