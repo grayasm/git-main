@@ -155,7 +155,6 @@ GtkActionEntry entries[]=
 	{ "Quit", GTK_STOCK_QUIT, NULL, NULL, "Quit", G_CALLBACK(quit)}
 };
 
-
 struct Widgets
 {
 	GtkWidget* w[11][6];
@@ -190,7 +189,7 @@ int main (int argc, char** argv)
 	                  0);
 
 
-	// Define the application Menu
+	// Application Menu
 	GtkActionGroup* magroup = gtk_action_group_new ("MainActionGroup");
 	gtk_action_group_add_actions (magroup, entries, NUM_ENTRIES, NULL);
 
@@ -200,9 +199,9 @@ int main (int argc, char** argv)
 
 	GtkWidget* menubar = gtk_ui_manager_get_widget (uimanager, "/MenuBar");
 
-	// 2nd widget at the top (after the menu)
+	// Combobox with widgets names
 	GtkWidget* wgcombobox = gtk_combo_box_new_text ();
-	gtk_combo_box_append_text (GTK_COMBO_BOX(wgcombobox), "widget");
+	gtk_combo_box_append_text (GTK_COMBO_BOX(wgcombobox), "button");
 	gtk_combo_box_set_active (GTK_COMBO_BOX(wgcombobox), 0);
 
 
@@ -270,6 +269,7 @@ int main (int argc, char** argv)
 	gtk_table_attach (table_,whiteclrbn,1,2,10,11,GTK_SHRINK,GTK_SHRINK,0,0);
 
 
+	// Packaging
 	GtkWidget* vbox = gtk_vbox_new (FALSE, 0);
 	gtk_box_pack_start (GTK_BOX(vbox), menubar, false, false, 0);
 	gtk_box_pack_start (GTK_BOX(vbox), wgcombobox, false, false, 0);
@@ -277,6 +277,7 @@ int main (int argc, char** argv)
 	gtk_container_add (GTK_CONTAINER(window), vbox);
 
 
+	// Connecting
 	Widgets* ws = g_slice_new (Widgets);
 	ws->w[0][0] = NULL;
 	ws->w[1][0] = fglbl;
@@ -325,9 +326,11 @@ int main (int argc, char** argv)
 	                  G_CALLBACK(colorbn_clicked),
 	                  ws);
 
-
 	colorbn_init (window, ws);
-
+	gtk_action_group_add_actions (magroup,
+	                              entries,
+	                              NUM_ENTRIES,
+	                              ws);
 
 	gtk_widget_show_all (window);
 	gtk_main ();
@@ -389,8 +392,20 @@ void colorbn_init(GtkWidget* wg, Widgets* ws)
 	gtk_color_button_set_color (GTK_COLOR_BUTTON(ws->w[10][1]), &(sty->white));
 }
 
-void colorbn_clicked (GtkButton*, gpointer pws)
+void colorbn_clicked (GtkButton* bn, gpointer pws)
 {
 	Widgets* ws = (Widgets*)pws;
-	g_print ("clicked\n");
+	GtkWidget* wbn = (GtkWidget*) bn;
+
+	for (int i=1; i<9; ++i)
+	{
+		for (int j=1; j<6; ++j)
+		{
+			if (ws->w[i][j] == wbn)
+			{
+				g_print("found button at %d,%d\n", i, j);
+				return;
+			}
+		}
+	}
 }
