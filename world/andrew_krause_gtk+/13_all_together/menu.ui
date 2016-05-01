@@ -1,0 +1,7 @@
+<ui>
+  <menubar name="MenuBar">
+    <menu name="FileMenu" action="File">
+      <menuitem name="FileOpen" action="Open"/>
+    </menu>
+  </menubar>
+</ui>
