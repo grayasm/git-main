@@ -144,12 +144,15 @@ struct _GdkColor
 #include <cstring> // strlen
 
 
-void menuopen (GtkMenuItem* menuitem, gpointer data){}
-#define NUM_ENTRIES 2
+void save_as (GtkMenuItem* menuitem, gpointer data);
+void quit (GtkMenuItem* menuitem, gpointer data);
+
+#define NUM_ENTRIES 3
 GtkActionEntry entries[]=
 {
 	{ "File", NULL, "_File", NULL, NULL, NULL },
-	{ "Open", GTK_STOCK_OPEN, NULL, NULL, "Open an existing file", G_CALLBACK (menuopen)}
+	{ "SaveAs", GTK_STOCK_SAVE_AS, NULL, NULL, "SaveAs", G_CALLBACK (save_as)},
+	{ "Quit", GTK_STOCK_QUIT, NULL, NULL, "Quit", G_CALLBACK(quit)}
 };
 
 
@@ -198,7 +201,9 @@ int main (int argc, char** argv)
 	GtkWidget* menubar = gtk_ui_manager_get_widget (uimanager, "/MenuBar");
 
 	// 2nd widget at the top (after the menu)
-	
+	GtkWidget* wgcombobox = gtk_combo_box_new_text ();
+	gtk_combo_box_append_text (GTK_COMBO_BOX(wgcombobox), "widget");
+	gtk_combo_box_set_active (GTK_COMBO_BOX(wgcombobox), 0);
 
 
 	// Widgets to set theme colors
@@ -267,6 +272,7 @@ int main (int argc, char** argv)
 
 	GtkWidget* vbox = gtk_vbox_new (FALSE, 0);
 	gtk_box_pack_start (GTK_BOX(vbox), menubar, false, false, 0);
+	gtk_box_pack_start (GTK_BOX(vbox), wgcombobox, false, false, 0);
 	gtk_box_pack_start (GTK_BOX(vbox), table, false, false, 0);
 	gtk_container_add (GTK_CONTAINER(window), vbox);
 
@@ -334,6 +340,34 @@ int main (int argc, char** argv)
 	return 0;
 }
 
+void save_as (GtkMenuItem* menuitem, gpointer data)
+{
+	GtkWidget* dialog = NULL;
+	dialog = gtk_file_chooser_dialog_new ("Save File",
+	                                      NULL, //parent_window,
+	                                      GTK_FILE_CHOOSER_ACTION_SAVE,
+	                                      GTK_STOCK_CANCEL,
+	                                      GTK_RESPONSE_CANCEL,
+	                                      GTK_STOCK_SAVE,
+	                                      GTK_RESPONSE_ACCEPT,
+	                                      NULL);
+
+	gtk_file_chooser_set_do_overwrite_confirmation (GTK_FILE_CHOOSER(dialog),
+	                                                TRUE);
+	if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT)
+	{
+		char *filename = NULL;
+		filename = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (dialog));
+		g_print ("Save as: %s\n", filename);
+		g_free (filename);
+	}
+	gtk_widget_destroy (dialog);
+}
+
+void quit (GtkMenuItem* menuitem, gpointer data)
+{
+	gtk_main_quit ();
+}
 
 void colorbn_init(GtkWidget* wg, Widgets* ws)
 {
