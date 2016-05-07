@@ -158,30 +158,39 @@ GtkActionEntry entries[]=
 struct Widgets
 {
 	GtkWidget* w[11][6];
+	GtkWidget* topw;
 };
 
-
 void colorbn_init(GtkWidget*, Widgets*);
-void colorbn_clicked (GtkButton*, gpointer);
+void colorbn_set (GtkColorButton*, gpointer);
+
+
+const char* rcfile=NULL;
+
+
 
 int main (int argc, char** argv)
 {
-	gtk_init (&argc, &argv);
-
-	// create a temporary file name to initialize gtk_rc_parse.
-	char* tmpfn = tmpnam(NULL);
-	FILE* tmpfp = fopen (tmpfn, "w+");
-	if (tmpfp == NULL)
+	// Temporary rc file
+	rcfile = tmpnam(NULL);
+	FILE* fp = fopen (rcfile, "w+");
+	if (fp == NULL)
 	{
-		g_print ("Cannot write to: %s\n", tmpfn);
+		g_print ("cannot write to: %s\n", rcfile);
 		return -1;
 	}
-	const char* content = "# gtk2-style output";
-	fwrite (content, sizeof(char), strlen(content), tmpfp);
-	fflush (tmpfp);
 
-	// needed for gtk_rc_reparse_all
-	gtk_rc_parse (tmpfn);
+	const char* content = "# gtk2-style output";
+	fwrite (content, sizeof(char), strlen(content), fp);
+	fclose (fp);
+
+	// Init & apply style from external file
+	gtk_rc_add_default_file (rcfile);
+
+	gtk_init (&argc, &argv);
+
+
+	// Main window
 	GtkWidget* window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
 	g_signal_connect (G_OBJECT(window),
 	                  "destroy",
@@ -310,20 +319,22 @@ int main (int argc, char** argv)
 	ws->w[10][1] = whiteclrbn;
 	FORi(4) ws->w[10][2+i] = NULL;
 
+	ws->topw = window;
+
 
 #define FORij(a,b) for(gint i=0; i<a; ++i) for(gint j=0; j<b; ++j)
 	FORij(9,5) g_signal_connect (G_OBJECT(ws->w[i+1][j+1]),
-	                             "clicked",
-	                             G_CALLBACK(colorbn_clicked),
+	                             "color-set",
+	                             G_CALLBACK(colorbn_set),
 	                             ws);
 
 	g_signal_connect (G_OBJECT(ws->w[9][1]),
-	                  "clicked",
-	                  G_CALLBACK(colorbn_clicked),
+	                  "color-set",
+	                  G_CALLBACK(colorbn_set),
 	                  ws);
 	g_signal_connect (G_OBJECT(ws->w[10][1]),
-	                  "clicked",
-	                  G_CALLBACK(colorbn_clicked),
+	                  "color-set",
+	                  G_CALLBACK(colorbn_set),
 	                  ws);
 
 	colorbn_init (window, ws);
@@ -335,9 +346,8 @@ int main (int argc, char** argv)
 	gtk_widget_show_all (window);
 	gtk_main ();
 
-	// clean up
-	fclose (tmpfp);
-	unlink (tmpfn);
+	// Clean up
+	unlink (rcfile);
 	g_slice_free(Widgets, ws);
 
 	return 0;
@@ -392,10 +402,12 @@ void colorbn_init(GtkWidget* wg, Widgets* ws)
 	gtk_color_button_set_color (GTK_COLOR_BUTTON(ws->w[10][1]), &(sty->white));
 }
 
-void colorbn_clicked (GtkButton* bn, gpointer pws)
+void colorbn_set (GtkColorButton* bn, gpointer pws)
 {
 	Widgets* ws = (Widgets*)pws;
 	GtkWidget* wbn = (GtkWidget*) bn;
+	int row = 0;
+	int col = 0;
 
 	for (int i=1; i<9; ++i)
 	{
@@ -403,9 +415,52 @@ void colorbn_clicked (GtkButton* bn, gpointer pws)
 		{
 			if (ws->w[i][j] == wbn)
 			{
-				g_print("found button at %d,%d\n", i, j);
-				return;
+				row = i;
+				col = j;
+				//break;
+				i = 10;
+				j = 7;
 			}
 		}
 	}
+
+	if (row == 0 && col == 0)
+	{
+		g_print ("cannot find the associated button\n");
+		return;
+	}
+
+	FILE* fp = fopen(rcfile, "w");
+	if (fp == NULL)
+	{
+		g_print ("cannot write to file: %s\n", rcfile);
+		return;
+	}
+
+	const char* color[]={"fg","bg","light","dark","mid","text","base","text_aa"};
+	const char* state[]={"NORMAL","ACTIVE","PRELIGHT","SELECTED","INSENSITIVE"};
+
+	fprintf (fp, "%s\n", "#gtk2-style output");
+	fprintf (fp, "%s\n", "style \"widgets\"");
+	fprintf (fp, "%s\n", "{");
+	for (int i=1; i < 9; ++i)
+	{
+		for (int j=1; j < 6; ++j)
+		{
+			GdkColor clr;
+			gtk_color_button_get_color(GTK_COLOR_BUTTON(ws->w[i][j]), &clr);
+			if (clr.red == 0 && clr.green == 0 && clr.blue == 0)
+				continue;
+			fprintf (fp, "\t%s[%s] = {%.3f,%.3f,%.3f}\n", color[i-1], state[j-1],
+			         (float)clr.red/65535.f,
+			         (float)clr.green/65535.f,
+			         (float)clr.blue/65535.f);
+		}
+	}
+	fprintf (fp, "%s\n", "}");
+	fprintf (fp, "%s\n", "\n");
+	fprintf (fp, "class \"GtkWidget\" style \"widgets\"\n");
+	fclose (fp);
+
+	gtk_rc_reparse_all ();
 }
