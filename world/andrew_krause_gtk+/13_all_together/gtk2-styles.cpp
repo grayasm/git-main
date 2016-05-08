@@ -155,15 +155,28 @@ GtkActionEntry entries[]=
 	{ "Quit", GTK_STOCK_QUIT, NULL, NULL, "Quit", G_CALLBACK(quit)}
 };
 
-struct Widgets
+struct RCstyle
 {
-	GtkWidget* w[11][6];
-	GtkWidget* topw;
+	GtkWidget* wgGtkWidget; GString* rcGtkWidget;
+	GtkWidget* wgGtkButton; GString* rcGtkButton;
 };
 
-void colorbn_init(GtkWidget*, Widgets*);
-void colorbn_set (GtkColorButton*, gpointer);
+struct Widgets
+{
+	GtkWidget* window;
+	GtkWidget* wgcombobox;
+	GtkWidget* w[11][6];
+	GtkWidget* table_bn;
+	RCstyle*   rcstyle;
+};
 
+
+
+void colorbn_init (Widgets*);
+void colorbn_set  (GtkColorButton*, gpointer);
+void wgcombobox_changed (GtkComboBox*, gpointer);
+void write_rcGtkWidget (FILE* fp, Widgets* ws);
+void write_rcGtkButton (FILE* fp, Widgets* ws);
 
 const char* rcfile=NULL;
 
@@ -210,6 +223,7 @@ int main (int argc, char** argv)
 
 	// Combobox with widgets names
 	GtkWidget* wgcombobox = gtk_combo_box_new_text ();
+	gtk_combo_box_append_text (GTK_COMBO_BOX(wgcombobox), "widgets");
 	gtk_combo_box_append_text (GTK_COMBO_BOX(wgcombobox), "button");
 	gtk_combo_box_set_active (GTK_COMBO_BOX(wgcombobox), 0);
 
@@ -265,7 +279,6 @@ int main (int argc, char** argv)
 	GtkWidget* blackclrbn;             blackclrbn = gtk_color_button_new();
 	GtkWidget* whiteclrbn;             whiteclrbn = gtk_color_button_new();
 
-
 	FORi(5) gtk_table_attach (table_,fgclrbn[i],i+1,i+2,1,2,GTK_SHRINK,GTK_SHRINK,0,0);
 	FORi(5) gtk_table_attach (table_,bgclrbn[i],i+1,i+2,2,3,GTK_SHRINK,GTK_SHRINK,0,0);
 	FORi(5) gtk_table_attach (table_,lightclrbn[i],i+1,i+2,3,4,GTK_SHRINK,GTK_SHRINK,0,0);
@@ -278,16 +291,46 @@ int main (int argc, char** argv)
 	gtk_table_attach (table_,whiteclrbn,1,2,10,11,GTK_SHRINK,GTK_SHRINK,0,0);
 
 
+	// Widgets for button style
+	GtkWidget* table_bn = gtk_table_new (5, 1, TRUE);
+	GtkWidget* bn_ok = gtk_button_new_from_stock (GTK_STOCK_OK);
+	GtkWidget* bn_cancel = gtk_button_new_from_stock (GTK_STOCK_CANCEL);
+	GtkWidget* bn_apply = gtk_button_new_from_stock (GTK_STOCK_APPLY);
+	GtkWidget* bn_copy = gtk_button_new_from_stock (GTK_STOCK_COPY);
+	GtkWidget* bn_media_play = gtk_button_new_from_stock (GTK_STOCK_MEDIA_PLAY);
+	gtk_button_set_relief (GTK_BUTTON(bn_ok), GTK_RELIEF_NORMAL);
+	gtk_button_set_relief (GTK_BUTTON(bn_cancel), GTK_RELIEF_HALF);
+	gtk_button_set_relief (GTK_BUTTON(bn_apply), GTK_RELIEF_NONE);
+	gtk_widget_set_sensitive (bn_copy, FALSE);
+	GtkTable* table_bn_ = GTK_TABLE(table_bn);
+	gtk_table_attach (table_bn_,bn_ok,        0,1,0,1,GTK_SHRINK,GTK_SHRINK,0,0);
+	gtk_table_attach (table_bn_,bn_cancel,    0,1,1,2,GTK_SHRINK,GTK_SHRINK,0,0);
+	gtk_table_attach (table_bn_,bn_apply,     0,1,2,3,GTK_SHRINK,GTK_SHRINK,0,0);
+	gtk_table_attach (table_bn_,bn_copy,      0,1,3,4,GTK_SHRINK,GTK_SHRINK,0,0);
+	gtk_table_attach (table_bn_,bn_media_play,0,1,4,5,GTK_SHRINK,GTK_SHRINK,0,0);
+
+
 	// Packaging
 	GtkWidget* vbox = gtk_vbox_new (FALSE, 0);
 	gtk_box_pack_start (GTK_BOX(vbox), menubar, false, false, 0);
 	gtk_box_pack_start (GTK_BOX(vbox), wgcombobox, false, false, 0);
-	gtk_box_pack_start (GTK_BOX(vbox), table, false, false, 0);
+	GtkWidget* hbox = gtk_hbox_new (FALSE, 0);
+	gtk_box_pack_start (GTK_BOX(vbox), hbox, false, false, 0);
+	GtkWidget* vboxl = gtk_vbox_new (FALSE, 0);
+	GtkWidget* vboxr = gtk_vbox_new (FALSE, 0);
+	gtk_box_pack_start (GTK_BOX(hbox), vboxl, false, false, 0);
+	gtk_box_pack_start (GTK_BOX(hbox), vboxr, false, false, 0);
 	gtk_container_add (GTK_CONTAINER(window), vbox);
+
+	gtk_box_pack_start (GTK_BOX(vboxl), table, false, false, 0);
+	gtk_box_pack_start (GTK_BOX(vboxr), table_bn, false, false, 0);
+
 
 
 	// Connecting
 	Widgets* ws = g_slice_new (Widgets);
+	ws->window = window;
+	ws->wgcombobox = wgcombobox;
 	ws->w[0][0] = NULL;
 	ws->w[1][0] = fglbl;
 	ws->w[2][0] = bglbl;
@@ -319,8 +362,20 @@ int main (int argc, char** argv)
 	ws->w[10][1] = whiteclrbn;
 	FORi(4) ws->w[10][2+i] = NULL;
 
-	ws->topw = window;
+	ws->table_bn = table_bn;
 
+	RCstyle* rcstyle = g_slice_new (RCstyle);
+	rcstyle->wgGtkWidget = window;
+	rcstyle->rcGtkWidget = g_string_new (NULL);
+	rcstyle->wgGtkButton = bn_ok;
+	rcstyle->rcGtkButton = g_string_new (NULL);
+	ws->rcstyle = rcstyle;
+
+
+	g_signal_connect (G_OBJECT(ws->wgcombobox),
+	                  "changed",
+	                  G_CALLBACK(wgcombobox_changed),
+	                  ws);
 
 #define FORij(a,b) for(gint i=0; i<a; ++i) for(gint j=0; j<b; ++j)
 	FORij(9,5) g_signal_connect (G_OBJECT(ws->w[i+1][j+1]),
@@ -337,18 +392,25 @@ int main (int argc, char** argv)
 	                  G_CALLBACK(colorbn_set),
 	                  ws);
 
-	colorbn_init (window, ws);
+	colorbn_init (ws);
 	gtk_action_group_add_actions (magroup,
 	                              entries,
 	                              NUM_ENTRIES,
 	                              ws);
 
+
+	// Visibility
 	gtk_widget_show_all (window);
+	gtk_widget_hide (table_bn);
 	gtk_main ();
+
 
 	// Clean up
 	unlink (rcfile);
-	g_slice_free(Widgets, ws);
+	g_string_free (rcstyle->rcGtkWidget, TRUE);
+	g_string_free (rcstyle->rcGtkButton, TRUE);
+	g_slice_free (RCstyle, rcstyle);
+	g_slice_free (Widgets, ws);
 
 	return 0;
 }
@@ -382,8 +444,15 @@ void quit (GtkMenuItem* menuitem, gpointer data)
 	gtk_main_quit ();
 }
 
-void colorbn_init(GtkWidget* wg, Widgets* ws)
+void colorbn_init(Widgets* ws)
 {
+	GtkComboBox* wgcombobox = GTK_COMBO_BOX(ws->wgcombobox);
+	gint active = gtk_combo_box_get_active (wgcombobox);
+	GtkWidget* wg = NULL;
+	if (active == 0)      /*widgets*/ wg = ws->rcstyle->wgGtkWidget;
+	else if (active == 1) /*button*/  wg = ws->rcstyle->wgGtkButton;
+	g_print ("active=%d\n", active);
+
 	GtkStyle* sty = gtk_widget_get_style (wg);
 
 	for(gint i=0; i < 5; ++i)
@@ -404,6 +473,7 @@ void colorbn_init(GtkWidget* wg, Widgets* ws)
 
 void colorbn_set (GtkColorButton* bn, gpointer pws)
 {
+	// A color has changed in the pannel
 	Widgets* ws = (Widgets*)pws;
 	GtkWidget* wbn = (GtkWidget*) bn;
 	int row = 0;
@@ -437,30 +507,169 @@ void colorbn_set (GtkColorButton* bn, gpointer pws)
 		return;
 	}
 
-	const char* color[]={"fg","bg","light","dark","mid","text","base","text_aa"};
-	const char* state[]={"NORMAL","ACTIVE","PRELIGHT","SELECTED","INSENSITIVE"};
+	write_rcGtkWidget (fp, ws);
+	write_rcGtkButton (fp, ws);
 
-	fprintf (fp, "%s\n", "#gtk2-style output");
-	fprintf (fp, "%s\n", "style \"widgets\"");
-	fprintf (fp, "%s\n", "{");
-	for (int i=1; i < 9; ++i)
-	{
-		for (int j=1; j < 6; ++j)
-		{
-			GdkColor clr;
-			gtk_color_button_get_color(GTK_COLOR_BUTTON(ws->w[i][j]), &clr);
-			if (clr.red == 0 && clr.green == 0 && clr.blue == 0)
-				continue;
-			fprintf (fp, "\t%s[%s] = {%.3f,%.3f,%.3f}\n", color[i-1], state[j-1],
-			         (float)clr.red/65535.f,
-			         (float)clr.green/65535.f,
-			         (float)clr.blue/65535.f);
-		}
-	}
-	fprintf (fp, "%s\n", "}");
-	fprintf (fp, "%s\n", "\n");
-	fprintf (fp, "class \"GtkWidget\" style \"widgets\"\n");
 	fclose (fp);
 
 	gtk_rc_reparse_all ();
+}
+
+void wgcombobox_changed (GtkComboBox*, gpointer pws)
+{
+	Widgets* ws = (Widgets*)pws;
+	gint active = gtk_combo_box_get_active (GTK_COMBO_BOX(ws->wgcombobox));
+
+	if (active == 0)      /*widgets*/
+	{
+		gtk_widget_hide (ws->table_bn);
+	}
+	else if (active == 1) /*button */
+	{
+		gtk_widget_show_all (ws->table_bn);
+	}
+
+	colorbn_init (ws);
+}
+
+
+void write_rcGtkWidget(FILE* fp, Widgets* ws)
+{
+	GtkComboBox* wgcombobox = GTK_COMBO_BOX(ws->wgcombobox);
+	gint active = gtk_combo_box_get_active (wgcombobox);
+
+	// "widgets" is selected, take the style from the pannel
+	if (active == 0)
+	{
+		GString* rcGtkWidget = ws->rcstyle->rcGtkWidget;
+		rcGtkWidget = g_string_set_size (rcGtkWidget, 0);
+
+		const char* color[]={"fg","bg","light","dark","mid","text","base","text_aa"};
+		const char* state[]={"NORMAL","ACTIVE","PRELIGHT","SELECTED","INSENSITIVE"};
+		const char* black = "black";
+		const char* white = "white";
+
+		g_string_append_printf (rcGtkWidget, "%s\n", "style \"widgets\"");
+		g_string_append_printf (rcGtkWidget, "%s\n", "{");
+
+		GdkColor clr;
+		for (int i=1; i < 9; ++i)
+		{
+			for (int j=1; j < 6; ++j)
+			{
+				gtk_color_button_get_color(GTK_COLOR_BUTTON(ws->w[i][j]), &clr);
+				if (clr.red == 0 && clr.green == 0 && clr.blue == 0)
+					continue;
+				g_string_append_printf (rcGtkWidget,
+				                        "\t%s[%s] = \"#%02X%02X%02X\"\n",
+				                        color[i-1],
+				                        state[j-1],
+				                        (clr.red * 255)/65535,
+				                        (clr.green * 255)/65535,
+				                        (clr.blue * 255)/65535);
+			}
+		}
+		gtk_color_button_get_color (GTK_COLOR_BUTTON(ws->w[9][1]), &clr);
+		if (clr.red != 0 || clr.green != 0 || clr.blue != 0)
+			g_string_append_printf (rcGtkWidget,
+			                        "\t%s = \"#%02X%02X%02X\"\n",
+			                        black,
+			                        (clr.red * 255)/65535,
+			                        (clr.green * 255)/65535,
+			                        (clr.blue * 255)/65535);
+		gtk_color_button_get_color (GTK_COLOR_BUTTON(ws->w[10][1]), &clr);
+		if (clr.red != 65535 || clr.green != 65535 || clr.blue != 65535)
+			g_string_append_printf (rcGtkWidget,
+			                        "\t%s = \"#%02X%02X%02X\"\n",
+			                        white,
+			                        (clr.red * 255)/65535,
+			                        (clr.green * 255)/65535,
+			                        (clr.blue * 255)/65535);
+		g_string_append_printf (rcGtkWidget, "%s\n", "}");
+		g_string_append_printf (rcGtkWidget, "%s\n", "\n");
+		g_string_append_printf (rcGtkWidget, "%s\n",
+		                        "class \"GtkWidget\" style \"widgets\"\n\n");
+
+		fprintf (fp, "%s", rcGtkWidget->str);
+	}
+	// another widget name is selected, use saved style.
+	else
+	{
+		GString* rcGtkWidget = ws->rcstyle->rcGtkWidget;
+		if (rcGtkWidget->len > 0)
+			fprintf (fp, "%s", rcGtkWidget->str);
+	}
+}
+
+
+void write_rcGtkButton(FILE* fp, Widgets* ws)
+{
+	GtkComboBox* wgcombobox = GTK_COMBO_BOX(ws->wgcombobox);
+	gint active = gtk_combo_box_get_active (wgcombobox);
+
+	// "button" is selected, take the style from the pannel
+	if (active == 1)
+	{
+		GString* rcGtkButton = ws->rcstyle->rcGtkButton;
+		rcGtkButton = g_string_set_size (rcGtkButton, 0);
+
+		const char* color[]={"fg","bg","light","dark","mid","text","base","text_aa"};
+		const char* state[]={"NORMAL","ACTIVE","PRELIGHT","SELECTED","INSENSITIVE"};
+		const char* black = "black";
+		const char* white = "white";
+
+		g_string_append_printf (rcGtkButton, "%s\n", "style \"button\"");
+		g_string_append_printf (rcGtkButton, "%s\n", "{");
+
+		GdkColor clr;
+		for (int i=1; i < 9; ++i)
+		{
+			for (int j=1; j < 6; ++j)
+			{
+				GdkColor clr;
+				gtk_color_button_get_color(GTK_COLOR_BUTTON(ws->w[i][j]), &clr);
+				if (clr.red == 0 && clr.green == 0 && clr.blue == 0)
+					continue;
+				// unexpected character '[', expected character ':'
+				if (i-1 == 2 || i-1 == 3 || i-1 )
+					continue;
+				g_string_append_printf (rcGtkButton,
+				                        "\t%s[%s] = \"#%02X%02X%02X\"\n",
+				                        color[i-1],
+				                        state[j-1],
+				                        (clr.red * 255)/65535,
+				                        (clr.green * 255)/65535,
+				                        (clr.blue * 255)/65535);
+			}
+		}
+		gtk_color_button_get_color (GTK_COLOR_BUTTON(ws->w[9][1]), &clr);
+		if (clr.red != 0 || clr.green != 0 || clr.blue != 0)
+			g_string_append_printf (rcGtkButton,
+			                        "\t%s = \"#%02X%02X%02X\"\n",
+			                        black,
+			                        (clr.red * 255)/65535,
+			                        (clr.green * 255)/65535,
+			                        (clr.blue * 255)/65535);
+		gtk_color_button_get_color (GTK_COLOR_BUTTON(ws->w[10][1]), &clr);
+		if (clr.red != 65535 || clr.green != 65535 || clr.blue != 65535)
+			g_string_append_printf (rcGtkButton,
+			                        "\t%s = \"#%02X%02X%02X\"\n",
+			                        white,
+			                        (clr.red * 255)/65535,
+			                        (clr.green * 255)/65535,
+			                        (clr.blue * 255)/65535);
+		g_string_append_printf (rcGtkButton, "%s\n", "}");
+		g_string_append_printf (rcGtkButton, "%s\n", "\n");
+		g_string_append_printf (rcGtkButton, "%s\n",
+		                        "class \"GtkButton\" style \"button\"\n\n");
+
+		fprintf (fp, "%s", rcGtkButton->str);
+	}
+	// another widget name is selected, use saved style.
+	else
+	{
+		GString* rcGtkButton = ws->rcstyle->rcGtkButton;
+		if (rcGtkButton->len > 0)
+			fprintf (fp, "%s", rcGtkButton->str);
+	}
 }
