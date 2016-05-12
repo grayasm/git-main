@@ -166,15 +166,17 @@ struct Widgets
 	GtkWidget* window;
 	GtkWidget* wgcombobox;
 	GtkWidget* w[5][6];
+	GtkWidget* font_namebn;
 	GtkWidget* table_bn;
 	RCstyle*   rcstyle;
 };
 
 
-
+void wgcombobox_changed (GtkComboBox*, gpointer);
 void colorbn_init (Widgets*);
 void colorbn_set  (GtkColorButton*, gpointer);
-void wgcombobox_changed (GtkComboBox*, gpointer);
+void font_namebn_init (Widgets*);
+void font_namebn_set (GtkFontButton*, gpointer);
 void write_rcGtkWidget (FILE* fp, Widgets* ws);
 void write_rcGtkButton (FILE* fp, Widgets* ws);
 
@@ -229,7 +231,7 @@ int main (int argc, char** argv)
 
 
 	// Widgets to set theme colors
-	GtkWidget* table = gtk_table_new (11, 6, true);
+	GtkWidget* table = gtk_table_new (6, 6, true);
 	GtkWidget* fglbl      = gtk_label_new ("fg");
 	GtkWidget* bglbl      = gtk_label_new ("bg");
 	GtkWidget* textlbl    = gtk_label_new ("text      ");
@@ -264,6 +266,11 @@ int main (int argc, char** argv)
 	FORi(5) gtk_table_attach (table_,bgclrbn[i],i+1,i+2,2,3,GTK_SHRINK,GTK_SHRINK,0,0);
 	FORi(5) gtk_table_attach (table_,textclrbn[i],i+1,i+2,3,4,GTK_SHRINK,GTK_SHRINK,0,0);
 	FORi(5) gtk_table_attach (table_,baseclrbn[i],i+1,i+2,4,5,GTK_SHRINK,GTK_SHRINK,0,0);
+
+	GtkWidget* font_namelbl = gtk_label_new ("font_name");
+	GtkWidget* font_namebn = gtk_font_button_new ();
+	gtk_table_attach (table_, font_namelbl,0,1,6,7,GTK_SHRINK,GTK_SHRINK,0,0);
+	gtk_table_attach (table_, font_namebn,1,6,6,7,GTK_SHRINK,GTK_SHRINK,0,0);
 
 
 	// Widgets for button style
@@ -323,6 +330,8 @@ int main (int argc, char** argv)
 	FORi(5) ws->w[3][i+1] = textclrbn[i];
 	FORi(5) ws->w[4][i+1] = baseclrbn[i];
 
+	ws->font_namebn = font_namebn;
+
 	ws->table_bn = table_bn;
 
 	RCstyle* rcstyle = g_slice_new (RCstyle);
@@ -343,8 +352,13 @@ int main (int argc, char** argv)
 	                             "color-set",
 	                             G_CALLBACK(colorbn_set),
 	                             ws);
+	g_signal_connect (G_OBJECT(ws->font_namebn),
+	                  "font-set",
+	                  G_CALLBACK(font_namebn_set),
+	                  ws);
 
 	colorbn_init (ws);
+	font_namebn_init (ws);
 	gtk_action_group_add_actions (magroup,
 	                              entries,
 	                              NUM_ENTRIES,
@@ -396,6 +410,24 @@ void quit (GtkMenuItem* menuitem, gpointer data)
 	gtk_main_quit ();
 }
 
+void wgcombobox_changed (GtkComboBox*, gpointer pws)
+{
+	Widgets* ws = (Widgets*)pws;
+	gint active = gtk_combo_box_get_active (GTK_COMBO_BOX(ws->wgcombobox));
+
+	if (active == 0)      /*widgets*/
+	{
+		gtk_widget_hide (ws->table_bn);
+	}
+	else if (active == 1) /*button */
+	{
+		gtk_widget_show_all (ws->table_bn);
+	}
+
+	colorbn_init (ws);
+	font_namebn_init (ws);
+}
+
 void colorbn_init(Widgets* ws)
 {
 	GtkComboBox* wgcombobox = GTK_COMBO_BOX(ws->wgcombobox);
@@ -403,7 +435,7 @@ void colorbn_init(Widgets* ws)
 	GtkWidget* wg = NULL;
 	if (active == 0)      /*widgets*/ wg = ws->rcstyle->wgGtkWidget;
 	else if (active == 1) /*button*/  wg = ws->rcstyle->wgGtkButton;
-	g_print ("active=%d\n", active);
+	g_print ("colorbn: active=%d\n", active);
 
 	GtkStyle* sty = gtk_widget_get_style (wg);
 
@@ -460,23 +492,42 @@ void colorbn_set (GtkColorButton* bn, gpointer pws)
 	gtk_rc_reparse_all ();
 }
 
-void wgcombobox_changed (GtkComboBox*, gpointer pws)
+void font_namebn_init (Widgets* ws)
 {
-	Widgets* ws = (Widgets*)pws;
-	gint active = gtk_combo_box_get_active (GTK_COMBO_BOX(ws->wgcombobox));
+	GtkComboBox* wgcombobox = GTK_COMBO_BOX(ws->wgcombobox);
+	gint active = gtk_combo_box_get_active (wgcombobox);
+	GtkWidget* wg = NULL;
+	if (active == 0)      /*widgets*/ wg = ws->rcstyle->wgGtkWidget;
+	else if (active == 1) /*button*/  wg = ws->rcstyle->wgGtkButton;
+	g_print ("font_name: active=%d\n", active);
 
-	if (active == 0)      /*widgets*/
-	{
-		gtk_widget_hide (ws->table_bn);
-	}
-	else if (active == 1) /*button */
-	{
-		gtk_widget_show_all (ws->table_bn);
-	}
-
-	colorbn_init (ws);
+	GtkStyle* sty = gtk_widget_get_style (wg);
+	PangoFontDescription* font_desc = sty->font_desc;
+	char* font_name = pango_font_description_to_string (font_desc);
+	GtkFontButton* font_namebn = GTK_FONT_BUTTON (ws->font_namebn);
+	gtk_font_button_set_font_name (font_namebn, font_name);
+	g_free (font_name);
 }
 
+void font_namebn_set (GtkFontButton*, gpointer pws)
+{
+	// new font selected
+	Widgets* ws = (Widgets*)pws;
+
+	FILE* fp = fopen(rcfile, "w");
+	if (fp == NULL)
+	{
+		g_print ("cannot write to file: %s\n", rcfile);
+		return;
+	}
+
+	write_rcGtkWidget (fp, ws);
+	write_rcGtkButton (fp, ws);
+
+	fclose (fp);
+
+	gtk_rc_reparse_all ();
+}
 
 void write_rcGtkWidget(FILE* fp, Widgets* ws)
 {
@@ -512,6 +563,10 @@ void write_rcGtkWidget(FILE* fp, Widgets* ws)
 				                        (clr.blue * 255)/65535);
 			}
 		}
+		g_string_append_printf (rcGtkWidget, "%s\n", "\n");
+		const gchar* font_name = gtk_font_button_get_font_name(
+			                                  GTK_FONT_BUTTON(ws->font_namebn));
+		g_string_append_printf (rcGtkWidget, "\tfont_name = \"%s\"\n",font_name);
 		g_string_append_printf (rcGtkWidget, "%s\n", "}");
 		g_string_append_printf (rcGtkWidget, "%s\n", "\n");
 		g_string_append_printf (rcGtkWidget, "%s\n",
@@ -567,6 +622,9 @@ void write_rcGtkButton(FILE* fp, Widgets* ws)
 				                        (clr.blue * 255)/65535);
 			}
 		}
+		const gchar* font_name = gtk_font_button_get_font_name(
+			                                  GTK_FONT_BUTTON(ws->font_namebn));
+		g_string_append_printf (rcGtkButton, "\tfont_name = \"%s\"\n",font_name);
 		g_string_append_printf (rcGtkButton, "%s\n", "}");
 		g_string_append_printf (rcGtkButton, "%s\n", "\n");
 		g_string_append_printf (rcGtkButton, "%s\n",
