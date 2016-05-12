@@ -122,15 +122,15 @@ struct _GdkColor
 /*
   GdkColor fg[5];
   GdkColor bg[5];
-  GdkColor light[5];
-  GdkColor dark[5];
-  GdkColor mid[5];
+  GdkColor light[5];       //not parsed by gtk_rc_parse and friends
+  GdkColor dark[5];        //not parsed ..
+  GdkColor mid[5];         //not parsed ..
   GdkColor text[5];
   GdkColor base[5];
-  GdkColor text_aa[5];      <Halfway between text/base>
+  GdkColor text_aa[5];     //not parsed .., <Halfway between text/base>
 
-  GdkColor black;
-  GdkColor white;
+  GdkColor black;          //not parsed
+  GdkColor white;          //not parsed
   PangoFontDescription *font_desc;
 
   gint xthickness;
@@ -165,7 +165,7 @@ struct Widgets
 {
 	GtkWidget* window;
 	GtkWidget* wgcombobox;
-	GtkWidget* w[11][6];
+	GtkWidget* w[5][6];
 	GtkWidget* table_bn;
 	RCstyle*   rcstyle;
 };
@@ -230,35 +230,22 @@ int main (int argc, char** argv)
 
 	// Widgets to set theme colors
 	GtkWidget* table = gtk_table_new (11, 6, true);
-	GtkWidget* fglbl      = gtk_label_new ("foreground");
-	GtkWidget* bglbl      = gtk_label_new ("background");
-	GtkWidget* lightlbl   = gtk_label_new ("light     ");
-	GtkWidget* darklbl    = gtk_label_new ("dark      ");
-	GtkWidget* midlbl     = gtk_label_new ("mid       ");
+	GtkWidget* fglbl      = gtk_label_new ("fg");
+	GtkWidget* bglbl      = gtk_label_new ("bg");
 	GtkWidget* textlbl    = gtk_label_new ("text      ");
 	GtkWidget* baselbl    = gtk_label_new ("base      ");
-	GtkWidget* text_aalbl = gtk_label_new ("text_aa   ");
-	GtkWidget* blacklbl   = gtk_label_new ("black     ");
-	GtkWidget* whitelbl   = gtk_label_new ("white     ");
 
-	GtkWidget* normallbl     = gtk_label_new ("normal");
-	GtkWidget* activelbl     = gtk_label_new ("active");
-	GtkWidget* prelightlbl   = gtk_label_new ("prelight");
-	GtkWidget* selectedlbl   = gtk_label_new ("selected");
-	GtkWidget* insensitivelbl= gtk_label_new ("insensitive");
+	GtkWidget* normallbl     = gtk_label_new ("NORMAL");
+	GtkWidget* activelbl     = gtk_label_new ("ACTIVE");
+	GtkWidget* prelightlbl   = gtk_label_new ("PRELIGHT");
+	GtkWidget* selectedlbl   = gtk_label_new ("SELECTED");
+	GtkWidget* insensitivelbl= gtk_label_new ("INSENSITIVE");
 
 	GtkTable* table_ = GTK_TABLE(table);
 	gtk_table_attach (table_, fglbl,0,1,1,2,GTK_SHRINK,GTK_SHRINK,0, 0);
 	gtk_table_attach (table_, bglbl,0,1,2,3,GTK_SHRINK,GTK_SHRINK,0, 0);
-	gtk_table_attach (table_, lightlbl,0,1,3,4,GTK_SHRINK,GTK_SHRINK,0, 0);
-	gtk_table_attach (table_, darklbl,0,1,4,5,GTK_SHRINK,GTK_SHRINK,0, 0);
-	gtk_table_attach (table_, midlbl,0,1,5,6,GTK_SHRINK,GTK_SHRINK,0, 0);
-	gtk_table_attach (table_, textlbl,0,1,6,7,GTK_SHRINK,GTK_SHRINK,0, 0);
-	gtk_table_attach (table_, baselbl,0,1,7,8,GTK_SHRINK,GTK_SHRINK,0, 0);
-	gtk_table_attach (table_, text_aalbl,0,1,8,9,GTK_SHRINK,GTK_SHRINK,0, 0);
-	gtk_table_attach (table_, blacklbl,0,1,9,10,GTK_SHRINK,GTK_SHRINK,0, 0);
-	gtk_table_attach (table_, whitelbl,0,1,10,11,GTK_SHRINK,GTK_SHRINK,0, 0);
-
+	gtk_table_attach (table_, textlbl,0,1,3,4,GTK_SHRINK,GTK_SHRINK,0, 0);
+	gtk_table_attach (table_, baselbl,0,1,4,5,GTK_SHRINK,GTK_SHRINK,0, 0);
 
 	gtk_table_attach (table_, normallbl,1,2,0,1,GTK_SHRINK,GTK_SHRINK,0,0);
 	gtk_table_attach (table_, activelbl,2,3,0,1,GTK_SHRINK,GTK_SHRINK,0,0);
@@ -270,25 +257,13 @@ int main (int argc, char** argv)
 #define FORi(a) for(gint i=0; i < a; ++i)
 	GtkWidget* fgclrbn[5];    FORi(5) fgclrbn[i] = gtk_color_button_new();
 	GtkWidget* bgclrbn[5];    FORi(5) bgclrbn[i] = gtk_color_button_new();
-	GtkWidget* lightclrbn[5]; FORi(5) lightclrbn[i] = gtk_color_button_new();
-	GtkWidget* darkclrbn[5];  FORi(5) darkclrbn[i] = gtk_color_button_new();
-	GtkWidget* midclrbn[5];   FORi(5) midclrbn[i] = gtk_color_button_new();
 	GtkWidget* textclrbn[5];  FORi(5) textclrbn[i] = gtk_color_button_new();
 	GtkWidget* baseclrbn[5];  FORi(5) baseclrbn[i] = gtk_color_button_new();
-	GtkWidget* txtaaclrbn[5]; FORi(5) txtaaclrbn[i] = gtk_color_button_new();
-	GtkWidget* blackclrbn;             blackclrbn = gtk_color_button_new();
-	GtkWidget* whiteclrbn;             whiteclrbn = gtk_color_button_new();
 
 	FORi(5) gtk_table_attach (table_,fgclrbn[i],i+1,i+2,1,2,GTK_SHRINK,GTK_SHRINK,0,0);
 	FORi(5) gtk_table_attach (table_,bgclrbn[i],i+1,i+2,2,3,GTK_SHRINK,GTK_SHRINK,0,0);
-	FORi(5) gtk_table_attach (table_,lightclrbn[i],i+1,i+2,3,4,GTK_SHRINK,GTK_SHRINK,0,0);
-	FORi(5) gtk_table_attach (table_,darkclrbn[i],i+1,i+2,4,5,GTK_SHRINK,GTK_SHRINK,0,0);
-	FORi(5) gtk_table_attach (table_,midclrbn[i],i+1,i+2,5,6,GTK_SHRINK,GTK_SHRINK,0,0);
-	FORi(5) gtk_table_attach (table_,textclrbn[i],i+1,i+2,6,7,GTK_SHRINK,GTK_SHRINK,0,0);
-	FORi(5) gtk_table_attach (table_,baseclrbn[i],i+1,i+2,7,8,GTK_SHRINK,GTK_SHRINK,0,0);
-	FORi(5) gtk_table_attach (table_,txtaaclrbn[i],i+1,i+2,8,9,GTK_SHRINK,GTK_SHRINK,0,0);
-	gtk_table_attach (table_,blackclrbn,1,2,9,10,GTK_SHRINK,GTK_SHRINK,0,0);
-	gtk_table_attach (table_,whiteclrbn,1,2,10,11,GTK_SHRINK,GTK_SHRINK,0,0);
+	FORi(5) gtk_table_attach (table_,textclrbn[i],i+1,i+2,3,4,GTK_SHRINK,GTK_SHRINK,0,0);
+	FORi(5) gtk_table_attach (table_,baseclrbn[i],i+1,i+2,4,5,GTK_SHRINK,GTK_SHRINK,0,0);
 
 
 	// Widgets for button style
@@ -334,14 +309,8 @@ int main (int argc, char** argv)
 	ws->w[0][0] = NULL;
 	ws->w[1][0] = fglbl;
 	ws->w[2][0] = bglbl;
-	ws->w[3][0] = lightlbl;
-	ws->w[4][0] = darklbl;
-	ws->w[5][0] = midlbl;
-	ws->w[6][0] = textlbl;
-	ws->w[7][0] = baselbl;
-	ws->w[8][0] = text_aalbl;
-	ws->w[9][0] = blacklbl;
-	ws->w[10][0]= whitelbl;
+	ws->w[3][0] = textlbl;
+	ws->w[4][0] = baselbl;
 
 	ws->w[0][1] = normallbl;
 	ws->w[0][2] = activelbl;
@@ -351,16 +320,8 @@ int main (int argc, char** argv)
 
 	FORi(5) ws->w[1][i+1] = fgclrbn[i];
 	FORi(5) ws->w[2][i+1] = bgclrbn[i];
-	FORi(5) ws->w[3][i+1] = lightclrbn[i];
-	FORi(5) ws->w[4][i+1] = darkclrbn[i];
-	FORi(5) ws->w[5][i+1] = midclrbn[i];
-	FORi(5) ws->w[6][i+1] = textclrbn[i];
-	FORi(5) ws->w[7][i+1] = baseclrbn[i];
-	FORi(5) ws->w[8][i+1] = txtaaclrbn[i];
-	ws->w[9][1] = blackclrbn;
-	FORi(4) ws->w[9][2+i] = NULL;
-	ws->w[10][1] = whiteclrbn;
-	FORi(4) ws->w[10][2+i] = NULL;
+	FORi(5) ws->w[3][i+1] = textclrbn[i];
+	FORi(5) ws->w[4][i+1] = baseclrbn[i];
 
 	ws->table_bn = table_bn;
 
@@ -378,19 +339,10 @@ int main (int argc, char** argv)
 	                  ws);
 
 #define FORij(a,b) for(gint i=0; i<a; ++i) for(gint j=0; j<b; ++j)
-	FORij(9,5) g_signal_connect (G_OBJECT(ws->w[i+1][j+1]),
+	FORij(5,5) g_signal_connect (G_OBJECT(ws->w[i+1][j+1]),
 	                             "color-set",
 	                             G_CALLBACK(colorbn_set),
 	                             ws);
-
-	g_signal_connect (G_OBJECT(ws->w[9][1]),
-	                  "color-set",
-	                  G_CALLBACK(colorbn_set),
-	                  ws);
-	g_signal_connect (G_OBJECT(ws->w[10][1]),
-	                  "color-set",
-	                  G_CALLBACK(colorbn_set),
-	                  ws);
 
 	colorbn_init (ws);
 	gtk_action_group_add_actions (magroup,
@@ -459,16 +411,9 @@ void colorbn_init(Widgets* ws)
 	{
 		gtk_color_button_set_color (GTK_COLOR_BUTTON(ws->w[1][i+1]), &(sty->fg[i]));
 		gtk_color_button_set_color (GTK_COLOR_BUTTON(ws->w[2][i+1]), &(sty->bg[i]));
-		gtk_color_button_set_color (GTK_COLOR_BUTTON(ws->w[3][i+1]), &(sty->light[i]));
-		gtk_color_button_set_color (GTK_COLOR_BUTTON(ws->w[4][i+1]), &(sty->dark[i]));
-		gtk_color_button_set_color (GTK_COLOR_BUTTON(ws->w[5][i+1]), &(sty->mid[i]));
-		gtk_color_button_set_color (GTK_COLOR_BUTTON(ws->w[6][i+1]), &(sty->text[i]));
-		gtk_color_button_set_color (GTK_COLOR_BUTTON(ws->w[7][i+1]), &(sty->base[i]));
-		gtk_color_button_set_color (GTK_COLOR_BUTTON(ws->w[8][i+1]), &(sty->text_aa[i]));
+		gtk_color_button_set_color (GTK_COLOR_BUTTON(ws->w[3][i+1]), &(sty->text[i]));
+		gtk_color_button_set_color (GTK_COLOR_BUTTON(ws->w[4][i+1]), &(sty->base[i]));
 	}
-
-	gtk_color_button_set_color (GTK_COLOR_BUTTON(ws->w[9][1]), &(sty->black));
-	gtk_color_button_set_color (GTK_COLOR_BUTTON(ws->w[10][1]), &(sty->white));
 }
 
 void colorbn_set (GtkColorButton* bn, gpointer pws)
@@ -479,7 +424,7 @@ void colorbn_set (GtkColorButton* bn, gpointer pws)
 	int row = 0;
 	int col = 0;
 
-	for (int i=1; i<9; ++i)
+	for (int i=1; i<5; ++i)
 	{
 		for (int j=1; j<6; ++j)
 		{
@@ -544,16 +489,14 @@ void write_rcGtkWidget(FILE* fp, Widgets* ws)
 		GString* rcGtkWidget = ws->rcstyle->rcGtkWidget;
 		rcGtkWidget = g_string_set_size (rcGtkWidget, 0);
 
-		const char* color[]={"fg","bg","light","dark","mid","text","base","text_aa"};
+		const char* color[]={"fg","bg","text","base"};
 		const char* state[]={"NORMAL","ACTIVE","PRELIGHT","SELECTED","INSENSITIVE"};
-		const char* black = "black";
-		const char* white = "white";
 
 		g_string_append_printf (rcGtkWidget, "%s\n", "style \"widgets\"");
 		g_string_append_printf (rcGtkWidget, "%s\n", "{");
 
 		GdkColor clr;
-		for (int i=1; i < 9; ++i)
+		for (int i=1; i < 5; ++i)
 		{
 			for (int j=1; j < 6; ++j)
 			{
@@ -569,22 +512,6 @@ void write_rcGtkWidget(FILE* fp, Widgets* ws)
 				                        (clr.blue * 255)/65535);
 			}
 		}
-		gtk_color_button_get_color (GTK_COLOR_BUTTON(ws->w[9][1]), &clr);
-		if (clr.red != 0 || clr.green != 0 || clr.blue != 0)
-			g_string_append_printf (rcGtkWidget,
-			                        "\t%s = \"#%02X%02X%02X\"\n",
-			                        black,
-			                        (clr.red * 255)/65535,
-			                        (clr.green * 255)/65535,
-			                        (clr.blue * 255)/65535);
-		gtk_color_button_get_color (GTK_COLOR_BUTTON(ws->w[10][1]), &clr);
-		if (clr.red != 65535 || clr.green != 65535 || clr.blue != 65535)
-			g_string_append_printf (rcGtkWidget,
-			                        "\t%s = \"#%02X%02X%02X\"\n",
-			                        white,
-			                        (clr.red * 255)/65535,
-			                        (clr.green * 255)/65535,
-			                        (clr.blue * 255)/65535);
 		g_string_append_printf (rcGtkWidget, "%s\n", "}");
 		g_string_append_printf (rcGtkWidget, "%s\n", "\n");
 		g_string_append_printf (rcGtkWidget, "%s\n",
@@ -613,25 +540,23 @@ void write_rcGtkButton(FILE* fp, Widgets* ws)
 		GString* rcGtkButton = ws->rcstyle->rcGtkButton;
 		rcGtkButton = g_string_set_size (rcGtkButton, 0);
 
-		const char* color[]={"fg","bg","light","dark","mid","text","base","text_aa"};
+		// unexpected character '[', expected character ':'
+		// for "light","mid","dark","text_aa","black","white"
+		// not supported by gtk_rc_parse
+
+		const char* color[]={"fg","bg","text","base"};
 		const char* state[]={"NORMAL","ACTIVE","PRELIGHT","SELECTED","INSENSITIVE"};
-		const char* black = "black";
-		const char* white = "white";
 
 		g_string_append_printf (rcGtkButton, "%s\n", "style \"button\"");
 		g_string_append_printf (rcGtkButton, "%s\n", "{");
 
-		GdkColor clr;
-		for (int i=1; i < 9; ++i)
+		for (int i=1; i < 5; ++i)
 		{
 			for (int j=1; j < 6; ++j)
 			{
 				GdkColor clr;
 				gtk_color_button_get_color(GTK_COLOR_BUTTON(ws->w[i][j]), &clr);
 				if (clr.red == 0 && clr.green == 0 && clr.blue == 0)
-					continue;
-				// unexpected character '[', expected character ':'
-				if (i-1 == 2 || i-1 == 3 || i-1 )
 					continue;
 				g_string_append_printf (rcGtkButton,
 				                        "\t%s[%s] = \"#%02X%02X%02X\"\n",
@@ -642,22 +567,6 @@ void write_rcGtkButton(FILE* fp, Widgets* ws)
 				                        (clr.blue * 255)/65535);
 			}
 		}
-		gtk_color_button_get_color (GTK_COLOR_BUTTON(ws->w[9][1]), &clr);
-		if (clr.red != 0 || clr.green != 0 || clr.blue != 0)
-			g_string_append_printf (rcGtkButton,
-			                        "\t%s = \"#%02X%02X%02X\"\n",
-			                        black,
-			                        (clr.red * 255)/65535,
-			                        (clr.green * 255)/65535,
-			                        (clr.blue * 255)/65535);
-		gtk_color_button_get_color (GTK_COLOR_BUTTON(ws->w[10][1]), &clr);
-		if (clr.red != 65535 || clr.green != 65535 || clr.blue != 65535)
-			g_string_append_printf (rcGtkButton,
-			                        "\t%s = \"#%02X%02X%02X\"\n",
-			                        white,
-			                        (clr.red * 255)/65535,
-			                        (clr.green * 255)/65535,
-			                        (clr.blue * 255)/65535);
 		g_string_append_printf (rcGtkButton, "%s\n", "}");
 		g_string_append_printf (rcGtkButton, "%s\n", "\n");
 		g_string_append_printf (rcGtkButton, "%s\n",
