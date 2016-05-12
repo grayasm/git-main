@@ -167,6 +167,8 @@ struct Widgets
 	GtkWidget* wgcombobox;
 	GtkWidget* w[5][6];
 	GtkWidget* font_namebn;
+	GtkWidget* xthicknessspinbn;
+	GtkWidget* ythicknessspinbn;
 	GtkWidget* table_bn;
 	RCstyle*   rcstyle;
 };
@@ -177,6 +179,8 @@ void colorbn_init (Widgets*);
 void colorbn_set  (GtkColorButton*, gpointer);
 void font_namebn_init (Widgets*);
 void font_namebn_set (GtkFontButton*, gpointer);
+void thicknessspinbn_init (Widgets*);
+void thicknessspinbn_changed (GtkSpinButton*, gpointer);
 void write_rcGtkWidget (FILE* fp, Widgets* ws);
 void write_rcGtkButton (FILE* fp, Widgets* ws);
 
@@ -231,7 +235,7 @@ int main (int argc, char** argv)
 
 
 	// Widgets to set theme colors
-	GtkWidget* table = gtk_table_new (6, 6, true);
+	GtkWidget* table = gtk_table_new (8, 6, true);
 	GtkWidget* fglbl      = gtk_label_new ("fg");
 	GtkWidget* bglbl      = gtk_label_new ("bg");
 	GtkWidget* textlbl    = gtk_label_new ("text      ");
@@ -256,21 +260,39 @@ int main (int argc, char** argv)
 	gtk_table_attach (table_, insensitivelbl,5,6,0,1,GTK_SHRINK,GTK_SHRINK,0,0);
 
 
-#define FORi(a) for(gint i=0; i < a; ++i)
-	GtkWidget* fgclrbn[5];    FORi(5) fgclrbn[i] = gtk_color_button_new();
-	GtkWidget* bgclrbn[5];    FORi(5) bgclrbn[i] = gtk_color_button_new();
-	GtkWidget* textclrbn[5];  FORi(5) textclrbn[i] = gtk_color_button_new();
-	GtkWidget* baseclrbn[5];  FORi(5) baseclrbn[i] = gtk_color_button_new();
+	GtkWidget* fgclrbn[5];
+	GtkWidget* bgclrbn[5];
+	GtkWidget* textclrbn[5];
+	GtkWidget* baseclrbn[5];
+	for (int i=0; i<5; ++i)
+	{
+		fgclrbn[i] = gtk_color_button_new();
+		bgclrbn[i] = gtk_color_button_new();
+		textclrbn[i] = gtk_color_button_new();
+		baseclrbn[i] = gtk_color_button_new();
 
-	FORi(5) gtk_table_attach (table_,fgclrbn[i],i+1,i+2,1,2,GTK_SHRINK,GTK_SHRINK,0,0);
-	FORi(5) gtk_table_attach (table_,bgclrbn[i],i+1,i+2,2,3,GTK_SHRINK,GTK_SHRINK,0,0);
-	FORi(5) gtk_table_attach (table_,textclrbn[i],i+1,i+2,3,4,GTK_SHRINK,GTK_SHRINK,0,0);
-	FORi(5) gtk_table_attach (table_,baseclrbn[i],i+1,i+2,4,5,GTK_SHRINK,GTK_SHRINK,0,0);
+		gtk_table_attach (table_,fgclrbn[i],i+1,i+2,1,2,GTK_SHRINK,GTK_SHRINK,0,0);
+		gtk_table_attach (table_,bgclrbn[i],i+1,i+2,2,3,GTK_SHRINK,GTK_SHRINK,0,0);
+		gtk_table_attach (table_,textclrbn[i],i+1,i+2,3,4,GTK_SHRINK,GTK_SHRINK,0,0);
+		gtk_table_attach (table_,baseclrbn[i],i+1,i+2,4,5,GTK_SHRINK,GTK_SHRINK,0,0);
+	}
 
+
+	// Widget to set font name
 	GtkWidget* font_namelbl = gtk_label_new ("font_name");
 	GtkWidget* font_namebn = gtk_font_button_new ();
-	gtk_table_attach (table_, font_namelbl,0,1,6,7,GTK_SHRINK,GTK_SHRINK,0,0);
-	gtk_table_attach (table_, font_namebn,1,6,6,7,GTK_SHRINK,GTK_SHRINK,0,0);
+	gtk_table_attach (table_, font_namelbl,0,1,5,6,GTK_SHRINK,GTK_SHRINK,0,0);
+	gtk_table_attach (table_, font_namebn,1,6,5,6,GTK_SHRINK,GTK_SHRINK,0,0);
+
+	// Widgets to set x,y thickness
+	GtkWidget* xthicknesslbl = gtk_label_new ("xthickness");
+	GtkWidget* ythicknesslbl = gtk_label_new ("ythickness");
+	GtkWidget* xthicknessspinbn = gtk_spin_button_new_with_range (0, 10, 1);
+	GtkWidget* ythicknessspinbn = gtk_spin_button_new_with_range (0, 10, 1);
+	gtk_table_attach (table_,xthicknesslbl,0,1,6,7,GTK_SHRINK,GTK_SHRINK,0,0);
+	gtk_table_attach (table_,xthicknessspinbn,1,2,6,7,GTK_SHRINK,GTK_SHRINK,0,0);
+	gtk_table_attach (table_,ythicknesslbl,0,1,7,8,GTK_SHRINK,GTK_SHRINK,0,0);
+	gtk_table_attach (table_,ythicknessspinbn,1,2,7,8,GTK_SHRINK,GTK_SHRINK,0,0);
 
 
 	// Widgets for button style
@@ -325,12 +347,19 @@ int main (int argc, char** argv)
 	ws->w[0][4] = selectedlbl;
 	ws->w[0][5] = insensitivelbl;
 
-	FORi(5) ws->w[1][i+1] = fgclrbn[i];
-	FORi(5) ws->w[2][i+1] = bgclrbn[i];
-	FORi(5) ws->w[3][i+1] = textclrbn[i];
-	FORi(5) ws->w[4][i+1] = baseclrbn[i];
+	for (int i=1; i<6; ++i)
+	{
+		ws->w[1][i] = fgclrbn[i-1];
+		ws->w[2][i] = bgclrbn[i-1];
+		ws->w[3][i] = textclrbn[i-1];
+		ws->w[4][i] = baseclrbn[i-1];
+	}
+
 
 	ws->font_namebn = font_namebn;
+
+	ws->xthicknessspinbn = xthicknessspinbn;
+	ws->ythicknessspinbn = ythicknessspinbn;
 
 	ws->table_bn = table_bn;
 
@@ -347,18 +376,30 @@ int main (int argc, char** argv)
 	                  G_CALLBACK(wgcombobox_changed),
 	                  ws);
 
-#define FORij(a,b) for(gint i=0; i<a; ++i) for(gint j=0; j<b; ++j)
-	FORij(5,5) g_signal_connect (G_OBJECT(ws->w[i+1][j+1]),
-	                             "color-set",
-	                             G_CALLBACK(colorbn_set),
-	                             ws);
+	for (int i=1; i<5; ++i)
+		for (int j=1; j<6; ++j)
+			g_signal_connect (G_OBJECT(ws->w[i][j]),
+			                  "color-set",
+			                  G_CALLBACK(colorbn_set),
+			                  ws);
+
 	g_signal_connect (G_OBJECT(ws->font_namebn),
 	                  "font-set",
 	                  G_CALLBACK(font_namebn_set),
 	                  ws);
+	g_signal_connect (G_OBJECT(ws->xthicknessspinbn),
+	                  "value-changed",
+	                  G_CALLBACK(thicknessspinbn_changed),
+	                  ws);
+	g_signal_connect (G_OBJECT(ws->ythicknessspinbn),
+	                  "value-changed",
+	                  G_CALLBACK(thicknessspinbn_changed),
+	                  ws);
+
 
 	colorbn_init (ws);
 	font_namebn_init (ws);
+	thicknessspinbn_init (ws);
 	gtk_action_group_add_actions (magroup,
 	                              entries,
 	                              NUM_ENTRIES,
@@ -426,6 +467,7 @@ void wgcombobox_changed (GtkComboBox*, gpointer pws)
 
 	colorbn_init (ws);
 	font_namebn_init (ws);
+	thicknessspinbn_init (ws);
 }
 
 void colorbn_init(Widgets* ws)
@@ -529,6 +571,45 @@ void font_namebn_set (GtkFontButton*, gpointer pws)
 	gtk_rc_reparse_all ();
 }
 
+void thicknessspinbn_init (Widgets* ws)
+{
+	GtkComboBox* wgcombobox = GTK_COMBO_BOX(ws->wgcombobox);
+	gint active = gtk_combo_box_get_active (wgcombobox);
+	GtkWidget* wg = NULL;
+	if (active == 0)      /*widgets*/ wg = ws->rcstyle->wgGtkWidget;
+	else if (active == 1) /*button*/  wg = ws->rcstyle->wgGtkButton;
+	g_print ("colorbn: active=%d\n", active);
+
+	GtkStyle* sty = gtk_widget_get_style (wg);
+	gint xthickness = sty->xthickness;
+	gint ythickness = sty->ythickness;
+
+	gtk_spin_button_set_value (GTK_SPIN_BUTTON(ws->xthicknessspinbn),
+	                           xthickness);
+	gtk_spin_button_set_value (GTK_SPIN_BUTTON(ws->ythicknessspinbn),
+	                           ythickness);
+}
+
+void thicknessspinbn_changed (GtkSpinButton*, gpointer pws)
+{
+	// thickness value has changed
+	Widgets* ws = (Widgets*)pws;
+
+	FILE* fp = fopen(rcfile, "w");
+	if (fp == NULL)
+	{
+		g_print ("cannot write to file: %s\n", rcfile);
+		return;
+	}
+
+	write_rcGtkWidget (fp, ws);
+	write_rcGtkButton (fp, ws);
+
+	fclose (fp);
+
+	gtk_rc_reparse_all ();
+}
+
 void write_rcGtkWidget(FILE* fp, Widgets* ws)
 {
 	GtkComboBox* wgcombobox = GTK_COMBO_BOX(ws->wgcombobox);
@@ -567,6 +648,13 @@ void write_rcGtkWidget(FILE* fp, Widgets* ws)
 		const gchar* font_name = gtk_font_button_get_font_name(
 			                                  GTK_FONT_BUTTON(ws->font_namebn));
 		g_string_append_printf (rcGtkWidget, "\tfont_name = \"%s\"\n",font_name);
+		gint xthickness = gtk_spin_button_get_value_as_int (
+			                             GTK_SPIN_BUTTON(ws->xthicknessspinbn));
+		gint ythickness = gtk_spin_button_get_value_as_int (
+			                             GTK_SPIN_BUTTON(ws->ythicknessspinbn));
+		g_string_append_printf (rcGtkWidget, "%s", "\n");
+		g_string_append_printf (rcGtkWidget, "\txthickness = %d\n",xthickness);
+		g_string_append_printf (rcGtkWidget, "\tythickness = %d\n",ythickness);
 		g_string_append_printf (rcGtkWidget, "%s\n", "}");
 		g_string_append_printf (rcGtkWidget, "%s\n", "\n");
 		g_string_append_printf (rcGtkWidget, "%s\n",
@@ -625,6 +713,13 @@ void write_rcGtkButton(FILE* fp, Widgets* ws)
 		const gchar* font_name = gtk_font_button_get_font_name(
 			                                  GTK_FONT_BUTTON(ws->font_namebn));
 		g_string_append_printf (rcGtkButton, "\tfont_name = \"%s\"\n",font_name);
+		gint xthickness = gtk_spin_button_get_value_as_int (
+			                             GTK_SPIN_BUTTON(ws->xthicknessspinbn));
+		gint ythickness = gtk_spin_button_get_value_as_int (
+			                             GTK_SPIN_BUTTON(ws->ythicknessspinbn));
+		g_string_append_printf (rcGtkButton, "%s", "\n");
+		g_string_append_printf (rcGtkButton, "\txthickness = %d\n",xthickness);
+		g_string_append_printf (rcGtkButton, "\tythickness = %d\n",ythickness);
 		g_string_append_printf (rcGtkButton, "%s\n", "}");
 		g_string_append_printf (rcGtkButton, "%s\n", "\n");
 		g_string_append_printf (rcGtkButton, "%s\n",
