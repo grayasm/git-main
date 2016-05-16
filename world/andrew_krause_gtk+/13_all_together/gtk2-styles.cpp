@@ -1,201 +1,69 @@
-/*
-  https://developer.gnome.org/gtk-tutorial/stable/x477.html
-
-GtkObject
-  +GtkWidget
-  | +GtkMisc
-  | | +GtkLabel                   (yes)
-  | | | `GtkAccelLabel
-  | | +GtkArrow
-  | | `GtkImage                   (yes)
-  | +GtkContainer
-  | | +GtkBin
-  | | | +GtkAlignment
-  | | | +GtkFrame                 (yes)
-  | | | | `GtkAspectFrame         (yes)
-  | | | +GtkButton                (yes)
-  | | | | +GtkToggleButton        (yes)
-  | | | | | `GtkCheckButton       (yes)
-  | | | | |   `GtkRadioButton     (yes)
-  | | | | `GtkOptionMenu          (yes)
-  | | | +GtkItem
-  | | | | +GtkMenuItem            (yes)
-  | | | |   +GtkCheckMenuItem     (yes)
-  | | | |   | `GtkRadioMenuItem   (yes)
-  | | | |   +GtkImageMenuItem     (yes)
-  | | | |   +GtkSeparatorMenuItem (yes)
-  | | | |   `GtkTearoffMenuItem   (yes)
-  | | | +GtkWindow                      (yes)
-  | | | | +GtkDialog                    (yes)
-  | | | | | +GtkColorSelectionDialog    (yes)
-  | | | | | +GtkFileSelection           (yes)
-  | | | | | +GtkFontSelectionDialog     (yes)
-  | | | | | +GtkInputDialog             (yes)
-  | | | | | `GtkMessageDialog           (yes)
-  | | | | `GtkPlug
-  | | | +GtkEventBox              (yes)
-  | | | +GtkHandleBox             (yes)
-  | | | +GtkScrolledWindow
-  | | | `GtkViewport
-  | | +GtkBox
-  | | | +GtkButtonBox
-  | | | | +GtkHButtonBox
-  | | | | `GtkVButtonBox
-  | | | +GtkVBox
-  | | | | +GtkColorSelection      (yes)
-  | | | | +GtkFontSelection       (yes)
-  | | | | `GtkGammaCurve          (yes)
-  | | | `GtkHBox
-  | | |   +GtkCombo               (yes)
-  | | |   `GtkStatusbar           (yes)
-  | | +GtkFixed
-  | | +GtkPaned
-  | | | +GtkHPaned
-  | | | `GtkVPaned
-  | | +GtkLayout
-  | | +GtkMenuShell
-  | | | +GtkMenuBar               (yes)
-  | | | `GtkMenu                  (yes)
-  | | +GtkNotebook                (yes)
-  | | +GtkSocket
-  | | +GtkTable
-  | | +GtkTextView
-  | | +GtkToolbar                 (yes)
-  | | `GtkTreeView
-  | +GtkCalendar
-  | +GtkDrawingArea
-  | | `GtkCurve
-  | +GtkEditable
-  | | +GtkEntry
-  | |   `GtkSpinButton
-  | +GtkRuler
-  | | +GtkHRuler
-  | | `GtkVRuler
-  | +GtkRange
-  | | +GtkScale
-  | | | +GtkHScale
-  | | | `GtkVScale
-  | | `GtkScrollbar
-  | |   +GtkHScrollbar
-  | |   `GtkVScrollbar
-  | +GtkSeparator
-  | | +GtkHSeparator
-  | | `GtkVSeparator
-  | +GtkInvisible
-  | +GtkPreview
-  | `GtkProgressBar
-  +GtkAdjustment
-  +GtkCellRenderer
-  | +GtkCellRendererPixbuf
-  | +GtkCellRendererText
-  | +GtkCellRendererToggle
-  +GtkItemFactory
-  +GtkTooltips
-  `GtkTreeViewColumn
- */
-
-/* Widget states
-typedef enum
-{
-  GTK_STATE_NORMAL,
-  GTK_STATE_ACTIVE,
-  GTK_STATE_PRELIGHT,
-  GTK_STATE_SELECTED,
-  GTK_STATE_INSENSITIVE
-} GtkStateType;
-
-struct _GtkStyle
-{
-  GdkColor fg[5];     // 1 color for each GtkStateType
-..
-
-
-struct _GdkColor
-{
-  guint32 pixel;
-  guint16 red;
-  guint16 green;
-  guint16 blue;
-};
-*/
-
-/*
-  GdkColor fg[5];
-  GdkColor bg[5];
-  GdkColor light[5];       //not parsed by gtk_rc_parse and friends
-  GdkColor dark[5];        //not parsed ..
-  GdkColor mid[5];         //not parsed ..
-  GdkColor text[5];
-  GdkColor base[5];
-  GdkColor text_aa[5];     //not parsed .., <Halfway between text/base>
-
-  GdkColor black;          //not parsed
-  GdkColor white;          //not parsed
-  PangoFontDescription *font_desc;
-
-  gint xthickness;
-  gint ythickness;
-*/
-
-
-
 #include <gtk/gtk.h>
 #include <cstdio>  // tmpnam
 #include <cstring> // strlen
+#include <cstdlib> // exit
 
 
-void save_as (GtkMenuItem* menuitem, gpointer data);
-void quit (GtkMenuItem* menuitem, gpointer data);
+void menu_saveas (GtkMenuItem* menuitem, gpointer data);
+void menu_quit (GtkMenuItem* menuitem, gpointer data);
 
 #define NUM_ENTRIES 3
 GtkActionEntry entries[]=
 {
 	{ "File", NULL, "_File", NULL, NULL, NULL },
-	{ "SaveAs", GTK_STOCK_SAVE_AS, NULL, NULL, "SaveAs", G_CALLBACK (save_as)},
-	{ "Quit", GTK_STOCK_QUIT, NULL, NULL, "Quit", G_CALLBACK(quit)}
+	{ "SaveAs", GTK_STOCK_SAVE_AS, NULL, NULL, "SaveAs", G_CALLBACK (menu_saveas)},
+	{ "Quit", GTK_STOCK_QUIT, NULL, NULL, "Quit", G_CALLBACK(menu_quit)}
 };
 
-struct RCstyle
-{
-	GtkWidget* wgGtkWidget; GString* rcGtkWidget;
-	GtkWidget* wgGtkButton; GString* rcGtkButton;
-};
 
-struct Widgets
+struct AppData
 {
+	const char* rcfile=NULL;
 	GtkWidget* window;
-	GtkWidget* wgcombobox;
-	GtkWidget* w[5][6];
-	GtkWidget* font_namebn;
-	GtkWidget* xthicknessspinbn;
-	GtkWidget* ythicknessspinbn;
-	GtkWidget* table_bn;
-	RCstyle*   rcstyle;
+	GtkWidget* vbox;
+	// ----- GtkWidget section -----
+	GtkWidget* widget_0_clr_bn[4][5];
+	GtkWidget* widget_0_fn_bn;
+	GtkWidget* widget_0_spinbn_xth;
+	GtkWidget* widget_0_spinbn_yth;
+	GtkWidget* widget_0_pixbn[5];
+	GString*   widget_0_style_txt;
 };
+AppData* app;
 
 
-void wgcombobox_changed (GtkComboBox*, gpointer);
-void colorbn_init (Widgets*);
-void colorbn_set  (GtkColorButton*, gpointer);
-void font_namebn_init (Widgets*);
-void font_namebn_set (GtkFontButton*, gpointer);
-void thicknessspinbn_init (Widgets*);
-void thicknessspinbn_changed (GtkSpinButton*, gpointer);
-void write_rcGtkWidget (FILE* fp, Widgets* ws);
-void write_rcGtkButton (FILE* fp, Widgets* ws);
+// GtkWidget sytle methods and callbacks
+void cb_0_color_set (GtkColorButton*, gpointer);
+void cb_0_font_set (GtkFontButton*, gpointer);
+void cb_0_value_changed (GtkSpinButton*, gpointer);
+void cb_0_clicked (GtkButton*, gpointer);
 
-const char* rcfile=NULL;
+// Main application RC methods
+void write_rc_for_gtkwidget();
+void write_rc_for_gtkbutton();
+void write_rc_for_all();
+
+// Main application UI methods
+void ui_create_gtkwidget();
+
 
 
 
 int main (int argc, char** argv)
 {
+	app = g_slice_new(AppData);
+	if (app == NULL)
+	{
+		g_print ("Cannot allocate memory.\n");
+		return -1;
+	}
+
 	// Temporary rc file
-	rcfile = tmpnam(NULL);
-	FILE* fp = fopen (rcfile, "w+");
+	app->rcfile = tmpnam(NULL);
+	FILE* fp = fopen (app->rcfile, "w+");
 	if (fp == NULL)
 	{
-		g_print ("cannot write to: %s\n", rcfile);
+		g_print ("cannot write to: %s\n", app->rcfile);
 		return -1;
 	}
 
@@ -204,13 +72,14 @@ int main (int argc, char** argv)
 	fclose (fp);
 
 	// Init & apply style from external file
-	gtk_rc_add_default_file (rcfile);
-
+	gtk_rc_add_default_file (app->rcfile);
 	gtk_init (&argc, &argv);
 
 
 	// Main window
 	GtkWidget* window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+	app->window = window;
+	gtk_window_set_title (GTK_WINDOW(window), "gtk2-styles");
 	g_signal_connect (G_OBJECT(window),
 	                  "destroy",
 	                  G_CALLBACK(gtk_main_quit),
@@ -220,209 +89,52 @@ int main (int argc, char** argv)
 	// Application Menu
 	GtkActionGroup* magroup = gtk_action_group_new ("MainActionGroup");
 	gtk_action_group_add_actions (magroup, entries, NUM_ENTRIES, NULL);
-
 	GtkUIManager* uimanager = gtk_ui_manager_new ();
 	gtk_ui_manager_insert_action_group (uimanager, magroup, 0);
 	gtk_ui_manager_add_ui_from_file (uimanager, "menu.ui", NULL);
-
 	GtkWidget* menubar = gtk_ui_manager_get_widget (uimanager, "/MenuBar");
-
-	// Combobox with widgets names
-	GtkWidget* wgcombobox = gtk_combo_box_new_text ();
-	gtk_combo_box_append_text (GTK_COMBO_BOX(wgcombobox), "widgets");
-	gtk_combo_box_append_text (GTK_COMBO_BOX(wgcombobox), "button");
-	gtk_combo_box_set_active (GTK_COMBO_BOX(wgcombobox), 0);
-
-
-	// Widgets to set theme colors
-	GtkWidget* table = gtk_table_new (8, 6, true);
-	GtkWidget* fglbl      = gtk_label_new ("fg");
-	GtkWidget* bglbl      = gtk_label_new ("bg");
-	GtkWidget* textlbl    = gtk_label_new ("text      ");
-	GtkWidget* baselbl    = gtk_label_new ("base      ");
-
-	GtkWidget* normallbl     = gtk_label_new ("NORMAL");
-	GtkWidget* activelbl     = gtk_label_new ("ACTIVE");
-	GtkWidget* prelightlbl   = gtk_label_new ("PRELIGHT");
-	GtkWidget* selectedlbl   = gtk_label_new ("SELECTED");
-	GtkWidget* insensitivelbl= gtk_label_new ("INSENSITIVE");
-
-	GtkTable* table_ = GTK_TABLE(table);
-	gtk_table_attach (table_, fglbl,0,1,1,2,GTK_SHRINK,GTK_SHRINK,0, 0);
-	gtk_table_attach (table_, bglbl,0,1,2,3,GTK_SHRINK,GTK_SHRINK,0, 0);
-	gtk_table_attach (table_, textlbl,0,1,3,4,GTK_SHRINK,GTK_SHRINK,0, 0);
-	gtk_table_attach (table_, baselbl,0,1,4,5,GTK_SHRINK,GTK_SHRINK,0, 0);
-
-	gtk_table_attach (table_, normallbl,1,2,0,1,GTK_SHRINK,GTK_SHRINK,0,0);
-	gtk_table_attach (table_, activelbl,2,3,0,1,GTK_SHRINK,GTK_SHRINK,0,0);
-	gtk_table_attach (table_, prelightlbl,3,4,0,1,GTK_SHRINK,GTK_SHRINK,0,0);
-	gtk_table_attach (table_, selectedlbl,4,5,0,1,GTK_SHRINK,GTK_SHRINK,0,0);
-	gtk_table_attach (table_, insensitivelbl,5,6,0,1,GTK_SHRINK,GTK_SHRINK,0,0);
-
-
-	GtkWidget* fgclrbn[5];
-	GtkWidget* bgclrbn[5];
-	GtkWidget* textclrbn[5];
-	GtkWidget* baseclrbn[5];
-	for (int i=0; i<5; ++i)
-	{
-		fgclrbn[i] = gtk_color_button_new();
-		bgclrbn[i] = gtk_color_button_new();
-		textclrbn[i] = gtk_color_button_new();
-		baseclrbn[i] = gtk_color_button_new();
-
-		gtk_table_attach (table_,fgclrbn[i],i+1,i+2,1,2,GTK_SHRINK,GTK_SHRINK,0,0);
-		gtk_table_attach (table_,bgclrbn[i],i+1,i+2,2,3,GTK_SHRINK,GTK_SHRINK,0,0);
-		gtk_table_attach (table_,textclrbn[i],i+1,i+2,3,4,GTK_SHRINK,GTK_SHRINK,0,0);
-		gtk_table_attach (table_,baseclrbn[i],i+1,i+2,4,5,GTK_SHRINK,GTK_SHRINK,0,0);
-	}
-
-
-	// Widget to set font name
-	GtkWidget* font_namelbl = gtk_label_new ("font_name");
-	GtkWidget* font_namebn = gtk_font_button_new ();
-	gtk_table_attach (table_, font_namelbl,0,1,5,6,GTK_SHRINK,GTK_SHRINK,0,0);
-	gtk_table_attach (table_, font_namebn,1,6,5,6,GTK_SHRINK,GTK_SHRINK,0,0);
-
-	// Widgets to set x,y thickness
-	GtkWidget* xthicknesslbl = gtk_label_new ("xthickness");
-	GtkWidget* ythicknesslbl = gtk_label_new ("ythickness");
-	GtkWidget* xthicknessspinbn = gtk_spin_button_new_with_range (0, 10, 1);
-	GtkWidget* ythicknessspinbn = gtk_spin_button_new_with_range (0, 10, 1);
-	gtk_table_attach (table_,xthicknesslbl,0,1,6,7,GTK_SHRINK,GTK_SHRINK,0,0);
-	gtk_table_attach (table_,xthicknessspinbn,1,2,6,7,GTK_SHRINK,GTK_SHRINK,0,0);
-	gtk_table_attach (table_,ythicknesslbl,0,1,7,8,GTK_SHRINK,GTK_SHRINK,0,0);
-	gtk_table_attach (table_,ythicknessspinbn,1,2,7,8,GTK_SHRINK,GTK_SHRINK,0,0);
-
-
-	// Widgets for button style
-	GtkWidget* table_bn = gtk_table_new (5, 1, TRUE);
-	GtkWidget* bn_ok = gtk_button_new_from_stock (GTK_STOCK_OK);
-	GtkWidget* bn_cancel = gtk_button_new_from_stock (GTK_STOCK_CANCEL);
-	GtkWidget* bn_apply = gtk_button_new_from_stock (GTK_STOCK_APPLY);
-	GtkWidget* bn_copy = gtk_button_new_from_stock (GTK_STOCK_COPY);
-	GtkWidget* bn_media_play = gtk_button_new_from_stock (GTK_STOCK_MEDIA_PLAY);
-	gtk_button_set_relief (GTK_BUTTON(bn_ok), GTK_RELIEF_NORMAL);
-	gtk_button_set_relief (GTK_BUTTON(bn_cancel), GTK_RELIEF_HALF);
-	gtk_button_set_relief (GTK_BUTTON(bn_apply), GTK_RELIEF_NONE);
-	gtk_widget_set_sensitive (bn_copy, FALSE);
-	GtkTable* table_bn_ = GTK_TABLE(table_bn);
-	gtk_table_attach (table_bn_,bn_ok,        0,1,0,1,GTK_SHRINK,GTK_SHRINK,0,0);
-	gtk_table_attach (table_bn_,bn_cancel,    0,1,1,2,GTK_SHRINK,GTK_SHRINK,0,0);
-	gtk_table_attach (table_bn_,bn_apply,     0,1,2,3,GTK_SHRINK,GTK_SHRINK,0,0);
-	gtk_table_attach (table_bn_,bn_copy,      0,1,3,4,GTK_SHRINK,GTK_SHRINK,0,0);
-	gtk_table_attach (table_bn_,bn_media_play,0,1,4,5,GTK_SHRINK,GTK_SHRINK,0,0);
-
-
-	// Packaging
-	GtkWidget* vbox = gtk_vbox_new (FALSE, 0);
-	gtk_box_pack_start (GTK_BOX(vbox), menubar, false, false, 0);
-	gtk_box_pack_start (GTK_BOX(vbox), wgcombobox, false, false, 0);
-	GtkWidget* hbox = gtk_hbox_new (FALSE, 0);
-	gtk_box_pack_start (GTK_BOX(vbox), hbox, false, false, 0);
-	GtkWidget* vboxl = gtk_vbox_new (FALSE, 0);
-	GtkWidget* vboxr = gtk_vbox_new (FALSE, 0);
-	gtk_box_pack_start (GTK_BOX(hbox), vboxl, false, false, 0);
-	gtk_box_pack_start (GTK_BOX(hbox), vboxr, false, false, 0);
-	gtk_container_add (GTK_CONTAINER(window), vbox);
-
-	gtk_box_pack_start (GTK_BOX(vboxl), table, false, false, 0);
-	gtk_box_pack_start (GTK_BOX(vboxr), table_bn, false, false, 0);
-
-
-
-	// Connecting
-	Widgets* ws = g_slice_new (Widgets);
-	ws->window = window;
-	ws->wgcombobox = wgcombobox;
-	ws->w[0][0] = NULL;
-	ws->w[1][0] = fglbl;
-	ws->w[2][0] = bglbl;
-	ws->w[3][0] = textlbl;
-	ws->w[4][0] = baselbl;
-
-	ws->w[0][1] = normallbl;
-	ws->w[0][2] = activelbl;
-	ws->w[0][3] = prelightlbl;
-	ws->w[0][4] = selectedlbl;
-	ws->w[0][5] = insensitivelbl;
-
-	for (int i=1; i<6; ++i)
-	{
-		ws->w[1][i] = fgclrbn[i-1];
-		ws->w[2][i] = bgclrbn[i-1];
-		ws->w[3][i] = textclrbn[i-1];
-		ws->w[4][i] = baseclrbn[i-1];
-	}
-
-
-	ws->font_namebn = font_namebn;
-
-	ws->xthicknessspinbn = xthicknessspinbn;
-	ws->ythicknessspinbn = ythicknessspinbn;
-
-	ws->table_bn = table_bn;
-
-	RCstyle* rcstyle = g_slice_new (RCstyle);
-	rcstyle->wgGtkWidget = window;
-	rcstyle->rcGtkWidget = g_string_new (NULL);
-	rcstyle->wgGtkButton = bn_ok;
-	rcstyle->rcGtkButton = g_string_new (NULL);
-	ws->rcstyle = rcstyle;
-
-
-	g_signal_connect (G_OBJECT(ws->wgcombobox),
-	                  "changed",
-	                  G_CALLBACK(wgcombobox_changed),
-	                  ws);
-
-	for (int i=1; i<5; ++i)
-		for (int j=1; j<6; ++j)
-			g_signal_connect (G_OBJECT(ws->w[i][j]),
-			                  "color-set",
-			                  G_CALLBACK(colorbn_set),
-			                  ws);
-
-	g_signal_connect (G_OBJECT(ws->font_namebn),
-	                  "font-set",
-	                  G_CALLBACK(font_namebn_set),
-	                  ws);
-	g_signal_connect (G_OBJECT(ws->xthicknessspinbn),
-	                  "value-changed",
-	                  G_CALLBACK(thicknessspinbn_changed),
-	                  ws);
-	g_signal_connect (G_OBJECT(ws->ythicknessspinbn),
-	                  "value-changed",
-	                  G_CALLBACK(thicknessspinbn_changed),
-	                  ws);
-
-
-	colorbn_init (ws);
-	font_namebn_init (ws);
-	thicknessspinbn_init (ws);
 	gtk_action_group_add_actions (magroup,
 	                              entries,
 	                              NUM_ENTRIES,
-	                              ws);
+	                              NULL);
+
+
+	// Scrolled window
+	GtkWidget* scrolled_win = gtk_scrolled_window_new (NULL, NULL);
+	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW(scrolled_win),
+	                                GTK_POLICY_AUTOMATIC,
+	                                GTK_POLICY_AUTOMATIC);
+
+
+	// Setup the main window
+	GtkWidget* pvbox = gtk_vbox_new (FALSE, 0); // parent vbox
+	gtk_box_pack_start (GTK_BOX(pvbox), menubar, FALSE, FALSE, 0);
+	gtk_box_pack_start (GTK_BOX(pvbox), scrolled_win, TRUE, TRUE, 0);
+	gtk_container_add (GTK_CONTAINER(window), pvbox);
+	app->vbox = gtk_vbox_new (FALSE, 0);
+	gtk_scrolled_window_add_with_viewport (GTK_SCROLLED_WINDOW(scrolled_win),
+	                                       app->vbox);
+
+	// Create UI for each widget
+	ui_create_gtkwidget ();
+
+
 
 
 	// Visibility
 	gtk_widget_show_all (window);
-	gtk_widget_hide (table_bn);
 	gtk_main ();
 
 
 	// Clean up
-	unlink (rcfile);
-	g_string_free (rcstyle->rcGtkWidget, TRUE);
-	g_string_free (rcstyle->rcGtkButton, TRUE);
-	g_slice_free (RCstyle, rcstyle);
-	g_slice_free (Widgets, ws);
+	unlink (app->rcfile);
+	g_string_free (app->widget_0_style_txt, TRUE);
+	g_slice_free(AppData, app);
 
 	return 0;
 }
 
-void save_as (GtkMenuItem* menuitem, gpointer data)
+void menu_saveas (GtkMenuItem* menuitem, gpointer data)
 {
 	GtkWidget* dialog = NULL;
 	dialog = gtk_file_chooser_dialog_new ("Save File",
@@ -446,292 +158,301 @@ void save_as (GtkMenuItem* menuitem, gpointer data)
 	gtk_widget_destroy (dialog);
 }
 
-void quit (GtkMenuItem* menuitem, gpointer data)
+void menu_quit (GtkMenuItem* menuitem, gpointer data)
 {
 	gtk_main_quit ();
 }
 
-void wgcombobox_changed (GtkComboBox*, gpointer pws)
+// ----- GtkWidget style methods and callbacks -----
+//
+void cb_0_color_set (GtkColorButton*, gpointer papp)
 {
-	Widgets* ws = (Widgets*)pws;
-	gint active = gtk_combo_box_get_active (GTK_COMBO_BOX(ws->wgcombobox));
-
-	if (active == 0)      /*widgets*/
-	{
-		gtk_widget_hide (ws->table_bn);
-	}
-	else if (active == 1) /*button */
-	{
-		gtk_widget_show_all (ws->table_bn);
-	}
-
-	colorbn_init (ws);
-	font_namebn_init (ws);
-	thicknessspinbn_init (ws);
+	write_rc_for_all ();
 }
 
-void colorbn_init(Widgets* ws)
+void cb_0_font_set (GtkFontButton*, gpointer)
 {
-	GtkComboBox* wgcombobox = GTK_COMBO_BOX(ws->wgcombobox);
-	gint active = gtk_combo_box_get_active (wgcombobox);
-	GtkWidget* wg = NULL;
-	if (active == 0)      /*widgets*/ wg = ws->rcstyle->wgGtkWidget;
-	else if (active == 1) /*button*/  wg = ws->rcstyle->wgGtkButton;
-	g_print ("colorbn: active=%d\n", active);
-
-	GtkStyle* sty = gtk_widget_get_style (wg);
-
-	for(gint i=0; i < 5; ++i)
-	{
-		gtk_color_button_set_color (GTK_COLOR_BUTTON(ws->w[1][i+1]), &(sty->fg[i]));
-		gtk_color_button_set_color (GTK_COLOR_BUTTON(ws->w[2][i+1]), &(sty->bg[i]));
-		gtk_color_button_set_color (GTK_COLOR_BUTTON(ws->w[3][i+1]), &(sty->text[i]));
-		gtk_color_button_set_color (GTK_COLOR_BUTTON(ws->w[4][i+1]), &(sty->base[i]));
-	}
+	write_rc_for_all ();
 }
 
-void colorbn_set (GtkColorButton* bn, gpointer pws)
+void cb_0_value_changed (GtkSpinButton*, gpointer)
 {
-	// A color has changed in the pannel
-	Widgets* ws = (Widgets*)pws;
-	GtkWidget* wbn = (GtkWidget*) bn;
-	int row = 0;
-	int col = 0;
+	write_rc_for_all ();
+}
 
-	for (int i=1; i<5; ++i)
+void cb_0_clicked (GtkButton* bn, gpointer)
+{
+	GtkWidget* dialog = NULL;
+	dialog = gtk_file_chooser_dialog_new ("Select a pixmap file",
+	                                      NULL, //parent_window,
+	                                      GTK_FILE_CHOOSER_ACTION_OPEN,
+	                                      GTK_STOCK_CANCEL,
+	                                      GTK_RESPONSE_CANCEL,
+	                                      GTK_STOCK_OPEN,
+	                                      GTK_RESPONSE_ACCEPT,
+	                                      NULL);
+	gtk_file_chooser_set_select_multiple (GTK_FILE_CHOOSER(dialog), FALSE);
+	gtk_file_chooser_set_create_folders (GTK_FILE_CHOOSER(dialog), FALSE);
+
+	GtkFileFilter* ffilter = gtk_file_filter_new ();
+	gtk_file_filter_add_pattern (ffilter, "*.xpm");
+	gtk_file_chooser_add_filter (GTK_FILE_CHOOSER(dialog), ffilter);
+
+	if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT)
 	{
-		for (int j=1; j<6; ++j)
+		char *filename = NULL;
+		filename = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (dialog));
+		g_print ("Pixmap file: %s\n", filename);
+		g_free (filename);
+	}
+	gtk_widget_destroy (dialog);
+}
+
+
+
+// ----- Main application RC methods -----
+//
+void write_rc_for_gtkwidget()
+{
+	if (app->widget_0_style_txt == NULL) exit(-1);
+	app->widget_0_style_txt = g_string_set_size (app->widget_0_style_txt, 0);
+	const gchar* style[4] = {"fg","bg","text","base"};
+	const gchar* state[5] = {
+		"NORMAL","ACTIVE","PRELIGHT","SELECTED","INSENSITIVE"
+	};
+	g_string_append_printf (app->widget_0_style_txt,
+	                        "style \"%s\"\n{\n",
+	                        "widgets");
+
+	// ----- style begin -----
+	for (gint i=0; i<4; ++i)
+	{
+		for (gint j=0; j<5; ++j)
 		{
-			if (ws->w[i][j] == wbn)
-			{
-				row = i;
-				col = j;
-				//break;
-				i = 10;
-				j = 7;
-			}
+			GdkColor clr;
+			gtk_color_button_get_color (
+				GTK_COLOR_BUTTON(app->widget_0_clr_bn[i][j]),
+				&clr);
+
+			g_string_append_printf (app->widget_0_style_txt,
+			                        "\t%s[%s] = \"#%02X%02X%02X\"\n",
+			                        style[i],
+			                        state[j],
+			                        (clr.red * 255 / 65535),
+			                        (clr.green * 255 / 65535),
+			                        (clr.blue * 255 / 65535));
 		}
+		g_string_append_printf (app->widget_0_style_txt,
+		                        "%s", "\n");
 	}
+	const gchar* font_name = gtk_font_button_get_font_name(
+                                         GTK_FONT_BUTTON(app->widget_0_fn_bn));
+	g_string_append_printf (app->widget_0_style_txt,
+	                        "\tfont_name = \"%s\"\n",
+	                        font_name);
 
-	if (row == 0 && col == 0)
-	{
-		g_print ("cannot find the associated button\n");
-		return;
-	}
+	gint xthickness = gtk_spin_button_get_value_as_int(
+                                     GTK_SPIN_BUTTON(app->widget_0_spinbn_xth));
+	gint ythickness = gtk_spin_button_get_value_as_int(
+                                     GTK_SPIN_BUTTON(app->widget_0_spinbn_yth));
+	g_string_append_printf (app->widget_0_style_txt,
+	                        "\nxthickness = %d\n",
+	                        xthickness);
+	g_string_append_printf (app->widget_0_style_txt,
+	                        "\nythickness = %d\n",
+	                        ythickness);
 
-	FILE* fp = fopen(rcfile, "w");
-	if (fp == NULL)
-	{
-		g_print ("cannot write to file: %s\n", rcfile);
-		return;
-	}
+	// ----- style end   -----
 
-	write_rcGtkWidget (fp, ws);
-	write_rcGtkButton (fp, ws);
+	g_string_append_printf (app->widget_0_style_txt,"%s\n", "}");
+	g_string_append_printf (app->widget_0_style_txt,
+	                        "class \"GtkWidget\" style \"%s\"\n",
+	                        "widgets");
+	FILE* fp = fopen (app->rcfile, "r+");
+	if (fp == NULL) exit (-1);
+	fprintf (fp, "%s", app->widget_0_style_txt->str);
+	fclose (fp);
+}
 
+void write_rc_for_gtkbutton()
+{
+}
+
+void write_rc_for_all()
+{
+	FILE* fp = fopen (app->rcfile, "w+");
+	if (fp == NULL) exit (-1);
 	fclose (fp);
 
+	write_rc_for_gtkwidget ();
+	write_rc_for_gtkbutton ();
 	gtk_rc_reparse_all ();
 }
 
-void font_namebn_init (Widgets* ws)
-{
-	GtkComboBox* wgcombobox = GTK_COMBO_BOX(ws->wgcombobox);
-	gint active = gtk_combo_box_get_active (wgcombobox);
-	GtkWidget* wg = NULL;
-	if (active == 0)      /*widgets*/ wg = ws->rcstyle->wgGtkWidget;
-	else if (active == 1) /*button*/  wg = ws->rcstyle->wgGtkButton;
-	g_print ("font_name: active=%d\n", active);
 
-	GtkStyle* sty = gtk_widget_get_style (wg);
-	PangoFontDescription* font_desc = sty->font_desc;
-	char* font_name = pango_font_description_to_string (font_desc);
-	GtkFontButton* font_namebn = GTK_FONT_BUTTON (ws->font_namebn);
-	gtk_font_button_set_font_name (font_namebn, font_name);
+// ----- Main application UI methods -----
+//
+void ui_create_gtkwidget()
+{
+	/*  Create the UI elements to set
+	    class GtkWidget's style and properties.
+	*/
+
+	// First table holds the color buttons and labels on top and left side.
+	GtkWidget* vbox = gtk_vbox_new (FALSE, 0);
+	const gint TABLE_0_ROW = 6; // 1 header, 4 colors, 1 pixmap
+	const gint TABLE_0_COL = 6;
+	GtkWidget* table_0 = gtk_table_new (TABLE_0_ROW, TABLE_0_COL, TRUE);
+	gtk_box_pack_start (GTK_BOX(vbox), table_0, TRUE, TRUE, 0);
+	GtkWidget* expander = gtk_expander_new ("GtkWidget");
+	gtk_container_add (GTK_CONTAINER(expander), vbox);
+	gtk_expander_set_expanded (GTK_EXPANDER(expander), TRUE);
+	gtk_box_pack_start (GTK_BOX(app->vbox), expander, TRUE, TRUE, 0);
+
+	// Set the labels on the left side.
+	const gchar* rows_txt[TABLE_0_ROW] = {
+		"", "fg", "bg", "text", "base", "bg_pixmap"
+	};
+	for (gint i=1; i<TABLE_0_ROW; ++i)
+	{
+		GtkWidget* label = gtk_label_new (rows_txt[i]);
+		gtk_table_attach (GTK_TABLE(table_0),
+		                  label,
+		                  0, 1,    // left, right
+		                  i, i+1,  // top, bottom
+		                  GTK_SHRINK, GTK_SHRINK, // GtkAttachOptions
+		                  0, 0);   // x,y padding
+	}
+
+	// Set the labels on the top.
+	const gchar* cols_txt[TABLE_0_COL] = {
+		"", "NORMAL","ACTIVE","PRELIGHT","SELECTED","INSENSITIVE"
+	};
+	for (gint j=1; j<TABLE_0_COL; ++j)
+	{
+		GtkWidget* label = gtk_label_new (cols_txt[j]);
+		gtk_table_attach (GTK_TABLE(table_0),
+		                  label,
+		                  j, j+1,   // left, right
+		                  0, 1,     // top, bottom
+		                  GTK_SHRINK, GTK_SHRINK, // GtkAttachOptions
+		                  0, 0);    // x,y padding
+	}
+
+	// Set the color buttons ( exclude bg_pixmap here)
+	GtkStyle* style = gtk_widget_get_style (app->window);
+	for (gint i=1; i<TABLE_0_ROW - 1; ++i)
+	{
+		for (gint j=1; j<TABLE_0_COL; ++j)
+		{
+			GdkColor* clr;
+			if (i == 1)      clr = &(style->fg[j-1]);
+			else if (i == 2) clr = &(style->bg[j-1]);
+			else if (i == 3) clr = &(style->text[j-1]);
+			else if (i == 4) clr = &(style->base[j-1]);
+			else exit(-1);
+			app->widget_0_clr_bn[i-1][j-1] = gtk_color_button_new_with_color (clr);
+			gtk_table_attach (GTK_TABLE(table_0),
+			                  app->widget_0_clr_bn[i-1][j-1],
+			                  j, j+1, // left, right
+			                  i, i+1, // top, bottom
+			                  GTK_SHRINK, GTK_SHRINK, // GtkAttachOptions
+			                  0, 0);  // x,y padding
+			g_signal_connect (G_OBJECT(app->widget_0_clr_bn[i-1][j-1]),
+			                  "color-set",
+			                  G_CALLBACK(cb_0_color_set),
+			                  NULL);
+		}
+	}
+
+	// Set bg_pixmap: an image to use as the background of widget in its 5 states
+	for (gint i=5; i<6; ++i)
+	{
+		for (gint j=1; j<TABLE_0_COL; ++j)
+		{
+			gchar label[200];
+			sprintf (label, "bn: %d %d", i, j);
+			app->widget_0_pixbn[j-1] = gtk_button_new_with_label (label);
+			gtk_table_attach (GTK_TABLE(table_0),
+			                  app->widget_0_pixbn[j-1],
+			                  j, j+1,   // left, right
+			                  i, i+1,   // top, bottom
+			                  GTK_SHRINK, GTK_SHRINK,  // GtkAttachOptions
+			                  0, 0);    // x,y padding
+			g_signal_connect (G_OBJECT(app->widget_0_pixbn[j-1]),
+			                  "clicked",
+			                  G_CALLBACK(cb_0_clicked),
+			                  NULL);
+		}
+	}
+
+	// New table for: font description, thickness
+	GtkWidget* table_1 = gtk_table_new (3, 2, TRUE);
+	gtk_box_pack_start (GTK_BOX(vbox), table_1, TRUE, TRUE, 0);
+	GtkWidget* font_desc_lbl = gtk_label_new ("font_desc");
+	char* font_name = pango_font_description_to_string (style->font_desc);
+	app->widget_0_fn_bn = gtk_font_button_new_with_font (font_name);
 	g_free (font_name);
-}
+	gtk_table_attach (GTK_TABLE(table_1),
+	                  font_desc_lbl,
+	                  0, 1,   // left, right
+	                  0, 1,   // top, bottom
+	                  GTK_SHRINK, GTK_SHRINK,  // GtkAttachOptions
+	                  0, 0);  // x,y padding
+	gtk_table_attach (GTK_TABLE(table_1),
+	                  app->widget_0_fn_bn,
+	                  1, 2,   // left, right
+	                  0, 1,   // top, bottom
+	                  GTK_SHRINK, GTK_SHRINK,  // GtkAttachOptions
+	                  0, 0);  // x,y padding
+	g_signal_connect (G_OBJECT(app->widget_0_fn_bn),
+	                  "font-set",
+	                  G_CALLBACK(cb_0_font_set),
+	                  NULL);
 
-void font_namebn_set (GtkFontButton*, gpointer pws)
-{
-	// new font selected
-	Widgets* ws = (Widgets*)pws;
+	// add thickness to table
+	GtkWidget* xthickness_lbl = gtk_label_new ("xthickness");
+	app->widget_0_spinbn_xth = gtk_spin_button_new_with_range (0,10,1);
+	gtk_spin_button_set_value (GTK_SPIN_BUTTON(app->widget_0_spinbn_xth),
+	                           (gdouble)style->xthickness);
+	gtk_table_attach (GTK_TABLE(table_1),
+	                  xthickness_lbl,
+	                  0, 1,   // left, right
+	                  1, 2,   // top, bottom
+	                  GTK_SHRINK, GTK_SHRINK,  // GtkAttachOptions
+	                  0, 0);  // x,y padding
+	gtk_table_attach (GTK_TABLE(table_1),
+	                  app->widget_0_spinbn_xth,
+	                  1, 2,   // left, right
+	                  1, 2,   // top, bottom
+	                  GTK_SHRINK, GTK_SHRINK,  // GtkAttachOptions
+	                  0, 0);  // x,y padding
+	g_signal_connect (G_OBJECT(app->widget_0_spinbn_xth),
+	                  "value-changed",
+	                  G_CALLBACK(cb_0_value_changed),
+	                  NULL);
 
-	FILE* fp = fopen(rcfile, "w");
-	if (fp == NULL)
-	{
-		g_print ("cannot write to file: %s\n", rcfile);
-		return;
-	}
+	GtkWidget* ythickness_lbl = gtk_label_new ("ythickness");
+	app->widget_0_spinbn_yth = gtk_spin_button_new_with_range (0,10,1);
+	gtk_spin_button_set_value (GTK_SPIN_BUTTON(app->widget_0_spinbn_yth),
+	                           (gdouble)style->ythickness);
+	gtk_table_attach (GTK_TABLE(table_1),
+	                  ythickness_lbl,
+	                  0, 1,   // left, right
+	                  2, 3,   // top, bottom
+	                  GTK_SHRINK, GTK_SHRINK,  // GtkAttachOptions
+	                  0, 0);  // x,y padding
+	gtk_table_attach (GTK_TABLE(table_1),
+	                  app->widget_0_spinbn_yth,
+	                  1, 2,   // left, right
+	                  2, 3,   // top, bottom
+	                  GTK_SHRINK, GTK_SHRINK,  // GtkAttachOptions
+	                  0, 0);  // x,y padding
+	g_signal_connect (G_OBJECT(app->widget_0_spinbn_yth),
+	                  "value-changed",
+	                  G_CALLBACK(cb_0_value_changed),
+	                  NULL);
 
-	write_rcGtkWidget (fp, ws);
-	write_rcGtkButton (fp, ws);
-
-	fclose (fp);
-
-	gtk_rc_reparse_all ();
-}
-
-void thicknessspinbn_init (Widgets* ws)
-{
-	GtkComboBox* wgcombobox = GTK_COMBO_BOX(ws->wgcombobox);
-	gint active = gtk_combo_box_get_active (wgcombobox);
-	GtkWidget* wg = NULL;
-	if (active == 0)      /*widgets*/ wg = ws->rcstyle->wgGtkWidget;
-	else if (active == 1) /*button*/  wg = ws->rcstyle->wgGtkButton;
-	g_print ("colorbn: active=%d\n", active);
-
-	GtkStyle* sty = gtk_widget_get_style (wg);
-	gint xthickness = sty->xthickness;
-	gint ythickness = sty->ythickness;
-
-	gtk_spin_button_set_value (GTK_SPIN_BUTTON(ws->xthicknessspinbn),
-	                           xthickness);
-	gtk_spin_button_set_value (GTK_SPIN_BUTTON(ws->ythicknessspinbn),
-	                           ythickness);
-}
-
-void thicknessspinbn_changed (GtkSpinButton*, gpointer pws)
-{
-	// thickness value has changed
-	Widgets* ws = (Widgets*)pws;
-
-	FILE* fp = fopen(rcfile, "w");
-	if (fp == NULL)
-	{
-		g_print ("cannot write to file: %s\n", rcfile);
-		return;
-	}
-
-	write_rcGtkWidget (fp, ws);
-	write_rcGtkButton (fp, ws);
-
-	fclose (fp);
-
-	gtk_rc_reparse_all ();
-}
-
-void write_rcGtkWidget(FILE* fp, Widgets* ws)
-{
-	GtkComboBox* wgcombobox = GTK_COMBO_BOX(ws->wgcombobox);
-	gint active = gtk_combo_box_get_active (wgcombobox);
-
-	// "widgets" is selected, take the style from the pannel
-	if (active == 0)
-	{
-		GString* rcGtkWidget = ws->rcstyle->rcGtkWidget;
-		rcGtkWidget = g_string_set_size (rcGtkWidget, 0);
-
-		const char* color[]={"fg","bg","text","base"};
-		const char* state[]={"NORMAL","ACTIVE","PRELIGHT","SELECTED","INSENSITIVE"};
-
-		g_string_append_printf (rcGtkWidget, "%s\n", "style \"widgets\"");
-		g_string_append_printf (rcGtkWidget, "%s\n", "{");
-
-		GdkColor clr;
-		for (int i=1; i < 5; ++i)
-		{
-			for (int j=1; j < 6; ++j)
-			{
-				gtk_color_button_get_color(GTK_COLOR_BUTTON(ws->w[i][j]), &clr);
-				if (clr.red == 0 && clr.green == 0 && clr.blue == 0)
-					continue;
-				g_string_append_printf (rcGtkWidget,
-				                        "\t%s[%s] = \"#%02X%02X%02X\"\n",
-				                        color[i-1],
-				                        state[j-1],
-				                        (clr.red * 255)/65535,
-				                        (clr.green * 255)/65535,
-				                        (clr.blue * 255)/65535);
-			}
-		}
-		g_string_append_printf (rcGtkWidget, "%s\n", "\n");
-		const gchar* font_name = gtk_font_button_get_font_name(
-			                                  GTK_FONT_BUTTON(ws->font_namebn));
-		g_string_append_printf (rcGtkWidget, "\tfont_name = \"%s\"\n",font_name);
-		gint xthickness = gtk_spin_button_get_value_as_int (
-			                             GTK_SPIN_BUTTON(ws->xthicknessspinbn));
-		gint ythickness = gtk_spin_button_get_value_as_int (
-			                             GTK_SPIN_BUTTON(ws->ythicknessspinbn));
-		g_string_append_printf (rcGtkWidget, "%s", "\n");
-		g_string_append_printf (rcGtkWidget, "\txthickness = %d\n",xthickness);
-		g_string_append_printf (rcGtkWidget, "\tythickness = %d\n",ythickness);
-		g_string_append_printf (rcGtkWidget, "%s\n", "}");
-		g_string_append_printf (rcGtkWidget, "%s\n", "\n");
-		g_string_append_printf (rcGtkWidget, "%s\n",
-		                        "class \"GtkWidget\" style \"widgets\"\n\n");
-
-		fprintf (fp, "%s", rcGtkWidget->str);
-	}
-	// another widget name is selected, use saved style.
-	else
-	{
-		GString* rcGtkWidget = ws->rcstyle->rcGtkWidget;
-		if (rcGtkWidget->len > 0)
-			fprintf (fp, "%s", rcGtkWidget->str);
-	}
-}
-
-
-void write_rcGtkButton(FILE* fp, Widgets* ws)
-{
-	GtkComboBox* wgcombobox = GTK_COMBO_BOX(ws->wgcombobox);
-	gint active = gtk_combo_box_get_active (wgcombobox);
-
-	// "button" is selected, take the style from the pannel
-	if (active == 1)
-	{
-		GString* rcGtkButton = ws->rcstyle->rcGtkButton;
-		rcGtkButton = g_string_set_size (rcGtkButton, 0);
-
-		// unexpected character '[', expected character ':'
-		// for "light","mid","dark","text_aa","black","white"
-		// not supported by gtk_rc_parse
-
-		const char* color[]={"fg","bg","text","base"};
-		const char* state[]={"NORMAL","ACTIVE","PRELIGHT","SELECTED","INSENSITIVE"};
-
-		g_string_append_printf (rcGtkButton, "%s\n", "style \"button\"");
-		g_string_append_printf (rcGtkButton, "%s\n", "{");
-
-		for (int i=1; i < 5; ++i)
-		{
-			for (int j=1; j < 6; ++j)
-			{
-				GdkColor clr;
-				gtk_color_button_get_color(GTK_COLOR_BUTTON(ws->w[i][j]), &clr);
-				if (clr.red == 0 && clr.green == 0 && clr.blue == 0)
-					continue;
-				g_string_append_printf (rcGtkButton,
-				                        "\t%s[%s] = \"#%02X%02X%02X\"\n",
-				                        color[i-1],
-				                        state[j-1],
-				                        (clr.red * 255)/65535,
-				                        (clr.green * 255)/65535,
-				                        (clr.blue * 255)/65535);
-			}
-		}
-		const gchar* font_name = gtk_font_button_get_font_name(
-			                                  GTK_FONT_BUTTON(ws->font_namebn));
-		g_string_append_printf (rcGtkButton, "\tfont_name = \"%s\"\n",font_name);
-		gint xthickness = gtk_spin_button_get_value_as_int (
-			                             GTK_SPIN_BUTTON(ws->xthicknessspinbn));
-		gint ythickness = gtk_spin_button_get_value_as_int (
-			                             GTK_SPIN_BUTTON(ws->ythicknessspinbn));
-		g_string_append_printf (rcGtkButton, "%s", "\n");
-		g_string_append_printf (rcGtkButton, "\txthickness = %d\n",xthickness);
-		g_string_append_printf (rcGtkButton, "\tythickness = %d\n",ythickness);
-		g_string_append_printf (rcGtkButton, "%s\n", "}");
-		g_string_append_printf (rcGtkButton, "%s\n", "\n");
-		g_string_append_printf (rcGtkButton, "%s\n",
-		                        "class \"GtkButton\" style \"button\"\n\n");
-
-		fprintf (fp, "%s", rcGtkButton->str);
-	}
-	// another widget name is selected, use saved style.
-	else
-	{
-		GString* rcGtkButton = ws->rcstyle->rcGtkButton;
-		if (rcGtkButton->len > 0)
-			fprintf (fp, "%s", rcGtkButton->str);
-	}
+	// retain the style as text to write it into rc file at any time.
+	app->widget_0_style_txt = g_string_new ("#rc style for class GtkWidget");
 }
