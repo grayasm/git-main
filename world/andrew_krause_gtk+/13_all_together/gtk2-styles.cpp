@@ -2,6 +2,7 @@
 #include <cstdio>  // tmpnam
 #include <cstring> // strlen
 #include <cstdlib> // exit
+#include <cctype>  // tolower
 
 
 void menu_saveas (GtkMenuItem* menuitem, gpointer data);
@@ -27,6 +28,9 @@ struct AppData
 	GtkWidget* widget_0_spinbn_xth;
 	GtkWidget* widget_0_spinbn_yth;
 	GtkWidget* widget_0_pixbn[5];
+	GString*   widget_0_pixmap[5];
+	GtkWidget* widget_0_spinbn_cursorar;
+	GtkWidget* widget_0_clr_bn_cursorclr;
 	GString*   widget_0_style_txt;
 };
 AppData* app;
@@ -45,7 +49,7 @@ void write_rc_for_all();
 
 // Main application UI methods
 void ui_create_gtkwidget();
-
+void ui_delete_gtkwidget();
 
 
 
@@ -126,9 +130,12 @@ int main (int argc, char** argv)
 	gtk_main ();
 
 
+	// Delete UI for each widget
+	ui_delete_gtkwidget ();
+
+
 	// Clean up
 	unlink (app->rcfile);
-	g_string_free (app->widget_0_style_txt, TRUE);
 	g_slice_free(AppData, app);
 
 	return 0;
@@ -194,18 +201,73 @@ void cb_0_clicked (GtkButton* bn, gpointer)
 	gtk_file_chooser_set_select_multiple (GTK_FILE_CHOOSER(dialog), FALSE);
 	gtk_file_chooser_set_create_folders (GTK_FILE_CHOOSER(dialog), FALSE);
 
-	GtkFileFilter* ffilter = gtk_file_filter_new ();
-	gtk_file_filter_add_pattern (ffilter, "*.xpm");
-	gtk_file_chooser_add_filter (GTK_FILE_CHOOSER(dialog), ffilter);
+	GtkFileFilter* xpmfilter = gtk_file_filter_new ();
+	gtk_file_filter_set_name    (xpmfilter, "*.xpm");
+	gtk_file_filter_add_pattern (xpmfilter, "*.xpm");
+	gtk_file_chooser_add_filter (GTK_FILE_CHOOSER(dialog), xpmfilter);
+	GtkFileFilter* allfilter = gtk_file_filter_new ();
+	gtk_file_filter_set_name    (allfilter, "*.*");
+	gtk_file_filter_add_pattern (allfilter, "*.*");
+	gtk_file_chooser_add_filter (GTK_FILE_CHOOSER(dialog), allfilter);
+
+	gboolean bwrite_rc = false;
 
 	if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT)
 	{
 		char *filename = NULL;
 		filename = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (dialog));
 		g_print ("Pixmap file: %s\n", filename);
+		size_t len = strlen(filename);
+		const gchar* ext = strstr (filename, ".xpm");
+		if (ext != 0)
+		{
+			const char* filebeg = &(filename[len]);
+			while (--filebeg != filename && *filebeg != '/');
+			if (*filebeg == '/') ++filebeg;
+
+			const gint TABLE_0_COL = 6;
+			for (int j=1; j<TABLE_0_COL; ++j)
+				if (GTK_WIDGET(bn) == app->widget_0_pixbn[j-1])
+				{
+					GString* newstr =
+						g_string_assign (app->widget_0_pixmap[j-1], filebeg);
+					app->widget_0_pixmap[j-1] = newstr; // modified GString*
+					g_print ("copied .xpm = %s\n", filebeg);
+					gtk_button_set_label (GTK_BUTTON (app->widget_0_pixbn[j-1]),
+					                      "set");
+
+					// update ui
+					bwrite_rc = true;
+				}
+		}
+		else // a different extension cancels previous pixmap
+		{
+			const gint TABLE_0_COL = 6;
+			for (int j=1; j<TABLE_0_COL; ++j)
+				if (GTK_WIDGET(bn) == app->widget_0_pixbn[j-1])
+				{
+					size_t len = strlen (app->widget_0_pixmap[j-1]->str);
+					if (len > 0)
+					{
+						GString* newstr =
+							g_string_erase (app->widget_0_pixmap[j-1], 0, -1);
+						app->widget_0_pixmap[j-1] = newstr;
+						g_print ("reset bp_pixmap[%d]\n", j-1);
+						gtk_button_set_label (GTK_BUTTON(
+							                      app->widget_0_pixbn[j-1]),
+						                      "null");
+
+						// update ui
+						bwrite_rc = true;
+					}
+				}
+		}
 		g_free (filename);
 	}
 	gtk_widget_destroy (dialog);
+
+	if (bwrite_rc)
+		write_rc_for_all ();
 }
 
 
@@ -245,10 +307,22 @@ void write_rc_for_gtkwidget()
 		g_string_append_printf (app->widget_0_style_txt,
 		                        "%s", "\n");
 	}
+
+	for (int j=0; j<5; ++j)
+	{
+		if (strlen(app->widget_0_pixmap[j]->str) > 0)
+		{
+			g_string_append_printf (app->widget_0_style_txt,
+			                        "\tbg_pixmap[%s] = \"%s\"\n",
+			                        state[j],
+			                        app->widget_0_pixmap[j]->str);
+		}
+	}
+
 	const gchar* font_name = gtk_font_button_get_font_name(
                                          GTK_FONT_BUTTON(app->widget_0_fn_bn));
 	g_string_append_printf (app->widget_0_style_txt,
-	                        "\tfont_name = \"%s\"\n",
+	                        "\n\tfont_name = \"%s\"\n",
 	                        font_name);
 
 	gint xthickness = gtk_spin_button_get_value_as_int(
@@ -256,11 +330,27 @@ void write_rc_for_gtkwidget()
 	gint ythickness = gtk_spin_button_get_value_as_int(
                                      GTK_SPIN_BUTTON(app->widget_0_spinbn_yth));
 	g_string_append_printf (app->widget_0_style_txt,
-	                        "\nxthickness = %d\n",
+	                        "\n\txthickness = %d\n",
 	                        xthickness);
 	g_string_append_printf (app->widget_0_style_txt,
-	                        "\nythickness = %d\n",
+	                        "\tythickness = %d\n",
 	                        ythickness);
+
+	gdouble cursorar = gtk_spin_button_get_value(
+                                GTK_SPIN_BUTTON(app->widget_0_spinbn_cursorar));
+	g_string_append_printf (app->widget_0_style_txt,
+	                        "\n\tGtkWidget::cursor-aspect-ratio = %.2f\n",
+	                        cursorar);
+
+	GdkColor cursorclr;
+	gtk_color_button_get_color (
+		GTK_COLOR_BUTTON(app->widget_0_clr_bn_cursorclr), &cursorclr);
+	g_string_append_printf (app->widget_0_style_txt,
+	                        "\tGtkWidget::cursor-color = \"#%02X%02X%02X\"\n",
+	                        (cursorclr.red * 255 / 65535),
+	                        (cursorclr.green * 255 / 65535),
+	                        (cursorclr.blue * 255 / 65535));
+
 
 	// ----- style end   -----
 
@@ -370,9 +460,11 @@ void ui_create_gtkwidget()
 	{
 		for (gint j=1; j<TABLE_0_COL; ++j)
 		{
-			gchar label[200];
-			sprintf (label, "bn: %d %d", i, j);
+			gchar label[5];
+			strcpy(label, style->bg_pixmap[j-1] == NULL ? "null" : "set");
+
 			app->widget_0_pixbn[j-1] = gtk_button_new_with_label (label);
+			app->widget_0_pixmap[j-1] = g_string_new ("");
 			gtk_table_attach (GTK_TABLE(table_0),
 			                  app->widget_0_pixbn[j-1],
 			                  j, j+1,   // left, right
@@ -387,7 +479,7 @@ void ui_create_gtkwidget()
 	}
 
 	// New table for: font description, thickness
-	GtkWidget* table_1 = gtk_table_new (3, 2, TRUE);
+	GtkWidget* table_1 = gtk_table_new (5, 2, TRUE); //row,col,homo
 	gtk_box_pack_start (GTK_BOX(vbox), table_1, TRUE, TRUE, 0);
 	GtkWidget* font_desc_lbl = gtk_label_new ("font_desc");
 	char* font_name = pango_font_description_to_string (style->font_desc);
@@ -453,6 +545,63 @@ void ui_create_gtkwidget()
 	                  G_CALLBACK(cb_0_value_changed),
 	                  NULL);
 
+	// GtkWidget::cursor-aspect-ratio = 0.04 (default) float [0.0, 1.0]
+	GtkWidget* cursorar_lbl = gtk_label_new ("cursor-aspect-ratio");
+	app->widget_0_spinbn_cursorar =
+		gtk_spin_button_new_with_range (0.0, 1.0, 0.01);
+	gtk_spin_button_set_value (GTK_SPIN_BUTTON(app->widget_0_spinbn_cursorar),
+	                           (gdouble)0.04); // use default
+	gtk_table_attach (GTK_TABLE(table_1),
+	                  cursorar_lbl,
+	                  0, 1,   // left, right
+	                  3, 4,   // top, bottom
+	                  GTK_SHRINK, GTK_SHRINK,  // GtkAttachOptions
+	                  0, 0);  // x,y padding
+	gtk_table_attach (GTK_TABLE(table_1),
+	                  app->widget_0_spinbn_cursorar,
+	                  1, 2,   // left, right
+	                  3, 4,   // top, bottom
+	                  GTK_SHRINK, GTK_SHRINK,  // GtkAttachOptions
+	                  0, 0);  // x,y padding
+	g_signal_connect (G_OBJECT(app->widget_0_spinbn_cursorar),
+	                  "value-changed",
+	                  G_CALLBACK(cb_0_value_changed),
+	                  NULL);
+
+
+	// GtkWidget::cursor-color = "#000000" GdkColor
+	GdkColor cursorclr;
+	gdk_color_parse ("#000000", &cursorclr);
+	app->widget_0_clr_bn_cursorclr = gtk_color_button_new_with_color (&cursorclr);
+	GtkWidget* cursorclr_lbl = gtk_label_new ("cursor-color");
+	gtk_table_attach (GTK_TABLE(table_1),
+	                  cursorclr_lbl,
+	                  0, 1,   // left, right
+	                  4, 5,   // top, bottom,
+	                  GTK_SHRINK, GTK_SHRINK, // GtkAttachOptions
+	                  0, 0);  // x,y padding
+	gtk_table_attach (GTK_TABLE(table_1),
+	                  app->widget_0_clr_bn_cursorclr,
+	                  1, 2,   // left, right
+	                  4, 5,   // top, bottom
+	                  GTK_SHRINK, GTK_SHRINK, // GtkAttachOptions
+	                  0, 0);  // x,y padding
+	g_signal_connect (G_OBJECT(app->widget_0_clr_bn_cursorclr),
+	                  "color-set",
+	                  G_CALLBACK(cb_0_color_set),
+	                  NULL);
+
 	// retain the style as text to write it into rc file at any time.
 	app->widget_0_style_txt = g_string_new ("#rc style for class GtkWidget");
+}
+
+void ui_delete_gtkwidget()
+{
+	if (app == NULL) exit(-1);
+	const gint TABLE_0_COL = 6;
+	for (int j=1; j<TABLE_0_COL; ++j)
+	{
+		g_string_free (app->widget_0_pixmap[j-1], TRUE);
+	}
+	g_string_free (app->widget_0_style_txt, TRUE);
 }
