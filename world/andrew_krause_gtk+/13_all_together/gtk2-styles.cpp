@@ -53,8 +53,9 @@ AppData* app;
 void cb_0_color_set (GtkColorButton*, gpointer);
 void cb_0_font_set (GtkFontButton*, gpointer);
 void cb_0_value_changed (GtkSpinButton*, gpointer);
-void cb_0_clicked (GtkButton*, gpointer);
+void cb_0_pixbn_clicked (GtkButton*, gpointer);
 void cb_0_activate(GtkEntry*,  gpointer);
+void cb_0_chkbn_clicked (GtkButton*, gpointer);
 
 
 // Main application RC methods
@@ -202,7 +203,7 @@ void cb_0_value_changed (GtkSpinButton*, gpointer)
 	write_rc_for_all ();
 }
 
-void cb_0_clicked (GtkButton* bn, gpointer)
+void cb_0_pixbn_clicked (GtkButton* bn, gpointer)
 {
 	GtkWidget* dialog = NULL;
 	dialog = gtk_file_chooser_dialog_new ("Select a pixmap file",
@@ -285,6 +286,15 @@ void cb_0_clicked (GtkButton* bn, gpointer)
 		write_rc_for_all ();
 }
 
+void cb_0_activate(GtkEntry*,  gpointer)
+{
+	write_rc_for_all ();
+}
+
+void cb_0_chkbn_clicked (GtkButton*, gpointer)
+{
+	write_rc_for_all ();
+}
 
 
 // ----- Main application RC methods -----
@@ -503,7 +513,7 @@ void ui_create_gtkwidget()
 			                  0, 0);    // x,y padding
 			g_signal_connect (G_OBJECT(app->widget_0_pixbn[j-1]),
 			                  "clicked",
-			                  G_CALLBACK(cb_0_clicked),
+			                  G_CALLBACK(cb_0_pixbn_clicked),
 			                  NULL);
 		}
 	}
@@ -656,7 +666,7 @@ void ui_create_gtkwidget()
 	// New table for 12 more widgets.
 	const gint TABLE_3_ROW = 12;
 	const gint TABLE_3_COL = 2;
-	GtkWidget* table_3 = gtk_table_new (12, 2, TRUE); // row, col, homo
+	GtkWidget* table_3 = gtk_table_new (TABLE_3_ROW, TABLE_3_COL, TRUE);
 	gtk_box_pack_start (GTK_BOX(vbox), table_3, FALSE, FALSE, 0);
 
 	// focus-line-pattern   char*      \001\001
@@ -668,7 +678,7 @@ void ui_create_gtkwidget()
 	                  GTK_SHRINK, GTK_SHRINK,  // GtkAttachOptions
 	                  0, 0);  // x,y padding
 	app->widget_0_entry_focuslp = gtk_entry_new ();
-	gtk_entry_set_text (app->widget_0_entry_focuslp, "\001\001");
+	gtk_entry_set_text (GTK_ENTRY(app->widget_0_entry_focuslp), "\001\001");
 	gtk_table_attach (GTK_TABLE(table_3),
 	                  app->widget_0_entry_focuslp,
 	                  1, 2,   // left, right
@@ -733,17 +743,195 @@ void ui_create_gtkwidget()
 	                  GTK_SHRINK, GTK_SHRINK,  // GtkAttachOptions
 	                  0, 0);  // x,y padding
 	app->widget_0_chkbn_interiorf = gtk_check_button_new ();
-	
-
+	gtk_table_attach (GTK_TABLE(table_3),
+	                  app->widget_0_chkbn_interiorf,
+	                  1, 2,   // left, right
+	                  3, 4,   // top, bottom
+	                  GTK_SHRINK, GTK_SHRINK,  // GtkAttachOptions
+	                  0, 0);  // x,y padding
+	g_signal_connect (G_OBJECT(app->widget_0_chkbn_interiorf),
+	                  "clicked",
+	                  G_CALLBACK(cb_0_chkbn_clicked),
+	                  NULL);
 
 	// link-color           GdkColor         def:did't say->blue
+	GtkWidget* linkclr_lbl = gtk_label_new ("link-color");
+	gtk_table_attach (GTK_TABLE(table_3),
+	                  linkclr_lbl,
+	                  0, 1,   // left, right
+	                  4, 5,   // top, bottom
+	                  GTK_SHRINK, GTK_SHRINK,  // GtkAttachOptions
+	                  0, 0);  // x,y padding
+	GdkColor linkclr;
+	gdk_color_parse ("#0000FF", &linkclr);
+	app->widget_0_clr_bn_linkclr = gtk_color_button_new_with_color (&linkclr);
+	gtk_table_attach (GTK_TABLE(table_3),
+	                  app->widget_0_clr_bn_linkclr,
+	                  1, 2,   // left, right
+	                  4, 5,   // top, bottom
+	                  GTK_SHRINK, GTK_SHRINK, // GtkAttachOptions
+	                  0, 0);  // x,y padding
+	g_signal_connect (G_OBJECT(app->widget_0_clr_bn_linkclr),
+	                  "color-set",
+	                  G_CALLBACK(cb_0_color_set),
+	                  NULL);
+
 	// scroll-arrow-hlength gint       >=1   def:16
+	GtkWidget* scrollahl_lbl = gtk_label_new ("scroll-arrow-hlength");
+	gtk_table_attach (GTK_TABLE(table_3),
+	                  scrollahl_lbl,
+	                  0, 1,   // left, right
+	                  5, 6,   // top, bottom
+	                  GTK_SHRINK, GTK_SHRINK,  // GtkAttachOptions
+	                  0, 0);  // x,y padding
+	app->widget_0_spinbn_scrollahl = gtk_spin_button_new_with_range (0,100,1);
+	gtk_spin_button_set_value (GTK_SPIN_BUTTON(app->widget_0_spinbn_scrollahl),
+	                           16); // use default 16
+	gtk_table_attach (GTK_TABLE(table_3),
+	                  app->widget_0_spinbn_scrollahl,
+	                  1, 2,  // left, right
+	                  5, 6,  // top, bottom
+	                  GTK_SHRINK, GTK_SHRINK,  // GtkAttachOptions
+	                  0, 0);   // x,y padding
+	g_signal_connect (G_OBJECT(app->widget_0_spinbn_scrollahl),
+	                  "value-changed",
+	                  G_CALLBACK(cb_0_value_changed),
+	                  NULL);
+
 	// scroll-arrow-vlength gint       >=1   def:16
+	GtkWidget* scrollavl_lbl = gtk_label_new ("scroll-arrow-vlength");
+	gtk_table_attach (GTK_TABLE(table_3),
+	                  scrollavl_lbl,
+	                  0, 1,   // left, right
+	                  6, 7,   // top, bottom
+	                  GTK_SHRINK, GTK_SHRINK,  // GtkAttachOptions
+	                  0, 0);  // x,y padding
+	app->widget_0_spinbn_scrollavl = gtk_spin_button_new_with_range (0,100,1);
+	gtk_spin_button_set_value (GTK_SPIN_BUTTON(app->widget_0_spinbn_scrollavl),
+	                           16); // use default 16
+	gtk_table_attach (GTK_TABLE(table_3),
+	                  app->widget_0_spinbn_scrollavl,
+	                  1, 2,  // left, right
+	                  6, 7,  // top, bottom
+	                  GTK_SHRINK, GTK_SHRINK,  // GtkAttachOptions
+	                  0, 0);   // x,y padding
+	g_signal_connect (G_OBJECT(app->widget_0_spinbn_scrollavl),
+	                  "value-changed",
+	                  G_CALLBACK(cb_0_value_changed),
+	                  NULL);
+
 	// secondary-cursor-color GdkColor  (left->right, right->left edit)
+	GtkWidget* secondarycurclr_lbl = gtk_label_new ("secondary-cursor-color");
+	gtk_table_attach (GTK_TABLE(table_3),
+	                  secondarycurclr_lbl,
+	                  0, 1,   // left, right
+	                  7, 8,   // top, bottom,
+	                  GTK_SHRINK, GTK_SHRINK, // GtkAttachOptions
+	                  0, 0);  // x,y padding
+	GdkColor secondarycurclr;
+	gdk_color_parse ("#FF0000", &secondarycurclr); // red?
+	app->widget_0_clr_bn_secondarycurclr =
+		gtk_color_button_new_with_color (&secondarycurclr);
+	gtk_table_attach (GTK_TABLE(table_3),
+	                  app->widget_0_clr_bn_secondarycurclr,
+	                  1, 2,   // left, right
+	                  7, 8,   // top, bottom
+	                  GTK_SHRINK, GTK_SHRINK, // GtkAttachOptions
+	                  0, 0);  // x,y padding
+	g_signal_connect (G_OBJECT(app->widget_0_clr_bn_secondarycurclr),
+	                  "color-set",
+	                  G_CALLBACK(cb_0_color_set),
+	                  NULL);
+
+
 	// separator-height     gint       >=0   def:0 (if wide-separators is on)
+	GtkWidget* separatorh_lbl = gtk_label_new ("separator-height");
+	gtk_table_attach (GTK_TABLE(table_3),
+	                  separatorh_lbl,
+	                  0, 1,   // left, right
+	                  8, 9,   // top, bottom
+	                  GTK_SHRINK, GTK_SHRINK,  // GtkAttachOptions
+	                  0, 0);  // x,y padding
+	app->widget_0_spinbn_separatorh = gtk_spin_button_new_with_range (0,10,1);
+	gtk_spin_button_set_value (GTK_SPIN_BUTTON(app->widget_0_spinbn_separatorh),
+	                           0); // use default 0
+	gtk_table_attach (GTK_TABLE(table_3),
+	                  app->widget_0_spinbn_separatorh,
+	                  1, 2,  // left, right
+	                  8, 9,  // top, bottom
+	                  GTK_SHRINK, GTK_SHRINK,  // GtkAttachOptions
+	                  0, 0);   // x,y padding
+	g_signal_connect (G_OBJECT(app->widget_0_spinbn_separatorh),
+	                  "value-changed",
+	                  G_CALLBACK(cb_0_value_changed),
+	                  NULL);
+
+
 	// separator-width      gint       >=0   def:0 (if wide-separators is on)
+	GtkWidget* separatorw_lbl = gtk_label_new ("separator-width");
+	gtk_table_attach (GTK_TABLE(table_3),
+	                  separatorw_lbl,
+	                  0, 1,   // left, right
+	                  9, 10,  // top, bottom
+	                  GTK_SHRINK, GTK_SHRINK,  // GtkAttachOptions
+	                  0, 0);  // x,y padding
+	app->widget_0_spinbn_separatorw = gtk_spin_button_new_with_range (0,10,1);
+	gtk_spin_button_set_value (GTK_SPIN_BUTTON(app->widget_0_spinbn_separatorw),
+	                           0); // use default 0
+	gtk_table_attach (GTK_TABLE(table_3),
+	                  app->widget_0_spinbn_separatorw,
+	                  1, 2,   // left, right
+	                  9, 10,  // top, bottom
+	                  GTK_SHRINK, GTK_SHRINK,  // GtkAttachOptions
+	                  0, 0);  // x,y padding
+	g_signal_connect (G_OBJECT(app->widget_0_spinbn_separatorw),
+	                  "value-changed",
+	                  G_CALLBACK(cb_0_value_changed),
+	                  NULL);
+
 	// visited-link-color   GdkColor
+	GtkWidget* visitedlnkclr_lbl = gtk_label_new ("visited-link-color");
+	gtk_table_attach (GTK_TABLE(table_3),
+	                  visitedlnkclr_lbl,
+	                  0, 1,    // left, right
+	                  10, 11,  // top, bottom,
+	                  GTK_SHRINK, GTK_SHRINK, // GtkAttachOptions
+	                  0, 0);   // x,y padding
+	GdkColor visitedlnkclr;
+	gdk_color_parse ("#009696", &visitedlnkclr); // light blue
+	app->widget_0_clr_bn_visitedlnkclr =
+		gtk_color_button_new_with_color (&visitedlnkclr);
+	gtk_table_attach (GTK_TABLE(table_3),
+	                  app->widget_0_clr_bn_visitedlnkclr,
+	                  1, 2,    // left, right
+	                  10, 11,  // top, bottom
+	                  GTK_SHRINK, GTK_SHRINK, // GtkAttachOptions
+	                  0, 0);   // x,y padding
+	g_signal_connect (G_OBJECT(app->widget_0_clr_bn_visitedlnkclr),
+	                  "color-set",
+	                  G_CALLBACK(cb_0_color_set),
+	                  NULL);
+
 	// wide-separators      gboolean   def:FALSE (draw sep using box not lines)
+	GtkWidget* wides_lbl = gtk_label_new ("wide-separators");
+	gtk_table_attach (GTK_TABLE(table_3),
+	                  wides_lbl,
+	                  0, 1,    // left, right
+	                  11, 12,  // top, bottom
+	                  GTK_SHRINK, GTK_SHRINK,  // GtkAttachOptions
+	                  0, 0);   // x,y padding
+	app->widget_0_chkbn_wides = gtk_check_button_new ();
+	gtk_table_attach (GTK_TABLE(table_3),
+	                  app->widget_0_chkbn_wides,
+	                  1, 2,    // left, right
+	                  11, 12,  // top, bottom
+	                  GTK_SHRINK, GTK_SHRINK,  // GtkAttachOptions
+	                  0, 0);   // x,y padding
+	g_signal_connect (G_OBJECT(app->widget_0_chkbn_wides),
+	                  "clicked",
+	                  G_CALLBACK(cb_0_chkbn_clicked),
+	                  NULL);
+
 
 
 	// retain the style as text to write it into rc file at any time.
