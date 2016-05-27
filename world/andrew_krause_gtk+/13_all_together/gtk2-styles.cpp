@@ -31,6 +31,19 @@ struct AppData
 	GString*   widget_0_pixmap[5];
 	GtkWidget* widget_0_spinbn_cursorar;
 	GtkWidget* widget_0_clr_bn_cursorclr;
+	GtkWidget* widget_0_spinbn_drawb[4];
+	GtkWidget* widget_0_entry_focuslp;
+	GtkWidget* widget_0_spinbn_focuslw;
+	GtkWidget* widget_0_spinbn_focusp;
+	GtkWidget* widget_0_chkbn_interiorf;
+	GtkWidget* widget_0_clr_bn_linkclr;
+	GtkWidget* widget_0_spinbn_scrollahl;
+	GtkWidget* widget_0_spinbn_scrollavl;
+	GtkWidget* widget_0_clr_bn_secondarycurclr;
+	GtkWidget* widget_0_spinbn_separatorh;
+	GtkWidget* widget_0_spinbn_separatorw;
+	GtkWidget* widget_0_clr_bn_visitedlnkclr;
+	GtkWidget* widget_0_chkbn_wides;
 	GString*   widget_0_style_txt;
 };
 AppData* app;
@@ -41,6 +54,8 @@ void cb_0_color_set (GtkColorButton*, gpointer);
 void cb_0_font_set (GtkFontButton*, gpointer);
 void cb_0_value_changed (GtkSpinButton*, gpointer);
 void cb_0_clicked (GtkButton*, gpointer);
+void cb_0_activate(GtkEntry*,  gpointer);
+
 
 // Main application RC methods
 void write_rc_for_gtkwidget();
@@ -351,6 +366,21 @@ void write_rc_for_gtkwidget()
 	                        (cursorclr.green * 255 / 65535),
 	                        (cursorclr.blue * 255 / 65535));
 
+	gint drawb_left   = gtk_spin_button_get_value_as_int(
+                                GTK_SPIN_BUTTON(app->widget_0_spinbn_drawb[0]));
+	gint drawb_right  = gtk_spin_button_get_value_as_int(
+                                GTK_SPIN_BUTTON(app->widget_0_spinbn_drawb[1]));
+	gint drawb_top    = gtk_spin_button_get_value_as_int(
+                                GTK_SPIN_BUTTON(app->widget_0_spinbn_drawb[2]));
+	gint drawb_bottom = gtk_spin_button_get_value_as_int(
+                                GTK_SPIN_BUTTON(app->widget_0_spinbn_drawb[3]));
+
+	g_string_append_printf (app->widget_0_style_txt,
+	                        "\tGtkWidget::draw-border = {%d, %d, %d, %d}\n",
+	                        drawb_left,
+	                        drawb_right,
+	                        drawb_top,
+	                        drawb_bottom);
 
 	// ----- style end   -----
 
@@ -393,7 +423,7 @@ void ui_create_gtkwidget()
 	const gint TABLE_0_ROW = 6; // 1 header, 4 colors, 1 pixmap
 	const gint TABLE_0_COL = 6;
 	GtkWidget* table_0 = gtk_table_new (TABLE_0_ROW, TABLE_0_COL, TRUE);
-	gtk_box_pack_start (GTK_BOX(vbox), table_0, TRUE, TRUE, 0);
+	gtk_box_pack_start (GTK_BOX(vbox), table_0, FALSE, FALSE, 0);
 	GtkWidget* expander = gtk_expander_new ("GtkWidget");
 	gtk_container_add (GTK_CONTAINER(expander), vbox);
 	gtk_expander_set_expanded (GTK_EXPANDER(expander), TRUE);
@@ -478,9 +508,9 @@ void ui_create_gtkwidget()
 		}
 	}
 
-	// New table for: font description, thickness
+	// New table for: font desc, thickness, cursor-aspect-ratio, cursor-color
 	GtkWidget* table_1 = gtk_table_new (5, 2, TRUE); //row,col,homo
-	gtk_box_pack_start (GTK_BOX(vbox), table_1, TRUE, TRUE, 0);
+	gtk_box_pack_start (GTK_BOX(vbox), table_1, FALSE, FALSE, 0);
 	GtkWidget* font_desc_lbl = gtk_label_new ("font_desc");
 	char* font_name = pango_font_description_to_string (style->font_desc);
 	app->widget_0_fn_bn = gtk_font_button_new_with_font (font_name);
@@ -590,6 +620,131 @@ void ui_create_gtkwidget()
 	                  "color-set",
 	                  G_CALLBACK(cb_0_color_set),
 	                  NULL);
+
+	// New table for: GtkWidget::draw-border = { 1, 1, 1, 1 }
+	const gint TABLE_1_COL = 5;
+	GtkWidget* table_2 = gtk_table_new (1, 5, TRUE); // row, col, homo
+	gtk_box_pack_start (GTK_BOX(vbox), table_2, FALSE, FALSE, 0);
+	GtkWidget* drawb_lbl = gtk_label_new ("draw-border");
+	gtk_table_attach (GTK_TABLE(table_2),
+	                  drawb_lbl,
+	                  0, 1,   // left, right
+	                  0, 1,   // top, bottom
+	                  GTK_SHRINK, GTK_SHRINK,  // GtkAttachOptions
+	                  0, 0);  // x,y padding
+
+	for (int j=1; j < TABLE_1_COL; ++j)
+	{
+		app->widget_0_spinbn_drawb[j-1] =
+			gtk_spin_button_new_with_range (0,10,1);
+		gtk_spin_button_set_value (
+                               GTK_SPIN_BUTTON(app->widget_0_spinbn_drawb[j-1]),
+                               1); // use default 1
+		gtk_table_attach (GTK_TABLE(table_2),
+		                  app->widget_0_spinbn_drawb[j-1],
+		                  j, j+1,  // left, right
+		                  0, 1,    // top, bottom
+		                  GTK_SHRINK, GTK_SHRINK,  // GtkAttachOptions
+		                  0, 0);   // x,y padding
+		g_signal_connect (G_OBJECT(app->widget_0_spinbn_drawb[j-1]),
+		                    "value-changed",
+		                    G_CALLBACK(cb_0_value_changed),
+		                    NULL);
+	}
+
+
+	// New table for 12 more widgets.
+	const gint TABLE_3_ROW = 12;
+	const gint TABLE_3_COL = 2;
+	GtkWidget* table_3 = gtk_table_new (12, 2, TRUE); // row, col, homo
+	gtk_box_pack_start (GTK_BOX(vbox), table_3, FALSE, FALSE, 0);
+
+	// focus-line-pattern   char*      \001\001
+	GtkWidget* focuslp_lbl = gtk_label_new ("focus-line-pattern");
+	gtk_table_attach (GTK_TABLE(table_3),
+	                  focuslp_lbl,
+	                  0, 1,   // left, right
+	                  0, 1,   // top, bottom
+	                  GTK_SHRINK, GTK_SHRINK,  // GtkAttachOptions
+	                  0, 0);  // x,y padding
+	app->widget_0_entry_focuslp = gtk_entry_new ();
+	gtk_entry_set_text (app->widget_0_entry_focuslp, "\001\001");
+	gtk_table_attach (GTK_TABLE(table_3),
+	                  app->widget_0_entry_focuslp,
+	                  1, 2,   // left, right
+	                  0, 1,   // top, bottom
+	                  GTK_SHRINK, GTK_SHRINK,  // GtkAttachOptions
+	                  0, 0);  // x,y padding
+	g_signal_connect (G_OBJECT(app->widget_0_entry_focuslp),
+	                  "activate",
+	                  G_CALLBACK(cb_0_activate),
+	                  NULL);
+
+	// focus-line-width     gint       >=0   def:1
+	GtkWidget* focuslw_lbl = gtk_label_new ("focus-line-width");
+	gtk_table_attach (GTK_TABLE(table_3),
+	                  focuslw_lbl,
+	                  0, 1,   // left, right
+	                  1, 2,   // top, bottom
+	                  GTK_SHRINK, GTK_SHRINK,  // GtkAttachOptions
+	                  0, 0);  // x,y padding
+	app->widget_0_spinbn_focuslw = gtk_spin_button_new_with_range(0, 10, 1);
+	gtk_spin_button_set_value (GTK_SPIN_BUTTON(app->widget_0_spinbn_focuslw),
+	                           1); // default=1
+	gtk_table_attach (GTK_TABLE(table_3),
+	                  app->widget_0_spinbn_focuslw,
+	                  1, 2,   // left, right
+	                  1, 2,   // top, bottom
+	                  GTK_SHRINK, GTK_SHRINK, // GtkAttachOptions
+	                  0, 0);  // x,y padding
+	g_signal_connect (G_OBJECT(app->widget_0_spinbn_focuslw),
+	                  "value-changed",
+	                  G_CALLBACK(cb_0_value_changed),
+	                  NULL);
+
+	// focus-padding        gint       >=0   def:1
+	GtkWidget* focusp_lbl = gtk_label_new ("focus-padding");
+	gtk_table_attach (GTK_TABLE(table_3),
+	                  focusp_lbl,
+	                  0, 1,   // left, right
+	                  2, 3,   // top, bottom
+	                  GTK_SHRINK, GTK_SHRINK,  // GtkAttachOptions
+	                  0, 0);  // x,y padding
+	app->widget_0_spinbn_focusp = gtk_spin_button_new_with_range(0, 10, 1);
+	gtk_spin_button_set_value (GTK_SPIN_BUTTON(app->widget_0_spinbn_focusp),
+	                           1); // default=1
+	gtk_table_attach (GTK_TABLE(table_3),
+	                  app->widget_0_spinbn_focusp,
+	                  1, 2,   // left, right
+	                  2, 3,   // top, bottom
+	                  GTK_SHRINK, GTK_SHRINK, // GtkAttachOptions
+	                  0, 0);  // x,y padding
+	g_signal_connect (G_OBJECT(app->widget_0_spinbn_focusp),
+	                  "value-changed",
+	                  G_CALLBACK(cb_0_value_changed),
+	                  NULL);
+
+	// interior-focus       gboolean         def:TRUE
+	GtkWidget* interiorf_lbl = gtk_label_new ("interior-focus");
+	gtk_table_attach (GTK_TABLE(table_3),
+	                  interiorf_lbl,
+	                  0, 1,   // left, right
+	                  3, 4,   // top, bottom
+	                  GTK_SHRINK, GTK_SHRINK,  // GtkAttachOptions
+	                  0, 0);  // x,y padding
+	app->widget_0_chkbn_interiorf = gtk_check_button_new ();
+	
+
+
+	// link-color           GdkColor         def:did't say->blue
+	// scroll-arrow-hlength gint       >=1   def:16
+	// scroll-arrow-vlength gint       >=1   def:16
+	// secondary-cursor-color GdkColor  (left->right, right->left edit)
+	// separator-height     gint       >=0   def:0 (if wide-separators is on)
+	// separator-width      gint       >=0   def:0 (if wide-separators is on)
+	// visited-link-color   GdkColor
+	// wide-separators      gboolean   def:FALSE (draw sep using box not lines)
+
 
 	// retain the style as text to write it into rc file at any time.
 	app->widget_0_style_txt = g_string_new ("#rc style for class GtkWidget");
