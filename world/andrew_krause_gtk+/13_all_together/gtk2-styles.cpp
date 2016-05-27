@@ -23,28 +23,265 @@ struct AppData
 	GtkWidget* window;
 	GtkWidget* vbox;
 	// ----- GtkWidget section -----
-	GtkWidget* widget_0_clr_bn[4][5];
+	GtkWidget* widget_0_clrbn[4][5];
 	GtkWidget* widget_0_fn_bn;
 	GtkWidget* widget_0_spinbn_xth;
 	GtkWidget* widget_0_spinbn_yth;
 	GtkWidget* widget_0_pixbn[5];
 	GString*   widget_0_pixmap[5];
 	GtkWidget* widget_0_spinbn_cursorar;
-	GtkWidget* widget_0_clr_bn_cursorclr;
+	GtkWidget* widget_0_clrbn_cursorclr;
 	GtkWidget* widget_0_spinbn_drawb[4];
 	GtkWidget* widget_0_entry_focuslp;
 	GtkWidget* widget_0_spinbn_focuslw;
 	GtkWidget* widget_0_spinbn_focusp;
 	GtkWidget* widget_0_chkbn_interiorf;
-	GtkWidget* widget_0_clr_bn_linkclr;
+	GtkWidget* widget_0_clrbn_linkclr;
 	GtkWidget* widget_0_spinbn_scrollahl;
 	GtkWidget* widget_0_spinbn_scrollavl;
-	GtkWidget* widget_0_clr_bn_secondarycurclr;
+	GtkWidget* widget_0_clrbn_secondarycurclr;
 	GtkWidget* widget_0_spinbn_separatorh;
 	GtkWidget* widget_0_spinbn_separatorw;
-	GtkWidget* widget_0_clr_bn_visitedlnkclr;
+	GtkWidget* widget_0_clrbn_visitedlnkclr;
 	GtkWidget* widget_0_chkbn_wides;
 	GString*   widget_0_style_txt;
+
+	// ----- GtkButton section -----
+	GtkWidget* widget_1_clrbn[4][5];
+	GtkWidget* widget_1_fn_bn;
+	GtkWidget* widget_1_spinbn_xth;
+	GtkWidget* widget_1_spinbn_yth;
+	GtkWidget* widget_1_spinbn_childdx;
+	GtkWidget* widget_1_spinbn_childdy;
+	GtkWidget* widget_1_spinbn_defaultb[4];
+	GtkWidget* widget_1_spinbn_defaultob[4];
+	GtkWidget* widget_1_chkbn_displacef;
+	GtkWidget* widget_1_spinbn_images;
+	GtkWidget* widget_1_spinbn_innerb[4];
+	GString*   widget_1_style_txt;
+
+	// ----- GtkCheckButton section -----
+	GtkWidget* widget_2_clrbn[4][5];
+	GtkWidget* widget_2_fn_bn;
+	GtkWidget* widget_2_spinbn_xth;
+	GtkWidget* widget_2_spinbn_yth;
+	GtkWidget* widget_2_spinbn_indicatorsz;
+	GtkWidget* widget_2_spinbn_indicatorsp;
+	GString*   widget_2_style_txt;
+
+	// ----- GtkButtonBox -----
+	GtkWidget* widget_3_spinbn_childipx;
+	GtkWidget* widget_3_spinbn_childipy;
+	GtkWidget* widget_3_spinbn_childmh;
+	GtkWidget* widget_3_spinbn_childmw;
+	GString*   widget_3_style_txt;
+
+	// ----- GtkComboBox section -----
+	GtkWidget* widget_4_clrbn[4][5];
+	GtkWidget* widget_4_fn_bn;
+	GtkWidget* widget_4_spinbn_xth;
+	GtkWidget* widget_4_spinbn_yth;
+	GtkWidget* widget_4_chkbn_appearsal;
+	GtkWidget* widget_4_spinbn_arrowsz;
+	GString*   widget_4_style_txt;
+
+	// ----- GtkEntry section -----
+	GtkWidget* widget_5_clrbn[4][5];
+	GtkWidget* widget_5_fn_bn;
+	GtkWidget* widget_5_spinbn_xth;
+	GtkWidget* widget_5_spinbn_yth;
+	GtkWidget* widget_5_spinbn_innerb[4];
+	GString*   widget_5_style_txt;
+
+	// ----- GtkExpander section -----
+	GtkWidget* widget_6_clrbn[4][5];
+	GtkWidget* widget_6_fn_bn;
+	GtkWidget* widget_6_spinbn_xth;
+	GtkWidget* widget_6_spinbn_yth;
+	GtkWidget* widget_6_spinbn_expandersz;
+	GtkWidget* widget_6_spinbn_expandersp;
+	GString*   widget_6_style_txt;
+
+	// ----- GtkScrollbar section -----
+	GtkWidget* widget_7_chkbn_fixedsl;
+	GtkWidget* widget_7_chkbn_hasbs;
+	GtkWidget* widget_7_chkbn_hasfs;
+	GtkWidget* widget_7_chkbn_hassfs;
+	GtkWidget* widget_7_spinbn_minsl;
+	GString*   widget_7_style_txt;
+
+	// ----- GtkArrow section -----
+	GtkWidget* widget_8_spinbn_arrowsc;
+	GString*   widget_8_style_txt;
+
+	// ----- GtkProgressBar section -----
+	GtkWidget* widget_9_clrbn[4][5];
+	GtkWidget* widget_9_fn_bn;
+	GtkWidget* widget_9_spinbn_xth;
+	GtkWidget* widget_9_spinbn_yth;
+	GtkWidget* widget_9_spinbn_xs;
+	GtkWidget* widget_9_spinbn_ys;
+	GString*   widget_9_style_txt;
+
+	// ----- GtkSpinButton -----
+	GtkWidget* widget_10_cmbbox_shadowt;
+	GString*   widget_10_style_txt;
+
+	// ----- GtkStatusbar -----
+	GtkWidget* widget_11_clrbn[4][5];
+	GtkWidget* widget_11_fn_bn;
+	GtkWidget* widget_11_spinbn_xth;
+	GtkWidget* widget_11_spinbn_yth;
+	GtkWidget* widget_11_cmbbox_shadowt;
+	GString*   widget_11_style_txt;
+
+	// ----- GtkToolbar -----
+	GtkWidget* widget_12_clrbn[4][5];
+	GtkWidget* widget_12_fn_bn;
+	GtkWidget* widget_12_spinbn_xth;
+	GtkWidget* widget_12_spinbn_yth;
+	GtkWidget* widget_12_cmbbox_buttonr;
+	GtkWidget* widget_12_spinbn_internalp;
+	GtkWidget* widget_12_spinbn_maxce;
+	GtkWidget* widget_12_cmbbox_shadowt;
+	GtkWidget* widget_12_spinbn_spacesz;
+	GtkWidget* widget_12_cmbbox_spacest;
+	GString*   widget_12_style_txt;
+
+	// ----- GtkToolButton -----
+	GtkWidget* widget_13_clrbn[4][5];
+	GtkWidget* widget_13_fn_bn;
+	GtkWidget* widget_13_spinbn_xth;
+	GtkWidget* widget_13_spinbn_yth;
+	GtkWidget* widget_13_spinbn_iconsp;
+	GString*   widget_13_style_txt;
+
+	// ----- GtkMenu -----
+	GtkWidget* widget_14_clrbn[4][5];
+	GtkWidget* widget_14_fn_bn;
+	GtkWidget* widget_14_spinbn_xth;
+	GtkWidget* widget_14_spinbn_yth;
+	GtkWidget* widget_14_chkbn_doublea;
+	GtkWidget* widget_14_spinbn_horizontaloff;
+	GtkWidget* widget_14_spinbn_horizontalpadd;
+	GtkWidget* widget_14_spinbn_verticaloff;
+	GtkWidget* widget_14_spinbn_verticalpadd;
+	GString*   widget_14_style_txt;
+
+	// ----- GtkMenuBar -----
+	GtkWidget* widget_15_clrbn[4][5];
+	GtkWidget* widget_15_fn_bn;
+	GtkWidget* widget_15_spinbn_xth;
+	GtkWidget* widget_15_spinbn_yth;
+	GtkWidget* widget_15_spinbn_internalp;
+	GtkWidget* widget_15_cmbbox_shadowt;
+
+	// ----- GtkMenuItem -----
+	GtkWidget* widget_16_clrbn[4][5];
+	GtkWidget* widget_16_fn_bn;
+	GtkWidget* widget_16_spinbn_xth;
+	GtkWidget* widget_16_spinbn_yth;
+	GtkWidget* widget_16_spinbn_arrowsp;
+	GtkWidget* widget_16_spinbn_horizontalpadd;
+	GtkWidget* widget_16_cmbbox_selectedst;
+	GtkWidget* widget_16_spinbn_togglesp;
+	GString*   widget_16_style_txt;
+
+	// ----- GtkCheckMenuItem -----
+	GtkWidget* widget_17_spinbn_indicatorsz;
+	GString*   widget_17_style_txt;
+
+	// ----- GtkTextView -----
+	GtkWidget* widget_18_clrbn[4][5];
+	GtkWidget* widget_18_fn_bn;
+	GtkWidget* widget_18_spinbn_xth;
+	GtkWidget* widget_18_spinbn_yth;
+	GtkWidget* widget_18_clrbn_errorundclr;
+	GString*   widget_18_style_txt;
+
+	// ----- GtkTreeView -----
+	GtkWidget* widget_19_clrbn[4][5];
+	GtkWidget* widget_19_fn_bn;
+	GtkWidget* widget_19_spinbn_xth;
+	GtkWidget* widget_19_spinbn_yth;
+	GtkWidget* widget_19_chkbn_allowr;
+	GtkWidget* widget_19_clrbn_evenrowclr;
+	GtkWidget* widget_19_spinbn_expandersz;
+	GtkWidget* widget_19_entry_gridlnpatt;
+	GtkWidget* widget_19_spinbn_gridlnw;
+	GtkWidget* widget_19_spinbn_horizontalsep;
+	GtkWidget* widget_19_chkbn_indentexp;
+	GtkWidget* widget_19_clrbn_oddrowclr;
+	GtkWidget* widget_19_chkbn_rowenddet;
+	GtkWidget* widget_19_entry_treelnpatt;
+	GtkWidget* widget_19_spinbn_treelnw;
+	GtkWidget* widget_19_spinbn_verticalsep;
+	GString*   widget_19_style_txt;
+
+	// ----- GtkIconView section -----
+	GtkWidget* widget_20_clrbn[4][5];
+	GtkWidget* widget_20_fn_bn;
+	GtkWidget* widget_20_spinbn_xth;
+	GtkWidget* widget_20_spinbn_yth;
+	GtkWidget* widget_20_spinbn_selectionboxa;
+	GtkWidget* widget_20_clrbn_selectionboxclr;
+	GString*   widget_20_style_txt;
+
+	// ----- GtkAssistant section -----
+	GtkWidget* widget_21_clrbn[4][5];
+	GtkWidget* widget_21_fn_bn;
+	GtkWidget* widget_21_spinbn_xth;
+	GtkWidget* widget_21_spinbn_yth;
+	GtkWidget* widget_21_spinbn_contentpadd;
+	GtkWidget* widget_21_spinbn_headerpadd;
+	GtkWidget* widget_21_spinbn_childdx;
+	GtkWidget* widget_21_spinbn_childdy;
+	GtkWidget* widget_21_spinbn_defaultb[4];
+	GtkWidget* widget_21_spinbn_defaultob[4];
+	GtkWidget* widget_21_chkbn_displacef;
+	GtkWidget* widget_21_spinbn_imagesp;
+	GtkWidget* widget_21_spinbn_innerb[4];
+	GString*   widget_21_style_txt;
+
+	// ----- GtkDialog -----
+	GtkWidget* widget_22_clrbn[4][5];
+	GtkWidget* widget_22_fn_bn;
+	GtkWidget* widget_22_spinbn_xth;
+	GtkWidget* widget_22_spinbn_yth;
+	GtkWidget* widget_22_spinbn_actionab;
+	GtkWidget* widget_22_spinbn_buttonsp;
+	GtkWidget* widget_22_spinbn_contentab;
+	GString*   widget_22_style_txt;
+
+	// ----- GtkMessageDialog -----
+	GtkWidget* widget_23_clrbn[4][5];
+	GtkWidget* widget_23_fn_bn;
+	GtkWidget* widget_23_spinbn_xth;
+	GtkWidget* widget_23_spinbn_yth;
+	GtkWidget* widget_23_spinbn_messageb;
+	GtkWidget* widget_23_chkbn_usesep;
+	GString*   widget_23_style_txt;
+
+	// ----- GtkNotebook -----
+	GtkWidget* widget_24_clrbn[4][5];
+	GtkWidget* widget_24_fn_bn;
+	GtkWidget* widget_24_spinbn_xth;
+	GtkWidget* widget_24_spinbn_yth;
+	GtkWidget* widget_24_spinbn_arrowsp;
+	GtkWidget* widget_24_chkbn_hasbs;
+	GtkWidget* widget_24_chkbn_hasfs;
+	GtkWidget* widget_24_chkbn_hassbs;
+	GtkWidget* widget_24_chkbn_hassfs;
+	GtkWidget* widget_24_spinbn_tabcurv;
+	GtkWidget* widget_24_spinbn_tabover;
+
+	// ----- GtkPaned -----
+	// ----- GtkRange -----
+	// ----- GtkScale -----
+	// ----- GtkScrolledWindow -----
+
+
+
 };
 AppData* app;
 
@@ -318,7 +555,7 @@ void write_rc_for_gtkwidget()
 		{
 			GdkColor clr;
 			gtk_color_button_get_color (
-				GTK_COLOR_BUTTON(app->widget_0_clr_bn[i][j]),
+				GTK_COLOR_BUTTON(app->widget_0_clrbn[i][j]),
 				&clr);
 
 			g_string_append_printf (app->widget_0_style_txt,
@@ -369,7 +606,7 @@ void write_rc_for_gtkwidget()
 
 	GdkColor cursorclr;
 	gtk_color_button_get_color (
-		GTK_COLOR_BUTTON(app->widget_0_clr_bn_cursorclr), &cursorclr);
+		GTK_COLOR_BUTTON(app->widget_0_clrbn_cursorclr), &cursorclr);
 	g_string_append_printf (app->widget_0_style_txt,
 	                        "\tGtkWidget::cursor-color = \"#%02X%02X%02X\"\n",
 	                        (cursorclr.red * 255 / 65535),
@@ -391,6 +628,84 @@ void write_rc_for_gtkwidget()
 	                        drawb_right,
 	                        drawb_top,
 	                        drawb_bottom);
+
+	const gchar* focuslp = gtk_entry_get_text (
+                                        GTK_ENTRY(app->widget_0_entry_focuslp));
+	g_string_append_printf (app->widget_0_style_txt,
+	                        "\tGtkWidget::focus-line-patter = \"%s\"\n",
+	                        focuslp);
+	gint focuslw = gtk_spin_button_get_value_as_int(
+                                 GTK_SPIN_BUTTON(app->widget_0_spinbn_focuslw));
+	g_string_append_printf (app->widget_0_style_txt,
+	                        "\tGtkWidget::focus-line-width = %d\n", focuslw);
+	gint focusp = gtk_spin_button_get_value_as_int(
+                                  GTK_SPIN_BUTTON(app->widget_0_spinbn_focusp));
+	g_string_append_printf (app->widget_0_style_txt,
+	                        "\tGtkWidget::focus-padding = %d\n", focusp);
+	gboolean interiorf = gtk_toggle_button_get_active (
+                              GTK_TOGGLE_BUTTON(app->widget_0_chkbn_interiorf));
+	g_string_append_printf (app->widget_0_style_txt,
+	                        "\tGtkWidget::interior-focus = %d\n",
+	                        interiorf == true ? 1 : 0);
+	GdkColor linkclr;
+	gtk_color_button_get_color (
+		GTK_COLOR_BUTTON(app->widget_0_clrbn_linkclr),
+		&linkclr);
+	g_string_append_printf (app->widget_0_style_txt,
+	                        "\tGtkWidget::link-color = \"#%02X%02X%02X\"\n",
+	                        (linkclr.red * 255 / 65535),
+	                        (linkclr.green * 255 / 65535),
+	                        (linkclr.blue * 255 / 65535));
+
+	gint scrollahl = gtk_spin_button_get_value_as_int(
+                               GTK_SPIN_BUTTON(app->widget_0_spinbn_scrollahl));
+	g_string_append_printf (app->widget_0_style_txt,
+	                        "\tGtkWidget::scroll-arrow-hlength = %d\n",
+	                        scrollahl);
+
+	gint scrollavl = gtk_spin_button_get_value_as_int(
+                               GTK_SPIN_BUTTON(app->widget_0_spinbn_scrollavl));
+	g_string_append_printf (app->widget_0_style_txt,
+	                        "\tGtkWidget::scroll-arrow-vlength = %d\n",
+	                        scrollavl);
+
+	GdkColor secondarycurclr;
+	gtk_color_button_get_color (
+		GTK_COLOR_BUTTON(app->widget_0_clrbn_secondarycurclr),
+		&secondarycurclr);
+	g_string_append_printf (app->widget_0_style_txt,
+	                "\tGtkWidget::secondary-cursor-color = \"#%02X%02X%02X\"\n",
+	                        (secondarycurclr.red * 255 / 65535),
+	                        (secondarycurclr.green * 255 / 65535),
+	                        (secondarycurclr.blue * 255 / 65535));
+
+	gint separatorh = gtk_spin_button_get_value_as_int(
+                              GTK_SPIN_BUTTON(app->widget_0_spinbn_separatorh));
+	g_string_append_printf (app->widget_0_style_txt,
+	                        "\tGtkWidget::separator-height = %d\n",
+	                        separatorh);
+
+	gint separatorw = gtk_spin_button_get_value_as_int(
+                              GTK_SPIN_BUTTON(app->widget_0_spinbn_separatorw));
+	g_string_append_printf (app->widget_0_style_txt,
+	                        "\tGtkWidget::separator-width = %d\n",
+	                        separatorw);
+
+	GdkColor visitedlnkclr;
+	gtk_color_button_get_color (
+		GTK_COLOR_BUTTON(app->widget_0_clrbn_visitedlnkclr),
+		&visitedlnkclr);
+	g_string_append_printf (app->widget_0_style_txt,
+                        "\tGtkWidget::visited-link-color = \"#%02X%02X%02X\"\n",
+	                        (visitedlnkclr.red * 255 / 65535),
+	                        (visitedlnkclr.green * 255 / 65535),
+	                        (visitedlnkclr.blue * 255 / 65535));
+
+	gboolean wides = gtk_toggle_button_get_active (
+                              GTK_TOGGLE_BUTTON(app->widget_0_chkbn_wides));
+	g_string_append_printf (app->widget_0_style_txt,
+	                        "\tGtkWidget::wide-separators = %d\n",
+	                        wides == true ? 1 : 0);
 
 	// ----- style end   -----
 
@@ -481,14 +796,14 @@ void ui_create_gtkwidget()
 			else if (i == 3) clr = &(style->text[j-1]);
 			else if (i == 4) clr = &(style->base[j-1]);
 			else exit(-1);
-			app->widget_0_clr_bn[i-1][j-1] = gtk_color_button_new_with_color (clr);
+			app->widget_0_clrbn[i-1][j-1] = gtk_color_button_new_with_color (clr);
 			gtk_table_attach (GTK_TABLE(table_0),
-			                  app->widget_0_clr_bn[i-1][j-1],
+			                  app->widget_0_clrbn[i-1][j-1],
 			                  j, j+1, // left, right
 			                  i, i+1, // top, bottom
 			                  GTK_SHRINK, GTK_SHRINK, // GtkAttachOptions
 			                  0, 0);  // x,y padding
-			g_signal_connect (G_OBJECT(app->widget_0_clr_bn[i-1][j-1]),
+			g_signal_connect (G_OBJECT(app->widget_0_clrbn[i-1][j-1]),
 			                  "color-set",
 			                  G_CALLBACK(cb_0_color_set),
 			                  NULL);
@@ -612,7 +927,7 @@ void ui_create_gtkwidget()
 	// GtkWidget::cursor-color = "#000000" GdkColor
 	GdkColor cursorclr;
 	gdk_color_parse ("#000000", &cursorclr);
-	app->widget_0_clr_bn_cursorclr = gtk_color_button_new_with_color (&cursorclr);
+	app->widget_0_clrbn_cursorclr = gtk_color_button_new_with_color (&cursorclr);
 	GtkWidget* cursorclr_lbl = gtk_label_new ("cursor-color");
 	gtk_table_attach (GTK_TABLE(table_1),
 	                  cursorclr_lbl,
@@ -621,12 +936,12 @@ void ui_create_gtkwidget()
 	                  GTK_SHRINK, GTK_SHRINK, // GtkAttachOptions
 	                  0, 0);  // x,y padding
 	gtk_table_attach (GTK_TABLE(table_1),
-	                  app->widget_0_clr_bn_cursorclr,
+	                  app->widget_0_clrbn_cursorclr,
 	                  1, 2,   // left, right
 	                  4, 5,   // top, bottom
 	                  GTK_SHRINK, GTK_SHRINK, // GtkAttachOptions
 	                  0, 0);  // x,y padding
-	g_signal_connect (G_OBJECT(app->widget_0_clr_bn_cursorclr),
+	g_signal_connect (G_OBJECT(app->widget_0_clrbn_cursorclr),
 	                  "color-set",
 	                  G_CALLBACK(cb_0_color_set),
 	                  NULL);
@@ -678,7 +993,7 @@ void ui_create_gtkwidget()
 	                  GTK_SHRINK, GTK_SHRINK,  // GtkAttachOptions
 	                  0, 0);  // x,y padding
 	app->widget_0_entry_focuslp = gtk_entry_new ();
-	gtk_entry_set_text (GTK_ENTRY(app->widget_0_entry_focuslp), "\001\001");
+	gtk_entry_set_text (GTK_ENTRY(app->widget_0_entry_focuslp), "\\001\\001");
 	gtk_table_attach (GTK_TABLE(table_3),
 	                  app->widget_0_entry_focuslp,
 	                  1, 2,   // left, right
@@ -764,14 +1079,14 @@ void ui_create_gtkwidget()
 	                  0, 0);  // x,y padding
 	GdkColor linkclr;
 	gdk_color_parse ("#0000FF", &linkclr);
-	app->widget_0_clr_bn_linkclr = gtk_color_button_new_with_color (&linkclr);
+	app->widget_0_clrbn_linkclr = gtk_color_button_new_with_color (&linkclr);
 	gtk_table_attach (GTK_TABLE(table_3),
-	                  app->widget_0_clr_bn_linkclr,
+	                  app->widget_0_clrbn_linkclr,
 	                  1, 2,   // left, right
 	                  4, 5,   // top, bottom
 	                  GTK_SHRINK, GTK_SHRINK, // GtkAttachOptions
 	                  0, 0);  // x,y padding
-	g_signal_connect (G_OBJECT(app->widget_0_clr_bn_linkclr),
+	g_signal_connect (G_OBJECT(app->widget_0_clrbn_linkclr),
 	                  "color-set",
 	                  G_CALLBACK(cb_0_color_set),
 	                  NULL);
@@ -830,15 +1145,15 @@ void ui_create_gtkwidget()
 	                  0, 0);  // x,y padding
 	GdkColor secondarycurclr;
 	gdk_color_parse ("#FF0000", &secondarycurclr); // red?
-	app->widget_0_clr_bn_secondarycurclr =
+	app->widget_0_clrbn_secondarycurclr =
 		gtk_color_button_new_with_color (&secondarycurclr);
 	gtk_table_attach (GTK_TABLE(table_3),
-	                  app->widget_0_clr_bn_secondarycurclr,
+	                  app->widget_0_clrbn_secondarycurclr,
 	                  1, 2,   // left, right
 	                  7, 8,   // top, bottom
 	                  GTK_SHRINK, GTK_SHRINK, // GtkAttachOptions
 	                  0, 0);  // x,y padding
-	g_signal_connect (G_OBJECT(app->widget_0_clr_bn_secondarycurclr),
+	g_signal_connect (G_OBJECT(app->widget_0_clrbn_secondarycurclr),
 	                  "color-set",
 	                  G_CALLBACK(cb_0_color_set),
 	                  NULL);
@@ -899,15 +1214,15 @@ void ui_create_gtkwidget()
 	                  0, 0);   // x,y padding
 	GdkColor visitedlnkclr;
 	gdk_color_parse ("#009696", &visitedlnkclr); // light blue
-	app->widget_0_clr_bn_visitedlnkclr =
+	app->widget_0_clrbn_visitedlnkclr =
 		gtk_color_button_new_with_color (&visitedlnkclr);
 	gtk_table_attach (GTK_TABLE(table_3),
-	                  app->widget_0_clr_bn_visitedlnkclr,
+	                  app->widget_0_clrbn_visitedlnkclr,
 	                  1, 2,    // left, right
 	                  10, 11,  // top, bottom
 	                  GTK_SHRINK, GTK_SHRINK, // GtkAttachOptions
 	                  0, 0);   // x,y padding
-	g_signal_connect (G_OBJECT(app->widget_0_clr_bn_visitedlnkclr),
+	g_signal_connect (G_OBJECT(app->widget_0_clrbn_visitedlnkclr),
 	                  "color-set",
 	                  G_CALLBACK(cb_0_color_set),
 	                  NULL);
