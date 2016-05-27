@@ -22,7 +22,7 @@ struct AppData
 	const char* rcfile=NULL;
 	GtkWidget* window;
 	GtkWidget* vbox;
-	// ----- GtkWidget section -----
+	// ----- GtkWidget -----
 	GtkWidget* widget_0_clrbn[4][5];
 	GtkWidget* widget_0_fn_bn;
 	GtkWidget* widget_0_spinbn_xth;
@@ -46,7 +46,7 @@ struct AppData
 	GtkWidget* widget_0_chkbn_wides;
 	GString*   widget_0_style_txt;
 
-	// ----- GtkButton section -----
+	// ----- GtkButton -----
 	GtkWidget* widget_1_clrbn[4][5];
 	GtkWidget* widget_1_fn_bn;
 	GtkWidget* widget_1_spinbn_xth;
@@ -60,7 +60,7 @@ struct AppData
 	GtkWidget* widget_1_spinbn_innerb[4];
 	GString*   widget_1_style_txt;
 
-	// ----- GtkCheckButton section -----
+	// ----- GtkCheckButton -----
 	GtkWidget* widget_2_clrbn[4][5];
 	GtkWidget* widget_2_fn_bn;
 	GtkWidget* widget_2_spinbn_xth;
@@ -76,7 +76,7 @@ struct AppData
 	GtkWidget* widget_3_spinbn_childmw;
 	GString*   widget_3_style_txt;
 
-	// ----- GtkComboBox section -----
+	// ----- GtkComboBox -----
 	GtkWidget* widget_4_clrbn[4][5];
 	GtkWidget* widget_4_fn_bn;
 	GtkWidget* widget_4_spinbn_xth;
@@ -85,7 +85,7 @@ struct AppData
 	GtkWidget* widget_4_spinbn_arrowsz;
 	GString*   widget_4_style_txt;
 
-	// ----- GtkEntry section -----
+	// ----- GtkEntry -----
 	GtkWidget* widget_5_clrbn[4][5];
 	GtkWidget* widget_5_fn_bn;
 	GtkWidget* widget_5_spinbn_xth;
@@ -93,7 +93,7 @@ struct AppData
 	GtkWidget* widget_5_spinbn_innerb[4];
 	GString*   widget_5_style_txt;
 
-	// ----- GtkExpander section -----
+	// ----- GtkExpander -----
 	GtkWidget* widget_6_clrbn[4][5];
 	GtkWidget* widget_6_fn_bn;
 	GtkWidget* widget_6_spinbn_xth;
@@ -102,7 +102,7 @@ struct AppData
 	GtkWidget* widget_6_spinbn_expandersp;
 	GString*   widget_6_style_txt;
 
-	// ----- GtkScrollbar section -----
+	// ----- GtkScrollbar -----
 	GtkWidget* widget_7_chkbn_fixedsl;
 	GtkWidget* widget_7_chkbn_hasbs;
 	GtkWidget* widget_7_chkbn_hasfs;
@@ -110,11 +110,11 @@ struct AppData
 	GtkWidget* widget_7_spinbn_minsl;
 	GString*   widget_7_style_txt;
 
-	// ----- GtkArrow section -----
+	// ----- GtkArrow -----
 	GtkWidget* widget_8_spinbn_arrowsc;
 	GString*   widget_8_style_txt;
 
-	// ----- GtkProgressBar section -----
+	// ----- GtkProgressBar -----
 	GtkWidget* widget_9_clrbn[4][5];
 	GtkWidget* widget_9_fn_bn;
 	GtkWidget* widget_9_spinbn_xth;
@@ -218,7 +218,7 @@ struct AppData
 	GtkWidget* widget_19_spinbn_verticalsep;
 	GString*   widget_19_style_txt;
 
-	// ----- GtkIconView section -----
+	// ----- GtkIconView -----
 	GtkWidget* widget_20_clrbn[4][5];
 	GtkWidget* widget_20_fn_bn;
 	GtkWidget* widget_20_spinbn_xth;
@@ -227,7 +227,7 @@ struct AppData
 	GtkWidget* widget_20_clrbn_selectionboxclr;
 	GString*   widget_20_style_txt;
 
-	// ----- GtkAssistant section -----
+	// ----- GtkAssistant -----
 	GtkWidget* widget_21_clrbn[4][5];
 	GtkWidget* widget_21_fn_bn;
 	GtkWidget* widget_21_spinbn_xth;
@@ -274,36 +274,140 @@ struct AppData
 	GtkWidget* widget_24_chkbn_hassfs;
 	GtkWidget* widget_24_spinbn_tabcurv;
 	GtkWidget* widget_24_spinbn_tabover;
+	GString*   widget_24_style_txt;
 
 	// ----- GtkPaned -----
+	GtkWidget* widget_25_spinbn_handlesz;
+	GString*   widget_25_style_txt;
+
 	// ----- GtkRange -----
+	GtkWidget* widget_26_chkbn_activatesld;
+	GtkWidget* widget_26_spinbn_arrowdx;
+	GtkWidget* widget_26_spinbn_arrowdy;
+	GtkWidget* widget_26_spinbn_sliderw;
+	GtkWidget* widget_26_spinbn_steppersz;
+	GtkWidget* widget_26_spinbn_steppersp;
+	GtkWidget* widget_26_spinbn_troughb;
+	GtkWidget* widget_26_chkbn_throughsdet;
+	GtkWidget* widget_26_chkbn_throughustep;
+	GString*   widget_26_style_txt;
+
 	// ----- GtkScale -----
+	GtkWidget* widget_27_spinbn_sliderl;
+	GtkWidget* widget_27_spinbn_valuesp;
+	GString*   widget_27_style_txt;
+
 	// ----- GtkScrolledWindow -----
-
-
-
+	GtkWidget* widget_28_clrbn[4][5];
+	GtkWidget* widget_28_fn_bn;
+	GtkWidget* widget_28_spinbn_xth;
+	GtkWidget* widget_28_spinbn_yth;
+	GtkWidget* widget_28_spinbn_scrollbarsp;
+	GString*   widget_28_style_txt;
 };
 AppData* app;
 
 
 // GtkWidget sytle methods and callbacks
-void cb_0_color_set (GtkColorButton*, gpointer);
-void cb_0_font_set (GtkFontButton*, gpointer);
-void cb_0_value_changed (GtkSpinButton*, gpointer);
-void cb_0_pixbn_clicked (GtkButton*, gpointer);
-void cb_0_activate(GtkEntry*,  gpointer);
-void cb_0_chkbn_clicked (GtkButton*, gpointer);
+void cb_color_set (GtkColorButton*, gpointer);
+void cb_font_set (GtkFontButton*, gpointer);
+void cb_value_changed (GtkSpinButton*, gpointer);
+void cb_0_pixbn_clicked (GtkButton*, gpointer); // for bg_pixmap but broken.
+void cb_activate(GtkEntry*,  gpointer);
+void cb_chkbn_clicked (GtkButton*, gpointer);
 
 
 // Main application RC methods
 void write_rc_for_gtkwidget();
 void write_rc_for_gtkbutton();
+void write_rc_for_gtkcheckbutton();
+void write_rc_for_gtkbuttonbox();
+void write_rc_for_gtkcombobox();
+void write_rc_for_gtkentry();
+void write_rc_for_gtkexpander();
+void write_rc_for_gtkscrollbar();
+void write_rc_for_gtkarrow();
+void write_rc_for_gtkprogressbar();
+void write_rc_for_gtkspinbutton();
+void write_rc_for_gtkstatusbar();
+void write_rc_for_gtktoolbar();
+void write_rc_for_gtktoolbutton();
+void write_rc_for_gtkmenu();
+void write_rc_for_gtkmenubar();
+void write_rc_for_gtkmenuitem();
+void write_rc_for_gtkcheckmenuitem();
+void write_rc_for_gtktextview();
+void write_rc_for_gtktreeview();
+void write_rc_for_gtkiconview();
+void write_rc_for_gtkassistant();
+void write_rc_for_gtkdialog();
+void write_rc_for_gtkmessagedialog();
+void write_rc_for_gtknotebook();
+void write_rc_for_gtkpaned();
+void write_rc_for_gtkrange();
+void write_rc_for_gtkscale();
+void write_rc_for_gtkscrolledwindow();
 void write_rc_for_all();
 
 // Main application UI methods
 void ui_create_gtkwidget();
 void ui_delete_gtkwidget();
-
+void ui_create_gtkbutton();
+void ui_delete_gtkbutton();
+void ui_create_gtkcheckbutton();
+void ui_delete_gtkcheckbutton();
+void ui_create_gtkbuttonbox();
+void ui_delete_gtkbuttonbox();
+void ui_create_gtkcombobox();
+void ui_delete_gtkcombobox();
+void ui_create_gtkentry();
+void ui_delete_gtkentry();
+void ui_create_gtkexpander();
+void ui_delete_gtkexpander();
+void ui_create_gtkscrollbar();
+void ui_delete_gtkscrollbar();
+void ui_create_gtkarrow();
+void ui_delete_gtkarrow();
+void ui_create_gtkprogressbar();
+void ui_delete_gtkprogressbar();
+void ui_create_gtkspinbutton();
+void ui_delete_gtkspinbutton();
+void ui_create_gtkstatusbar();
+void ui_delete_gtkstatusbar();
+void ui_create_gtktoolbar();
+void ui_delete_gtktoolbar();
+void ui_create_gtktoolbutton();
+void ui_delete_gtktoolbutton();
+void ui_create_gtkmenu();
+void ui_delete_gtkmenu();
+void ui_create_gtkmenubar();
+void ui_delete_gtkmenubar();
+void ui_create_gtkmenuitem();
+void ui_delete_gtkmenuitem();
+void ui_create_gtkcheckmenuitem();
+void ui_delete_gtkcheckmenuitem();
+void ui_create_gtktextview();
+void ui_delete_gtktextview();
+void ui_create_gtktreeview();
+void ui_delete_gtktreeview();
+void ui_create_gtkiconview();
+void ui_delete_gtkiconview();
+void ui_create_gtkassistant();
+void ui_delete_gtkassistant();
+void ui_create_gtkdialog();
+void ui_delete_gtkdialog();
+void ui_create_gtkmessagedialog();
+void ui_delete_gtkmessagedialog();
+void ui_create_gtknotebook();
+void ui_delete_gtknotebook();
+void ui_create_gtkpaned();
+void ui_delete_gtkpaned();
+void ui_create_gtkrange();
+void ui_delete_gtkrange();
+void ui_create_gtkscale();
+void ui_delete_gtkscale();
+void ui_create_gtkscrolledwindow();
+void ui_delete_gtkscrolledwindow();
 
 
 int main (int argc, char** argv)
@@ -425,17 +529,17 @@ void menu_quit (GtkMenuItem* menuitem, gpointer data)
 
 // ----- GtkWidget style methods and callbacks -----
 //
-void cb_0_color_set (GtkColorButton*, gpointer papp)
+void cb_color_set (GtkColorButton*, gpointer papp)
 {
 	write_rc_for_all ();
 }
 
-void cb_0_font_set (GtkFontButton*, gpointer)
+void cb_font_set (GtkFontButton*, gpointer)
 {
 	write_rc_for_all ();
 }
 
-void cb_0_value_changed (GtkSpinButton*, gpointer)
+void cb_value_changed (GtkSpinButton*, gpointer)
 {
 	write_rc_for_all ();
 }
@@ -523,12 +627,12 @@ void cb_0_pixbn_clicked (GtkButton* bn, gpointer)
 		write_rc_for_all ();
 }
 
-void cb_0_activate(GtkEntry*,  gpointer)
+void cb_activate(GtkEntry*,  gpointer)
 {
 	write_rc_for_all ();
 }
 
-void cb_0_chkbn_clicked (GtkButton*, gpointer)
+void cb_chkbn_clicked (GtkButton*, gpointer)
 {
 	write_rc_for_all ();
 }
@@ -723,6 +827,114 @@ void write_rc_for_gtkbutton()
 {
 }
 
+void write_rc_for_gtkcheckbutton()
+{
+}
+
+void write_rc_for_gtkbuttonbox()
+{
+}
+
+void write_rc_for_gtkcombobox()
+{
+}
+
+void write_rc_for_gtkentry()
+{
+}
+
+void write_rc_for_gtkexpander()
+{
+}
+
+void write_rc_for_gtkscrollbar()
+{
+}
+
+void write_rc_for_gtkarrow()
+{
+}
+
+void write_rc_for_gtkprogressbar()
+{
+}
+
+void write_rc_for_gtkspinbutton()
+{
+}
+
+void write_rc_for_gtkstatusbar()
+{
+}
+
+void write_rc_for_gtktoolbar()
+{
+}
+
+void write_rc_for_gtktoolbutton()
+{
+}
+
+void write_rc_for_gtkmenu()
+{
+}
+
+void write_rc_for_gtkmenubar()
+{
+}
+
+void write_rc_for_gtkmenuitem()
+{
+}
+
+void write_rc_for_gtkcheckmenuitem()
+{
+}
+
+void write_rc_for_gtktextview()
+{
+}
+
+void write_rc_for_gtktreeview()
+{
+}
+
+void write_rc_for_gtkiconview()
+{
+}
+
+void write_rc_for_gtkassistant()
+{
+}
+
+void write_rc_for_gtkdialog()
+{
+}
+
+void write_rc_for_gtkmessagedialog()
+{
+}
+
+void write_rc_for_gtknotebook()
+{
+}
+
+void write_rc_for_gtkpaned()
+{
+}
+
+void write_rc_for_gtkrange()
+{
+}
+
+void write_rc_for_gtkscale()
+{
+}
+
+void write_rc_for_gtkscrolledwindow()
+{
+}
+
 void write_rc_for_all()
 {
 	FILE* fp = fopen (app->rcfile, "w+");
@@ -731,6 +943,34 @@ void write_rc_for_all()
 
 	write_rc_for_gtkwidget ();
 	write_rc_for_gtkbutton ();
+	write_rc_for_gtkcheckbutton();
+	write_rc_for_gtkbuttonbox();
+	write_rc_for_gtkcombobox();
+	write_rc_for_gtkentry();
+	write_rc_for_gtkexpander();
+	write_rc_for_gtkscrollbar();
+	write_rc_for_gtkarrow();
+	write_rc_for_gtkprogressbar();
+	write_rc_for_gtkspinbutton();
+	write_rc_for_gtkstatusbar();
+	write_rc_for_gtktoolbar();
+	write_rc_for_gtktoolbutton();
+	write_rc_for_gtkmenu();
+	write_rc_for_gtkmenubar();
+	write_rc_for_gtkmenuitem();
+	write_rc_for_gtkcheckmenuitem();
+	write_rc_for_gtktextview();
+	write_rc_for_gtktreeview();
+	write_rc_for_gtkiconview();
+	write_rc_for_gtkassistant();
+	write_rc_for_gtkdialog();
+	write_rc_for_gtkmessagedialog();
+	write_rc_for_gtknotebook();
+	write_rc_for_gtkpaned();
+	write_rc_for_gtkrange();
+	write_rc_for_gtkscale();
+	write_rc_for_gtkscrolledwindow();
+
 	gtk_rc_reparse_all ();
 }
 
@@ -739,10 +979,6 @@ void write_rc_for_all()
 //
 void ui_create_gtkwidget()
 {
-	/*  Create the UI elements to set
-	    class GtkWidget's style and properties.
-	*/
-
 	// First table holds the color buttons and labels on top and left side.
 	GtkWidget* vbox = gtk_vbox_new (FALSE, 0);
 	const gint TABLE_0_ROW = 6; // 1 header, 4 colors, 1 pixmap
@@ -805,7 +1041,7 @@ void ui_create_gtkwidget()
 			                  0, 0);  // x,y padding
 			g_signal_connect (G_OBJECT(app->widget_0_clrbn[i-1][j-1]),
 			                  "color-set",
-			                  G_CALLBACK(cb_0_color_set),
+			                  G_CALLBACK(cb_color_set),
 			                  NULL);
 		}
 	}
@@ -854,10 +1090,10 @@ void ui_create_gtkwidget()
 	                  0, 0);  // x,y padding
 	g_signal_connect (G_OBJECT(app->widget_0_fn_bn),
 	                  "font-set",
-	                  G_CALLBACK(cb_0_font_set),
+	                  G_CALLBACK(cb_font_set),
 	                  NULL);
 
-	// add thickness to table
+	// xthickness = 2
 	GtkWidget* xthickness_lbl = gtk_label_new ("xthickness");
 	app->widget_0_spinbn_xth = gtk_spin_button_new_with_range (0,10,1);
 	gtk_spin_button_set_value (GTK_SPIN_BUTTON(app->widget_0_spinbn_xth),
@@ -876,9 +1112,10 @@ void ui_create_gtkwidget()
 	                  0, 0);  // x,y padding
 	g_signal_connect (G_OBJECT(app->widget_0_spinbn_xth),
 	                  "value-changed",
-	                  G_CALLBACK(cb_0_value_changed),
+	                  G_CALLBACK(cb_value_changed),
 	                  NULL);
 
+	// ythickness = 2
 	GtkWidget* ythickness_lbl = gtk_label_new ("ythickness");
 	app->widget_0_spinbn_yth = gtk_spin_button_new_with_range (0,10,1);
 	gtk_spin_button_set_value (GTK_SPIN_BUTTON(app->widget_0_spinbn_yth),
@@ -897,7 +1134,7 @@ void ui_create_gtkwidget()
 	                  0, 0);  // x,y padding
 	g_signal_connect (G_OBJECT(app->widget_0_spinbn_yth),
 	                  "value-changed",
-	                  G_CALLBACK(cb_0_value_changed),
+	                  G_CALLBACK(cb_value_changed),
 	                  NULL);
 
 	// GtkWidget::cursor-aspect-ratio = 0.04 (default) float [0.0, 1.0]
@@ -920,7 +1157,7 @@ void ui_create_gtkwidget()
 	                  0, 0);  // x,y padding
 	g_signal_connect (G_OBJECT(app->widget_0_spinbn_cursorar),
 	                  "value-changed",
-	                  G_CALLBACK(cb_0_value_changed),
+	                  G_CALLBACK(cb_value_changed),
 	                  NULL);
 
 
@@ -943,7 +1180,7 @@ void ui_create_gtkwidget()
 	                  0, 0);  // x,y padding
 	g_signal_connect (G_OBJECT(app->widget_0_clrbn_cursorclr),
 	                  "color-set",
-	                  G_CALLBACK(cb_0_color_set),
+	                  G_CALLBACK(cb_color_set),
 	                  NULL);
 
 	// New table for: GtkWidget::draw-border = { 1, 1, 1, 1 }
@@ -973,12 +1210,12 @@ void ui_create_gtkwidget()
 		                  0, 0);   // x,y padding
 		g_signal_connect (G_OBJECT(app->widget_0_spinbn_drawb[j-1]),
 		                    "value-changed",
-		                    G_CALLBACK(cb_0_value_changed),
+		                    G_CALLBACK(cb_value_changed),
 		                    NULL);
 	}
 
 
-	// New table for 12 more widgets.
+	// New table for 12 more widgets of type GtkWidget::___ = ___
 	const gint TABLE_3_ROW = 12;
 	const gint TABLE_3_COL = 2;
 	GtkWidget* table_3 = gtk_table_new (TABLE_3_ROW, TABLE_3_COL, TRUE);
@@ -1002,7 +1239,7 @@ void ui_create_gtkwidget()
 	                  0, 0);  // x,y padding
 	g_signal_connect (G_OBJECT(app->widget_0_entry_focuslp),
 	                  "activate",
-	                  G_CALLBACK(cb_0_activate),
+	                  G_CALLBACK(cb_activate),
 	                  NULL);
 
 	// focus-line-width     gint       >=0   def:1
@@ -1024,7 +1261,7 @@ void ui_create_gtkwidget()
 	                  0, 0);  // x,y padding
 	g_signal_connect (G_OBJECT(app->widget_0_spinbn_focuslw),
 	                  "value-changed",
-	                  G_CALLBACK(cb_0_value_changed),
+	                  G_CALLBACK(cb_value_changed),
 	                  NULL);
 
 	// focus-padding        gint       >=0   def:1
@@ -1046,7 +1283,7 @@ void ui_create_gtkwidget()
 	                  0, 0);  // x,y padding
 	g_signal_connect (G_OBJECT(app->widget_0_spinbn_focusp),
 	                  "value-changed",
-	                  G_CALLBACK(cb_0_value_changed),
+	                  G_CALLBACK(cb_value_changed),
 	                  NULL);
 
 	// interior-focus       gboolean         def:TRUE
@@ -1066,7 +1303,7 @@ void ui_create_gtkwidget()
 	                  0, 0);  // x,y padding
 	g_signal_connect (G_OBJECT(app->widget_0_chkbn_interiorf),
 	                  "clicked",
-	                  G_CALLBACK(cb_0_chkbn_clicked),
+	                  G_CALLBACK(cb_chkbn_clicked),
 	                  NULL);
 
 	// link-color           GdkColor         def:did't say->blue
@@ -1088,7 +1325,7 @@ void ui_create_gtkwidget()
 	                  0, 0);  // x,y padding
 	g_signal_connect (G_OBJECT(app->widget_0_clrbn_linkclr),
 	                  "color-set",
-	                  G_CALLBACK(cb_0_color_set),
+	                  G_CALLBACK(cb_color_set),
 	                  NULL);
 
 	// scroll-arrow-hlength gint       >=1   def:16
@@ -1110,7 +1347,7 @@ void ui_create_gtkwidget()
 	                  0, 0);   // x,y padding
 	g_signal_connect (G_OBJECT(app->widget_0_spinbn_scrollahl),
 	                  "value-changed",
-	                  G_CALLBACK(cb_0_value_changed),
+	                  G_CALLBACK(cb_value_changed),
 	                  NULL);
 
 	// scroll-arrow-vlength gint       >=1   def:16
@@ -1132,7 +1369,7 @@ void ui_create_gtkwidget()
 	                  0, 0);   // x,y padding
 	g_signal_connect (G_OBJECT(app->widget_0_spinbn_scrollavl),
 	                  "value-changed",
-	                  G_CALLBACK(cb_0_value_changed),
+	                  G_CALLBACK(cb_value_changed),
 	                  NULL);
 
 	// secondary-cursor-color GdkColor  (left->right, right->left edit)
@@ -1155,7 +1392,7 @@ void ui_create_gtkwidget()
 	                  0, 0);  // x,y padding
 	g_signal_connect (G_OBJECT(app->widget_0_clrbn_secondarycurclr),
 	                  "color-set",
-	                  G_CALLBACK(cb_0_color_set),
+	                  G_CALLBACK(cb_color_set),
 	                  NULL);
 
 
@@ -1178,7 +1415,7 @@ void ui_create_gtkwidget()
 	                  0, 0);   // x,y padding
 	g_signal_connect (G_OBJECT(app->widget_0_spinbn_separatorh),
 	                  "value-changed",
-	                  G_CALLBACK(cb_0_value_changed),
+	                  G_CALLBACK(cb_value_changed),
 	                  NULL);
 
 
@@ -1201,7 +1438,7 @@ void ui_create_gtkwidget()
 	                  0, 0);  // x,y padding
 	g_signal_connect (G_OBJECT(app->widget_0_spinbn_separatorw),
 	                  "value-changed",
-	                  G_CALLBACK(cb_0_value_changed),
+	                  G_CALLBACK(cb_value_changed),
 	                  NULL);
 
 	// visited-link-color   GdkColor
@@ -1224,7 +1461,7 @@ void ui_create_gtkwidget()
 	                  0, 0);   // x,y padding
 	g_signal_connect (G_OBJECT(app->widget_0_clrbn_visitedlnkclr),
 	                  "color-set",
-	                  G_CALLBACK(cb_0_color_set),
+	                  G_CALLBACK(cb_color_set),
 	                  NULL);
 
 	// wide-separators      gboolean   def:FALSE (draw sep using box not lines)
@@ -1244,7 +1481,7 @@ void ui_create_gtkwidget()
 	                  0, 0);   // x,y padding
 	g_signal_connect (G_OBJECT(app->widget_0_chkbn_wides),
 	                  "clicked",
-	                  G_CALLBACK(cb_0_chkbn_clicked),
+	                  G_CALLBACK(cb_chkbn_clicked),
 	                  NULL);
 
 
@@ -1262,4 +1499,377 @@ void ui_delete_gtkwidget()
 		g_string_free (app->widget_0_pixmap[j-1], TRUE);
 	}
 	g_string_free (app->widget_0_style_txt, TRUE);
+}
+
+
+void ui_create_gtkbutton()
+{
+	// First table holds the color buttons and labels on top and left side.
+	GtkWidget* vbox = gtk_vbox_new (FALSE, 0);
+	const gint TABLE_0_ROW = 5; // 1 header, 4 colors
+	const gint TABLE_0_COL = 6;
+	GtkWidget* table_0 = gtk_table_new (TABLE_0_ROW, TABLE_0_COL, TRUE);
+	gtk_box_pack_start (GTK_BOX(vbox), table_0, FALSE, FALSE, 0);
+	GtkWidget* expander = gtk_expander_new ("GtkButton");
+	gtk_container_add (GTK_CONTAINER(expander), vbox);
+	gtk_expander_set_expanded (GTK_EXPANDER(expander), TRUE);
+	gtk_box_pack_start (GTK_BOX(app->vbox), expander, TRUE, TRUE, 0);
+
+	// Set the labels on the left side.
+	const gchar* rows_txt[TABLE_0_ROW] = { "", "fg", "bg", "text", "base" };
+
+	for (gint i=1; i<TABLE_0_ROW; ++i)
+	{
+		GtkWidget* label = gtk_label_new (rows_txt[i]);
+		gtk_table_attach (GTK_TABLE(table_0),
+		                  label,
+		                  0, 1,    // left, right
+		                  i, i+1,  // top, bottom
+		                  GTK_SHRINK, GTK_SHRINK, // GtkAttachOptions
+		                  0, 0);   // x,y padding
+	}
+
+	// Set the labels on the top.
+	const gchar* cols_txt[TABLE_0_COL] = {
+		"", "NORMAL","ACTIVE","PRELIGHT","SELECTED","INSENSITIVE"
+	};
+	for (gint j=1; j<TABLE_0_COL; ++j)
+	{
+		GtkWidget* label = gtk_label_new (cols_txt[j]);
+		gtk_table_attach (GTK_TABLE(table_0),
+		                  label,
+		                  j, j+1,   // left, right
+		                  0, 1,     // top, bottom
+		                  GTK_SHRINK, GTK_SHRINK, // GtkAttachOptions
+		                  0, 0);    // x,y padding
+	}
+
+	// Set the color buttons
+	GtkStyle* style = gtk_widget_get_style (app->window);
+
+	for (gint i=1; i<TABLE_0_ROW; ++i)
+	{
+		for (gint j=1; j<TABLE_0_COL; ++j)
+		{
+			GdkColor* clr;
+			if (i == 1)      clr = &(style->fg[j-1]);
+			else if (i == 2) clr = &(style->bg[j-1]);
+			else if (i == 3) clr = &(style->text[j-1]);
+			else if (i == 4) clr = &(style->base[j-1]);
+			else exit(-1);
+			app->widget_1_clrbn[i-1][j-1] =
+				gtk_color_button_new_with_color (clr);
+			gtk_table_attach (GTK_TABLE(table_0),
+			                  app->widget_1_clrbn[i-1][j-1],
+			                  j, j+1, // left, right
+			                  i, i+1, // top, bottom
+			                  GTK_SHRINK, GTK_SHRINK, // GtkAttachOptions
+			                  0, 0);  // x,y padding
+			g_signal_connect (G_OBJECT(app->widget_1_clrbn[i-1][j-1]),
+			                  "color-set",
+			                  G_CALLBACK(cb_color_set),
+			                  NULL);
+		}
+	}
+
+	// New table for 5 pairs of 2 (label + widget)
+
+	// font_desc
+	GtkWidget* table_1 = gtk_table_new (5, 2, TRUE); //row,col,homo
+	gtk_box_pack_start (GTK_BOX(vbox), table_1, FALSE, FALSE, 0);
+	GtkWidget* font_desc_lbl = gtk_label_new ("font_desc");
+	char* font_name = pango_font_description_to_string (style->font_desc);
+	app->widget_1_fn_bn = gtk_font_button_new_with_font (font_name);
+	g_free (font_name);
+	gtk_table_attach (GTK_TABLE(table_1),
+	                  font_desc_lbl,
+	                  0, 1,   // left, right
+	                  0, 1,   // top, bottom
+	                  GTK_SHRINK, GTK_SHRINK,  // GtkAttachOptions
+	                  0, 0);  // x,y padding
+	gtk_table_attach (GTK_TABLE(table_1),
+	                  app->widget_1_fn_bn,
+	                  1, 2,   // left, right
+	                  0, 1,   // top, bottom
+	                  GTK_SHRINK, GTK_SHRINK,  // GtkAttachOptions
+	                  0, 0);  // x,y padding
+	g_signal_connect (G_OBJECT(app->widget_1_fn_bn),
+	                  "font-set",
+	                  G_CALLBACK(cb_font_set),
+	                  NULL);
+
+	// xthickness = 1
+	GtkWidget* xthickness_lbl = gtk_label_new ("xthickness");
+	app->widget_1_spinbn_xth = gtk_spin_button_new_with_range (0,10,1);
+	gtk_spin_button_set_value (GTK_SPIN_BUTTON(app->widget_1_spinbn_xth),
+	                           (gdouble)style->xthickness);
+	gtk_table_attach (GTK_TABLE(table_1),
+	                  xthickness_lbl,
+	                  0, 1,   // left, right
+	                  1, 2,   // top, bottom
+	                  GTK_SHRINK, GTK_SHRINK,  // GtkAttachOptions
+	                  0, 0);  // x,y padding
+	gtk_table_attach (GTK_TABLE(table_1),
+	                  app->widget_1_spinbn_xth,
+	                  1, 2,   // left, right
+	                  1, 2,   // top, bottom
+	                  GTK_SHRINK, GTK_SHRINK,  // GtkAttachOptions
+	                  0, 0);  // x,y padding
+	g_signal_connect (G_OBJECT(app->widget_1_spinbn_xth),
+	                  "value-changed",
+	                  G_CALLBACK(cb_value_changed),
+	                  NULL);
+
+	// ythickness = 1
+	GtkWidget* ythickness_lbl = gtk_label_new ("ythickness");
+	app->widget_1_spinbn_yth = gtk_spin_button_new_with_range (0,10,1);
+	gtk_spin_button_set_value (GTK_SPIN_BUTTON(app->widget_1_spinbn_yth),
+	                           (gdouble)style->ythickness);
+	gtk_table_attach (GTK_TABLE(table_1),
+	                  ythickness_lbl,
+	                  0, 1,   // left, right
+	                  2, 3,   // top, bottom
+	                  GTK_SHRINK, GTK_SHRINK,  // GtkAttachOptions
+	                  0, 0);  // x,y padding
+	gtk_table_attach (GTK_TABLE(table_1),
+	                  app->widget_1_spinbn_yth,
+	                  1, 2,   // left, right
+	                  2, 3,   // top, bottom
+	                  GTK_SHRINK, GTK_SHRINK,  // GtkAttachOptions
+	                  0, 0);  // x,y padding
+	g_signal_connect (G_OBJECT(app->widget_1_spinbn_yth),
+	                  "value-changed",
+	                  G_CALLBACK(cb_value_changed),
+	                  NULL);
+
+/*
+	GtkWidget* widget_1_spinbn_childdx;
+	GtkWidget* widget_1_spinbn_childdy;
+	GtkWidget* widget_1_spinbn_defaultb[4];
+	GtkWidget* widget_1_spinbn_defaultob[4];
+	GtkWidget* widget_1_chkbn_displacef;
+	GtkWidget* widget_1_spinbn_images;
+	GtkWidget* widget_1_spinbn_innerb[4];
+*/
+
+}
+
+void ui_delete_gtkbutton()
+{
+}
+
+void ui_create_gtkcheckbutton()
+{
+}
+
+void ui_delete_gtkcheckbutton()
+{
+}
+
+void ui_create_gtkbuttonbox()
+{
+}
+
+void ui_delete_gtkbuttonbox()
+{
+}
+
+void ui_create_gtkcombobox()
+{
+}
+
+void ui_delete_gtkcombobox()
+{
+}
+
+void ui_create_gtkentry()
+{
+}
+
+void ui_delete_gtkentry()
+{
+}
+
+void ui_create_gtkexpander()
+{
+}
+
+void ui_delete_gtkexpander()
+{
+}
+
+void ui_create_gtkscrollbar()
+{
+}
+
+void ui_delete_gtkscrollbar()
+{
+}
+
+void ui_create_gtkarrow()
+{
+}
+
+void ui_delete_gtkarrow()
+{
+}
+
+void ui_create_gtkprogressbar()
+{
+}
+
+void ui_delete_gtkprogressbar()
+{
+}
+
+void ui_create_gtkspinbutton()
+{
+}
+
+void ui_delete_gtkspinbutton()
+{
+}
+
+void ui_create_gtkstatusbar()
+{
+}
+
+void ui_delete_gtkstatusbar()
+{
+}
+
+void ui_create_gtktoolbar()
+{
+}
+
+void ui_delete_gtktoolbar()
+{
+}
+
+void ui_create_gtktoolbutton()
+{
+}
+
+void ui_delete_gtktoolbutton()
+{
+}
+
+void ui_create_gtkmenu()
+{
+}
+
+void ui_delete_gtkmenu()
+{
+}
+
+void ui_create_gtkmenubar()
+{
+}
+
+void ui_delete_gtkmenubar()
+{
+}
+
+void ui_create_gtkmenuitem()
+{
+}
+
+void ui_delete_gtkmenuitem()
+{
+}
+
+void ui_create_gtkcheckmenuitem()
+{
+}
+
+void ui_delete_gtkcheckmenuitem()
+{
+}
+
+void ui_create_gtktextview()
+{
+}
+
+void ui_delete_gtktextview()
+{
+}
+
+void ui_create_gtktreeview()
+{
+}
+
+void ui_delete_gtktreeview()
+{
+}
+
+void ui_create_gtkiconview()
+{
+}
+
+void ui_delete_gtkiconview()
+{
+}
+
+void ui_create_gtkassistant()
+{
+}
+
+void ui_delete_gtkassistant()
+{
+}
+
+void ui_create_gtkdialog()
+{
+}
+
+void ui_delete_gtkdialog()
+{
+}
+
+void ui_create_gtkmessagedialog()
+{
+}
+
+void ui_delete_gtkmessagedialog()
+{
+}
+
+void ui_create_gtknotebook()
+{
+}
+
+void ui_delete_gtknotebook()
+{
+}
+
+void ui_create_gtkpaned()
+{
+}
+
+void ui_delete_gtkpaned()
+{
+}
+
+void ui_create_gtkrange()
+{
+}
+
+void ui_delete_gtkrange()
+{
+}
+
+void ui_create_gtkscale()
+{
+}
+
+void ui_delete_gtkscale()
+{
+}
+
+void ui_create_gtkscrolledwindow()
+{
+}
+
+void ui_delete_gtkscrolledwindow()
+{
 }
