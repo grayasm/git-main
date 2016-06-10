@@ -45,9 +45,16 @@ alias ..='cd ..'
 alias ...='cd ..; cd ..'
 alias diff='meld'
 
+# RPM Repos
 alias yumnux='yum --enablerepo=nux-dextop'
 alias yumfed='yum --enablerepo=fedora19'
 alias yumall='yum --enablerepo=nux-dexop --enablerepo=fedora19'
+
+# SVN shortcuts
+alias svnlu='svn status | grep ^\?'   # list unversioned
+alias svnru='svn status | grep ^\? | cut -c9- | xargs -d \\n rm -r'
+
+
 
 
 # Inside a tiling window manager
