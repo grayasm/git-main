@@ -351,62 +351,91 @@ void write_rc_for_all();
 
 // Main application UI methods
 void ui_create_gtkwidget();
+void ui_update_gtkwidget();
 void ui_delete_gtkwidget();
 void ui_create_gtkbutton();
+void ui_update_gtkbutton();
 void ui_delete_gtkbutton();
 void ui_create_gtkcheckbutton();
+void ui_update_gtkcheckbutton();
 void ui_delete_gtkcheckbutton();
 void ui_create_gtkbuttonbox();
+void ui_update_gtkbuttonbox();
 void ui_delete_gtkbuttonbox();
 void ui_create_gtkcombobox();
+void ui_update_gtkcombobox();
 void ui_delete_gtkcombobox();
 void ui_create_gtkentry();
+void ui_update_gtkentry();
 void ui_delete_gtkentry();
 void ui_create_gtkexpander();
+void ui_update_gtkexpander();
 void ui_delete_gtkexpander();
 void ui_create_gtkscrollbar();
+void ui_update_gtkscrollbar();
 void ui_delete_gtkscrollbar();
 void ui_create_gtkarrow();
+void ui_update_gtkarrow();
 void ui_delete_gtkarrow();
 void ui_create_gtkprogressbar();
+void ui_update_gtkprogressbar();
 void ui_delete_gtkprogressbar();
 void ui_create_gtkspinbutton();
+void ui_update_gtkspinbutton();
 void ui_delete_gtkspinbutton();
 void ui_create_gtkstatusbar();
+void ui_update_gtkstatusbar();
 void ui_delete_gtkstatusbar();
 void ui_create_gtktoolbar();
+void ui_update_gtktoolbar();
 void ui_delete_gtktoolbar();
 void ui_create_gtktoolbutton();
+void ui_update_gtktoolbutton();
 void ui_delete_gtktoolbutton();
 void ui_create_gtkmenu();
+void ui_update_gtkmenu();
 void ui_delete_gtkmenu();
 void ui_create_gtkmenubar();
+void ui_update_gtkmenubar();
 void ui_delete_gtkmenubar();
 void ui_create_gtkmenuitem();
+void ui_update_gtkmenuitem();
 void ui_delete_gtkmenuitem();
 void ui_create_gtkcheckmenuitem();
+void ui_update_gtkcheckmenuitem();
 void ui_delete_gtkcheckmenuitem();
 void ui_create_gtktextview();
+void ui_update_gtktextview();
 void ui_delete_gtktextview();
 void ui_create_gtktreeview();
+void ui_update_gtktreeview();
 void ui_delete_gtktreeview();
 void ui_create_gtkiconview();
+void ui_update_gtkiconview();
 void ui_delete_gtkiconview();
 void ui_create_gtkassistant();
+void ui_update_gtkassistant();
 void ui_delete_gtkassistant();
 void ui_create_gtkdialog();
+void ui_update_gtkdialog();
 void ui_delete_gtkdialog();
 void ui_create_gtkmessagedialog();
+void ui_update_gtkmessagedialog();
 void ui_delete_gtkmessagedialog();
 void ui_create_gtknotebook();
+void ui_update_gtknotebook();
 void ui_delete_gtknotebook();
 void ui_create_gtkpaned();
+void ui_update_gtkpaned();
 void ui_delete_gtkpaned();
 void ui_create_gtkrange();
+void ui_update_gtkrange();
 void ui_delete_gtkrange();
 void ui_create_gtkscale();
+void ui_update_gtkscale();
 void ui_delete_gtkscale();
 void ui_create_gtkscrolledwindow();
+void ui_update_gtkscrolledwindow();
 void ui_delete_gtkscrolledwindow();
 
 
@@ -478,7 +507,34 @@ int main (int argc, char** argv)
 
 	// Create UI for each widget
 	ui_create_gtkwidget ();
-
+	ui_create_gtkbutton ();
+	ui_create_gtkcheckbutton ();
+	ui_create_gtkbuttonbox ();
+	ui_create_gtkcombobox ();
+	ui_create_gtkentry ();
+	ui_create_gtkexpander ();
+	ui_create_gtkscrollbar ();
+	ui_create_gtkarrow ();
+	ui_create_gtkprogressbar ();
+	ui_create_gtkspinbutton ();
+	ui_create_gtkstatusbar ();
+	ui_create_gtktoolbar ();
+	ui_create_gtktoolbutton ();
+	ui_create_gtkmenu ();
+	ui_create_gtkmenubar ();
+	ui_create_gtkmenuitem ();
+	ui_create_gtkcheckmenuitem ();
+	ui_create_gtktextview ();
+	ui_create_gtktreeview ();
+	ui_create_gtkiconview ();
+	ui_create_gtkassistant ();
+	ui_create_gtkdialog ();
+	ui_create_gtkmessagedialog ();
+	ui_create_gtknotebook ();
+	ui_create_gtkpaned ();
+	ui_create_gtkrange ();
+	ui_create_gtkscale ();
+	ui_create_gtkscrolledwindow ();
 
 
 
@@ -487,8 +543,36 @@ int main (int argc, char** argv)
 	gtk_main ();
 
 
-	// Delete UI for each widget
+	// Delete resources other than UI
 	ui_delete_gtkwidget ();
+	ui_delete_gtkbutton ();
+	ui_delete_gtkcheckbutton ();
+	ui_delete_gtkbuttonbox ();
+	ui_delete_gtkcombobox ();
+	ui_delete_gtkentry ();
+	ui_delete_gtkexpander ();
+	ui_delete_gtkscrollbar ();
+	ui_delete_gtkarrow ();
+	ui_delete_gtkprogressbar ();
+	ui_delete_gtkspinbutton ();
+	ui_delete_gtkstatusbar ();
+	ui_delete_gtktoolbar ();
+	ui_delete_gtktoolbutton ();
+	ui_delete_gtkmenu ();
+	ui_delete_gtkmenubar ();
+	ui_delete_gtkmenuitem ();
+	ui_delete_gtkcheckmenuitem ();
+	ui_delete_gtktextview ();
+	ui_delete_gtktreeview ();
+	ui_delete_gtkiconview ();
+	ui_delete_gtkassistant ();
+	ui_delete_gtkdialog ();
+	ui_delete_gtkmessagedialog ();
+	ui_delete_gtknotebook ();
+	ui_delete_gtkpaned ();
+	ui_delete_gtkrange ();
+	ui_delete_gtkscale ();
+	ui_delete_gtkscrolledwindow ();
 
 
 	// Clean up
@@ -1490,6 +1574,10 @@ void ui_create_gtkwidget()
 	app->widget_0_style_txt = g_string_new ("#rc style for class GtkWidget");
 }
 
+void ui_update_gtkwidget()
+{
+}
+
 void ui_delete_gtkwidget()
 {
 	if (app == NULL) exit(-1);
@@ -1500,7 +1588,6 @@ void ui_delete_gtkwidget()
 	}
 	g_string_free (app->widget_0_style_txt, TRUE);
 }
-
 
 void ui_create_gtkbutton()
 {
@@ -1642,16 +1729,198 @@ void ui_create_gtkbutton()
 	                  G_CALLBACK(cb_value_changed),
 	                  NULL);
 
-/*
-	GtkWidget* widget_1_spinbn_childdx;
-	GtkWidget* widget_1_spinbn_childdy;
-	GtkWidget* widget_1_spinbn_defaultb[4];
-	GtkWidget* widget_1_spinbn_defaultob[4];
-	GtkWidget* widget_1_chkbn_displacef;
-	GtkWidget* widget_1_spinbn_images;
-	GtkWidget* widget_1_spinbn_innerb[4];
-*/
+	// GtkButton::child-displacement-x  gint
+	GtkWidget* childdx_lbl = gtk_label_new("child-displacement-x");
+	app->widget_1_spinbn_childdx = gtk_spin_button_new_with_range (0,10,1);
+	gtk_spin_button_set_value (GTK_SPIN_BUTTON(app->widget_1_spinbn_childdx),
+	                           1);
+	gtk_table_attach (GTK_TABLE(table_1),
+	                  childdx_lbl,
+	                  0, 1,   // left, right
+	                  3, 4,   // top, bottom
+	                  GTK_SHRINK, GTK_SHRINK,   // GtkAttachOptions
+	                  0, 0);  // x,y padding
+	gtk_table_attach (GTK_TABLE(table_1),
+	                  app->widget_1_spinbn_childdx,
+	                  1, 2,   // left, right
+	                  3, 4,   // top, bottom
+	                  GTK_SHRINK, GTK_SHRINK,   // GtkAttachOptions
+	                  0, 0);  // x,y padding
+	g_signal_connect (G_OBJECT(app->widget_1_spinbn_childdx),
+	                  "value-changed",
+	                  G_CALLBACK(cb_value_changed),
+	                  NULL);
 
+	// GtkButton::child-displacement-y  gint
+	GtkWidget* widget_1_spinbn_childdy;
+	GtkWidget* childdy_lbl = gtk_label_new("child-displacement-y");
+	app->widget_1_spinbn_childdy = gtk_spin_button_new_with_range (0,10,1);
+	gtk_spin_button_set_value (GTK_SPIN_BUTTON(app->widget_1_spinbn_childdy),
+	                           1);
+	gtk_table_attach (GTK_TABLE(table_1),
+	                  childdy_lbl,
+	                  0, 1,   // left, right
+	                  4, 5,   // top, bottom
+	                  GTK_SHRINK, GTK_SHRINK,   // GtkAttachOptions
+	                  0, 0);  // x,y padding
+	gtk_table_attach (GTK_TABLE(table_1),
+	                  app->widget_1_spinbn_childdy,
+	                  1, 2,   // left, right
+	                  4, 5,   // top, bottom
+	                  GTK_SHRINK, GTK_SHRINK,   // GtkAttachOptions
+	                  0, 0);  // x,y padding
+	g_signal_connect (G_OBJECT(app->widget_1_spinbn_childdy),
+	                  "value-changed",
+	                  G_CALLBACK(cb_value_changed),
+	                  NULL);
+
+	// New table for
+	// GtkButton::default-border        GtkBorder = {1, 1, 1, 1}
+	const gint TABLE_2_COL = 5;
+	GtkWidget* table_2 = gtk_table_new (1, 5, TRUE); // row, col, homo
+	gtk_box_pack_start (GTK_BOX(vbox), table_2, FALSE, FALSE, 0);
+	GtkWidget* defaultb_lbl = gtk_label_new ("default-border");
+	gtk_table_attach (GTK_TABLE(table_2),
+	                  defaultb_lbl,
+	                  0, 1,   // left, right
+	                  0, 1,   // top, bottom
+	                  GTK_SHRINK, GTK_SHRINK,  // GtkAttachOptions
+	                  0, 0);  // x,y padding
+
+	for (int j=1; j < TABLE_2_COL; ++j)
+	{
+		app->widget_1_spinbn_defaultb[j-1] =
+			gtk_spin_button_new_with_range(0, 10, 1);
+		gtk_spin_button_set_value (
+                            GTK_SPIN_BUTTON(app->widget_1_spinbn_defaultb[j-1]),
+                            1); // use default
+		gtk_table_attach (GTK_TABLE(table_2),
+		                  app->widget_1_spinbn_defaultb[j-1],
+		                  j, j+1,   // left, right
+		                  0, 1,     // top, bottom
+		                  GTK_SHRINK, GTK_SHRINK, // GtkAttachOptions
+		                  0, 0);    // x,y padding
+		g_signal_connect (G_OBJECT(app->widget_1_spinbn_defaultb[j-1]),
+		                  "value-changed",
+		                  G_CALLBACK(cb_value_changed),
+		                  NULL);
+	}
+
+
+	// New table for
+	// GtkButton::default-outside-border GtkBorder= {1, 1, 1, 1}
+	const gint TABLE_3_COL = 5;
+	GtkWidget* table_3 = gtk_table_new (1, 5, TRUE); // row, col, homo
+	gtk_box_pack_start (GTK_BOX(vbox), table_3, FALSE, FALSE, 0);
+	GtkWidget* defaultob_lbl = gtk_label_new ("default-outside-border");
+	gtk_table_attach (GTK_TABLE(table_3),
+	                  defaultob_lbl,
+	                  0, 1,   // left, right
+	                  0, 1,   // top, bottom
+	                  GTK_SHRINK, GTK_SHRINK,  // GtkAttachOptions
+	                  0, 0);  // x,y padding
+
+	for (int j=1; j < TABLE_3_COL; ++j)
+	{
+		app->widget_1_spinbn_defaultob[j-1] =
+			gtk_spin_button_new_with_range(0, 10, 1);
+		gtk_spin_button_set_value (
+                            GTK_SPIN_BUTTON(app->widget_1_spinbn_defaultob[j-1]),
+                            1); // use default
+		gtk_table_attach (GTK_TABLE(table_3),
+		                  app->widget_1_spinbn_defaultob[j-1],
+		                  j, j+1,   // left, right
+		                  0, 1,     // top, bottom
+		                  GTK_SHRINK, GTK_SHRINK, // GtkAttachOptions
+		                  0, 0);    // x,y padding
+		g_signal_connect (G_OBJECT(app->widget_1_spinbn_defaultob[j-1]),
+		                  "value-changed",
+		                  G_CALLBACK(cb_value_changed),
+		                  NULL);
+	}
+
+
+	// New table for 2 elements (2 rows, 2 cols)
+	GtkWidget* table_4 = gtk_table_new (2, 2, TRUE); // row, col, homo
+	gtk_box_pack_start (GTK_BOX(vbox), table_4, FALSE, FALSE, 0);
+
+	// GtkButton::displace-focus        gboolean = 1 or 0
+	GtkWidget* displacef_lbl = gtk_label_new ("displace-focus");
+	gtk_table_attach (GTK_TABLE(table_4),
+	                  displacef_lbl,
+	                  0, 1,   // left, right
+	                  0, 1,   // top, bottom
+	                  GTK_SHRINK, GTK_SHRINK, // GtkAttachOptions
+	                  0, 0);  // x,y padding
+
+	app->widget_1_chkbn_displacef = gtk_check_button_new ();
+	gtk_table_attach (GTK_TABLE(table_4),
+	                  app->widget_1_chkbn_displacef,
+	                  1, 2,   // left, right
+	                  0, 1,   // top, bottom
+	                  GTK_SHRINK, GTK_SHRINK, // GtkAttachOptions
+	                  0, 0);  // x,y padding
+	g_signal_connect (G_OBJECT(app->widget_1_chkbn_displacef),
+	                  "clicked",
+	                  G_CALLBACK(cb_chkbn_clicked),
+	                  NULL);
+
+	// GtkButton::image-spacing         gint
+	GtkWidget* images_lbl = gtk_label_new ("image-spacing");
+	gtk_table_attach (GTK_TABLE(table_4),
+	                  0, 1,   // left, right
+	                  1, 2,   // top, bottom
+	                  GTK_SHRINK, GTK_SHRINK,  // GtkAttachOptions
+	                  0, 0);  // x,y padding
+	app->widget_1_spinbn_images = gtk_spin_button_new_with_range(0, 10, 1);
+	gtk_spin_button_set_value (GTK_SPIN_BUTTON(app->widget_1_spinbn_images),
+	                           1); // default=1
+	gtk_table_attach (GTK_TABLE(table_4),
+	                  app->widget_1_spinbn_images,
+	                  0, 1,   // left, right
+	                  1, 2,   // top, bottom
+	                  GTK_SHRINK, GTK_SHRINK,  // GtkAttachOptions
+	                  0, 0);  // x,y padding
+
+
+	// New table for
+	// GtkButton::inner-border          GtkBorder = {1, 1, 1, 1}
+	const gint TABLE_5_COL = 5;
+	GtkWidget* table_5 = gtk_table_new (1, 5, TRUE); // row, col, homo
+	gtk_box_pack_start (GTK_BOX(vbox), table_5, FALSE, FALSE, 0);
+	GtkWidget* innerb_lbl = gtk_label_new ("inner-border");
+	gtk_table_attach (GTK_TABLE(table_5),
+	                  innerb_lbl,
+	                  0, 1,   // left, right
+	                  0, 1,   // top, bottom
+	                  GTK_SHRINK, GTK_SHRINK,  // GtkAttachOptions
+	                  0, 0);  // x,y padding
+
+	for (int j=1; j < TABLE_5_COL; ++j)
+	{
+		app->widget_1_spinbn_innerb[j-1] =
+			gtk_spin_button_new_with_range(0, 10, 1);
+		gtk_spin_button_set_value (
+                            GTK_SPIN_BUTTON(app->widget_1_spinbn_innerb[j-1]),
+                            1); // use default
+		gtk_table_attach (GTK_TABLE(table_5),
+		                  app->widget_1_spinbn_innerb[j-1],
+		                  j, j+1,   // left, right
+		                  0, 1,     // top, bottom
+		                  GTK_SHRINK, GTK_SHRINK, // GtkAttachOptions
+		                  0, 0);    // x,y padding
+		g_signal_connect (G_OBJECT(app->widget_1_spinbn_innerb[j-1]),
+		                  "value-changed",
+		                  G_CALLBACK(cb_value_changed),
+		                  NULL);
+	}
+
+	// retain the style as text to write it into rc file at any time
+	app->widget_1_style_txt = g_string_new ("#rc style for class GtkButton");
+}
+
+void ui_update_gtkbutton()
+{
 }
 
 void ui_delete_gtkbutton()
@@ -1659,6 +1928,10 @@ void ui_delete_gtkbutton()
 }
 
 void ui_create_gtkcheckbutton()
+{
+}
+
+void ui_update_gtkcheckbutton()
 {
 }
 
@@ -1670,11 +1943,19 @@ void ui_create_gtkbuttonbox()
 {
 }
 
+void ui_update_gtkbuttonbox()
+{
+}
+
 void ui_delete_gtkbuttonbox()
 {
 }
 
 void ui_create_gtkcombobox()
+{
+}
+
+void ui_update_gtkcombobox()
 {
 }
 
@@ -1686,11 +1967,19 @@ void ui_create_gtkentry()
 {
 }
 
+void ui_update_gtkentry()
+{
+}
+
 void ui_delete_gtkentry()
 {
 }
 
 void ui_create_gtkexpander()
+{
+}
+
+void ui_update_gtkexpander()
 {
 }
 
@@ -1702,11 +1991,19 @@ void ui_create_gtkscrollbar()
 {
 }
 
+void ui_update_gtkscrollbar()
+{
+}
+
 void ui_delete_gtkscrollbar()
 {
 }
 
 void ui_create_gtkarrow()
+{
+}
+
+void ui_update_gtkarrow()
 {
 }
 
@@ -1718,11 +2015,19 @@ void ui_create_gtkprogressbar()
 {
 }
 
+void ui_update_gtkprogressbar()
+{
+}
+
 void ui_delete_gtkprogressbar()
 {
 }
 
 void ui_create_gtkspinbutton()
+{
+}
+
+void ui_update_gtkspinbutton()
 {
 }
 
@@ -1734,11 +2039,19 @@ void ui_create_gtkstatusbar()
 {
 }
 
+void ui_update_gtkstatusbar()
+{
+}
+
 void ui_delete_gtkstatusbar()
 {
 }
 
 void ui_create_gtktoolbar()
+{
+}
+
+void ui_update_gtktoolbar()
 {
 }
 
@@ -1750,11 +2063,19 @@ void ui_create_gtktoolbutton()
 {
 }
 
+void ui_update_gtktoolbutton()
+{
+}
+
 void ui_delete_gtktoolbutton()
 {
 }
 
 void ui_create_gtkmenu()
+{
+}
+
+void ui_update_gtkmenu()
 {
 }
 
@@ -1766,11 +2087,19 @@ void ui_create_gtkmenubar()
 {
 }
 
+void ui_update_gtkmenubar()
+{
+}
+
 void ui_delete_gtkmenubar()
 {
 }
 
 void ui_create_gtkmenuitem()
+{
+}
+
+void ui_update_gtkmenuitem()
 {
 }
 
@@ -1782,11 +2111,19 @@ void ui_create_gtkcheckmenuitem()
 {
 }
 
+void ui_update_gtkcheckmenuitem()
+{
+}
+
 void ui_delete_gtkcheckmenuitem()
 {
 }
 
 void ui_create_gtktextview()
+{
+}
+
+void ui_update_gtktextview()
 {
 }
 
@@ -1798,11 +2135,19 @@ void ui_create_gtktreeview()
 {
 }
 
+void ui_update_gtktreeview()
+{
+}
+
 void ui_delete_gtktreeview()
 {
 }
 
 void ui_create_gtkiconview()
+{
+}
+
+void ui_update_gtkiconview()
 {
 }
 
@@ -1814,11 +2159,19 @@ void ui_create_gtkassistant()
 {
 }
 
+void ui_update_gtkassistant()
+{
+}
+
 void ui_delete_gtkassistant()
 {
 }
 
 void ui_create_gtkdialog()
+{
+}
+
+void ui_update_gtkdialog()
 {
 }
 
@@ -1830,11 +2183,19 @@ void ui_create_gtkmessagedialog()
 {
 }
 
+void ui_update_gtkmessagedialog()
+{
+}
+
 void ui_delete_gtkmessagedialog()
 {
 }
 
 void ui_create_gtknotebook()
+{
+}
+
+void ui_update_gtknotebook()
 {
 }
 
@@ -1846,11 +2207,19 @@ void ui_create_gtkpaned()
 {
 }
 
+void ui_update_gtkpaned()
+{
+}
+
 void ui_delete_gtkpaned()
 {
 }
 
 void ui_create_gtkrange()
+{
+}
+
+void ui_update_gtkrange()
 {
 }
 
@@ -1862,11 +2231,19 @@ void ui_create_gtkscale()
 {
 }
 
+void ui_update_gtkscale()
+{
+}
+
 void ui_delete_gtkscale()
 {
 }
 
 void ui_create_gtkscrolledwindow()
+{
+}
+
+void ui_update_gtkscrolledwindow()
 {
 }
 
