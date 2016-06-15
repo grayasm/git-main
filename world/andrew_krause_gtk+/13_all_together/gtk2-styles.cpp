@@ -909,6 +909,142 @@ void write_rc_for_gtkwidget()
 
 void write_rc_for_gtkbutton()
 {
+	if (app->widget_1_style_txt == NULL) exit(-1);
+	app->widget_1_style_txt = g_string_set_size (app->widget_1_style_txt, 0);
+
+	const gchar* style[4] = {"fg","bg","text","base"};
+	const gchar* state[5] = {
+		"NORMAL","ACTIVE","PRELIGHT","SELECTED","INSENSITIVE"
+	};
+	g_string_append_printf (app->widget_1_style_txt,
+	                        "style \"%s\"\n{\n",
+	                        "buttons");
+
+	// ----- style begin -----
+	for (gint i=0; i<4; ++i)
+	{
+		for (gint j=0; j<5; ++j)
+		{
+			GdkColor clr;
+			gtk_color_button_get_color (
+				GTK_COLOR_BUTTON(app->widget_1_clrbn[i][j]),
+				&clr);
+
+			g_string_append_printf (app->widget_1_style_txt,
+			                        "\t%s[%s] = \"#%02X%02X%02X\"\n",
+			                        style[i],
+			                        state[j],
+			                        (clr.red * 255 / 65535),
+			                        (clr.green * 255 / 65535),
+			                        (clr.blue * 255 / 65535));
+		}
+		g_string_append_printf (app->widget_1_style_txt,
+		                        "%s", "\n");
+	}
+
+
+	const gchar* font_name = gtk_font_button_get_font_name(
+                                         GTK_FONT_BUTTON(app->widget_1_fn_bn));
+	g_string_append_printf (app->widget_1_style_txt,
+	                        "\n\tfont_name = \"%s\"\n",
+	                        font_name);
+
+
+	gint xthickness = gtk_spin_button_get_value_as_int(
+                                     GTK_SPIN_BUTTON(app->widget_1_spinbn_xth));
+	gint ythickness = gtk_spin_button_get_value_as_int(
+                                     GTK_SPIN_BUTTON(app->widget_1_spinbn_yth));
+	g_string_append_printf (app->widget_1_style_txt,
+	                        "\n\txthickness = %d\n",
+	                        xthickness);
+	g_string_append_printf (app->widget_1_style_txt,
+	                        "\tythickness = %d\n",
+	                        ythickness);
+
+
+	gint childdx = gtk_spin_button_get_value_as_int(
+                                 GTK_SPIN_BUTTON(app->widget_1_spinbn_childdx));
+	gint childdy = gtk_spin_button_get_value_as_int(
+                                 GTK_SPIN_BUTTON(app->widget_1_spinbn_childdy));
+	g_string_append_printf (app->widget_1_style_txt,
+	                        "\n\tGtkButton::child-displacement-x = %d\n",
+	                        childdx);
+	g_string_append_printf (app->widget_1_style_txt,
+	                        "\tGtkButton::child-displacement-y = %d\n",
+	                        childdy);
+
+
+	gint defaultb_left   = gtk_spin_button_get_value_as_int(
+                             GTK_SPIN_BUTTON(app->widget_1_spinbn_defaultb[0]));
+	gint defaultb_right  = gtk_spin_button_get_value_as_int(
+                             GTK_SPIN_BUTTON(app->widget_1_spinbn_defaultb[1]));
+	gint defaultb_top    = gtk_spin_button_get_value_as_int(
+                             GTK_SPIN_BUTTON(app->widget_1_spinbn_defaultb[2]));
+	gint defaultb_bottom = gtk_spin_button_get_value_as_int(
+                             GTK_SPIN_BUTTON(app->widget_1_spinbn_defaultb[3]));
+
+	g_string_append_printf (app->widget_1_style_txt,
+	                        "\tGtkButton::default-border = {%d, %d, %d, %d}\n",
+	                        defaultb_left,
+	                        defaultb_right,
+	                        defaultb_top,
+	                        defaultb_bottom);
+
+	gint defaultob_left   = gtk_spin_button_get_value_as_int(
+                            GTK_SPIN_BUTTON(app->widget_1_spinbn_defaultob[0]));
+	gint defaultob_right  = gtk_spin_button_get_value_as_int(
+                            GTK_SPIN_BUTTON(app->widget_1_spinbn_defaultob[1]));
+	gint defaultob_top    = gtk_spin_button_get_value_as_int(
+                            GTK_SPIN_BUTTON(app->widget_1_spinbn_defaultob[2]));
+	gint defaultob_bottom = gtk_spin_button_get_value_as_int(
+                            GTK_SPIN_BUTTON(app->widget_1_spinbn_defaultob[3]));
+
+	g_string_append_printf (app->widget_1_style_txt,
+                     "\tGtkButton::default-outside-border = {%d, %d, %d, %d}\n",
+	                        defaultob_left,
+	                        defaultob_right,
+	                        defaultob_top,
+	                        defaultob_bottom);
+
+	gboolean displacef = gtk_toggle_button_get_active (
+                              GTK_TOGGLE_BUTTON(app->widget_1_chkbn_displacef));
+	g_string_append_printf (app->widget_1_style_txt,
+	                        "\tGtkButton::displace-focus = %d\n",
+	                        displacef == true ? 1 : 0);
+
+	gint images = gtk_spin_button_get_value_as_int(
+                                  GTK_SPIN_BUTTON(app->widget_1_spinbn_images));
+	g_string_append_printf (app->widget_1_style_txt,
+	                        "\tGtkButton::image-spacing = %d\n",
+	                        images);
+
+	gint innerb_left   = gtk_spin_button_get_value_as_int(
+                               GTK_SPIN_BUTTON(app->widget_1_spinbn_innerb[0]));
+	gint innerb_right  = gtk_spin_button_get_value_as_int(
+                               GTK_SPIN_BUTTON(app->widget_1_spinbn_innerb[1]));
+	gint innerb_top    = gtk_spin_button_get_value_as_int(
+                               GTK_SPIN_BUTTON(app->widget_1_spinbn_innerb[2]));
+	gint innerb_bottom = gtk_spin_button_get_value_as_int(
+                               GTK_SPIN_BUTTON(app->widget_1_spinbn_innerb[3]));
+
+	g_string_append_printf (app->widget_1_style_txt,
+	                        "\tGtkButton::inner-border = {%d, %d, %d, %d}\n",
+	                        innerb_left,
+	                        innerb_right,
+	                        innerb_top,
+	                        innerb_bottom);
+
+	// ----- style end   -----
+
+	g_string_append_printf (app->widget_1_style_txt,"%s\n", "}");
+	g_string_append_printf (app->widget_1_style_txt,
+	                        "class \"GtkButton\" style \"%s\"\n",
+	                        "buttons");
+	FILE* fp = fopen (app->rcfile, "r+");
+	if (fp == NULL) exit (-1);
+	fseek (fp, 0, SEEK_END);
+	fprintf (fp, "%s", app->widget_1_style_txt->str);
+	fclose (fp);
 }
 
 void write_rc_for_gtkcheckbutton()
@@ -1752,7 +1888,7 @@ void ui_create_gtkbutton()
 	                  NULL);
 
 	// GtkButton::child-displacement-y  gint
-	GtkWidget* widget_1_spinbn_childdy;
+
 	GtkWidget* childdy_lbl = gtk_label_new("child-displacement-y");
 	app->widget_1_spinbn_childdy = gtk_spin_button_new_with_range (0,10,1);
 	gtk_spin_button_set_value (GTK_SPIN_BUTTON(app->widget_1_spinbn_childdy),
@@ -1868,6 +2004,7 @@ void ui_create_gtkbutton()
 	// GtkButton::image-spacing         gint
 	GtkWidget* images_lbl = gtk_label_new ("image-spacing");
 	gtk_table_attach (GTK_TABLE(table_4),
+	                  images_lbl,
 	                  0, 1,   // left, right
 	                  1, 2,   // top, bottom
 	                  GTK_SHRINK, GTK_SHRINK,  // GtkAttachOptions
