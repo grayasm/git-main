@@ -96,3 +96,5 @@ alias xwininfo='xwininfo'   #window info
 #export PKG_CONFIG_PATH=$HOME/.local/lib64/pkgconfig:$PKG_CONFIG_PATH
 #export PKG_CONFIG_PATH=/opt/cegui-0.8.6/lib/pkgconfig:$PKG_CONFIG_PATH
 #export PKG_CONFIG_PATH=/opt/cegui-0.8.6/lib64/pkgconfig:$PKG_CONFIG_PATH
+
+alias rdpoffice="/opt/rdesktop-1.8.3/bin/rdesktop -g 95% -u Mihai 10.1.1.235"
