@@ -470,6 +470,7 @@ int main (int argc, char** argv)
 	GtkWidget* window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
 	app->window = window;
 	gtk_window_set_title (GTK_WINDOW(window), "gtk2-styles");
+	gtk_window_set_default_size (GTK_WINDOW(window), 500, 600);
 	g_signal_connect (G_OBJECT(window),
 	                  "destroy",
 	                  G_CALLBACK(gtk_main_quit),
@@ -498,7 +499,11 @@ int main (int argc, char** argv)
 
 	// Setup the main window
 	GtkWidget* pvbox = gtk_vbox_new (FALSE, 0); // parent vbox
-	gtk_box_pack_start (GTK_BOX(pvbox), menubar, FALSE, FALSE, 0);
+	gtk_box_pack_start (GTK_BOX(pvbox),
+	                    menubar,
+	                    FALSE,   // expand
+	                    FALSE,   // fill
+	                    0);      // padding
 	gtk_box_pack_start (GTK_BOX(pvbox), scrolled_win, TRUE, TRUE, 0);
 	gtk_container_add (GTK_CONTAINER(window), pvbox);
 	app->vbox = gtk_vbox_new (FALSE, 0);
@@ -1204,11 +1209,19 @@ void ui_create_gtkwidget()
 	const gint TABLE_0_ROW = 6; // 1 header, 4 colors, 1 pixmap
 	const gint TABLE_0_COL = 6;
 	GtkWidget* table_0 = gtk_table_new (TABLE_0_ROW, TABLE_0_COL, TRUE);
-	gtk_box_pack_start (GTK_BOX(vbox), table_0, FALSE, FALSE, 0);
+	gtk_box_pack_start (GTK_BOX(vbox),
+	                    table_0,
+	                    FALSE,   // expand
+	                    FALSE,   // fill
+	                    0);      // padding
 	GtkWidget* expander = gtk_expander_new ("GtkWidget");
 	gtk_container_add (GTK_CONTAINER(expander), vbox);
 	gtk_expander_set_expanded (GTK_EXPANDER(expander), TRUE);
-	gtk_box_pack_start (GTK_BOX(app->vbox), expander, TRUE, TRUE, 0);
+	gtk_box_pack_start (GTK_BOX(app->vbox),
+	                    expander,
+	                    TRUE,   // expand
+	                    TRUE,   // fill
+	                    0);     // padding
 
 	// Set the labels on the left side.
 	const gchar* rows_txt[TABLE_0_ROW] = {
@@ -1291,7 +1304,11 @@ void ui_create_gtkwidget()
 
 	// New table for: font desc, thickness, cursor-aspect-ratio, cursor-color
 	GtkWidget* table_1 = gtk_table_new (5, 2, TRUE); //row,col,homo
-	gtk_box_pack_start (GTK_BOX(vbox), table_1, FALSE, FALSE, 0);
+	gtk_box_pack_start (GTK_BOX(vbox),
+	                    table_1,
+	                    FALSE,   // expand
+	                    FALSE,   // fill
+	                    0);      // padding
 	GtkWidget* font_desc_lbl = gtk_label_new ("font_desc");
 	char* font_name = pango_font_description_to_string (style->font_desc);
 	app->widget_0_fn_bn = gtk_font_button_new_with_font (font_name);
@@ -1406,7 +1423,11 @@ void ui_create_gtkwidget()
 	// New table for: GtkWidget::draw-border = { 1, 1, 1, 1 }
 	const gint TABLE_1_COL = 5;
 	GtkWidget* table_2 = gtk_table_new (1, 5, TRUE); // row, col, homo
-	gtk_box_pack_start (GTK_BOX(vbox), table_2, FALSE, FALSE, 0);
+	gtk_box_pack_start (GTK_BOX(vbox),
+	                    table_2,
+	                    FALSE,   // expand
+	                    FALSE,   // fill
+	                    0);      // padding
 	GtkWidget* drawb_lbl = gtk_label_new ("draw-border");
 	gtk_table_attach (GTK_TABLE(table_2),
 	                  drawb_lbl,
@@ -1439,7 +1460,11 @@ void ui_create_gtkwidget()
 	const gint TABLE_3_ROW = 12;
 	const gint TABLE_3_COL = 2;
 	GtkWidget* table_3 = gtk_table_new (TABLE_3_ROW, TABLE_3_COL, TRUE);
-	gtk_box_pack_start (GTK_BOX(vbox), table_3, FALSE, FALSE, 0);
+	gtk_box_pack_start (GTK_BOX(vbox),
+	                    table_3,
+	                    FALSE,   // expand
+	                    FALSE,   // fill
+	                    0);      // padding
 
 	// focus-line-pattern   char*      \001\001
 	GtkWidget* focuslp_lbl = gtk_label_new ("focus-line-pattern");
@@ -1732,11 +1757,19 @@ void ui_create_gtkbutton()
 	const gint TABLE_0_ROW = 5; // 1 header, 4 colors
 	const gint TABLE_0_COL = 6;
 	GtkWidget* table_0 = gtk_table_new (TABLE_0_ROW, TABLE_0_COL, TRUE);
-	gtk_box_pack_start (GTK_BOX(vbox), table_0, FALSE, FALSE, 0);
+	gtk_box_pack_start (GTK_BOX(vbox),
+	                    table_0,
+	                    FALSE,   // expand
+	                    FALSE,   // fill
+	                    0);      // padding
 	GtkWidget* expander = gtk_expander_new ("GtkButton");
 	gtk_container_add (GTK_CONTAINER(expander), vbox);
 	gtk_expander_set_expanded (GTK_EXPANDER(expander), TRUE);
-	gtk_box_pack_start (GTK_BOX(app->vbox), expander, TRUE, TRUE, 0);
+	gtk_box_pack_start (GTK_BOX(app->vbox),
+	                    expander,
+	                    TRUE,   // expand
+	                    TRUE,   // fill
+	                    0);     // padding
 
 	// Set the labels on the left side.
 	const gchar* rows_txt[TABLE_0_ROW] = { "", "fg", "bg", "text", "base" };
@@ -1799,7 +1832,11 @@ void ui_create_gtkbutton()
 
 	// font_desc
 	GtkWidget* table_1 = gtk_table_new (5, 2, TRUE); //row,col,homo
-	gtk_box_pack_start (GTK_BOX(vbox), table_1, FALSE, FALSE, 0);
+	gtk_box_pack_start (GTK_BOX(vbox),
+	                    table_1,
+	                    FALSE,   // expanding
+	                    FALSE,   // fill
+	                    0);      // padding
 	GtkWidget* font_desc_lbl = gtk_label_new ("font_desc");
 	char* font_name = pango_font_description_to_string (style->font_desc);
 	app->widget_1_fn_bn = gtk_font_button_new_with_font (font_name);
@@ -1914,7 +1951,11 @@ void ui_create_gtkbutton()
 	// GtkButton::default-border        GtkBorder = {1, 1, 1, 1}
 	const gint TABLE_2_COL = 5;
 	GtkWidget* table_2 = gtk_table_new (1, 5, TRUE); // row, col, homo
-	gtk_box_pack_start (GTK_BOX(vbox), table_2, FALSE, FALSE, 0);
+	gtk_box_pack_start (GTK_BOX(vbox),
+	                    table_2,
+	                    FALSE,   // expanding
+	                    FALSE,   // fill
+	                    0);      // padding
 	GtkWidget* defaultb_lbl = gtk_label_new ("default-border");
 	gtk_table_attach (GTK_TABLE(table_2),
 	                  defaultb_lbl,
@@ -1947,7 +1988,11 @@ void ui_create_gtkbutton()
 	// GtkButton::default-outside-border GtkBorder= {1, 1, 1, 1}
 	const gint TABLE_3_COL = 5;
 	GtkWidget* table_3 = gtk_table_new (1, 5, TRUE); // row, col, homo
-	gtk_box_pack_start (GTK_BOX(vbox), table_3, FALSE, FALSE, 0);
+	gtk_box_pack_start (GTK_BOX(vbox),
+	                    table_3,
+	                    FALSE,   // expanding
+	                    FALSE,   // fill
+	                    0);      // padding
 	GtkWidget* defaultob_lbl = gtk_label_new ("default-outside-border");
 	gtk_table_attach (GTK_TABLE(table_3),
 	                  defaultob_lbl,
@@ -1978,7 +2023,11 @@ void ui_create_gtkbutton()
 
 	// New table for 2 elements (2 rows, 2 cols)
 	GtkWidget* table_4 = gtk_table_new (2, 2, TRUE); // row, col, homo
-	gtk_box_pack_start (GTK_BOX(vbox), table_4, FALSE, FALSE, 0);
+	gtk_box_pack_start (GTK_BOX(vbox),
+	                    table_4,
+	                    FALSE,   // expand
+	                    FALSE,   // fill
+	                    0);      // padding
 
 	// GtkButton::displace-focus        gboolean = 1 or 0
 	GtkWidget* displacef_lbl = gtk_label_new ("displace-focus");
@@ -2024,7 +2073,11 @@ void ui_create_gtkbutton()
 	// GtkButton::inner-border          GtkBorder = {1, 1, 1, 1}
 	const gint TABLE_5_COL = 5;
 	GtkWidget* table_5 = gtk_table_new (1, 5, TRUE); // row, col, homo
-	gtk_box_pack_start (GTK_BOX(vbox), table_5, FALSE, FALSE, 0);
+	gtk_box_pack_start (GTK_BOX(vbox),
+	                    table_5,
+	                    FALSE,   // expand
+	                    FALSE,   // fill
+	                    0);      // padding
 	GtkWidget* innerb_lbl = gtk_label_new ("inner-border");
 	gtk_table_attach (GTK_TABLE(table_5),
 	                  innerb_lbl,
