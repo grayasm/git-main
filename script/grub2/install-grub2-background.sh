@@ -1,5 +1,24 @@
 #!/bin/bash
 
+# warnings
+echo "If you run kernel-lt with NVIDIA-Linux-x86_64-340.96.run
+this script will disable the nvidia driver (dump login to console).
+I had to:
+systemctl disable lightdm.service && reboot
+/usr/bin/nvidia-uninstall && rm /etc/X11/xorg.conf
+yum install kernel kmod-nvidia-340xx && reboot # to kernel
+graphic login || startx
+run this script
+reboot # to kernel-lt
+yum remove kernel kmod-nvidia-340xx
+reboot # kernel-lt/graphic; nouveau in initramfs: hard to blacklist other way
+install NVIDIA-Linux-x86_64-340.96.run
+reboot # to kernel-lt with nvidia-340xx, all should be fine again.
+
+When you are ready remove this exit to proceed with the script."
+exit
+
+
 # check location
 if [ "${PWD##*/}" != "grub2" ]; then
 	echo "switch to script directory!"
