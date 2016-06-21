@@ -470,6 +470,7 @@ int main (int argc, char** argv)
 	GtkWidget* window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
 	app->window = window;
 	gtk_window_set_title (GTK_WINDOW(window), "gtk2-styles");
+	gtk_window_set_default_size (GTK_WINDOW(window), 500, 600);
 	g_signal_connect (G_OBJECT(window),
 	                  "destroy",
 	                  G_CALLBACK(gtk_main_quit),
@@ -498,7 +499,11 @@ int main (int argc, char** argv)
 
 	// Setup the main window
 	GtkWidget* pvbox = gtk_vbox_new (FALSE, 0); // parent vbox
-	gtk_box_pack_start (GTK_BOX(pvbox), menubar, FALSE, FALSE, 0);
+	gtk_box_pack_start (GTK_BOX(pvbox),
+	                    menubar,
+	                    FALSE,   // expand
+	                    FALSE,   // fill
+	                    0);      // padding
 	gtk_box_pack_start (GTK_BOX(pvbox), scrolled_win, TRUE, TRUE, 0);
 	gtk_container_add (GTK_CONTAINER(window), pvbox);
 	app->vbox = gtk_vbox_new (FALSE, 0);
@@ -1204,11 +1209,19 @@ void ui_create_gtkwidget()
 	const gint TABLE_0_ROW = 6; // 1 header, 4 colors, 1 pixmap
 	const gint TABLE_0_COL = 6;
 	GtkWidget* table_0 = gtk_table_new (TABLE_0_ROW, TABLE_0_COL, TRUE);
-	gtk_box_pack_start (GTK_BOX(vbox), table_0, FALSE, FALSE, 0);
+	gtk_box_pack_start (GTK_BOX(vbox),
+	                    table_0,
+	                    FALSE,   // expand
+	                    FALSE,   // fill
+	                    0);      // padding
 	GtkWidget* expander = gtk_expander_new ("GtkWidget");
 	gtk_container_add (GTK_CONTAINER(expander), vbox);
-	gtk_expander_set_expanded (GTK_EXPANDER(expander), TRUE);
-	gtk_box_pack_start (GTK_BOX(app->vbox), expander, TRUE, TRUE, 0);
+	gtk_expander_set_expanded (GTK_EXPANDER(expander), FALSE);
+	gtk_box_pack_start (GTK_BOX(app->vbox),
+	                    expander,
+	                    FALSE,   // expand
+	                    FALSE,   // fill
+	                    0);      // padding
 
 	// Set the labels on the left side.
 	const gchar* rows_txt[TABLE_0_ROW] = {
@@ -1291,7 +1304,11 @@ void ui_create_gtkwidget()
 
 	// New table for: font desc, thickness, cursor-aspect-ratio, cursor-color
 	GtkWidget* table_1 = gtk_table_new (5, 2, TRUE); //row,col,homo
-	gtk_box_pack_start (GTK_BOX(vbox), table_1, FALSE, FALSE, 0);
+	gtk_box_pack_start (GTK_BOX(vbox),
+	                    table_1,
+	                    FALSE,   // expand
+	                    FALSE,   // fill
+	                    0);      // padding
 	GtkWidget* font_desc_lbl = gtk_label_new ("font_desc");
 	char* font_name = pango_font_description_to_string (style->font_desc);
 	app->widget_0_fn_bn = gtk_font_button_new_with_font (font_name);
@@ -1406,7 +1423,11 @@ void ui_create_gtkwidget()
 	// New table for: GtkWidget::draw-border = { 1, 1, 1, 1 }
 	const gint TABLE_1_COL = 5;
 	GtkWidget* table_2 = gtk_table_new (1, 5, TRUE); // row, col, homo
-	gtk_box_pack_start (GTK_BOX(vbox), table_2, FALSE, FALSE, 0);
+	gtk_box_pack_start (GTK_BOX(vbox),
+	                    table_2,
+	                    FALSE,   // expand
+	                    FALSE,   // fill
+	                    0);      // padding
 	GtkWidget* drawb_lbl = gtk_label_new ("draw-border");
 	gtk_table_attach (GTK_TABLE(table_2),
 	                  drawb_lbl,
@@ -1439,7 +1460,11 @@ void ui_create_gtkwidget()
 	const gint TABLE_3_ROW = 12;
 	const gint TABLE_3_COL = 2;
 	GtkWidget* table_3 = gtk_table_new (TABLE_3_ROW, TABLE_3_COL, TRUE);
-	gtk_box_pack_start (GTK_BOX(vbox), table_3, FALSE, FALSE, 0);
+	gtk_box_pack_start (GTK_BOX(vbox),
+	                    table_3,
+	                    FALSE,   // expand
+	                    FALSE,   // fill
+	                    0);      // padding
 
 	// focus-line-pattern   char*      \001\001
 	GtkWidget* focuslp_lbl = gtk_label_new ("focus-line-pattern");
@@ -1727,18 +1752,89 @@ void ui_delete_gtkwidget()
 
 void ui_create_gtkbutton()
 {
-	// First table holds the color buttons and labels on top and left side.
 	GtkWidget* vbox = gtk_vbox_new (FALSE, 0);
+	GtkWidget* expander = gtk_expander_new ("GtkButton");
+	gtk_container_add (GTK_CONTAINER(expander), vbox);
+	gtk_expander_set_expanded (GTK_EXPANDER(expander), FALSE);
+	gtk_box_pack_start (GTK_BOX(app->vbox),
+	                    expander,
+	                    FALSE,   // expand
+	                    FALSE,   // fill
+	                    0);      // padding
+
+
+	// Create sample buttons and retain the theme
+	GtkWidget* table_sample = gtk_table_new (3, 3, TRUE);
+	gtk_box_pack_start (GTK_BOX(vbox),
+	                    table_sample,
+	                    FALSE,   // expand
+	                    FALSE,   // fill
+	                    0);      // padding
+	GtkWidget* bn_withlabel[3] = {NULL, NULL, NULL};
+	const gchar* bn_withlabel_lbl[3] = { "Normal Button",
+	                                     "No Action",
+	                                     "Button with a label" };
+	for (gint i=0; i < 3; ++i)
+	{
+		bn_withlabel[i] = gtk_button_new_with_label (bn_withlabel_lbl[i]);
+		gtk_table_attach (GTK_TABLE(table_sample),
+		                  bn_withlabel[i],
+		                  i, i+1,    // left, right
+		                  0, 1,      // top, bottom
+		                  GTK_SHRINK, GTK_SHRINK, // GtkAttachOptions
+		                  0, 0);     // x,y padding
+	}
+
+
+	GtkWidget* bn_relief[3] = {NULL, NULL, NULL};
+	const gchar* bn_relief_lbl[3] = { "GTK_RELIEF_NORMAL",
+	                                  "GTK_RELIEF_HALF",
+	                                  "GTK_RELIEF_NONE" };
+	GtkReliefStyle bn_relief_st[3] = { GTK_RELIEF_NORMAL,
+	                                   GTK_RELIEF_HALF,
+	                                   GTK_RELIEF_NONE };
+	for (gint i=0; i < 3; ++i)
+	{
+		bn_relief[i] = gtk_button_new_with_label (bn_relief_lbl[i]);
+		gtk_button_set_relief (GTK_BUTTON(bn_relief[i]), bn_relief_st[i]);
+		gtk_table_attach (GTK_TABLE(table_sample),
+		                  bn_relief[i],
+		                  i, i+1,    // left, right
+		                  1, 2,      // top, bottom
+		                  GTK_SHRINK, GTK_SHRINK, // GtkAttachOptions
+		                  0, 0);     // x,y padding
+	}
+
+	GtkWidget* bn_stock[2][3] = { {NULL, NULL, NULL},
+	                              {NULL, NULL, NULL}};
+	const gchar* bn_stock_id[2][3] =
+		{ {GTK_STOCK_ABOUT, GTK_STOCK_APPLY, GTK_STOCK_CDROM},
+		  {GTK_STOCK_PAGE_SETUP, GTK_STOCK_CONNECT, GTK_STOCK_EXECUTE} };
+
+	for (gint i=0; i < 2; ++i)
+		for(gint j=0; j < 3; ++j)
+		{
+			bn_stock[i][j] = gtk_button_new_from_stock (bn_stock_id[i][j]);
+			gtk_table_attach (GTK_TABLE(table_sample),
+			                  bn_stock[i][j],
+			                  j, j+1,     // left, right
+			                  2+i, 3+i,   // top, bottom
+			                  GTK_SHRINK, GTK_SHRINK, // GtkAttachOptions
+			                  0, 0);      // x,y padding
+		}
+
+
+
+	// Set the labels on the left side.
 	const gint TABLE_0_ROW = 5; // 1 header, 4 colors
 	const gint TABLE_0_COL = 6;
 	GtkWidget* table_0 = gtk_table_new (TABLE_0_ROW, TABLE_0_COL, TRUE);
-	gtk_box_pack_start (GTK_BOX(vbox), table_0, FALSE, FALSE, 0);
-	GtkWidget* expander = gtk_expander_new ("GtkButton");
-	gtk_container_add (GTK_CONTAINER(expander), vbox);
-	gtk_expander_set_expanded (GTK_EXPANDER(expander), TRUE);
-	gtk_box_pack_start (GTK_BOX(app->vbox), expander, TRUE, TRUE, 0);
+	gtk_box_pack_start (GTK_BOX(vbox),
+	                    table_0,
+	                    FALSE,   // expand
+	                    FALSE,   // fill
+	                    0);      // padding
 
-	// Set the labels on the left side.
 	const gchar* rows_txt[TABLE_0_ROW] = { "", "fg", "bg", "text", "base" };
 
 	for (gint i=1; i<TABLE_0_ROW; ++i)
@@ -1799,7 +1895,11 @@ void ui_create_gtkbutton()
 
 	// font_desc
 	GtkWidget* table_1 = gtk_table_new (5, 2, TRUE); //row,col,homo
-	gtk_box_pack_start (GTK_BOX(vbox), table_1, FALSE, FALSE, 0);
+	gtk_box_pack_start (GTK_BOX(vbox),
+	                    table_1,
+	                    FALSE,   // expanding
+	                    FALSE,   // fill
+	                    0);      // padding
 	GtkWidget* font_desc_lbl = gtk_label_new ("font_desc");
 	char* font_name = pango_font_description_to_string (style->font_desc);
 	app->widget_1_fn_bn = gtk_font_button_new_with_font (font_name);
@@ -1910,11 +2010,21 @@ void ui_create_gtkbutton()
 	                  G_CALLBACK(cb_value_changed),
 	                  NULL);
 
-	// New table for
+	// New table 5 x 5
+	// 1st row = 5
+	// 2nd row = 5
+	// 3rd row = 2
+	// 4th row = 2
+	// 5th row = 5
+
 	// GtkButton::default-border        GtkBorder = {1, 1, 1, 1}
 	const gint TABLE_2_COL = 5;
-	GtkWidget* table_2 = gtk_table_new (1, 5, TRUE); // row, col, homo
-	gtk_box_pack_start (GTK_BOX(vbox), table_2, FALSE, FALSE, 0);
+	GtkWidget* table_2 = gtk_table_new (5, 5, FALSE); // row, col, homo
+	gtk_box_pack_start (GTK_BOX(vbox),
+	                    table_2,
+	                    FALSE,   // expanding
+	                    FALSE,   // fill
+	                    0);      // padding
 	GtkWidget* defaultb_lbl = gtk_label_new ("default-border");
 	gtk_table_attach (GTK_TABLE(table_2),
 	                  defaultb_lbl,
@@ -1943,30 +2053,26 @@ void ui_create_gtkbutton()
 	}
 
 
-	// New table for
 	// GtkButton::default-outside-border GtkBorder= {1, 1, 1, 1}
-	const gint TABLE_3_COL = 5;
-	GtkWidget* table_3 = gtk_table_new (1, 5, TRUE); // row, col, homo
-	gtk_box_pack_start (GTK_BOX(vbox), table_3, FALSE, FALSE, 0);
 	GtkWidget* defaultob_lbl = gtk_label_new ("default-outside-border");
-	gtk_table_attach (GTK_TABLE(table_3),
+	gtk_table_attach (GTK_TABLE(table_2),
 	                  defaultob_lbl,
 	                  0, 1,   // left, right
-	                  0, 1,   // top, bottom
+	                  1, 2,   // top, bottom
 	                  GTK_SHRINK, GTK_SHRINK,  // GtkAttachOptions
 	                  0, 0);  // x,y padding
 
-	for (int j=1; j < TABLE_3_COL; ++j)
+	for (int j=1; j < TABLE_2_COL; ++j)
 	{
 		app->widget_1_spinbn_defaultob[j-1] =
 			gtk_spin_button_new_with_range(0, 10, 1);
 		gtk_spin_button_set_value (
-                            GTK_SPIN_BUTTON(app->widget_1_spinbn_defaultob[j-1]),
-                            1); // use default
-		gtk_table_attach (GTK_TABLE(table_3),
+                          GTK_SPIN_BUTTON(app->widget_1_spinbn_defaultob[j-1]),
+                          1); // use default
+		gtk_table_attach (GTK_TABLE(table_2),
 		                  app->widget_1_spinbn_defaultob[j-1],
 		                  j, j+1,   // left, right
-		                  0, 1,     // top, bottom
+		                  1, 2,     // top, bottom
 		                  GTK_SHRINK, GTK_SHRINK, // GtkAttachOptions
 		                  0, 0);    // x,y padding
 		g_signal_connect (G_OBJECT(app->widget_1_spinbn_defaultob[j-1]),
@@ -1976,24 +2082,20 @@ void ui_create_gtkbutton()
 	}
 
 
-	// New table for 2 elements (2 rows, 2 cols)
-	GtkWidget* table_4 = gtk_table_new (2, 2, TRUE); // row, col, homo
-	gtk_box_pack_start (GTK_BOX(vbox), table_4, FALSE, FALSE, 0);
-
 	// GtkButton::displace-focus        gboolean = 1 or 0
 	GtkWidget* displacef_lbl = gtk_label_new ("displace-focus");
-	gtk_table_attach (GTK_TABLE(table_4),
+	gtk_table_attach (GTK_TABLE(table_2),
 	                  displacef_lbl,
 	                  0, 1,   // left, right
-	                  0, 1,   // top, bottom
+	                  2, 3,   // top, bottom
 	                  GTK_SHRINK, GTK_SHRINK, // GtkAttachOptions
 	                  0, 0);  // x,y padding
 
 	app->widget_1_chkbn_displacef = gtk_check_button_new ();
-	gtk_table_attach (GTK_TABLE(table_4),
+	gtk_table_attach (GTK_TABLE(table_2),
 	                  app->widget_1_chkbn_displacef,
 	                  1, 2,   // left, right
-	                  0, 1,   // top, bottom
+	                  2, 3,   // top, bottom
 	                  GTK_SHRINK, GTK_SHRINK, // GtkAttachOptions
 	                  0, 0);  // x,y padding
 	g_signal_connect (G_OBJECT(app->widget_1_chkbn_displacef),
@@ -2003,47 +2105,43 @@ void ui_create_gtkbutton()
 
 	// GtkButton::image-spacing         gint
 	GtkWidget* images_lbl = gtk_label_new ("image-spacing");
-	gtk_table_attach (GTK_TABLE(table_4),
+	gtk_table_attach (GTK_TABLE(table_2),
 	                  images_lbl,
 	                  0, 1,   // left, right
-	                  1, 2,   // top, bottom
+	                  3, 4,   // top, bottom
 	                  GTK_SHRINK, GTK_SHRINK,  // GtkAttachOptions
 	                  0, 0);  // x,y padding
 	app->widget_1_spinbn_images = gtk_spin_button_new_with_range(0, 10, 1);
 	gtk_spin_button_set_value (GTK_SPIN_BUTTON(app->widget_1_spinbn_images),
 	                           1); // default=1
-	gtk_table_attach (GTK_TABLE(table_4),
+	gtk_table_attach (GTK_TABLE(table_2),
 	                  app->widget_1_spinbn_images,
-	                  0, 1,   // left, right
-	                  1, 2,   // top, bottom
+	                  1, 2,   // left, right
+	                  3, 4,   // top, bottom
 	                  GTK_SHRINK, GTK_SHRINK,  // GtkAttachOptions
 	                  0, 0);  // x,y padding
 
 
-	// New table for
 	// GtkButton::inner-border          GtkBorder = {1, 1, 1, 1}
-	const gint TABLE_5_COL = 5;
-	GtkWidget* table_5 = gtk_table_new (1, 5, TRUE); // row, col, homo
-	gtk_box_pack_start (GTK_BOX(vbox), table_5, FALSE, FALSE, 0);
 	GtkWidget* innerb_lbl = gtk_label_new ("inner-border");
-	gtk_table_attach (GTK_TABLE(table_5),
+	gtk_table_attach (GTK_TABLE(table_2),
 	                  innerb_lbl,
 	                  0, 1,   // left, right
-	                  0, 1,   // top, bottom
+	                  4, 5,   // top, bottom
 	                  GTK_SHRINK, GTK_SHRINK,  // GtkAttachOptions
 	                  0, 0);  // x,y padding
 
-	for (int j=1; j < TABLE_5_COL; ++j)
+	for (int j=1; j < TABLE_2_COL; ++j)
 	{
 		app->widget_1_spinbn_innerb[j-1] =
 			gtk_spin_button_new_with_range(0, 10, 1);
 		gtk_spin_button_set_value (
                             GTK_SPIN_BUTTON(app->widget_1_spinbn_innerb[j-1]),
                             1); // use default
-		gtk_table_attach (GTK_TABLE(table_5),
+		gtk_table_attach (GTK_TABLE(table_2),
 		                  app->widget_1_spinbn_innerb[j-1],
 		                  j, j+1,   // left, right
-		                  0, 1,     // top, bottom
+		                  4, 5,     // top, bottom
 		                  GTK_SHRINK, GTK_SHRINK, // GtkAttachOptions
 		                  0, 0);    // x,y padding
 		g_signal_connect (G_OBJECT(app->widget_1_spinbn_innerb[j-1]),
