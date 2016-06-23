@@ -21,3 +21,11 @@
   calculated does not affect correctness of the answer, these computations can
   be carried out independently. In other words, this problem can be parallelized
   over the index value i.
+
+  #pragma omp parallel for default(none) shared(m,n,a,b,c) private(i,j)
+
+  - default(none): if default is off must explicit set shared and private vars.
+  - shared(m,n,a,b,c): each thread share the same copy of m,n,a,b,c
+        * the result "a" must be shared, otherwise the end result would not be
+          updated at the end of parallel section.
+  - private(i,j): each thread has its own copy of i,j with different values obv.
