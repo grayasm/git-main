@@ -6,10 +6,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void mxv(int m, int n,
-         double * restrict a,
-         double * restrict b,
-         double * restrict c);
+void mxv(int m, int n, double* a, double* b, double* c);
+void print_mat(int m, int n, double* b);
+void print_vec(int m, double* c);
 
 int main(int argc, char* argv[])
 {
@@ -45,10 +44,7 @@ int main(int argc, char* argv[])
 	return(0);
 }
 
-void mxv(int m, int n,
-         double * restrict a,
-         double * restrict b,
-         double * restrict c)
+void mxv(int m, int n, double* a, double* b, double* c)
 {
 	int i,j;
 
@@ -60,7 +56,7 @@ void mxv(int m, int n,
 	}
 }
 
-void print_mat(int m, int n, double * restrict b)
+void print_mat(int m, int n, double* b)
 {
 	int i,j;
 
@@ -68,16 +64,16 @@ void print_mat(int m, int n, double * restrict b)
 	for (i=0; i<m; i++)
 	{
 		for (j=0; j<n; j++)
-			printf("\t%d", b[i*n+j]);
+			printf("\t%.2f", b[i*n+j]);
 		printf("\n");
 	}
 }
 
-void print_vec(int m, double * restric c)
+void print_vec(int m, double* c)
 {
 	int i;
 
 	printf("Vector (%d) = \n", m);
 	for (i=0; i<m; i++)
-		printf("\t%d\n", c[m]);
+		printf("\t%.2f\n", c[i]);
 }
