@@ -40,8 +40,10 @@
   Incorrect parallelism
   ---------------------
   - sample 04_incorrect_omp contains an example of what is a bad code candidate
-    for parallelism.
+    for parallelism. Consecutive results are different in the omp version.
 
   Conditional compilation:
   ------------------------
   - using macro _OPENMP to guard #include <omp.h> is the general advise.
+    #define _OPENMP 201107    is current for openmp-3.0 in CentOS.
+    omp_get_thread_num () -> the current running thread number.
