@@ -24,3 +24,5 @@ add_executable(02_tmatrix_mul_omp  02_tmatrix_mul_omp.cpp)
 # ----------------------------------------
 add_executable(03_tmatrix_mul_bench      03_tmatrix_mul_bench.cpp)
 add_executable(03_tmatrix_mul_bench_omp  03_tmatrix_mul_bench_omp.cpp)
+
+add_executable(testbench testbench.cpp)
