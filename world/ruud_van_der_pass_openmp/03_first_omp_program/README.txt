@@ -29,3 +29,19 @@
         * the result "a" must be shared, otherwise the end result would not be
           updated at the end of parallel section.
   - private(i,j): each thread has its own copy of i,j with different values obv.
+
+
+  Fork-Join overhead
+  ------------------
+  - sample 03_tmatrix_mul_bench is FASTER than omp version. The only explanation
+    is that the fork-join effort is bigger and brings no advantages over the
+    sequential version.
+
+  Incorrect parallelism
+  ---------------------
+  - sample 04_incorrect_omp contains an example of what is a bad code candidate
+    for parallelism.
+
+  Conditional compilation:
+  ------------------------
+  - using macro _OPENMP to guard #include <omp.h> is the general advise.
