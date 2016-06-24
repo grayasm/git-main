@@ -17,3 +17,9 @@ endif()
 # ----------------------------------------
 add_executable(02_tmatrix_mul
                02_tmatrix_mul.cpp)
+
+
+# ----------------------------------------
+# CMAKE_CXX_FLAGS already has OpenMP
+add_executable(02_tmatrix_mul_omp
+               02_tmatrix_mul_omp.cpp)
