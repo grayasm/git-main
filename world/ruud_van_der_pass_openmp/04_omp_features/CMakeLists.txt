@@ -16,3 +16,4 @@ endif()
 
 
 add_executable(01_parallel_block      01_parallel_block.cpp)
+add_executable(01_parallel_book       01_parallel_book.cpp)
