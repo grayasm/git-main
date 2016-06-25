@@ -39,3 +39,15 @@
             6.1  Nested Parallelism         (4.9.1)
             6.2  Flush          Directive   (4.9.2)
             6.3  Threadprivate  Directive   (4.9.3)
+
+
+  ==============================================================================
+  2.1 Loops (4.4.1)
+      - the for loop must be over an integer or similar (cannot be iterator)
+      - the lower or upper bound must be known also
+      - when these are provided then the compiler knows how many threads to
+        assign for the loop
+      - inside a loop, if working over a container it must be one with constant
+        lookup time (vector 0(1), list O(N), map O(logN) , set O(logN))
+      - if not a std::vector, a bidirectional iterator must be incremented
+        all over from the beginning to the current i position

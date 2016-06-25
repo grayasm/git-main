@@ -14,6 +14,8 @@
  - the iterators are not random-access
  - even if the loop if faked: for(size_t i=0; i<lst.size(); ++i){ cb++; ..}
    the icrementation of lst.begin() must be sequential
+ - the only way it works is to iterator over i=0; i<lst.size() and inside
+   each thread to start incrementing lst.begin() up to i position.
 */
 
 #include <stdio.h>
@@ -33,7 +35,7 @@ int main(int argc, char** argv)
 #pragma omp parallel
 	{
 		#pragma omp for
-		for(cb = lst.begin(); cb != lst.end(); ++cb)
+		for(cb = lst.begin(); cb != lst.end(); ++cb) // invalid
 		{
 			printf("thread %d list's node %d\n", omp_get_thread_num(), *cb);
 		}

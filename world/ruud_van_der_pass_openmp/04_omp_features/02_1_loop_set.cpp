@@ -10,9 +10,9 @@
  - a counter is used for incrementing/decrementing
  - an upper or lower bound is specified
 
- Here an attempt to use for-loop with std::set<>
- Cannot be used effectively with std::set which has bidirectional access iterator.
- Incrementing set.begin() in each thread to match i is totally ineffective.
+  Here an attempt to use for-loop with std::set<>
+  Cannot be used effectively with std::set which has bidirectional iterator.
+  Incrementing set.begin() in each thread to match i is totally ineffective.
 */
 
 #include <stdio.h>

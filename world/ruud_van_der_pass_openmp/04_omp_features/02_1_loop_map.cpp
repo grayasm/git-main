@@ -12,6 +12,7 @@
 
  Here an attempt to use for-loop with std::map<>
  Pretty bad, cannot use iterators and have to access elements by index (mp[i]).
+ Map operations insert,search are 0(log N)
 */
 
 #include <stdio.h>
@@ -31,7 +32,7 @@ int main(int argc, char** argv)
 #pragma omp parallel
 	{
 		#pragma omp for
-		for(i = 0; i<mp.size(); ++i) // cannot use iterators
+		for(i = 0; i<mp.size(); ++i)
 		{
 			printf("thread %d map's node %d\n", omp_get_thread_num(), mp[i]);
 		}
