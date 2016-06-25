@@ -17,3 +17,7 @@ endif()
 
 add_executable(01_parallel_block      01_parallel_block.cpp)
 add_executable(01_parallel_book       01_parallel_book.cpp)
+add_executable(01_parallel_branching_illegal 01_parallel_branching_illegal.cpp)
+add_executable(01_parallel_throw_restriction 01_parallel_throw_restriction.cpp)
+add_executable(01_parallel_throw_illegal     01_parallel_throw_illegal.cpp)
+add_executable(02_1_loop              02_1_loop.cpp)
