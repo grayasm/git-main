@@ -14,8 +14,7 @@
 
 int main(int argc, char** argv)
 {
-    int i, a;
-    const int MAX=5;
+	int i, a, MAX=5;
 
 #pragma omp parallel for private(i) lastprivate(a)
     for (i=0; i<MAX; i++)
@@ -23,6 +22,7 @@ int main(int argc, char** argv)
         a = i+1;
         printf("thread %d over i=%d has a= %d\n", omp_get_thread_num(),i,a);
     } /* End of parallel region. */
+
 
     printf("after parallel i=%d a= %d\n", i, a);
     // sequential, i=5, a=5
