@@ -13,16 +13,20 @@
 
 int main(int argc, char** argv)
 {
-	size_t i;
-	std::vector<int> a(5, 0);
+	int i, a, MAX=5;
 
-#pragma omp parallel for shared(a) private(i)
-    for (i=0; i<a.size(); i++)
+#pragma omp parallel for private(i,a)
+    for (i=0; i<MAX; i++)
     {
-        a[i] += omp_get_thread_num ();
-        printf("thread %d over i= %d\n", omp_get_thread_num(), i);
+	    a = i + 1;
+	    printf("thread %d over i= %d has a= %d\n", omp_get_thread_num(),i,a);
 
     } /* End of parallel region. */
+
+
+    printf("outside parallel i= %d a= %d\n", i,a);
+    // sequential i= 5 a= 5
+    // parallel   i= 0 a= 0  (undefined)
 
     return 0;
 }
