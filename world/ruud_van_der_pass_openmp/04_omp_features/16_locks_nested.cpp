@@ -1,6 +1,6 @@
 /* Synchrnization construct: locks
 
-   syntax: void omp_"func"_lock (omp_lock_t *lck)
+   syntax: void omp_"func"_nest_lock (omp_nest_lock_t *lck)
 
    func may assume the values: init, destroy, set, unset, test.
 
@@ -8,6 +8,8 @@
    routines, similar in function to the use of semaphores.
    These routines provide greater flexibility for synchronization than does the
    use of critical sections or atomic constructs.
+
+   nested locks can be locked multiple times from the same thread.
 */
 
 #include <stdio.h>
@@ -21,14 +23,17 @@
 #endif //WIN32
 
 
+omp_nest_lock_t  mylock;
+
+void func_relock();
+
 int main(int argc, char** argv)
 {
 	setbuf (stdout, NULL); // flush stdout
 	const int MAX=6;
 	int i, a[MAX];
 
-	omp_lock_t  mylock;
-	omp_init_lock (&mylock);
+	omp_init_nest_lock (&mylock);
 
 
 #pragma omp parallel for shared(a) private(i)
@@ -36,16 +41,27 @@ int main(int argc, char** argv)
 	{
 		a[i] = omp_get_thread_num ();
 
-		omp_set_lock (&mylock);
+		omp_set_nest_lock (&mylock);
 		printf ("locked   thread %d i= %d\n", a[i], i);
-		sleep(1);
+
+		func_relock ();
+
 		printf ("unlocked thread %d\n", a[i]);
-		omp_unset_lock (&mylock);
+		omp_unset_nest_lock (&mylock);
 
 	}/* end of parallel region */
 
 
-	omp_destroy_lock (&mylock);
+	omp_destroy_nest_lock (&mylock);
 
 	return 0;
+}
+
+void func_relock()
+{
+	omp_set_nest_lock (&mylock);
+	printf ("relock   thread %d\n", omp_get_thread_num ());
+	sleep(1);
+	printf ("unlock\n");
+	omp_unset_nest_lock (&mylock);
 }
