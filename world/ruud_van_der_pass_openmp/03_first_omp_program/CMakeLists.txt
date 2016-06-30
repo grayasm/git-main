@@ -28,3 +28,10 @@ target_compile_definitions(05_omp_get_thread_num PUBLIC _OPENMP=201107)
 set (CMAKE_C_FLAGS       ${CMAKE_C_FLAGS_2})
 set (CMAKE_CXX_FLAGS     ${CMAKE_CXX_FLAGS_2})
 add_executable(06_disable_omp              06_disable_omp.cpp)
+
+
+if(OPENMP_FOUND)
+  set (CMAKE_C_FLAGS    "${CMAKE_C_FLAGS}    ${OpenMP_C_FLAGS}")
+  set (CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS}  ${OpenMP_CXX_FLAGS}")
+endif()
+add_executable(07_omp_version               07_omp_version.cpp)
