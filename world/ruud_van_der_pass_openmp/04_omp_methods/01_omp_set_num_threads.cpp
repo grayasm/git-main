@@ -36,3 +36,12 @@ int main(int argc, char** argv)
 
     printf ("main: %d\n", omp_get_num_threads ());
 }
+
+/*
+$> ./01_omp_set_num_threads
+main: 1
+master: 4
+main: 1
+master: 3
+main: 1
+*/
