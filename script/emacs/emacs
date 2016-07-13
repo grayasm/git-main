@@ -347,8 +347,7 @@
 
 ;; to be downloaded from Melpa
 (defvar myPackages
-  '(better-defaults    ; some minor modes for Emacs
-    ein                ; Emacs ipython notebook
+  '(ein                ; Emacs ipython notebook
     elpy
     flycheck           ; better than default flymake
     py-autopep8))      ; reformats text on C-x C-s
@@ -363,8 +362,6 @@
 
 ;; enable elpy
 (elpy-enable)
-;; enable IPython/Jupyter Integration
-(elpy-use-ipython)
 
 ;; enable flycheck - better as default flymake
 (when (require 'flycheck nil t)
