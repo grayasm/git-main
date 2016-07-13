@@ -49,3 +49,7 @@
            of language and standard libraries.
 
   Python Software Foundation is non-profit org. devoted to promoting Python.
+
+  PEP - Python Enhancement Proposals are docs in public domain with proposed
+           changes to Python (debated, advisorily voted on, approved or rejected
+           by Guido).
