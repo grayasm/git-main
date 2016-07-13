@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # print every command
-set -x 
+set -x
 
 # need git
 git --version 2>&1 >/dev/null
@@ -19,6 +19,42 @@ if [ $WGET_IS_AVAILABLE -ne 0 ]; then
 	exit
 fi
 
+# need pip
+pip --version 2>&1 >/dev/null
+PIP_IS_AVAILABLE=$?
+if [ $PIP_IS_AVAILABLE -ne 0 ]; then
+    echo "install pip"
+    exit
+fi
+
+# check pip packages required for Python IDE
+pip list | grep 'rope'
+ROPE_IS_AVAILABLE=$?
+if [ $ROPE_IS_AVAILABLE -ne 0 ]; then
+    echo "run command: pip install rope"
+    exit
+fi
+
+pip list | grep 'jedi'
+JEDI_IS_AVAILABLE=$?
+if [ $JEDI_IS_AVAILABLE -ne 0 ]; then
+    echo "run command: pip install jedi"
+    exit
+fi
+
+pip list | grep 'flake8'
+FLAKE8_IS_AVAILABLE=$?
+if [ $FLAKE8_IS_AVAILABLE -ne 0 ]; then
+    echo "run command: pip install flake8"
+    exit
+fi
+
+pip list | grep 'importmagic'
+IMPORTMAGIC_IS_AVAILABLE=$?
+if [ $IMPORTMAGIC_IS_AVAILABLE -ne 0 ]; then
+    echo "run command: pip install importmagic"
+    exit
+fi
 
 # lusty explorer
 cd /tmp

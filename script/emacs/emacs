@@ -335,4 +335,45 @@
 (color-theme-vim-colors)
 ;;(color-theme-jb-simple)
 ;;------------------------------------------------------------
+(require 'package)
+
+;; use Melpa repository
+(add-to-list 'package-archives
+             '("melpa" . "http://melpa.org/packages/") t)
+
+(package-initialize)
+(when (not package-archive-contents)
+  (package-refresh-contents))
+
+;; to be downloaded from Melpa
+(defvar myPackages
+  '(better-defaults    ; some minor modes for Emacs
+    ein                ; Emacs ipython notebook
+    elpy
+    flycheck           ; better than default flymake
+    py-autopep8))      ; reformats text on C-x C-s
+
+
+;; if I removed .emacs.d/elpa (crazy reason) reinstall packages
+(mapc #'(lambda (package)
+          (unless (package-installed-p package)
+            (package-install package)))
+      myPackages)
+
+
+;; enable elpy
+(elpy-enable)
+;; enable IPython/Jupyter Integration
+(elpy-use-ipython)
+
+;; enable flycheck - better as default flymake
+(when (require 'flycheck nil t)
+  (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
+  (add-hook 'elpy-mode-hook 'flycheck-mode))
+
+;; enable PEP8
+(require 'py-autopep8)
+(add-hook 'elpy-mode-hook 'py-autopep8-enable-on-save)
+
+;;------------------------------------------------------------
 ;;------------------------------------------------------------
