@@ -1,46 +1,46 @@
-;
-; cp $HOME/.emacs  $HOME/Code/svn-trunk/script/emacs/emacs
-; svn status $HOME/Code/svn-trunk
-; svn diff   $HOME/Code/svn-trunk
-; svn commit $HOME/Code/svn-trunk
+;;
+;; cp $HOME/.emacs  $HOME/Code/svn-trunk/script/emacs/emacs
+;; svn status $HOME/Code/svn-trunk
+;; svn diff   $HOME/Code/svn-trunk
+;; svn commit $HOME/Code/svn-trunk
 
-; 2011-03-05 xref adjusted key-bindings
+;; 2011-03-05 xref adjusted key-bindings
 
-; this is appended by xrefsetup shell script into .emacs
+;; this is appended by xrefsetup shell script into .emacs
 ;;---------------------------------------------------------------------
 ;; Xrefactory configuration part ;;
 ;; Installation steps:
-;  cd ~/Downloads
-;  wget http://www.xref.sk/xrefactory/downloads/2.0.14/xref-2.0.14-i86pc-linux.tar.gz
-;  tar -zxvf xref-2.0.14-i86pc-linux.tar.gz
-;  sudo mv xref /opt
-;  sudo chown -Rv root:root /opt/xref
-;  ll /opt/
+;;  cd ~/Downloads
+;;  wget http://www.xref.sk/xrefactory/downloads/2.0.14/xref-2.0.14-i86pc-linux.tar.gz
+;;  tar -zxvf xref-2.0.14-i86pc-linux.tar.gz
+;;  sudo mv xref /opt
+;;  sudo chown -Rv root:root /opt/xref
+;;  ll /opt/
 
 ;; some Xrefactory defaults can be set here
-;(defvar xref-current-project nil) ;; can be also "my_project_name"
-;(defvar xref-key-binding 'global) ;; can be also 'local or 'none
-;(setq load-path (cons "/opt/xref/emacs" load-path))
-;(setq exec-path (cons "/opt/xref" exec-path))
-;(load "xrefactory")
+;;(defvar xref-current-project nil) ;; can be also "my_project_name"
+;;(defvar xref-key-binding 'global) ;; can be also 'local or 'none
+;;(setq load-path (cons "/opt/xref/emacs" load-path))
+;;(setq exec-path (cons "/opt/xref" exec-path))
+;;(load "xrefactory")
 ;; end of Xrefactory configuration part ;;
-;(message "xrefactory loaded")
+;;(message "xrefactory loaded")
 ;;---------------------------------------------------------------------
 
-; my key-bindings for xref
-;(global-set-key (kbd "M-g") 'xref-push-and-goto-definition) ; xref's <f6>
-;(global-set-key (kbd "M-<left>") 'xref-previous-reference) ; xref's <f3>
-;(global-set-key (kbd "M-<right>") 'xref-next-reference) ; xref's <f4>
-;(global-set-key (kbd "M-S-o") 'xref-browse-symbol) ; xref's CTRL-<f6>
-;(global-set-key (kbd "M-.") 'xref-completion) ; xref's <f8>
-;(global-set-key (kbd "M-r") 'xref-refactor) ; xref's <f11>
-;(global-set-key (kbd "M-,") 'xref-pop-and-return) ; xref's <f5> clear symbol stack after <f6> <f4> <f3>
-;(global-set-key (kbd "M-c") 'xref-delete-window) ; xref's <f7>
+;; my key-bindings for xref
+;;(global-set-key (kbd "M-g") 'xref-push-and-goto-definition) ; xref's <f6>
+;;(global-set-key (kbd "M-<left>") 'xref-previous-reference) ; xref's <f3>
+;;(global-set-key (kbd "M-<right>") 'xref-next-reference) ; xref's <f4>
+;;(global-set-key (kbd "M-S-o") 'xref-browse-symbol) ; xref's CTRL-<f6>
+;;(global-set-key (kbd "M-.") 'xref-completion) ; xref's <f8>
+;;(global-set-key (kbd "M-r") 'xref-refactor) ; xref's <f11>
+;;(global-set-key (kbd "M-,") 'xref-pop-and-return) ; xref's <f5> clear symbol stack after <f6> <f4> <f3>
+;;(global-set-key (kbd "M-c") 'xref-delete-window) ; xref's <f7>
 
 
 
-; 2011-03-05
-; GDB front-end
+;; 2011-03-05
+;; GDB front-end
 (global-set-key (kbd "<f4>") 'gud-cont)
 (global-set-key (kbd "<f8>") 'gud-until)
 (global-set-key (kbd "<f5>") 'gdb)
@@ -48,36 +48,38 @@
 (global-set-key (kbd "<f11>") 'gud-step)
 (global-set-key (kbd "<f9>") 'gud-tbreak)
 
-; text editor
+;; text editor
 (autoload 'ansi-color-for-comint-mode-on "ansi-color" nil t)
 (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
 (setq inhibit-startup-message t) ; turns off welcome buffer at startup
-; M-f forward 1 word
-; M-b backard 1 word
-; M-d delete word
-; M-Del delete word backwards
-; C-k kill line
-; M-t transpose 2 words
-; C-x C-t transpose lines
-; M-u make UPPERCASE
-; M-c make first letter UPPERCASE
-; M-l opposite to UPPERCASE
-; C-s search forward, C-r backward, C-g return to start position.
-; C-x o change to other window
-; C-x 0 delete other window
-; C-x 1 delete all other windows
-; C-x + vertical splitter at 50%
-; C-g goto-line
+
+;; M-f forward 1 word
+;; M-b backard 1 word
+;; M-d delete word
+;; M-Del delete word backwards
+;; C-k kill line
+;; M-t transpose 2 words
+;; C-x C-t transpose lines
+;; M-u make UPPERCASE
+;; M-c make first letter UPPERCASE
+;; M-l opposite to UPPERCASE
+;; C-s search forward, C-r backward, C-g return to start position.
+;; C-x o change to other window
+;; C-x 0 delete other window
+;; C-x 1 delete all other windows
+;; C-x + vertical splitter at 50%
+;; C-g goto-line
+
 (global-set-key (kbd "C-g") 'goto-line)
 (global-set-key (kbd "C-t") 'make-frame-command) ;open new emacs window
 (global-linum-mode t) ; line numbers for all buffers
 (column-number-mode 1); column numbers for all buffers
 
 
-; identation
+;; identation
 (setq c-default-style "bsd")
-; ident the whole buffer
-; http://emacsblog.org/2007/01/17/indent-whole-buffer/
+;; ident the whole buffer
+;; http://emacsblog.org/2007/01/17/indent-whole-buffer/
 (defun iwb ()
   "indent whole buffer"
   (interactive)
@@ -87,49 +89,49 @@
 
 
 
-; Interactive Highlighting
-; http://www.gnu.org/software/emacs/manual/html_node/emacs/Highlight-Interactively.html
-; Hi Lock mode is a minor mode that highlights text that matches regular expressions you specify. 
+;; Interactive Highlighting
+;; http://www.gnu.org/software/emacs/manual/html_node/emacs/Highlight-Interactively.html
+;; Hi Lock mode is a minor mode that highlights text that matches regular expressions you specify.
 (global-hi-lock-mode 1)
 
 
 
-; Programming
+;; Programming
 (global-set-key (kbd "<f7>") 'compile)
 (global-set-key (kbd "<f3>") 'next-error)
 (global-set-key (kbd "<f2>") 'previous-error)
 (global-set-key (kbd "C-S-f") 'rgrep)
 (global-set-key (kbd "C-h") 'query-replace)
 (global-set-key (kbd "C-S-h") 'find-name-dired) ; t to toggle all files, Q to query-replace, y(Yes) n(No)
-; after query-replace-regexp to save all visited buffers: C-x s
+;; after query-replace-regexp to save all visited buffers: C-x s
 (global-set-key (kbd "<f12>") 'shell)
 (global-set-key (kbd "<f1>") 'man)
-; use "M-;" to comment line or region
+;; use "M-;" to comment line or region
 
 
-; C-c C-v C-x copy-past like in Windows
-; If you have an Emacs version which does not have it, you must obtain cua.el
-; (see Kim Storm’s page http://www.cua.dk/).
-; To see if Cua is built into your Emacs try M-x cua-mode. 
-; Cua-mode seems not to be part of X-Emacs and at least for recent XEmacs-versions cua-mode.el seems to be broken 
+;; C-c C-v C-x copy-past like in Windows
+;; If you have an Emacs version which does not have it, you must obtain cua.el
+;; (see Kim Storm’s page http://www.cua.dk/).
+;; To see if Cua is built into your Emacs try M-x cua-mode.
+;; Cua-mode seems not to be part of X-Emacs and at least for recent XEmacs-versions cua-mode.el seems to be broken
 
-; http://www.emacswiki.org/emacs/CuaMode
+;; http://www.emacswiki.org/emacs/CuaMode
 (cua-mode t)
-; optional
-; (setq cua-auto-tabify-rectangles nil) ;; Don't tabify after rectangle commands
-; (transient-mark-mode 1) ;; No region when it is not highlighted
+;; optional
+;; (setq cua-auto-tabify-rectangles nil) ;; Don't tabify after rectangle commands
+;; (transient-mark-mode 1) ;; No region when it is not highlighted
 (setq cua-keep-region-after-copy t) ;; Standard Windows behaviour
 
 
-; Shell
-; M-p show previous command
-; C-c C-c stop running job
+;; Shell
+;; M-p show previous command
+;; C-c C-c stop running job
 
-; Programming C,C++ and Java modes
-; M-a beginning of statement
-; M-e end of statement
-; M C-a begin of function
-; M C-e end of function
+;; Programming C,C++ and Java modes
+;; M-a beginning of statement
+;; M-e end of statement
+;; M C-a begin of function
+;; M C-e end of function
 
 
 ;; SmartTabs identation
@@ -174,9 +176,9 @@
 
 ;; Lusty Explorer
 ;; http://www.emacswiki.org/emacs/LustyExplorer
-; to install it do:
-; cd ~/.emacs.d/lisp/
-; wget http://www.emacswiki.org/emacs/download/lusty-explorer.el
+;; to install it do:
+;; cd ~/.emacs.d/lisp/
+;; wget http://www.emacswiki.org/emacs/download/lusty-explorer.el
 
 (add-to-list 'load-path "/home/mihai/.emacs.d/lisp/")
 (require 'lusty-explorer)
@@ -186,29 +188,29 @@
 
 ;; GCCSENSE-0.1
 ;; this is done following the instruction to compile and install gccsense
-;(setq exec-path (append exec-path '("/home/mihai/local/gccsense-0.1/bin")))
-;(add-to-list 'load-path "~/.emacs.d/")
-;(require 'gccsense)
+;;(setq exec-path (append exec-path '("/home/mihai/local/gccsense-0.1/bin")))
+;;(add-to-list 'load-path "~/.emacs.d/")
+;;(require 'gccsense)
 ;; to bind C-c .
-;(add-hook 'c-mode-common-hook
-;(lambda ()
-;(local-set-key (kbd "C-c .") 'gccsense-complete)
+;;(add-hook 'c-mode-common-hook
+;;(lambda ()
+;;(local-set-key (kbd "C-c .") 'gccsense-complete)
 ;; or
-;(local-set-key (kbd "C-c .") 'ac-complete-gccsense)))
+;;(local-set-key (kbd "C-c .") 'ac-complete-gccsense)))
 
 
 
-; Auto Complete Mode -> "auto-complete" command
-; http://cx4a.org/software/auto-complete/manual.html#Completion_by_Fuzzy_Matching
-; this is Fuzzy Matching
+;; Auto Complete Mode -> "auto-complete" command
+;; http://cx4a.org/software/auto-complete/manual.html#Completion_by_Fuzzy_Matching
+;; this is Fuzzy Matching
 
-; to install execute
-; cd ~/Downloads
-; replace next link if new version is out
-; wget http://cx4a.org/pub/auto-complete/auto-complete-1.3.1.tar.bz2
-; tar jxvf auto-complete-1.3.1.tar.bz2
-; type M-x load-file
-; ~/Downloads/auto-complete-1.3.1/etc/install.el
+;; to install execute
+;; cd ~/Downloads
+;; replace next link if new version is out
+;; wget http://cx4a.org/pub/auto-complete/auto-complete-1.3.1.tar.bz2
+;; tar jxvf auto-complete-1.3.1.tar.bz2
+;; type M-x load-file
+;; ~/Downloads/auto-complete-1.3.1/etc/install.el
 
 
 ;; Install 'Auto Complete Mode' in ~/.emacs.d/lisp
@@ -220,12 +222,12 @@
 (ac-config-default)
 
 
-; Auto Complete Mode -> install dictionary files
+;; Auto Complete Mode -> install dictionary files
 (add-to-list 'ac-dictionary-directories "~/.emacs.d/lisp/dict")
 (require 'auto-complete-config)
 (ac-config-default)
 
-; Extra for Auto Complete Mode
+;; Extra for Auto Complete Mode
 (define-key ac-mode-map (kbd "M-u") 'auto-complete) ;M-u make UPPERCASE (default), now bound to auto-complete
 
 ;; end Auto Complete Mode.
@@ -240,12 +242,12 @@
 
 ;; FillColumnIndicator
 ;; http://www.emacswiki.org/FillColumnIndicator
-; cd ~/.emacs.d/lisp/
-; wget http://www.emacswiki.org/emacs/download/fill-column-indicator.el
-; (add-to-list 'load-path "/home/mihai/.emacs.d/lisp/") ; if not added already
+;; cd ~/.emacs.d/lisp/
+;; wget http://www.emacswiki.org/emacs/download/fill-column-indicator.el
+;; (add-to-list 'load-path "/home/mihai/.emacs.d/lisp/") ; if not added already
 
-;(setq fci-rule-width 1)
-;(setq fci-rule-color "darkblue")
+;;(setq fci-rule-width 1)
+;;(setq fci-rule-color "darkblue")
 (setq fci-rule-column 80)
 (require 'fill-column-indicator)
 (add-hook 'after-change-major-mode-hook 'fci-mode)
@@ -253,63 +255,63 @@
 
 ;; Emacs ColorTheme guide: http://emacswiki.org/emacs/ColorTheme
 ;; Color Theme page: http://www.nongnu.org/color-theme/
-; cd ~/Downloads
-; wget http://download.savannah.gnu.org/releases/color-theme/color-theme-6.6.0.tar.gz
-; tar zxvf color-theme-6.6.0.tar.gz
-; mv color-theme-6.6.0 ~/.emacs.d/
+;; cd ~/Downloads
+;; wget http://download.savannah.gnu.org/releases/color-theme/color-theme-6.6.0.tar.gz
+;; tar zxvf color-theme-6.6.0.tar.gz
+;; mv color-theme-6.6.0 ~/.emacs.d/
 
 (add-to-list 'load-path "/home/mihai/.emacs.d/color-theme-6.6.0")
 (require 'color-theme)
 (color-theme-initialize)
 
-; to choose a predefined color theme type
-; M-x color-theme-  RET and all available themes will be displayed
+;; to choose a predefined color theme type
+;; M-x color-theme-  RET and all available themes will be displayed
 
 ;;------------------------------------------------------------
 ;; errors visible!!
 ;;------------------------------------------------------------
-;(color-theme-xemacs)             ; gray, red errors
-;(color-theme-vim-colors)         ; white-blue, green errors
-;(color-theme-jb-simple)          ; white, red errors
-;(color-theme-jsc-light2)         ; white, blue errors
-;(color-theme-kingsajz)           ; green sunos, blue errors
-;(color-theme-midnight)           ; black, blue errors
-;(color-theme-montz)              ; gray, mouse arrow invisible, red errors
-;(color-theme-pok-wob)            ; black-yellowish, yellow errors
-;(color-theme-raspopovic)         ; turbo c++ light, rose errors
-;(color-theme-simple-1)           ; black, red errors
-;(color-theme-sitaramv-solaris)   ; blue, blue errors
-;(color-theme-taming-mr-arneson)  ; black-red, white errors
-;(color-theme-tty-dark)           ; black, light-blue errors
-;(color-theme-word-perfect)       ; turbo c++ light, red errors
-;(color-theme-blue-mood)          ; blue, green errors
-;(color-theme-clarity)            ; black, light blue errors
-;(color-theme-deep-blue)          ; blue, solaris, yellow errors
-;(color-theme-high-contrast)      ; bold, blue errors
-;(color-theme-jedit-grey)         ; gray, green errors
-;(color-theme-jsc-light)          ; white, blue errors
-;(color-theme-katester)           ; white, blue error, invalid selection??
-;(color-theme-pierson)            ; yellow butter, blue errors
-;(color-theme-pok-wog)            ; green solaris, yellow errors
-;(color-theme-scintilla)          ; white, green errors
-;(color-theme-shaman)             ; greenish, green errors
-;(color-theme-sitaramv-nt)        ; white, red errors
-;(color-theme-subtle-hacker)      ; green solaris, blue errors
-;(color-theme-taylor)             ; black-red, blue errors
-;(color-theme-wheat)              ; yellow, glue errors
+;;(color-theme-xemacs)             ; gray, red errors
+;;(color-theme-vim-colors)         ; white-blue, green errors
+;;(color-theme-jb-simple)          ; white, red errors
+;;(color-theme-jsc-light2)         ; white, blue errors
+;;(color-theme-kingsajz)           ; green sunos, blue errors
+;;(color-theme-midnight)           ; black, blue errors
+;;(color-theme-montz)              ; gray, mouse arrow invisible, red errors
+;;(color-theme-pok-wob)            ; black-yellowish, yellow errors
+;;(color-theme-raspopovic)         ; turbo c++ light, rose errors
+;;(color-theme-simple-1)           ; black, red errors
+;;(color-theme-sitaramv-solaris)   ; blue, blue errors
+;;(color-theme-taming-mr-arneson)  ; black-red, white errors
+;;(color-theme-tty-dark)           ; black, light-blue errors
+;;(color-theme-word-perfect)       ; turbo c++ light, red errors
+;;(color-theme-blue-mood)          ; blue, green errors
+;;(color-theme-clarity)            ; black, light blue errors
+;;(color-theme-deep-blue)          ; blue, solaris, yellow errors
+;;(color-theme-high-contrast)      ; bold, blue errors
+;;(color-theme-jedit-grey)         ; gray, green errors
+;;(color-theme-jsc-light)          ; white, blue errors
+;;(color-theme-katester)           ; white, blue error, invalid selection??
+;;(color-theme-pierson)            ; yellow butter, blue errors
+;;(color-theme-pok-wog)            ; green solaris, yellow errors
+;;(color-theme-scintilla)          ; white, green errors
+;;(color-theme-shaman)             ; greenish, green errors
+;;(color-theme-sitaramv-nt)        ; white, red errors
+;;(color-theme-subtle-hacker)      ; green solaris, blue errors
+;;(color-theme-taylor)             ; black-red, blue errors
+;;(color-theme-wheat)              ; yellow, glue errors
 ;;------------------------------------------------------------
 ;; errors NOT visible!!
 ;;------------------------------------------------------------
-;(color-theme-emacs-21)           ; green solaris
-;(color-theme-gtk-ide)            ; white-red
-;(color-theme-lawrence)           ; matrix
-;(color-theme-marquardt)          ; yellow butter
-;(color-theme-parus)              ; turbo c++ light :)
-;(color-theme-calm-forest)        ; greenish
-;(color-theme-comidia)            ; black
-;(color-theme-late-night)         ; lights off
-;(color-theme-matrix)             ; matrix
-;(color-theme-retro-green)        ; all green
+;;(color-theme-emacs-21)           ; green solaris
+;;(color-theme-gtk-ide)            ; white-red
+;;(color-theme-lawrence)           ; matrix
+;;(color-theme-marquardt)          ; yellow butter
+;;(color-theme-parus)              ; turbo c++ light :)
+;;(color-theme-calm-forest)        ; greenish
+;;(color-theme-comidia)            ; black
+;;(color-theme-late-night)         ; lights off
+;;(color-theme-matrix)             ; matrix
+;;(color-theme-retro-green)        ; all green
 ;;------------------------------------------------------------
 
 ;; or a custom theme can be defined:
@@ -327,8 +329,10 @@
      (default ((t (nil))))
      (show-paren-mismatch-face ((t (:foreground "white" :background "purple")))))))
 ;; to choose the custom theme
-; (color-theme-youlike)
+;; (color-theme-youlike)
 ;; MY THEME
-;(color-theme-xemacs)
-;(color-theme-vim-colors)
-(color-theme-jb-simple)
+;;(color-theme-xemacs)
+(color-theme-vim-colors)
+;;(color-theme-jb-simple)
+;;------------------------------------------------------------
+;;------------------------------------------------------------
