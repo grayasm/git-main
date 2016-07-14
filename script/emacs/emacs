@@ -221,12 +221,6 @@
 (add-to-list 'ac-dictionary-directories "/home/mihai/.emacs.d/lisp/ac-dict")
 (ac-config-default)
 
-
-;; Auto Complete Mode -> install dictionary files
-(add-to-list 'ac-dictionary-directories "~/.emacs.d/lisp/dict")
-(require 'auto-complete-config)
-(ac-config-default)
-
 ;; Extra for Auto Complete Mode
 (define-key ac-mode-map (kbd "M-u") 'auto-complete) ;M-u make UPPERCASE (default), now bound to auto-complete
 
