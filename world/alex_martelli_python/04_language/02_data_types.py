@@ -63,3 +63,83 @@ print [42, 3.14, 'hello']       # list with 3 items
 print [100]                     # list with 1 item
 print []                        # list empty
 print list('wow')               # list built-in type, prints ['w','o','w']
+
+
+# -----------------------------------------------------------------------------
+# Sets
+#    * arbitrarily unordered collections of unique items
+#    * set
+#    * frozenset
+#    * are built-in types equivalent with classes Set and ImmutableSet from
+#      Python standard library "sets"
+#    # see https://docs.python.org/2/library/sets.html#sets.Set
+
+x = set(['ana', 'are', 'mere'])
+y = set(['dan', 'are', 'pere'])
+print len(x)            # number of elements in x
+print 'ana' in x        # test 'ana' membership in x
+print 'dan' not in y    # test 'dan' for non-membership in y
+print x <= y            # test whether every element in x is in y
+print x >= y            # test whether every lemenet in y is in x
+print x | y             # union, new set with elements from both x and y
+print x & y             # intersection, new set with elem. common to x and y
+print x - y             # difference, new set with elem. in x but not in y
+print x ^ y             # symmetric different, in one of them but not in both
+
+# same as above but using set member functions
+lte = x.issubset(y)
+gte = x.issuperset(y)
+uni = x.union(y)
+int = x.intersection(y)
+dif = x.difference(y)
+sdf = x.symmetric_difference(y)
+print "lte: %s" % lte
+print "gte: %s" % gte
+print "uni: %s" % uni
+print "int: %s" % int
+print "dif: %s" % dif
+print "sym: %s" % sdf
+
+x = frozenset(['ana', 'are', 'mere', 'forever'])
+# y = x - 'ana'  TypeError: unsupported operand type -: 'frozenset' and 'str'
+
+# -----------------------------------------------------------------------------
+# Dictionaries
+#    * is an arbitrary collections of items as (key:value) pairs
+#    * mutable, not ordered
+#    * 1 built-in type, the dictionary
+#    * library and extension modules provide other mapping types
+#    * keys must be hashable, values can be arbitrary types
+#    * see: https://docs.python.org/2/library/stdtypes.html#dict
+
+{'x': 42, 'y': 3.14, 'z': 7}   # Dictionary with 3 items and string keys
+{1: 2, 3: 4}                   # Dictionary with 2 items and integer keys
+{}                             # Empty dictionary
+
+dict(x=42, y=3.14, z=7)        # Dictionary with 3 items and string keys
+dict([[1, 2], [3, 4]])         # Dictionary with 2 items and integer keys
+dict()                         # Empty dictionary
+
+# more examples
+a = dict(one=1, two=2, three=3)
+b = {'one': 1, 'two': 2, 'three': 3}
+c = dict(zip(['one', 'two', 'three'], [1, 2, 3]))
+d = dict([('two', 2), ('one', 1), ('three', 3)])
+e = dict({'three': 3, 'one': 1, 'two': 2})
+print "a == b == c == d == e is %s" % (a == b == c == d == e)
+
+# -----------------------------------------------------------------------------
+# None
+#    * built-in null object
+
+# -----------------------------------------------------------------------------
+# Callables
+#    * those whose instances support the function call operation
+
+# -----------------------------------------------------------------------------
+# Boolean Values
+#    * true:  any non-zero member or non-empty container
+#    * false: 0, None and empty containers
+#    * built-in bool class is of type int, don't use it with float numbers
+#    * True, False: instances of type bool with string representations as
+#      'True', 'False' but also numberical values 1 and 0
