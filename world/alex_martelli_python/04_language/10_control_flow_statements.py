@@ -1,7 +1,7 @@
-# -----------------------------------------------------------------------------
+#
 # Control Flow Statement
 
-# The if Statement
+# The 'if' Statement
 a = 100
 b = 20
 
@@ -27,19 +27,19 @@ if a == True: print a, " == True"
 if bool(a): print "bool(", a, ") evaluates to True"
 
 
-# The while Statement
+# The 'while' Statement
 a = 0
 while a < 5:
     print "while", a, "<= 5"
     a += 1
 
-# The for Statement
+# The 'for' Statement
 # for over a string
 for letter in "ciao":
     print "give me a", letter, "..."
 
 
-# for over a dictionary
+# 'for' over a dictionary
 # dict.items() return a list of pairs [('a', 42), ('b', 3.14)...]
 
 a = {'a': 42, 'b': 3.14, 'z': 101}
@@ -65,7 +65,8 @@ while True:
     print i
 
 
-# range and xrange
+# 'range'
+# 'xrange'
 for i in range(1, 4):
     print i
 
@@ -87,7 +88,7 @@ for i in a:
 print b, c, d
 
 
-# The break Statement
+# The 'break' Statement
 i = 0
 while True:
     global i                         # local by default
@@ -97,7 +98,7 @@ while True:
     else:
         print i                      # 1, 2, 3
 
-# The continue Statement
+# The 'continue' Statement
 i = 0
 while True:
     global i                         # local by default
@@ -109,7 +110,7 @@ while True:
     print i                          # 3, 4, 5
 
 
-# The else Clause on Loop Statements
+# The 'else' Clause on Loop Statements
 #    * executed when for/while ends naturally, not from break,return,exception
 #    * suited when you want to search and element in a container
 for elem in a:
@@ -119,7 +120,7 @@ else:
     print "Warning: no satisfactory item was found in container"
 
 
-# The pass Statement
+# The 'pass' Statement
 #    * the body of a compund statement cannot be empty
 #      it must always contain at least one statement
 for i in range(4):

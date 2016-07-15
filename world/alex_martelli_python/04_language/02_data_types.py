@@ -1,5 +1,5 @@
-# -----------------------------------------------------------------------------
-# Integer numbers
+#
+# *** Integer numbers ***
 
 1,   23,   3493    # Decimal
 01,  027,  06645   # Octal
@@ -9,16 +9,16 @@
 01L,  027L,  01351033136165L  # Long octal integers
 0x1L, 0x17L, 0x17486CBC75L    # Long hexadecimal integers
 
-# Floating-point numbers
+# *** Floating-point numbers ***
 0., 0.0, .0, 1., 1.0, 1e0, 1.e0, 1.0e0
 
-# Complex numbers
+# *** Complex numbers ***
 0j, 0.j, 0.0j, .0j, 1j, 1.j, 1.0j, 1e0j, 1.e0j, 1.0e0j
 
-# -----------------------------------------------------------------------------
-# Sequences
-#    * ordered container of items, indexed by nonnegative integers.
-#    * String, Tuple and List  (built-in sequences)
+
+# *** Sequences ***
+#    - ordered container of items, indexed by nonnegative integers
+#    - String, Tuple and List  (built-in sequences)
 
 'this is a sequence'        # String
 [42, 2, 4]                  # List
@@ -65,14 +65,14 @@ print []                        # list empty
 print list('wow')               # list built-in type, prints ['w','o','w']
 
 
-# -----------------------------------------------------------------------------
-# Sets
-#    * arbitrarily unordered collections of unique items
-#    * set
-#    * frozenset
-#    * are built-in types equivalent with classes Set and ImmutableSet from
+
+# *** Sets ***
+#    - arbitrarily unordered collections of unique items
+#    - set
+#    - frozenset
+#      are built-in types equivalent with classes Set and ImmutableSet from
 #      Python standard library "sets"
-#    # see https://docs.python.org/2/library/sets.html#sets.Set
+#    - see https://docs.python.org/2/library/sets.html#sets.Set
 
 x = set(['ana', 'are', 'mere'])
 y = set(['dan', 'are', 'pere'])
@@ -103,14 +103,14 @@ print "sym: %s" % sdf
 x = frozenset(['ana', 'are', 'mere', 'forever'])
 # y = x - 'ana'  TypeError: unsupported operand type -: 'frozenset' and 'str'
 
-# -----------------------------------------------------------------------------
-# Dictionaries
-#    * is an arbitrary collections of items as (key:value) pairs
-#    * mutable, not ordered
-#    * 1 built-in type, the dictionary
-#    * library and extension modules provide other mapping types
-#    * keys must be hashable, values can be arbitrary types
-#    * see: https://docs.python.org/2/library/stdtypes.html#dict
+
+# *** Dictionaries ***
+#    - is an arbitrary collections of items as (key:value) pairs
+#    - mutable, not ordered
+#    - 1 built-in type, the dictionary
+#    - library and extension modules provide other mapping types
+#    - keys must be hashable, values can be arbitrary types
+#    - see: https://docs.python.org/2/library/stdtypes.html#dict
 
 {'x': 42, 'y': 3.14, 'z': 7}   # Dictionary with 3 items and string keys
 {1: 2, 3: 4}                   # Dictionary with 2 items and integer keys
@@ -128,18 +128,18 @@ d = dict([('two', 2), ('one', 1), ('three', 3)])
 e = dict({'three': 3, 'one': 1, 'two': 2})
 print "a == b == c == d == e is %s" % (a == b == c == d == e)
 
-# -----------------------------------------------------------------------------
-# None
-#    * built-in null object
 
-# -----------------------------------------------------------------------------
-# Callables
-#    * those whose instances support the function call operation
+# *** None ***
+#     - built-in null object
 
-# -----------------------------------------------------------------------------
-# Boolean Values
-#    * true:  any non-zero member or non-empty container
-#    * false: 0, None and empty containers
-#    * built-in bool class is of type int, don't use it with float numbers
-#    * True, False: instances of type bool with string representations as
+
+# *** Callable ***
+#     - those whose instances support the function call operation
+
+
+# *** Boolean Values ***
+#    - true:  any non-zero member or non-empty container
+#    - false: 0, None and empty containers
+#    - built-in bool class is of type int, don't use it with float numbers
+#    - True, False: instances of type bool with string representations as
 #      'True', 'False' but also numberical values 1 and 0

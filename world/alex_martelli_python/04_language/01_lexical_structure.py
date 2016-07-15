@@ -4,9 +4,7 @@
 from __future__ import division  # see the Operators section.
 
 
-# -----------------------------------------------------------------------------
-# Lines and Identation
-#
+# *** Lines and Identation ***
 
 # this is a comment
 
@@ -37,16 +35,16 @@ def f():
     print "of a program, here var2 = %d" % var2
     f()
 
-# -----------------------------------------------------------------------------
-# Character Sets
+
+# *** Character Sets ***
 # see the second line after shebang
 
-# -----------------------------------------------------------------------------
 # Identifiers: variable, function, Class, module or other object.
 #              [A-Za-z_] + [0-9][A-Za-z_]
 
-# -----------------------------------------------------------------------------
-# Keywords:  (see http://www.programiz.com/python-programming/keyword-list)
+
+# *** Keywords ***
+#    see http://www.programiz.com/python-programming/keyword-list
 #
 #         and        del       for      is         raise
 #         assert     elif      from     lambda     return
@@ -57,10 +55,11 @@ def f():
 #         as         False      True      None     nonlocal (3.0)
 
 
-print " 1 == 1 %s" % (1 == 1)  # True
-print " 10 < 1 %s" % (10 < 1)  # False
+# 'True' 'False' 'None' which represents the null value (absence value)
+print " 1 == 1 %s" % (1 == 1)
+print " 10 < 1 %s" % (10 < 1)
 var2 = None
-print " var2 = %s" % var2      # None represents the null value (absence value)
+print " var2 = %s" % var2
 
 
 def a_void_function():
@@ -68,7 +67,7 @@ def a_void_function():
     b = 2
     c = a + b
     var3 = a_void_function()
-    print " var3 = %s" % var3      # no return value
+    print " var3 = %s" % var3      # return 'None' (default)
 
 
 def improper_return_function(a):
@@ -82,43 +81,54 @@ print " True and False is %s" % (True and False)
 print " True or False  is %s" % (True or False)
 print " not True       is %s" % (not True)
 
-import math as myAlias         # import, as
+
+# 'as'
+import math as myAlias
 print "cos(pi) is %.2f" % myAlias.cos(myAlias.pi)
 
-assert 10 < 11, "my error message"  # keyworkd: assert condition,message
+# 'assert'
+assert 10 < 11, "my error message"
 
-for i in range(1, 11):         # for
-    if i == 5:                 # if
-        break                  # break
+
+# 'for' 'if' 'break' 'continue'
+for i in range(1, 11):
+    if i == 5:
+        break
     if i == 3:
-        continue               # continue
+        continue
     print i
 
 
-class ExampleClass:            # class - new user defined class in Python
+# 'class' 'def' user defined function
+class ExampleClass:
     def function1(parameter):
         None
 
-    def function2(parameter):  # def - a user defined function
+    def function2(parameter):
         None
 
+# 'del' - delete a reference to an object
 var5 = var6 = 5
-del var5                       # del - delete a reference to an object
-#       everything in python is an object
-#       var5 does not exist anymore
+del var5
+
+# everything in python is an object
+# var5 does not exist anymore
 # NameError: name 'var5' is not defined
 
+
+# this is a list, don't know why it's here :)
 var7 = ['x', 'y', 'z']
 del var7[1]
-print var7                     # ['x', 'z']
+print var7         # prints: ['x', 'z']
 
 
+# 'if' 'elif' 'else'
 def if_example(a):
-    if a == 1:                 # if
+    if a == 1:
         print "One"
-    elif a == 2:               # elif
+    elif a == 2:
         print "Two"
-    else:                      # else
+    else:
         print "> than Two"
 
 if_example(2)
@@ -126,6 +136,7 @@ if_example(4)
 if_example(1)
 
 
+# 'try' 'except'
 def reciprocal(num):
     try:
         r = 1/num
@@ -138,6 +149,7 @@ print reciprocal(10)
 print reciprocal(0)
 
 
+# 'finally' - gets executed even if there is an exception
 def with_finally(a):
     try:
         r = 1/a
@@ -145,22 +157,27 @@ def with_finally(a):
         print "except SyntaxError:"
     except NameError:
         print "except NameError:"
-    finally:                   # gets executed even if there is an exception
+    finally:
         print "finally"
     return r
 
 print with_finally(1)
 
+
+# 'for'
 var8 = ['John', 'Monica', 'Steven', 'Robin']
-for i in var8:                 # for
+for i in var8:
     print 'Hello ' + i
 
-from math import cos           # from
+
+# 'from'
+from math import cos
 
 
-# global - a variable declared global inside a function refers to a variable
-#          defined outside; If not declared global, Python will create a local
-#          variable instead.
+# 'global'
+# A variable declared global inside a function refers to a variable
+# defined outside; If not declared global, Python will create a local
+# variable instead.
 var9 = 10
 
 
@@ -176,21 +193,23 @@ def write1():
 def write2():
     var9 = 15
 
-read1()   # 10
+read1()   # prints: 10
 write1()
-read1()   # 5
+read1()   # prints: 5
 write2()
-read1()   # 5
+read1()   # prints: 5
 
 
-# in - used to test if a sequence (list, tuple, string etc) contains a value
+# 'in'
+# Used to test if a sequence (list, tuple, string etc) contains a value
 var10 = [1, 2, 3, 4, 5]
 print "5 in %s is %s" % (var10, 5 in var10)
 
 
-# is - used to test if 2 variables refer to the same object, where == operator
-#      is used to test if 2 variables are equal or not.
-#      It returns True if objects are identical and False if not.
+# 'is'
+# Used to test if 2 variables refer to the same object, where == operator
+# is used to test if 2 variables are equal or not.
+# It returns True if objects are identical and False if not.
 
 print "True is True = %s" % (True is True)  # True is one instance in Python
 print "False is False = %s" % (False is False)
@@ -206,16 +225,18 @@ print "() == () =  %s" % (() == ())
 print "() is () =  %s" % (() is ())
 
 
-# lambda - used to create an anonymous function (function with no name)
-#          It is an inline function that does not contain a return statement.
+# 'lambda'
+# Used to create an anonymous function (function with no name)
+# It is an inline function that does not contain a return statement.
 func11 = lambda x: x*2
 for i in range(1, 6):
     print "lambda(%d)= %d" % (i, func11(i))
 
 
-# nonlocal - used to declare that a variable inside a nested function (function
-#            inside a function) is not local to it, meaning it lies in the
-#            outer inclosing function. Python >= 3
+# 'nonlocal'
+# Used to declare that a variable inside a nested function (function
+# inside a function) is not local to it, meaning it lies in the
+# outer inclosing function. Does not work in python-2.7
 
 '''def outer_function():
     a = 5
@@ -230,13 +251,16 @@ for i in range(1, 6):
 outer_function()'''
 
 
-# pass - a null statement (placeholder). Nothing happens when executed.
+# 'pass'
+# A null statement (placeholder).
+# Nothing happens when executed.
 def function(args):
     pass
 
 
-# return - used inside a function to exit it and return a value. If no value
-#          is return explicitly, None is returned automatically.
+# 'return'
+# Used inside a function to exit it and return a value. If no value
+# is return explicitly, None is returned automatically.
 
 def func_return():
     a = 10
@@ -250,24 +274,27 @@ print func_return()
 print no_return()
 
 
-# while - used for looping until False or a break is encountered.
+# 'while'
+# Used for looping until False or a break is encountered.
 var12 = 5
 while (var12):                   # 0 evaluated to False
     print var12
     var12 = var12 - 1
 
 
-# with - used to wrap the execution of a block of code within methods defined
-#        by the context manager which implements __enter__ and __exit__
+# 'with'
+#  Used to wrap the execution of a block of code within methods defined
+#  by the context manager which implements __enter__ and __exit__
 
 with open('/tmp/test_python_can_delete_this.txt', 'w') as my_file:
     my_file.write('Hello world!')
 
 
-# yield - used inside a function like a return statement. It returns a
-#         generator, which is an iterator that generates one item at a time.
-#         It generates one value at a time instead of storing all the values
-#         in memory.
+# 'yield'
+# Used inside a function like a return statement.
+# It returns a generator, which is an iterator that generates one item at
+# a time. It generates one value at a time instead of storing all the values
+# in memory.
 def generator():
     for i in range(6):
         yield i*i
@@ -275,6 +302,7 @@ def generator():
 var13 = generator()
 for i in var13:
     print i
+
 
 # -----------------------------------------------------------------------------
 # Operators  (see http://www.programiz.com/python-programming/operators)
@@ -374,9 +402,9 @@ print "1 in %s = %s" % (y, (1 in y))
 print "'a' in %s = %s" % (y, ('a' in y))
 
 
-# -----------------------------------------------------------------------------
-# Literals : is a number or string that appears directly in a program
-#
+# *** Literals***
+# Is a number or string that appears directly in a program
+
 
 42                          # Integral literal
 3.14                        # Floating-point literal

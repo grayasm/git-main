@@ -1,10 +1,10 @@
-# -----------------------------------------------------------------------------
-# Variables
-#    * everything in Pyton is an Object
-#    * binding operation connects a Name with an Object (implicit)
-#    * rebinding operation binds a reference that was already bound (implicit)
-#    * object dissapears when nothing refers it (implicit)
-#    * unbinding operation disconnects the Name from the Object
+#
+# *** Variables ***
+#    - everything in Pyton is an Object
+#    - binding operation connects a Name with an Object (implicit)
+#    - rebinding operation binds a reference that was already bound (implicit)
+#    - object dissapears when nothing refers it (implicit)
+#    - unbinding operation disconnects the Name from the Object
 #      'del' statement unbinds the Name and deletes the Object (explicit)
 
 name = [10, 99, 42, 22, 11]

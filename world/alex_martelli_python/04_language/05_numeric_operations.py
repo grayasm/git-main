@@ -1,4 +1,4 @@
-# -----------------------------------------------------------------------------
+#
 # Numeric Operations
 a = 1j                  # imaginary part
 b = 2j                  # imaginary part

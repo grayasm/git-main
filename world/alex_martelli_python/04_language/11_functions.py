@@ -1,4 +1,4 @@
-# -----------------------------------------------------------------------------
+#
 # Functions
 #
 #    * a function always returns a value or None
@@ -6,7 +6,7 @@
 #    * can pass a function as argument to another function
 
 
-# The def Statement
+# The 'def' Statement
 def double(x):
     return x*2
 
@@ -61,12 +61,12 @@ counter()
 print counter.count         # 2
 
 
-# The return Statement
+# The 'return' Statement
 
 # The semantic argument passing
 #    - there are 2 concepts related to passing parameters to a function
 #    1) rebinding the caller's variables (immutable objects, like numbers)
-#    2) mutating the caller's variables (mutable objects)
+#    2) mutating the caller's variables (mutable objects, like lists)
 # example:
 def f(x, y):
     x = 23
@@ -90,7 +90,7 @@ print divide(dividend=94, divisor=12)  # prints: 7 (see the flip)
 #    * variables that are not local are global (when not nested)
 
 
-# The global Statement
+# The 'global' Statement
 _count = 0
 
 
@@ -135,7 +135,7 @@ def f1():
 f1()
 
 
-# lambda Expressions
+# 'lambda' Expressions
 #   - if a function body is a single return statement, you may choose to
 #     replace the function with a special lambda expression form:
 #   syntax:  lambda parameters: expression

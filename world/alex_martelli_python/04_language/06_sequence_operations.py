@@ -1,4 +1,4 @@
-# -----------------------------------------------------------------------------
+#
 # Sequence Operations
 #    * operations on string "", tuple (), list []
 #    * each class has member functions accessible

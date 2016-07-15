@@ -1,4 +1,4 @@
-# -----------------------------------------------------------------------------
+#
 # Set Operations
 #
 #    set: arbitrarily unordered collections of unique items

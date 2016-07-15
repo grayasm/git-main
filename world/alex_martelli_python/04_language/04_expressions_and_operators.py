@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-# -----------------------------------------------------------------------------
-# Expressions and other Operators
+
+# *** Expressions and other Operators ***
 a = `222, str`          # string conversion
 print a
 
@@ -44,13 +44,13 @@ b = 15
 c = 20
 d = 21
 e = a < b <= c < d
-print "a < b <= c < d is ", e
+print "a < b <= c < d is ", e  # prints: ... is True
 
 # Short-Circuiting Operators
 #      if expr1 and expr2:   -> if expr1 is False, expr2 is not executed
 def expr2():
-    print "If you see this is an error"
+    print "If you see this then it is an error"
     return True
 
 if a == 200 and expr2():
-    print "If you see this is an error"
+    print "If you see this then it is an error"
