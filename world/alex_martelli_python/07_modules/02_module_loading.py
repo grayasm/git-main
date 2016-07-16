@@ -71,3 +71,9 @@ print sys.path
 # (1) .pyd (OSX) .dll (Windows) .so(Unix)  .sl(HP-UX)
 # (2) .py
 # (3) .pyc .pyo when run with -O
+
+class TT(object):
+    def __getattr__(self, name): return 23
+
+import sys
+sys.modules[__name__] = TT()
