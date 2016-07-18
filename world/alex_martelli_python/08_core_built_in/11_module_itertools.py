@@ -4,14 +4,20 @@
 #
 # The intertools Module
 #
+# https://docs.python.org/2/library/itertools.html
 import itertools
 
-#  chain(*iterables)
-#  count(firstval=0)
-#  cycle(iterable)
-#  ifilter(func, iterable)
-#  imap(func, *iterables)
-#  islice(iterable[,start],stop[,step])
-#  izip(*iterables)
-#  repeat(items[,times])
-#  tee(iterable, n=2)
+#  itertools.chain(*iterables)
+#  itertools.count(firstval=0)
+for i in itertools.count(5, 2):
+    if i > 10:
+        break
+    print i
+
+#  itertools.cycle(iterable)
+#  itertools.ifilter(func, iterable)
+#  itertools.imap(func, *iterables)
+#  itertools.islice(iterable[,start],stop[,step])
+#  itertools.izip(*iterables)
+#  itertools.repeat(items[,times])
+#  itertools.tee(iterable, n=2)
