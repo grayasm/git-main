@@ -1,0 +1,73 @@
+#!/usr/bin/python -tt
+# -*- coding: utf-8 -*-
+
+#
+# Regular Expressions and the re Module
+#
+# 'compile' - builds a RE object from a pattern string
+# RE object - searches for matches
+#           - substitutes a string
+
+# *** Pattern-String Syntax ***
+'''
+.        - any character except \n
+^        - start of string
+$        - end of string
+*        - zero or more cases of previous RE (greedy, as many as possible)
++        - one or more cases of previous RE (greedy, as many as possible)
+?        - zero or one case of previous RE (greedy, as many as possible)
+*?,+?,?? - nongreedy versions of *,+ and ? (as few as possible)
+
+{m,n}    - m to n cases of previous RE (greedy)
+{m,n}?   - m to n cases of previous RE (nongreedy)
+[...]    - any one of a set of characters contained within brackets
+|        - either preceding or the following expression
+(...)    - matches the RE within the paranthesis and indicates a group
+
+(?iLmsux) - alternate way to set optional flags
+(?:...)  - like (...) but does not indicate a group
+(?P<id>...) - like (...) but the group also gets the name id
+(?#...)  - content of the paranthesis is a comment; no effect on match
+(?=...)  - matches if RE ... matches what's next but does not consume it
+(?!...)  - matches if RE ... does not match what's next, does not consume it
+(?<=...) - matches if there is a match ending at the current position
+(?<!...) - matches if there is no match ending at the current position
+\number  - maches whatever was previously matched by group numbered number
+\A       - empty string at the start of the whole string
+\b       - empty string at the start or end of a word
+\B       - an empty string, but not at the start or end of a word
+\d       - one digit, like set [0-9]
+\D       - one nondigit, like the set [^0-9]
+\s       - a whitespace character like the set [\t\n\r\f\v]
+\S       - a nonwhite space character like the set [^\t\n\r\f\v]
+\w       - one alphanumeric character, like [a-zA-Z0-9_]
+\W       - one nonalphanumeric character, the reverse of \w
+\Z       - one empty string, but only at the end of the whole string
+\\       - one backslash character
+'''
+
+# *** Common Regular Expressions Idioms ***
+
+# *** Set of Characters ***
+
+# *** Alternatives ***
+
+# *** Groups ***
+
+# *** Optional Flags ***
+
+# *** Match Versus Search ***
+
+# *** Anchoring at String Start and End ***
+
+# *** Regular Expression Objects ***
+
+# *** Match Objects ***
+
+
+# *** Functions of RE Module ***
+
+'''
+compile(pattern, flag=0)
+escape(s)
+'''
