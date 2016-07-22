@@ -4,6 +4,8 @@
 #
 # Regular Expressions and the re Module
 #
+import re
+
 # 'compile' - builds a RE object from a pattern string
 # RE object - searches for matches
 #           - substitutes a string
@@ -71,3 +73,35 @@ $        - end of string
 compile(pattern, flag=0)
 escape(s)
 '''
+
+# https://docs.python.org/3/howto/regex.html
+# compiling regular expressions
+p = re.compile('ab*')
+p = re.compile('ab*', re.IGNORECASE)
+p = re.compile('[a-z]+')
+
+# 'match' and 'search' return None or a match object instance
+m = p.match("")
+print m                      # None
+
+m = p.match('tempo')
+print m                      # <_sre.SRE_Match object at 0x7fa73e754850>
+print m.group()              # tempo
+print m.start()              # 0
+print m.end()                # 5
+print m.span()               # (0, 5)
+
+
+# If the first character does not match, re.match(..) will return None.
+# This means m.start() will always be zero for successul return.
+m = p.match('::: message')
+print m                      # None
+
+m = p.search('::: message')
+print m.group()              # message
+print m.span()               # (4, 11)
+
+# 'findall' returns a list of matching strings
+p = re.compile('\d+')        # \d matches one digit i.e. [0-9]
+l = p.findall('12 drummers drumming, 11 pipers piping, 10 lords a-leaping')
+print l                      # [12, 11, 10]
