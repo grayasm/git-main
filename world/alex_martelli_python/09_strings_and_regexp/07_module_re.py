@@ -75,21 +75,21 @@ escape(s)
 '''
 
 # https://docs.python.org/3/howto/regex.html
-# compiling regular expressions
-p = re.compile('ab*')
-p = re.compile('ab*', re.IGNORECASE)
-p = re.compile('[a-z]+')
+# The 'pattern' object contains compiled reg. expressions
+pat = re.compile('ab*')
+pat = re.compile('ab*', re.IGNORECASE)
+pat = re.compile('[a-z]+')
 
 # 'match' and 'search' return None or a match object instance
-m = p.match("")
-print m                      # None
+mat = pat.match("")
+print mat                    # None
 
-m = p.match('tempo')
-print m                      # <_sre.SRE_Match object at 0x7fa73e754850>
-print m.group()              # tempo
-print m.start()              # 0
-print m.end()                # 5
-print m.span()               # (0, 5)
+mat = pat.match('tempo')
+print mat                    # <_sre.SRE_Match object at 0x7fa73e754850>
+print mat.group()            # tempo
+print mat.start()            # 0
+print mat.end()              # 5
+print mat.span()             # (0, 5)
 
 
 # If the first character does not match, re.match(..) will return None.
@@ -101,7 +101,18 @@ m = p.search('::: message')
 print m.group()              # message
 print m.span()               # (4, 11)
 
-# 'findall' returns a list of matching strings
+# 'findall()' returns a list of matching strings
 p = re.compile('\d+')        # \d matches one digit i.e. [0-9]
 l = p.findall('12 drummers drumming, 11 pipers piping, 10 lords a-leaping')
 print l                      # [12, 11, 10]
+
+# 'finditer()' returns a sequence of match object instances
+iterator = p.finditer('12 drummers, 11 ... 10 ...')
+print iterator               # <callable-iterator object at 0x7fd10573e990>
+
+for match in iterator:
+    print match.span()       # (0, 2) (13, 15) (20, 22)
+
+# calling 're' module methods directly, without a pattern object
+m = re.match(r'From\s+', 'Fromage amk')
+print m                      # None
