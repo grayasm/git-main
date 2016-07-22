@@ -52,8 +52,9 @@ alias yumall='yum --enablerepo=nux-dexop --enablerepo=fedora19'
 
 # SVN shortcuts
 alias svnlu='svn status | grep ^\?'   # list unversioned
-alias svnru='svn status | grep ^\? | cut -c9- | xargs -d \\n rm -r'
-
+alias svnru='svn status | grep ^\? | cut -c9- | xargs -d \\n rm -rv'
+alias svnrevd='svn revert --recursive .'
+alias svnrevf='svn revert'
 
 
 
