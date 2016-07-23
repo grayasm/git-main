@@ -21,4 +21,4 @@ X11_DEVEL='libXp-devel  libXpm-devel  libXt-devel  libXtst-devel
           libxcb-devel  libxdo-devel  libxkbfile-devel  libxklavier-devel
           libxkbcommon-devel'
 
-echo $X11_DEVEL
+yum install $X11_DEVEL
