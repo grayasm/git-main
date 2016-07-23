@@ -6,6 +6,14 @@ if [ ! -d $HOME/1TB/fonts ]; then
 	exit
 fi
 
+# need fc-cache
+fc-cache --version 2>&1 >/dev/null
+FC_CACHE_IS_AVAILABLE=$?
+if [ $FC_CACHE_IS_AVAILABLE -ne 0 ]; then
+	echo "install fc-cache"
+	exit
+fi
+
 
 # should be copied in the home directory?
 read -p "Install fonts in $HOME/.fonts [Y/n]=" YN
@@ -22,6 +30,7 @@ case $YN in
 			mkdir -pv $HOME/.fonts
 		fi
 		cp -v $HOME/1TB/fonts/*  $HOME/.fonts
+		fc-cache $HOME/.fonts
 		echo "Done."
 		exit
 		;;
