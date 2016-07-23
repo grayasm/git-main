@@ -86,6 +86,12 @@ alias office='ssh -i $HOME/.ssh/id_dsa_office -l mihai -L 13389:10.1.1.235:3389 
 alias xwininfo='xwininfo'   #window info
 
 
+export DISTCC_HOSTS='localhost 192.168.0.15'
+export CC="/usr/bin/distcc  /usr/bin/gcc"
+export CXX="/usr/bin/distcc  /usr/bin/g++"
+export PATH=/opt/cmake-3.4/bin:$PATH
+
+
 # must install everything as a rpm package
 # which remainds me that I need to solve the buildrpm issue sooner.
 
