@@ -76,20 +76,22 @@ escape(s)
 
 # https://docs.python.org/3/howto/regex.html
 # The 'pattern' object contains compiled reg. expressions
-pat = re.compile('ab*')
-pat = re.compile('ab*', re.IGNORECASE)
-pat = re.compile('[a-z]+')
+# The notation below is p-pattern, m-match, re-module
+
+p = re.compile('ab*')
+p = re.compile('ab*', re.IGNORECASE)
+p = re.compile('[a-z]+')
 
 # 'match' and 'search' return None or a match object instance
-mat = pat.match("")
-print mat                    # None
+m = p.match("")
+print m                    # None
 
-mat = pat.match('tempo')
-print mat                    # <_sre.SRE_Match object at 0x7fa73e754850>
-print mat.group()            # tempo
-print mat.start()            # 0
-print mat.end()              # 5
-print mat.span()             # (0, 5)
+m = p.match('tempo')
+print m                    # <_sre.SRE_Match object at 0x7fa73e754850>
+print m.group()            # tempo
+print m.start()            # 0
+print m.end()              # 5
+print m.span()             # (0, 5)
 
 
 # If the first character does not match, re.match(..) will return None.
@@ -116,3 +118,81 @@ for match in iterator:
 # calling 're' module methods directly, without a pattern object
 m = re.match(r'From\s+', 'Fromage amk')
 print m                      # None
+
+# compilation flags, ex:'VERBOSE'
+charref = re.compile(r"""
+&[#]                 # start of a numeric entity reference
+(
+    0[0-7]+          # octal form
+  | [0-9]+           # decimal form
+  | x[0-9a-fA-F]+    # hexadecimal form
+)
+;                    # trailing semicolon
+""", re.VERBOSE)
+
+# or simple form without VERBOSE
+charref = re.compile("&#(0[0-7]+"
+                     "|[0-9]+"
+                     "|x[0-9a-fA-F]+);")
+
+# more metacharacters
+# ^
+m = re.search('^From', 'From here to there')
+print m.group()               # From
+
+m = re.search('^From', 'Reciting From Memory')
+print m                       # None
+
+# $
+m = re.search('}$', '{block}')
+print m.group(), m.span()     # } (6, 7)
+
+m = re.search('}$', '{block} ')
+print m                       # None
+
+m = re.search('}$', '{block}\n')
+print m.group(), m.span()     # } (6, 7)
+
+p = re.compile(r'\bclass\b')
+m = p.search('no class at all')
+print m.group(), m.span()     # class (3, 8)
+
+m = p.search('the declassified algorithm')
+print m                       # None
+
+m = p.search('one subclass is')
+print m                       # None
+
+# r'\b.....'  - is a raw r'...' string where escape does not have effect
+#  '\b.....'  - is a normal string where \b escape is a backspace character
+#             - so r'\bword' means empty string at the beginning of the word
+p = re.compile('\bclass\b')
+m = p.search('no class at all')
+print m                       # None
+
+m = p.search('\b' + 'class' + '\b')
+print m.group(), m.span()     # clas (0, 7)
+
+# Grouping (...)
+p = re.compile('(ab)*')
+m = p.match('ababababab')
+print m.group(), m.span()     # ababababab (0, 10)
+
+p = re.compile('(a)b')
+m = p.match('ab')
+print m.group(), m.group(0)   # ab ab
+
+p = re.compile('(a(b)c)d')
+m = p.match('abcd')
+print m.group(0), m.group(1), m.group(2)  # abcd abc b
+
+t = m.group(0, 1, 2)
+print t                       # ('abcd', 'abc', 'b')
+
+t = m.groups()
+print t                       # ('abc', 'b')
+
+# RE detects doubled words in a string
+p = re.compile(r'(\b\w+)\s+\1')
+m = p.search('Paris in the the spring.')
+print m.group(), m.span()     # the the (9, 16)
