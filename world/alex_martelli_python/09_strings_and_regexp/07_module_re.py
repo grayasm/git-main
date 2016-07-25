@@ -196,3 +196,145 @@ print t                       # ('abc', 'b')
 p = re.compile(r'(\b\w+)\s+\1')
 m = p.search('Paris in the the spring.')
 print m.group(), m.span()     # the the (9, 16)
+
+
+# https://docs.python.org/3/howto/regex.html#non-capturing-and-named-groups
+# Non-capturing groups (?:...)
+m = re.match("([abc])+", "abc")
+print m.groups()              # ('c',)
+m = re.match("(?:[abc])+", "abc")
+print m.groups()              # ()
+
+# named group syntax is: (?P<name>...)
+p = re.compile(r'(?P<word>\b\w+\b)')
+m = p.search('(((( Lots of punctuation )))')
+print m.group('word')         # Lots
+print m.group(1)              # Lots
+
+# named groups are handy because they let you use easily-remembered names.ex:
+InternalDate = re.compile(r'INTERMEDIATE "'
+            r'(?P<day>[ 123][0-9])-(?P<mon>[A-Z][a-z][a-z])-'
+            r'(?P<year>[0-9][0-9][0-9][0-9])'
+            r' (?P<hour>[0-9][0-9]):(?P<min>[0-9][0-9]):(?P<sec>[0-9][0-9])'
+            r' (?P<zonen>[-+])(?P<zoneh>[0-9][0-9])(?P<zonem>[0-9][0-9])'
+            r'"')
+
+m = InternalDate.match('INTERMEDIATE " 2-Feb-0999 01:01:99 +0020"')
+print m.group()          # INTERMEDIATE " 2-Feb-0999 01:01:99 +0020"
+print m.groups()         # (' 2', 'Feb', '0999', '01', '01', '99', '+', '00', '20')
+print m.group('year')    # 0999
+
+
+p = re.compile(r'(?P<word>\b\w+)\s+(?P=word)')
+m = p.search('Paris in the the spring')
+print m.group()          # the the
+
+# Splitting String with:
+# pattern.split(string [, maxsplit=0])
+
+p = re.compile(r'\W+')
+l = p.split('This is a test, short and sweet, of split().')
+print l   # ['This', 'is', 'a', 'test', 'short', 'and', 'sweet', 'of', 'split', '']
+
+p = re.compile(r'\W+')
+p2 = re.compile(r'(\W+)')
+l = p.split('This... is a test.')
+print l   # ['This', 'is', 'a', 'test', '']
+
+l = p2.split('This...is a test.')
+print l   # ['This', '...', 'is', ' ', 'a', ' ', 'test', '.', '']
+
+# or using re.split()
+l = re.split('[\W]+', 'Words, words, words.')
+print l   # ['Words', 'words', 'words', '']
+
+l = re.split('([\W]+)', 'Words, words, words.')
+print l   # ['Words', ', ', 'words', ', ', 'words', '.', '']
+
+l = re.split('[\W]+', 'Words, words, words.', 1)
+print l   # ['Words', 'words, words.']
+
+
+# Search and Replace
+# pattern.sub(replacement, string[, count=0])
+p = re.compile('(blue|white|red)')
+s = p.sub('colour', 'blue socks and red shoes')
+print s                       # colour socks and colour shoes
+
+# 'subn'
+p = re.compile('(blue|white|red)')
+t = p.subn('colour', 'blue socks and red shoes')
+print t                       # ('colour socks and colour shoes', 2)
+
+t = p.subn('colour', 'no colours at all')
+print t                       # ('no colours at all', 0)
+
+p = re.compile('x*')
+s = p.sub('-', 'abxd')
+print s                       # -a-b-d-
+
+
+# changes section into subsection
+p = re.compile('section{ ( [^}]* ) }', re.VERBOSE)
+s = p.sub(r'subsection{\1}', 'section{First} section{second}')
+print s                       # subsection{First} subsection{second}
+
+# 3 equivalent substitutions using named groups.
+p = re.compile('section{ (?P<name> [^}]* ) }', re.VERBOSE)
+s = p.sub(r'subsection{\1}', 'section{First}')
+print s                       # subsection{First}
+
+s = p.sub(r'subsection{\g<1>}', 'section{First}')
+print s                       # subsection{First}
+
+s = p.sub(r'subsection{\g<name>}', 'section{First}')
+print s                       # subsection{First}
+
+
+# replacement as a function
+def hexrepl(match):
+    "Return the hex string for a decimal number"
+    value = int(match.group())
+    return hex(value)
+
+p = re.compile(r'\d+')
+s = p.sub(hexrepl, 'Call 65490 for printing, 49152 for user code.')
+print s                       # Call 0xffd2 for printing, 0xc000 for user code.
+
+
+# Common Problems
+
+# match() vs search()
+print (re.match('super', 'superstition').span())   # (0, 5)
+print (re.match('super', 'insuperable'))           # None
+
+print (re.search('super', 'superstition').span())  # (0, 5)
+print (re.search('super', 'insuperable').span())   # (2, 7)
+
+
+# Greedy vs Non-Greedy
+s = '<html><head><title>Title</title>'
+print len(s)                     # 32
+
+m = re.match('<.*>', s)
+print m.span()                   # (0, 32)
+
+m = re.match('<.*>', s)
+print m.group()                  # <html><head><title>Title</title>
+
+m = re.match('<.*?>', s)
+print m.group()                  # <html>
+
+
+# Using re.VERBOSE - permissive with # comments in syntax
+p = re.compile(r"""
+\s*                 # Skip leading whitespace
+(?P<headers>[^:]+)  # Header name
+\s* :               # Whitespace, and a colon
+(?P<value>.*?)      # The header's value -- *? used to
+                    # lose the following trailing whitespace
+\s*$                # Trailing whitespace to end-of-line
+""", re.VERBOSE)
+
+# which is more readable than
+p = re.compile(r"\s*(?P<header>[^:]+)\s*:(?P<value>.*?)\s*$")
