@@ -6,7 +6,7 @@
 
 
 if [ -f $HOME/.bash_nosave ]; then
-. $HOME/.bash_nosave
+   . $HOME/.bash_nosave
 fi
 
 
@@ -86,9 +86,9 @@ alias office='ssh -i $HOME/.ssh/id_dsa_office -l mihai -L 13389:10.1.1.235:3389 
 alias xwininfo='xwininfo'   #window info
 
 
-export DISTCC_HOSTS='localhost 192.168.0.15'
-export CC="/usr/bin/distcc  /usr/bin/gcc"
-export CXX="/usr/bin/distcc  /usr/bin/g++"
+# export DISTCC_HOSTS='localhost 192.168.0.15'
+# export CC="/usr/bin/distcc  /usr/bin/gcc"
+# export CXX="/usr/bin/distcc  /usr/bin/g++"
 export PATH=/opt/cmake-3.4/bin:$PATH
 
 
