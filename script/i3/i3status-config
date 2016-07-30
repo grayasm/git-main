@@ -1,0 +1,45 @@
+#
+# i3status config
+#
+# parameters for the statusbar program i3bar
+# other programs are dzen2, xmobar, lemonbar or similar
+# author: https://gist.github.com/rafi/6063132
+general {
+        colors = true
+        interval = 1
+        color_good = "#FF00FF"
+        color_bad = "#FF00FF"
+        color_degraded = "#FF00FF"
+        output_format = "i3bar"
+}
+
+# https://i3wm.org/i3status/manpage.html
+# what do display on the statusbar
+order += "cpu_usage"
+order += "disk /"
+# order += "disk /mnt/sdb1"
+order += "ethernet enp6s0"
+order += "tztime local"
+
+cpu_usage {
+     format = "cpu:%usage %"
+}
+
+disk / {
+     prefix_type = "decimal"
+     format = "sda1: %total | %free free"
+}
+
+disk /mnt/sdb1 {
+     prefix_type = "decimal"
+     format = "sdb1: %total|%free free"
+}
+
+ethernet enp6s0 {
+     format_up = "E: %ip (%speed)"
+}
+
+tztime local {
+     format = "%Y-%m-%d %H:%M:%S %Z"
+     timezone = "Europe/Berlin"
+}
