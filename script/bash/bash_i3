@@ -1,0 +1,22 @@
+#
+# https://i3wm.org/docs/refcard.html
+
+i3help()
+{
+    echo "https://i3wm.org/docs/refcard.html"
+    echo "mod1 + d                   open application launcher (dmenu)"
+    echo "mod1 + SHIFT + q           kill a window"
+    echo "mod1 + ENTER               open new terminal"
+    echo "mod1 + j,k,l,;             focus left,down,up,right"
+    echo "mod1 + SHIFT + j,k,l,;     move window left,down,up,right"
+    echo "mod1 + f,v,h,r             toggle fullscreen,split vert,horiz,resize"
+    echo "mod1 + e,s,w               container layout default,stacking,tabbed"
+    echo "mod1 + SHIFT + SPACEBAR    toggle floating"
+    echo "mod1 + l.mouse             drag floating"
+    echo "mod1 + r.mouse             resize floating"
+    echo "mod1 + 0-9                 switch to another workspace"
+    echo "mod1 + SHIFT + 0-9         move window to another workspace"
+    echo "mod1 + SHIFT + c           reload teh configuration file"
+    echo "mod1 + SHIFT + r           restart i3 inplace"
+    echo "mod1 + SHIFT + e           exit i3"
+}
