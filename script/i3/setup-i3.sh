@@ -36,3 +36,5 @@ if [ -f $HOME/.config/i3status/config ]; then
 fi
 
 cp ./i3status-config  $HOME/.config/i3status/config
+
+echo "please add content of i3-config at the end of ~/.config/i3/config"
