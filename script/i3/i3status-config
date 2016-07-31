@@ -1,9 +1,10 @@
 #
 # i3status config
 #
-# parameters for the statusbar program i3bar
-# other programs are dzen2, xmobar, lemonbar or similar
-# author: https://gist.github.com/rafi/6063132
+# The parameters are specific to i3bar (status bar UI tool).
+# i3bar is similar in functionality with dzen2, xmobar, lemonbar.
+# Author: https://gist.github.com/rafi/6063132
+
 general {
         colors = true
         interval = 1
@@ -14,7 +15,8 @@ general {
 }
 
 # https://i3wm.org/i3status/manpage.html
-# what do display on the statusbar
+# What do display on the statusbar (i.e order += )
+
 order += "cpu_usage"
 order += "disk /"
 # order += "disk /mnt/sdb1"

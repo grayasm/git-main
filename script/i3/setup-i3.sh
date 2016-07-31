@@ -30,6 +30,21 @@ if [ ! -f /usr/bin/i3status ]; then
 	exit
 fi
 
+if [ ! -f /usr/bin/feh ]; then
+	echo "feh wallpaper setting tool not found at '/usr/bin/feh'; install feh"
+	exit
+	#[copr-admiralnemo-feh]
+	#name=feh for i3 window manager
+	#baseurl=http://copr-be.cloud.fedoraproject.org/results/admiralnemo/i3wm-el7/epel-7-$basearch/
+	#failovermethod=priority
+	#enabled=1
+	#gpgcheck=1
+	#gpgkey=https://copr-be.cloud.fedoraproject.org/results/admiralnemo/i3wm-el7/pubkey.gpg
+	#priority=90
+fi
+
+
+
 mkdir -pv $HOME/.config/i3status
 if [ -f $HOME/.config/i3status/config ]; then
 	cp $HOME/.config/i3status/config $HOME/.config/i3status/config.old
