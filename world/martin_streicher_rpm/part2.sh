@@ -9,12 +9,9 @@ fi
 
 rmdir -v  BUILD RPMS SOURCES SPECS SRPMS
 mkdir -pv BUILD RPMS SOURCES SPECS SRPMS
+cp part2.{cpp,mk,png}  SOURCES/
 
-cd SOURCES
-wget http://ftp.halifax.rwth-aachen.de/gnu/wget/wget-1.18.tar.gz
-
-cd ..
-cp part1.spec  SPECS/wget.spec
-rpmbuild -v -bb --clean SPECS/wget.spec
+cp part2.spec  SPECS/part2.spec
+rpmbuild -v -bb --clean SPECS/part2.spec
 
 find . -iname '*.rpm'
