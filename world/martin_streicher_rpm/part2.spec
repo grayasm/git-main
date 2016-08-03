@@ -13,7 +13,7 @@ License:       GPL
 Name:          %{name}
 Version:       %{version}
 Release:       %{release}
-Source:        %{name}.cpp
+Source:        %{name}-%{version}.tar.gz
 Prefix:        /tmp/part2
 Group:         Development/Tools
 
@@ -23,6 +23,7 @@ Group:         Development/Tools
 The GNU part2 dummy program.
 
 %prep
+%setup -q
 
 %build
 make -f part2.mk

@@ -9,7 +9,10 @@ fi
 
 rmdir -v  BUILD RPMS SOURCES SPECS SRPMS
 mkdir -pv BUILD RPMS SOURCES SPECS SRPMS
-cp part2.{cpp,mk,png}  SOURCES/
+
+mkdir part2-0.1 && cp part2.{cpp,mk,png} part2-0.1/
+tar -cvzf part2-0.1.tar.gz part2-0.1
+mv part2-0.1.tar.gz  SOURCES/
 
 cp part2.spec  SPECS/part2.spec
 rpmbuild -v -bb --clean SPECS/part2.spec
