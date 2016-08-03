@@ -8,5 +8,12 @@ if [ `basename $DIR` != "martin_streicher_rpm" ]; then
 fi
 
 mkdir -pv BUILD RPMS SOURCES SPECS SRPMS
+
 cd SOURCES
-wget http://ftp.gnu.org/gnu/wget/wget-1.18.tar.gz
+wget http://ftp.halifax.rwth-aachen.de/gnu/wget/wget-1.18.tar.gz
+
+cd ..
+cp wget.spec  SPECS/wget.spec
+rpmbuild -v -bb --clean SPECS/wget.spec
+
+find . -iname '*.rpm'
