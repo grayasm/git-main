@@ -1,4 +1,4 @@
-# This is spec file for simple part2 (installed in /tmp/part2)
+# This is spec file for part2 (installed in /tmp/part2)
 #
 # The simplest case of deployment is when system lacks:
 #    - you package's daemons
