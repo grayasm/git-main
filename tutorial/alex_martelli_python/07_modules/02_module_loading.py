@@ -53,7 +53,7 @@ print sys.modules
 # __import__(...) search in the sys.path
 print sys.path
 
-# ['/home/mihai/Code/git-main/world/alex_martelli_python/07_modules',
+# ['/home/mihai/Code/git-main/tutorial/alex_martelli_python/07_modules',
 #  '/usr/lib64/python27.zip',
 #  '/usr/lib64/python2.7',
 #  '/usr/lib64/python2.7/plat-linux2',

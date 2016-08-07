@@ -6,7 +6,7 @@
 
 #include <gtk/gtk.h>
 
-#define ICON_LOCATION "/home/mihai/Code/git-main/world/" \
+#define ICON_LOCATION "/home/mihai/Code/git-main/tutorial/" \
                       "andrew_krause_gtk+/09_menus_and_toolbars/"
 
 typedef struct
