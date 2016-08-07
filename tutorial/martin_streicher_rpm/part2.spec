@@ -1,6 +1,6 @@
 # This is a spec file for a dummy program 'part2'
 
-%define _topdir     /home/mihai/Code/git-main/world/martin_streicher_rpm
+%define _topdir     /home/mihai/Code/git-main/tutorial/martin_streicher_rpm
 %define name        part2
 %define release     1
 %define version     0.1
