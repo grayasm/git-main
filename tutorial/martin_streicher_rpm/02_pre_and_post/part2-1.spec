@@ -63,6 +63,7 @@ fi
 %postun
 if [ "$1" == "0" ]; then
 	echo "spec: %{name}-%{version} run %preun $1 hook after uninstall"
+	rm -rfvd /tmp/part2
 elif [ "$1" == "1" ]; then
 	echo "spec: %{name}-%{version} run %preun $1 hook after upgrade"
 fi
