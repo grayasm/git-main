@@ -1,4 +1,13 @@
-# This is a spec file for a dummy program 'part2'
+# This is spec file for simple part2 (installed in /tmp/part2)
+#
+# The simplest case of deployment is when system lacks:
+#    - you package's daemons
+#    - binaries
+#    - configuration files
+#    - data files
+#
+# The installation need not stop work in progress or back up, restore and
+# possibly merge files.
 
 %define _topdir     /home/mihai/Code/git-main/tutorial/martin_streicher_rpm
 %define name        part2
