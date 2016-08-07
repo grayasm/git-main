@@ -1,6 +1,6 @@
 # This is a spec file for wget
 
-%define _topdir   /home/mihai/Code/git-main/tutorial/martin_streicher_rpm
+%define _topdir   /home/mihai/Code/git-main/tutorial/martin_streicher_rpm/01_build
 %define name      wget
 %define release   1
 %define version   1.18

@@ -6,7 +6,7 @@
 # - %postun hook run after your package is removed from the system.
 
 
-%define _topdir      /home/mihai/Code/git-main/tutorial/martin_streicher_rpm
+%define _topdir      /home/mihai/Code/git-main/tutorial/martin_streicher_rpm/02_pre_and_post
 %define name         part2
 %define release      1
 %define version      0.1
@@ -40,3 +40,5 @@ make -f part2-0.mk DESTDIR=$RPM_BUILD_ROOT/tmp/part2 install
 
 %files
 %defattr(-,root,root)
+/tmp/part2/bin/part2
+/tmp/part2/etc/config2.0

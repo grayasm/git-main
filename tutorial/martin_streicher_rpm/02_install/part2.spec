@@ -9,7 +9,7 @@
 # The installation need not stop work in progress or back up, restore and
 # possibly merge files.
 
-%define _topdir     /home/mihai/Code/git-main/tutorial/martin_streicher_rpm
+%define _topdir     /home/mihai/Code/git-main/tutorial/martin_streicher_rpm/02_install
 %define name        part2
 %define release     1
 %define version     0.1

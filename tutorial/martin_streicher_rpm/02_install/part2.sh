@@ -2,8 +2,8 @@
 
 set -x
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-if [ `basename $DIR` != "martin_streicher_rpm" ]; then
-	echo "run this script from dir: martin_streicher_rpm"
+if [ `basename $DIR` != "02_install" ]; then
+	echo "run this script from: 02_install"
 	exit
 fi
 
