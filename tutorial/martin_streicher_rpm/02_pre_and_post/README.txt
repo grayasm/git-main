@@ -11,7 +11,7 @@
     We install the first version, then upgrade it and finally remove it.
 
 
-root@centos# rpm -Uhv RPMS/x86_64/part2-0.1-1.x86_64.rpm
+root@centos:# rpm -Uvh RPMS/x86_64/part2-0.1-1.x86_64.rpm
 Preparing...                          ################################# [100%]
 spec: part2-0.1 run %pre 1 hook before install
 Updating / installing...
@@ -19,12 +19,12 @@ Updating / installing...
 spec: part2-0.1 run %post 1 hook after install
 
 
-root@centos# rpm -Uvh RPMS/x86_64/part2-0.1-1.x86_64.rpm
+root@centos:# rpm -Uvh RPMS/x86_64/part2-0.1-1.x86_64.rpm
 Preparing...                          ################################# [100%]
         package part2-0.1-1.x86_64 is already installed
 
 
-root@centos# rpm -Uvh RPMS/x86_64/part2-1.1-2.x86_64.rpm
+root@centos:# rpm -Uvh RPMS/x86_64/part2-1.1-2.x86_64.rpm
 Preparing...                          ################################# [100%]
 spec: part2-1.1 run %pre 2 hook before upgrade
 Updating / installing...
@@ -36,39 +36,11 @@ Cleaning up / removing...
 spec: part2-0.1 run %preun 1 hook after upgrade
 
 
-root@centos# yum remove part2
-Loaded plugins: fastestmirror, langpacks, priorities
-Resolving Dependencies
---> Running transaction check
----> Package part2.x86_64 0:1.1-2 will be erased
---> Finished Dependency Resolution
-
-Dependencies Resolved
-
-================================================================================
- Package             Arch     Version              Repository               Size
-================================================================================
-Removing:
- part2               x86_64   1.1-2                installed                11 k
-
-Transaction Summary
-================================================================================
-Remove  1 Package
-
-Installed size: 11 k
-Is this ok [y/N]: y
-Downloading packages:
-Running transaction check
-Running transaction test
-Transaction test succeeded
-Running transaction
-Warning: RPMDB altered outside of yum.
+root@centos:# rpm -e part2
 spec: part2-1.1 run %preun 0 hook before uninstall
-  Erasing    : part2-1.1-2.x86_64                                            1/1
 spec: part2-1.1 run %preun 0 hook after uninstall
-  Verifying  : part2-1.1-2.x86_64                                            1/1 
-
-Removed:
-  part2.x86_64 0:1.1-2
-
-Complete!
+removed directory: ‘/tmp/part2/bin’
+removed directory: ‘/tmp/part2/etc’
+removed directory: ‘/tmp/part2’
+root@centos:# ll /tmp/part2
+ls: cannot access /tmp/part2: No such file or directory
