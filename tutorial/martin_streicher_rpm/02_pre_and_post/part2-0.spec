@@ -38,7 +38,47 @@ make -f part2-0.mk
 %install
 make -f part2-0.mk DESTDIR=$RPM_BUILD_ROOT/tmp/part2 install
 
+%clean
+rm -rf $RPM_BUILD_ROOT
+
+
+# http://pkgs.fedoraproject.org/cgit/rpms/autossh.git/tree/autossh.spec#n53
+%pre
+if [ "$1" == "1" ]; then
+	echo "spec: %{name}-%{version} run %pre $1 hook before install"
+elif [ "$1" == "2" ]; then
+	echo "spec: %{name}-%{version} run %pre $1 hook before upgrade"
+fi
+
+%post
+if [ "$1" == "1" ]; then
+	echo "spec: %{name}-%{version} run %post $1 hook after install"
+elif [ "$1" == "2" ]; then
+	echo "spec: %{name}-%{version} run %post $1 hook after upgrade"
+fi
+
+%preun
+if [ "$1" == "0" ]; then
+	echo "spec: %{name}-%{version} run %preun $1 hook before uninstall"
+elif [ "$1" == "1" ]; then
+	echo "spec: %{name}-%{version} run %preun $1 hook before upgrade"
+fi
+
+%postun
+if [ "$1" == "0" ]; then
+	echo "spec: %{name}-%{version} run %preun $1 hook after uninstall"
+elif [ "$1" == "1" ]; then
+	echo "spec: %{name}-%{version} run %preun $1 hook after upgrade"
+fi
+
+
+
 %files
 %defattr(-,root,root)
 /tmp/part2/bin/part2
 /tmp/part2/etc/config2.0
+
+
+%changelog
+* Sun Aug 6 2016 Mihai Vasilian <grayasm@gmail.com> 0.1-1
+- Initial package
