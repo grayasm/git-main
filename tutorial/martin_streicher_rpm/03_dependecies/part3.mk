@@ -8,6 +8,6 @@ clean:
 
 # make DESTDIR=/opt/part3 install
 install: part3
-	install -D -m 0755 part3            $(DESTDIR)/bin/part3
+	install -D -m 0755 part3    $(DESTDIR)/bin/part3
 
 .PHONY: all clean install
