@@ -2,7 +2,13 @@
 #
 # When you create a RPM package, you can declare four types of dependencies:
 # Requires, Provides, Conflicts, Obsoletes
-
+#
+# Requires:  to define a requirement,
+# Provides:  declare the capability your package provides,
+# Conflicts: for when it cannot coexist simultaneously with another package,
+# Obsoletes: when it deprecates another package or an older version of itself.
+#
+# There are six comparisons for version number (<, >, >=, <=, =, package)
 
 %define _topdir      /home/mihai/Code/git-main/tutorial/martin_streicher_rpm/03_dependencies
 %define name         part3
@@ -22,10 +28,10 @@ Source:        %{name}-%{version}.tar.gz
 Prefix:        /tmp/part3
 Group:         Development/Tools
 
-Requires:      zlib >= 5.5
-Provides:      part3-0.1-1.el7
-Conflicts:     part3-0.1-1.el7
-Obsoletes:     part3-0.1-1.el7
+Requires:      zlib >= 5.5, man < 2.0
+Provides:      part3
+Conflicts:     gcc > 3.0, gdb = 5
+Obsoletes:     zcat
 
 
 %description
