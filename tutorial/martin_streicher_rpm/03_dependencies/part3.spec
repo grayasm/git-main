@@ -31,7 +31,7 @@ Group:         Development/Tools
 Requires:      zlib >= 5.5, man < 2.0
 Provides:      part3
 Conflicts:     gcc > 3.0, gdb = 5
-Obsoletes:     zcat
+Obsoletes:     gzip
 
 
 %description
