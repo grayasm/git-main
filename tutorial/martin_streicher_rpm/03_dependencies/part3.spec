@@ -4,7 +4,7 @@
 # Requires, Provides, Conflicts, Obsoletes
 
 
-%define _topdir      /home/mihai/Code/git-main/tutorial/martin_streicher_rpm/03_dependecies
+%define _topdir      /home/mihai/Code/git-main/tutorial/martin_streicher_rpm/03_dependencies
 %define name         part3
 %define release      1.el7
 %define version      0.1
@@ -22,6 +22,10 @@ Source:        %{name}-%{version}.tar.gz
 Prefix:        /tmp/part3
 Group:         Development/Tools
 
+Requires:      zlib >= 5.5
+Provides:      part3-0.1-1.el7
+Conflicts:     part3-0.1-1.el7
+Obsoletes:     part3-0.1-1.el7
 
 
 %description
