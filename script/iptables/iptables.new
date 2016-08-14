@@ -1,0 +1,93 @@
+#!/bin/bash
+
+# ---------------------------- IPV4 -------------------------------------------
+iptables -F
+
+
+iptables -P INPUT   DROP
+# drop invalid headers
+iptables -A INPUT -m conntrack --ctstate INVALID -j DROP
+iptables -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+iptables -A INPUT -p icmp --icmp-type 8 -m conntrack --ctstate NEW -j ACCEPT
+# Open Apache port for all
+iptables -A INPUT -p tcp --dport 80 -j ACCEPT
+# Open vsftpd port 21 (ftp-connection) and 20 (ftp-data) for all.
+# vsftpd must be able to open passive session (PASV command) on port 40000:40099
+# with maxim 100 clients allowed
+iptables -A INPUT -p tcp --dport 20 -j ACCEPT
+iptables -A INPUT -p tcp --dport 21 -j ACCEPT
+iptables -A INPUT -p tcp --dport 40000:40099 -j ACCEPT
+# Open secure shell (sshd) port for all
+iptables -A INPUT -p tcp --dport 22 -j ACCEPT
+iptables -A INPUT -p udp --dport 22 -j ACCEPT
+# Open transmission-qt port for
+iptables -A INPUT -p tcp --dport 51413 -j ACCEPT
+iptables -A INPUT -p udp --dport 51413 -j ACCEPT
+# Allow everybody from LAN to connect
+iptables -A INPUT -p tcp -s 192.168.0.1/24 -j ACCEPT
+iptables -A INPUT -p udp -s 192.168.0.1/24 -j ACCEPT
+# tv-maxe static ports
+iptables -A INPUT -p tcp --dport 10320:10321 -j ACCEPT
+
+# Everything else on INPUT is dropped!!!
+iptables -A INPUT -p udp -j DROP
+iptables -A INPUT -p tcp -j DROP
+
+
+iptables -P OUTPUT  ACCEPT
+iptables -A OUTPUT -p tcp -m string --algo bm --string "microsoft.com" -j REJECT
+iptables -A OUTPUT -p tcp -m string --algo bm --string "microsoftstore.com" -j REJECT
+iptables -A OUTPUT -p tcp -m string --algo bm --string "office.com" -j REJECT
+iptables -A OUTPUT -p tcp -m string --algo bm --string "live.com" -j REJECT
+iptables -A OUTPUT -p tcp -m string --algo bm --string "onenote.com" -j REJECT
+iptables -A OUTPUT -p tcp -m string --algo bm --string "xbox.com" -j REJECT
+
+
+iptables -P FORWARD DROP
+
+
+iptables -L
+
+
+
+# ---------------------------- IPV6 -------------------------------------------
+ip6tables -F
+
+ip6tables -P INPUT   DROP
+# drop invalid headers
+ip6tables -A INPUT -m conntrack --ctstate INVALID -j DROP
+ip6tables -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+# Open Apache port for all
+ip6tables -A INPUT -p tcp --dport 80 -j ACCEPT
+# Open vsftpd port 21 (ftp-connection) and 20 (ftp-data) for all.
+# vsftpd must be able to open passive session (PASV command) on port 40000:40099
+# with maxim 100 clients allowed
+ip6tables -A INPUT -p tcp --dport 20 -j ACCEPT
+ip6tables -A INPUT -p tcp --dport 21 -j ACCEPT
+ip6tables -A INPUT -p tcp --dport 40000:40099 -j ACCEPT
+# Open secure shell (sshd) port for all
+ip6tables -A INPUT -p tcp --dport 22 -j ACCEPT
+ip6tables -A INPUT -p udp --dport 22 -j ACCEPT
+# Open transmission-qt port for
+ip6tables -A INPUT -p tcp --dport 51413 -j ACCEPT
+ip6tables -A INPUT -p udp --dport 51413 -j ACCEPT
+# tv-maxe static ports
+ip6tables -A INPUT -p tcp --dport 10320:10321 -j ACCEPT
+
+# Everything else on INPUT is dropped!!!
+ip6tables -A INPUT -p udp -j DROP
+ip6tables -A INPUT -p tcp -j DROP
+
+
+ip6tables -P OUTPUT  ACCEPT
+ip6tables -A OUTPUT -p tcp -m string --algo bm --string "microsoft.com" -j REJECT
+ip6tables -A OUTPUT -p tcp -m string --algo bm --string "microsoftstore.com" -j REJECT
+ip6tables -A OUTPUT -p tcp -m string --algo bm --string "office.com" -j REJECT
+ip6tables -A OUTPUT -p tcp -m string --algo bm --string "live.com" -j REJECT
+ip6tables -A OUTPUT -p tcp -m string --algo bm --string "onenote.com" -j REJECT
+ip6tables -A OUTPUT -p tcp -m string --algo bm --string "xbox.com" -j REJECT
+
+ip6tables -P FORWARD DROP
+
+ip6tables -L
+# -----------------------------------------------------------------------------
