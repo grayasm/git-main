@@ -1,20 +1,21 @@
 #include <iostream>
-#include <omp.h>ssss
+#include <omp.h>
 
 using namespace std;
 int main(int argc, char** argv)
 {
-	int i;
-	const int N=25;
+    const int N=25;
+    int i;
 
-#pragma opm parallel
-	{
-#pragma omp for
-		for(i=0; i<N; i++)
-		{
-#pragma omp atomic
-			cout << omp_get_thread_num() << " "
-		}// end of for
-	}// end of parallel
-	return 0;
+#pragma omp parallel for private(i)
+    for(i=0; i<N; i++)
+    {
+#pragma omp critical
+	    {
+		    cout << "i= " << i << " thid= " << omp_get_thread_num() << endl;
+	    }
+    }// end of parallel region
+    cout << endl;
+
+    return 0;
 }

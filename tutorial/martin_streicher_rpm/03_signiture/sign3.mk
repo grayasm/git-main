@@ -1,13 +1,13 @@
-all: part3
+all: sign3
 
-part3: part3.cpp part3.mk
-	g++ -O3 `pkg-config --cflags --libs zlib` -o part3 part3.cpp
+sign3: sign3.cpp sign3.mk
+	g++ -O3 -fopenmp -o sign3 sign3.cpp
 
 clean:
-	rm -v part3
+	rm -v sign3
 
-# make DESTDIR=/opt/part3 install
-install: part3
-	install -D -m 0755 part3    $(DESTDIR)/bin/part3
+# make DESTDIR=/opt/sign3 install
+install: sign3
+	install -D -m 0755 sign3    $(DESTDIR)/bin/sign3
 
 .PHONY: all clean install

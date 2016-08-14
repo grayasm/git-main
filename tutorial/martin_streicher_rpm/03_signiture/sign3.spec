@@ -1,50 +1,42 @@
-# This is spec file for part3 (dependencies)
+# This is spec file for sign3 sample (Signing your RPM)
 #
-# When you create a RPM package, you can declare four types of dependencies:
-# Requires, Provides, Conflicts, Obsoletes
+# See README.txt for instructions about how to setup gpg.
+# This file is no different than a normal spec file.
+# The only difference is in $HOME/.rpmmacros and the rpmbuild command.
 #
-# Requires:  to define a requirement,
-# Provides:  declare the capability your package provides,
-# Conflicts: for when it cannot coexist simultaneously with another package,
-# Obsoletes: when it deprecates another package or an older version of itself.
+# Note: I tried to add the macros from $HOME/.rpmmacros here but:
+# error: line 9: Unknown tag: %_signature   gpg
 #
-# There are six comparisons for version number (<, >, >=, <=, =, package)
 
-%define _topdir      /home/mihai/Code/git-main/tutorial/martin_streicher_rpm/03_dependencies
-%define name         part3
+%define _topdir      /home/mihai/Code/git-main/tutorial/martin_streicher_rpm/03_signiture
+%define name         sign3
 %define release      1.el7
 %define version      0.1
 %define buildroot    %{_topdir}/%{name}-%{version}-root
 
-
-
 BuildRoot:     %{buildroot}
-Summary:       GNU part3
+Summary:       GNU sign3
 License:       GPL
 Name:          %{name}
 Version:       %{version}
 Release:       %{release}
 Source:        %{name}-%{version}.tar.gz
-Prefix:        /tmp/part3
+Prefix:        /tmp/sign3
 Group:         Development/Tools
 
-Requires:      zlib >= 5.5, man < 2.0
-Provides:      part3
-Conflicts:     gcc > 3.0, gdb = 5
-Obsoletes:     gzip
 
 
 %description
-The GNU part3 dummy program.
+The GNU sign3 dummy program.
 
 %prep
 %setup -q
 
 %build
-make -f part3.mk
+make -f sign3.mk
 
 %install
-make -f part3.mk DESTDIR=$RPM_BUILD_ROOT/tmp/part3 install
+make -f sign3.mk DESTDIR=$RPM_BUILD_ROOT/tmp/sign3 install
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -53,9 +45,9 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,root)
-/tmp/part3/bin/part3
+/tmp/sign3/bin/sign3
 
 
 %changelog
-* Sun Aug 10 2016 Mihai Vasilian <grayasm@gmail.com> 0.1-1.el7
-- Initial package
+* Sun Aug 14 2016 Mihai Vasilian <grayasm@gmail.com> 0.1-1.el7
+- Initial package with signiture.
