@@ -1,0 +1,18 @@
+# .bash_gpg
+# cp $HOME/.bash_gpg $HOME/Code/git-main/script/bash/bash_gpg
+# git status $HOME/Code/git-main
+# git diff   $HOME/Code/git-main
+# git commit $HOME/Code/git-main
+
+# if the system runs the agent, ask how to connect to it.
+# $ gpg-agent --daemon --enable-ssh-support
+#             --write-env-file "${HOME}/.gpg-agent-info"
+
+if [ -f "${HOME}/.gpg-agent-info" ]; then
+   . "${HOME}/.gpg-agent-info"
+   export GPG_AGENT_INFO
+   export SSH_AUTH_SOCK
+   export SSH_AGENT_PID
+   GPG_TTY=$(tty)
+   export GPG_TTY
+fi

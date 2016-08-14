@@ -1,0 +1,15 @@
+#
+# http://stackoverflow.com/questions/24756240/how-can-i-use-iptables-on-centos-7
+
+iptableshelp()
+{
+    echo "http://stackoverflow.com/questions/24756240/how-can-i-use-iptables-on-centos-7"
+    echo "systemctl stop firewalld"
+    echo "systemctl mask firewalld"
+    echo "yum install iptables-services"
+    echo "systemctl enable iptables"
+    echo "systemctl [stop|start|restart] iptables"
+    echo "service iptables save"
+    echo "or"
+    echo "/usr/libexec/iptables/iptables.init save"
+}

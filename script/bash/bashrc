@@ -19,5 +19,13 @@ if [ -f $HOME/.bash_aliases ]; then
 fi
 
 if [ -f $HOME/.bash_i3 ]; then
-   . $HOME/.bash_i3
+	. $HOME/.bash_i3
+fi
+
+if [ -f $HOME/.bash_gpg ]; then
+	. $HOME/.bash_gpg
+fi
+
+if [ -f $HOME/.bash_iptables ]; then
+	. $HOME/.bash_iptables
 fi
