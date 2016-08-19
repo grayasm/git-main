@@ -24,3 +24,5 @@
 					   --enable-multilib \
 					   --enable-libgomp \
 					   --with-system-zlib
+					   
+# make DESTDIR=/opt/gcc-4.9.2  install
