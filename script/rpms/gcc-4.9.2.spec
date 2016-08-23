@@ -1,14 +1,15 @@
 #
 # Spec file for gcc-4.9.2
 #
+# ftp://gcc.gnu.org/pub/gcc/releases/gcc-4.9.2/gcc-4.9.2.tar.gz
+# ftp://ftp.fu-berlin.de/unix/languages/gcc/releases/gcc-4.9.2/gcc-4.9.2.tar.gz
 
 
-
-%define    _topdir       /home/mihai/Code/git-main/script/gcc
-%define    name          gcc
+%define    _topdir       /home/mihai/rpmbuild
+%define    name          gcc492
 %define    version       4.9.2
-%define    release       1
-%define    buildroot     %{_topdir}/%{name}-%{version}-root
+%define    release       1.el7
+%define    buildroot     %{_topdir}/gcc-%{version}-root
 %define    debug_package %{nil}
 
 
@@ -18,7 +19,7 @@ License:      GPL
 Name:         %{name}
 Version:      %{version}
 Release:      %{release}
-Source:       %{name}-%{version}.tar.gz
+Source:       gcc-%{version}.tar.gz
 Prefix:       /opt/gcc-4.9.2
 Group:        Development/Tools
 
@@ -28,10 +29,14 @@ Group:        Development/Tools
 %description
 The GNU gcc compiler version 4.9.2
 
+
 %prep
-%setup -q
+rm -rfvd  $RPM_BUILD_DIR/gcc-4.9.2
+tar -zxvf $RPM_SOURCE_DIR/gcc-4.9.2.tar.gz
+
 
 %build
+cd $RPM_BUILD_DIR/gcc-4.9.2
 mkdir gcc-build && cd gcc-build
 ../configure --prefix=/ \
 			 --enable-libstdcxx \
@@ -48,8 +53,9 @@ mkdir gcc-build && cd gcc-build
 make -j8
 
 %install
-cd gcc-build
+cd $RPM_BUILD_DIR/gcc-4.9.2/gcc-build
 make DESTDIR=$RPM_BUILD_ROOT/opt/gcc-4.9.2 install
+
 
 %postun
 if [ "$1" == "0" ]; then
@@ -1365,5 +1371,5 @@ fi
 
 
 %changelog
-* Sun Aug 19 2016 Mihai Vasilian <grayasm@gmail.com> 4.9.2-1
+* Tue Aug 23 2016 Mihai Vasilian <grayasm@gmail.com> 4.9.2-1.el7
 - Initial package.
