@@ -15,3 +15,15 @@ If you use extension APIs from MSWSOCK.H, you must also link with MSWSOCK.DLL.
 
 Once you have included the necessary header files and link environment,
 you are ready to begin coding your application, which requires initializing Winsock. 
+
+IPC Stocket client - server 
+===============================
+SERVER      |       CLIENT
+------------+------------------
+socket()            socket()
+bind()
+listen()
+accept()
+            <--     connect()
+read()      <--     write()
+write()     -->     read()
