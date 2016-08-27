@@ -14,7 +14,7 @@
 
 
 BuildRoot:    %{buildroot}
-Summary:      GNU gcc compiler version 5.1.0
+Summary:      GNU gcc compiler version 5.1.0 for C,C++ and FORTRAN.
 License:      GPL
 Name:         %{name}
 Version:      %{version}
@@ -27,7 +27,7 @@ Group:        Development/Tools
 
 
 %description
-The GNU gcc compiler (C,C++ and Fortran) version 5.1.0
+The GNU gcc compiler version 5.1.0 for C,C++ and FORTRAN.
 
 
 %prep
