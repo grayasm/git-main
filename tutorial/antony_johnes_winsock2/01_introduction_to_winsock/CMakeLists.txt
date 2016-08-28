@@ -21,3 +21,9 @@ target_link_libraries(05_client_send PRIVATE Ws2_32.lib)
 
 add_executable(05_server_recv 05_server_recv.cpp)
 target_link_libraries(05_server_recv PRIVATE Ws2_32.lib)
+
+add_executable(06_client_send_chunks 06_client_send_chunks.cpp)
+target_link_libraries(06_client_send_chunks PRIVATE Ws2_32.lib)
+
+add_executable(06_server_recv_chunks 06_server_recv_chunks.cpp)
+target_link_libraries(06_server_recv_chunks PRIVATE Ws2_32.lib)

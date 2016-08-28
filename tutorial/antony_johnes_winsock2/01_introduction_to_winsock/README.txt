@@ -174,16 +174,59 @@
 	For more information about TCP/IP protocol, RFC 793 at http://www.rfc-editor.org. 
 	
 	
+	Data Transmission.
+	==================
+	sending data:  send  WSASend
+	receiving data: recv WSARecv
 	
+	All buffers associated with sending and receiving data are of the simple 
+	char type which is just simple byte-oriented data. In reality, it can be a 
+	buffer with any raw data in it—whether it's binary or string data doesn't 
+	matter. 
 	
+	send(SOCKET s, const char FAR * buf, int len, int flags) : int
+			Parameters are the socket, the buffer to send + its length and 
+			the flags (0, MSG_DONTROUTE, or MSG_OOB).
+			MSG_DONTROUTE tells the transport not to route the packets.
+			MSG_OOB is for transmiting out of band packets.
+			The transport may or may not honor the passed flags.		
+			
+			When an application on a connected stream socket needs to send data 
+			that is more important than regular data on the stream, it can mark 
+			the important data as out-of-band (OOB) data. The application on the 
+			other end of a connection can receive and process OOB data through a
+			separate logical channel that is conceptually independent of the 
+			data stream. It is discouraged to use OOB as it is implementation
+			specific and can differ on non-Windows systems.
+			
+			The errors are mostly related to the peer rebooting or connection
+			dropped because of network failure or something else.
 	
+	recv(SOCKET s, char FAR* buf, int len, int flags) : int
+			The parameters are the socket, the buffer to be filled and its size,
+			and the flags (0, MSG_PEEK, or MSG_OOB). 
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+			MSG_PEEK causes the data that is available to be copied into the 
+			supplied receive buffer, but this data is not removed from the 
+			system's buffer. The number of bytes pending is also returned. 
+			Message peeking is bad. Not only does it degrade performance, as you 
+			now need to make two system calls (one to peek and one without the 
+			MSG_PEEK flag to actually remove the data), but it is also unreliable 
+			under certain circumstances. The data returned might not reflect the 
+			entire amount available. Also, by leaving data in the system buffers, 
+			the system has less space to contain incoming data. As a result, the 
+			system reduces the TCP window size for all senders. This prevents 
+			your application from achieving the maximum possible throughput. 
+			The best thing to do is to copy all the data you can into your own 
+			buffer and manipulate it there. 
+			
+			There are some considerations when using recv on a 
+			(1) message-based socket (TCP) or (2) datagram-based socket (UDP).
+			If the data pending is larger than the supplied buffer, the buffer
+			is filled with as much data as it will contain. In this event, the 
+			recv call generates the error WSAEMSGSIZE. Note that the 
+			message-size error occurs with message-based protocols. 
+			Stream protocols such as TCP buffer incoming data and will return as 
+			much data as the application requests, even if the amount of pending 
+			data is greater. Thus, for streaming protocols you will not encounter 
+			the WSAEMSGSIZE error.

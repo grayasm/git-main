@@ -1,11 +1,12 @@
 /*
  * It's normal sample for creating the bind(), listen(), accept() on a
- * connection + MSDN example for the simplest recv(...) command.
+ * connection + book sample from "Connection Oriented Communication"
  */
 
 #include <winsock2.h>
 #include <WS2tcpip.h>
 #include <stdio.h>
+#include <string>
 
 
 int main(int argc, char** argv)
@@ -70,31 +71,34 @@ int main(int argc, char** argv)
 	printf("Client connected.\n");
 
 	// -------------------------------------------------------
-	// MSDN example "Receiving and Sending Data on the Server"
-	char recvbuf[512];
-	int iSendResult;
-
+	// "Connection Oriented Communication" : Stream protocols
+	// Few issues here:
+	// 1) buffer is 51, 50 occupied by recv() buffer + NULL termination.
+	// 2) client sends buffers of 36 bytes but here sometimes are confirmed
+	//    50 bytes which looks like send(...) calls got buffered.
+	// 3) search for >>EOF<< otherwise it's not known when to stop recv(...)
+	
+	std::string recvstr;
+	char recvbuf[51];
+	int iRecvBytes = 0;
+	
 	do 
 	{
-		iResult = recv(ClientSocket, recvbuf, 512, 0);
-		if (iResult > 0)
+		iRecvBytes = recv(ClientSocket, recvbuf, 50, 0);
+		if (iRecvBytes > 0)
 		{
-			printf ("Bytes received: %d\n", iResult);
+			recvbuf[iRecvBytes] = '\0';
+			printf ("recv-ed %d: %s\n", iRecvBytes, recvbuf);
+			recvstr += recvbuf;
 
-			// Echo the buffer back to the sender
-			iSendResult = send(ClientSocket, recvbuf, iResult, 0);
-
-			if (iSendResult == SOCKET_ERROR)
+			// search for end of transmission
+			if (recvstr.find(">>EOF<<") != std::string::npos)
 			{
-				printf ("send failed with error: %d\n", WSAGetLastError());
-				closesocket(ClientSocket);
-				WSACleanup();
-				return 1;
+				printf ("found EOF\n");
+				break;
 			}
-
-			printf ("Bytes sent: %d\n", iSendResult);
 		}
-		else if (iResult == 0)
+		else if (iRecvBytes == 0)
 		{
 			printf ("Connection closing ...\n");
 		}
@@ -105,14 +109,14 @@ int main(int argc, char** argv)
 			WSACleanup();
 			return 1;
 		}
-	} while (iResult > 0);
+	} while (iRecvBytes > 0);
 
-	// end of MSDN sample.
+	// end of sample.
 	// -------------------------------------------------------
 
 
 	// No longer need server socket.
-	printf ("server shutting down\n");
+	printf ("Server shutting down\n");
 	closesocket(ListenSocket);
 	WSACleanup();
 	return 0;
