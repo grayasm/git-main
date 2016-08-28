@@ -15,3 +15,9 @@ target_link_libraries(03_protocol_client PRIVATE Ws2_32.lib)
 
 add_executable(04_create_a_socket 04_create_a_socket.cpp)
 target_link_libraries(04_create_a_socket PRIVATE Ws2_32.lib)
+
+add_executable(05_client_send 05_client_send.cpp)
+target_link_libraries(05_client_send PRIVATE Ws2_32.lib)
+
+add_executable(05_server_recv 05_server_recv.cpp)
+target_link_libraries(05_server_recv PRIVATE Ws2_32.lib)
