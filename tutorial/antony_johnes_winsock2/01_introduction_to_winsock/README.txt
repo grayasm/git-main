@@ -20,17 +20,20 @@
 	you are ready to begin coding your application, which requires initializing
 	Winsock. 
 
-	IPC Stocket client - server 
-	===============================
-	SERVER      |       CLIENT
-	------------+------------------
-	socket()            socket()
+	IPC Stocket client - server
+	==============++=================
+	SERVER        |       CLIENT
+	--------------+------------------
+	socket()              socket()
 	bind()
 	listen()
 	accept()
-				<--     connect()
-	read()      <--     write()
-	write()     -->     read()
+				  <--     connect()
+	recv()        <--     send()
+	send()        -->     recv()
+				  <--     shutdown()
+	closesocket() -->
+				  <--     closesocket()
 	
 	Server API
 	----------
@@ -230,3 +233,51 @@
 			much data as the application requests, even if the amount of pending 
 			data is greater. Thus, for streaming protocols you will not encounter 
 			the WSAEMSGSIZE error.
+
+			
+	Breaking the connection
+	=======================
+	
+	To actually release the resources associated with an open socket handle, 
+	use the closesocket call. Be aware, however, that closesocket can have some 
+	adverse effects—depending on how it is called—that can lead to data loss. 
+	For this reason, a connection should be gracefully terminated with the 
+	shutdown function before a call to the closesocket function. 
+			
+	shutdown(SOCKET s, int how) : int			
+			The how parameter can be SD_RECEIVE, SD_SEND, or SD_BOTH. 
+			For SD_RECEIVE, subsequent calls to any receive function on the 
+			socket are disallowed. This has no effect on the lower protocol 
+			layers. And for TCP sockets, if data is queued for receive or if 
+			data subsequently arrives, the connection is reset. 
+			However, on UDP sockets incoming data is still accepted and queued 
+			(because shutdown has no meaning for connectionless protocols). 
+			
+			For SD_SEND, subsequent calls to any send function are disallowed. 
+			For TCP sockets, this causes a FIN packet to be generated after all 
+			data is sent and acknowledged by the receiver. 
+			
+			Finally, specifying SD_BOTH disables both sends and receives.
+
+	closesocket (SOCKET s) : int
+			Calling closesocket releases the socket descriptor and any further 
+			calls using the socket fail with WSAENOTSOCK. 
+			If there are no other references to this socket, all resources 
+			associated with the descriptor are released. 
+			This includes discarding any queued data.
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

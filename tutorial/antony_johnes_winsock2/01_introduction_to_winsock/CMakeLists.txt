@@ -27,3 +27,9 @@ target_link_libraries(06_client_send_chunks PRIVATE Ws2_32.lib)
 
 add_executable(06_server_recv_chunks 06_server_recv_chunks.cpp)
 target_link_libraries(06_server_recv_chunks PRIVATE Ws2_32.lib)
+
+add_executable(07_client_sendto_udp 07_client_sendto_udp.cpp)
+target_link_libraries(07_client_sendto_udp PRIVATE Ws2_32.lib)
+
+add_executable(07_server_recvfrom_udp 07_server_recvfrom_udp.cpp)
+target_link_libraries(07_server_recvfrom_udp PRIVATE Ws2_32.lib)
