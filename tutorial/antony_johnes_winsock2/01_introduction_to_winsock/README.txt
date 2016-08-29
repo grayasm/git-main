@@ -20,21 +20,22 @@
 	you are ready to begin coding your application, which requires initializing
 	Winsock. 
 
-	IPC Stocket client - server
-	==============++=================
-	SERVER        |       CLIENT
-	--------------+------------------
-	socket()              socket()
+	IPC Stocket client - server (via TCP/IP)
+	================+======================
+	SERVER          |         CLIENT
+	----------------+----------------------
+	socket()                  socket()
 	bind()
 	listen()
 	accept()
-				  <--     connect()
-	recv()        <--     send()
-	send()        -->     recv()
-				  <--     shutdown()
-	closesocket() -->
-				  <--     closesocket()
-	
+				   <--     connect()
+	recv()         <--     send()
+	send()         -->     recv()
+				   <--     shutdown()
+	closesocket()  -->
+				   <--     closesocket()
+
+
 	Server API
 	----------
 	socket(af, type, protocol) : SOCKET
@@ -265,19 +266,57 @@
 			If there are no other references to this socket, all resources 
 			associated with the descriptor are released. 
 			This includes discarding any queued data.
+
+
+	Connectionless Communication (happens over UDP/IP)
+	==================================================
 	
+	Connectionless communication behaves differently than connection-oriented 
+	communication, so the method for sending and receiving data is substantially
+	different. 
+	In IP, connectionless communication is accomplished through UDP/IP. 
+	UDP doesn't guarantee reliable data transmission and is capable of sending 
+	data to multiple destinations and receiving it from multiple sources. 
+	For example, if a client sends data to a server, the data is transmitted 
+	immediately regardless of whether the server is ready to receive it. If the 
+	server receives data from the client, it doesn't acknowledge the receipt. 
+	Data is transmitted using datagrams, which are discrete message packets.
+
+	IPC Stocket client - server (via UDP/IP)
+	=====================+===================
+	SERVER               |       CLIENT
+	---------------------+------------------
+	socket()                     socket()
+	bind()
+	recvfrom()          <--      sendto()
+						<--      closesocket()
+	closesocket()       -->
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+
+	recvfrom(	SOCKET s, char FAR* buf, int len, int flags, 
+				struct sockaddr FAR* from, int FAR* fromlen) : int
+			 
+			The difference with connectionless sockets is that you do not call
+			listen or accept, but recvfrom, and you simply wait to receive the 
+			incoming data. Because there is no connection, the receiving socket 
+			can receive datagrams originating from any machine on the network.
+			 
+			The first four parameters are the same as recv, including the 
+			possible values for flags: MSG_OOB and MSG_PEEK. The same warnings 
+			for using the MSG_PEEK flag also apply to connectionless sockets. 
+			The from parameter is a SOCKADDR structure for the given protocol of
+			the listening socket, with fromlen pointing to the size of the 
+			address structure. 
+			When the API call returns with data, the SOCKADDR structure is 
+			filled with the address of the workstation that sent the data.
+
+	sendto(	SOCKET s, const char FAR * buf, int len, int flags,
+			const struct sockaddr FAR * to, int tolen) : int
+			
+			The parameters are the same as recvfrom except that buf is the 
+			buffer of data to send and len indicates how many bytes to send. 
+			Also, the to parameter is a pointer to a SOCKADDR structure with the 
+			destination address of the workstation to receive the data.
+
 	
