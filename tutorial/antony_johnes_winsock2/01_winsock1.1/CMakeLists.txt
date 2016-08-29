@@ -1,0 +1,49 @@
+cmake_minimum_required(VERSION 3.2)
+project(Winsock1.1 CXX)
+
+add_executable(01_initialize_winsock 01_initialize_winsock.cpp)
+target_link_libraries(01_initialize_winsock PRIVATE Ws2_32.lib)
+
+add_executable(01_accept			01_accept.cpp
+add_executable(02_bind				02_bind.cpp
+add_executable(03_closesocket		03_closesocket.cpp
+add_executable(04_connect			04_connect.cpp
+add_executable(05_freeaddrinfo		05_freeaddrinfo.cpp
+add_executable(06_gai_strerror		06_gai_strerror.cpp
+add_executable(07_getaddrinfo		07_getaddrinfo.cpp
+add_executable(08_gethostbyaddr		08_gethostbyaddr.cpp
+add_executable(09_gethostbyname		09_gethostbyname.cpp
+add_executable(10_gethostname		10_gethostname.cpp
+add_executable(11_getnameinfo.cpp
+add_executable(12_getipv4sourcefilter.cpp
+add_executable(13_getpeername.cpp
+add_executable(14_getprotobyname.cpp
+add_executable(15_getservbyname.cpp
+add_executable(16_getservbyport.cpp
+add_executable(17_getsockname.cpp
+add_executable(18_getsockopt.cpp
+add_executable(19_getsourcefilter.cpp
+add_executable(20_htond.cpp
+add_executable(21_htonf.cpp
+add_executable(22_htonl.cpp
+add_executable(23_htonll.cpp
+add_executable(24_htons.cpp
+add_executable(25_inet_addr.cpp
+add_executable(26_inet_ntoa.cpp
+add_executable(27_ioctlsocket.cpp
+add_executable(28_listen.cpp
+add_executable(29_ntohd.cpp
+add_executable(30_ntohf.cpp
+add_executable(31_ntohl.cpp
+add_executable(32_ntohll.cpp
+add_executable(33_ntohs.cpp
+add_executable(34_recv.cpp
+add_executable(35_recvfrom.cpp
+add_executable(36_select.cpp
+add_executable(37_send.cpp
+add_executable(38_sendto.cpp
+add_executable(39_setipv4sourcefilter.cpp
+add_executable(40_setsockopt.cpp
+add_executable(41_setsourcefilter.cpp
+add_executable(42_shutodwn.cpp
+add_executable(43_socket.cpp
