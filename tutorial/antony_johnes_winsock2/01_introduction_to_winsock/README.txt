@@ -282,7 +282,7 @@
 	server receives data from the client, it doesn't acknowledge the receipt. 
 	Data is transmitted using datagrams, which are discrete message packets.
 
-	IPC Stocket client - server (via UDP/IP)
+	IPC Stocket client - server (via UDP/IP) - first alternative.
 	=====================+===================
 	SERVER               |       CLIENT
 	---------------------+------------------
@@ -293,7 +293,17 @@
 	closesocket()       -->
 	
 
-
+	IPC Stocket client - server (via UDP/IP) - second alternative.
+	=====================+===================
+	SERVER               |       CLIENT
+	---------------------+------------------
+	socket()                     socket()
+	bind()                       connect()
+	recvfrom()          <--      send()
+						<--      closesocket()
+	closesocket()       -->
+	
+	
 	recvfrom(	SOCKET s, char FAR* buf, int len, int flags, 
 				struct sockaddr FAR* from, int FAR* fromlen) : int
 			 
@@ -318,5 +328,3 @@
 			buffer of data to send and len indicates how many bytes to send. 
 			Also, the to parameter is a pointer to a SOCKADDR structure with the 
 			destination address of the workstation to receive the data.
-
-	

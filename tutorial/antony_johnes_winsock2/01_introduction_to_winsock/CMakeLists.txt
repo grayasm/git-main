@@ -33,3 +33,9 @@ target_link_libraries(07_client_sendto_udp PRIVATE Ws2_32.lib)
 
 add_executable(07_server_recvfrom_udp 07_server_recvfrom_udp.cpp)
 target_link_libraries(07_server_recvfrom_udp PRIVATE Ws2_32.lib)
+
+add_executable(08_client_send_udp2 08_client_send_udp2.cpp)
+target_link_libraries(08_client_send_udp2 PRIVATE Ws2_32.lib)
+
+add_executable(08_server_recvfrom_udp2 08_server_recvfrom_udp2.cpp)
+target_link_libraries(08_server_recvfrom_udp2 PRIVATE Ws2_32.lib)
