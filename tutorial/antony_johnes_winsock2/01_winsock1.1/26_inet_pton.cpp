@@ -1,11 +1,11 @@
 /*
- * https://msdn.microsoft.com/en-us/library/windows/desktop/ms738521(v=vs.85).aspx
+ * https://msdn.microsoft.com/en-us/library/windows/desktop/cc805844(v=vs.85).aspx
  *
- * gethostbyaddr is no longer recommended for use as of Windows Sockets 2. 
- * Instead, use getnameinfo
+ * The InetPton function converts an IPv4 or IPv6 Internet network address in 
+ * its standard text presentation form into its numeric binary form.
+ * The ANSI version of this function is inet_pton.
  *
- * The gethostbyaddr function retrieves the host information corresponding to
- * a network address.
+ * An example for inet_pton
  */
 
 #include <WinSock2.h>
@@ -26,7 +26,7 @@ int main(int argc, char** argv)
 	}
 
 	printf("Calling gethostbyaddr with 0::1\n");
-	
+
 	IN6_ADDR addr6;
 	iResult = inet_pton(AF_INET6, "0::1", &addr6);
 	if (iResult == 0)
@@ -34,7 +34,7 @@ int main(int argc, char** argv)
 		printf("The IPv6 address entered must be legal address\n");
 		return 1;
 	}
-	
+
 	DWORD dwError;
 	struct hostent* remoteHost;
 	remoteHost = gethostbyaddr((char*)&addr6, 16, AF_INET6);
