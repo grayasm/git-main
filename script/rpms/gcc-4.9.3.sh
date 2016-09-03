@@ -17,15 +17,15 @@ echo "
 %_gpg_name    Mihai Vasilian (Key for RPM) <grayasm@gmail.com>
 " > $HOME/.rpmmacros
 
-cp gcc-5.1.0.spec  $HOME/rpmbuild
+cp gcc-4.9.3.spec  $HOME/rpmbuild
 cd $HOME/rpmbuild
 
-if [ ! -f gcc-5.1.0.tar.gz ]; then
-	wget ftp://ftp.fu-berlin.de/unix/languages/gcc/releases/gcc-5.1.0/gcc-5.1.0.tar.gz
-	wget ftp://ftp.fu-berlin.de/unix/languages/gcc/releases/gcc-5.1.0/md5.sum
+if [ ! -f gcc-4.9.3.tar.gz ]; then
+	wget ftp://ftp.fu-berlin.de/unix/languages/gcc/releases/gcc-4.9.3/gcc-4.9.3.tar.gz
+	wget ftp://ftp.fu-berlin.de/unix/languages/gcc/releases/gcc-4.9.3/md5.sum
 fi
 
-CHECKSUM=`md5sum -c md5.sum 2>/dev/null | grep gcc-5.1.0.tar.gz | cut -d : -f 2`
+CHECKSUM=`md5sum -c md5.sum 2>/dev/null | grep gcc-4.9.3.tar.gz | cut -d : -f 2`
 if [ "${CHECKSUM}" == " OK" ]; then
 	echo "md5sum is OK"
 else
@@ -36,9 +36,9 @@ fi
 rm -rfvd   BUILD RPMS SOURCES SPECS SRPMS
 mkdir -pv  BUILD RPMS SOURCES SPECS SRPMS
 
-cp gcc-5.1.0.tar.gz  SOURCES/
-cp gcc-5.1.0.spec    SPECS/
+cp gcc-4.9.3.tar.gz  SOURCES/
+cp gcc-4.9.3.spec    SPECS/
 
-rpmbuild -v --sign -bb --clean SPECS/gcc-5.1.0.spec
+rpmbuild -v --sign -bb --clean SPECS/gcc-4.9.3.spec
 
 find . -iname '*.rpm'

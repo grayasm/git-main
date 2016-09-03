@@ -22,6 +22,15 @@ cd $HOME/rpmbuild
 
 if [ ! -f gcc-6.1.0.tar.gz ]; then
 	wget ftp://ftp.fu-berlin.de/unix/languages/gcc/releases/gcc-6.1.0/gcc-6.1.0.tar.gz
+	wget ftp://ftp.fu-berlin.de/unix/languages/gcc/releases/gcc-6.1.0/md5.sum
+fi
+
+CHECKSUM=`md5sum -c md5.sum 2>/dev/null | grep gcc-6.1.0.tar.gz | cut -d : -f 2`
+if [ "${CHECKSUM}" == " OK" ]; then
+	echo "md5sum is OK"
+else
+	echo "md5sum NOT OK"
+	exit
 fi
 
 rm -rfvd   BUILD RPMS SOURCES SPECS SRPMS
