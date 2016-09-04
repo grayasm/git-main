@@ -149,6 +149,7 @@ fi
 /opt/gcc-5.4.0/include/c++/5.4.0/bits/postypes.h
 /opt/gcc-5.4.0/include/c++/5.4.0/bits/predefined_ops.h
 /opt/gcc-5.4.0/include/c++/5.4.0/bits/ptr_traits.h
+/opt/gcc-5.4.0/include/c++/5.4.0/bits/quoted_string.h
 /opt/gcc-5.4.0/include/c++/5.4.0/bits/random.h
 /opt/gcc-5.4.0/include/c++/5.4.0/bits/random.tcc
 /opt/gcc-5.4.0/include/c++/5.4.0/bits/range_access.h
@@ -198,6 +199,7 @@ fi
 /opt/gcc-5.4.0/include/c++/5.4.0/bits/streambuf.tcc
 /opt/gcc-5.4.0/include/c++/5.4.0/bits/streambuf_iterator.h
 /opt/gcc-5.4.0/include/c++/5.4.0/bits/stringfwd.h
+/opt/gcc-5.4.0/include/c++/5.4.0/bits/uniform_int_dist.h
 /opt/gcc-5.4.0/include/c++/5.4.0/bits/unique_ptr.h
 /opt/gcc-5.4.0/include/c++/5.4.0/bits/unordered_map.h
 /opt/gcc-5.4.0/include/c++/5.4.0/bits/unordered_set.h
@@ -276,6 +278,11 @@ fi
 /opt/gcc-5.4.0/include/c++/5.4.0/experimental/algorithm
 /opt/gcc-5.4.0/include/c++/5.4.0/experimental/any
 /opt/gcc-5.4.0/include/c++/5.4.0/experimental/chrono
+/opt/gcc-5.4.0/include/c++/5.4.0/experimental/filesystem
+/opt/gcc-5.4.0/include/c++/5.4.0/experimental/fs_dir.h
+/opt/gcc-5.4.0/include/c++/5.4.0/experimental/fs_fwd.h
+/opt/gcc-5.4.0/include/c++/5.4.0/experimental/fs_ops.h
+/opt/gcc-5.4.0/include/c++/5.4.0/experimental/fs_path.h
 /opt/gcc-5.4.0/include/c++/5.4.0/experimental/functional
 /opt/gcc-5.4.0/include/c++/5.4.0/experimental/optional
 /opt/gcc-5.4.0/include/c++/5.4.0/experimental/ratio
@@ -908,6 +915,7 @@ fi
 /opt/gcc-5.4.0/lib/gcc/x86_64-unknown-linux-gnu/5.4.0/include/mm3dnow.h
 /opt/gcc-5.4.0/lib/gcc/x86_64-unknown-linux-gnu/5.4.0/include/mm_malloc.h
 /opt/gcc-5.4.0/lib/gcc/x86_64-unknown-linux-gnu/5.4.0/include/mmintrin.h
+/opt/gcc-5.4.0/lib/gcc/x86_64-unknown-linux-gnu/5.4.0/include/mwaitxintrin.h
 /opt/gcc-5.4.0/lib/gcc/x86_64-unknown-linux-gnu/5.4.0/include/nmmintrin.h
 /opt/gcc-5.4.0/lib/gcc/x86_64-unknown-linux-gnu/5.4.0/include/omp.h
 /opt/gcc-5.4.0/lib/gcc/x86_64-unknown-linux-gnu/5.4.0/include/openacc.h
@@ -1313,6 +1321,7 @@ fi
 /opt/gcc-5.4.0/lib/gcc/x86_64-unknown-linux-gnu/5.4.0/plugin/include/tsan.h
 /opt/gcc-5.4.0/lib/gcc/x86_64-unknown-linux-gnu/5.4.0/plugin/include/tsystem.h
 /opt/gcc-5.4.0/lib/gcc/x86_64-unknown-linux-gnu/5.4.0/plugin/include/typeclass.h
+/opt/gcc-5.4.0/lib/gcc/x86_64-unknown-linux-gnu/5.4.0/plugin/include/typed-splay-tree.h
 /opt/gcc-5.4.0/lib/gcc/x86_64-unknown-linux-gnu/5.4.0/plugin/include/ubsan.h
 /opt/gcc-5.4.0/lib/gcc/x86_64-unknown-linux-gnu/5.4.0/plugin/include/valtrack.h
 /opt/gcc-5.4.0/lib/gcc/x86_64-unknown-linux-gnu/5.4.0/plugin/include/value-prof.h
@@ -1391,6 +1400,8 @@ fi
 /opt/gcc-5.4.0/lib/libstdc++.so.6.0.21-gdb.py
 /opt/gcc-5.4.0/lib/libstdc++.so.6.0.21-gdb.pyc
 /opt/gcc-5.4.0/lib/libstdc++.so.6.0.21-gdb.pyo
+/opt/gcc-5.4.0/lib/libstdc++fs.a
+/opt/gcc-5.4.0/lib/libstdc++fs.la
 /opt/gcc-5.4.0/lib/libsupc++.a
 /opt/gcc-5.4.0/lib/libsupc++.la
 /opt/gcc-5.4.0/lib/libubsan.a
@@ -1474,6 +1485,8 @@ fi
 /opt/gcc-5.4.0/lib64/libstdc++.so.6.0.21-gdb.py
 /opt/gcc-5.4.0/lib64/libstdc++.so.6.0.21-gdb.pyc
 /opt/gcc-5.4.0/lib64/libstdc++.so.6.0.21-gdb.pyo
+/opt/gcc-5.4.0/lib64/libstdc++fs.a
+/opt/gcc-5.4.0/lib64/libstdc++fs.la
 /opt/gcc-5.4.0/lib64/libsupc++.a
 /opt/gcc-5.4.0/lib64/libsupc++.la
 /opt/gcc-5.4.0/lib64/libtsan.a
@@ -1563,6 +1576,7 @@ fi
 /opt/gcc-5.4.0/share/locale/tr/LC_MESSAGES/cpplib.mo
 /opt/gcc-5.4.0/share/locale/tr/LC_MESSAGES/gcc.mo
 /opt/gcc-5.4.0/share/locale/uk/LC_MESSAGES/cpplib.mo
+/opt/gcc-5.4.0/share/locale/uk/LC_MESSAGES/gcc.mo
 /opt/gcc-5.4.0/share/locale/vi/LC_MESSAGES/cpplib.mo
 /opt/gcc-5.4.0/share/locale/vi/LC_MESSAGES/gcc.mo
 /opt/gcc-5.4.0/share/locale/zh_CN/LC_MESSAGES/cpplib.mo
@@ -1577,7 +1591,6 @@ fi
 /opt/gcc-5.4.0/share/man/man7/fsf-funding.7
 /opt/gcc-5.4.0/share/man/man7/gfdl.7
 /opt/gcc-5.4.0/share/man/man7/gpl.7
-
 
 
 %changelog
