@@ -1,0 +1,14 @@
+TARGETNAME=STUPID
+TARGETTYPE=DRIVER
+DRIVERTYPE=WDM
+TARGETPATH=obj
+USE_PDB=1
+
+!if "$(_BUILDARCH)" == "x86"
+CPUTYPE=i386
+!else
+CPUTYPE=$(_BUILDARCH)
+!endif
+
+SOURCES=	DriverEntry.cpp \
+			driver.rc

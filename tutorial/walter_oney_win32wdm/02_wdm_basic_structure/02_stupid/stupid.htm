@@ -1,0 +1,36 @@
+<HTML>
+</HEAD>
+<BODY>
+
+<H2>The STUPID Sample</H2>
+<P>The STUPID Sample accompanies Chapter 2 and illustrates the basics of the DriverEntry, DriverUnload, and AddDevice functions.
+This sample was added to the 2d edition.</P>
+
+<P>The sample includes one component:</P>
+
+<UL>
+<LI>STUPID.SYS is a WDM driver for a non-existent hardware device. </LI></UL>
+
+<H3>Building STUPID</H3>
+<P>To build STUPID.SYS, follow the <A HREF="../../wdmbook.htm#wdmbuild">general instructions for building a WDM sample</A>. The Microsoft Visual C++ project file is named STUPID.DSP.</P>
+<H3>Testing STUPID</H3>
+<P>Follow the general instructions for using <A HREF="../../wdmbook.htm#fastinst">FastInst</A> in 
+Windows XP or Windows 98/Me. The INF file is named STUPID.INF.</P>
+<p>The whole point of this sample is for you to single step it in a debugger. Therefore, install and run the
+kernel debugger of your choice and set breakpoints at DriverEntry and AddDevice.</p>
+
+<p>Note that AddDevice returns
+an error code, which is decidedly not the right thing to do in a production driver. The error code causes the
+system to remove STUPID.SYS from memory. If AddDevice were to succeed, there would be no way to get rid of
+the driver without removing the device in Device Manager and then rebooting the computer. This is because
+STUPID doesn't handle the PnP requests that are needed for a driver to unload.
+
+<p><b>Do not turn the Driver Verifier on for this sample.</b> It doesn't have dispatch functions for
+the required types of IRP. The Driver Verifier would bug check immediately upon detecting this fact.</p>
+
+<h3>What to look for</h3>
+<p>DriverEntry.cpp contains slightly simplified versions of the standard DriverEntry and AddDevice
+functions that a "real" driver would contain.</p>
+
+</BODY>
+</HTML>

@@ -1,0 +1,126 @@
+*
+*
+    Cap. 2 Basic Structure of a WDM Driver.
+
+	Registered device interfaces have persistent registry keys below
+	HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\DeviceClasses
+	
+	Registry functions: help interogate interfaces
+	https://msdn.microsoft.com/en-us/library/windows/desktop/ms724875(v=vs.85).aspx
+	
+	Public Device Installation Functions
+	https://msdn.microsoft.com/en-us/library/windows/hardware/ff549791(v=vs.85).aspx
+	DiInstallDevice
+	DiInstallDriver
+	DiRollbackDriver
+	DiShowUpdateDevice
+	DiUninstallDevice
+	InstallSelectedDriver
+	SetupDiAskForOEMDisk
+	SetupDiBuildClassInfoList
+	SetupDiBuildClassInfoListEx
+	SetupDiBuildDriverInfoList
+	SetupDiCallClassInstaller
+	SetupDiCancelDriverInfoSearch
+	SetupDiChangeState
+	SetupDiClassGuidsFromName
+	SetupDiClassGuidsFromNameEx
+	SetupDiClassNameFromGuid
+	SetupDiClassNameFromGuidEx
+	SetupDiCreateDeviceInfo
+	SetupDiCreateDeviceInfoList
+	SetupDiCreateDeviceInfoListEx
+	SetupDiCreateDeviceInterface
+	SetupDiCreateDeviceInterfaceRegKey
+	SetupDiCreateDevRegKey
+	SetupDiDeleteDeviceInfo
+	SetupDiDeleteDeviceInterfaceData
+	SetupDiDeleteDeviceInterfaceRegKey
+	SetupDiDeleteDevRegKey
+	SetupDiDestroyClassImageList
+	SetupDiDestroyDeviceInfoList
+	SetupDiDestroyDriverInfoList
+	SetupDiDrawMiniIcon
+	SetupDiEnumDeviceInfo
+	SetupDiEnumDeviceInterfaces
+	SetupDiEnumDriverInfo
+	SetupDiFinishInstallAction
+	SetupDiGetActualModelsSection
+	SetupDiGetActualSectionToInstall
+	SetupDiGetActualSectionToInstallEx
+	SetupDiGetClassBitmapIndex
+	SetupDiGetClassDescription
+	SetupDiGetClassDescriptionEx
+	SetupDiGetClassDevPropertySheets
+	SetupDiGetClassDevs
+	SetupDiGetClassDevsEx
+	SetupDiGetClassImageIndex
+	SetupDiGetClassImageList
+	SetupDiGetClassImageListEx
+	SetupDiGetClassInstallParams
+	SetupDiGetClassProperty
+	SetupDiGetClassPropertyEx
+	SetupDiGetClassPropertyKeys
+	SetupDiGetClassPropertyKeysEx
+	SetupDiGetClassRegistryProperty
+	SetupDiGetCustomDeviceProperty
+	SetupDiGetDeviceInfoListClass
+	SetupDiGetDeviceInfoListDetail
+	SetupDiGetDeviceInstallParams
+	SetupDiGetDeviceInstanceId
+	SetupDiGetDeviceInterfaceAlias
+	SetupDiGetDeviceInterfaceDetail
+	SetupDiGetDeviceInterfaceProperty
+	SetupDiGetDeviceInterfacePropertyKeys
+	SetupDiGetDeviceProperty
+	SetupDiGetDevicePropertyKeys
+	SetupDiGetDeviceRegistryProperty
+	SetupDiGetDriverInfoDetail
+	SetupDiGetDriverInstallParams
+	SetupDiGetHwProfileFriendlyName
+	SetupDiGetHwProfileFriendlyNameEx
+	SetupDiGetHwProfileList
+	SetupDiGetHwProfileListEx
+	SetupDiGetINFClass
+	SetupDiGetSelectedDevice
+	SetupDiGetSelectedDriver
+	SetupDiGetWizardPage
+	SetupDiInstallClass
+	SetupDiInstallClassEx
+	SetupDiInstallDevice
+	SetupDiInstallDeviceInterfaces
+	SetupDiInstallDriverFiles
+	SetupDiLoadClassIcon
+	SetupDiLoadDeviceIcon
+	SetupDiOpenClassRegKey
+	SetupDiOpenClassRegKeyEx
+	SetupDiOpenDeviceInfo
+	SetupDiOpenDeviceInterface
+	SetupDiOpenDeviceInterfaceRegKey
+	SetupDiOpenDevRegKey
+	SetupDiRegisterCoDeviceInstallers
+	SetupDiRegisterDeviceInfo
+	SetupDiRemoveDevice
+	SetupDiRemoveDeviceInterface
+	SetupDiRestartDevices
+	SetupDiSelectBestCompatDrv
+	SetupDiSelectDevice
+	SetupDiSelectOEMDrv
+	SetupDiSetClassInstallParams
+	SetupDiSetClassProperty
+	SetupDiSetClassPropertyEx
+	SetupDiSetClassRegistryProperty
+	SetupDiSetDeviceInstallParams
+	SetupDiSetDeviceInterfaceDefault
+	SetupDiSetDeviceInterfaceProperty
+	SetupDiSetDeviceProperty
+	SetupDiSetDeviceRegistryProperty
+	SetupDiSetDriverInstallParams
+	SetupDiSetSelectedDevice
+	SetupDiSetSelectedDriver
+	SetupDiUnremoveDevice
+	UpdateDriverForPlugAndPlayDevices
+	
+	
+	
+	
