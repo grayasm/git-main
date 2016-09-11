@@ -70,6 +70,7 @@ set_property(TARGET stupid APPEND_STRING PROPERTY LINK_FLAGS
 # remove /RTC1 or /RTCs or /RTCu from compiler flags
 # remove /DYNAMICBASE or /DYNAMICBASE:NO from linker flags
 # remove /NXCOMPAT from linker flags
+# remove /MANIFEST from linker flags
 # embed manifest no
 
 						

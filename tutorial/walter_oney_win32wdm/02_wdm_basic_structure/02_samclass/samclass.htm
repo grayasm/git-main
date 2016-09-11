@@ -1,0 +1,55 @@
+<html>
+
+<head>
+<title>The SAMCLASS Sample</title>
+<body>
+
+<h2>The SAMCLASS Sample</h2>
+
+<p>The SAMCLASS Sample accompanies Chapter 15 and illustrates how to provide a
+custom property page for a new class of WDM device. This sample was upgraded in
+SP-9 to also include a trivial class installer function so that the Win2K and
+WinXp Device Manager would display a custom icon.</p>
+
+<p>The sample includes two components:</p>
+
+<ul type=disc>
+ <li>SAMCLASS.DLL is a 32-bit property page DLL for use with Windows 2000.</li>
+ <li>SAMCLS16.DLL (SAMCLS16 subdirectory) is a 16-bit property page DLL for use with Windows 98.</li>
+</ul>
+
+<h3>Building SAMCLASS</h3>
+
+<p>To build SAMCLASS.DLL, follow the <a href="..\..\wdmbook.htm#usermodebuild">general
+instructions for building user-mode programs</a>. The Microsoft Visual C++
+project file is named SAMCLASS.DSP.</p>
+
+<p>To build SAMCLS16.DLL, use the SAMCLS16.MAK project (SAMCLS16 subdirectory)
+in Microsoft Visual C++ 1.52 or equivalent. Note that this is a 16-bit project
+and can’t be built with a 32-bit compiler. You’ll need to use the
+Options/Directories menu command to specify several directory paths. On my
+computer, I had the compiler installed in the c:\msvc directory and the Win98
+DDK in the c:\98ddk directory. My settings are:</p>
+
+<ul type=disc>
+ <li>Include Files Path: c:\98ddk\inc\win98\inc16;c:\msvc\include;c:\msvc\mfc\include;c:\98ddk\inc\win98</li>
+ <li>Library Files Path: c:\msvc\lib;c:\msvc\mfc\lib;c:\98ddk\lib\win98</li>
+</ul>
+
+<p><i>It won’t work to specify project-specific include directories because the
+search order won’t end up right.<o:p></o:p></i></p>
+
+<h3>Testing SAMCLASS</h3>
+
+<p>If you installed the book samples normally, the setup program will have
+installed SAMCLASS or SAMCLS16 as the property page provider for the SAMPLE
+class of devices. Each time you view the properties of one of the book sample
+drivers in Device Manager, you’ll be able to view the Sample Information page
+that these DLLs provide.</p>
+
+<h3>What to look for</h3>
+<p><b>Samclass.cpp</b> is the important file in this sample. Don't overlook the 16-bit version
+in the <b>samcls16</b> directory.</p>
+
+</body>
+</html>

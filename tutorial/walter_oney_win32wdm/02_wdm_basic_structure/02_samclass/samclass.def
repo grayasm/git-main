@@ -1,0 +1,4 @@
+LIBRARY SAMCLASS
+EXPORTS
+	EnumPropPages
+	SampleClassInstaller

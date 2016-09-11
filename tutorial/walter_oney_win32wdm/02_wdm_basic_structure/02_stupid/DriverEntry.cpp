@@ -7,17 +7,14 @@
 #include <initguid.h>
 #include "guids.h"
 
-NTSTATUS AddDevice(IN PDRIVER_OBJECT DriverObject, IN PDEVICE_OBJECT pdo);
-VOID DriverUnload(IN PDRIVER_OBJECT DriverObject);
+NTSTATUS AddDevice(PDRIVER_OBJECT DriverObject, PDEVICE_OBJECT pdo);
+VOID DriverUnload(PDRIVER_OBJECT DriverObject);
 
-///////////////////////////////////////////////////////////////////////////////
 
 #pragma PAGEDCODE
-
-// before had IN both params
 extern "C" NTSTATUS DriverEntry(PDRIVER_OBJECT DriverObject,
 								PUNICODE_STRING RegistryPath)
-{							// DriverEntry
+{
 	KdPrint((DRIVERNAME " - Entering DriverEntry: DriverObject %8.8lX\n", DriverObject));
 
 	// Initialize function pointers
@@ -26,24 +23,20 @@ extern "C" NTSTATUS DriverEntry(PDRIVER_OBJECT DriverObject,
 	DriverObject->DriverExtension->AddDevice = AddDevice;
 
 	return STATUS_SUCCESS;
-}							// DriverEntry
+}
 
-///////////////////////////////////////////////////////////////////////////////
 
 #pragma PAGEDCODE
-
-VOID DriverUnload(IN PDRIVER_OBJECT DriverObject)
-{							// DriverUnload
+VOID DriverUnload(PDRIVER_OBJECT DriverObject)
+{
 	PAGED_CODE();
 	KdPrint((DRIVERNAME " - Entering DriverUnload: DriverObject %8.8lX\n", DriverObject));
-}							// DriverUnload
+}
 
-///////////////////////////////////////////////////////////////////////////////
 
 #pragma PAGEDCODE
-
-NTSTATUS AddDevice(IN PDRIVER_OBJECT DriverObject, IN PDEVICE_OBJECT pdo)
-	{							// AddDevice
+NTSTATUS AddDevice(PDRIVER_OBJECT DriverObject, PDEVICE_OBJECT pdo)
+{
 	PAGED_CODE();
 	KdPrint((DRIVERNAME " - Entering AddDevice: DriverObject %8.8lX, pdo %8.8lX\n", DriverObject, pdo));
 
@@ -52,14 +45,20 @@ NTSTATUS AddDevice(IN PDRIVER_OBJECT DriverObject, IN PDEVICE_OBJECT pdo)
 	// Create a function device object to represent the hardware we're managing.
 
 	PDEVICE_OBJECT fdo;
-	#define xsize sizeof(DEVICE_EXTENSION)
-	status = IoCreateDevice(DriverObject, xsize, NULL,
-		FILE_DEVICE_UNKNOWN, FILE_DEVICE_SECURE_OPEN, FALSE, &fdo);
+	status = IoCreateDevice(DriverObject, 
+							sizeof(DEVICE_EXTENSION),
+							NULL,
+							FILE_DEVICE_UNKNOWN,
+							FILE_DEVICE_SECURE_OPEN,
+							FALSE,
+							&fdo);
+
 	if (!NT_SUCCESS(status))
-		{						// can't create device object
+	{
+		// can't create device object
 		KdPrint((DRIVERNAME " - IoCreateDevice failed - %X\n", status));
 		return status;
-		}						// can't create device object
+	}
 	
 	PDEVICE_EXTENSION pdx = (PDEVICE_EXTENSION) fdo->DeviceExtension;
 
@@ -68,7 +67,8 @@ NTSTATUS AddDevice(IN PDRIVER_OBJECT DriverObject, IN PDEVICE_OBJECT pdo)
 	// easily without losing track of the side effects.
 
 	do
-		{						// finish initialization
+	{
+		// finish initialization
 		pdx->DeviceObject = fdo;
 		pdx->Pdo = pdo;
 
@@ -76,11 +76,12 @@ NTSTATUS AddDevice(IN PDRIVER_OBJECT DriverObject, IN PDEVICE_OBJECT pdo)
 		
 		pdx->LowerDeviceObject = IoAttachDeviceToDeviceStack(fdo, pdo);
 		if (!pdx->LowerDeviceObject)
-			{						// can't attach device
+		{
+			// can't attach device
 			KdPrint((DRIVERNAME " - IoAttachDeviceToDeviceStack failed\n"));
 			status = STATUS_DEVICE_REMOVED;
 			break;
-			}						// can't attach device
+		}
 
 		// Set power management flags in the device object
 
@@ -88,12 +89,17 @@ NTSTATUS AddDevice(IN PDRIVER_OBJECT DriverObject, IN PDEVICE_OBJECT pdo)
 
 		// Register a device interface
 
-		status = IoRegisterDeviceInterface(pdo, &GUID_DEVINTERFACE_STUPID, NULL, &pdx->ifname);
+		status = IoRegisterDeviceInterface(	pdo, 
+											&GUID_DEVINTERFACE_STUPID,
+											NULL,
+											&pdx->ifname);
+
 		if (!NT_SUCCESS(status))
-			{						// unable to register interface
+		{
+			// unable to register interface
 			KdPrint((DRIVERNAME " - IoRegisterDeviceInterface failed - %8.8lX\n", status));
 			break;
-			}						// unable to register interface
+		}
 
 		// Clear the "initializing" flag so that we can get IRPs
 
@@ -105,17 +111,19 @@ NTSTATUS AddDevice(IN PDRIVER_OBJECT DriverObject, IN PDEVICE_OBJECT pdo)
 		// an expedient for testing this driver that doesn't support PnP, fail this function
 
 		status = STATUS_UNSUCCESSFUL;	// <== don't do this in a real driver!
-		}						// finish initialization
-	while (FALSE);
+	} while (FALSE);
 
 	if (!NT_SUCCESS(status))
-		{					// need to cleanup
+	{
+		// need to cleanup
 		if (pdx->ifname.Buffer)
 			RtlFreeUnicodeString(&pdx->ifname);
+
 		if (pdx->LowerDeviceObject)
 			IoDetachDevice(pdx->LowerDeviceObject);
+
 		IoDeleteDevice(fdo);
-		}					// need to cleanup
+	}
 
 	return status;
-	}							// AddDevice
+}

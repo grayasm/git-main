@@ -16,13 +16,13 @@ extern "C" {
 	}
 #endif
 
-#define PAGEDCODE code_seg("PAGE")
-#define LOCKEDCODE code_seg()
-#define INITCODE code_seg("INIT")
+#define PAGEDCODE	code_seg("PAGE")
+#define LOCKEDCODE	code_seg()
+#define INITCODE	code_seg("INIT")
 
-#define PAGEDDATA data_seg("PAGEDATA")
-#define LOCKEDDATA data_seg()
-#define INITDATA data_seg("INITDATA")
+#define PAGEDDATA	data_seg("PAGEDATA")
+#define LOCKEDDATA	data_seg()
+#define INITDATA	data_seg("INITDATA")
 
 #define arraysize(p) (sizeof(p)/sizeof((p)[0]))
 
@@ -30,7 +30,7 @@ extern "C" {
 #pragma warning(disable:4390)	// empty controlled stmt [e.g., if() KdPrint();]
 #endif
 
-#if DBG && defined(_X86_)
+#if DBG && defined(_AMD64_) // defined(_X86_) 
 	#undef ASSERT
 	#define ASSERT(e) if(!(e)){DbgPrint("Assertion failure in "\
 	__FILE__ ", line %d: " #e "\n", __LINE__);\
