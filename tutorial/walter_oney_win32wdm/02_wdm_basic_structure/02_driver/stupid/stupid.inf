@@ -8,6 +8,9 @@ Signature=$CHICAGO$
 Class=Sample
 ClassGuid={894A7460-A033-11D2-821E-444553540000}
 Provider=%ONEYSOFT%
+; DriverVer   = 08/19/2013,1.1.0.1944
+; CatalogFile = Sample.cat
+
 
 ;------------------------------------------------------------------------------
 ;  SAMPLE class definition
@@ -26,17 +29,17 @@ HKR,,Icon,,101
 [ClassInstall32CopyFiles]
 samclass.dll,,,2
 
-[ClassInstall]
-AddReg=ClassInstallAddReg
-CopyFiles=ClassInstallCopyFiles
+; [ClassInstall]
+; AddReg=ClassInstallAddReg
+; CopyFiles=ClassInstallCopyFiles
 
-[ClassInstallAddReg]
-HKR,,,,"WDM Book Samples"
-HKR,,EnumPropPages,,samcls16.dll
-HKR,,Icon,,102
+; [ClassInstallAddReg]
+; HKR,,,,"WDM Book Samples"
+; HKR,,EnumPropPages,,samcls16.dll
+; HKR,,Icon,,102
 
-[ClassInstallCopyFiles]
-samcls16.dll,,,2
+; [ClassInstallCopyFiles]
+; samcls16.dll,,,2
 
 ;------------------------------------------------------------------------------
 ;  Standard INF sections
@@ -47,15 +50,16 @@ samcls16.dll,,,2
 
 [DestinationDirs]
 DefaultDestDir=10,System32\Drivers
-ClassInstallCopyFiles=11
+; ClassInstallCopyFiles=11
 ClassInstall32CopyFiles=11
 
 [SourceDisksFiles]
-stupid.sys=1,objchk~1\i386,
-generic.sys=1,..\..\generic\objchk~1\i386,
-wdmstub.sys=1,..\..\Append~1\newstub\objchk~1\i386,
-samclass.dll=1,..\..\Chap15\samclass\release,
-samcls16.dll=1,..\..\Chap15\samclass\samcls16,
+; stupid.sys=1,objchk~1\i386,
+stupid.sys=1,.\,
+; generic.sys=1,..\..\generic\objchk~1\i386,
+; wdmstub.sys=1,..\..\Append~1\newstub\objchk~1\i386,
+samclass.dll=1,.\,
+; samcls16.dll=1,..\..\Chap15\samclass\samcls16,
 
 [SourceDisksNames]
 1=%INSTDISK%,,,
@@ -86,22 +90,23 @@ ServiceBinary=%10%\system32\drivers\stupid.sys
 AddReg=DriverHwAddReg
 
 [DriverHwAddReg]
-HKR,,SampleInfo,,"%wdmbook%\chap2\stupid\stupid.htm"
+; HKR,,SampleInfo,,"%wdmbook%\chap2\stupid\stupid.htm"
+HKR,,SampleInfo,,
 
 ;------------------------------------------------------------------------------
 ;  Windows 98 Sections
 ;------------------------------------------------------------------------------
 
-[DriverInstall]
-AddReg=DriverAddReg
-CopyFiles=DriverCopyFiles
+; [DriverInstall]
+; AddReg=DriverAddReg
+; CopyFiles=DriverCopyFiles
 
-[DriverAddReg]
-HKR,,DevLoader,,*ntkern
-HKR,,NTMPDriver,,stupid.sys
+; [DriverAddReg]
+; HKR,,DevLoader,,*ntkern
+; HKR,,NTMPDriver,,stupid.sys
 
-[DriverInstall.HW]
-AddReg=DriverHwAddReg
+; [DriverInstall.HW]
+; AddReg=DriverHwAddReg
 
 ;------------------------------------------------------------------------------
 ;  String Definitions

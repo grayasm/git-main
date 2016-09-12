@@ -1,6 +1,4 @@
-cmake_minimum_required(VERSION 3.2)
-project(02_proj)
-
+# This is the "stupid.sys" CMake file.
 set(SRC DriverEntry.cpp
 		stddcls.cpp
 		Driver.h
@@ -66,7 +64,13 @@ set_property(TARGET stupid APPEND_STRING PROPERTY LINK_FLAGS
 						/RELEASE /BASE:0x10000									\
 						/MERGE:_TEXT=.text ")
 
-
+add_custom_command(TARGET stupid POST_BUILD
+		COMMAND "${CMAKE_COMMAND}" -E make_directory "${CMAKE_BINARY_DIR}/install"
+		COMMAND "${CMAKE_COMMAND}" -E copy  "\$(TargetDir)/stupid.sys"  "${CMAKE_BINARY_DIR}/install"
+		COMMAND "${CMAKE_COMMAND}" -E copy  "${CMAKE_CURRENT_SOURCE_DIR}/stupid.inf"  "${CMAKE_BINARY_DIR}/install"
+		)
+		
+		
 # remove /RTC1 or /RTCs or /RTCu from compiler flags
 # remove /DYNAMICBASE or /DYNAMICBASE:NO from linker flags
 # remove /NXCOMPAT from linker flags
