@@ -105,22 +105,28 @@ extern "C" DWORD CALLBACK SampleClassInstaller(DI_FUNCTION fcn, HDEVINFO infoset
 #endif // _DEBUG
 
 	return ERROR_DI_DO_DEFAULT;	// do default action in all cases
-	}							// SampleClassInstaller
+}
 
-///////////////////////////////////////////////////////////////////////////////
-// This function is the "property page provider" for the sample class. The name of
-// this DLL is the value of the EnumPropPages32 value in the "sample" class key.
-// EnumPropPages is the name of the exported function that Device Manager searches
-// for by default, but you could give it a different name if you wanted to.
-//
-// Note on control placement: The Device Manager's regular property pages place the
-// icon at 7,7 and the device description at 37, 9. If you look carefully at the
-// dialog resource, you'll see that I did the same thing, so that these controls
-// don't appear to flop around as you page through the property sheet.
 
-extern "C" BOOL CALLBACK EnumPropPages(PSP_PROPSHEETPAGE_REQUEST p,
-	LPFNADDPROPSHEETPAGE AddPage, LPARAM lParam)
-	{							// EnumPropPages
+
+/*
+	This function is the "property page provider" for the sample class.
+	The name of this DLL is the value of the EnumPropPages32 value in the "sample" class key.
+	EnumPropPages is the name of the exported function that Device Manager 
+	searches for by default, but you could give it a different name if you wanted to.
+
+	Note on control placement: The Device Manager's regular property pages place 
+	the icon at 7,7 and the device description at 37, 9. 
+	If you look carefully at the dialog resource, you'll see that I did the same 
+	thing, so that these controls don't appear to flop around as you page through 
+	the property sheet.
+*/
+
+extern "C" BOOL CALLBACK EnumPropPages(	PSP_PROPSHEETPAGE_REQUEST p,
+										LPFNADDPROPSHEETPAGE AddPage,
+										LPARAM lParam)
+{
+
 	PROPSHEETPAGE page;
 	HPROPSHEETPAGE hpage;
 
@@ -130,10 +136,11 @@ extern "C" BOOL CALLBACK EnumPropPages(PSP_PROPSHEETPAGE_REQUEST p,
 	page.pszTemplate = MAKEINTRESOURCE(IDD_SAMPAGE);
 	page.pfnDlgProc = (DLGPROC) PageDlgProc;
 
-	// Create an auxiliary data structure to pass important information
-	// to our WM_INITDIALOG handler. Arrange for a callback when the page
-	// is destroyed (the only event we actually care about) to delete this
-	// structure
+	/*	Create an auxiliary data structure to pass important information
+		to our WM_INITDIALOG handler. Arrange for a callback when the page
+		is destroyed (the only event we actually care about) to delete this
+		structure.
+	*/
 
 	SETUPSTUFF* stuff = new SETUPSTUFF;
 	stuff->info = p->DeviceInfoSet;
@@ -142,42 +149,56 @@ extern "C" BOOL CALLBACK EnumPropPages(PSP_PROPSHEETPAGE_REQUEST p,
 	page.pfnCallback = PageCallbackProc;
 	page.dwFlags = PSP_USECALLBACK;
 
-	// Create a property page and add it to the device manager's property sheet
 
+	/* Create a property page and add it to the device manager's property sheet.*/
 	hpage = CreatePropertySheetPage(&page);
 
 	if (!hpage)
-		{
+	{
 		delete stuff;
 		return TRUE;
-		}
+	}
 
 	if (!(*AddPage)(hpage, lParam))
 		DestroyPropertySheetPage(hpage);
 
-	return TRUE;
-	}							// EnumPropPages
+	return TRUE;	
+}
 
-///////////////////////////////////////////////////////////////////////////////
+
+
 
 BOOL WINAPI PageDlgProc(HWND hdlg, UINT msg, WPARAM wParam, LPARAM lParam)
-	{							// PageDlgProc
+{
+
 	int flag = DWLP_DLGPROC + sizeof(DLGPROC); // DWL_USER;
 	SETUPSTUFF* stuff = (SETUPSTUFF*) GetWindowLong(hdlg, flag);
 
 	switch (msg)
-		{						// process message
-
+	{
 	case WM_INITDIALOG:
-		{						// WM_INITDIALOG
+	{
 		SETUPSTUFF* stuff = (SETUPSTUFF*) ((LPPROPSHEETPAGE) lParam)->lParam;
 		SetWindowLong(hdlg, flag, (LONG) stuff);
 
 		// Determine the friendly name or description of the device
 
 		TCHAR name[256];
-		if (!SetupDiGetDeviceRegistryProperty(stuff->info, stuff->did, SPDRP_FRIENDLYNAME, NULL, (PBYTE) name, sizeof(name), NULL)
-			&& !SetupDiGetDeviceRegistryProperty(stuff->info, stuff->did, SPDRP_DEVICEDESC, NULL, (PBYTE) name, sizeof(name), NULL))
+		if (	!SetupDiGetDeviceRegistryProperty(	stuff->info, 
+													stuff->did, 
+													SPDRP_FRIENDLYNAME, 
+													NULL, 
+													(PBYTE) name, 
+													sizeof(name), 
+													NULL)
+
+			&& !SetupDiGetDeviceRegistryProperty(	stuff->info, 
+													stuff->did, 
+													SPDRP_DEVICEDESC, 
+													NULL, 
+													(PBYTE) name, 
+													sizeof(name),
+													NULL))
 			name[0] = 0;
 
 		SetDlgItemText(hdlg, IDC_SAMNAME, name);
@@ -191,14 +212,21 @@ BOOL WINAPI PageDlgProc(HWND hdlg, UINT msg, WPARAM wParam, LPARAM lParam)
 		else
 			ShowWindow(hClassIcon, SW_HIDE);
 
-		// Determine the URL for the sample information file by interrogating the non-standard
-		// device property SampleInfo. The user may click the More Information button on this
-		// page to view this file in a web browser.
+		/*	Determine the URL for the sample information file by interrogating 
+			the non-standard device property SampleInfo. The user may click the 
+			More Information button on this page to view this file in a web browser.
+		*/
 
-		HKEY hkey = SetupDiOpenDevRegKey(stuff->info, stuff->did, DICS_FLAG_GLOBAL, 0, DIREG_DEV, KEY_READ);
+		HKEY hkey = SetupDiOpenDevRegKey(	stuff->info, 
+											stuff->did, 
+											DICS_FLAG_GLOBAL, 
+											0, 
+											DIREG_DEV, 
+											KEY_READ);
+
 		DWORD length = sizeof(name);
 		if (hkey && RegQueryValueEx(hkey, "SampleInfo", NULL, NULL, (LPBYTE) name, &length) == 0)
-			{				// get sample info URL
+		{
     		DoEnvironmentSubst(name, sizeof(name));
 			int len = strlen(name);
 			if (len >= sizeof(stuff->infopath))
@@ -207,40 +235,40 @@ BOOL WINAPI PageDlgProc(HWND hdlg, UINT msg, WPARAM wParam, LPARAM lParam)
 			stuff->infopath[len] = 0;
 
 			RegCloseKey(hkey);
-			}				// get sample info URL
+		}
 		else
-			{				// no sample info
+		{
 			stuff->infopath[0] = 0;
 			ShowWindow(GetDlgItem(hdlg, IDC_INFOLABEL), SW_HIDE);
 			ShowWindow(GetDlgItem(hdlg, IDB_MOREINFO), SW_HIDE);
-			}				// no sample info
-			    		
-    	break;
-    	}						// WM_INITDIALOG
+		}
+	    		
+		break;
+	} // WM_INITDIALOG
     	
     case WM_COMMAND:
     	switch (LOWORD(wParam))
-    		{					// process command notification
-    		
+    	{
     	case IDB_MOREINFO:
-    		{					// IDB_MOREINFO 
+    	{
     		ShellExecute(hdlg, NULL, stuff->infopath, NULL, NULL, SW_SHOWNORMAL);
     		return TRUE;
-    		}					// IDB_MOREINFO
-    		
-    		}					// process command notification
+    	} // IDB_MOREINFO
+    	
+		}
 		break;
-
-		}						// process message
+		}
 
 	return FALSE;
-	}							// PageDlgProc
+} // PageDlgProc
 
-///////////////////////////////////////////////////////////////////////////////
+
 
 UINT CALLBACK PageCallbackProc(HWND junk, UINT msg, LPPROPSHEETPAGE p)
-	{							// PageCallbackProc
+{
 	if (msg == PSPCB_RELEASE && p->lParam)
 		delete (SETUPSTUFF*) p->lParam;
-	return TRUE;				// matters only for PSPCB_CREATE
-	}							// PageCallbackProc
+	return TRUE; // matters only for PSPCB_CREATE
+}
+
+

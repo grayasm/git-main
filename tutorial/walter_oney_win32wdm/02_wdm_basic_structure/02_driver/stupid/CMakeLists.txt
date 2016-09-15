@@ -12,6 +12,7 @@ set(SRC DriverEntry.cpp
 
 set(WDMINC "c:/Program Files (x86)/Windows Kits/10/Include/10.0.14393.0")
 set(WDMLIB "c:/Program Files (x86)/Windows Kits/10/Lib/10.0.14393.0")
+set(WDMBIN "c:/Program Files (x86)/Windows Kits/10/bin")
 
 add_executable(stupid ${SRC})
 target_include_directories(	stupid PUBLIC 
@@ -68,6 +69,10 @@ add_custom_command(TARGET stupid POST_BUILD
 		COMMAND "${CMAKE_COMMAND}" -E make_directory "${CMAKE_BINARY_DIR}/install"
 		COMMAND "${CMAKE_COMMAND}" -E copy  "\$(TargetDir)/stupid.sys"  "${CMAKE_BINARY_DIR}/install"
 		COMMAND "${CMAKE_COMMAND}" -E copy  "${CMAKE_CURRENT_SOURCE_DIR}/stupid.inf"  "${CMAKE_BINARY_DIR}/install"
+		COMMAND "${CMAKE_COMMAND}" -E copy  "${CMAKE_CURRENT_SOURCE_DIR}/stupid.htm"  "${CMAKE_BINARY_DIR}/install"
+		# create a catalog file for the driver package (type inf2cat /?  to see the supported operating systems)
+		COMMAND "${WDMBIN}/x86/Inf2Cat.exe" driver:"${CMAKE_BINARY_DIR}/install" /os:10_x64
+		# see README.txt for how to sign the catalog
 		)
 		
 		
