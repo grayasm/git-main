@@ -1,0 +1,14 @@
+TARGETNAME=generic
+TARGETPATH=obj
+TARGETTYPE=DRIVER
+DRIVERTYPE=WDM
+USE_PDB=1
+
+SOURCES= 	Control.cpp \
+		DriverEntry.cpp \
+		RemoveLock.cpp \
+		DevQueue.cpp \
+		PlugPlay.cpp \
+		Driver.rc \
+		Power.cpp \
+		stddcls.cpp
