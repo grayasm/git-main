@@ -6,11 +6,11 @@ set(SRC control.cpp
 		plugplay.cpp
 		power.cpp
 		RemoveLock.cpp
-		stdcls.cpp
+		stddcls.cpp
 		driver.h
 		generic.h
 		GenericPower.h
-		stdcls.h
+		stddcls.h
 		version.h
 		Driver.rc
 		generic.htm

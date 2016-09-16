@@ -102,7 +102,7 @@ struct _POWERINFO;
 VOID AbortPendingIoctls(PGENERIC_EXTENSION pdx, NTSTATUS status);
 VOID AdjustSpecialFileCounter(PGENERIC_EXTENSION pdx, BOOLEAN inpath, PLONG counter);
 NTSTATUS CompleteRequest(PIRP Irp, NTSTATUS status, ULONG_PTR info);
-NTSTATUS Completerequest(PIRP Irp, NTSTATUS status);
+NTSTATUS CompleteRequest(PIRP Irp, NTSTATUS status);
 NTSTATUS ForwardAndWait(PGENERIC_EXTENSION pdx, PIRP Irp);
 NTSTATUS GetPowerInfoFromRegistry(PGENERIC_EXTENSION pfx, _POWERINFO* pip);
 NTSTATUS ImplementPowerPolicy(PGENERIC_EXTENSION pdx, _POWERINFO* pip);
