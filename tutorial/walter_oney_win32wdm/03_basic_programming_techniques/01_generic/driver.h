@@ -1,3 +1,7 @@
+/*	driver.h part of generic.sys
+	Copyright (C) 1999 by Walter Oney.
+*/
+
 #ifndef __driver_h__
 #define __driver_h__
 
@@ -42,46 +46,69 @@ typedef struct _GENERIC_EXTENSION
 	SYSTEM_POWER_STATE syspower;			// current system power state
 	PULONG idlecount;						// address of idle counter from idle detection registration
 	ULONG cto;								// conservation timeout
-	ULONG pto;
-	DEVICE_POWER_STATE idlesate;
-	DEVICE_CAPABILITIES devcaps;
-	ULONG nqueues;
-	PDEVQUEUE* queues;
-	PSTART_DEVICE StartDevice;
-	PSTOP_DEVICE StopDevice;
-	PREMOVE_DEVICE RemoveDevice;
-	PQUERYFUNCTION OkayToStop;
-	PQUERYFUNCTION OkayToRemove;
-	PFLUSHIOFUNCTION FlushPendingIo;
-	PGETDSTATEFUNCTION GetDevicePowerState;
-	CHAR DebugName[64];
-	ULONG Flags;
-	LONG npagefiles;
-	LONG ndumpfiles;
-	LONG nhibernatefiles;
-	LIST_ENTRY PendingIoctlList;
-	KSPIN_LOCK IoctlListLock;
-	NTSTATUS IoctlAbortStatus;
-	PQUERYPOWERFUNCTION QueryPower;
-	PCONTEXTFUNCTION SaveDeviceContext;
-	PCONTEXTFUNCTION RestoreDeviceContext;
-	PNP_DEVICE_STATE pnpstatemask;
-	DEVICE_POWER_STATE PerfBoundary;
-	PIRP WaitWakeIrp;
-	LONG wwcancelled;
-	LONG wwoutstanding;
-	POWER_SEQUENCE oldseq;
-	KEVENT iflock;
-	LIST_ENTRY iflist;
-	KEVENT evPagingPath;
-	BOOLEAN HardwareWorking;
-	BOOLEAN WakeupEnabled;
-	BOOLEAN StalledForPower;
-	BOOLEAN GotCapabilities;
+	ULONG pto;								// performance timeout
+	DEVICE_POWER_STATE idlesate;			// idle state requested by minidriver
+	DEVICE_CAPABILITIES devcaps;			// copy of most recent device capabilities
+	ULONG nqueues;							// number of queues
+	PDEVQUEUE* queues;						// IRP queues
+	PSTART_DEVICE StartDevice;				// routine to initialize device configuration
+	PSTOP_DEVICE StopDevice;				// routine to release device configuration
+	PREMOVE_DEVICE RemoveDevice;			// routine to remove device object
+	PQUERYFUNCTION OkayToStop;				// okay to stop device now?
+	PQUERYFUNCTION OkayToRemove;			// okay to remove device now?
+	PFLUSHIOFUNCTION FlushPendingIo;		// encourage pending I/O to finish
+	PGETDSTATEFUNCTION GetDevicePowerState;	// get D-state for given S-state
+	CHAR DebugName[64];						// name for debugging messages
+	ULONG Flags;							// flags from initialization call
+	LONG npagefiles;						// # page files about which we've been notified
+	LONG ndumpfiles;						// # dump ditto
+	LONG nhibernatefiles;					// # hibernate ditto
+	LIST_ENTRY PendingIoctlList;			// list of asynchronous IOCTLs
+	KSPIN_LOCK IoctlListLock;				// lock for pending IOCTLs
+	NTSTATUS IoctlAbortStatus;				// abort incoming IOCTLs if nonzero
+	PQUERYPOWERFUNCTION QueryPower;			// okay to change device power?
+	PCONTEXTFUNCTION SaveDeviceContext;		// routine to save device context
+	PCONTEXTFUNCTION RestoreDeviceContext;	// routine to restore device context
+	PNP_DEVICE_STATE pnpstate;				// new PnP state bits
+	PNP_DEVICE_STATE pnpstatemask;			// mask of changed state bits
+	DEVICE_POWER_STATE PerfBoundary;		// context restore very expensive from >= this power state
+	PIRP WaitWakeIrp;						// outstanding WAIT_WAKE request (if any)
+	LONG wwcancelled;						// non-zero when WAIT_WAKE has been cancelled
+	LONG wwoutstanding;						// non-zero between PoReqeustPowerIrp and WaitWaitCallback
+	POWER_SEQUENCE oldseq;					// old power sequence numbers
+	KEVENT iflock;							// for interlocking use of interface list
+	LIST_ENTRY iflist;						// list of registered device interfaces
+	KEVENT evPagingPath;					// synch event used as a mutex for paging path notifications
+	BOOLEAN HardwareWorking;				// we should touch hardware at stop-device time
+	BOOLEAN WakeupEnabled;					// device wakeup feature is enabled
+	BOOLEAN StalledForPower;				// power management has stalled IRP queue
+	BOOLEAN GotCapabilities;				// capabilities have been gotten already
 } GENERIC_EXTENSION;
 
 
 
+typedef struct _INTERFACE_RECORD
+{
+	LIST_ENTRY list;						// linking fields
+	GUID guid;								// guid for registered interface
+	UNICODE_STRING linkname;				// symbolic link name
+	BOOLEAN enabled;						// true if interface currently enabled
+} INTERFACE_RECORD, *PINTERFACE_RECORD;
 
+
+/*  Global functions.  */
+struct _POWERINFO;
+
+VOID AbortPendingIoctls(PGENERIC_EXTENSION pdx, NTSTATUS status);
+VOID AdjustSpecialFileCounter(PGENERIC_EXTENSION pdx, BOOLEAN inpath, PLONG counter);
+NTSTATUS CompleteRequest(PIRP Irp, NTSTATUS status, ULONG_PTR info);
+NTSTATUS Completerequest(PIRP Irp, NTSTATUS status);
+NTSTATUS ForwardAndWait(PGENERIC_EXTENSION pdx, PIRP Irp);
+NTSTATUS GetPowerInfoFromRegistry(PGENERIC_EXTENSION pfx, _POWERINFO* pip);
+NTSTATUS ImplementPowerPolicy(PGENERIC_EXTENSION pdx, _POWERINFO* pip);
+BOOLEAN OkayToRemove(PGENERIC_EXTENSION pdx);
+BOOLEAN OkayToStop(PGENERIC_EXTENSION pdx);
+NTSTATUS SendDeviceSetPower(PGENERIC_EXTENSION pdx, DEVICE_POWER_STATE state, BOOLEAN wait = FALSE);
+NTSTATUS WritePowerInfoRegistry(PGENERIC_EXTENSION pdx, _POWERINFO* pip);
 
 #endif // __driver_h__
