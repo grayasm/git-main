@@ -83,6 +83,7 @@ struct AppData
 	GtkWidget* widget_4_spinbn_yth;
 	GtkWidget* widget_4_chkbn_appearsal;
 	GtkWidget* widget_4_spinbn_arrowsz;
+	GtkWidget* widget_4_cbbox_shadowt;
 	GString*   widget_4_style_txt;
 
 	// ----- GtkEntry -----
@@ -90,7 +91,11 @@ struct AppData
 	GtkWidget* widget_5_fn_bn;
 	GtkWidget* widget_5_spinbn_xth;
 	GtkWidget* widget_5_spinbn_yth;
+	GtkWidget* widget_5_chkbn_iconp;
 	GtkWidget* widget_5_spinbn_innerb[4];
+	GtkWidget* widget_5_spinbn_invisiblec;
+	GtkWidget* widget_5_spinbn_progressb[4];
+	GtkWidget* widget_5_chkbn_stateh;
 	GString*   widget_5_style_txt;
 
 	// ----- GtkExpander -----
@@ -106,6 +111,7 @@ struct AppData
 	GtkWidget* widget_7_chkbn_fixedsl;
 	GtkWidget* widget_7_chkbn_hasbs;
 	GtkWidget* widget_7_chkbn_hasfs;
+	GtkWidget* widget_7_chkbn_hassbs;
 	GtkWidget* widget_7_chkbn_hassfs;
 	GtkWidget* widget_7_spinbn_minsl;
 	GString*   widget_7_style_txt;
@@ -119,6 +125,10 @@ struct AppData
 	GtkWidget* widget_9_fn_bn;
 	GtkWidget* widget_9_spinbn_xth;
 	GtkWidget* widget_9_spinbn_yth;
+	GtkWidget* widget_9_spinbn_minhzbarh;
+	GtkWidget* widget_9_spinbn_minhzbarw;
+	GtkWidget* widget_9_spinbn_minvtbarh;
+	GtkWidget* widget_9_spinbn_minvtbarw;
 	GtkWidget* widget_9_spinbn_xs;
 	GtkWidget* widget_9_spinbn_ys;
 	GString*   widget_9_style_txt;
@@ -161,6 +171,8 @@ struct AppData
 	GtkWidget* widget_14_fn_bn;
 	GtkWidget* widget_14_spinbn_xth;
 	GtkWidget* widget_14_spinbn_yth;
+	GtkWidget* widget_14_cmbbox_arrowp;
+	GtkWidget* widget_14_chkbn_arrowsc;
 	GtkWidget* widget_14_chkbn_doublea;
 	GtkWidget* widget_14_spinbn_horizontaloff;
 	GtkWidget* widget_14_spinbn_horizontalpadd;
@@ -181,10 +193,12 @@ struct AppData
 	GtkWidget* widget_16_fn_bn;
 	GtkWidget* widget_16_spinbn_xth;
 	GtkWidget* widget_16_spinbn_yth;
+	GtkWidget* widget_16_spinbn_arrowsc;
 	GtkWidget* widget_16_spinbn_arrowsp;
 	GtkWidget* widget_16_spinbn_horizontalpadd;
 	GtkWidget* widget_16_cmbbox_selectedst;
 	GtkWidget* widget_16_spinbn_togglesp;
+	GtkWidget* widget_16_spinbn_widthc;
 	GString*   widget_16_style_txt;
 
 	// ----- GtkCheckMenuItem -----
@@ -234,13 +248,6 @@ struct AppData
 	GtkWidget* widget_21_spinbn_yth;
 	GtkWidget* widget_21_spinbn_contentpadd;
 	GtkWidget* widget_21_spinbn_headerpadd;
-	GtkWidget* widget_21_spinbn_childdx;
-	GtkWidget* widget_21_spinbn_childdy;
-	GtkWidget* widget_21_spinbn_defaultb[4];
-	GtkWidget* widget_21_spinbn_defaultob[4];
-	GtkWidget* widget_21_chkbn_displacef;
-	GtkWidget* widget_21_spinbn_imagesp;
-	GtkWidget* widget_21_spinbn_innerb[4];
 	GString*   widget_21_style_txt;
 
 	// ----- GtkDialog -----
@@ -251,6 +258,7 @@ struct AppData
 	GtkWidget* widget_22_spinbn_actionab;
 	GtkWidget* widget_22_spinbn_buttonsp;
 	GtkWidget* widget_22_spinbn_contentab;
+	GtkWidget* widget_22_spinbn_contentas;
 	GString*   widget_22_style_txt;
 
 	// ----- GtkMessageDialog -----
@@ -284,7 +292,9 @@ struct AppData
 	GtkWidget* widget_26_chkbn_activatesld;
 	GtkWidget* widget_26_spinbn_arrowdx;
 	GtkWidget* widget_26_spinbn_arrowdy;
+	GtkWidget* widget_26_spinbn_arrowsc;
 	GtkWidget* widget_26_spinbn_sliderw;
+	GtkWidget* widget_26_chkbn_stepperpd;
 	GtkWidget* widget_26_spinbn_steppersz;
 	GtkWidget* widget_26_spinbn_steppersp;
 	GtkWidget* widget_26_spinbn_troughb;
@@ -303,6 +313,7 @@ struct AppData
 	GtkWidget* widget_28_spinbn_xth;
 	GtkWidget* widget_28_spinbn_yth;
 	GtkWidget* widget_28_spinbn_scrollbarsp;
+	GtkWidget* widget_28_chkbn_scrollbarswb;
 	GString*   widget_28_style_txt;
 };
 AppData* app;
@@ -1254,6 +1265,11 @@ void ui_create_gtkwidget()
 	}
 
 	// Set the color buttons ( exclude bg_pixmap here)
+	/* fg[NORMAL]   = "#747474"  , also ACTIVE,PRELIGHT,SELECTED,INSENSITIVE
+	   bg[NORMAL]   = "#DCDAD5"  , idem
+	   text[NORMAL] = "#000000"  , idem
+	   base[NORMAL] = "#FFFFFF"  , idem
+	*/
 	GtkStyle* style = gtk_widget_get_style (app->window);
 	for (gint i=1; i<TABLE_0_ROW - 1; ++i)
 	{
@@ -1763,8 +1779,8 @@ void ui_create_gtkbutton()
 	                    0);      // padding
 
 
-	// Create sample buttons and retain the theme
-	GtkWidget* table_sample = gtk_table_new (3, 3, TRUE);
+	// Create few sample buttons to visualize theme changes
+	GtkWidget* table_sample = gtk_table_new (4, 3, TRUE);
 	gtk_box_pack_start (GTK_BOX(vbox),
 	                    table_sample,
 	                    FALSE,   // expand
@@ -1864,6 +1880,11 @@ void ui_create_gtkbutton()
 	}
 
 	// Set the color buttons
+	/* fg[NORMAL] = "#747474"  , also ACTIVE,PRELIGHT,SELECTED,INSENSITIVE
+	   bg[NORMAL] = "#DCDAD5"  , idem
+	   text[NORMAL] = "#000000", idem
+	   base[NORMAL] = "#FFFFFF", idem
+	 */
 	GtkStyle* style = gtk_widget_get_style (app->window);
 
 	for (gint i=1; i<TABLE_0_ROW; ++i)
@@ -1893,7 +1914,7 @@ void ui_create_gtkbutton()
 
 	// New table for 5 pairs of 2 (label + widget)
 
-	// font_desc
+	// font_desc    font_name="FreeSans 11"
 	GtkWidget* table_1 = gtk_table_new (5, 2, TRUE); //row,col,homo
 	gtk_box_pack_start (GTK_BOX(vbox),
 	                    table_1,
@@ -1988,7 +2009,6 @@ void ui_create_gtkbutton()
 	                  NULL);
 
 	// GtkButton::child-displacement-y  gint
-
 	GtkWidget* childdy_lbl = gtk_label_new("child-displacement-y");
 	app->widget_1_spinbn_childdy = gtk_spin_button_new_with_range (0,10,1);
 	gtk_spin_button_set_value (GTK_SPIN_BUTTON(app->widget_1_spinbn_childdy),
@@ -2164,10 +2184,74 @@ void ui_delete_gtkbutton()
 
 void ui_create_gtkcheckbutton()
 {
+	GtkWidget* vbox = gtk_vbox_new (FALSE, 0);
+	GtkWidget* expander = gtk_expander_new ("GtkCheckButton");
+	gtk_container_add (GTK_CONTAINER(expander), vbox);
+	gtk_expander_set_expanded (GTK_EXPANDER(expander), FALSE);
+	gtk_box_pack_start (GTK_BOX(app->vbox),
+	                    expander,
+	                    FALSE,   // expand
+	                    FALSE,   // fill
+	                    0);      // padding
+
+	// Create few sample widgets to visualize theme changes
+	GtkWidget* table_sample = gtk_table_new (1, 3, TRUE);
+	gtk_box_pack_start (GTK_BOX(vbox),
+	                    table_sample,
+	                    FALSE,   // expand
+	                    FALSE,   // fill
+	                    0);      // padding
+
+	GtkWidget* ckbn_withlabel[3];
+	ckbn_withlabel[0] = gtk_check_button_new_with_label("Check Button");
+	ckbn_withlabel[1] = gtk_check_button_new_with_mnemonic ("With _Mnemonic");
+	ckbn_withlabel[2] = gtk_check_button_new_with_label("Check Me!");
+
+	for (gint i=0; i < 3; ++i)
+	{
+		gtk_table_attach (GTK_TABLE(table_sample),
+		                  ckbn_withlabel[i],
+		                  i, i+1,    // left, right
+		                  0, 1,      // top, bottom
+		                  GTK_SHRINK, GTK_SHRINK, // GtkAttachOptions
+		                  0, 0);     // x,y padding
+	}
+
+
+	// create 3 radio buttons
+	GtkWidget* rdbn_withlabel[3];
+	rdbn_withlabel[0] = gtk_radio_button_new_with_label(NULL, "radio 1");
+	rdbn_withlabel[1] = gtk_radio_button_new_with_label_from_widget(
+		                                    GTK_RADIO_BUTTON(rdbn_withlabel[0]),
+		                                    "radio 2");
+	rdbn_withlabel[2] = gtk_radio_button_new_with_label_from_widget(
+		                                    GTK_RADIO_BUTTON(rdbn_withlabel[0]),
+		                                    "radio 3");
+	for (gint i=0; i < 3; ++i)
+	{
+		gtk_table_attach (GTK_TABLE(table_sample),
+		                  rdbn_withlabel[i],
+		                  i, i+1,    // left, right
+		                  1, 2,      // top, bottom
+		                  GTK_SHRINK, GTK_SHRINK, // GtkAttachOptions
+		                  0, 0);     // x,y padding
+	}
+
+
+	/*
+	GtkWidget* widget_2_clrbn[4][5];
+	GtkWidget* widget_2_fn_bn;
+	GtkWidget* widget_2_spinbn_xth;
+	GtkWidget* widget_2_spinbn_yth;
+	GtkWidget* widget_2_spinbn_indicatorsz;
+	GtkWidget* widget_2_spinbn_indicatorsp;
+	GString*   widget_2_style_txt;
+	*/
 }
 
 void ui_update_gtkcheckbutton()
 {
+
 }
 
 void ui_delete_gtkcheckbutton()
@@ -2176,6 +2260,79 @@ void ui_delete_gtkcheckbutton()
 
 void ui_create_gtkbuttonbox()
 {
+	GtkWidget* vbox = gtk_vbox_new (FALSE, 0);
+	GtkWidget* expander = gtk_expander_new ("GtkButtonBox");
+	gtk_container_add (GTK_CONTAINER(expander), vbox);
+	gtk_expander_set_expanded (GTK_EXPANDER(expander), FALSE);
+	gtk_box_pack_start (GTK_BOX(app->vbox),
+	                    expander,
+	                    FALSE,   // expand
+	                    FALSE,   // fill
+	                    0);      // padding
+
+	GtkWidget* lbl_horizontal = gtk_label_new("GtkHButtonBox");
+	gtk_box_pack_start (GTK_BOX(vbox),
+	                    lbl_horizontal,
+	                    FALSE,   // expand
+	                    FALSE,   // fill
+	                    0);      // padding
+
+	GtkWidget* bnbox_horizontal = gtk_hbutton_box_new ();
+	gtk_box_pack_start (GTK_BOX(vbox),
+	                    bnbox_horizontal,
+	                    FALSE,   // expand
+	                    FALSE,   // fill
+	                    0);      // padding
+
+	GtkWidget* bn_haligned[3];
+	const gchar* bn_haligned_lbl[3] = { "_Buttons",
+	                                    "_Horizontal",
+	                                    "_Aligned"};
+	for (gint i=0; i < 3; ++i)
+	{
+		bn_haligned[i] = gtk_button_new_with_mnemonic(bn_haligned_lbl[i]);
+		gtk_box_pack_start (GTK_BOX(bnbox_horizontal),
+		                    bn_haligned[i],
+		                    FALSE,   // expand
+		                    FALSE,   // fill
+		                    0);      // padding
+	}
+
+	GtkWidget* lbl_vertical = gtk_label_new("GtkVButtonBox");
+	gtk_box_pack_start (GTK_BOX(vbox),
+	                    lbl_vertical,
+	                    FALSE,   // expand
+	                    FALSE,   // fill
+	                    0);      // padding
+
+	GtkWidget* bnbox_vertical = gtk_vbutton_box_new ();
+	gtk_box_pack_start (GTK_BOX(vbox),
+	                    bnbox_vertical,
+	                    FALSE,   // expand
+	                    FALSE,   // fill
+	                    0);      // padding
+
+	GtkWidget* bn_valigned[3];
+	const gchar* bn_valigned_lbl[3] = { "_Buttons",
+	                                    "_Vertical",
+	                                    "_Aligned"};
+	for (gint i=0; i < 3; ++i)
+	{
+		bn_valigned[i] = gtk_button_new_with_mnemonic(bn_valigned_lbl[i]);
+		gtk_box_pack_start (GTK_BOX(bnbox_vertical),
+		                    bn_valigned[i],
+		                    FALSE,   // expand
+		                    FALSE,   // fill
+		                    0);      // padding
+	}
+
+	/*
+	GtkWidget* widget_3_spinbn_childipx;
+	GtkWidget* widget_3_spinbn_childipy;
+	GtkWidget* widget_3_spinbn_childmh;
+	GtkWidget* widget_3_spinbn_childmw;
+	GString*   widget_3_style_txt;
+	*/
 }
 
 void ui_update_gtkbuttonbox()
@@ -2188,6 +2345,84 @@ void ui_delete_gtkbuttonbox()
 
 void ui_create_gtkcombobox()
 {
+	GtkWidget* vbox = gtk_vbox_new (FALSE, 0);
+	GtkWidget* expander = gtk_expander_new ("GtkComboBox");
+	gtk_container_add (GTK_CONTAINER(expander), vbox);
+	gtk_expander_set_expanded (GTK_EXPANDER(expander), FALSE);
+	gtk_box_pack_start (GTK_BOX(app->vbox),
+	                    expander,
+	                    FALSE,   // expand
+	                    FALSE,   // fill
+	                    0);      // padding
+
+
+	// Create few sample widgets to visualize theme changes
+	GtkWidget* table_sample = gtk_table_new (1, 2, TRUE);
+	gtk_box_pack_start (GTK_BOX(vbox),
+	                    table_sample,
+	                    FALSE,   // expand
+	                    FALSE,   // fill
+	                    0);      // padding
+
+
+	// http://stackoverflow.com/questions/16630528/trying-to-populate-a-gtkcombobox-with-model-in-c
+	GtkListStore* liststore;
+	GtkCellRenderer* column;
+	GtkWidget* combo;
+
+	liststore = gtk_list_store_new(2, G_TYPE_STRING, G_TYPE_STRING);
+	gtk_list_store_insert_with_values (liststore, NULL, -1,
+	                                   0, "red",
+	                                   1, "Don't install.",
+	                                   -1);
+	gtk_list_store_insert_with_values (liststore, NULL, -1,
+	                                   0, "green",
+	                                   1, "This user only.",
+	                                   -1);
+	gtk_list_store_insert_with_values (liststore, NULL, -1,
+	                                   0, "yellow",
+	                                   1, "All users.",
+	                                   -1);
+	combo = gtk_combo_box_new_with_model (GTK_TREE_MODEL(liststore));
+	g_object_unref (liststore);
+	column = gtk_cell_renderer_text_new();
+	gtk_cell_layout_pack_start (GTK_CELL_LAYOUT(combo), column, TRUE);
+	gtk_cell_layout_set_attributes (GTK_CELL_LAYOUT(combo), column,
+	                                "cell-background", 0,
+	                                "text", 1,
+	                                NULL);
+	gtk_combo_box_set_active (GTK_COMBO_BOX(combo), 1);
+	gtk_table_attach (GTK_TABLE(table_sample),
+	                  combo,
+	                  0, 1,    // left, right
+	                  0, 1,    // top, bottom
+	                  GTK_SHRINK, GTK_SHRINK,   // GtkAttachOptions
+	                  0, 0);   // x,y padding
+
+	// the second example from SO
+	GtkWidget* combo2 = gtk_combo_box_text_new();
+    gtk_combo_box_append_text(GTK_COMBO_BOX(combo2), "Don't install.");
+    gtk_combo_box_append_text(GTK_COMBO_BOX(combo2), "This user only.");
+    gtk_combo_box_append_text(GTK_COMBO_BOX(combo2), "All users");
+    gtk_combo_box_set_active(GTK_COMBO_BOX(combo2), 1);
+
+	gtk_table_attach (GTK_TABLE(table_sample),
+	                  combo2,
+	                  1, 2,    // left, right
+	                  0, 1,    // top, bottom
+	                  GTK_SHRINK, GTK_SHRINK,   // GtkAttachOptions
+	                  0, 0);   // x,y padding
+
+	/*
+	  GtkWidget* widget_4_clrbn[4][5];
+	  GtkWidget* widget_4_fn_bn;
+	  GtkWidget* widget_4_spinbn_xth;
+	  GtkWidget* widget_4_spinbn_yth;
+	  GtkWidget* widget_4_chkbn_appearsal;
+	  GtkWidget* widget_4_spinbn_arrowsz;
+	  GtkWidget* widget_4_shadow_type;
+	  GString*   widget_4_style_txt;
+	*/
 }
 
 void ui_update_gtkcombobox()
@@ -2200,6 +2435,55 @@ void ui_delete_gtkcombobox()
 
 void ui_create_gtkentry()
 {
+	GtkWidget* vbox = gtk_vbox_new (FALSE, 0);
+	GtkWidget* expander = gtk_expander_new ("GtkEntry");
+	gtk_container_add (GTK_CONTAINER(expander), vbox);
+	gtk_expander_set_expanded (GTK_EXPANDER(expander), FALSE);
+	gtk_box_pack_start (GTK_BOX(app->vbox),
+	                    expander,
+	                    FALSE,   // expand
+	                    FALSE,   // fill
+	                    0);      // padding
+
+
+	// Create few sample widgets to visualize theme changes
+	GtkWidget* table_sample = gtk_table_new (1, 3, TRUE);
+	gtk_box_pack_start (GTK_BOX(vbox),
+	                    table_sample,
+	                    FALSE,   // expand
+	                    FALSE,   // fill
+	                    0);      // padding
+
+	GtkWidget* entry[3];
+	const gchar* entry_txt[] = { "no frame", "not editable", "i is invisible" };
+	for (gint i = 0; i < 3; ++i)
+	{
+		entry[i] = gtk_entry_new();
+		gtk_entry_set_text (GTK_ENTRY(entry[i]), entry_txt[i]);
+		if (i == 0) gtk_entry_set_has_frame (GTK_ENTRY(entry[i]), false);
+		if (i == 1) gtk_entry_set_editable (GTK_ENTRY(entry[i]), false);
+		if (i == 2) gtk_entry_set_invisible_char (GTK_ENTRY(entry[i]), 'i');
+
+		gtk_table_attach (GTK_TABLE(table_sample),
+		                  entry[i],
+		                  i, i+1,    // left, right
+		                  0, 1,      // top, bottom
+		                  GTK_SHRINK, GTK_SHRINK, // GtkAttachOptions
+		                  0, 0);     // x,y padding
+	}
+
+	/*
+	  GtkWidget* widget_5_clrbn[4][5];
+	  GtkWidget* widget_5_fn_bn;
+	  GtkWidget* widget_5_spinbn_xth;
+	  GtkWidget* widget_5_spinbn_yth;
+	  GtkWidget* widget_5_chkbn_iconp;
+	  GtkWidget* widget_5_spinbn_innerb[4];
+	  GtkWidget* widget_5_spinbn_invisiblec;
+	  GtkWidget* widget_5_spinbn_progressb[4];
+	  GtkWidget* widget_5_chkbn_stateh;
+	  GString*   widget_5_style_txt;
+	 */
 }
 
 void ui_update_gtkentry()
@@ -2212,6 +2496,59 @@ void ui_delete_gtkentry()
 
 void ui_create_gtkexpander()
 {
+	GtkWidget* vbox = gtk_vbox_new (FALSE, 0);
+	GtkWidget* expander = gtk_expander_new ("GtkExpander");
+	gtk_container_add (GTK_CONTAINER(expander), vbox);
+	gtk_expander_set_expanded (GTK_EXPANDER(expander), FALSE);
+	gtk_box_pack_start (GTK_BOX(app->vbox),
+	                    expander,
+	                    FALSE,   // expand
+	                    FALSE,   // fill
+	                    0);      // padding
+
+
+	// Create few sample widgets to visualize theme changes
+	GtkWidget* table_sample = gtk_table_new (1, 3, TRUE);
+	gtk_box_pack_start (GTK_BOX(vbox),
+	                    table_sample,
+	                    FALSE,   // expand
+	                    FALSE,   // fill
+	                    0);      // padding
+
+
+	GtkWidget* exp_wgt[3];
+	const gchar* exp_txt[] = {"1st expander", "2dn expander", "3rd expander"};
+	for (gint i = 0; i < 3; ++i)
+	{
+		exp_wgt[i] = gtk_expander_new (exp_txt[i]);
+		gtk_expander_set_expanded (GTK_EXPANDER(exp_wgt[i]), TRUE);
+		GtkWidget* embed;
+		if (i==0) embed = gtk_label_new ("Label");
+		else if (i==1) embed = gtk_button_new_with_label ("Button");
+		else if (i==2)
+		{
+			embed = gtk_entry_new ();
+			gtk_entry_set_text (GTK_ENTRY(embed), "Entry");
+		}
+		gtk_container_add (GTK_CONTAINER(exp_wgt[i]), embed);
+		gtk_table_attach (GTK_TABLE(table_sample),
+		                  exp_wgt[i],
+		                  i, i+1,    // left, right
+		                  0, 1,      // top, bottom
+		                  GTK_SHRINK, GTK_SHRINK,  // GtkAttachOptions
+		                  0, 0);     // x,y padding
+	}
+
+
+	/*
+	  GtkWidget* widget_6_clrbn[4][5];
+	  GtkWidget* widget_6_fn_bn;
+	  GtkWidget* widget_6_spinbn_xth;
+	  GtkWidget* widget_6_spinbn_yth;
+	  GtkWidget* widget_6_spinbn_expandersz;
+	  GtkWidget* widget_6_spinbn_expandersp;
+	  GString*   widget_6_style_txt;
+	 */
 }
 
 void ui_update_gtkexpander()
@@ -2224,6 +2561,49 @@ void ui_delete_gtkexpander()
 
 void ui_create_gtkscrollbar()
 {
+	GtkWidget* vbox = gtk_vbox_new (FALSE, 0);
+	GtkWidget* expander = gtk_expander_new ("GtkScrollbar");
+	gtk_container_add (GTK_CONTAINER(expander), vbox);
+	gtk_expander_set_expanded (GTK_EXPANDER(expander), FALSE);
+	gtk_box_pack_start (GTK_BOX(app->vbox),
+	                    expander,
+	                    FALSE,   // expand
+	                    FALSE,   // fill
+	                    0);      // padding
+
+
+	// Create few sample widgets to visualize theme changes
+	GtkWidget* table_sample = gtk_table_new (1, 1, TRUE);
+	gtk_box_pack_start (GTK_BOX(vbox),
+	                    table_sample,
+	                    FALSE,   // expand
+	                    FALSE,   // fill
+	                    0);      // padding
+
+
+	// sample from SO
+	// http://stackoverflow.com/questions/8403731/gtk-and-scrolling-text-view
+	GtkWidget* txtview = gtk_text_view_new();
+	GtkWidget* scrwin = gtk_scrolled_window_new (NULL, NULL);
+	gtk_container_add (GTK_CONTAINER(scrwin), txtview);
+	gtk_table_attach (GTK_TABLE(table_sample),
+	                  scrwin,
+	                  0, 1,    // left, right
+	                  0, 1,    // top, bottom
+	                  GTK_SHRINK, GTK_SHRINK, // GtkAttachOptions
+	                  0, 0);     // x,y padding
+
+	gtk_widget_set_size_request (scrwin, 400, 150);
+
+	/*
+	  GtkWidget* widget_7_chkbn_fixedsl;
+	  GtkWidget* widget_7_chkbn_hasbs;
+	  GtkWidget* widget_7_chkbn_hasfs;
+	  GtkWidget* widget_7_chkbn_hassbs;
+	  GtkWidget* widget_7_chkbn_hassfs;
+	  GtkWidget* widget_7_spinbn_minsl;
+	  GString*   widget_7_style_txt;
+	 */
 }
 
 void ui_update_gtkscrollbar()
@@ -2236,6 +2616,30 @@ void ui_delete_gtkscrollbar()
 
 void ui_create_gtkarrow()
 {
+	GtkWidget* vbox = gtk_vbox_new (FALSE, 0);
+	GtkWidget* expander = gtk_expander_new ("GtkArrow");
+	gtk_container_add (GTK_CONTAINER(expander), vbox);
+	gtk_expander_set_expanded (GTK_EXPANDER(expander), FALSE);
+	gtk_box_pack_start (GTK_BOX(app->vbox),
+	                    expander,
+	                    FALSE,   // expand
+	                    FALSE,   // fill
+	                    0);      // padding
+
+
+	// Create few sample widgets to visualize theme changes
+	GtkWidget* table_sample = gtk_table_new (4, 3, TRUE);
+	gtk_box_pack_start (GTK_BOX(vbox),
+	                    table_sample,
+	                    FALSE,   // expand
+	                    FALSE,   // fill
+	                    0);      // padding
+
+	/*
+	  GtkWidget* widget_8_spinbn_arrowsc;
+	  GString*   widget_8_style_txt;
+	*/
+
 }
 
 void ui_update_gtkarrow()
@@ -2248,6 +2652,39 @@ void ui_delete_gtkarrow()
 
 void ui_create_gtkprogressbar()
 {
+	GtkWidget* vbox = gtk_vbox_new (FALSE, 0);
+	GtkWidget* expander = gtk_expander_new ("GtkProgressBar");
+	gtk_container_add (GTK_CONTAINER(expander), vbox);
+	gtk_expander_set_expanded (GTK_EXPANDER(expander), FALSE);
+	gtk_box_pack_start (GTK_BOX(app->vbox),
+	                    expander,
+	                    FALSE,   // expand
+	                    FALSE,   // fill
+	                    0);      // padding
+
+
+	// Create few sample widgets to visualize theme changes
+	GtkWidget* table_sample = gtk_table_new (4, 3, TRUE);
+	gtk_box_pack_start (GTK_BOX(vbox),
+	                    table_sample,
+	                    FALSE,   // expand
+	                    FALSE,   // fill
+	                    0);      // padding
+
+	
+	/*
+	  GtkWidget* widget_9_clrbn[4][5];
+	  GtkWidget* widget_9_fn_bn;
+	  GtkWidget* widget_9_spinbn_xth;
+	  GtkWidget* widget_9_spinbn_yth;
+	  GtkWidget* widget_9_spinbn_minhzbarh;
+	  GtkWidget* widget_9_spinbn_minhzbarw;
+	  GtkWidget* widget_9_spinbn_minvtbarh;
+	  GtkWidget* widget_9_spinbn_minvtbarw;
+	  GtkWidget* widget_9_spinbn_xs;
+	  GtkWidget* widget_9_spinbn_ys;
+	  GString*   widget_9_style_txt;
+	*/
 }
 
 void ui_update_gtkprogressbar()
@@ -2260,6 +2697,30 @@ void ui_delete_gtkprogressbar()
 
 void ui_create_gtkspinbutton()
 {
+	GtkWidget* vbox = gtk_vbox_new (FALSE, 0);
+	GtkWidget* expander = gtk_expander_new ("GtkSpinButton");
+	gtk_container_add (GTK_CONTAINER(expander), vbox);
+	gtk_expander_set_expanded (GTK_EXPANDER(expander), FALSE);
+	gtk_box_pack_start (GTK_BOX(app->vbox),
+	                    expander,
+	                    FALSE,   // expand
+	                    FALSE,   // fill
+	                    0);      // padding
+
+
+	// Create few sample widgets to visualize theme changes
+	GtkWidget* table_sample = gtk_table_new (4, 3, TRUE);
+	gtk_box_pack_start (GTK_BOX(vbox),
+	                    table_sample,
+	                    FALSE,   // expand
+	                    FALSE,   // fill
+	                    0);      // padding
+
+	/*
+	  GtkWidget* widget_10_cmbbox_shadowt;
+	  GString*   widget_10_style_txt;
+	 */
+
 }
 
 void ui_update_gtkspinbutton()
@@ -2272,6 +2733,33 @@ void ui_delete_gtkspinbutton()
 
 void ui_create_gtkstatusbar()
 {
+	GtkWidget* vbox = gtk_vbox_new (FALSE, 0);
+	GtkWidget* expander = gtk_expander_new ("GtkStatusbar");
+	gtk_container_add (GTK_CONTAINER(expander), vbox);
+	gtk_expander_set_expanded (GTK_EXPANDER(expander), FALSE);
+	gtk_box_pack_start (GTK_BOX(app->vbox),
+	                    expander,
+	                    FALSE,   // expand
+	                    FALSE,   // fill
+	                    0);      // padding
+
+
+	// Create few sample widgets to visualize theme changes
+	GtkWidget* table_sample = gtk_table_new (4, 3, TRUE);
+	gtk_box_pack_start (GTK_BOX(vbox),
+	                    table_sample,
+	                    FALSE,   // expand
+	                    FALSE,   // fill
+	                    0);      // padding
+
+	/*
+	  GtkWidget* widget_11_clrbn[4][5];
+	  GtkWidget* widget_11_fn_bn;
+	  GtkWidget* widget_11_spinbn_xth;
+	  GtkWidget* widget_11_spinbn_yth;
+	  GtkWidget* widget_11_cmbbox_shadowt;
+	  GString*   widget_11_style_txt;
+	 */
 }
 
 void ui_update_gtkstatusbar()
@@ -2284,6 +2772,40 @@ void ui_delete_gtkstatusbar()
 
 void ui_create_gtktoolbar()
 {
+	GtkWidget* vbox = gtk_vbox_new (FALSE, 0);
+	GtkWidget* expander = gtk_expander_new ("GtkToolbar");
+	gtk_container_add (GTK_CONTAINER(expander), vbox);
+	gtk_expander_set_expanded (GTK_EXPANDER(expander), FALSE);
+	gtk_box_pack_start (GTK_BOX(app->vbox),
+	                    expander,
+	                    FALSE,   // expand
+	                    FALSE,   // fill
+	                    0);      // padding
+
+
+	// Create few sample widgets to visualize theme changes
+	GtkWidget* table_sample = gtk_table_new (4, 3, TRUE);
+	gtk_box_pack_start (GTK_BOX(vbox),
+	                    table_sample,
+	                    FALSE,   // expand
+	                    FALSE,   // fill
+	                    0);      // padding
+
+
+	/*
+	  GtkWidget* widget_12_clrbn[4][5];
+	  GtkWidget* widget_12_fn_bn;
+	  GtkWidget* widget_12_spinbn_xth;
+	  GtkWidget* widget_12_spinbn_yth;
+	  GtkWidget* widget_12_cmbbox_buttonr;
+	  GtkWidget* widget_12_spinbn_internalp;
+	  GtkWidget* widget_12_spinbn_maxce;
+	  GtkWidget* widget_12_cmbbox_shadowt;
+	  GtkWidget* widget_12_spinbn_spacesz;
+	  GtkWidget* widget_12_cmbbox_spacest;
+	  GString*   widget_12_style_txt;
+	 */
+
 }
 
 void ui_update_gtktoolbar()
@@ -2296,6 +2818,34 @@ void ui_delete_gtktoolbar()
 
 void ui_create_gtktoolbutton()
 {
+	GtkWidget* vbox = gtk_vbox_new (FALSE, 0);
+	GtkWidget* expander = gtk_expander_new ("GtkToolButton");
+	gtk_container_add (GTK_CONTAINER(expander), vbox);
+	gtk_expander_set_expanded (GTK_EXPANDER(expander), FALSE);
+	gtk_box_pack_start (GTK_BOX(app->vbox),
+	                    expander,
+	                    FALSE,   // expand
+	                    FALSE,   // fill
+	                    0);      // padding
+
+
+	// Create few sample widgets to visualize theme changes
+	GtkWidget* table_sample = gtk_table_new (4, 3, TRUE);
+	gtk_box_pack_start (GTK_BOX(vbox),
+	                    table_sample,
+	                    FALSE,   // expand
+	                    FALSE,   // fill
+	                    0);      // padding
+
+	/*
+	  GtkWidget* widget_13_clrbn[4][5];
+	  GtkWidget* widget_13_fn_bn;
+	  GtkWidget* widget_13_spinbn_xth;
+	  GtkWidget* widget_13_spinbn_yth;
+	  GtkWidget* widget_13_spinbn_iconsp;
+	  GString*   widget_13_style_txt;
+	 */
+
 }
 
 void ui_update_gtktoolbutton()
@@ -2308,6 +2858,40 @@ void ui_delete_gtktoolbutton()
 
 void ui_create_gtkmenu()
 {
+	GtkWidget* vbox = gtk_vbox_new (FALSE, 0);
+	GtkWidget* expander = gtk_expander_new ("GtkMenu");
+	gtk_container_add (GTK_CONTAINER(expander), vbox);
+	gtk_expander_set_expanded (GTK_EXPANDER(expander), FALSE);
+	gtk_box_pack_start (GTK_BOX(app->vbox),
+	                    expander,
+	                    FALSE,   // expand
+	                    FALSE,   // fill
+	                    0);      // padding
+
+
+	// Create few sample widgets to visualize theme changes
+	GtkWidget* table_sample = gtk_table_new (4, 3, TRUE);
+	gtk_box_pack_start (GTK_BOX(vbox),
+	                    table_sample,
+	                    FALSE,   // expand
+	                    FALSE,   // fill
+	                    0);      // padding
+
+	/*
+	  GtkWidget* widget_14_clrbn[4][5];
+	  GtkWidget* widget_14_fn_bn;
+	  GtkWidget* widget_14_spinbn_xth;
+	  GtkWidget* widget_14_spinbn_yth;
+	  GtkWidget* widget_14_cmbbox_arrowp;
+	  GtkWidget* widget_14_chkbn_arrowsc;
+	  GtkWidget* widget_14_chkbn_doublea;
+	  GtkWidget* widget_14_spinbn_horizontaloff;
+	  GtkWidget* widget_14_spinbn_horizontalpadd;
+	  GtkWidget* widget_14_spinbn_verticaloff;
+	  GtkWidget* widget_14_spinbn_verticalpadd;
+	  GString*   widget_14_style_txt;
+	 */
+
 }
 
 void ui_update_gtkmenu()
@@ -2320,6 +2904,33 @@ void ui_delete_gtkmenu()
 
 void ui_create_gtkmenubar()
 {
+	GtkWidget* vbox = gtk_vbox_new (FALSE, 0);
+	GtkWidget* expander = gtk_expander_new ("GtkMenuBar");
+	gtk_container_add (GTK_CONTAINER(expander), vbox);
+	gtk_expander_set_expanded (GTK_EXPANDER(expander), FALSE);
+	gtk_box_pack_start (GTK_BOX(app->vbox),
+	                    expander,
+	                    FALSE,   // expand
+	                    FALSE,   // fill
+	                    0);      // padding
+
+
+	// Create few sample widgets to visualize theme changes
+	GtkWidget* table_sample = gtk_table_new (4, 3, TRUE);
+	gtk_box_pack_start (GTK_BOX(vbox),
+	                    table_sample,
+	                    FALSE,   // expand
+	                    FALSE,   // fill
+	                    0);      // padding
+
+	/*
+	  GtkWidget* widget_15_clrbn[4][5];
+	  GtkWidget* widget_15_fn_bn;
+	  GtkWidget* widget_15_spinbn_xth;
+	  GtkWidget* widget_15_spinbn_yth;
+	  GtkWidget* widget_15_spinbn_internalp;
+	  GtkWidget* widget_15_cmbbox_shadowt;
+	 */
 }
 
 void ui_update_gtkmenubar()
@@ -2332,6 +2943,39 @@ void ui_delete_gtkmenubar()
 
 void ui_create_gtkmenuitem()
 {
+	GtkWidget* vbox = gtk_vbox_new (FALSE, 0);
+	GtkWidget* expander = gtk_expander_new ("GtkMenuItem");
+	gtk_container_add (GTK_CONTAINER(expander), vbox);
+	gtk_expander_set_expanded (GTK_EXPANDER(expander), FALSE);
+	gtk_box_pack_start (GTK_BOX(app->vbox),
+	                    expander,
+	                    FALSE,   // expand
+	                    FALSE,   // fill
+	                    0);      // padding
+
+
+	// Create few sample widgets to visualize theme changes
+	GtkWidget* table_sample = gtk_table_new (4, 3, TRUE);
+	gtk_box_pack_start (GTK_BOX(vbox),
+	                    table_sample,
+	                    FALSE,   // expand
+	                    FALSE,   // fill
+	                    0);      // padding
+
+
+	/*
+	  GtkWidget* widget_16_clrbn[4][5];
+	  GtkWidget* widget_16_fn_bn;
+	  GtkWidget* widget_16_spinbn_xth;
+	  GtkWidget* widget_16_spinbn_yth;
+	  GtkWidget* widget_16_spinbn_arrowsc;
+	  GtkWidget* widget_16_spinbn_arrowsp;
+	  GtkWidget* widget_16_spinbn_horizontalpadd;
+	  GtkWidget* widget_16_cmbbox_selectedst;
+	  GtkWidget* widget_16_spinbn_togglesp;
+	  GtkWidget* widget_16_spinbn_widthc;
+	  GString*   widget_16_style_txt;
+	 */
 }
 
 void ui_update_gtkmenuitem()
@@ -2344,6 +2988,30 @@ void ui_delete_gtkmenuitem()
 
 void ui_create_gtkcheckmenuitem()
 {
+	GtkWidget* vbox = gtk_vbox_new (FALSE, 0);
+	GtkWidget* expander = gtk_expander_new ("GtkCheckMenuItem");
+	gtk_container_add (GTK_CONTAINER(expander), vbox);
+	gtk_expander_set_expanded (GTK_EXPANDER(expander), FALSE);
+	gtk_box_pack_start (GTK_BOX(app->vbox),
+	                    expander,
+	                    FALSE,   // expand
+	                    FALSE,   // fill
+	                    0);      // padding
+
+
+	// Create few sample widgets to visualize theme changes
+	GtkWidget* table_sample = gtk_table_new (4, 3, TRUE);
+	gtk_box_pack_start (GTK_BOX(vbox),
+	                    table_sample,
+	                    FALSE,   // expand
+	                    FALSE,   // fill
+	                    0);      // padding
+
+	/*
+	  GtkWidget* widget_17_spinbn_indicatorsz;
+	  GString*   widget_17_style_txt;
+	 */
+
 }
 
 void ui_update_gtkcheckmenuitem()
@@ -2356,6 +3024,34 @@ void ui_delete_gtkcheckmenuitem()
 
 void ui_create_gtktextview()
 {
+	GtkWidget* vbox = gtk_vbox_new (FALSE, 0);
+	GtkWidget* expander = gtk_expander_new ("GtkTextView");
+	gtk_container_add (GTK_CONTAINER(expander), vbox);
+	gtk_expander_set_expanded (GTK_EXPANDER(expander), FALSE);
+	gtk_box_pack_start (GTK_BOX(app->vbox),
+	                    expander,
+	                    FALSE,   // expand
+	                    FALSE,   // fill
+	                    0);      // padding
+
+
+	// Create few sample widgets to visualize theme changes
+	GtkWidget* table_sample = gtk_table_new (4, 3, TRUE);
+	gtk_box_pack_start (GTK_BOX(vbox),
+	                    table_sample,
+	                    FALSE,   // expand
+	                    FALSE,   // fill
+	                    0);      // padding
+
+
+	/*
+	  GtkWidget* widget_18_clrbn[4][5];
+	  GtkWidget* widget_18_fn_bn;
+	  GtkWidget* widget_18_spinbn_xth;
+	  GtkWidget* widget_18_spinbn_yth;
+	  GtkWidget* widget_18_clrbn_errorundclr;
+	  GString*   widget_18_style_txt;
+	 */
 }
 
 void ui_update_gtktextview()
@@ -2368,6 +3064,45 @@ void ui_delete_gtktextview()
 
 void ui_create_gtktreeview()
 {
+	GtkWidget* vbox = gtk_vbox_new (FALSE, 0);
+	GtkWidget* expander = gtk_expander_new ("GtkTreeView");
+	gtk_container_add (GTK_CONTAINER(expander), vbox);
+	gtk_expander_set_expanded (GTK_EXPANDER(expander), FALSE);
+	gtk_box_pack_start (GTK_BOX(app->vbox),
+	                    expander,
+	                    FALSE,   // expand
+	                    FALSE,   // fill
+	                    0);      // padding
+
+
+	// Create few sample widgets to visualize theme changes
+	GtkWidget* table_sample = gtk_table_new (4, 3, TRUE);
+	gtk_box_pack_start (GTK_BOX(vbox),
+	                    table_sample,
+	                    FALSE,   // expand
+	                    FALSE,   // fill
+	                    0);      // padding
+
+
+	/*
+	  GtkWidget* widget_19_clrbn[4][5];
+	  GtkWidget* widget_19_fn_bn;
+	  GtkWidget* widget_19_spinbn_xth;
+	  GtkWidget* widget_19_spinbn_yth;
+	  GtkWidget* widget_19_chkbn_allowr;
+	  GtkWidget* widget_19_clrbn_evenrowclr;
+	  GtkWidget* widget_19_spinbn_expandersz;
+	  GtkWidget* widget_19_entry_gridlnpatt;
+	  GtkWidget* widget_19_spinbn_gridlnw;
+	  GtkWidget* widget_19_spinbn_horizontalsep;
+	  GtkWidget* widget_19_chkbn_indentexp;
+	  GtkWidget* widget_19_clrbn_oddrowclr;
+	  GtkWidget* widget_19_chkbn_rowenddet;
+	  GtkWidget* widget_19_entry_treelnpatt;
+	  GtkWidget* widget_19_spinbn_treelnw;
+	  GtkWidget* widget_19_spinbn_verticalsep;
+	  GString*   widget_19_style_txt;
+	 */
 }
 
 void ui_update_gtktreeview()
@@ -2380,6 +3115,37 @@ void ui_delete_gtktreeview()
 
 void ui_create_gtkiconview()
 {
+	GtkWidget* vbox = gtk_vbox_new (FALSE, 0);
+	GtkWidget* expander = gtk_expander_new ("GtkIconView");
+	gtk_container_add (GTK_CONTAINER(expander), vbox);
+	gtk_expander_set_expanded (GTK_EXPANDER(expander), FALSE);
+	gtk_box_pack_start (GTK_BOX(app->vbox),
+	                    expander,
+	                    FALSE,   // expand
+	                    FALSE,   // fill
+	                    0);      // padding
+
+
+	// Create few sample widgets to visualize theme changes
+	GtkWidget* table_sample = gtk_table_new (4, 3, TRUE);
+	gtk_box_pack_start (GTK_BOX(vbox),
+	                    table_sample,
+	                    FALSE,   // expand
+	                    FALSE,   // fill
+	                    0);      // padding
+
+
+
+	/*
+	  GtkWidget* widget_20_clrbn[4][5];
+	  GtkWidget* widget_20_fn_bn;
+	  GtkWidget* widget_20_spinbn_xth;
+	  GtkWidget* widget_20_spinbn_yth;
+	  GtkWidget* widget_20_spinbn_selectionboxa;
+	  GtkWidget* widget_20_clrbn_selectionboxclr;
+	  GString*   widget_20_style_txt;
+	 */
+
 }
 
 void ui_update_gtkiconview()
@@ -2392,6 +3158,35 @@ void ui_delete_gtkiconview()
 
 void ui_create_gtkassistant()
 {
+	GtkWidget* vbox = gtk_vbox_new (FALSE, 0);
+	GtkWidget* expander = gtk_expander_new ("GtkAssistant");
+	gtk_container_add (GTK_CONTAINER(expander), vbox);
+	gtk_expander_set_expanded (GTK_EXPANDER(expander), FALSE);
+	gtk_box_pack_start (GTK_BOX(app->vbox),
+	                    expander,
+	                    FALSE,   // expand
+	                    FALSE,   // fill
+	                    0);      // padding
+
+
+	// Create few sample widgets to visualize theme changes
+	GtkWidget* table_sample = gtk_table_new (4, 3, TRUE);
+	gtk_box_pack_start (GTK_BOX(vbox),
+	                    table_sample,
+	                    FALSE,   // expand
+	                    FALSE,   // fill
+	                    0);      // padding
+
+
+	/*
+	  GtkWidget* widget_21_clrbn[4][5];
+	  GtkWidget* widget_21_fn_bn;
+	  GtkWidget* widget_21_spinbn_xth;
+	  GtkWidget* widget_21_spinbn_yth;
+	  GtkWidget* widget_21_spinbn_contentpadd;
+	  GtkWidget* widget_21_spinbn_headerpadd;
+	  GString*   widget_21_style_txt;
+	 */
 }
 
 void ui_update_gtkassistant()
@@ -2404,6 +3199,37 @@ void ui_delete_gtkassistant()
 
 void ui_create_gtkdialog()
 {
+	GtkWidget* vbox = gtk_vbox_new (FALSE, 0);
+	GtkWidget* expander = gtk_expander_new ("GtkDialog");
+	gtk_container_add (GTK_CONTAINER(expander), vbox);
+	gtk_expander_set_expanded (GTK_EXPANDER(expander), FALSE);
+	gtk_box_pack_start (GTK_BOX(app->vbox),
+	                    expander,
+	                    FALSE,   // expand
+	                    FALSE,   // fill
+	                    0);      // padding
+
+
+	// Create few sample widgets to visualize theme changes
+	GtkWidget* table_sample = gtk_table_new (4, 3, TRUE);
+	gtk_box_pack_start (GTK_BOX(vbox),
+	                    table_sample,
+	                    FALSE,   // expand
+	                    FALSE,   // fill
+	                    0);      // padding
+
+
+	/*
+	  GtkWidget* widget_22_clrbn[4][5];
+	  GtkWidget* widget_22_fn_bn;
+	  GtkWidget* widget_22_spinbn_xth;
+	  GtkWidget* widget_22_spinbn_yth;
+	  GtkWidget* widget_22_spinbn_actionab;
+	  GtkWidget* widget_22_spinbn_buttonsp;
+	  GtkWidget* widget_22_spinbn_contentab;
+	  GtkWidget* widget_22_spinbn_contentas;
+	  GString*   widget_22_style_txt;
+	 */
 }
 
 void ui_update_gtkdialog()
@@ -2416,6 +3242,35 @@ void ui_delete_gtkdialog()
 
 void ui_create_gtkmessagedialog()
 {
+	GtkWidget* vbox = gtk_vbox_new (FALSE, 0);
+	GtkWidget* expander = gtk_expander_new ("GtkMessageDialog");
+	gtk_container_add (GTK_CONTAINER(expander), vbox);
+	gtk_expander_set_expanded (GTK_EXPANDER(expander), FALSE);
+	gtk_box_pack_start (GTK_BOX(app->vbox),
+	                    expander,
+	                    FALSE,   // expand
+	                    FALSE,   // fill
+	                    0);      // padding
+
+
+	// Create few sample widgets to visualize theme changes
+	GtkWidget* table_sample = gtk_table_new (4, 3, TRUE);
+	gtk_box_pack_start (GTK_BOX(vbox),
+	                    table_sample,
+	                    FALSE,   // expand
+	                    FALSE,   // fill
+	                    0);      // padding
+
+
+	/*
+	  GtkWidget* widget_23_clrbn[4][5];
+	  GtkWidget* widget_23_fn_bn;
+	  GtkWidget* widget_23_spinbn_xth;
+	  GtkWidget* widget_23_spinbn_yth;
+	  GtkWidget* widget_23_spinbn_messageb;
+	  GtkWidget* widget_23_chkbn_usesep;
+	  GString*   widget_23_style_txt;
+	 */
 }
 
 void ui_update_gtkmessagedialog()
@@ -2428,6 +3283,40 @@ void ui_delete_gtkmessagedialog()
 
 void ui_create_gtknotebook()
 {
+	GtkWidget* vbox = gtk_vbox_new (FALSE, 0);
+	GtkWidget* expander = gtk_expander_new ("GtkNotebook");
+	gtk_container_add (GTK_CONTAINER(expander), vbox);
+	gtk_expander_set_expanded (GTK_EXPANDER(expander), FALSE);
+	gtk_box_pack_start (GTK_BOX(app->vbox),
+	                    expander,
+	                    FALSE,   // expand
+	                    FALSE,   // fill
+	                    0);      // padding
+
+
+	// Create few sample widgets to visualize theme changes
+	GtkWidget* table_sample = gtk_table_new (4, 3, TRUE);
+	gtk_box_pack_start (GTK_BOX(vbox),
+	                    table_sample,
+	                    FALSE,   // expand
+	                    FALSE,   // fill
+	                    0);      // padding
+
+
+	/*
+	  GtkWidget* widget_24_clrbn[4][5];
+	  GtkWidget* widget_24_fn_bn;
+	  GtkWidget* widget_24_spinbn_xth;
+	  GtkWidget* widget_24_spinbn_yth;
+	  GtkWidget* widget_24_spinbn_arrowsp;
+	  GtkWidget* widget_24_chkbn_hasbs;
+	  GtkWidget* widget_24_chkbn_hasfs;
+	  GtkWidget* widget_24_chkbn_hassbs;
+	  GtkWidget* widget_24_chkbn_hassfs;
+	  GtkWidget* widget_24_spinbn_tabcurv;
+	  GtkWidget* widget_24_spinbn_tabover;
+	  GString*   widget_24_style_txt;
+	 */
 }
 
 void ui_update_gtknotebook()
@@ -2440,6 +3329,30 @@ void ui_delete_gtknotebook()
 
 void ui_create_gtkpaned()
 {
+	GtkWidget* vbox = gtk_vbox_new (FALSE, 0);
+	GtkWidget* expander = gtk_expander_new ("GtkPaned");
+	gtk_container_add (GTK_CONTAINER(expander), vbox);
+	gtk_expander_set_expanded (GTK_EXPANDER(expander), FALSE);
+	gtk_box_pack_start (GTK_BOX(app->vbox),
+	                    expander,
+	                    FALSE,   // expand
+	                    FALSE,   // fill
+	                    0);      // padding
+
+
+	// Create few sample widgets to visualize theme changes
+	GtkWidget* table_sample = gtk_table_new (4, 3, TRUE);
+	gtk_box_pack_start (GTK_BOX(vbox),
+	                    table_sample,
+	                    FALSE,   // expand
+	                    FALSE,   // fill
+	                    0);      // padding
+
+
+	/*
+	  GtkWidget* widget_25_spinbn_handlesz;
+	  GString*   widget_25_style_txt;
+	 */
 }
 
 void ui_update_gtkpaned()
@@ -2452,6 +3365,40 @@ void ui_delete_gtkpaned()
 
 void ui_create_gtkrange()
 {
+	GtkWidget* vbox = gtk_vbox_new (FALSE, 0);
+	GtkWidget* expander = gtk_expander_new ("GtkRange");
+	gtk_container_add (GTK_CONTAINER(expander), vbox);
+	gtk_expander_set_expanded (GTK_EXPANDER(expander), FALSE);
+	gtk_box_pack_start (GTK_BOX(app->vbox),
+	                    expander,
+	                    FALSE,   // expand
+	                    FALSE,   // fill
+	                    0);      // padding
+
+
+	// Create few sample widgets to visualize theme changes
+	GtkWidget* table_sample = gtk_table_new (4, 3, TRUE);
+	gtk_box_pack_start (GTK_BOX(vbox),
+	                    table_sample,
+	                    FALSE,   // expand
+	                    FALSE,   // fill
+	                    0);      // padding
+
+
+	/*
+	  GtkWidget* widget_26_chkbn_activatesld;
+	  GtkWidget* widget_26_spinbn_arrowdx;
+	  GtkWidget* widget_26_spinbn_arrowdy;
+	  GtkWidget* widget_26_spinbn_arrowsc;
+	  GtkWidget* widget_26_spinbn_sliderw;
+	  GtkWidget* widget_26_chkbn_stepperpd;
+	  GtkWidget* widget_26_spinbn_steppersz;
+	  GtkWidget* widget_26_spinbn_steppersp;
+	  GtkWidget* widget_26_spinbn_troughb;
+	  GtkWidget* widget_26_chkbn_throughsdet;
+	  GtkWidget* widget_26_chkbn_throughustep;
+	  GString*   widget_26_style_txt;
+	 */
 }
 
 void ui_update_gtkrange()
@@ -2464,6 +3411,31 @@ void ui_delete_gtkrange()
 
 void ui_create_gtkscale()
 {
+	GtkWidget* vbox = gtk_vbox_new (FALSE, 0);
+	GtkWidget* expander = gtk_expander_new ("GtkScale");
+	gtk_container_add (GTK_CONTAINER(expander), vbox);
+	gtk_expander_set_expanded (GTK_EXPANDER(expander), FALSE);
+	gtk_box_pack_start (GTK_BOX(app->vbox),
+	                    expander,
+	                    FALSE,   // expand
+	                    FALSE,   // fill
+	                    0);      // padding
+
+
+	// Create few sample widgets to visualize theme changes
+	GtkWidget* table_sample = gtk_table_new (4, 3, TRUE);
+	gtk_box_pack_start (GTK_BOX(vbox),
+	                    table_sample,
+	                    FALSE,   // expand
+	                    FALSE,   // fill
+	                    0);      // padding
+
+
+	/*
+	  GtkWidget* widget_27_spinbn_sliderl;
+	  GtkWidget* widget_27_spinbn_valuesp;
+	  GString*   widget_27_style_txt;
+	 */
 }
 
 void ui_update_gtkscale()
@@ -2476,6 +3448,35 @@ void ui_delete_gtkscale()
 
 void ui_create_gtkscrolledwindow()
 {
+	GtkWidget* vbox = gtk_vbox_new (FALSE, 0);
+	GtkWidget* expander = gtk_expander_new ("GtkScrolledWindow");
+	gtk_container_add (GTK_CONTAINER(expander), vbox);
+	gtk_expander_set_expanded (GTK_EXPANDER(expander), FALSE);
+	gtk_box_pack_start (GTK_BOX(app->vbox),
+	                    expander,
+	                    FALSE,   // expand
+	                    FALSE,   // fill
+	                    0);      // padding
+
+
+	// Create few sample widgets to visualize theme changes
+	GtkWidget* table_sample = gtk_table_new (4, 3, TRUE);
+	gtk_box_pack_start (GTK_BOX(vbox),
+	                    table_sample,
+	                    FALSE,   // expand
+	                    FALSE,   // fill
+	                    0);      // padding
+
+
+	/*
+	  GtkWidget* widget_28_clrbn[4][5];
+	  GtkWidget* widget_28_fn_bn;
+	  GtkWidget* widget_28_spinbn_xth;
+	  GtkWidget* widget_28_spinbn_yth;
+	  GtkWidget* widget_28_spinbn_scrollbarsp;
+	  GtkWidget* widget_28_chkbn_scrollbarswb;
+	  GString*   widget_28_style_txt;
+	 */
 }
 
 void ui_update_gtkscrolledwindow()
