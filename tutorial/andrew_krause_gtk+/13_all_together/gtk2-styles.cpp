@@ -2572,28 +2572,22 @@ void ui_create_gtkscrollbar()
 	                    0);      // padding
 
 
-	// Create few sample widgets to visualize theme changes
-	GtkWidget* table_sample = gtk_table_new (1, 1, TRUE);
+	// sample from SO
+	// http://stackoverflow.com/questions/8403731/gtk-and-scrolling-text-view
+	const gchar* text = "sample text";
+	GtkTextTagTable* txttags = gtk_text_tag_table_new ();
+	GtkTextBuffer* txtbuff = gtk_text_buffer_new (txttags);
+	gtk_text_buffer_set_text (txtbuff, text, strlen(text));
+	GtkWidget* txtview = gtk_text_view_new_with_buffer (txtbuff);
+	GtkWidget* scrwin = gtk_scrolled_window_new (NULL, NULL);
+	gtk_container_add (GTK_CONTAINER(scrwin), txtview);
 	gtk_box_pack_start (GTK_BOX(vbox),
-	                    table_sample,
-	                    FALSE,   // expand
+	                    scrwin,
+	                    FALSE,   // expanding
 	                    FALSE,   // fill
 	                    0);      // padding
 
 
-	// sample from SO
-	// http://stackoverflow.com/questions/8403731/gtk-and-scrolling-text-view
-	GtkWidget* txtview = gtk_text_view_new();
-	GtkWidget* scrwin = gtk_scrolled_window_new (NULL, NULL);
-	gtk_container_add (GTK_CONTAINER(scrwin), txtview);
-	gtk_table_attach (GTK_TABLE(table_sample),
-	                  scrwin,
-	                  0, 1,    // left, right
-	                  0, 1,    // top, bottom
-	                  GTK_SHRINK, GTK_SHRINK, // GtkAttachOptions
-	                  0, 0);     // x,y padding
-
-	gtk_widget_set_size_request (scrwin, 400, 150);
 
 	/*
 	  GtkWidget* widget_7_chkbn_fixedsl;
@@ -2628,18 +2622,40 @@ void ui_create_gtkarrow()
 
 
 	// Create few sample widgets to visualize theme changes
-	GtkWidget* table_sample = gtk_table_new (4, 3, TRUE);
+	GtkWidget* table_sample = gtk_table_new (2, 3, TRUE);
 	gtk_box_pack_start (GTK_BOX(vbox),
 	                    table_sample,
 	                    FALSE,   // expand
 	                    FALSE,   // fill
 	                    0);      // padding
 
+	GtkWidget* spinbn[3];
+	GtkWidget* spinlbl[3];
+	const gchar* lbl_txt[] = {"value-x", "value-y", "value-z"};
+	for (gint i = 0; i < 3; i++)
+	{
+		spinlbl[i] = gtk_label_new (lbl_txt[i]);
+		spinbn[i] = gtk_spin_button_new_with_range (0, 10, 1);
+		gtk_spin_button_set_value (GTK_SPIN_BUTTON(spinbn[i]), i+5);
+
+		gtk_table_attach (GTK_TABLE(table_sample),
+		                  spinlbl[i],
+		                  i, i+1,    // left, right
+		                  0, 1,      // top, bottom
+		                  GTK_EXPAND, GTK_SHRINK,   // GtkAttachOptions
+		                  0, 0);     // x,y padding
+		gtk_table_attach (GTK_TABLE(table_sample),
+		                  spinbn[i],
+		                  i, i+1,    // left, right
+		                  1, 2,      // top, bottom
+		                  GTK_EXPAND, GTK_SHRINK, // GtkAttachOptions
+		                  0, 0);     // x,y padding
+	}
+
 	/*
 	  GtkWidget* widget_8_spinbn_arrowsc;
 	  GString*   widget_8_style_txt;
 	*/
-
 }
 
 void ui_update_gtkarrow()
@@ -2664,14 +2680,26 @@ void ui_create_gtkprogressbar()
 
 
 	// Create few sample widgets to visualize theme changes
-	GtkWidget* table_sample = gtk_table_new (4, 3, TRUE);
+	GtkWidget* table_sample = gtk_table_new (1, 2, TRUE);
 	gtk_box_pack_start (GTK_BOX(vbox),
 	                    table_sample,
 	                    FALSE,   // expand
 	                    FALSE,   // fill
 	                    0);      // padding
 
-	
+	GtkWidget* bn_pulse = gtk_button_new_with_label("Pulse!");
+	gtk_table_attach (GTK_TABLE(table_sample),
+	                  bn_pulse,
+	                  0, 1,   // left, right
+	                  0, 1,   // top, bottom
+	                  GTK_SHRINK, GTK_SHRINK,   // GtkAttachOptions
+	                  0, 0);  // x,y padding
+
+	GtkWidget* prgbar = gtk_progress_bar_new();
+
+#error here /* continue from here*/
+
+
 	/*
 	  GtkWidget* widget_9_clrbn[4][5];
 	  GtkWidget* widget_9_fn_bn;
