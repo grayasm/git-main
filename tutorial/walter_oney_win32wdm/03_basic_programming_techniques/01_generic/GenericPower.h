@@ -23,7 +23,7 @@ typedef struct _POWERINFO
 {
 	unsigned long ulConservation;	// idle timeout in conservation mode
 	unsigned long ulPerformance;	// idle timeout in performance mode
-	unsigned char bWakup;			// TRUE if wakeup feature should be armed
+	unsigned char bWakeup;			// TRUE if wakeup feature should be armed
 	unsigned char bCanWake;			// device capable of waking system
 	unsigned char bCanIdle;			// device can be idled
 	unsigned char bIdle;			// device is idle right now

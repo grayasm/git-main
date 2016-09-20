@@ -80,17 +80,17 @@ typedef struct _GENERIC_REMOVE_LOCK
 
 
 GENERICAPI VOID		GENERIC_EXPORT GenericInitializeRemoveLock(PGENERIC_REMOVE_LOCK lock, ULONG tag, ULONG minutes, ULONG maxcount);
-GENERICAPI VOID		GENERIC_EXPORT GenericAquireRemoveLock(PGENERIC_REMOVE_LOCK lock, PVOID tag);
-GENERICAPI NTSTATUS	GENERIC_EXPORT GenericReleaseRemoveLock(PGENERIC_REMOVE_LOCK lock, PVOID tag);
+GENERICAPI NTSTATUS	GENERIC_EXPORT GenericAcquireRemoveLock(PGENERIC_REMOVE_LOCK lock, PVOID tag);
+GENERICAPI VOID		GENERIC_EXPORT GenericReleaseRemoveLock(PGENERIC_REMOVE_LOCK lock, PVOID tag);
 GENERICAPI VOID		GENERIC_EXPORT GenericReleaseRemoveLockAndWait(PGENERIC_REMOVE_LOCK lock, PVOID tag);
 
 
-/*	NTDDK.H and WDM.H declares the documented support functions and
+/*	NTDDK.H and WDM.H declares the documented support functions as
 	macros which we need to redefine.
 */
 
 #if !defined(_NTDDK_)
-	#error You must include WMD.H or NTDDK.H before GENERIC.H
+	#error You must include WDM.H or NTDDK.H before GENERIC.H
 #endif
 
 #undef IoInitializeRemoveLock
@@ -126,10 +126,10 @@ typedef VOID		(__stdcall *PFLUSHIOFUNCTION)(PDEVICE_OBJECT, UCHAR, UCHAR, DEVICE
 typedef DEVICE_POWER_STATE (__stdcall *PGETDSTATEFUNCTION)(PDEVICE_OBJECT, SYSTEM_POWER_STATE, DEVICE_POWER_STATE);
 
 
-struct QSIO
+struct QSIO 
 {
 	PDEVQUEUE DeviceQueue;
-	PDRIVER_STARTIO StartIo;
+	PDRIVER_STARTIO StartIo; 
 };
 
 
@@ -187,7 +187,7 @@ enum WAKEFUNCTION
 
 /*	Exported functions.	*/
 GENERICAPI VOID		GENERIC_EXPORT CleanupGenericExtension(PGENERIC_EXTENSION pdx); // 1.3
-GENERICAPI NTSTATUS	GENERIC_EXPORT GenericCacheControlRequests(PGENERIC_EXTENSION pdx, PIRP Irp, PIRP* pIrp);
+GENERICAPI NTSTATUS	GENERIC_EXPORT GenericCacheControlRequest(PGENERIC_EXTENSION pdx, PIRP Irp, PIRP* pIrp);
 GENERICAPI VOID		GENERIC_EXPORT GenericCleanupAllRequests(PGENERIC_EXTENSION pdx, PFILE_OBJECT fop, NTSTATUS status);
 GENERICAPI VOID		GENERIC_EXPORT GenericCleanupControlRequests(PGENERIC_EXTENSION pdx, NTSTATUS status, PFILE_OBJECT fop);
 GENERICAPI NTSTATUS	GENERIC_EXPORT GenericDeregisterInterface(PGENERIC_EXTENSION pdx, const GUID* guid);

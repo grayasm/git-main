@@ -2,6 +2,9 @@
 *
 	Capter. 3 Basic Programming Techniques.
 	
+	01_generic: is a skeleton. It should be renamed before reused/linked into other projects.
+
+	
 	Kernel-Mode Driver Reference from MSDN:
 	https://msdn.microsoft.com/en-us/library/windows/hardware/ff547794(v=vs.85).aspx
 	

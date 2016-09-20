@@ -6,10 +6,10 @@
 extern "C" {
 #endif
 
-#pragma warning(disable: 4201) // nameless struct/union
+#pragma warning(disable:4201) // nameless struct/union
 #define DEPRECATE_DDK_FUNCTIONS 1
 
-#include <wmdm.h>
+#include <wdm.h>
 #include <stdio.h>
 
 #ifdef __cplusplus
@@ -23,7 +23,7 @@ extern "C" {
 #define INITCODE code_seg("INIT")
 
 
-#define PAGEDDATE data_seg("PAGEDATA")
+#define PAGEDDATA data_seg("PAGEDATA")
 #define LOCKEDDATA data_seg()
 #define INITDATA data_seg("INITDATA")
 
@@ -34,10 +34,11 @@ extern "C" {
 #endif
 
 
-#if DBG && defined(_AMD64_) // (_X86_)
+#if DBG && defined(_AMD64_) // defined(_X86_) 
 	#undef ASSERT
 	#define ASSERT(e) if(!(e)){DbgPrint("Assertion failure in "\
 	__FILE__", line %d: " #e "\n", __LINE__);\
-	_asm int 3\
 }
 #endif
+
+// _asm int 3\

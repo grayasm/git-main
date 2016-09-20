@@ -47,7 +47,7 @@ typedef struct _GENERIC_EXTENSION
 	PULONG idlecount;						// address of idle counter from idle detection registration
 	ULONG cto;								// conservation timeout
 	ULONG pto;								// performance timeout
-	DEVICE_POWER_STATE idlesate;			// idle state requested by minidriver
+	DEVICE_POWER_STATE idlestate;			// idle state requested by minidriver
 	DEVICE_CAPABILITIES devcaps;			// copy of most recent device capabilities
 	ULONG nqueues;							// number of queues
 	PDEVQUEUE* queues;						// IRP queues
@@ -104,11 +104,13 @@ VOID AdjustSpecialFileCounter(PGENERIC_EXTENSION pdx, BOOLEAN inpath, PLONG coun
 NTSTATUS CompleteRequest(PIRP Irp, NTSTATUS status, ULONG_PTR info);
 NTSTATUS CompleteRequest(PIRP Irp, NTSTATUS status);
 NTSTATUS ForwardAndWait(PGENERIC_EXTENSION pdx, PIRP Irp);
-NTSTATUS GetPowerInfoFromRegistry(PGENERIC_EXTENSION pfx, _POWERINFO* pip);
+NTSTATUS GetPowerInfoFromRegistry(PGENERIC_EXTENSION pdx, _POWERINFO* pip);
 NTSTATUS ImplementPowerPolicy(PGENERIC_EXTENSION pdx, _POWERINFO* pip);
 BOOLEAN OkayToRemove(PGENERIC_EXTENSION pdx);
 BOOLEAN OkayToStop(PGENERIC_EXTENSION pdx);
 NTSTATUS SendDeviceSetPower(PGENERIC_EXTENSION pdx, DEVICE_POWER_STATE state, BOOLEAN wait = FALSE);
-NTSTATUS WritePowerInfoRegistry(PGENERIC_EXTENSION pdx, _POWERINFO* pip);
+NTSTATUS WritePowerInfoToRegistry(PGENERIC_EXTENSION pdx, _POWERINFO* pip);
+
+extern BOOLEAN win98;
 
 #endif // __driver_h__

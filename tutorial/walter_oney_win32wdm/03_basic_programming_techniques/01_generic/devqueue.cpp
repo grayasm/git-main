@@ -113,8 +113,8 @@ GENERICAPI BOOLEAN GENERIC_EXPORT CheckAnyBusyAndStall(PDEVQUEUE* q, ULONG nq, P
 
 GENERICAPI VOID GENERIC_EXPORT CleanupRequests(PDEVQUEUE pdq, PFILE_OBJECT fop, NTSTATUS status)
 {
-	LIST_ENTRY cancelList;
-	InitializeListHead(&cancelList);
+	LIST_ENTRY cancellist;
+	InitializeListHead(&cancellist);
 
 	/*	Create a list of IRPs that belong to the same file object.	*/
 
@@ -154,7 +154,7 @@ GENERICAPI VOID GENERIC_EXPORT CleanupRequests(PDEVQUEUE pdq, PFILE_OBJECT fop, 
 			continue;
 
 		RemoveEntryList(current);
-		InsertTailList(&cancelList, current);
+		InsertTailList(&cancellist, current);
 	}
 
 
@@ -166,10 +166,10 @@ GENERICAPI VOID GENERIC_EXPORT CleanupRequests(PDEVQUEUE pdq, PFILE_OBJECT fop, 
 	KeReleaseSpinLock(&pdq->lock, oldirql);
 
 	/*	Complete the selected requests.	*/
-	while (!IsListEmpty(&cancelList))
+	while (!IsListEmpty(&cancellist))
 	{
 		// cancel selected requests
-		next = RemoveHeadList(&cancelList);
+		next = RemoveHeadList(&cancellist);
 		PIRP Irp = CONTAINING_RECORD(next, IRP, Tail.Overlay.ListEntry);
 		Irp->IoStatus.Status = status;
 		IoCompleteRequest(Irp, IO_NO_INCREMENT);
@@ -460,7 +460,7 @@ GENERICAPI PIRP GENERIC_EXPORT StartNextPacket(PDEVQUEUE pdq, PDEVICE_OBJECT fdo
 
 	/*	If someone is waiting for notification that this IRP has finished,
 		we'll provide the notification after we release the spin lock.
-		We shouldn't find the queue unstlaled if there is a notification
+		We shouldn't find the queue unstalled if there is a notification
 		routine in place, by the way.
 	*/
 
@@ -566,7 +566,7 @@ GENERICAPI VOID GENERIC_EXPORT StartPacket(PDEVQUEUE pdq, PDEVICE_OBJECT fdo, PI
 		pdq->CurrentIrp = Irp;
 		KeReleaseSpinLock(&pdq->lock, DISPATCH_LEVEL);
 		(*pdq->StartIo)(fdo, Irp);
-		KeLowerIrql(oldirql)
+		KeLowerIrql(oldirql);
 	}
 
 } // StartPacket

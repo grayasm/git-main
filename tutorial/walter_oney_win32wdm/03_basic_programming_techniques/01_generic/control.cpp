@@ -22,7 +22,7 @@ VOID AbortPendingIoctls(PGENERIC_EXTENSION pdx, NTSTATUS status)
 
 
 #pragma LOCKEDCODE
-GENERICAPI NTSTATUS GENERIC_EXPORT GenericCacheControlRequests(PGENERIC_EXTENSION pdx, PIRP Irp, PIRP* pIrp)
+GENERICAPI NTSTATUS GENERIC_EXPORT GenericCacheControlRequest(PGENERIC_EXTENSION pdx, PIRP Irp, PIRP* pIrp)
 {
 	ASSERT(KeGetCurrentIrql() <= DISPATCH_LEVEL);
 
@@ -92,8 +92,8 @@ GENERICAPI VOID GENERIC_EXPORT GenericCleanupControlRequests(PGENERIC_EXTENSION 
 	if (!(pdx->Flags & GENERIC_PENDING_IOCTLS))
 		return; // didn't signup for pending ioctl service!
 
-	LIST_ENTRY cancelList;
-	InitializeListHead(&cancelList);
+	LIST_ENTRY cancellist;
+	InitializeListHead(&cancellist);
 
 	/*	Create a list of IRPs that belong to the same file object. */
 	KIRQL oldirql;
@@ -128,7 +128,7 @@ GENERICAPI VOID GENERIC_EXPORT GenericCleanupControlRequests(PGENERIC_EXTENSION 
 		PIRP* pIrp = (PIRP*) Irp->Tail.Overlay.DriverContext[0];
 		*pIrp = NULL;
 		RemoveEntryList(current);
-		InsertTailList(&cancelList, current);
+		InsertTailList(&cancellist, current);
 	}
 
 	/*	Release the spin lock. We're about to undertake a potentially
@@ -138,10 +138,10 @@ GENERICAPI VOID GENERIC_EXPORT GenericCleanupControlRequests(PGENERIC_EXTENSION 
 	KeReleaseSpinLock(&pdx->IoctlListLock, oldirql);
 
 	/*	Complete the selected requests.	*/
-	while (!IsListEmpty(&cancelList))
+	while (!IsListEmpty(&cancellist))
 	{
 		// cancel selected requests
-		next = RemoveHeadList(&cancelList);
+		next = RemoveHeadList(&cancellist);
 		PIRP Irp = CONTAINING_RECORD(next, IRP, Tail.Overlay.ListEntry);
 		Irp->IoStatus.Status = STATUS_CANCELLED;
 		IoCompleteRequest(Irp, IO_NO_INCREMENT);

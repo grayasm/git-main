@@ -6,26 +6,29 @@ set(SRC control.cpp
 		plugplay.cpp
 		power.cpp
 		RemoveLock.cpp
-		stddcls.cpp
 		driver.h
 		generic.h
 		GenericPower.h
 		stddcls.h
 		version.h
 		Driver.rc
-		generic.htm
-		Generic.chm
-		)
+		sources
+		makefile
+		generic.inf)
+		#generic.htm
+		#Generic.chm
+
 
 set(WDMINC "c:/Program Files (x86)/Windows Kits/10/Include/10.0.14393.0")
 set(WDMLIB "c:/Program Files (x86)/Windows Kits/10/Lib/10.0.14393.0")
 set(WDMBIN "c:/Program Files (x86)/Windows Kits/10/bin")
 
 add_executable(generic ${SRC})
-target_include_directories(	generic PUBLIC
-							"${WMDINC}/shared"
-							"${WMDINC}/km")
 
+target_include_directories(generic PUBLIC
+                            "${WDMINC}/shared"
+							"${WDMINC}/km")
+  
 target_compile_definitions(	generic PUBLIC
 							CONDITION_HANDLING=1
 							DBG=1
@@ -42,7 +45,7 @@ target_compile_definitions(	generic PUBLIC
 							#_X86_
 							_AMD64_
 							)
-							
+
 target_compile_options(	generic PUBLIC
 						/Od		# no optimization
 						/Oi		# intrinsics
@@ -79,9 +82,6 @@ add_custom_command(TARGET generic POST_BUILD
 		COMMAND "${CMAKE_COMMAND}" -E copy  "\$(TargetDir)/generic.sys"  "${CMAKE_BINARY_DIR}/install"
 		COMMAND "${CMAKE_COMMAND}" -E copy  "${CMAKE_CURRENT_SOURCE_DIR}/generic.inf"  "${CMAKE_BINARY_DIR}/install"
 		COMMAND "${CMAKE_COMMAND}" -E copy  "${CMAKE_CURRENT_SOURCE_DIR}/generic.htm"  "${CMAKE_BINARY_DIR}/install"
-		# create a catalog file for the driver package (type inf2cat /?  to see the supported operating systems)
-		COMMAND "${WDMBIN}/x86/Inf2Cat.exe" driver:"${CMAKE_BINARY_DIR}/install" /os:10_x64
-		# see README.txt for how to sign the catalog
 		)
 		
 		
@@ -91,7 +91,18 @@ add_custom_command(TARGET generic POST_BUILD
 # remove /MANIFEST from linker flags
 # embed manifest no
 
-						
+# when the driver is built and copied to "install" run these 2 commands:
+
+# ${WDMBIN}/x86/Inf2Cat.exe  driver:${CMAKE_BINARY_DIR}/install /os:10_x64
+# start genericamd64.cat
+# open VS command tool
+# signtool sign /s ModuleWorksCertStore /n "ModuleWorks - for test use only"
+#				 /t http://timestamp.verisign.com/scripts/timestamp.dll
+#				 genericamd64.cat
+# start genericamd64.cat
+
+
+
 
 
 
