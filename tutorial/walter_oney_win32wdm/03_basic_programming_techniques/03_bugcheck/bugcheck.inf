@@ -1,0 +1,99 @@
+
+[Version]
+Signature=$CHICAGO$
+Class=Sample
+ClassGuid={894A7460-A033-11D2-821E-444553540000}
+CatalogFile.NTx86  = Bugcheckx86.cat
+CatalogFile.NTIA64 = Bugcheckia64.cat
+CatalogFile.NTAMD64 = Bugcheckamd64.cat
+Provider=%ONEYSOFT%
+DriverVer=09/15/2016,1.0.00001.1
+; Copyright 2016 OneySoft
+
+
+[DestinationDirs]
+DefaultDestDir=12
+SampleClassInstallerCopyFiles = 11
+
+;------------------------------------------------------------------------------
+;  SAMPLE class definition
+;------------------------------------------------------------------------------
+
+[ClassInstall32]
+AddReg=ClassInstall32AddReg
+CopyFiles=SampleClassInstallerCopyFiles
+
+[ClassInstall32AddReg]
+HKR,,,,"WDM Book Samples"
+HKR,,Installer32,,"samclass.dll,SampleClassInstaller"
+HKR,,EnumPropPages32,,samclass.dll
+HKR,,Icon,,101
+
+[SampleClassInstallerCopyFiles]
+samclass.dll,,,2
+
+;------------------------------------------------------------------------------
+;  Standard INF sections
+;------------------------------------------------------------------------------
+
+[Manufacturer]
+%MFGNAME%=BugcheckDevice,NTx86,NTia64,NTamd64
+
+[BugcheckDevice.NTx86]
+%DESCRIPTION%=DriverInstall,*WCO0305
+
+[BugcheckDevice.NTia64]
+%DESCRIPTION%=DriverInstall,*WCO0305
+
+[BugcheckDevice.NTamd64]
+%DESCRIPTION%=DriverInstall,*WCO0305
+
+[DriverInstall.NT]
+CopyFiles=DriverCopyFiles
+FriendlyNameFormat=%FRIENDLYNAME%
+
+[DriverCopyFiles]
+bugcheck.sys,,,2
+
+[DriverInstall.NT.HW]
+AddReg=DriverInstall.NT.HW.AddReg
+
+[DriverInstall.NT.HW.AddReg]
+HKR,,SampleInfo,,"bugcheck.htm"
+
+[DriverInstall.NT.Services]
+AddService=BUGCHECK,2,DriverService
+
+[DriverService]
+DisplayName=%DESCRIPTION%
+ServiceType=1
+StartType=3
+ErrorControl=1
+; ServiceBinary=%10%\system32\drivers\bugcheck.sys
+ServiceBinary=%12%\bugcheck.sys
+
+[SourceDisksNames.x86]
+1=%INSTDISK%,,,
+
+[SourceDisksNames.ia64]
+1=%INSTDISK%,,,
+
+[SourceDisksNames.amd64]
+1=%INSTDISK%,,,
+
+[SourceDisksFiles]
+bugcheck.sys=1,,
+generic.sys=1,,
+samclass.dll=1,,
+
+
+;------------------------------------------------------------------------------
+;  String Definitions
+;------------------------------------------------------------------------------
+
+[Strings]
+ONEYSOFT="Walter Oney Software"
+MFGNAME="Walter Oney Software"
+INSTDISK="Walter Oney Software Installation Disc"
+DESCRIPTION="Bugcheck Device Driver"
+FRIENDLYNAME="BugcheckDevice%1!u!"
