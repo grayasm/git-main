@@ -1,4 +1,5 @@
 # This is GENERIC.SYS project file
+# Usually this driver acompanies other SYS files, so it doesn't have its own INF file.
 
 set(SRC control.cpp
 		devqueue.cpp
@@ -13,11 +14,8 @@ set(SRC control.cpp
 		version.h
 		Driver.rc
 		sources
-		makefile
-		generic.inf)
-		#generic.htm
-		#Generic.chm
-
+		makefile)
+		
 
 set(WDMINC "c:/Program Files (x86)/Windows Kits/10/Include/10.0.14393.0")
 set(WDMLIB "c:/Program Files (x86)/Windows Kits/10/Lib/10.0.14393.0")
@@ -50,13 +48,14 @@ target_compile_options(	generic PUBLIC
 						/Od		# no optimization
 						/Oi		# intrinsics
 						/GF		# enable string pooling
+						/GS-	# disable buffer security check
 						/EHsc	# enable c++ exceptions
 						/MTd	# multithreaded debug
 						/Gy		# enable function level linking
 						/Gz		# _stdcall calling convention
 						/Oy		# omit frame pointers
 						/Zp8	# struct member aligment
-						# FORCE INCLUDES
+						/FI"warning.h" # force includes
 						)
 
 
@@ -73,35 +72,28 @@ set_property(TARGET generic APPEND_STRING PROPERTY LINK_FLAGS
 						/STACK:262144,4096										\
 						/SUBSYSTEM:NATIVE 										\
 						/DRIVER:WDM /ENTRY:DriverEntry							\
+						/MANIFEST:NO											\
 						/MANIFESTUAC:NO											\
 						/RELEASE /BASE:0x10000									\
 						/MERGE:_TEXT=.text ")
 
 add_custom_command(TARGET generic POST_BUILD
-		COMMAND "${CMAKE_COMMAND}" -E make_directory "${CMAKE_BINARY_DIR}/install"
-		COMMAND "${CMAKE_COMMAND}" -E copy  "\$(TargetDir)/generic.sys"  "${CMAKE_BINARY_DIR}/install"
-		COMMAND "${CMAKE_COMMAND}" -E copy  "${CMAKE_CURRENT_SOURCE_DIR}/generic.inf"  "${CMAKE_BINARY_DIR}/install"
-		COMMAND "${CMAKE_COMMAND}" -E copy  "${CMAKE_CURRENT_SOURCE_DIR}/generic.htm"  "${CMAKE_BINARY_DIR}/install"
+		COMMAND "${CMAKE_COMMAND}" -E make_directory "${CMAKE_BINARY_DIR}/install-generic"
+		COMMAND "${CMAKE_COMMAND}" -E copy  "\$(TargetDir)/generic.sys"  "${CMAKE_BINARY_DIR}/install-generic"
+		COMMAND "${CMAKE_COMMAND}" -E copy  "${CMAKE_CURRENT_SOURCE_DIR}/generic.htm"  "${CMAKE_BINARY_DIR}/install-generic"
 		)
 		
-		
+
+# I.	There should be a .bat file to fix vcxproj (fix_vcxproj.bat) or alternatively change .vcxproj by hand.
+# --------------------------------------------------------------------------------------------------------------
+#
 # remove /RTC1 or /RTCs or /RTCu from compiler flags
 # remove /DYNAMICBASE or /DYNAMICBASE:NO from linker flags
 # remove /NXCOMPAT from linker flags
 # remove /MANIFEST from linker flags
 # embed manifest no
 
-# when the driver is built and copied to "install" run these 2 commands:
-
-# ${WDMBIN}/x86/Inf2Cat.exe  driver:${CMAKE_BINARY_DIR}/install /os:10_x64
-# start genericamd64.cat
-# open VS command tool
-# signtool sign /s ModuleWorksCertStore /n "ModuleWorks - for test use only"
-#				 /t http://timestamp.verisign.com/scripts/timestamp.dll
-#				 genericamd64.cat
-# start genericamd64.cat
-
-
+# II.	Copy generic.sys to the other driver folder where it is needed.
 
 
 
