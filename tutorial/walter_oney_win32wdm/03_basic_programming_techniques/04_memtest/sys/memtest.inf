@@ -1,4 +1,6 @@
-
+#
+#	memtest.sys driver installs in the 'Device Manager' under "WDM Book Samples"
+#
 [Version]
 Signature=$CHICAGO$
 Class=Sample

@@ -1,4 +1,6 @@
-
+#
+#	resource.sys driver installs in the 'Device Manager' under "WDM Book Samples"
+#
 [Version]
 Signature=$CHICAGO$
 Class=Sample
@@ -53,25 +55,25 @@ CopyFiles=DriverCopyFiles
 FriendlyNameFormat=%FRIENDLYNAME%
 
 [DriverCopyFiles]
-memtest.sys,,,2
+resource.sys,,,2
 generic.sys,,,2
 
 [DriverInstall.NT.HW]
 AddReg=DriverInstall.NT.HW.AddReg
 
 [DriverInstall.NT.HW.AddReg]
-HKR,,SampleInfo,,"memtest.htm"
+HKR,,SampleInfo,,"resource.htm"
 
 [DriverInstall.NT.Services]
-AddService=MEMTEST,2,DriverService
+AddService=resource,2,DriverService
 
 [DriverService]
 DisplayName=%DESCRIPTION%
 ServiceType=1
 StartType=3
 ErrorControl=1
-; ServiceBinary=%10%\system32\drivers\memtest.sys
-ServiceBinary=%12%\memtest.sys
+; ServiceBinary=%10%\system32\drivers\resource.sys
+ServiceBinary=%12%\resource.sys
 
 [SourceDisksNames.x86]
 1=%INSTDISK%,,,
@@ -83,7 +85,7 @@ ServiceBinary=%12%\memtest.sys
 1=%INSTDISK%,,,
 
 [SourceDisksFiles]
-memtest.sys=1,,
+resource.sys=1,,
 generic.sys=1,,
 samclass.dll=1,,
 
