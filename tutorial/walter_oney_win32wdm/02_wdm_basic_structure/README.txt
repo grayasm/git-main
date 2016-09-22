@@ -133,7 +133,7 @@
 	https://technet.microsoft.com/en-us/library/dd919238(v=ws.10).aspx
 	
 	Here is a short summary:
-	1)	Create a digital certificate for signing using MakeCert tool from
+	1)	Create (one time) a digital certificate for signing using MakeCert tool from
 		c:\Program Files (x86)\Windows Kits\10\bin\x64\makecert.exe
 		
 		makecert -r -n "CN=ModuleWorks - for test use only"

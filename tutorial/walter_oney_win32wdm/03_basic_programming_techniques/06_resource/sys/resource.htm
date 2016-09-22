@@ -1,0 +1,67 @@
+<HTML>
+<HEAD>
+<title>The RESOURCE Sample</title>
+</HEAD>
+<BODY>
+
+<h2>The RESOURCE Sample</h2>
+<p>The RESOURCE Sample accompanies Chapter 3 and illustrates how to read values
+from the resource script attached to a kernel-mode driver. The sample includes two
+files (<b>KmdResource.h</b> and <b>KmdResource.cpp</b>) that can be used in any
+driver. This sample was added in Service Pack 8 in the 1st edition.</p>
+
+<p>The sample includes two components:</p>
+<ul>
+<li>RESOURCE.SYS (SYS subdirectory) is a WDM driver for a non-existent device.</li>
+<li >TEST.EXE (TEST subdirectory) is a Win32 console application that tests the RESOURCE driver.</li>
+</ul>
+
+<h3>Building RESOURCE</h3>
+<p>To build RESOURCE.SYS, follow the <a href="..\..\wdmbook.htm#wdmbuild">general
+instructions for building a WDM sample</a>. The Microsoft Visual C++ project
+file is named RESOURCE.DSP in the SYS subdirectory. <span style='color:red'>Unfortunately,
+you cannot use the BUILD utility for this sample program because BUILD is
+unable to cope with modules that have different compile options than other
+modules in the project, and FILEIO98.CPP requires special options.</span></p>
+
+<p>To build TEST.EXE, follow <a href="..\..\wdmbook.htm#usermodebuild">the
+general instructions for building user-mode programs</a>. The Microsoft Visual
+C++ project file is named TEST.DSP in the TEST subdirectory.</p>
+
+<h3>Testing RESOURCE</h3>
+
+<p>First arrange a way to see debug messages. You can run under control of a
+kernel debugger such as Soft-Ice, or you can run Mark Russinovitch’s DbgView
+utility (see <a href="http://www.sysinternals.com/">http://www.sysinternals.com</a>).</p>
+
+<p>Now install RESOURCE.SYS. Follow the instructions for using <a
+href="..\..\wdmbook.htm#FASTINST">FASTINST</a> in either Windows XP or
+Windows 98/Me. The INF file is named SYS\Resource.inf. As RESOURCE starts up, it
+will locate a FIRMWARE resource. In a real driver, this might be a binary
+resource that you could download to your hardware. In this driver, it’s just a
+string value, which the driver prints to the debug console. If you have set
+your system’s locale such that German or French is your default language, the
+message will be in the appropriate language. Otherwise, it will be in English.</p>
+
+<p>Finally, open a DOS prompt and navigate to the TEST\DEBUG subdirectory.
+Issue the “TEST” command, which will use a DeviceIoControl to interrogate the
+revision level of the RESOURCE driver (1.42) by means of the imbedded version
+resource. The driver’s handler for the DeviceIoControl will also display the
+Comments string in all the languages that the version resource contains.</p>
+
+<h3>Special Note</h3>
+The resources package uses the portable file libraries from the
+<a href="..\fileio\fileio.htm">FILEIO</a> sample, which requires WDMSTUB.SYS in
+Windows 98/Me. If you copy the KmdResource files to your own project, be
+sure you also copy the FILEIO routines and that you ship WDMSTUB.SYS along with your driver. Bear in mind that WDMSTUB requires a royalty-free
+redistribution license from me. (WDMSTUB is actually only needed because the
+Win2K version of SetFilePosition calls ZwSetInformationFile.)
+
+<h3>What to look for</h3>
+<p>This key part of this sample is the file <b>KmdResource.cpp</b>, which contains a platform-portable
+set of subroutines for accessing objects in a driver's resource script. <b>KmdResource.h</b> declares
+the interface to these subroutines and provides usage instructions.</b>
+
+</body>
+
+</html>

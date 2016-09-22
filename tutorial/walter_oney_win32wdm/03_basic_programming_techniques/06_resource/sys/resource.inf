@@ -3,9 +3,9 @@
 Signature=$CHICAGO$
 Class=Sample
 ClassGuid={894A7460-A033-11D2-821E-444553540000}
-CatalogFile.NTx86  = Stupidx86.cat
-CatalogFile.NTIA64 = Stupidia64.cat
-CatalogFile.NTAMD64 = Stupidamd64.cat
+CatalogFile.NTx86  = Resourcex86.cat
+CatalogFile.NTIA64 = Resourceia64.cat
+CatalogFile.NTAMD64 = Resourceamd64.cat
 Provider=%ONEYSOFT%
 DriverVer=09/15/2016,1.0.00001.1
 ; Copyright 2016 OneySoft
@@ -37,41 +37,41 @@ samclass.dll,,,2
 ;------------------------------------------------------------------------------
 
 [Manufacturer]
-%MFGNAME%=StupidDevice,NTx86,NTia64,NTamd64
+%MFGNAME%=ResourceDevice,NTx86,NTia64,NTamd64
 
-[StupidDevice.NTx86]
-%DESCRIPTION%=DriverInstall,*WCO0201
+[ResourceDevice.NTx86]
+%DESCRIPTION%=DriverInstall,*WCO0306
 
-[StupidDevice.NTia64]
-%DESCRIPTION%=DriverInstall,*WCO0201
+[ResourceDevice.NTia64]
+%DESCRIPTION%=DriverInstall,*WCO0306
 
-[StupidDevice.NTamd64]
-%DESCRIPTION%=DriverInstall,*WCO0201
+[ResourceDevice.NTamd64]
+%DESCRIPTION%=DriverInstall,*WCO0306
 
 [DriverInstall.NT]
 CopyFiles=DriverCopyFiles
 FriendlyNameFormat=%FRIENDLYNAME%
 
 [DriverCopyFiles]
-stupid.sys,,,2
+memtest.sys,,,2
+generic.sys,,,2
 
 [DriverInstall.NT.HW]
 AddReg=DriverInstall.NT.HW.AddReg
 
 [DriverInstall.NT.HW.AddReg]
-HKR,,SampleInfo,,"stupid.htm"
-
+HKR,,SampleInfo,,"memtest.htm"
 
 [DriverInstall.NT.Services]
-AddService=STUPID,2,DriverService
+AddService=MEMTEST,2,DriverService
 
 [DriverService]
 DisplayName=%DESCRIPTION%
 ServiceType=1
 StartType=3
 ErrorControl=1
-; ServiceBinary=%10%\system32\drivers\stupid.sys
-ServiceBinary=%12%\stupid.sys
+; ServiceBinary=%10%\system32\drivers\memtest.sys
+ServiceBinary=%12%\memtest.sys
 
 [SourceDisksNames.x86]
 1=%INSTDISK%,,,
@@ -83,7 +83,7 @@ ServiceBinary=%12%\stupid.sys
 1=%INSTDISK%,,,
 
 [SourceDisksFiles]
-stupid.sys=1,,
+memtest.sys=1,,
 generic.sys=1,,
 samclass.dll=1,,
 
@@ -96,5 +96,5 @@ samclass.dll=1,,
 ONEYSOFT="Walter Oney Software"
 MFGNAME="Walter Oney Software"
 INSTDISK="Walter Oney Software Installation Disc"
-DESCRIPTION="Stupid Device Driver"
-FRIENDLYNAME="StupidDevice%1!u!"
+DESCRIPTION="Resource Device Driver"
+FRIENDLYNAME="ResourceDevice%1!u!"

@@ -1,4 +1,6 @@
-# This is the "samclass.dll" for driver settings/Control Panel dialog.
+#
+#	samclass.dll provides icon with tag "WDM Book Samples" in the "Device Manager".
+#
 set(SRC samclass.cpp
 		StdAfx.h
 		resource.h
