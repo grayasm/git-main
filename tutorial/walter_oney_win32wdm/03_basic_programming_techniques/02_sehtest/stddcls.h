@@ -1,6 +1,8 @@
-// stddcls.h -- Precompiled headers for WDM drivers
-// Copyright (C) 1999 by Walter Oney
-// All rights reserved
+/*
+	stddcls.h -- Precompiled headers for WDM drivers
+	Copyright (C) 1999 by Walter Oney
+*/
+
 
 #ifdef __cplusplus
 extern "C" {
@@ -17,20 +19,21 @@ extern "C" {
 	}
 #endif
 
-#define PAGEDCODE code_seg("PAGE")
-#define LOCKEDCODE code_seg()
-#define INITCODE code_seg("INIT")
+#define PAGEDCODE	code_seg("PAGE")
+#define LOCKEDCODE	code_seg()
+#define INITCODE	code_seg("INIT")
 
-#define PAGEDDATA data_seg("PAGEDATA")
-#define LOCKEDDATA data_seg()
-#define INITDATA data_seg("INITDATA")
+#define PAGEDDATA	data_seg("PAGEDATA")
+#define LOCKEDDATA	data_seg()
+#define INITDATA	data_seg("INITDATA")
 
 #define arraysize(p) (sizeof(p)/sizeof((p)[0]))
 
-#if DBG && defined(_X86_)
+#if DBG && defined(_AMD64_) // defined(_X86_)
 	#undef ASSERT
 	#define ASSERT(e) if(!(e)){DbgPrint("Assertion failure in "\
 	__FILE__ ", line %d: " #e "\n", __LINE__);\
-	_asm int 3\
   }
 #endif
+
+// 	_asm int 3\
