@@ -1,26 +1,31 @@
-// Declarations for bugcheck driver
-// Copyright (C) 1999, 2000 by Walter Oney
-// All rights reserved
+/*
+	Declarations for bugcheck driver
+	Copyright (C) 1999, 2000 by Walter Oney
+*/
 
-#ifndef DRIVER_H
-#define DRIVER_H
+
+#ifndef __Driver_h__
+#define __Driver_h__
 
 #define DRIVERNAME "BUGCHECK"				// for use in messages
 #define LDRIVERNAME L"BUGCHECK"				// for use in UNICODE string constants
 
-///////////////////////////////////////////////////////////////////////////////
+
 // Device extension structure
 
-enum DEVSTATE {
+enum DEVSTATE 
+{
 	STOPPED,								// device stopped
 	WORKING,								// started and working
 	PENDINGSTOP,							// stop pending
 	PENDINGREMOVE,							// remove pending
 	SURPRISEREMOVED,						// removed by surprise
 	REMOVED,								// removed
-	};
+};
 
-typedef struct _DEVICE_EXTENSION {
+
+typedef struct _DEVICE_EXTENSION 
+{
 	PDEVICE_OBJECT DeviceObject;			// device object this extension belongs to
 	PDEVICE_OBJECT LowerDeviceObject;		// next lower driver in same stack
 	PDEVICE_OBJECT Pdo;						// the PDO
@@ -34,15 +39,16 @@ typedef struct _DEVICE_EXTENSION {
 
 	// TODO add additional per-device declarations
 
-	} DEVICE_EXTENSION, *PDEVICE_EXTENSION;
+} DEVICE_EXTENSION, *PDEVICE_EXTENSION;
 
-///////////////////////////////////////////////////////////////////////////////
+
+
 // Global functions
 
-VOID RemoveDevice(IN PDEVICE_OBJECT fdo);
-NTSTATUS CompleteRequest(IN PIRP Irp, IN NTSTATUS status, IN ULONG_PTR info);
-NTSTATUS CompleteRequest(IN PIRP Irp, IN NTSTATUS status);
-NTSTATUS ForwardAndWait(IN PDEVICE_OBJECT fdo, IN PIRP Irp);
+VOID RemoveDevice(PDEVICE_OBJECT fdo);
+NTSTATUS CompleteRequest(PIRP Irp, NTSTATUS status, ULONG_PTR info);
+NTSTATUS CompleteRequest(PIRP Irp, NTSTATUS status);
+NTSTATUS ForwardAndWait(PDEVICE_OBJECT fdo, PIRP Irp);
 NTSTATUS SendDeviceSetPower(PDEVICE_EXTENSION fdo, DEVICE_POWER_STATE state, BOOLEAN wait = FALSE);
 VOID SendAsyncNotification(PVOID context);
 VOID EnableAllInterfaces(PDEVICE_EXTENSION pdx, BOOLEAN enable);
@@ -58,4 +64,4 @@ NTSTATUS DispatchPnp(PDEVICE_OBJECT fdo, PIRP Irp);
 
 extern UNICODE_STRING servkey;
 
-#endif // DRIVER_H
+#endif // __Driver_h__
