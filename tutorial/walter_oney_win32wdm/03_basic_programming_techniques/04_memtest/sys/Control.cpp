@@ -1,6 +1,7 @@
-// Control.cpp -- IOCTL handlers for memtest driver
-// Copyright (C) 1999, 2000 by Walter Oney
-// All rights reserved
+/*
+	Control.cpp -- IOCTL handlers for memtest driver
+	Copyright (C) 1999, 2000 by Walter Oney
+*/
 
 #include "stddcls.h"
 #include "driver.h"
@@ -8,13 +9,14 @@
 
 VOID DoMemoryTest(char* poolname, POOL_TYPE pooltype);
 
-///////////////////////////////////////////////////////////////////////////////
+
+
 
 #pragma PAGEDCODE
-
 NTSTATUS DispatchControl(PDEVICE_OBJECT fdo, PIRP Irp)
-	{							// DispatchControl
+{
 	PAGED_CODE();
+
 	PDEVICE_EXTENSION pdx = (PDEVICE_EXTENSION) fdo->DeviceExtension;
 
 	NTSTATUS status = IoAcquireRemoveLock(&pdx->RemoveLock, Irp);
@@ -28,31 +30,31 @@ NTSTATUS DispatchControl(PDEVICE_OBJECT fdo, PIRP Irp)
 	ULONG code = stack->Parameters.DeviceIoControl.IoControlCode;
 
 	switch (code)
-		{						// process request
+	{
 
-	case IOCTL_DO_TEST:				// code == 0x800
-		{						// IOCTL_DO_TEST
+	case IOCTL_DO_TEST: // code == 0x800
+	{
 		DoMemoryTest("PagedPool", PagedPool);
 		DoMemoryTest("NonPagedPool", NonPagedPool);
 		break;
-		}						// IOCTL_DO_TEST
+	}
 
 	default:
 		status = STATUS_INVALID_DEVICE_REQUEST;
 		break;
 
-		}						// process request
+	} // switch
 
 	IoReleaseRemoveLock(&pdx->RemoveLock, Irp);
 	return CompleteRequest(Irp, status, info);
-	}							// DispatchControl
+} // DispatchControl
 
-///////////////////////////////////////////////////////////////////////////////
+
+
 
 #pragma LOCKEDCODE
-
 VOID DoMemoryTest(char* poolname, POOL_TYPE pooltype)
-	{							// DoMemoryTest
+{
 	DbgPrint(DRIVERNAME " - Beginning test for %s\n", poolname);
 
 	ULONG npages = 512 * 1024 * 1024 / PAGE_SIZE;	// start with 512 MB
@@ -63,29 +65,32 @@ VOID DoMemoryTest(char* poolname, POOL_TYPE pooltype)
 	// this pool
 
 	while (delta > 64 * 1024 / PAGE_SIZE)
-		{						// determine largest allocation
+	{
+		// determine largest allocation
 		PVOID p = ExAllocatePoolWithTagPriority(pooltype, npages * PAGE_SIZE - 512, 'YENO', LowPoolPriority);
 		if (p)
 			ExFreePool(p);
 
 		if (p)
-			{					// success
+		{
+			// success
 			DbgPrint(DRIVERNAME " - Allocated %8.8X bytes okay\n", npages * PAGE_SIZE - 512);
 			if (npages > biggest)
 				biggest = npages;
 			npages += delta;
 
-			}					// success
+		}
 		else
-			{					// failure
+		{
+			// failure
 			DbgPrint(DRIVERNAME " - Unable to allocate %8.8X bytes\n", npages * PAGE_SIZE - 512);
 			npages -= delta;
-			}					// failure
+		}
 
 		delta /= 2;
-		}						// determine largest allocation
+	}
 	
 	DbgPrint(DRIVERNAME " - **** Largest allocation from %s was %8.8X bytes (%8.8X pages) ****\n",
 		poolname, biggest * PAGE_SIZE - 512, biggest);
-	}							// DoMemoryTest
+} // DoMemoryTest
 

@@ -1,6 +1,8 @@
-// IOCTLS.H -- IOCTL code definitions for memtest driver
-// Copyright (C) 1999, 2000 by Walter Oney
-// All rights reserved
+/*
+	IOCTLS.H -- IOCTL code definitions for memtest driver
+	Copyright (C) 1999, 2000 by Walter Oney
+*/
+
 
 #ifndef IOCTLS_H
 #define IOCTLS_H
