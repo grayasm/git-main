@@ -16,24 +16,7 @@
 
 */
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-#include <wdm.h>
-
-#ifdef __cplusplus
-}
-#endif
-
-
-#define PAGEDCODE	code_seg("PAGE")
-#define LOCKEDCODE	code_seg()
-#define INITCODE	code_seg("INIT")
-
-#define PAGEDDATA	data_seg("PAGEDATA")
-#define LOCKEDDATA	data_seg()
-#define INITDATA	data_seg("INITDATA")
+#include "driver.h"
 
 
 
@@ -71,6 +54,7 @@ NTSTATUS AddDevice(PDRIVER_OBJECT DriverObject, PDEVICE_OBJECT pdo)
 	else
 		KdPrint((DRIVERNAME " - RtlAppendUnicodeStringToString SUCCEEDED, us1 is now %s\n", us1.Buffer));
 	
+
 	return STATUS_UNSUCCESSFUL;
 }
 

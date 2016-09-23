@@ -6,7 +6,8 @@
 cmake_minimum_required(VERSION 3.2)
 project(c3_proj)
 
-set(SRC DriverEntry.cpp)
+set(SRC DriverEntry.cpp
+		driver.h)
 
 set(WDMINC "c:/Program Files (x86)/Windows Kits/10/Include/10.0.14393.0")
 set(WDMLIB "c:/Program Files (x86)/Windows Kits/10/Lib/10.0.14393.0")
@@ -16,7 +17,8 @@ add_executable(c3_errstatus ${SRC})
 
 target_include_directories(c3_errstatus PUBLIC
                             "${WDMINC}/shared"
-							"${WDMINC}/km")
+							"${WDMINC}/km"
+							"${WDMINC}/um")
   
 target_compile_definitions(	c3_errstatus PUBLIC
 							CONDITION_HANDLING=1
