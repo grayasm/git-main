@@ -2,7 +2,8 @@
 *
 	Capter. 3 Basic Programming Techniques.
 	
-	01_generic: is a skeleton. It should be renamed before reused/linked into other projects.
+	01_generic: contains function called from some other SYS drivers in cap3.
+	07_fputest: is 32bit only due to use of MMX and __asm extension.
 
 	
 	Kernel-Mode Driver Reference from MSDN:
@@ -85,7 +86,20 @@
 			Monitoring
 			Helpers
 			
-			
+	Overview of the Kernel-Mode support routines
+	--------------------------------------------
+		2.1.	The I/O Manager (prefix Io)
+		2.2.	The Process Structure module (prefix Ps) - for kernel-mode threads
+		2.3.	The Memory Manager (prefix Mm) - page tables.
+		2.4.	The executive (prefix Ex) - for heap management and synchronization.
+		2.5.	The Object Manager (prefix Ob) - access to many Windows data objects.
+		2.6.	The Security Reference Monitor (prefix Se) - security checks on files.
+		2.7.	The Runtime Library Component (prefix Rtl) - utility routines (e.g. strings)
+		2.8.	The Kernel-Mode Callers (prefix Zw)
+		2.9.	The Windows Kernel (prefix Ke) - low-level threads/processes synchronization.
+		2.10.	The Hardware Abstraction (prefix Hal) - interrupts,I/O and memory mapped devices, etc.
+		
+		
 			
 			
 			
