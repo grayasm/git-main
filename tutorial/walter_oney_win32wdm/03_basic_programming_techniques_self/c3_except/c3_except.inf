@@ -5,9 +5,9 @@
 Signature=$CHICAGO$
 Class=Sample
 ClassGuid={894A7460-A033-11d2-821E-444553540000}
-CatalogFile.NTx86  = C3_except_x86.cat
-CatalogFile.NTIA64 = C3_except_ia64.cat
-CatalogFile.NTAMD64 = C3_except_amd64.cat
+CatalogFile.NTx86  = c3_except_x86.cat
+CatalogFile.NTIA64 = c3_except_ia64.cat
+CatalogFile.NTAMD64 = c3_except_amd64.cat
 Provider=%ONEYSOFT%
 DriverVer=09/15/2016,1.0.00001.1
 ; Copyright 2016 OneySoft

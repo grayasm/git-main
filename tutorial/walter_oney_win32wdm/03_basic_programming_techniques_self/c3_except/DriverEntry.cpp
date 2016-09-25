@@ -196,6 +196,6 @@ VOID DriverUnload(PDRIVER_OBJECT DriverObject)
 
 LONG EvaluateException(NTSTATUS status, PEXCEPTION_POINTERS excp)
 {
-	KdPrint((DRIVERNAME " - inside EvaluateException(0x%X, 0x%X)\n"), status, excp);
+	KdPrint((DRIVERNAME " - inside EvaluateException(0x%X, 0x%X)\n", status, excp));
 	return EXCEPTION_EXECUTE_HANDLER;
 }
