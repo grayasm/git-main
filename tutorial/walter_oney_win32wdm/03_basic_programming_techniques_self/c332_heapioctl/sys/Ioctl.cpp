@@ -12,6 +12,8 @@
 #pragma PAGEDCODE
 GENERICAPI VOID GENERIC_EXPORT CleanupGenericExtension(PGENERIC_EXTENSION pdx)
 {
+	KdPrint((DRIVERNAME " - %s\n", __FUNCTION__));
+
 	if (pdx->queues)
 		ExFreePool(pdx->queues);
 
@@ -24,6 +26,9 @@ GENERICAPI VOID GENERIC_EXPORT CleanupGenericExtension(PGENERIC_EXTENSION pdx)
 GENERICAPI NTSTATUS GENERIC_EXPORT GenericCacheControlRequest(PGENERIC_EXTENSION pdx, PIRP Irp, PIRP* pIrp)
 {
 	ASSERT(KeGetCurrentIrql() <= DISPATCH_LEVEL);
+
+	KdPrint((DRIVERNAME " - %s\n", __FUNCTION__));
+
 
 	/*	Acquire the lock that guards pending IOCTL operations for this client. */
 	KIRQL oldirql;
@@ -80,6 +85,9 @@ GENERICAPI NTSTATUS GENERIC_EXPORT GenericCacheControlRequest(PGENERIC_EXTENSION
 GENERICAPI VOID GENERIC_EXPORT GenericCleanupAllRequests(PGENERIC_EXTENSION pdx, PFILE_OBJECT fop, NTSTATUS status)
 {
 	PAGED_CODE();
+
+	KdPrint((DRIVERNAME " - %s\n", __FUNCTION__));
+
 	CleanupAllRequests(pdx->queues, pdx->nqueues, fop, status);
 	GenericCleanupControlRequests(pdx, status, fop);
 }
@@ -88,6 +96,8 @@ GENERICAPI VOID GENERIC_EXPORT GenericCleanupAllRequests(PGENERIC_EXTENSION pdx,
 #pragma LOCKEDCODE
 GENERICAPI VOID GENERIC_EXPORT GenericCleanupControlRequests(PGENERIC_EXTENSION pdx, NTSTATUS status, PFILE_OBJECT fop)
 {
+	KdPrint((DRIVERNAME " - %s\n", __FUNCTION__));
+
 	if (!(pdx->Flags & GENERIC_PENDING_IOCTLS))
 		return; // didn't signup for pending ioctl service!
 
@@ -152,6 +162,8 @@ GENERICAPI VOID GENERIC_EXPORT GenericCleanupControlRequests(PGENERIC_EXTENSION 
 #pragma LOCKEDCODE
 GENERICAPI PVOID GENERIC_EXPORT GenericGetSystemAddressForMdl(PMDL mdl)
 {
+	KdPrint((DRIVERNAME " - %s\n", __FUNCTION__));
+
 	if (!mdl)
 		return NULL;
 
@@ -170,6 +182,8 @@ GENERICAPI PVOID GENERIC_EXPORT GenericGetSystemAddressForMdl(PMDL mdl)
 #pragma LOCKEDCODE
 GENERICAPI ULONG GENERIC_EXPORT GenericGetVersion()
 {
+	KdPrint((DRIVERNAME " - %s\n", __FUNCTION__));
+
 	return (VERMAJOR << 16) | VERMINOR;
 }
 
@@ -178,6 +192,8 @@ GENERICAPI ULONG GENERIC_EXPORT GenericGetVersion()
 GENERICAPI PIRP GENERIC_EXPORT GenericUncacheControlRequest(PGENERIC_EXTENSION pdx, PIRP* pIrp)
 {
 	ASSERT(KeGetCurrentIrql() <= DISPATCH_LEVEL);
+
+	KdPrint((DRIVERNAME " - %s\n", __FUNCTION__));
 
 	if (!(pdx->Flags & GENERIC_PENDING_IOCTLS))
 		return NULL;
@@ -219,6 +235,9 @@ GENERICAPI PIRP GENERIC_EXPORT GenericUncacheControlRequest(PGENERIC_EXTENSION p
 GENERICAPI ULONG GENERIC_EXPORT GetSizeofGenericExtension()
 {
 	PAGED_CODE();
+
+	KdPrint((DRIVERNAME " - %s\n", __FUNCTION__));
+
 	ULONG size = (sizeof(GENERIC_EXTENSION) + 7) & ~7;
 	return size;
 }
@@ -227,6 +246,8 @@ GENERICAPI ULONG GENERIC_EXPORT GetSizeofGenericExtension()
 #pragma PAGEDCODE
 GENERICAPI NTSTATUS GENERIC_EXPORT InitializeGenericExtension(PGENERIC_EXTENSION pdx, PGENERIC_INIT_STRUCT isp)
 {
+	KdPrint((DRIVERNAME " - %s\n", __FUNCTION__));
+
 	if (isp->Size < FIELD_OFFSET(GENERIC_INIT_STRUCT, Flags) ||
 		!isp->DeviceObject ||
 		!isp->Ldo ||
@@ -394,6 +415,8 @@ GENERICAPI NTSTATUS GENERIC_EXPORT InitializeGenericExtension(PGENERIC_EXTENSION
 #pragma LOCKEDCODE
 VOID OnCancelPendingIoctl(PDEVICE_OBJECT junk, PIRP Irp)
 {
+	KdPrint((DRIVERNAME " - %s\n", __FUNCTION__));
+
 	KIRQL oldirql = Irp->CancelIrql;
 	IoReleaseCancelSpinLock(DISPATCH_LEVEL);
 
@@ -437,6 +460,9 @@ VOID OnCancelPendingIoctl(PDEVICE_OBJECT junk, PIRP Irp)
 VOID AbortPendingIoctls(PGENERIC_EXTENSION pdx, NTSTATUS status)
 {
 	PAGED_CODE();
+
+	KdPrint((DRIVERNAME " - %s\n", __FUNCTION__));
+
 	if (!(pdx->Flags & GENERIC_PENDING_IOCTLS))
 		return;
 

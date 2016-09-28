@@ -46,6 +46,9 @@ static char* dname[] = {
 GENERICAPI NTSTATUS GENERIC_EXPORT GenericDispatchPnp(PGENERIC_EXTENSION pdx, PIRP Irp)
 {
 	PAGED_CODE();
+
+	KdPrint((DRIVERNAME " - %s\n", __FUNCTION__));
+
 	NTSTATUS status = STATUS_SUCCESS;
 	if (pdx->RemoveLock && !NT_SUCCESS(status = IoAcquireRemoveLock(pdx->RemoveLock, Irp)))
 		return CompleteRequest(Irp, status);
@@ -135,6 +138,9 @@ GENERICAPI NTSTATUS GENERIC_EXPORT GenericDispatchPnp(PGENERIC_EXTENSION pdx, PI
 GENERICAPI NTSTATUS GENERIC_EXPORT GenericDeregisterInterface(PGENERIC_EXTENSION pdx, const GUID* guid)
 {
 	ASSERT(KeGetCurrentIrql() == PASSIVE_LEVEL);
+
+	KdPrint((DRIVERNAME " - %s\n", __FUNCTION__));
+
 	NTSTATUS status;
 
 	KeEnterCriticalRegion();
@@ -159,6 +165,9 @@ GENERICAPI NTSTATUS GENERIC_EXPORT GenericDeregisterInterface(PGENERIC_EXTENSION
 GENERICAPI NTSTATUS GENERIC_EXPORT GenericEnableInterface(PGENERIC_EXTENSION pdx, const GUID* guid, BOOLEAN enable)
 {
 	ASSERT(KeGetCurrentIrql() == PASSIVE_LEVEL);
+
+	KdPrint((DRIVERNAME " - %s\n", __FUNCTION__));
+
 	NTSTATUS status;
 
 	KeEnterCriticalRegion();
@@ -191,6 +200,8 @@ GENERICAPI NTSTATUS GENERIC_EXPORT GenericEnableInterface(PGENERIC_EXTENSION pdx
 #pragma LOCKEDCODE
 GENERICAPI PDEVICE_CAPABILITIES GENERIC_EXPORT GenericGetDeviceCapabilities(PGENERIC_EXTENSION pdx)
 {
+	KdPrint((DRIVERNAME " - %s\n", __FUNCTION__));
+
 	/*	If necessary, ask the bus driver for this device's capabilities.
 	We must be at PASSIVE_LEVEL to do this (requirement for sending the IRP).
 	*/
@@ -242,6 +253,9 @@ GENERICAPI PDEVICE_CAPABILITIES GENERIC_EXPORT GenericGetDeviceCapabilities(PGEN
 GENERICAPI NTSTATUS GENERIC_EXPORT GenericRegisterInterface(PGENERIC_EXTENSION pdx, const GUID* guid)
 {
 	ASSERT(KeGetCurrentIrql() == PASSIVE_LEVEL);
+
+	KdPrint((DRIVERNAME " - %s\n", __FUNCTION__));
+
 	NTSTATUS status;
 
 	KeEnterCriticalRegion();
@@ -286,6 +300,8 @@ GENERICAPI NTSTATUS GENERIC_EXPORT GenericRegisterInterface(PGENERIC_EXTENSION p
 #pragma LOCKEDCODE
 GENERICAPI VOID GENERIC_EXPORT GenericSetDeviceState(PGENERIC_EXTENSION pdx, PNP_DEVICE_STATE pnpstate)
 {
+	KdPrint((DRIVERNAME " - %s\n", __FUNCTION__));
+
 	pdx->pnpstatemask = (pnpstate ^ pdx->pnpstate); // mask for things that changed
 	pdx->pnpstate |= pnpstate;
 
@@ -306,6 +322,8 @@ __inline SYSTEM_POWER_STATE& operator--(SYSTEM_POWER_STATE& ss) { ss = (SYSTEM_P
 
 VOID AdjustDeviceCapabilities(PGENERIC_EXTENSION pdx, PDEVICE_CAPABILITIES pdc)
 {
+	KdPrint((DRIVERNAME " - %s\n", __FUNCTION__));
+
 	/*	Make sure that the device state for S0 is D0.	*/
 	if (pdc->DeviceState[PowerSystemWorking] != PowerDeviceD0)
 	{
@@ -416,6 +434,8 @@ VOID AdjustDeviceCapabilities(PGENERIC_EXTENSION pdx, PDEVICE_CAPABILITIES pdc)
 
 VOID AdjustWakeCapabilities(PGENERIC_EXTENSION pdx, PDEVICE_CAPABILITIES pdc, DEVICE_POWER_STATE dstate)
 {
+	KdPrint((DRIVERNAME " - %s\n", __FUNCTION__));
+
 	switch (dstate)
 	{
 		// select on D-state
@@ -455,6 +475,8 @@ VOID AdjustWakeCapabilities(PGENERIC_EXTENSION pdx, PDEVICE_CAPABILITIES pdc, DE
 
 VOID CallStopDevice(PGENERIC_EXTENSION pdx)
 {
+	KdPrint((DRIVERNAME " - %s\n", __FUNCTION__));
+
 	GenericWakeupControl(pdx, CancelWaitWake);
 	BOOLEAN oktouch = pdx->HardwareWorking;
 	pdx->HardwareWorking = FALSE;
@@ -464,12 +486,16 @@ VOID CallStopDevice(PGENERIC_EXTENSION pdx)
 
 VOID CallRemoveDevice(PGENERIC_EXTENSION pdx)
 {
+	KdPrint((DRIVERNAME " - %s\n", __FUNCTION__));
+
 	(*pdx->RemoveDevice)(pdx->DeviceObject);
 }
 
 
 NTSTATUS DefaultPnpHandler(PGENERIC_EXTENSION pdx, PIRP Irp)
 {
+	KdPrint((DRIVERNAME " - %s\n", __FUNCTION__));
+
 	IoSkipCurrentIrpStackLocation(Irp);
 	return IoCallDriver(pdx->LowerDeviceObject, Irp);
 }
@@ -479,6 +505,8 @@ NTSTATUS DefaultPnpHandler(PGENERIC_EXTENSION pdx, PIRP Irp)
 VOID DeregisterAllInterfaces(PGENERIC_EXTENSION pdx)
 {
 	ASSERT(KeGetCurrentIrql() == PASSIVE_LEVEL);
+
+	KdPrint((DRIVERNAME " - %s\n", __FUNCTION__));
 
 	KeEnterCriticalRegion();
 	KeWaitForSingleObject(&pdx->iflock, Executive, KernelMode, FALSE, NULL);
@@ -499,6 +527,8 @@ VOID DeregisterAllInterfaces(PGENERIC_EXTENSION pdx)
 #pragma PAGEDCODE
 VOID DeregisterInterface(PGENERIC_EXTENSION pdx, PINTERFACE_RECORD ifp)
 {
+	KdPrint((DRIVERNAME " - %s\n", __FUNCTION__));
+
 	if (ifp->enabled)
 		IoSetDeviceInterfaceState(&ifp->linkname, FALSE);
 
@@ -511,6 +541,8 @@ VOID DeregisterInterface(PGENERIC_EXTENSION pdx, PINTERFACE_RECORD ifp)
 #pragma LOCKEDCODE
 VOID EnableAllInterfaces(PGENERIC_EXTENSION pdx, BOOLEAN enable)
 {
+	KdPrint((DRIVERNAME " - %s\n", __FUNCTION__));
+
 	for (PLIST_ENTRY list = pdx->iflist.Flink; list != &pdx->iflist; list = list->Flink)
 	{
 		// search for specified interface record
@@ -528,6 +560,8 @@ PINTERFACE_RECORD FindInterfaceRecord(PGENERIC_EXTENSION pdx, const GUID* guid)
 {
 	PAGED_CODE();
 
+	KdPrint((DRIVERNAME " - %s\n", __FUNCTION__));
+
 	for (PLIST_ENTRY list = pdx->iflist.Flink; list != &pdx->iflist; list = list->Flink)
 	{
 		// search for specified interface record
@@ -541,6 +575,8 @@ PINTERFACE_RECORD FindInterfaceRecord(PGENERIC_EXTENSION pdx, const GUID* guid)
 
 NTSTATUS HandleCancelRemove(PGENERIC_EXTENSION pdx, PIRP Irp)
 {
+	KdPrint((DRIVERNAME " - %s\n", __FUNCTION__));
+
 	ASSERT(IoGetCurrentIrpStackLocation(Irp)->MinorFunction == IRP_MN_CANCEL_REMOVE_DEVICE);
 	Irp->IoStatus.Status = STATUS_SUCCESS;	// flag that we handled this IRP
 
@@ -572,6 +608,8 @@ NTSTATUS HandleCancelRemove(PGENERIC_EXTENSION pdx, PIRP Irp)
 
 NTSTATUS HandleCancelStop(PGENERIC_EXTENSION pdx, PIRP Irp)
 {
+	KdPrint((DRIVERNAME " - %s\n", __FUNCTION__));
+
 	ASSERT(IoGetCurrentIrpStackLocation(Irp)->MinorFunction == IRP_MN_CANCEL_STOP_DEVICE);
 	Irp->IoStatus.Status = STATUS_SUCCESS;	// flag that we handled this IRP
 
@@ -606,6 +644,8 @@ NTSTATUS HandleCancelStop(PGENERIC_EXTENSION pdx, PIRP Irp)
 
 NTSTATUS HandleQueryCapabilities(PGENERIC_EXTENSION pdx, PIRP Irp)
 {
+	KdPrint((DRIVERNAME " - %s\n", __FUNCTION__));
+
 	ASSERT(IoGetCurrentIrpStackLocation(Irp)->MinorFunction == IRP_MN_QUERY_CAPABILITIES);
 
 	PIO_STACK_LOCATION stack = IoGetCurrentIrpStackLocation(Irp);
@@ -641,6 +681,8 @@ NTSTATUS HandleQueryCapabilities(PGENERIC_EXTENSION pdx, PIRP Irp)
 
 NTSTATUS HandleQueryRemove(PGENERIC_EXTENSION pdx, PIRP Irp)
 {
+	KdPrint((DRIVERNAME " - %s\n", __FUNCTION__));
+
 	ASSERT(IoGetCurrentIrpStackLocation(Irp)->MinorFunction == IRP_MN_QUERY_REMOVE_DEVICE);
 	Irp->IoStatus.Status = STATUS_SUCCESS;	// flag that we handled this IRP
 
@@ -679,6 +721,8 @@ NTSTATUS HandleQueryRemove(PGENERIC_EXTENSION pdx, PIRP Irp)
 
 NTSTATUS HandleQueryState(PGENERIC_EXTENSION pdx, PIRP Irp)
 {
+	KdPrint((DRIVERNAME " - %s\n", __FUNCTION__));
+
 	ASSERT(IoGetCurrentIrpStackLocation(Irp)->MinorFunction == IRP_MN_QUERY_PNP_DEVICE_STATE);
 
 	/*	Note that you can't use sizeof in a #if expression, so it's not possible
@@ -710,6 +754,8 @@ NTSTATUS HandleQueryState(PGENERIC_EXTENSION pdx, PIRP Irp)
 
 NTSTATUS HandleQueryStop(PGENERIC_EXTENSION pdx, PIRP Irp)
 {
+	KdPrint((DRIVERNAME " - %s\n", __FUNCTION__));
+
 	ASSERT(IoGetCurrentIrpStackLocation(Irp)->MinorFunction == IRP_MN_QUERY_STOP_DEVICE);
 	Irp->IoStatus.Status = STATUS_SUCCESS;	// flag that we handled this IRP
 
@@ -745,6 +791,8 @@ NTSTATUS HandleQueryStop(PGENERIC_EXTENSION pdx, PIRP Irp)
 
 NTSTATUS HandleRemoveDevice(PGENERIC_EXTENSION pdx, PIRP Irp)
 {
+	KdPrint((DRIVERNAME " - %s\n", __FUNCTION__));
+
 	ASSERT(IoGetCurrentIrpStackLocation(Irp)->MinorFunction == IRP_MN_REMOVE_DEVICE);
 	Irp->IoStatus.Status = STATUS_SUCCESS;	// flag that we handled this IRP
 
@@ -796,6 +844,8 @@ NTSTATUS HandleRemoveDevice(PGENERIC_EXTENSION pdx, PIRP Irp)
 
 NTSTATUS HandleStartDevice(PGENERIC_EXTENSION pdx, PIRP Irp)
 {
+	KdPrint((DRIVERNAME " - %s\n", __FUNCTION__));
+
 	ASSERT(IoGetCurrentIrpStackLocation(Irp)->MinorFunction == IRP_MN_START_DEVICE);
 	Irp->IoStatus.Status = STATUS_SUCCESS; // flag that we handled this IRP
 
@@ -879,6 +929,8 @@ NTSTATUS HandleStartDevice(PGENERIC_EXTENSION pdx, PIRP Irp)
 
 NTSTATUS HandleStopDevice(PGENERIC_EXTENSION pdx, PIRP Irp)
 {
+	KdPrint((DRIVERNAME " - %s\n", __FUNCTION__));
+
 	ASSERT(IoGetCurrentIrpStackLocation(Irp)->MinorFunction == IRP_MN_STOP_DEVICE);
 	Irp->IoStatus.Status = STATUS_SUCCESS;
 
@@ -906,6 +958,8 @@ NTSTATUS HandleStopDevice(PGENERIC_EXTENSION pdx, PIRP Irp)
 
 NTSTATUS HandleSurpriseRemoval(PGENERIC_EXTENSION pdx, PIRP Irp)
 {
+	KdPrint((DRIVERNAME " - %s\n", __FUNCTION__));
+
 	ASSERT(IoGetCurrentIrpStackLocation(Irp)->MinorFunction == IRP_MN_SURPRISE_REMOVAL);
 	Irp->IoStatus.Status = STATUS_SUCCESS;	// flag that we handled this IRP
 
@@ -924,6 +978,8 @@ NTSTATUS HandleSurpriseRemoval(PGENERIC_EXTENSION pdx, PIRP Irp)
 
 NTSTATUS HandleUsageNotification(PGENERIC_EXTENSION pdx, PIRP Irp)
 {
+	KdPrint((DRIVERNAME " - %s\n", __FUNCTION__));
+
 	ASSERT(IoGetCurrentIrpStackLocation(Irp)->MinorFunction == IRP_MN_DEVICE_USAGE_NOTIFICATION);
 
 	PIO_STACK_LOCATION stack = IoGetCurrentIrpStackLocation(Irp);
@@ -1007,6 +1063,8 @@ NTSTATUS HandleUsageNotification(PGENERIC_EXTENSION pdx, PIRP Irp)
 
 NTSTATUS OnNotificationComplete(PDEVICE_OBJECT fdo, PIRP Irp, PGENERIC_EXTENSION pdx)
 {
+	KdPrint((DRIVERNAME " - %s\n", __FUNCTION__));
+
 	if (Irp->PendingReturned)
 		IoMarkIrpPending(Irp);
 
@@ -1070,6 +1128,8 @@ NTSTATUS OnNotificationComplete(PDEVICE_OBJECT fdo, PIRP Irp, PGENERIC_EXTENSION
 
 VOID ShowResources(IN PCM_PARTIAL_RESOURCE_LIST list)
 {
+	KdPrint((DRIVERNAME " - %s\n", __FUNCTION__));
+
 	PCM_PARTIAL_RESOURCE_DESCRIPTOR resource = list->PartialDescriptors;
 	ULONG nres = list->Count;
 	ULONG i;

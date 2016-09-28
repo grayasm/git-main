@@ -30,8 +30,8 @@ extern "C" {
 
 #define arraysize(p)	(sizeof(p)/sizeof(p[0]))
 
-#define DRIVERNAME		"DRIVERNAME"
-#define LDRIVERNAME		L"DRIVERNAME"
+#define DRIVERNAME		"C3_HEAPIOCTL"
+#define LDRIVERNAME		L"C3_HEAPIOCTL"
 
 
 

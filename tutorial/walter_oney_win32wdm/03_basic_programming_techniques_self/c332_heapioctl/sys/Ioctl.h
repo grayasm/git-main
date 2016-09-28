@@ -55,5 +55,15 @@ GENERICAPI NTSTATUS	GENERIC_EXPORT InitializeGenericExtension(PGENERIC_EXTENSION
 VOID OnCancelPendingIoctl(PDEVICE_OBJECT junk, PIRP Irp);
 VOID AbortPendingIoctls(PGENERIC_EXTENSION pdx, NTSTATUS status);
 
+//////////////////////////////////////////////////////////////////////////
+#ifndef CTL_CODE
+#pragma message("CTL_CODE undefined. Include winioctl.h or wdm.h")
+#endif
+
+#define IOCTL_DO_TEST CTL_CODE(FILE_DEVICE_UNKNOWN, 0x800, METHOD_NEITHER, FILE_ANY_ACCESS)
+
+//////////////////////////////////////////////////////////////////////////
+
+
 
 #endif // __Ioctl_h__
