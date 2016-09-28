@@ -1,3 +1,9 @@
+/*
+	Pnp.cpp - Plug 'n Play functions.
+	Copyright (C) 1999, 2000 by Walter Oney.
+*/
+
+
 #include "Pnp.h"
 
 
@@ -502,7 +508,6 @@ VOID DeregisterInterface(PGENERIC_EXTENSION pdx, PINTERFACE_RECORD ifp)
 }
 
 
-
 #pragma LOCKEDCODE
 VOID EnableAllInterfaces(PGENERIC_EXTENSION pdx, BOOLEAN enable)
 {
@@ -516,7 +521,6 @@ VOID EnableAllInterfaces(PGENERIC_EXTENSION pdx, BOOLEAN enable)
 		ifp->enabled = enable;
 	}
 }
-
 
 
 #pragma PAGEDCODE
@@ -533,7 +537,6 @@ PINTERFACE_RECORD FindInterfaceRecord(PGENERIC_EXTENSION pdx, const GUID* guid)
 	}
 	return NULL;
 }
-
 
 
 NTSTATUS HandleCancelRemove(PGENERIC_EXTENSION pdx, PIRP Irp)
@@ -644,21 +647,6 @@ NTSTATUS HandleQueryRemove(PGENERIC_EXTENSION pdx, PIRP Irp)
 	if (pdx->state == WORKING)
 	{
 
-		// currently working
-#ifdef _X86_
-
-		// Win98 doesn't check for open handles before allowing a remove to proceed,
-		// and it may deadlock in IoReleaseRemoveLockAndWait if handles are still
-		// open.
-
-		if (win98 && pdx->DeviceObject->ReferenceCount)
-		{
-			KdPrint(("%s - Failing removal query due to open handles\n", pdx->DebugName));
-			return CompleteRequest(Irp, STATUS_DEVICE_BUSY);
-		}
-
-#endif
-
 		/*	See if it's okay to remove this device.
 		The test includes asking the client driver. Then stall the queue
 		for the duration of the query. The TOASTER sample in the DDK drains
@@ -687,7 +675,6 @@ NTSTATUS HandleQueryRemove(PGENERIC_EXTENSION pdx, PIRP Irp)
 
 	return DefaultPnpHandler(pdx, Irp);
 } // HandleQueryRemove
-
 
 
 NTSTATUS HandleQueryState(PGENERIC_EXTENSION pdx, PIRP Irp)
@@ -719,7 +706,6 @@ NTSTATUS HandleQueryState(PGENERIC_EXTENSION pdx, PIRP Irp)
 
 	return DefaultPnpHandler(pdx, Irp);
 } // HandleQueryState
-
 
 
 NTSTATUS HandleQueryStop(PGENERIC_EXTENSION pdx, PIRP Irp)
@@ -808,7 +794,6 @@ NTSTATUS HandleRemoveDevice(PGENERIC_EXTENSION pdx, PIRP Irp)
 } // HandleRemoveDevice
 
 
-
 NTSTATUS HandleStartDevice(PGENERIC_EXTENSION pdx, PIRP Irp)
 {
 	ASSERT(IoGetCurrentIrpStackLocation(Irp)->MinorFunction == IRP_MN_START_DEVICE);
@@ -892,7 +877,6 @@ NTSTATUS HandleStartDevice(PGENERIC_EXTENSION pdx, PIRP Irp)
 } // HandleStartDevice
 
 
-
 NTSTATUS HandleStopDevice(PGENERIC_EXTENSION pdx, PIRP Irp)
 {
 	ASSERT(IoGetCurrentIrpStackLocation(Irp)->MinorFunction == IRP_MN_STOP_DEVICE);
@@ -918,7 +902,6 @@ NTSTATUS HandleStopDevice(PGENERIC_EXTENSION pdx, PIRP Irp)
 	pdx->state = STOPPED;
 	return DefaultPnpHandler(pdx, Irp);
 } // HandleStopDevice
-
 
 
 NTSTATUS HandleSurpriseRemoval(PGENERIC_EXTENSION pdx, PIRP Irp)
@@ -1020,7 +1003,6 @@ NTSTATUS HandleUsageNotification(PGENERIC_EXTENSION pdx, PIRP Irp)
 	return IoCallDriver(pdx->LowerDeviceObject, Irp);
 
 } // HandleUsageNotification
-
 
 
 NTSTATUS OnNotificationComplete(PDEVICE_OBJECT fdo, PIRP Irp, PGENERIC_EXTENSION pdx)

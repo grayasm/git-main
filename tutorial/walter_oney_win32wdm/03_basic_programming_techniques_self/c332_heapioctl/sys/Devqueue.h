@@ -1,3 +1,9 @@
+/*
+	Device Queue header file.
+	Copyright (C) 1999, 2000 by Walter Oney.
+*/
+
+
 #ifndef __Devqueue_h__
 #define __Devqueue_h__
 
@@ -46,6 +52,16 @@ GENERICAPI VOID		GENERIC_EXPORT WaitForCurrentIrps(PDEVQUEUE* q, ULONG nq);
 GENERICAPI VOID		GENERIC_EXPORT AbortAllRequests(PDEVQUEUE* q, ULONG nq, NTSTATUS status);
 GENERICAPI VOID		GENERIC_EXPORT AllowAllRequests(PDEVQUEUE* q, ULONG nq);
 GENERICAPI NTSTATUS	GENERIC_EXPORT StallAllRequestsAndNotify(PDEVQUEUE* q, ULONG nq, PQNOTIFYFUNC notify, PVOID context);
+
+
+typedef struct _NOTIFY_CONTEXT
+{
+	PQNOTIFYFUNC notify;			// real notification function
+	PVOID context;					// context arg for notification function
+	LONG count;						// number of busy queues
+} NOTIFY_CONTEXT, *PNOTIFY_CONTEXT;
+
+VOID NotificationCallback(PNOTIFY_CONTEXT ctx);
 
 
 

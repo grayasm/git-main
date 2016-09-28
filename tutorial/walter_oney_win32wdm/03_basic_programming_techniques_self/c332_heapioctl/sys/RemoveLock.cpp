@@ -1,3 +1,8 @@
+/*
+	RemoveLock.cpp - Remove Lock functions.
+	Copyright (C) 1999, 2000 by Walter Oney.
+*/
+
 #include "RemoveLock.h"
 
 
@@ -10,7 +15,6 @@ GENERICAPI VOID GENERIC_EXPORT GenericInitializeRemoveLock(PGENERIC_REMOVE_LOCK 
 	lock->usage = 1;
 	lock->removing = FALSE;
 }
-
 
 
 #pragma LOCKEDCODE

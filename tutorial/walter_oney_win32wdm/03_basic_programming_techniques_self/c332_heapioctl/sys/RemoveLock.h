@@ -1,3 +1,9 @@
+/*
+	Remove Lock header file.
+	Copyright (C) 1999, 2000 by Walter Oney.
+*/
+
+
 #ifndef __RemoveLock_h__
 #define __RemoveLock_h__
 

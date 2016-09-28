@@ -1,11 +1,12 @@
+/*
+	Ioctl.cpp - Ioctl functions.
+	Copyright (C) 1999, 2000 by Walter Oney.
+*/
+
 
 
 #include "Ioctl.h"
 #include "Pnp.h"
-
-#include <InitGuid.h>
-DEFINE_GUID(GUID_AUTOLAUNCH_NOTIFY, 0xba4ec740, 0xda8b, 0x11d2, 0x81, 0xb5, 0x0, 0xc0, 0x4f, 0xa3, 0x30, 0xa6);
-
 
 
 #pragma PAGEDCODE
@@ -147,6 +148,7 @@ GENERICAPI VOID GENERIC_EXPORT GenericCleanupControlRequests(PGENERIC_EXTENSION 
 
 } // GenericCleanupControlRequests
 
+
 #pragma LOCKEDCODE
 GENERICAPI PVOID GENERIC_EXPORT GenericGetSystemAddressForMdl(PMDL mdl)
 {
@@ -163,6 +165,7 @@ GENERICAPI PVOID GENERIC_EXPORT GenericGetSystemAddressForMdl(PMDL mdl)
 
 	return address;
 }
+
 
 #pragma LOCKEDCODE
 GENERICAPI ULONG GENERIC_EXPORT GenericGetVersion()
@@ -210,6 +213,7 @@ GENERICAPI PIRP GENERIC_EXPORT GenericUncacheControlRequest(PGENERIC_EXTENSION p
 	KeReleaseSpinLock(&pdx->IoctlListLock, oldirql);
 	return Irp;
 } // GenericUncacheControlRequest
+
 
 #pragma PAGEDCODE
 GENERICAPI ULONG GENERIC_EXPORT GetSizeofGenericExtension()
@@ -383,10 +387,6 @@ GENERICAPI NTSTATUS GENERIC_EXPORT InitializeGenericExtension(PGENERIC_EXTENSION
 	GenericRegisterInterface(pdx, &GUID_GENERIC_POWER);
 
 
-#ifdef _X86_
-	win98 = IsWin98();
-#endif
-
 	return STATUS_SUCCESS;
 } // InitializeGenericExtension
 
@@ -433,7 +433,6 @@ VOID OnCancelPendingIoctl(PDEVICE_OBJECT junk, PIRP Irp)
 } // OnCancelPendingIoctl
 
 
-
 #pragma PAGEDCODE
 VOID AbortPendingIoctls(PGENERIC_EXTENSION pdx, NTSTATUS status)
 {
@@ -443,15 +442,4 @@ VOID AbortPendingIoctls(PGENERIC_EXTENSION pdx, NTSTATUS status)
 
 	InterlockedExchange(&pdx->IoctlAbortStatus, status);
 	GenericCleanupControlRequests(pdx, status, NULL);
-}
-
-
-#pragma PAGEDCODE
-GENERICAPI BOOLEAN GENERIC_EXPORT IsWin98()
-{
-#ifdef _X86_
-	return !IoIsWdmVersionAvailable(1, 0x10);
-#else
-	return FALSE;
-#endif
 }

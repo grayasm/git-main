@@ -1,3 +1,10 @@
+/*
+	Plug 'n Play header file.
+	Copyright (C) 1999, 2000 by Walter Oney.
+*/
+
+
+
 #ifndef __Pnp_h__
 #define __Pnp_h__
 
