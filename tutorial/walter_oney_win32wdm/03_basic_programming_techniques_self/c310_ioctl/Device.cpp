@@ -16,8 +16,8 @@ NTSTATUS CompleteRequest(PIRP Irp, NTSTATUS status, ULONG_PTR info)
 }
 
 
-/*	Overload variant that doesn't change IoStatus.Information -- use
-this for most PnP requests.
+/*	Overload variant that doesn't change IoStatus.
+	Information -- use this for most PnP requests.
 */
 
 NTSTATUS CompleteRequest(PIRP Irp, NTSTATUS status)

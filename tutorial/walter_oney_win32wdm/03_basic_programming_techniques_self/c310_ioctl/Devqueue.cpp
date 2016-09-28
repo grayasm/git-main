@@ -21,16 +21,19 @@ GENERICAPI VOID GENERIC_EXPORT AbortAllRequests(PDEVQUEUE* q, ULONG nq, NTSTATUS
 		AbortRequests(q[i], status);
 }
 
+
 GENERICAPI VOID GENERIC_EXPORT AllowRequests(PDEVQUEUE pdq)
 {
 	pdq->abortstatus = STATUS_SUCCESS;
 }
+
 
 GENERICAPI VOID GENERIC_EXPORT AllowAllRequests(PDEVQUEUE* q, ULONG nq)
 {
 	for (ULONG i = 0; i < nq; ++i)
 		AllowRequests(q[i]);
 }
+
 
 GENERICAPI NTSTATUS GENERIC_EXPORT AreRequestsBeingAborted(PDEVQUEUE pdq)
 {
@@ -174,7 +177,6 @@ GENERICAPI VOID GENERIC_EXPORT CleanupAllRequests(PDEVQUEUE* q, ULONG nq, PFILE_
 }
 
 
-
 GENERICAPI PIRP GENERIC_EXPORT GetCurrentIrp(PDEVQUEUE pdq)
 {
 	return pdq->CurrentIrp;
@@ -253,7 +255,6 @@ GENERICAPI VOID GENERIC_EXPORT RestartRequests(PDEVQUEUE pdq, PDEVICE_OBJECT fdo
 	/*	No IRPs need to be started (or else all queued IRPs were being cancelled.	*/
 	KeReleaseSpinLock(&pdq->lock, oldirql);
 } // RestartRequests
-
 
 
 GENERICAPI VOID GENERIC_EXPORT RestartAllRequests(PDEVQUEUE* q, ULONG nq, PDEVICE_OBJECT fdo)

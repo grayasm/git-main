@@ -13,60 +13,6 @@ NTSTATUS WaitWakeCompletionRoutine(PDEVICE_OBJECT junk, PIRP Irp, PGENERIC_EXTEN
 VOID WaitWakeCallback(PDEVICE_OBJECT junk, UCHAR MinorFunction, POWER_STATE state, PGENERIC_EXTENSION pdx, PIO_STATUS_BLOCK pstatus);
 
 
-enum POWSTATE
-{
-	InitialState = 0,				// initial state of FSM
-	SysPowerUpPending,				// system power-up IRP forwarded
-	SubPowerUpPending,				// waiting for nested device power up to finish
-	SubPowerDownPending,			// waiting from device to power down before forwarding system power-down IRP
-	SysPowerDownPending,			// waiting for system power-down IRP to finish
-	DevPowerUpPending,				// waiting for device power-up IRP
-	DevPowerDownPending,			// waiting for device power-down IRP
-	ContextSavePending,				// context save is underway
-	ContextRestorePending,			// context restore is underway
-	DevQueryUpPending,				// device query for power-up pending
-	DevQueryDownPending,			// device query for power-down pending
-	QueueStallPending,				// waiting for device to be idle
-	SaveSeqPending,					// waiting to get sequence numbers after context save
-	RestoreSeqPending,				// waiting to get sequence numbers before context restore
-	PassiveCompletePending,			// waiting for PASSIVE_LEVEL callback to complete IRP
-	FinalState,						// final state of FSM
-	NUMPOWSTATES
-
-};
-
-
-
-enum POWEVENT
-{
-	NewIrp = 0,						// new query/set IRP
-	MainIrpComplete,				// the main IRP has finished
-	AsyncNotify,					// some other event has occurred
-	NUMPOWEVENTS
-
-};
-
-
-
-typedef struct _POWCONTEXT
-{
-	LONG id;						// unique sequence number for this IRP
-	LONG eventcount;				// number of events generated for this IRP
-	PGENERIC_EXTENSION pdx;			// our own device extension
-	PIRP irp;						// the IRP we're processing
-	enum POWSTATE state;			// current state of FSM
-	NTSTATUS status;				// completion status for main IRP
-	DEVICE_POWER_STATE devstate;	// device power state to use
-	POWER_SEQUENCE sequence;		// sequence numbers retrieved by ditto
-	DEVICE_POWER_STATE oldpower;	// previous device power state
-	UCHAR MinorFunction;			// minor function to use in requested power IRP
-	BOOLEAN UnstallQueue;			// unstall queue when main IRP finishes
-
-} POWCONTEXT, *PPOWCONTEXT;
-
-
-NTSTATUS HandlePowerEvent(PPOWCONTEXT ctx, enum POWEVENT event);
-
 
 static LONG ctxcount = 0;			// counter for POWCONTEXT structures
 
@@ -311,13 +257,11 @@ GENERICAPI NTSTATUS GENERIC_EXPORT GenericIdleDevice(PGENERIC_EXTENSION pdx, DEV
 }
 
 
-
 GENERICAPI VOID GENERIC_EXPORT GenericMarkDeviceBusy(PGENERIC_EXTENSION pdx)
 {
 	if (pdx->idlecount)
 		PoSetDeviceBusy(pdx->idlecount);
 }
-
 
 
 GENERICAPI VOID GENERIC_EXPORT GenericRegisterForIdleDetection(PGENERIC_EXTENSION pdx, ULONG ConservationTimeout, ULONG PerformanceTimeout, DEVICE_POWER_STATE state)
@@ -331,12 +275,10 @@ GENERICAPI VOID GENERIC_EXPORT GenericRegisterForIdleDetection(PGENERIC_EXTENSIO
 }
 
 
-
 GENERICAPI VOID GENERIC_EXPORT GenericSaveRestoreComplete(PVOID context)
 {
 	HandlePowerEvent((PPOWCONTEXT)context, AsyncNotify);
 }
-
 
 
 GENERICAPI NTSTATUS GENERIC_EXPORT GenericWakeupControl(PGENERIC_EXTENSION pdx, enum WAKEFUNCTION wf)
@@ -455,7 +397,6 @@ GENERICAPI NTSTATUS GENERIC_EXPORT GenericWakeupControl(PGENERIC_EXTENSION pdx, 
 } // GenericWakeupControl
 
 
-
 GENERICAPI NTSTATUS GENERIC_EXPORT GenericWakeupFromIdle(PGENERIC_EXTENSION pdx, BOOLEAN wait /* = FALSE */)
 {
 	if (pdx->devpower == PowerDeviceD0)
@@ -467,7 +408,6 @@ GENERICAPI NTSTATUS GENERIC_EXPORT GenericWakeupFromIdle(PGENERIC_EXTENSION pdx,
 
 	return status;
 }
-
 
 
 VOID AdjustSpecialFileCounter(PGENERIC_EXTENSION pdx, BOOLEAN inpath, PLONG counter)
@@ -502,7 +442,6 @@ VOID AdjustSpecialFileCounter(PGENERIC_EXTENSION pdx, BOOLEAN inpath, PLONG coun
 		GenericSetDeviceState(pdx, PNP_DEVICE_NOT_DISABLEABLE);
 	}
 }
-
 
 
 NTSTATUS DefaultPowerHandler(PGENERIC_EXTENSION pdx, PIRP Irp)
@@ -544,8 +483,7 @@ DEVICE_POWER_STATE GetLowestDevicePowerState(PGENERIC_EXTENSION pdx, SYSTEM_POWE
 	}
 
 	return dstate;
-}
-
+} // GetLowestDevicePowerState
 
 
 NTSTATUS GetPowerInfoFromRegistry(PGENERIC_EXTENSION pdx, PPOWERINFO pip)
@@ -592,7 +530,6 @@ NTSTATUS GetPowerInfoFromRegistry(PGENERIC_EXTENSION pdx, PPOWERINFO pip)
 } // GetPowerInfoFromRegistry
 
 
-
 NTSTATUS ImplementPowerPolicy(PGENERIC_EXTENSION pdx, PPOWERINFO pip)
 {
 	if (pdx->Flags & GENERIC_IDLE_DETECT)
@@ -615,7 +552,6 @@ BOOLEAN OkayToRemove(PGENERIC_EXTENSION pdx)
 }
 
 
-
 BOOLEAN OkayToStop(PGENERIC_EXTENSION pdx)
 {
 	if (pdx->ndumpfiles || pdx->nhibernatefiles || pdx->npagefiles)
@@ -626,8 +562,6 @@ BOOLEAN OkayToStop(PGENERIC_EXTENSION pdx)
 
 	return (*pdx->OkayToStop)(pdx->DeviceObject);
 }
-
-
 
 struct SDSP_CONTEXT
 {
@@ -642,7 +576,6 @@ VOID SendDeviceSetPowerComplete(PDEVICE_OBJECT junk, UCHAR fcn, POWER_STATE stat
 	context->status = pstatus->Status;
 	KeSetEvent(context->pev, EVENT_INCREMENT, FALSE);
 }
-
 
 
 #pragma PAGEDCODE
@@ -672,12 +605,11 @@ NTSTATUS SendDeviceSetPower(PGENERIC_EXTENSION pdx, DEVICE_POWER_STATE devpower,
 		status = PoRequestPowerIrp(pdx->Pdo, IRP_MN_SET_POWER, state, NULL, NULL, NULL);
 
 	return status;
-}
+} // SendDeviceSetPower
 
 
 #pragma LOCKEDCODE
-VOID WaitWakeCallback(PDEVICE_OBJECT junk, UCHAR MinorFunction, POWER_STATE state,
-	PGENERIC_EXTENSION pdx, PIO_STATUS_BLOCK pstatus)
+VOID WaitWakeCallback(PDEVICE_OBJECT junk, UCHAR MinorFunction, POWER_STATE state, PGENERIC_EXTENSION pdx, PIO_STATUS_BLOCK pstatus)
 {
 
 	/*	Indicate that wait-wake is no longer outstanding.	*/
@@ -729,8 +661,6 @@ NTSTATUS WaitWakeCompletionRoutine(PDEVICE_OBJECT junk, PIRP Irp, PGENERIC_EXTEN
 } // WaitWakeCompletionRoutine
 
 
-
-
 #pragma PAGEDCODE
 NTSTATUS WritePowerInfoToRegistry(PGENERIC_EXTENSION pdx, PPOWERINFO pip)
 {
@@ -753,16 +683,6 @@ NTSTATUS WritePowerInfoToRegistry(PGENERIC_EXTENSION pdx, PPOWERINFO pip)
 	ZwClose(hkey);
 	return status;
 } // WritePowerInfoToRegistry
-
-
-
-#pragma LOCKEDCODE
-
-NTSTATUS MainCompletionRoutine(PDEVICE_OBJECT junk, PIRP Irp, PPOWCONTEXT ctx);
-NTSTATUS SequenceCompletionRoutine(PDEVICE_OBJECT junk, PIRP Irp, PPOWCONTEXT ctx);
-VOID PoCompletionRoutine(PDEVICE_OBJECT junk, UCHAR fcn, POWER_STATE state, PPOWCONTEXT ctx, PIO_STATUS_BLOCK pstatus);
-NTSTATUS SafePoCallDriver(PDEVICE_OBJECT DeviceObject, PIRP Irp);
-VOID PassivePowerComplete(PPOWCONTEXT ctx) { HandlePowerEvent(ctx, AsyncNotify); }
 
 
 
@@ -868,22 +788,22 @@ NTSTATUS HandlePowerEvent(PPOWCONTEXT ctx, enum POWEVENT event)
 	static enum POWACTION actiontable[NUMPOWSTATES][NUMPOWEVENTS] =
 	{
 		/*							NewIrp				MainIrpComplete				AsyncNotify	*/
-		/* InitialState */{ TriageNewIrp,		InvalidAction,				InvalidAction },
-		/* SysPowerUpPending */{ InvalidAction,		SysPowerUpComplete,			InvalidAction },
-		/* SubPowerUpPending */{ InvalidAction,		InvalidAction,				SubPowerUpComplete },
-		/* SubPowerDownPending */{ InvalidAction,		InvalidAction,				SubPowerDownComplete },
-		/* SysPowerDownPending */{ InvalidAction,		SysPowerDownComplete,		InvalidAction },
-		/* DevPowerUpPending */{ InvalidAction,		DevPowerUpComplete,			InvalidAction },
-		/* DevPowerDownPending */{ InvalidAction,		CompleteMainIrp,			InvalidAction },
-		/* ContextSavePending */{ InvalidAction,		InvalidAction,				ContextSaveComplete },
-		/* ContextRestorePending */{ InvalidAction,		InvalidAction,				ContextRestoreComplete },
-		/* DevQueryUpPending */{ InvalidAction,		DevQueryUpComplete,			InvalidAction },
-		/* DevQueryDownPending */{ InvalidAction,		DevQueryDownComplete,		InvalidAction },
-		/* QueueStallPending */{ InvalidAction,		InvalidAction,				QueueStallComplete },
-		/* SaveSeqPending */{ InvalidAction,		InvalidAction,				SaveSeqComplete },
-		/* RestoreSeqPending */{ InvalidAction,		InvalidAction,				RestoreSeqComplete },
-		/* PassiveCompletePending */{ InvalidAction,		InvalidAction,				CompleteMainIrp },
-		/* FinalState */{ InvalidAction,		InvalidAction,				InvalidAction },
+		/* InitialState */			{ TriageNewIrp,		InvalidAction,				InvalidAction },
+		/* SysPowerUpPending */		{ InvalidAction,	SysPowerUpComplete,			InvalidAction },
+		/* SubPowerUpPending */		{ InvalidAction,	InvalidAction,				SubPowerUpComplete },
+		/* SubPowerDownPending */	{ InvalidAction,	InvalidAction,				SubPowerDownComplete },
+		/* SysPowerDownPending */	{ InvalidAction,	SysPowerDownComplete,		InvalidAction },
+		/* DevPowerUpPending */		{ InvalidAction,	DevPowerUpComplete,			InvalidAction },
+		/* DevPowerDownPending */	{ InvalidAction,	CompleteMainIrp,			InvalidAction },
+		/* ContextSavePending */	{ InvalidAction,	InvalidAction,				ContextSaveComplete },
+		/* ContextRestorePending */	{ InvalidAction,	InvalidAction,				ContextRestoreComplete },
+		/* DevQueryUpPending */		{ InvalidAction,	DevQueryUpComplete,			InvalidAction },
+		/* DevQueryDownPending */	{ InvalidAction,	DevQueryDownComplete,		InvalidAction },
+		/* QueueStallPending */		{ InvalidAction,	InvalidAction,				QueueStallComplete },
+		/* SaveSeqPending */		{ InvalidAction,	InvalidAction,				SaveSeqComplete },
+		/* RestoreSeqPending */		{ InvalidAction,	InvalidAction,				RestoreSeqComplete },
+		/* PassiveCompletePending */{ InvalidAction,	InvalidAction,				CompleteMainIrp },
+		/* FinalState */			{ InvalidAction,	InvalidAction,				InvalidAction },
 	};
 
 
@@ -1144,7 +1064,7 @@ NTSTATUS HandlePowerEvent(PPOWCONTEXT ctx, enum POWEVENT event)
 					faster restart after suspend.
 					*/
 
-					if (pdx->syspower == PowerSystemWorking && !win98)
+					if (pdx->syspower == PowerSystemWorking)
 					{
 						// S0
 						POWTRACE(("%s - %d.%d Completing S0 IRP early\n", pdx->DebugName, ctxid, eventid));
@@ -1254,31 +1174,6 @@ NTSTATUS HandlePowerEvent(PPOWCONTEXT ctx, enum POWEVENT event)
 
 		case CompleteMainIrp:
 		{
-
-			/*	In Win98, we must not complete a power IRP at DISPATCH_LEVEL, so
-			queue a work item in that case.
-			*/
-
-			if (win98 && KeGetCurrentIrql() > PASSIVE_LEVEL)
-			{
-#pragma warning(disable:4995)
-#pragma warning(disable:4996)
-				// defer completion to passive level
-				C_ASSERT(sizeof(Irp->Tail.Overlay.DriverContext) >= sizeof(WORK_QUEUE_ITEM));
-
-				PWORK_QUEUE_ITEM item = (PWORK_QUEUE_ITEM)Irp->Tail.Overlay.DriverContext;
-				ExInitializeWorkItem(item, (PWORKER_THREAD_ROUTINE)PassivePowerComplete, (PVOID)ctx);
-				ExQueueWorkItem(item, CriticalWorkQueue);
-
-#pragma warning(default:4995)
-#pragma warning(default:4996)
-
-				if (event == MainIrpComplete)
-					status = STATUS_MORE_PROCESSING_REQUIRED;
-				SETSTATE(PassiveCompletePending);
-				break;
-			}
-
 			/*	Skip completion processing if we've already completed an S0 SET_POWER.
 			Otherwise, complete (or allow to complete) the main IRP
 			*/
@@ -1750,7 +1645,6 @@ NTSTATUS HandlePowerEvent(PPOWCONTEXT ctx, enum POWEVENT event)
 } // HandlePowerEvent
 
 
-
 NTSTATUS MainCompletionRoutine(PDEVICE_OBJECT junk, PIRP Irp, PPOWCONTEXT ctx)
 {
 	ctx->status = Irp->IoStatus.Status;
@@ -1774,7 +1668,6 @@ VOID PoCompletionRoutine(PDEVICE_OBJECT junk, UCHAR fcn, POWER_STATE state, PPOW
 }
 
 
-
 VOID PassivePowerCall(PIRP Irp)
 {
 	PoCallDriver(IoGetNextIrpStackLocation(Irp)->DeviceObject, Irp);
@@ -1783,37 +1676,12 @@ VOID PassivePowerCall(PIRP Irp)
 
 NTSTATUS SafePoCallDriver(PDEVICE_OBJECT DeviceObject, PIRP Irp)
 {
-	/*	If running in Win2K, or if Win98 and already at PASSIVE_LEVEL, just call
-	PoCallDriver.
-	*/
-	if (!win98 || KeGetCurrentIrql() == PASSIVE_LEVEL)
-		return PoCallDriver(DeviceObject, Irp);
-
-	/*	Win98's PoCallDriver is the same as IoCallDriver, and it won't do anything to
-	present the IRP at passive level if we're currently above. Build a work queue
-	item in the DriverContext field of the IRP and queue the work item so we
-	can present the IRP properly. Boy, is this something we shouldn't have to
-	worry about!
-	*/
-	IoMarkIrpPending(Irp);		// be sure it's marked pending
-	IoGetNextIrpStackLocation(Irp)->DeviceObject = DeviceObject; // so PassivePowerCall can find it
-
-																 /*	Note: The ExXxxWorkItem functions are deprecated for Win2K and WinXp but
-																 okay for win98. This code only executes in Win98, so these should be okay
-																 */
-
-#pragma warning(disable:4995)
-#pragma warning(disable:4996)
-	C_ASSERT(sizeof(Irp->Tail.Overlay.DriverContext) >= sizeof(WORK_QUEUE_ITEM));
-
-	PWORK_QUEUE_ITEM item = (PWORK_QUEUE_ITEM)Irp->Tail.Overlay.DriverContext;
-	ExInitializeWorkItem(item, (PWORKER_THREAD_ROUTINE)PassivePowerCall, (PVOID)Irp);
-	ExQueueWorkItem(item, CriticalWorkQueue);
-
-#pragma warning(default:4995)
-#pragma warning(default:4996)
-
-	return STATUS_PENDING;
-} // SafePoCallDriver
+	return PoCallDriver(DeviceObject, Irp);
+}
 
 
+#pragma LOCKEDCODE
+VOID PassivePowerComplete(PPOWCONTEXT ctx)
+{
+	HandlePowerEvent(ctx, AsyncNotify); 
+}

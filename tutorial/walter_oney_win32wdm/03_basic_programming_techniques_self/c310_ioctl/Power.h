@@ -38,6 +38,57 @@ typedef struct _POWERINFO
 } POWERINFO, *PPOWERINFO;
 
 
+enum POWSTATE
+{
+	InitialState = 0,				// initial state of FSM
+	SysPowerUpPending,				// system power-up IRP forwarded
+	SubPowerUpPending,				// waiting for nested device power up to finish
+	SubPowerDownPending,			// waiting from device to power down before forwarding system power-down IRP
+	SysPowerDownPending,			// waiting for system power-down IRP to finish
+	DevPowerUpPending,				// waiting for device power-up IRP
+	DevPowerDownPending,			// waiting for device power-down IRP
+	ContextSavePending,				// context save is underway
+	ContextRestorePending,			// context restore is underway
+	DevQueryUpPending,				// device query for power-up pending
+	DevQueryDownPending,			// device query for power-down pending
+	QueueStallPending,				// waiting for device to be idle
+	SaveSeqPending,					// waiting to get sequence numbers after context save
+	RestoreSeqPending,				// waiting to get sequence numbers before context restore
+	PassiveCompletePending,			// waiting for PASSIVE_LEVEL callback to complete IRP
+	FinalState,						// final state of FSM
+	NUMPOWSTATES
+
+};
+
+enum POWEVENT
+{
+	NewIrp = 0,						// new query/set IRP
+	MainIrpComplete,				// the main IRP has finished
+	AsyncNotify,					// some other event has occurred
+	NUMPOWEVENTS
+
+};
+
+typedef struct _POWCONTEXT
+{
+	LONG				id;				// unique sequence number for this IRP
+	LONG				eventcount;		// number of events generated for this IRP
+	PGENERIC_EXTENSION	pdx;			// our own device extension
+	PIRP				irp;			// the IRP we're processing
+	enum POWSTATE		state;			// current state of FSM
+	NTSTATUS			status;			// completion status for main IRP
+	DEVICE_POWER_STATE	devstate;		// device power state to use
+	POWER_SEQUENCE		sequence;		// sequence numbers retrieved by ditto
+	DEVICE_POWER_STATE	oldpower;		// previous device power state
+	UCHAR				MinorFunction;	// minor function to use in requested power IRP
+	BOOLEAN				UnstallQueue;	// unstall queue when main IRP finishes
+} POWCONTEXT, *PPOWCONTEXT;
+
+
+NTSTATUS HandlePowerEvent(PPOWCONTEXT ctx, enum POWEVENT event);
+
+
+
 /*	Devices that use GENERIC.SYS for power management register an interface
 with the following GUID:
 
@@ -66,7 +117,11 @@ GENERICAPI NTSTATUS	GENERIC_EXPORT GenericWakeupControl(PGENERIC_EXTENSION pdx, 
 GENERICAPI NTSTATUS GENERIC_EXPORT GenericWakeupFromIdle(PGENERIC_EXTENSION pdx, BOOLEAN wait = FALSE);
 
 
-
+NTSTATUS MainCompletionRoutine(PDEVICE_OBJECT junk, PIRP Irp, PPOWCONTEXT ctx);
+NTSTATUS SequenceCompletionRoutine(PDEVICE_OBJECT junk, PIRP Irp, PPOWCONTEXT ctx);
+VOID PoCompletionRoutine(PDEVICE_OBJECT junk, UCHAR fcn, POWER_STATE state, PPOWCONTEXT ctx, PIO_STATUS_BLOCK pstatus);
+NTSTATUS SafePoCallDriver(PDEVICE_OBJECT DeviceObject, PIRP Irp);
+VOID PassivePowerComplete(PPOWCONTEXT ctx);
 
 
 #endif // __Power_h__

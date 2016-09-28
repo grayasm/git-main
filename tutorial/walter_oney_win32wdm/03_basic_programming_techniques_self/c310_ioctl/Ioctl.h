@@ -12,6 +12,10 @@
 #include "Device.h"
 
 
+#include <InitGuid.h>
+DEFINE_GUID(GUID_AUTOLAUNCH_NOTIFY, 0xba4ec740, 0xda8b, 0x11d2, 0x81, 0xb5, 0x0, 0xc0, 0x4f, 0xa3, 0x30, 0xa6);
+
+
 
 #define GENERIC_AUTOLAUNCH			0x00000001  // register for AutoLaunch
 #define GENERIC_USAGE_PAGING		0x00000002  // device supports DeviceUsageTypePaging
@@ -46,7 +50,7 @@ GENERICAPI ULONG	GENERIC_EXPORT GenericGetVersion(); // 1.3
 GENERICAPI PIRP		GENERIC_EXPORT GenericUncacheControlRequest(PGENERIC_EXTENSION pdx, PIRP* pIrp);
 GENERICAPI ULONG	GENERIC_EXPORT GetSizeofGenericExtension(VOID);
 GENERICAPI NTSTATUS	GENERIC_EXPORT InitializeGenericExtension(PGENERIC_EXTENSION, PGENERIC_INIT_STRUCT);
-GENERICAPI BOOLEAN	GENERIC_EXPORT IsWin98();
+
 
 VOID OnCancelPendingIoctl(PDEVICE_OBJECT junk, PIRP Irp);
 VOID AbortPendingIoctls(PGENERIC_EXTENSION pdx, NTSTATUS status);

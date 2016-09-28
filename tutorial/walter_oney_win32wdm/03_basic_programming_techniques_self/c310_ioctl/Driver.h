@@ -41,8 +41,11 @@ extern "C" {
 #define PRODVER "2, 0, 0, 0\0"
 
 
+/*	I will keep these 2 macros in place to recognize what was initially exported
+	from GENERIC.SYS
+ */
 #define GENERICAPI
 #define GENERIC_EXPORT
-extern BOOLEAN win98;
+
 
 #endif // __Driver_h__
