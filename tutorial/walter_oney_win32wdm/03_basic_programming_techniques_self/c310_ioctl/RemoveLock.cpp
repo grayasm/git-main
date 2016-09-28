@@ -10,6 +10,8 @@
 #pragma PAGEDCODE
 GENERICAPI VOID GENERIC_EXPORT GenericInitializeRemoveLock(PGENERIC_REMOVE_LOCK lock, ULONG tag, ULONG minutes, ULONG maxcount)
 {
+	KdPrint((DRIVERNAME " - %s\n", __FUNCTION__));
+
 	PAGED_CODE();
 	KeInitializeEvent(&lock->evRemove, NotificationEvent, FALSE);
 	lock->usage = 1;
@@ -20,6 +22,8 @@ GENERICAPI VOID GENERIC_EXPORT GenericInitializeRemoveLock(PGENERIC_REMOVE_LOCK 
 #pragma LOCKEDCODE
 GENERICAPI NTSTATUS GENERIC_EXPORT GenericAcquireRemoveLock(PGENERIC_REMOVE_LOCK lock, PVOID tag)
 {
+	KdPrint((DRIVERNAME " - %s\n", __FUNCTION__));
+
 	InterlockedIncrement(&lock->usage);
 	if (lock->removing)
 	{
@@ -35,6 +39,8 @@ GENERICAPI NTSTATUS GENERIC_EXPORT GenericAcquireRemoveLock(PGENERIC_REMOVE_LOCK
 
 GENERICAPI VOID GENERIC_EXPORT GenericReleaseRemoveLock(PGENERIC_REMOVE_LOCK lock, PVOID tag)
 {
+	KdPrint((DRIVERNAME " - %s\n", __FUNCTION__));
+
 	if (InterlockedDecrement(&lock->usage) == 0)
 		KeSetEvent(&lock->evRemove, 0, FALSE);
 }
@@ -44,6 +50,9 @@ GENERICAPI VOID GENERIC_EXPORT GenericReleaseRemoveLock(PGENERIC_REMOVE_LOCK loc
 GENERICAPI VOID GENERIC_EXPORT GenericReleaseRemoveLockAndWait(PGENERIC_REMOVE_LOCK lock, PVOID tag)
 {
 	PAGED_CODE();
+
+	KdPrint((DRIVERNAME " - %s\n", __FUNCTION__));
+
 	lock->removing = TRUE;
 	GenericReleaseRemoveLock(lock, tag);
 	GenericReleaseRemoveLock(lock, NULL);

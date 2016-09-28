@@ -10,6 +10,8 @@
 
 GENERICAPI VOID GENERIC_EXPORT AbortRequests(PDEVQUEUE pdq, NTSTATUS status)
 {
+	KdPrint((DRIVERNAME " - %s\n", __FUNCTION__));
+
 	pdq->abortstatus = status;
 	CleanupRequests(pdq, NULL, status);
 }
@@ -17,6 +19,8 @@ GENERICAPI VOID GENERIC_EXPORT AbortRequests(PDEVQUEUE pdq, NTSTATUS status)
 
 GENERICAPI VOID GENERIC_EXPORT AbortAllRequests(PDEVQUEUE* q, ULONG nq, NTSTATUS status)
 {
+	KdPrint((DRIVERNAME " - %s\n", __FUNCTION__));
+
 	for (ULONG i = 0; i < nq; ++i)
 		AbortRequests(q[i], status);
 }
@@ -24,12 +28,16 @@ GENERICAPI VOID GENERIC_EXPORT AbortAllRequests(PDEVQUEUE* q, ULONG nq, NTSTATUS
 
 GENERICAPI VOID GENERIC_EXPORT AllowRequests(PDEVQUEUE pdq)
 {
+	KdPrint((DRIVERNAME " - %s\n", __FUNCTION__));
+
 	pdq->abortstatus = STATUS_SUCCESS;
 }
 
 
 GENERICAPI VOID GENERIC_EXPORT AllowAllRequests(PDEVQUEUE* q, ULONG nq)
 {
+	KdPrint((DRIVERNAME " - %s\n", __FUNCTION__));
+
 	for (ULONG i = 0; i < nq; ++i)
 		AllowRequests(q[i]);
 }
@@ -37,12 +45,16 @@ GENERICAPI VOID GENERIC_EXPORT AllowAllRequests(PDEVQUEUE* q, ULONG nq)
 
 GENERICAPI NTSTATUS GENERIC_EXPORT AreRequestsBeingAborted(PDEVQUEUE pdq)
 {
+	KdPrint((DRIVERNAME " - %s\n", __FUNCTION__));
+
 	return pdq->abortstatus;
 }
 
 
 GENERICAPI VOID GENERIC_EXPORT CancelRequest(PDEVQUEUE pdq, PIRP Irp)
 {
+	KdPrint((DRIVERNAME " - %s\n", __FUNCTION__));
+
 	KIRQL oldirql = Irp->CancelIrql;
 
 	/*	Release the global cancel spin lock as soon as possible. */
@@ -68,6 +80,8 @@ GENERICAPI VOID GENERIC_EXPORT CancelRequest(PDEVQUEUE pdq, PIRP Irp)
 
 GENERICAPI BOOLEAN GENERIC_EXPORT CheckBusyAndStall(PDEVQUEUE pdq)
 {
+	KdPrint((DRIVERNAME " - %s\n", __FUNCTION__));
+
 	KIRQL oldirql;
 	KeAcquireSpinLock(&pdq->lock, &oldirql);
 	BOOLEAN busy = pdq->CurrentIrp != NULL;
@@ -81,6 +95,8 @@ GENERICAPI BOOLEAN GENERIC_EXPORT CheckBusyAndStall(PDEVQUEUE pdq)
 
 GENERICAPI BOOLEAN GENERIC_EXPORT CheckAnyBusyAndStall(PDEVQUEUE* q, ULONG nq, PDEVICE_OBJECT fdo)
 {
+	KdPrint((DRIVERNAME " - %s\n", __FUNCTION__));
+
 	ULONG i;
 
 	/*	Call CheckBusyAndStall for each queue.
@@ -106,6 +122,8 @@ GENERICAPI BOOLEAN GENERIC_EXPORT CheckAnyBusyAndStall(PDEVQUEUE* q, ULONG nq, P
 
 GENERICAPI VOID GENERIC_EXPORT CleanupRequests(PDEVQUEUE pdq, PFILE_OBJECT fop, NTSTATUS status)
 {
+	KdPrint((DRIVERNAME " - %s\n", __FUNCTION__));
+
 	LIST_ENTRY cancellist;
 	InitializeListHead(&cancellist);
 
@@ -172,6 +190,8 @@ GENERICAPI VOID GENERIC_EXPORT CleanupRequests(PDEVQUEUE pdq, PFILE_OBJECT fop, 
 
 GENERICAPI VOID GENERIC_EXPORT CleanupAllRequests(PDEVQUEUE* q, ULONG nq, PFILE_OBJECT fop, NTSTATUS status)
 {
+	KdPrint((DRIVERNAME " - %s\n", __FUNCTION__));
+
 	for (ULONG i = 0; i < nq; ++i)
 		CleanupRequests(q[i], fop, status);
 }
@@ -179,12 +199,16 @@ GENERICAPI VOID GENERIC_EXPORT CleanupAllRequests(PDEVQUEUE* q, ULONG nq, PFILE_
 
 GENERICAPI PIRP GENERIC_EXPORT GetCurrentIrp(PDEVQUEUE pdq)
 {
+	KdPrint((DRIVERNAME " - %s\n", __FUNCTION__));
+
 	return pdq->CurrentIrp;
 }
 
 
 GENERICAPI VOID GENERIC_EXPORT InitializeQueue(PDEVQUEUE pdq, PDRIVER_STARTIO StartIo)
 {
+	KdPrint((DRIVERNAME " - %s\n", __FUNCTION__));
+
 	InitializeListHead(&pdq->head);
 	KeInitializeSpinLock(&pdq->lock);
 
@@ -200,6 +224,8 @@ GENERICAPI VOID GENERIC_EXPORT InitializeQueue(PDEVQUEUE pdq, PDRIVER_STARTIO St
 
 VOID NotificationCallback(PNOTIFY_CONTEXT ctx)
 {
+	KdPrint((DRIVERNAME " - %s\n", __FUNCTION__));
+
 	if (InterlockedDecrement(&ctx->count) > 0)
 		return;
 
@@ -211,6 +237,8 @@ VOID NotificationCallback(PNOTIFY_CONTEXT ctx)
 
 GENERICAPI VOID GENERIC_EXPORT RestartRequests(PDEVQUEUE pdq, PDEVICE_OBJECT fdo)
 {
+	KdPrint((DRIVERNAME " - %s\n", __FUNCTION__));
+
 	/*	The original version of this routine called StartNextPacket to restart
 	the queue. Reader Sink Ho pointed out a race condition, such that
 	an intervening call to StartPacket in another thread or on another
@@ -259,6 +287,8 @@ GENERICAPI VOID GENERIC_EXPORT RestartRequests(PDEVQUEUE pdq, PDEVICE_OBJECT fdo
 
 GENERICAPI VOID GENERIC_EXPORT RestartAllRequests(PDEVQUEUE* q, ULONG nq, PDEVICE_OBJECT fdo)
 {
+	KdPrint((DRIVERNAME " - %s\n", __FUNCTION__));
+
 	for (ULONG i = 0; i < nq; ++i)
 		RestartRequests(q[i], fdo);
 }
@@ -266,17 +296,23 @@ GENERICAPI VOID GENERIC_EXPORT RestartAllRequests(PDEVQUEUE* q, ULONG nq, PDEVIC
 
 GENERICAPI VOID GENERIC_EXPORT StallRequests(PDEVQUEUE pdq)
 {
+	KdPrint((DRIVERNAME " - %s\n", __FUNCTION__));
+
 	InterlockedIncrement(&pdq->stallcount);
 }
 
 GENERICAPI VOID GENERIC_EXPORT StallAllRequests(PDEVQUEUE* q, ULONG nq)
 {
+	KdPrint((DRIVERNAME " - %s\n", __FUNCTION__));
+
 	for (ULONG i = 0; i < nq; ++i)
 		StallRequests(q[i]);
 }
 
 GENERICAPI NTSTATUS GENERIC_EXPORT StallRequestsAndNotify(PDEVQUEUE pdq, PQNOTIFYFUNC notify, PVOID context)
 {
+	KdPrint((DRIVERNAME " - %s\n", __FUNCTION__));
+
 	NTSTATUS status;
 	KIRQL oldirql;
 	KeAcquireSpinLock(&pdq->lock, &oldirql);
@@ -309,6 +345,8 @@ GENERICAPI NTSTATUS GENERIC_EXPORT StallRequestsAndNotify(PDEVQUEUE pdq, PQNOTIF
 
 GENERICAPI NTSTATUS GENERIC_EXPORT StallAllRequestsAndNotify(PDEVQUEUE* q, ULONG nq, PQNOTIFYFUNC notify, PVOID context)
 {
+	KdPrint((DRIVERNAME " - %s\n", __FUNCTION__));
+
 	NTSTATUS status;
 	KIRQL oldirql;
 	ULONG i;
@@ -431,6 +469,8 @@ GENERICAPI NTSTATUS GENERIC_EXPORT StallAllRequestsAndNotify(PDEVQUEUE* q, ULONG
 
 GENERICAPI PIRP GENERIC_EXPORT StartNextPacket(PDEVQUEUE pdq, PDEVICE_OBJECT fdo)
 {
+	KdPrint((DRIVERNAME " - %s\n", __FUNCTION__));
+
 	KIRQL oldirql;
 	KeAcquireSpinLock(&pdq->lock, &oldirql);
 
@@ -503,6 +543,8 @@ GENERICAPI PIRP GENERIC_EXPORT StartNextPacket(PDEVQUEUE pdq, PDEVICE_OBJECT fdo
 
 GENERICAPI VOID GENERIC_EXPORT StartPacket(PDEVQUEUE pdq, PDEVICE_OBJECT fdo, PIRP Irp, PDRIVER_CANCEL cancel)
 {
+	KdPrint((DRIVERNAME " - %s\n", __FUNCTION__));
+
 	KIRQL oldirql;
 	KeAcquireSpinLock(&pdq->lock, &oldirql);
 
@@ -565,6 +607,8 @@ GENERICAPI VOID GENERIC_EXPORT StartPacket(PDEVQUEUE pdq, PDEVICE_OBJECT fdo, PI
 
 GENERICAPI VOID GENERIC_EXPORT WaitForCurrentIrp(PDEVQUEUE pdq)
 {
+	KdPrint((DRIVERNAME " - %s\n", __FUNCTION__));
+
 	/*	First reset the event that StartNextPacket sets each time.	*/
 	KeClearEvent(&pdq->evStop);
 
@@ -589,6 +633,8 @@ GENERICAPI VOID GENERIC_EXPORT WaitForCurrentIrp(PDEVQUEUE pdq)
 
 GENERICAPI VOID GENERIC_EXPORT WaitForCurrentIrps(PDEVQUEUE* q, ULONG nq)
 {
+	KdPrint((DRIVERNAME " - %s\n", __FUNCTION__));
+
 	for (ULONG i = 0; i < nq; ++i)
 		WaitForCurrentIrp(q[i]);
 }

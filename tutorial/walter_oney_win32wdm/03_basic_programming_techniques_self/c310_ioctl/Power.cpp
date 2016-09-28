@@ -63,6 +63,8 @@ static char* devstate[] =
 
 GENERICAPI NTSTATUS GENERIC_EXPORT GenericDispatchPower(PGENERIC_EXTENSION pdx, PIRP Irp)
 {
+	KdPrint((DRIVERNAME " - %s\n", __FUNCTION__));
+
 	NTSTATUS status = STATUS_SUCCESS;
 
 	if (pdx->RemoveLock)
@@ -155,6 +157,9 @@ GENERICAPI NTSTATUS GENERIC_EXPORT GenericDispatchPower(PGENERIC_EXTENSION pdx, 
 GENERICAPI NTSTATUS GENERIC_EXPORT GenericHandlePowerIoctl(PGENERIC_EXTENSION pdx, PIRP Irp)
 {
 	ASSERT(KeGetCurrentIrql() == PASSIVE_LEVEL);
+
+	KdPrint((DRIVERNAME " - %s\n", __FUNCTION__));
+
 	ULONG info = 0;
 	NTSTATUS status = STATUS_SUCCESS;
 
@@ -245,6 +250,8 @@ GENERICAPI NTSTATUS GENERIC_EXPORT GenericHandlePowerIoctl(PGENERIC_EXTENSION pd
 
 GENERICAPI NTSTATUS GENERIC_EXPORT GenericIdleDevice(PGENERIC_EXTENSION pdx, DEVICE_POWER_STATE state, BOOLEAN wait /* = FALSE */)
 {
+	KdPrint((DRIVERNAME " - %s\n", __FUNCTION__));
+
 	if (pdx->state != WORKING && pdx->state != STOPPED)
 		return STATUS_SUCCESS;
 
@@ -259,6 +266,8 @@ GENERICAPI NTSTATUS GENERIC_EXPORT GenericIdleDevice(PGENERIC_EXTENSION pdx, DEV
 
 GENERICAPI VOID GENERIC_EXPORT GenericMarkDeviceBusy(PGENERIC_EXTENSION pdx)
 {
+	KdPrint((DRIVERNAME " - %s\n", __FUNCTION__));
+
 	if (pdx->idlecount)
 		PoSetDeviceBusy(pdx->idlecount);
 }
@@ -267,6 +276,8 @@ GENERICAPI VOID GENERIC_EXPORT GenericMarkDeviceBusy(PGENERIC_EXTENSION pdx)
 GENERICAPI VOID GENERIC_EXPORT GenericRegisterForIdleDetection(PGENERIC_EXTENSION pdx, ULONG ConservationTimeout, ULONG PerformanceTimeout, DEVICE_POWER_STATE state)
 {
 	ASSERT(KeGetCurrentIrql() < DISPATCH_LEVEL);	// required by PoRegisterDeviceForIdleDetection
+
+	KdPrint((DRIVERNAME " - %s\n", __FUNCTION__));
 
 	pdx->cto = ConservationTimeout;
 	pdx->pto = PerformanceTimeout;
@@ -277,12 +288,16 @@ GENERICAPI VOID GENERIC_EXPORT GenericRegisterForIdleDetection(PGENERIC_EXTENSIO
 
 GENERICAPI VOID GENERIC_EXPORT GenericSaveRestoreComplete(PVOID context)
 {
+	KdPrint((DRIVERNAME " - %s\n", __FUNCTION__));
+
 	HandlePowerEvent((PPOWCONTEXT)context, AsyncNotify);
 }
 
 
 GENERICAPI NTSTATUS GENERIC_EXPORT GenericWakeupControl(PGENERIC_EXTENSION pdx, enum WAKEFUNCTION wf)
 {
+	KdPrint((DRIVERNAME " - %s\n", __FUNCTION__));
+
 	NTSTATUS status = STATUS_SUCCESS;
 
 	switch (wf)
@@ -399,6 +414,8 @@ GENERICAPI NTSTATUS GENERIC_EXPORT GenericWakeupControl(PGENERIC_EXTENSION pdx, 
 
 GENERICAPI NTSTATUS GENERIC_EXPORT GenericWakeupFromIdle(PGENERIC_EXTENSION pdx, BOOLEAN wait /* = FALSE */)
 {
+	KdPrint((DRIVERNAME " - %s\n", __FUNCTION__));
+
 	if (pdx->devpower == PowerDeviceD0)
 		return STATUS_SUCCESS;
 
@@ -412,6 +429,7 @@ GENERICAPI NTSTATUS GENERIC_EXPORT GenericWakeupFromIdle(PGENERIC_EXTENSION pdx,
 
 VOID AdjustSpecialFileCounter(PGENERIC_EXTENSION pdx, BOOLEAN inpath, PLONG counter)
 {
+	KdPrint((DRIVERNAME " - %s\n", __FUNCTION__));
 
 	/*	Increment or decrement the appropriate special-file usage counter.
 	Note that IoAdjustPagingPathCount (recommended for this use in the DDK doc)
@@ -446,6 +464,8 @@ VOID AdjustSpecialFileCounter(PGENERIC_EXTENSION pdx, BOOLEAN inpath, PLONG coun
 
 NTSTATUS DefaultPowerHandler(PGENERIC_EXTENSION pdx, PIRP Irp)
 {
+	KdPrint((DRIVERNAME " - %s\n", __FUNCTION__));
+
 	PoStartNextPowerIrp(Irp);	// must be done while we own the IRP
 	IoSkipCurrentIrpStackLocation(Irp);
 	return PoCallDriver(pdx->LowerDeviceObject, Irp);
@@ -460,6 +480,8 @@ the device.
 
 DEVICE_POWER_STATE GetLowestDevicePowerState(PGENERIC_EXTENSION pdx, SYSTEM_POWER_STATE sysstate)
 {
+	KdPrint((DRIVERNAME " - %s\n", __FUNCTION__));
+
 	DEVICE_POWER_STATE maxstate = pdx->devcaps.DeviceState[sysstate];
 	DEVICE_POWER_STATE minstate = PowerDeviceD3;
 
@@ -488,6 +510,8 @@ DEVICE_POWER_STATE GetLowestDevicePowerState(PGENERIC_EXTENSION pdx, SYSTEM_POWE
 
 NTSTATUS GetPowerInfoFromRegistry(PGENERIC_EXTENSION pdx, PPOWERINFO pip)
 {
+	KdPrint((DRIVERNAME " - %s\n", __FUNCTION__));
+
 	HANDLE hkey;
 	NTSTATUS status = IoOpenDeviceRegistryKey(pdx->Pdo, PLUGPLAY_REGKEY_DEVICE, KEY_ALL_ACCESS, &hkey);
 	if (!NT_SUCCESS(status))
@@ -532,6 +556,8 @@ NTSTATUS GetPowerInfoFromRegistry(PGENERIC_EXTENSION pdx, PPOWERINFO pip)
 
 NTSTATUS ImplementPowerPolicy(PGENERIC_EXTENSION pdx, PPOWERINFO pip)
 {
+	KdPrint((DRIVERNAME " - %s\n", __FUNCTION__));
+
 	if (pdx->Flags & GENERIC_IDLE_DETECT)
 		GenericRegisterForIdleDetection(pdx, pip->ulConservation, pip->ulPerformance, PowerDeviceD3);
 
@@ -542,6 +568,8 @@ NTSTATUS ImplementPowerPolicy(PGENERIC_EXTENSION pdx, PPOWERINFO pip)
 
 BOOLEAN OkayToRemove(PGENERIC_EXTENSION pdx)
 {
+	KdPrint((DRIVERNAME " - %s\n", __FUNCTION__));
+
 	if (pdx->ndumpfiles || pdx->nhibernatefiles || pdx->npagefiles)
 		return FALSE;
 
@@ -554,6 +582,8 @@ BOOLEAN OkayToRemove(PGENERIC_EXTENSION pdx)
 
 BOOLEAN OkayToStop(PGENERIC_EXTENSION pdx)
 {
+	KdPrint((DRIVERNAME " - %s\n", __FUNCTION__));
+
 	if (pdx->ndumpfiles || pdx->nhibernatefiles || pdx->npagefiles)
 		return FALSE;
 
@@ -573,6 +603,8 @@ struct SDSP_CONTEXT
 #pragma LOCKEDCODE
 VOID SendDeviceSetPowerComplete(PDEVICE_OBJECT junk, UCHAR fcn, POWER_STATE state, SDSP_CONTEXT* context, PIO_STATUS_BLOCK pstatus)
 {
+	KdPrint((DRIVERNAME " - %s\n", __FUNCTION__));
+
 	context->status = pstatus->Status;
 	KeSetEvent(context->pev, EVENT_INCREMENT, FALSE);
 }
@@ -581,6 +613,8 @@ VOID SendDeviceSetPowerComplete(PDEVICE_OBJECT junk, UCHAR fcn, POWER_STATE stat
 #pragma PAGEDCODE
 NTSTATUS SendDeviceSetPower(PGENERIC_EXTENSION pdx, DEVICE_POWER_STATE devpower, BOOLEAN wait /* = FALSE */)
 {
+	KdPrint((DRIVERNAME " - %s\n", __FUNCTION__));
+
 	POWER_STATE state;
 	state.DeviceState = devpower;
 	NTSTATUS status;
@@ -611,6 +645,7 @@ NTSTATUS SendDeviceSetPower(PGENERIC_EXTENSION pdx, DEVICE_POWER_STATE devpower,
 #pragma LOCKEDCODE
 VOID WaitWakeCallback(PDEVICE_OBJECT junk, UCHAR MinorFunction, POWER_STATE state, PGENERIC_EXTENSION pdx, PIO_STATUS_BLOCK pstatus)
 {
+	KdPrint((DRIVERNAME " - %s\n", __FUNCTION__));
 
 	/*	Indicate that wait-wake is no longer outstanding.	*/
 	pdx->wwoutstanding = 0;
@@ -635,6 +670,7 @@ VOID WaitWakeCallback(PDEVICE_OBJECT junk, UCHAR MinorFunction, POWER_STATE stat
 #pragma LOCKEDCODE
 NTSTATUS WaitWakeCompletionRoutine(PDEVICE_OBJECT junk, PIRP Irp, PGENERIC_EXTENSION pdx)
 {
+	KdPrint((DRIVERNAME " - %s\n", __FUNCTION__));
 
 	if (Irp->PendingReturned)
 		IoMarkIrpPending(Irp);
@@ -664,6 +700,8 @@ NTSTATUS WaitWakeCompletionRoutine(PDEVICE_OBJECT junk, PIRP Irp, PGENERIC_EXTEN
 #pragma PAGEDCODE
 NTSTATUS WritePowerInfoToRegistry(PGENERIC_EXTENSION pdx, PPOWERINFO pip)
 {
+	KdPrint((DRIVERNAME " - %s\n", __FUNCTION__));
+
 	HANDLE hkey;
 
 	NTSTATUS status = IoOpenDeviceRegistryKey(pdx->Pdo, PLUGPLAY_REGKEY_DEVICE, KEY_ALL_ACCESS, &hkey);
@@ -686,9 +724,11 @@ NTSTATUS WritePowerInfoToRegistry(PGENERIC_EXTENSION pdx, PPOWERINFO pip)
 
 
 
-
+#pragma LOCKEDCODE
 NTSTATUS HandlePowerEvent(PPOWCONTEXT ctx, enum POWEVENT event)
 {
+	KdPrint((DRIVERNAME " - %s\n", __FUNCTION__));
+
 	NTSTATUS status = -1;	// an invalid value
 	ASSERT(ctx);
 	ASSERT((ULONG)event < NUMPOWEVENTS);
@@ -1647,6 +1687,8 @@ NTSTATUS HandlePowerEvent(PPOWCONTEXT ctx, enum POWEVENT event)
 
 NTSTATUS MainCompletionRoutine(PDEVICE_OBJECT junk, PIRP Irp, PPOWCONTEXT ctx)
 {
+	KdPrint((DRIVERNAME " - %s\n", __FUNCTION__));
+
 	ctx->status = Irp->IoStatus.Status;
 	return HandlePowerEvent(ctx, MainIrpComplete);
 }
@@ -1654,6 +1696,8 @@ NTSTATUS MainCompletionRoutine(PDEVICE_OBJECT junk, PIRP Irp, PPOWCONTEXT ctx)
 
 NTSTATUS SequenceCompletionRoutine(PDEVICE_OBJECT junk, PIRP Irp, PPOWCONTEXT ctx)
 {
+	KdPrint((DRIVERNAME " - %s\n", __FUNCTION__));
+
 	ctx->status = Irp->IoStatus.Status;
 	HandlePowerEvent(ctx, AsyncNotify);
 	IoFreeIrp(Irp);
@@ -1663,6 +1707,8 @@ NTSTATUS SequenceCompletionRoutine(PDEVICE_OBJECT junk, PIRP Irp, PPOWCONTEXT ct
 
 VOID PoCompletionRoutine(PDEVICE_OBJECT junk, UCHAR fcn, POWER_STATE state, PPOWCONTEXT ctx, PIO_STATUS_BLOCK pstatus)
 {
+	KdPrint((DRIVERNAME " - %s\n", __FUNCTION__));
+
 	ctx->status = pstatus->Status;
 	HandlePowerEvent(ctx, AsyncNotify);
 }
@@ -1670,12 +1716,16 @@ VOID PoCompletionRoutine(PDEVICE_OBJECT junk, UCHAR fcn, POWER_STATE state, PPOW
 
 VOID PassivePowerCall(PIRP Irp)
 {
+	KdPrint((DRIVERNAME " - %s\n", __FUNCTION__));
+
 	PoCallDriver(IoGetNextIrpStackLocation(Irp)->DeviceObject, Irp);
 }
 
 
 NTSTATUS SafePoCallDriver(PDEVICE_OBJECT DeviceObject, PIRP Irp)
 {
+	KdPrint((DRIVERNAME " - %s\n", __FUNCTION__));
+
 	return PoCallDriver(DeviceObject, Irp);
 }
 
@@ -1683,5 +1733,7 @@ NTSTATUS SafePoCallDriver(PDEVICE_OBJECT DeviceObject, PIRP Irp)
 #pragma LOCKEDCODE
 VOID PassivePowerComplete(PPOWCONTEXT ctx)
 {
+	KdPrint((DRIVERNAME " - %s\n", __FUNCTION__));
+
 	HandlePowerEvent(ctx, AsyncNotify); 
 }

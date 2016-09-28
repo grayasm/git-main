@@ -9,6 +9,8 @@
 #pragma LOCKEDCODE
 NTSTATUS CompleteRequest(PIRP Irp, NTSTATUS status, ULONG_PTR info)
 {
+	KdPrint((DRIVERNAME " - %s\n", __FUNCTION__));
+
 	Irp->IoStatus.Status = status;
 	Irp->IoStatus.Information = info;
 	IoCompleteRequest(Irp, IO_NO_INCREMENT);
@@ -22,6 +24,8 @@ NTSTATUS CompleteRequest(PIRP Irp, NTSTATUS status, ULONG_PTR info)
 
 NTSTATUS CompleteRequest(PIRP Irp, NTSTATUS status)
 {
+	KdPrint((DRIVERNAME " - %s\n", __FUNCTION__));
+
 	Irp->IoStatus.Status = status;
 	IoCompleteRequest(Irp, IO_NO_INCREMENT);
 	return status;
@@ -32,6 +36,7 @@ NTSTATUS CompleteRequest(PIRP Irp, NTSTATUS status)
 NTSTATUS ForwardAndWait(PGENERIC_EXTENSION pdx, PIRP Irp)
 {
 	PAGED_CODE();
+	KdPrint((DRIVERNAME " - %s\n", __FUNCTION__));
 
 	KEVENT event;
 	KeInitializeEvent(&event, NotificationEvent, FALSE);
@@ -49,6 +54,8 @@ NTSTATUS ForwardAndWait(PGENERIC_EXTENSION pdx, PIRP Irp)
 #pragma LOCKEDCODE
 NTSTATUS OnRequestComplete(PDEVICE_OBJECT junk, PIRP Irp, PKEVENT pev)
 {
+	KdPrint((DRIVERNAME " - %s\n", __FUNCTION__));
+
 	KeSetEvent(pev, 0, FALSE);
 	return STATUS_MORE_PROCESSING_REQUIRED;
 }
