@@ -6,7 +6,14 @@
 cmake_minimum_required(VERSION 3.2)
 project(c3_proj)
 
-set(SRC DriverEntry.cpp)
+set(SRC DriverEntry.cpp
+		Driver.h
+		Device.cpp Device.h
+		Devqueue.cpp Devqueue.h
+		Ioctl.cpp Ioctl.h
+		Pnp.cpp Pnp.h
+		Power.cpp Power.h
+		RemoveLock.cpp RemoveLock.h)
 
 set(WDMINC "c:/Program Files (x86)/Windows Kits/10/Include/10.0.14393.0")
 set(WDMLIB "c:/Program Files (x86)/Windows Kits/10/Lib/10.0.14393.0")
@@ -31,6 +38,7 @@ target_compile_definitions(	c3_heapioctl PUBLIC
 							STD_CALL
 							_DLL=1
 							_IDWBUILD
+							_CRT_SECURE_NO_WARNINGS
 							#_X86_
 							_AMD64_
 							)
