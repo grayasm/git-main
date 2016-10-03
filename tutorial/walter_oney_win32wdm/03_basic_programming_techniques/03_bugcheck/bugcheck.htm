@@ -1,0 +1,43 @@
+<HTML>
+<HEAD>
+<title>The BUGCHECK Sample</title>
+</HEAD>
+<BODY>
+
+<h2>The BUGCHECK Sample</h2>
+<p>The BUGCHECK Sample accompanies Chapter 3 and illustrates how to invoke KeBugCheckEx.</p>
+
+<p>The sample includes one components:</p>
+<ul>
+<li>BUGCHECK.SYS is a WDM driver for a non-existent device.</li>
+</ul>
+
+<h3>Building BUGCHECK</h3>
+<p>To build BUGCHECK.SYS, follow the <a href="..\..\wdmbook.htm#wdmbuild">general
+instructions for building a WDM sample</a>. The Microsoft Visual C++ project
+file is named BUGCHECK.DSP.</p>
+
+<h3>Testing BUGCHECK</h3>
+<p>I highly recommend that you make one or all of these prepatory actions before testing BUGCHECK:
+
+<ul>
+<li>Download the SYNC.EXE tool from <a href="http://www.sysinternals.com">http://www.sysinternals.com</a>. Run SYNC to
+flush all disk caches out to disk. 
+<li>Change the Startup and Recovery Settings in My Computer/Properties/Advanced to produce a kernel dump.
+<li>Start a kernel debugger
+</ul>
+
+Now use <a href="..\..\wdmbook.htm#fastinst">FASINST</a> to install
+BUGCHECK.SYS. It will call <b>KeBugCheckEx</b> during DriverEntry.
+You can investigate the bug check in the debugger or after the fact
+from the crash dump.
+
+<h3>What to look for</h3>
+<p>DriverEntry registers a bug check callback and then calls KeBugCheckEx. Note that you're very
+unlikely to need to <i>cause</i> a bug check in a driver, but you might very well want to arrange
+a callback to record information critical to debugging failures through Online Crash Analysis or
+otherwise.</p>
+
+</body>
+
+</html>

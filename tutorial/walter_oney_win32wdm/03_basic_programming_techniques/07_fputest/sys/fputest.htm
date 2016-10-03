@@ -1,0 +1,73 @@
+<html>
+
+<head>
+<title>The FPUTEST Sample</title>
+</head>
+
+<body>
+
+<h2>The FPUTEST Sample</h2>
+
+<p>The FPUTEST Sample accompanies Chapter 3 and illustrates how to perform
+floating point and MMX operations in Windows XP. This sample was distributed
+as part of Service Pack 2 and was revised in Service Pack 9 in the 1st edition.</p>
+
+<p>The sample includes two components:</p>
+
+<ul>
+<li>FPUTEST.SYS (SYS subdirectory) is a WDM driver for a non-existent hardware device. </li>
+<li >TEST.EXE (TEST subdirectory) is a test program that calls FPUTEST.</li>
+</ul>
+
+<h3>Building FPUTEST</h3>
+
+<p>To build FPUTEST.SYS for Windows XP, follow the 
+<a href="..\..\wdmbook.htm#wdmbuild">general instructions for building a WDM
+sample</a>. The Microsoft Visual C++ project
+file is named FPUTEST.DSP.</p>
+
+<p>To build TEST.EXE, follow the <a href="..\..\wdmbook.htm#usermodebuild">general
+instructions for building user-mode samples</a></p>
+
+<h3>Testing FPUTEST</h3>
+
+<p>This sample works only on an Intel x86 computer running Windows XP or
+Windows Xp.</p>
+
+<p><span style='color:red'>This sample will not run under Windows 98/Me or Windows
+Millennium.<b> </b></span><span style='color:windowtext'>This is because the
+virtualization of the math coprocessor in Windows operating systems does not
+correctly handle exceptions that occur when an FRSTOR operation is performed on
+an image that reflects an unsignalled floating point exception. Due to variations
+in math coprocessors, there is no way short of rewriting VMCPD.VXD to overcome
+this problem. There is no impediment to using floating point in a separate
+kernel thread, but this sample wasn’t intended to illustrate that possibility
+in the first place.<o:p></o:p></span></p>
+
+<p>To test the sample, first install the FPUTEST.SYS driver. Follow the general
+instructions for using <a href="..\..\wdmbook.htm#fastinst">FastInst</a> in
+Windows XP. The INF file is named SYS\FPUTEST.INF.</p>
+
+<p>Now launch TEST.EXE from the TEST\DEBUG subdirectory. TEST will issue two
+DeviceIoControl calls to test floating point and MMX operations in FPUTEST.SYS.
+The first test occurs at PASSIVE_LEVEL, the second at DISPATCH_LEVEL. TEST will
+report the ending status. FPUTEST will print additional information about the
+tests on the debugging terminal.</p>
+
+<h3>What to look for</h3>
+<p>The <b>dotest</b> function in <b>control.cpp</b> performs a few basic floating point
+operations. Other important things in control.cpp include:</p>
+
+<ul>
+<li>Definition of <b>_fltused</b> to satisfy a symbol demand that the compiler generates whenever
+you use floating point in a source file.
+<li>Definition of transcendental functions like <b>sin</b> to take the place of runtime
+library functions that aren't available in a driver.
+<li>Use of <b>KeSaveFloatingPointState</b> and <b>KeRestoreFloatingPointState</b>.
+<li>Use of <b>ExIsProcessorFeaturePresent</b> to determine whether the MMX instruction set
+is installed.
+</ul>
+
+</body>
+
+</html>

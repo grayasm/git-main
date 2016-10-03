@@ -1,0 +1,48 @@
+<HTML>
+<HEAD>
+<title>The MEMTEST Sample</title>
+</HEAD>
+<BODY>
+
+<h2>The MEMTEST Sample</h2>
+<p>The MEMTEST Sample accompanies Chapter 3 and determines how much memory
+can be allocated from the paged and nonpaged pools. </p>
+
+<p>The sample includes two components:</p>
+<ul>
+<li>MEMTEST.SYS (SYS subdirectory) is a WDM driver for a non-existent device.</li>
+<li >TEST.EXE (TEST subdirectory) is a Win32 console application that tests the MEMTEST driver.</li>
+</ul>
+
+<h3>Building MEMTEST</h3>
+<p>To build MEMTEST.SYS, follow the <a href="..\..\wdmbook.htm#wdmbuild">general
+instructions for building a WDM sample</a>. The Microsoft Visual C++ project
+file is named MEMTEST.DSP in the SYS subdirectory. 
+
+<p>To build TEST.EXE, follow <a href="..\..\wdmbook.htm#usermodebuild">the
+general instructions for building user-mode programs</a>. The Microsoft Visual
+C++ project file is named TEST.DSP in the TEST subdirectory.</p>
+
+<h3>Testing MEMTEST</h3>
+
+<p>First arrange a way to see debug messages. You can run under control of a
+kernel debugger such as Soft-Ice, or you can run Mark Russinovitch’s DbgView
+utility (see <a href="http://www.sysinternals.com/">http://www.sysinternals.com</a>).</p>
+
+<p>Now install MEMTEST.SYS. Follow the instructions for using <a
+href="..\..\wdmbook.htm#FASTINST">FASTINST</a> in either Windows XP or
+Windows 98/Me. The INF file is named SYS\MEMTEST.inf.</p>
+
+<p>Finally, open a DOS prompt and navigate to the TEST\DEBUG subdirectory.
+Issue the "TEST" command, which will use a DeviceIoControl to perform the test.
+MEMTEST.SYS will use a binary search to determine the largest single block it can
+allocate of paged and nonpaged memory, respectively, and will report the results
+in the debug trace output.</p>
+
+<h3>What to look for</h3>
+<p><b>DoMemoryTest</b> in <b>Control.cpp</b> is the function that actually attempts the memory
+allocations reported by the test program.</p>
+
+</body>
+
+</html>

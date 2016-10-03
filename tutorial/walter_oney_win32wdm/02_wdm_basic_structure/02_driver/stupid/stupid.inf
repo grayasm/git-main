@@ -13,7 +13,6 @@ DriverVer=09/15/2016,1.0.00001.1
 
 [DestinationDirs]
 DefaultDestDir=12
-CoInstaller_CopyFiles = 11
 SampleClassInstallerCopyFiles = 11
 
 ;------------------------------------------------------------------------------
@@ -41,13 +40,13 @@ samclass.dll,,,2
 %MFGNAME%=StupidDevice,NTx86,NTia64,NTamd64
 
 [StupidDevice.NTx86]
-%DESCRIPTION%=DriverInstall, {894A7460-A033-11D2-821E-444553540000}\Stupid
+%DESCRIPTION%=DriverInstall,*WCO0201
 
 [StupidDevice.NTia64]
-%DESCRIPTION%=DriverInstall, {894A7460-A033-11D2-821E-444553540000}\Stupid
+%DESCRIPTION%=DriverInstall,*WCO0201
 
 [StupidDevice.NTamd64]
-%DESCRIPTION%=DriverInstall, {894A7460-A033-11D2-821E-444553540000}\Stupid
+%DESCRIPTION%=DriverInstall,*WCO0201
 
 [DriverInstall.NT]
 CopyFiles=DriverCopyFiles
@@ -60,9 +59,7 @@ stupid.sys,,,2
 AddReg=DriverInstall.NT.HW.AddReg
 
 [DriverInstall.NT.HW.AddReg]
-HKR,,"BeepCount",0x00010003,4
 HKR,,SampleInfo,,"stupid.htm"
-HKR,,SampleInfo,,
 
 
 [DriverInstall.NT.Services]
@@ -87,6 +84,7 @@ ServiceBinary=%12%\stupid.sys
 
 [SourceDisksFiles]
 stupid.sys=1,,
+generic.sys=1,,
 samclass.dll=1,,
 
 

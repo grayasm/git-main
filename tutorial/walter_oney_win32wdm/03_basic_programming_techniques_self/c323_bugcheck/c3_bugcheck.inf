@@ -1,0 +1,102 @@
+#
+#	c3_bugcheck.sys driver installs in the 'Device Manager' under "WDM Book Samples"
+#					or at least it would if it doesn't BSOD the system.
+#
+[Version]
+Signature=$CHICAGO$
+Class=Sample
+ClassGuid={894A7460-A033-11d2-821E-444553540000}
+CatalogFile.NTx86  = C3_bugcheck_x86.cat
+CatalogFile.NTIA64 = C3_bugcheck_ia64.cat
+CatalogFile.NTAMD64 = C3_bugcheck_amd64.cat
+Provider=%ONEYSOFT%
+DriverVer=09/15/2016,1.0.00001.1
+; Copyright 2016 OneySoft
+
+
+[DestinationDirs]
+DefaultDestDir=12
+SampleClassInstallerCopyFiles = 11
+
+;------------------------------------------------------------------------------
+;  SAMPLE class definition
+;------------------------------------------------------------------------------
+
+[ClassInstall32]
+AddReg=ClassInstall32AddReg
+CopyFiles=SampleClassInstallerCopyFiles
+
+[ClassInstall32AddReg]
+HKR,,,,"WDM Book Samples"
+HKR,,Installer32,,"samclass.dll,SampleClassInstaller"
+HKR,,EnumPropPages32,,samclass.dll
+HKR,,Icon,,101
+
+[SampleClassInstallerCopyFiles]
+samclass.dll,,,2
+
+;------------------------------------------------------------------------------
+;  Standard INF sections
+;------------------------------------------------------------------------------
+
+[Manufacturer]
+%MFGNAME%=C3_bugcheckDevice,NTx86,NTia64,NTamd64
+
+[C3_bugcheckDevice.NTx86]
+%DESCRIPTION%=DriverInstall,*WCOC3BUGCHECK
+
+[C3_bugcheckDevice.NTia64]
+%DESCRIPTION%=DriverInstall,*WCOC3BUGCHECK
+
+[C3_bugcheckDevice.NTamd64]
+%DESCRIPTION%=DriverInstall,*WCOC3BUGCHECK
+
+[DriverInstall.NT]
+CopyFiles=DriverCopyFiles
+FriendlyNameFormat=%FRIENDLYNAME%
+
+[DriverCopyFiles]
+c3_bugcheck.sys,,,2
+
+
+[DriverInstall.NT.HW]
+AddReg=DriverInstall.NT.HW.AddReg
+
+[DriverInstall.NT.HW.AddReg]
+HKR,,SampleInfo,,
+
+[DriverInstall.NT.Services]
+AddService=C3_BUGCHECK,2,DriverService
+
+[DriverService]
+DisplayName=%DESCRIPTION%
+ServiceType=1
+StartType=3
+ErrorControl=1
+; ServiceBinary=%10%\system32\drivers\c3_bugcheck.sys
+ServiceBinary=%12%\c3_bugcheck.sys
+
+[SourceDisksNames.x86]
+1=%INSTDISK%,,,
+
+[SourceDisksNames.ia64]
+1=%INSTDISK%,,,
+
+[SourceDisksNames.amd64]
+1=%INSTDISK%,,,
+
+[SourceDisksFiles]
+c3_bugcheck.sys=1,,
+samclass.dll=1,,
+
+
+;------------------------------------------------------------------------------
+;  String Definitions
+;------------------------------------------------------------------------------
+
+[Strings]
+ONEYSOFT="Walter Oney Software"
+MFGNAME="Walter Oney Software"
+INSTDISK="Walter Oney Software Installation Disc"
+DESCRIPTION="C3_bugcheck Device Driver"
+FRIENDLYNAME="C3_bugcheckDevice%1!u!"

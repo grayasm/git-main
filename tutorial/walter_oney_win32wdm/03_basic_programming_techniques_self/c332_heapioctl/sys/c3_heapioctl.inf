@@ -1,0 +1,101 @@
+#
+#	c3_heapioctl.sys driver installs in the 'Device Manager' under "WDM Book Samples"
+#
+[Version]
+Signature=$CHICAGO$
+Class=Sample
+ClassGuid={894A7460-A033-11d2-821E-444553540000}
+CatalogFile.NTx86  = c3_heapioctl_x86.cat
+CatalogFile.NTIA64 = c3_heapioctl_ia64.cat
+CatalogFile.NTAMD64 = c3_heapioctl_amd64.cat
+Provider=%ONEYSOFT%
+DriverVer=09/15/2016,1.0.00001.1
+; Copyright 2016 OneySoft
+
+
+[DestinationDirs]
+DefaultDestDir=12
+SampleClassInstallerCopyFiles = 11
+
+;------------------------------------------------------------------------------
+;  SAMPLE class definition
+;------------------------------------------------------------------------------
+
+[ClassInstall32]
+AddReg=ClassInstall32AddReg
+CopyFiles=SampleClassInstallerCopyFiles
+
+[ClassInstall32AddReg]
+HKR,,,,"WDM Book Samples"
+HKR,,Installer32,,"samclass.dll,SampleClassInstaller"
+HKR,,EnumPropPages32,,samclass.dll
+HKR,,Icon,,101
+
+[SampleClassInstallerCopyFiles]
+samclass.dll,,,2
+
+;------------------------------------------------------------------------------
+;  Standard INF sections
+;------------------------------------------------------------------------------
+
+[Manufacturer]
+%MFGNAME%=C3_heapioctlDevice,NTx86,NTia64,NTamd64
+
+[C3_heapioctlDevice.NTx86]
+%DESCRIPTION%=DriverInstall,*WCOC3HEAPIOCTL
+
+[C3_heapioctlDevice.NTia64]
+%DESCRIPTION%=DriverInstall,*WCOC3HEAPIOCTL
+
+[C3_heapioctlDevice.NTamd64]
+%DESCRIPTION%=DriverInstall,*WCOC3HEAPIOCTL
+
+[DriverInstall.NT]
+CopyFiles=DriverCopyFiles
+FriendlyNameFormat=%FRIENDLYNAME%
+
+[DriverCopyFiles]
+c3_heapioctl.sys,,,2
+
+
+[DriverInstall.NT.HW]
+AddReg=DriverInstall.NT.HW.AddReg
+
+[DriverInstall.NT.HW.AddReg]
+HKR,,SampleInfo,,
+
+[DriverInstall.NT.Services]
+AddService=C3_HEAPIOCTL,2,DriverService
+
+[DriverService]
+DisplayName=%DESCRIPTION%
+ServiceType=1
+StartType=3
+ErrorControl=1
+; ServiceBinary=%10%\system32\drivers\c3_heapioctl.sys
+ServiceBinary=%12%\c3_heapioctl.sys
+
+[SourceDisksNames.x86]
+1=%INSTDISK%,,,
+
+[SourceDisksNames.ia64]
+1=%INSTDISK%,,,
+
+[SourceDisksNames.amd64]
+1=%INSTDISK%,,,
+
+[SourceDisksFiles]
+c3_heapioctl.sys=1,,
+samclass.dll=1,,
+
+
+;------------------------------------------------------------------------------
+;  String Definitions
+;------------------------------------------------------------------------------
+
+[Strings]
+ONEYSOFT="Walter Oney Software"
+MFGNAME="Walter Oney Software"
+INSTDISK="Walter Oney Software Installation Disc"
+DESCRIPTION="C3_heapioctl Device Driver"
+FRIENDLYNAME="C3_heapioctlDevice%1!u!"

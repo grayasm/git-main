@@ -1,0 +1,12 @@
+TARGETNAME=FPUTEST
+TARGETTYPE=DRIVER
+DRIVERTYPE=WDM
+TARGETPATH=obj
+USE_PDB=1
+
+INCLUDES=$(WDMBOOK)\generic;$(DDK_INC_PATH)
+TARGETLIBS=$(WDMBOOK)\generic\obj$(BUILD_ALT_DIR)\*\generic.lib
+SOURCES=	DriverEntry.cpp \
+			control.cpp \
+			readwrite.cpp \
+			driver.rc

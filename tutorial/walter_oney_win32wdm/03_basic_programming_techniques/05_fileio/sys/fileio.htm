@@ -1,0 +1,66 @@
+<html>
+
+<head>
+<title>The FILEIO Sample</title>
+</head>
+
+<body>
+
+<h2>The FILEIO Sample</h2>
+
+<p>The FILEIO Sample accompanies Chapter 3 and illustrates how to perform file
+I/O operations in Windows XP and Windows 98/Me.</p>
+
+<p>The sample includes two components:</p>
+
+<ul >
+ <li>FILEIO.SYS (SYS subdirectory) is a WDM driver for a non-existent hardware device. </li>
+ <li>TEST.EXE (TEST subdirectory) is a test program that calls FILEIO.</li>
+</ul>
+
+<h3>Building FILEIO</h3>
+
+<p>To build FILEIO.SYS, you need to have installed the Windows Millennium DDK
+along with the Windows XP DDK. Follow the <a href="..\..\wdmbook.htm#wdmbuild">general
+instructions for building a WDM sample</a>.<span style='color:red'> </span>The
+Microsoft Visual C++ project file is named FILEIO.DSP. <span style='color:red'>Unfortunately,
+you cannot use the BUILD utility for this sample program because BUILD is
+unable to cope with modules that have different compile options than other
+modules in the project, and FILEIO98.CPP requires special options.</span></p>
+
+<p>To build TEST.EXE, follow the <a href="..\..\wdmbook.htm#usermodebuild">general
+instructions for building user-mode samples</a></p>
+
+<h3>Testing FILEIO</h3>
+
+<p>Install the FILEIO.SYS driver. Follow the general instructions for using <a
+href="..\..\wdmbook.htm#fastinst">FastInst</a> in Windows XP or Windows 98/Me.
+The INF file is named SYS\FILEIO.INF. Windows 98/Me may prompt your for the
+location of FILEIO.JNK, which is in the project directory itself.</p>
+
+<p>During initialization, the driver will read the contents of the file
+FILEIO.JNK from the Drivers directory. Thereafter, open a command prompt and
+execute the TEST.EXE program in the TEST\DEBUG subdirectory. TEST will report
+the file data read by the driver.</p>
+
+<p>This sample illustrates how you can do file I/O operations in a driver
+without needing separate binaries for Windows XP/Xp and Windows 98/Me/Me.
+Microsoft prefers that you ship separate binaries, however. If you elect to do
+that, you would (obviously) need to remove the runtime test for the platform
+you're using and conditionally compile one or the other version of the file I/O
+functions.</p>
+
+<h3>Special Note</h3>
+This sample requires WDMSTUB.SYS in
+Windows 98/Me. If you copy the FILEIO routines to your own project,
+be sure that you ship WDMSTUB.SYS along with your driver. Bear in mind that WDMSTUB requires a royalty-free
+redistribution license from me. (WDMSTUB is actually only needed because the
+Win2K version of SetFilePosition calls ZwSetInformationFile.)
+
+<h3>What to look for</h3>
+<p>FILEIO is less a sample and more a collection of routines you can copy into your own drivers
+in order to do file I/O in a cross-platform compatible way. <b>driver.h</b> declares the interface
+to these functions. <b>fileio.cpp</b> and <b>fileio98.cpp</b> contain the implementations.</p>
+
+</body>
+</html>
