@@ -2680,25 +2680,30 @@ void ui_create_gtkprogressbar()
 
 
 	// Create few sample widgets to visualize theme changes
-	GtkWidget* table_sample = gtk_table_new (1, 2, TRUE);
+	GtkWidget* table_sample = gtk_table_new (1, 3, TRUE);
 	gtk_box_pack_start (GTK_BOX(vbox),
 	                    table_sample,
 	                    FALSE,   // expand
 	                    FALSE,   // fill
 	                    0);      // padding
 
-	GtkWidget* bn_pulse = gtk_button_new_with_label("Pulse!");
-	gtk_table_attach (GTK_TABLE(table_sample),
-	                  bn_pulse,
-	                  0, 1,   // left, right
-	                  0, 1,   // top, bottom
-	                  GTK_SHRINK, GTK_SHRINK,   // GtkAttachOptions
-	                  0, 0);  // x,y padding
+	GtkWidget* progress[3];
+	for(gint i=0; i<3; ++i)
+	{
+		progress[i] = gtk_progress_bar_new();
+		gchar text[200];
+		sprintf(text, "%d%%", i*50);
+		gtk_progress_bar_set_text(GTK_PROGRESS_BAR(progress[i]), text);
+		gtk_progress_bar_set_fraction(GTK_PROGRESS_BAR(progress[i]), i*0.5);
+		                                                          // 0.0 -> 1.0
 
-	GtkWidget* prgbar = gtk_progress_bar_new();
-
-#error here /* continue from here*/
-
+		gtk_table_attach (GTK_TABLE(table_sample),
+		                  progress[i],
+		                  i, i+1,   // left , right
+		                  0, 1,     // top  , bottom
+		                  GTK_SHRINK, GTK_SHRINK,   // GtkAttachOptions
+		                  0, 0);    // x, y padding
+	}
 
 	/*
 	  GtkWidget* widget_9_clrbn[4][5];
@@ -2737,12 +2742,22 @@ void ui_create_gtkspinbutton()
 
 
 	// Create few sample widgets to visualize theme changes
-	GtkWidget* table_sample = gtk_table_new (4, 3, TRUE);
+	GtkWidget* table_sample = gtk_table_new (2, 3, TRUE);
 	gtk_box_pack_start (GTK_BOX(vbox),
 	                    table_sample,
 	                    FALSE,   // expand
 	                    FALSE,   // fill
 	                    0);      // padding
+
+
+
+gtk_adjustment_new (gdouble value,
+                    gdouble lower,
+                    gdouble upper,
+                    gdouble step_increment,
+                    gdouble page_increment,
+                    gdouble page_size);
+
 
 	/*
 	  GtkWidget* widget_10_cmbbox_shadowt;
