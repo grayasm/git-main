@@ -187,6 +187,7 @@ struct AppData
 	GtkWidget* widget_15_spinbn_yth;
 	GtkWidget* widget_15_spinbn_internalp;
 	GtkWidget* widget_15_cmbbox_shadowt;
+	GString*   widget_15_style_txt;
 
 	// ----- GtkMenuItem -----
 	GtkWidget* widget_16_clrbn[4][5];
@@ -2701,7 +2702,7 @@ void ui_create_gtkprogressbar()
 		                  progress[i],
 		                  i, i+1,   // left , right
 		                  0, 1,     // top  , bottom
-		                  GTK_SHRINK, GTK_SHRINK,   // GtkAttachOptions
+		                  GTK_EXPAND, GTK_SHRINK,   // GtkAttachOptions
 		                  0, 0);    // x, y padding
 	}
 
@@ -2750,13 +2751,37 @@ void ui_create_gtkspinbutton()
 	                    0);      // padding
 
 
+	GtkWidget* spin_bn[3];
+	GtkWidget* spin_lbl[3];
 
-gtk_adjustment_new (gdouble value,
-                    gdouble lower,
-                    gdouble upper,
-                    gdouble step_increment,
-                    gdouble page_increment,
-                    gdouble page_size);
+	for (gint i = 0; i < 3; ++i)
+	{
+		GtkObject* adjustment = gtk_adjustment_new ((gdouble)i*10, // value
+		                                            0.0,           // lower
+		                                            100.0,         // upper
+		                                            1.0,           // step inc
+		                                            10.0,          // page inc
+		                                            10.0);         // page size
+		spin_bn[i] = gtk_spin_button_new (GTK_ADJUSTMENT(adjustment),
+		                                  1.0,
+		                                  0);
+		gchar text[100];
+		sprintf(text, "GtkSpinButton:%d", i);
+		spin_lbl[i] = gtk_label_new(text);
+		gtk_table_attach (GTK_TABLE(table_sample),
+		                  spin_bn[i],
+		                  i, i+1,    // left,  right
+		                  0, 1,      // top, bottom
+		                  GTK_EXPAND, GTK_SHRINK,   // GtkAttachOptions
+		                  0, 0);     // x, y padding
+
+		gtk_table_attach (GTK_TABLE(table_sample),
+		                  spin_lbl[i],
+		                  i, i+1,    // left,  right
+		                  1, 2,      // top, bottom
+		                  GTK_EXPAND, GTK_SHRINK,   // GtkAttachOptions
+		                  0, 0);     // x, y padding
+	}
 
 
 	/*
@@ -2787,13 +2812,19 @@ void ui_create_gtkstatusbar()
 	                    0);      // padding
 
 
-	// Create few sample widgets to visualize theme changes
-	GtkWidget* table_sample = gtk_table_new (4, 3, TRUE);
+	// The statusbar attached to a table is not shown correctly.
+	GtkWidget* statusbar = gtk_statusbar_new();
+	guint uid = gtk_statusbar_get_context_id(GTK_STATUSBAR(statusbar),
+	                                         "Statusbar example"); // context description
+
+	gtk_statusbar_push (GTK_STATUSBAR(statusbar),
+	                    uid,
+	                    "Status bar sample message!");
 	gtk_box_pack_start (GTK_BOX(vbox),
-	                    table_sample,
-	                    FALSE,   // expand
-	                    FALSE,   // fill
-	                    0);      // padding
+	                    statusbar,
+	                    TRUE,  // expand
+	                    TRUE,  // fill
+	                    0);    // padding
 
 	/*
 	  GtkWidget* widget_11_clrbn[4][5];
@@ -2825,15 +2856,28 @@ void ui_create_gtktoolbar()
 	                    FALSE,   // fill
 	                    0);      // padding
 
+	// example from the book, cap.9 sample: toolbars.cpp
+	GtkWidget* toolbar = gtk_toolbar_new ();
+	GtkToolItem* cut  = gtk_tool_button_new_from_stock (GTK_STOCK_CUT);
+	GtkToolItem* copy = gtk_tool_button_new_from_stock (GTK_STOCK_COPY);
+	GtkToolItem* paste= gtk_tool_button_new_from_stock (GTK_STOCK_PASTE);
+	GtkToolItem* selectall = gtk_tool_button_new_from_stock (GTK_STOCK_SELECT_ALL);
+	GtkToolItem* separator = gtk_separator_tool_item_new ();
 
-	// Create few sample widgets to visualize theme changes
-	GtkWidget* table_sample = gtk_table_new (4, 3, TRUE);
+	gtk_toolbar_set_show_arrow (GTK_TOOLBAR(toolbar), TRUE);
+	gtk_toolbar_set_style (GTK_TOOLBAR (toolbar), GTK_TOOLBAR_BOTH);
+
+	gtk_toolbar_insert (GTK_TOOLBAR (toolbar), cut, 0);
+	gtk_toolbar_insert (GTK_TOOLBAR (toolbar), copy, 1);
+	gtk_toolbar_insert (GTK_TOOLBAR (toolbar), paste, 2);
+	gtk_toolbar_insert (GTK_TOOLBAR (toolbar), separator, 3);
+	gtk_toolbar_insert (GTK_TOOLBAR (toolbar), selectall, 4);
+
 	gtk_box_pack_start (GTK_BOX(vbox),
-	                    table_sample,
+	                    toolbar,
 	                    FALSE,   // expand
 	                    FALSE,   // fill
 	                    0);      // padding
-
 
 	/*
 	  GtkWidget* widget_12_clrbn[4][5];
@@ -2848,7 +2892,6 @@ void ui_create_gtktoolbar()
 	  GtkWidget* widget_12_cmbbox_spacest;
 	  GString*   widget_12_style_txt;
 	 */
-
 }
 
 void ui_update_gtktoolbar()
@@ -2872,13 +2915,29 @@ void ui_create_gtktoolbutton()
 	                    0);      // padding
 
 
-	// Create few sample widgets to visualize theme changes
-	GtkWidget* table_sample = gtk_table_new (4, 3, TRUE);
+	// example from the book, cap.9 sample: toolbars.cpp
+	GtkWidget* toolbar = gtk_toolbar_new ();
+	GtkToolItem* cut  = gtk_tool_button_new_from_stock (GTK_STOCK_CUT);
+	GtkToolItem* copy = gtk_tool_button_new_from_stock (GTK_STOCK_COPY);
+	GtkToolItem* paste= gtk_tool_button_new_from_stock (GTK_STOCK_PASTE);
+	GtkToolItem* selectall = gtk_tool_button_new_from_stock (GTK_STOCK_SELECT_ALL);
+	GtkToolItem* separator = gtk_separator_tool_item_new ();
+
+	gtk_toolbar_set_show_arrow (GTK_TOOLBAR(toolbar), TRUE);
+	gtk_toolbar_set_style (GTK_TOOLBAR (toolbar), GTK_TOOLBAR_BOTH);
+
+	gtk_toolbar_insert (GTK_TOOLBAR (toolbar), cut, 0);
+	gtk_toolbar_insert (GTK_TOOLBAR (toolbar), copy, 1);
+	gtk_toolbar_insert (GTK_TOOLBAR (toolbar), paste, 2);
+	gtk_toolbar_insert (GTK_TOOLBAR (toolbar), separator, 3);
+	gtk_toolbar_insert (GTK_TOOLBAR (toolbar), selectall, 4);
+
 	gtk_box_pack_start (GTK_BOX(vbox),
-	                    table_sample,
+	                    toolbar,
 	                    FALSE,   // expand
 	                    FALSE,   // fill
 	                    0);      // padding
+
 
 	/*
 	  GtkWidget* widget_13_clrbn[4][5];
@@ -2888,7 +2947,6 @@ void ui_create_gtktoolbutton()
 	  GtkWidget* widget_13_spinbn_iconsp;
 	  GString*   widget_13_style_txt;
 	 */
-
 }
 
 void ui_update_gtktoolbutton()
@@ -2911,14 +2969,48 @@ void ui_create_gtkmenu()
 	                    FALSE,   // fill
 	                    0);      // padding
 
+	//  GtkMenu sample, book cap.9 - menubars.cpp
+	GtkAccelGroup* group = gtk_accel_group_new ();
+	GtkWidget* menubar = gtk_menu_bar_new ();
+	GtkWidget* file = gtk_menu_item_new_with_label ("File");
+	GtkWidget* edit = gtk_menu_item_new_with_label ("Edit");
+	GtkWidget* help = gtk_menu_item_new_with_label ("Help");
 
-	// Create few sample widgets to visualize theme changes
-	GtkWidget* table_sample = gtk_table_new (4, 3, TRUE);
+	GtkWidget* filemenu = gtk_menu_new ();
+	GtkWidget* editmenu = gtk_menu_new ();
+	GtkWidget* helpmenu = gtk_menu_new ();
+
+	gtk_menu_item_set_submenu (GTK_MENU_ITEM(file), filemenu);
+	gtk_menu_item_set_submenu (GTK_MENU_ITEM(edit), editmenu);
+	gtk_menu_item_set_submenu (GTK_MENU_ITEM(help), helpmenu);
+
+	gtk_menu_shell_append (GTK_MENU_SHELL(menubar), file);
+	gtk_menu_shell_append (GTK_MENU_SHELL(menubar), edit);
+	gtk_menu_shell_append (GTK_MENU_SHELL(menubar), help);
+
+	GtkWidget* New = gtk_image_menu_item_new_from_stock (GTK_STOCK_NEW, group);
+	GtkWidget* Open= gtk_image_menu_item_new_from_stock (GTK_STOCK_OPEN, group);
+	gtk_menu_shell_append (GTK_MENU_SHELL(filemenu), New);
+	gtk_menu_shell_append (GTK_MENU_SHELL(filemenu), Open);
+
+	GtkWidget* Cut  = gtk_image_menu_item_new_from_stock (GTK_STOCK_CUT, group);
+	GtkWidget* Copy = gtk_image_menu_item_new_from_stock (GTK_STOCK_COPY, group);
+	GtkWidget* Paste= gtk_image_menu_item_new_from_stock (GTK_STOCK_PASTE, group);
+	gtk_menu_shell_append (GTK_MENU_SHELL (editmenu), Cut);
+	gtk_menu_shell_append (GTK_MENU_SHELL (editmenu), Copy);
+	gtk_menu_shell_append (GTK_MENU_SHELL (editmenu), Paste);
+
+	GtkWidget* contents = gtk_image_menu_item_new_from_stock (GTK_STOCK_HELP, group);
+	GtkWidget* about = gtk_image_menu_item_new_from_stock (GTK_STOCK_ABOUT, group);
+	gtk_menu_shell_append (GTK_MENU_SHELL (helpmenu), contents);
+	gtk_menu_shell_append (GTK_MENU_SHELL (helpmenu), about);
+
 	gtk_box_pack_start (GTK_BOX(vbox),
-	                    table_sample,
+	                    menubar,
 	                    FALSE,   // expand
 	                    FALSE,   // fill
 	                    0);      // padding
+
 
 	/*
 	  GtkWidget* widget_14_clrbn[4][5];
@@ -2957,14 +3049,45 @@ void ui_create_gtkmenubar()
 	                    FALSE,   // fill
 	                    0);      // padding
 
+	/*  This sample menu is from book, cap.9 - uimanager.cpp
+	    I changed the callbacks to NULL for Open, Save, etc.
+	    Sample menu entries:
+	 */
+	const gint SMNUM_ENTRIES = 13;
+	GtkActionEntry smentries[]=
+		{
+			{ "File", NULL, "_File", NULL, NULL, NULL },
+			{ "Open", GTK_STOCK_OPEN, NULL, NULL, "Open an existing file", NULL},
+			{ "Save", GTK_STOCK_SAVE, NULL, NULL, "Save the doc to a file", NULL},
+			{ "Quit", GTK_STOCK_QUIT, NULL, NULL, "Quit the application",  NULL},
+			{ "Edit", NULL, "_Edit", NULL, NULL, NULL},
+			{ "Cut", GTK_STOCK_CUT, NULL, NULL, "Cut to clipboard", NULL},
+			{ "Copy", GTK_STOCK_COPY, NULL, NULL, "Copy to clipboard", NULL},
+			{ "Paste", GTK_STOCK_PASTE, NULL, NULL, "Paste from clipboard", NULL},
+			{ "SelectAll", GTK_STOCK_SELECT_ALL, NULL, NULL, "Select all", NULL},
+			{ "Deselect", NULL, "_Deselect", "<control>d", "Deselect all", NULL},
+			{ "Help", NULL, "_Help", NULL, NULL, NULL},
+			{ "Contents", GTK_STOCK_HELP, NULL, NULL, "Get help", NULL},
+			{ "About", GTK_STOCK_ABOUT, NULL, NULL, "More info", NULL}
+		};
 
-	// Create few sample widgets to visualize theme changes
-	GtkWidget* table_sample = gtk_table_new (4, 3, TRUE);
+	GtkActionGroup* sagroup = gtk_action_group_new ("SampleActionGroup");
+	gtk_action_group_add_actions (sagroup, smentries, SMNUM_ENTRIES, NULL);
+	GtkUIManager* uimanager = gtk_ui_manager_new ();
+	gtk_ui_manager_insert_action_group (uimanager, sagroup, 0);
+	gtk_ui_manager_add_ui_from_file (uimanager, "samplemenu.ui", NULL);
+	GtkWidget* menubar = gtk_ui_manager_get_widget (uimanager, "/MenuBar");
+	gtk_action_group_add_actions (sagroup,
+	                              smentries,
+	                              SMNUM_ENTRIES,
+	                              NULL);
 	gtk_box_pack_start (GTK_BOX(vbox),
-	                    table_sample,
+	                    menubar,
 	                    FALSE,   // expand
 	                    FALSE,   // fill
 	                    0);      // padding
+
+
 
 	/*
 	  GtkWidget* widget_15_clrbn[4][5];
@@ -2996,14 +3119,49 @@ void ui_create_gtkmenuitem()
 	                    FALSE,   // fill
 	                    0);      // padding
 
+	//  GtkMenuItem sample, book cap.9 - menubars.cpp
+	GtkAccelGroup* group = gtk_accel_group_new ();
+	GtkWidget* menubar = gtk_menu_bar_new ();
+	GtkWidget* file = gtk_menu_item_new_with_label ("File");
+	GtkWidget* edit = gtk_menu_item_new_with_label ("Edit");
+	GtkWidget* help = gtk_menu_item_new_with_label ("Help");
 
-	// Create few sample widgets to visualize theme changes
-	GtkWidget* table_sample = gtk_table_new (4, 3, TRUE);
+	GtkWidget* filemenu = gtk_menu_new ();
+	GtkWidget* editmenu = gtk_menu_new ();
+	GtkWidget* helpmenu = gtk_menu_new ();
+
+	gtk_menu_item_set_submenu (GTK_MENU_ITEM(file), filemenu);
+	gtk_menu_item_set_submenu (GTK_MENU_ITEM(edit), editmenu);
+	gtk_menu_item_set_submenu (GTK_MENU_ITEM(help), helpmenu);
+
+	gtk_menu_shell_append (GTK_MENU_SHELL(menubar), file);
+	gtk_menu_shell_append (GTK_MENU_SHELL(menubar), edit);
+	gtk_menu_shell_append (GTK_MENU_SHELL(menubar), help);
+
+	GtkWidget* New = gtk_image_menu_item_new_from_stock (GTK_STOCK_NEW, group);
+	GtkWidget* Open= gtk_image_menu_item_new_from_stock (GTK_STOCK_OPEN, group);
+	gtk_menu_shell_append (GTK_MENU_SHELL(filemenu), New);
+	gtk_menu_shell_append (GTK_MENU_SHELL(filemenu), Open);
+
+	GtkWidget* Cut  = gtk_image_menu_item_new_from_stock (GTK_STOCK_CUT, group);
+	GtkWidget* Copy = gtk_image_menu_item_new_from_stock (GTK_STOCK_COPY, group);
+	GtkWidget* Paste= gtk_image_menu_item_new_from_stock (GTK_STOCK_PASTE, group);
+	gtk_menu_shell_append (GTK_MENU_SHELL (editmenu), Cut);
+	gtk_menu_shell_append (GTK_MENU_SHELL (editmenu), Copy);
+	gtk_menu_shell_append (GTK_MENU_SHELL (editmenu), Paste);
+
+	GtkWidget* contents = gtk_image_menu_item_new_from_stock (GTK_STOCK_HELP, group);
+	GtkWidget* about = gtk_image_menu_item_new_from_stock (GTK_STOCK_ABOUT, group);
+	gtk_menu_shell_append (GTK_MENU_SHELL (helpmenu), contents);
+	gtk_menu_shell_append (GTK_MENU_SHELL (helpmenu), about);
+
 	gtk_box_pack_start (GTK_BOX(vbox),
-	                    table_sample,
+	                    menubar,
 	                    FALSE,   // expand
 	                    FALSE,   // fill
 	                    0);      // padding
+
+
 
 
 	/*
@@ -3042,13 +3200,71 @@ void ui_create_gtkcheckmenuitem()
 	                    0);      // padding
 
 
-	// Create few sample widgets to visualize theme changes
-	GtkWidget* table_sample = gtk_table_new (4, 3, TRUE);
+	GtkWidget* menubar = gtk_menu_bar_new ();
+
+	GtkWidget* cycle  = gtk_menu_item_new_with_label ("Cycling");
+	GtkWidget* focus  = gtk_menu_item_new_with_label ("Focus");
+	GtkWidget* access = gtk_menu_item_new_with_label ("Accessibility");
+
+	GtkWidget* cyclemenu  = gtk_menu_new ();
+	GtkWidget* focusmenu  = gtk_menu_new ();
+	GtkWidget* accessmenu = gtk_menu_new ();
+
+	gtk_menu_item_set_submenu (GTK_MENU_ITEM(cycle),  cyclemenu);
+	gtk_menu_item_set_submenu (GTK_MENU_ITEM(focus),  focusmenu);
+	gtk_menu_item_set_submenu (GTK_MENU_ITEM(access), accessmenu);
+
+	gtk_menu_shell_append (GTK_MENU_SHELL(menubar), cycle);
+	gtk_menu_shell_append (GTK_MENU_SHELL(menubar), focus);
+	gtk_menu_shell_append (GTK_MENU_SHELL(menubar), access);
+
+	GtkWidget* ihwin = gtk_check_menu_item_new_with_label (
+                                      "Include hidden (i.e. iconified windows");
+	GtkWidget* ctwoawork= gtk_check_menu_item_new_with_label (
+                                     "Cycle through windows on all workspaces");
+	GtkWidget* dfaswwcyc = gtk_check_menu_item_new_with_label (
+                            "Draw frame around selected windows while cycling");
+
+	gtk_menu_shell_append (GTK_MENU_SHELL(cyclemenu), ihwin);
+	gtk_menu_shell_append (GTK_MENU_SHELL(cyclemenu), ctwoawork);
+	gtk_menu_shell_append (GTK_MENU_SHELL(cyclemenu), dfaswwcyc);
+
+	GtkWidget* afsprev  = gtk_check_menu_item_new_with_label (
+                                          "Activate focus stealing prevention");
+	GtkWidget* hsifhint = gtk_check_menu_item_new_with_label (
+                                          "Honor standard ICCCM focus hint");
+
+	gtk_menu_shell_append (GTK_MENU_SHELL (focusmenu), afsprev);
+	gtk_menu_shell_append (GTK_MENU_SHELL (focusmenu), hsifhint);
+
+	GtkWidget* bwocwork = gtk_radio_menu_item_new_with_label(NULL,
+                                           "Brind window on current workspace");
+	GtkWidget* stwwork = gtk_radio_menu_item_new_with_label_from_widget (
+                                            GTK_RADIO_MENU_ITEM(bwocwork),
+                                            "Switch to window's workspace");
+	GtkWidget* dnot = gtk_radio_menu_item_new_with_label_from_widget (
+                                            GTK_RADIO_MENU_ITEM(bwocwork),
+                                            "Do nothing");
+
+	gtk_check_menu_item_set_active  (GTK_CHECK_MENU_ITEM(bwocwork), TRUE);
+	gtk_menu_shell_append (GTK_MENU_SHELL (focusmenu), bwocwork);
+	gtk_menu_shell_append (GTK_MENU_SHELL (focusmenu), stwwork);
+	gtk_menu_shell_append (GTK_MENU_SHELL (focusmenu), dnot);
+
+
+	GtkWidget* rwwambipress = gtk_check_menu_item_new_with_label (
+                              "Raise windows when any mouse button is pressed");
+	GtkWidget* hfowwmax = gtk_check_menu_item_new_with_label (
+                              "Hide frame of windows when maximized");
+	gtk_menu_shell_append (GTK_MENU_SHELL (accessmenu), rwwambipress);
+	gtk_menu_shell_append (GTK_MENU_SHELL (accessmenu), hfowwmax);
+
 	gtk_box_pack_start (GTK_BOX(vbox),
-	                    table_sample,
+	                    menubar,
 	                    FALSE,   // expand
 	                    FALSE,   // fill
 	                    0);      // padding
+
 
 	/*
 	  GtkWidget* widget_17_spinbn_indicatorsz;
@@ -3078,14 +3294,38 @@ void ui_create_gtktextview()
 	                    0);      // padding
 
 
-	// Create few sample widgets to visualize theme changes
-	GtkWidget* table_sample = gtk_table_new (4, 3, TRUE);
-	gtk_box_pack_start (GTK_BOX(vbox),
-	                    table_sample,
-	                    FALSE,   // expand
-	                    FALSE,   // fill
-	                    0);      // padding
+	PangoFontDescription* fd = pango_font_description_from_string(
+                                                           "Monospace Bold 10");
+	GtkWidget* textview = gtk_text_view_new ();
+	gtk_widget_modify_font (textview, fd);
 
+	gtk_text_view_set_wrap_mode (GTK_TEXT_VIEW(textview), GTK_WRAP_WORD);
+	gtk_text_view_set_justification (GTK_TEXT_VIEW(textview), GTK_JUSTIFY_RIGHT);
+
+	gtk_text_view_set_editable (GTK_TEXT_VIEW(textview), TRUE);
+	gtk_text_view_set_cursor_visible (GTK_TEXT_VIEW(textview), TRUE);
+
+	gtk_text_view_set_pixels_above_lines (GTK_TEXT_VIEW (textview), 5);
+	gtk_text_view_set_pixels_below_lines (GTK_TEXT_VIEW (textview), 5);
+	gtk_text_view_set_pixels_inside_wrap (GTK_TEXT_VIEW (textview), 5);
+
+	gtk_text_view_set_left_margin (GTK_TEXT_VIEW(textview), 10);
+	gtk_text_view_set_right_margin (GTK_TEXT_VIEW(textview), 10);
+
+	GtkTextBuffer* buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW(textview));
+	gtk_text_buffer_set_text (buffer, "This is some text!\nChange me!", -1);
+
+	GtkWidget* scrolled_win = gtk_scrolled_window_new (NULL, NULL);
+	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW(scrolled_win),
+	                                GTK_POLICY_AUTOMATIC,
+	                                GTK_POLICY_ALWAYS);
+
+	gtk_container_add (GTK_CONTAINER(scrolled_win), textview);
+	gtk_box_pack_start (GTK_BOX(vbox),
+	                    scrolled_win,
+	                    TRUE,
+	                    TRUE,
+	                    0);
 
 	/*
 	  GtkWidget* widget_18_clrbn[4][5];
