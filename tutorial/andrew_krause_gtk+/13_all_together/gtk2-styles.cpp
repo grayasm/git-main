@@ -3357,13 +3357,54 @@ void ui_create_gtktreeview()
 	                    FALSE,   // fill
 	                    0);      // padding
 
+	// Based on cap 8_tree_view_widget, sample- treestore.cpp
+	GtkWidget* treeview = gtk_tree_view_new ();
+	GtkCellRenderer* renderer = gtk_cell_renderer_text_new ();
+	GtkTreeViewColumn* column = gtk_tree_view_column_new_with_attributes (
+                                         "Title",  // *title
+                                         renderer, // *cell
+                                         "text",   // , ...
+                                         0,        // column index
+                                         NULL);
+	gtk_tree_view_append_column (GTK_TREE_VIEW(treeview), column);
 
-	// Create few sample widgets to visualize theme changes
-	GtkWidget* table_sample = gtk_table_new (4, 3, TRUE);
+	GtkTreeStore* store = gtk_tree_store_new (1, G_TYPE_STRING);
+	GtkTreeIter iter, child[3];
+	gtk_tree_store_append (store, &iter, NULL);
+	gtk_tree_store_set (store,    // store
+	                    &iter,    // iterator
+	                    0,        // column index
+	                    "iter",  // value
+	                    -1);      // -1 -> end
+
+	gtk_tree_store_append (store, &child[0], &iter);
+	gtk_tree_store_set (store,
+	                    &child[0],
+	                    0,
+	                    "child[0]",
+	                    -1);
+
+	gtk_tree_store_append (store, &child[1], &child[0]);
+	gtk_tree_store_set (store,
+	                    &child[1],
+	                    0,
+	                    "child[1]",
+	                    -1);
+
+	gtk_tree_store_append (store, &child[2], &child[1]);
+	gtk_tree_store_set (store,
+	                    &child[2],
+	                    0,
+	                    "child[2]",
+	                    -1);
+
+	gtk_tree_view_set_model (GTK_TREE_VIEW(treeview), GTK_TREE_MODEL(store));
+	gtk_tree_view_expand_all (GTK_TREE_VIEW(treeview));
+ 	g_object_unref (store);
 	gtk_box_pack_start (GTK_BOX(vbox),
-	                    table_sample,
-	                    FALSE,   // expand
-	                    FALSE,   // fill
+	                    treeview,
+	                    TRUE,    // expand
+	                    TRUE,    // fill
 	                    0);      // padding
 
 
@@ -3408,15 +3449,45 @@ void ui_create_gtkiconview()
 	                    FALSE,   // fill
 	                    0);      // padding
 
+	// Based on example from:
+	// https://developer.gnome.org/gtk2/unstable/gtk-migrating-GtkIconView.html
 
-	// Create few sample widgets to visualize theme changes
-	GtkWidget* table_sample = gtk_table_new (4, 3, TRUE);
+	GtkWidget* iconview = gtk_icon_view_new ();
+	GtkListStore* store = gtk_list_store_new (2,                // no of col.
+	                                          GDK_TYPE_PIXBUF,  // , ...
+	                                          G_TYPE_STRING);
+
+	gtk_icon_view_set_pixbuf_column (GTK_ICON_VIEW (iconview), 0);
+	gtk_icon_view_set_text_column (GTK_ICON_VIEW (iconview), 1);
+	gtk_icon_view_set_model (GTK_ICON_VIEW (iconview), GTK_TREE_MODEL (store));
+
+	GtkTreeIter iter;
+	GdkPixbuf *pixbuf;
+
+	// for iconview1.png -> iconview4.png repeat these from below.
+	for (gint i = 1; i < 5; ++i)
+	{
+		gchar iconpath[100], iconname[100];
+		sprintf(iconpath, "iconview%d.png", i);
+		sprintf(iconname, "iconview%d.png", i);
+
+		gtk_list_store_append (store, &iter);
+		pixbuf = gdk_pixbuf_new_from_file (iconpath, NULL);
+		gtk_list_store_set (store,    // store
+		                    &iter,    // iterator
+		                    0,        // column
+		                    pixbuf,   // value
+		                    1,        // column
+		                    iconname, // value
+		                    -1);      // -1 -> end
+		g_object_unref (pixbuf);
+	}
+
 	gtk_box_pack_start (GTK_BOX(vbox),
-	                    table_sample,
-	                    FALSE,   // expand
-	                    FALSE,   // fill
+	                    iconview,
+	                    TRUE,   // expand
+	                    TRUE,   // fill
 	                    0);      // padding
-
 
 
 	/*
