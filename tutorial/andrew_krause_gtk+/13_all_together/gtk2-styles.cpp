@@ -3374,7 +3374,7 @@ void ui_create_gtktreeview()
 	gtk_tree_store_set (store,    // store
 	                    &iter,    // iterator
 	                    0,        // column index
-	                    "iter",  // value
+	                    "iter",   // value
 	                    -1);      // -1 -> end
 
 	gtk_tree_store_append (store, &child[0], &iter);
@@ -3510,6 +3510,19 @@ void ui_delete_gtkiconview()
 {
 }
 
+
+void assistant_apply(GtkAssistant*, gpointer){ printf("clicked Apply\n"); }
+void assistant_cancel(GtkAssistant*, gpointer){ printf("clicked Cancel\n"); }
+void assistant_close(GtkAssistant*, gpointer) { printf("clicked Close\n"); }
+void assistant_destroy() { printf("called Destroy\n"); }
+void assistant_expander_activate (GtkExpander* ex, gpointer data)
+{
+	if (gtk_expander_get_expanded(ex) == FALSE)
+		gtk_widget_show_all (GTK_WIDGET(data));
+	else
+		gtk_widget_hide (GTK_WIDGET(data));
+}
+
 void ui_create_gtkassistant()
 {
 	GtkWidget* vbox = gtk_vbox_new (FALSE, 0);
@@ -3522,14 +3535,30 @@ void ui_create_gtkassistant()
 	                    FALSE,   // fill
 	                    0);      // padding
 
+	/*  Based on 05_dialogs, sample - assistant2.cpp and assistant.cpp
+	    GtkAssistant asserts & closes when the dialog is not standalone but
+	    has a parent (i.e. packed in vbox).
+	    The solution is to leave the assistant as a separate window for now.
+	*/
 
-	// Create few sample widgets to visualize theme changes
-	GtkWidget* table_sample = gtk_table_new (4, 3, TRUE);
-	gtk_box_pack_start (GTK_BOX(vbox),
-	                    table_sample,
-	                    FALSE,   // expand
-	                    FALSE,   // fill
-	                    0);      // padding
+	GtkWidget* assistant = gtk_assistant_new ();
+	gtk_widget_set_size_request (assistant, 400, 300);
+	gtk_window_set_title (GTK_WINDOW(assistant), "GtkAssistant sample");
+	g_signal_connect (G_OBJECT(assistant), "destroy", G_CALLBACK(assistant_destroy), 0);
+	g_signal_connect (G_OBJECT(assistant), "apply",   G_CALLBACK(assistant_apply), 0);
+	g_signal_connect (G_OBJECT(assistant), "cancel",  G_CALLBACK(assistant_cancel), 0);
+	g_signal_connect (G_OBJECT(assistant), "close",   G_CALLBACK(assistant_close), 0);
+
+	GtkWidget* label = gtk_label_new ("Gtk label");
+	gtk_assistant_append_page (GTK_ASSISTANT(assistant), label);
+	gtk_assistant_set_page_title (GTK_ASSISTANT(assistant), label, "Page title");
+	gtk_assistant_set_page_type (GTK_ASSISTANT(assistant), label, GTK_ASSISTANT_PAGE_CONFIRM);
+	gtk_assistant_set_page_complete (GTK_ASSISTANT(assistant), label, TRUE);
+
+	g_signal_connect (G_OBJECT(expander), "activate",
+	                  G_CALLBACK(assistant_expander_activate),
+	                  (gpointer)assistant);
+
 
 
 	/*
@@ -3551,6 +3580,24 @@ void ui_delete_gtkassistant()
 {
 }
 
+
+/* Return FALSE to destroy the widget.
+   Return TRUE to cancel a delete-event. This can be used to confirm
+   quitting the application. */
+gboolean dialog_delete_event (GtkWidget*, GdkEvent*, gpointer)
+{
+	printf("delete-event\n");
+	return TRUE;
+}
+
+void dialog_expander_activate (GtkExpander* ex, gpointer data)
+{
+	if (gtk_expander_get_expanded(ex) == FALSE)
+		gtk_widget_show_all (GTK_WIDGET(data));
+	else
+		gtk_widget_hide (GTK_WIDGET(data));
+}
+
 void ui_create_gtkdialog()
 {
 	GtkWidget* vbox = gtk_vbox_new (FALSE, 0);
@@ -3563,15 +3610,34 @@ void ui_create_gtkdialog()
 	                    FALSE,   // fill
 	                    0);      // padding
 
+	/*
+	  This modeless dialog sample is written from scratch based on gnome.org.
+	  When setting a parent on the dialog the program closes with assertion:
+	  Gtk-WARNING **: Can't set a parent on a toplevel widget!
+	 */
+	GtkWidget* dialog   = gtk_dialog_new ();
+	gtk_window_set_title (GTK_WINDOW(dialog), "GtkDialog sample");
+	gtk_widget_set_size_request (dialog, 300, 150);
+	gtk_dialog_add_button (GTK_DIALOG(dialog), " OK ", 11000);
+	gtk_dialog_add_button (GTK_DIALOG(dialog), " Cancel ", 11001);
 
-	// Create few sample widgets to visualize theme changes
-	GtkWidget* table_sample = gtk_table_new (4, 3, TRUE);
-	gtk_box_pack_start (GTK_BOX(vbox),
-	                    table_sample,
-	                    FALSE,   // expand
-	                    FALSE,   // fill
-	                    0);      // padding
+	GtkWidget* hbox = gtk_dialog_get_action_area (GTK_DIALOG(dialog));
+	GtkWidget* rndbn = gtk_button_new_with_label("h-boxed");
+	gtk_box_pack_start (GTK_BOX(hbox), rndbn, FALSE, FALSE, 0);
 
+	GtkWidget* vbox2 = gtk_dialog_get_content_area (GTK_DIALOG(dialog));
+	GtkWidget* label = gtk_label_new ("sample label\non 2 raws");
+	gtk_box_pack_start (GTK_BOX(vbox2), label, FALSE, FALSE, 0);
+
+	gtk_window_set_modal (GTK_WINDOW(dialog), FALSE);
+	g_signal_connect (G_OBJECT(dialog),
+	                  "delete-event",
+	                  G_CALLBACK(dialog_delete_event),
+	                  0);
+
+	g_signal_connect (G_OBJECT(expander), "activate",
+	                  G_CALLBACK(dialog_expander_activate),
+	                  (gpointer)dialog);
 
 	/*
 	  GtkWidget* widget_22_clrbn[4][5];
@@ -3594,6 +3660,24 @@ void ui_delete_gtkdialog()
 {
 }
 
+
+/* Return FALSE to destroy the widget.
+   Return TRUE to cancel a delete-event. This can be used to confirm
+   quitting the application. */
+gboolean msgdialog_delete_event (GtkWidget*, GdkEvent*, gpointer)
+{
+	printf("delete-event\n");
+	return TRUE;
+}
+
+void msgdialog_expander_activate (GtkExpander* ex, gpointer data)
+{
+	if (gtk_expander_get_expanded(ex) == FALSE)
+		gtk_widget_show_all (GTK_WIDGET(data));
+	else
+		gtk_widget_hide (GTK_WIDGET(data));
+}
+
 void ui_create_gtkmessagedialog()
 {
 	GtkWidget* vbox = gtk_vbox_new (FALSE, 0);
@@ -3607,13 +3691,32 @@ void ui_create_gtkmessagedialog()
 	                    0);      // padding
 
 
-	// Create few sample widgets to visualize theme changes
-	GtkWidget* table_sample = gtk_table_new (4, 3, TRUE);
-	gtk_box_pack_start (GTK_BOX(vbox),
-	                    table_sample,
-	                    FALSE,   // expand
-	                    FALSE,   // fill
-	                    0);      // padding
+	/*
+	  This modeless message dialog sample is based on gnome.org
+	  Didn't bother to try setting a parent on GtkMessageDialog.
+	  Most probably will assert, so followed the above dialog sample.
+	 */
+	GtkWidget* msgdialog = gtk_message_dialog_new (
+                               GTK_WINDOW(app->window), // parent
+                               GTK_DIALOG_DESTROY_WITH_PARENT,
+                               GTK_MESSAGE_INFO,
+                               GTK_BUTTONS_OK_CANCEL,
+                               "Sample message\n"
+                               "on 2 raws."
+                               );
+	gtk_window_set_title (GTK_WINDOW(msgdialog), "GtkMessageDialog sample");
+	gtk_widget_set_size_request (msgdialog, 300, 150);
+
+	gtk_window_set_modal (GTK_WINDOW(msgdialog), FALSE);
+	g_signal_connect (G_OBJECT(msgdialog),
+	                  "delete-event",
+	                  G_CALLBACK(msgdialog_delete_event),
+	                  0);
+
+	g_signal_connect (G_OBJECT(expander), "activate",
+	                  G_CALLBACK(msgdialog_expander_activate),
+	                  (gpointer)msgdialog);
+
 
 
 	/*
@@ -3648,13 +3751,24 @@ void ui_create_gtknotebook()
 	                    0);      // padding
 
 
-	// Create few sample widgets to visualize theme changes
-	GtkWidget* table_sample = gtk_table_new (4, 3, TRUE);
+	/*
+	  GtkNotebook sample is based on 03_containers - notebooks.cpp
+	 */
+	GtkWidget* notebook = gtk_notebook_new ();
+	GtkWidget* label1 = gtk_label_new ("Page One");
+	GtkWidget* label2 = gtk_label_new ("Page Two");
+	GtkWidget* child1 = gtk_label_new ("Go to page 2 to find the answer.");
+	GtkWidget* child2 = gtk_label_new ("Go to page 1 to find the answer.");
+
+	gtk_notebook_append_page (GTK_NOTEBOOK(notebook), child1, label1);
+	gtk_notebook_append_page (GTK_NOTEBOOK(notebook), child2, label2);
+	gtk_notebook_set_tab_pos (GTK_NOTEBOOK(notebook), GTK_POS_BOTTOM);
+
 	gtk_box_pack_start (GTK_BOX(vbox),
-	                    table_sample,
-	                    FALSE,   // expand
-	                    FALSE,   // fill
-	                    0);      // padding
+	                    notebook,
+	                    TRUE,   // expand
+	                    TRUE,   // fill
+	                    0);     // padding
 
 
 	/*
@@ -3693,15 +3807,25 @@ void ui_create_gtkpaned()
 	                    FALSE,   // fill
 	                    0);      // padding
 
+	/*
+	  GtkPaned sample is based on 03_containers - panes.cpp
+	 */
+	GtkWidget* hpaned = gtk_hpaned_new ();
+	GtkWidget* hbn1 = gtk_button_new_with_label ("Resize");
+	GtkWidget* hbn2 = gtk_button_new_with_label ("Me!");
+	gtk_paned_add1 (GTK_PANED(hpaned), hbn1);
+	gtk_paned_add2 (GTK_PANED(hpaned), hbn2);
 
-	// Create few sample widgets to visualize theme changes
-	GtkWidget* table_sample = gtk_table_new (4, 3, TRUE);
-	gtk_box_pack_start (GTK_BOX(vbox),
-	                    table_sample,
-	                    FALSE,   // expand
-	                    FALSE,   // fill
-	                    0);      // padding
+	GtkWidget* vpaned = gtk_vpaned_new ();
+	GtkWidget* vbn1 = gtk_button_new_with_label ("Resize");
+	GtkWidget* vbn2 = gtk_button_new_with_label ("Me!");
+	gtk_paned_add1 (GTK_PANED(vpaned), vbn1);
+	gtk_paned_add2 (GTK_PANED(vpaned), vbn2);
 
+	GtkWidget* hbox = gtk_hbox_new (TRUE, 10);
+	gtk_box_pack_start (GTK_BOX(hbox), hpaned, TRUE, TRUE, 0);
+	gtk_box_pack_start (GTK_BOX(hbox), vpaned, TRUE, TRUE, 0);
+	gtk_box_pack_start (GTK_BOX(vbox), hbox, TRUE, TRUE, 0);
 
 	/*
 	  GtkWidget* widget_25_spinbn_handlesz;
@@ -3717,6 +3841,29 @@ void ui_delete_gtkpaned()
 {
 }
 
+typedef struct
+{
+	GtkWidget *spin;      // GtkSpinButton
+	GtkWidget *scale;     // GtkHScale
+	GtkWidget *check;     // GtkCheckButton
+} range_widgets;
+
+void range_value_changed (GtkWidget *widget, range_widgets *w)
+{
+	gdouble val1 = gtk_spin_button_get_value (GTK_SPIN_BUTTON (w->spin));
+	gdouble val2 = gtk_range_get_value (GTK_RANGE (w->scale));
+
+	/* Synchronize the widget's value based upon the type of "widget". */
+	if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (w->check)) &&
+	    val1 != val2)
+	{
+		if (GTK_IS_SPIN_BUTTON (widget))
+			gtk_range_set_value (GTK_RANGE (w->scale), val1);
+		else
+			gtk_spin_button_set_value (GTK_SPIN_BUTTON (w->spin), val2);
+	}
+}
+
 void ui_create_gtkrange()
 {
 	GtkWidget* vbox = gtk_vbox_new (FALSE, 0);
@@ -3730,13 +3877,40 @@ void ui_create_gtkrange()
 	                    0);      // padding
 
 
-	// Create few sample widgets to visualize theme changes
-	GtkWidget* table_sample = gtk_table_new (4, 3, TRUE);
-	gtk_box_pack_start (GTK_BOX(vbox),
-	                    table_sample,
-	                    FALSE,   // expand
-	                    FALSE,   // fill
-	                    0);      // padding
+	/*
+	  GtkRange is based on exercises/exercise4-2.c
+	 */
+	GtkAdjustment* adj1 =
+		GTK_ADJUSTMENT (gtk_adjustment_new (0.5, 0.0, 1.0, 0.01, 0.02, 0.02));
+	GtkAdjustment* adj2 =
+		GTK_ADJUSTMENT (gtk_adjustment_new (0.5, 0.0, 1.02, 0.01, 0.02, 0.02));
+
+	range_widgets* w = (range_widgets*) g_malloc (sizeof(range_widgets));
+	w->spin = gtk_spin_button_new (adj1, 0.01, 2);
+	w->scale = gtk_hscale_new (adj2);
+	w->check = gtk_check_button_new_with_label ("Synchronize Spin and Scale");
+
+	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (w->check), TRUE);
+	gtk_scale_set_digits (GTK_SCALE (w->scale), 2);
+	gtk_scale_set_value_pos (GTK_SCALE (w->scale), GTK_POS_RIGHT);
+
+	g_signal_connect (G_OBJECT (w->spin),
+	                  "value_changed",
+	                  G_CALLBACK (range_value_changed),
+	                  (gpointer) w);
+	g_signal_connect (G_OBJECT (w->scale),
+	                  "value_changed",
+	                  G_CALLBACK (range_value_changed),
+	                  (gpointer) w);
+
+	GtkWidget* vbox2 = gtk_vbox_new (FALSE, 5);
+	gtk_box_pack_start (GTK_BOX (vbox2), w->spin, FALSE, TRUE, 0);
+	gtk_box_pack_start (GTK_BOX (vbox2), w->scale, FALSE, TRUE, 0);
+	gtk_box_pack_start (GTK_BOX (vbox2), w->check, FALSE, TRUE, 0);
+
+	gtk_box_pack_start (GTK_BOX(vbox), vbox2, FALSE, TRUE, 0);
+
+
 
 
 	/*
@@ -3763,6 +3937,30 @@ void ui_delete_gtkrange()
 {
 }
 
+
+typedef struct
+{
+	GtkWidget *spin;      // GtkSpinButton
+	GtkWidget *scale;     // GtkHScale
+	GtkWidget *check;     // GtkCheckButton
+} scale_widgets;
+
+void scale_value_changed (GtkWidget *widget, scale_widgets *w)
+{
+	gdouble val1 = gtk_spin_button_get_value (GTK_SPIN_BUTTON (w->spin));
+	gdouble val2 = gtk_range_get_value (GTK_RANGE (w->scale));
+
+	/* Synchronize the widget's value based upon the type of "widget". */
+	if (gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (w->check)) &&
+	    val1 != val2)
+	{
+		if (GTK_IS_SPIN_BUTTON (widget))
+			gtk_range_set_value (GTK_RANGE (w->scale), val1);
+		else
+			gtk_spin_button_set_value (GTK_SPIN_BUTTON (w->spin), val2);
+	}
+}
+
 void ui_create_gtkscale()
 {
 	GtkWidget* vbox = gtk_vbox_new (FALSE, 0);
@@ -3776,13 +3974,38 @@ void ui_create_gtkscale()
 	                    0);      // padding
 
 
-	// Create few sample widgets to visualize theme changes
-	GtkWidget* table_sample = gtk_table_new (4, 3, TRUE);
-	gtk_box_pack_start (GTK_BOX(vbox),
-	                    table_sample,
-	                    FALSE,   // expand
-	                    FALSE,   // fill
-	                    0);      // padding
+	/*
+	  GtkScale is based on exercises/exercise4-2.c
+	 */
+	GtkAdjustment* adj1 =
+		GTK_ADJUSTMENT (gtk_adjustment_new (0.5, 0.0, 1.0, 0.01, 0.02, 0.02));
+	GtkAdjustment* adj2 =
+		GTK_ADJUSTMENT (gtk_adjustment_new (0.5, 0.0, 1.02, 0.01, 0.02, 0.02));
+
+	scale_widgets* w = (scale_widgets*) g_malloc (sizeof(scale_widgets));
+	w->spin = gtk_spin_button_new (adj1, 0.01, 2);
+	w->scale = gtk_hscale_new (adj2);
+	w->check = gtk_check_button_new_with_label ("Synchronize Spin and Scale");
+
+	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (w->check), TRUE);
+	gtk_scale_set_digits (GTK_SCALE (w->scale), 2);
+	gtk_scale_set_value_pos (GTK_SCALE (w->scale), GTK_POS_RIGHT);
+
+	g_signal_connect (G_OBJECT (w->spin),
+	                  "value_changed",
+	                  G_CALLBACK (scale_value_changed),
+	                  (gpointer) w);
+	g_signal_connect (G_OBJECT (w->scale),
+	                  "value_changed",
+	                  G_CALLBACK (scale_value_changed),
+	                  (gpointer) w);
+
+	GtkWidget* vbox2 = gtk_vbox_new (FALSE, 5);
+	gtk_box_pack_start (GTK_BOX (vbox2), w->spin, FALSE, TRUE, 0);
+	gtk_box_pack_start (GTK_BOX (vbox2), w->scale, FALSE, TRUE, 0);
+	gtk_box_pack_start (GTK_BOX (vbox2), w->check, FALSE, TRUE, 0);
+
+	gtk_box_pack_start (GTK_BOX(vbox), vbox2, FALSE, TRUE, 0);
 
 
 	/*
@@ -3812,12 +4035,18 @@ void ui_create_gtkscrolledwindow()
 	                    FALSE,   // fill
 	                    0);      // padding
 
-
-	// Create few sample widgets to visualize theme changes
-	GtkWidget* table_sample = gtk_table_new (4, 3, TRUE);
+	// sample from SO
+	// http://stackoverflow.com/questions/8403731/gtk-and-scrolling-text-view
+	const gchar* text = "sample text";
+	GtkTextTagTable* txttags = gtk_text_tag_table_new ();
+	GtkTextBuffer* txtbuff = gtk_text_buffer_new (txttags);
+	gtk_text_buffer_set_text (txtbuff, text, strlen(text));
+	GtkWidget* txtview = gtk_text_view_new_with_buffer (txtbuff);
+	GtkWidget* scrwin = gtk_scrolled_window_new (NULL, NULL);
+	gtk_container_add (GTK_CONTAINER(scrwin), txtview);
 	gtk_box_pack_start (GTK_BOX(vbox),
-	                    table_sample,
-	                    FALSE,   // expand
+	                    scrwin,
+	                    FALSE,   // expanding
 	                    FALSE,   // fill
 	                    0);      // padding
 
