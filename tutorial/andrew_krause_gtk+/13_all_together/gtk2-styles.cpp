@@ -1489,7 +1489,7 @@ void write_rc_for_gtkexpander()
 	                        "\tGtkExpander::expander-spacing = %d\n",
 	                        expandersp);
 
-	// ----- style end   -----
+	// ----- style end -----
 
 	g_string_append_printf (app->widget_6_style_txt,"%s\n", "}");
 	g_string_append_printf (app->widget_6_style_txt,
@@ -1514,24 +1514,49 @@ void write_rc_for_gtkscrollbar()
 	                        gtkstyle,
 	                        gtkparentstyle);
 
-	// ----- no style   -----
+	// ----- style begin -----
+	gboolean fixedsl = gtk_toggle_button_get_active (
+                            GTK_TOGGLE_BUTTON(app->widget_7_chkbn_fixedsl));
+	g_string_append_printf (app->widget_7_style_txt,
+	                        "\tGtkScrollbar::fixed-slider-length = %d\n",
+	                        fixedsl == true ? 1 : 0);
+
+	gboolean hasbs = gtk_toggle_button_get_active (
+                            GTK_TOGGLE_BUTTON(app->widget_7_chkbn_hasbs));
+	g_string_append_printf (app->widget_7_style_txt,
+	                        "\tGtkScrollbar::has-backward-stepper = %d\n",
+	                        hasbs == true ? 1 : 0);
+
+	gboolean hasfs = gtk_toggle_button_get_active (
+                            GTK_TOGGLE_BUTTON(app->widget_7_chkbn_hasfs));
+	g_string_append_printf (app->widget_7_style_txt,
+	                        "\tGtkScrollbar::has-forward-stepper = %d\n",
+	                        hasfs == true ? 1 : 0);
+
+	gboolean hassbs = gtk_toggle_button_get_active (
+                            GTK_TOGGLE_BUTTON(app->widget_7_chkbn_hassbs));
+	g_string_append_printf (app->widget_7_style_txt,
+	                    "\tGtkScrollbar::has-secondary-backward-stepper = %d\n",
+	                        hassbs == true ? 1 : 0);
+
+	gboolean hassfs = gtk_toggle_button_get_active (
+                            GTK_TOGGLE_BUTTON(app->widget_7_chkbn_hassfs));
+	g_string_append_printf (app->widget_7_style_txt,
+	                    "\tGtkScrollbar::has-secondary-forward-stepper = %d\n",
+	                        hassfs == true ? 1 : 0);
+
+	gint minsl = gtk_spin_button_get_value_as_int(
+                            GTK_SPIN_BUTTON(app->widget_7_spinbn_minsl));
+	g_string_append_printf (app->widget_7_style_txt,
+	                        "\tGtkScrollbar::min-slider-length = %d\n",
+	                        minsl);
+
+	// ----- style end -----
 
 	g_string_append_printf (app->widget_7_style_txt,"%s\n", "}");
 	g_string_append_printf (app->widget_7_style_txt,
 	                        "class \"GtkScrollbar\" style \"%s\"\n",
 	                        gtkstyle);
-
-	// ----- properties begin -----
-	/*
-	  GtkWidget* widget_7_chkbn_fixedsl; "fixed-slider-length" gboolean default=FALSE
-	  GtkWidget* widget_7_chkbn_hasbs; "has-backward-stepper" gboolean default=TRUE
-	  GtkWidget* widget_7_chkbn_hasfs; "has-forward-stepper" gboolean default=TRUE
-	  GtkWidget* widget_7_chkbn_hassbs; "has-secondary-backward-stepper" gboolean default=FALSE
-	  GtkWidget* widget_7_chkbn_hassfs; "has-secondary-forward-stepper" gboolean default=FALSE
-	  GtkWidget* widget_7_spinbn_minsl; "min-slider-length" gint >= 0 default=21
-	*/
-
-	// ----- properties end -----
 
 	FILE* fp = fopen (app->rcfile, "a");
 	if (fp == NULL) exit (-1);
@@ -1551,19 +1576,19 @@ void write_rc_for_gtkarrow()
 	                        gtkstyle,
 	                        gtkparentstyle);
 
-	// ----- no style -----
+	// ----- style begin -----
+	gdouble arrowsc = gtk_spin_button_get_value(
+                            GTK_SPIN_BUTTON(app->widget_8_spinbn_arrowsc));
+	g_string_append_printf (app->widget_8_style_txt,
+	                        "\tGtkArrow::arrow-scaling = %0.2f\n",
+	                        arrowsc);
+
+	// ----- style end -----
 
 	g_string_append_printf (app->widget_8_style_txt,"%s\n", "}");
 	g_string_append_printf (app->widget_8_style_txt,
 	                        "class \"GtkArrow\" style \"%s\"\n",
 	                        gtkstyle);
-
-	// ----- properties begin -----
-	/*
-	  GtkWidget* widget_8_spinbn_arrowsc; "arrow-scaling" gfloat [0,1] default=0.7
-	*/
-
-	// ----- properties end -----
 
 	FILE* fp = fopen (app->rcfile, "a");
 	if (fp == NULL) exit (-1);
@@ -1628,24 +1653,48 @@ void write_rc_for_gtkprogressbar()
 	                        "\tythickness = %d\n",
 	                        ythickness);
 
+	gint minhzbarh = gtk_spin_button_get_value_as_int(
+                            GTK_SPIN_BUTTON(app->widget_9_spinbn_minhzbarh));
+	g_string_append_printf (app->widget_9_style_txt,
+	                        "\tGtkprogressBar::min-horizontal-bar-height = %d\n",
+	                        minhzbarh);
+
+	gint minhzbarw = gtk_spin_button_get_value_as_int(
+                            GTK_SPIN_BUTTON(app->widget_9_spinbn_minhzbarw));
+	g_string_append_printf (app->widget_9_style_txt,
+	                        "\tGtkprogressBar::min-horizontal-bar-width = %d\n",
+	                        minhzbarw);
+
+	gint minvtbarh = gtk_spin_button_get_value_as_int(
+                            GTK_SPIN_BUTTON(app->widget_9_spinbn_minvtbarh));
+	g_string_append_printf (app->widget_9_style_txt,
+	                        "\tGtkprogressBar::min-vertical-bar-height = %d\n",
+	                        minvtbarh);
+
+	gint minvtbarw = gtk_spin_button_get_value_as_int(
+                            GTK_SPIN_BUTTON(app->widget_9_spinbn_minvtbarw));
+	g_string_append_printf (app->widget_9_style_txt,
+	                        "\tGtkprogressBar::min-vertical-bar-width = %d\n",
+	                        minvtbarw);
+
+	gint xspacing = gtk_spin_button_get_value_as_int(
+                            GTK_SPIN_BUTTON(app->widget_9_spinbn_xs));
+	g_string_append_printf (app->widget_9_style_txt,
+	                        "\tGtkprogressBar::xspacing = %d\n",
+	                        xspacing);
+
+	gint yspacing = gtk_spin_button_get_value_as_int(
+                            GTK_SPIN_BUTTON(app->widget_9_spinbn_ys));
+	g_string_append_printf (app->widget_9_style_txt,
+	                        "\tGtkprogressBar::yspacing = %d\n",
+	                        yspacing);
+
 	// ----- style end   -----
 
 	g_string_append_printf (app->widget_9_style_txt,"%s\n", "}");
 	g_string_append_printf (app->widget_9_style_txt,
-	                        "class \"GtkprogressBar\" style \"%s\"\n",
+	                        "class \"GtkProgressBar\" style \"%s\"\n",
 	                        gtkstyle);
-
-	// ----- properties begin -----
-	/*
-	  GtkWidget* widget_9_spinbn_minhzbarh; "min-horizontal-bar-height" gint >= 1 default=20
-	  GtkWidget* widget_9_spinbn_minhzbarw; "min-horizontal-bar-width" gint >= 1 default=150
-	  GtkWidget* widget_9_spinbn_minvtbarh; "min-vertical-bar-height" gint >= 1 default=80
-	  GtkWidget* widget_9_spinbn_minvtbarw; "min-vertical-bar-width" gint >= 1 default=22
-	  GtkWidget* widget_9_spinbn_xs; "xspacing" gint >= 0 default=7
-	  GtkWidget* widget_9_spinbn_ys; "yspacing" gint >= 0 default=7
-	*/
-
-	// ----- properties end -----
 
 	FILE* fp = fopen (app->rcfile, "a");
 	if (fp == NULL) exit (-1);
