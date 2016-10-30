@@ -1477,20 +1477,24 @@ void write_rc_for_gtkexpander()
 	                        "\tythickness = %d\n",
 	                        ythickness);
 
+	gint expandersz = gtk_spin_button_get_value_as_int(
+                            GTK_SPIN_BUTTON(app->widget_6_spinbn_expandersz));
+	g_string_append_printf (app->widget_6_style_txt,
+	                        "\n\tGtkExpander::expander-size = %d\n",
+	                        expandersz);
+
+	gint expandersp = gtk_spin_button_get_value_as_int(
+                            GTK_SPIN_BUTTON(app->widget_6_spinbn_expandersp));
+	g_string_append_printf (app->widget_6_style_txt,
+	                        "\tGtkExpander::expander-spacing = %d\n",
+	                        expandersp);
+
 	// ----- style end   -----
 
 	g_string_append_printf (app->widget_6_style_txt,"%s\n", "}");
 	g_string_append_printf (app->widget_6_style_txt,
 	                        "class \"GtkExpander\" style \"%s\"\n",
 	                        gtkstyle);
-
-	// ----- properties begin -----
-	/*
-	  GtkWidget* widget_6_spinbn_expandersz; "expander-size" gint >=0 default=10
-	  GtkWidget* widget_6_spinbn_expandersp; "expander-spacing" gint >= 0 default=2
-	*/
-
-	// ----- properties end -----
 
 	FILE* fp = fopen (app->rcfile, "a");
 	if (fp == NULL) exit (-1);
