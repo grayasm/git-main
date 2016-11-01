@@ -3097,29 +3097,79 @@ void write_rc_for_gtkrange()
 	                        gtkstyle,
 	                        gtkparentstyle);
 
-	// ----- no style -----
+	// ----- style begin -----
+	gboolean activatesld = gtk_toggle_button_get_active (
+                            GTK_TOGGLE_BUTTON(app->widget_26_chkbn_activatesld));
+	g_string_append_printf (app->widget_26_style_txt,
+	                        "\tGtkRange::activate-slider = %d\n",
+	                        activatesld == true ? 1 : 0);
+
+	gint arrowdx = gtk_spin_button_get_value_as_int(
+                            GTK_SPIN_BUTTON(app->widget_26_spinbn_arrowdx));
+	g_string_append_printf (app->widget_26_style_txt,
+	                        "\tGtkRange::arrow-displacement-x = %d\n",
+	                        arrowdx);
+
+	gint arrowdy = gtk_spin_button_get_value_as_int(
+                            GTK_SPIN_BUTTON(app->widget_26_spinbn_arrowdy));
+	g_string_append_printf (app->widget_26_style_txt,
+	                        "\tGtkRange::arrow-displacement-y = %d\n",
+	                        arrowdy);
+
+	gdouble arrowsc = gtk_spin_button_get_value(
+                            GTK_SPIN_BUTTON(app->widget_26_spinbn_arrowsc));
+	g_string_append_printf (app->widget_26_style_txt,
+	                        "\tGtkRange::arrow-scaling = %.02f\n",
+	                        arrowsc);
+
+	gint sliderw = gtk_spin_button_get_value_as_int(
+                            GTK_SPIN_BUTTON(app->widget_26_spinbn_sliderw));
+	g_string_append_printf (app->widget_26_style_txt,
+	                        "\tGtkRange::slider-width = %d\n",
+	                        sliderw);
+
+	gboolean stepperpd = gtk_toggle_button_get_active (
+                            GTK_TOGGLE_BUTTON(app->widget_26_chkbn_stepperpd));
+	g_string_append_printf (app->widget_26_style_txt,
+	                        "\tGtkRange::stepper-position-details = %d\n",
+	                        stepperpd == true ? 1 : 0);
+
+	gint steppersz = gtk_spin_button_get_value_as_int(
+                            GTK_SPIN_BUTTON(app->widget_26_spinbn_steppersz));
+	g_string_append_printf (app->widget_26_style_txt,
+	                        "\tGtkRange::stepper-size = %d\n",
+	                        steppersz);
+
+	gint steppersp = gtk_spin_button_get_value_as_int(
+                            GTK_SPIN_BUTTON(app->widget_26_spinbn_steppersp));
+	g_string_append_printf (app->widget_26_style_txt,
+	                        "\tGtkRange::stepper-spacing = %d\n",
+	                        steppersp);
+
+	gint troughb = gtk_spin_button_get_value_as_int(
+                            GTK_SPIN_BUTTON(app->widget_26_spinbn_troughb));
+	g_string_append_printf (app->widget_26_style_txt,
+	                        "\tGtkRange::through-border = %d\n",
+	                        troughb);
+
+	gboolean throughsdet = gtk_toggle_button_get_active (
+                           GTK_TOGGLE_BUTTON(app->widget_26_chkbn_throughsdet));
+	g_string_append_printf (app->widget_26_style_txt,
+	                        "\tGtkRange::through-size-details = %d\n",
+	                        throughsdet == true ? 1 : 0);
+
+	gboolean throughustep = gtk_toggle_button_get_active (
+                          GTK_TOGGLE_BUTTON(app->widget_26_chkbn_throughustep));
+	g_string_append_printf (app->widget_26_style_txt,
+	                        "\tGtkRange::through-under-steppers = %d\n",
+	                        throughustep == true ? 1 : 0);
+
+	// ----- style end -----
 
 	g_string_append_printf (app->widget_26_style_txt,"%s\n", "}");
 	g_string_append_printf (app->widget_26_style_txt,
 	                        "class \"GtkRange\" style \"%s\"\n",
 	                        gtkstyle);
-
-	// ----- properties begin -----
-	/*
-	GtkWidget* widget_26_chkbn_activatesld; "activate-slider" gboolean default=FALSE , deprecated in 2.22
-	GtkWidget* widget_26_spinbn_arrowdx; "arrow-displacement-x" gint (didn't specify) default=0  (how far in x dir to move the arrow when button is pressed)
-	GtkWidget* widget_26_spinbn_arrowdy; "arrow-displacement-y" gint (didn't specify) default=0  (similar in y)
-	GtkWidget* widget_26_spinbn_arrowsc; "arrow-scaling" gfloat [0,1] default=0.5
-	GtkWidget* widget_26_spinbn_sliderw; "slider-width" gint >= 0 default=14
-	GtkWidget* widget_26_chkbn_stepperpd; "stepper-position-details" gboolean default=FALSE , deprecated in 2.22
-	GtkWidget* widget_26_spinbn_steppersz; "stepper-size" gint >= 0 default=14
-	GtkWidget* widget_26_spinbn_steppersp; "stepper-spacing" gint >= 0 default=0
-	GtkWidget* widget_26_spinbn_troughb; "through-border" gint >= 0 default=1
-	GtkWidget* widget_26_chkbn_throughsdet; "through-size-details" gboolean default=FALSE , deprecated in 2.22
-	GtkWidget* widget_26_chkbn_throughustep; "through-under-steppers" gboolean default=TRUE
-	*/
-
-	// ----- properties end -----
 
 	FILE* fp = fopen (app->rcfile, "a");
 	if (fp == NULL) exit (-1);
