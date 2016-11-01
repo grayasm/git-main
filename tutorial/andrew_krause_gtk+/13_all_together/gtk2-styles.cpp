@@ -3065,17 +3065,19 @@ void write_rc_for_gtkpaned()
 	                        gtkstyle,
 	                        gtkparentstyle);
 
-	// ----- no style -----
+	// ----- style begin -----
+	gint handlesz = gtk_spin_button_get_value_as_int(
+                            GTK_SPIN_BUTTON(app->widget_25_spinbn_handlesz));
+	g_string_append_printf (app->widget_25_style_txt,
+	                        "\tGtkPaned::handle-size = %d\n",
+	                        handlesz);
+
+	// ----- style end -----
 
 	g_string_append_printf (app->widget_25_style_txt,"%s\n", "}");
 	g_string_append_printf (app->widget_25_style_txt,
 	                        "class \"GtkPaned\" style \"%s\"\n",
 	                        gtkstyle);
-
-	// ----- properties begin -----
-	// GtkWidget* widget_25_spinbn_handlesz; "handle-size" gint >= 0 default=5
-
-	// ----- properties end -----
 
 	FILE* fp = fopen (app->rcfile, "a");
 	if (fp == NULL) exit (-1);
