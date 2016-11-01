@@ -3272,20 +3272,24 @@ void write_rc_for_gtkscrolledwindow()
 	                        "\tythickness = %d\n",
 	                        ythickness);
 
+	gint scrollbarsp = gtk_spin_button_get_value_as_int(
+                            GTK_SPIN_BUTTON(app->widget_28_spinbn_scrollbarsp));
+	g_string_append_printf (app->widget_28_style_txt,
+	                        "\tGtkScrolledWindow::scrollbar-spacing = %d\n",
+	                        scrollbarsp);
+
+	gboolean scrollbarswb = gtk_toggle_button_get_active (
+                          GTK_TOGGLE_BUTTON(app->widget_28_chkbn_scrollbarswb));
+	g_string_append_printf (app->widget_28_style_txt,
+                            "\tGtkScrolledWindow::scollbars-within-bevel = %d\n",
+	                        scrollbarswb == true ? 1 : 0);
+
 	// ----- style end -----
 
 	g_string_append_printf (app->widget_28_style_txt,"%s\n", "}");
 	g_string_append_printf (app->widget_28_style_txt,
 	                        "class \"GtkScrolledWindow\" style \"%s\"\n",
 	                        gtkstyle);
-
-	// ----- properties begin -----
-	/*
-	GtkWidget* widget_28_spinbn_scrollbarsp; "scrollbar-spacing" gint >= 0 default=3
-	GtkWidget* widget_28_chkbn_scrollbarswb; "scollbars-within-bevel" gboolean default=FALSE
-	*/
-
-	// ----- properties end -----
 
 	FILE* fp = fopen (app->rcfile, "a");
 	if (fp == NULL) exit (-1);
