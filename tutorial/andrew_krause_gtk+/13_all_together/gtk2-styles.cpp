@@ -2822,22 +2822,36 @@ void write_rc_for_gtkdialog()
 	                        "\tythickness = %d\n",
 	                        ythickness);
 
+	gint actionab = gtk_spin_button_get_value_as_int(
+                            GTK_SPIN_BUTTON(app->widget_22_spinbn_actionab));
+	g_string_append_printf (app->widget_22_style_txt,
+	                        "\n\tGtkDialog::action-area-border = %d\n",
+	                        actionab);
+
+	gint buttonsp = gtk_spin_button_get_value_as_int(
+                            GTK_SPIN_BUTTON(app->widget_22_spinbn_buttonsp));
+	g_string_append_printf (app->widget_22_style_txt,
+	                        "\tGtkDialog::button-spacing = %d\n",
+	                        buttonsp);
+
+	gint contentab = gtk_spin_button_get_value_as_int(
+                            GTK_SPIN_BUTTON(app->widget_22_spinbn_contentab));
+	g_string_append_printf (app->widget_22_style_txt,
+	                        "\tGtkDialog::content-area-border = %d\n",
+	                        contentab);
+
+	gint contentas = gtk_spin_button_get_value_as_int(
+                            GTK_SPIN_BUTTON(app->widget_22_spinbn_contentas));
+	g_string_append_printf (app->widget_22_style_txt,
+	                        "\tGtkDialog::content-area-spacing = %d\n",
+	                        contentas);
+
 	// ----- style end   -----
 
 	g_string_append_printf (app->widget_22_style_txt,"%s\n", "}");
 	g_string_append_printf (app->widget_22_style_txt,
 	                        "class \"GtkDialog\" style \"%s\"\n",
 	                        gtkstyle);
-
-	// ----- properties begin -----
-	/*
-	GtkWidget* widget_22_spinbn_actionab; "action-area-border" gint >= 0 default=5
-	GtkWidget* widget_22_spinbn_buttonsp; "button-spacing" gint >= 0 default=6
-	GtkWidget* widget_22_spinbn_contentab; "content-area-border" gint >= 0 default=2
-	GtkWidget* widget_22_spinbn_contentas; "content-area-spacing" gint >= 0 default=0
-	*/
-
-	// ----- properties end -----
 
 	FILE* fp = fopen (app->rcfile, "a");
 	if (fp == NULL) exit (-1);
