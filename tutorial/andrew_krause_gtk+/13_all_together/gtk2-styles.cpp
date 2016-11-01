@@ -846,27 +846,33 @@ void write_rc_for_gtkwidget()
 	                        drawb_bottom);
 
 	const gchar* focuslp = gtk_entry_get_text (
-                                        GTK_ENTRY(app->widget_0_entry_focuslp));
+                            GTK_ENTRY(app->widget_0_entry_focuslp));
 	g_string_append_printf (app->widget_0_style_txt,
-	                        "\tGtkWidget::focus-line-patter = \"%s\"\n",
+	                        "\tGtkWidget::focus-line-pattern = \"%s\"\n",
 	                        focuslp);
+
 	gint focuslw = gtk_spin_button_get_value_as_int(
                             GTK_SPIN_BUTTON(app->widget_0_spinbn_focuslw));
 	g_string_append_printf (app->widget_0_style_txt,
-	                        "\tGtkWidget::focus-line-width = %d\n", focuslw);
+	                        "\tGtkWidget::focus-line-width = %d\n",
+	                        focuslw);
+
 	gint focusp = gtk_spin_button_get_value_as_int(
                             GTK_SPIN_BUTTON(app->widget_0_spinbn_focusp));
 	g_string_append_printf (app->widget_0_style_txt,
-	                        "\tGtkWidget::focus-padding = %d\n", focusp);
+	                        "\tGtkWidget::focus-padding = %d\n",
+	                        focusp);
+
 	gboolean interiorf = gtk_toggle_button_get_active (
                             GTK_TOGGLE_BUTTON(app->widget_0_chkbn_interiorf));
 	g_string_append_printf (app->widget_0_style_txt,
 	                        "\tGtkWidget::interior-focus = %d\n",
 	                        interiorf == true ? 1 : 0);
+
 	GdkColor linkclr;
 	gtk_color_button_get_color (
-		GTK_COLOR_BUTTON(app->widget_0_clrbn_linkclr),
-		&linkclr);
+                            GTK_COLOR_BUTTON(app->widget_0_clrbn_linkclr),
+                            &linkclr);
 	g_string_append_printf (app->widget_0_style_txt,
 	                        "\tGtkWidget::link-color = \"#%02X%02X%02X\"\n",
 	                        (linkclr.red * 255 / 65535),
@@ -874,21 +880,21 @@ void write_rc_for_gtkwidget()
 	                        (linkclr.blue * 255 / 65535));
 
 	gint scrollahl = gtk_spin_button_get_value_as_int(
-                               GTK_SPIN_BUTTON(app->widget_0_spinbn_scrollahl));
+                            GTK_SPIN_BUTTON(app->widget_0_spinbn_scrollahl));
 	g_string_append_printf (app->widget_0_style_txt,
 	                        "\tGtkWidget::scroll-arrow-hlength = %d\n",
 	                        scrollahl);
 
 	gint scrollavl = gtk_spin_button_get_value_as_int(
-                               GTK_SPIN_BUTTON(app->widget_0_spinbn_scrollavl));
+                            GTK_SPIN_BUTTON(app->widget_0_spinbn_scrollavl));
 	g_string_append_printf (app->widget_0_style_txt,
 	                        "\tGtkWidget::scroll-arrow-vlength = %d\n",
 	                        scrollavl);
 
 	GdkColor secondarycurclr;
 	gtk_color_button_get_color (
-		GTK_COLOR_BUTTON(app->widget_0_clrbn_secondarycurclr),
-		&secondarycurclr);
+                          GTK_COLOR_BUTTON(app->widget_0_clrbn_secondarycurclr),
+                            &secondarycurclr);
 	g_string_append_printf (app->widget_0_style_txt,
 	                "\tGtkWidget::secondary-cursor-color = \"#%02X%02X%02X\"\n",
 	                        (secondarycurclr.red * 255 / 65535),
@@ -896,13 +902,13 @@ void write_rc_for_gtkwidget()
 	                        (secondarycurclr.blue * 255 / 65535));
 
 	gint separatorh = gtk_spin_button_get_value_as_int(
-                              GTK_SPIN_BUTTON(app->widget_0_spinbn_separatorh));
+                            GTK_SPIN_BUTTON(app->widget_0_spinbn_separatorh));
 	g_string_append_printf (app->widget_0_style_txt,
 	                        "\tGtkWidget::separator-height = %d\n",
 	                        separatorh);
 
 	gint separatorw = gtk_spin_button_get_value_as_int(
-                              GTK_SPIN_BUTTON(app->widget_0_spinbn_separatorw));
+                            GTK_SPIN_BUTTON(app->widget_0_spinbn_separatorw));
 	g_string_append_printf (app->widget_0_style_txt,
 	                        "\tGtkWidget::separator-width = %d\n",
 	                        separatorw);
@@ -1714,19 +1720,24 @@ void write_rc_for_gtkspinbutton()
 	                        gtkstyle,
 	                        gtkparentstyle);
 
-	// ----- no style -----
+	// ----- style begin -----
+	gint shadowti = gtk_combo_box_get_active (
+                           GTK_COMBO_BOX(app->widget_10_cbbox_shadowt));
+	const gchar* shadowts = "GTK_SHADOW_NONE";
+	if (shadowti == 1) shadowts = "GTK_SHADOW_IN";
+	else if (shadowti == 2) shadowts = "GTK_SHADOW_OUT";
+	else if (shadowti == 3) shadowts = "GTK_SHADOW_ETCHED_IN";
+	else if (shadowti == 4) shadowts = "GTK_SHADOW_ETCHED_OUT";
+	g_string_append_printf (app->widget_10_style_txt,
+	                        "\tGtkSpinButton::shadow-type = %s\n",
+	                        shadowts);
+
+	// ----- style end -----
 
 	g_string_append_printf (app->widget_10_style_txt,"%s\n", "}");
 	g_string_append_printf (app->widget_10_style_txt,
 	                        "class \"GtkSpinButton\" style \"%s\"\n",
 	                        gtkstyle);
-
-	// ----- properties begin -----
-	/*
-	  GtkWidget* widget_10_cbbox_shadowt; "shadow-type" GtkShadowType default=GTK_SHADOW_IN
-	*/
-
-	// ----- properties end -----
 
 	FILE* fp = fopen (app->rcfile, "a");
 	if (fp == NULL) exit (-1);
@@ -1791,19 +1802,23 @@ void write_rc_for_gtkstatusbar()
 	                        "\tythickness = %d\n",
 	                        ythickness);
 
+	gint shadowti = gtk_combo_box_get_active (
+                           GTK_COMBO_BOX(app->widget_11_cbbox_shadowt));
+	const gchar* shadowts = "GTK_SHADOW_NONE";
+	if (shadowti == 1) shadowts = "GTK_SHADOW_IN";
+	else if (shadowti == 2) shadowts = "GTK_SHADOW_OUT";
+	else if (shadowti == 3) shadowts = "GTK_SHADOW_ETCHED_IN";
+	else if (shadowti == 4) shadowts = "GTK_SHADOW_ETCHED_OUT";
+	g_string_append_printf (app->widget_11_style_txt,
+	                        "\n\tGtkStatusBar::shadow-type = %s\n",
+	                        shadowts);
+
 	// ----- style end   -----
 
 	g_string_append_printf (app->widget_11_style_txt,"%s\n", "}");
 	g_string_append_printf (app->widget_11_style_txt,
 	                        "class \"GtkStatusBar\" style \"%s\"\n",
 	                        gtkstyle);
-
-	// ----- properties begin -----
-	/*
-	  GtkWidget* widget_11_cbbox_shadowt; "shadow-type" GtkShadowType default=GTK_SHADOWN_IN
-	*/
-
-	// ----- properties end -----
 
 	FILE* fp = fopen (app->rcfile, "a");
 	if (fp == NULL) exit (-1);
@@ -1868,24 +1883,58 @@ void write_rc_for_gtktoolbar()
 	                        "\tythickness = %d\n",
 	                        ythickness);
 
+	gint buttonri = gtk_combo_box_get_active (
+                           GTK_COMBO_BOX(app->widget_12_cbbox_buttonr));
+	const gchar* buttonrs = "GTK_RELIEF_NORMAL";
+	if (buttonri == 1) buttonrs = "GTK_RELIEF_HALF";
+	else if (buttonri == 2) buttonrs = "GTK_RELIEF_NONE";
+	g_string_append_printf (app->widget_12_style_txt,
+	                        "\n\tGtkReliefStyle::button-relief = %s\n",
+	                        buttonrs);
+
+	gint internalp = gtk_spin_button_get_value_as_int(
+                            GTK_SPIN_BUTTON(app->widget_12_spinbn_internalp));
+	g_string_append_printf (app->widget_12_style_txt,
+	                        "\tGtkToolbar::internal-padding = %d\n",
+	                        internalp);
+
+	gint maxce = gtk_spin_button_get_value_as_int(
+                            GTK_SPIN_BUTTON(app->widget_12_spinbn_maxce));
+	g_string_append_printf (app->widget_12_style_txt,
+	                        "\tGtkToolbar::max-child-expand = %d\n",
+	                        maxce);
+
+	gint shadowti = gtk_combo_box_get_active (
+                           GTK_COMBO_BOX(app->widget_12_cbbox_shadowt));
+	const gchar* shadowts = "GTK_SHADOW_NONE";
+	if (shadowti == 1) shadowts = "GTK_SHADOW_IN";
+	else if (shadowti == 2) shadowts = "GTK_SHADOW_OUT";
+	else if (shadowti == 3) shadowts = "GTK_SHADOW_ETCHED_IN";
+	else if (shadowti == 4) shadowts = "GTK_SHADOW_ETCHED_OUT";
+	g_string_append_printf (app->widget_12_style_txt,
+	                        "\tGtkToolbar::shadow-type = %s\n",
+	                        shadowts);
+
+	gint spacesz = gtk_spin_button_get_value_as_int(
+                            GTK_SPIN_BUTTON(app->widget_12_spinbn_spacesz));
+	g_string_append_printf (app->widget_12_style_txt,
+	                        "\tGtkToolbar::space-size = %d\n",
+	                        spacesz);
+
+	gint spacesti = gtk_combo_box_get_active (
+                           GTK_COMBO_BOX(app->widget_12_cbbox_spacest));
+	const gchar* spacests = "GTK_TOOLBAR_SPACE_EMPTY";
+	if (spacesti == 1) spacests = "GTK_TOOLBAR_SPACE_LINE";
+	g_string_append_printf (app->widget_12_style_txt,
+	                        "\tGtkToolbar::space-style = %s\n",
+	                        spacests);
+
 	// ----- style end -----
 
 	g_string_append_printf (app->widget_12_style_txt,"%s\n", "}");
 	g_string_append_printf (app->widget_12_style_txt,
 	                        "class \"GtkToolbar\" style \"%s\"\n",
 	                        gtkstyle);
-
-	// ----- properties begin -----
-	/*
-	  GtkWidget* widget_12_cbbox_buttonr; "button-relief" GtkReliefStyle default=GTK_RELIEF_NONE
-	  GtkWidget* widget_12_spinbn_internalp; "internal-padding" gint >= 0 default=0
-	  GtkWidget* widget_12_spinbn_maxce; "max-child-expand" gint >= 0 default=2147483647
-	  GtkWidget* widget_12_cbbox_shadowt; "shadow-type" GtkShadowType default=GTK_SHADOW_OUT
-	  GtkWidget* widget_12_spinbn_spacesz; "space-size" gint >= 0 default=12
-	  GtkWidget* widget_12_cbbox_spacest; "space-style" GtkToolbarSpaceStyle default=GTK_TOOLBAR_SPACE_LINE
-	*/
-
-	// ----- properties end -----
 
 	FILE* fp = fopen (app->rcfile, "a");
 	if (fp == NULL) exit (-1);
@@ -1950,19 +1999,18 @@ void write_rc_for_gtktoolbutton()
 	                        "\tythickness = %d\n",
 	                        ythickness);
 
+	gint iconsp = gtk_spin_button_get_value_as_int(
+                            GTK_SPIN_BUTTON(app->widget_13_spinbn_iconsp));
+	g_string_append_printf (app->widget_13_style_txt,
+	                        "\n\tGtkToolButton::icon-spacing = %d\n",
+	                        iconsp);
+
 	// ----- style end   -----
 
 	g_string_append_printf (app->widget_13_style_txt,"%s\n", "}");
 	g_string_append_printf (app->widget_13_style_txt,
 	                        "class \"GtkToolButton\" style \"%s\"\n",
 	                        gtkstyle);
-
-	// ----- properties begin -----
-	/*
-	  GtkWidget* widget_13_spinbn_iconsp; "icon-spacing" gint >= 0 default=3
-	*/
-
-	// ----- properties end -----
 
 	FILE* fp = fopen (app->rcfile, "a");
 	if (fp == NULL) exit (-1);
@@ -2027,25 +2075,57 @@ void write_rc_for_gtkmenu()
 	                        "\tythickness = %d\n",
 	                        ythickness);
 
+	gint arrowpi = gtk_combo_box_get_active (
+                           GTK_COMBO_BOX(app->widget_14_cbbox_arrowp));
+	const gchar* arrowps = "GTK_ARROWS_BOTH";
+	if (arrowpi == 1) arrowps = "GTK_ARROWS_START";
+	else if (arrowpi == 2) arrowps = "GTK_ARROWS_END";
+	g_string_append_printf (app->widget_14_style_txt,
+	                        "\n\tGtkMenu::arrow-placement = %s\n",
+	                        arrowps);
+
+	gdouble arrowsc = gtk_spin_button_get_value(
+                            GTK_SPIN_BUTTON(app->widget_14_spinbn_arrowsc));
+	g_string_append_printf (app->widget_14_style_txt,
+	                        "\tGtkMenu::arrow-scaling = %.02f\n",
+	                        arrowsc);
+
+	gboolean doublea = gtk_toggle_button_get_active (
+                            GTK_TOGGLE_BUTTON(app->widget_14_chkbn_doublea));
+	g_string_append_printf (app->widget_14_style_txt,
+	                        "\tGtkMenu::double-arrows = %d\n",
+	                        doublea == true ? 1 : 0);
+
+	gint horizontaloff = gtk_spin_button_get_value_as_int(
+                            GTK_SPIN_BUTTON(app->widget_14_spinbn_horizontaloff));
+	g_string_append_printf (app->widget_14_style_txt,
+	                        "\tGtkMenu::horizontal-offset = %d\n",
+	                        horizontaloff);
+
+	gint horizontalpadd = gtk_spin_button_get_value_as_int(
+                            GTK_SPIN_BUTTON(app->widget_14_spinbn_horizontalpadd));
+	g_string_append_printf (app->widget_14_style_txt,
+	                        "\tGtkMenu::horizontal-padding = %d\n",
+	                        horizontalpadd);
+
+	gint verticaloff = gtk_spin_button_get_value_as_int(
+                            GTK_SPIN_BUTTON(app->widget_14_spinbn_verticaloff));
+	g_string_append_printf (app->widget_14_style_txt,
+	                        "\tGtkMenu::vertical-offset = %d\n",
+	                        verticaloff);
+
+	gint verticalpadd = gtk_spin_button_get_value_as_int(
+                            GTK_SPIN_BUTTON(app->widget_14_spinbn_verticalpadd));
+	g_string_append_printf (app->widget_14_style_txt,
+	                        "\tGtkMenu::vertical-padding = %d\n",
+	                        verticalpadd);
+
 	// ----- style end -----
 
 	g_string_append_printf (app->widget_14_style_txt,"%s\n", "}");
 	g_string_append_printf (app->widget_14_style_txt,
 	                        "class \"GtkMenu\" style \"%s\"\n",
 	                        gtkstyle);
-
-	// ----- properties begin -----
-	/*
-	GtkWidget* widget_14_cbbox_arrowp; "arrow-placement" GtkArrowPlacement default=GTK_ARROWS_BOTH
-	GtkWidget* widget_14_spinbn_arrowsc; "arrow-scaling" gfloat [0,1] default=0.7
-	GtkWidget* widget_14_chkbn_doublea; "double-arrows" gboolean default=TRUE
-	GtkWidget* widget_14_spinbn_horizontaloff; "horizontal-offset" gint (didn't specify) default=-2 (submenu hz off in pix)
-	GtkWidget* widget_14_spinbn_horizontalpadd; "horizontal-padding" gint >= 0 default=0
-	GtkWidget* widget_14_spinbn_verticaloff; "vertical-offset" gint (didn't specify) default=0 (submenu vt off in pix)
-	GtkWidget* widget_14_spinbn_verticalpadd; "vertical-padding" gint >= 0 default=1
-	*/
-
-	// ----- properties end -----
 
 	FILE* fp = fopen (app->rcfile, "a");
 	if (fp == NULL) exit (-1);
@@ -2110,20 +2190,29 @@ void write_rc_for_gtkmenubar()
 	                        "\tythickness = %d\n",
 	                        ythickness);
 
+	gint internalp = gtk_spin_button_get_value_as_int(
+                            GTK_SPIN_BUTTON(app->widget_15_spinbn_internalp));
+	g_string_append_printf (app->widget_15_style_txt,
+	                        "\n\tGtkMenuBar::internal-padding = %d\n",
+	                        internalp);
+
+	gint shadowti = gtk_combo_box_get_active (
+                            GTK_COMBO_BOX(app->widget_15_cbbox_shadowt));
+	const gchar* shadowts = "GTK_SHADOW_NONE";
+	if (shadowti == 1) shadowts = "GTK_SHADOW_IN";
+	else if (shadowti == 2) shadowts = "GTK_SHADOW_OUT";
+	else if (shadowti == 3) shadowts = "GTK_SHADOW_ETCHED_IN";
+	else if (shadowti == 4) shadowts = "GTK_SHADOW_ETCHED_OUT";
+	g_string_append_printf (app->widget_15_style_txt,
+	                        "\tGtkMenuBar::shadow-type = %s\n",
+	                        shadowts);
+
 	// ----- style end -----
 
 	g_string_append_printf (app->widget_15_style_txt,"%s\n", "}");
 	g_string_append_printf (app->widget_15_style_txt,
 	                        "class \"GtkMenuBar\" style \"%s\"\n",
 	                        gtkstyle);
-
-	// ----- properties begin -----
-	/*
-	GtkWidget* widget_15_spinbn_internalp; "internal-padding" gint >=0 default=1
-	GtkWidget* widget_15_cbbox_shadowt; "shadow-type" GtkShadowType default=GTK_SHADOW_OUT
-	*/
-
-	// ----- properties end -----
 
 	FILE* fp = fopen (app->rcfile, "a");
 	if (fp == NULL) exit (-1);
@@ -2188,24 +2277,53 @@ void write_rc_for_gtkmenuitem()
 	                        "\tythickness = %d\n",
 	                        ythickness);
 
+	gdouble arrowsc = gtk_spin_button_get_value(
+                            GTK_SPIN_BUTTON(app->widget_16_spinbn_arrowsc));
+	g_string_append_printf (app->widget_16_style_txt,
+	                        "\n\tGtkMenuItem::arrow-scaling = %.02f\n",
+	                        arrowsc);
+
+	gint arrowsp = gtk_spin_button_get_value_as_int(
+                            GTK_SPIN_BUTTON(app->widget_16_spinbn_arrowsp));
+	g_string_append_printf (app->widget_16_style_txt,
+	                        "\tGtkMenuItem::arrow-spacing = %d\n",
+	                        arrowsp);
+
+	gint horizontalpadd = gtk_spin_button_get_value_as_int(
+                            GTK_SPIN_BUTTON(app->widget_16_spinbn_horizontalpadd));
+	g_string_append_printf (app->widget_16_style_txt,
+	                        "\tGtkMenuItem::horizontal-padding = %d\n",
+	                        horizontalpadd);
+
+	gint shadowti = gtk_combo_box_get_active (
+                           GTK_COMBO_BOX(app->widget_16_cbbox_selectedst));
+	const gchar* shadowts = "GTK_SHADOW_NONE";
+	if (shadowti == 1) shadowts = "GTK_SHADOW_IN";
+	else if (shadowti == 2) shadowts = "GTK_SHADOW_OUT";
+	else if (shadowti == 3) shadowts = "GTK_SHADOW_ETCHED_IN";
+	else if (shadowti == 4) shadowts = "GTK_SHADOW_ETCHED_OUT";
+	g_string_append_printf (app->widget_16_style_txt,
+	                        "\tGtkMenuItem::selected-shadow-type = %s\n",
+	                        shadowts);
+
+	gint togglesp = gtk_spin_button_get_value_as_int(
+                            GTK_SPIN_BUTTON(app->widget_16_spinbn_togglesp));
+	g_string_append_printf (app->widget_16_style_txt,
+	                        "\tGtkMenuItem::toggle-spacing = %d\n",
+	                        togglesp);
+
+	gint widthc = gtk_spin_button_get_value_as_int(
+                            GTK_SPIN_BUTTON(app->widget_16_spinbn_widthc));
+	g_string_append_printf (app->widget_16_style_txt,
+	                        "\tGtkMenuItem::width-chars = %d\n",
+	                        widthc);
+
 	// ----- style end   -----
 
 	g_string_append_printf (app->widget_16_style_txt,"%s\n", "}");
 	g_string_append_printf (app->widget_16_style_txt,
 	                        "class \"GtkMenuItem\" style \"%s\"\n",
 	                        gtkstyle);
-
-	// ----- properties begin -----
-	/*
-	GtkWidget* widget_16_spinbn_arrowsc; "arrow-scaling" gfloat [0,2] default=0.8
-	GtkWidget* widget_16_spinbn_arrowsp; "arrow-spacing" gint >=0 default=10
-	GtkWidget* widget_16_spinbn_horizontalpadd; "horizontal-padding" gint >=0 default=3
-	GtkWidget* widget_16_cbbox_selectedst; "selected-shadow-type" GtkShadowType default=GTK_SHADOW_NONE
-	GtkWidget* widget_16_spinbn_togglesp; "toggle-spacing" gint >=0 default=5
-	GtkWidget* widget_16_spinbn_widthc; "width-chars" gint >=0 default=12
-	*/
-
-	// ----- properties end -----
 
 	FILE* fp = fopen (app->rcfile, "a");
 	if (fp == NULL) exit (-1);
@@ -2225,17 +2343,19 @@ void write_rc_for_gtkcheckmenuitem()
 	                        gtkstyle,
 	                        gtkparentstyle);
 
-	// ----- no style -----
+	// ----- style begin -----
+	gint indicatorsz = gtk_spin_button_get_value_as_int(
+                            GTK_SPIN_BUTTON(app->widget_17_spinbn_indicatorsz));
+	g_string_append_printf (app->widget_17_style_txt,
+	                        "\tGtkCheckMenuItem::indicator-size = %d\n",
+	                        indicatorsz);
+
+	// ----- style end -----
 
 	g_string_append_printf (app->widget_17_style_txt,"%s\n", "}");
 	g_string_append_printf (app->widget_17_style_txt,
 	                        "class \"GtkCheckMenuItem\" style \"%s\"\n",
 	                        gtkstyle);
-
-	// ----- properties begin -----
-	// GtkWidget* widget_17_spinbn_indicatorsz; "indicator-size" gint >=0 default=13
-
-	// ----- properties end -----
 
 	FILE* fp = fopen (app->rcfile, "a");
 	if (fp == NULL) exit (-1);
@@ -2300,19 +2420,23 @@ void write_rc_for_gtktextview()
 	                        "\tythickness = %d\n",
 	                        ythickness);
 
+	GdkColor errorundclr;
+	gtk_color_button_get_color (
+                            GTK_COLOR_BUTTON(app->widget_18_clrbn_errorundclr),
+                            &errorundclr);
+	g_string_append_printf (app->widget_18_style_txt,
+	                        "\n\t%s = \"#%02X%02X%02X\"\n",
+	                        "GtkTextView::error-underline-color",
+	                        (errorundclr.red * 255 / 65535),
+	                        (errorundclr.green * 255 / 65535),
+	                        (errorundclr.blue * 255 / 65535));
+
 	// ----- style end   -----
 
 	g_string_append_printf (app->widget_18_style_txt,"%s\n", "}");
 	g_string_append_printf (app->widget_18_style_txt,
 	                        "class \"GtkTextView\" style \"%s\"\n",
 	                        gtkstyle);
-
-	// ----- properties begin -----
-	/*
-	GtkWidget* widget_18_clrbn_errorundclr; "error-underline-color" GdkColor (didn't specify range & default)
-	*/
-
-	// ----- properties end -----
 
 	FILE* fp = fopen (app->rcfile, "a");
 	if (fp == NULL) exit (-1);
@@ -2377,30 +2501,94 @@ void write_rc_for_gtktreeview()
 	                        "\tythickness = %d\n",
 	                        ythickness);
 
+	gboolean allowr = gtk_toggle_button_get_active (
+                            GTK_TOGGLE_BUTTON(app->widget_19_chkbn_allowr));
+	g_string_append_printf (app->widget_19_style_txt,
+	                        "\n\tGtkTreeView::allow-rules = %d\n",
+	                        allowr == true ? 1 : 0);
+
+	GdkColor evenrowclr;
+	gtk_color_button_get_color (
+                            GTK_COLOR_BUTTON(app->widget_19_clrbn_evenrowclr),
+                            &evenrowclr);
+	g_string_append_printf (app->widget_19_style_txt,
+	                        "\n\t%s = \"#%02X%02X%02X\"\n",
+	                        "GtkTreeView::even-row-color",
+	                        (evenrowclr.red * 255 / 65535),
+	                        (evenrowclr.green * 255 / 65535),
+	                        (evenrowclr.blue * 255 / 65535));
+
+	gint expandersz = gtk_spin_button_get_value_as_int(
+                            GTK_SPIN_BUTTON(app->widget_19_spinbn_expandersz));
+	g_string_append_printf (app->widget_19_style_txt,
+	                        "\tGtkTreeView::expander-size = %d\n",
+	                        expandersz);
+
+	const gchar* gridlnpatt = gtk_entry_get_text (
+                            GTK_ENTRY(app->widget_19_entry_gridlnpatt));
+	g_string_append_printf (app->widget_19_style_txt,
+	                        "\tGtkTreeView::grid-line-pattern = \"%s\"\n",
+	                        gridlnpatt);
+
+	gint gridlnw = gtk_spin_button_get_value_as_int(
+                            GTK_SPIN_BUTTON(app->widget_19_spinbn_gridlnw));
+	g_string_append_printf (app->widget_19_style_txt,
+	                        "\tGtkTreeView::grid-line-width = %d\n",
+	                        gridlnw);
+
+	gint horizontalsep = gtk_spin_button_get_value_as_int(
+                            GTK_SPIN_BUTTON(app->widget_19_spinbn_horizontalsep));
+	g_string_append_printf (app->widget_19_style_txt,
+	                        "\tGtkTreeView::horizontal-separator = %d\n",
+	                        horizontalsep);
+
+	gboolean indentexp = gtk_toggle_button_get_active (
+                            GTK_TOGGLE_BUTTON(app->widget_19_chkbn_indentexp));
+	g_string_append_printf (app->widget_19_style_txt,
+	                        "\tGtkTreeView::indent-expanders = %d\n",
+	                        indentexp == true ? 1 : 0);
+
+	GdkColor oddrowclr;
+	gtk_color_button_get_color (
+                            GTK_COLOR_BUTTON(app->widget_19_clrbn_oddrowclr),
+                            &oddrowclr);
+	g_string_append_printf (app->widget_19_style_txt,
+	                        "\t%s = \"#%02X%02X%02X\"\n",
+	                        "GtkTreeView::odd-row-color",
+	                        (oddrowclr.red * 255 / 65535),
+	                        (oddrowclr.green * 255 / 65535),
+	                        (oddrowclr.blue * 255 / 65535));
+
+	gboolean rowenddet = gtk_toggle_button_get_active (
+                            GTK_TOGGLE_BUTTON(app->widget_19_chkbn_rowenddet));
+	g_string_append_printf (app->widget_19_style_txt,
+	                        "\tGtkTreeView::row-ending-details = %d\n",
+	                        rowenddet == true ? 1 : 0);
+
+	const gchar* treelnpatt = gtk_entry_get_text (
+                            GTK_ENTRY(app->widget_19_entry_treelnpatt));
+	g_string_append_printf (app->widget_19_style_txt,
+	                        "\tGtkTreeView::tree-line-pattern = \"%s\"\n",
+	                        treelnpatt);
+
+	gint treelnw = gtk_spin_button_get_value_as_int(
+                            GTK_SPIN_BUTTON(app->widget_19_spinbn_treelnw));
+	g_string_append_printf (app->widget_19_style_txt,
+	                        "\tGtkTreeView::tree-line-width = %d\n",
+	                        treelnw);
+
+	gint verticalsep = gtk_spin_button_get_value_as_int(
+                            GTK_SPIN_BUTTON(app->widget_19_spinbn_verticalsep));
+	g_string_append_printf (app->widget_19_style_txt,
+	                        "\tGtkTreeView::vertical-separator = %d\n",
+	                        verticalsep);
+
 	// ----- style end -----
 
 	g_string_append_printf (app->widget_19_style_txt,"%s\n", "}");
 	g_string_append_printf (app->widget_19_style_txt,
 	                        "class \"GtkTreeView\" style \"%s\"\n",
 	                        gtkstyle);
-
-	// ----- properties begin -----
-	/*
-	GtkWidget* widget_19_chkbn_allowr; "allow-rules" gboolean default=TRUE
-	GtkWidget* widget_19_clrbn_evenrowclr; "even-row-color" GdkColor (didn't specify range & default) (clr even rows)
-	GtkWidget* widget_19_spinbn_expandersz; "expander-size" gint >=0 default=12
-	GtkWidget* widget_19_entry_gridlnpatt; "grid-line-pattern" gchar* (didn't specify) default="\001\001"
-	GtkWidget* widget_19_spinbn_gridlnw; "grid-line-width" gint >=0 default=1
-	GtkWidget* widget_19_spinbn_horizontalsep; "horizontal-separator" gint >=0 default=2
-	GtkWidget* widget_19_chkbn_indentexp; "indent-expanders" gboolean default=TRUE
-	GtkWidget* widget_19_clrbn_oddrowclr; "odd-row-color" GdkColor (didn't specify range & default) (clr odd rows)
-	GtkWidget* widget_19_chkbn_rowenddet; "row-ending-details" gboolean default=FALSE (deprecated 2.22)
-	GtkWidget* widget_19_entry_treelnpatt; "tree-line-pattern" gchar* (didn't specify) default="\001\001"
-	GtkWidget* widget_19_spinbn_treelnw; "tree-line-width" gint >= 0 default=1
-	GtkWidget* widget_19_spinbn_verticalsep; "vertical-separator" gint >= 0 default=2
-	*/
-
-	// ----- properties end -----
 
 	FILE* fp = fopen (app->rcfile, "a");
 	if (fp == NULL) exit (-1);
