@@ -2740,20 +2740,24 @@ void write_rc_for_gtkassistant()
 	                        "\tythickness = %d\n",
 	                        ythickness);
 
+	gint contentpadd = gtk_spin_button_get_value_as_int(
+                            GTK_SPIN_BUTTON(app->widget_21_spinbn_contentpadd));
+	g_string_append_printf (app->widget_21_style_txt,
+	                        "\n\tGtkAssistant::content-padding = %d\n",
+	                        contentpadd);
+
+	gint headerpadd = gtk_spin_button_get_value_as_int(
+                            GTK_SPIN_BUTTON(app->widget_21_spinbn_headerpadd));
+	g_string_append_printf (app->widget_21_style_txt,
+	                        "\tGtkAssistant::header-padding = %d\n",
+	                        headerpadd);
+
 	// ----- style end   -----
 
 	g_string_append_printf (app->widget_21_style_txt,"%s\n", "}");
 	g_string_append_printf (app->widget_21_style_txt,
 	                        "class \"GtkAssistant\" style \"%s\"\n",
 	                        gtkstyle);
-
-	// ----- properties begin -----
-	/*
-	GtkWidget* widget_21_spinbn_contentpadd; "content-padding" gint >= 0 default=1
-	GtkWidget* widget_21_spinbn_headerpadd; "header-padding" gint >= 0 default=6
-	*/
-
-	// ----- properties end -----
 
 	FILE* fp = fopen (app->rcfile, "a");
 	if (fp == NULL) exit (-1);
