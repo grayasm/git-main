@@ -2998,25 +2998,54 @@ void write_rc_for_gtknotebook()
 	                        "\tythickness = %d\n",
 	                        ythickness);
 
+	gint arrowsp = gtk_spin_button_get_value_as_int(
+                            GTK_SPIN_BUTTON(app->widget_24_spinbn_arrowsp));
+	g_string_append_printf (app->widget_24_style_txt,
+	                        "\n\tGtkNotebook::arrow-spacing = %d\n",
+	                        arrowsp);
+
+	gboolean hasbs = gtk_toggle_button_get_active (
+                            GTK_TOGGLE_BUTTON(app->widget_24_chkbn_hasbs));
+	g_string_append_printf (app->widget_24_style_txt,
+	                        "\tGtkNotebook::has-backward-stepper = %d\n",
+	                        hasbs == true ? 1 : 0);
+
+	gboolean hasfs = gtk_toggle_button_get_active (
+                            GTK_TOGGLE_BUTTON(app->widget_24_chkbn_hasfs));
+	g_string_append_printf (app->widget_24_style_txt,
+	                        "\tGtkNotebook::has-forward-stepper = %d\n",
+	                        hasfs == true ? 1 : 0);
+
+	gboolean hassbs = gtk_toggle_button_get_active (
+                            GTK_TOGGLE_BUTTON(app->widget_24_chkbn_hassbs));
+	g_string_append_printf (app->widget_24_style_txt,
+                         "\tGtkNotebook::has-secondary-backward-stepper = %d\n",
+	                        hassbs == true ? 1 : 0);
+
+	gboolean hassfs = gtk_toggle_button_get_active (
+                            GTK_TOGGLE_BUTTON(app->widget_24_chkbn_hassfs));
+	g_string_append_printf (app->widget_24_style_txt,
+                          "\tGtkNotebook::has-secondary-forward-stepper = %d\n",
+	                        hassfs == true ? 1 : 0);
+
+	gint tabcurv = gtk_spin_button_get_value_as_int(
+                            GTK_SPIN_BUTTON(app->widget_24_spinbn_tabcurv));
+	g_string_append_printf (app->widget_24_style_txt,
+	                        "\tGtkNotebook::tab-curvature = %d\n",
+	                        tabcurv);
+
+	gint tabover = gtk_spin_button_get_value_as_int(
+                            GTK_SPIN_BUTTON(app->widget_24_spinbn_tabover));
+	g_string_append_printf (app->widget_24_style_txt,
+	                        "\tGtkNotebook::tab-overlap = %d\n",
+	                        tabover);
+
 	// ----- style end   -----
 
 	g_string_append_printf (app->widget_24_style_txt,"%s\n", "}");
 	g_string_append_printf (app->widget_24_style_txt,
 	                        "class \"GtkNotebook\" style \"%s\"\n",
 	                        gtkstyle);
-
-	// ----- properties begin -----
-	/*
-	GtkWidget* widget_24_spinbn_arrowsp; "arrow-spacing" gint >= 0 default=0
-	GtkWidget* widget_24_chkbn_hasbs; "has-backward-stepper" gboolean default=TRUE
-	GtkWidget* widget_24_chkbn_hasfs; "has-forward-stepper" gboolean default=TRUE
-	GtkWidget* widget_24_chkbn_hassbs; "has-secondary-backward-stepper" gboolean default=FALSE
-	GtkWidget* widget_24_chkbn_hassfs; "has-secondary-forward-stepper" gboolean defalt=FALSE
-	GtkWidget* widget_24_spinbn_tabcurv; "tab-curvature" gint >= 0 default=1
-	GtkWidget* widget_24_spinbn_tabover; "tab-overlap" gint (didn's specify) default=2 (size of tab overalp area)
-	*/
-
-	// ----- properties end -----
 
 	FILE* fp = fopen (app->rcfile, "a");
 	if (fp == NULL) exit (-1);
