@@ -3189,20 +3189,25 @@ void write_rc_for_gtkscale()
 	                        gtkstyle,
 	                        gtkparentstyle);
 
-	// ----- no style -----
+	// ----- style begin -----
+	gint sliderl = gtk_spin_button_get_value_as_int(
+                            GTK_SPIN_BUTTON(app->widget_27_spinbn_sliderl));
+	g_string_append_printf (app->widget_27_style_txt,
+	                        "\tGtkScale::slider-length = %d\n",
+	                        sliderl);
+
+	gint valuesp = gtk_spin_button_get_value_as_int(
+                            GTK_SPIN_BUTTON(app->widget_27_spinbn_valuesp));
+	g_string_append_printf (app->widget_27_style_txt,
+	                        "\tGtkScale::value-spacing = %d\n",
+	                        valuesp);
+
+	// ----- style end -----
 
 	g_string_append_printf (app->widget_27_style_txt,"%s\n", "}");
 	g_string_append_printf (app->widget_27_style_txt,
 	                        "class \"GtkScale\" style \"%s\"\n",
 	                        gtkstyle);
-
-	// ----- properties begin -----
-	/*
-	GtkWidget* widget_27_spinbn_sliderl; "slider-length" gint >= 0 default=31
-	GtkWidget* widget_27_spinbn_valuesp; "value-spacing" gint >= 0 defalt=2
-	*/
-
-	// ----- properties end -----
 
 	FILE* fp = fopen (app->rcfile, "a");
 	if (fp == NULL) exit (-1);
