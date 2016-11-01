@@ -2916,20 +2916,24 @@ void write_rc_for_gtkmessagedialog()
 	                        "\tythickness = %d\n",
 	                        ythickness);
 
+	gint messageb = gtk_spin_button_get_value_as_int(
+                            GTK_SPIN_BUTTON(app->widget_23_spinbn_messageb));
+	g_string_append_printf (app->widget_23_style_txt,
+	                        "\n\tGtkMessageDialog::message-border = %d\n",
+	                        messageb);
+
+	gboolean usesep = gtk_toggle_button_get_active (
+                            GTK_TOGGLE_BUTTON(app->widget_23_chkbn_usesep));
+	g_string_append_printf (app->widget_23_style_txt,
+	                        "\tGtkMessageDialog::use-separator = %d\n",
+	                        usesep == true ? 1 : 0);
+
 	// ----- style end   -----
 
 	g_string_append_printf (app->widget_23_style_txt,"%s\n", "}");
 	g_string_append_printf (app->widget_23_style_txt,
 	                        "class \"GtkMessageDialog\" style \"%s\"\n",
 	                        gtkstyle);
-
-	// ----- properties begin -----
-	/*
-	GtkWidget* widget_23_spinbn_messageb; "message-border" gint >= 0 default=12
-	GtkWidget* widget_23_chkbn_usesep; "use-separator" gboolean default=FALSE , deprecated in 2.22
-	*/
-
-	// ----- properties end -----
 
 	FILE* fp = fopen (app->rcfile, "a");
 	if (fp == NULL) exit (-1);
