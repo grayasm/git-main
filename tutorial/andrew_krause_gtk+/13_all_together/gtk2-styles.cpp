@@ -23,6 +23,7 @@ struct AppData
 	GtkWidget* window;
 	GtkWidget* vbox;
 	// ----- GtkWidget -----
+	GtkWidget* widget_0_sample;
 	GtkWidget* widget_0_clrbn[4][5];
 	GtkWidget* widget_0_fn_bn;
 	GtkWidget* widget_0_spinbn_xth;
@@ -47,6 +48,7 @@ struct AppData
 	GString*   widget_0_style_txt;
 
 	// ----- GtkButton -----
+	GtkWidget* widget_1_sample;
 	GtkWidget* widget_1_clrbn[4][5];
 	GtkWidget* widget_1_fn_bn;
 	GtkWidget* widget_1_spinbn_xth;
@@ -61,6 +63,7 @@ struct AppData
 	GString*   widget_1_style_txt;
 
 	// ----- GtkCheckButton -----
+	GtkWidget* widget_2_sample;
 	GtkWidget* widget_2_clrbn[4][5];
 	GtkWidget* widget_2_fn_bn;
 	GtkWidget* widget_2_spinbn_xth;
@@ -70,6 +73,7 @@ struct AppData
 	GString*   widget_2_style_txt;
 
 	// ----- GtkButtonBox -----
+	GtkWidget* widget_3_sample;
 	GtkWidget* widget_3_spinbn_childipx;
 	GtkWidget* widget_3_spinbn_childipy;
 	GtkWidget* widget_3_spinbn_childmh;
@@ -77,6 +81,7 @@ struct AppData
 	GString*   widget_3_style_txt;
 
 	// ----- GtkComboBox -----
+	GtkWidget* widget_4_sample;
 	GtkWidget* widget_4_clrbn[4][5];
 	GtkWidget* widget_4_fn_bn;
 	GtkWidget* widget_4_spinbn_xth;
@@ -87,6 +92,7 @@ struct AppData
 	GString*   widget_4_style_txt;
 
 	// ----- GtkEntry -----
+	GtkWidget* widget_5_sample;
 	GtkWidget* widget_5_clrbn[4][5];
 	GtkWidget* widget_5_fn_bn;
 	GtkWidget* widget_5_spinbn_xth;
@@ -99,6 +105,7 @@ struct AppData
 	GString*   widget_5_style_txt;
 
 	// ----- GtkExpander -----
+	GtkWidget* widget_6_sample;
 	GtkWidget* widget_6_clrbn[4][5];
 	GtkWidget* widget_6_fn_bn;
 	GtkWidget* widget_6_spinbn_xth;
@@ -108,6 +115,7 @@ struct AppData
 	GString*   widget_6_style_txt;
 
 	// ----- GtkScrollbar -----
+	GtkWidget* widget_7_sample;
 	GtkWidget* widget_7_chkbn_fixedsl;
 	GtkWidget* widget_7_chkbn_hasbs;
 	GtkWidget* widget_7_chkbn_hasfs;
@@ -3361,14 +3369,14 @@ void ui_create_gtkwidget()
 	                    FALSE,   // fill
 	                    0);      // padding
 
-
+	app->widget_0_sample = app->window;
 
 
 	// Set the labels on the left side.
 	const gchar* rows_txt[TABLE_0_ROW] = {
 		"", "fg", "bg", "text", "base", "bg_pixmap"
 	};
-	for (gint i=1; i<TABLE_0_ROW; ++i)
+	for (gint i = 1; i < TABLE_0_ROW; ++i)
 	{
 		GtkWidget* label = gtk_label_new (rows_txt[i]);
 		gtk_table_attach (GTK_TABLE(table_0),
@@ -3381,7 +3389,7 @@ void ui_create_gtkwidget()
 
 	// Set the labels on the top.
 	const gchar* cols_txt[TABLE_0_COL] = {
-		"", "NORMAL","ACTIVE","PRELIGHT","SELECTED","INSENSITIVE"
+		"", "NORMAL", "ACTIVE", "PRELIGHT", "SELECTED", "INSENSITIVE"
 	};
 	for (gint j=1; j<TABLE_0_COL; ++j)
 	{
@@ -3400,7 +3408,7 @@ void ui_create_gtkwidget()
 	   text[NORMAL] = "#000000"  , idem
 	   base[NORMAL] = "#FFFFFF"  , idem
 	*/
-	GtkStyle* style = gtk_widget_get_style (app->window);
+	GtkStyle* style = gtk_widget_get_style (app->widget_0_sample);
 	for (gint i=1; i<TABLE_0_ROW - 1; ++i)
 	{
 		for (gint j=1; j<TABLE_0_COL; ++j)
@@ -3933,7 +3941,6 @@ void ui_create_gtkbutton()
 		                  0, 0);     // x,y padding
 	}
 
-
 	GtkWidget* bn_relief[3] = {NULL, NULL, NULL};
 	const gchar* bn_relief_lbl[3] = { "GTK_RELIEF_NORMAL",
 	                                  "GTK_RELIEF_HALF",
@@ -3960,6 +3967,7 @@ void ui_create_gtkbutton()
 		  {GTK_STOCK_PAGE_SETUP, GTK_STOCK_CONNECT, GTK_STOCK_EXECUTE} };
 
 	for (gint i=0; i < 2; ++i)
+	{
 		for(gint j=0; j < 3; ++j)
 		{
 			bn_stock[i][j] = gtk_button_new_from_stock (bn_stock_id[i][j]);
@@ -3970,8 +3978,9 @@ void ui_create_gtkbutton()
 			                  GTK_SHRINK, GTK_SHRINK, // GtkAttachOptions
 			                  0, 0);      // x,y padding
 		}
+	}
 
-
+	app->widget_1_sample = bn_withlabel[0];
 
 	// Set the labels on the left side.
 	const gint TABLE_0_ROW = 5; // 1 header, 4 colors
@@ -3984,7 +3993,6 @@ void ui_create_gtkbutton()
 	                    0);      // padding
 
 	const gchar* rows_txt[TABLE_0_ROW] = { "", "fg", "bg", "text", "base" };
-
 	for (gint i=1; i<TABLE_0_ROW; ++i)
 	{
 		GtkWidget* label = gtk_label_new (rows_txt[i]);
@@ -3998,7 +4006,7 @@ void ui_create_gtkbutton()
 
 	// Set the labels on the top.
 	const gchar* cols_txt[TABLE_0_COL] = {
-		"", "NORMAL","ACTIVE","PRELIGHT","SELECTED","INSENSITIVE"
+		"", "NORMAL", "ACTIVE", "PRELIGHT", "SELECTED", "INSENSITIVE"
 	};
 	for (gint j=1; j<TABLE_0_COL; ++j)
 	{
@@ -4017,7 +4025,7 @@ void ui_create_gtkbutton()
 	   text[NORMAL] = "#000000", idem
 	   base[NORMAL] = "#FFFFFF", idem
 	 */
-	GtkStyle* style = gtk_widget_get_style (app->window);
+	GtkStyle* style = gtk_widget_get_style (app->widget_1_sample);
 
 	for (gint i=1; i<TABLE_0_ROW; ++i)
 	{
@@ -4353,7 +4361,6 @@ void ui_create_gtkcheckbutton()
 		                  0, 0);     // x,y padding
 	}
 
-
 	// create 3 radio buttons
 	GtkWidget* rdbn_withlabel[3];
 	rdbn_withlabel[0] = gtk_radio_button_new_with_label(NULL, "radio 1");
@@ -4373,7 +4380,7 @@ void ui_create_gtkcheckbutton()
 		                  0, 0);     // x,y padding
 	}
 
-
+	app->widget_2_sample = ckbn_withlabel[0];
 
 
 	// Set the labels on the left side.
@@ -4420,7 +4427,7 @@ void ui_create_gtkcheckbutton()
 	   text[NORMAL] = "#000000", idem
 	   base[NORMAL] = "#FFFFFF", idem
 	 */
-	GtkStyle* style = gtk_widget_get_style (app->window);
+	GtkStyle* style = gtk_widget_get_style (app->widget_2_sample);
 
 	for (gint i=1; i<TABLE_0_ROW; ++i)
 	{
@@ -4646,6 +4653,7 @@ void ui_create_gtkbuttonbox()
 		                    0);      // padding
 	}
 
+	app->widget_3_sample = bnbox_horizontal;
 
 
 	GtkWidget* table_1 = gtk_table_new (4, 2, TRUE); // row,col,homo
@@ -4826,7 +4834,7 @@ void ui_create_gtkcombobox()
 	                  GTK_SHRINK, GTK_SHRINK,   // GtkAttachOptions
 	                  0, 0);   // x,y padding
 
-
+	app->widget_4_sample = combo;
 
 
 
@@ -4874,7 +4882,7 @@ void ui_create_gtkcombobox()
 	   text[NORMAL] = "#000000", idem
 	   base[NORMAL] = "#FFFFFF", idem
 	 */
-	GtkStyle* style = gtk_widget_get_style (app->window);
+	GtkStyle* style = gtk_widget_get_style (app->widget_4_sample);
 
 	for (gint i=1; i<TABLE_0_ROW; ++i)
 	{
@@ -5102,7 +5110,7 @@ void ui_create_gtkentry()
 		                  0, 0);     // x,y padding
 	}
 
-
+	app->widget_5_sample = entry[2];
 
 
 
@@ -5150,7 +5158,7 @@ void ui_create_gtkentry()
 	   text[NORMAL] = "#000000", idem
 	   base[NORMAL] = "#FFFFFF", idem
 	 */
-	GtkStyle* style = gtk_widget_get_style (app->window);
+	GtkStyle* style = gtk_widget_get_style (app->widget_5_sample);
 
 	for (gint i=1; i<TABLE_0_ROW; ++i)
 	{
@@ -5441,7 +5449,7 @@ void ui_create_gtkexpander()
 		                  0, 0);     // x,y padding
 	}
 
-
+	app->widget_6_sample = exp_wgt[0];
 
 
 
@@ -5674,6 +5682,7 @@ void ui_create_gtkscrollbar()
 	                    FALSE,   // fill
 	                    0);      // padding
 
+	app->widget_7_sample = scrwin;
 
 
 	GtkWidget* table_1 = gtk_table_new (6, 2, TRUE); //row,col,homo
