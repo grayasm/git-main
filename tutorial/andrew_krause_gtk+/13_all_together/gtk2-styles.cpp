@@ -2653,20 +2653,29 @@ void write_rc_for_gtkiconview()
 	                        "\tythickness = %d\n",
 	                        ythickness);
 
+	gint selectionboxa = gtk_spin_button_get_value_as_int(
+                          GTK_SPIN_BUTTON(app->widget_20_spinbn_selectionboxa));
+	g_string_append_printf (app->widget_20_style_txt,
+	                        "\n\tGtkIconView::selection-box-alpha = %d\n",
+	                        selectionboxa);
+
+	GdkColor selectionboxclr;
+	gtk_color_button_get_color (
+                         GTK_COLOR_BUTTON(app->widget_20_clrbn_selectionboxclr),
+                            &selectionboxclr);
+	g_string_append_printf (app->widget_20_style_txt,
+	                        "\t%s = \"#%02X%02X%02X\"\n",
+	                        "GtkIconView::selection-box-color",
+	                        (selectionboxclr.red * 255 / 65535),
+	                        (selectionboxclr.green * 255 / 65535),
+	                        (selectionboxclr.blue * 255 / 65535));
+
 	// ----- style end -----
 
 	g_string_append_printf (app->widget_20_style_txt,"%s\n", "}");
 	g_string_append_printf (app->widget_20_style_txt,
 	                        "class \"GtkIconView\" style \"%s\"\n",
 	                        gtkstyle);
-
-	// ----- properties begin -----
-	/*
-	GtkWidget* widget_20_spinbn_selectionboxa; "selection-box-alpha" guchar (didn't specify) default=64 (opacity of sel box)
-	GtkWidget* widget_20_clrbn_selectionboxclr; "selection-box-color" GdkColor (didn't specify default)
-	*/
-
-	// ----- properties end -----
 
 	FILE* fp = fopen (app->rcfile, "a");
 	if (fp == NULL) exit (-1);
