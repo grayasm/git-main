@@ -3,6 +3,7 @@
 #include <cstring> // strlen
 #include <cstdlib> // exit
 #include <cctype>  // tolower
+#include <libgen.h> // dirname
 
 
 void menu_saveas (GtkMenuItem* menuitem, gpointer data);
@@ -630,10 +631,12 @@ int main (int argc, char** argv)
 
 void fcopy(const char* from,const char* to)
 {
+	if (access(from, R_OK) != 0)
+		return;
     FILE* fin = fopen(from, "r");
     FILE* fout= fopen(to,   "w");
     int ch=0;
-    while((ch = fgetc(fin)) != EOF)
+    while ((ch = fgetc(fin)) != EOF)
 	    fputc(ch, fout);
     fclose(fin);
     fclose(fout);
@@ -655,10 +658,31 @@ void menu_saveas (GtkMenuItem* menuitem, gpointer data)
 	                                                TRUE);
 	if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT)
 	{
-		char *filename = NULL;
+		char* filename = NULL;
 		filename = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (dialog));
-		g_print ("Save as: %s\n", filename);
 		fcopy (app->rcfile, filename);
+
+		char* filedup = strdup(filename);
+		char* dir = dirname(filedup);
+
+		for (gint i = 0; i<5; ++i)
+		{
+			if (app->widget_0_pixmap[i]->len == 0)
+				continue;
+
+			char* pixdup = strdup(app->widget_0_pixmap[i]->str);
+			char* pixbase = basename(pixdup);
+			char* filepix = (char*) malloc(strlen(dir) + strlen(pixbase) + 2 );
+			strcpy (filepix, dir);
+			strcat (filepix, "/");
+			strcat (filepix, pixbase);
+
+			fcopy (app->widget_0_pixmap[i]->str, filepix);
+			free (filepix);
+			free (pixdup);
+		}
+
+		free (filedup);
 		g_free (filename);
 	}
 	gtk_widget_destroy (dialog);
@@ -715,29 +739,37 @@ void cb_0_pixbn_clicked (GtkButton* bn, gpointer)
 	{
 		char *filename = NULL;
 		filename = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (dialog));
-		g_print ("Pixmap file: %s\n", filename);
-		size_t len = strlen(filename);
+
 		const gchar* ext = strstr (filename, ".xpm");
 		if (ext != 0)
 		{
-			const char* filebeg = &(filename[len]);
-			while (--filebeg != filename && *filebeg != '/');
-			if (*filebeg == '/') ++filebeg;
+			char* filedup = strdup(filename);
+			char* filebase = basename (filedup);
 
 			const gint TABLE_0_COL = 6;
 			for (int j=1; j<TABLE_0_COL; ++j)
+			{
 				if (GTK_WIDGET(bn) == app->widget_0_pixbn[j-1])
 				{
+					char* filetmp = (char*) malloc(strlen(filebase)+6);
+					strcpy (filetmp, "/tmp/");
+					strcat (filetmp, filebase);
+
 					GString* newstr =
-						g_string_assign (app->widget_0_pixmap[j-1], filebeg);
+						g_string_assign (app->widget_0_pixmap[j-1], filetmp);
 					app->widget_0_pixmap[j-1] = newstr; // modified GString*
-					g_print ("copied .xpm = %s\n", filebeg);
 					gtk_button_set_label (GTK_BUTTON (app->widget_0_pixbn[j-1]),
 					                      "set");
+
+					fcopy (filename, filetmp);
+					free (filetmp);
 
 					// update ui
 					bwrite_rc = true;
 				}
+			}
+
+			free (filedup);
 		}
 		else // a different extension cancels previous pixmap
 		{
@@ -751,7 +783,6 @@ void cb_0_pixbn_clicked (GtkButton* bn, gpointer)
 						GString* newstr =
 							g_string_erase (app->widget_0_pixmap[j-1], 0, -1);
 						app->widget_0_pixmap[j-1] = newstr;
-						g_print ("reset bp_pixmap[%d]\n", j-1);
 						gtk_button_set_label (
 							GTK_BUTTON(app->widget_0_pixbn[j-1]),
 							"null");
@@ -826,12 +857,17 @@ void write_rc_for_gtkwidget()
 
 	for (int j=0; j<5; ++j)
 	{
-		if (strlen(app->widget_0_pixmap[j]->str) > 0)
+		if (app->widget_0_pixmap[j]->len > 0)
 		{
+			/* It only parses .xpm relative paths to .rc file. */
+			char* pixdup = strdup(app->widget_0_pixmap[j]->str);
+			char* pixfile = basename (pixdup);
+
 			g_string_append_printf (app->widget_0_style_txt,
 			                        "\tbg_pixmap[%s] = \"%s\"\n",
 			                        state[j],
-			                        app->widget_0_pixmap[j]->str);
+			                        pixfile);
+			free (pixdup);
 		}
 	}
 
