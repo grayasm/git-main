@@ -149,6 +149,7 @@ struct AppData
 	GString*   widget_10_style_txt;
 
 	// ----- GtkStatusbar -----
+	GtkWidget* widget_11_statbar_sample;
 	GtkWidget* widget_11_clrbn[4][5];
 	GtkWidget* widget_11_fn_bn;
 	GtkWidget* widget_11_spinbn_xth;
@@ -157,6 +158,7 @@ struct AppData
 	GString*   widget_11_style_txt;
 
 	// ----- GtkToolbar -----
+	GtkWidget* widget_12_toolbar_sample;
 	GtkWidget* widget_12_clrbn[4][5];
 	GtkWidget* widget_12_fn_bn;
 	GtkWidget* widget_12_spinbn_xth;
@@ -170,6 +172,7 @@ struct AppData
 	GString*   widget_12_style_txt;
 
 	// ----- GtkToolButton -----
+	GtkToolItem* widget_13_toolitem_sample;
 	GtkWidget* widget_13_clrbn[4][5];
 	GtkWidget* widget_13_fn_bn;
 	GtkWidget* widget_13_spinbn_xth;
@@ -178,6 +181,7 @@ struct AppData
 	GString*   widget_13_style_txt;
 
 	// ----- GtkMenu -----
+	GtkWidget* widget_14_menu_sample;
 	GtkWidget* widget_14_clrbn[4][5];
 	GtkWidget* widget_14_fn_bn;
 	GtkWidget* widget_14_spinbn_xth;
@@ -192,6 +196,7 @@ struct AppData
 	GString*   widget_14_style_txt;
 
 	// ----- GtkMenuBar -----
+	GtkWidget* widget_15_menubar_sample;
 	GtkWidget* widget_15_clrbn[4][5];
 	GtkWidget* widget_15_fn_bn;
 	GtkWidget* widget_15_spinbn_xth;
@@ -201,6 +206,7 @@ struct AppData
 	GString*   widget_15_style_txt;
 
 	// ----- GtkMenuItem -----
+	GtkWidget* widget_16_menuitem_sample;
 	GtkWidget* widget_16_clrbn[4][5];
 	GtkWidget* widget_16_fn_bn;
 	GtkWidget* widget_16_spinbn_xth;
@@ -214,10 +220,12 @@ struct AppData
 	GString*   widget_16_style_txt;
 
 	// ----- GtkCheckMenuItem -----
+	GtkWidget* widget_17_chkmenuitem_sample;
 	GtkWidget* widget_17_spinbn_indicatorsz;
 	GString*   widget_17_style_txt;
 
 	// ----- GtkTextView -----
+	GtkWidget* widget_18_textview_sample;
 	GtkWidget* widget_18_clrbn[4][5];
 	GtkWidget* widget_18_fn_bn;
 	GtkWidget* widget_18_spinbn_xth;
@@ -226,6 +234,7 @@ struct AppData
 	GString*   widget_18_style_txt;
 
 	// ----- GtkTreeView -----
+	GtkWidget* widget_19_treeview_sample;
 	GtkWidget* widget_19_clrbn[4][5];
 	GtkWidget* widget_19_fn_bn;
 	GtkWidget* widget_19_spinbn_xth;
@@ -245,6 +254,7 @@ struct AppData
 	GString*   widget_19_style_txt;
 
 	// ----- GtkIconView -----
+	GtkWidget* widget_20_iconview_sample;
 	GtkWidget* widget_20_clrbn[4][5];
 	GtkWidget* widget_20_fn_bn;
 	GtkWidget* widget_20_spinbn_xth;
@@ -254,6 +264,7 @@ struct AppData
 	GString*   widget_20_style_txt;
 
 	// ----- GtkAssistant -----
+	GtkWidget* widget_21_assist_sample;
 	GtkWidget* widget_21_clrbn[4][5];
 	GtkWidget* widget_21_fn_bn;
 	GtkWidget* widget_21_spinbn_xth;
@@ -263,6 +274,7 @@ struct AppData
 	GString*   widget_21_style_txt;
 
 	// ----- GtkDialog -----
+	GtkWidget* widget_22_dlg_sample;
 	GtkWidget* widget_22_clrbn[4][5];
 	GtkWidget* widget_22_fn_bn;
 	GtkWidget* widget_22_spinbn_xth;
@@ -274,6 +286,7 @@ struct AppData
 	GString*   widget_22_style_txt;
 
 	// ----- GtkMessageDialog -----
+	GtkWidget* widget_23_msgdlg_sample;
 	GtkWidget* widget_23_clrbn[4][5];
 	GtkWidget* widget_23_fn_bn;
 	GtkWidget* widget_23_spinbn_xth;
@@ -283,6 +296,7 @@ struct AppData
 	GString*   widget_23_style_txt;
 
 	// ----- GtkNotebook -----
+	GtkWidget* widget_24_notebook_sample;
 	GtkWidget* widget_24_clrbn[4][5];
 	GtkWidget* widget_24_fn_bn;
 	GtkWidget* widget_24_spinbn_xth;
@@ -297,10 +311,12 @@ struct AppData
 	GString*   widget_24_style_txt;
 
 	// ----- GtkPaned -----
+	GtkWidget* widget_25_paned_sample;
 	GtkWidget* widget_25_spinbn_handlesz;
 	GString*   widget_25_style_txt;
 
 	// ----- GtkRange -----
+	GtkWidget* widget_26_scale_sample;
 	GtkWidget* widget_26_chkbn_activatesld;
 	GtkWidget* widget_26_spinbn_arrowdx;
 	GtkWidget* widget_26_spinbn_arrowdy;
@@ -315,11 +331,13 @@ struct AppData
 	GString*   widget_26_style_txt;
 
 	// ----- GtkScale -----
+	GtkWidget* widget_27_scale_sample;
 	GtkWidget* widget_27_spinbn_sliderl;
 	GtkWidget* widget_27_spinbn_valuesp;
 	GString*   widget_27_style_txt;
 
 	// ----- GtkScrolledWindow -----
+	GtkWidget* widget_28_scrwin_sample;
 	GtkWidget* widget_28_clrbn[4][5];
 	GtkWidget* widget_28_fn_bn;
 	GtkWidget* widget_28_spinbn_xth;
@@ -6386,6 +6404,8 @@ void ui_create_gtkstatusbar()
 	                    TRUE,  // fill
 	                    0);    // padding
 
+	app->widget_11_statbar_sample = statusbar;
+
 
 
 
@@ -6613,6 +6633,8 @@ void ui_create_gtktoolbar()
 	                    FALSE,   // expand
 	                    FALSE,   // fill
 	                    0);      // padding
+
+	app->widget_12_toolbar_sample = toolbar;
 
 
 
@@ -6966,6 +6988,7 @@ void ui_create_gtktoolbutton()
 	                    FALSE,   // fill
 	                    0);      // padding
 
+	app->widget_13_toolitem_sample = cut;
 
 
 
@@ -7201,6 +7224,8 @@ void ui_create_gtkmenu()
 	                    FALSE,   // expand
 	                    FALSE,   // fill
 	                    0);      // padding
+
+	app->widget_14_menu_sample = filemenu;
 
 
 
@@ -7535,7 +7560,7 @@ void ui_create_gtkmenubar()
 	                    0);      // padding
 
 	/*  This sample menu is from book, cap.9 - uimanager.cpp
-	    I changed the callbacks to NULL for Open, Save, etc.
+	    I changed the callbacks for Open, Save, etc to NULL.
 	    Sample menu entries:
 	 */
 	const gint SMNUM_ENTRIES = 13;
@@ -7571,6 +7596,8 @@ void ui_create_gtkmenubar()
 	                    FALSE,   // expand
 	                    FALSE,   // fill
 	                    0);      // padding
+
+	app->widget_15_menubar_sample = menubar;
 
 
 
@@ -7839,6 +7866,7 @@ void ui_create_gtkmenuitem()
 	                    FALSE,   // fill
 	                    0);      // padding
 
+	app->widget_16_menuitem_sample = file;
 
 
 
@@ -8218,6 +8246,9 @@ void ui_create_gtkcheckmenuitem()
 	                    FALSE,   // fill
 	                    0);      // padding
 
+	app->widget_17_chkmenuitem_sample = afsprev;
+
+
 
 	GtkWidget* table_1 = gtk_table_new (1, 2, TRUE); //row,col,homo
 	gtk_box_pack_start (GTK_BOX(vbox),
@@ -8305,6 +8336,8 @@ void ui_create_gtktextview()
 	                    TRUE,
 	                    TRUE,
 	                    0);
+
+	app->widget_18_textview_sample = textview;
 
 
 
@@ -8548,6 +8581,8 @@ void ui_create_gtktreeview()
 	                    TRUE,    // expand
 	                    TRUE,    // fill
 	                    0);      // padding
+
+	app->widget_19_treeview_sample = treeview;
 
 
 
@@ -9023,6 +9058,8 @@ void ui_create_gtkiconview()
 	                    TRUE,   // fill
 	                    0);      // padding
 
+	app->widget_20_iconview_sample = iconview;
+
 
 
 
@@ -9277,6 +9314,7 @@ void ui_create_gtkassistant()
 	                  G_CALLBACK(assistant_expander_activate),
 	                  (gpointer)assistant);
 
+	app->widget_21_assist_sample = assistant;
 
 
 
@@ -9539,6 +9577,8 @@ void ui_create_gtkdialog()
 	g_signal_connect (G_OBJECT(expander), "activate",
 	                  G_CALLBACK(dialog_expander_activate),
 	                  (gpointer)dialog);
+
+	app->widget_22_dlg_sample = dialog;
 
 
 
@@ -9845,6 +9885,7 @@ void ui_create_gtkmessagedialog()
 	                  G_CALLBACK(msgdialog_expander_activate),
 	                  (gpointer)msgdialog);
 
+	app->widget_23_msgdlg_sample = msgdialog;
 
 
 
@@ -10080,6 +10121,8 @@ void ui_create_gtknotebook()
 	                    TRUE,   // expand
 	                    TRUE,   // fill
 	                    0);     // padding
+
+	app->widget_24_notebook_sample = notebook;
 
 
 
@@ -10426,6 +10469,8 @@ void ui_create_gtkpaned()
 	gtk_box_pack_start (GTK_BOX(hbox), vpaned, TRUE, TRUE, 0);
 	gtk_box_pack_start (GTK_BOX(vbox), hbox, TRUE, TRUE, 0);
 
+	app->widget_25_paned_sample = hpaned;
+
 
 
 	GtkWidget* table_1 = gtk_table_new (1, 2, TRUE); //row,col,homo
@@ -10537,6 +10582,8 @@ void ui_create_gtkrange()
 	gtk_box_pack_start (GTK_BOX (vbox2), w->check, FALSE, TRUE, 0);
 
 	gtk_box_pack_start (GTK_BOX(vbox), vbox2, FALSE, TRUE, 0);
+
+	app->widget_26_scale_sample = w->scale;
 
 
 
@@ -10866,6 +10913,8 @@ void ui_create_gtkscale()
 	gtk_box_pack_start (GTK_BOX (vbox2), w->check, FALSE, TRUE, 0);
 	gtk_box_pack_start (GTK_BOX(vbox), vbox2, FALSE, TRUE, 0);
 
+	app->widget_27_scale_sample = w->scale;
+
 
 
 	GtkWidget* table_1 = gtk_table_new (2, 2, TRUE); //row,col,homo
@@ -10957,6 +11006,8 @@ void ui_create_gtkscrolledwindow()
 	                    FALSE,   // expanding
 	                    FALSE,   // fill
 	                    0);      // padding
+
+	app->widget_28_scrwin_sample = scrwin;
 
 
 
