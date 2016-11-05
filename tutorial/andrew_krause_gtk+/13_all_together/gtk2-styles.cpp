@@ -628,6 +628,17 @@ int main (int argc, char** argv)
 	return 0;
 }
 
+void fcopy(const char* from,const char* to)
+{
+    FILE* fin = fopen(from, "r");
+    FILE* fout= fopen(to,   "w");
+    int ch=0;
+    while((ch = fgetc(fin)) != EOF)
+	    fputc(ch, fout);
+    fclose(fin);
+    fclose(fout);
+}
+
 void menu_saveas (GtkMenuItem* menuitem, gpointer data)
 {
 	GtkWidget* dialog = NULL;
@@ -647,6 +658,7 @@ void menu_saveas (GtkMenuItem* menuitem, gpointer data)
 		char *filename = NULL;
 		filename = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (dialog));
 		g_print ("Save as: %s\n", filename);
+		fcopy (app->rcfile, filename);
 		g_free (filename);
 	}
 	gtk_widget_destroy (dialog);
