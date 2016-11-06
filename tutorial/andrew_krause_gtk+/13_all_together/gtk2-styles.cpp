@@ -1,3 +1,8 @@
+/*
+  Having some fun at the end of Andrew Krause book
+  "Foundations of Gtk+ Development"
+ */
+
 #include <gtk/gtk.h>
 #include <cstdio>  // tmpnam
 #include <cstring> // strlen
