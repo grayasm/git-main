@@ -4398,6 +4398,7 @@ void ui_update_gtkbutton()
 
 void ui_delete_gtkbutton()
 {
+	g_string_free (app->widget_1_style_txt, TRUE);
 }
 
 void ui_create_gtkcheckbutton()
@@ -4657,6 +4658,7 @@ void ui_update_gtkcheckbutton()
 
 void ui_delete_gtkcheckbutton()
 {
+	g_string_free (app->widget_2_style_txt, TRUE);
 }
 
 void ui_create_gtkbuttonbox()
@@ -4836,6 +4838,7 @@ void ui_update_gtkbuttonbox()
 
 void ui_delete_gtkbuttonbox()
 {
+	g_string_free (app->widget_3_style_txt, TRUE);
 }
 
 void ui_create_gtkcombobox()
@@ -5143,6 +5146,7 @@ void ui_update_gtkcombobox()
 
 void ui_delete_gtkcombobox()
 {
+	g_string_free (app->widget_4_style_txt, TRUE);
 }
 
 void ui_create_gtkentry()
@@ -5476,6 +5480,7 @@ void ui_update_gtkentry()
 
 void ui_delete_gtkentry()
 {
+	g_string_free (app->widget_5_style_txt, TRUE);
 }
 
 void ui_create_gtkexpander()
@@ -5726,6 +5731,7 @@ void ui_update_gtkexpander()
 
 void ui_delete_gtkexpander()
 {
+	g_string_free (app->widget_6_style_txt, TRUE);
 }
 
 void ui_create_gtkscrollbar()
@@ -5901,6 +5907,7 @@ void ui_update_gtkscrollbar()
 
 void ui_delete_gtkscrollbar()
 {
+	g_string_free (app->widget_7_style_txt, TRUE);
 }
 
 void ui_create_gtkarrow()
@@ -5989,6 +5996,7 @@ void ui_update_gtkarrow()
 
 void ui_delete_gtkarrow()
 {
+	g_string_free (app->widget_8_style_txt, TRUE);
 }
 
 void ui_create_gtkprogressbar()
@@ -6320,6 +6328,7 @@ void ui_update_gtkprogressbar()
 
 void ui_delete_gtkprogressbar()
 {
+	g_string_free (app->widget_9_style_txt, TRUE);
 }
 
 void ui_create_gtkspinbutton()
@@ -6428,6 +6437,7 @@ void ui_update_gtkspinbutton()
 
 void ui_delete_gtkspinbutton()
 {
+	g_string_free (app->widget_10_style_txt, TRUE);
 }
 
 void ui_create_gtkstatusbar()
@@ -6650,6 +6660,7 @@ void ui_update_gtkstatusbar()
 
 void ui_delete_gtkstatusbar()
 {
+	g_string_free (app->widget_11_style_txt, TRUE);
 }
 
 void ui_create_gtktoolbar()
@@ -7003,6 +7014,7 @@ void ui_update_gtktoolbar()
 
 void ui_delete_gtktoolbar()
 {
+	g_string_free (app->widget_12_style_txt, TRUE);
 }
 
 void ui_create_gtktoolbutton()
@@ -7222,6 +7234,7 @@ void ui_update_gtktoolbutton()
 
 void ui_delete_gtktoolbutton()
 {
+	g_string_free (app->widget_13_style_txt, TRUE);
 }
 
 void ui_create_gtkmenu()
@@ -7598,6 +7611,7 @@ void ui_update_gtkmenu()
 
 void ui_delete_gtkmenu()
 {
+	g_string_free (app->widget_14_style_txt, TRUE);
 }
 
 void ui_create_gtkmenubar()
@@ -7863,6 +7877,7 @@ void ui_update_gtkmenubar()
 
 void ui_delete_gtkmenubar()
 {
+	g_string_free (app->widget_15_style_txt, TRUE);
 }
 
 void ui_create_gtkmenuitem()
@@ -8219,6 +8234,7 @@ void ui_update_gtkmenuitem()
 
 void ui_delete_gtkmenuitem()
 {
+	g_string_free (app->widget_16_style_txt, TRUE);
 }
 
 void ui_create_gtkcheckmenuitem()
@@ -8342,6 +8358,7 @@ void ui_update_gtkcheckmenuitem()
 
 void ui_delete_gtkcheckmenuitem()
 {
+	g_string_free (app->widget_17_style_txt, TRUE);
 }
 
 void ui_create_gtktextview()
@@ -8571,6 +8588,7 @@ void ui_update_gtktextview()
 
 void ui_delete_gtktextview()
 {
+	g_string_free (app->widget_18_style_txt, TRUE);
 }
 
 void ui_create_gtktreeview()
@@ -9057,6 +9075,7 @@ void ui_update_gtktreeview()
 
 void ui_delete_gtktreeview()
 {
+	g_string_free (app->widget_19_style_txt, TRUE);
 }
 
 void ui_create_gtkiconview()
@@ -9316,6 +9335,7 @@ void ui_update_gtkiconview()
 
 void ui_delete_gtkiconview()
 {
+	g_string_free (app->widget_20_style_txt, TRUE);
 }
 
 
@@ -9570,6 +9590,7 @@ void ui_update_gtkassistant()
 
 void ui_delete_gtkassistant()
 {
+	g_string_free (app->widget_21_style_txt, TRUE);
 }
 
 
@@ -9879,6 +9900,7 @@ void ui_update_gtkdialog()
 
 void ui_delete_gtkdialog()
 {
+	g_string_free (app->widget_22_style_txt, TRUE);
 }
 
 
@@ -10141,6 +10163,7 @@ void ui_update_gtkmessagedialog()
 
 void ui_delete_gtkmessagedialog()
 {
+	g_string_free (app->widget_23_style_txt, TRUE);
 }
 
 void ui_create_gtknotebook()
@@ -10488,6 +10511,7 @@ void ui_update_gtknotebook()
 
 void ui_delete_gtknotebook()
 {
+	g_string_free (app->widget_24_style_txt, TRUE);
 }
 
 void ui_create_gtkpaned()
@@ -10565,6 +10589,7 @@ void ui_update_gtkpaned()
 
 void ui_delete_gtkpaned()
 {
+	g_string_free (app->widget_25_style_txt, TRUE);
 }
 
 typedef struct
@@ -10895,6 +10920,7 @@ void ui_update_gtkrange()
 
 void ui_delete_gtkrange()
 {
+	g_string_free (app->widget_26_style_txt, TRUE);
 }
 
 
@@ -11031,6 +11057,7 @@ void ui_update_gtkscale()
 
 void ui_delete_gtkscale()
 {
+	g_string_free (app->widget_27_style_txt, TRUE);
 }
 
 void ui_create_gtkscrolledwindow()
@@ -11261,4 +11288,5 @@ void ui_update_gtkscrolledwindow()
 
 void ui_delete_gtkscrolledwindow()
 {
+	g_string_free (app->widget_28_style_txt, TRUE);
 }
