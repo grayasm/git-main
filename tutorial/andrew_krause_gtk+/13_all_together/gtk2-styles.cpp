@@ -5749,7 +5749,21 @@ void ui_create_gtkscrollbar()
 
 	// sample from SO
 	// http://stackoverflow.com/questions/8403731/gtk-and-scrolling-text-view
-	const gchar* text = "sample text";
+	const gchar* text =
+		"The GtkScrollbar widget is an abstract\n"
+		"base class for GtkHScrollbar and GtkVScrollbar.\n"
+		"It is not very useful in itself.\n"
+		"The position of the thumb in a scrollbar is\n"
+		"controlled by the scroll adjustments.\n"
+		"See GtkAdjustment for the fields in an adjustment\n"
+		"- for GtkScrollbar, the \"value\" field represents\n"
+		"the position of the scrollbar, which must be between\n"
+		"the \"lower\" field and \"upper - page_size.\"\n"
+		"The \"page_size\" field represents the size of the\n"
+		"visible scrollable area. The \"step_increment\" and\n"
+		"\"page_increment\" fields are used when the user asks\n"
+		"to step down (using the small stepper arrows) or page down\n"
+		"(using for example the PageDown key).";
 	GtkTextTagTable* txttags = gtk_text_tag_table_new ();
 	GtkTextBuffer* txtbuff = gtk_text_buffer_new (txttags);
 	gtk_text_buffer_set_text (txtbuff, text, strlen(text));
