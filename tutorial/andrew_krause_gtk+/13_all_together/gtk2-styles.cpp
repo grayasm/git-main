@@ -5769,6 +5769,7 @@ void ui_create_gtkscrollbar()
 	gtk_text_buffer_set_text (txtbuff, text, strlen(text));
 	GtkWidget* txtview = gtk_text_view_new_with_buffer (txtbuff);
 	GtkWidget* scrwin = gtk_scrolled_window_new (NULL, NULL);
+	gtk_widget_set_size_request (scrwin, 5, 150);
 	gtk_container_add (GTK_CONTAINER(scrwin), txtview);
 	gtk_box_pack_start (GTK_BOX(vbox),
 	                    scrwin,
@@ -8407,9 +8408,39 @@ void ui_create_gtktextview()
 	gtk_text_view_set_right_margin (GTK_TEXT_VIEW(textview), 10);
 
 	GtkTextBuffer* buffer = gtk_text_view_get_buffer (GTK_TEXT_VIEW(textview));
-	gtk_text_buffer_set_text (buffer, "This is some text!\nChange me!", -1);
+	const gchar* text =
+		"GTK+ has an extremely powerful framework for multiline text editing.\n"
+		"The primary objects involved in the process are GtkTextBuffer, which\n"
+		"represents the text being edited, and GtkTextView, a widget which can\n"
+		"display a GtkTextBuffer. Each buffer can be displayed by any number\n"
+		"of views.\n"
+		"One of the important things to remember about text in GTK+ is that\n"
+		"it's in the UTF-8 encoding. This means that one character can be\n"
+		"encoded as multiple bytes. Character counts are usually referred to as\n"
+		"offsets, while byte counts are called indexes. If you confuse these\n"
+		"two, things will work fine with ASCII, but as soon as your buffer\n"
+		"contains multibyte characters, bad things will happen.\n"
+		"Text in a buffer can be marked with tags. A tag is an attribute that\n"
+		"can be applied to some range of text. For example, a tag might be\n"
+		"called \"bold\" and make the text inside the tag bold. However, the\n"
+		"tag concept is more general than that; tags don't have to affect\n"
+		"appearance. They can instead affect the behavior of mouse and key\n"
+		"presses, \"lock\" a range of text so the user can't edit it, or\n"
+		"countless other things. A tag is represented by a GtkTextTag object.\n"
+		"One GtkTextTag can be applied to any number of text ranges in any\n"
+		"number of buffers.\n"
+		"Each tag is stored in a GtkTextTagTable. A tag table defines a set of\n"
+		"tags that can be used together. Each buffer has one tag table\n"
+		"associated with it; only tags from that tag table can be used with the\n"
+		"buffer. A single tag table can be shared between multiple buffers,\n"
+		"however.\n"
+		"Tags can have names, which is convenient sometimes (for example, you\n"
+		"can name your tag that makes things bold \"bold\"), but they can also\n"
+		"be anonymous (which is convenient if you're creating tags on-the-fly).\n";
 
+	gtk_text_buffer_set_text (buffer, text, -1);
 	GtkWidget* scrolled_win = gtk_scrolled_window_new (NULL, NULL);
+	gtk_widget_set_size_request (scrolled_win, 5, 150);
 	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW(scrolled_win),
 	                                GTK_POLICY_AUTOMATIC,
 	                                GTK_POLICY_ALWAYS);
@@ -8629,34 +8660,28 @@ void ui_create_gtktreeview()
 	gtk_tree_view_append_column (GTK_TREE_VIEW(treeview), column);
 
 	GtkTreeStore* store = gtk_tree_store_new (1, G_TYPE_STRING);
-	GtkTreeIter iter, child[3];
-	gtk_tree_store_append (store, &iter, NULL);
-	gtk_tree_store_set (store,    // store
-	                    &iter,    // iterator
-	                    0,        // column index
-	                    "iter",   // value
-	                    -1);      // -1 -> end
+	GtkTreeIter iter[9];
+	gtk_tree_store_append (store, &iter[0], NULL);
+	gtk_tree_store_append (store, &iter[1], NULL);
+	gtk_tree_store_append (store, &iter[2], NULL);
+	// _tree_store_set (store, iter,  col, val, -1 for end);
+	gtk_tree_store_set (store, &iter[0], 0, "BSD", -1);
+	gtk_tree_store_set (store, &iter[1], 0, "Linux", -1);
+	gtk_tree_store_set (store, &iter[2], 0, "Minix", -1);
 
-	gtk_tree_store_append (store, &child[0], &iter);
-	gtk_tree_store_set (store,
-	                    &child[0],
-	                    0,
-	                    "child[0]",
-	                    -1);
+	gtk_tree_store_append (store, &iter[3], &iter[1]);
+	gtk_tree_store_append (store, &iter[4], &iter[1]);
+	gtk_tree_store_append (store, &iter[5], &iter[1]);
+	gtk_tree_store_set (store, &iter[3], 0, "Ubuntu", -1);
+	gtk_tree_store_set (store, &iter[4], 0, "SUSE", -1);
+	gtk_tree_store_set (store, &iter[5], 0, "Fedora", -1);
 
-	gtk_tree_store_append (store, &child[1], &child[0]);
-	gtk_tree_store_set (store,
-	                    &child[1],
-	                    0,
-	                    "child[1]",
-	                    -1);
-
-	gtk_tree_store_append (store, &child[2], &child[1]);
-	gtk_tree_store_set (store,
-	                    &child[2],
-	                    0,
-	                    "child[2]",
-	                    -1);
+	gtk_tree_store_append (store, &iter[6], &iter[5]);
+	gtk_tree_store_append (store, &iter[7], &iter[5]);
+	gtk_tree_store_append (store, &iter[8], &iter[5]);
+	gtk_tree_store_set (store, &iter[6], 0, "Workstation", -1);
+	gtk_tree_store_set (store, &iter[7], 0, "Server", -1);
+	gtk_tree_store_set (store, &iter[8], 0, "Cloud", -1);
 
 	gtk_tree_view_set_model (GTK_TREE_VIEW(treeview), GTK_TREE_MODEL(store));
 	gtk_tree_view_expand_all (GTK_TREE_VIEW(treeview));
@@ -11088,12 +11113,42 @@ void ui_create_gtkscrolledwindow()
 
 	// sample from SO
 	// http://stackoverflow.com/questions/8403731/gtk-and-scrolling-text-view
-	const gchar* text = "sample text";
+	const gchar* text =
+		"GtkScrolledWindow is a GtkBin subclass: it's a container the accepts\n"
+		"a single child widget. GtkScrolledWindow adds scrollbars to the child\n"
+		"widget and optionally draws a beveled frame around the child widget.\n"
+		"The scrolled window can work in two ways. Some widgets have native\n"
+		"scrolling support; these widgets have \"slots\" for GtkAdjustment\n"
+		"objects. [5] Widgets with native scroll support include GtkTreeView,\n"
+		"GtkTextView, and GtkLayout.\n"
+		"For widgets that lack native scrolling support, the GtkViewport widget\n"
+		"acts as an adaptor class, implementing scrollability for child widgets\n"
+		"that lack their own scrolling capabilities. Use GtkViewport to scroll\n"
+		"child widgets such as GtkTable, GtkBox, and so on.\n"
+		"If a widget has native scrolling abilities, it can be added to the\n"
+		"GtkScrolledWindow with gtk_container_add(). If a widget does not, you\n"
+		"must first add the widget to a GtkViewport, then add the GtkViewport\n"
+		"to the scrolled window. The convenience function\n"
+		"gtk_scrolled_window_add_with_viewport() does exactly this, so you can\n"
+		"ignore the presence of the viewport.\n"
+		"The position of the scrollbars is controlled by the scroll adjustments.\n"
+		"See GtkAdjustment for the fields in an adjustment - for GtkScrollbar,\n"
+		"used by GtkScrolledWindow, the \"value\" field represents the position\n"
+		"of the scrollbar, which must be between the \"lower\" field and\n"
+		"\"upper - page_size.\" The \"page_size\" field represents the size\n"
+		"of the visible scrollable area. The \"step_increment\" and\n"
+		"\"page_increment\" fields are used when the user asks to step down\n"
+		"(using the small stepper arrows) or page down (using for example the\n"
+		"PageDown key).\n"
+		"If a GtkScrolledWindow doesn't behave quite as you would like, or\n"
+		"doesn't have exactly the right layout, it's very possible to set up\n"
+		"your own scrolling with GtkScrollbar and for example a GtkTable.";
 	GtkTextTagTable* txttags = gtk_text_tag_table_new ();
 	GtkTextBuffer* txtbuff = gtk_text_buffer_new (txttags);
 	gtk_text_buffer_set_text (txtbuff, text, strlen(text));
 	GtkWidget* txtview = gtk_text_view_new_with_buffer (txtbuff);
 	GtkWidget* scrwin = gtk_scrolled_window_new (NULL, NULL);
+	gtk_widget_set_size_request (scrwin, 5, 150);
 	gtk_container_add (GTK_CONTAINER(scrwin), txtview);
 	gtk_box_pack_start (GTK_BOX(vbox),
 	                    scrwin,
