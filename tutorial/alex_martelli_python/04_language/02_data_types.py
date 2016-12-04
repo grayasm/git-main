@@ -1,4 +1,23 @@
-#
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+# pag. 38, Data Types
+#          All data values in Python are objects, and each object, or value
+#          has a type. An object's type determines which operations the object
+#          supports, or in other words, which operations you can perform on
+#          the data value. The type also determines the object's attributes
+#          and items (if any) and whether the object can be altered.
+#          An object that can be altered is known as a mutable object, while
+#          one that cannot be altered is an immutable object.
+#          The built-in type(obj) accepts any object as its argument and
+#          returns the type object that is the type of obj.
+#          The built-in function isinstance(obj, type) returns True if object
+#          obj has type type (or any subclass thereof); otherwise returns False
+#          Python has built-in types for fundamental data types such as
+#          numbers, strings, tuples, lists and dictionaries. You can also
+#          create user-defined types known as classes.
+
+
 # *** Integer numbers ***
 
 1,   23,   3493    # Decimal

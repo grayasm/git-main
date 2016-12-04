@@ -1,4 +1,21 @@
-#
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+# pag. 52, Numeric Operations
+#          Python supplies the usual numeric operations, as we've seen in
+#          Table 4-2. Numbers are immutable objects: when you perform numeric
+#          operations on number objects, you always produce a new number object
+#          and never modify existing ones. You can access the parts of a
+#          complex object z as read-only attributes z.real and z.imag. Trying
+#          to rebind these attributes on a complex object raises an exception.
+#          A number's optional + or - sign, and the + that joins a floating
+#          point literal to an imaginary one to make a complex number, are not
+#          part of the literals' syntax. They are ordinary operators, subject
+#          to normal operator precedence rules. For example, -2**2 evalues
+#          to -4: exponentiation has higher precedence than unary minus, so
+#          the whole expression parses as -(2**2), not as (-2)**2.
+
+
 # Numeric Operations
 a = 1j                  # imaginary part
 b = 2j                  # imaginary part

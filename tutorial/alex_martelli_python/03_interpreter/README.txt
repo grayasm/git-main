@@ -44,7 +44,9 @@
   - add the shebang line to script:
     #!/usr/bin/env python {options}
 
+
   On Windows:
   - .py files executed by python.exe  runs normally with GUIs
   - .pyw files executed by pythonw.exe runs in background without standard
     input and output. Scripts must be fully debugged.
+  - shebang #!/bin/python does not harm or have any influence in Windows

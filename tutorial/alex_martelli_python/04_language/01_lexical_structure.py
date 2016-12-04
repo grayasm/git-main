@@ -1,6 +1,16 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+# pag. 33, Lexical Structure
+#          The lexical structure of a programming langugage is the set of
+#          basic rules that govern how to write programs in that language.
+#          It is the lowest-level syntax of the language and specifies
+#          such things as what variable names look like and which characters
+#          denote comments. Python is very particular about program layout
+#          especially with regard to lines and identation, so you'll want
+#          to pay attention to this information if you are coming to Python
+#          from another language.
+
 from __future__ import division  # see the Operators section.
 
 
@@ -52,7 +62,7 @@ def f():
 #         class      except    if       or         while
 #         continue   exec      import   pass       with (2.5)
 #         def        finally   in       print      yield
-#         as         False      True      None     nonlocal (3.0)
+#         as         False     True     None       nonlocal (3.0)
 
 
 # 'True' 'False' 'None' which represents the null value (absence value)

@@ -1,4 +1,16 @@
-#
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+# pag. 46, Variables and Other References
+#          A Python program accesses data values through references.
+#          A reference is a name that refers to the location in memory of
+#          a value (object). References take the form of variables,
+#          attributes and items. In Python, a variable or other reference
+#          has no intrinsic type. The object to which a reference is bound
+#          at a given time always has a type, but a given reference may be
+#          bound to objects of various types during the program's execution.
+
+
 # *** Variables ***
 #    - everything in Pyton is an Object
 #    - binding operation connects a Name with an Object (implicit)
