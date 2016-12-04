@@ -21,6 +21,21 @@
 
 name = [10, 99, 42, 22, 11]
 
+# *** Assignament Statements ***
+'''
+  Plain assignament is how you createa a new variable or rebind an existing
+  one to a new value:
+    name = value
+    x.attr = value
+    x[k] = value
+  Augmented assignament does not create new references.
+  It can:
+      (1) rebind a variable
+      (2) ask an object to rebind one of its existing attributes or items
+      (3) request the target object to modify itself (up to the object to
+          honor the request of raise an exception.
+    name += value
+'''
 
 # Attribute reference
 class car():
@@ -50,6 +65,7 @@ x = 10
 x *= -8
 print "x = ", x  # -80
 
-# del statement
+
+# *** del Statements ***
 del x            # deleted object referenced by name 'x'
 # print x        # NameError: name 'x' is not defined

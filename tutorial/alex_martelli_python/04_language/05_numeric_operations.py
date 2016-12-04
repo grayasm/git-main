@@ -31,10 +31,11 @@ print "abs(2+4j)= ", abs(a)
 print "2 + 4j == complex(2, 4) is ", a == b
 
 
-# Numeric Conversion
+# *** Numeric Conversion ***
 a = "545.2222"
-print "float(", a, ")= ", float(a)
-print "int(float(", a, ")=", int(float(a))
+print "float(", a, ")= ", float(a)            # ...=545.2222
+print "int(float(", a, ")=", int(float(a))    # ...=545
+
 
 # http://stackoverflow.com/questions/379906/parse-string-to-float-or-int
 def isfloat(val):
@@ -43,6 +44,7 @@ def isfloat(val):
         return True
     except:
         return False
+
 
 # Command to parse                   isFloat?   Note
 # --------------------------------  --------   ---------------------------
@@ -79,3 +81,45 @@ print isfloat("+1e1^5")             # False      Fancy exponent not interpreted
 print isfloat("+1e1.3")             # False      No decimals in exponent
 print isfloat("-+1")                # False      Make up your mind
 print isfloat("(1)")                # False      Parenthesis is bad
+
+# *** Arithmetic Operations ***
+
+# division, unobvious behavior
+try:
+    a = 10 / 0
+except Exception as e:
+    print "10 / 0 throws: ", type(e)  # <type 'exceptions.ZeroDivisionError'>
+
+a = 10.0 / 3.3                        # 3.030303 of type: <type 'float'>
+print "10.0 / 3.3 = %f of type: %s" % (a, type(a))
+
+b = 10 / 3                            # 3 of type: <type 'int'>
+print "10 / 3 = ", b, " of type: ", type(b)
+
+# can use divmod instead of // and % (truncate division + remainder)
+(q, r) = divmod(10, 3)
+print "quotient  = ", q, " of type: ", type(q)  # 3  of type:  <type 'int'>
+print "remainder = ", r, " of type: ", type(r)  # 1  of type:  <type 'int'>
+
+# truncating division, unobvious behavior
+try:
+    a = 10 // 0
+except Exception as e:
+    print "10 // 0 throws: ", type(e)  # <type 'exceptions.ZeroDivisionError'>
+
+# remainder, unobvious behavior
+try:
+    a = 10 % 0
+except Exception as e:
+    print "10 % 0 throws: ", type(e)  # <type 'exceptions.ZeroDivisionError'>
+
+
+# *** Comparisons ***
+'''
+==, !=, <, <=, >, >=    all return Boolean True or False
+                        unless either operand is complex when it raises
+                        runtime exception.
+'''
+
+
+# *** Bitwise Operations on Integers ***

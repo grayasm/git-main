@@ -57,6 +57,29 @@ print "slicing a[0:1]= ", b
 b = a[1]                # indexing
 print "indexing a[1]= ", b
 
+# attributes
+# exponentiation
+# bitwise NOT
+# unary plus
+# unary minus
+# multiplication
+# division
+# truncating division
+# remainder
+# addition
+# subtraction
+# left-shift
+# right-shift
+# bitwise AND
+# bitwise XOR
+# bitwise OR
+# less than
+# less than or equal
+# greater than
+# greater than or equal
+# inequality
+# equality
+
 # Comparison chaining
 a = 5
 b = 15
@@ -73,3 +96,10 @@ def expr2():
 
 if a == 200 and expr2():
     print "If you see this then it is an error"
+
+# identity test
+# membership test
+# boolean NOT
+# boolean AND
+# boolean OR
+# anonymous function
