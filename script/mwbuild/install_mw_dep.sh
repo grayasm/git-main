@@ -22,4 +22,5 @@ yum install subversion-devel    \
             libXrandr-devel     \
             libXinerama-devel   \
             libXcursor-devel    \
+			libXt-devel         \
             procps-ng-devel
