@@ -57,9 +57,18 @@ print "slicing a[0:1]= ", b
 b = a[1]                # indexing
 print "indexing a[1]= ", b
 
-# attributes
-# exponentiation
-# bitwise NOT
+
+class counter:
+    count = 100
+
+
+print "counter.count + 10 = %d" % (counter.count + 10)  # attributes
+
+print "10**2 = %d" % 10**2  # exponentiation
+
+c = 10
+print "~10 = %d" % (~10)  # bitwise NOT
+
 # unary plus
 # unary minus
 # multiplication
