@@ -61,33 +61,30 @@ print "indexing a[1]= ", b
 class counter:
     count = 100
 
-
 print "counter.count + 10 = %d" % (counter.count + 10)  # attributes
 
-print "10**2 = %d" % 10**2  # exponentiation
-
-c = 10
-print "~10 = %d" % (~10)  # bitwise NOT
-
-# unary plus
-# unary minus
-# multiplication
-# division
-# truncating division
-# remainder
-# addition
-# subtraction
-# left-shift
-# right-shift
-# bitwise AND
-# bitwise XOR
-# bitwise OR
-# less than
-# less than or equal
-# greater than
-# greater than or equal
-# inequality
-# equality
+print "10 ** 2 = %d" % 10**2      # exponentiation
+print "~10     = %d" % ~10        # bitwise NOT  (~0000 1010 = 1111 0101)
+print "+10     = %d" % (+10)      # unary plus
+print "-10     = %d" % (-10)      # unary minus
+print "10 * 10 = %d" % (10*10)    # multiplication
+print "10 / 10 = %d" % (10/10)    # division
+print "10 // 3 = %d" % (10 // 3)  # truncating division
+print "10 % 3  =", 10 % 3         # remainder
+print "10 + 3  = %d" % (10+3)     # addition
+print "10 - 3  = %d" % (10-3)     # subtraction
+print "2 << 2  = %d" % (2 << 2)   # left-shift
+print "8 >> 2  = %d" % (8 >> 2)   # right-shift
+print "11 & 7  = %d" % (11 & 7)   # bitwise AND  (1011 & 0111 = 0011)
+print "11 ^ 7  = %d" % (11 ^ 7)   # bitwise XOR  (1011 ^ 0111 = 1100)
+print "11 | 7  = %d" % (11 | 7)   # bitwise OR   (1011 | 0111 = 1111)
+print "11 < 7  = %s" % (11 < 7)   # less than
+print "11 <= 7 = %s" % (11 <= 7)  # less than or equal
+print "11 > 7  = %s" % (11 > 7)   # greater than
+print "11 >= 7 = %s" % (11 >= 7)  # greater than or equal
+print "11 <> 7 = %s" % (11 <> 7)  # inequality
+print "11 != 7 = %s" % (11 != 7)
+print "11 == 7 = %s" % (11 == 7)  # equality
 
 # Comparison chaining
 a = 5
@@ -95,7 +92,7 @@ b = 15
 c = 20
 d = 21
 e = a < b <= c < d
-print "a < b <= c < d is ", e  # prints: ... is True
+print "%d < %d <= %d < %d is %s" % (a, b, c, d, e)  # prints: ... is True
 
 # Short-Circuiting Operators
 #      if expr1 and expr2:   -> if expr1 is False, expr2 is not executed
@@ -106,9 +103,15 @@ def expr2():
 if a == 200 and expr2():
     print "If you see this then it is an error"
 
-# identity test
-# membership test
-# boolean NOT
-# boolean AND
-# boolean OR
-# anonymous function
+f = "google"
+print "%s is \"google\" = %s" % (f, f is "google")  # identity test
+
+g = [1, 2, 3, 4, 5]
+h = 5
+print "%d in %s = %s" % (h, g, h in g)             # membership test
+print "not True = %s" % (not True)                 # boolean NOT
+print "True and False = %s" % (True and False)     # boolean AND
+print "True or False  = %s" % (True or False)      # boolean OR
+
+double = lambda x: x * 2
+print "double(%.2f) = %f" % (2.2, double(2.2))     # anonymous function
