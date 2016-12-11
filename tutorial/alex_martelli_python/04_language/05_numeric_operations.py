@@ -123,3 +123,18 @@ except Exception as e:
 
 
 # *** Bitwise Operations on Integers ***
+c = 0b1001  # AND (&)
+d = 0b1100
+# = 0b1000  # 8 DECIMAL
+
+e = 0b1001  # OR (|)
+f = 0b1100
+# = 0b1101  # 13 DECIMAL
+
+g = 0b1001  # XOR (^) exclusive OR
+h = 0b1100
+# = 0b0101  # 5 DECIMAL
+
+print "%d & %d = %d" % (c, d, c & d)  # 8
+print "%d | %d = %d" % (e, f, e | f)  # 13
+print "%d ^ %d = %d" % (g, h, g ^ h)  # 5

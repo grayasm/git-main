@@ -2,10 +2,18 @@
 # -*- coding: utf-8 -*-
 
 
-#
-# Sequence Operations
-#    * operations on string "", tuple (), list []
-#    * each class has member functions accessible
+# pag. 53, Sequence Operations.
+#          Python supports a variety of operations applicable to all sequences,
+#          including strings, lists and tuples. Some sequence operations apply
+#          to all containers (including, for example sets and dictionaries,
+#          which are not sequences) and some apply to all iterables, meaning
+#          "any object on which you can loop", as covered in "Iterables";
+#          all containers, be they sequences or otherwise, are iterable, and
+#          so are many objects that are not containers, such as files, covered
+#          in "File Objects" and generators convered in "Generators".
+#          In the following, I use the terms sequence, container and iterable
+#          quite precisely and specifically to indicate exactly which
+#          operations apply to each category.
 
 
 # String
@@ -56,6 +64,20 @@ a[3:4] = [30, 40]
 print "new a = ", a            # a = [0, 10, 2, 30, 40]
 
 
+# In-place operations on a list (+= , *=)
+l1 = ['a', 'b', 'c']
+l2 = [0, 1, 2]
+l2 += l1                       # in place version of + operator
+print "l2 = ", l2              # l2 = [0, 1, 2, 'a', 'b', 'c']
+c = 2
+l1 *= c                        # in place version of * operator
+print "l1 = ", l1              # l1 = ['a', 'b', 'c', 'a', 'b', 'c']
+
+c = 0
+l1 *= c                        # for any multiplier <= 0 l1 is emptied
+print "l1 = ", l1              # l1 = []
+
+
 # List methods
 a[-1] = 30                     # a = [0, 10, 2, 30, 30]
 print "how many 30 are in ", a, " = ", a.count(30)  # 2
@@ -65,4 +87,4 @@ print "how many 30 are in ", a, " = ", a.count(30)  # 2
 a = [-1, 100, 4, -5]
 b = a
 b.sort()
-print a, " and sorted ", b
+print a, " and sorted ", b     # b = [-5, -1, 4, 100]
