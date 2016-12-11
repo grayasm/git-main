@@ -2,8 +2,16 @@
 # -*- coding: utf-8 -*-
 
 
-#
-# Dictionary Operations
+# pag. 59, Dictionary Operations
+#          Python provides a variety of operations applicable to dictionaries.
+#          Since dictionaries are containers, the built-in "len" function can
+#          take a dictionary as its single argument and return the number
+#          of items (key/value pairs) in the dictionary object.
+#          A dictionary is iterable, so you can pass it to any function or
+#          method that takes an iterable argument. In this case, only the
+#          keys of the dictionary are iterated upon, in some arbitrary order.
+#          For example, for any dictionary D, min(D) returns the smallest key
+#          in D.
 #
 #    the dictionary:
 #    * is an arbitrary collections of items as (key:value) pairs
@@ -13,6 +21,12 @@
 #    * keys must be hashable, values can be arbitrary types
 #    * see: https://docs.python.org/2/library/stdtypes.html#dict
 
+
+# Dictionary Membership
+D = {97: 'a', 98: 'b', 99: 'c'}
+print '%d in D = %s' % (97, 97 in D)      # True, test key membership
+
+# Indexing a Dictionary
 a = {'x': 42, 'y': 3.14, 'z': 7}
 print "d['x']=", a['x']                   # 42
 print "d['z']=", a['z']                   # 7
@@ -22,8 +36,11 @@ try:
 except:
     print "no d['a'], stupid"
 
-a = {'x': 42, 'y': 3.14}
+a = {'x': 42, 'y': 3.14}                  # plain assignament D[newkey]=value
 a['a'] = 16                               # {'x':42, 'y':3.14, 'a':16}
+
+del D[97]                                 # del Statement del D[key]
+print 'D=', D                             # D={98: 'b', 99: 'c'}
 
 
 # Dictionary object methods - non-mutating
