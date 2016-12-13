@@ -1,5 +1,14 @@
-#
-# Set Operations
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+
+# pag. 58, Set Operations
+#          Python provides a variety of operations applicable to sets.
+#          Since sets are containers, the built-in len function can take a set
+#          as its single argument and return the number of items in the set
+#          object. A set is iterable, so you can pass it to any function
+#          or method that takes an iterable argument. In this case, the items
+#          of the set are iterated upon, in some arbitrary order.
 #
 #    set: arbitrarily unordered collections of unique items
 #    frozenset:  similar but immutable

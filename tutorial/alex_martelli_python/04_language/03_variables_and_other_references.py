@@ -1,4 +1,16 @@
-#
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+# pag. 46, Variables and Other References
+#          A Python program accesses data values through references.
+#          A reference is a name that refers to the location in memory of
+#          a value (object). References take the form of variables,
+#          attributes and items. In Python, a variable or other reference
+#          has no intrinsic type. The object to which a reference is bound
+#          at a given time always has a type, but a given reference may be
+#          bound to objects of various types during the program's execution.
+
+
 # *** Variables ***
 #    - everything in Pyton is an Object
 #    - binding operation connects a Name with an Object (implicit)
@@ -9,6 +21,21 @@
 
 name = [10, 99, 42, 22, 11]
 
+# *** Assignament Statements ***
+'''
+  Plain assignament is how you createa a new variable or rebind an existing
+  one to a new value:
+    name = value
+    x.attr = value
+    x[k] = value
+  Augmented assignament does not create new references.
+  It can:
+      (1) rebind a variable
+      (2) ask an object to rebind one of its existing attributes or items
+      (3) request the target object to modify itself (up to the object to
+          honor the request of raise an exception.
+    name += value
+'''
 
 # Attribute reference
 class car():
@@ -38,6 +65,7 @@ x = 10
 x *= -8
 print "x = ", x  # -80
 
-# del statement
+
+# *** del Statements ***
 del x            # deleted object referenced by name 'x'
 # print x        # NameError: name 'x' is not defined
