@@ -91,3 +91,63 @@ print '{:=5d}'.format((- 23))          #-  23 , not possible with old-style
 # Named placeholders
 data = {'first': 'Hodor', 'last': 'Hodor!'}
 print '%(first)s %(last)s' % data      # Hodor Hodor!
+print '{first} {last}'.format(**data)  # Hodor Hodor!
+
+print '{first} {last}'.format(first='Hodor', last='Hodor!')  # Hodor Hodor!
+
+
+# Getitem with containers that support __getitem__
+person = {'first': 'Jean-Luc', 'last': 'Picard'}
+print '{p[first]} {p[last]}'.format(p=person)  # Jean-Luc Picard
+
+data = [4, 8, 15, 16, 23, 42]
+print '{d[4]} {d[5]}'.format(d=data)    # 23 42
+
+
+# Getattr with containers that support accessing attributes via getattr()
+class Plant(object):
+    type = 'tree'
+
+
+print '{p.type}'.format(p=Plant())      # tree
+
+
+# Datetime
+from datetime import datetime
+
+print '{:%Y-%m-%d %H:%M}'.format(datetime(2001, 2, 3, 4, 5)) # 2001-02-03 04:05
+
+# Parameterized formats, nested expressions in braces anywhere after colon.
+print '{:{align}{width}}'.format('test', align='^', width='10')  #   test
+
+
+# Parameterized precision
+print '%.*s = %.*f' % (3, 'Gibberish', 3, 2.7182)                     # Gib = 2.718
+print '{:.{prec}} = {:.{prec}f}'.format('Gibberish', 2.7182, prec=3)  # Gib = 2.718
+
+# Parameterized width and precision
+print '%*.*f' % (5, 2, 2.7182)                               # 2.72
+print '{:{width}.{prec}f}'.format(2.7182, width=5, prec=2)   # 2.72
+
+# - rewritten with nested format
+print '{:{prec}} = {:{prec}}'.format('Gibberish', 2.7182, prec='.3')  # Gib = 2.72
+
+
+# - rewritten with date and time separately
+from datetime import datetime
+dt = datetime(2001, 2, 3, 4, 5)
+print '{:{dfmt} {tfmt}}'.format(dt, dfmt='%Y-%m-%d', tfmt='%H:%M')  # 2001-02-03 04:05
+
+# - with nested formats as positional arguments
+print '{:{}{}{}.{}}'.format(2.7182818284, '>', '+', 10, 3)  #     +2.72
+
+
+# Custom objects, working through the __format__() magic method.
+class HAL9000(object):
+    def __format__(self, format):
+        if (format == 'open-the-pod-bay-doors'):
+            return "I'm afraid I can't do that."
+        return 'HAL 9000'
+
+
+print '{:open-the-pod-bay-doors}'.format(HAL9000())  # I'm afraid I can't do that. 
