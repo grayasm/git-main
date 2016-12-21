@@ -30,14 +30,15 @@ BuildRequires:    libarchive-devel, glibc-devel, glibc-headers
 BuildRequires:    libgpg-error-devel, libblkid-devel, libuuid-devel, pcre-devel
 BuildRequires:    libcap-devel, libxml2-devel
 BuildRequires:    libffi-devel
-BuildRequires:    elfutils-libelf-devel
+BuildRequires:    elfutils-libelf-devel, fuse-devel
 
 
 Requires:     gpgme, xz-libs, zlib, libmount, libselinux, systemd-libs
 Requires:     libsoup, glib2, libarchive, glibc, libassuan, libgpg-error
 Requires:     libblkid, libuuid, pcre, libcap, libgcrypt, elfutils-libs
 Requires:     libgcc, libxml2, sqlite, libffi, openssl-libs, libacl
-Requires:     libattr, lzo, elfutils-libelf
+Requires:     libattr, lzo, elfutils-libelf, bzip2-libs, fuse-libs
+
 
 
 %description
