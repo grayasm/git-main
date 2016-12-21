@@ -22,11 +22,11 @@
 #    * see: https://docs.python.org/2/library/stdtypes.html#dict
 
 
-# Dictionary Membership
+# *** Dictionary Membership ***
 D = {97: 'a', 98: 'b', 99: 'c'}
 print '%d in D = %s' % (97, 97 in D)      # True, test key membership
 
-# Indexing a Dictionary
+# *** Indexing a Dictionary ***
 a = {'x': 42, 'y': 3.14, 'z': 7}
 print "d['x']=", a['x']                   # 42
 print "d['z']=", a['z']                   # 7
@@ -43,7 +43,7 @@ del D[97]                                 # del Statement del D[key]
 print 'D=', D                             # D={98: 'b', 99: 'c'}
 
 
-# Dictionary object methods - non-mutating
+# *** Dictionary methods *** - non-mutating
 b = a.copy()              # {'y':3.14, 'x':42, 'a':16}
 c = b.has_key('m')        # False
 d = b.items()             # [('y', 3.14), ('x', 42), ('a', 16)]
@@ -54,7 +54,7 @@ h = b.iterkeys()          # <dictionary-keyiterator object at 0x7f7fbb46d260>
 i = b.itervalues()        # <dictionary-valueiterator object at 0x7f7fbb46d2b8>
 j = a.get('a')            # 16
 
-# Dictionary object methods - mutating
+# *** Dictionary methods *** - mutating
 a.clear()                 # {}
 k = b.copy()              # {y':3.14, 'x':42, 'a':16}
 for key in k:

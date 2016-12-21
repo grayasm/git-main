@@ -16,6 +16,7 @@
 #          operations apply to each category.
 
 
+# *** Sequences in General ***
 # String
 a = "this is a string"
 print a, " with length ", len(a)            # len(string)
