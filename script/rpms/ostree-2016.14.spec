@@ -21,8 +21,23 @@ Name:         %{name}
 Version:      %{version}
 Release:      %{release}
 Source:       ostree-%{version}.tar.gz
-# Prefix:     /
+#Prefix:      /usr
 Group:        Development/Libraries
+
+BuildRequires:    gpgme-devel, xz-devel, zlib-devel, libmount-devel
+BuildRequires:    libselinux-devel, systemd-devel, libsoup-devel, glib2-devel
+BuildRequires:    libarchive-devel, glibc-devel, glibc-headers
+BuildRequires:    libgpg-error-devel, libblkid-devel, libuuid-devel, pcre-devel
+BuildRequires:    libcap-devel, libxml2-devel
+BuildRequires:    libffi-devel
+BuildRequires:    elfutils-libelf-devel
+
+
+Requires:     gpgme, xz-libs, zlib, libmount, libselinux, systemd-libs
+Requires:     libsoup, glib2, libarchive, glibc, libassuan, libgpg-error
+Requires:     libblkid, libuuid, pcre, libcap, libgcrypt, elfutils-libs
+Requires:     libgcc, libxml2, sqlite, libffi, openssl-libs, libacl
+Requires:     libattr, lzo, elfutils-libelf
 
 
 %description
