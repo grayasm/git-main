@@ -1,12 +1,17 @@
-# -----------------------------------------------------------------------------
-# Python Classes
 #
-# syntax: class classname(base-classes):
-#               statement(s)
+# pag. 82, Classes and Instances
+#          If you're already familiar with object-oriented programming in
+#          other languages such as C++ or Java, then you probably have a
+#          good intuitive grasp of classes and instances: a class is a
+#          user-defined type, which you can instantiate to obtain instances,
+#          meaning objects of that type. Python supports these concepts through
+#          its class and instance objects.
 
 
-# *** Attributes of class objects ***
+# *** Python Classes ***
+# *** The class Statement ***
 
+# *** The Class Body ***
 class C1(object):
     x = 23            # attribute
 print C1.x            # prints: 23
@@ -46,28 +51,27 @@ class C4(object):
         print C4.x            # must use C4.x, not just x
 
 
-# *** Function definitions in a class body ***
 class C5(object):
-
-    def hello(self):
+    def hello(self):          # function definition in a class body
         print "Hello"
 
 
-# *** Class-private variables ***
 class A():
-    __ident = 100
-a = A()
+    __ident = 100      # private variable starts with __
+a = A()                # and its changed by compiler into _classname__variable
 print a._A__ident      # prints: 100
 
 
-# *** Class documentation strings ***
+# Class documentation strings
 class A():
     '''If the first statement in the class body is a
     string literal, the compiler binds that string as
     the documentation string attribute for the class.'''
     pass
+
+
 a = A()
-print a.__doc__   # prints: '''If the first ....
+print a.__doc__   # prints: If the first ....
 
 
 # *** Descriptors ***
@@ -177,25 +181,34 @@ class Singleton(object):
 class B(object):
     a = 23
     b = 45
-    def f(self): print "method f in class B"
-    def g(self): print "method g in class B"
+
+    def f(self):
+        print "method f in class B"
+
+    def g(self):
+        print "method g in class B"
 
 
 class C(B):
     b = 67
     c = 89
     d = 123
-    def g(self): print "method g in class C"
-    def h(self): print "method h in class C"
+
+    def g(self):
+        print "method g in class C"
+
+    def h(self):
+        print "method h in class C"
+
 
 x = C()
 x.d = 77
 x.e = 88
 
-print C.__name__  # prints: C
-print C.__bases__ # prints: (<class '__main__.B'>,)
-print x.__class__ # prints: <class '__main__.C'>
-print x.__dict__  # prints: {'e': 88, 'd': 77}
+print C.__name__   # prints: C
+print C.__bases__  # prints: (<class '__main__.B'>,)
+print x.__class__  # prints: <class '__main__.C'>
+print x.__dict__   # prints: {'e': 88, 'd': 77}
 
 
 # Getting an attribute from a class.
@@ -203,7 +216,8 @@ print x.__dict__  # prints: {'e': 88, 'd': 77}
 print x.e, x.d, x.c, x.b, x.a  # prints: 88 77 89 67 23
 
 
-# *** Bound and Unbound Methods ***
+
+# *** Bound and Unbound Methods
 # - bound method - associated with an instance
 # - unbound method - not associated with a particular instance
 
@@ -276,8 +290,8 @@ def make_adder_as_callable_instance(augend):
 
 
 # add 5 + 6
-fn_closure  = make_adder_as_closure(0)
-fn_bound    = make_adder_as_bound_method(6)
+fn_closure = make_adder_as_closure(0)
+fn_bound = make_adder_as_bound_method(6)
 fn_callable = make_adder_as_callable_instance(6)
 
 a = fn_closure(5, 6)
@@ -369,6 +383,7 @@ class D(B,C):
 
 d = D()
 d.met()   # prints: D.met B.met A.met C.met A.met
+
 
 
 # *** The Built-in object Type ***
@@ -473,7 +488,9 @@ class OptimizedRectangle(Rectangle):
     __slots__ = 'width', 'height'
 
 
+
 # *** __getattribute__ ***
+
 #
 # Method gets called for all instance attributes. Override this method to
 # implement specific behavior.
@@ -486,7 +503,9 @@ x = listNoAppend((1, 2, 3, 4, 5))
 # x.append(6)      AttributeError: append
 
 
+
 # *** Per-Instance Methods ***
+
 #
 # Old-Style-class vs New-Style-class in python with different binding behavior
 

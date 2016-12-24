@@ -1,6 +1,14 @@
 #
-# Metaclasses
-#
+# pag. 117, Metaclasses
+#           Any object, even a class object, has a type. In Python, types and
+#           classes are also first-class objects. The type of a class is also
+#           known as the class's metaclass. An object's behavior is mostly
+#           determined by the type of the object. This also holds for classes:
+#           a class's behavior is mostly determined by the class's metaclass.
+
+
+# *** How Python Determines a Class's Metaclass ***
+
 # The 'type' class object is also known as the class's metaclass.
 # Old-style and New-style classes have different metaclasses.
 
@@ -10,6 +18,8 @@ print type(Classic)       # prints: <type 'classobj'>
 print type(Newstyle)      # prints: <type 'type'>
 
 
+
+# *** How a Metaclass Creates a Class ***
 # Defining and using your own metaclasses.
 class MyMeta(type):
     def __str__(cls):

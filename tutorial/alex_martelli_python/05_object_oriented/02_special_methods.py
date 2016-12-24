@@ -1,5 +1,13 @@
 #
-# Special Methods
+# pag. 104, Special Methods
+#           A class my define or inherit special methods (i.e. methods whose
+#           names begin and end with double underscores). Each special method
+#           relates to a specific operation. Python implicitly invokes a
+#           special method whenever you perform the related operation on an
+#           instance object. In most cases, the method's return value is the
+#           operation's result, and attempting an operation when its related
+#           method is not present raises and exception.
+
 
 # *** General-Purpose Special Methods ***
 # Initialization and finalization
