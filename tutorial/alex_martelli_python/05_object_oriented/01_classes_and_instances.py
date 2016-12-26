@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-#
 # pag. 82, Classes and Instances
 #          If you're already familiar with object-oriented programming in
 #          other languages such as C++ or Java, then you probably have a
@@ -16,19 +15,19 @@
 
 # *** The Class Body ***
 class C1(object):
-    x = 23            # attribute
-print C1.x            # prints: 23
+    x = 23              # attribute
+print (C1.x)            # prints: 23
 
 
 class C2(object):
     pass
-C2.x = 23             # bind attribute from outside
-print C2.x            # prints: 23
+C2.x = 23               # bind attribute from outside
+print (C2.x)            # prints: 23
 
 
-print C1.__name__     # prints: C1
-print C1.__bases__    # prints: (<type 'object'>,)
-print C1.__dict__
+print (C1.__name__)     # prints: C1
+print (C1.__bases__)    # prints: (<type 'object'>,)
+print (C1.__dict__)
 
 # prints: {'__dict__': <attribute '__dict__' of 'C1' objects>,
 #          'x': 23,
@@ -39,30 +38,30 @@ print C1.__dict__
 C1.y = 45
 C1.z = 67
 z = C1.__dict__['z']
-print C1.x, C1.y, z        # prints: 23, 45, 67
+print (C1.x, C1.y, z)   # prints: 23, 45, 67
 
 
 class C3(object):
     x = 23
-    y = x + 22                # must use just x, not C3.x
+    y = x + 22          # must use just x, not C3.x
 
 
 class C4(object):
     x = 23
 
     def method(self):
-        print C4.x            # must use C4.x, not just x
+        print (C4.x)    # must use C4.x, not just x
 
 
 class C5(object):
     def hello(self):          # function definition in a class body
-        print "Hello"
+        print ("Hello")
 
 
 class A():
     __ident = 100      # private variable starts with __
 a = A()                # and its changed by compiler into _classname__variable
-print a._A__ident      # prints: 100
+print (a._A__ident)    # prints: 100
 
 
 # Class documentation strings
@@ -74,7 +73,7 @@ class A():
 
 
 a = A()
-print a.__doc__   # prints: If the first ....
+print (a.__doc__)   # prints: If the first ....
 
 
 # *** Descriptors ***
@@ -91,11 +90,11 @@ class A(object):
         self.name = name
 
     def __get__(self, obj, objtype):
-        print 'Retrieving', self.name
+        print ('Retrieving', self.name)
         return self.val
 
     def __set__(self, obj, val):
-        print 'Updating', self.name
+        print ('Updating', self.name)
         self.val = val
 
 
@@ -104,55 +103,63 @@ class B(object):
     y = 5
 
 m = B()
-print m.x       # prints: Retrieving var "x"  \n10
+print (m.x)     # prints: Retrieving var "x"  \n10
 m.x = 20        # prints: Updating var "x"
-print m.y       # prints: 5
+print (m.y)     # prints: 5
 
 
 # *** Instances ***
 anInstance = C5()
-print isinstance(anInstance, C5)  # prints: True
+print (isinstance(anInstance, C5))  # prints: True
 
 
 # __init__
 class C6(object):
-
     def __init__(self, n):
         self.x = n
+
+
 anotherInstance = C6(42)
 
 
 # attributes of instance objects
-anInstance.hello()        # prints: Hello
-print anotherInstance.x   # prints: 42
+anInstance.hello()          # prints: Hello
+print (anotherInstance.x)   # prints: 42
 
 
 class C7(object):
     pass
+
+
 z = C7()
-z.x = 23             # arbitrary attribute
-print z.x            # prints: 23
+z.x = 23                # arbitrary attribute
+print (z.x)             # prints: 23
 
 
-print z.__class__.__name__, z.__dict__  # prints: C7 {'x': 23}
+print (z.__class__.__name__, z.__dict__)  # prints: C7 {'x': 23}
 z.y = 45
 z.__dict__['z'] = 67
-print z.x, z.y, z.z  # prints: 23 45 67
+print (z.x, z.y, z.z)   # prints: 23 45 67
 
 
 # The factory-function idiom
 # similar with C++ singleton
 class SpecialCase(object):
-    def amethod(self): print "special"
+    def amethod(self):
+        print ("special")
 
 
 class NormalCase(object):
-    def amethod(self): print "normal"
+    def amethod(self):
+        print ("normal")
 
 
 def appropriateCase(isnormal=True):
-    if isnormal: return NormalCase()
-    else: return SpecialCase()
+    if isnormal:
+        return NormalCase()
+    else:
+        return SpecialCase()
+
 
 aninstance = appropriateCase(isnormal=False)
 aninstance.amethod()     # prints: "special", as desired
@@ -186,10 +193,10 @@ class B(object):
     b = 45
 
     def f(self):
-        print "method f in class B"
+        print ("method f in class B")
 
     def g(self):
-        print "method g in class B"
+        print ("method g in class B")
 
 
 class C(B):
@@ -198,33 +205,32 @@ class C(B):
     d = 123
 
     def g(self):
-        print "method g in class C"
+        print ("method g in class C")
 
     def h(self):
-        print "method h in class C"
+        print ("method h in class C")
 
 
 x = C()
 x.d = 77
 x.e = 88
 
-print C.__name__   # prints: C
-print C.__bases__  # prints: (<class '__main__.B'>,)
-print x.__class__  # prints: <class '__main__.C'>
-print x.__dict__   # prints: {'e': 88, 'd': 77}
+print (C.__name__)      # prints: C
+print (C.__bases__)     # prints: (<class '__main__.B'>,)
+print (x.__class__)     # prints: <class '__main__.C'>
+print (x.__dict__)      # prints: {'e': 88, 'd': 77}
 
 
 # Getting an attribute from a class.
 # Getting an attribute from an instance.
-print x.e, x.d, x.c, x.b, x.a  # prints: 88 77 89 67 23
-
+print (x.e, x.d, x.c, x.b, x.a)   # prints: 88 77 89 67 23
 
 
 # *** Bound and Unbound Methods
 # - bound method - associated with an instance
 # - unbound method - not associated with a particular instance
 
-print x.h, x.g, x.f, C.h, C.g, C.f
+print (x.h, x.g, x.f, C.h, C.g, C.f)
 
 # prints: <bound method C.h of <__main__.C object at 0x23af150>>
 #         <bound method C.g of <__main__.C object at 0x23af150>>
@@ -237,25 +243,27 @@ x.h()   # prints: method h in class C
 C.h(x)  # prints: method h in class C
 
 
-# Unbound method details
+# Unbound method details, removed in python3
 # 'im_class' 'im_func' 'im_self'
 
-print C.h.im_class   # prints: <class '__main__.C'>
-print C.h.im_func    # prints: <function h at 0x21dbc08>
-print C.h.im_self    # prints: None
+# print (C.h.im_class)      # prints: <class '__main__.C'>
+# print (C.h.im_func)       # prints: <function h at 0x21dbc08>
+# print (C.h.im_self)       # prints: None
 
-print x.h.im_class   # prints: <class '__main__.C'>
-print x.h.im_func    # prints: <function h at 0x1d90c08>
-print x.h.im_self    # prints: <__main__.C object at 0x1d97150>
+# print (x.h.im_class)      # prints: <class '__main__.C'>
+# print (x.h.im_func)       # prints: <function h at 0x1d90c08>
+# print (x.h.im_self)       # prints: <__main__.C object at 0x1d97150>
 
 
 # low-level detail of the method call with the normal syntax: x.name(arg)
 def f(a, b):
-    print a, b
+    print (a, b)
 
 
 class C(object):
     name = f
+
+
 x = C()
 x.name(33)  # prints: <__main__.C object at 0x850210> 33
 
@@ -300,7 +308,7 @@ fn_callable = make_adder_as_callable_instance(6)
 a = fn_closure(5, 6)
 b = fn_bound(5)
 c = fn_callable(5)
-print a, b, c    # prints: 11 11 11
+print (a, b, c)    # prints: 11 11 11
 
 
 # *** Inheritance ***
@@ -310,7 +318,7 @@ print a, b, c    # prints: 11 11 11
 # multiple inheritance, example:
 
 class Base1:
-    def amethod(self): print "Base1"
+    def amethod(self): print ("Base1")
 
 
 class Base2(Base1):
@@ -318,11 +326,12 @@ class Base2(Base1):
 
 
 class Base3(Base1):
-    def amethod(self): print "Base3"
+    def amethod(self): print ("Base3")
 
 
 class Derived(Base2, Base3):
     pass
+
 
 aninstance = Derived()
 aninstance.amethod()  # prints: "Base1"
@@ -332,22 +341,29 @@ aninstance.amethod()  # prints: "Base1"
 class B(object):
     a = 23
     b = 45
-    def f(self): print "method f in class B"
-    def g(self): print "method g in class B"
+
+    def f(self): print ("method f in class B")
+
+    def g(self): print ("method g in class B")
+
 
 class C(B):
     b = 67
-    def g(self): print "method g in class C"
+
+    def g(self): print ("method g in class C")
 
 
 # Delegating to superclass methods
 # C++ - calling the overriden method from base
 class Base(object):
-    def greet(self, name): print "Welcome ", name
+    def greet(self, name): print ("Welcome ", name)
+
+
 class Sub(Base):
     def greet(self, name):
-        print "Well Met and",
+        print ("Well Met and", end=" ")
         Base.greet(self, name)
+
 
 x = Sub()
 x.greet('Alex')
@@ -368,18 +384,24 @@ class Derived(Base):
 # Cooperative superclass method calling
 class A(object):
     def met(self):
-        print 'A.met'
+        print ('A.met')
+
+
 class B(A):
     def met(self):
-        print 'B.met'
+        print ('B.met')
         A.met(self)
+
+
 class C(A):
     def met(self):
-        print 'C.met'
+        print ('C.met')
         A.met(self)
-class D(B,C):
+
+
+class D(B, C):
     def met(self):
-        print 'D.met'
+        print ('D.met')
         B.met(self)
         C.met(self)
 
@@ -410,8 +432,10 @@ __str__
 
 class AClass(object):
     def astatic():
-        print 'a static method'
+        print ('a static method')
     astatic = staticmethod(astatic)
+
+
 aninstance = AClass()
 AClass.astatic()       # prints: a static method
 aninstance.astatic()   # prints: a static method
@@ -422,12 +446,13 @@ aninstance.astatic()   # prints: a static method
 
 class ABase(object):
     def aclassmet(cls):
-        print 'a class method for', cls.__name__
+        print ('a class method for', cls.__name__)
     aclassmet = classmethod(aclassmet)
 
 
 class ADeriv(ABase):
     pass
+
 
 bInstance = ABase()
 dInstance = ADeriv()
@@ -464,10 +489,14 @@ class Rectangle(object):
 class B(object):
     def f(self): return 23
     g = property(f)
+
+
 class C(B):
     def f(self): return 42
+
+
 c = C()
-print c.g    # prints: 23
+print (c.g)    # prints: 23
 
 
 # Achieving to override a property by using an extra level of indirection
@@ -475,10 +504,14 @@ class B(object):
     def f(self): return 23
     def _f_getter(self): return self.f()
     g = property(_f_getter)
+
+
 class C(B):
     def f(self): return 42
+
+
 c = C()
-print c.g    # prints: 42, as expected
+print (c.g)    # prints: 42, as expected
 
 
 # *** __slots__ ***
@@ -491,51 +524,55 @@ class OptimizedRectangle(Rectangle):
     __slots__ = 'width', 'height'
 
 
-
 # *** __getattribute__ ***
 
-#
 # Method gets called for all instance attributes. Override this method to
 # implement specific behavior.
 class listNoAppend(list):
     def __getattribute__(self, name):
-        if name == 'append': raise AttributeError, name
+        if name == 'append':
+            raise AttributeError(name)
         return list.__getattribute__(self, name)
+
 
 x = listNoAppend((1, 2, 3, 4, 5))
 # x.append(6)      AttributeError: append
 
 
-
 # *** Per-Instance Methods ***
 
-#
 # Old-Style-class vs New-Style-class in python with different binding behavior
-
-
 class OldStyle:
     pass
+
+
 class NewStyle(object):
     pass
 
+
 def fakeGet(n):
     return n
+
 
 c = OldStyle()
 n = NewStyle()
 c.__getitem__ = fakeGet
 n.__getitem__ = fakeGet
 
-print c[23]
-# print n[23]  TypeError: 'NewStyle' object does not support indexing
+
+# removed in python3
+# print (c[23])  TypeError: 'OldStyle' object does not support indexing
+# print (n[23])  TypeError: 'NewStyle' object does not support indexing
 
 
 # *** Inheritance from Built-in Types ***
 class newdict(dict):
     pass
 
+
 class newlist(list):
     pass
+
 
 # cannot inherit from 2 non-compatible types
 # class noway(dict, list):

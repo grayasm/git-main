@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-#
 # pag. 115, Decorators
 #           Due to the existance of descriptor types such as
 #           staticmethod and classmethod, covered in "Class-Level Methods" on
@@ -41,9 +40,9 @@ class Classic(object):
         return x*2
     double = classmethod(double)
 
+
 # a decorator calls a function with the same name right after the decorated
 # block.
-
 class Decorated(object):
     @classmethod
     def double(x):
@@ -53,14 +52,15 @@ class Decorated(object):
 # or this example:
 def showdoc(f):
     if f.__doc__:
-        print '%s: %s' % (f.__name__, f.__doc__)
+        print ('%s: %s' % (f.__name__, f.__doc__))
     else:
-        print '%s: No docstring!' % f.__name__
+        print ('%s: No docstring!' % f.__name__)
     return f
 
 
 @showdoc
 def f1(): "a docstring"      # prints: f1: a docstring
+
 
 @showdoc
 def f2(): pass               # prints: f2: No docstring!

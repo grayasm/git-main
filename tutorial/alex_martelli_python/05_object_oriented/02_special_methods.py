@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-#
 # pag. 104, Special Methods
 #           A class my define or inherit special methods (i.e. methods whose
 #           names begin and end with double underscores). Each special method
@@ -10,7 +9,6 @@
 #           instance object. In most cases, the method's return value is the
 #           operation's result, and attempting an operation when its related
 #           method is not present raises and exception.
-
 
 # *** General-Purpose Special Methods ***
 # Initialization and finalization
@@ -49,18 +47,14 @@ __delattr__'''
 __call__'''
 
 
-# Examples: http://stackoverflow.com/questions/1061283/lt-instead-of-cmp
-class A(object):
-    def __init__(self, value):
-        self.value = value
-    def __cmp__(self, other):
-        assert isinstance(other, A)
-        return cmp(self.value, other.value)
+# http://stackoverflow.com/questions/111234/what-is-a-callable-in-python
+class Foo(object):
+    def __call__(self):
+        print ('Foo.__call__')
 
 
-print cmp(A(4), A(5))   # prints: -1
-print cmp(A(7), A(7))   # prints: 0
-print cmp(A(8), A(4))   # prints: 1
+foo_instance = Foo()
+foo_instance()        # print: Foo.__call__
 
 
 # override __eq__, __ne__, __gt__, __ge__, __le__
@@ -88,8 +82,9 @@ class A(object):
         assert isinstance(other, A)
         return self.value <= other.value
 
-print A(5) <= A(8)  # prints: True
-print A(2) >= A(8)  # prints: False
+
+print (A(5) <= A(8))  # prints: True
+print (A(2) >= A(8))  # prints: False
 
 
 # *** Special Methods for Containers ***
@@ -149,11 +144,11 @@ union
 ...etc
 '''
 
+
 # Container slicing
 #
 # Slicing a[1:3] uses a generator over the container or customer container.
 # The generator uses __getitem__ special method to walk over items.
-
 class A(object):
     def __init__(self, alist=[]):
         self.alist = alist
@@ -162,17 +157,22 @@ class A(object):
         if isinstance(pos, int):
             return self.alist[pos]
         else:
-            raise TypeError, "Index should be integer!"
+            raise TypeError("Index should be integer!")
+
 
 a = A([1e-3, 1e-2, 1e-1])
 for i in a:
-    print i  # prints: 0.001  0.01  0.1
+    print (i)   # prints: 0.001  0.01  0.1
 
 
 # __getslice__ example
 class C(tuple):
-    def __getslice__(self, i, j): print 'getslice', i, j
-    def __getitem___(self, index): print 'getitem', index
+    def __getslice__(self, i, j):
+        print ('getslice', i, j)
+
+    def __getitem___(self, index):
+        print ('getitem', index)
+
 
 x = C()
 x[12:34]      # prints: getslice 12 34
@@ -209,8 +209,8 @@ class M(list):
 a = M([-1, 0, 1, -5])    # [-1, 0, 1, -5]
 del a[-1]                # [-1, 0, 1]
 a[1] = 100               # [-1, 100, 1]
-print -1 in a            # True
-print len(a)             # 3
+print (-1 in a)          # True
+print (len(a))           # 3
 
 ''' other methods like print a, or sort(a) do not work'''
 
@@ -237,6 +237,8 @@ __rpow__
 
 # http://stackoverflow.com/questions/4233628/override-mul-from-a-child-class-using-parent-implementation-leads-to-proble
 from numbers import Number
+
+
 class MyFloat(object):
     def __init__(self, a):
         self.a = a
@@ -246,6 +248,7 @@ class MyFloat(object):
 
     def __repr__(self):
         return str(self.a)
+
 
 class MyFloatEx(MyFloat):
     def __init__(self, a):
@@ -260,22 +263,23 @@ class MyFloatEx(MyFloat):
         else:
             return super(MyFloatEx, self).__mul__(other)
 
+
 a = MyFloatEx(0.5)
 b = MyFloatEx(1.5)
 
 c = a + b
-print "c=", c      # prints: 2.0
+print ("c=", c)     # prints: 2.0
 
 d = a * b
-print "d=", d      # prints: 0.75
+print ("d=", d)     # prints: 0.75
 
 
 e = d * c
-print "e=", e      # prints: 1.5
+print ("e=", e)     # prints: 1.5
 
-print "e is MyFloat=", isinstance(e, MyFloat)  # prints: True
+print ("e is MyFloat=", isinstance(e, MyFloat))  # prints: True
 
 f = e * 0.5
-print "f=", f      # pritns: 0.75
+print ("f=", f)      # pritns: 0.75
 
-print map(type,[a, b, c, d, e, f]) == [MyFloatEx]*6   # prints: True
+print (map(type, [a, b, c, d, e, f]) == [MyFloatEx]*6)   # prints: True
