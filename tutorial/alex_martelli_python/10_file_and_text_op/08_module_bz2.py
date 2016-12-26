@@ -1,4 +1,4 @@
-#!/usr/bin/python -tt
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 # pag. 232, The bz2 Module lets you read and write files compatible with those

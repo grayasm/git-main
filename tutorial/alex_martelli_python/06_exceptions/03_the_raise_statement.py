@@ -1,9 +1,14 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
 #
-# *** The 'raise' Statement
-#
+# pag. 128, The 'raise' Statement
+#           You can use the raise statement to raise an exception explicitly.
+#           raise is a simple statement with the following syntax:
 '''
 raise [expression1[, expression2]]
 '''
+
 
 # A plain raise statement re-raises the same exception object
 # that the handler received.

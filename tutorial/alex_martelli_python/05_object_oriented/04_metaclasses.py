@@ -1,3 +1,6 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
 #
 # pag. 117, Metaclasses
 #           Any object, even a class object, has a type. In Python, types and

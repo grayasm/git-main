@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 # pag. 62, Control Flow Statements
@@ -17,29 +17,29 @@ a = 100
 b = 20
 
 if a > b:
-    print "%d > %d" % (a, b)      # 100 > 20
+    print ("%d > %d" % (a, b))      # 100 > 20
 elif a == b:
-    print "%d == %d" % (a, b)
+    print ("%d == %d" % (a, b))
 else:
-    print "%d < %d" % (a, b)
+    print ("%d < %d" % (a, b))
 
 
-if a < 0: print a, "< 0"
-elif a % 2: print a, " is positive and odd"
-else: print a, " is even and non-negative"  # 100 is even and non-negative
+if a < 0: print (a, "< 0")
+elif a % 2: print (a, " is positive and odd")
+else: print (a, " is even and non-negative")  # 100 is even and non-negative
 
 
-if a: print a, " is evaluated to True"      # 100 is evaluated to True
+if a: print (a, " is evaluated to True")      # 100 is evaluated to True
 
-if a is True: print a, " is True"                    # a is not True
-if a == True: print a, " == True"                    # a is not == True
-if bool(a): print "bool(", a, ") evaluates to True"  # bool(100) evaluates to True
+if a is True: print (a, " is True")                    # a is not True
+if a == True: print (a, " == True")                    # a is not == True
+if bool(a): print ("bool(", a, ") evaluates to True")  # bool(100) evaluates to True
 
 
 # *** The 'while' Statement ***
 a = 0
 while a < 5:
-    print "while", a, "<= 5"         # while 0 <= 5
+    print ("while", a, "<= 5")       # while 0 <= 5
     a += 1                           # while 1 <= 5
                                      # while 2 <= 5
                                      # while 3 <= 5
@@ -50,7 +50,7 @@ while a < 5:
 
 # 'for' over a string
 for letter in "ciao":
-    print "give me a", letter, "..."
+    print ("give me a", letter, "...")
 
 
 # 'for' over a dictionary
@@ -59,7 +59,7 @@ for letter in "ciao":
 a = {'a': 42, 'b': 3.14, 'z': 101}
 for key, value in a.items():
     if key and value:
-        print "in for: key=", key, "value=", value
+        print ("key=", key, "value=", value)
 
 
 # 'for' over an Iterator
@@ -68,22 +68,22 @@ for key, value in a.items():
 # when i has no more items raises a StopIteration exception
 a = (1, 2, 3, 4)
 for i in a:
-    print i
+    print ("element of a=", i)
 
 # equivalent with
 _temporary_iterator = iter(a)
 while True:
     try:
-        i = _temporary_iterator.next()
+        i = next(_temporary_iterator)
     except StopIteration:
         break
-    print i
+    print (i)
 
 
 # 'for' over range and xrange
 
 for i in range(1, 4):
-    print i
+    print (i)
 
 # 'for' with list comprehension idiom
 #    * let's you code the common use of a for loop that inspects each item
@@ -100,40 +100,39 @@ d = []
 for i in a:
     if i > 2:
         d.append(i)                  # [3, 4]
-print "b=%s c=%s d=%s" % (b, c, d)
+print ("b=%s c=%s d=%s" % (b, c, d))
 
 
 # *** The 'break' Statement ***
 j = 0
 while True:
-    global j                         # local by default
     j += 1
     if j > 3:
         break
     else:
-        print 'j=%d ' % (j,),        # 1, 2, 3
+        print ('j=%d ' % (j), end=" ")   # 1, 2, 3
 
 # *** The 'continue' Statement ***
-print "\n",
+print ('\n', end="")
 k = 0
 while True:
-    global k                         # local by default
     k += 1
     if k < 3:
         continue
     elif k > 5:
         break
-    print "k=%d " % (k,),            # 3, 4, 5
+    print ("k=%d " % (k), end=" ")   # 3, 4, 5
 
 
 # *** The 'else' Clause on Loop Statements ***
 #    * executed when for/while ends naturally, not from break,return,exception
 #    * suited when you want to search and element in a container
+print ('\n', end="")
 for elem in a:
     if elem > 100:
         break
 else:
-    print "\nNo item > 100 was found in %s" % (a,)  # No item > 100 was ...
+    print ("\nNo item > 100 was found in ", a)  # No item > 100 was ...
 
 
 # *** The 'pass' Statement ***
@@ -141,6 +140,8 @@ else:
 #      it must always contain at least one statement
 for m in range(4):
     if m == 0:
-        pass                     # nothing to be done in this case
+        pass                            # nothing to be done in this case
     else:
-        print "m=%d " % (m,),    # 1, 2, 3
+        print ("m=%d " % (m), end=" ")  # 1, 2, 3
+
+print ('\n', end="")

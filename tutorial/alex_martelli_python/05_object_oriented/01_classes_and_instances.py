@@ -1,3 +1,6 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
 #
 # pag. 82, Classes and Instances
 #          If you're already familiar with object-oriented programming in

@@ -1,6 +1,18 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
 #
-# *** Exception Objects ***
-#
+# pag. 129, Exception Objects
+#           Exceptions are instances of subclasses of the built-in,
+#           legacy-style Exception class. An instance of any subclass of
+#           Exception has an attribute args, the tuple of arguments used
+#           to create the instance. args holds error-specific information,
+#           usable for diagnostic or recovery purposes.
+
+
+# *** The Hierarchy of Standard Exceptions ***
+# *** Standard Exception Classes ***
+
 # Subclases of the legacy-style 'Exception' class.
 # Since 2.5 Exception derives from 'BaseException' new-style exceptions.
 #

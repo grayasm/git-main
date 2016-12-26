@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 
@@ -26,3 +26,5 @@ b.clear()                         # set([])
 a.discard(-3)                     # set([2, 4])
 i = a.pop()                       # 2 poped, a=set([4])
 a.remove(4)                       # set([])
+
+print ("who is a? =", a)

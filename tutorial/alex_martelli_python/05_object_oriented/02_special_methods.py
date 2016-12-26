@@ -1,3 +1,6 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
 #
 # pag. 104, Special Methods
 #           A class my define or inherit special methods (i.e. methods whose

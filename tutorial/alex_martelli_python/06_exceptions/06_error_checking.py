@@ -1,9 +1,23 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
 #
-# *** Error-Checking Strategies ***
-#
-# 1) Check first for error condition (LBYL look bef you leap) or
-# 2) Execute and cach exception (EAFP easier to ask forgivenss than permis)
-#
+# pag. 134, Error-Checking Strategies
+#           Most programming languages that support exceptions are geared to
+#           raise exceptions only in rare cases. Python's emphasis is
+#           different. In Python, exceptions are considered appropriate
+#           whenever they make a program simpler and more robust, even if that
+#           means that exceptions are raised rather frequently.
+
+
+# *** LBYL Versus EAFP ***
+# A common idiom in other languages, sometimes known as "look before you leap"
+# (LBYL) is to check in advance, before attempting an operation, for all
+# circumstances that might make the operation invalid.
+# The preffered idiom in Python is generally to attempt the operation in a
+# try clause and handle the exceptions that may result in except clauses.
+# This idiom is known as "it's easier to ask for forgiveness than permission"
+# (EAFP)
 
 
 def save_divide_1(x, y):
@@ -29,7 +43,10 @@ def trycalling(obj, attrib, default, *args, **kwds):
     else:
         return method(*args, **kwds)
 
-# Logging Errors
+
+# *** Handling Errors in Large Programs ***
+# *** Logging Errors ***
+
 import logging
 import sys
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
@@ -47,8 +64,8 @@ except Exception, e:
 # ZeroDivisionError: integer division or modulo by zero
 
 
-# The 'assert' Statement
-#
+
+# *** The 'assert' Statement ***
 # If condition is True, does nothing.
 # If condition is False then rises AssertionError with expression as arg.
 '''

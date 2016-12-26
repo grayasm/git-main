@@ -1,3 +1,6 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
 #
 # pag. 115, Decorators
 #           Due to the existance of descriptor types such as
