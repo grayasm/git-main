@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-#
 # pag. 121, The 'try' Statement.
 #           The 'try' statement provided by Python's exception-handling
 #           mechanism it is a compound statement that can take one of two
@@ -88,7 +87,7 @@ with expression [as varname]
     statement(s)
 '''
 
-# which is translated to, or equivalent with:
+# it is translated to, or equivalent with:
 '''
 _normal_exit = True
 _temporary = expression

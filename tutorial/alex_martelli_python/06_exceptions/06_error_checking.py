@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-#
 # pag. 134, Error-Checking Strategies
 #           Most programming languages that support exceptions are geared to
 #           raise exceptions only in rare cases. Python's emphasis is
@@ -54,15 +53,14 @@ logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
 try:
     1 / 0
-except Exception, e:
+except Exception as e:
     logging.exception("message")
 
 # ERROR:root:message
 # Traceback (most recent call last):
-#   File "06_error_checking.py", line 39, in <module>
+#   File "06_error_checking.py", line 55, in <module>
 #     1 / 0
 # ZeroDivisionError: integer division or modulo by zero
-
 
 
 # *** The 'assert' Statement ***

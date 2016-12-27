@@ -11,6 +11,6 @@ class class2(object):
                         'Mendelevium', 'Nobelium', 'Lawrencium']
 
     def printMembers(self):
-        print 'Actininide Series:'
+        print ('Actininide Series:')
         for elem in self.members:
-            print '\t%s ' % elem
+            print ('\t%s ' % elem)

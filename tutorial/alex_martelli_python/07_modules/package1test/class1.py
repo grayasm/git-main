@@ -12,6 +12,6 @@ class class1(object):
                         'Thulium', 'Ytterbium', 'Lutetium']
 
     def printMembers(self):
-        print "Lanthanide Series:"
+        print ("Lanthanide Series:")
         for elem in self.members:
-            print '\t%s ' % elem
+            print ('\t%s ' % elem)

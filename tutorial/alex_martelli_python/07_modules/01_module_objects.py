@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-#
 # The 'import' Statement
 '''
 import modname [as varname][,...]
@@ -11,7 +10,7 @@ import modname [as varname][,...]
 # IMPORTS ANOTHER MODULE see moduletest.py
 import moduletest
 
-print moduletest.ageofqueen
+print (moduletest.ageofqueen)
 cfcpiano = moduletest.Piano()
 cfcpiano.printdetails()
 
@@ -21,8 +20,8 @@ from moduletest import ageofqueen
 from moduletest import printhello
 
 # now try using them (with or without module name)
-print ageofqueen                 # prints: 78
-print moduletest.ageofqueen      # prints: 78
+print (ageofqueen)               # prints: 78
+print (moduletest.ageofqueen)    # prints: 78
 
 printhello()                     # prints: hello
 moduletest.printhello()          # prints: hello
@@ -36,10 +35,10 @@ __file__
 __doc__
 '''
 from moduletest import ageofqueen as AgeOfQueen # alias
-print AgeOfQueen                                # prints: 78
-print moduletest.__name__                       # prints: moduletest
-print moduletest.__file__                       # prints: /..../moduletest.pyc
-print moduletest.__dict__                       # prints:
+print (AgeOfQueen)                              # prints: 78
+print (moduletest.__name__)                     # prints: moduletest
+print (moduletest.__file__)                     # prints: /..../moduletest.pyc
+print (moduletest.__dict__)                     # prints:
 #{'numberone': 1,
 # 'printhello': <function printhello at 0x7f12775cbc80>,
 # '__builtins__': {'bytearray': <type 'bytearray'>,
@@ -206,10 +205,10 @@ print moduletest.__dict__                       # prints:
 # 'timesfour': <function timesfour at 0x7f12775cbcf8>,
 # '__doc__': None}
 
-print moduletest.__dict__['ageofqueen']   # prints: 78
+print (moduletest.__dict__['ageofqueen'])   # prints: 78
 
 # Module documentation strings.
-print moduletest.__doc__   # prints: Module documentation strings.
+print (moduletest.__doc__)   # prints: Module documentation strings.
 
 
 # Module-private variables

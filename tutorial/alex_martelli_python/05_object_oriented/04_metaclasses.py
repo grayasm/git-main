@@ -55,7 +55,6 @@ print (p)             # prints: <__main__.Bunch object at 0x182de90>
 
 
 # A very long and complex metaMetaBunch metaclass (book Example 5-1)
-# not ported to python3: TypeError: object() takes no parameters
 import warnings
 
 
@@ -109,5 +108,7 @@ class Point(MetaBunch):
 q = Point()
 print (q)             # prints: Point
 
-p = Point(x=1.2, y=3.4)
-print (p)             # prints: Point(y=3.4, x=1.2)
+
+# not ported to python3: TypeError: object() takes no parameters
+# p = Point(x=1.2, y=3.4)
+# print (p)           # prints: Point(y=3.4, x=1.2)

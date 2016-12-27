@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-#
 # pag. 129, Exception Objects
 #           Exceptions are instances of subclasses of the built-in,
 #           legacy-style Exception class. An instance of any subclass of
@@ -76,4 +75,4 @@ try:
     l = []
     assert isinstance(l, tuple)
 except AssertionError:
-    print "AssertionError"    # prints: AssertionError
+    print ("AssertionError")  # prints: AssertionError

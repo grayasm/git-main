@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-#
 # *** Custom Importers ***
 #
 # The ability to rebind __import__ attribute of module __builtin__
 # One wants to use import statements for modules that are not written yet,
 # getting just warning messages (and empty modules) as a consequence.
 
-import sys, new
+import sys
+import types
 
 
 class ImporterAndLoader(object):
@@ -27,23 +27,25 @@ class ImporterAndLoader(object):
         return self
 
     def load_module(self, fullname):
-        print 'NOTE: module %r not written yet' % fullname
-        mod = sys.modules[fullname] = new.module(fullname)
+        print ('NOTE: module %r not written yet' % fullname)
+        # mod = sys.modules[fullname] = new.module(fullname)
+        mod = sys.modules[fullname] = types.ModuleType(fullname)
         mod.__file__ = 'dummy<%s>' % fullname
         mod.__loader__ = self
         return mod
+
 
 # add the class to the hook and its fake-path marker to the path
 sys.path_hooks.append(ImporterAndLoader)
 sys.path.append(ImporterAndLoader.fake_path)
 
-if __name__=='__main__':        # self-test when run as main script
+if __name__ == '__main__':      # self-test when run as main script
     import missing_module       # import a simple missing module
-    print sys.modules.get('missing_module')    # ... should succeed
+    print (sys.modules.get('missing_module'))    # ... should succeed
     # check that we don't deal with importing from packages
     try:
         import missing_module.sub_module
     except ImportError:
         pass
     else:
-        print 'Unexpected:', sys.modules.get('missing_module.sub_module')
+        print ('Unexpected:', sys.modules.get('missing_module.sub_module'))
