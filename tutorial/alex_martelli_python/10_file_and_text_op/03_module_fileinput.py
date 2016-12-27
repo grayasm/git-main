@@ -29,5 +29,5 @@ import fileinput
 
 f = fileinput.input(files=('99_spam.txt', '99_eggs.txt'))
 for line in f:
-    print "%s:%d:%s" % (f.filename(), f.filelineno(), line),
+    print ("%s:%d:%s" % (f.filename(), f.filelineno(), line), end=' ')
 f.close()

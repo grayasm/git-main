@@ -8,13 +8,13 @@
 
 
 #  capitalize()
-print "a complete sentence.".capitalize()  # A complete sentence.
+print ("a complete sentence.".capitalize())  # A complete sentence.
 
 #  center(n, fillchar=' ')
 end = "-*-"
 txt = "text"
-print end, txt, end             # -*- text -*-
-print end, txt.center(8), end   # -*-   text   -*-
+print (end, txt, end)             # -*- text -*-
+print (end, txt.center(8), end)   # -*-   text   -*-
 
 #  count(sub, start=0, end=sys.maxint)
 #  decode(codec=None, errors='strict')
@@ -23,7 +23,7 @@ print end, txt.center(8), end   # -*-   text   -*-
 #  expandtabs(tabsize=8)
 #  find(sub, start=0, end=sys.maxint)
 s = "/tmp/autocomplete/etc/install.el"
-print s.find('install.el')      # 22
+print (s.find('install.el'))      # 22
 
 #  index(sub, start=0, end=sys.maxint)
 #  isalnum()

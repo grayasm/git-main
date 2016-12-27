@@ -84,40 +84,40 @@ p = re.compile('[a-z]+')
 
 # 'match' and 'search' return None or a match object instance
 m = p.match("")
-print m                    # None
+print (m)                   # None
 
 m = p.match('tempo')
-print m                    # <_sre.SRE_Match object at 0x7fa73e754850>
-print m.group()            # tempo
-print m.start()            # 0
-print m.end()              # 5
-print m.span()             # (0, 5)
+print (m)                   # <_sre.SRE_Match object at 0x7fa73e754850>
+print (m.group())           # tempo
+print (m.start())           # 0
+print (m.end())             # 5
+print (m.span())            # (0, 5)
 
 
 # If the first character does not match, re.match(..) will return None.
 # This means m.start() will always be zero for successul return.
 m = p.match('::: message')
-print m                      # None
+print (m)                   # None
 
 m = p.search('::: message')
-print m.group()              # message
-print m.span()               # (4, 11)
+print (m.group())           # message
+print (m.span())            # (4, 11)
 
 # 'findall()' returns a list of matching strings
-p = re.compile('\d+')        # \d matches one digit i.e. [0-9]
+p = re.compile('\d+')       # \d matches one digit i.e. [0-9]
 l = p.findall('12 drummers drumming, 11 pipers piping, 10 lords a-leaping')
-print l                      # [12, 11, 10]
+print (l)                   # [12, 11, 10]
 
 # 'finditer()' returns a sequence of match object instances
 iterator = p.finditer('12 drummers, 11 ... 10 ...')
-print iterator               # <callable-iterator object at 0x7fd10573e990>
+print (iterator)            # <callable-iterator object at 0x7fd10573e990>
 
 for match in iterator:
-    print match.span()       # (0, 2) (13, 15) (20, 22)
+    print (match.span())    # (0, 2) (13, 15) (20, 22)
 
 # calling 're' module methods directly, without a pattern object
 m = re.match(r'From\s+', 'Fromage amk')
-print m                      # None
+print (m)                   # None
 
 # compilation flags, ex:'VERBOSE'
 charref = re.compile(r"""
@@ -138,78 +138,78 @@ charref = re.compile("&#(0[0-7]+"
 # more metacharacters
 # ^
 m = re.search('^From', 'From here to there')
-print m.group()               # From
+print (m.group())             # From
 
 m = re.search('^From', 'Reciting From Memory')
-print m                       # None
+print (m)                     # None
 
 # $
 m = re.search('}$', '{block}')
-print m.group(), m.span()     # } (6, 7)
+print (m.group(), m.span())   # } (6, 7)
 
 m = re.search('}$', '{block} ')
-print m                       # None
+print (m)                     # None
 
 m = re.search('}$', '{block}\n')
-print m.group(), m.span()     # } (6, 7)
+print (m.group(), m.span())   # } (6, 7)
 
 p = re.compile(r'\bclass\b')
 m = p.search('no class at all')
-print m.group(), m.span()     # class (3, 8)
+print (m.group(), m.span())   # class (3, 8)
 
 m = p.search('the declassified algorithm')
-print m                       # None
+print (m)                     # None
 
 m = p.search('one subclass is')
-print m                       # None
+print (m)                     # None
 
 # r'\b.....'  - is a raw r'...' string where escape does not have effect
 #  '\b.....'  - is a normal string where \b escape is a backspace character
 #             - so r'\bword' means empty string at the beginning of the word
 p = re.compile('\bclass\b')
 m = p.search('no class at all')
-print m                       # None
+print (m)                     # None
 
 m = p.search('\b' + 'class' + '\b')
-print m.group(), m.span()     # clas (0, 7)
+print (m.group(), m.span())   # clas (0, 7)
 
 # Grouping (...)
 p = re.compile('(ab)*')
 m = p.match('ababababab')
-print m.group(), m.span()     # ababababab (0, 10)
+print (m.group(), m.span())   # ababababab (0, 10)
 
 p = re.compile('(a)b')
 m = p.match('ab')
-print m.group(), m.group(0)   # ab ab
+print (m.group(), m.group(0))  # ab ab
 
 p = re.compile('(a(b)c)d')
 m = p.match('abcd')
-print m.group(0), m.group(1), m.group(2)  # abcd abc b
+print (m.group(0), m.group(1), m.group(2))  # abcd abc b
 
 t = m.group(0, 1, 2)
-print t                       # ('abcd', 'abc', 'b')
+print (t)                     # ('abcd', 'abc', 'b')
 
 t = m.groups()
-print t                       # ('abc', 'b')
+print (t)                     # ('abc', 'b')
 
 # RE detects doubled words in a string
 p = re.compile(r'(\b\w+)\s+\1')
 m = p.search('Paris in the the spring.')
-print m.group(), m.span()     # the the (9, 16)
+print (m.group(), m.span())   # the the (9, 16)
 
 
 # https://docs.python.org/3/howto/regex.html#non-capturing-and-named-groups
 # Non-capturing groups (?:...)
 m = re.match("([abc])+", "abc")
-print m.groups()              # ('c',)
+print (m.groups())            # ('c',)
 m = re.match("(?:[abc])+", "abc")
-print m.groups()              # ()
+print (m.groups())            # ()
 
 # named group syntax is: (?P<name>...)
 p = re.compile(r'(?P<word>\b\w+\b)')
 m = p.search('(((( Lots of punctuation )))')
-print m.group('word')         # Lots
-print m.group(1)              # Lots
+print (m.group('word'))       # Lots
+print (m.group(1))            # Lots
 
 # named groups are handy because they let you use easily-remembered names.ex:
 InternalDate = re.compile(r'INTERMEDIATE "'
@@ -220,75 +220,75 @@ InternalDate = re.compile(r'INTERMEDIATE "'
             r'"')
 
 m = InternalDate.match('INTERMEDIATE " 2-Feb-0999 01:01:99 +0020"')
-print m.group()          # INTERMEDIATE " 2-Feb-0999 01:01:99 +0020"
-print m.groups()         # (' 2', 'Feb', '0999', '01', '01', '99', '+', '00', '20')
-print m.group('year')    # 0999
+print (m.group())        # INTERMEDIATE " 2-Feb-0999 01:01:99 +0020"
+print (m.groups())       # (' 2', 'Feb', '0999', '01', '01', '99', '+', '00', '20')
+print (m.group('year'))  # 0999
 
 
 p = re.compile(r'(?P<word>\b\w+)\s+(?P=word)')
 m = p.search('Paris in the the spring')
-print m.group()          # the the
+print (m.group())        # the the
 
 # Splitting String with:
 # pattern.split(string [, maxsplit=0])
 
 p = re.compile(r'\W+')
 l = p.split('This is a test, short and sweet, of split().')
-print l   # ['This', 'is', 'a', 'test', 'short', 'and', 'sweet', 'of', 'split', '']
+print (l)   # ['This', 'is', 'a', 'test', 'short', 'and', 'sweet', 'of', 'split', '']
 
 p = re.compile(r'\W+')
 p2 = re.compile(r'(\W+)')
 l = p.split('This... is a test.')
-print l   # ['This', 'is', 'a', 'test', '']
+print (l)   # ['This', 'is', 'a', 'test', '']
 
 l = p2.split('This...is a test.')
-print l   # ['This', '...', 'is', ' ', 'a', ' ', 'test', '.', '']
+print (l)   # ['This', '...', 'is', ' ', 'a', ' ', 'test', '.', '']
 
 # or using re.split()
 l = re.split('[\W]+', 'Words, words, words.')
-print l   # ['Words', 'words', 'words', '']
+print (l)   # ['Words', 'words', 'words', '']
 
 l = re.split('([\W]+)', 'Words, words, words.')
-print l   # ['Words', ', ', 'words', ', ', 'words', '.', '']
+print (l)   # ['Words', ', ', 'words', ', ', 'words', '.', '']
 
 l = re.split('[\W]+', 'Words, words, words.', 1)
-print l   # ['Words', 'words, words.']
+print (l)   # ['Words', 'words, words.']
 
 
 # Search and Replace
 # pattern.sub(replacement, string[, count=0])
 p = re.compile('(blue|white|red)')
 s = p.sub('colour', 'blue socks and red shoes')
-print s                       # colour socks and colour shoes
+print (s)                     # colour socks and colour shoes
 
 # 'subn'
 p = re.compile('(blue|white|red)')
 t = p.subn('colour', 'blue socks and red shoes')
-print t                       # ('colour socks and colour shoes', 2)
+print (t)                     # ('colour socks and colour shoes', 2)
 
 t = p.subn('colour', 'no colours at all')
-print t                       # ('no colours at all', 0)
+print (t)                     # ('no colours at all', 0)
 
 p = re.compile('x*')
 s = p.sub('-', 'abxd')
-print s                       # -a-b-d-
+print (s)                     # -a-b-d-
 
 
 # changes section into subsection
 p = re.compile('section{ ( [^}]* ) }', re.VERBOSE)
 s = p.sub(r'subsection{\1}', 'section{First} section{second}')
-print s                       # subsection{First} subsection{second}
+print (s)                     # subsection{First} subsection{second}
 
 # 3 equivalent substitutions using named groups.
 p = re.compile('section{ (?P<name> [^}]* ) }', re.VERBOSE)
 s = p.sub(r'subsection{\1}', 'section{First}')
-print s                       # subsection{First}
+print (s)                     # subsection{First}
 
 s = p.sub(r'subsection{\g<1>}', 'section{First}')
-print s                       # subsection{First}
+print (s)                     # subsection{First}
 
 s = p.sub(r'subsection{\g<name>}', 'section{First}')
-print s                       # subsection{First}
+print (s)                     # subsection{First}
 
 
 # replacement as a function
@@ -299,7 +299,7 @@ def hexrepl(match):
 
 p = re.compile(r'\d+')
 s = p.sub(hexrepl, 'Call 65490 for printing, 49152 for user code.')
-print s                       # Call 0xffd2 for printing, 0xc000 for user code.
+print (s)                     # Call 0xffd2 for printing, 0xc000 for user code.
 
 
 # Common Problems
@@ -314,16 +314,16 @@ print (re.search('super', 'insuperable').span())   # (2, 7)
 
 # Greedy vs Non-Greedy
 s = '<html><head><title>Title</title>'
-print len(s)                     # 32
+print (len(s))                   # 32
 
 m = re.match('<.*>', s)
-print m.span()                   # (0, 32)
+print (m.span())                 # (0, 32)
 
 m = re.match('<.*>', s)
-print m.group()                  # <html><head><title>Title</title>
+print (m.group())                # <html><head><title>Title</title>
 
 m = re.match('<.*?>', s)
-print m.group()                  # <html>
+print (m.group())                # <html>
 
 
 # Using re.VERBOSE - permissive with # comments in syntax

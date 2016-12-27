@@ -8,6 +8,11 @@
 #           - can operate on both input and output
 #           - does support Unicode
 #           On the other side cStringIO has better performance.
+#
+# http://stackoverflow.com/questions/11914472/stringio-in-python3
+#     The StringIO and cStringIO modules are gone.
+#     Instead, import the io module and use io.StringIO or io.BytesIO for text
+#     and data respectively.
 
 '''
 class StringIO.StringIO([buffer])
@@ -16,17 +21,16 @@ StringIO.close()
 '''
 
 # https://docs.python.org/2/library/stringio.html
-import StringIO
-import cStringIO
+from io import StringIO
 
 # StringIO example usage
-output = StringIO.StringIO()
+output = StringIO()
 output.write('First line.\n')
-print >> output, 'Second line.'
+
 
 # Retrieve file contents -- this will be 'First line.\nSecond line.\n'
 contents = output.getvalue()
-print 'StringIO.getvalue()=%s' % contents
+print ('StringIO.getvalue()=%s' % contents)
 
 # Close object and discard memory buffer --
 # .getvalue() will not raise an exception.

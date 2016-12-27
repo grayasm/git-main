@@ -12,7 +12,7 @@ import itertools
 for i in itertools.count(5, 2):
     if i > 10:
         break
-    print i
+    print (i)
 
 #  itertools.cycle(iterable)
 #  itertools.ifilter(func, iterable)

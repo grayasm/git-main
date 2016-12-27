@@ -13,7 +13,7 @@ bufsize = -1
 
 f = open(filename, mode, bufsize)
 for line in f:
-        print line,
+        print(line, end=' ')
 
 # mode possible values= 'r' 'w' 'a' 'r+' 'w+' 'a+'
 # for binary or text modes append= 'b' or 't'  ex= 'rb' 'rt'
@@ -23,13 +23,13 @@ for line in f:
 print('----------------------')
 with open('99_hello.txt') as f:
         for line in f:
-                print line,
+                print(line, end=' ')
 
 print('----------------------')
 f = open('99_hello.txt')
 try:
         for line in f:
-                print line,
+                print(line, end=' ')
 finally:
         f.close()
 

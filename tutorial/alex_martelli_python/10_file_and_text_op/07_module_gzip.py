@@ -18,14 +18,14 @@ import gzip
 import shutil
 
 # example of how to create a compressed file
-content = "Lots of content here"
+content = bytes("Lots of content here", 'UTF-8')
 with gzip.open('file.txt.gz', 'wb') as f:
     f.write(content)
 
 # example of how to read a compressed file
 with gzip.open('file.txt.gz', 'rb') as f:
     file_content = f.read()
-    print "file.txt.gz: %s" % file_content
+    print ("file.txt.gz: %s" % file_content)
 
 # example of how to gzip compress an existing file
 with open('99_hello.txt', 'rb') as f_in:
@@ -34,10 +34,10 @@ with open('99_hello.txt', 'rb') as f_in:
 
 # another exmple from the book pag. 231
 zipped_f = open('file.txt.gz', 'rb')
-unzipped_f = gzip.GzipFile(fileobj=zipped_f, mode='rt')
-print 'file.txt.gz: ',
+unzipped_f = gzip.GzipFile(fileobj=zipped_f, mode='r')
+print ('file.txt.gz: ', end=' ')
 for line in unzipped_f:
-    print line,
+    print (line, end=' ')
 
 unzipped_f.close()
 zipped_f.close()

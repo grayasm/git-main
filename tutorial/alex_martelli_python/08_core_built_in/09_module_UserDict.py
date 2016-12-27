@@ -3,5 +3,6 @@
 
 #
 # The UserDict Module
+# obsolete because of new object model
 #
-import UserDict
+# import UserDict

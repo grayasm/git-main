@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-#
 # Built-in Functions
 #
 
@@ -63,17 +62,18 @@ any([-1, 0])        # True, if any is true
 # 'callable'
 class A(object):
     def __call__(self):
-        print 'Yes, it\'s callable'
+        print ('Yes, it\'s callable')
+
+
 callable(A())       # True
 chr(65)             # ASCII 65='A' prints: A
-cmp(-20, 0)         # prints: -1, or 0=for equal, and 1=for >=
-coerce(1, 11)       # prints: (1, 11)
+
 
 # 'compile'
 pycode = str("x=-5\n"
              "y=11\n"
              "l = [x, y, 0]\n"
-             "print l\n")
+             "print (l)\n")
 codeobj = compile(pycode, 'fakefile', 'exec')
 exec(codeobj)
 
@@ -87,6 +87,7 @@ class A(object):
 class B(object):
     def __init__(self, v):
         self.value = v
+
 
 a = A(10)
 b = B(20)
@@ -119,6 +120,7 @@ def func(i):
         return True
     else:
         return False
+
 
 filter(func, seq)     # ['k', 'l', 'm']
 
@@ -163,7 +165,9 @@ x = input(message)
 '''
 
 # intern(string)   - string is stored in (fast) internal memory
-intern_is_faster = intern("this string should be compared fast")
+# in python3 intern is sys.intern
+import sys
+intern_is_faster = sys.intern("this string should be compared fast")
 extern_is_clean = "this string should be compared fast"
 intern_is_faster is extern_is_clean   # True
 
@@ -174,8 +178,14 @@ isinstance(l, list)     # True
 
 
 # issubclass(cls1, clas2)
-class C1(object): pass
-class C2(C1): pass
+class C1(object):
+    pass
+
+
+class C2(C1):
+    pass
+
+
 issubclass(C2, C1)      # True
 
 
@@ -199,11 +209,14 @@ locals()
 # map(func, seq) is like:
 #    [func(item) for item in seq]
 seq = ['maria-julia', 'ana-maria', 'daniel']
+
+
 def func(name):
     if name == 'daniel':
         return ''
     else:
         return name
+
 
 map(func, seq)    # ['maria-julia', 'ana-maria', 'daniel']
 seq               # ['maria-julia', 'ana-maria']
@@ -232,7 +245,10 @@ def reduce(func,seq,init=None):
     for item in seq: init = func(init,item)
     return init
 '''
-reduce(list.__add__, [[1, 2, 3], [4, 5], [6, 7, 8]], [])  # [1,2,3,4,5,6,7,8]
+# python3 moved reduce() to functools.reduce()
+import functools
+functools.reduce(list.__add__, [[1, 2, 3], [4, 5], [6, 7, 8]], [])
+# prints: [1,2,3,4,5,6,7,8]
 
 
 # reload(module)
@@ -244,6 +260,7 @@ class A(object):
     def __repr__(self):
         return str(self.value)
 
+
 repr(A(1.33))          # 1.33
 repr(A('some text'))   # some text
 round(1.123456789, 3)  # 1.123
@@ -252,6 +269,8 @@ round(1.123456789, 3)  # 1.123
 # setattr(obj,name,value)         ; binds obj's attribute name with the value
 class A(object):
     pass
+
+
 a = A()
 setattr(a, 'value', 1.33)   # a.value = 1.33
 
@@ -270,9 +289,9 @@ sorted(d)                  # [1, 2, 3, 4, 5]
 l = [1, 1, 1]
 sum(l, 5)   # 8
 
-# unichr(code)      ; returns a Unicode string for the [0, 65535] code
+# unichr(code)        ; returns a Unicode string for the [0, 65535] code
 code = ord(u'六')
-print unichr(code)  # prints: 六
+
 
 # vars()            ; returns a dict with all variables in current scope
 # vars(obj)         ; returns a dict with all attributes bound to obj

@@ -10,6 +10,8 @@
 #          "print" implicitly outputs a space between expressions, and
 #          implicitly outputs \n after the last expression, unless the last
 #          expression is followed by a trailing comma (,)
+#
+#          see also: 09_strings_and_regexp/03_string_formatting.py
 
 letter = 'c'
 print ("give me a", letter, "...")  # prints: give me a c ...

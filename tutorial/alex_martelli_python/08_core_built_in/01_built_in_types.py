@@ -10,18 +10,13 @@ import sys
 #
 
 # 'basestring'  - base class for both str & unicode
-print isinstance(u'ciao', basestring)  # prints: True
+print((isinstance('ciao', str)))  # prints: True
 
 
 # 'bool'
 x = -1
-print bool(x)   # prints: True
+print(bool(x))    # prints: True
 
-# 'buffer'    - read-only buffer of another object's slice of data
-s = 'Hello world'
-t = buffer(s, 6, 5)
-print t         # prints: world
-print type(t)   # prints: <type 'buffer'>
 
 # 'classmethod' - returns a class method object
 class c(object):
@@ -56,8 +51,8 @@ i = int("200")
 # 'list'
 l = list([1, 2, 3, 4])
 
-# 'long'
-l = long("1323333")
+# 'long'  renamed to 'int' in python3
+l = int("1323333")
 
 
 # 'object' - new instance of most fundamental type, no functionality.
@@ -84,18 +79,18 @@ class Pressure(object):
 # 'reversed'  - a new reversed iterator
 l = [0, 10, 20, 40]
 for i in reversed(l):
-    print i             # prints: 40, 20, 10, 0
+    print (i)               # prints: 40, 20, 10, 0
 
 
 # 'set'
-a = set([2, -3, 4, 4, -3])   # set([2, 4, -3])
-b = {2, -3, 4}               # set([2, 4, -3])
+a = set([2, -3, 4, 4, -3])  # set([2, 4, -3])
+b = {2, -3, 4}              # set([2, 4, -3])
 
 
 
 # 'slice'    - slice([start,]stop[,step]) or obj[start:stop:step]
 l = [0, 2, 3, 4, 5]
-print l[2: -1: 1]            # prints: [3, 4]
+print(l[2: -1: 1])          # prints: [3, 4]
 
 
 # 'staticmethod'
@@ -108,16 +103,21 @@ class c(object):
 #            - Implement __str__() or __repr__() in the class's metaclass.
 class c(object):
     pass
-print str(c)                # prints: <class '__main__.c'>
+
+
+print(str(c))              # prints: <class '__main__.c'>
+
 
 class metac(type):
     def __repr__(self):
         return 'Wahaha!'
 
-class c(object):
-    __metaclass__ = metac
 
-print str(c)               # prints: Wahaha!
+class c(object, metaclass=metac):
+    pass
+
+
+print(str(c))              # prints: Wahaha!
 
 
 # 'super' - super(cls, obj)
@@ -125,15 +125,18 @@ print str(c)               # prints: Wahaha!
 #           is not hardcoded. Always calls only the __init__ of base.
 class A(object):
     def __init__(self):
-        print "A.__init__()"
+        print ("A.__init__()")
+
 
 class B(object):
     def __init__(self):
-        print "B.__init__()"
+        print ("B.__init__()")
+
 
 class C(A, B):
     def __init__(self):
         super(C, self).__init__()
+
 
 x = C()     # prints: A.__init__() -> broken???? shouldn't B.__init__() show?
 
@@ -145,13 +148,14 @@ b = (10, -5, 11)          # (10, -5, 11)
 
 # 'type'
 li = [5, 4]
-print type(li)            # prints: <type 'list'>
+print((type(li)))          # prints: <type 'list'>
 
 
 # 'unicode'   - unicode(string[,codec[,errors]])
 #             - needs the first 4 lines in this file.
-s = unicode('الإنجليزية', 'utf8')
-print s
+# python3: TypeError: decoding str is not supported
+s = str('الإنجليزية', 'utf8')
+print('utf-8 = ', s)
 
-# 'xrange'    - xrange([start,]stop[,step=1])  ; deprecated in 3.0
-print [i for i in xrange(-1, 4)]   # prints: [-1, 0, 1, 2, 3]
+# 'range'     - range([start,]stop[,step=1]);
+print ([i for i in range(-1, 4)])   # prints: [-1, 0, 1, 2, 3]

@@ -3,7 +3,8 @@
 
 #
 # The functional Module
+# renamed functools in python3 (most probably in 2.7 too).
 #
-import functional
+import functools
 
-# functional.partial(func, *a, **k)
+# functools.partial(func, *a, **k)

@@ -59,24 +59,24 @@ import struct
 
 # a basic exmple of packing/unpacking three integers
 packed_str = struct.pack('hhl', 1, 2, 3)
-print "hhl=%s" % packed_str
+print ("hhl=%s" % packed_str)
 
 unpacked_tuple = struct.unpack('hhl', packed_str)
-print "unpacked_tupple=", unpacked_tuple
+print ("unpacked_tupple=", unpacked_tuple)
 
 # unpacked fields can be named by assigning them to variables or by wrapping
 # the result in a named tuple
-record = 'raymond   \x32\x12\x08\x01\x08'
+record = bytes('raymond   \x32\x12\x08\x01\x08', 'UTF-8')
 name, serialnum, school, gradelevel = struct.unpack('<10sHHb', record)
 
-print "name=%s serialnum=%d school=%d gradelevel=%d" % (name, serialnum,
-                                                        school, gradelevel)
+print ("name=%s serialnum=%d school=%d gradelevel=%d" % (name, serialnum,
+                                                         school, gradelevel))
 
 # the ordering of format characters may have an impact on size since the
 # padding needed to satisfy alignament requirements is different.
-print "struct.calcsize('ci')=%d" % struct.calcsize('ci')
-print "struct.calcsize('ic')=%d" % struct.calcsize('ic')
+print ("struct.calcsize('ci')=%d" % struct.calcsize('ci'))
+print ("struct.calcsize('ic')=%d" % struct.calcsize('ic'))
 
 # the following format 'llh0l' specifies two pad bytes at the end, assuming
 # longs are aligned on 4-bytes boundaries.
-print "struct.pack('llh0l', 1, 2, 3)=%s" % struct.pack('llh0l', 1, 2, 3)
+print ("struct.pack('llh0l', 1, 2, 3)=%s" % struct.pack('llh0l', 1, 2, 3))
