@@ -1,10 +1,16 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-#
-# The string Module
-#
-# https://docs.python.org/2/library/string.html#module-string
+# pag 191, The string Module
+#          The string module supplies functions that duplicate each method of
+#          string objects, as covered in “Methods of String Objects” pag. 186
+#          Each function takes the (plain or Unicode) string object as its
+#          first argument. Module string also supplies several useful
+#          plain-string attributes.
+
+
+#    Module string
+#    https://docs.python.org/3.6/library/string.html#module-string
 
 import string
 

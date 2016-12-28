@@ -1,9 +1,22 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+# pag. 201, Regular Expressions and the re Module
+#           A regular expression (RE) is a string that represents a pattern.
+#           With RE functionality, you can check any string with the pattern
+#           and see if any part of the string matches the pattern.
 #
-# Regular Expressions and the re Module
+#           The re module supplies Python’s RE functionality. The compile
+#           function builds a RE object from a pattern string and optional
+#           flags. The methods of a RE object look for matches of the RE in a
+#           string or perform substitutions. Module re also exposes functions
+#           equivalent to a RE’s methods, but with the RE’s pattern string
+#           as the first argument.
 #
+#           REs can be difficult to master, and this book does not purport to
+#           teach them; I cover only the ways in which you can use REs
+#           in Python.
+
 import re
 
 # 'compile' - builds a RE object from a pattern string

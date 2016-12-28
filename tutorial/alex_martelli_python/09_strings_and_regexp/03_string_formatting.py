@@ -1,13 +1,16 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-#
-# String Formatting
-#
-# https://docs.python.org/2/library/string.html#custom-string-formatting
-
-# format % values
-import string
+# pag. 193, String Formatting
+#           In Python, a string-formatting expression has the syntax:
+#           format % values
+#           where format is a plain or Unicode string containing format
+#           specifiers and values is any single object or a collection of
+#           objects in a tuple or dictionary. Python’s string-formatting
+#           operator has roughly the same set of features as the C language’s
+#           printf and operates in a similar way. Each format specifier is a
+#           substring of format that starts with a percent sign ( % ) and ends
+#           with one of the conversion characters shown below.
 
 
 '''
@@ -43,11 +46,12 @@ another= 'x%sy%sz' % (j, j)
 '%s' % (1/3.0)    #: 0.3333333..
 '''
 
+#    Custom string formatting
+#    https://docs.python.org/3.6/library/string.html#custom-string-formatting
 
-#
-# Template Strings
-#
-# https://docs.python.org/2/library/string.html#template-strings
+
+#    Template Strings
+#    https://docs.python.org/3.6/library/string.html#template-strings
 from string import Template
 t = Template('$who likes $what')
 t.substitute(who='tim', what='kung pao')
@@ -57,11 +61,8 @@ t.substitute(who='tim', what='kung pao')
 # t.substitute(mapping, **k)
 
 
-#
-# Text Wrapping and Filling
-#
-# https://docs.python.org/2/library/textwrap.html#module-textwrap
-
+#    Text Wrapping and Filling
+#    https://docs.python.org/3.6/library/textwrap.html#module-textwrap
 import textwrap
 
 s = "This is a long text I want wrapped at 10 column. Thank you!"
@@ -79,10 +80,10 @@ print ('answers are: %d %f' % (x,y))    # answers are: 42 3.14
 print ('hello %s' % z)                  # hello george
 
 
-# https://docs.python.org/3/library/string.html#format-string-syntax
-# Format String Syntax
-# str.format() method and the Formatter class
+#    Format String Syntax
+#    https://docs.python.org/3/library/string.html#format-string-syntax
 
+# str.format() method and the Formatter class
 print ("who is {0}".format(100))                  # who is 100
 print ("who is {} ".format(100, 200))             # who is 100
 print ("from {} to {}".format('A', 'Z'))          # from A to Z
@@ -108,7 +109,8 @@ print ("Bring out the holy {name!r}".format(name1='', name='grail'))
 # Bring out the holy 'grail'
 
 
-# https://docs.python.org/2.7/library/string.html#format-examples
+#    https://docs.python.org/3.6/library/string.html#format-examples
+
 print ('{0}, {1}, {2}'.format('a', 'b', 'c'))     # a, b, c
 print ('{}, {}, {}'.format('a', 'b', 'c'))        # a, b, c
 print ('{2}, {1}, {0}'.format('a', 'b', 'c'))     # c, b, a
@@ -221,5 +223,7 @@ for num in range(5, 12):
    11     B    13  1011
 ''')
 
-# https://docs.python.org/2.7/library/string.html#template-strings
+
+#    Template strings
+#    https://docs.python.org/3.6/library/string.html#template-strings
 # to continue....

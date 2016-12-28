@@ -1,11 +1,19 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+# pag. 197, The pprint Module
+#           The pprint module pretty-prints complicated data structures, with
+#           formatting that may be more readable than that supplied by built-in
+#           function repr (covered in repr on page 166).
+#           To fine-tune the formatting, you can instantiate the PrettyPrinter
+#           class supplied by module pprint and apply detailed control, helped
+#           by auxiliary functions also supplied by module pprint.
+#           Most of the time, however, one of the two main functions exposed by
+#           module pprint suffices.
 
-#
-# The pprint Module
-#
-# https://docs.python.org/2/library/pprint.html#module-pprint
+
+#    Data pretty printer
+#    https://docs.python.org/3.6/library/pprint.html#module-pprint
 
 import pprint
 

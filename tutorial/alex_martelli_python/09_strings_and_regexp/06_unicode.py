@@ -1,21 +1,28 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-#
-# Unicode
-#
-# python uses a codec to encode/decode plain string to Unicode strings
-# to identify the codec pass its name to 'unicode' or 'encode'
-# by default python uses 'ascii'
+# pag. 198, Unicode
+#           Plain strings are converted into Unicode strings either explicitly,
+#           with the unicode built-in, or implicitly, when you pass a plain
+#           string to a function that expects Unicode. In either case, the
+#           conversion is done by an auxiliary object known as a codec (for
+#           coder-decoder).
+#           To identify a codec, pass the codec name to unicode or encode.
+#           When you pass no codec name, and for implicit conversion, Python
+#           uses a default encoding, normally 'ascii'
+#           Every conversion has a parameter errors , a string specifying how
+#           conversion errors are to be handled. The default is 'strict' ,
+#           meaning any error raises an exception. When errors is 'replace' ,
+#           the conversion replaces each character that causes an error
+#           with '?' in a plain-string result and with u'\ufffd' in a Unicode
+#           result. When errors is 'ignore' , the conversion silently skips
+#           characters that cause errors. When errors is 'xmlcharrefreplace' ,
+#           the conversion replaces each character that causes an error with
+#           the XML character reference representation of that character in the
+#           result.
 
 
 # *** The 'codecs' Module
-'''
-import codecs
-import sys
-'''
-
-
 '''
 codecs.encode(obj [,encoding [,errors]])
 codecs.decode(obj [,encoding [,errors]])
@@ -39,47 +46,3 @@ codecs.EncodedFile(file, input [,output [,errors]])
 codecs.interencode(iterable, encoding [,errors])
 codecs.interdecode(iterable, encoding [,errors])
 '''
-
-# Inconsistent treatement of output
-# https://pythonhosted.org/kitchen/unicode-frustrations.html#frustration-3-inconsistent-treatment-of-output
-'''
-str = unicode('météo tempête\n', 'utf8')
-string_for_output = str.encode('utf8', 'replace')
-log = open('/tmp/python_debug_can_delete.log', 'w')
-log.write(string_for_output)
-'''
-
-# the StreamWriter converts from unicode and sends byte string to output
-'''
-str = u'météo tempête'
-utf8writer = codecs.getwriter('utf8')  # StreamWriter type
-sys.stdout = utf8writer(sys.stdout)
-print str
-'''
-
-# https://pythonhosted.org/kitchen/unicode-frustrations.html#frustration-4-now-it-doesn-t-take-byte-strings
-# now the StreamWriter fails when input is byte string instead of unicode
-'''
-import sys
-from kitchen.text.converters import getwriter
-str = 'météo tempête'
-ustr = u'météo tempête'
-utf8writer = getwriter('utf8')  # improved StreamWriter type
-sys.stdout = utf8writer(sys.stdout)
-print str, '\n', ustr
-'''
-
-# https://pythonhosted.org/kitchen/unicode-frustrations.html#frustration-5-exceptions
-# now, I cannot rise exceptions with a unicode string
-
-'''
-from kitchen.text.converters import to_bytes
-
-class myexception(Exception):
-    pass
-raise myexception(to_bytes(u'Cannot do this while at a café'))
-'''
-
-
-# https://pythonhosted.org/kitchen/unicode-frustrations.html#example-putting-this-all-together-with-kitchen
-# short example with kitchen function that work with unicode
