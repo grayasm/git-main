@@ -46,3 +46,34 @@ codecs.EncodedFile(file, input [,output [,errors]])
 codecs.interencode(iterable, encoding [,errors])
 codecs.interdecode(iterable, encoding [,errors])
 '''
+
+#    some independent research ...
+
+b1 = bytes("good morning(en)=早上好(ch)(Zǎoshang hǎo)", "utf-8")
+t1 = str(b1, 'utf-8')
+t2 = b'\xe6\x97\xa9\xe4\xb8\x8a\xe5\xa5\xbd'.decode("utf-8", "strict")
+
+print ("b1:", b1)  # b'good morning(en)=\xe6\x97\xa9\xe4\xb8\x8a\xe5\xa5\xbd(ch)(Z\xc7\x8eoshang h\xc7\x8eo)'
+print ("t1:", t1)  # good morning(en)=早上好(ch)(Zǎoshang hǎo)
+print ("t2:", t2)  # 早上好
+
+#    Diving In
+#    http://www.diveintopython3.net/strings.html#divingin
+#    In Python 3, all strings are sequences of Unicode characters. There is no
+#    such thing as a Python string encoded in utf-8, or a Python string encoded
+#    as CP-1252. “Is this string utf-8?” is an invalid question.
+#    utf-8 is a way of encoding characters as a sequence of bytes. If you want
+#    to take a string and turn it into a sequence of bytes in a particular
+#    character encoding, Python 3 can help you with that. If you want to take a
+#    sequence of bytes and turn it into a string, Python 3 can help you with
+#    that too. Bytes are not characters; bytes are bytes. Characters are an
+#    abstraction. A string is a sequence of those abstractions.
+t3 = '深入 Python'
+i3 = len(t3)
+t4 = t3[0]
+t5 = t3 + ' 3'
+
+print ("t3:", t3)       # 深入 Python
+print ("len(t3)=", i3)  # 9
+print ("t4:", t4)       # 深
+print ("t5:", t5)       # 深入 Python 3
