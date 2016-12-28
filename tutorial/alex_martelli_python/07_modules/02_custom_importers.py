@@ -2,10 +2,9 @@
 # -*- coding: utf-8 -*-
 
 # *** Custom Importers ***
-#
-# The ability to rebind __import__ attribute of module __builtin__
-# One wants to use import statements for modules that are not written yet,
-# getting just warning messages (and empty modules) as a consequence.
+#     An advanced, rarely needed functionality that Python offers is the
+#     ability to change the semantics or some or all import and from
+#     statements.
 
 import sys
 import types

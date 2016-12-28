@@ -1,10 +1,17 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-#
-# Module Loading
-#
-# __import__ (...)  searches in sys.modules first.
+# pag. 144, Module Loading
+#           Module-loading operations rely on attributes of the built-in sys
+#           module (covered in "The sys Module" on page 168).
+#           The module-loading process described in this section is carried
+#           out by built-in function __import__ with the module name string
+#           as an argument. __import__ returns the module object or raises
+#           ImportError if the import fails.
+#           Modules are loaded only once with an expesive operation and each
+#           correspoding object is stored in dictionary sys.modules, and can
+#           be retrieved for all later import calls.
+
 
 import sys
 print ('sys.modules=\n', sys.modules)

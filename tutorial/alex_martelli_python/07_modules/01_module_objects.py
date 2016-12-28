@@ -1,7 +1,23 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-# The 'import' Statement
+# pag. 139, Module Objects
+#           A module is a Python object with arbitrarily named attributes that
+#           you can bind and reference. The Python code for a module named
+#           'aname' normally resides in a file named aname.py, as covered in
+#           "Module Loading" on page 144.
+#           In Python, modules are objects (values) and are handled like other
+#           objects. Thus, you can pass a module as an argument in a call to
+#           a function. Similarly, a function can return a module as the result
+#           of a call. A module, just like any other object, can be bound to
+#           a variable, an item in a container, or an attribute of an object.
+#           For example, the sys.modules dictionary, covered in
+#           "Module Loading" on page 144, holds module objects as its values.
+#           The fact that modules are ordinary objects in Python is often
+#           expressed by saying that modules are first-class objects.
+
+
+# *** The 'import' Statement ***
 '''
 import modname [as varname][,...]
 '''
@@ -215,7 +231,8 @@ print (moduletest.__doc__)   # prints: Module documentation strings.
 # start variable name with _ underscore, only indication for other devs
 # not to use them. Nothing is really private in a module.
 
-# *** The 'from' Statement
+
+# *** The 'from' Statement ***
 '''
 from modname import attrname [as varname][,...]
 from modname import *

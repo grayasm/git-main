@@ -1,5 +1,12 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+
+# pag. 168, The sys Module
+#           The attributes of the sys module are bound to data and functions
+#           that provide information on the state of the Python interpreter
+#           or affect the interpreter directly. This section documents the
+#           most frequently used attributes of sys, in alphabetical order.
+
 import sys
 
 

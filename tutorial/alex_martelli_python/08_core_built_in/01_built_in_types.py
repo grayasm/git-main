@@ -1,6 +1,14 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+# pag. 154, Built-in Types
+#           This section documents Python's core built-in types, such as
+#           int, float, dict and many others. More details about many of these
+#           types, and about operations on their instances, are found in
+#           Chapter 4. In this section by "number" it's meant specifically
+#           "noncomplex number"
+
+
 import codecs
 import sys
 

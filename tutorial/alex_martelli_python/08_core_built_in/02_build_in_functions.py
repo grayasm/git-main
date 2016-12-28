@@ -1,8 +1,21 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-# Built-in Functions
-#
+# pag. 158, Built-in Functions
+#           This section documents the Python functions available in module
+#           __builtin__ in alphabetical order. Note that the names of these
+#           built-ins are not reserved words. Thus, your program can bind for
+#           its own purposes, in local or global scope, an identifier that has
+#           the same name as a built-in function. Names bound in local or
+#           global scope have priority over names bound in built-in scope, so
+#           local and global names hide built-in ones. Be very careful,
+#           to avoid accidentally hiding built-ins that your code might need.
+#           It’s tempting to use, for your own variables, natural names such as
+#           file , input , list , filter , but don’t do it: these are all
+#           names of built-in Python types or functions, and, unless you get
+#           into the habit of never shadowing such built-in names with your
+#           own, you’ll end up with some mysterious bug in your code
+
 
 '''
 __import__  __import__(module_name[,globals[,locals[,fromlist]]])
