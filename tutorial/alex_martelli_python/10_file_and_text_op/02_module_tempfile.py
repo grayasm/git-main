@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-# pag.223, The tempfile Module lets you create temporary files and directories
+# pag.223, The tempfile Module
+#          The tempfile module lets you create temporary files and directories
 #          in the most secure manner afforded by your platform.
 #          Temporary files are often excellent for an amount of data that
 #          might not confortably fit in memory, or when your program writes

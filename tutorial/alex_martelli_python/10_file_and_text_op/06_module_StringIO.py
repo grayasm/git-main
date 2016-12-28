@@ -9,10 +9,10 @@
 #           - does support Unicode
 #           On the other side cStringIO has better performance.
 #
-# http://stackoverflow.com/questions/11914472/stringio-in-python3
-#     The StringIO and cStringIO modules are gone.
-#     Instead, import the io module and use io.StringIO or io.BytesIO for text
-#     and data respectively.
+#    http://stackoverflow.com/questions/11914472/stringio-in-python3
+#      The StringIO and cStringIO modules are gone.
+#      Instead, import the io module and use io.StringIO or io.BytesIO for text
+#      and data respectively.
 
 '''
 class StringIO.StringIO([buffer])

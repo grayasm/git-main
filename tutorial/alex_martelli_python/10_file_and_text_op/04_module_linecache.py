@@ -16,4 +16,4 @@ linecache.getlines(filename)
 import linecache
 
 line = linecache.getline('99_eggs.txt', 2)
-print ("99_eggs.txt:2:%s" % line, end=' ')
+print ("99_eggs.txt:2:%s" % line, end="")

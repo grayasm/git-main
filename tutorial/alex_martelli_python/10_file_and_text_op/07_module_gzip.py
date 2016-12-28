@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-# pag. 230, The gzip Module lets you read and write files compatible with those
+# pag. 230, The gzip Module
+#           The gzip module lets you read and write files compatible with those
 #           handled by the powerful GNU compression programs gzip and gunzip.
 #           The GNU programs support many compression formats, but module
 #           gzip supports only the highly effective native gzip format,
@@ -18,7 +19,7 @@ import gzip
 import shutil
 
 # example of how to create a compressed file
-content = bytes("Lots of content here", 'UTF-8')
+content = bytes("Lots of content here", "UTF-8")
 with gzip.open('file.txt.gz', 'wb') as f:
     f.write(content)
 
@@ -35,9 +36,9 @@ with open('99_hello.txt', 'rb') as f_in:
 # another exmple from the book pag. 231
 zipped_f = open('file.txt.gz', 'rb')
 unzipped_f = gzip.GzipFile(fileobj=zipped_f, mode='r')
-print ('file.txt.gz: ', end=' ')
+print ('file.txt.gz: ')
 for line in unzipped_f:
-    print (line, end=' ')
+    print (line, end="")
 
 unzipped_f.close()
 zipped_f.close()
