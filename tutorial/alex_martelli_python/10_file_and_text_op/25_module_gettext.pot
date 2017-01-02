@@ -1,0 +1,45 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR ORGANIZATION
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 2017-01-02 16:58+CET\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: ENCODING\n"
+"Generated-By: pygettext.py 1.5\n"
+
+
+#: 25_module_gettext.py:39
+msgid "Hello! What is your name?"
+msgstr ""
+
+#: 25_module_gettext.py:43
+msgid "Well, %s, I am thinking of a number between 1 and 20."
+msgstr ""
+
+#: 25_module_gettext.py:46
+msgid "Take a guess."
+msgstr ""
+
+#: 25_module_gettext.py:53
+msgid "Your guess is too low."
+msgstr ""
+
+#: 25_module_gettext.py:56
+msgid "Your guess is too high."
+msgstr ""
+
+#: 25_module_gettext.py:63
+msgid "Good job, %s! You guessed my number in %d guesses!"
+msgstr ""
+
+#: 25_module_gettext.py:69
+msgid "Nope. The number I was thinking of was %d."
+msgstr ""
+
