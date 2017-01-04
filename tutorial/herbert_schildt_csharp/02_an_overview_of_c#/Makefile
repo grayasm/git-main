@@ -2,7 +2,8 @@ all: 01_a_first_simple_program \
      02_a_small_variation \
      03_a_second_simple_program \
      04_another_data_type \
-     05_area_of_a_circle
+     05_area_of_a_circle \
+     06_two_control_statements
 
 01_a_first_simple_program: 01_a_first_simple_program.cs Makefile
 	mcs 01_a_first_simple_program.cs
@@ -19,10 +20,13 @@ all: 01_a_first_simple_program \
 05_area_of_a_circle: 05_area_of_a_circle.cs Makefile
 	mcs 05_area_of_a_circle.cs
 
+06_two_control_statements: 06_two_control_statements.cs Makefile
+	mcs 06_two_control_statements.cs
 
 clean:
 	rm -v 01_a_first_simple_program.exe \
           02_a_small_variation.exe \
           03_a_second_simple_program.exe \
           04_another_data_type.exe \
-          05_area_of_a_circle.exe
+          05_area_of_a_circle.exe \
+          06_two_control_statements.exe
