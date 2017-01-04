@@ -7,7 +7,8 @@ all: 01_a_first_simple_program \
      07_the_for_loop \
      08_using_code_blocks \
      09_another_block_structure \
-     10_semicolon_and_identation
+     10_semicolon_and_identation \
+     11_keywords
 
 
 01_a_first_simple_program: 01_a_first_simple_program.cs Makefile
@@ -40,6 +41,9 @@ all: 01_a_first_simple_program \
 10_semicolon_and_identation: 10_semicolon_and_identation.cs Makefile
 	mcs 10_semicolon_and_identation.cs
 
+11_keywords: 11_keywords.cs Makefile
+	mcs 11_keywords.cs
+
 
 clean:
 	rm -v 01_a_first_simple_program.exe \
@@ -51,4 +55,5 @@ clean:
           07_the_for_loop.exe \
           08_using_code_blocks.exe \
           09_another_block_structure.exe \
-          10_semicolon_and_identation.exe
+          10_semicolon_and_identation.exe \
+          11_keywords.exe
