@@ -1,4 +1,6 @@
 /*
+    C# Reserved Keywords:
+
     abstract    as          base        bool        break
     byte        case        catch       char        checked
     class       const       continue    decimal     default
@@ -15,7 +17,16 @@
     try         typeof      uint        ulong       unchecked
     unsafe      ushort      using       virtual     volatile
     void        while
+
+
+    C# Contextual Keywords:
+
+    add         dynamic     from        get         global
+    group       into        join        let         orderby
+    partial     remove      select      set         value
+    var         where       yield
 */
+
 
 using System;
 

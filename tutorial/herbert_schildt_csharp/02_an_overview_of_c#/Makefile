@@ -8,7 +8,8 @@ all: 01_a_first_simple_program \
      08_using_code_blocks \
      09_another_block_structure \
      10_semicolon_and_identation \
-     11_keywords
+     11_keywords \
+     12_identifiers
 
 
 01_a_first_simple_program: 01_a_first_simple_program.cs Makefile
@@ -44,6 +45,9 @@ all: 01_a_first_simple_program \
 11_keywords: 11_keywords.cs Makefile
 	mcs 11_keywords.cs
 
+12_identifiers: 12_identifiers.cs Makefile
+	mcs 12_identifiers.cs
+
 
 clean:
 	rm -v 01_a_first_simple_program.exe \
@@ -56,4 +60,5 @@ clean:
           08_using_code_blocks.exe \
           09_another_block_structure.exe \
           10_semicolon_and_identation.exe \
-          11_keywords.exe
+          11_keywords.exe \
+          12_identifiers.exe
