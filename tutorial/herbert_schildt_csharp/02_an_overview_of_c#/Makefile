@@ -3,7 +3,8 @@ all: 01_a_first_simple_program \
      03_a_second_simple_program \
      04_another_data_type \
      05_area_of_a_circle \
-     06_two_control_statements
+     06_two_control_statements \
+     07_the_for_loop
 
 01_a_first_simple_program: 01_a_first_simple_program.cs Makefile
 	mcs 01_a_first_simple_program.cs
@@ -23,10 +24,15 @@ all: 01_a_first_simple_program \
 06_two_control_statements: 06_two_control_statements.cs Makefile
 	mcs 06_two_control_statements.cs
 
+07_the_for_loop: 07_the_for_loop.cs Makefile
+	mcs 07_the_for_loop.cs
+
+
 clean:
 	rm -v 01_a_first_simple_program.exe \
           02_a_small_variation.exe \
           03_a_second_simple_program.exe \
           04_another_data_type.exe \
           05_area_of_a_circle.exe \
-          06_two_control_statements.exe
+          06_two_control_statements.exe \
+          07_the_for_loop.exe
