@@ -6,6 +6,26 @@
 # svn commit $HOME/Code/svn-trunk
 
 
-echo "Flush all chains and list default rules"
+# ---------------------------- IPV4 -------------------------------------------
+echo "Flush all ipv4 chains and list default rules"
 iptables -F
 iptables -L
+
+# ---------------------------- IPV6 -------------------------------------------
+echo "Flush all ipv6 chains and list default rules"
+ip6tables -F
+ip6tables -L
+
+
+# -----------------------------------------------------------------------------
+service iptables save
+service ip6tables save
+
+systemctl disable iptables.service
+systemctl disable ip6tables.service
+
+systemctl stop iptables.service
+systemctl stop ip6tables.service
+
+systemctl list-unit-files | grep 'iptables'
+systemctl list-unit-files | grep 'ip6tables'
