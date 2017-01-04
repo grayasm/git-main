@@ -4,7 +4,9 @@ all: 01_a_first_simple_program \
      04_another_data_type \
      05_area_of_a_circle \
      06_two_control_statements \
-     07_the_for_loop
+     07_the_for_loop \
+     08_using_code_blocks
+
 
 01_a_first_simple_program: 01_a_first_simple_program.cs Makefile
 	mcs 01_a_first_simple_program.cs
@@ -27,6 +29,9 @@ all: 01_a_first_simple_program \
 07_the_for_loop: 07_the_for_loop.cs Makefile
 	mcs 07_the_for_loop.cs
 
+08_using_code_blocks: 08_using_code_blocks.cs Makefile
+	mcs 08_using_code_blocks.cs
+
 
 clean:
 	rm -v 01_a_first_simple_program.exe \
@@ -35,4 +40,5 @@ clean:
           04_another_data_type.exe \
           05_area_of_a_circle.exe \
           06_two_control_statements.exe \
-          07_the_for_loop.exe
+          07_the_for_loop.exe \
+          08_using_code_blocks.exe
