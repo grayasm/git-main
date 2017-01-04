@@ -5,7 +5,8 @@ all: 01_a_first_simple_program \
      05_area_of_a_circle \
      06_two_control_statements \
      07_the_for_loop \
-     08_using_code_blocks
+     08_using_code_blocks \
+     09_another_block_structure
 
 
 01_a_first_simple_program: 01_a_first_simple_program.cs Makefile
@@ -32,6 +33,9 @@ all: 01_a_first_simple_program \
 08_using_code_blocks: 08_using_code_blocks.cs Makefile
 	mcs 08_using_code_blocks.cs
 
+09_another_block_structure: 09_another_block_structure.cs Makefile
+	mcs 09_another_block_structure.cs
+
 
 clean:
 	rm -v 01_a_first_simple_program.exe \
@@ -41,4 +45,5 @@ clean:
           05_area_of_a_circle.exe \
           06_two_control_statements.exe \
           07_the_for_loop.exe \
-          08_using_code_blocks.exe
+          08_using_code_blocks.exe \
+          09_another_block_structure.exe
