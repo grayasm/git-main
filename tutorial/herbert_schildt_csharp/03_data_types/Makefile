@@ -81,23 +81,23 @@ all: 01_value_types \
 
 
 clean:
-	rm -v  01_value_types \
-           02_integers \
-           03_long \
-           04_byte \
-           05_float \
-           06_double \
-           07_decimal \
-           08_char \
-           09_bool \
-           10_string_formatting \
-           11_hexadecimal_literals \
-           12_escape_literals \
-           13_string_literals \
-           14_variables \
-           15_var_type \
-           16_scope_block \
-           17_scope_illegal \
-           18_type_conversion_assignament \
-           19_casting_incompatible_types \
-           20_type_conversion_expression
+	rm -v  01_value_types.exe \
+           02_integers.exe \
+           03_long.exe \
+           04_byte.exe \
+           05_float.exe \
+           06_double.exe \
+           07_decimal.exe \
+           08_char.exe \
+           09_bool.exe \
+           10_string_formatting.exe \
+           11_hexadecimal_literals.exe \
+           12_escape_literals.exe \
+           13_string_literals.exe \
+           14_variables.exe \
+           15_var_type.exe \
+           16_scope_block.exe \
+           17_scope_illegal.exe \
+           18_type_conversion_assignament.exe \
+           19_casting_incompatible_types.exe \
+           20_type_conversion_expression.exe
