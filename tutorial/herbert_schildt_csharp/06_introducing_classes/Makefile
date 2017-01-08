@@ -33,7 +33,7 @@ all: 01_class_fundamentals \
 	mcs 08_keyword_this.cs
 
 
-clear:
+clean:
 	rm -v  01_class_fundamentals.exe \
            02_create_objects.exe \
            03_references.exe \
