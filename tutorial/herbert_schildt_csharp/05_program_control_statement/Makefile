@@ -37,12 +37,13 @@ all: 01_if_else_if \
 	mcs 09_goto.cs
 
 
-clean: 01_if_else_if.exe \
-       02_switch.exe \
-       03_for.exe \
-       04_while.exe \
-       05_do_while.exe \
-       06_foreach.exe \
-       07_break.exe \
-       08_continue.exe \
-       09_goto.exe
+clean:
+	rm -v 01_if_else_if.exe \
+          02_switch.exe \
+          03_for.exe \
+          04_while.exe \
+          05_do_while.exe \
+          06_foreach.exe \
+          07_break.exe \
+          08_continue.exe \
+          09_goto.exe
