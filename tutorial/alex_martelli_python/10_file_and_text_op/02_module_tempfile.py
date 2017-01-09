@@ -1,7 +1,8 @@
-#!/usr/bin/python -tt
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-# pag.223, The tempfile Module lets you create temporary files and directories
+# pag.223, The tempfile Module
+#          The tempfile module lets you create temporary files and directories
 #          in the most secure manner afforded by your platform.
 #          Temporary files are often excellent for an amount of data that
 #          might not confortably fit in memory, or when your program writes
@@ -25,15 +26,15 @@ import os
 
 fd, path = tempfile.mkstemp(suffix='.txt', text=True)
 try:
-	print "content of file: %s" % path
-	os.write(fd, "header\nline 2\nend of file")
-	os.close(fd)
-	f = open(path, 'r')
-	s = f.read()
-	print s
-	f.close()
+        print("content of file: %s" % path)
+        os.write(fd, bytes("header\nline 2\nend of file", 'UTF-8'))
+        os.close(fd)
+        f = open(path, 'r')
+        s = f.read()
+        print(s)
+        f.close()
 finally:
-	os.unlink(path)
+        os.unlink(path)
 
 '''
 content of file: /tmp/tmpFiGpaF.txt
@@ -41,4 +42,3 @@ header
 line 2
 end of file
 '''
-

@@ -6,3 +6,4 @@ export GIT_PASS=
 export OFFICE=
 export SERVER=
 export MWOVPN_PASS=
+export DIGITALOCEAN=

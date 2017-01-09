@@ -1,4 +1,4 @@
-#!/usr/bin/python -tt
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 # pag.226, The linecache Module lets you read a given line (specified by number)
@@ -16,4 +16,4 @@ linecache.getlines(filename)
 import linecache
 
 line = linecache.getline('99_eggs.txt', 2)
-print "99_eggs.txt:2:%s" % line,
+print ("99_eggs.txt:2:%s" % line, end="")

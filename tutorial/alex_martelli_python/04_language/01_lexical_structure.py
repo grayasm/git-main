@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 # pag. 33, Lexical Structure
@@ -18,31 +18,31 @@ from __future__ import division  # see the Operators section.
 
 # this is a comment
 
-print "followed by a comment"  # all after are part of the comment
+print ("followed by a comment")  # all after are part of the comment
 
     # 'blank-line' (spaces followed by a comment) is ignored
 
-print "this statement is too long \
-to fit into a single line"
+print ("this statement is too long \
+to fit into a single line")
 
-print "( or { or [ join adjacent physical lines %s <-> %s" % ("line",
-                                                              "another line")
+print ("( or { or [ join adjacent physical lines %s <-> %s" % ("line",
+                                                              "another line"))
 
 str = '''tripple-quoted string literals
 can also span physical lines'''
-print "str=%s" % str
+print ("str=%s" % str)
 
 var1 = 1 + 2 + \
        3 + 1 + \
        2 + 1
-print "continuation lines with var1= %d" % var1
+print ("continuation lines with var1= %d" % var1)
 
 
 def f():
-    print "Python uses identation to express the block structure"
+    print ("Python uses identation to express the block structure")
     var2 = 2 + 1 + \
            3 + 1
-    print "of a program, here var2 = %d" % var2
+    print ("of a program, here var2 = %d" % var2)
     f()
 
 
@@ -66,10 +66,10 @@ def f():
 
 
 # 'True' 'False' 'None' which represents the null value (absence value)
-print " 1 == 1 %s" % (1 == 1)
-print " 10 < 1 %s" % (10 < 1)
+print (" 1 == 1 %s" % (1 == 1))
+print (" 10 < 1 %s" % (10 < 1))
 var2 = None
-print " var2 = %s" % var2
+print (" var2 = %s" % var2)
 
 
 def a_void_function():
@@ -77,7 +77,7 @@ def a_void_function():
     b = 2
     c = a + b
     var3 = a_void_function()
-    print " var3 = %s" % var3      # return 'None' (default)
+    print (" var3 = %s" % var3)         # return 'None' (default)
 
 
 def improper_return_function(a):
@@ -85,16 +85,16 @@ def improper_return_function(a):
         return True
 
 var4 = improper_return_function(3)
-print " var4 = %s" % var4      # programming error
+print (" var4 = %s" % var4)             # programming error
 
-print " True and False is %s" % (True and False)
-print " True or False  is %s" % (True or False)
-print " not True       is %s" % (not True)
+print (" True and False is %s" % (True and False))
+print (" True or False  is %s" % (True or False))
+print (" not True       is %s" % (not True))
 
 
 # 'as'
 import math as myAlias
-print "cos(pi) is %.2f" % myAlias.cos(myAlias.pi)
+print ("cos(pi) is %.2f" % myAlias.cos(myAlias.pi))
 
 # 'assert'
 assert 10 < 11, "my error message"
@@ -106,7 +106,7 @@ for i in range(1, 11):
         break
     if i == 3:
         continue
-    print i
+    print (i)
 
 
 # 'class' 'def' user defined function
@@ -129,17 +129,17 @@ del var5
 # this is a list, don't know why it's here :)
 var7 = ['x', 'y', 'z']
 del var7[1]
-print var7         # prints: ['x', 'z']
+print (var7)         # prints: ['x', 'z']
 
 
 # 'if' 'elif' 'else'
 def if_example(a):
     if a == 1:
-        print "One"
+        print ("One")
     elif a == 2:
-        print "Two"
+        print ("Two")
     else:
-        print "> than Two"
+        print ("> than Two")
 
 if_example(2)
 if_example(4)
@@ -151,12 +151,12 @@ def reciprocal(num):
     try:
         r = 1/num
     except:
-        print 'Exception caught'
+        print ('Exception caught')
         return
     return r
 
-print reciprocal(10)
-print reciprocal(0)
+print (reciprocal(10))
+print (reciprocal(0))
 
 
 # 'finally' - gets executed even if there is an exception
@@ -164,20 +164,20 @@ def with_finally(a):
     try:
         r = 1/a
     except SyntaxError:
-        print "except SyntaxError:"
+        print ("except SyntaxError:")
     except NameError:
-        print "except NameError:"
+        print ("except NameError:")
     finally:
-        print "finally"
+        print ("finally")
     return r
 
-print with_finally(1)
+print (with_finally(1))
 
 
 # 'for'
 var8 = ['John', 'Monica', 'Steven', 'Robin']
 for i in var8:
-    print 'Hello ' + i
+    print ('Hello ' + i)
 
 
 # 'from'
@@ -192,7 +192,7 @@ var9 = 10
 
 
 def read1():
-    print var9
+    print (var9)
 
 
 def write1():
@@ -213,7 +213,7 @@ read1()   # prints: 5
 # 'in'
 # Used to test if a sequence (list, tuple, string etc) contains a value
 var10 = [1, 2, 3, 4, 5]
-print "5 in %s is %s" % (var10, 5 in var10)
+print ("5 in %s is %s" % (var10, 5 in var10))
 
 
 # 'is'
@@ -221,18 +221,18 @@ print "5 in %s is %s" % (var10, 5 in var10)
 # is used to test if 2 variables are equal or not.
 # It returns True if objects are identical and False if not.
 
-print "True is True = %s" % (True is True)  # True is one instance in Python
-print "False is False = %s" % (False is False)
-print "None is None = %s" % (None is None)
-print "[] == [] =  %s" % ([] == [])         # Equal
-print "[] is [] =  %s" % ([] is [])         # but not identical
-print "{} == {} =  %s" % ({} == {})         # Equal
-print "{} is {} =  %s" % ({} is {})         # but not identical
+print ("True is True = %s" % (True is True))  # True is one instance in Python
+print ("False is False = %s" % (False is False))
+print ("None is None = %s" % (None is None))
+print ("[] == [] =  %s" % ([] == []))         # Equal
+print ("[] is [] =  %s" % ([] is []))         # but not identical
+print ("{} == {} =  %s" % ({} == {}))         # Equal
+print ("{} is {} =  %s" % ({} is {}))         # but not identical
 
-print "'' == '' =  %s" % ('' == '')         # unlike list and dict, string
-print "'' is '' =  %s" % ('' is '')         # and tuple are immutable
-print "() == () =  %s" % (() == ())
-print "() is () =  %s" % (() is ())
+print ("'' == '' =  %s" % ('' == ''))         # unlike list and dict, string
+print ("'' is '' =  %s" % ('' is ''))         # and tuple are immutable
+print ("() == () =  %s" % (() == ()))
+print ("() is () =  %s" % (() is ()))
 
 
 # 'lambda'
@@ -240,7 +240,7 @@ print "() is () =  %s" % (() is ())
 # It is an inline function that does not contain a return statement.
 func11 = lambda x: x*2
 for i in range(1, 6):
-    print "lambda(%d)= %d" % (i, func11(i))
+    print ("lambda(%d)= %d" % (i, func11(i)))
 
 
 # 'nonlocal'
@@ -280,15 +280,15 @@ def func_return():
 def no_return():
     a = 10
 
-print func_return()
-print no_return()
+print (func_return())
+print (no_return())
 
 
 # 'while'
 # Used for looping until False or a break is encountered.
 var12 = 5
 while (var12):                   # 0 evaluated to False
-    print var12
+    print (var12)
     var12 = var12 - 1
 
 
@@ -311,7 +311,7 @@ def generator():
 
 var13 = generator()
 for i in var13:
-    print i
+    print (i)
 
 
 # -----------------------------------------------------------------------------
@@ -324,50 +324,50 @@ for i in var13:
 x = 15
 y = 4
 
-print "%d + %d = %d" % (x, y, x+y)
-print "%d - %d = %d" % (x, y, x-y)
-print "%d * %d = %d" % (x, y, x*y)
+print ("%d + %d = %d" % (x, y, x+y))
+print ("%d - %d = %d" % (x, y, x-y))
+print ("%d * %d = %d" % (x, y, x*y))
 
 # In python-2.7  / is integer division if inputs are integers.
 # For float must use special import:
 #
 # from __future__ import division
 #
-print "%d / %d = %f" % (x, y, x/y)
-print "%d modulo %d = %d" % (x, y, x % y)
-print "%d // %d = %f" % (x, y, x//y)   # floor division, adjusted to the left
-print "%d ** %d = %f" % (x, y, x**y)   # left rised to the power of right
+print ("%d / %d = %f" % (x, y, x/y))
+print ("%d modulo %d = %d" % (x, y, x % y))
+print ("%d // %d = %f" % (x, y, x//y))  # floor division, adjusted to the left
+print ("%d ** %d = %f" % (x, y, x**y))  # left rised to the power of right
 
 
 # comparison operators: >  <  ==  !=  >=  <=
 x = 10
 y = 12
-print "%d > %d is %s" % (x, y, x > y)
-print "%d < %d is %s" % (x, y, x < y)
-print "%d == %d is %s" % (x, y, x == y)
-print "%d != %d is %s" % (x, y, x != y)
-print "%d >= %d is %s" % (x, y, x >= y)
-print "%d <= %d is %s" % (x, y, x <= y)
+print ("%d > %d is %s" % (x, y, x > y))
+print ("%d < %d is %s" % (x, y, x < y))
+print ("%d == %d is %s" % (x, y, x == y))
+print ("%d != %d is %s" % (x, y, x != y))
+print ("%d >= %d is %s" % (x, y, x >= y))
+print ("%d <= %d is %s" % (x, y, x <= y))
 
 
 # logical operators: and, or, not
 x = True
 y = False
-print "%s and %s is %s" % (x, y, x and y)
-print "%s or %s is %s" % (x, y, x or y)
-print "not %s is %s" % (x, not x)
+print ("%s and %s is %s" % (x, y, x and y))
+print ("%s or %s is %s" % (x, y, x or y))
+print ("not %s is %s" % (x, not x))
 
 
 # bitwise operators
 x = 0b00001010 # 0000 1010 = 10 decimal
 y = 0b00000100 # 0000 0100 =  4 decimal
 
-print "%d & %d = %d" % (x, y, x & y)      # bitwise AND
-print "%d | %d = %d" % (x, y, x | y)      # bitwise OR
-print "~ %d    = %d" % (x, ~x)            # bitwise NOT
-print "%d ^ %d = %d" % (x, y, x ^ y)      # bitwise XOR
-print "%d >> 2 = %d" % (x, x >> 2)        # bitwise right shift
-print "%d << 2 = %d" % (x, x << 2)        # bitwise left shit
+print ("%d & %d = %d" % (x, y, x & y))    # bitwise AND
+print ("%d | %d = %d" % (x, y, x | y))    # bitwise OR
+print ("~ %d    = %d" % (x, ~x))          # bitwise NOT
+print ("%d ^ %d = %d" % (x, y, x ^ y))    # bitwise XOR
+print ("%d >> 2 = %d" % (x, x >> 2))      # bitwise right shift
+print ("%d << 2 = %d" % (x, x << 2))      # bitwise left shit
 
 
 # assignament operators
@@ -379,7 +379,7 @@ x /= 10   # 29
 x %= 19   # 10
 x //= 3   # 3
 x **= 4   # 81
-print "81 must be %d" % x
+print ("81 must be %d" % x)
 
 x = 0b01010001
 x &= 5
@@ -387,7 +387,7 @@ x |= 5
 x ^= 5
 x >>= 5
 x <<= 5
-print "x = %d" % x
+print ("x = %d" % x)
 
 
 # identity operators: is, is not
@@ -397,19 +397,19 @@ x2 = 'Hello'
 y2 = 'Hello'
 x3 = [1, 2, 3]
 y3 = [1, 2, 3]
-print "%d is not %d = %s" % (x1, y1, x1 is not y1)
-print "%s is %s = %s" % (x2, y2, x2 is y2)
-print "%s is %s = %s" % (x3, y3, x3 is y3)
+print ("%d is not %d = %s" % (x1, y1, x1 is not y1))
+print ("%s is %s = %s" % (x2, y2, x2 is y2))
+print ("%s is %s = %s" % (x3, y3, x3 is y3))
 
 
 # membership operators
 x = 'Hello world'
 y = {1: 'a', 2: 'b'}
 
-print "'H' in %s = %s" % (x, ('H' in x))
-print "'hello' not in %s = %s" % (x, 'hello' not in x)
-print "1 in %s = %s" % (y, (1 in y))
-print "'a' in %s = %s" % (y, ('a' in y))
+print ("'H' in %s = %s" % (x, ('H' in x)))
+print ("'hello' not in %s = %s" % (x, 'hello' not in x))
+print ("1 in %s = %s" % (y, (1 in y)))
+print ("'a' in %s = %s" % (y, ('a' in y)))
 
 
 # *** Literals***

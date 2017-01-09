@@ -1,4 +1,5 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 
 
 class class2(object):
@@ -10,6 +11,6 @@ class class2(object):
                         'Mendelevium', 'Nobelium', 'Lawrencium']
 
     def printMembers(self):
-        print 'Actininide Series:'
+        print ('Actininide Series:')
         for elem in self.members:
-            print '\t%s ' % elem
+            print ('\t%s ' % elem)

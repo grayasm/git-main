@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 # pag. 38, Data Types
@@ -20,13 +20,18 @@
 
 # *** Integer numbers ***
 
-1,   23,   3493    # Decimal
-01,  027,  06645   # Octal
-0x1, 0x17, 0xDA5   # Hexadecimal
+1,   23,   3493      # Decimal
+# 01,  027,  06645   # Octal python2 format, no longer valid
+0o1, 0o27, 0o6645    # Octal python3
+0x1, 0x17, 0xDA5     # Hexadecimal
 
-1L,   23L,   99999333493L     # Long decimal integers
-01L,  027L,  01351033136165L  # Long octal integers
-0x1L, 0x17L, 0x17486CBC75L    # Long hexadecimal integers
+# 1L,   23L,   99999333493L     # Long decimal integers python2 format, invalid
+# 01L,  027L,  01351033136165L  # Long octal integers, python2 format invalid
+# 0x1L, 0x17L, 0x17486CBC75L    # Long hexadecimal integers, python2 invalid
+
+1,   23,    99999333493         # python3 has only int type (also for old long)
+0o1, 0o27,  0o1351033136165
+0x1, 0x17,  0x17486CBC75
 
 # *** Floating-point numbers ***
 0., 0.0, .0, 1., 1.0, 1e0, 1.e0, 1.0e0
@@ -45,43 +50,43 @@
 
 
 # Strings
-print 'This is a literal string'
+print ('This is a literal string')
 
-print "This is another literal string"
+print ("This is another literal string")
 
-print 'A quote\' can be escaped but'
+print ('A quote\' can be escaped but')
 
-print "This way' is more readable"
+print ("This way' is more readable")
 
-print "A not very long string \
-that spans two lines"
+print ("A not very long string \
+that spans two lines")
 
-print "A not very long string\n\
-that prints on two lines"
+print ("A not very long string\n\
+that prints on two lines")
 
-print """An even bigger
+print ("""An even bigger
 string that spans
-three lines"""
+three lines""")
 
 
 # Tuples:
 #   * immutable ordered sequence of items enclosed in (..)
 #   * arbitrary objects that may be of different types
 
-print (100, 200, 300)           # tuple with 3 items
-print (3.14, )                  # tuple with 1 item
-print ()                        # tuple empty (parantheses NOT optional!)
-print tuple('wow')              # tuple built-in type, prints ('w','o','w')
+print ((100, 200, 300))         # tuple with 3 items
+print ((3.14, ))                # tuple with 1 item
+print (())                      # tuple empty (parantheses NOT optional!)
+print (tuple('wow'))            # tuple built-in type, prints ('w','o','w')
 
 
 # Lists:
 #   * mutable ordered sequence of items enclosed in [ ...]
 #   * The items of a list are arbitrary objects and may be of different types.
 
-print [42, 3.14, 'hello']       # list with 3 items
-print [100]                     # list with 1 item
-print []                        # list empty
-print list('wow')               # list built-in type, prints ['w','o','w']
+print ([42, 3.14, 'hello'])     # list with 3 items
+print ([100])                   # list with 1 item
+print ([])                      # list empty
+print (list('wow'))             # list built-in type, prints ['w','o','w']
 
 
 
@@ -95,15 +100,15 @@ print list('wow')               # list built-in type, prints ['w','o','w']
 
 x = set(['ana', 'are', 'mere'])
 y = set(['dan', 'are', 'pere'])
-print len(x)            # number of elements in x
-print 'ana' in x        # test 'ana' membership in x
-print 'dan' not in y    # test 'dan' for non-membership in y
-print x <= y            # test whether every element in x is in y
-print x >= y            # test whether every lemenet in y is in x
-print x | y             # union, new set with elements from both x and y
-print x & y             # intersection, new set with elem. common to x and y
-print x - y             # difference, new set with elem. in x but not in y
-print x ^ y             # symmetric different, in one of them but not in both
+print (len(x))          # number of elements in x
+print ('ana' in x)      # test 'ana' membership in x
+print ('dan' not in y)  # test 'dan' for non-membership in y
+print (x <= y)          # test whether every element in x is in y
+print (x >= y)          # test whether every lemenet in y is in x
+print (x | y)           # union, new set with elements from both x and y
+print (x & y)           # intersection, new set with elem. common to x and y
+print (x - y)           # difference, new set with elem. in x but not in y
+print (x ^ y)           # symmetric different, in one of them but not in both
 
 # same as above but using set member functions
 lte = x.issubset(y)
@@ -112,12 +117,12 @@ uni = x.union(y)
 int = x.intersection(y)
 dif = x.difference(y)
 sdf = x.symmetric_difference(y)
-print "lte: %s" % lte
-print "gte: %s" % gte
-print "uni: %s" % uni
-print "int: %s" % int
-print "dif: %s" % dif
-print "sym: %s" % sdf
+print ("lte: %s" % lte)
+print ("gte: %s" % gte)
+print ("uni: %s" % uni)
+print ("int: %s" % int)
+print ("dif: %s" % dif)
+print ("sym: %s" % sdf)
 
 x = frozenset(['ana', 'are', 'mere', 'forever'])
 # y = x - 'ana'  TypeError: unsupported operand type -: 'frozenset' and 'str'
@@ -145,7 +150,7 @@ b = {'one': 1, 'two': 2, 'three': 3}
 c = dict(zip(['one', 'two', 'three'], [1, 2, 3]))
 d = dict([('two', 2), ('one', 1), ('three', 3)])
 e = dict({'three': 3, 'one': 1, 'two': 2})
-print "a == b == c == d == e is %s" % (a == b == c == d == e)
+print ("a == b == c == d == e is %s" % (a == b == c == d == e))
 
 
 # *** None ***

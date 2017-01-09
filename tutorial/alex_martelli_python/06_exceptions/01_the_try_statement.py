@@ -1,6 +1,15 @@
-#
-# The 'try' statement
-#
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
+# pag. 121, The 'try' Statement.
+#           The 'try' statement provided by Python's exception-handling
+#           mechanism it is a compound statement that can take one of two
+#           different forms:
+#           - a try clause followed by one or more except clauses and
+#             optionally an else clause
+#           - a try clause followed by exactly one finally clause
+
+# *** try/except ***
 '''
 try:
     statement(s)
@@ -11,48 +20,43 @@ except: [expression [, target]]:
 '''
 
 
-# simplistic
 try:
-    1 / 0
+    1 / 0                               # print 'caught divide-by-0 attempt'
 except ZeroDivisionError:
-    print "caught divide-by-0 attempt"
+    print ("caught divide-by-0 attempt")
 
 
-# more generic
-# prints: Second argument to a division or modulo operation was zero.
 try:
-    1 / 0
-except Exception, e:
-    print e.__doc__
+    1 / 0                               # print: Second argument to a division
+except Exception as e:                  # or modulo operation was zero.
+    print (e.__doc__)
 
 
 try:
     try:
-        1 / 0
+        1 / 0                           # print: caught an exception
     except:
-        print "caught an exception"
+        print ("caught an exception")
 except ZeroDivisionError:
-    print "caught divide-by-0 attempt"
-# prints: caught an exception
+    print ("caught divide-by-0 attempt")
 
 
 value = ['s']
-print repr(value), "is ",
+print (repr(value), "is ", end=" ")
 try:
-    value + 0
+    value + 0                 # ['s'] is neighter a number nor a string
 except TypeError:
-    # not a number, maybe a string, Unicode, UserString...?
     try:
         value + ''
     except TypeError:
-        print "neigther a number nor a string"
+        print ("neigther a number nor a string")
     else:
-        print "a string or string-like value"
+        print ("a string or string-like value")
 else:
-    print "some kind of number"
+    print ("some kind of number")
 
 
-# try/finally
+# *** try/finally ***
 #    - has exacly 1 finally and cannot have an else clause
 #    - finally is a clean-up handler
 #    - code always execute after try terminates in any way
@@ -66,7 +70,7 @@ finally:
 
 f = open("/tmp/test_try.txt", "w")
 try:
-    print "do_something_with_file(f)"
+    print ("do_something_with_file(f)")   # do_something_with_file(f)
 finally:
     f.close()
 
@@ -83,7 +87,7 @@ with expression [as varname]
     statement(s)
 '''
 
-# which is translated to, or equivalent with:
+# it is translated to, or equivalent with:
 '''
 _normal_exit = True
 _temporary = expression
@@ -105,24 +109,27 @@ class sendmsg(object):
         self.id = id
 
     def text(self, txt):
-        print "send:", txt
+        print ("send:", txt)
 
     def __enter__(self):
-        print "Open:", self.channel
-        print "Contact:", self.id
+        print ("Open:", self.channel)
+        print ("Contact:", self.id)
         return self
 
     def __exit__(self, etyp, einst, etb):
-        print "Say Bye:", self.id
-        print "Close:", self.channel
-        print "Exit"
+        print ("Say Bye:", self.id)
+        print ("Close:", self.channel)
+        print ("Exit")
         return True
 
 
-with sendmsg('freenode', 'michael44') as sm:
-    sm.text('Hello Michael.')
-    sm.text('You are invited tonight at the reception')
-    sm.text('Bring Michele also. See you there. Bye!')
+with sendmsg('freenode', 'michael44') as sm:              # Open: freenode
+    sm.text('Hello Michael.')                             # Contact: michael44
+    sm.text('You are invited tonight at the reception')   # send: Hello Michael
+    sm.text('Bring Michele also. See you there. Bye!')    # send: Bring ...
+                                                          # Say Bye: michael44
+                                                          # Close: freenode
+                                                          # Exit
 
 
 # Generator Enhancements
@@ -139,7 +146,8 @@ def item_generator(lst=[]):
         try:
             yield elem
         except Exception:
-            raise Exception, "error during index: %d"%i
+            raise Exception("error during index: %d" % i)
+
 
 try:
     lst = list([1, 2, 3, 0, -100])
@@ -148,4 +156,4 @@ try:
         if i < 0:
             gen.throw(ValueError, "vad value")
 except:
-    print "don't know yet how to print the message" # :(
+    print ("don't know yet how to print the message")  # don't know yet ...

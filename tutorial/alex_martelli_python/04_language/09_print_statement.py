@@ -1,6 +1,5 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-
 
 # pag. 61, The print Statement
 #          A print statement si denoted by the keyword "print" followed by zero
@@ -11,11 +10,16 @@
 #          "print" implicitly outputs a space between expressions, and
 #          implicitly outputs \n after the last expression, unless the last
 #          expression is followed by a trailing comma (,)
+#
+#          see also: 09_strings_and_regexp/03_string_formatting.py
 
 letter = 'c'
-print "give me a", letter, "..."  # prints: give me a c ...
+print ("give me a", letter, "...")  # prints: give me a c ...
 answer = 42
 print "the answer is:", answer  # prints: the answer is: 42
+
+print ("line begin", end=" ")   # replaces end line '\n' with " "
+print ("and line end")
 
 
 # https://pyformat.info/

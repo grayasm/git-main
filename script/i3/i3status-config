@@ -22,6 +22,7 @@ order += "disk /"
 # order += "disk /mnt/sdb1"
 order += "ethernet enp6s0"
 order += "tztime local"
+order += "battery 0"
 
 cpu_usage {
      format = "cpu:%usage %"
@@ -44,4 +45,9 @@ ethernet enp6s0 {
 tztime local {
      format = "%Y-%m-%d %H:%M:%S %Z"
      timezone = "Europe/Berlin"
+}
+
+battery 0 {
+     format = "%status %percentage %remaining"
+     path = "/sys/class/power_supply/BAT0/uevent"
 }

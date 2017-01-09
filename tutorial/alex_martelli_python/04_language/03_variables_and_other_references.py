@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 # pag. 46, Variables and Other References
@@ -43,27 +43,27 @@ class car():
 
 x = car()
 x.doors = 10
-print "car.doors= %d" % x.doors
+print ("car.doors= %d" % x.doors)
 
 # An indexing
 x = {'a': 1, 'b': 2}
 x['a'] = 200
-print x
+print (x)
 
 # A slicing
 x = (10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0)
 y = x[0:8:2]                            # for(i=0; i<8; i+=2)
 z = x[::3]                              # for(i=0; i<max; i+=3)
 w = x[0:2]                              # for(i=0; i<2; i++)
-print "slicing x[0:8:2]= ", y
-print "slicing x[::3]  = ", z
-print "slicing x[0:2]  = ", w
+print ("slicing x[0:8:2]= ", y)
+print ("slicing x[::3]  = ", z)
+print ("slicing x[0:2]  = ", w)
 
 
 # Augmented assignament
 x = 10
 x *= -8
-print "x = ", x  # -80
+print ("x = ", x)  # -80
 
 
 # *** del Statements ***

@@ -1,4 +1,4 @@
-#!/usr/bin/python -tt
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 # pag.224, The fileinput Module lets you loop over all the lines in a list
@@ -29,5 +29,5 @@ import fileinput
 
 f = fileinput.input(files=('99_spam.txt', '99_eggs.txt'))
 for line in f:
-    print "%s:%d:%s" % (f.filename(), f.filelineno(), line),
+    print ("%s:%d:%s" % (f.filename(), f.filelineno(), line), end="")
 f.close()

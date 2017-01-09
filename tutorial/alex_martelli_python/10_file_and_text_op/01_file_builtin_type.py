@@ -1,10 +1,18 @@
-#!/usr/bin/python -tt
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-# pag.216, file is a built-in type in Python and the single most common way
-#          for you Python programs to read or write data.
-#          Python reacts to any I/O error related to a file object by raising
-#          an instance fo built-in exception class IOError.
+# pag.216, File Objects
+#          file is a built-in type in Python and the single most common way
+#          for your Python programs to read or write data. With a file object,
+#          you can read and/or write data to a file as seen by the underlying
+#          operating system. Python reacts to any I/O error related to a file
+#          object by raising an instance of built-in exception class IOError.
+#          Errors that cause this exception include open failing to open or
+#          create a file, calls to a method on a file object to which that
+#          method doesn’t apply (e.g., calling write on a read-only file object
+#          or calling seek on a nonseekable file), and I/O errors diagnosed by
+#          a file object’s methods.
+
 
 # Create a File Object with open
 filename = '99_hello.txt'
@@ -13,7 +21,7 @@ bufsize = -1
 
 f = open(filename, mode, bufsize)
 for line in f:
-        print line,
+        print(line, end="")
 
 # mode possible values= 'r' 'w' 'a' 'r+' 'w+' 'a+'
 # for binary or text modes append= 'b' or 't'  ex= 'rb' 'rt'
@@ -23,13 +31,13 @@ for line in f:
 print('----------------------')
 with open('99_hello.txt') as f:
         for line in f:
-                print line,
+                print(line, end="")
 
 print('----------------------')
 f = open('99_hello.txt')
 try:
         for line in f:
-                print line,
+                print(line, end="")
 finally:
         f.close()
 
