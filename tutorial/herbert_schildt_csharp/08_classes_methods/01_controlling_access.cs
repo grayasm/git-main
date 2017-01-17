@@ -47,12 +47,9 @@ class AccessDemo
 
 
         // You cannot access alpha or beta like this:
-        ob.alpha = 10; // Wrong! alpha is private!
-        ob.beta = 9;
+        // ob.alpha = 10; // Wrong! alpha is private!
+        // ob.beta = 9;   // Wrong! beta is private!
 
-        // Wrong! beta is private!
-        //
-        //
         // It is OK to directly access gamma because it is public.
         ob.gamma = 99;
     }

@@ -10,12 +10,14 @@ class StaticError
 
     static int ValDivDenom()
     {
-        return Val/Denom; // won't compile!
+        // return Val / Denom; // won't compile!
+
+        return 1; // pass Makefile
     }
 }
 
 
-class AnotherStaticError\
+class AnotherStaticError
 {
     // A non-static method.
     void NonStaticMeth()
@@ -27,7 +29,7 @@ class AnotherStaticError\
        from within a static method. */
     static void staticMeth()
     {
-        NonStaticMeth(); // won't compile
+        // NonStaticMeth(); // won't compile
     }
 }
 

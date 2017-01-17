@@ -19,6 +19,6 @@ class OptionArgDemo
 
     static void Main()
     {
-        OptArgMeth(1); // Error! Ambiguous
+        // OptArgMeth(1); // Error! Ambiguous
     }
 }
