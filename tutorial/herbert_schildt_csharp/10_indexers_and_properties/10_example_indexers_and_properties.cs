@@ -1,10 +1,9 @@
 /*
     Create a specifiable range array class.
-    The RangeArray class allows indexing to begin at
-    some value other than 0. When you create a RangeArray,
-    you specify the beginning and ending index. Negative
-    indexes are also allowed. For example, you can create
-    arrays that index from -5 to 5, 1 to 10, or 50 to 56.
+    The RangeArray class allows indexing to begin at some value other than 0.
+    When you create a RangeArray, you specify the beginning and ending index.
+    Negative indexes are also allowed. For example, you can create arrays that
+    index from -5 to 5, 1 to 10, or 50 to 56.
 */
 
 using System;
