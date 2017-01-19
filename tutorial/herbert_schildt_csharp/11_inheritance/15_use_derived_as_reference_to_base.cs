@@ -85,7 +85,7 @@ class Triangle : TwoDShape
     }
 
     // Construct an isosceles triangle.
-    public Triangle(double x) : base(x)\
+    public Triangle(double x) : base(x)
     {
         Style = "isosceles";
     }
