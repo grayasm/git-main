@@ -150,7 +150,8 @@ all:  01_controlling_access \
 	mcs 37_static_ctors.cs
 
 38_static_classes: 38_static_classes.cs Makefile
-	mcs 38_static_classes.cs
+	#mcs 38_static_classes.cs
+	echo "38_static_classes.cs error"
 
 
 

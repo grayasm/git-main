@@ -50,6 +50,6 @@ class StaticClassDemo
         // The following attempt to create an instance of
         // NumericFn will cause an error.
 
-        // NumericFn ob = new NumericFn(); // Wrong!
+        NumericFn ob = new NumericFn(); // Wrong!
     }
 }

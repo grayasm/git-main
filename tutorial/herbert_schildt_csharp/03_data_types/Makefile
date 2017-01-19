@@ -41,7 +41,8 @@ all: 01_value_types \
 	mcs 07_decimal.cs
 
 08_char: 08_char.cs Makefile
-	mcs 08_char.cs
+	#mcs 08_char.cs
+	echo "08_char.cs error"
 
 09_bool: 09_bool.cs Makefile
 	mcs 09_bool.cs
@@ -68,7 +69,8 @@ all: 01_value_types \
 	mcs 16_scope_block.cs
 
 17_scope_illegal: 17_scope_illegal.cs Makefile
-	mcs 17_scope_illegal.cs
+	#mcs 17_scope_illegal.cs
+	echo "17_scope_illegal.cs error"
 
 18_type_conversion_assignament: 18_type_conversion_assignament.cs Makefile
 	mcs 18_type_conversion_assignament.cs
