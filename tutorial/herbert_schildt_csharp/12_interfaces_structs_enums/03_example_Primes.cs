@@ -6,6 +6,14 @@
 */
 
 
+public interface ISeries
+{
+    int GetNext();    // return next number in series
+    void Reset();     // restart
+    void SetStart(int x);  // set starting value
+}
+
+
 // Use ISeries to implement a series of prime numbers.
 class Primes : ISeries
 {
@@ -55,5 +63,29 @@ class Primes : ISeries
     {
         start = x;
         val = start;
+    }
+}
+
+
+class SeriesDemo
+{
+    static void Main()
+    {
+        Primes ob = new Primes();
+
+        for(int i=0; i < 5; i++)
+            Console.WriteLine("Next value is " + ob.GetNext());
+
+        Console.WriteLine("\nResetting");
+        ob.Reset();
+
+        for(int i=0; i < 5; i++)
+            Console.WriteLine("Next value is " + ob.GetNext());
+
+        Console.WriteLine("\nStarting at 100");
+        ob.SetStart(100);
+
+        for(int i=0; i < 5; i++)
+            Console.WriteLine("Next value is " + ob.GetNext());
     }
 }
