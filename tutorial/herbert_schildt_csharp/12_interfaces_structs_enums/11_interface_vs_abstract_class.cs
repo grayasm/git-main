@@ -9,3 +9,10 @@
     implementation details, then you will need to represent your concept
     in an abstract class.
 */
+
+using System;
+
+class Demo
+{
+    static void Main(){}
+}

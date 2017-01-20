@@ -8,3 +8,9 @@
     hidden. This will cause a warning message unless you specify the derived
     interface member with new.
 */
+using System;
+
+class Demo
+{
+    static void Main(){}
+}

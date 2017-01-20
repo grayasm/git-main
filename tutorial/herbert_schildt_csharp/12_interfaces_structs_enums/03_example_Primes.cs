@@ -5,6 +5,8 @@
     fundamentally different than the one provided by ByTwos.
 */
 
+using System;
+
 
 public interface ISeries
 {

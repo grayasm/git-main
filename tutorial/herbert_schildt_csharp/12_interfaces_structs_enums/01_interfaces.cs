@@ -53,6 +53,9 @@ class class-name : interface-name {
     and signature specified in the interface definition.
 */
 
+// Demonstrate the ISeries interface.
+using System;
+
 
 public interface ISeries
 {
@@ -92,9 +95,6 @@ class ByTwos : ISeries
     }
 }
 
-
-// Demonstrate the ISeries interface.
-using System;
 
 class SeriesDemo
 {

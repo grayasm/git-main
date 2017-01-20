@@ -19,7 +19,7 @@ class Transaction
     string accountNum;
     double amount;
 
-    ublic Transaction(string acc, double val)
+    public Transaction(string acc, double val)
     {
         // create packet header
         ph.PackNum = transacNum++;
