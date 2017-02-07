@@ -16,3 +16,15 @@
     among others. Attributes can be interrogated at runtime, and the attribute
     information obtained. Attributes use both runtime type identification and
     reflection.
+
+
+    Attributes
+
+    C# allows you to add declarative information to a program in the form
+    of an attribute. An attribute defines additional information (metadata)
+    that is associated with a class, structure, method, and so on.
+    For example, you might define an attribute that determines the type of
+    button that a class will display. Attributes are specified between square
+    brackets, preceding the item to which they apply. Thus, an attribute is
+    not a member of a class. Rather, an attribute specifies supplemental
+    information that is attached to an item.
