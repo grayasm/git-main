@@ -43,6 +43,6 @@ class AmbiguityDemo
         Gen<int, int> notOK = new Gen<int, int>();
 
         ok.Set(10); // is valid, type args differ
-        notOK.Set(10); // ambiguous, type args are the same!
+        //notOK.Set(10); // Error: ambiguous, type args are the same!
     }
 }

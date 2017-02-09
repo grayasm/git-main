@@ -7,6 +7,7 @@
     and so on.
 */
 
+using System;
 
 class NotFoundException : Exception
 {

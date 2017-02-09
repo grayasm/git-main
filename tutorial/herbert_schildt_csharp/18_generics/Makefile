@@ -37,7 +37,7 @@ all: 01_generics \
 04_constrained_types: 04_constrained_types.cs Makefile
 	mcs 04_constrained_types.cs
 
-05_phone_list_sample: 05_phone_list_sample.cs Makfile
+05_phone_list_sample: 05_phone_list_sample.cs Makefile
 	mcs 05_phone_list_sample.cs
 
 06_constrained_interface: 06_constrained_interface.cs Makefile
