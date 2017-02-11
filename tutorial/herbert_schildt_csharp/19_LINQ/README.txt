@@ -24,7 +24,24 @@
     join         let      on            orderby
     select       where
 
+
     Query begin clauses:
     --------------------
     from         group    join          let
     orderby      select   where
+
+
+    The Query Methods:
+    ------------------
+    The query methods are defined by System.Linq.Enumerable and are
+    implemented as extension methods that extend the functionality
+    of IEnumerable<T>. (Query methods are also defined by System.Linq.Queryable,
+    which extends the functionality of IQueryable<T>.
+
+    Query Keyword    Equivalent Query Method
+    -------------    -----------------------
+    select           Select(selector)
+    where            Where(predicate)
+    orderby          OrderBy(keySelector) or OrderByDescending(keySelector)
+    join             Join(inner, outerKeySelector, innerKeySelector, resultSelector)
+    group            GroupBy(keySelector)
