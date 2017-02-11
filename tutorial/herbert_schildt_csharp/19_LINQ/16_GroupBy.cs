@@ -15,7 +15,7 @@ class GroupByDemo
                               "hsNameG.tv", "hsNameH.net", "hsNameI.tv" };
 
         // Use query methods to group websites by top-level domain name.
-        var webAddrs = websites.Where(w => w.LastIndexOf('.') != –1).
+        var webAddrs = websites.Where(w => w.LastIndexOf('.') != -1).
                        GroupBy(x => x.Substring(x.LastIndexOf(".")));
 
 
