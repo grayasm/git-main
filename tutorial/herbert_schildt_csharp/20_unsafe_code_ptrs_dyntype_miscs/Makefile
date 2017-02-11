@@ -22,28 +22,28 @@ all: 01_unsafe \
 
 
 01_unsafe: 01_unsafe.cs Makefile
-	mcs 01_unsafe.cs
+	mcs -unsafe 01_unsafe.cs
 
 02_fixed: 02_fixed.cs Makefile
-	mcs 02_fixed.cs
+	mcs -unsafe 02_fixed.cs
 
 03_pointer_arithmetic: 03_pointer_arithmetic.cs Makefile
-	mcs 03_pointer_arithmetic.cs
+	mcs -unsafe 03_pointer_arithmetic.cs
 
 04_pointer_to_array: 04_pointer_to_array.cs Makefile
-	mcs 04_pointer_to_array.cs
+	mcs -unsafe 04_pointer_to_array.cs
 
 05_indexing_a_pointer: 05_indexing_a_pointer.cs Makefile
-	mcs 05_indexing_a_pointer.cs
+	mcs -unsafe 05_indexing_a_pointer.cs
 
 06_pointer_to_string: 06_pointer_to_string.cs Makefile
-	mcs 06_pointer_to_string.cs
+	mcs -unsafe 06_pointer_to_string.cs
 
 07_pointer_to_pointer: 07_pointer_to_pointer.cs Makefile
-	mcs 07_pointer_to_pointer.cs
+	mcs -unsafe 07_pointer_to_pointer.cs
 
 08_stackalloc: 08_stackalloc.cs Makefile
-	mcs 08_stackalloc.cs
+	mcs -unsafe 08_stackalloc.cs
 
 09_nullable_type: 09_nullable_type.cs Makefile
 	mcs 09_nullable_type.cs
@@ -86,7 +86,7 @@ all: 01_unsafe \
 
 
 
-clear:
+clean:
 	rm -v 01_unsafe.exe \
           02_fixed.exe \
           03_pointer_arithmetic.exe \

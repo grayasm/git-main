@@ -16,7 +16,7 @@ class DynRefDemo
             if(all[i].Name == "DivBy")
                 break;
 
-        0if(i == all.Length)
+        if(i == all.Length)
         {
             Console.WriteLine("DivBy not found in assembly.");
             return;
@@ -33,7 +33,7 @@ class DynRefDemo
 
         if(j == ci.Length)
         {
-            Console.WriteLine(“Default constructor not found.”);
+            Console.WriteLine("Default constructor not found.");
             return;
         }
 
