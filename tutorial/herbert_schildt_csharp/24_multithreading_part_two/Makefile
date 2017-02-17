@@ -66,19 +66,19 @@ all: 01_Task \
 
 
 clean:
-	rm -v 01_Task.cs
-          02_Task.Start.cs
-          03_Task.CurrentId.cs
-          04_Task.Wait.cs
-          05_Task_as_lambda.cs
-          06_Task.ContinueWith.cs
-          07_Task.Result.cs
-          08_CancellationToken.cs
-          09_Parallel.Invoke.cs
-          10_Parallel.Invoke_as_lambda.cs
-          11_Parallel.For.cs
-          12_sequential_and_parallel_time.cs
-          13_ParallelLoopResult.cs
-          14_ParallelLoopResult.cs
-          15_PLINQ_AsParallel.cs
-          16_PLINQ_AsParallel_WithCancellation.cs
+	rm -v 01_Task.exe \
+          02_Task.Start.exe \
+          03_Task.CurrentId.exe \
+          04_Task.Wait.exe \
+          05_Task_as_lambda.exe \
+          06_Task.ContinueWith.exe \
+          07_Task.Result.exe \
+          08_CancellationToken.exe \
+          09_Parallel.Invoke.exe \
+          10_Parallel.Invoke_as_lambda.exe \
+          11_Parallel.For.exe \
+          12_sequential_and_parallel_time.exe \
+          13_ParallelLoopResult.exe \
+          14_ParallelLoopResult.exe \
+          15_PLINQ_AsParallel.exe \
+          16_PLINQ_AsParallel_WithCancellation.exe
