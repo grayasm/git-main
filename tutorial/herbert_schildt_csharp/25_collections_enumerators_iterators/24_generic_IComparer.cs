@@ -1,12 +1,30 @@
-// Implement IComparable<T>.
+/*
+    Using a Generic IComparer<T>
+    The IComparer<T> interface is the generic version of IComparer.
+    It defines the generic version of Compare( ), shown here:
+
+int Compare(T x, T y)
+*/
+
+// Use IComparer<T>.
 using System;
 using System.Collections.Generic;
 
 
-// Implement the generic IComparable<T> interface.
-class Inventory : IComparable<Inventory>
+// Create an IComparer<T> for Inventory objects.
+class CompInv<T> : IComparer<T> where T : Inventory
 {
-    string name;
+    // Implement the IComparer<T> interface.
+    public int Compare(T x, T y)
+    {
+        return string.Compare(x.name, y.name, StringComparison.Ordinal);
+    }
+}
+
+
+class Inventory
+{
+    public string name;
     double cost;
     int onhand;
 
@@ -24,20 +42,14 @@ class Inventory : IComparable<Inventory>
                              cost,
                              onhand);
     }
-
-
-    // Implement the IComparable<T> interface.
-    public int CompareTo(Inventory other)
-    {
-        return string.Compare(name, other.name, StringComparison.Ordinal);
-    }
 }
 
 
-class GenericIComparableDemo
+class GenericIComparerDemo
 {
     static void Main()
     {
+        CompInv<Inventory> comp = new CompInv<Inventory>();
         List<Inventory> inv = new List<Inventory>();
 
         // Add elements to the list.
@@ -51,12 +63,14 @@ class GenericIComparableDemo
         {
             Console.WriteLine(" " + i);
         }
+
         Console.WriteLine();
 
+        // Sort the list using an IComparer.
+        inv.Sort(comp);
 
-        // Sort the list.
-        inv.Sort();
         Console.WriteLine("Inventory list after sorting:");
+
         foreach(Inventory i in inv)
         {
             Console.WriteLine(" " + i);

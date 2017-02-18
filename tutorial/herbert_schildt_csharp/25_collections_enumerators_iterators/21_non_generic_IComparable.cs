@@ -1,3 +1,18 @@
+/*
+    Implementing IComparable for Non-Generic Collections
+    If you want to sort objects that are stored in a non-generic
+    collection, then you will implement the non-generic version of
+    IComparable. This version defines only one method, CompareTo( ),
+    which determines how comparisons are performed.
+    The general form of CompareTo( ) is shown here:
+
+int CompareTo(object obj)
+
+    It compares the invoking object with other. To sort in ascending order
+    return zero for equal, a positive value if the invoking object is greater
+    than other and a negative value if smaller.
+*/
+
 // Implement IComparable.
 using System;
 using System.Collections;

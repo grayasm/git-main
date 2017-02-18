@@ -1,3 +1,16 @@
+/*
+    Using a Non-Generic IComparer
+    The non-generic IComparer defines only one method, Compare( ), which
+    is shown here:
+
+int Compare(object x, object y)
+
+     Compare( ) compares x to y. To sort in ascending order, your
+     implementation must return zero if the objects are equal, a
+     positive value if x is greater than y, and a negative value if
+     x is less than y.
+*/
+
 // Use IComparer.
 using System;
 using System.Collections;
