@@ -12,7 +12,7 @@ all: 01_access_a_website \
 	mcs 01_access_a_website.cs
 
 02_handle_network_exceptions: 02_handle_network_exceptions.cs Makefile
-	mcs 02_handle_network_exceptions
+	mcs 02_handle_network_exceptions.cs
 
 03_use_uri: 03_use_uri.cs Makefile
 	mcs 03_use_uri.cs
