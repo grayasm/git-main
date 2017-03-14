@@ -1,7 +1,7 @@
 all: 27_recap
 
-27_recap: main.cs
-	mcs -out:main.exe `pkg-config --libs gtk-sharp-3.0` main.cs
+27_recap: player.cs
+	mcs -out:player.exe `pkg-config --libs gtk-sharp-3.0` player.cs
 
 clean:
-	rm -v main.exe
+	rm -v player.exe
