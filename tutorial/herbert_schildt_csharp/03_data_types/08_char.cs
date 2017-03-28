@@ -9,6 +9,6 @@ class Example
 
         Console.WriteLine("This is ch: " + ch);
 
-        //ch = 88; // error, won't work
+        ch = 88; // error, won't work
     }
 }

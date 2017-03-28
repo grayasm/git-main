@@ -15,9 +15,9 @@ class Example
         {
            Console.WriteLine("This is count: " + count);
 
-           // int count; // illegal!!!
+           int count; // illegal!!!
            for(count = 0; count < 2; count++)
-                     Console.WriteLine("This program is in error!");
+               Console.WriteLine("This program is in error!");
         }
     }
 }

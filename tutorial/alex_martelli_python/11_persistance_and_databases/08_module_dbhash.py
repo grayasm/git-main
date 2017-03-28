@@ -9,3 +9,6 @@
 #    dumbdb    in  dbm.dumb
 #    gdbm      in  dbm.gnu
 #    whichdbm  in  dbm
+
+
+Deprecated since version 2.6: The dbhash module has been removed in Python 3.

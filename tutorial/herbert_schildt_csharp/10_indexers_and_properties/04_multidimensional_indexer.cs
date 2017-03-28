@@ -5,10 +5,10 @@ using System;
 
 class FailSoftArray2D
 {
-    int[,] a; // reference to underlying 2D array
-    int rows, cols; // dimensions
-    public int Length; // Length is public
-    public bool ErrFlag; // indicates outcome of last operation
+    int[,] a;             // reference to underlying 2D array
+    int rows, cols;       // dimensions
+    public int Length;    // Length is public
+    public bool ErrFlag;  // indicates outcome of last operation
 
     // Construct array given its dimensions.
     public FailSoftArray2D(int r, int c)
