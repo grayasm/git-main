@@ -1,4 +1,4 @@
 .
 
     To build and install the module run this command:
-    python module01_setup.py install
+    python x_setup.py install
