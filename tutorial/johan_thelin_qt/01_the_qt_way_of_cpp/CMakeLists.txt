@@ -11,3 +11,6 @@ target_link_libraries(02_dynamic_memory_without_qt Qt5::Core)
 
 add_executable(03_dynamic_memory_with_qt 03_dynamic_memory_with_qt.cpp)
 target_link_libraries(03_dynamic_memory_with_qt Qt5::Core)
+
+add_executable(04_using_qstring 04_using_qstring.cpp)
+target_link_libraries(04_using_qstring Qt5::Core)
