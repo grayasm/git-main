@@ -1,3 +1,17 @@
+/*
+  See MyClass.h for the explation for 'signals, slots and meta-objects'.
+
+  connect:  it asks the meta-object to add the slot to the signal's calling list.
+            if the arguments match, the connection is made.
+            when matching arguments, the match is checked only for the arguments
+            accepted by the slot. A slot that does not take any arguments
+            matches all signals. The arguments not accepted by the slot are
+            simply dropped by the signal-emitting code.
+
+  $ qmake-qt5 -project
+  $ qmake
+  $ make
+ */
 #include "MyClass.h"
 
 int main(int, char**)
