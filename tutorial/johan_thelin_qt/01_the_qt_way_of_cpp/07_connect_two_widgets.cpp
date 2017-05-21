@@ -2,7 +2,8 @@
   $ qmake-qt5 -project -nopwd $PWD/06_MyClass.h \
                               $PWD/07_connect_two_widgets.cpp \
                               -o project.pro
-  $ qmake-qt5
+
+  $ qmake-qt5 -makefile -o Makefile "QT+=widgets" project.pro
   $ make
   $ ./project
   $ git clean -f .
