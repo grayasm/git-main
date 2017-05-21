@@ -8,12 +8,12 @@
   QListIterator:        http://doc.qt.io/qt-5/qlistiterator.html
   QMutableListIterator  http://doc.qt.io/qt-5/qmutablelistiterator.html
 
-  qmake-qt5 -project -nopwd $PWD/09_stl_and_java_style_iterators.cpp \
-                        -o project.pro
-  qmake-qt5
-  make
-  ./project
-  git clean -f .
+  $ qmake-qt5 -project -nopwd $PWD/09_stl_and_java_style_iterators.cpp \
+                       -o project.pro
+  $ qmake-qt5
+  $ make
+  $ ./project
+  $ git clean -f .
 
  */
 
