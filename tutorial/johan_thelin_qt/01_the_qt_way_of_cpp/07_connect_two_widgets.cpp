@@ -3,7 +3,13 @@
                               $PWD/07_connect_two_widgets.cpp \
                               -o project.pro
 
+  At this point the linking will not work because it's missing libQt5Gui, etc.
+  Fix it by adding to project.pro this line:
+  QT += widgets
+
+  Alternatively, instead of simply running qmake-qt just type:
   $ qmake-qt5 -makefile -o Makefile "QT+=widgets" project.pro
+
   $ make
   $ ./project
   $ git clean -f .
