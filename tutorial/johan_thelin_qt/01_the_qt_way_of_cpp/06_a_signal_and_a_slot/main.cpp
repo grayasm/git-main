@@ -9,7 +9,7 @@
             simply dropped by the signal-emitting code.
 
   $ qmake-qt5 -project
-  $ qmake
+  $ qmake-qt5
   $ make
  */
 #include "MyClass.h"
