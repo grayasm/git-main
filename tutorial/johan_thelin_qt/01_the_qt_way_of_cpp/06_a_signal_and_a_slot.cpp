@@ -1,5 +1,5 @@
 /*
-  See MyClass.h for the explation for 'signals, slots and meta-objects'.
+  See .h for the explation for 'signals, slots and meta-objects'.
 
   connect:  it asks the meta-object to add the slot to the signal's calling list.
             if the arguments match, the connection is made.
@@ -8,11 +8,15 @@
             matches all signals. The arguments not accepted by the slot are
             simply dropped by the signal-emitting code.
 
-  $ qmake-qt5 -project
+  $ qmake-qt5 -project -nopwd  $PWD/06_MyClass.h \
+                               $PWD/06_a_signal_and_a_slot.cpp \
+                               -o project.pro
   $ qmake-qt5
   $ make
+  $ ./project
+  $ git clean -f .
  */
-#include "MyClass.h"
+#include "06_MyClass.h"
 
 int main(int, char**)
 {

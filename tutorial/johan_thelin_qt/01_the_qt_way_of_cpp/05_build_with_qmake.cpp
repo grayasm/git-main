@@ -3,17 +3,14 @@
   different compilers. It even creates the project definition file for you if
   you want it to.
 
-  Create .pro file with:
-  $ qmake-qt5 -project
+  doc: http://doc.qt.io/qt-4.8/qmake-running.html#projectmode
 
-  Then generate the Makefile with:
+  Build and run the project with:
+
+  $ qmake-qt5 -project -nopwd $PWD/05_build_with_qmake.cpp -o project.pro
   $ qmake-qt5
-
-  To build and run the program type:
   $ make
-  $ ./05_build_with_qmake
-
-  Clean with:
+  $ ./project
   $ git clean -f .
  */
 
