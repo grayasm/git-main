@@ -18,14 +18,24 @@
  */
 
 
-#include <QtDebug>
 #include <QStack>
 #include <QString>
+#include <QtDebug>
 
 
 int main(int, char**)
 {
 	QStack<QString> stack;
 
-	stack.
+	stack.push("foo");
+	stack.push("bar");
+	stack.push("baz");
+
+	QString result;
+	while(!stack.isEmpty())
+		result += stack.pop();
+
+	qDebug() << "result: " << result;
+
+	return 0;
 }
