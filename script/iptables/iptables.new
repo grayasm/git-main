@@ -20,9 +20,12 @@ iptables -A INPUT -p tcp --dport 40000:40099 -j ACCEPT
 # Open secure shell (sshd) port for all
 iptables -A INPUT -p tcp --dport 22 -j ACCEPT
 iptables -A INPUT -p udp --dport 22 -j ACCEPT
-# Open transmission-qt port for
+# Open transmission-qt port for all
 iptables -A INPUT -p tcp --dport 51413 -j ACCEPT
 iptables -A INPUT -p udp --dport 51413 -j ACCEPT
+# Open bitcoin-qt port for all
+iptables -A INPUT -p tcp --dport 8333 -j ACCEPT
+iptables -A INPUT -p udp --dport 8333 -j ACCEPT
 # Allow everybody from LAN to connect
 iptables -A INPUT -p tcp -s 192.168.0.1/24 -j ACCEPT
 iptables -A INPUT -p udp -s 192.168.0.1/24 -j ACCEPT
@@ -72,6 +75,9 @@ ip6tables -A INPUT -p udp --dport 22 -j ACCEPT
 # Open transmission-qt port for
 ip6tables -A INPUT -p tcp --dport 51413 -j ACCEPT
 ip6tables -A INPUT -p udp --dport 51413 -j ACCEPT
+# Open bitcoin-qt port for all
+ip6tables -A INPUT -p tcp --dport 8333 -j ACCEPT
+ip6tables -A INPUT -p udp --dport 8333 -j ACCEPT
 # tv-maxe static ports
 ip6tables -A INPUT -p tcp --dport 10320:10321 -j ACCEPT
 
