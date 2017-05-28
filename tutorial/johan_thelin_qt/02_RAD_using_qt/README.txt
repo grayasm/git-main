@@ -59,3 +59,21 @@
 
     All other slots and signals must be connected explicitly.
     See in listdialog.cpp, the ListDialog::ListDialog code for an example.
+
+6. CMake
+--------
+    Although not shown in the book, CMake supports Qt, providing:
+    CMAKE_AUTOMOC
+    CMAKE_AUTOUIC
+    find_package(Qt5Widgets), etc.
+
+    See the CMakeLists.txt example and various web-sites like:
+    http://doc.qt.io/qt-5/cmake-manual.html
+    https://cmake.org/cmake/help/v3.6/manual/cmake-qt.7.html
+
+    which qmake
+    which cmake3
+    cd 02_RAD_using_qt
+    mkdir ../build && cd ../build
+    cmake3 -DCMAKE_BUILD_TYPE=Debug -G "Unix Makefiles" ../02_RAD_using_qt
+    make
