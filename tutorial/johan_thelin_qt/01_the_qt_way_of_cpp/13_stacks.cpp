@@ -10,8 +10,11 @@
   stack. Before trying to pop the stack, you can check whether there is
   something there to get by using the isEmpty method.
 
-  $ qmake-qt5 -project -nopwd $PWD/13_stacks.cpp -o project.pro
-  $ qmake-qt5
+  $ which qmake
+/usr/lib64/qt5/bin/qmake
+
+  $ qmake -project -nopwd $PWD/13_stacks.cpp -o project.pro
+  $ qmake
   $ make
   $ ./project
   $ git clean -f .

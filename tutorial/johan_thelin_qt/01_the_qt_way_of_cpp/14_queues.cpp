@@ -6,8 +6,11 @@
   the current item. Just as for the stack, there is a method called isEmpty
   that indicates whether there is anything enqueued.
 
-  $ qmake-qt5 -project -nopwd $PWD/14_queues.cpp -o project.pro
-  $ qmake-qt5
+  $ which qmake
+/usr/lib64/qt5/bin/qmake
+
+  $ qmake -project -nopwd $PWD/14_queues.cpp -o project.pro
+  $ qmake
   $ make
   $ ./project
   $ git clean -f .

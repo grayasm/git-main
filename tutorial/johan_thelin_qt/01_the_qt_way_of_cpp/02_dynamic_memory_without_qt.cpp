@@ -10,6 +10,8 @@
   pass the parent as an argument to the constructor as the first default
   argument to avoid having to type setParent for each instance created from the
   class.
+
+  See CMakeLists.txt for building this source.
  */
 
 #include <iostream>

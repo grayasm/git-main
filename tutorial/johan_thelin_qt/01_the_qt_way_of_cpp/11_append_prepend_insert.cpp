@@ -3,12 +3,14 @@
   << operator used appends new data to the end of the list. It is possible to
   prepend data (add at the start of the list) or insert data in the middle.
 
-  $ qmake-qt5 -project -nopwd $PWD/11_append_prepend_insert.cpp -o project.pro
-  $ qmake-qt5
+  $ which qmake
+/usr/lib64/qt5/bin/qmake
+
+  $ qmake -project -nopwd $PWD/11_append_prepend_insert.cpp -o project.pro
+  $ qmake
   $ make
   $ ./project
   $ git clean -f .
-
  */
 
 

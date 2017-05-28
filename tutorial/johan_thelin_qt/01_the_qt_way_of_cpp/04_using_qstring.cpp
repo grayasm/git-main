@@ -9,6 +9,8 @@
   deviations from the STL standard when moving between platforms and compilers —
   you can even develop on platforms that do not have implementations of the
   STL (mobile?)
+
+  See CMakeLists.txt for building this source.
  */
 
 #include <QString>

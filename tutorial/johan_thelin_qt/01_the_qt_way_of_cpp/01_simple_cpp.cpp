@@ -1,3 +1,7 @@
+/*
+  See CMakeLists.txt for building this source.
+ */
+
 #include <iostream>
 #include <string>
 

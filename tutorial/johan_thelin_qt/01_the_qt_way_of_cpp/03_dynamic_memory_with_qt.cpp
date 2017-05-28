@@ -7,6 +7,8 @@
   object performing some sort of task—for example, a QApplication object, or
   (in the case of a dialog box or a window) the this pointer of the window
   class.
+
+  See CMakeLists.txt for building this source.
  */
 
 

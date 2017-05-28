@@ -6,8 +6,11 @@
   class. A set is a hash without the value, so there must be a qHash function
   and a == operator for the keys. Also, the order of the keys is arbitrary.
 
-  $ qmake-qt5 -project -nopwd $PWD/17_sets.cpp -o project.pro
-  $ qmake-qt5
+  $ which qmake
+/usr/lib64/qt5/bin/qmake
+
+  $ qmake -project -nopwd $PWD/17_sets.cpp -o project.pro
+  $ qmake
   $ make
   $ ./project
   $ git clean -f .

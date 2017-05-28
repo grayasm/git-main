@@ -8,10 +8,13 @@
             matches all signals. The arguments not accepted by the slot are
             simply dropped by the signal-emitting code.
 
-  $ qmake-qt5 -project -nopwd  $PWD/06_MyClass.h \
-                               $PWD/06_a_signal_and_a_slot.cpp \
-                               -o project.pro
-  $ qmake-qt5
+  $ which qmake
+/usr/lib64/qt5/bin/qmake
+
+  $ qmake -project -nopwd  $PWD/06_MyClass.h \
+                           $PWD/06_a_signal_and_a_slot.cpp \
+                           -o project.pro
+  $ qmake
   $ make
   $ ./project
   $ git clean -f .

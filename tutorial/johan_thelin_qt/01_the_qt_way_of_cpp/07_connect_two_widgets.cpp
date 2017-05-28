@@ -1,14 +1,16 @@
 /*
-  $ qmake-qt5 -project -nopwd $PWD/06_MyClass.h \
-                              $PWD/07_connect_two_widgets.cpp \
-                              -o project.pro
+  $ which qmake
+/usr/lib64/qt5/bin/qmake
+
+  $ qmake -project -nopwd $PWD/06_MyClass.h \
+                          $PWD/07_connect_two_widgets.cpp \
+                          -o project.pro
 
   At this point the linking will not work because it's missing libQt5Gui
   from linking. It looks like the only solution is to use the following
-  command instead of qmake-qt5:
+  command:
 
-  $ qmake-qt5 -makefile -o Makefile "QT+=widgets" project.pro
-
+  $ qmake -makefile -o Makefile "QT+=widgets" project.pro
   $ make
   $ ./project
   $ git clean -f .

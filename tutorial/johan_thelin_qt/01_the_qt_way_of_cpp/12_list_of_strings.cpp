@@ -3,8 +3,11 @@
   The string list class inherits QList<QString> and can be treated as such.
   However, it also has some string-specific methods that make it useful.
 
-  $ qmake-qt5 -project -nopwd $PWD/12_list_of_strings.cpp -o project.pro
-  $ qmake-qt5
+  $ which qmake
+/usr/lib64/qt5/bin/qmake
+
+  $ qmake -project -nopwd $PWD/12_list_of_strings.cpp -o project.pro
+  $ qmake
   $ make
   $ ./project
   $ git clean -f .

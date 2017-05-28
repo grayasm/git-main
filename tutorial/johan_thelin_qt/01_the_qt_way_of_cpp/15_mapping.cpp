@@ -2,12 +2,16 @@
   QMap
   QMap class enables you to keep items in key-value pairs.
 
-  $ qmake-qt5 -project -nopwd $PWD/15_mapping.cpp -o project.pro
-  $ qmake-qt5
+  $ which qmake
+/usr/lib64/qt5/bin/qmake
+
+  $ qmake -project -nopwd $PWD/15_mapping.cpp -o project.pro
+  $ qmake
   $ make
   $ ./project
   $ git clean -f .
 */
+
 
 #include <QMap>
 #include <QString>

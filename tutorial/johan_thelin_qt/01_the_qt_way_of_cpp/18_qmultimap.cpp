@@ -9,8 +9,11 @@
   associated with the given key. Before requesting a list, it is possible to
   see how many items are associated to a given key using the count method.
 
-  $ qmake-qt5 -project -nopwd $PWD/18_qmultimap.cpp -o project.pro
-  $ qmake-qt5
+  $ which qmake
+/usr/lib64/qt5/bin/qmake
+
+  $ qmake -project -nopwd $PWD/18_qmultimap.cpp -o project.pro
+  $ qmake
   $ make
   $ ./project
   $ git clean -f .

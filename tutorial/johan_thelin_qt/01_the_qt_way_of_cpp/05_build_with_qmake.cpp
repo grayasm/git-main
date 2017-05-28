@@ -7,8 +7,11 @@
 
   Build and run the project with:
 
-  $ qmake-qt5 -project -nopwd $PWD/05_build_with_qmake.cpp -o project.pro
-  $ qmake-qt5
+  $ which qmake
+/usr/lib64/qt5/bin/qmake
+
+  $ qmake -project -nopwd $PWD/05_build_with_qmake.cpp -o project.pro
+  $ qmake
   $ make
   $ ./project
   $ git clean -f .

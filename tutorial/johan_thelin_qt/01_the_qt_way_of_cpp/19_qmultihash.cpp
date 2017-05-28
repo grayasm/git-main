@@ -6,8 +6,11 @@
   the find and iterate method fails—the keys appear in an arbitrary order, but
   are still in order.
 
-  $ qmake-qt5 -project -nopwd $PWD/19_qmultihash.cpp -o project.pro
-  $ qmake-qt5
+  $ which qmake
+/usr/lib64/qt5/bin/qmake
+
+  $ qmake -project -nopwd $PWD/19_qmultihash.cpp -o project.pro
+  $ qmake
   $ make
   $ ./project
   $ git clean -f .

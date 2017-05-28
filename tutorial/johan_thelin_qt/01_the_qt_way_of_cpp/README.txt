@@ -20,13 +20,27 @@ INSTALL:
     # /usr/include/qt5/QtWidgets/<headers, QApplication,QLabel,QLineEdit,etc>
     # /usr/include/qt5/QtXml/<headers, QXmlReader,etc>
 
+    yum provides "*/bin/qmake"
+    yum provides "*/bin/moc"
+    yum provides "*/bin/uic"
+
+qt5-qtbase-devel-5.6.1-10.el7.x86_64 : Development files for qt5-qtbase
+Repo        : base
+Matched from:
+Filename    : /usr/lib64/qt5/bin/uic
+
+     export PATH=/usr/lib64/qt5/bin:$PATH
+
 PROJECT:
 --------------------------------------------------------------------------------
     # http://doc.qt.io/qt-5/qmake-manual.html
 
-    qt5-qmake -project -nopwd $PWD/file1 $PWD/file2 ... $PWD/filen \
-              -o project.pro
-    qt5-qmake
+    which qmake
+/usr/lib64/qt5/bin/qmake
+
+    qmake -project -nopwd $PWD/file1 $PWD/file2 ... $PWD/filen \
+          -o project.pro
+    qmake
     make
     ./project
     git clean -f .

@@ -14,8 +14,11 @@
   By using your knowledge of the keys that might appear, you can use the hash
   function to increase performance.
 
-  $ qmake-qt5 -project -nopwd $PWD/16_hashing.cpp -o project.pro
-  $ qmake-qt5
+  $ which qmake
+/usr/lib64/qt5/bin/qmake
+
+  $ qmake -project -nopwd $PWD/16_hashing.cpp -o project.pro
+  $ qmake
   $ make
   $ ./project
   $ git clean -f .

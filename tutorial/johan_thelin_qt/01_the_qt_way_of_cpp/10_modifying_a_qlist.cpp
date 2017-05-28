@@ -1,9 +1,11 @@
 /*
   Modifying lists using iterators.
 
+  $ which qmake
+/usr/lib64/qt5/bin/qmake
 
-  $ qmake-qt5 -project -nopwd $PWD/10_modifying_a_qlist.cpp -o project.pro
-  $ qmake-qt5
+  $ qmake -project -nopwd $PWD/10_modifying_a_qlist.cpp -o project.pro
+  $ qmake
   $ make
   $ ./project
   $ git clean -f .

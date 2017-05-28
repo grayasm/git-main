@@ -1,8 +1,11 @@
 /*
   Qt Core C++ Classes: http://doc.qt.io/qt-5/qtcore-module.html
 
-  $ qmake-qt5 -project -nopwd $PWD/08_qlist.cpp -o project.pro
-  $ qmake-qt5
+  $ which qmake
+/usr/lib64/qt5/bin/qmake
+
+  $ qmake -project -nopwd $PWD/08_qlist.cpp -o project.pro
+  $ qmake
   $ make
   $ ./project
   $ git clean -f .
