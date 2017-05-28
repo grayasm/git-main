@@ -57,6 +57,9 @@ alias svnru='svn status | grep ^\? | cut -c9- | xargs -d \\n rm -rv'
 alias svnrevd='svn revert --recursive .'
 alias svnrevf='svn revert'
 
+# Python
+alias python='/usr/bin/python3'
+alias pip='/usr/bin/python3-pip'
 
 
 # Inside a tiling window manager
@@ -89,13 +92,15 @@ alias xwininfo='xwininfo'   #window info
 
 # alias rdpoffice="/opt/rdesktop-1.8.3/bin/rdesktop -g 95% -u Mihai 10.1.1.235"
 
+# Qt5
+export PATH=/usr/lib64/qt5/bin:$PATH
 
 # ====== gcc-5.4.0 ======
-export PATH=/opt/gcc-5.4.0/bin:$PATH
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/gcc-5.4.0/lib64:/usr/local/lib64:/usr/lib64:/lib64
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/gcc-5.4.0/lib:/usr/local/lib:/usr/lib:/lib
-export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/local/lib64/pkgconfig:/usr/lib64/pkgconfig:/lib64/pkgconfig
-export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/local/lib/pkgconfig:/usr/lib/pkgconfig:/lib/pkgconfig
+# export PATH=/opt/gcc-5.4.0/bin:$PATH
+# export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/gcc-5.4.0/lib64:/usr/local/lib64:/usr/lib64:/lib64
+# export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/gcc-5.4.0/lib:/usr/local/lib:/usr/lib:/lib
+# export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/local/lib64/pkgconfig:/usr/lib64/pkgconfig:/lib64/pkgconfig
+# export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/local/lib/pkgconfig:/usr/lib/pkgconfig:/lib/pkgconfig
 
 
 # export DISTCC_HOSTS='localhost 192.168.0.15'
