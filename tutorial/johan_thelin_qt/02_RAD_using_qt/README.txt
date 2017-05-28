@@ -46,6 +46,7 @@
     The designer is integrated into qtcreator.
     Double click on editdialog.ui (or any .ui) file will open the designer.
     If the .ui file is empty it needs first to be created (see 3).
+
     Really helpful are 'Vertical Layout', 'Horizontal Layout', 'Form Layout'
     'Vertical Spacer' and obviously all the widgets (Push Button, List Widget).
     Upper toolbar contains 'Edit Widgets' 'Edit Signals/Slots' 'Edit Tab Order'
