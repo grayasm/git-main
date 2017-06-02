@@ -20,7 +20,8 @@ if [ $WGET_IS_AVAILABLE -ne 0 ]; then
 fi
 
 # need pip
-pip --version 2>&1 >/dev/null
+pip=/usr/bin/python3-pip
+$pip --version 2>&1 >/dev/null
 PIP_IS_AVAILABLE=$?
 if [ $PIP_IS_AVAILABLE -ne 0 ]; then
     echo "install pip"
@@ -28,28 +29,28 @@ if [ $PIP_IS_AVAILABLE -ne 0 ]; then
 fi
 
 # check pip packages required for Python IDE
-pip list | grep 'rope'
+$pip list | grep 'rope'
 ROPE_IS_AVAILABLE=$?
 if [ $ROPE_IS_AVAILABLE -ne 0 ]; then
     echo "run command: pip install rope"
     exit
 fi
 
-pip list | grep 'jedi'
+$pip list | grep 'jedi'
 JEDI_IS_AVAILABLE=$?
 if [ $JEDI_IS_AVAILABLE -ne 0 ]; then
     echo "run command: pip install jedi"
     exit
 fi
 
-pip list | grep 'flake8'
+$pip list | grep 'flake8'
 FLAKE8_IS_AVAILABLE=$?
 if [ $FLAKE8_IS_AVAILABLE -ne 0 ]; then
     echo "run command: pip install flake8"
     exit
 fi
 
-pip list | grep 'importmagic'
+$pip list | grep 'importmagic'
 IMPORTMAGIC_IS_AVAILABLE=$?
 if [ $IMPORTMAGIC_IS_AVAILABLE -ne 0 ]; then
     echo "run command: pip install importmagic"
