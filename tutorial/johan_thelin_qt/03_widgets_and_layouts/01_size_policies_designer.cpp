@@ -1,3 +1,8 @@
+/*
+  The size policies are applied directly in the Qt ui designer.
+ */
+
+
 #include "01_designerdlg.h"
 #include <QtWidgets/QApplication>
 
