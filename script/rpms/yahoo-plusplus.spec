@@ -46,9 +46,7 @@ make install DESTDIR=$RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,root)
-%doc README.md
-%license LICENSE
-
+/usr/lib64/purple-2/libyahoo-plusplus.so
 
 
 %changelog
