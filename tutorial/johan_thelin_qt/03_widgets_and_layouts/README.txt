@@ -1,13 +1,22 @@
 ********************************************************************************
                         Chapter 3. Widgets and Layouts
 ********************************************************************************
+1. Qt5 classes hierarchy
+------------------------
 
-1. Setup the environment (already explained in cap.2)
+   http://doc.qt.io/qt-5/hierarchy.html
+
+
+2. Setup the environment (already explained in cap.2)
 -----------------------------------------------------
     export PATH=/usr/lib64/qt5/bin:$PATH
+    which qmake; which moc; which uic;
+/usr/lib64/qt5/bin/qmake
+/usr/lib64/qt5/bin/moc
+/usr/lib64/qt5/bin/uic
 
 
-2. Create a project
+3. Create a project
 -------------------
     touch main.cpp
     qmake -project $PWD/main.cpp -o project.pro
@@ -21,25 +30,7 @@
     git clean -f .
 
 
-3. Size Policies set by Qt Designer
------------------------------------
-    qmake -project -nopwd $PWD/01_size_policies_designer.cpp \
-                          $PWD/01_designerdlg.cpp \
-                          $PWD/01_designerdlg.h \
-                          $PWD/01_designerdlg.ui \
-                          -o designer.pro
-    qmake -makefile -o Makefile "QT+=widgets" designer.pro
-    make
-
-
-4. Size Policies set in the code directly
------------------------------------------
-    qmake -project -nopwd $PWD/02_size_policies_coding.cpp -o project.pro
-    qmake -makefile -o Makefile "QT+=widgets" project.pro
-    make
-
-
-5. Layouts
+4. Layouts
 ----------
     Vertical layout, where all widgets are stacked vertically.
     Horizontal layout, where all widges are stacked horizontally.
