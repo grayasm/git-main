@@ -31,3 +31,16 @@
     qmake -makefile -o Makefile "QT+=widgets" designer.pro
     make
 
+
+4. Size Policies set in the code directly
+-----------------------------------------
+    qmake -project -nopwd $PWD/02_size_policies_coding.cpp -o project.pro
+    qmake -makefile -o Makefile "QT+=widgets" project.pro
+    make
+
+
+5. Layouts
+----------
+    Vertical layout, where all widgets are stacked vertically.
+    Horizontal layout, where all widges are stacked horizontally.
+    Grid layout, where one widget can span one or more cells in table-like grid.
