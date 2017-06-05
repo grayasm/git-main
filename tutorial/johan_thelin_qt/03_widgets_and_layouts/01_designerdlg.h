@@ -1,5 +1,5 @@
-#ifndef _DESIGNERDLG_H
-#define _DESIGNERDLG_H
+#ifndef __01_DESIGNERDLG_H__
+#define __01_DESIGNERDLG_H__
 
 #include <QDialog>
 
@@ -19,4 +19,4 @@ private:
     Ui::DesignerDlg *ui;
 };
 
-#endif // _DESIGNERDLG_H
+#endif // __01_DESIGNERDLG_H__
