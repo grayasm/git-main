@@ -11,7 +11,8 @@
   If you do not want to split them visually, you can use a QButtonGroup.
 
   This sample creates confusion because radio buttons are not separated visually
-  into QGroupBox(es), but using a minimal approach with QButtonGroup.
+  into QGroupBox(es). Normally each QButtonGroup of QRadioButtons(s) should have
+  its own QGroupBox.
 
 
 
