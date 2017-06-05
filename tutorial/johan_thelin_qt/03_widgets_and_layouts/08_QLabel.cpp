@@ -1,5 +1,5 @@
 /*
-  QLabel mnemonic (keyboard shortcut) is ALT+A : setText("Your &Age")
+  QLabel mnemonic (keyboard shortcut) is ALT+A : setText("Your &Age:")
   QLabel associated widget to receive the focus: setBuddy(ageEdit)
 
 
