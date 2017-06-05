@@ -39,10 +39,10 @@ int main(int argc, char** argv)
     group->addButton(bar);
     group->addButton(baz);
 
-    QVBoxLayout layout(&dlg);
-    layout.addWidget(foo);
-    layout.addWidget(bar);
-    layout.addWidget(baz);
+    QVBoxLayout* layout = new QVBoxLayout(&box);
+    layout->addWidget(foo);
+    layout->addWidget(bar);
+    layout->addWidget(baz);
 
     dlg.show();
     return app.exec();
