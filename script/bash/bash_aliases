@@ -57,12 +57,15 @@ alias svnru='svn status | grep ^\? | cut -c9- | xargs -d \\n rm -rv'
 alias svnrevd='svn revert --recursive .'
 alias svnrevf='svn revert'
 
+# Python
+alias python='/usr/bin/python3'
+alias pip='/usr/bin/python3-pip'
 
 
 # Inside a tiling window manager
-alias jdraw='java -jar /opt/jdraw-1.1.5/jdraw_v1.1.5.jar'
-alias netbeans='/opt/netbeans-8.0.2/bin/netbeans'
-alias xfe='xfe-xfe'
+# alias jdraw='java -jar /opt/jdraw-1.1.5/jdraw_v1.1.5.jar'
+# alias netbeans='/opt/netbeans-8.0.2/bin/netbeans'
+# alias xfe='xfe-xfe'
 # alias se='/opt/slickedit/bin/vs'
 # alias calc='galculator'
 # alias edit='emacs'
@@ -79,30 +82,50 @@ alias xfe='xfe-xfe'
 
 
 # ssh client
-alias sshsrv='ssh -X -l mihai -i $HOME/.ssh/id_rsa_home_key $SERVER'
-alias office='ssh -i $HOME/.ssh/id_dsa_office -l mihai -L 13389:10.1.1.235:3389 $OFFICE'
+# alias sshsrv='ssh -X -l mihai -i $HOME/.ssh/id_rsa_home_key $SERVER'
+# alias office='ssh -i $HOME/.ssh/id_dsa_office -l mihai -L 13389:10.1.1.235:3389 $OFFICE'
+alias sshocean='ssh -l root -i $HOME/.ssh/id_rsa_digitalocean $DIGITALOCEAN'
 
 
 # X11
 alias xwininfo='xwininfo'   #window info
 
+# alias rdpoffice="/opt/rdesktop-1.8.3/bin/rdesktop -g 95% -u Mihai 10.1.1.235"
 
-# export DISTCC_HOSTS='localhost 192.168.0.15'
-# export CC="/usr/bin/distcc  /usr/bin/gcc"
-# export CXX="/usr/bin/distcc  /usr/bin/g++"
-export PATH=/opt/cmake-3.4/bin:$PATH
+# Qt5
+export PATH=/usr/lib64/qt5/bin:$PATH
 
 
-# must install everything as a rpm package
-# which remainds me that I need to solve the buildrpm issue sooner.
+# ----- using gcc-4.9.2 -----
+# export MYPATH=/opt/gcc-4.9.2/bin:/opt/cmake-3.4/bin
+# export MYLIB64=/opt/gcc-4.9.2/lib64
+# export MYLIB=/opt/gcc-4.9.2/lib
+# export PATH=$MYPATH:$PATH
+# export LD_LIBRARY_PATH=.:$MYLIB64:/usr/local/lib64:/usr/lib64:/lib64
+# export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$MYLIB:/usr/local/lib:/usr/lib:/lib
 
-#export PATH=/opt/make-4.0/bin:$PATH
-#export LD_LIBRARY_PATH=/usr/local/lib64:/usr/lib64:/lib64:$HOME/.local/lib64:$LD_LIBRARY_PATH
-#export LD_LIBRARY_PATH=/opt/cegui-0.8.6/lib:$LD_LIBRARY_PATH
-#export LD_LIBRARY_PATH=/usr/local/lib:/usr/lib:/lib:$HOME/.local/lib:$LD_LIBRARY_PATH
-#export PKG_CONFIG_PATH=/usr/local/lib64/pkgconfig:/usr/lib64/pkgconfig:$PKG_CONFIG_PATH
-#export PKG_CONFIG_PATH=$HOME/.local/lib64/pkgconfig:$PKG_CONFIG_PATH
-#export PKG_CONFIG_PATH=/opt/cegui-0.8.6/lib/pkgconfig:$PKG_CONFIG_PATH
-#export PKG_CONFIG_PATH=/opt/cegui-0.8.6/lib64/pkgconfig:$PKG_CONFIG_PATH
+# ----- using gcc-4.9.3 -----
+# export MYPATH=/opt/gcc-4.9.3/bin:/opt/cmake-3.4/bin
+# export MYLIB64=/opt/gcc-4.9.3/lib64
+# export MYLIB=/opt/gcc-4.9.3/lib
+# export PATH=$MYPATH:$PATH
+# export LD_LIBRARY_PATH=.:$MYLIB64:/usr/local/lib64:/usr/lib64:/lib64
+# export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$MYLIB:/usr/local/lib:/usr/lib:/lib
 
-alias rdpoffice="/opt/rdesktop-1.8.3/bin/rdesktop -g 95% -u Mihai 10.1.1.235"
+# ====== gcc-5.4.0 ======
+# export PATH=/opt/gcc-5.4.0/bin:$PATH
+# export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/gcc-5.4.0/lib64:/usr/local/lib64:/usr/lib64:/lib64
+# export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/gcc-5.4.0/lib:/usr/local/lib:/usr/lib:/lib
+# export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/local/lib64/pkgconfig:/usr/lib64/pkgconfig:/lib64/pkgconfig
+# export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/local/lib/pkgconfig:/usr/lib/pkgconfig:/lib/pkgconfig
+
+
+
+# ----- using distcc -----
+# export DISTCC_HOSTS='localhost/3  10.1.1.89/12'
+# export CC="distcc gcc"
+# export CXX="distcc g++"
+
+# ----- using NO-distcc -----
+# export CC='gcc'
+# export CXX='g++'
