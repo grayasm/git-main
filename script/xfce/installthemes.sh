@@ -27,3 +27,7 @@ THEMES="clearlooks-phenix-common clearlooks-phenix-gtk2-theme \
 
 echo "Installing Xfce themes for CentOS"
 yum install $THEMES
+
+
+cd /tmp/
+wget https://dl.opendesktop.org/api/files/download/id/1460764485/108920-R2Carbon.tar.gz
