@@ -1,0 +1,35 @@
+[bitcoin]
+name=Bitcoin for Enterprise Linux - $basearch
+baseurl=https://linux.ringingliberty.com/bitcoin/el$releasever/$basearch
+failovermethod=priority
+enabled=1
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-bitcoin
+priority=50
+
+
+[bitcoin-source]
+name=Bitcoin for Enterprise Linux - $basearch - Source
+baseurl=https://linux.ringingliberty.com/bitcoin/el$releasever/SRPMS
+failovermethod=priority
+enabled=0
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-bitcoin
+gpgcheck=1
+
+
+[bitcoin-test]
+name=Bitcoin for Enterprise Linux - Testing - $basearch
+baseurl=https://linux.ringingliberty.com/bitcoin-test/el$releasever/$basearch
+failovermethod=priority
+enabled=0
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-bitcoin
+
+
+[bitcoin-test-source]
+name=Bitcoin for Enterprise Linux - Testing - $basearch - Source
+baseurl=https://linux.ringingliberty.com/bitcoin-test/el$releasever/SRPMS
+failovermethod=priority
+enabled=0
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-bitcoin
+gpgcheck=1

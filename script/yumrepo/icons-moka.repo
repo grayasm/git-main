@@ -1,0 +1,7 @@
+[icons-moka]
+name=Moka Project (Fedora_24)
+type=rpm-md
+baseurl=http://download.opensuse.org/repositories/home:/snwh:/moka/Fedora_24/
+gpgcheck=1
+gpgkey=http://download.opensuse.org/repositories/home:/snwh:/moka/Fedora_24/repodata/repomd.xml.key
+enabled=1
