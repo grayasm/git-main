@@ -9,6 +9,7 @@ fi
 # cd /tmp
 # exit
 
+
 # Aurora R2Carbon
 wget https://dl.opendesktop.org/api/files/download/id/1460764485/108920-R2Carbon.tar.gz
 tar zxvf 108920-R2Carbon.tar.gz
@@ -192,5 +193,81 @@ chcon -Rv -u system_u -r object_r -t usr_t /usr/share/themes/Elementary-v3
 chmod -Rv 755 /usr/share/themes/Elementary-v3
 rm 174774-Elementary-v3.zip
 
-# continue with new window decorations from here
-# https://www.xfce-look.org/browse/cat/138/page/6/ord/latest/
+
+# blarge-color Window decorations for XFCE/XFWM4 (hdpmi - large)
+wget https://dl.opendesktop.org/api/files/download/id/1461767559/175878-blarge-color.tar.gz
+tar zxvf 175878-blarge-color.tar.gz
+rm -rfv /usr/share/themes/blarge-color
+mv  blarge-color  /usr/share/themes/
+chown -Rv root:root /usr/share/themes/blarge-color
+chcon -Rv -u system_u -r object_r -t usr_t /usr/share/themes/blarge-color
+rm 175878-blarge-color.tar.gz
+
+
+
+# dust-shiki-numix Window decorations for XFCE/XFWM4
+wget https://dl.opendesktop.org/api/files/download/id/1461053452/175816-dust-shiki-numix.tar.gz
+tar zxvf 175816-dust-shiki-numix.tar.gz
+rm -rfv /usr/share/themes/dust-shiki-numix
+mv dust-shiki-numix  /usr/share/themes/
+chown -Rv root:root /usr/share/themes/dust-shiki-numix
+chcon -Rv -u system_u -r object_r -t usr_t /usr/share/themes/dust-shiki-numix
+rm 175816-dust-shiki-numix.tar.gz
+
+
+# Bluecurve window decorations for XFCE/XFWM4
+https://dl.opendesktop.org/api/files/download/id/1460766007/174775-Bluecurve-XWM4.tar.gz
+tar zxvf 174775-Bluecurve-XWM4.tar.gz
+mv Bluecurve  Bluecurve-hamish
+rm -rfv /usr/share/themes/Bluecurve-hamish
+mv Bluecurve-hamish /usr/share/themes/
+chown -Rv root:root /usr/share/themes/Bluecurve-hamish
+chcon -Rv -u system_u -r object_r -t usr_t /usr/share/themes/Bluecurve-hamish
+rm 174775-Bluecurve-XWM4.tar.gz
+
+
+# Clearlooks-Phenix-Faded window decorations for XFCE/XFWM4
+wget https://dl.opendesktop.org/api/files/download/id/1460766438/174540-Clearlooks-Phenix-Faded.tar.gz
+tar zxvf 174540-Clearlooks-Phenix-Faded.tar.gz
+rm -rfv /usr/share/themes/Clearlooks-Phenix-Faded
+mv Clearlooks-Phenix-Faded  /usr/share/themes/
+chown -Rv root:root /usr/share/themes/Clearlooks-Phenix-Faded
+chcon -Rv -u system_u -r object_r -t usr_t /usr/share/themes/Clearlooks-Phenix-Faded
+rm 174540-Clearlooks-Phenix-Faded.tar.gz
+
+
+# Greybird alternative (full bottom) window decorations for XFCE/XFWM4
+wget https://dl.opendesktop.org/api/files/download/id/1460765969/171328-Greybird-alt-fb-2015-09-09.zip
+unzip 171328-Greybird-alt-fb-2015-09-09.zip
+rm -rfv Greybird-alt-fb/.git
+rm -rfv /usr/share/themes/Greybird-alt-fb
+mv Greybird-alt-fb  /usr/share/themes/
+chown -Rv root:root /usr/share/themes/Greybird-alt-fb
+chcon -Rv -u system_u -r object_r -t usr_t /usr/share/themes/Greybird-alt-fb
+rm 171328-Greybird-alt-fb-2015-09-09.zip
+
+
+# Greybird alternative window decorations for XFCE/XFWM4
+wget https://dl.opendesktop.org/api/files/download/id/1460766263/168845-Greybird-alt-2015-09-09.zip
+unzip 168845-Greybird-alt-2015-09-09.zip
+rm -rfv /usr/share/themes/Greybird-alt
+mv Greybird-alt /usr/share/themes/
+chown -Rv root:root /usr/share/themes/Greybird-alt
+chcon -Rv -u system_u -r object_r -t usr_t /usr/share/themes/Greybird-alt
+rm 168845-Greybird-alt-2015-09-09.zip
+
+
+
+# Sabia window decorations for XFCE/XFWM4
+wget https://dl.opendesktop.org/api/files/download/id/1460765964/170898-Sabia.zip
+unzip 170898-Sabia.zip
+rm -rfv /usr/share/Sabia\ *
+mv Sabia\ *  /usr/share/themes/
+chown -Rv root:root /usr/share/themes/Sabia\ *
+chcon -Rv -u system_u -r object_r -t usr_t /usr/share/themes/Sabia\ *
+rm 170898-Sabia.zip
+
+
+
+# continue from top of page :
+# https://www.xfce-look.org/browse/cat/138/page/17/ord/latest/
