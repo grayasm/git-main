@@ -20,10 +20,16 @@ if [ ! -f /etc/yum.repos.d/epel.repo ]; then
 	exit
 fi
 
+if [ -f /etc/yum.repos.d/icons-moka.repo ]; then
+	echo "must install icons-moka repository first"
+	exit
+fi
+
 THEMES="clearlooks-phenix-common clearlooks-phenix-gtk2-theme \
         clearlooks-phenix-xfwm4-theme dmz-cursor-themes \
         xfwm4-themes bluecurve-gtk-themes hicolor-icon-theme \
-        mate-icon-theme-faenza zukitwo-gtk2-theme zukitwo-xfwm4-theme"
+        mate-icon-theme-faenza zukitwo-gtk2-theme zukitwo-xfwm4-theme \
+        moka-icon-theme"
 
 echo "Installing Xfce themes for CentOS"
 yum install $THEMES
