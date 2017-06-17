@@ -15,6 +15,7 @@
 
 
 #include <QtWidgets/QtWidgets>
+#include <iostream>
 
 
 int main(int argc, char** argv)
@@ -32,6 +33,32 @@ int main(int argc, char** argv)
     QMessageBox::critical(NULL,
                           QObject::tr("title"),
                           QObject::tr("A critical message."));
+
+    int ret = QMessageBox::question(NULL,
+                                    QObject::tr("title"),
+                                    QObject::tr("Answer the question."),
+                                    QMessageBox::Yes |
+                                    QMessageBox::No |
+                                    QMessageBox::Cancel |
+                                    QMessageBox::Ignore);
+    switch(ret)
+    {
+    case QMessageBox::Yes:
+	    std::cout << "QMessageBox::Yes\n";
+	    break;
+
+    case QMessageBox::No:
+	    std::cout << "QMessageBox::No\n";
+	    break;
+
+    case QMessageBox::Cancel:
+	    std::cout << "QMessageBox::Cancel\n";
+	    break;
+
+    case QMessageBox::Ignore:
+	    std::cout << "QMessageBox::Ignore\n";
+	    break;
+    };
 
     // no need for the message loop, just return to system
     // return app.exec();
