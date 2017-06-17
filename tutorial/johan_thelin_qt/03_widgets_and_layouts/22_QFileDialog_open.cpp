@@ -99,10 +99,3 @@ void Simple::openx_clicked()
     for(QStringList::iterator it = filenames.begin(); it != filenames.end(); it++)
         m_edit->append(*it);
 }
-
-
-
-
-
-
-
