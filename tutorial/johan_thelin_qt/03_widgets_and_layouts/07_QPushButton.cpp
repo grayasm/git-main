@@ -3,8 +3,9 @@
 
 
   Build:
-  qmake -project -nopwd $PWD/07_QPushButton.cpp $PWD/07_QPushButton.h \
-        -o 07_project.pro
+  qmake -project -nopwd $PWD/07_QPushButton.cpp   \
+                        $PWD/07_QPushButton.h     \
+                        -o 07_project.pro
   qmake -makefile -o Makefile "QT+=widgets" 07_project.pro
   make
   ./07_project
