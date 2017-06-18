@@ -10,9 +10,10 @@
   To assign a validator QLineEdit and QComboBox have setValidator(QValidator*).
 
   Build:
-  qmake -project -nopwd $PWD/29_QValidator.cpp -o project.pro
-  qmake -makefile -o Makefile "QT+=widgets" project.pro
+  qmake -project -nopwd $PWD/29_QValidator.cpp -o 29_project.pro
+  qmake -makefile -o Makefile "QT+=widgets" 29_project.pro
   make
+  ./29_project
   git clean -f .
  */
 

@@ -3,10 +3,10 @@
 
 
   Build:
-  qmake -project -nopwd $PWD/16_QTimeEdit.cpp -o project.pro
-  qmake -makefile -o Makefile "QT+=widgets" project.pro
+  qmake -project -nopwd $PWD/16_QTimeEdit.cpp -o 16_project.pro
+  qmake -makefile -o Makefile "QT+=widgets" 16_project.pro
   make
-  ./project
+  ./16_project
   git clean -f .
  */
 

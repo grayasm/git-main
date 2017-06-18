@@ -6,9 +6,11 @@
   for values and texts, and to pick an item from a given list.
 
   Build:
-  qmake -project -nopwd $PWD/26_QInputDialog.cpp -o project.pro
-  qmake -makefile -o Makefile "QT+=widgets" project.pro
+  qmake -project -nopwd $PWD/26_QInputDialog.cpp -o 26_project.pro
+  qmake -makefile -o Makefile "QT+=widgets" 26_project.pro
   make
+  ./26_project
+  git clean -f .
  */
 
 

@@ -2,11 +2,12 @@
   This sample does not contain a .ui file or a form.
   The size policy is applied directly from code.
 
-  Build instructions:
-  qmake -project -nopwd $PWD/02_size_policies_coding.cpp -o project.pro
-  qmake -makefile -o Makefile "QT+=widgets" project.pro
+
+  Build:
+  qmake -project -nopwd $PWD/02_size_policies_coding.cpp -o 02_project.pro
+  qmake -makefile -o Makefile "QT+=widgets" 02_project.pro
   make
-  ./project
+  ./02_project
   git clean -f .
  */
 

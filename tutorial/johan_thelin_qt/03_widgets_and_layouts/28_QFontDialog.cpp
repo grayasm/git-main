@@ -11,10 +11,10 @@
   widget, and the last argument is a window title for the dialog.
 
   Build:
-  qmake -project -nopwd $PWD/28_QFontDialog.cpp -o project.pro
-  qmake -makefile -o Makefile "QT+=widgets" project.pro
+  qmake -project -nopwd $PWD/28_QFontDialog.cpp -o 28_project.pro
+  qmake -makefile -o Makefile "QT+=widgets" 28_project.pro
   make
-  ./project
+  ./28_project
   git clean -f .
  */
 

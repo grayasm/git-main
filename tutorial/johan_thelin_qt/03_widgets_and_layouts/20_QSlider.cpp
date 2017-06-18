@@ -3,10 +3,10 @@
 
 
   Build:
-  qmake -project -nopwd $PWD/20_QSlider.cpp -o project.pro
-  qmake -makefile -o Makefile "QT+=widgets" project.pro
+  qmake -project -nopwd $PWD/20_QSlider.cpp -o 20_project.pro
+  qmake -makefile -o Makefile "QT+=widgets" 20_project.pro
   make
-  ./project
+  ./20_project
   git clean -f .
  */
 

@@ -13,10 +13,10 @@
   In this situation a regular expression can be your savior.
 
   Build:
-  qmake -project -nopwd $PWD/30_QRegExp.cpp -o project.pro
-  qmake -makefile -o Makefile "QT+=widgets" project.pro
+  qmake -project -nopwd $PWD/30_QRegExp.cpp -o 30_project.pro
+  qmake -makefile -o Makefile "QT+=widgets" 30_project.pro
   make
-  ./project
+  ./30_project
   git clean -f .
  */
 

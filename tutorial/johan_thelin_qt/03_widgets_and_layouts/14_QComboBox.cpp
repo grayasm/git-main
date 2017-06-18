@@ -10,10 +10,10 @@
 
 
   Build:
-  qmake -project -nopwd $PWD/14_QComboBox.cpp -o project.pro
-  qmake -makefile -o Makefile "QT+=widgets" project.pro
+  qmake -project -nopwd $PWD/14_QComboBox.cpp -o 14_project.pro
+  qmake -makefile -o Makefile "QT+=widgets" 14_project.pro
   make
-  ./project
+  ./14_project
   git clean -f .
  */
 

@@ -7,10 +7,10 @@
   has cancelled the dialog.
 
   Build:
-  qmake -project -nopwd $PWD/27_QColorDialog.cpp -o project.pro
-  qmake -makefile -o Makefile "QT+=widgets" project.pro
+  qmake -project -nopwd $PWD/27_QColorDialog.cpp -o 27_project.pro
+  qmake -makefile -o Makefile "QT+=widgets" 27_project.pro
   make
-  ./project
+  ./27_project
   git clean -f .
  */
 

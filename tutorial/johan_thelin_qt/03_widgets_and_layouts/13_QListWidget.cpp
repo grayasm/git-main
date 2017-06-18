@@ -15,11 +15,12 @@
 
 
   Build:
-  qmake -project -nopwd $PWD/13_QListWidget.h $PWD/13_QListWidget.cpp \
-                 -o project.pro
-  qmake -makefile -o Makefile "QT+=widgets" project.pro
+  qmake -project -nopwd $PWD/13_QListWidget.h    \
+                        $PWD/13_QListWidget.cpp  \
+                        -o 13_project.pro
+  qmake -makefile -o Makefile "QT+=widgets" 13_project.pro
   make
-  ./project
+  ./13_project
   git clean -f .
  */
 

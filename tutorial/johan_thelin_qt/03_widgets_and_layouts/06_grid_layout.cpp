@@ -3,11 +3,12 @@
   Grid layout and widgets placement is done in the code.
   In a grid layout one widget can occupy one or more cells in a table-like grid.
 
-  Build instructions:
-  qmake -project -nopwd $PWD/06_grid_layout.cpp -o project.pro
-  qmake -makefile -o Makefile "QT+=widgets" project.pro
+
+  Build:
+  qmake -project -nopwd $PWD/06_grid_layout.cpp -o 06_project.pro
+  qmake -makefile -o Makefile "QT+=widgets" 06_project.pro
   make
-  ./project
+  ./06_project
   git clean -f .
  */
 

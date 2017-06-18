@@ -12,11 +12,13 @@
 
   Build:
   qmake -project -nopwd $PWD/21_QProgressBar.cpp \
-                        $PWD/21_Form.cpp $PWD/21_Form.h $PWD/21_Form.ui \
-                        -o project.pro
-  qmake -makefile -o Makefile "QT+=widgets" project.pro
+                        $PWD/21_Form.cpp         \
+                        $PWD/21_Form.h           \
+                        $PWD/21_Form.ui          \
+                        -o 21_project.pro
+  qmake -makefile -o Makefile "QT+=widgets" 21_project.pro
   make
-  ./project
+  ./21_project
   git clean -f .
  */
 

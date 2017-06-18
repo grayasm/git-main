@@ -7,11 +7,13 @@
 
   Build:
   qmake -project -nopwd $PWD/09_QLineEdit.cpp \
-                        $PWD/09_Form.cpp $PWD/09_Form.h $PWD/09_Form.ui \
-                        -o project.pro
-  qmake -makefile -o Makefile "QT+=widgets" project.pro
+                        $PWD/09_Form.cpp      \
+                        $PWD/09_Form.h        \
+                        $PWD/09_Form.ui       \
+                        -o 09_project.pro
+  qmake -makefile -o Makefile "QT+=widgets" 09_project.pro
   make
-  ./project
+  ./09_project
   git clean -f .
  */
 

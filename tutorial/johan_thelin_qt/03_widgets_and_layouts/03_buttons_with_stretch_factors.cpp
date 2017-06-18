@@ -2,11 +2,13 @@
   This sample does not contain a .ui file or a form.
   The size policy is applied directly from code.
 
-  Build instructions:
-  qmake -project -nopwd $PWD/03_buttons_with_stretch_factors.cpp -o project.pro
-  qmake -makefile -o Makefile "QT+=widgets" project.pro
+
+  Build:
+  qmake -project -nopwd $PWD/03_buttons_with_stretch_factors.cpp \
+                 -o 03_project.pro
+  qmake -makefile -o Makefile "QT+=widgets" 03_project.pro
   make
-  ./project
+  ./03_project
   git clean -f .
  */
 

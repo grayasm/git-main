@@ -11,10 +11,10 @@
 
 
   Build:
-  qmake -project -nopwd $PWD/12_QGroupBox.cpp -o project.pro
-  qmake -makefile -o Makefile "QT+=widgets" project.pro
+  qmake -project -nopwd $PWD/12_QGroupBox.cpp -o 12_project.pro
+  qmake -makefile -o Makefile "QT+=widgets" 12_project.pro
   make
-  ./project
+  ./12_project
   git clean -f .
  */
 

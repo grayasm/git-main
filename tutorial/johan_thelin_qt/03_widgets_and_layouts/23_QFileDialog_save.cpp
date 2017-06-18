@@ -9,9 +9,11 @@
 
   qmake -project -nopwd $PWD/23_QFileDialog_save.h \
                         $PWD/23_QFileDialog_save.cpp \
-                        -o project.pro
-  qmake -makefile -o Makefile "QT+=widgets" project.pro
+                        -o 23_project.pro
+  qmake -makefile -o Makefile "QT+=widgets" 23_project.pro
   make
+  ./23_project
+  git clean -f .
  */
 
 

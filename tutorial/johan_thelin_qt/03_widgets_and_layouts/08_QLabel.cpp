@@ -3,11 +3,11 @@
   QLabel associated widget to receive the focus: setBuddy(ageEdit)
 
 
-  Build with:
-  qmake -project -nopwd $PWD/08_QLabel.cpp -o project.pro
-  qmake -makefile -o Makefile "QT+=widgets" project.pro
+  Build:
+  qmake -project -nopwd $PWD/08_QLabel.cpp -o 08_project.pro
+  qmake -makefile -o Makefile "QT+=widgets" 08_project.pro
   make
-  ./project
+  ./08_project
   git clean -f .
  */
 

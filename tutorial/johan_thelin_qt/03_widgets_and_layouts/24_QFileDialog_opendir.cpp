@@ -11,11 +11,13 @@
   extensions when working with directories.
 
   Build:
-  qmake -project -nopwd $PWD/24_QFileDialog_opendir.h \
-                        $PWD/24_QFileDialog_opendir.cpp \
-                        -o project.pro
-  qmake -makefile -o Makefile "QT+=widgets" project.pro
+  qmake -project -nopwd $PWD/24_QFileDialog_opendir.h    \
+                        $PWD/24_QFileDialog_opendir.cpp  \
+                        -o 24_project.pro
+  qmake -makefile -o Makefile "QT+=widgets" 24_project.pro
   make
+  ./24_project
+  git clean -f .
  */
 
 

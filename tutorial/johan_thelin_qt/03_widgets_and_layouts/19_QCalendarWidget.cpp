@@ -3,10 +3,10 @@
 
 
   Build:
-  qmake -project -nopwd $PWD/19_QCalendarWidget.cpp -o project.pro
-  qmake -makefile -o Makefile "QT+=widgets" project.pro
+  qmake -project -nopwd $PWD/19_QCalendarWidget.cpp -o 19_project.pro
+  qmake -makefile -o Makefile "QT+=widgets" 19_project.pro
   make
-  ./project
+  ./19_project
   git clean -f .
  */
 

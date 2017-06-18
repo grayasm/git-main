@@ -5,8 +5,9 @@
 
 
   Build:
-  qmake -project -nopwd $PWD/10_QCheckBox.h $PWD/10_QCheckBox.cpp \
-                 -o 10_QCheckBox.pro
+  qmake -project -nopwd $PWD/10_QCheckBox.h     \
+                        $PWD/10_QCheckBox.cpp   \
+                        -o 10_QCheckBox.pro
   qmake -makefile -o Makefile "QT+=widgets" 10_QCheckBox.pro
   make
   ./10_QCheckBox

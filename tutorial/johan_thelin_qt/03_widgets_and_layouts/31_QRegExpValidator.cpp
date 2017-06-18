@@ -7,10 +7,10 @@
   to validate input.
 
   Build:
-  qmake -project -nopwd $PWD/31_QRegExpValidator.cpp -o project.pro
-  qmake -makefile -o Makefile "QT+=widgets" project.pro
+  qmake -project -nopwd $PWD/31_QRegExpValidator.cpp -o 31_project.pro
+  qmake -makefile -o Makefile "QT+=widgets" 31_project.pro
   make
-  ./project
+  ./31_project
   git clean -f .
  */
 

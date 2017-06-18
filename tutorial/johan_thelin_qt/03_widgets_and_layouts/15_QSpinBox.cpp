@@ -3,10 +3,10 @@
 
 
   Build:
-  qmake -project -nopwd $PWD/15_QSpinBox.cpp -o project.pro
-  qmake -makefile -o Makefile "QT+=widgets" project.pro
+  qmake -project -nopwd $PWD/15_QSpinBox.cpp -o 15_project.pro
+  qmake -makefile -o Makefile "QT+=widgets" 15_project.pro
   make
-  ./project
+  ./15_project
   git clean -f .
  */
 

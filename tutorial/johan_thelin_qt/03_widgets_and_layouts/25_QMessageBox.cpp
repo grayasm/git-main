@@ -8,9 +8,11 @@
   the system sound.
 
   Build:
-  qmake -project -nopwd $PWD/25_QMessageBox.cpp -o project.pro
-  qmake -makefile -o Makefile "QT+=widgets" project.pro
+  qmake -project -nopwd $PWD/25_QMessageBox.cpp -o 25_project.pro
+  qmake -makefile -o Makefile "QT+=widgets" 25_project.pro
   make
+  ./25_project
+  git clean -f .
  */
 
 

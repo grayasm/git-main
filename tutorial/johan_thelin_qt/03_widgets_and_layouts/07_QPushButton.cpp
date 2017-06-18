@@ -1,14 +1,16 @@
 /*
   Sample dialog with 2 QPushButton(s) connected to 2 slots.
 
-  Build with:
+
+  Build:
   qmake -project -nopwd $PWD/07_QPushButton.cpp $PWD/07_QPushButton.h \
-        -o project.pro
-  qmake -makefile -o Makefile "QT+=widgets" project.pro
+        -o 07_project.pro
+  qmake -makefile -o Makefile "QT+=widgets" 07_project.pro
   make
-  ./project
+  ./07_project
   git clean -f .
  */
+
 
 #include <QtWidgets/QtWidgets>
 #include <07_QPushButton.h>

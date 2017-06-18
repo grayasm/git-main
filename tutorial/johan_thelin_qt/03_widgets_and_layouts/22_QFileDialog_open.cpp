@@ -16,12 +16,17 @@
   in other way aborted the dialog, the returned string is a null string.
   By using the isNull method, you can see whether the user picked a file.
 
+
+  Build:
   qmake -project -nopwd $PWD/22_QFileDialog_open.cpp \
                         $PWD/22_QFileDialog_open.h \
-                        -o project.pro
-  qmake -makefile -o Makefile "QT+=widgets" project.pro
+                        -o 22_project.pro
+  qmake -makefile -o Makefile "QT+=widgets" 22_project.pro
   make
+  ./22_project
+  git clean -f .
  */
+
 
 #include <QtWidgets/QtWidgets>
 #include "22_QFileDialog_open.h"

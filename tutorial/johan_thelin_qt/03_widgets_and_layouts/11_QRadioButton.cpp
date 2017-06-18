@@ -16,11 +16,11 @@
 
 
 
-  Build with:
-  qmake -project -nopwd $PWD/11_QRadioButton.cpp -o project.pro
-  qmake -makefile -o Makefile "QT+=widgets" project.pro
+  Build:
+  qmake -project -nopwd $PWD/11_QRadioButton.cpp -o 11_project.pro
+  qmake -makefile -o Makefile "QT+=widgets" 11_project.pro
   make
-  ./project
+  ./11_project
   git clean -f .
  */
 
