@@ -1,13 +1,22 @@
 ********************************************************************************
                         Chapter 3. Widgets and Layouts
 ********************************************************************************
-1. Qt5 classes hierarchy
-------------------------
+1. Build samples using qmake
+----------------------------
+   Open each c++ source file and read the Build instructions.
 
+2. Build samples using CMake
+----------------------------
+    cd ~/Code/git-main/tutorial/johan_thelin_qt/03_widgets_and_layouts
+    mkdir ../03_build && cd ../03_build
+    cmake3 -DCMAKE_BUILD_TYPE=Debug -G "Unix Makefiles" ../03_widgets_and_layouts
+    make
+
+3. Qt5 classes hierarchy
+------------------------
    http://doc.qt.io/qt-5/hierarchy.html
 
-
-2. Qt Widget classes
+4. Qt Widget classes
 --------------------
 Qt5 widgets classes     : http://doc.qt.io/qt-5/qtwidgets-module.html
 
