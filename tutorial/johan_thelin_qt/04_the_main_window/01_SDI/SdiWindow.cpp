@@ -19,9 +19,7 @@ int main(int argc, char** argv)
 {
     QApplication app(argc, argv);
 
-    // I don't know if ptr is leaked or not.
-    // I will probably find out later.
-    SdiWindow* ptr = new SdiWindow(0);
+    SdiWindow* ptr = new SdiWindow(NULL);
     ptr->show();
 
     return app.exec();
@@ -80,7 +78,7 @@ void SdiWindow::fileNew()
 {
     // I don't know if ptr is leaked or not!!
     // I will probably find out later.
-    SdiWindow* ptr = new SdiWindow();
+    SdiWindow* ptr = new SdiWindow(NULL);
     ptr->show();
 }
 

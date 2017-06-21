@@ -1,7 +1,3 @@
-#ifndef __SdiWindow_h__
-#define __SdiWindow_h__
-
-
 #include <QtWidgets/QtWidgets>
 
 class SdiWindow : public QMainWindow
@@ -38,7 +34,3 @@ private:
     QAction*    m_actionAbout;
     QAction*    m_actionAboutQt;
 };
-
-
-
-#endif // __SdiWindow_h__
