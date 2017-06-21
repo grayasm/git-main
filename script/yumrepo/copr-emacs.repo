@@ -1,0 +1,11 @@
+[copr-emacs]
+name=Copr repo for emacs owned by shassard
+baseurl=https://copr-be.cloud.fedoraproject.org/results/shassard/emacs/epel-7-$basearch/
+type=rpm-md
+skip_if_unavailable=True
+gpgcheck=1
+gpgkey=https://copr-be.cloud.fedoraproject.org/results/shassard/emacs/pubkey.gpg
+repo_gpgcheck=0
+enabled=1
+enabled_metadata=1
+priority=9

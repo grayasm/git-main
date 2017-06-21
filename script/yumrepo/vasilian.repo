@@ -1,0 +1,8 @@
+[vasilian]
+name=Vasilian packages for CentOS7
+baseurl=ftp://138.68.68.112/CentOS/$releasever/extras/$basearch/
+enabled=1
+gpgcheck=1
+gpgkey=ftp://138.68.68.112/RPM-GPG-KEY-vasilian
+protect=0
+priority=90

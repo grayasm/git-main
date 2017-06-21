@@ -1,0 +1,9 @@
+[fedora19]
+name=Fedora19 repository as the base for CentOS7
+baseurl=http://archives.fedoraproject.org/pub/archive/fedora/linux/releases/19/Everything/$basearch/os/
+#mirrorlist=
+enabled=0
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-19-primary
+protect=0
+priority=90

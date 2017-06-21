@@ -95,6 +95,23 @@ alias xwininfo='xwininfo'   #window info
 # Qt5
 export PATH=/usr/lib64/qt5/bin:$PATH
 
+
+# ----- using gcc-4.9.2 -----
+# export MYPATH=/opt/gcc-4.9.2/bin:/opt/cmake-3.4/bin
+# export MYLIB64=/opt/gcc-4.9.2/lib64
+# export MYLIB=/opt/gcc-4.9.2/lib
+# export PATH=$MYPATH:$PATH
+# export LD_LIBRARY_PATH=.:$MYLIB64:/usr/local/lib64:/usr/lib64:/lib64
+# export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$MYLIB:/usr/local/lib:/usr/lib:/lib
+
+# ----- using gcc-4.9.3 -----
+# export MYPATH=/opt/gcc-4.9.3/bin:/opt/cmake-3.4/bin
+# export MYLIB64=/opt/gcc-4.9.3/lib64
+# export MYLIB=/opt/gcc-4.9.3/lib
+# export PATH=$MYPATH:$PATH
+# export LD_LIBRARY_PATH=.:$MYLIB64:/usr/local/lib64:/usr/lib64:/lib64
+# export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$MYLIB:/usr/local/lib:/usr/lib:/lib
+
 # ====== gcc-5.4.0 ======
 # export PATH=/opt/gcc-5.4.0/bin:$PATH
 # export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/gcc-5.4.0/lib64:/usr/local/lib64:/usr/lib64:/lib64
@@ -103,6 +120,12 @@ export PATH=/usr/lib64/qt5/bin:$PATH
 # export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/local/lib/pkgconfig:/usr/lib/pkgconfig:/lib/pkgconfig
 
 
-# export DISTCC_HOSTS='localhost 192.168.0.15'
-# export CC="distcc  gcc"
+
+# ----- using distcc -----
+# export DISTCC_HOSTS='localhost/3  10.1.1.89/12'
+# export CC="distcc gcc"
 # export CXX="distcc g++"
+
+# ----- using NO-distcc -----
+# export CC='gcc'
+# export CXX='g++'
