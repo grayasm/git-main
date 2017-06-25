@@ -1,29 +1,4 @@
-/*
-  Build:
-  qmake -project -nopwd $PWD/SdiWindow.cpp   \
-                        $PWD/SdiWindow.h     \
-                        $PWD/images.qrc      \
-                        -o 01_project.pro
-  qmake -makefile -o Makefile "QT += widgets" 01_project.pro
-  make
-  ./01_project
-  git clean -f .
- */
-
-
-#include <QtWidgets/QtWidgets>
 #include "SdiWindow.h"
-
-
-int main(int argc, char** argv)
-{
-    QApplication app(argc, argv);
-
-    SdiWindow* ptr = new SdiWindow(NULL);
-    ptr->show();
-
-    return app.exec();
-}
 
 
 SdiWindow::SdiWindow(QWidget *parent) : QMainWindow(parent)
@@ -169,38 +144,3 @@ void SdiWindow::createToolbars()
     toolbar->addAction(m_actionCopy);
     toolbar->addAction(m_actionPaste);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
