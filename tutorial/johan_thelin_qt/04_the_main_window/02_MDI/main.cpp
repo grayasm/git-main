@@ -23,7 +23,7 @@ int main(int argc, char** argv)
     QApplication app(argc, argv);
 
     MdiWindow win;
-    MdiWindow.show();
+    win.show();
 
     return app.exec();
 }

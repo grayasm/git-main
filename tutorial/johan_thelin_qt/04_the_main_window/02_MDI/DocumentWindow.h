@@ -2,10 +2,21 @@
 #define __DocumentWindow_h__
 
 
-class DocumentWindow
+#include <QtWidgets/QTextEdit>
+
+
+class DocumentWindow : public QTextEdit
 {
+    Q_OBJECT
+
 public:
-    DocumentWindow(){}
+    DocumentWindow(QWidget* parent = 0);
+
+protected:
+    void closeEvent(QCloseEvent* event);
+
+private:
+    bool isSafeToClose();
 };
 
 #endif // __DocumentWindow_h__
