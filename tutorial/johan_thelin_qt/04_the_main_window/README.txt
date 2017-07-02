@@ -191,11 +191,22 @@ Header                  : #include <QSignalMapper>
 qmake                   : QT += core
 Inherits                : QObject
 Code                    :
-                          --current class is derived from QWidget--
-                          // private class member:
-                          QSignalMapper* signalMapper;
-                          
-TODO: create a simple example for QSignalMapper;
+
+Please read the 4 samples 01_signal_trivial.cpp to 04_signal_mapper.cpp
+Because it is not possible to connect correctly something like this:
+connect(sender, SIGNAL(clicked()), receiver, SLOT(digitClicked(int)))
+the class QSignalMapper is used to attach data to a widget that is transported
+with the signal when emitted.
+The code looks like this:
+
+    QSignalMapper* mapper = new QSignalMapper(parent);
+    connect(mapper, SIGNAL(mapped(int)), receiver, SLOT(function(int)));
+    mapper->setMapping(sender, int_value);
+    connect(sender, SIGNAL(signal()), mapper, SLOT(map()));
+
+QSignalMapper can attach the following data to a signal:
+  int, const QString&, QWidget* and QObject* types.
+
 
 QDockWidget
 -----------------------
