@@ -1,4 +1,6 @@
 /*
+  Source: https://doc.qt.io/archives/qq/qq10-signalmapper.html#thetrivialsolution
+
   We want this Keypad component to emit a signal with the sender
   (the clicked button) number as an int parameter, like "void clicked(int)".
 
