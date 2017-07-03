@@ -1,4 +1,10 @@
 /*
+  Sample at: https://github.com/Apress/foundations-of-qt-dev/blob/master/Chapter04/mdi/mdiwindow.cpp
+  uses QWorkspace which was removed in Qt5 and replaced with QMdiArea.
+  I made the sample compile with QMdiArea but cut,copy,paste actions trigger
+  segmentation fault. I did not take time to fix this.
+
+
   Build:
   qmake -project -nopwd $PWD/main.cpp              \
                         $PWD/DocumentWindow.cpp    \
