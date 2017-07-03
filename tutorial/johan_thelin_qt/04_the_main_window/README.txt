@@ -1,6 +1,21 @@
 ********************************************************************************
                         Chapter 4. The Main Window
 ********************************************************************************
+1. Build samples using qmake
+----------------------------
+   Open each c++ source file and read the Build instructions.
+
+2. Build samples using CMake
+----------------------------
+    cd ~/Code/git-main/tutorial/johan_thelin_qt/04_the_main_window/
+    mkdir ../04_build && cd ../04_build
+    cmake3 -DCMAKE_BUILD_TYPE=Debug -G "Unix Makefiles" ../04_the_main_window
+    make
+
+
+3. The Main Window classes
+---------------------------
+
 
 QMainWindow
 -----------------------
