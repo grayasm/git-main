@@ -1355,7 +1355,7 @@ void test_generic_string::append(const char* msg)
 		str.append("here: "); // "here: "
 		str.append(10, '.'); // ".........."
 		str.append(str3.begin() + 8, str3.end()); // " and then 5 more"
-		str.append<int>(5, 0x2E); // "....."
+		str.append(5, 0x2E); // "....."
 
 		CPPUNIT_ASSERT(
 				strcmp(str.c_str(),

@@ -5,13 +5,13 @@ add_executable(misctest ${misctest_SRC})
 
 # --- compiling ---
 if (UNIX)
-target_compile_options(misctest PRIVATE -Wall -Wno-long-long -pedantic)
-target_compile_definitions(misctest PRIVATE DEBUG _GLIBCXX_DEBUG)
+	target_compile_options(misctest PRIVATE -Wall -Wno-long-long -pedantic)
+	target_compile_definitions(misctest PRIVATE DEBUG _GLIBCXX_DEBUG)
 endif(UNIX)
 
 # --- linking ---
-target_link_libraries(misctest misc)
+target_link_libraries(misctest PRIVATE misc cppunit)
 
 if (UNIX)
-target_link_libraries(misctest pthread dl m)
+	target_link_libraries(misctest PRIVATE pthread dl m)
 endif (UNIX)

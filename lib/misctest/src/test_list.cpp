@@ -2325,7 +2325,7 @@ void test_list::unique()
     //const int iSize = 10000;
     list perflist;
     for(int i=0; i<(int)iSize; ++i)
-        perflist.push_back( rand() % (iSize/2) );
+        perflist.push_back( (int)(rand() % (iSize/2)) );
     perflist.sort();
     perflist.unique();
     perflist.unique( same_integral_part );
@@ -2545,7 +2545,7 @@ void test_list::sort()
     list perflist1;
     for(int i=0; i<(int)iSize; ++i)
     {
-        perflist1.push_back( misc::from_value(rand() % iSize).c_str() );
+        perflist1.push_back( misc::from_value((int)(rand() % iSize)).c_str() );
     }
     perflist1.sort();
     //////////////////////////////////////////////////////////////////////////
