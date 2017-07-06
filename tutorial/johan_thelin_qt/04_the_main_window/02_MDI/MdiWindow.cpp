@@ -283,16 +283,3 @@ void MdiWindow::updateWindowList()
         m_mapper->setMapping(action, w);
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

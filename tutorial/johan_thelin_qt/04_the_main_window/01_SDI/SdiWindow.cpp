@@ -51,8 +51,6 @@ bool SdiWindow::isSafeToClose()
 
 void SdiWindow::fileNew()
 {
-    // I don't know if ptr is leaked or not!!
-    // I will probably find out later.
     SdiWindow* ptr = new SdiWindow(NULL);
     ptr->show();
 }
@@ -69,7 +67,7 @@ void SdiWindow::createActions()
     m_actionNew = new QAction(QIcon(":/images/new.png"), tr("&New"), this);
     m_actionNew->setShortcut(tr("Ctrl+N"));
     m_actionNew->setStatusTip(tr("Create a new document"));
-    connect(m_actionNew, SIGNAL(triggered()), this, SLOT(fileNew));
+    connect(m_actionNew, SIGNAL(triggered()), this, SLOT(fileNew()));
 
     m_actionClose = new QAction(tr("&Close"), this);
     m_actionClose->setShortcut(tr("Ctrl+W"));
