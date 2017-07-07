@@ -6,7 +6,8 @@ add_executable(fxmon ${fxmon_SRC})
 
 target_include_directories(fxmon PRIVATE "src")
 
-# Import FXCM libraries; It didnt' work from fxcmAdapter; Maybe it is worth another try.
+
+# Import FXCM libraries
 add_library(ForexConnect SHARED IMPORTED)
 add_library(sample_tools SHARED IMPORTED)
 
@@ -22,5 +23,35 @@ set_property(TARGET ForexConnect PROPERTY IMPORTED_LOCATION "${CMAKE_SOURCE_DIR}
 set_property(TARGET sample_tools PROPERTY IMPORTED_LOCATION "${CMAKE_SOURCE_DIR}/world/ForexConnectAPI/linux/samples/cpp/sample_tools/lib/libsample_tools.so")
 endif(UNIX)
 
- 
-target_link_libraries(fxmon PRIVATE fxcmAdapter ForexConnect sample_tools)
+ target_link_libraries(fxmon PRIVATE fxcmAdapter ForexConnect sample_tools)
+
+# Postbuild copy
+if(MSVC)
+add_custom_command( TARGET fxmon POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory
+					"${CMAKE_SOURCE_DIR}/world/ForexConnectAPI/win32/bin"
+					"${CMAKE_CURRENT_BINARY_DIR}/$(Configuration)")
+add_custom_command( TARGET fxmon POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory
+					"${CMAKE_SOURCE_DIR}/world/ForexConnectAPI/win32/samples/cpp/sample_tools/bin"
+					"${CMAKE_CURRENT_BINARY_DIR}/$(Configuration)")
+add_custom_command( TARGET fxmon POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy
+					"${CMAKE_CURRENT_SOURCE_DIR}/monitor.ini"
+					"${CMAKE_CURRENT_BINARY_DIR}")
+endif(MSVC)
+
+if(UNIX)
+add_custom_command( TARGET fxmon POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory
+					"${CMAKE_SOURCE_DIR}/world/ForexConnectAPI/linux/lib"
+					"${CMAKE_CURRENT_BINARY_DIR}")
+add_custom_command( TARGET fxmon POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory
+					"${CMAKE_SOURCE_DIR}/world/ForexConnectAPI/linux/samples/cpp/sample_tools/lib"
+					"${CMAKE_CURRENT_BINARY_DIR}")
+add_custom_command( TARGET fxmon POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy
+					"${CMAKE_CURRENT_SOURCE_DIR}/monitor.ini"
+					"${CMAKE_CURRENT_BINARY_DIR}")
+endif(UNIX)
+
+
+
+
+
+
