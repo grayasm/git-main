@@ -331,6 +331,20 @@ namespace misc
 
 
 
+	misc::string from_value(size_t ui64val)
+	{
+#ifdef UNICODE
+		wchar_t buff[101];
+		_snwprintf(buff, 100, U("%lu"), ui64val);
+		return misc::string(buff);
+#else
+		char buff[101];
+		snprintf(buff, 100, U("%lu"), ui64val);
+		return misc::string(buff);
+#endif
+	} // from_value
+
+
     bool to_value( const misc::string& src, char& cval )
     {
         //0 for no conversion, -1 for error, n for n conversions;
@@ -436,6 +450,16 @@ namespace misc
 #endif
     }//to_value
 
+
+	bool to_value(const misc::string& src, size_t& ui64val)
+	{
+		//0 for no conversion, -1 for error, n for n conversions;
+#ifdef UNICODE
+		return swscanf(src.c_str(), U("%lu"), &ui64val) == 1;
+#else
+		return sscanf(src.c_str(), U("%lu"), &ui64val) == 1;
+#endif
+	}
 
 
     void trim(misc::string& totrim, misc::char_t token/*=U(' ')*/)

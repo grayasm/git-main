@@ -31,6 +31,7 @@
 #include <ctype.h>
 #include <string.h>
 #include <algorithm>
+#include <crtdefs.h>
 
 //c
 #include <stdio.h>
@@ -78,6 +79,9 @@ namespace misc
     misc::string from_value( unsigned long ulval );
     misc::string from_value( float fval, unsigned short prec );
     misc::string from_value( double dval, unsigned short prec );
+#ifdef _WIN32
+	misc::string from_value(size_t ui64val);
+#endif
 
 
 
@@ -91,6 +95,9 @@ namespace misc
     bool to_value( const misc::string& valstr, unsigned long& value );
     bool to_value( const misc::string& valstr, float& value );
     bool to_value( const misc::string& valstr, double& value );
+#ifdef _WIN32
+	bool to_value(const misc::string& valstr, size_t& value);
+#endif
 
     //! trimming methods
     void trim(misc::string& str, misc::char_t token=U(' '));
