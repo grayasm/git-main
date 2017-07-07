@@ -79,7 +79,7 @@ namespace misc
     misc::string from_value( unsigned long ulval );
     misc::string from_value( float fval, unsigned short prec );
     misc::string from_value( double dval, unsigned short prec );
-#ifdef _WIN32
+#ifdef _WIN64
 	misc::string from_value(size_t ui64val);
 #endif
 
@@ -95,7 +95,7 @@ namespace misc
     bool to_value( const misc::string& valstr, unsigned long& value );
     bool to_value( const misc::string& valstr, float& value );
     bool to_value( const misc::string& valstr, double& value );
-#ifdef _WIN32
+#ifdef _WIN64
 	bool to_value(const misc::string& valstr, size_t& value);
 #endif
 

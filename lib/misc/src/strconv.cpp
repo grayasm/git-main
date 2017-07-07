@@ -330,7 +330,7 @@ namespace misc
     }//from_value
 
 
-
+#ifdef _WIN64
 	misc::string from_value(size_t ui64val)
 	{
 #ifdef UNICODE
@@ -343,7 +343,7 @@ namespace misc
 		return misc::string(buff);
 #endif
 	} // from_value
-
+#endif
 
     bool to_value( const misc::string& src, char& cval )
     {
@@ -451,6 +451,7 @@ namespace misc
     }//to_value
 
 
+#ifdef _WIN64
 	bool to_value(const misc::string& src, size_t& ui64val)
 	{
 		//0 for no conversion, -1 for error, n for n conversions;
@@ -460,6 +461,7 @@ namespace misc
 		return sscanf(src.c_str(), U("%lu"), &ui64val) == 1;
 #endif
 	}
+#endif
 
 
     void trim(misc::string& totrim, misc::char_t token/*=U(' ')*/)
