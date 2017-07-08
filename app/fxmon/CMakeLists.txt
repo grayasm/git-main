@@ -23,7 +23,15 @@ set_property(TARGET ForexConnect PROPERTY IMPORTED_LOCATION "${CMAKE_SOURCE_DIR}
 set_property(TARGET sample_tools PROPERTY IMPORTED_LOCATION "${CMAKE_SOURCE_DIR}/world/ForexConnectAPI/linux/samples/cpp/sample_tools/lib/libsample_tools.so")
 endif(UNIX)
 
- target_link_libraries(fxmon PRIVATE fxcmAdapter ForexConnect sample_tools)
+
+# Linking
+target_link_libraries(fxmon PRIVATE fxcmAdapter ForexConnect sample_tools)
+
+if(UNIX)
+target_link_libraries(fxmon PRIVATE pthread dl m)
+endif(UNIX)
+
+
 
 # Postbuild copy
 if(MSVC)
@@ -49,9 +57,3 @@ add_custom_command( TARGET fxmon POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy
 					"${CMAKE_CURRENT_SOURCE_DIR}/monitor.ini"
 					"${CMAKE_CURRENT_BINARY_DIR}")
 endif(UNIX)
-
-
-
-
-
-

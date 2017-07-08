@@ -31,7 +31,6 @@
 #include <ctype.h>
 #include <string.h>
 #include <algorithm>
-#include <crtdefs.h>
 
 //c
 #include <stdio.h>
