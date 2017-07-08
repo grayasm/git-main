@@ -257,7 +257,6 @@ chcon -Rv -u system_u -r object_r -t usr_t /usr/share/themes/Greybird-alt
 rm 168845-Greybird-alt-2015-09-09.zip
 
 
-
 # Sabia window decorations for XFCE/XFWM4
 wget https://dl.opendesktop.org/api/files/download/id/1460765964/170898-Sabia.zip
 unzip 170898-Sabia.zip
@@ -268,6 +267,32 @@ chcon -Rv -u system_u -r object_r -t usr_t /usr/share/themes/Sabia\ *
 rm 170898-Sabia.zip
 
 
+# Window decorations: Another Xfwm themE (AXE) is a minimalistic theme which
+# picks up your gtk colors
+wget https://dl.opendesktop.org/api/files/download/id/1460767141/73291-axe.tar.gz
+tar zxvf 73291-axe.tar.gz
+rm -rfv /usr/share/themes/axe
+rm -rfv "/usr/share/themes/axe rounded"
+mv axe /usr/share/themes/
+mv "axe rounded"  /usr/share/themes/
+chown -Rv root:root /usr/share/themes/axe
+chown -Rv root:root "/usr/share/themes/axe rounded"
+chcon -Rv -u system_u -r object_r -t usr_t /usr/share/themes/axe
+chcon -Rv -u system_u -r object_r -t usr_t "/usr/share/themes/axe rounded"
+rm 73291-axe.tar.gz
+
+
+# Window decorations: 4deb theme for xfwm4 with Debian color scheme
+wget https://dl.opendesktop.org/api/files/download/id/1460766415/166997-4deb.zip
+unzip 166997-4deb.zip
+rm -rfv /usr/share/themes/4deb
+mv 4deb  /usr/share/themes/
+chown -Rv root:root /usr/share/themes/4deb
+chcon -Rv -u system_u -r object_r -t usr_t /usr/share/themes/4deb
+rm 166997-4deb.zip
+
+
+
 
 # continue from top of page :
-# https://www.xfce-look.org/browse/cat/138/page/17/ord/latest/
+# https://www.xfce-look.org/browse/cat/138/page/18/ord/latest/
