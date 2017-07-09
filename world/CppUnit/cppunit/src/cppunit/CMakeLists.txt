@@ -7,7 +7,7 @@ list(REMOVE_ITEM cppunit_SRC ${CMAKE_CURRENT_SOURCE_DIR}/DllMain.cpp)
 endif(UNIX)
 
 if(MSVC)
-list(REMOVE_ITEM cppunit_SRC ${CMAKE_CURRENT_SOURCE_DIR}/DllMain.cpp
+list(REMOVE_ITEM cppunit_SRC ${CMAKE_CURRENT_SOURCE_DIR}/DllMain.cpp)
 endif(MSVC)
 
 
