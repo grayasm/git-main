@@ -198,7 +198,7 @@ void test_algorithm::search()
 void test_algorithm::search_n()
 {
 	misc::cout << "\n\n\tsearch_n-----------------------------------------------";
-	search_n<std::vector<int> >																	("\n\tstd::vector       ");
+	search_n<std::vector<int> >																	    ("\n\tstd::vector       ");
 	search_n<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
 	search_n2<misc::vector<int> >																	("\n\tmisc::vector      ");
 	search_n2<misc::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
@@ -2532,6 +2532,7 @@ void test_algorithm::fill_n(const char* msg)
 		for (it = v2.begin(); it != v2.end(); ++it)
 			CPPUNIT_ASSERT(*it == Cval(-1));
 
+#if !defined(DEBUG)
 		//	STD
 		std::fill_n (v1.begin(), 4, Cval(2));   // v1: 2 2 2 2 10 10 10 10
 		std::fill_n (v1.begin()+3, 3, Cval(3)); // v1: 2 2 2 3  3  3 10 10
@@ -2545,6 +2546,7 @@ void test_algorithm::fill_n(const char* msg)
 		std::fill_n (v2.begin(), m_container_size, Cval(-6));
 		for (it = v2.begin(); it != v2.end(); ++it)
 			CPPUNIT_ASSERT(*it == Cval(-6));
+#endif
 	}
 }
 
@@ -2663,6 +2665,8 @@ void test_algorithm::generate_n(const char* msg)
 			CPPUNIT_ASSERT(*it == Cval(i0+1));
 		}
 		
+
+#if !defined(DEBUG)
 		//	STD
 		current_generate_n = 0;
 		std::generate_n (myarray, 9, UniqueNumber_generate_n);
@@ -2679,6 +2683,7 @@ void test_algorithm::generate_n(const char* msg)
 		{
 			CPPUNIT_ASSERT(*it == Cval(i0+1));
 		}
+#endif
 	}
 }
 

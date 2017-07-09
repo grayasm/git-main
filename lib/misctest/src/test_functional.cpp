@@ -464,9 +464,9 @@ struct MemFunS1{
 void test_functional::mem_fun()
 {
 	misc::cout << "\n\n\tmem_fun------------------------------------------------";
-	mem_fun<std::vector<MemFunS1*> > ("\n\tstd::vector       ");
+	mem_fun<std::vector<MemFunS1*> >   ("\n\tstd::vector       ");
 	mem_fun_2<misc::vector<MemFunS1*> >("\n\tmisc::vector      ");
-	mem_fun<std::list<MemFunS1*> >   ("\n\tstd::list         ");
+	mem_fun<std::list<MemFunS1*> >     ("\n\tstd::list         ");
 	mem_fun_2<misc::list<MemFunS1*> >  ("\n\tmisc::list        ");
 }
 
@@ -1240,7 +1240,12 @@ void test_functional::less(const char* msg)
 	Container v1(m_container_size), v2(m_container_size);
 	for( it = v1.begin(), i0 = 0; it != v1.end(); ++it, ++i0) *it = Cval(i0);
 	for( it = v2.begin(), i0 = 1; it != v2.end(); ++it, ++i0) *it = Cval(i0);
+
+#if !defined(DEBUG)
 	misc::vector<bool> v3(m_container_size, false);
+#else
+	std::vector<bool> v3(m_container_size);
+#endif
 
 
 
@@ -2550,8 +2555,14 @@ void test_functional::mem_fun(const char* msg)
 	size_t i0, i1;
 
 	Container v1(m_container_size);
-	for( it = v1.begin(), i0 = 1; it != v1.end(); ++it, ++i0) *it = new MemFunS1(i0);
+	for( it = v1.begin(), i0 = 1; it != v1.end(); ++it, ++i0)
+		*it = new MemFunS1(i0);
+
+#if !defined(DEBUG)
 	misc::vector<double> v2(m_container_size); // result
+#else
+	std::vector<double> v2(m_container_size);
+#endif
 
 
 	//  TEST
@@ -2625,8 +2636,14 @@ void test_functional::mem_fun_ref(const char* msg)
 	size_t i0, i1;
 
 	Container v1(m_container_size);
-	for( it = v1.begin(), i0 = 0; it != v1.end(); ++it, ++i0) *it = Cval(i0);
+	for( it = v1.begin(), i0 = 0; it != v1.end(); ++it, ++i0)
+		*it = Cval(i0);
+
+#if !defined(DEBUG)
 	misc::vector<double> v2(m_container_size);// store the results of Cval::Sqrt(double)
+#else
+	std::vector<double> v2(m_container_size);
+#endif
 
 
 	//  TEST

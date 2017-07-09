@@ -4009,12 +4009,15 @@ void test_generic_array::find_last_not_of(const char* msg)
 		for(size_t i=0; i < CYCLE; ++i)
 		{
 			size_t pos1 = charr0.find_last_not_of(charr1);
-			while(pos1 != 0)
+			while(pos1 != 0 && pos1 != (size_t)-1)
 			{
 				pos1 = charr0.find_last_not_of(charr1.c_str(), pos1-1);
-				if(pos1 == 0) break;
+				if(pos1 == 0 || pos1 == (size_t)-1) break;
+
+				// string.find_last_not_of(str, 1, 44) returns -1 in MSVC RELEASE and 0 in DEBUG
 				pos1 = charr0.find_last_not_of(charr1.c_str(), pos1-1, STRSIZE-1);
-				if(pos1 == 0) break;
+				if (pos1 == 0 || pos1 == (size_t)-1) break;
+
 				pos1 = charr0.find_last_not_of(charr1[0], pos1-1);
 			}
 		}
