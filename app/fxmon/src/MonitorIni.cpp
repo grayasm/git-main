@@ -52,7 +52,25 @@ MonitorIni::MonitorIni()
 
 MonitorIni::MonitorIni(const misc::string& inifile)	
 {
-	m_inisrv = misc::iniserv(inifile);
+	misc::iniserv iniReader(inifile);
+
+	misc::string emptys("");
+
+	m_iniFile = inifile;
+	m_section = g_section;
+	m_quoteUpdateTimeout = iniReader.get(m_section, g_quoteUpdateTimeout, double(0));
+	m_keepStrategyInProfit = iniReader.get(m_section, g_keepStrategyInProfit, false);
+	m_keepStrategyInLoss = iniReader.get(m_section, g_keepStrategyInLoss, false);
+	m_dumpStrategyOutcome = iniReader.get(m_section, g_dumpStrategyOutcome, true);
+	m_connection = iniReader.get(m_section, g_connection, emptys);
+	m_marketPlugin = iniReader.get(m_section, g_marketPlugin, emptys);
+	m_priceGeneratorCurrency = iniReader.get(m_section, g_priceGeneratorCurrency, emptys);
+	m_priceGeneratorTrendChance = iniReader.get(m_section, g_priceGeneratorTrendChance, int(0));
+	m_priceGeneratorTrendFragmentation = iniReader.get(m_section, g_priceGeneratorTrendFragmentation, int(0));
+	m_priceGeneratorVolatility = iniReader.get(m_section, g_priceGeneratorVolatility, double(0));
+	m_dateFrom = iniReader.get(m_section, g_dateFrom, emptys);
+	m_dateTo = iniReader.get(m_section, g_dateTo, emptys);
+	m_auditFile = iniReader.get(m_section, g_auditFile, emptys);
 }
 
 MonitorIni::~MonitorIni()
@@ -68,81 +86,87 @@ MonitorIni& MonitorIni::operator=(const MonitorIni& tc)
 {
 	if(this != &tc)
 	{
-		m_inisrv = tc.m_inisrv;
+		m_section = tc.m_section;
+		m_quoteUpdateTimeout = tc.m_quoteUpdateTimeout;
+		m_keepStrategyInProfit = tc.m_keepStrategyInProfit;
+		m_keepStrategyInLoss = tc.m_keepStrategyInLoss;
+		m_dumpStrategyOutcome = tc.m_dumpStrategyOutcome;
+		m_connection = tc.m_connection;
+		m_marketPlugin = tc.m_marketPlugin;
+		m_priceGeneratorCurrency = tc.m_priceGeneratorCurrency;
+		m_priceGeneratorTrendChance = tc.m_priceGeneratorTrendChance;
+		m_priceGeneratorTrendFragmentation = tc.m_priceGeneratorTrendFragmentation;
+		m_priceGeneratorVolatility = tc.m_priceGeneratorVolatility;
+		m_dateFrom = tc.m_dateFrom;
+		m_dateTo = tc.m_dateTo;
+		m_auditFile = tc.m_auditFile;
 	}
 	return *this;
 }
 
 void MonitorIni::SetQuoteUpdateTimeout(double sec)
 {
-	m_inisrv.set(g_section, g_quoteUpdateTimeout, sec);
+	m_quoteUpdateTimeout = sec;
 }
 
 double MonitorIni::GetQuoteUpdateTimeout() const
 {
-	double defval = 0;
-	return m_inisrv.get(g_section, g_quoteUpdateTimeout, defval);
+	return m_quoteUpdateTimeout;
 }
 
 bool MonitorIni::GetKeepStrategyInProfit() const
 {
-	bool defval = false; // conservative
-	return m_inisrv.get(g_section, g_keepStrategyInProfit, defval);
+	return m_keepStrategyInProfit;
 }
 
 void MonitorIni::SetKeepStrategyInProfit(bool value)
 {
-	m_inisrv.set(g_section, g_keepStrategyInProfit, value);
+	m_keepStrategyInProfit = value;
 }
 
 bool MonitorIni::GetKeepStrategyInLoss() const
 {
-	bool defval = false;	// safety
-	return m_inisrv.get(g_section, g_keepStrategyInLoss, defval);
+	return m_keepStrategyInLoss;
 }
 
 void MonitorIni::SetKeepStrategyInLoss(bool value)
 {
-	m_inisrv.set(g_section, g_keepStrategyInLoss, value);
+	m_keepStrategyInLoss = value;
 }
 
 bool MonitorIni::GetDumpStrategyOutcome() const
 {
-	bool defval = true;		// safety
-	return m_inisrv.get(g_section, g_dumpStrategyOutcome, defval);
+	return m_dumpStrategyOutcome;
 }
 
 void MonitorIni::SetDumpStrategyOutcome(bool value)
 {
-	m_inisrv.set(g_section, g_dumpStrategyOutcome, value);
+	m_dumpStrategyOutcome = value;
 }
 
 const misc::string& MonitorIni::GetConnection() const
 {
-	misc::string defval("");
-	return m_inisrv.get(g_section, g_connection, defval);
+	return m_connection;
 }
 
 void MonitorIni::SetConnection(const misc::string& value)
 {
-	m_inisrv.set(g_section, g_connection, value);
+	m_connection = value;
 }
 
 const misc::string& MonitorIni::GetMarketPlugin() const
 {
-	misc::string defval("");
-	return m_inisrv.get(g_section, g_marketPlugin, defval);
+	return m_marketPlugin;
 }
 
 void MonitorIni::SetMarketPlugin(const misc::string& value)
 {
-	m_inisrv.set(g_section, g_marketPlugin, value);
+	m_marketPlugin = value;
 }
 
 fx::Currency MonitorIni::GetPriceGeneratorCurrency() const
 {
-	misc::string defval("");
-	misc::string sline = m_inisrv.get(g_section, g_priceGeneratorCurrency, defval);
+	misc::string sline = m_priceGeneratorCurrency;
 
 	misc::strtok tokenizer(sline, ";");
 	if(tokenizer.count() < 6)
@@ -174,77 +198,87 @@ void MonitorIni::SetPriceGeneratorCurrency(const fx::Currency& currency)
 	sline += misc::from_value(currency.GetPipCost(), 3); sline += " ; ";
 	sline += misc::from_value(currency.GetRate2Pip(), 1); sline += " ; ";
 
-	m_inisrv.set(g_section, g_priceGeneratorCurrency, sline);
+	m_priceGeneratorCurrency = sline;
 }
 
 void MonitorIni::SetPriceGeneratorTrendChance(int value)
 {
-	m_inisrv.set(g_section, g_priceGeneratorTrendChance, value);
+	m_priceGeneratorTrendChance = value;
 }
 
 int MonitorIni::GetPriceGeneratorTrendChance() const
 {
-	int defval=0;
-	return m_inisrv.get(g_section, g_priceGeneratorTrendChance, defval);
+	return m_priceGeneratorTrendChance;
 }
 
 void MonitorIni::SetPriceGeneratorTrendFragmentation(int value)
 {
-	m_inisrv.set(g_section, g_priceGeneratorTrendFragmentation, value);
+	m_priceGeneratorTrendFragmentation = value;
 }
 
 int MonitorIni::GetPriceGeneratorTrendFragmentation() const
 {
-	int defval=0;
-	return m_inisrv.get(g_section, g_priceGeneratorTrendFragmentation, defval);
+	return m_priceGeneratorTrendFragmentation;
 }
 
 void MonitorIni::SetPriceGeneratorVolatility(double value)
 {
-	m_inisrv.set(g_section, g_priceGeneratorVolatility, value);
+	m_priceGeneratorVolatility = value;
 }
 
 double MonitorIni::GetPriceGeneratorVolatility() const
 {
-	double defval = 0;
-	return m_inisrv.get(g_section, g_priceGeneratorVolatility, defval);
+	return m_priceGeneratorVolatility;
 }
 
 const misc::string& MonitorIni::GetDateFrom() const
 {
-	misc::string defval("");
-	return m_inisrv.get(g_section, g_dateFrom, defval);
+	return m_dateFrom;
 }
 
 void MonitorIni::SetDateFrom(const misc::string& value)
 {
-	m_inisrv.set(g_section, g_dateFrom, value);
+	m_dateFrom = value;
 }
 
 const misc::string& MonitorIni::GetDateTo() const
 {
-	misc::string defval("");
-	return m_inisrv.get(g_section, g_dateTo, defval);
+	return m_dateTo;
 }
 
 void MonitorIni::SetDateTo(const misc::string& value)
 {
-	m_inisrv.set(g_section, g_dateTo, value);
+	m_dateTo = value;
 }
 
 const misc::string& MonitorIni::GetAuditFile() const
 {
-	misc::string defval("");
-	return m_inisrv.get(g_section, g_auditFile, defval);
+	return m_auditFile;
 }
 
 void MonitorIni::SetAuditFile(const misc::string& filepath)
 {
-	m_inisrv.set(g_section, g_auditFile, filepath);
+	m_auditFile = filepath;
 }
 
 
 bool MonitorIni::SaveIni()
 {
-	return m_inisrv.write();
+	misc::iniserv iniWriter(m_iniFile);
+
+	iniWriter.set(m_section, g_quoteUpdateTimeout, m_quoteUpdateTimeout);
+	iniWriter.set(m_section, g_keepStrategyInProfit, m_keepStrategyInProfit);
+	iniWriter.set(m_section, g_keepStrategyInLoss, m_keepStrategyInLoss);
+	iniWriter.set(m_section, g_dumpStrategyOutcome, m_dumpStrategyOutcome);
+	iniWriter.set(m_section, g_connection, m_connection);
+	iniWriter.set(m_section, g_marketPlugin, m_marketPlugin);
+	iniWriter.set(m_section, g_priceGeneratorCurrency, m_priceGeneratorCurrency);
+	iniWriter.set(m_section, g_priceGeneratorTrendChance, m_priceGeneratorTrendChance);
+	iniWriter.set(m_section, g_priceGeneratorTrendFragmentation, m_priceGeneratorTrendFragmentation);
+	iniWriter.set(m_section, g_priceGeneratorVolatility, m_priceGeneratorVolatility);
+	iniWriter.set(m_section, g_dateFrom, m_dateFrom);
+	iniWriter.set(m_section, g_dateTo, m_dateTo);
+	iniWriter.set(m_section, g_auditFile, m_auditFile);
+	
+	return iniWriter.write();
 }

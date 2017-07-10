@@ -68,9 +68,18 @@ namespace fxcm
 		const misc::string& GetAccountSymbol() const;
 
 		bool SaveIni();
-
+	
 	private:
-		misc::iniserv		m_inisrv;		
+		misc::string	m_iniFile;
+		misc::string	m_section;
+		misc::string	m_user;
+		misc::string	m_pass;
+		misc::string	m_url;
+		misc::string	m_connection;
+		misc::string	m_account;
+		misc::string	m_sessionID;
+		misc::string	m_pin;
+		misc::string	m_currency;
 	};
 } // namespace
 

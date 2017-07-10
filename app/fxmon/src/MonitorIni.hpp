@@ -79,8 +79,23 @@ public:
 
 	bool SaveIni();
 
+
 private:
-	misc::iniserv		m_inisrv;
+	misc::string	m_iniFile;
+	misc::string	m_section;
+	double			m_quoteUpdateTimeout;
+	bool			m_keepStrategyInProfit;
+	bool			m_keepStrategyInLoss;
+	bool			m_dumpStrategyOutcome;
+	misc::string	m_connection;
+	misc::string	m_marketPlugin;
+	misc::string	m_priceGeneratorCurrency;
+	int				m_priceGeneratorTrendChance;
+	int				m_priceGeneratorTrendFragmentation;
+	double			m_priceGeneratorVolatility;
+	misc::string	m_dateFrom;
+	misc::string	m_dateTo;
+	misc::string	m_auditFile;
 };
 
 
