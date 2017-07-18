@@ -18,54 +18,115 @@
 */
 
 
+#include "LoginParams.hpp"
+#include "IniParams.hpp"
+#include "Session.hpp"
+
+int test2()
+{
+	fxcm::LoginParams::Ptr loginParams = new fxcm::LoginParams("monitor.ini");
+	fxcm::IniParams::Ptr iniParams = new fxcm::IniParams("monitor.ini");
+
+	// checkObligatoryParams
+	if (loginParams->GetLogin().empty() ||
+		loginParams->GetPassword().empty() ||
+		loginParams->GetUrl().empty() ||
+		loginParams->GetConnection().empty() ||
+		iniParams->GetInstrument().empty())
+		return -1;
+
+	fxcm::Session session(*loginParams, *iniParams);
+	session.Login();
+	session.GetOffers();
+	session.Logout();
+	
+	return 0;
+}
+
+
+
+#if 0
 #include "Test.hpp"
 #include "MonitorIni.hpp"
 #include "fxcmSession.hpp"
 #include "stream.hpp"
 
 
-void test()
+int test()
 {
 	MonitorIni monIniParams("monitor.ini");
 	fxcm::IniParams sessionIni("monitor.ini");
 
 	fxcm::Session session(sessionIni);
-	session.Connect();
+	if (!session.Connect())
+		return -1;
 
 	session.SetAuditFile(monIniParams.GetAuditFile());
 	misc::vector<fx::Currency> currencies;
 	session.GetCurrencies(currencies);
 	 			
-	std::map<misc::string, fx::Price> quotes;	
-	for(size_t i = 0, j = 0; i < 2; ++i, ++j)
-	{
-		if(j + 1 >  currencies.size())
-			j = 0;
+	if (currencies.size() != 1)
+		return -1;
 
-		fx::Currency curr(currencies[j]);
-		
-		
+	if (currencies[0].GetSymbol() != "EUR/USD")
+		return -1;
+
+	fx::Currency euro(currencies[0]);
+	fxcm::HistPriceData priceData;
+
+	if (!session.GetHistPrices(euro.GetSymbol(),
+		"m1",
+		monIniParams.GetDateFrom(),
+		monIniParams.GetDateTo(),
+		priceData))
+		return -1;
+	
+	for (fxcm::HistPriceData::iterator beg = priceData.begin();
+		beg != priceData.end(); ++beg)
+	{
+		const fxcm::HistoryPrice& hprice = *beg;
+		bool		isBar = hprice.IsBar();
+		misc::DATE	date = hprice.GetDate();
+		fx::Price	currPrice = hprice.GetCurrPrice();
+		fx::Price	openPrice = hprice.GetOpenPrice();
+		fx::Price	closePrice = hprice.GetClosePrice();
+		fx::Price	highPrice = hprice.GetHighPrice();
+		fx::Price	lowPrice = hprice.GetLowPrice();
+		int			volume = hprice.GetVolume();
+
+		volume += 0;
+	}
+
+	//std::map<misc::string, fx::Price> quotes;	
+	//for(size_t i = 0, j = 0; i < 2; ++i, ++j)
+	//{
+	//	if(j + 1 >  currencies.size())
+	//		j = 0;
+
+	//	fx::Currency curr(currencies[j]);
+	//	
+	//	
 //		double margin = curr.GetMargin();
 //		double pipcost= curr.GetPipCost();
 //		double rate2pip=curr.GetRate2Pip();
 
-		fx::Position pos("", "", curr, (i%2==0), 5, 0, 0);
+		//fx::Position pos("", "", curr, (i%2==0), 5, 0, 0);
 
-		for(size_t j = 0; j < 3; ++j)
-		{
-			session.GetOffer(quotes);
-			for(std::map<misc::string, fx::Price>::iterator it = quotes.begin();
-				it != quotes.end(); ++it)
-			{
-				misc::cout << std::fixed << std::cout.precision(5) << "\n\t" <<
-					it->first.c_str() << " B=" << it->second.GetBuy() <<
-					" S: " << it->second.GetSell();
-			}			
-			
-			//Sleep(1000);
-		}
+		//for(size_t j = 0; j < 3; ++j)
+		//{
+		//	session.GetOffer(quotes);
+		//	for(std::map<misc::string, fx::Price>::iterator it = quotes.begin();
+		//		it != quotes.end(); ++it)
+		//	{
+		//		misc::cout << std::fixed << std::cout.precision(5) << "\n\t" <<
+		//			it->first.c_str() << " B=" << it->second.GetBuy() <<
+		//			" S: " << it->second.GetSell();
+		//	}			
+		//	
+		//	//Sleep(1000);
+		//}
 
-
+		/*
 		misc::vector<fx::Position> otrades, ctrades;
 		for(size_t i = 0; i < 3; ++i)
 			session.CreateMarketOrder(pos, otrades);			
@@ -81,8 +142,13 @@ void test()
 
 			session.CloseMarketOrder(trade, ctrades);
 		}		
-	}
+		*/
+		
+	//}
 	
 	session.Disconnect();
-	return;	
+	return -1;	
 }
+
+
+#endif // 0

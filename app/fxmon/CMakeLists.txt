@@ -1,6 +1,16 @@
 # CMakeLists.txt file for fxmon application.
 
 file(GLOB fxmon_SRC "src/*.hpp" "src/*.cpp")
+list(REMOVE_ITEM fxmon_SRC	"${CMAKE_CURRENT_SOURCE_DIR}/src/MonConsoleHandlerPlugin.cpp"
+							"${CMAKE_CURRENT_SOURCE_DIR}/src/MonEngine.cpp"
+							"${CMAKE_CURRENT_SOURCE_DIR}/src/MonFXCMSession.cpp"
+							"${CMAKE_CURRENT_SOURCE_DIR}/src/MonHistoryPriceSession.cpp"
+							"${CMAKE_CURRENT_SOURCE_DIR}/src/MonitorApp.cpp"
+							"${CMAKE_CURRENT_SOURCE_DIR}/src/MonitorIni.cpp"
+							"${CMAKE_CURRENT_SOURCE_DIR}/src/MonNotificationPlugin.cpp"
+							"${CMAKE_CURRENT_SOURCE_DIR}/src/MonPriceGeneratorSession.cpp"
+							"${CMAKE_CURRENT_SOURCE_DIR}/src/MonQuoteUpdateTimeoutPlugin.cpp"
+							"${CMAKE_CURRENT_SOURCE_DIR}/src/MonSession.cpp")
 
 add_executable(fxmon ${fxmon_SRC})
 

@@ -22,7 +22,8 @@
 #define __Test_hpp__
 
 
-void test();
+int test();
+int test2();
 
 
 #endif // __Test_hpp__

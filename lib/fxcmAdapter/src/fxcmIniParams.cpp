@@ -22,16 +22,17 @@
 
 namespace fxcm
 {	
-	misc::string	g_section("session");
-	misc::string	g_user("user");
-	misc::string	g_pass("password");
-	misc::string	g_url("url");
-	misc::string	g_connection("connection");
-	misc::string	g_account("account");
-	misc::string	g_sessionID("sessionID");
-	misc::string	g_pin("pin");
-	misc::string	g_currency("currency");
-
+	
+	extern misc::string	g_section;	// ("session");
+	extern misc::string	g_login;	// ("user");
+	extern misc::string	g_pass;		// ("password");
+	extern misc::string	g_url;		// ("url");
+	extern misc::string	g_connection;	// ("connection");
+	extern misc::string	g_account;	// ("account");
+	extern misc::string	g_sessionID;	// ("sessionID");
+	extern misc::string	g_pin;		// ("pin");
+	extern misc::string	g_currency;	// ("currency");
+	
 
 	IniParams::IniParams()
 	{
@@ -45,7 +46,7 @@ namespace fxcm
 
 		m_iniFile = inifile;
 		m_section = g_section;
-		m_user = iniReader.get(m_section, g_user, emptys);
+		m_user = iniReader.get(m_section, g_login, emptys);
 		m_pass = iniReader.get(m_section, g_pass, emptys);
 		m_url = iniReader.get(m_section, g_url, emptys);
 		m_connection = iniReader.get(m_section, g_connection, emptys);
@@ -166,7 +167,7 @@ namespace fxcm
 	{
 		misc::iniserv iniWriter(m_iniFile);
 
-		iniWriter.set(m_section, g_user, m_user);
+		iniWriter.set(m_section, g_login, m_user);
 		iniWriter.set(m_section, g_pass, m_pass);
 		iniWriter.set(m_section, g_url, m_url);
 		iniWriter.set(m_section, g_connection, m_connection);

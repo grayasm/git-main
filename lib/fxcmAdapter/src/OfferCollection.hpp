@@ -18,42 +18,36 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 contact: grayasm@gmail.com
 */
 
+#ifndef __OfferCollection_hpp__
+#define __OfferCollection_hpp__
 
-#ifndef __Session_hpp__
-#define __Session_hpp__
+#include "Offer.hpp"
+#include "critical_section.hpp"
 
-#include <stddef.h>
-#include <ForexConnect.h>
-#include "SessionStatusListener.hpp"
-#include "LoginParams.hpp"
-#include "IniParams.hpp"
 
 namespace fxcm
 {
-	class Session
+	class OfferCollection
 	{
 	public:
-		Session(const fxcm::LoginParams& loginParams,
-				const fxcm::IniParams& iniParams);
-		~Session();
+		OfferCollection();
+		~OfferCollection();
 
-		bool Login();
-		bool Logout();
-
-		bool GetOffers();
-
-	private:
-		Session();
-		Session(const Session&);
-		Session& operator=(const Session&);
+		void AddOffer(const fx::Offer& offer);
+		size_t FindOffer(const char* id);
+		size_t Size();
+		fx::Offer* Get(size_t index);
+		void Clear();
 
 	private:
-		fxcm::LoginParams		m_loginParams;
-		fxcm::IniParams			m_iniParams;
-		IO2GSession*			m_session;
-		SessionStatusListener*	m_sessionListener;		
+		OfferCollection(const OfferCollection&);
+		OfferCollection& operator=(const OfferCollection&);
+
+	private:
+		std::vector<fx::Offer>		m_offersVec;
+		misc::critical_section		m_criticalsection;
 	};
 } // namespace
 
 
-#endif // __Session_hpp__
+#endif // __OfferCollection_hpp__
