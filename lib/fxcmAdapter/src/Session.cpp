@@ -19,7 +19,7 @@ contact: grayasm@gmail.com
 */
 
 #include "Session.hpp"
-#include "ResponseListener.hpp"
+#include "ResponseListener4Offers.hpp"
 #include "unistd.hpp"
 #include "stream.hpp"
 
@@ -31,17 +31,36 @@ namespace fxcm
 					 const fxcm::IniParams& iniParams)
 	{
 		m_loginParams = loginParams;
+		m_iniParams = iniParams;
+
 		m_session = CO2GTransport::createSession();	// IO2GSession*
+
+		/*
+			SessionStatusListener provides the session status as:
+			Connected, Connecting, Disconnected, SessionLost, etc.
+		*/
 		m_sessionListener = new SessionStatusListener(
 									m_session,
 									true,
 									m_loginParams.GetSessionID(),
 									m_loginParams.GetPin());
 		m_session->subscribeSessionStatus(m_sessionListener);
+
+		/*
+			ResponseListener4Offers works as a separate thread to receive
+			Offers table updates. I avoid thread contention with other table
+			updates (Trades, ClosedTrades, Messages, etc) and reduce complexity
+			e.g. easier to add DB storage for quotes, etc.
+		*/
+		m_responseListener4Offers = new ResponseListener4Offers(m_session);
+		m_responseListener4Offers->SetInstrument(m_iniParams.GetInstrument());
+		m_session->subscribeResponse(m_responseListener4Offers);
 	}
 
 	Session::~Session()
 	{
+		m_session->unsubscribeResponse(m_responseListener4Offers);
+		m_responseListener4Offers->release();
 		m_session->unsubscribeSessionStatus(m_sessionListener);
 		m_sessionListener->release();
 		m_session->release();
@@ -68,20 +87,24 @@ namespace fxcm
 				m_sessionListener->IsDisconnected();
 	}
 
-	bool Session::GetOffers()
+	int Session::GetOffers()
 	{
-		bool bWasError = false;
-
 		if (m_sessionListener->IsDisconnected())
 		{
-			bWasError = true;
-			return !bWasError;
+			misc::cout << __FUNCTION__
+				<< ": Session disconnected" << std::endl;
+			return -100; // Disconnected
 		}
+			
 
-		ResponseListener* responseListener = new ResponseListener(m_session);
-		responseListener->SetInstrument(m_iniParams.GetInstrument());
-		m_session->subscribeResponse(responseListener);
-
+		/*
+			As per FXCM 'GetOffers' example, we can get the Offers as either:
+			(1) session login rules (here the table has all instruments), or
+			(2) sending a session request (here the table has live updated instruments)
+			After getting the response, in both cases all response listeners
+			will get live updates for the Offers table until they are
+			unsubscribed or session disconnected.
+		*/
 		O2G2Ptr<IO2GLoginRules> loginRules = m_session->getLoginRules();
 		if (loginRules)
 		{
@@ -90,10 +113,14 @@ namespace fxcm
 			{
 				response = loginRules->getTableRefreshResponse(Offers);
 				if (response)
-					responseListener->PrintOffers(m_session, response, "");
+					m_responseListener4Offers->PrintOffers(m_session, response, "");
 			}
 			else
 			{
+				/*
+					TODO:	So far the Offers table is loaded by default.
+							This part is not tested.
+				*/
 				O2G2Ptr<IO2GRequestFactory> requestFactory =
 					m_session->getRequestFactory();
 				if (requestFactory)
@@ -101,40 +128,33 @@ namespace fxcm
 					O2G2Ptr<IO2GRequest> offersRequest =
 						requestFactory->createRefreshTableRequest(Offers);
 					misc::string requestID(offersRequest->getRequestID());
-					responseListener->SetRequestID(requestID);
+					m_responseListener4Offers->SetRequestID(requestID);
 
-					// Send a request to FXCM server!
-					m_session->sendRequest(offersRequest);
+					m_session->sendRequest(offersRequest); // send REQUEST
 
-					if (responseListener->WaitEvents())
+					if (m_responseListener4Offers->WaitEvents())
 					{
-						response = responseListener->GetResponse();
+						response = m_responseListener4Offers->GetResponse();
 						if (response)
-							responseListener->PrintOffers(m_session, response, "");
+							m_responseListener4Offers->PrintOffers(m_session, response, "");
 					}
 					else
 					{
 						misc::cout << __FUNCTION__
-							<< "Response waiting timeout expired" << std::endl;
-						bWasError = true;
+							<< ": Response waiting timeout expired" << std::endl;
+						return -101; // Timeout
 					}
 				}
 			}
-
-			// So nothing for 10 seconds, let offers print.
-			sleep(10);
-			misc::cout << "Done!" << std::endl;
 		}
 		else
 		{
-			misc::cout << "Cannot get login rules" << std::endl;
-			bWasError = true;
+			misc::cout << __FUNCTION__ 
+				<< ": Cannot get login rules" << std::endl;
+			return -102; // No login rules
 		}
 
-		m_session->unsubscribeResponse(responseListener);
-		responseListener->release();
-
-		return !bWasError;
+		return 0;
 	}
 
 

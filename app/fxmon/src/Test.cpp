@@ -21,6 +21,9 @@
 #include "LoginParams.hpp"
 #include "IniParams.hpp"
 #include "Session.hpp"
+#include "unistd.hpp"
+#include "stream.hpp"
+
 
 int test2()
 {
@@ -38,6 +41,15 @@ int test2()
 	fxcm::Session session(*loginParams, *iniParams);
 	session.Login();
 	session.GetOffers();
+
+	int i = 0;
+	do 
+	{
+		sleep(1);
+		++i;
+		misc::cout << "sleep(1)" << std::endl;
+	} while (i < 10);
+
 	session.Logout();
 	
 	return 0;

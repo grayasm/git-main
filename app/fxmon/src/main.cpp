@@ -28,7 +28,6 @@
 // local
 #include "exception.hpp"
 #include "stream.hpp"
-//#include "MonitorApp.hpp"
 #include "Test.hpp"
 
 
@@ -39,11 +38,6 @@ int main(int /*argc*/, char** /*argv*/)
 	// disable stdout buffer
 	setvbuf(stdout, NULL, _IONBF, 0);
 	
-	
-//	MonitorApp app;	
-//	app.Menu();
-	
-//	test();
 	test2();
 	return 0;
 }

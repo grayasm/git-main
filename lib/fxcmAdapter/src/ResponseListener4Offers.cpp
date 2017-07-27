@@ -19,7 +19,7 @@ contact: grayasm@gmail.com
 */
 
 
-#include "ResponseListener.hpp"
+#include "ResponseListener4Offers.hpp"
 #include "autocritical_section.hpp"
 #include "stream.hpp"
 #include <sstream>
@@ -28,7 +28,7 @@ contact: grayasm@gmail.com
 
 namespace fxcm
 {
-	ResponseListener::ResponseListener(IO2GSession* session)
+	ResponseListener4Offers::ResponseListener4Offers(IO2GSession* session)
 	{
 		m_Session = session;
 		m_Session->addRef();
@@ -38,17 +38,17 @@ namespace fxcm
 		m_Instrument = "";
 		m_Response = NULL;
 		// m_Offers
-		misc::cout.precision(2);
+		misc::cout.precision(6);
 	}
 
-	long ResponseListener::addRef()
+	long ResponseListener4Offers::addRef()
 	{
 		misc::autocritical_section autocs(m_CriticalSection);
 		m_RefCount++;
 		return m_RefCount;
 	}
 
-	long ResponseListener::release()
+	long ResponseListener4Offers::release()
 	{
 		misc::autocritical_section autocs(m_CriticalSection);
 		m_RefCount--;
@@ -57,7 +57,7 @@ namespace fxcm
 		return m_RefCount;
 	}
 
-	void ResponseListener::onRequestCompleted(const char* requestId, IO2GResponse* response)
+	void ResponseListener4Offers::onRequestCompleted(const char* requestId, IO2GResponse* response)
 	{
 		if (m_Response && m_RequestID == requestId)
 		{
@@ -68,22 +68,23 @@ namespace fxcm
 		}
 	}
 
-	void ResponseListener::onRequestFailed(const char* requestId, const char* error)
+	void ResponseListener4Offers::onRequestFailed(const char* requestId, const char* error)
 	{
 		if (m_RequestID == requestId)
 		{
-			misc::cout << "The request has been failed. ID: "
+			misc::cout << __FUNCTION__ 
+				<< ": The request has been failed. ID: "
 				<< requestId << " : " << error << std::endl;
 			m_ResponseEvent.unlock();
 		}
 	}
 
-	void ResponseListener::onTablesUpdates(IO2GResponse* tablesUpdates)
+	void ResponseListener4Offers::onTablesUpdates(IO2GResponse* tablesUpdates)
 	{
 		if (tablesUpdates == NULL)
 			return;
 
-		/* When updating to new API, check if there are new enum ids. */
+		/*	When updating to new API, check if there are new enum ids. */
 		O2GResponseType responseType = tablesUpdates->getType();
 		switch (responseType)
 		{
@@ -92,6 +93,12 @@ namespace fxcm
 			break;
 
 		case TablesUpdates:
+			/*
+				The table Offers is updated with this response type when
+				initiated by - see Session.cpp, GetOffers:
+				loginRules->isTableLoadedByDefault(Offers) +
+				loginRules->getTableRefreshResponse(Offers)
+			*/
 			misc::cout << __FUNCTION__ << " response::TablesUpdates" << std::endl;
 			PrintOffers(m_Session, tablesUpdates, m_Instrument);
 			break;
@@ -160,7 +167,7 @@ namespace fxcm
 		}
 	}
 
-	void ResponseListener::SetRequestID(const misc::string& requestID)
+	void ResponseListener4Offers::SetRequestID(const misc::string& requestID)
 	{
 		m_RequestID = requestID;
 		if (m_Response)
@@ -171,26 +178,26 @@ namespace fxcm
 		m_ResponseEvent.unlock();
 	}
 
-	void ResponseListener::SetInstrument(const misc::string& instrument)
+	void ResponseListener4Offers::SetInstrument(const misc::string& instrument)
 	{
 		m_Instrument = instrument;
 	}
 
-	bool ResponseListener::WaitEvents()
+	bool ResponseListener4Offers::WaitEvents()
 	{
 		return (m_ResponseEvent.trylock(30000) == 0);
 	}
 
-	IO2GResponse* ResponseListener::GetResponse()
+	IO2GResponse* ResponseListener4Offers::GetResponse()
 	{
 		if (m_Response)
 			m_Response->addRef();
-		return m_Response;
+		return m_Response; // ~O2G2Ptr will release() it.
 	}
 
-	void ResponseListener::PrintOffers(	IO2GSession* session,
-										IO2GResponse* response,
-										const misc::string& instrument)
+	void ResponseListener4Offers::PrintOffers(	IO2GSession* session,
+												IO2GResponse* response,
+												const misc::string& instrument)
 	{
 		misc::autocritical_section autocs(m_CriticalSection);
 
@@ -200,7 +207,7 @@ namespace fxcm
 		if (!readerFactory)
 		{
 			misc::cout << __FUNCTION__
-				<< "Cannot create response reader factory" << std::endl;
+				<< ": Cannot create response reader factory" << std::endl;
 			return;
 		}
 
@@ -210,7 +217,7 @@ namespace fxcm
 		if (!offersResponseReader)
 		{
 			misc::cout << __FUNCTION__
-				<< "Cannot create offers table reader" << std::endl;
+				<< ": Cannot create offers table reader" << std::endl;
 			return;
 		}
 
@@ -256,7 +263,7 @@ namespace fxcm
 		}
 	}
 
-	void ResponseListener::PrintLevel2MarketData(IO2GSession* session,
+	void ResponseListener4Offers::PrintLevel2MarketData(IO2GSession* session,
 												IO2GResponse* response,
 												const misc::string& instrument)
 	{
@@ -266,7 +273,8 @@ namespace fxcm
 			session->getResponseReaderFactory();
 		if (!readerFactory)
 		{
-			misc::cout << "Cannot create response reader factory" << std::endl;
+			misc::cout << __FUNCTION__ 
+				<< ": Cannot create response reader factory" << std::endl;
 			return;
 		}
 
@@ -274,18 +282,49 @@ namespace fxcm
 			readerFactory->createLevel2MarketDataReader(response);
 		if (!level2ResponseReader)
 		{
-			misc::cout << "Cannot create level 2 response reader" << std::endl;
+			misc::cout << __FUNCTION__
+				<< ": Cannot create level 2 response reader" << std::endl;
 			return;
 		}
 
 		char dateBuf[32] = { 0 };
 		for (int i = 0; i < level2ResponseReader->getPriceQuotesCount(); ++i)
 		{
+			FormatDate(level2ResponseReader->getDateTime(i), dateBuf);
+			std::cout << "Quote: offerID = " << level2ResponseReader->getSymbolID(i) << "; "
+				<< "volume = " << level2ResponseReader->getVolume(i) << "; "
+				<< "date = " << dateBuf << std::endl;
+			for (int j = 0; j < level2ResponseReader->getPricesCount(i); ++j)
+			{
+				std::cout << "    ";
+				if (level2ResponseReader->isAsk(i, j))
+					std::cout << "ask = ";
+				else if (level2ResponseReader->isBid(i, j))
+					std::cout << "bid = ";
+				else if (level2ResponseReader->isHigh(i, j))
+					std::cout << "high = ";
+				else if (level2ResponseReader->isLow(i, j))
+					std::cout << "low = ";
 
+				std::cout << level2ResponseReader->getRate(i, j);
+
+				if (level2ResponseReader->isAsk(i, j) || level2ResponseReader->isBid(i, j))
+					std::cout << " (amount = " << level2ResponseReader->getAmount(i, j) << "; condition = " << level2ResponseReader->getCondition(i, j) << ")";
+
+				std::cout << "; originator = " << level2ResponseReader->getOriginator(i, j) << ";" << std::endl;
+			}
 		}
 	}
+	
+	ResponseListener4Offers::~ResponseListener4Offers()
+	{
+		if (m_Response)
+			m_Response->release();
+		m_Session->release();
+		// m_ResponseEvent will CloseHandle itself on ~dtor
+	}
 
-	void ResponseListener::FormatDate(DATE date, char* buf)
+	void ResponseListener4Offers::FormatDate(DATE date, char* buf)
 	{
 		struct tm tmBuf = { 0 };
 		CO2GDateUtils::OleTimeToCTime(date, &tmBuf);
@@ -299,13 +338,5 @@ namespace fxcm
 			<< setw(2) << setfill('0') << tmBuf.tm_min << ":" \
 			<< setw(2) << setfill('0') << tmBuf.tm_sec;
 		strcpy(buf, sstream.str().c_str());
-	}
-
-	ResponseListener::~ResponseListener()
-	{
-		if (m_Response)
-			m_Response->release();
-		m_Session->release();
-		// m_ResponseEvent will CloseHandle itself on ~dtor
 	}
 } // namespace

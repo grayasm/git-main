@@ -24,9 +24,10 @@ contact: grayasm@gmail.com
 
 #include <stddef.h>
 #include <ForexConnect.h>
-#include "SessionStatusListener.hpp"
 #include "LoginParams.hpp"
 #include "IniParams.hpp"
+#include "SessionStatusListener.hpp"
+#include "ResponseListener4Offers.hpp"
 
 namespace fxcm
 {
@@ -40,7 +41,7 @@ namespace fxcm
 		bool Login();
 		bool Logout();
 
-		bool GetOffers();
+		int GetOffers();
 
 	private:
 		Session();
@@ -48,10 +49,11 @@ namespace fxcm
 		Session& operator=(const Session&);
 
 	private:
-		fxcm::LoginParams		m_loginParams;
-		fxcm::IniParams			m_iniParams;
-		IO2GSession*			m_session;
-		SessionStatusListener*	m_sessionListener;		
+		fxcm::LoginParams			m_loginParams;
+		fxcm::IniParams				m_iniParams;
+		IO2GSession*				m_session;
+		SessionStatusListener*		m_sessionListener;
+		ResponseListener4Offers*	m_responseListener4Offers;
 	};
 } // namespace
 

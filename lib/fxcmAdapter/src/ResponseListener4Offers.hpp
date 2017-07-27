@@ -19,8 +19,8 @@ contact: grayasm@gmail.com
 */
 
 
-#ifndef __ResponseListener_hpp__
-#define __ResponseListener_hpp__
+#ifndef __ResponseListener4Offers_hpp__
+#define __ResponseListener4Offers_hpp__
 
 #include <stddef.h>
 #include <ForexConnect.h>
@@ -31,10 +31,10 @@ contact: grayasm@gmail.com
 
 namespace fxcm
 {
-	class ResponseListener : public IO2GResponseListener
+	class ResponseListener4Offers : public IO2GResponseListener
 	{
 	public:
-		ResponseListener(IO2GSession* session);
+		ResponseListener4Offers(IO2GSession* session);
 
 		// vtable begin
 		long addRef();
@@ -54,10 +54,12 @@ namespace fxcm
 		void PrintLevel2MarketData(	IO2GSession* session,
 									IO2GResponse* response,
 									const misc::string& instrument);
-		void FormatDate(DATE date, char* buf);
-
 	protected:
-		~ResponseListener();
+		~ResponseListener4Offers();
+
+	private:
+		// These do not require locking
+		void FormatDate(DATE date, char* buf);
 
 	private:
 		long					m_RefCount;
@@ -72,4 +74,4 @@ namespace fxcm
 } // namespace
 
 
-#endif // __ResponseListener_hpp__
+#endif // __ResponseListener4Offers_hpp__
