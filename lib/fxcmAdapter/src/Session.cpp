@@ -19,9 +19,11 @@ contact: grayasm@gmail.com
 */
 
 #include "Session.hpp"
-#include "ResponseListener4Offers.hpp"
 #include "unistd.hpp"
 #include "stream.hpp"
+#include "ResponseListener4Offers.hpp"
+#include "OffersPrinter.hpp"
+
 
 
 
@@ -46,6 +48,14 @@ namespace fxcm
 									m_loginParams.GetPin());
 		m_session->subscribeSessionStatus(m_sessionListener);
 
+
+
+		/*
+			Session as well as ResponseListener4Offers can output the Offers.
+			OffersPrinter deals with locking, printing and updating the Offers.
+		*/
+		m_offersPrinter = new OffersPrinter(m_session);
+
 		/*
 			ResponseListener4Offers works as a separate thread to receive
 			Offers table updates. I avoid thread contention with other table
@@ -53,12 +63,16 @@ namespace fxcm
 			e.g. easier to add DB storage for quotes, etc.
 		*/
 		m_responseListener4Offers = new ResponseListener4Offers(m_session);
-		m_responseListener4Offers->SetInstrument(m_iniParams.GetInstrument());
 		m_session->subscribeResponse(m_responseListener4Offers);
+
+		// optional can print the offers (otherwise not useful)
+		m_responseListener4Offers->SetOffersPrinter(m_offersPrinter);
 	}
 
 	Session::~Session()
 	{
+		if (m_offersPrinter)
+			delete m_offersPrinter;
 		m_session->unsubscribeResponse(m_responseListener4Offers);
 		m_responseListener4Offers->release();
 		m_session->unsubscribeSessionStatus(m_sessionListener);
@@ -113,7 +127,10 @@ namespace fxcm
 			{
 				response = loginRules->getTableRefreshResponse(Offers);
 				if (response)
-					m_responseListener4Offers->PrintOffers(m_session, response, "");
+				{
+					if(m_offersPrinter)
+						m_offersPrinter->PrintOffers(response);
+				}
 			}
 			else
 			{
@@ -136,7 +153,10 @@ namespace fxcm
 					{
 						response = m_responseListener4Offers->GetResponse();
 						if (response)
-							m_responseListener4Offers->PrintOffers(m_session, response, "");
+						{
+							if (m_offersPrinter)
+								m_offersPrinter->PrintOffers(response);
+						}
 					}
 					else
 					{

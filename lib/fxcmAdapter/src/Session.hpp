@@ -53,6 +53,7 @@ namespace fxcm
 		fxcm::IniParams				m_iniParams;
 		IO2GSession*				m_session;
 		SessionStatusListener*		m_sessionListener;
+		OffersPrinter*				m_offersPrinter;
 		ResponseListener4Offers*	m_responseListener4Offers;
 	};
 } // namespace

@@ -1,29 +1,28 @@
 /*
-Copyright (C) 2017 Mihai Vasilian
+	Copyright (C) 2017 Mihai Vasilian
 
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version 2
-of the License, or (at your option) any later version.
+	This program is free software; you can redistribute it and/or modify it
+	under the terms of the GNU General Public License as published by the
+	Free Software Foundation; either version 2 of the License, or (at your
+	option) any later version.
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+	This program is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+	See the GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License
-along with this program; if not, write to the Free Software
-Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+	You should have received a copy of the GNU General Public License along
+	with this program. If not, see http://www.gnu.org/licenses/.
 
-contact: grayasm@gmail.com
+	contact: grayasm@gmail.com
 */
-
 
 #include "ResponseListener4Offers.hpp"
 #include "autocritical_section.hpp"
 #include "stream.hpp"
 #include <sstream>
-#include <iomanip>
+
+
 
 
 namespace fxcm
@@ -35,9 +34,9 @@ namespace fxcm
 		m_RefCount = 1;
 		// m_ResponseEvent is non-signaled
 		m_RequestID = "";
-		m_Instrument = "";
 		m_Response = NULL;
-		// m_Offers
+		// m_CriticalSection - is unlocked
+		m_offersPrinter = NULL;
 		misc::cout.precision(6);
 	}
 
@@ -96,11 +95,12 @@ namespace fxcm
 			/*
 				The table Offers is updated with this response type when
 				initiated by - see Session.cpp, GetOffers:
-				loginRules->isTableLoadedByDefault(Offers) +
-				loginRules->getTableRefreshResponse(Offers)
+					loginRules->isTableLoadedByDefault(Offers) +
+					loginRules->getTableRefreshResponse(Offers)
 			*/
 			misc::cout << __FUNCTION__ << " response::TablesUpdates" << std::endl;
-			PrintOffers(m_Session, tablesUpdates, m_Instrument);
+			if (m_offersPrinter)
+				m_offersPrinter->PrintOffers(tablesUpdates);
 			break;
 
 		case MarketDataSnapshot:
@@ -157,7 +157,8 @@ namespace fxcm
 
 		case Level2MarketData:
 			misc::cout << __FUNCTION__ << " response::Level2MarketData" << std::endl;
-			PrintLevel2MarketData(m_Session, tablesUpdates, m_Instrument);
+			if(m_offersPrinter)
+				m_offersPrinter->PrintLevel2MarketData(tablesUpdates);
 			break;
 
 		default:
@@ -178,11 +179,6 @@ namespace fxcm
 		m_ResponseEvent.unlock();
 	}
 
-	void ResponseListener4Offers::SetInstrument(const misc::string& instrument)
-	{
-		m_Instrument = instrument;
-	}
-
 	bool ResponseListener4Offers::WaitEvents()
 	{
 		return (m_ResponseEvent.trylock(30000) == 0);
@@ -195,148 +191,18 @@ namespace fxcm
 		return m_Response; // ~O2G2Ptr will release() it.
 	}
 
-	void ResponseListener4Offers::PrintOffers(	IO2GSession* session,
-												IO2GResponse* response,
-												const misc::string& instrument)
+	void ResponseListener4Offers::SetOffersPrinter(OffersPrinter* op)
 	{
-		misc::autocritical_section autocs(m_CriticalSection);
-
-		O2G2Ptr<IO2GResponseReaderFactory> readerFactory =
-			session->getResponseReaderFactory();
-
-		if (!readerFactory)
-		{
-			misc::cout << __FUNCTION__
-				<< ": Cannot create response reader factory" << std::endl;
-			return;
-		}
-
-		O2G2Ptr<IO2GOffersTableResponseReader> offersResponseReader =
-			readerFactory->createOffersTableReader(response);
-
-		if (!offersResponseReader)
-		{
-			misc::cout << __FUNCTION__
-				<< ": Cannot create offers table reader" << std::endl;
-			return;
-		}
-
-		for (int i = 0; i < offersResponseReader->size(); ++i)
-		{
-			O2G2Ptr<IO2GOfferRow> offerRow = offersResponseReader->getRow(i);
-			size_t index = m_Offers.FindOffer(offerRow->getOfferID());
-			
-			fx::Offer* offer = NULL;
-			if (index != -1)
-				offer = m_Offers.Get(index);
-			
-			if (offer)
-			{
-				if (offerRow->isTimeValid() &&
-					offerRow->isBidValid() && offerRow->isAskValid())
-				{
-					offer->SetDate(offerRow->getTime());
-					offer->SetBid(offerRow->getBid());
-					offer->SetAsk(offerRow->getAsk());
-				}
-			}
-			else
-			{
-				fx::Offer newOffer(offerRow->getOfferID(),
-					offerRow->getInstrument(), offerRow->getDigits(),
-					offerRow->getPointSize(), offerRow->getTime(),
-					offerRow->getBid(), offerRow->getAsk());
-				m_Offers.AddOffer(newOffer);
-				
-				// MT can screw the index
-				index = m_Offers.FindOffer(offerRow->getOfferID());
-				offer = m_Offers.Get(index);
-			}
-
-			if (!instrument.empty() || instrument.size() == 0 ||
-				(instrument == offerRow->getInstrument()))
-			{
-				misc::cout << offer->GetId() << ", " << offer->GetInstrument()
-					<< ", Bid=" << std::fixed << offer->GetBid()
-					<< ", Ask=" << std::fixed << offer->GetAsk() << std::endl;
-			}
-		}
+		m_offersPrinter = op;
 	}
 
-	void ResponseListener4Offers::PrintLevel2MarketData(IO2GSession* session,
-												IO2GResponse* response,
-												const misc::string& instrument)
-	{
-		misc::autocritical_section autocs(m_CriticalSection);
-
-		O2G2Ptr<IO2GResponseReaderFactory> readerFactory =
-			session->getResponseReaderFactory();
-		if (!readerFactory)
-		{
-			misc::cout << __FUNCTION__ 
-				<< ": Cannot create response reader factory" << std::endl;
-			return;
-		}
-
-		O2G2Ptr<IO2GLevel2MarketDataUpdatesReader> level2ResponseReader =
-			readerFactory->createLevel2MarketDataReader(response);
-		if (!level2ResponseReader)
-		{
-			misc::cout << __FUNCTION__
-				<< ": Cannot create level 2 response reader" << std::endl;
-			return;
-		}
-
-		char dateBuf[32] = { 0 };
-		for (int i = 0; i < level2ResponseReader->getPriceQuotesCount(); ++i)
-		{
-			FormatDate(level2ResponseReader->getDateTime(i), dateBuf);
-			std::cout << "Quote: offerID = " << level2ResponseReader->getSymbolID(i) << "; "
-				<< "volume = " << level2ResponseReader->getVolume(i) << "; "
-				<< "date = " << dateBuf << std::endl;
-			for (int j = 0; j < level2ResponseReader->getPricesCount(i); ++j)
-			{
-				std::cout << "    ";
-				if (level2ResponseReader->isAsk(i, j))
-					std::cout << "ask = ";
-				else if (level2ResponseReader->isBid(i, j))
-					std::cout << "bid = ";
-				else if (level2ResponseReader->isHigh(i, j))
-					std::cout << "high = ";
-				else if (level2ResponseReader->isLow(i, j))
-					std::cout << "low = ";
-
-				std::cout << level2ResponseReader->getRate(i, j);
-
-				if (level2ResponseReader->isAsk(i, j) || level2ResponseReader->isBid(i, j))
-					std::cout << " (amount = " << level2ResponseReader->getAmount(i, j) << "; condition = " << level2ResponseReader->getCondition(i, j) << ")";
-
-				std::cout << "; originator = " << level2ResponseReader->getOriginator(i, j) << ";" << std::endl;
-			}
-		}
-	}
-	
 	ResponseListener4Offers::~ResponseListener4Offers()
 	{
 		if (m_Response)
 			m_Response->release();
 		m_Session->release();
 		// m_ResponseEvent will CloseHandle itself on ~dtor
+		// m_offersPrinter is owned by the Session
 	}
 
-	void ResponseListener4Offers::FormatDate(DATE date, char* buf)
-	{
-		struct tm tmBuf = { 0 };
-		CO2GDateUtils::OleTimeToCTime(date, &tmBuf);
-
-		using namespace std;
-		stringstream sstream;
-		sstream << setw(2) << setfill('0') << tmBuf.tm_mon + 1 << "." \
-			<< setw(2) << setfill('0') << tmBuf.tm_mday << "." \
-			<< setw(4) << tmBuf.tm_year + 1900 << " " \
-			<< setw(2) << setfill('0') << tmBuf.tm_hour << ":" \
-			<< setw(2) << setfill('0') << tmBuf.tm_min << ":" \
-			<< setw(2) << setfill('0') << tmBuf.tm_sec;
-		strcpy(buf, sstream.str().c_str());
-	}
 } // namespace

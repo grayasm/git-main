@@ -26,8 +26,9 @@ contact: grayasm@gmail.com
 #include <ForexConnect.h>
 #include "string.hpp"
 #include "event.hpp"
-#include "OfferCollection.hpp"
 #include "critical_section.hpp"
+#include "OffersPrinter.hpp"
+
 
 namespace fxcm
 {
@@ -45,31 +46,22 @@ namespace fxcm
 		// vtable end
 
 		void SetRequestID(const misc::string& requestID);
-		void SetInstrument(const misc::string& instrument);
 		bool WaitEvents();
 		IO2GResponse* GetResponse();
-		void PrintOffers(IO2GSession* session,
-						IO2GResponse* response,
-						const misc::string& instrument);
-		void PrintLevel2MarketData(	IO2GSession* session,
-									IO2GResponse* response,
-									const misc::string& instrument);
+		void SetOffersPrinter(OffersPrinter* op);
+
+
 	protected:
 		~ResponseListener4Offers();
-
-	private:
-		// These do not require locking
-		void FormatDate(DATE date, char* buf);
 
 	private:
 		long					m_RefCount;
 		IO2GSession*			m_Session;
 		misc::string			m_RequestID;
-		misc::string			m_Instrument;
 		misc::event				m_ResponseEvent;
 		IO2GResponse*			m_Response;
-		OfferCollection			m_Offers;
 		misc::critical_section	m_CriticalSection;
+		OffersPrinter*			m_offersPrinter;
 	};
 } // namespace
 
