@@ -26,6 +26,9 @@ iptables -A INPUT -p udp --dport 51413 -j ACCEPT
 # Open bitcoin-qt port for all
 iptables -A INPUT -p tcp --dport 8333 -j ACCEPT
 iptables -A INPUT -p udp --dport 8333 -j ACCEPT
+# Open postgresql port for all
+iptables -A INPUT -p tcp --dport 5432 -j ACCEPT
+iptables -A INPUT -p udp --dport 5432 -j ACCEPT
 # Allow everybody from LAN to connect
 iptables -A INPUT -p tcp -s 192.168.0.1/24 -j ACCEPT
 iptables -A INPUT -p udp -s 192.168.0.1/24 -j ACCEPT
@@ -78,6 +81,9 @@ ip6tables -A INPUT -p udp --dport 51413 -j ACCEPT
 # Open bitcoin-qt port for all
 ip6tables -A INPUT -p tcp --dport 8333 -j ACCEPT
 ip6tables -A INPUT -p udp --dport 8333 -j ACCEPT
+# Open postgresql port for all
+ip6tables -A INPUT -p tcp --dport 5432 -j ACCEPT
+ip6tables -A INPUT -p udp --dport 5432 -j ACCEPT
 # tv-maxe static ports
 ip6tables -A INPUT -p tcp --dport 10320:10321 -j ACCEPT
 
