@@ -3,7 +3,7 @@
 
     Run with:
     psql -d mytestdb -U pgmihai   # give password
-    \i 04_query_a_table.sql
+    \i 04_querying_a_table.sql
 */
 
 SELECT * FROM weather;  -- retrieve all rows from weather;
