@@ -1,4 +1,4 @@
-﻿/*  Chapter 1. Getting Started
+/*  Chapter 1. Getting Started
     Run:
     (a) from pgadmin3 using GUI tool
     (b) from command line:

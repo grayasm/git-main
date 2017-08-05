@@ -1,4 +1,4 @@
-﻿/*  Cap.2 The SQL Language,
+/*  Cap.2 The SQL Language,
     2.4 Populating a Table with Rows
 
     Run with:
