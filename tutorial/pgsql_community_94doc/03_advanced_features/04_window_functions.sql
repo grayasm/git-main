@@ -178,3 +178,8 @@ SELECT sum(salary) OVER w, avg(salary) OVER w
  14600 | 4866.66666666667
  14600 | 4866.66666666667
 */
+
+
+
+-- clean up
+DROP TABLE IF EXISTS empsalary;

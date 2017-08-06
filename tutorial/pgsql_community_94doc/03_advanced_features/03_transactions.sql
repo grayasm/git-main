@@ -101,3 +101,9 @@ SELECT * FROM accounts ORDER BY name;
  Bob   | Chicago     |  525.43
  Wally | Detroit     |  225.13
 */
+
+
+
+
+--clean up
+DROP TABLE accounts, branches;

@@ -45,3 +45,7 @@ SELECT name, altitude FROM ONLY cities WHERE altitude > 500;
  Las Vegas |     2174
  Mariposa  |     1953
 */
+
+
+-- clean up
+DROP TABLE weather, capitals, cities;

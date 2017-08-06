@@ -12,9 +12,9 @@
     maintaining the REFERENTIAL INTEGRITY of your data.
     The new declaration of the tables would look like this:
 */
-DROP VIEW myview;    -- delete tables to have them recreated
-DROP TABLE cities;
-DROP TABLE weather;
+DROP VIEW  IF EXISTS myview;    -- drop old view and tables
+DROP TABLE IF EXISTS cities;
+DROP TABLE IF EXISTS weather;
 
 
 CREATE TABLE cities (
@@ -32,3 +32,10 @@ CREATE TABLE weather (
 
 INSERT INTO weather VALUES ('Berkeley', 45, 53, 0.0, '1994-11-28');
 /*  DETAIL:  Key (city)=(Berkeley) is not present in table "cities".  */
+
+
+
+-- clean up
+DROP VIEW myview;
+DROP TABLE cities;
+DROP TABLE weather;

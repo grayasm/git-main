@@ -29,7 +29,7 @@ SELECT weather.city, weather.temp_lo, weather.temp_hi,
 	weather.prcp, weather.date, cities.location
 	FROM weather, cities
 	WHERE cities.name = weather.city;
-	
+
 
 /*  Join queries of the kind seen thus far can also be written in this
     alternative form.
@@ -62,19 +62,3 @@ SELECT W1.city, W1.temp_lo AS low, W1.temp_hi AS high,
 SELECT *
 	FROM weather w, cities c
 	WHERE w.city = c.name;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
