@@ -244,29 +244,3 @@ SELECT product_name, group_name, price,
  Samsung Galaxy Tab | Tablet     |  200.00 |                  700.00
  iPad               | Tablet     |  700.00 |                  700.00
 */
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
-
-
-
-
