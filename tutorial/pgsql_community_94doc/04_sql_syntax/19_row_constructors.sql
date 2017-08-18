@@ -4,7 +4,7 @@
     psql -d mytestdb -U pgmihai
     \dt  --list all tables
     \df  --list all functions
-    \i 18_row_constructors.sql
+    \i 19_row_constructors.sql
 */
 
 
