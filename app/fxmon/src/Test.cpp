@@ -50,6 +50,8 @@ int test2()
 		misc::cout << "sleep(1)" << std::endl;
 	} while (i < 10);
 
+	session.GetTradingSettings();
+
 	session.Logout();
 	
 	return 0;

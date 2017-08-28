@@ -23,6 +23,7 @@ contact: grayasm@gmail.com
 #include "stream.hpp"
 #include "ResponseListener4Offers.hpp"
 #include "OffersPrinter.hpp"
+#include "ErrorCodes.hpp"
 
 
 
@@ -107,7 +108,7 @@ namespace fxcm
 		{
 			misc::cout << __FUNCTION__
 				<< ": Session disconnected" << std::endl;
-			return -100; // Disconnected
+			return ErrorCodes::ERR_DISCONNECTED;
 		}
 			
 
@@ -162,7 +163,7 @@ namespace fxcm
 					{
 						misc::cout << __FUNCTION__
 							<< ": Response waiting timeout expired" << std::endl;
-						return -101; // Timeout
+						return ErrorCodes::ERR_TIMEOUT;
 					}
 				}
 			}
@@ -171,11 +172,142 @@ namespace fxcm
 		{
 			misc::cout << __FUNCTION__ 
 				<< ": Cannot get login rules" << std::endl;
-			return -102; // No login rules
+			return ErrorCodes::ERR_NO_LOGIN_RULES;
 		}
 
-		return 0;
-	}
+		return ErrorCodes::ERR_SUCCESS;
+	} // GetOffers
+
+
+	int Session::GetTradingSettings(TradingSettingsVec& tsv, bool refresh/*= false*/)
+	{
+		if (!refresh && !m_tradingSettingsVec.empty())
+		{
+			tsv = m_tradingSettingsVec;
+			return ErrorCodes::ERR_SUCCESS;
+		}
+
+		m_tradingSettingsVec.clear();
+
+		O2G2Ptr<IO2GLoginRules> loginRules = m_session->getLoginRules();
+		if (!loginRules)
+		{
+			misc::cout << __FUNCTION__
+				<< ": Cannot get login rules" << std::endl;
+			return ErrorCodes::ERR_NO_LOGIN_RULES;
+		}
+
+		O2G2Ptr<IO2GResponse> accountsResponse =
+			loginRules->getTableRefreshResponse(Accounts);
+		if (!accountsResponse)
+		{
+			misc::cout << __FUNCTION__
+				<< ": Cannot get Accounts response" << std::endl;
+			return ErrorCodes::ERR_NO_ACOUNTS_RESPONSE;
+		}
+
+		O2G2Ptr<IO2GResponse> offersResponse =
+			loginRules->getTableRefreshResponse(Offers);
+		if (!offersResponse)
+		{
+			misc::cout << __FUNCTION__
+				<< ": Cannot get Offers response" << std::endl;
+			return ErrorCodes::ERR_NO_OFFERS_RESPONSE;
+		}
+
+		O2G2Ptr<IO2GTradingSettingsProvider> tradingSettingsProvider =
+			loginRules->getTradingSettingsProvider();
+		O2G2Ptr<IO2GResponseReaderFactory> factory =
+			m_session->getResponseReaderFactory();
+		if (!factory)
+		{
+			misc::cout << __FUNCTION__
+				<< ": Cannot create response reader factory" << std::endl;
+			return ErrorCodes::ERR_NO_RESPONSE_READER_FACTORY;
+		}
+
+		O2G2Ptr<IO2GAccountsTableResponseReader> accountsReader =
+			factory->createAccountsTableReader(accountsResponse);
+		O2G2Ptr<IO2GOffersTableResponseReader> instrumentsReader =
+			factory->createOffersTableReader(offersResponse);
+		O2G2Ptr<IO2GAccountRow>	account = accountsReader->getRow(0);
+		for (int i = 0; i < instrumentsReader->size(); ++i)
+		{
+			O2G2Ptr<IO2GOfferRow> instrumentRow = instrumentsReader->getRow(i);
+			const char* sInstrument = instrumentRow->getInstrument();
+			int condDistStopForTrade =
+				tradingSettingsProvider->getCondDistStopForTrade(sInstrument);
+			int condDistLimitForTrade =
+				tradingSettingsProvider->getCondDistLimitForTrade(sInstrument);
+			int condDistEntryStop =
+				tradingSettingsProvider->getCondDistEntryStop(sInstrument);
+			int condDistEntryLimit =
+				tradingSettingsProvider->getCondDistEntryLimit(sInstrument);
+			int minQuantity =
+				tradingSettingsProvider->getMinQuantity(sInstrument, account);
+			int maxQuantity =
+				tradingSettingsProvider->getMaxQuantity(sInstrument, account);
+			int baseUnitSize =
+				tradingSettingsProvider->getBaseUnitSize(sInstrument, account);
+			O2GMarketStatus marketStatus =
+				tradingSettingsProvider->getMarketStatus(sInstrument);
+
+			int minTrailingStep = tradingSettingsProvider->getMinTrailingStep();
+			int maxTrailingStep = tradingSettingsProvider->getMaxTrailingStep();
+
+			double mmr = tradingSettingsProvider->getMMR(sInstrument, account);
+			double mmr2 = 0, emr = 0, lmr = 0;
+			bool b3LevelMargin =
+				tradingSettingsProvider->getMargins(sInstrument,
+													account,
+													mmr2, emr, lmr);
+
+
+
+			bool bDebug = false;
+			if (bDebug)
+			{
+				std::string sMarketStatus = "unknown";
+				switch (marketStatus)
+				{
+				case MarketStatusOpen:
+					sMarketStatus = "Market Open";
+					break;
+				case MarketStatusClosed:
+					sMarketStatus = "Market Close";
+					break;
+				}
+				misc::cout << "Instrument: " << sInstrument << std::endl;
+				misc::cout << "Status : " << sMarketStatus << std::endl;
+				misc::cout << "Cond.Dist: ST=" << condDistStopForTrade
+					<< "; LT=" << condDistLimitForTrade
+					<< std::endl;
+				misc::cout << "Cond.Dist entry stop=" << condDistEntryStop
+					<< "; entry limit=" << condDistEntryLimit
+					<< std::endl;
+				misc::cout << "Quantity: Min=" << minQuantity
+					<< "; Max=" << maxQuantity << std::endl;
+				misc::cout << "Base unit size=" << baseUnitSize
+					<< "; MMR=" << mmr << std::endl;
+
+				if (b3LevelMargin)
+				{
+					misc::cout << "Three level maring: MMR=" << mmr2
+						<< "; EMR=" << emr << "; LMR=" << lmr << std::endl;
+				}
+				else
+				{
+					misc::cout << "Single level margin: MMR=" << mmr2
+						<< "; EMR=" << emr << "; LMR=" << lmr << std::endl;
+				}
+				misc::cout << "Trailing step: " << minTrailingStep
+					<< "-" << maxTrailingStep << std::endl;
+			}
+		}
+
+
+		return ErrorCodes::ERR_SUCCESS;
+	} // GetTradingSettings
 
 
 } // namespace

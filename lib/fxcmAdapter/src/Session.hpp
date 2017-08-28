@@ -28,11 +28,15 @@ contact: grayasm@gmail.com
 #include "IniParams.hpp"
 #include "SessionStatusListener.hpp"
 #include "ResponseListener4Offers.hpp"
+#include "TradingSettings.hpp"
 
 namespace fxcm
 {
 	class Session
 	{
+	public:
+		typedef std::vector<TradingSettings> TradingSettingsVec;
+
 	public:
 		Session(const fxcm::LoginParams& loginParams,
 				const fxcm::IniParams& iniParams);
@@ -42,6 +46,7 @@ namespace fxcm
 		bool Logout();
 
 		int GetOffers();
+		int GetTradingSettings(TradingSettingsVec& tsv, bool refresh = false);
 
 	private:
 		Session();
@@ -55,6 +60,7 @@ namespace fxcm
 		SessionStatusListener*		m_sessionListener;
 		OffersPrinter*				m_offersPrinter;
 		ResponseListener4Offers*	m_responseListener4Offers;
+		TradingSettingsVec			m_tradingSettingsVec;
 	};
 } // namespace
 
