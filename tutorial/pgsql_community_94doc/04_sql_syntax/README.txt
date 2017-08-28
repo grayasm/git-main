@@ -19,7 +19,7 @@
 
 4.2     Value Expressions
 
-        Column references       ex:	my_table.name, my_table.salary
+        Column references       ex: my_table.name, my_table.salary
         Positional parameters   ex: inside a function $2 is the 2nd parameter
         Subscripts              ex: CREATE TABLE bigt(v int[2]);
         Field selection         ex: mytable.mycolumn, $1.mycolumn, (fn(a)).col3

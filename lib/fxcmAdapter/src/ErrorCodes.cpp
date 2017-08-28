@@ -36,13 +36,13 @@ namespace fxcm
 	{
 		switch (id)
 		{
-		case ErrorId::ERR_SUCCESS: return "Success";
-		case ErrorId::ERR_DISCONNECTED: return "Disconnected";
-		case ErrorId::ERR_TIMEOUT: return "Timeout";
-		case ErrorId::ERR_NO_LOGIN_RULES: return "No login rules";
-		case ErrorId::ERR_NO_ACOUNTS_RESPONSE: return "No Accounts response";
-		case ErrorId::ERR_NO_OFFERS_RESPONSE: return "No Offers response";
-		case ErrorId::ERR_NO_RESPONSE_READER_FACTORY : return "Cannot create response reader factory";
+		case ERR_SUCCESS: return "Success";
+		case ERR_DISCONNECTED: return "Disconnected";
+		case ERR_TIMEOUT: return "Timeout";
+		case ERR_NO_LOGIN_RULES: return "No login rules";
+		case ERR_NO_ACOUNTS_RESPONSE: return "No Accounts response";
+		case ERR_NO_OFFERS_RESPONSE: return "No Offers response";
+		case ERR_NO_RESPONSE_READER_FACTORY : return "Cannot create response reader factory";
 		default:
 			throw misc::exception("Unknown ErrorId");
 		} // switch
