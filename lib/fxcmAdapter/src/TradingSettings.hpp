@@ -38,7 +38,7 @@ namespace fxcm
 		bool operator < (const TradingSettings& tc) const;
 
 		const misc::string& GetInstrument() const;
-		void SetIntrument(const misc::string& instrument);
+		void SetInstrument(const misc::string& instrument);
 
 		int GetCondDistStopForTrade() const;
 		void SetCondDistStopForTrade(int val);		

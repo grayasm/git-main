@@ -91,52 +91,134 @@ namespace fxcm
 	{
 		return m_instrument;
 	}
-	void TradingSettings::SetIntrument(const misc::string& instrument)
+	void TradingSettings::SetInstrument(const misc::string& instrument)
 	{
 		m_instrument = instrument;
 	}
 
-	int TradingSettings::GetCondDistStopForTrade() const;
-	void TradingSettings::SetCondDistStopForTrade(int val);
+	int TradingSettings::GetCondDistStopForTrade() const
+	{
+		return m_condDistStopForTrade;
+	}
+	void TradingSettings::SetCondDistStopForTrade(int val)
+	{
+		m_condDistStopForTrade = val;
+	}
 
-	int TradingSettings::GetCondDistLimitForTrade() const;
-	void TradingSettings::SetCondDistLimitForTrade(int val);
+	int TradingSettings::GetCondDistLimitForTrade() const
+	{
+		return m_condDistLimitForTrade;
+	}
+	void TradingSettings::SetCondDistLimitForTrade(int val)
+	{
+		m_condDistLimitForTrade = val;
+	}
 
-	int TradingSettings::GetCondDistEntryStop() const;
-	void TradingSettings::SetCondDistEntryStop(int val);
+	int TradingSettings::GetCondDistEntryStop() const
+	{
+		return m_condDistEntryStop;
+	}
+	void TradingSettings::SetCondDistEntryStop(int val)
+	{
+		m_condDistEntryStop = val;
+	}
 
-	int TradingSettings::GetCondDistEntryLimit() const;
-	void TradingSettings::SetCondDistEntryLimit(int val);
+	int TradingSettings::GetCondDistEntryLimit() const
+	{
+		return m_condDistEntryLimit;
+	}
+	void TradingSettings::SetCondDistEntryLimit(int val)
+	{
+		m_condDistEntryLimit = val;
+	}
 
-	int TradingSettings::GetMinQuantity() const;
-	void TradingSettings::SetMinQuantity(int val);
+	int TradingSettings::GetMinQuantity() const
+	{
+		return m_minQuantity;
+	}
+	void TradingSettings::SetMinQuantity(int val)
+	{
+		m_minQuantity;
+	}
 
-	int TradingSettings::GetMaxQuantity() const;
-	void TradingSettings::SetMaxQuantity(int val);
+	int TradingSettings::GetMaxQuantity() const
+	{
+		return m_maxQuantity;
+	}
+	void TradingSettings::SetMaxQuantity(int val)
+	{
+		m_maxQuantity = val;
+	}
 
-	int	TradingSettings::GetBaseUnitSize() const;
-	void TradingSettings::SetBaseUnitSize(int val);
+	int	TradingSettings::GetBaseUnitSize() const
+	{
+		return m_baseUnitSize;
+	}
+	void TradingSettings::SetBaseUnitSize(int val)
+	{
+		m_baseUnitSize = val;
+	}
 
-	O2GMarketStatus TradingSettings::GetMarketStatus() const;
-	void TradingSettings::SetMarketStatus(O2GMarketStatus ms);
+	O2GMarketStatus TradingSettings::GetMarketStatus() const
+	{
+		return m_marketStatus;
+	}
+	void TradingSettings::SetMarketStatus(O2GMarketStatus ms)
+	{
+		m_marketStatus = ms;
+	}
 
-	int TradingSettings::GetMinTrailingStep() const;
-	void TradingSettings::SetMinTrailingStep(int val);
+	int TradingSettings::GetMinTrailingStep() const
+	{
+		return m_minTrailingStep;
+	}
+	void TradingSettings::SetMinTrailingStep(int val)
+	{
+		m_minTrailingStep = val;
+	}
 
-	int TradingSettings::GetMaxTrailingStep() const;
-	void TradingSettings::SetMaxTrailingStep(int val);
+	int TradingSettings::GetMaxTrailingStep() const
+	{
+		return m_maxTrailingStep;
+	}
+	void TradingSettings::SetMaxTrailingStep(int val)
+	{
+		m_maxTrailingStep = val;
+	}
 
-	double TradingSettings::GetMMR() const;
-	void TradingSettings::SetMMR(double val);
+	double TradingSettings::GetMMR() const
+	{
+		return m_mmr;
+	}
+	void TradingSettings::SetMMR(double val)
+	{
+		m_mmr = val;
+	}
 
-	double TradingSettings::GetMMR2() const;
-	void TradingSettings::SetMMR2(double val);
+	double TradingSettings::GetMMR2() const
+	{
+		return m_mmr2;
+	}
+	void TradingSettings::SetMMR2(double val)
+	{
+		m_mmr2 = val;
+	}
 
-	double TradingSettings::GetEMR() const;
-	void TradingSettings::SetEMR(double val);
+	double TradingSettings::GetEMR() const
+	{
+		return m_emr;
+	}
+	void TradingSettings::SetEMR(double val)
+	{
+		m_emr = val;
+	}
 
-	double TradingSettings::GetLMR() const;
-	void TradingSettings::SetLMR(double val);
-
-
+	double TradingSettings::GetLMR() const
+	{
+		return m_lmr;
+	}
+	void TradingSettings::SetLMR(double val)
+	{
+		m_lmr = val;
+	}
 } // namespace

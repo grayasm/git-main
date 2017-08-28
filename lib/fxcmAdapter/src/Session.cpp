@@ -179,11 +179,11 @@ namespace fxcm
 	} // GetOffers
 
 
-	int Session::GetTradingSettings(TradingSettingsVec& tsv, bool refresh/*= false*/)
+	int Session::GetTradingSettings(TradingSettingsVec& tsvec, bool refresh/*= false*/)
 	{
 		if (!refresh && !m_tradingSettingsVec.empty())
 		{
-			tsv = m_tradingSettingsVec;
+			tsvec = m_tradingSettingsVec;
 			return ErrorCodes::ERR_SUCCESS;
 		}
 
@@ -262,7 +262,23 @@ namespace fxcm
 													account,
 													mmr2, emr, lmr);
 
-
+			TradingSettings ts;
+			ts.SetInstrument(sInstrument);
+			ts.SetCondDistStopForTrade(condDistStopForTrade);
+			ts.SetCondDistLimitForTrade(condDistLimitForTrade);
+			ts.SetCondDistEntryStop(condDistEntryStop);
+			ts.SetCondDistEntryLimit(condDistEntryLimit);
+			ts.SetMinQuantity(minQuantity);
+			ts.SetMaxQuantity(maxQuantity);
+			ts.SetBaseUnitSize(baseUnitSize);
+			ts.SetMarketStatus(marketStatus);
+			ts.SetMinTrailingStep(minTrailingStep);
+			ts.SetMaxTrailingStep(maxTrailingStep);
+			ts.SetMMR(mmr);
+			ts.SetMMR2(mmr2);
+			ts.SetEMR(emr);
+			ts.SetLMR(lmr);
+			tsvec.push_back(ts);
 
 			bool bDebug = false;
 			if (bDebug)
@@ -305,9 +321,71 @@ namespace fxcm
 			}
 		}
 
-
 		return ErrorCodes::ERR_SUCCESS;
 	} // GetTradingSettings
+
+
+	int Session::GetTradingPermissions(const char* sInstrument, TradingPermissions& tp)
+	{
+		O2G2Ptr<IO2GLoginRules> loginRules = m_session->getLoginRules();
+		if (!loginRules)
+		{
+			misc::cout << __FUNCTION__
+				<< ": Cannot get login rules" << std::endl;
+			return ErrorCodes::ERR_NO_LOGIN_RULES;
+		}
+
+		O2G2Ptr<IO2GPermissionChecker> permissionChecker =
+			loginRules->getPermissionChecker();
+		if (!permissionChecker)
+		{
+			misc::cout << __FUNCTION__
+				<< ": Cannot get permission checker" << std::endl;
+			return ErrorCodes::ERR_NO_PERMISSION_CHECKER;
+		}
+
+		if (strcmp(sInstrument, "") == 0)
+			return ErrorCodes::ERR_NO_INSTRUMENT;
+
+		tp.SetInstrument(sInstrument);
+		tp.SetCanCreateMarketOpenOrder(permissionChecker->canCreateMarketOpenOrder(sInstrument));
+		tp.SetCanChangeMarketOpenOrder(permissionChecker->canChangeMarketOpenOrder(sInstrument));
+		tp.SetCanDeleteMarketOpenOrder(permissionChecker->canDeleteMarketOpenOrder(sInstrument));
+		tp.SetCanCreateMarketCloseOrder(permissionChecker->canCreateMarketCloseOrder(sInstrument));		
+		tp.SetCanChangeMarketCloseOrder(permissionChecker->canChangeMarketCloseOrder(sInstrument));		
+		tp.SetCanDeleteMarketCloseOrder(permissionChecker->canDeleteMarketCloseOrder(sInstrument));		
+		tp.SetCanCreateEntryOrder(permissionChecker->canCreateEntryOrder(sInstrument));		
+		tp.SetCanChangeEntryOrder(permissionChecker->canChangeEntryOrder(sInstrument));		
+		tp.SetCanDeleteEntryOrder(permissionChecker->canDeleteEntryOrder(sInstrument));		
+		tp.SetCanCreateStopLimitOrder(permissionChecker->canCreateStopLimitOrder(sInstrument));		
+		tp.SetCanChangeStopLimitOrder(permissionChecker->canChangeStopLimitOrder(sInstrument));		
+		tp.SetCanDeleteStopLimitOrder(permissionChecker->canDeleteStopLimitOrder(sInstrument));		
+		tp.SetCanRequestQuote(permissionChecker->canRequestQuote(sInstrument));		
+		tp.SetCanAcceptQuote(permissionChecker->canAcceptQuote(sInstrument));		
+		tp.SetCanDeleteQuote(permissionChecker->canDeleteQuote(sInstrument));		
+		tp.SetCanCreateOCO(permissionChecker->canCreateOCO(sInstrument));		
+		tp.SetCanCreateOTO(permissionChecker->canCreateOTO(sInstrument));		
+		tp.SetCanJoinToNewContingencyGroup(permissionChecker->canJoinToNewContingencyGroup(sInstrument));		
+		tp.SetCanJoinToExistingContingencyGroup(permissionChecker->canJoinToExistingContingencyGroup(sInstrument));		
+		tp.SetCanRemoveFromContingencyGroup(permissionChecker->canRemoveFromContingencyGroup(sInstrument));		
+		tp.SetCanChangeOfferSubscription(permissionChecker->canChangeOfferSubscription(sInstrument));		
+		tp.SetCanCreateNetCloseOrder(permissionChecker->canCreateNetCloseOrder(sInstrument));		
+		tp.SetCanChangeNetCloseOrder(permissionChecker->canChangeNetCloseOrder(sInstrument));		
+		tp.SetCanDeleteNetCloseOrder(permissionChecker->canDeleteNetCloseOrder(sInstrument));		
+		tp.SetCanCreateNetStopLimitOrder(permissionChecker->canCreateNetStopLimitOrder(sInstrument));
+		tp.SetCanChangeNetStopLimitOrder(permissionChecker->canChangeNetStopLimitOrder(sInstrument));
+		tp.SetCanDeleteNetStopLimitOrder(permissionChecker->canDeleteNetStopLimitOrder(sInstrument));
+		tp.SetCanUseDynamicTrailingForStop(permissionChecker->canUseDynamicTrailingForStop());
+		tp.SetCanUseDynamicTrailingForLimit(permissionChecker->canUseDynamicTrailingForLimit());
+		tp.SetCanUseDynamicTrailingForEntryStop(permissionChecker->canUseDynamicTrailingForEntryStop());
+		tp.SetCanUseDynamicTrailingForEntryLimit(permissionChecker->canUseDynamicTrailingForEntryLimit());
+		tp.SetCanUseFluctuateTrailingForStop(permissionChecker->canUseFluctuateTrailingForStop());
+		tp.SetCanUseFluctuateTrailingForLimit(permissionChecker->canUseFluctuateTrailingForLimit());
+		tp.SetCanUseFluctuateTrailingForEntryStop(permissionChecker->canUseFluctuateTrailingForEntryStop());
+		tp.SetCanUseFluctuateTrailingForEntryLimit(permissionChecker->canUseFluctuateTrailingForEntryLimit());
+
+		return ErrorCodes::ERR_SUCCESS;
+	}
 
 
 } // namespace

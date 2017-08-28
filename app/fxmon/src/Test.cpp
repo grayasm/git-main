@@ -50,7 +50,11 @@ int test2()
 		misc::cout << "sleep(1)" << std::endl;
 	} while (i < 10);
 
-	session.GetTradingSettings();
+	misc::vector<fxcm::TradingSettings> tsvec;
+	session.GetTradingSettings(tsvec, true);
+
+	fxcm::TradingPermissions tradingPermission;
+	session.GetTradingPermissions("EUR/USD", tradingPermission);
 
 	session.Logout();
 	

@@ -24,18 +24,23 @@ contact: grayasm@gmail.com
 
 #include <stddef.h>
 #include <ForexConnect.h>
+#include <vector.hpp>
+
 #include "LoginParams.hpp"
 #include "IniParams.hpp"
 #include "SessionStatusListener.hpp"
 #include "ResponseListener4Offers.hpp"
 #include "TradingSettings.hpp"
+#include "TradingPermissions.hpp"
+
+
 
 namespace fxcm
 {
 	class Session
 	{
 	public:
-		typedef std::vector<TradingSettings> TradingSettingsVec;
+		typedef misc::vector<TradingSettings> TradingSettingsVec;
 
 	public:
 		Session(const fxcm::LoginParams& loginParams,
@@ -46,7 +51,8 @@ namespace fxcm
 		bool Logout();
 
 		int GetOffers();
-		int GetTradingSettings(TradingSettingsVec& tsv, bool refresh = false);
+		int GetTradingSettings(TradingSettingsVec& tsvec, bool refresh = false);
+		int GetTradingPermissions(const char* sInstrument, TradingPermissions& tp);
 
 	private:
 		Session();
