@@ -58,7 +58,7 @@ namespace fxcm
 
 	void ResponseListener4Offers::onRequestCompleted(const char* requestId, IO2GResponse* response)
 	{
-		if (m_Response && m_RequestID == requestId)
+		if (response && m_RequestID == requestId)
 		{
 			m_Response = response;
 			m_Response->addRef();

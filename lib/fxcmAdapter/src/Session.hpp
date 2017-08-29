@@ -30,6 +30,7 @@ contact: grayasm@gmail.com
 #include "IniParams.hpp"
 #include "SessionStatusListener.hpp"
 #include "ResponseListener4Offers.hpp"
+#include "ResponseListener4FindingOrders.hpp"
 #include "TradingSettings.hpp"
 #include "TradingPermissions.hpp"
 
@@ -53,6 +54,7 @@ namespace fxcm
 		int GetOffers();
 		int GetTradingSettings(TradingSettingsVec& tsvec, bool refresh = false);
 		int GetTradingPermissions(const char* sInstrument, TradingPermissions& tp);
+		int GetOrders();
 
 	private:
 		Session();
@@ -60,13 +62,14 @@ namespace fxcm
 		Session& operator=(const Session&);
 
 	private:
-		fxcm::LoginParams			m_loginParams;
-		fxcm::IniParams				m_iniParams;
-		IO2GSession*				m_session;
-		SessionStatusListener*		m_sessionListener;
-		OffersPrinter*				m_offersPrinter;
-		ResponseListener4Offers*	m_responseListener4Offers;
-		TradingSettingsVec			m_tradingSettingsVec;
+		fxcm::LoginParams					m_loginParams;
+		fxcm::IniParams						m_iniParams;
+		IO2GSession*						m_session;
+		SessionStatusListener*				m_sessionListener;
+		OffersPrinter*						m_offersPrinter;
+		ResponseListener4Offers*			m_responseListener4Offers;
+		ResponseListener4FindingOrders*		m_responseListener4FindingOrders;
+		TradingSettingsVec					m_tradingSettingsVec;
 	};
 } // namespace
 

@@ -72,6 +72,8 @@ namespace fxcm
 
 	Session::~Session()
 	{
+		m_session->unsubscribeResponse(m_responseListener4FindingOrders);
+		m_responseListener4Offers->SetOffersPrinter(NULL);
 		if (m_offersPrinter)
 			delete m_offersPrinter;
 		m_session->unsubscribeResponse(m_responseListener4Offers);
@@ -383,6 +385,81 @@ namespace fxcm
 		tp.SetCanUseFluctuateTrailingForLimit(permissionChecker->canUseFluctuateTrailingForLimit());
 		tp.SetCanUseFluctuateTrailingForEntryStop(permissionChecker->canUseFluctuateTrailingForEntryStop());
 		tp.SetCanUseFluctuateTrailingForEntryLimit(permissionChecker->canUseFluctuateTrailingForEntryLimit());
+
+		return ErrorCodes::ERR_SUCCESS;
+	}
+
+	int Session::GetOrders()
+	{
+		O2G2Ptr<IO2GRequestFactory> requestFactory = m_session->getRequestFactory();
+		if (!requestFactory)
+		{
+			misc::cout << __FUNCTION__
+				<< ": Cannot create request factory" << std::endl;
+			return ErrorCodes::ERR_NO_REQUEST_FACTORY;
+		}
+
+		const char* sAccountID = m_iniParams.GetAccount().c_str();
+		O2G2Ptr<IO2GRequest> request =
+			requestFactory->createRefreshTableRequestByAccount(Orders, sAccountID);
+		if (!request)
+		{
+			misc::cout << __FUNCTION__
+				<< ": Last error=" << requestFactory->getLastError() << std::endl;
+			return ErrorCodes::ERR_NO_ORDERS_REQUEST;
+		}
+
+		m_responseListener4FindingOrders->SetRequestID(request->getRequestID());
+		m_session->sendRequest(request);
+		// asynchronous request sent to server, waiting
+		if (!m_responseListener4FindingOrders->WaitEvents())
+		{
+			misc::cout << __FUNCTION__
+				<< ": Response waiting timeout expired" << std::endl;
+			return ErrorCodes::ERR_TIMEOUT;
+		}
+
+		O2G2Ptr<IO2GResponse> orderResponse =
+			m_responseListener4FindingOrders->GetResponse();
+		if (orderResponse)
+		{
+			if (orderResponse->getType() == O2GResponseType::GetOrders)
+			{
+				O2G2Ptr<IO2GResponseReaderFactory> responseReaderFactory =
+					m_session->getResponseReaderFactory();
+				O2G2Ptr<IO2GOrdersTableResponseReader> responseReader =
+					responseReaderFactory->createOrdersTableReader(orderResponse);
+				int totalRows = responseReader->size();
+				for (int i = 0; i < responseReader->size(); ++i)
+				{
+					O2G2Ptr<IO2GOrderRow> order = responseReader->getRow(i);
+
+					misc::string orderId = order->getOrderID();
+					misc::string accountId = order->getAccountID();
+					misc::string orderType = order->getType();
+					misc::string orderStatus = order->getStatus();
+					misc::string orderOfferId = order->getOfferID();
+					int orderAmount = order->getAmount();
+					misc::string orderBuySell = order->getBuySell();
+					double orderRate = order->getRate();
+					misc::string orderTimeInForce = order->getTimeInForce();
+					
+					static bool bDebug = true;
+					if (bDebug)
+					{
+						misc::cout << "OrderId=" << orderId.c_str()
+							<< "AccountId=" << accountId.c_str() << ", "
+							<< "Type=" << orderType.c_str() << ", "
+							<< "Status=" << orderStatus.c_str() << ", "
+							<< "OfferId=" << orderOfferId.c_str() << ", "
+							<< "Amount=" << orderAmount << ", "
+							<< "BuySell=" << orderBuySell.c_str() << ", "
+							<< "Rate=" << orderRate << ", "
+							<< "TimeInForce=" << orderTimeInForce << std::endl;
+					}
+				}
+			}
+		}
 
 		return ErrorCodes::ERR_SUCCESS;
 	}

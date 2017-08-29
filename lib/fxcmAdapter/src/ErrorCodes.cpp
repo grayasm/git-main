@@ -43,6 +43,10 @@ namespace fxcm
 		case ERR_NO_ACOUNTS_RESPONSE: return "No Accounts response";
 		case ERR_NO_OFFERS_RESPONSE: return "No Offers response";
 		case ERR_NO_RESPONSE_READER_FACTORY : return "Cannot create response reader factory";
+		case ERR_NO_PERMISSION_CHECKER: return "Cannot get permission checker";
+		case ERR_NO_INSTRUMENT: return "Invalid instrument";
+		case ERR_NO_REQUEST_FACTORY: return "Cannot create request factory";
+		case ERR_NO_ORDERS_REQUEST: return "Cannot create Orders request";
 		default:
 			throw misc::exception("Unknown ErrorId");
 		} // switch

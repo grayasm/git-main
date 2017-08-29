@@ -40,21 +40,23 @@ int test2()
 
 	fxcm::Session session(*loginParams, *iniParams);
 	session.Login();
-	session.GetOffers();
+	//session.GetOffers();
 
-	int i = 0;
-	do 
-	{
-		sleep(1);
-		++i;
-		misc::cout << "sleep(1)" << std::endl;
-	} while (i < 10);
+	//int i = 0;
+	//do 
+	//{
+	//	sleep(1);
+	//	++i;
+	//	misc::cout << "sleep(1)" << std::endl;
+	//} while (i < 4);
 
-	misc::vector<fxcm::TradingSettings> tsvec;
-	session.GetTradingSettings(tsvec, true);
+	//misc::vector<fxcm::TradingSettings> tsvec;
+	//session.GetTradingSettings(tsvec, true);
 
-	fxcm::TradingPermissions tradingPermission;
-	session.GetTradingPermissions("EUR/USD", tradingPermission);
+	//fxcm::TradingPermissions tradingPermission;
+	//session.GetTradingPermissions("EUR/USD", tradingPermission);
+
+	session.GetOrders();
 
 	session.Logout();
 	
