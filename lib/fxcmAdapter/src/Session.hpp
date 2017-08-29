@@ -55,6 +55,8 @@ namespace fxcm
 		int GetTradingSettings(TradingSettingsVec& tsvec, bool refresh = false);
 		int GetTradingPermissions(const char* sInstrument, TradingPermissions& tp);
 		int GetOrders();
+		int GetLastOffer(Offer& offer, const char* sInstrument);
+		
 
 	private:
 		Session();
@@ -67,6 +69,7 @@ namespace fxcm
 		IO2GSession*						m_session;
 		SessionStatusListener*				m_sessionListener;
 		OffersPrinter*						m_offersPrinter;
+		OffersUpdater*						m_offersUpdater;
 		ResponseListener4Offers*			m_responseListener4Offers;
 		ResponseListener4Orders*			m_responseListener4Orders;
 		TradingSettingsVec					m_tradingSettingsVec;

@@ -28,6 +28,7 @@ contact: grayasm@gmail.com
 #include "event.hpp"
 #include "critical_section.hpp"
 #include "OffersPrinter.hpp"
+#include "OffersUpdater.hpp"
 
 
 namespace fxcm
@@ -49,6 +50,7 @@ namespace fxcm
 		bool WaitEvents();
 		IO2GResponse* GetResponse();
 		void SetOffersPrinter(OffersPrinter* op);
+		void SetOffersUpdater(OffersUpdater* ou);
 
 
 	protected:
@@ -62,6 +64,7 @@ namespace fxcm
 		IO2GResponse*			m_Response;
 		misc::critical_section	m_CriticalSection;
 		OffersPrinter*			m_offersPrinter;
+		OffersUpdater*			m_offersUpdater;
 	};
 } // namespace
 

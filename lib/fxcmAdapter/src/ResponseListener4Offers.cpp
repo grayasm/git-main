@@ -37,6 +37,7 @@ namespace fxcm
 		m_Response = NULL;
 		// m_CriticalSection - is unlocked
 		m_offersPrinter = NULL;
+		m_offersUpdater = NULL;
 		misc::cout.precision(6);
 	}
 
@@ -101,6 +102,8 @@ namespace fxcm
 			misc::cout << __FUNCTION__ << " response::TablesUpdates" << std::endl;
 			if (m_offersPrinter)
 				m_offersPrinter->PrintOffers(tablesUpdates);
+			if (m_offersUpdater)
+				m_offersUpdater->UpdateOffers(tablesUpdates);
 			break;
 
 		case MarketDataSnapshot:
@@ -196,6 +199,11 @@ namespace fxcm
 		m_offersPrinter = op;
 	}
 
+	void ResponseListener4Offers::SetOffersUpdater(OffersUpdater* ou)
+	{
+		m_offersUpdater = ou;
+	}
+
 	ResponseListener4Offers::~ResponseListener4Offers()
 	{
 		if (m_Response)
@@ -203,6 +211,7 @@ namespace fxcm
 		m_Session->release();
 		// m_ResponseEvent will CloseHandle itself on ~dtor
 		// m_offersPrinter is owned by the Session
+		// m_offersUpdater is owned by the Session
 	}
 
 } // namespace

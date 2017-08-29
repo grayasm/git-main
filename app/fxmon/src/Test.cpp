@@ -18,11 +18,14 @@
 */
 
 
+#include "unistd.hpp"
+#include "stream.hpp"
+
 #include "LoginParams.hpp"
 #include "IniParams.hpp"
 #include "Session.hpp"
-#include "unistd.hpp"
-#include "stream.hpp"
+#include "Offer.hpp"
+#include "ErrorCodes.hpp"
 
 
 int test2()
@@ -57,6 +60,24 @@ int test2()
 	session.GetTradingPermissions("EUR/USD", tradingPermission);
 
 	session.GetOrders();
+
+	i = 0;
+	do
+	{
+		sleep(1);
+		++i;
+		misc::cout << "sleep(1)" << std::endl;
+		fxcm::Offer offer("0", "EUR/USD", 0, 0, 0, 0, 0);
+		
+		if (session.GetLastOffer(offer, "EUR/USD") == fxcm::ErrorCodes::ERR_SUCCESS)
+		{
+			misc::cout	<< offer.GetId() << ", "
+						<< offer.GetInstrument()
+						<< ", Bid=" << std::fixed << offer.GetBid()
+						<< ", Ask=" << std::fixed << offer.GetAsk()
+						<< std::endl;
+		}
+	} while (i < 4);
 
 	session.Logout();
 	

@@ -23,6 +23,7 @@ contact: grayasm@gmail.com
 #include "stream.hpp"
 #include "ResponseListener4Offers.hpp"
 #include "OffersPrinter.hpp"
+#include "OffersUpdater.hpp"
 #include "ErrorCodes.hpp"
 
 
@@ -53,9 +54,11 @@ namespace fxcm
 
 		/*
 			Session as well as ResponseListener4Offers can output the Offers.
-			OffersPrinter deals with locking, printing and updating the Offers.
+			OffersPrinter deals with locking, printing and updating the last Offers.
+			OffersUpdater deals with locking, setting and getting the last Offers.
 		*/
 		m_offersPrinter = new OffersPrinter(m_session);
+		m_offersUpdater = new OffersUpdater(m_session);
 
 		/*
 			ResponseListener4Offers works as a separate thread to receive
@@ -140,8 +143,10 @@ namespace fxcm
 				response = loginRules->getTableRefreshResponse(Offers);
 				if (response)
 				{
-					if(m_offersPrinter)
+					if (m_offersPrinter)
 						m_offersPrinter->PrintOffers(response);
+					if (m_offersUpdater)
+						m_offersUpdater->UpdateOffers(response);
 				}
 			}
 			else
@@ -168,6 +173,8 @@ namespace fxcm
 						{
 							if (m_offersPrinter)
 								m_offersPrinter->PrintOffers(response);
+							if (m_offersUpdater)
+								m_offersUpdater->UpdateOffers(response);
 						}
 					}
 					else
@@ -472,5 +479,14 @@ namespace fxcm
 		return ErrorCodes::ERR_SUCCESS;
 	}
 
+	int Session::GetLastOffer(Offer& offer, const char* sInstrument)
+	{
+		if (m_offersUpdater)
+			return m_offersUpdater->GetLastOffer(offer, sInstrument);
+
+		misc::cout << __FUNCTION__
+			<< ": OffersUpdater instance is not available" << std::endl;
+		return ErrorCodes::ERR_NO_OFFER_AVAILABLE;
+	}
 
 } // namespace

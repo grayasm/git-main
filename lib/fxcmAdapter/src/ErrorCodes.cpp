@@ -47,6 +47,7 @@ namespace fxcm
 		case ERR_NO_INSTRUMENT: return "Invalid instrument";
 		case ERR_NO_REQUEST_FACTORY: return "Cannot create request factory";
 		case ERR_NO_ORDERS_REQUEST: return "Cannot create Orders request";
+		case ERR_NO_OFFER_AVAILABLE: return "No Offer is available for your instrument";
 		default:
 			throw misc::exception("Unknown ErrorId");
 		} // switch
