@@ -30,7 +30,7 @@ contact: grayasm@gmail.com
 #include "IniParams.hpp"
 #include "SessionStatusListener.hpp"
 #include "ResponseListener4Offers.hpp"
-#include "ResponseListener4FindingOrders.hpp"
+#include "ResponseListener4Orders.hpp"
 #include "TradingSettings.hpp"
 #include "TradingPermissions.hpp"
 
@@ -68,7 +68,7 @@ namespace fxcm
 		SessionStatusListener*				m_sessionListener;
 		OffersPrinter*						m_offersPrinter;
 		ResponseListener4Offers*			m_responseListener4Offers;
-		ResponseListener4FindingOrders*		m_responseListener4FindingOrders;
+		ResponseListener4Orders*			m_responseListener4Orders;
 		TradingSettingsVec					m_tradingSettingsVec;
 	};
 } // namespace

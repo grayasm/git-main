@@ -19,8 +19,8 @@ contact: grayasm@gmail.com
 */
 
 
-#ifndef __ResponseListener4FindingOrders_hpp__
-#define __ResponseListener4FindingOrders_hpp__
+#ifndef __ResponseListener4Orders_hpp__
+#define __ResponseListener4Orders_hpp__
 
 #include <stddef.h>
 #include <ForexConnect.h>
@@ -32,10 +32,10 @@ contact: grayasm@gmail.com
 
 namespace fxcm
 {
-	class ResponseListener4FindingOrders : public IO2GResponseListener
+	class ResponseListener4Orders : public IO2GResponseListener
 	{
 	public:
-		ResponseListener4FindingOrders(IO2GSession* session);
+		ResponseListener4Orders(IO2GSession* session);
 
 		// vtable begin
 		long addRef();
@@ -45,13 +45,13 @@ namespace fxcm
 		void onTablesUpdates(IO2GResponse* tablesUpdates);
 		// vtable end
 
-		void SetRequestID(const char* requestID);
+		void SetRequestID(const misc::string& requestID);
 		bool WaitEvents();
 		IO2GResponse* GetResponse();
 
 
 	protected:
-		~ResponseListener4FindingOrders();
+		~ResponseListener4Orders();
 
 	private:
 		long					m_RefCount;
@@ -64,4 +64,4 @@ namespace fxcm
 } // namespace
 
 
-#endif // __ResponseListener4FindingOrders_hpp__
+#endif // __ResponseListener4Orders_hpp__

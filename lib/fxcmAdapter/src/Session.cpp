@@ -68,11 +68,20 @@ namespace fxcm
 
 		// optional can print the offers (otherwise not useful)
 		m_responseListener4Offers->SetOffersPrinter(m_offersPrinter);
+
+
+		/*
+			ResponseListener4Orders works as a separate thread to receive
+			Orders table updates. This listener should be able to handle most
+			common request for Orders table.
+		*/
+		m_responseListener4Orders = new ResponseListener4Orders(m_session);
+		m_session->subscribeResponse(m_responseListener4Orders);
 	}
 
 	Session::~Session()
 	{
-		m_session->unsubscribeResponse(m_responseListener4FindingOrders);
+		m_session->unsubscribeResponse(m_responseListener4Orders);
 		m_responseListener4Offers->SetOffersPrinter(NULL);
 		if (m_offersPrinter)
 			delete m_offersPrinter;
@@ -399,7 +408,7 @@ namespace fxcm
 			return ErrorCodes::ERR_NO_REQUEST_FACTORY;
 		}
 
-		const char* sAccountID = m_iniParams.GetAccount().c_str();
+		const char* sAccountID = m_loginParams.GetAccount().c_str();
 		O2G2Ptr<IO2GRequest> request =
 			requestFactory->createRefreshTableRequestByAccount(Orders, sAccountID);
 		if (!request)
@@ -409,10 +418,10 @@ namespace fxcm
 			return ErrorCodes::ERR_NO_ORDERS_REQUEST;
 		}
 
-		m_responseListener4FindingOrders->SetRequestID(request->getRequestID());
+		m_responseListener4Orders->SetRequestID(request->getRequestID());
 		m_session->sendRequest(request);
 		// asynchronous request sent to server, waiting
-		if (!m_responseListener4FindingOrders->WaitEvents())
+		if (!m_responseListener4Orders->WaitEvents())
 		{
 			misc::cout << __FUNCTION__
 				<< ": Response waiting timeout expired" << std::endl;
@@ -420,7 +429,7 @@ namespace fxcm
 		}
 
 		O2G2Ptr<IO2GResponse> orderResponse =
-			m_responseListener4FindingOrders->GetResponse();
+			m_responseListener4Orders->GetResponse();
 		if (orderResponse)
 		{
 			if (orderResponse->getType() == O2GResponseType::GetOrders)
@@ -429,7 +438,6 @@ namespace fxcm
 					m_session->getResponseReaderFactory();
 				O2G2Ptr<IO2GOrdersTableResponseReader> responseReader =
 					responseReaderFactory->createOrdersTableReader(orderResponse);
-				int totalRows = responseReader->size();
 				for (int i = 0; i < responseReader->size(); ++i)
 				{
 					O2G2Ptr<IO2GOrderRow> order = responseReader->getRow(i);
