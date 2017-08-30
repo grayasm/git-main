@@ -489,4 +489,53 @@ namespace fxcm
 		return ErrorCodes::ERR_NO_OFFER_AVAILABLE;
 	}
 
+	int Session::CreateELS(fx::Position& entry)
+	{
+		O2G2Ptr<IO2GAccountRow> account = GetAccount();
+		if (!account)
+		{
+			misc::cout << __FUNCTION__
+				<< ": No valid accounts" << std::endl;
+			return ErrorCodes::ERR_NO_ACOUNTS_RESPONSE;
+		}
+
+
+
+	} // CreateELS
+
+	IO2GAccountRow* Session::GetAccount()
+	{
+		O2G2Ptr<IO2GLoginRules> loginRules = m_session->getLoginRules();
+		if (loginRules)
+		{
+			O2G2Ptr<IO2GResponse> response = loginRules->getTableRefreshResponse(Accounts);
+			if (response)
+			{
+				O2G2Ptr<IO2GResponseReaderFactory> readerFactory =
+					m_session->getResponseReaderFactory();
+				if (readerFactory)
+				{
+					O2G2Ptr<IO2GAccountsTableResponseReader> reader =
+						readerFactory->createAccountsTableReader(response);
+
+					for (int i = 0; i < reader->size(); ++i)
+					{
+						O2G2Ptr<IO2GAccountRow> account = reader->getRow(i);
+						if (account)
+						{
+							if (m_loginParams.GetAccount() == account->getAccountID())
+							{
+								if (strcmp(account->getMarginCallFlag(), "N") == 0 &&
+									(strcmp(account->getAccountKind(), "32") == 0 ||
+									strcmp(account->getAccountKind(), "36") == 0))
+									return account.Detach();
+							}
+						}
+					}
+				}
+			}
+		}
+		return NULL;
+	} // GetAccount
+
 } // namespace

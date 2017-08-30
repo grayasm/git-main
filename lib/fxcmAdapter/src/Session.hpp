@@ -34,6 +34,7 @@ contact: grayasm@gmail.com
 #include "TradingSettings.hpp"
 #include "TradingPermissions.hpp"
 
+#include "Position.hpp"
 
 
 namespace fxcm
@@ -56,12 +57,17 @@ namespace fxcm
 		int GetTradingPermissions(const char* sInstrument, TradingPermissions& tp);
 		int GetOrders();
 		int GetLastOffer(Offer& offer, const char* sInstrument);
+		int CreateELS(fx::Position& entry);
 		
 
 	private:
 		Session();
 		Session(const Session&);
 		Session& operator=(const Session&);
+
+		// CommonSources.cpp
+		IO2GAccountRow* GetAccount();
+
 
 	private:
 		fxcm::LoginParams					m_loginParams;
