@@ -35,7 +35,7 @@ namespace fxcm
 	{
 	public:
 		typedef misc::autoptr<OffersPrinter> Ptr;
-		OffersPrinter(IO2GSession* session);
+		OffersPrinter(IO2GSession* session, bool outputOffers);
 		~OffersPrinter();
 
 		void PrintOffers(IO2GResponse* response);
@@ -52,6 +52,7 @@ namespace fxcm
 		IO2GSession*					m_session;
 		misc::critical_section			m_criticalSection;
 		std::vector<Offer>				m_offers;
+		bool							m_outputOffers;
 	};
 } // namespace
 

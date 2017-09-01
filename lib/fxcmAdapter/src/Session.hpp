@@ -79,6 +79,7 @@ namespace fxcm
 		ResponseListener4Offers*			m_responseListener4Offers;
 		ResponseListener4Orders*			m_responseListener4Orders;
 		TradingSettingsVec					m_tradingSettingsVec;
+		bool								m_outputOffers;
 	};
 } // namespace
 

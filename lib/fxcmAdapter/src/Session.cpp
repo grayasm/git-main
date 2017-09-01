@@ -56,8 +56,10 @@ namespace fxcm
 			Session as well as ResponseListener4Offers can output the Offers.
 			OffersPrinter deals with locking, printing and updating the last Offers.
 			OffersUpdater deals with locking, setting and getting the last Offers.
+			m_outputOffers turns off/on printing offers on the console all the time.
 		*/
-		m_offersPrinter = new OffersPrinter(m_session);
+		m_outputOffers = false;
+		m_offersPrinter = new OffersPrinter(m_session, m_outputOffers);
 		m_offersUpdater = new OffersUpdater(m_session);
 
 		/*
@@ -66,7 +68,7 @@ namespace fxcm
 			updates (Trades, ClosedTrades, Messages, etc) and reduce complexity
 			e.g. easier to add DB storage for quotes, etc.
 		*/
-		m_responseListener4Offers = new ResponseListener4Offers(m_session);
+		m_responseListener4Offers = new ResponseListener4Offers(m_session, m_outputOffers);
 		m_session->subscribeResponse(m_responseListener4Offers);
 
 		// optional can print the offers (otherwise not useful)

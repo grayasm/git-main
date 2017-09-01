@@ -27,7 +27,7 @@
 
 namespace fxcm
 {
-	ResponseListener4Offers::ResponseListener4Offers(IO2GSession* session)
+	ResponseListener4Offers::ResponseListener4Offers(IO2GSession* session, bool outputOffers)
 	{
 		m_Session = session;
 		m_Session->addRef();
@@ -38,6 +38,7 @@ namespace fxcm
 		// m_CriticalSection - is unlocked
 		m_offersPrinter = NULL;
 		m_offersUpdater = NULL;
+		m_outputOffers = outputOffers;
 		misc::cout.precision(6);
 	}
 
@@ -100,7 +101,7 @@ namespace fxcm
 					loginRules->getTableRefreshResponse(Offers)
 			*/
 			misc::cout << __FUNCTION__ << " response::TablesUpdates" << std::endl;
-			if (m_offersPrinter)
+			if (m_offersPrinter && m_outputOffers)
 				m_offersPrinter->PrintOffers(tablesUpdates);
 			if (m_offersUpdater)
 				m_offersUpdater->UpdateOffers(tablesUpdates);
@@ -160,7 +161,7 @@ namespace fxcm
 
 		case Level2MarketData:
 			misc::cout << __FUNCTION__ << " response::Level2MarketData" << std::endl;
-			if(m_offersPrinter)
+			if(m_offersPrinter && m_outputOffers)
 				m_offersPrinter->PrintLevel2MarketData(tablesUpdates);
 			break;
 

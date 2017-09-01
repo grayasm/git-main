@@ -41,10 +41,11 @@ namespace fxcm
 		misc::string	m_id;
 	};
 
-	OffersPrinter::OffersPrinter(IO2GSession* session)
+	OffersPrinter::OffersPrinter(IO2GSession* session, bool outputOffers)
 	{
 		m_session = session;
 		m_session->addRef();
+		m_outputOffers = outputOffers;
 	}
 
 	OffersPrinter::~OffersPrinter()
@@ -108,7 +109,7 @@ namespace fxcm
 				}
 			}
 
-			if (currOffer)
+			if (currOffer && m_outputOffers)
 			{
 				misc::cout << currOffer->GetId() << ", "
 					<< currOffer->GetInstrument()

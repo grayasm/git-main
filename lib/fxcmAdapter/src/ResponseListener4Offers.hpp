@@ -36,7 +36,7 @@ namespace fxcm
 	class ResponseListener4Offers : public IO2GResponseListener
 	{
 	public:
-		ResponseListener4Offers(IO2GSession* session);
+		ResponseListener4Offers(IO2GSession* session, bool outputOffers);
 
 		// vtable begin
 		long addRef();
@@ -65,6 +65,7 @@ namespace fxcm
 		misc::critical_section	m_CriticalSection;
 		OffersPrinter*			m_offersPrinter;
 		OffersUpdater*			m_offersUpdater;
+		bool					m_outputOffers;
 	};
 } // namespace
 

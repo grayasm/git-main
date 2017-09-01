@@ -126,7 +126,8 @@ namespace fxcm
 				}
 			}
 
-			if (currOffer)
+			static bool bDebug = false;
+			if (currOffer && bDebug)
 			{
 				misc::cout << currOffer->GetId() << ", "
 					<< currOffer->GetInstrument()
