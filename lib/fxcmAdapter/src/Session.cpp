@@ -71,6 +71,7 @@ namespace fxcm
 
 		// optional can print the offers (otherwise not useful)
 		m_responseListener4Offers->SetOffersPrinter(m_offersPrinter);
+		m_responseListener4Offers->SetOffersUpdater(m_offersUpdater);
 
 
 		/*
@@ -88,6 +89,9 @@ namespace fxcm
 		m_responseListener4Offers->SetOffersPrinter(NULL);
 		if (m_offersPrinter)
 			delete m_offersPrinter;
+		m_responseListener4Offers->SetOffersUpdater(NULL);
+		if (m_offersUpdater)
+			delete m_offersUpdater;
 		m_session->unsubscribeResponse(m_responseListener4Offers);
 		m_responseListener4Offers->release();
 		m_session->unsubscribeSessionStatus(m_sessionListener);
