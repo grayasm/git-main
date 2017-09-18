@@ -71,17 +71,20 @@ rm -rfvd /tmp/lusty-emacs
 
 
 
-# FillColumnIndicator
+# FillColumnIndicator updated for emacs-25
 cd /tmp
-git clone https://github.com/alpaker/Fill-Column-Indicator.git  Fill-Column-Indicator
-if [ ! -d /tmp/Fill-Column-Indicator ]; then
-	echo "cannot clone Fill-Column-Indicator"
-	exit
-fi
+# git clone https://github.com/alpaker/Fill-Column-Indicator.git  Fill-Column-Indicator
+# if [ ! -d /tmp/Fill-Column-Indicator ]; then
+# 	echo "cannot clone Fill-Column-Indicator"
+# 	exit
+# fi
 
 mkdir -pv $HOME/.emacs.d/lisp
-cp -v /tmp/Fill-Column-Indicator/fill-column-indicator.el $HOME/.emacs.d/lisp
-rm -rfvd /tmp/Fill-Column-Indicator
+wget http://www.emacswiki.org/emacs/download/fill-column-indicator.el
+# cp -v /tmp/Fill-Column-Indicator/fill-column-indicator.el $HOME/.emacs.d/lisp
+# rm -rfvd /tmp/Fill-Column-Indicator
+cp -v /tmp/fill-column-indicator.el $HOME/.emacs.d/lisp
+rm /tmp/fill-column-indicator.el
 
 
 # Emacs ColorTheme
