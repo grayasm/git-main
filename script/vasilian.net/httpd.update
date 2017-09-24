@@ -13,15 +13,19 @@ git pull
 echo "done now ..."
 ENDCOMMANDS
 
-# website directory
-if [ ! -d /srv/http ]; then
-    mkdir -pv /srv/http
-fi
 
-cp -afRv /home/mihai/Code/git-main/script/vasilian.net/*  /srv/http/
-rm -v /srv/http/httpd.update
-chown -Rv apache:apache /srv/http
-chmod -v 755 /srv/http/images
+# vasilian.net root dir.
+WWWDIR=/srv/http/vasilian.net
+if [ ! -d $WWWDIR ]; then
+    mkdir -pv     $WWWDIR
+    chmod -Rv 755 $WWWDIR
+fi
+      
+# keep file attributes for now
+cp    -afRv  /home/mihai/Code/git-main/script/vasilian.net/*  $WWWDIR
+rm    -v  $WWWDIR/httpd.update
+chown -v  root:root     /srv/http
+chown -Rv apache:apache $WWWDIR
 
 # on DigitalOcean I disabled SELinux
 # chcon -u system_u -r object_r -t httpd_sys_content_t -Rv /srv/http
