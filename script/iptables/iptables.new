@@ -9,17 +9,31 @@ iptables -P INPUT   DROP
 iptables -A INPUT -m conntrack --ctstate INVALID -j DROP
 iptables -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
 iptables -A INPUT -p icmp --icmp-type 8 -m conntrack --ctstate NEW -j ACCEPT
-# Open Apache port for all
-iptables -A INPUT -p tcp --dport 80 -j ACCEPT
+
+# Open http,https (Apache) ports for all
+iptables -A INPUT -p tcp --dport 80  -j ACCEPT
+iptables -A INPUT -p tcp --dport 443 -j ACCEPT
+
 # Open vsftpd port 21 (ftp-connection) and 20 (ftp-data) for all.
 # vsftpd must be able to open passive session (PASV command) on port 40000:40099
 # with maxim 100 clients allowed
 iptables -A INPUT -p tcp --dport 20 -j ACCEPT
 iptables -A INPUT -p tcp --dport 21 -j ACCEPT
 iptables -A INPUT -p tcp --dport 40000:40099 -j ACCEPT
-# Open secure shell (sshd) port for all
+# Open ssh (secure shell) port for all
 iptables -A INPUT -p tcp --dport 22 -j ACCEPT
 iptables -A INPUT -p udp --dport 22 -j ACCEPT
+
+# Open smtp,smtps (postfix) ports for all
+iptables -A INPUT -p tcp --match multiport --dports 25,465 -j ACCEPT
+# Open pop3,pop3s (dovecot) ports for all
+iptables -A INPUT -p tcp --match multiport --dports 110,995 -j ACCEPT
+# Open imap,imaps (dovecot) ports for all
+iptables -A INPUT -p tcp --match multiport --dports 143,993 -j ACCEPT
+# Open submission (postfix) port for all
+iptables -A INPUT -p tcp --dport 587 -j ACCEPT
+
+
 # Open transmission-qt port for all
 iptables -A INPUT -p tcp --dport 51413 -j ACCEPT
 iptables -A INPUT -p udp --dport 51413 -j ACCEPT
@@ -64,17 +78,26 @@ ip6tables -P INPUT   DROP
 # drop invalid headers
 ip6tables -A INPUT -m conntrack --ctstate INVALID -j DROP
 ip6tables -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
-# Open Apache port for all
-ip6tables -A INPUT -p tcp --dport 80 -j ACCEPT
+# Open http,https (Apache) ports for all
+ip6tables -A INPUT -p tcp --dport 80  -j ACCEPT
+ip6tables -A INPUT -p tcp --dport 443 -j ACCEPT
 # Open vsftpd port 21 (ftp-connection) and 20 (ftp-data) for all.
 # vsftpd must be able to open passive session (PASV command) on port 40000:40099
 # with maxim 100 clients allowed
 ip6tables -A INPUT -p tcp --dport 20 -j ACCEPT
 ip6tables -A INPUT -p tcp --dport 21 -j ACCEPT
 ip6tables -A INPUT -p tcp --dport 40000:40099 -j ACCEPT
-# Open secure shell (sshd) port for all
+# Open ssh (secure shell) port for all
 ip6tables -A INPUT -p tcp --dport 22 -j ACCEPT
 ip6tables -A INPUT -p udp --dport 22 -j ACCEPT
+# Open smtp,smtps (postfix) ports for all
+ip6tables -A INPUT -p tcp --match multiport --dports 25,465 -j ACCEPT
+# Open pop3,pop3s (dovecot) ports for all
+ip6tables -A INPUT -p tcp --match multiport --dports 110,995 -j ACCEPT
+# Open imap,imaps (dovecot) ports for all
+ip6tables -A INPUT -p tcp --match multiport --dports 143,993 -j ACCEPT
+# Open submission (postfix) port for all
+ip6tables -A INPUT -p tcp --dport 587 -j ACCEPT
 # Open transmission-qt port for
 ip6tables -A INPUT -p tcp --dport 51413 -j ACCEPT
 ip6tables -A INPUT -p udp --dport 51413 -j ACCEPT
