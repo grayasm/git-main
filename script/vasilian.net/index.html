@@ -1,11 +1,15 @@
 <html>
 <head>
 <style type="text/css">
-th, td {
+td.tops {
 	vertical-align: top;
 }
+td.namecol {
+	width: 100;
+	height: 100;
+}
 p.serif {
-	font-family: "Times New Roman", Times, serif;
+	font-family: Georgia, serif;
 	font-size: 1.2em;
 }
 p.sansserif {
@@ -15,28 +19,39 @@ p.sansserif {
 </style>
 </head>
 <body>
-<table>
+
+<table border="0" bgcolor="#F2F2F2">
 <tr>
-	<td rowspan="5"><img src="images/mihai_203x360.jpg" width="203" height="360" alt=""></td>
+	<td rowspan="6" class="tops"><img src="images/mihai_130x230.jpg" width="130" height="230" alt=""></td>
+	<td rowspan="6" width="50"></td>
 	<td colspan="2"><h1>Mihai Vasilian<h1></td>
 </tr>
 <tr>
-	<td><p class="serif">GitHub:</p></td>
-	<td><p class="sansserif"><a href="http://github.com/grayasm">grayasm</a></p></td>
+	<td valign="bottom"><p class="serif">GitHub:</p></td>
+	<td valign="bottom"><p class="sansserif"><a href="http://github.com/grayasm" target="_blank">mainly c++ code</a></p></td>
 </tr>
 <tr>
-	<td><p class="serif">CentOS:</p></td>
-	<td><p class="sansserif"><a href="ftp://vasilian.net/vasilian.repo">my packages</a></p></td>
+	<td valign="bottom"><p class="serif">CentOS:</p></td>
+	<td valign="bottom"><p class="sansserif"><a href="ftp://vasilian.net/vasilian.repo" target="_blank">my extra packages</a></p></td>
 </tr>
 <tr>
-	<td><p class="serif">Email:</p></td>
-	<td><p class="sansserif"><a href="mailto:mihai@vasilian.net">Mihai Vasilian</a></p></td>
+	<td><p class="serif">Docs:</p></td>
+	<td><p class="sansserif"><a href="documentation.html">my notes</a></p></td>
 </tr>
 
-<!-- leave this at the end -->
 <tr>
-	<td height="400"></td>
-	<td height="400"></td>
+	<td valign="bottom"><p class="serif">Email:</p></td>
+	<td valign="bottom"><p class="sansserif"><a href="mailto:mihai@vasilian.net">contact address</a></p></td>
+</tr>
+
+<!-- leave this at the end (for re-sizing) -->
+<tr>
+	<td width="80"  height="50"></td>
+	<td width="400" height="50"></td>
+</tr>
+<!-- last update -->
+<tr>
+	<td colspan="4" align="center">Last update: 8-Oct-2017</td>
 </tr>
 </table>
 
