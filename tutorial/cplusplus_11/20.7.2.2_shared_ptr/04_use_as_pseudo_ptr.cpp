@@ -1,6 +1,7 @@
-/* http://thispointer.com/learning-shared_ptr-part-1-usage-details/
+/* http://thispointer.com/c11-tutorial/
+   http://thispointer.com/learning-shared_ptr-part-1-usage-details/
+   
    shared_ptr is a pseudo pointer
-
 */
 
 

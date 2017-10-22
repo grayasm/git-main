@@ -1,6 +1,7 @@
-/* http://thispointer.com/shared_ptr-and-custom-deletor/
+/* http://thispointer.com/c11-tutorial/
+   http://thispointer.com/shared_ptr-and-custom-deletor/
+   
    Custom deleter as function pointer
-
 */
 
 #include <iostream>

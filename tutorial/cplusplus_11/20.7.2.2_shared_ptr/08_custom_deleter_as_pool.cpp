@@ -1,4 +1,5 @@
-/* http://thispointer.com/shared_ptr-and-custom-deletor/
+/* http://thispointer.com/c11-tutorial/
+   http://thispointer.com/shared_ptr-and-custom-deletor/
 
    There might be other cases when we don't need to delete any memory
    we just need to release memory or resources to a pool etc.
