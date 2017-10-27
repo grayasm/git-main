@@ -2,19 +2,16 @@
    http://thispointer.com/c11-multithreading-part-5-using-mutex-to-fix-race-conditions
    http://thispointer.com/c11-tutorial
 
-   In this article we will discuss how to use mutex locks to protect shared data
-   in multithreaded environment and avoid race conditions. To fix race
-   conditions in multithreaded environment we need mutex i.e. each thread needs
-   to lock a mutex before modifying or reading the shared data and after
-   modifying the data each thread should unlock the mutex.
-   In C++11 threading library, the mutexes are in the <mutex> header file.
-   The class representing a mutex is the std::mutex class.
+   std::lock_guard is a class template which implements the RAII for mutex.
+   It wraps the mutex inside it's object and locks the attached mutex in its
+   constructor. When it's destructor is called it releases the mutex.
 */
 
 #include <iostream>
 #include <vector>
 #include <thread>
 #include <mutex>
+
 
 
 class Wallet
@@ -24,12 +21,15 @@ public:
     int GetMoney() { return m_money; }
     void AddMoney(int money)
     {
-        m_mutex.lock();
+        std::lock_guard<std::mutex> lockGuard(m_mutex);
+        // In constructor it locks the mutex
+
         for (int i = 0; i < money; ++i)
         {
             m_money++;
         }
-        m_mutex.unlock();
+
+        // In destructor it unlocks the mutex
     }
 
 private:
