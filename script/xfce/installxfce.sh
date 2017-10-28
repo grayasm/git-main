@@ -27,4 +27,5 @@ XFCE="f22-backgrounds-xfce gtk-xfce-engine \
       ntfs-3g"
 
 echo "Installing Xfce for CentOS"
+yum group install "Xfce"
 yum install $XFCE
