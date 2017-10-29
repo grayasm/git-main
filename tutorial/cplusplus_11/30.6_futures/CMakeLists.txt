@@ -1,0 +1,28 @@
+# This is CMakeLists.txt for 30.6_futures
+
+find_package (Threads REQUIRED)
+
+add_executable(01_promise 01_promise.cpp)
+add_executable(02_future 02_future.cpp)
+add_executable(03_shared_future 03_shared_future.cpp)
+add_executable(04_without_async 04_without_async.cpp)
+add_executable(05_async_with_fcn_pointer 05_async_with_fcn_pointer.cpp)
+add_executable(06_async_with_fcn_object 06_async_with_fcn_object.cpp)
+add_executable(07_async_with_lambda 07_async_with_lambda.cpp)
+add_executable(08_packaged_task 08_packaged_task.cpp)
+add_executable(09_packaged_task_with_fcn_pointer 09_packaged_task_with_fcn_pointer.cpp)
+add_executable(10_packaged_task_with_fcn_object 10_packaged_task_with_fcn_object.cpp)
+add_executable(11_packaged_task_with_lambda 11_packaged_task_with_lambda.cpp)
+
+
+target_link_libraries(01_promise ${CMAKE_THREAD_LIBS_INIT})
+target_link_libraries(02_future ${CMAKE_THREAD_LIBS_INIT})
+target_link_libraries(03_shared_future ${CMAKE_THREAD_LIBS_INIT})
+target_link_libraries(04_without_async ${CMAKE_THREAD_LIBS_INIT})
+target_link_libraries(05_async_with_fcn_pointer ${CMAKE_THREAD_LIBS_INIT})
+target_link_libraries(06_async_with_fcn_object ${CMAKE_THREAD_LIBS_INIT})
+target_link_libraries(07_async_with_lambda ${CMAKE_THREAD_LIBS_INIT})
+target_link_libraries(08_packaged_task ${CMAKE_THREAD_LIBS_INIT})
+target_link_libraries(09_packaged_task_with_fcn_pointer ${CMAKE_THREAD_LIBS_INIT})
+target_link_libraries(10_packaged_task_with_fcn_object ${CMAKE_THREAD_LIBS_INIT})
+target_link_libraries(11_packaged_task_with_lambda ${CMAKE_THREAD_LIBS_INIT})
