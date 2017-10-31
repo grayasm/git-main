@@ -1,13 +1,19 @@
-#
 # CMakeLists.txt file for 5.1.2_lambda_expressions
-#
 
-add_executable(01_foreach_without_lambda 01_foreach_without_lambda.cpp)
-add_executable(02_foreach_with_lambda 02_foreach_with_lambda.cpp)
-add_executable(03_lambda_outer_scope 03_lambda_outer_scope.cpp)
-add_executable(04_lambda_capture_by_value 04_lambda_capture_by_value.cpp)
-add_executable(05_lambda_capture_by_reference 05_lambda_capture_by_reference.cpp)
-add_executable(06_lambda_capture_all_by_val 06_lambda_capture_all_by_val.cpp)
-add_executable(07_lambda_capture_all_by_ref 07_lambda_capture_all_by_ref.cpp)
-add_executable(08_lambda_capture_mixing 08_lambda_capture_mixing.cpp)
-add_executable(09_lambda_capture_illegal 09_lambda_capture_illegal.cpp)
+add_executable(01_no_capture 01_no_capture.cpp)
+add_executable(02_capture_by_copy 02_capture_by_copy.cpp)
+add_executable(03_capture_by_reference 03_capture_by_reference.cpp)
+add_executable(04_parameters 04_parameters.cpp)
+add_executable(05_function_pointer 05_function_pointer.cpp)
+add_executable(06_function_auto 06_function_auto.cpp)
+add_executable(07_function_std 07_function_std.cpp)
+
+add_executable(21_foreach_without_lambda 21_foreach_without_lambda.cpp)
+add_executable(22_foreach_with_lambda 22_foreach_with_lambda.cpp)
+add_executable(23_lambda_outer_scope 23_lambda_outer_scope.cpp)
+add_executable(24_lambda_capture_by_value 24_lambda_capture_by_value.cpp)
+add_executable(25_lambda_capture_by_reference 25_lambda_capture_by_reference.cpp)
+add_executable(26_lambda_capture_all_by_val 26_lambda_capture_all_by_val.cpp)
+add_executable(27_lambda_capture_all_by_ref 27_lambda_capture_all_by_ref.cpp)
+add_executable(28_lambda_capture_mixing 28_lambda_capture_mixing.cpp)
+add_executable(29_lambda_capture_illegal 29_lambda_capture_illegal.cpp)
