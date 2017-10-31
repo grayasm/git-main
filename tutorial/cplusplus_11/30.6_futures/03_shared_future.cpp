@@ -1,6 +1,17 @@
-/*
-  std::shared_future's get() function can be called from multiple threads,
-  in comparison with std::future's get() that may be called only one time.
+/* This sample is inspired from:
+   http://thispointer.com/c11-multithreading-part-8-stdfuture-stdpromise-and-returning-values-from-thread
+
+   - std::promise.set_value(): must be called ONLY 1 time. (more-> exception)
+   - std::future.get()       : must be called ONLY 1 time. (more-> exception)
+   - std::shared_future.get(): can be called MORE then 1 time, e.g. more threads
+                               reading the same std::promise value.
+
+
+   - std::future.get()       : blocks the thread until the promise sets a value
+   - std::shared_future.get(): blocks the thread until the promise sets a value.
+
+   - std::promise.set_value(): sets the std::future, std::shared_future value
+                               and releases the other threads (if blocked)
 */
 
 #include <iostream>

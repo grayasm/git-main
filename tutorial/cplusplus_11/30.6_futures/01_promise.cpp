@@ -2,14 +2,13 @@
    http://thispointer.com/c11-multithreading-part-8-stdfuture-stdpromise-and-returning-values-from-thread/
    http://thispointer.com/c11-tutorial/
 
-   std::promise's set_value() must be called only 1 time.
-   std::future's get() must be called only 1 time.
+   - std::promise.set_value(): must be called ONLY 1 time. (more-> exception)
+   - std::future.get()       : must be called ONLY 1 time. (more-> exception)
 
-   Calling std::future's get() function will block until some other thread calls
-   std::promise's set_value().
+   - std::future.get()       : blocks the thread until the promise sets a value
+   - std::promise.set_value(): sets the std::future value and release the
+                               other thread (if blocked)
 
-   As a result, set std::promise value in 1 thread only and fetch std::future
-   value in another thread, not more.
    To use std::future in more than one thread, see std::shared_future.
 */
 
