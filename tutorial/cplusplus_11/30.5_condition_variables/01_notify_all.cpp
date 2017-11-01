@@ -1,23 +1,39 @@
-/* This sample is improvised based on notify_one() sample from:
+/* Header     : <condition_variable>
+   Signature  : condition_variable();
+                condition_variable(const condition_variable&) = delete;
+   Description:
+     - condition_variable is an object able to lock the calling thread until
+       notified to resume
+     - works only with std::unique_lock<std::mutex> which allows for max efficency
+       on some platforms
+
+   See also:
+   condition_variable_any : http://www.cplusplus.com/reference/condition_variable/condition_variable_any
+
+
+   Diagram:
+   -----------------------------------------------------------------------------
+   Thread 1               Kernel             Thread 2
+   -----------------------------------------------------------------------------
+
+   lock(mutex) ->         mx-locked
+
+   wait(cond_var) ->      mx-unlocked
+                          cv-unsignaled
+
+                          mx-locked          <-- lock(mutex)
+
+                          cv-signaled        <-- signal(cond_var)
+
+                          mx-unlocked        <-- unlock(mutex)
+
+   cv-signaled
+   -----------------------------------------------------------------------------
+
+   This sample is improvised based on notify_one() sample from:
    http://thispointer.com/c11-multithreading-part-7-condition-variables-explained
    http://thispointer.com/c11-tutorial
 
-   Thread 1                         |  Thread 2,3,4,5...
-   Load data.                       |  Needs data to complete.
-   =============================================================================
-                                    |  unique_lock(mutex)
-                                    |
-   (attempt to lock mutex ...)      |  (preparation ...)
-                                    |
-                                    |  condition_variable.wait(unique_lock)
-   (mutex is released)              |
-                                    |
-   mutex.lock()                     |
-                                    |
-   (load data)                      |
-                                    |
-   condition_variable.notify_all()  |
-                                    |  (process data ...)
 */
 
 #include <iostream>
