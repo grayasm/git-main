@@ -1,4 +1,21 @@
-/* This sample is copied from:
+/* Header     : <mutex>
+   Signature  : constexpr mutex() noexcept;
+                          mutex(const mutex&) = delete;
+   Description:
+     - mutex is a lockable object that is designed to signal when critical
+       sections of code need exclusive access, preventing other threads with
+       the same protection from executing concurrently and access the same
+       memory locations
+     - it provides exclusive ownership
+
+   See also:
+     recursive_mutex      : http://www.cplusplus.com/reference/mutex/recursive_mutex
+     timed_mutex          : http://www.cplusplus.com/reference/mutex/timed_mutex
+     recursive_timed_mutex: http://www.cplusplus.com/reference/mutex/recursive_timed_mutex
+
+   -----------------------------------------------------------------------------
+
+   This sample is copied from:
    http://thispointer.com/c11-multithreading-part-5-using-mutex-to-fix-race-conditions
    http://thispointer.com/c11-tutorial
 
