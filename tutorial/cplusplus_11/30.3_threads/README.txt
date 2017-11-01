@@ -1,4 +1,5 @@
-/* Header     : <thread>
+.
+   Header     : <thread>
    Signature  :           thread() noexcept;
                 template<class Fn, class... Args>
                 explicit  thread(Fn&& fn, Args&&... args);
@@ -18,32 +19,3 @@
 
    See also : http://en.cppreference.com/w/cpp/thread/thread
    -----------------------------------------------------------------------------
-
-   This tutorial is copied from: http://thispointer.com/c11-tutorial
-   http://thispointer.com/c-11-multithreading-part-1-three-different-ways-to-create-threads
-
-   Creating a thread using Lambda functions
-*/
-
-#include <iostream>
-#include <thread>
-
-int main()
-{
-    int x = 9;
-
-    std::thread thobj (
-        []{
-            for (int i = 0; i < 10; ++i)
-                std::cout << __FUNCTION__ << std::endl;
-        });
-
-    for (int i = 0; i < 10; ++i)
-        std::cout << __FUNCTION__ << std::endl;
-
-    thobj.join();
-
-    std::cout << "Exit main thread\n";
-
-    return 0;
-}
