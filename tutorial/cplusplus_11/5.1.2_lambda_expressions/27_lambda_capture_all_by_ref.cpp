@@ -26,12 +26,12 @@
        body      : function body
 
 
+   -----------------------------------------------------------------------------
+   http://thispointer.com/c11-lambda-how-to-capture-local-variables-inside-lambda/
 
-http://thispointer.com/c11-lambda-how-to-capture-local-variables-inside-lambda/
- *
- * Capture all local variables from outer scope by reference.
- *
- * auto func = [&] () { };
+   Capture all local variables from outer scope by reference.
+
+   auto func = [&] () { };
  */
 
 #include <iostream>

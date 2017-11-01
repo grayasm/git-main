@@ -25,18 +25,19 @@
        ret       : default void or explicit, e.g. auto&, int&, char*, SomeClass
        body      : function body
 
+   -----------------------------------------------------------------------------
 
- http://thispointer.com/c11-lambda-how-to-capture-local-variables-inside-lambda/
- *
- * Be-aware of capturing local variables by reference in lambda
- *
- * If in lambda we are capturing local variables by reference, then we need to
- * make sure that when lambda function is accessed or called, all those captured
- * by reference are still in scope.
- *
- * If lambda will try to access or modify a local variable captured by refrence
- * which is not in scope anymore i.e. which has been destroyed due to stack
- * unwinding, then crash can happen.
+   http://thispointer.com/c11-lambda-how-to-capture-local-variables-inside-lambda
+
+   Be-aware of capturing local variables by reference in lambda
+
+   If in lambda we are capturing local variables by reference, then we need to
+   make sure that when lambda function is accessed or called, all those captured
+   by reference are still in scope.
+
+   If lambda will try to access or modify a local variable captured by refrence
+   which is not in scope anymore i.e. which has been destroyed due to stack
+   unwinding, then crash can happen.
  */
 
 #include <iostream>

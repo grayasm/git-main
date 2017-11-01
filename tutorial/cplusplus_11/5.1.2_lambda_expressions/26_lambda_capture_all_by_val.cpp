@@ -26,11 +26,12 @@
        body      : function body
 
 
-http://thispointer.com/c11-lambda-how-to-capture-local-variables-inside-lambda/
- *
- * Capture all local variables from outer scope by value.
- *
- * auto func = [=] () { };
+   -----------------------------------------------------------------------------
+   http://thispointer.com/c11-lambda-how-to-capture-local-variables-inside-lambda
+
+   Capture all local variables from outer scope by value.
+
+   auto func = [=] () { };
  */
 
 #include <iostream>
@@ -43,9 +44,7 @@ int main()
 	int counter = 10;
 
 	auto func = [=] ( ) {
-		/* outer variables are captured by value
-		   outer variables are const (without mutable keyword)
-		*/
+		// outer variables are captured by value
 		cout << "message = " << message << '\n';
 		cout << "counter = " << counter << '\n';
 	};

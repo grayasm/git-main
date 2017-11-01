@@ -25,16 +25,16 @@
        ret       : default void or explicit, e.g. auto&, int&, char*, SomeClass
        body      : function body
 
+   -----------------------------------------------------------------------------
+   http://thispointer.com/c11-lambda-how-to-capture-local-variables-inside-lambda/
 
- * http://thispointer.com/c11-lambda-how-to-capture-local-variables-inside-lambda/
- *
- * How to capture local variables by value from outer scope in lambda expr.
- * The variables specified in capture list will be copied inside lambda
- * by value. Inside lambda they can be accessed but can not be changed,
- * because they are const. To modify them we need to add mutable keyword.
- *
- * auto func = [msg, counter] () mutable { };
- *
+   How to capture local variables by value from outer scope in lambda expr.
+   The variables specified in capture list will be copied inside lambda
+   by value. Inside lambda they can be accessed but can not be changed,
+   because they are const. To modify them we need to add mutable keyword.
+
+   auto func = [msg, counter] () mutable { };
+
  */
 
 #include <iostream>

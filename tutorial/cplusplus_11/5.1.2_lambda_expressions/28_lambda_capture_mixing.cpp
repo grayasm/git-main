@@ -26,14 +26,14 @@
        body      : function body
 
 
+   -----------------------------------------------------------------------------
+   http://thispointer.com/c11-lambda-how-to-capture-local-variables-inside-lambda/
 
-http://thispointer.com/c11-lambda-how-to-capture-local-variables-inside-lambda/
- *
- * Mixing capturing by value and reference.
- * We can also mix the capturing mode of lambda expression by passing some
- * local variables by value and some by reference.
- *
- * auto func = [=, &counter] ( ) mutable { };
+   Mixing capturing by value and reference.
+   We can also mix the capturing mode of lambda expression by passing some
+   local variables by value and some by reference.
+
+   auto func = [=, &counter] ( ) mutable { };
  */
 
 #include <iostream>

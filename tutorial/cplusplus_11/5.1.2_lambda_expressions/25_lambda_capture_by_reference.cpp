@@ -25,14 +25,14 @@
        ret       : default void or explicit, e.g. auto&, int&, char*, SomeClass
        body      : function body
 
+   -----------------------------------------------------------------------------
+   http://thispointer.com/c11-lambda-how-to-capture-local-variables-inside-lambda
 
-http://thispointer.com/c11-lambda-how-to-capture-local-variables-inside-lambda/
- *
- * Capturing local variables by reference inside lambda expression.
- * To capture the local variables by reference, specify their name in capture
- * list with prefix &
- *
- * auto func = [&message, &counter] () { };
+   Capturing local variables by reference inside lambda expression.
+   To capture the local variables by reference, specify their name in capture
+   list with prefix &
+
+   auto func = [&message, &counter] () { };
  */
 
 #include <iostream>
