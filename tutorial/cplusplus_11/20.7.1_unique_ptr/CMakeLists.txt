@@ -1,6 +1,5 @@
-#
 # CMakeLists.txt file for 20.7.1_unique_ptr
-#
+
 
 add_executable(01_create 01_create.cpp)
 add_executable(02_unique_ownership 02_unique_ownership.cpp)
