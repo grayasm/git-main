@@ -1,6 +1,5 @@
-#
 # CMakeLists.txt file for 20.7.2.2_shared_ptr
-#
+
 
 add_executable(01_create_a_shared_ptr 01_create_a_shared_ptr.cpp)
 add_executable(02_check_ref_count 02_check_ref_count.cpp)
