@@ -1,5 +1,21 @@
-/* http://thispointer.com/c11-tutorial/
-   http://thispointer.com/shared_ptr-binary-trees-and-the-problem-of-cyclic-references/
+/* Header: <memory>
+   Signature: constexpr weak_ptr() noexcept;
+                        weak_ptr(const weak_ptr& x) noexcept;
+              template<class U>
+                        weak_ptr(const weak_ptr<U>& x) noexcept;
+              template<class U>
+                        weak_ptr(const shared_ptr<U>& x) noexcept;
+
+   Description:
+      - weak_ptr is a smart pointer that holds a non-owning "weak" reference
+        to an object that is managed by std::shared_ptr. It must be converted
+        to std::shared_ptr in order to access the referenced object.
+      - weak_ptr is used to break circular references of std::shared_ptr
+      - if the original std::shared_ptr is destroyed, the object's lifetime is
+        extended until the temporary std::shared_ptr is destroyed as well
+
+   http://thispointer.com/c11-tutorial
+   http://thispointer.com/shared_ptr-binary-trees-and-the-problem-of-cyclic-references
 
    Main advantage of shared_ptr is that it automatically releases the associated
    memory when not used anymore.
