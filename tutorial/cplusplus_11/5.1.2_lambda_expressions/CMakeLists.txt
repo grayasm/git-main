@@ -7,6 +7,7 @@ add_executable(04_parameters 04_parameters.cpp)
 add_executable(05_function_pointer 05_function_pointer.cpp)
 add_executable(06_function_auto 06_function_auto.cpp)
 add_executable(07_function_std 07_function_std.cpp)
+add_executable(08_naive_implementation_std_function 08_naive_implementation_std_function.cpp)
 
 add_executable(21_foreach_without_lambda 21_foreach_without_lambda.cpp)
 add_executable(22_foreach_with_lambda 22_foreach_with_lambda.cpp)
