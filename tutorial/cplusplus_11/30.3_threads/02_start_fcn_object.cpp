@@ -18,7 +18,7 @@
 
    See also : http://en.cppreference.com/w/cpp/thread/thread
    -----------------------------------------------------------------------------
-   
+
    This tutorial is copied from: http://thispointer.com/c11-tutorial
    http://thispointer.com/c-11-multithreading-part-1-three-different-ways-to-create-threads/
 
