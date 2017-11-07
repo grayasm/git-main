@@ -20,10 +20,16 @@ if [ ! -f /etc/yum.repos.d/epel.repo ]; then
 	exit
 fi
 
-if [ -f /etc/yum.repos.d/icons-moka.repo ]; then
+if [ ! -f /etc/yum.repos.d/icons-moka.repo ]; then
 	echo "must install icons-moka repository first"
 	exit
 fi
+
+if [ ! -f /etc/yum.repos.d/fedora19.repo ]; then
+    echo "must install fedora19 repository first"
+    exit
+fi
+
 
 THEMES="clearlooks-phenix-common clearlooks-phenix-gtk2-theme \
         clearlooks-phenix-xfwm4-theme dmz-cursor-themes \
@@ -33,3 +39,13 @@ THEMES="clearlooks-phenix-common clearlooks-phenix-gtk2-theme \
 
 echo "Installing Xfce themes for CentOS"
 yum install $THEMES
+
+REDHAT_THEMES="bluecurve-cursor-theme bluecurve-icon-theme \
+              clearlooks-compact-gnome-theme clearlooks-phenix-common \
+              clearlooks-phenix-gtk2-theme clearlooks-phenix-gtk3-theme \
+              clearlooks-phenix-xfwm4-theme fedora-icon-theme \
+              gnome-theme-curvylooks gnome-themes humanity-icon-theme \
+              tango-icon-theme xfce4-icon-theme"
+
+echo "Installing RedHat Artwork for Xfce"
+yum install $REDHAT_THEMES

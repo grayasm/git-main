@@ -24,7 +24,8 @@ XFCE="f22-backgrounds-xfce gtk-xfce-engine \
       xfce4-weather-plugin xfce4-xkb-plugin exo mousepad \
       orage parole ristretto xarchiver xfdesktop xfwm4 \
       Thunar thunar-archive-plugin thunar-volman \
-      ntfs-3g"
+      ntfs-3g udisks2 gvfs gvfs-fuse gvfs-gphoto2 gvfs-smb \
+      gvfs-archive"
 
 echo "Installing Xfce for CentOS"
 yum group install "Xfce"
