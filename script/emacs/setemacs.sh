@@ -20,7 +20,7 @@ if [ $WGET_IS_AVAILABLE -ne 0 ]; then
 fi
 
 # need pip
-pip=/usr/bin/python3-pip
+pip=/usr/bin/pip3
 $pip --version 2>&1 >/dev/null
 PIP_IS_AVAILABLE=$?
 if [ $PIP_IS_AVAILABLE -ne 0 ]; then
