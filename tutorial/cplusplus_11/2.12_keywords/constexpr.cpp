@@ -28,7 +28,7 @@ constexpr int buffsz = 1024;        // OK: definition
 };
 
 constexpr pixel::pixel(int a)
-	: x(square(a), y(square(a)      // OK: definition
+  : x(square(a)), y(square(a))      // OK: definition
 {
 }
 
