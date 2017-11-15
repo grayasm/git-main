@@ -36,3 +36,5 @@ auto add(int x, int y) -> int
 {
 	return x + y;
 }
+
+// sample is complete, the other 3 functions are omitted.
