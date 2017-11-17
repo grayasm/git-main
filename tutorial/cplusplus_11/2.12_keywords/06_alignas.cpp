@@ -22,9 +22,37 @@
       struct alignas(1) U { S s; }; --> error: alignment of U would have been 8
                                                without alignas(1)
 
-      
+      Invalid non-zero alignment, such as alignas(3) are ill-formed.
+      Valid non-zero alignments that are weaker than other alignas on the same
+      declaration are ignored.
+      alignas(0) is always ignored.
  */
+
+#include <iostream>
+using namespace std;
+
+
+// every object of type sse_t will be aligned to 16-byte boundary
+struct alignas(16) sse_t
+{
+	float sse_data[4];
+};
+
+// the array "cacheline" will be aligned to 128-byte boundary
+alignas(128) char cacheline[128];
+
+
 int main()
 {
+
+
+
+	using namespace std;
+	cout << "sizeof(sse_t) = "   << sizeof(sse_t)
+	     << " alignof(sse_t) = " << alignof(sse_t) << '\n';
+
+	cout << "sizeof(cacheline) = "   << sizeof(cacheline)
+	     << " alignof(cacheline) = " << alignof(cacheline) << '\n';
+
 	return 0;
 }
