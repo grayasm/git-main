@@ -49,6 +49,20 @@ public:
  */
 
 
+// class alignas(12) C12 { };   error: requested alignment is not a power of 2
+class alignas(4)   C4 { };
+class alignas(8)   C8 { };
+class alignas(16)  C16 { };
+class alignas(32)  C32 { };
+class alignas(64)  C64 { };    // you get the idea: 2^6
+
+class alignas(8) C8x
+{
+	C32 mc32;
+};
+// alignas(8) is not obeyed here, this class has alignment = 32
+
+
 int main()
 {
     print<bool>(true, "bool");
@@ -81,6 +95,9 @@ int main()
     C2 class2;
     class2.c1;
     print<C2>(class2, "C2");
+
+    C8x c8x;
+    print<>(c8x, "C8x");
 
     return 0;
 }

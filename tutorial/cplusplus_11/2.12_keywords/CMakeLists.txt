@@ -8,7 +8,9 @@ add_executable(05_alignament_explained 05_alignament_explained.cpp)
 add_executable(06_alignas 06_alignas.cpp)
 add_executable(07_alignof 07_alignof.cpp)
 add_executable(08_alignment_in_detail 08_alignment_in_detail.cpp)
-
-
-add_executable(constexpr  constexpr.cpp)
-add_executable(decltype decltype.cpp)
+add_executable(09_decltype 09_decltype.cpp)
+add_executable(10_constexpr 10_constexpr.cpp)
+add_executable(11_nullptr 11_nullptr.cpp)
+add_executable(12_noexcept 12_noexcept.cpp)
+add_executable(13_static_assert 13_static_assert.cpp)
+add_executable(14_thread_local 14_thread_local.cpp)
