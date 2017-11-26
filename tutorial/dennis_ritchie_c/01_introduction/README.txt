@@ -15,4 +15,8 @@
   9. formal argument and actual argument are sometimes used for the same
      distinction
  10. in C all function arguments are passed "by value"
-
+ 11. delimit expressions with , e.g: s[i]=0, printf("%s",s), i=0, s[i++] = c;
+ 12. declaration is where the variable is stated but no storage is allocated
+ 13. definition is where the variable is created and storage is assigned
+ 14. extern keyword should appear at the beginning of a function where a
+     variable is used but its definition is in another file
