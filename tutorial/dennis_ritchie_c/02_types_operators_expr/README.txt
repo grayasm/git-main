@@ -23,3 +23,6 @@
      type before the operation proceeds
  11. binary ^ xor with 1 toggles the bit:  1001 ^ 1111 = 0110
  12. unary negation ~ flips all bits: ~(~0 << 2) << 1  = 0110
+ 13. these are called bitwise operators: <<  >>  &  |  ^
+ 14. writing code that depends on order of evaluation is a bad programming
+     practice in any language
