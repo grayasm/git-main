@@ -6,3 +6,4 @@ project(dennis_ritchie_c)
 set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS}")
 
 add_subdirectory(01_introduction)
+add_subdirectory(02_types_operators_expr)
