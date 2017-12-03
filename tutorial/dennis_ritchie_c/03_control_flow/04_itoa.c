@@ -12,29 +12,29 @@
 /* itoa: convert n to characters in s */
 void itoa (int n, char s[])
 {
-	int i, sign;
-	
-	if ((sign = n) < 0)		/* record sign */
-		n = -n;
-	i = 0;
-	do {		/* generate digits in reverse order */
-		s[i++] = n % 10 + '0';		/* get next digit */
-	} while ((n /= 10) > 0);		/* delete it */
-	
-	if (sign < 0)
-		s[i++] = '-';
-	s[i] = '\0';
-	// reverse (s);
+    int i, sign;
+
+    if ((sign = n) < 0)     /* record sign */
+        n = -n;
+    i = 0;
+    do {        /* generate digits in reverse order */
+        s[i++] = n % 10 + '0';      /* get next digit */
+    } while ((n /= 10) > 0);        /* delete it */
+
+    if (sign < 0)
+        s[i++] = '-';
+    s[i] = '\0';
+    // reverse (s);
 }
 
 main()
 {
-	int n = -12345;
-	char s[10];
-	itoa(n, s);
-	printf("itoa(%d)=%s\n", n, s);
+    int n = -12345;
+    char s[10];
+    itoa(n, s);
+    printf("itoa(%d)=%s\n", n, s);
 }
 
 /*
-itoa(-12345)=54321-
+  itoa(-12345)=54321-
 */
