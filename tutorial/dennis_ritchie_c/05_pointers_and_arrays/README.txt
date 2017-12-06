@@ -32,5 +32,21 @@
  18. int a[10][20]; -- true 2 dimensional array, 200 int location set aside
      int *b[10];    -- only 10 pointers are set aside and not initialized
      a[3][4] and b[3][4] are both syntactically legal references to a single int
- 19.
-pag. 114
+ 19. The advantage of pointer array is that the rows of the array may be of
+     different length. Compare the 2 declarations:
+     char *name[] = { "one", "two", "five" };
+     char aname[][5] = { "one", "two", "five"};
+     name[0] * -> "one"
+         [1] * -> "tow"
+         [2] * -> "five"
+     aname: one\0  two\0  five\0 
+           [0      5      10     ]
+ 20. int (*comp)(void*, void*);
+     the (*comp) parantheses are needed so the components are correctly
+     associated.
+ 21. any pointer can be cast to void* and back without loss of information
+ 22. x is a function returning a pointer to an array of pointers to functions
+     returning char
+     x () * [] * () char
+     to:
+     char (*(*x())[])()
