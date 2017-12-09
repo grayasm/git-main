@@ -39,7 +39,7 @@
      name[0] * -> "one"
          [1] * -> "tow"
          [2] * -> "five"
-     aname: one\0  two\0  five\0 
+     aname: one\0  two\0  five\0
            [0      5      10     ]
  20. int (*comp)(void*, void*);
      the (*comp) parantheses are needed so the components are correctly
