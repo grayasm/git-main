@@ -12,19 +12,21 @@ main(int argc, char *argv[])
     char line[MAXLINE];
     char **lines;
 
-    if(argc < 2)
-        printf("use: program n < file.txt\n"), return;
+    if(argc < 2) {
+        printf("use: program n < file.txt\n");
+        return;
+    }
 
     n = atoi(argv[1]);
 
     /* get line by line
-           store each line into lines;??
-           count lines;
+       store each line into lines;??
+       count lines;
 
        if EOF
-           if n lines are available :
-               print all lines
-           else:
-               print all available lines;
+       if n lines are available :
+       print all lines
+       else:
+       print all available lines;
     */
 }
