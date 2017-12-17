@@ -1,18 +1,10 @@
-/*
- * Filename:    itob.c
- * Author:      Thomas van der Burgt <thomas@thvdburgt.nl>
- * Date:        24-FEB-2010
- *
- * The C Programming Language, second edition,
- * by Brian Kernighan and Dennis Ritchie
- *
- * Exercise 3-6, page 64
- *
- * Write a version of itoa that accepts three arguments instead of two.
- * The third argument is a minimum field width; the converted number
- * must be padded with blanks on the left if necessary to make it wide
- * enough.
- */
+/* Cap.3 Control Flow, pag.64
+
+   Exercise 3-6: Write a version of itoa that accepts three arguments
+                 instead of two. The third argument is a minimum field width;
+                 the converted number must be padded with blanks on the left
+                 if necessary to make it wide enough.
+*/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -31,7 +23,7 @@ int main(void)
     printf("%s\n", s);
     itoa(n, s, 16);
     printf("%s\n", s);
-    
+
     return EXIT_SUCCESS;
 }
 

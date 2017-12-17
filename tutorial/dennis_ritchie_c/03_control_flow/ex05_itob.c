@@ -1,17 +1,10 @@
-/*
- * Filename:    itob.c
- * Author:      Thomas van der Burgt <thomas@thvdburgt.nl>
- * Date:        24-FEB-2010
- *
- * The C Programming Language, second edition,
- * by Brian Kernighan and Dennis Ritchie
- *
- * Exercise 3-5, page 64
- *
- * Write the function itob(n,s,b) that converts the integer n into a
- * base b character representation in the string s. In particular,
- * itob(n,s,16) formats n as a hexadecimal integer in s.
- */
+/* Cap.3 Control Flow, pag.64
+
+   Exercise 3-5: Write the function itob(n,s,b) that converts the integer n
+                 into a base b character representation in the string s.
+                 In particular, itob(n,s,16) formats n as a hexadecimal
+                 integer in s.
+*/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -34,10 +27,10 @@ void itob(int n, char s[], int b)
 {
     int i, sign;
     char symbols[] = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    
+
     if (2 > b || b > strlen(symbols) )
         return;     /* not a valid base */
-    
+
     sign = n;
     i = 0;
     do {            /* generate symbols in reverse order */
@@ -60,4 +53,3 @@ void reverse(char s[])
         s[j] = c;
     }
 }
-

@@ -1,25 +1,18 @@
-/*
- * Filename:    itoa.c
- * Author:      Thomas van der Burgt <thomas@thvdburgt.nl>
- * Date:        24-FEB-2010
- *
- * The C Programming Language, second edition,
- * by Brian Kernighan and Dennis Ritchie
- *
- * Exercise 3-4, page 64
- *
- * In a two's complement number representation, our version of itoa does
- * not handle the largest negative number, that is, the value of n equal
- * to -(2^(wordsize - 1)). Explain why not. Modify it to print that
- * value correctly regardless of the machine on which it runs.
- *
- * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
- * It does not handle the largest negative number because it does not
- * have a positive equivalent; -n where n is the largest negative number
- * gives n; because n is still negative n%10 gives negative values
- * instead of the desired positive ones. If we take the asbolute value
- * of n%10 we get the correct value and character.
- */
+/* Cap.3 Control Flow, pag.64
+
+   Exercise 3-4: In a two's complement number representation, our version of
+                 itoa does not handle the largest negative number, that is
+                 the value of n equal to -(2^(wordsize - 1)). Explain why not.
+                 Modify it to print that value correctly regardless of the
+                 machine on which it runs.
+
+   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+   It does not handle the largest negative number because it does not
+   have a positive equivalent; -n where n is the largest negative number
+   gives n; because n is still negative n%10 gives negative values
+   instead of the desired positive ones. If we take the asbolute value
+   of n%10 we get the correct value and character.
+*/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -38,7 +31,7 @@ int main(void)
     printf("%s\n", s);
     itoa(n, s);
     printf("%s\n", s);
-    
+
     return EXIT_SUCCESS;
 }
 
