@@ -1,30 +1,27 @@
-/*
- * Filename:    polishcalc.c
- * Author:      Thomas van der Burgt <thomas@thvdburgt.nl>
- * Date:        08-MAR-2010
- *
- * The C Programming Language, second edition,
- * by Brian Kernighan and Dennis Ritchie
- *
- * Exercise 4-5, page 79
- *
- * Add access to library functions like sin, exp, and pow. See <math.h>
- * in Appendix B, Section 4.
- */
+/* Cap.4 Functions and Program Structure, pag.79
+
+   Exercise 4-5: Add access to library functions like sin, exp and pow.
+                 See <math.h> in Appendix B, Section 4
+*/
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>     /* strcmp */
 #include <math.h>       /* sin, exp & pow */
+#include <ctype.h>
+
 
 #define MAXOP   100     /* max size of operand or operator */
 #define NUMBER  '0'     /* signal that a number was found */
 #define LIBFUNC '1'     /* signal that a library function was found */
 
+
 void dofunc(char []);
 int getop(char []);
 void push(double);
 double pop(void);
+
+
 
 /* reverse Polish calculator */
 int main(void)
@@ -93,8 +90,8 @@ void dofunc(char s[])
     }
 }
 
-#define MAXVAL  100  /* maximum depth of val stack*/
 
+#define MAXVAL  100  /* maximum depth of val stack*/
 int sp = 0;          /* next free stack position */
 double val[MAXVAL];  /* value stack */
 
@@ -119,7 +116,7 @@ double pop(void)
     }
 }
 
-#include <ctype.h>
+
 
 int getch(void);
 void ungetch(int);
@@ -152,7 +149,6 @@ int getop(char s[])
 }
 
 #define BUFSIZE 100
-
 char buf[BUFSIZE];  /* buffer for ungetch */
 int  bufp = 0;      /* next free position in buf */
 

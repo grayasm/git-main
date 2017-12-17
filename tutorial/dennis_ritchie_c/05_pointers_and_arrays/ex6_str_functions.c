@@ -1,24 +1,28 @@
-/*
- * Filename:    itoa.c
- * Author:      Thomas van der Burgt <thomas@thvdburgt.nl>
- * Date:        04-MAR-2010
- *
- * The C Programming Language, second edition,
- * by Brian Kernighan and Dennis Ritchie
- *
- * Exercise 5-6, page 107
- *
- * Rewrite appropriate programs from earlier chapters and exercises with
- * pointers instead of array indexing. Good possibilities include
- * getline (Chapters 1 and 4), atoi, itoa, and their variants
- * (Chapters 2, 3, and 4), reverse (Chapter 3), and strindex and getop
- * (Chapter 4).
- */
+/* Cap.5 Pointers and Arrays, pag.107
+
+   Exercise 5-6: Rewrite appropriate programs from earlier chapters and
+                 exercises with pointers instead of array indexing. Good
+                 posibilities include geline (Chapters 1 and 4), atoi, itoa
+                 and their variants (Chapters 2, 3 and 4), reverse (Chapter 3)
+                 and strindex and getop (Chapter 4).
+*/
 
 #include <stdio.h>
 #include <stdlib.h>     /* abs() */
 #include <string.h>
 #include <ctype.h>
+
+int strindex(const char *s, const char *t);
+void reverse(char *s);
+void itoa(int n, char *s);
+int getop(char *s);
+
+main()
+{
+    char s[] = "0123456789";
+    reverse(s);
+    printf("reverse(0123456789)=%s\n", s);
+}
 
 
 /* strindex:  return index of t in s, -1 if none */
@@ -64,8 +68,8 @@ void itoa(int n, char *s)
     reverse(s);
 }
 
-#define NUMBER '0'  /* signal that a number was found */
 
+#define NUMBER '0'  /* signal that a number was found */
 int getch(void);
 void ungetch(int);
 
@@ -89,8 +93,8 @@ int getop(char *s)
     return NUMBER;
 }
 
-#define BUFSIZE 100
 
+#define BUFSIZE 100
 char buf[BUFSIZE];  /* buffer for ungetch */
 int  bufp = 0;      /* next free position in buf */
 

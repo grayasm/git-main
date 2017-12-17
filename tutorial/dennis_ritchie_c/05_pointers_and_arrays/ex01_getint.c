@@ -1,21 +1,14 @@
-/*
- * Filename:    main.c
- * Author:      Thomas van der Burgt <thomas@thvdburgt.nl>
- * Date:        01-MAR-2010
- *
- * The C Programming Language, second edition,
- * by Brian Kernighan and Dennis Ritchie
- *
- * Exercise 5-1, page 97
- *
- * As written, getint treats a + or - not followed by a digit as a valid
- * representation of zero. Fix it to push such a character back on the
- * input.
- */
+/* Cap.5 Pointers and Arrays, pag.97
+
+   Exercise 5-1: As written, getint treats a + or - not followed by a digit as
+                 a valid representation of zero. Fix it to push such a character
+                 back on the input.
+*/
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
+
 
 int getint(int *pn);
 int getch(void);
@@ -38,6 +31,7 @@ int main(void)
         printf("wtf happend?\n");
     return EXIT_SUCCESS;
 }
+
 
 /* getint:  get next integer from input into *pn */
 int getint(int *pn)
@@ -69,7 +63,6 @@ int getint(int *pn)
 
 
 #define BUFSIZE 100
-
 char buf[BUFSIZE];    /* buffer for ungetch */
 int bufp = 0;         /* next free position in buf */
 

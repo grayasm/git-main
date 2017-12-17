@@ -1,22 +1,16 @@
-/*
- * Filename:    cat.c
- * Author:      Thomas van der Burgt <thomas@thvdburgt.nl>
- * Date:        24-MAR-2010
- *
- * The C Programming Language, second edition,
- * by Brian Kernighan and Dennis Ritchie
- *
- * Exercise 8-1, page 174
- *
- * Rewrite the program cat from Chapter 7 using read, write, open and
- * close instead of their standard library equivalents. Perform
- * experiments to determine the relative speeds of the two versions.
- */
+/* Cap.8 The Unix System Interface, pag.174
+
+   Exercise 8-1: Rewrite the program cat from Chapter 7 using read, write
+                 open and close instead of their standard library equivalents.
+                 Perform experiments to determine the relative speeds of the
+                 two versions.
+*/
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <fcntl.h>  /* File Control Operations */
 #include <unistd.h> /* Symbolic Constants */
+
 
 /* cat:  concatenate files */
 int main(int argc, char *argv[])
@@ -38,6 +32,7 @@ int main(int argc, char *argv[])
             }
     exit(EXIT_SUCCESS);
 }
+
 
 /* filecopy:  copy file ifd to file ofd */
 void filecopy(int ifd, int ofd)

@@ -1,20 +1,21 @@
-/*
- * Filename:    atof.c
- * Author:      Thomas van der Burgt <thomas@thvdburgt.nl>
- * Date:        08-MAR-2010
- *
- * The C Programming Language, second edition,
- * by Brian Kernighan and Dennis Ritchie
- *
- * Exercise 4-2, page 73
- *
- * Extend atof to handle scientific notation of the form 123.45e-6 
- * where a floating-point number may be followed by e or E and an
- * optionally signed exponent.
- */
+/* Cap.4 Functions and Program Structure, pag.73
+
+   Exercise 4-2: Extend atof to handle scientific notation of the form 123.45e-6
+                 where a floating-point number may be followed by e or E
+                 and an optionally signed exponent.
+*/
 
 #include <ctype.h>  /* isspace() & isdigit() */
 #include <math.h>   /* pow() */
+
+float atof(char s[]);
+
+main()
+{
+    char *s = "123.45e-6";
+    printf("\"%s\"=%f\n", s, atof(s));
+}
+
 
 /* atof:  convert string s to double */
 float atof(char s[])

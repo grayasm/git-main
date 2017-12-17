@@ -1,19 +1,12 @@
-/*
- * Filename:    getfloat.c
- * Author:      Thomas van der Burgt <thomas@thvdburgt.nl>
- * Date:        01-MAR-2010
- *
- * The C Programming Language, second edition,
- * by Brian Kernighan and Dennis Ritchie
- *
- * Exercise 5-2, page 97
- *
- * Write getfloat, the floating-point analog of getint. What type does
- * getfloat return as its function value?
- *
- * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
- * The function returns an int
- */
+/* Cap.5 Pointers and Arrays, pag.97
+
+   Exercise 5-2: Write getfloat, the floating-point along of getint. What type
+                 does getfloat return as its function value?
+
+   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+   The function returns an int
+*/
+
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -43,6 +36,8 @@ int main(void)
         printf("wtf happend?\n");
     return EXIT_SUCCESS;
 }
+
+
 
 /* getfloat:  get next float from input into *pn */
 int getfloat(float *pn)
@@ -100,7 +95,6 @@ int getfloat(float *pn)
 
 
 #define BUFSIZE 100
-
 char buf[BUFSIZE];    /* buffer for ungetch */
 int bufp = 0;         /* next free position in buf */
 

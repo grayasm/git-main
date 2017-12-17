@@ -1,21 +1,15 @@
-/*
- * Filename:    polishcalc.c
- * Author:      Thomas van der Burgt <thomas@thvdburgt.nl>
- * Date:        08-MAR-2010
- *
- * The C Programming Language, second edition,
- * by Brian Kernighan and Dennis Ritchie
- *
- * Exercise 4-3, page 79
- *
- * Given the basic framework, it's straightforward to extend the
- * calculator. Add the modulus (%) operator and provisions for
- * negative numbers.
- */
+/* Cap.4 Functions and Program Structure, pag.79
+
+   Exercise 4-3: Given the basic frameword, it's straightforward to extend the
+                 calculator. Add the modulus (%) operator and provisions for
+                 negative numbers.
+*/
 
 #include <stdio.h>
 #include <stdlib.h>   /* EXIT_SUCCESS, atof() */
 #include <math.h>     /* fmod() */
+#include <ctype.h>
+
 
 #define MAXOP   100   /* max size of operand or operator */
 #define NUMBER  '0'   /* signal that a number was found */
@@ -71,8 +65,9 @@ int main(void)
     return EXIT_SUCCESS;
 }
 
-#define MAXVAL  100  /* maximum depth of val stack*/
 
+
+#define MAXVAL  100  /* maximum depth of val stack*/
 int sp = 0;          /* next free stack position */
 double val[MAXVAL];  /* value stack */
 
@@ -95,8 +90,6 @@ double pop(void)
         return 0.0;
     }
 }
-
-#include <ctype.h>
 
 int getch(void);
 void ungetch(int);
@@ -122,7 +115,6 @@ int getop(char s[])
 }
 
 #define BUFSIZE 100
-
 char buf[BUFSIZE];  /* buffer for ungetch */
 int  bufp = 0;      /* next free position in buf */
 

@@ -1,16 +1,9 @@
-/*
- * Filename:    convert.c
- * Author:      Thomas van der Burgt <thomas@thvdburgt.nl>
- * Date:        18-MAR-2010
- *
- * The C Programming Language, second edition,
- * by Brian Kernighan and Dennis Ritchie
- *
- * Exercise 7-1, page 153
- *
- * Write a program that converts upper case to lower or lower case to
- * upper, depending on the name it is invoked with, as found in argv[0]. 
- */
+/* Cap.7 Input and Output, pag.153
+
+   Exercise 7-1: Write a program that converts upper case to lower or lower
+                 case to upper, depending on the name it is invoked with
+                 as found in argv[0].
+*/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -29,7 +22,7 @@ int main(int argc, char **argv)
         exit(-1);
 
     name = splitpath(argv[0]);
-    
+
     if (strcmp(name, "lower") == 0)
         while ((c = getchar()) != EOF)
             putchar(tolower(c));

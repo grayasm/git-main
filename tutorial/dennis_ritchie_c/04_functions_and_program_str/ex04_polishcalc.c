@@ -1,27 +1,22 @@
-/*
- * Filename:    polishcalc.c
- * Author:      Thomas van der Burgt <thomas@thvdburgt.nl>
- * Date:        08-MAR-2010
- *
- * The C Programming Language, second edition,
- * by Brian Kernighan and Dennis Ritchie
- *
- * Exercise 4-4, page 79
- *
- * Add commands to print the top element of the stack without popping,
- * to duplicate it, and to swap the top two elements. Add a command to
- * clear the stack.
- *
- * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
- * I added the following functions:
- *  - void show_top(void);
- *  - void duplicate_top(void);
- *  - void swap_top(void);
- *  - void clear(void);
- */
+/* Cap.4 Functions and Program Structure, pag.79
+
+   Exercise 4-4: Add commands to print the top element of the stack without
+                 popping, to duplicate it, and to swap the top two elements.
+                 Add a command to clear the stack.
+
+   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+   I added the following functions:
+    - void show_top(void);
+    - void duplicate_top(void);
+    - void swap_top(void);
+    - void clear(void);
+*/
+
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <ctype.h>
+
 
 #define MAXOP   100   /* max size of operand or operator */
 #define NUMBER  '0'   /* signal that a number was found */
@@ -33,6 +28,7 @@ void show_top(void);
 void duplicate_top(void);
 void swap_top(void);
 void clear(void);
+
 
 /* reverse Polish calculator */
 int main(void)
@@ -81,8 +77,9 @@ int main(void)
     return EXIT_SUCCESS;
 }
 
-#define MAXVAL  100  /* maximum depth of val stack*/
 
+
+#define MAXVAL  100  /* maximum depth of val stack*/
 int sp = 0;          /* next free stack position */
 double val[MAXVAL];  /* value stack */
 
@@ -129,7 +126,7 @@ void swap_top(void)
     double tmp1 = pop();
     double tmp2 = pop();
     push(tmp1);
-    push(tmp2); 
+    push(tmp2);
 }
 
 /* clear:  clear the stack */
@@ -137,8 +134,6 @@ void clear(void)
 {
     sp = 0;
 }
-
-#include <ctype.h>
 
 int getch(void);
 void ungetch(int);
@@ -164,7 +159,6 @@ int getop(char s[])
 }
 
 #define BUFSIZE 100
-
 char buf[BUFSIZE];  /* buffer for ungetch */
 int  bufp = 0;      /* next free position in buf */
 

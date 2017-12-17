@@ -1,19 +1,21 @@
-/*
- * Filename:    minprintf.c
- * Author:      Thomas van der Burgt <thomas@thvdburgt.nl>
- * Date:        19-MAY-2010
- *
- * The C Programming Language, second edition,
- * by Brian Kernighan and Dennis Ritchie
- *
- * Exercise 7-3, page 156
- *
- * Revise minprintf to handle more of the other facilities of printf.
- */
+/* Cap.7 Input and Output, pag.156
+
+   Exercise 7-3: Revise minprintf to handle more of the other facilities of
+                 printf.
+*/
 
 #include <stdarg.h>
 #include <stdlib.h>
 #include <stdio.h>
+
+
+void minprintf(char *fmt, ...);
+
+main()
+{
+    minprintf("minprintf (%s,%d,%f)\n", "string", 123, 123.45f);
+}
+
 
 /* minprintf:  minimal printf with variable argument list */
 void minprintf(char *fmt, ...)
@@ -22,7 +24,7 @@ void minprintf(char *fmt, ...)
     char *p, *sval;
     int ival;
     double dval;
-    
+
     va_start(ap, fmt); /* make ap point to 1st unnamed arg */
     for (p = fmt; *p; p++) {
         if (*p != '%') {

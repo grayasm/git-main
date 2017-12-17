@@ -1,22 +1,26 @@
-/*
- * Filename:    strrindex.c
- * Author:      Thomas van der Burgt <thomas@thvdburgt.nl>
- * Date:        08-MAR-2010
- *
- * The C Programming Language, second edition,
- * by Brian Kernighan and Dennis Ritchie
- *
- * Exercise 4-1, page 71
- *
- * Write the function strrindex(s,t), which returns the position of the
- * rightmost occurrence of t in s, or -1 if there is none. 
- */
+/* Cap.4 Functions and Program Structure, pag.71
+
+   Exercise 4-1: Write the function strrindex(s,t) which returns the position
+                 of the rightmost occurrence of t in s, or -1 if there is none.
+*/
+
+#include <stdio.h>
+
+int strrindex(char s[], char t[]);
+
+main()
+{
+    char s[] = "long string - short string";
+    char t[] = "string";
+
+    printf("righmost position of %s in %s: %d\n", t, s, strrindex(s, t));
+}
 
 /* strrindex:  return index of rightmost t in s, -1 if none */
 int strrindex(char s[], char t[])
 {
     int i, j, k, rindex;
-    
+
     rindex = -1;
     for (i = 0; s[i] != '\0'; i++) {
         /* check if t starts at this index in s */
