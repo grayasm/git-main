@@ -5,6 +5,7 @@
                  and an optionally signed exponent.
 */
 
+#include <stdio.h>
 #include <ctype.h>  /* isspace() & isdigit() */
 #include <math.h>   /* pow() */
 

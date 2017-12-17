@@ -1,5 +1,6 @@
 # CMakeLists file for Cap.5 Poiters and Arrays
 
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -lm")
 
 add_executable(01_pointers_and_addresses  01_pointers_and_addresses.c)
 add_executable(02_pointers_and_func_args  02_pointers_and_func_args.c)

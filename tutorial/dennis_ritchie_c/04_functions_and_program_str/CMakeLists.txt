@@ -1,5 +1,7 @@
 # CMakeLists file for Cap.4 Functions and Program Structure
 
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -lm")
+
 add_executable(01_grep  01_grep.c)
 add_executable(02_atof  02_atof.c)
 add_executable(03_calc  03_calc.c)

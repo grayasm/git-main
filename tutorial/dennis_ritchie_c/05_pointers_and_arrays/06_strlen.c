@@ -9,7 +9,7 @@
 #include <stdio.h>
 
 /* strlen: return length of string s */
-int strlen(char *s)
+int strlen_(char *s)
 {
     char *p = s;
 
@@ -24,7 +24,7 @@ main()
     char a[] = "hello, world";
     char *pa = a;
 
-    printf("%d\n", strlen("hello, world"));
-    printf("%d\n", strlen(pa));
-    printf("%d\n", strlen(a));
+    printf("%d\n", strlen_("hello, world"));
+    printf("%d\n", strlen_(pa));
+    printf("%d\n", strlen_(a));
 }

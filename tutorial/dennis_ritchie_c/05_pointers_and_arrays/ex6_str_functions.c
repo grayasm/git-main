@@ -16,6 +16,7 @@ int strindex(const char *s, const char *t);
 void reverse(char *s);
 void itoa(int n, char *s);
 int getop(char *s);
+int getline_(char *s, int lim);
 
 main()
 {
@@ -111,8 +112,8 @@ void ungetch(int c) /* push character back on input */
         buf[bufp++] = c;
 }
 
-/* getline:  get line into s, return length */
-int getline(char *s, int lim)
+/* getline_:  get line into s, return length */
+int getline_(char *s, int lim)
 {
     char c, *p;
 

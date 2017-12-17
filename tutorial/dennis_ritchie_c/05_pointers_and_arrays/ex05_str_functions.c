@@ -9,10 +9,11 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
-void strncpy(char *s, const char *t, int n);
-int strncmp(char *s, const char *t, int n);
-void strcat(char *s, const char *t, int n);
+void strncpy_(char *s, const char *t, int n);
+int strncmp_(char *s, const char *t, int n);
+void strcat_(char *s, const char *t, int n);
 
 
 main()
@@ -20,12 +21,12 @@ main()
     char s[100] = "1234567890";
     char t[100] = "987654321";
 
-    strncpy(s, t, strlen(t));
+    strncpy_(s, t, strlen(t));
 }
 
 
 /* strncpy:  copy at most n characters of t to s */
-void strncpy(char *s, const char *t, int n)
+void strncpy_(char *s, const char *t, int n)
 {
     while (*t && n-- > 0)
         *s++ = *t++;
@@ -35,7 +36,7 @@ void strncpy(char *s, const char *t, int n)
 
 /* strncmp:  compare at most n characters of s and t, return <0 if s<t,
              0 if s==t, >0 if s>t */
-int strncmp(char *s, const char *t, int n)
+int strncmp_(char *s, const char *t, int n)
 {
     for (; *s == *t && n-- > 0; s++, t++)
         if (*s == '\0' || n == 0)
@@ -45,7 +46,7 @@ int strncmp(char *s, const char *t, int n)
 
 /* strcat:  concatenate at most n characters of t to the end of s; s
             must be big enough */
-void strcat(char *s, const char *t, int n)
+void strcat_(char *s, const char *t, int n)
 {
     while (*s)              /* find end of s */
         s++;
