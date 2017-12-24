@@ -1,0 +1,13 @@
+#CMakeLists.txt file for 08.5_initializers folder
+
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+
+add_executable(01_old_initialization_of_pod  01_old_initialization_of_pod.cpp)
+add_executable(02_old_initialization_of_members  02_old_initialization_of_members.cpp)
+add_executable(03_old_initialization_of_aggregates  03_old_initialization_of_aggregates.cpp)
+add_executable(04_old_initialization_restrictions  04_old_initialization_restrictions.cpp)
+add_executable(05_cxx11_brace_init  05_cxx11_brace_init.cpp)
+add_executable(06_cxx11_default_initialization  06_cxx11_default_initialization.cpp)
+add_executable(07_cxx11_class_member_initializers  07_cxx11_class_member_initializers.cpp)
+add_executable(08_cxx11_initializer_list  08_cxx11_initializer_list.cpp)
+add_executable(09_cxx11_a_naive_initializer_list  09_cxx11_a_naive_initializer_list.cpp)
