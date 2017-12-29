@@ -8,6 +8,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
 add_subdirectory(02.12_keywords)
 add_subdirectory(05.1.2_lambda_expressions)
+add_subdirectory(08.4_function_definitions)
 add_subdirectory(08.5_initializers)
 add_subdirectory(20.7.1_unique_ptr)
 add_subdirectory(20.7.2.2_shared_ptr)
