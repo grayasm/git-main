@@ -1,0 +1,12 @@
+# CMakeLists for 08.4_function_definitions
+
+add_executable(01_no_default_constructor  01_no_default_constructor.cpp)
+add_executable(02_no_default_destructor  02_no_default_destructor.cpp)
+add_executable(03_no_default_copy_constructor  03_no_default_copy_constructor.cpp)
+add_executable(04_no_default_move_constructor  04_no_default_move_constructor.cpp)
+add_executable(05_non_copyable_idiom  05_non_copyable_idiom.cpp)
+add_executable(06_default_outside_class  06_default_outside_class.cpp)
+add_executable(07_default_inline  07_default_inline.cpp)
+add_executable(08_delete_operator_new  08_delete_operator_new.cpp)
+add_executable(09_disable_undesired_conversion  09_disable_undesired_conversion.cpp)
+add_executable(10_use_case_atomic_int  10_use_case_atomic_int.cpp)
