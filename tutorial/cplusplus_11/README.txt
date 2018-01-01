@@ -20,3 +20,16 @@ I can find , individually for each topic.
 Also the C++11 ISO N3337.pdf is not always the best documentation for
 this purpose.
 -----------------------------------------------------------------------
+
+1) lambda,std::function<..> (5.1.2)  auto,decltype(2.12)
+2) nullptr, noexcept, constexpr (2.12)
+3) range-based for loop (6.5.4)
+4) enum class (7.2)
+5) default and delete methods and operators (8.4)
+6) braced-init-list, std::initializer_list (8.5)
+7) override and final (10.3)
+8) delegating constructors (12.6)
+9) rvalue references, move semantics, std::move, std::forward (12.8)
+10) shared_ptr, weak_ptr, unique_ptr (20.7)
+11) thread (30.3), mutex(30.4), condition_variable(30.5)
+12) future, shared_future, promise, async, packaged_task (30.6)
