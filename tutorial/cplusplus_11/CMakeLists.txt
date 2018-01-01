@@ -8,6 +8,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
 add_subdirectory(02.12_keywords)
 add_subdirectory(05.1.2_lambda_expressions)
+add_subdirectory(06.5.4_the_range_based_for_statement)
 add_subdirectory(07.2_enumeration_declarations)
 add_subdirectory(08.4_function_definitions)
 add_subdirectory(08.5_initializers)
