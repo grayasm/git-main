@@ -31,7 +31,7 @@ if [ $? -eq 0 ]; then
 	echo "emacs-25.3.tar.xz.sig :OK"
 else
 	echo "emacs-25.3.tar.xz.sig :NOT OK"
-	exit
+	# exit
 	# Not until I have 7C207910 key installed.
 fi
 

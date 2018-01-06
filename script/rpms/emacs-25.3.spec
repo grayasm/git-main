@@ -40,13 +40,15 @@ tar -xvf  $RPM_SOURCE_DIR/emacs-25.3.tar
 %build
 cd $RPM_BUILD_DIR/emacs-25.3
 mkdir emacs-build && cd emacs-build
-../configure --prefix=/ \
-			 --with-x-toolkit=gtk2
+../configure --prefix=/opt/emacs-25.3 \
+			 --with-dbus --with-gif --with-jpeg --with-png --with-rsvg \
+			 --with-tiff --with-xft --with-xpm --with-gpm=no \
+			 --with-x-toolkit=gtk2 --with-modules
 make -j8
 
 %install
 cd $RPM_BUILD_DIR/emacs-25.3/emacs-build
-make DESTDIR=$RPM_BUILD_ROOT/opt/emacs-25.3 install
+make DESTDIR=$RPM_BUILD_ROOT install
 
 
 %postun
