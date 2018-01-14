@@ -29,6 +29,7 @@
 #include "exception.hpp"
 #include "stream.hpp"
 #include "Test.hpp"
+#include "GetHistoryPrices.hpp"
 
 
 
@@ -38,7 +39,8 @@ int main(int /*argc*/, char** /*argv*/)
 	// disable stdout buffer
 	setvbuf(stdout, NULL, _IONBF, 0);
 	
-	test2();
+	GetHistoryPrices();
+
 	return 0;
 }
 

@@ -22,7 +22,6 @@
 #define __Test_hpp__
 
 
-int test();
 int test2();
 
 

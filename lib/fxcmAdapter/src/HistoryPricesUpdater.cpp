@@ -19,7 +19,7 @@ contact: grayasm@gmail.com
 */
 
 
-#include "HistoryPricesPrinter.hpp"
+#include "HistoryPricesUpdater.hpp"
 #include "ErrorCodes.hpp"
 #include "autocritical_section.hpp"
 #include "stream.hpp"
@@ -29,19 +29,33 @@ contact: grayasm@gmail.com
 
 namespace fxcm
 {
-	HistoryPricesPrinter::HistoryPricesPrinter(IO2GSession* session, bool outputPrices)
+	HistoryPricesUpdater::HistoryPricesUpdater(IO2GSession* session)
 	{
 		m_session = session;
 		m_session->addRef();
-		m_outputPrices = outputPrices;
 	}
 
-	HistoryPricesPrinter::~HistoryPricesPrinter()
+	HistoryPricesUpdater::~HistoryPricesUpdater()
 	{
 		m_session->release();
 	}
 
-	int HistoryPricesPrinter::PrintPrices(IO2GResponse* response)
+	void HistoryPricesUpdater::SetInstrument(const char* sInstrument)
+	{
+		m_instrument = sInstrument;
+	}
+
+	void HistoryPricesUpdater::SetTimeframe(const char* sTimeframe)
+	{
+		m_timeframe = sTimeframe;
+	}
+
+	void HistoryPricesUpdater::ClearPrices()
+	{
+		m_historyPricesVec.clear();
+	}
+
+	int HistoryPricesUpdater::UpdatePrices(IO2GResponse* response)
 	{
 		misc::autocritical_section autoCS(m_criticalSection);
 
@@ -72,22 +86,53 @@ namespace fxcm
 		}
 
 		char sTime[20];
+		misc::time mTime;
+		/*	The customer sample reads the prices backward.
+			
 		for (int ii = reader->size() - 1; ii >= 0; ii--)
+		*/		
+		for (int ii = 0; ii < reader->size(); ++ii)
 		{
 			DATE dt = reader->getDate(ii);
 			FormatDate(dt, sTime);
+			FormatDate(dt, mTime);
+
 			if (reader->isBar())
 			{
-				misc::cout << "DateTime=" << sTime
-					<< " BidOpen=" << reader->getBidOpen(ii)
-					<< " BidHigh=" << reader->getBidHigh(ii)
-					<< " BidLow=" << reader->getBidLow(ii)
-					<< " BidClose=" << reader->getBidClose(ii)
-					<< " AskOpen=" << reader->getAskOpen(ii)
-					<< " AskHigh=" << reader->getAskHigh(ii)
-					<< " AskLow=" << reader->getAskLow(ii)
-					<< " AskClose=" << reader->getAskClose(ii)
-					<< " Volume=" << reader->getVolume(ii) << std::endl;
+				double bidOpen = reader->getBidOpen(ii);
+				double bidHigh = reader->getBidHigh(ii);
+				double bidLow = reader->getBidLow(ii);
+				double bidClose = reader->getBidClose(ii);
+				double askOpen = reader->getAskOpen(ii);
+				double askHigh = reader->getAskHigh(ii);
+				double askLow = reader->getAskLow(ii);
+				double askClose = reader->getAskClose(ii);
+				int volume = reader->getVolume(ii);
+
+				HistoryPrice histPrice(
+					m_instrument.c_str(),
+					m_timeframe.c_str(),
+					mTime,
+					bidOpen, bidHigh, bidLow, bidClose,
+					askOpen, askHigh, askLow, askClose,
+					volume);
+				m_historyPricesVec.push_back(histPrice);
+
+
+				static bool debugOutput = true;
+				if (debugOutput)
+				{
+					misc::cout << "DateTime=" << sTime
+						<< " BidOpen=" << bidOpen
+						<< " BidHigh=" << bidHigh
+						<< " BidLow=" << bidLow
+						<< " BidClose=" << bidClose
+						<< " AskOpen=" << askOpen
+						<< " AskHigh=" << askHigh
+						<< " AskLow=" << askLow
+						<< " AskClose=" << askClose
+						<< " Volume=" << volume << std::endl;
+				}
 			}
 			else
 			{
@@ -100,7 +145,15 @@ namespace fxcm
 		return ErrorCodes::ERR_SUCCESS;
 	}
 
-	void HistoryPricesPrinter::FormatDate(DATE date, char* buf)
+	const HistoryPricesUpdater::HistoryPricesVec& HistoryPricesUpdater::GetPrices() const
+	{
+		/*	If the prices are read backward, I may need to sort this vector
+			in the oder of time increasing.
+		*/
+		return m_historyPricesVec;
+	}
+
+	void HistoryPricesUpdater::FormatDate(DATE date, char* buf)
 	{
 		struct tm tmBuf = { 0 };
 		CO2GDateUtils::OleTimeToCTime(date, &tmBuf);
@@ -114,5 +167,22 @@ namespace fxcm
 			<< setw(2) << setfill('0') << tmBuf.tm_min << ":" \
 			<< setw(2) << setfill('0') << tmBuf.tm_sec;
 		strcpy(buf, sstream.str().c_str());
+	}
+
+	void HistoryPricesUpdater::FormatDate(DATE date, misc::time& mtime)
+	{
+		struct tm tmBuf = { 0 };
+		CO2GDateUtils::OleTimeToCTime(date, &tmBuf);
+	
+		enum misc::time::Month month = (enum misc::time::Month)tmBuf.tm_mon;
+
+		mtime = misc::time(
+			tmBuf.tm_year + 1900,
+			month,
+			tmBuf.tm_mday,
+			tmBuf.tm_hour,
+			tmBuf.tm_min,
+			tmBuf.tm_sec);
+
 	}
 } // namespace

@@ -32,7 +32,7 @@ contact: grayasm@gmail.com
 #include "ResponseListener4Offers.hpp"
 #include "ResponseListener4Orders.hpp"
 #include "ResponseListener4HistoryPrices.hpp"
-#include "HistoryPricesPrinter.hpp"
+#include "HistoryPricesUpdater.hpp"
 #include "TradingSettings.hpp"
 #include "TradingPermissions.hpp"
 
@@ -45,6 +45,7 @@ namespace fxcm
 	{
 	public:
 		typedef misc::vector<TradingSettings> TradingSettingsVec;
+		typedef misc::vector<HistoryPrice> HistoryPricesVec;
 
 	public:
 		Session(const fxcm::LoginParams& loginParams,
@@ -60,7 +61,8 @@ namespace fxcm
 		int GetOrders();
 		int GetLastOffer(Offer& offer, const char* sInstrument);
 		int GetHistoryPrices(const char* sInstrument, const char* sTimeframe,
-							 DATE dtFrom, DATE dtTo);
+							 DATE dtFrom, DATE dtTo,
+							 HistoryPricesVec& historyPricesVec);
 
 
 	private:
@@ -82,7 +84,7 @@ namespace fxcm
 		ResponseListener4Offers*			m_responseListener4Offers;
 		ResponseListener4Orders*			m_responseListener4Orders;
 		ResponseListener4HistoryPrices*		m_responseListener4HistoryPrices;
-		HistoryPricesPrinter*				m_historyPricesPrinter;
+		HistoryPricesUpdater*				m_historyPricesUpdater;
 		TradingSettingsVec					m_tradingSettingsVec;
 	};
 } // namespace

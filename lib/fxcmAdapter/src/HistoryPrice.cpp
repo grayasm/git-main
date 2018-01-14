@@ -26,9 +26,9 @@ namespace fxcm
 {
 	HistoryPrice::HistoryPrice
 	(
-		const char* instrument,					// 'EUR/USD'
-		const char* timeframe,					// m1 , H1 , ...
-		const char* time,						// m.d.Y H:M:S
+		const char* instrument,			// 'EUR/USD'
+		const char* timeframe,			// m1 , H1 , ...
+		misc::time time,				// UTC
 		double BidOpen, double BidHigh, double BidLow, double BidClose,
 		double AskOpen, double AskHigh, double AskLow, double AskClose,
 		int volume
@@ -82,7 +82,7 @@ namespace fxcm
 		return m_instrument;
 	}
 
-	void HistoryPrice::SetInstrument(const char* instrument) const
+	void HistoryPrice::SetInstrument(const char* instrument)
 	{
 		m_instrument = instrument;
 	}
@@ -95,6 +95,16 @@ namespace fxcm
 	void HistoryPrice::SetTimeframe(const char* timeframe)
 	{
 		m_timeframe = timeframe;
+	}
+
+	const misc::time& HistoryPrice::GetTime() const
+	{
+		return m_time;
+	}
+
+	void HistoryPrice::SetTime(const misc::time& val)
+	{
+		m_time = val;
 	}
 
 	double HistoryPrice::GetBidOpen() const

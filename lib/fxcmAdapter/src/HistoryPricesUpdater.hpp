@@ -18,38 +18,50 @@ along with this program; if not, write to the Free Software Foundation, Inc.
 contact: grayasm@gmail.com
 */
 
-#ifndef __HistoryPricesPrinter_hpp__
-#define __HistoryPricesPrinter_hpp__
+#ifndef __HistoryPricesUpdater_hpp__
+#define __HistoryPricesUpdater_hpp__
 
 
 #include <vector>
 #include <ForexConnect.h>
 #include "critical_section.hpp"
 #include "autoptr.hpp"
+#include "vector.hpp"
+#include "HistoryPrice.hpp"
 
 
 namespace fxcm
 {
-	class HistoryPricesPrinter
+	class HistoryPricesUpdater
 	{
 	public:
-		HistoryPricesPrinter(IO2GSession* session, bool outputPrices);
-		~HistoryPricesPrinter();
+		typedef misc::vector<HistoryPrice> HistoryPricesVec;
 
-		int PrintPrices(IO2GResponse* response);
+		HistoryPricesUpdater(IO2GSession* session);
+		~HistoryPricesUpdater();
+
+		void SetInstrument(const char* sInstrument);
+		void SetTimeframe(const char* sTimeframe);
+		void ClearPrices();
+
+		int UpdatePrices(IO2GResponse* response);
+		const HistoryPricesVec& GetPrices() const;
 
 	private:
 		// disable copying
-		HistoryPricesPrinter(const HistoryPricesPrinter&);
-		HistoryPricesPrinter& operator=(const HistoryPricesPrinter&);
+		HistoryPricesUpdater(const HistoryPricesUpdater&);
+		HistoryPricesUpdater& operator=(const HistoryPricesUpdater&);
 
 		void FormatDate(DATE date, char* buf);
+		void FormatDate(DATE date, misc::time& mtime);
 
 	private:
 		IO2GSession*					m_session;
 		misc::critical_section			m_criticalSection;
-		bool							m_outputPrices;
+		misc::string					m_instrument;
+		misc::string					m_timeframe;
+		misc::vector<HistoryPrice>		m_historyPricesVec;
 	};
 } // namespace
 
-#endif // __HistoryPricesPrinter_hpp__
+#endif // __HistoryPricesUpdater_hpp__

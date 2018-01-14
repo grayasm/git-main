@@ -28,7 +28,7 @@
 #include "ErrorCodes.hpp"
 #include "time.hpp"
 
-void Time2DATE(time_t tt, DATE& dt);
+static void Time2DATE(time_t tt, DATE& dt);
 
 int test2()
 {
@@ -48,7 +48,7 @@ int test2()
 	session.GetOffers();
 	session.GetOrders();
 
-
+	misc::vector<fxcm::HistoryPrice> historyPricesVec;
 	int toff = misc::time::hourSEC;
 	misc::time tbeg(2018, misc::time::JAN, 8, 0, 0, 0);
 	misc::time tnext = tbeg + toff;
@@ -62,7 +62,8 @@ int test2()
 
 		session.GetHistoryPrices(
 			"EUR/USD", "m1",
-			dtFrom, dtTo);
+			dtFrom, dtTo,
+			historyPricesVec);
 	}
 	
 	session.Logout();
@@ -70,7 +71,7 @@ int test2()
 	return 0;
 }
 
-void Time2DATE(time_t tt, DATE& dt)
+static void Time2DATE(time_t tt, DATE& dt)
 {
 	struct tm *tmNow = gmtime(&tt);
 	CO2GDateUtils::CTimeToOleTime(tmNow, &dt);

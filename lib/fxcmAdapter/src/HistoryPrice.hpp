@@ -22,15 +22,17 @@ contact: grayasm@gmail.com
 #define __HistoryPrice_hpp__
 
 #include "string.hpp"
+#include "time.hpp"
 
 namespace fxcm
 {
 	class HistoryPrice
 	{
 	public:
-		HistoryPrice(const char* instrument,		// 'EUR/USD'
-			const char* timeframe,					// m1 , H1 , ...
-			const char* time,						// m.d.Y H:M:S  (UTC)
+		HistoryPrice(
+			const char* instrument,			// 'EUR/USD'
+			const char* timeframe,			// m1 , H1 , ...
+			misc::time time,				// UTC
 			double BidOpen, double BidHigh, double BidLow, double BidClose,
 			double AskOpen, double AskHigh, double AskLow, double AskClose,
 			int volume);
@@ -40,10 +42,13 @@ namespace fxcm
 		~HistoryPrice();
 
 		const misc::string& GetInstrument() const;
-		void SetInstrument(const char* instrument) const;
+		void SetInstrument(const char* instrument);
 
 		const misc::string& GetTimeframe() const;
 		void SetTimeframe(const char* timeframe);
+
+		const misc::time& GetTime() const;
+		void SetTime(const misc::time& val);
 
 		double GetBidOpen() const;
 		void SetBidOpen(double val);
@@ -75,7 +80,7 @@ namespace fxcm
 	private:
 		misc::string m_instrument;
 		misc::string m_timeframe;
-		misc::string m_time;
+		misc::time m_time;
 		double m_bidOpen, m_bidHigh, m_bidLow, m_bidClose;
 		double m_askOpen, m_askHigh, m_askLow, m_askClose;
 		int m_volume;

@@ -92,9 +92,8 @@ namespace fxcm
 		m_responseListener4HistoryPrices = new ResponseListener4HistoryPrices(m_session);
 		m_session->subscribeResponse(m_responseListener4HistoryPrices);
 
-		// The listener does not use HistoryPricesPrinter. Only the Session does
-		static bool outputPrices = true;
-		m_historyPricesPrinter = new HistoryPricesPrinter(m_session, outputPrices);
+		// The listener does not use HistoryPricesUpdater. Only the Session does
+		m_historyPricesUpdater = new HistoryPricesUpdater(m_session);
 	}
 
 	Session::~Session()
@@ -110,8 +109,8 @@ namespace fxcm
 		m_responseListener4Offers->release();
 		m_session->unsubscribeResponse(m_responseListener4HistoryPrices);
 		m_responseListener4HistoryPrices->release();
-		if (m_historyPricesPrinter)
-			delete m_historyPricesPrinter;
+		if (m_historyPricesUpdater)
+			delete m_historyPricesUpdater;
 		m_session->unsubscribeSessionStatus(m_sessionListener);
 		m_sessionListener->release();
 		m_session->release();
@@ -520,7 +519,8 @@ namespace fxcm
 	} // GetLastOffer
 
 	int Session::GetHistoryPrices(	const char* sInstrument, const char* sTimeframe,
-									DATE dtFrom, DATE dtTo)
+									DATE dtFrom, DATE dtTo,
+									HistoryPricesVec& historyPricesVec)
 	{
 		/* Start by validating the input data. */
 		if (strlen(sTimeframe) == 0)
@@ -549,6 +549,17 @@ namespace fxcm
 			misc::cout << __FUNCTION__
 				<< ": Time To is incorrect" << std::endl;
 			return ErrorCodes::ERR_TIME_TO_INCORRECT;
+		}
+
+		/*	Instrument and Timeframe are not available to the market data reader
+			so this needs to be set somewhere to reach the HistoryPrice.
+			Clear prices on successive calls.
+		*/
+		if (m_historyPricesUpdater)
+		{
+			m_historyPricesUpdater->SetInstrument(sInstrument);
+			m_historyPricesUpdater->SetTimeframe(sTimeframe);
+			m_historyPricesUpdater->ClearPrices();
 		}
 
 		// get history prices
@@ -621,10 +632,18 @@ namespace fxcm
 				break;
 			}
 
-			if (m_historyPricesPrinter)
-				m_historyPricesPrinter->PrintPrices(response);
+			if (m_historyPricesUpdater)
+			{
+				m_historyPricesUpdater->UpdatePrices(response);
+			}
 
 		} while (dtFirst - dtFrom > 0.0001);
+
+
+		if (m_historyPricesUpdater)
+		{
+			historyPricesVec = m_historyPricesUpdater->GetPrices();
+		}
 
 		return ErrorCodes::ERR_SUCCESS;
 	} // GetHistoryPrices
