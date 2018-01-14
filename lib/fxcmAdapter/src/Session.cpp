@@ -21,11 +21,12 @@ contact: grayasm@gmail.com
 #include "Session.hpp"
 #include "unistd.hpp"
 #include "stream.hpp"
+#include <time.h>
+#include <math.h>
 #include "ResponseListener4Offers.hpp"
 #include "OffersPrinter.hpp"
 #include "OffersUpdater.hpp"
 #include "ErrorCodes.hpp"
-#include <time.h>
 
 
 
