@@ -173,17 +173,17 @@ namespace fxcm
 
 	void OffersPrinter::FormatDate(DATE date, char* buf)
 	{
-			struct tm tmBuf = { 0 };
-			CO2GDateUtils::OleTimeToCTime(date, &tmBuf);
+		struct tm tmBuf = { 0 };
+		CO2GDateUtils::OleTimeToCTime(date, &tmBuf);
 
-			using namespace std;
-			stringstream sstream;
-			sstream << setw(2) << setfill('0') << tmBuf.tm_mon + 1 << "." \
-				<< setw(2) << setfill('0') << tmBuf.tm_mday << "." \
-				<< setw(4) << tmBuf.tm_year + 1900 << " " \
-				<< setw(2) << setfill('0') << tmBuf.tm_hour << ":" \
-				<< setw(2) << setfill('0') << tmBuf.tm_min << ":" \
-				<< setw(2) << setfill('0') << tmBuf.tm_sec;
-			strcpy(buf, sstream.str().c_str());
-		}
+		using namespace std;
+		stringstream sstream;
+		sstream << setw(2) << setfill('0') << tmBuf.tm_mon + 1 << "." \
+			<< setw(2) << setfill('0') << tmBuf.tm_mday << "." \
+			<< setw(4) << tmBuf.tm_year + 1900 << " " \
+			<< setw(2) << setfill('0') << tmBuf.tm_hour << ":" \
+			<< setw(2) << setfill('0') << tmBuf.tm_min << ":" \
+			<< setw(2) << setfill('0') << tmBuf.tm_sec;
+		strcpy(buf, sstream.str().c_str());
+	}
 } // namespace

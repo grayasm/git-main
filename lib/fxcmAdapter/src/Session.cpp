@@ -25,7 +25,7 @@ contact: grayasm@gmail.com
 #include "OffersPrinter.hpp"
 #include "OffersUpdater.hpp"
 #include "ErrorCodes.hpp"
-
+#include <time.h>
 
 
 
@@ -56,10 +56,10 @@ namespace fxcm
 			Session as well as ResponseListener4Offers can output the Offers.
 			OffersPrinter deals with locking, printing and updating the last Offers.
 			OffersUpdater deals with locking, setting and getting the last Offers.
-			m_outputOffers turns off/on printing offers on the console all the time.
+			outputOffers turns off/on printing offers on the console all the time.
 		*/
-		m_outputOffers = false;
-		m_offersPrinter = new OffersPrinter(m_session, m_outputOffers);
+		static bool outputOffers = false;
+		m_offersPrinter = new OffersPrinter(m_session, outputOffers);
 		m_offersUpdater = new OffersUpdater(m_session);
 
 		/*
@@ -68,7 +68,7 @@ namespace fxcm
 			updates (Trades, ClosedTrades, Messages, etc) and reduce complexity
 			e.g. easier to add DB storage for quotes, etc.
 		*/
-		m_responseListener4Offers = new ResponseListener4Offers(m_session, m_outputOffers);
+		m_responseListener4Offers = new ResponseListener4Offers(m_session, outputOffers);
 		m_session->subscribeResponse(m_responseListener4Offers);
 
 		// optional can print the offers (otherwise not useful)
@@ -83,6 +83,17 @@ namespace fxcm
 		*/
 		m_responseListener4Orders = new ResponseListener4Orders(m_session);
 		m_session->subscribeResponse(m_responseListener4Orders);
+
+		/*
+			ResponseListener4HistoryPrices works as a separate thread to receive
+			Orders table updates. The response is of type MarketDataSnapshot.
+		*/
+		m_responseListener4HistoryPrices = new ResponseListener4HistoryPrices(m_session);
+		m_session->subscribeResponse(m_responseListener4HistoryPrices);
+
+		// The listener does not use HistoryPricesPrinter. Only the Session does
+		static bool outputPrices = true;
+		m_historyPricesPrinter = new HistoryPricesPrinter(m_session, outputPrices);
 	}
 
 	Session::~Session()
@@ -96,6 +107,10 @@ namespace fxcm
 			delete m_offersUpdater;
 		m_session->unsubscribeResponse(m_responseListener4Offers);
 		m_responseListener4Offers->release();
+		m_session->unsubscribeResponse(m_responseListener4HistoryPrices);
+		m_responseListener4HistoryPrices->release();
+		if (m_historyPricesPrinter)
+			delete m_historyPricesPrinter;
 		m_session->unsubscribeSessionStatus(m_sessionListener);
 		m_sessionListener->release();
 		m_session->release();
@@ -116,8 +131,16 @@ namespace fxcm
 
 	bool Session::Logout()
 	{
+		bool waitEvents = m_sessionListener->IsConnected();
 		m_sessionListener->reset();
 		m_session->logout();
+		/*  If account has expired or password is incorrect the session login
+			errors out. In such cases the session listener is not notified
+			on logout. Avoid a deadlock by returning immediately.
+		*/
+		if (!waitEvents)
+			return m_sessionListener->IsDisconnected();
+
 		return	m_sessionListener->WaitEvents() &&
 				m_sessionListener->IsDisconnected();
 	}
@@ -495,19 +518,115 @@ namespace fxcm
 		return ErrorCodes::ERR_NO_OFFER_AVAILABLE;
 	}
 
-	int Session::CreateELS(fx::Position& entry)
+	int Session::GetHistoryPrices(	const char* sInstrument, const char* sTimeframe,
+									DATE dtFrom, DATE dtTo)
 	{
-		O2G2Ptr<IO2GAccountRow> account = GetAccount();
-		if (!account)
+		/* Start by validating the input data. */
+		if (strlen(sTimeframe) == 0)
 		{
 			misc::cout << __FUNCTION__
-				<< ": No valid accounts" << std::endl;
-			return ErrorCodes::ERR_NO_ACOUNTS_RESPONSE;
+				<< ": Error timeframe not specified" << std::endl;
+			return ErrorCodes::ERR_TIMEFRAME_INCORRECT;
 		}
 
+		time_t tNow = time(NULL); // get time now
+		struct tm *tmNow = gmtime(&tNow);
+		DATE dtNow = 0;
+		CO2GDateUtils::CTimeToOleTime(tmNow, &dtNow);
 
+		// isNAN(dtFrom)
+		if (dtFrom != dtFrom || dtFrom - dtNow > 0.0001)
+		{
+			misc::cout << __FUNCTION__
+				<< ": Time From is incorrect" << std::endl;
+			return ErrorCodes::ERR_TIME_FROM_INCORRECT;
+		}
 
-	} // CreateELS
+		// isNAN(dtFrom)
+		if (dtTo != dtTo || dtFrom - dtTo > 0.0001)
+		{
+			misc::cout << __FUNCTION__
+				<< ": Time To is incorrect" << std::endl;
+			return ErrorCodes::ERR_TIME_TO_INCORRECT;
+		}
+
+		// get history prices
+		O2G2Ptr<IO2GRequestFactory> requestFactory = m_session->getRequestFactory();
+		if (!requestFactory)
+		{
+			misc::cout << __FUNCTION__
+				<< ": Cannot create request factory" << std::endl;
+			return ErrorCodes::ERR_NO_REQUEST_FACTORY;
+		}
+
+		// find timeframe by identifier
+		O2G2Ptr<IO2GTimeframeCollection> timeframeCollection = 
+			requestFactory->getTimeFrameCollection();
+		O2G2Ptr<IO2GTimeframe> timeframe = timeframeCollection->get(sTimeframe);
+		if (!timeframe)
+		{
+			misc::cout << __FUNCTION__
+				<< ": Timeframe '" << sTimeframe << "' is incorrect!" << std::endl;
+			return ErrorCodes::ERR_TIMEFRAME_INCORRECT;
+		}
+
+		O2G2Ptr<IO2GRequest> request =
+			requestFactory->createMarketDataSnapshotRequestInstrument(
+				sInstrument, timeframe, timeframe->getQueryDepth());
+		DATE dtFirst = dtTo;
+		// there is limit for returned candles amount
+		do 
+		{
+			requestFactory->fillMarketDataSnapshotRequestTime(request, dtFrom, dtFirst, false);
+			m_responseListener4HistoryPrices->SetRequestID(request->getRequestID());
+			m_session->sendRequest(request);
+			// asynchronous request sent to server, waiting
+			if (!m_responseListener4HistoryPrices->WaitEvents())
+			{
+				misc::cout << __FUNCTION__
+					<< ": Response waiting timeout expired" << std::endl;
+				return ErrorCodes::ERR_TIMEOUT;
+			}
+			// shift "to" bound to oldest datetime of returned data
+			O2G2Ptr<IO2GResponse> response = m_responseListener4HistoryPrices->GetResponse();
+			if (!response || response->getType() != MarketDataSnapshot)
+			{
+				misc::cout << __FUNCTION__
+					<< ": No market data snapshot response" << std::endl;
+				return ErrorCodes::ERR_NO_MARKET_DATA_RESPONSE;
+			}
+
+			O2G2Ptr<IO2GResponseReaderFactory> readerFactory =
+				m_session->getResponseReaderFactory();
+			if (!readerFactory)
+			{
+				misc::cout << __FUNCTION__
+					<< ": Cannot create response reader factory" << std::endl;
+				return ErrorCodes::ERR_NO_RESPONSE_READER_FACTORY;
+			}
+
+			O2G2Ptr<IO2GMarketDataSnapshotResponseReader> reader =
+				readerFactory->createMarketDataSnapshotReader(response);
+			if (reader->size() > 0)
+			{
+				if (fabs(dtFirst - reader->getDate(0)) > 0.0001)
+					dtFirst = reader->getDate(0); // earliest datetime of returned data
+				else
+					break;
+			}
+			else
+			{
+				misc::cout << "0 rows received" << std::endl;
+				break;
+			}
+
+			if (m_historyPricesPrinter)
+				m_historyPricesPrinter->PrintPrices(response);
+
+		} while (dtFirst - dtFrom > 0.0001);
+
+		return ErrorCodes::ERR_SUCCESS;
+	}
 
 	IO2GAccountRow* Session::GetAccount()
 	{

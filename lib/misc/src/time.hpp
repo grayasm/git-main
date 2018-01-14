@@ -89,6 +89,7 @@ namespace misc
 		
 		misc::string tostring() const;
 		misc::string tolocaltime() const;
+		time_t totime_t() const;
 		
 		enum WDay wday() const;		// day of week
 		int yday() const;			// day of the year

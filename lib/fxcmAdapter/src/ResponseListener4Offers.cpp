@@ -55,7 +55,7 @@ namespace fxcm
 		m_RefCount--;
 		if (m_RefCount == 0)	// see NonTableManagerSamples, any sample
 			delete this;
-		return m_RefCount;
+		return 0;
 	}
 
 	void ResponseListener4Offers::onRequestCompleted(const char* requestId, IO2GResponse* response)

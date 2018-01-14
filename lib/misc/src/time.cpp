@@ -212,6 +212,12 @@ namespace misc
 		stime += misc::from_value( loctm.tm_sec );
 		return stime;		
 	}
+
+	time_t time::totime_t() const
+	{
+		/* useful if initialized with a different ctor than: time(time_t) */
+		return m_t;
+	}
 	
 	enum time::WDay time::wday() const
 	{
