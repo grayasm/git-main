@@ -433,7 +433,7 @@ namespace fxcm
 		tp.SetCanUseFluctuateTrailingForEntryLimit(permissionChecker->canUseFluctuateTrailingForEntryLimit());
 
 		return ErrorCodes::ERR_SUCCESS;
-	}
+	} // GetTradingPermissions
 
 	int Session::GetOrders()
 	{
@@ -507,7 +507,7 @@ namespace fxcm
 		}
 
 		return ErrorCodes::ERR_SUCCESS;
-	}
+	} // GetOrders
 
 	int Session::GetLastOffer(Offer& offer, const char* sInstrument)
 	{
@@ -517,7 +517,7 @@ namespace fxcm
 		misc::cout << __FUNCTION__
 			<< ": OffersUpdater instance is not available" << std::endl;
 		return ErrorCodes::ERR_NO_OFFER_AVAILABLE;
-	}
+	} // GetLastOffer
 
 	int Session::GetHistoryPrices(	const char* sInstrument, const char* sTimeframe,
 									DATE dtFrom, DATE dtTo)
@@ -627,7 +627,7 @@ namespace fxcm
 		} while (dtFirst - dtFrom > 0.0001);
 
 		return ErrorCodes::ERR_SUCCESS;
-	}
+	} // GetHistoryPrices
 
 	IO2GAccountRow* Session::GetAccount()
 	{

@@ -49,21 +49,23 @@ int test2()
 	session.GetOrders();
 
 
-	misc::time tFrom(2018, misc::time::JAN, 11, 14, 0, 0);
-	misc::time tTo(2018, misc::time::JAN, 11, 14, 5, 0);
+	int toff = misc::time::hourSEC;
+	misc::time tbeg(2018, misc::time::JAN, 8, 0, 0, 0);
+	misc::time tnext = tbeg + toff;
+	misc::time tend(2018, misc::time::JAN, 12, 23, 59, 0);
 
-	DATE dtFrom, dtTo;
-	Time2DATE(tFrom.totime_t(), dtFrom);
-	Time2DATE(tTo.totime_t(), dtTo);
+	for (; tbeg < tend; tbeg += toff, tnext += toff)
+	{
+		DATE dtFrom, dtTo;
+		Time2DATE(tbeg.totime_t(), dtFrom);
+		Time2DATE(tnext.totime_t(), dtTo);
 
-
-	session.GetHistoryPrices(
-		"EUR/USD", "m1",
-		dtFrom, dtTo);
-
-	session.Logout();
+		session.GetHistoryPrices(
+			"EUR/USD", "m1",
+			dtFrom, dtTo);
+	}
 	
-	msleep(1000);
+	session.Logout();
 	
 	return 0;
 }
