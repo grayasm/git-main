@@ -31,6 +31,8 @@ contact: grayasm@gmail.com
 #include "SessionStatusListener.hpp"
 #include "ResponseListener4Offers.hpp"
 #include "ResponseListener4Orders.hpp"
+#include "ResponseListener4HistoryPrices.hpp"
+#include "HistoryPricesPrinter.hpp"
 #include "TradingSettings.hpp"
 #include "TradingPermissions.hpp"
 
@@ -57,8 +59,9 @@ namespace fxcm
 		int GetTradingPermissions(const char* sInstrument, TradingPermissions& tp);
 		int GetOrders();
 		int GetLastOffer(Offer& offer, const char* sInstrument);
-		int CreateELS(fx::Position& entry);
-		
+		int GetHistoryPrices(const char* sInstrument, const char* sTimeframe,
+							 DATE dtFrom, DATE dtTo);
+
 
 	private:
 		Session();
@@ -78,8 +81,9 @@ namespace fxcm
 		OffersUpdater*						m_offersUpdater;
 		ResponseListener4Offers*			m_responseListener4Offers;
 		ResponseListener4Orders*			m_responseListener4Orders;
+		ResponseListener4HistoryPrices*		m_responseListener4HistoryPrices;
+		HistoryPricesPrinter*				m_historyPricesPrinter;
 		TradingSettingsVec					m_tradingSettingsVec;
-		bool								m_outputOffers;
 	};
 } // namespace
 

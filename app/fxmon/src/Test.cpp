@@ -26,7 +26,9 @@
 #include "Session.hpp"
 #include "Offer.hpp"
 #include "ErrorCodes.hpp"
+#include "time.hpp"
 
+void Time2DATE(time_t tt, DATE& dt);
 
 int test2()
 {
@@ -44,152 +46,30 @@ int test2()
 	fxcm::Session session(*loginParams, *iniParams);
 	session.Login();
 	session.GetOffers();
-
-	int i = 0;
-	do
-	{
-		sleep(1);
-		++i;
-		misc::cout << "sleep(1)" << std::endl;
-	} while (i < 4);
-
-	misc::vector<fxcm::TradingSettings> tsvec;
-	session.GetTradingSettings(tsvec, true);
-
-	fxcm::TradingPermissions tradingPermission;
-	session.GetTradingPermissions("EUR/USD", tradingPermission);
-
 	session.GetOrders();
 
-	i = 0;
-	do
-	{
-		sleep(1);
-		++i;
-		misc::cout << "sleep(1)" << std::endl;
-		fxcm::Offer offer("0", "EUR/USD", 0, 0, 0, 0, 0);
-		
-		if (session.GetLastOffer(offer, "EUR/USD") == fxcm::ErrorCodes::ERR_SUCCESS)
-		{
-			misc::cout	<< offer.GetId() << ", "
-						<< offer.GetInstrument()
-						<< ", Bid=" << std::fixed << offer.GetBid()
-						<< ", Ask=" << std::fixed << offer.GetAsk()
-						<< std::endl;
-		}
-	} while (i < 4);
+
+	misc::time tFrom(2018, misc::time::JAN, 11, 14, 0, 0);
+	misc::time tTo(2018, misc::time::JAN, 11, 14, 5, 0);
+
+	DATE dtFrom, dtTo;
+	Time2DATE(tFrom.totime_t(), dtFrom);
+	Time2DATE(tTo.totime_t(), dtTo);
+
+
+	session.GetHistoryPrices(
+		"EUR/USD", "m1",
+		dtFrom, dtTo);
 
 	session.Logout();
+	
+	msleep(1000);
 	
 	return 0;
 }
 
-
-
-#if 0
-#include "Test.hpp"
-#include "MonitorIni.hpp"
-#include "fxcmSession.hpp"
-#include "stream.hpp"
-
-
-int test()
+void Time2DATE(time_t tt, DATE& dt)
 {
-	MonitorIni monIniParams("monitor.ini");
-	fxcm::IniParams sessionIni("monitor.ini");
-
-	fxcm::Session session(sessionIni);
-	if (!session.Connect())
-		return -1;
-
-	session.SetAuditFile(monIniParams.GetAuditFile());
-	misc::vector<fx::Currency> currencies;
-	session.GetCurrencies(currencies);
-	 			
-	if (currencies.size() != 1)
-		return -1;
-
-	if (currencies[0].GetSymbol() != "EUR/USD")
-		return -1;
-
-	fx::Currency euro(currencies[0]);
-	fxcm::HistPriceData priceData;
-
-	if (!session.GetHistPrices(euro.GetSymbol(),
-		"m1",
-		monIniParams.GetDateFrom(),
-		monIniParams.GetDateTo(),
-		priceData))
-		return -1;
-	
-	for (fxcm::HistPriceData::iterator beg = priceData.begin();
-		beg != priceData.end(); ++beg)
-	{
-		const fxcm::HistoryPrice& hprice = *beg;
-		bool		isBar = hprice.IsBar();
-		misc::DATE	date = hprice.GetDate();
-		fx::Price	currPrice = hprice.GetCurrPrice();
-		fx::Price	openPrice = hprice.GetOpenPrice();
-		fx::Price	closePrice = hprice.GetClosePrice();
-		fx::Price	highPrice = hprice.GetHighPrice();
-		fx::Price	lowPrice = hprice.GetLowPrice();
-		int			volume = hprice.GetVolume();
-
-		volume += 0;
-	}
-
-	//std::map<misc::string, fx::Price> quotes;	
-	//for(size_t i = 0, j = 0; i < 2; ++i, ++j)
-	//{
-	//	if(j + 1 >  currencies.size())
-	//		j = 0;
-
-	//	fx::Currency curr(currencies[j]);
-	//	
-	//	
-//		double margin = curr.GetMargin();
-//		double pipcost= curr.GetPipCost();
-//		double rate2pip=curr.GetRate2Pip();
-
-		//fx::Position pos("", "", curr, (i%2==0), 5, 0, 0);
-
-		//for(size_t j = 0; j < 3; ++j)
-		//{
-		//	session.GetOffer(quotes);
-		//	for(std::map<misc::string, fx::Price>::iterator it = quotes.begin();
-		//		it != quotes.end(); ++it)
-		//	{
-		//		misc::cout << std::fixed << std::cout.precision(5) << "\n\t" <<
-		//			it->first.c_str() << " B=" << it->second.GetBuy() <<
-		//			" S: " << it->second.GetSell();
-		//	}			
-		//	
-		//	//Sleep(1000);
-		//}
-
-		/*
-		misc::vector<fx::Position> otrades, ctrades;
-		for(size_t i = 0; i < 3; ++i)
-			session.CreateMarketOrder(pos, otrades);			
-
-		for(size_t i = 0; i < otrades.size(); ++i)
-		{
-			const fx::Position& trade = otrades[i];
-			if(!trade.IsOpen())
-			{
-				ctrades.push_back(trade);
-				continue;
-			}
-
-			session.CloseMarketOrder(trade, ctrades);
-		}		
-		*/
-		
-	//}
-	
-	session.Disconnect();
-	return -1;	
+	struct tm *tmNow = gmtime(&tt);
+	CO2GDateUtils::CTimeToOleTime(tmNow, &dt);
 }
-
-
-#endif // 0
