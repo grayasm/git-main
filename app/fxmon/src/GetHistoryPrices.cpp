@@ -26,7 +26,8 @@ contact: grayasm@gmail.com
 #include "Offer.hpp"
 #include "ErrorCodes.hpp"
 #include "time.hpp"
-#include "date.hpp" // strptime
+#include "filename.hpp"
+
 
 static void Time2DATE(time_t tt, DATE& dt);
 
@@ -43,7 +44,8 @@ void GetHistoryPrices()
 		iniParams->GetInstrument().empty() ||
 		iniParams->GetTimeframe().empty() ||
 		iniParams->GetDateFrom().empty() ||
-		iniParams->GetDateTo().empty() )
+		iniParams->GetDateTo().empty() ||
+		iniParams->GetHistoryFile().empty() )
 		return;
 	
 	int toff = 0;
@@ -53,6 +55,13 @@ void GetHistoryPrices()
 	else if (iniParams->GetTimeframe() == "H1")
 		toff = misc::time::hourSEC * 60; // 60hours
 	else
+		return; // error
+	
+	misc::filename historyfile(iniParams->GetHistoryFile());
+	if (!historyfile.access(F_OK))
+		return; // error
+	FILE* pf = fopen(historyfile.get_path().c_str(), "a");
+	if (pf == NULL)
 		return; // error
 	
 	
@@ -77,11 +86,34 @@ void GetHistoryPrices()
 		Time2DATE(tEnd.totime_t(), dtEnd);
 
 		session.GetHistoryPrices(
-			"EUR/USD",
+			iniParams->GetInstrument().c_str(),
 			iniParams->GetTimeframe().c_str(),
 			dtFrom, dtEnd,
 			historyPricesVec);
+
+		for (size_t i = 0; i < historyPricesVec.size(); ++i)
+		{
+			const fxcm::HistoryPrice& hprice = historyPricesVec[i];
+
+			std::stringstream ss;
+			ss << "I=" << hprice.GetInstrument().c_str() << " ";
+			ss << "T=" << hprice.GetTime().tostring() << " ";
+			ss << "BO=" << hprice.GetBidOpen() << " ";
+			ss << "BH=" << hprice.GetBidHigh() << " ";
+			ss << "BL=" << hprice.GetBidLow() << " ";
+			ss << "BC=" << hprice.GetBidClose() << " ";
+			ss << "AO=" << hprice.GetAskOpen() << " ";
+			ss << "AH=" << hprice.GetAskHigh() << " ";
+			ss << "AL=" << hprice.GetAskLow() << " ";
+			ss << "AC=" << hprice.GetAskClose() << " ";
+			ss << "V=" << hprice.GetVolume() << "\n";
+			
+			std::string str(ss.str());
+			fwrite(str.c_str(), 1, str.size(), pf);
+		}
 	}
+
+	fclose(pf);
 
 	session.Logout();
 }

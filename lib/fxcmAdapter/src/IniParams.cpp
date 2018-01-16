@@ -20,6 +20,7 @@ contact: grayasm@gmail.com
 
 
 #include "IniParams.hpp"
+#include "strconv.hpp"
 
 namespace fxcm
 {
@@ -39,6 +40,7 @@ namespace fxcm
 	misc::string		g_TrailStep("trailstep");
 	misc::string		g_DateFrom("datefrom");
 	misc::string		g_DateTo("dateto");
+	misc::string		g_HistoryFile("historyfile");
 	misc::string		g_RangeInPips("rangeinpips");
 	misc::string		g_Rate("rate");
 	misc::string		g_RateStop("ratestop");
@@ -73,10 +75,13 @@ namespace fxcm
 		m_expDate = iniReader.get(m_section, g_ExpDate, emptys);
 		m_lots = iniReader.get(m_section, g_Lots, int(0));
 		m_trailStep = iniReader.get(m_section, g_TrailStep, int(0));
-
 		m_dateFrom = iniReader.get(m_section, g_DateFrom, emptys);
 		m_dateTo = iniReader.get(m_section, g_DateTo, emptys);
-
+		
+		m_historyfile = iniReader.get(m_section, g_HistoryFile, emptys);
+		misc::trim(m_historyfile, '"'); // remove double quote at both ends
+		misc::trim(m_historyfile, ' '); // remove empty spaces at both ends
+		
 		m_rangeInPips = iniReader.get(m_section, g_RangeInPips, double(0));
 		m_rate = iniReader.get(m_section, g_Rate, double(0));
 		m_rateStop = iniReader.get(m_section, g_RateStop, double(0));
@@ -116,6 +121,7 @@ namespace fxcm
 			m_trailStep = tc.m_trailStep;
 			m_dateFrom = tc.m_dateFrom;
 			m_dateTo = tc.m_dateTo;
+			m_historyfile = tc.m_historyfile;
 			m_rangeInPips = tc.m_rangeInPips;
 			m_rate = tc.m_rate;
 			m_rateStop = tc.m_rateStop;
@@ -274,6 +280,16 @@ namespace fxcm
 		m_dateTo = val;
 	}
 
+	const misc::string& IniParams::GetHistoryFile() const
+	{
+		return m_historyfile;
+	}
+
+	void IniParams::SetHistoryFile(const misc::string& val)
+	{
+		m_historyfile = val;
+	}
+
 	double IniParams::GetRangeInPips() const
 	{
 		return m_rangeInPips;
@@ -333,6 +349,7 @@ namespace fxcm
 		m_trailStep = 0;
 		m_dateFrom = "";
 		m_dateTo = "";
+		m_historyfile = "";
 		m_rangeInPips = 0;
 		m_rate = 0;
 		m_rateStop = 0;

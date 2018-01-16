@@ -90,6 +90,9 @@ namespace fxcm
 		const misc::string& GetDateTo() const;
 		void SetDateTo(const misc::string& val);
 
+		const misc::string& GetHistoryFile() const;
+		void SetHistoryFile(const misc::string& val);
+
 		double GetRangeInPips() const;
 		void SetRangeInPips(double val);
 
@@ -123,6 +126,7 @@ namespace fxcm
 		int					m_trailStep;
 		misc::string		m_dateFrom;
 		misc::string		m_dateTo;
+		misc::string		m_historyfile;
 		double				m_rangeInPips;
 		double				m_rate;
 		double				m_rateStop;
