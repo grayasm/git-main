@@ -45,6 +45,14 @@ namespace misc
 		init(t); 
 	}
 	
+	/*	UTC time format.
+	 *	year	Year. 1900 or greater
+	 *  mon		Month. [JAN-DEC]
+	 *  day		Day.   [1-31]
+	 *  hour	Hours. [0-23]
+	 *  min		Minutes. [0-59]
+	 *  sec		Seconds. [0-59]
+	 */
 	time::time(int year, enum Month mon, int day, int hour, int min, int sec)
 	{
 		if( year < 1900 || mon < JAN || mon > DEC ||
@@ -71,7 +79,8 @@ namespace misc
 	 */
 	time::time(int year, int mon, int day, int hour, int min, int sec)
 	{
-		if(year < 1900 || mon < 0 || day < 1 || hour < 0 || min < 0 || sec < 0)
+		if(year < 1900 || mon < 0 || mon> 11 ||
+			day < 1 || hour < 0 || min < 0 || sec < 0)
 			throw misc::exception("time is invalid");
 
 		struct tm initm;
@@ -82,6 +91,30 @@ namespace misc
 		initm.tm_min = min;
 		initm.tm_sec = sec;
 		
+		init( initm );
+	}
+
+	/*	UTC string format: "m.d.Y H:M:S" */
+	time::time(const misc::string& str)
+	{
+		int mon, day, year, hour, min, sec;
+		mon = day = year = hour = min = sec = -1;
+
+		sscanf(str.c_str(), "%d.%d.%d %d:%d:%d",
+			&mon, &day, &year, &hour, &min, &sec);
+
+		if (year < 1900 || mon < 1 || mon > 12 ||
+			day < 1 || hour < 0 || min < 0 || sec < 0)
+			throw misc::exception("time is invalid");
+
+		struct tm initm;
+		initm.tm_year = year - 1900;
+		initm.tm_mon = (mon - 1); // 0 for JAN
+		initm.tm_mday = day;
+		initm.tm_hour = hour;
+		initm.tm_min = min;
+		initm.tm_sec = sec;
+
 		init( initm );
 	}
 

@@ -69,6 +69,9 @@ namespace misc
 		 */
 		time(int year, enum Month mon, int day, int hour, int min, int sec);
 		
+		/*	UTC string format: "m.d.Y H:M:S" */
+		time(const misc::string& str);
+
 		time(const time& tc);
 		
 		time& operator=(const time& tc);

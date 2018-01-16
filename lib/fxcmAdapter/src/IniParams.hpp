@@ -83,11 +83,12 @@ namespace fxcm
 		int GetTrailStep() const;
 		void SetTrailStep(int val);
 
-		DATE GetDateFrom() const;
-		void SetDateFrom(DATE val);
+		// "m.d.Y H:M:S"
+		const misc::string& GetDateFrom() const;
+		void SetDateFrom(const misc::string& val);
 
-		DATE GetDateTo() const;
-		void SetDateTo(DATE val);
+		const misc::string& GetDateTo() const;
+		void SetDateTo(const misc::string& val);
 
 		double GetRangeInPips() const;
 		void SetRangeInPips(double val);
@@ -120,8 +121,8 @@ namespace fxcm
 		misc::string		m_expDate;
 		int					m_lots;
 		int					m_trailStep;
-		DATE				m_dateFrom;
-		DATE				m_dateTo;
+		misc::string		m_dateFrom;
+		misc::string		m_dateTo;
 		double				m_rangeInPips;
 		double				m_rate;
 		double				m_rateStop;

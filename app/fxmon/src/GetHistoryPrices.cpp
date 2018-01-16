@@ -26,6 +26,7 @@ contact: grayasm@gmail.com
 #include "Offer.hpp"
 #include "ErrorCodes.hpp"
 #include "time.hpp"
+#include "date.hpp" // strptime
 
 static void Time2DATE(time_t tt, DATE& dt);
 
@@ -39,26 +40,35 @@ void GetHistoryPrices()
 		loginParams->GetPassword().empty() ||
 		loginParams->GetUrl().empty() ||
 		loginParams->GetConnection().empty() ||
-		iniParams->GetInstrument().empty())
+		iniParams->GetInstrument().empty() ||
+		iniParams->GetTimeframe().empty() ||
+		iniParams->GetDateFrom().empty() ||
+		iniParams->GetDateTo().empty() )
 		return;
+	
+	if (iniParams->GetTimeframe() != "m1")
+		return;
+
+	// m.d.Y H:M:S
+	misc::time tFrom(iniParams->GetDateFrom());
+	misc::time tTo(iniParams->GetDateTo());
+	int toff = misc::time::hourSEC;
+	misc::time tEnd = tFrom + toff;
+
 
 	fxcm::Session session(*loginParams, *iniParams);
 	session.Login();
 
 	misc::vector<fxcm::HistoryPrice> historyPricesVec;
-	int toff = misc::time::hourSEC;
-	misc::time tbeg(2018, misc::time::JAN, 12, 14, 0, 0);
-	misc::time tnext = tbeg + toff;
-	misc::time tend(2018, misc::time::JAN, 13, 22, 0, 0);
-
-	for (; tbeg < tend; tbeg += toff, tnext += toff)
+	for (; tFrom < tTo; tFrom += toff, tEnd += toff)
 	{
 		DATE dtFrom, dtTo;
-		Time2DATE(tbeg.totime_t(), dtFrom);
-		Time2DATE(tnext.totime_t(), dtTo);
+		Time2DATE(tFrom.totime_t(), dtFrom);
+		Time2DATE(tEnd.totime_t(), dtTo);
 
 		session.GetHistoryPrices(
-			"EUR/USD", "m1",
+			"EUR/USD",
+			iniParams->GetTimeframe().c_str(),
 			dtFrom, dtTo,
 			historyPricesVec);
 	}

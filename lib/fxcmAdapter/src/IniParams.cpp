@@ -73,8 +73,10 @@ namespace fxcm
 		m_expDate = iniReader.get(m_section, g_ExpDate, emptys);
 		m_lots = iniReader.get(m_section, g_Lots, int(0));
 		m_trailStep = iniReader.get(m_section, g_TrailStep, int(0));
-		m_dateFrom = iniReader.get(m_section, g_DateFrom, DATE(0));
-		m_dateTo = iniReader.get(m_section, g_DateTo, DATE(0));
+
+		m_dateFrom = iniReader.get(m_section, g_DateFrom, emptys);
+		m_dateTo = iniReader.get(m_section, g_DateTo, emptys);
+
 		m_rangeInPips = iniReader.get(m_section, g_RangeInPips, double(0));
 		m_rate = iniReader.get(m_section, g_Rate, double(0));
 		m_rateStop = iniReader.get(m_section, g_RateStop, double(0));
@@ -252,22 +254,22 @@ namespace fxcm
 		m_trailStep = val;
 	}
 
-	DATE IniParams::GetDateFrom() const
+	const misc::string& IniParams::GetDateFrom() const
 	{
 		return m_dateFrom;
 	}
 
-	void IniParams::SetDateFrom(DATE val)
+	void IniParams::SetDateFrom(const misc::string& val)
 	{
 		m_dateFrom = val;
 	}
 
-	DATE IniParams::GetDateTo() const
+	const misc::string& IniParams::GetDateTo() const
 	{
 		return m_dateTo;
 	}
 
-	void IniParams::SetDateTo(DATE val)
+	void IniParams::SetDateTo(const misc::string& val)
 	{
 		m_dateTo = val;
 	}
@@ -329,8 +331,8 @@ namespace fxcm
 		m_expDate = "";
 		m_lots = 0;
 		m_trailStep = 0;
-		m_dateFrom = 0;
-		m_dateTo = 0;
+		m_dateFrom = "";
+		m_dateTo = "";
 		m_rangeInPips = 0;
 		m_rate = 0;
 		m_rateStop = 0;
