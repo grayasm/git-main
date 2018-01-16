@@ -21,6 +21,7 @@ contact: grayasm@gmail.com
 #define __GetHistoryPrices_hpp__
 
 void GetHistoryPrices();
+void LoadHistoryPrices();
 
 
 #endif // __GetHistorPrices_hpp__

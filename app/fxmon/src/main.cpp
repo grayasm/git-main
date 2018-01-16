@@ -39,7 +39,8 @@ int main(int /*argc*/, char** /*argv*/)
 	// disable stdout buffer
 	setvbuf(stdout, NULL, _IONBF, 0);
 	
-	GetHistoryPrices();
+	// GetHistoryPrices();
+	LoadHistoryPrices();
 
 	return 0;
 }
