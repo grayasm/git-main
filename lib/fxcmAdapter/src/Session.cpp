@@ -523,33 +523,36 @@ namespace fxcm
 									HistoryPricesVec& historyPricesVec)
 	{
 		/* Start by validating the input data. */
-		if (strlen(sTimeframe) == 0)
+		if (strlen(sTimeframe) == 0 ||
+			(strcmp(sTimeframe, "m1") != 0 && strcmp(sTimeframe, "H1") != 0))
 		{
 			misc::cout << __FUNCTION__
-				<< ": Error timeframe not specified" << std::endl;
+				<< ": Error timeframe incorrect, use m1 or H1" << std::endl;
 			return ErrorCodes::ERR_TIMEFRAME_INCORRECT;
 		}
 
-		time_t tNow = time(NULL); // get time now
-		struct tm *tmNow = gmtime(&tNow);
-		DATE dtNow = 0;
-		CO2GDateUtils::CTimeToOleTime(tmNow, &dtNow);
-
-		// isNAN(dtFrom)
-		if (dtFrom != dtFrom || dtFrom - dtNow > 0.0001)
+		if (dtFrom <= 0 || dtTo <= 0 || dtFrom >= dtTo)
 		{
 			misc::cout << __FUNCTION__
-				<< ": Time From is incorrect" << std::endl;
-			return ErrorCodes::ERR_TIME_FROM_INCORRECT;
+				<< ": DateFrom/DateTo data is incorrect" << std::endl;
+			return ErrorCodes::ERR_DATE_INTERVAL_INCORRECT;
 		}
 
-		// isNAN(dtFrom)
-		if (dtTo != dtTo || dtFrom - dtTo > 0.0001)
+		double _1H = 0.04167; // approximately 1h !!
+		if (strcmp(sTimeframe, "m1") == 0 && dtTo - dtFrom > _1H)
 		{
 			misc::cout << __FUNCTION__
-				<< ": Time To is incorrect" << std::endl;
-			return ErrorCodes::ERR_TIME_TO_INCORRECT;
+				<< ": Date interval must be <= 1h" << std::endl;
+			return ErrorCodes::ERR_DATE_INTERVAL_INCORRECT;
 		}
+		
+		if (strcmp(sTimeframe, "H1") == 0 && dtTo - dtFrom > _1H * 60)
+		{
+			misc::cout << __FUNCTION__
+				<< ": Date interval must be <= 60h" << std::endl;
+			return ErrorCodes::ERR_DATE_INTERVAL_INCORRECT;
+		}
+
 
 		/*	Instrument and Timeframe are not available to the market data reader
 			so this needs to be set somewhere to reach the HistoryPrice.

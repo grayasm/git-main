@@ -46,14 +46,21 @@ void GetHistoryPrices()
 		iniParams->GetDateTo().empty() )
 		return;
 	
-	if (iniParams->GetTimeframe() != "m1")
-		return;
+	int toff = 0;
 
+	if (iniParams->GetTimeframe() == "m1")
+		toff = misc::time::hourSEC; // 60mins
+	else if (iniParams->GetTimeframe() == "H1")
+		toff = misc::time::hourSEC * 60; // 60hours
+	else
+		return; // error
+	
+	
 	// m.d.Y H:M:S
 	misc::time tFrom(iniParams->GetDateFrom());
-	misc::time tTo(iniParams->GetDateTo());
-	int toff = misc::time::hourSEC;
-	misc::time tEnd = tFrom + toff;
+	misc::time tTo(iniParams->GetDateTo());	
+	misc::time tEnd = tFrom;
+	tEnd += toff;
 
 
 	fxcm::Session session(*loginParams, *iniParams);
@@ -62,14 +69,17 @@ void GetHistoryPrices()
 	misc::vector<fxcm::HistoryPrice> historyPricesVec;
 	for (; tFrom < tTo; tFrom += toff, tEnd += toff)
 	{
-		DATE dtFrom, dtTo;
+		if (tEnd > tTo)
+			tEnd = tTo;
+
+		DATE dtFrom, dtEnd;
 		Time2DATE(tFrom.totime_t(), dtFrom);
-		Time2DATE(tEnd.totime_t(), dtTo);
+		Time2DATE(tEnd.totime_t(), dtEnd);
 
 		session.GetHistoryPrices(
 			"EUR/USD",
 			iniParams->GetTimeframe().c_str(),
-			dtFrom, dtTo,
+			dtFrom, dtEnd,
 			historyPricesVec);
 	}
 
