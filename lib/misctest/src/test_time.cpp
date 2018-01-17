@@ -103,7 +103,37 @@ void test_time::ctor()
 	CPPUNIT_ASSERT( t9.tostring() == U("2018-MAR-25 2:0:0"));
 	
 	misc::time t10(2018, misc::time::OCT, 28, 3, 0, 0);
-	CPPUNIT_ASSERT( t10.tostring() == U("2018-OCT-28 3:0:0"));	
+	CPPUNIT_ASSERT( t10.tostring() == U("2018-OCT-28 3:0:0"));
+
+	misc::time ts1("03.30.2014 02:00:00");
+	CPPUNIT_ASSERT(ts1 == t1);
+
+	misc::time ts2("10.26.2014 03:00:00");
+	CPPUNIT_ASSERT(ts2 == t2);
+
+	misc::time ts3("03.29.2015 02:00:00");
+	CPPUNIT_ASSERT(ts3 == t3);
+
+	misc::time ts4("10.25.2015  3:0:0");
+	CPPUNIT_ASSERT(ts4 == t4);
+
+	misc::time ts5("3.27.2016 2:0:0");
+	CPPUNIT_ASSERT(ts5 == t5);
+
+	misc::time ts6("10.30.2016 03:00:00");
+	CPPUNIT_ASSERT(ts6 == t6);
+
+	misc::time ts7("3.26.2017 2:0:0");
+	CPPUNIT_ASSERT(ts7 == t7);
+
+	misc::time ts8("10.29.2017 3:0:0");
+	CPPUNIT_ASSERT(ts8 == t8);
+
+	misc::time ts9("3.25.2018 02:00:00");
+	CPPUNIT_ASSERT(ts9 == t9);
+
+	misc::time ts10("10.28.2018 03:00:00");
+	CPPUNIT_ASSERT(ts10 == t10);
 }
 
 void test_time::copy_ctor()
@@ -296,6 +326,16 @@ void test_time::tolocaltime()
 	
 	misc::time t0;
 	CPPUNIT_ASSERT( t0.tolocaltime() != U("1970-JAN-1 0:0:0") );
+}
+
+void test_time::totime_t()
+{
+	misc::cout << "\n\n\ttotime_t ---------------------------------------------";
+
+	time_t tm = 1393725600; // 2-mar-2014 02:00:00
+
+	misc::time t0("3.2.2014 2:0:0");
+	CPPUNIT_ASSERT(t0.totime_t() == tm);
 }
 
 void test_time::wday()

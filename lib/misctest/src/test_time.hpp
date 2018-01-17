@@ -50,6 +50,7 @@ class test_time : public CppUnit::TestFixture
 	CPPUNIT_TEST(decr_op);
 	CPPUNIT_TEST(tostring);
 	CPPUNIT_TEST(tolocaltime);
+	CPPUNIT_TEST(totime_t);
 	CPPUNIT_TEST(wday);
 	CPPUNIT_TEST(yday);	
 	CPPUNIT_TEST_SUITE_END();
@@ -77,6 +78,7 @@ public:
 	void decr_op();
 	void tostring();
 	void tolocaltime();
+	void totime_t();
 	void wday();
 	void yday();	
 	
