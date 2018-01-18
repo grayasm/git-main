@@ -1,0 +1,17 @@
+[Unit]
+Description=fxmon Service
+After=network.target
+
+[Service]
+WorkingDirectory=/home/mihai/Code/git-main-build/app/fxmon
+Environment=LD_LIBRARY_PATH=/home/mihai/Code/git-main-build/app/fxmon:/lib64:/usr/lib64:/usr/local/lib64
+Type=simple
+User=mihai
+ExecStart=/home/mihai/Code/git-main-build/app/fxmon/fxmon
+Restart=on-abort
+StandardOutput=null
+StandardError=null
+
+
+[Install]
+WantedBy=multi-user.target
