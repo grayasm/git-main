@@ -47,10 +47,15 @@ namespace fxcm
 
 	long ResponseListener4Orders::release()
 	{
-		misc::autocritical_section autocs(m_CriticalSection);
-		m_RefCount--;
-		if (m_RefCount == 0)	// see NonTableManagerSamples, any sample
-			delete this;
+		// protect m_CriticalSection against 'delete this'
+		{
+			misc::autocritical_section autocs(m_CriticalSection);
+			m_RefCount--;
+			if (m_RefCount)
+				return m_RefCount;
+		}
+
+		delete this;
 		return 0;
 	}
 

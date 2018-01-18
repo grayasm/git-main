@@ -98,15 +98,14 @@ namespace fxcm
 
 	Session::~Session()
 	{
-		m_session->unsubscribeResponse(m_responseListener4Orders);
-		m_responseListener4Offers->SetOffersPrinter(NULL);
-		if (m_offersPrinter)
-			delete m_offersPrinter;
-		m_responseListener4Offers->SetOffersUpdater(NULL);
-		if (m_offersUpdater)
-			delete m_offersUpdater;
 		m_session->unsubscribeResponse(m_responseListener4Offers);
 		m_responseListener4Offers->release();
+		if (m_offersPrinter)
+			delete m_offersPrinter;
+		if (m_offersUpdater)
+			delete m_offersUpdater;
+		m_session->unsubscribeResponse(m_responseListener4Orders);
+		m_responseListener4Orders->release();
 		m_session->unsubscribeResponse(m_responseListener4HistoryPrices);
 		m_responseListener4HistoryPrices->release();
 		if (m_historyPricesUpdater)

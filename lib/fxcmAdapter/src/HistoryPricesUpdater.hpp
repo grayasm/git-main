@@ -60,7 +60,7 @@ namespace fxcm
 		misc::critical_section			m_criticalSection;
 		misc::string					m_instrument;
 		misc::string					m_timeframe;
-		misc::vector<HistoryPrice>		m_historyPricesVec;
+		HistoryPricesVec				m_historyPricesVec;
 	};
 } // namespace
 
