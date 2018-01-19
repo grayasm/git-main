@@ -562,6 +562,7 @@ namespace fxcm
 			m_historyPricesUpdater->SetInstrument(sInstrument);
 			m_historyPricesUpdater->SetTimeframe(sTimeframe);
 			m_historyPricesUpdater->ClearPrices();
+			historyPricesVec.clear();
 		}
 
 		// get history prices
