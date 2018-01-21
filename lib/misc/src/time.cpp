@@ -252,6 +252,37 @@ namespace misc
 		return m_t;
 	}
 	
+
+	int time::sec_() const
+	{
+		return m_tm.tm_sec;
+	}
+
+	int time::min_() const
+	{
+		return m_tm.tm_min;
+	}
+
+	int time::hour_() const
+	{
+		return m_tm.tm_hour;
+	}
+
+	int time::mday_() const
+	{
+		return m_tm.tm_mday;
+	}
+
+	int time::mon_() const
+	{
+		return m_tm.tm_mon;
+	}
+
+	int time::year_() const
+	{
+		return m_tm.tm_year;
+	}
+
 	enum time::WDay time::wday() const
 	{
 		return (WDay) (SUN + m_tm.tm_wday); // SUN + [0-6]
@@ -260,6 +291,11 @@ namespace misc
 	int time::yday() const
 	{
 		return m_tm.tm_yday;
+	}
+
+	int time::isdst() const
+	{
+		return m_tm.tm_isdst;
 	}
 
 	void time::init(time_t t)

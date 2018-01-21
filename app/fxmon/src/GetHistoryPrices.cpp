@@ -74,7 +74,8 @@ void GetHistoryPrices()
 
 
 	fxcm::Session session(*loginParams, *iniParams);
-	session.Login();
+	if (!session.Login())
+		return; // error
 
 	misc::vector<fxcm::HistoryPrice> historyPricesVec;
 	for (; tFrom < tTo; tFrom += toff, tEnd += toff)
@@ -82,15 +83,27 @@ void GetHistoryPrices()
 		if (tEnd > tTo)
 			tEnd = tTo;
 
+		/*	Trading hours are: 5:15 pm EST SUN -> 5:00 pm EST FRI
+		*/
+		if (tFrom.wday() == misc::time::SAT)
+			continue;
+		else if (tFrom.wday() == misc::time::FRI && tFrom.hour_() >= 22)
+			continue;
+		else if (tFrom.wday() == misc::time::SUN && tFrom.hour_() <  22)
+			continue;
+
+
 		DATE dtFrom, dtEnd;
 		Time2DATE(tFrom.totime_t(), dtFrom);
 		Time2DATE(tEnd.totime_t(), dtEnd);
 
-		session.GetHistoryPrices(
-			iniParams->GetInstrument().c_str(),
-			iniParams->GetTimeframe().c_str(),
-			dtFrom, dtEnd,
-			historyPricesVec);
+		int ret = session.GetHistoryPrices(
+							iniParams->GetInstrument().c_str(),
+							iniParams->GetTimeframe().c_str(),
+							dtFrom, dtEnd,
+							historyPricesVec);
+		if (ret != fxcm::ErrorCodes::ERR_SUCCESS)
+			continue;
 
 		for (size_t i = 0; i < historyPricesVec.size(); ++i)
 		{

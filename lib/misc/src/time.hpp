@@ -94,8 +94,16 @@ namespace misc
 		misc::string tolocaltime() const;
 		time_t totime_t() const;
 		
+		int sec_() const;			// _ suffixed to avoid nasty macros
+		int min_() const;
+		int hour_() const;
+		int mday_() const;
+		int mon_() const;
+		int year_() const;
+
 		enum WDay wday() const;		// day of week
 		int yday() const;			// day of the year
+		int isdst() const;			// -1 unknown, 0 not set, 1 dst is set
 		
 		
 		static const int daySEC = 86400;
