@@ -275,12 +275,12 @@ namespace misc
 
 	int time::mon_() const
 	{
-		return m_tm.tm_mon;
+		return (m_tm.tm_mon + 1);
 	}
 
 	int time::year_() const
 	{
-		return m_tm.tm_year;
+		return (m_tm.tm_year + 1900);
 	}
 
 	enum time::WDay time::wday() const

@@ -98,8 +98,8 @@ namespace misc
 		int min_() const;
 		int hour_() const;
 		int mday_() const;
-		int mon_() const;
-		int year_() const;
+		int mon_() const;			// Jan=1, Feb=2, ..., Dec=12
+		int year_() const;			// between 1900 and 2038(32) or 3000(64bit)
 
 		enum WDay wday() const;		// day of week
 		int yday() const;			// day of the year

@@ -338,6 +338,70 @@ void test_time::totime_t()
 	CPPUNIT_ASSERT(t0.totime_t() == tm);
 }
 
+void test_time::sec_()
+{
+	misc::cout << "\n\n\tsec_ -------------------------------------------------";
+
+	misc::time t0("3.2.2014 2:0:59");
+	CPPUNIT_ASSERT(t0.sec_() == 59);
+}
+
+void test_time::min_()
+{
+	misc::cout << "\n\n\tmin_ -------------------------------------------------";
+
+	misc::time t0("3.2.2014 2:59:00");
+	CPPUNIT_ASSERT(t0.min_() == 59);
+}
+
+void test_time::hour_()
+{
+	misc::cout << "\n\n\thour_ ------------------------------------------------";
+
+	misc::time t0("3.2.2014 23:0:0");
+	CPPUNIT_ASSERT(t0.hour_() == 23);
+}
+
+void test_time::mday_()
+{
+	misc::cout << "\n\n\tmday_ ------------------------------------------------";
+
+	misc::time t0("3.29.2014 02:0:0");
+	CPPUNIT_ASSERT(t0.mday_() == 29);
+}
+
+void test_time::mon_()
+{
+	misc::cout << "\n\n\tmon_ -------------------------------------------------";
+
+	misc::time t0("11.2.2014 03:0:0");
+	CPPUNIT_ASSERT(t0.mon_() == 11);
+}
+
+void test_time::year_()
+{
+	misc::cout << "\n\n\tyear_ ------------------------------------------------";
+
+	misc::time t0("11.2.2014 03:0:0");
+	CPPUNIT_ASSERT(t0.year_() == 2014);
+
+	/*	https://msdn.microsoft.com/en-us/library/d1y53h2a.aspx
+		When using _mktime32 and if timeptr references a date after
+		23:59:59 January 18, 2038, Coordinated Universal Time (UTC), 
+		it will return –1 cast to type time_t.
+
+		_mktime64 will return –1 cast to type __time64_t if timeptr
+		references a date after
+		23:59:59, December 31, 3000, UTC.
+	*/
+	misc::time t1("1.18.2038 23:59:59");
+	CPPUNIT_ASSERT(t1.tostring() == U("2038-JAN-18 23:59:59"));
+	t1 += misc::time::hourSEC;
+	misc::string t1str = t1.tostring();
+	CPPUNIT_ASSERT(t1str == U("2038-JAN-19 0:59:59"));
+}
+
+
 void test_time::wday()
 {
 	misc::cout << "\n\n\twday -------------------------------------------------";
@@ -354,4 +418,15 @@ void test_time::yday()
 	CPPUNIT_ASSERT( 114 == t1.yday() );
 }
 
-
+void test_time::isdst()
+{
+	misc::cout << "\n\n\tisdst ------------------------------------------------";
+	// EST (Eastern Standard Time) -> 11.MAR.2018 02:00
+	// EDT (Eastern Daylight Time) 11.MAR.2018 (+1h) -> 4.NOV.2018 (-1h)
+	// EST is -0500 UTC
+	misc::time t1("3.09.2018 0:0:0"); // no DST
+	misc::time t2("3.15.2018 0:0:0"); // DST may be active
+	
+	CPPUNIT_ASSERT(t1.isdst() == 0);
+	CPPUNIT_ASSERT(t2.isdst() == 0); // should be zero, DST not set.
+}

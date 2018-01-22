@@ -51,8 +51,15 @@ class test_time : public CppUnit::TestFixture
 	CPPUNIT_TEST(tostring);
 	CPPUNIT_TEST(tolocaltime);
 	CPPUNIT_TEST(totime_t);
+	CPPUNIT_TEST(sec_);
+	CPPUNIT_TEST(min_);
+	CPPUNIT_TEST(hour_);
+	CPPUNIT_TEST(mday_);
+	CPPUNIT_TEST(mon_);
+	CPPUNIT_TEST(year_);
 	CPPUNIT_TEST(wday);
-	CPPUNIT_TEST(yday);	
+	CPPUNIT_TEST(yday);
+	CPPUNIT_TEST(isdst);
 	CPPUNIT_TEST_SUITE_END();
 	
 public:
@@ -79,9 +86,15 @@ public:
 	void tostring();
 	void tolocaltime();
 	void totime_t();
+	void sec_();
+	void min_();
+	void hour_();
+	void mday_();
+	void mon_();
+	void year_();
 	void wday();
-	void yday();	
-	
+	void yday();
+	void isdst();	
 };
 
 #endif // __test_time_hpp__
