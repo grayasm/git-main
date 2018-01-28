@@ -123,7 +123,7 @@ namespace fxcm
 
 			misc::time tnow(::time(NULL));
 			char stamp[32];
-			sprintf(stamp, "_%2d_%2d_%2d_%2d_%2d_%2d",
+			sprintf(stamp, "_%02d_%02d_%02d_%02d_%02d_%02d",
 				tnow.year_(),
 				tnow.mon_(),
 				tnow.mday_(),
