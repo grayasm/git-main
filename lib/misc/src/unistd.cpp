@@ -60,7 +60,13 @@ void clrscr()
 int	msleep(unsigned long milliseconds)
 {
 #ifdef _WIN32
+	/*	http://www.geisswerks.com/ryan/FAQS/timing.html
+		Sleep(1) has a precision of 10ms without timeBeginPeriod/timeEndPeriod
+		The 2 functions require linking with "winmm.lib"
+	*/
+	timeBeginPeriod(1);
 	Sleep(milliseconds);
+	timeEndPeriod(1);
 	return 0;	// error code not supported on WIN32
 #else
 	struct timespec req, rem;
