@@ -251,7 +251,6 @@ namespace misc
 		/* useful if initialized with a different ctor than: time(time_t) */
 		return m_t;
 	}
-	
 
 	int time::sec_() const
 	{

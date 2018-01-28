@@ -22,17 +22,20 @@
 #define __Offer_hpp__
 
 #include "string.hpp"
+#include "time.hpp"
 
 namespace fxcm
 {
 	class Offer
 	{
 	public:
+		Offer();
+
 		Offer(	const misc::string& id,
 				const misc::string& instrument,
 				int precision,
 				double pipsize,
-				double date,
+				const misc::time& time,
 				double bid,
 				double ask);
 		Offer(const Offer& tc);
@@ -48,8 +51,8 @@ namespace fxcm
 		double GetPrecision() const;
 		void SetPrecision(double precision);
 
-		double GetDate();
-		void SetDate(double date);
+		const misc::time& GetTime() const;
+		void SetTime(const misc::time& time);
 
 		double GetPipSize() const;
 		void SetPipSize(double pipsize);
@@ -61,10 +64,13 @@ namespace fxcm
 		void SetAsk(double ask);
 
 	private:
+		void Init();
+
+	private:
 		misc::string		m_id;
 		misc::string		m_instrument;
 		int					m_precision;
-		double				m_date;
+		misc::time			m_time;
 		double				m_pipsize;
 		double				m_bid;
 		double				m_ask;

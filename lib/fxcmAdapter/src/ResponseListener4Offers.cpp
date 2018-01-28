@@ -27,7 +27,7 @@
 
 namespace fxcm
 {
-	ResponseListener4Offers::ResponseListener4Offers(IO2GSession* session, bool outputOffers)
+	ResponseListener4Offers::ResponseListener4Offers(IO2GSession* session)
 	{
 		m_Session = session;
 		m_Session->addRef();
@@ -36,9 +36,8 @@ namespace fxcm
 		m_RequestID = "";
 		m_Response = NULL;
 		// m_CriticalSection - is unlocked
-		m_offersPrinter = NULL;
 		m_offersUpdater = NULL;
-		m_outputOffers = outputOffers;
+		m_offersWriter = NULL;
 		misc::cout.precision(6);
 	}
 
@@ -106,10 +105,10 @@ namespace fxcm
 					loginRules->getTableRefreshResponse(Offers)
 			*/
 			misc::cout << __FUNCTION__ << " response::TablesUpdates" << std::endl;
-			if (m_offersPrinter && m_outputOffers)
-				m_offersPrinter->PrintOffers(tablesUpdates);
 			if (m_offersUpdater)
 				m_offersUpdater->UpdateOffers(tablesUpdates);
+			if (m_offersWriter)
+				m_offersWriter->UpdateOffers(tablesUpdates);
 			break;
 
 		case MarketDataSnapshot:
@@ -166,8 +165,6 @@ namespace fxcm
 
 		case Level2MarketData:
 			misc::cout << __FUNCTION__ << " response::Level2MarketData" << std::endl;
-			if(m_offersPrinter && m_outputOffers)
-				m_offersPrinter->PrintLevel2MarketData(tablesUpdates);
 			break;
 
 		default:
@@ -200,14 +197,14 @@ namespace fxcm
 		return m_Response; // ~O2G2Ptr will release() it.
 	}
 
-	void ResponseListener4Offers::SetOffersPrinter(OffersPrinter* op)
-	{
-		m_offersPrinter = op;
-	}
-
 	void ResponseListener4Offers::SetOffersUpdater(OffersUpdater* ou)
 	{
 		m_offersUpdater = ou;
+	}
+
+	void ResponseListener4Offers::SetOffersWriter(OffersWriter* ow)
+	{
+		m_offersWriter = ow;
 	}
 
 	ResponseListener4Offers::~ResponseListener4Offers()
@@ -216,8 +213,8 @@ namespace fxcm
 			m_Response->release();
 		m_Session->release();
 		// m_ResponseEvent will CloseHandle itself on ~dtor
-		// m_offersPrinter is owned by the Session
 		// m_offersUpdater is owned by the Session
+		// m_offersWriter is owned by the Session
 	}
 
 } // namespace

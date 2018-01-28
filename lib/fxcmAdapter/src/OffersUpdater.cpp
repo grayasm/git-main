@@ -20,6 +20,7 @@
 
 
 #include "OffersUpdater.hpp"
+#include "Utils.hpp"
 #include "autocritical_section.hpp"
 #include "stream.hpp"
 #include "algorithm.hpp"
@@ -30,34 +31,6 @@
 
 namespace fxcm
 {
-	class EqById : public misc::unary_function<Offer, bool>
-	{
-	public:
-		EqById(const misc::string& id) : m_id(id) { }
-		EqById(const char* id) : m_id(id) { }
-		bool operator()(const Offer& tc) const
-		{
-			return (tc.GetId() == m_id);
-		}
-	private:
-		misc::string	m_id;
-	};
-
-	class EqByInstrument : public misc::unary_function<Offer, bool>
-	{
-	public:
-		EqByInstrument(const misc::string& instrument)
-			: m_instrument(instrument) { }
-		EqByInstrument(const char* sInstrument)
-			: m_instrument(sInstrument) { }
-		bool operator()(const Offer& tc) const
-		{
-			return (tc.GetInstrument() == m_instrument);
-		}
-	private:
-		misc::string	m_instrument;
-	};
-
 	OffersUpdater::OffersUpdater(IO2GSession* session)
 	{
 		m_session = session;
@@ -98,41 +71,54 @@ namespace fxcm
 		{
 			O2G2Ptr<IO2GOfferRow> offerRow = offersResponseReader->getRow(i);
 
-			Offer* currOffer = NULL;
+			misc::string instrument(offerRow->getInstrument());
 
-			EqById pred(offerRow->getOfferID());
-			misc::vector<Offer>::iterator fndit = 
-				misc::find_if(m_offers.begin(), m_offers.end(), pred);
-			if (fndit == m_offers.end())
+			// update the last offer map
+			OffersMap::iterator it = m_offersMap.find(instrument);
+			if (it == m_offersMap.end())
 			{
-				Offer newOffer(offerRow->getOfferID(),
-					offerRow->getInstrument(), offerRow->getDigits(),
-					offerRow->getPointSize(), offerRow->getTime(),
-					offerRow->getBid(), offerRow->getAsk());
-				m_offers.push_back(newOffer);
+				misc::time oftime;
+				Utils::FormatDate(offerRow->getTime(), oftime);
 
-				currOffer = &(*m_offers.rbegin());
+				Offer newOffer(
+					offerRow->getOfferID(),
+					offerRow->getInstrument(),
+					offerRow->getDigits(),
+					offerRow->getPointSize(),
+					oftime,
+					offerRow->getBid(),
+					offerRow->getAsk());
+
+				OffersMap::value_type ofpair(newOffer.GetInstrument(), newOffer);
+				m_offersMap.insert(ofpair);
 			}
 			else
 			{
 				if (offerRow->isTimeValid() &&
-					offerRow->isBidValid() && offerRow->isAskValid())
+					offerRow->isBidValid() &&
+					offerRow->isAskValid())
 				{
-					fndit->SetDate(offerRow->getTime());
-					fndit->SetBid(offerRow->getBid());
-					fndit->SetAsk(offerRow->getAsk());
+					misc::time oftime;
+					Utils::FormatDate(offerRow->getTime(), oftime);
 
-					currOffer = &(*fndit);
+					it->second.SetTime(oftime);
+					it->second.SetBid(offerRow->getBid());
+					it->second.SetAsk(offerRow->getAsk());
 				}
 			}
 
-			static bool bDebug = false;
-			if (currOffer && bDebug)
+			static bool bDebug = true;
+			if (bDebug)
 			{
-				misc::cout << currOffer->GetId() << ", "
-					<< currOffer->GetInstrument()
-					<< ", Bid=" << std::fixed << currOffer->GetBid()
-					<< ", Ask=" << std::fixed << currOffer->GetAsk() 
+				char dateBuf[32] = { 0 };
+				Utils::FormatDate(offerRow->getTime(), dateBuf);
+
+				misc::cout
+					<< "Id=" << offerRow->getOfferID() << ", "
+					<< "I=" << offerRow->getInstrument() << ", "
+					<< "T=" << dateBuf << ", "
+					<< "Bid=" << std::fixed << offerRow->getBid() << ", "
+					<< "Ask=" << std::fixed << offerRow->getAsk()
 					<< std::endl;
 			}
 		}
@@ -143,34 +129,17 @@ namespace fxcm
 		// synchronize access to internal resource
 		misc::autocritical_section autoCS(m_criticalSection);
 
-		EqByInstrument pred(sInstrument);
-		misc::vector<Offer>::iterator fndit =
-			misc::find_if(m_offers.begin(), m_offers.end(), pred);
-		if (fndit == m_offers.end())
+		misc::string instrument(sInstrument);
+		OffersMap::iterator it = m_offersMap.find(instrument);
+		if (it == m_offersMap.end())
 		{
 			misc::cout << __FUNCTION__
 				<< ": Cannot find Offer for '" << sInstrument << "'" << std::endl;
 			return ErrorCodes::ERR_NO_OFFER_AVAILABLE;
 		}
 
-		offer = *fndit;
+		offer = it->second;
 
 		return ErrorCodes::ERR_SUCCESS;
 	}
-
-	void OffersUpdater::FormatDate(DATE date, char* buf)
-	{
-			struct tm tmBuf = { 0 };
-			CO2GDateUtils::OleTimeToCTime(date, &tmBuf);
-
-			using namespace std;
-			stringstream sstream;
-			sstream << setw(2) << setfill('0') << tmBuf.tm_mon + 1 << "." \
-				<< setw(2) << setfill('0') << tmBuf.tm_mday << "." \
-				<< setw(4) << tmBuf.tm_year + 1900 << " " \
-				<< setw(2) << setfill('0') << tmBuf.tm_hour << ":" \
-				<< setw(2) << setfill('0') << tmBuf.tm_min << ":" \
-				<< setw(2) << setfill('0') << tmBuf.tm_sec;
-			strcpy(buf, sstream.str().c_str());
-		}
 } // namespace

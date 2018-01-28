@@ -21,6 +21,7 @@ contact: grayasm@gmail.com
 
 #include "HistoryPricesUpdater.hpp"
 #include "ErrorCodes.hpp"
+#include "Utils.hpp"
 #include "autocritical_section.hpp"
 #include "stream.hpp"
 #include "algorithm.hpp"
@@ -94,8 +95,8 @@ namespace fxcm
 		for (int ii = 0; ii < reader->size(); ++ii)
 		{
 			DATE dt = reader->getDate(ii);
-			FormatDate(dt, sTime);
-			FormatDate(dt, mTime);
+			Utils::FormatDate(dt, sTime);
+			Utils::FormatDate(dt, mTime);
 
 			if (reader->isBar())
 			{
@@ -153,36 +154,4 @@ namespace fxcm
 		return m_historyPricesVec;
 	}
 
-	void HistoryPricesUpdater::FormatDate(DATE date, char* buf)
-	{
-		struct tm tmBuf = { 0 };
-		CO2GDateUtils::OleTimeToCTime(date, &tmBuf);
-
-		using namespace std;
-		stringstream sstream;
-		sstream << setw(2) << setfill('0') << tmBuf.tm_mon + 1 << "." \
-			<< setw(2) << setfill('0') << tmBuf.tm_mday << "." \
-			<< setw(4) << tmBuf.tm_year + 1900 << " " \
-			<< setw(2) << setfill('0') << tmBuf.tm_hour << ":" \
-			<< setw(2) << setfill('0') << tmBuf.tm_min << ":" \
-			<< setw(2) << setfill('0') << tmBuf.tm_sec;
-		strcpy(buf, sstream.str().c_str());
-	}
-
-	void HistoryPricesUpdater::FormatDate(DATE date, misc::time& mtime)
-	{
-		struct tm tmBuf = { 0 };
-		CO2GDateUtils::OleTimeToCTime(date, &tmBuf);
-	
-		enum misc::time::Month month = (enum misc::time::Month)tmBuf.tm_mon;
-
-		mtime = misc::time(
-			tmBuf.tm_year + 1900,
-			month,
-			tmBuf.tm_mday,
-			tmBuf.tm_hour,
-			tmBuf.tm_min,
-			tmBuf.tm_sec);
-
-	}
 } // namespace

@@ -24,8 +24,8 @@ contact: grayasm@gmail.com
 #include <time.h>
 #include <math.h>
 #include "ResponseListener4Offers.hpp"
-#include "OffersPrinter.hpp"
 #include "OffersUpdater.hpp"
+#include "OffersWriter.hpp"
 #include "ErrorCodes.hpp"
 
 
@@ -55,13 +55,11 @@ namespace fxcm
 
 		/*
 			Session as well as ResponseListener4Offers can output the Offers.
-			OffersPrinter deals with locking, printing and updating the last Offers.
 			OffersUpdater deals with locking, setting and getting the last Offers.
-			outputOffers turns off/on printing offers on the console all the time.
+			OffersWriter deals with locking and writing all Offers to file.
 		*/
-		static bool outputOffers = false;
-		m_offersPrinter = new OffersPrinter(m_session, outputOffers);
 		m_offersUpdater = new OffersUpdater(m_session);
+		m_offersWriter = new OffersWriter(m_session, m_iniParams);
 
 		/*
 			ResponseListener4Offers works as a separate thread to receive
@@ -69,12 +67,12 @@ namespace fxcm
 			updates (Trades, ClosedTrades, Messages, etc) and reduce complexity
 			e.g. easier to add DB storage for quotes, etc.
 		*/
-		m_responseListener4Offers = new ResponseListener4Offers(m_session, outputOffers);
+		m_responseListener4Offers = new ResponseListener4Offers(m_session);
 		m_session->subscribeResponse(m_responseListener4Offers);
 
-		// optional can print the offers (otherwise not useful)
-		m_responseListener4Offers->SetOffersPrinter(m_offersPrinter);
+		// optional can print the offers and save to file (otherwise not useful)
 		m_responseListener4Offers->SetOffersUpdater(m_offersUpdater);
+		m_responseListener4Offers->SetOffersWriter(m_offersWriter);
 
 
 		/*
@@ -100,10 +98,10 @@ namespace fxcm
 	{
 		m_session->unsubscribeResponse(m_responseListener4Offers);
 		m_responseListener4Offers->release();
-		if (m_offersPrinter)
-			delete m_offersPrinter;
 		if (m_offersUpdater)
 			delete m_offersUpdater;
+		if (m_offersWriter)
+			delete m_offersWriter;
 		m_session->unsubscribeResponse(m_responseListener4Orders);
 		m_responseListener4Orders->release();
 		m_session->unsubscribeResponse(m_responseListener4HistoryPrices);
@@ -171,10 +169,10 @@ namespace fxcm
 				response = loginRules->getTableRefreshResponse(Offers);
 				if (response)
 				{
-					if (m_offersPrinter)
-						m_offersPrinter->PrintOffers(response);
 					if (m_offersUpdater)
 						m_offersUpdater->UpdateOffers(response);
+					if (m_offersWriter)
+						m_offersWriter->UpdateOffers(response);
 				}
 			}
 			else
@@ -199,10 +197,10 @@ namespace fxcm
 						response = m_responseListener4Offers->GetResponse();
 						if (response)
 						{
-							if (m_offersPrinter)
-								m_offersPrinter->PrintOffers(response);
 							if (m_offersUpdater)
 								m_offersUpdater->UpdateOffers(response);
+							if (m_offersWriter)
+								m_offersWriter->UpdateOffers(response);
 						}
 					}
 					else

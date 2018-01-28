@@ -114,7 +114,6 @@ namespace fxcm
 			m_Response->release();
 		m_Session->release();
 		// m_ResponseEvent will CloseHandle itself on ~dtor
-		// m_offersPrinter is owned by the Session
 	}
 
 } // namespace

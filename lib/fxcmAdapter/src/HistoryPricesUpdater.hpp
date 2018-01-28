@@ -52,9 +52,6 @@ namespace fxcm
 		HistoryPricesUpdater(const HistoryPricesUpdater&);
 		HistoryPricesUpdater& operator=(const HistoryPricesUpdater&);
 
-		void FormatDate(DATE date, char* buf);
-		void FormatDate(DATE date, misc::time& mtime);
-
 	private:
 		IO2GSession*					m_session;
 		misc::critical_section			m_criticalSection;

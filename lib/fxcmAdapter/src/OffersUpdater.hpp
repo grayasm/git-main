@@ -23,10 +23,11 @@
 
 
 #include <stddef.h>
+#include <map>
 #include <ForexConnect.h>
-#include "vector.hpp"
 #include "critical_section.hpp"
 #include "autoptr.hpp"
+#include "vector.hpp"
 #include "Offer.hpp"
 
 
@@ -36,7 +37,9 @@ namespace fxcm
 	class OffersUpdater
 	{
 	public:
-		typedef misc::autoptr<OffersUpdater> Ptr;
+		typedef misc::autoptr<OffersUpdater>	Ptr;
+		typedef std::map<misc::string, Offer>	OffersMap;
+
 		OffersUpdater(IO2GSession* session);
 		~OffersUpdater();
 
@@ -48,12 +51,10 @@ namespace fxcm
 		OffersUpdater(const OffersUpdater&);
 		OffersUpdater& operator=(const OffersUpdater&);
 
-		void FormatDate(DATE date, char* buf);
-
 	private:
 		IO2GSession*					m_session;
 		misc::critical_section			m_criticalSection;
-		misc::vector<Offer>				m_offers;
+		OffersMap						m_offersMap;
 	};
 } // namespace
 

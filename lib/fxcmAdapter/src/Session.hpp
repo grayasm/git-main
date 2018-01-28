@@ -35,7 +35,6 @@ contact: grayasm@gmail.com
 #include "HistoryPricesUpdater.hpp"
 #include "TradingSettings.hpp"
 #include "TradingPermissions.hpp"
-
 #include "Position.hpp"
 
 
@@ -79,8 +78,8 @@ namespace fxcm
 		fxcm::IniParams						m_iniParams;
 		IO2GSession*						m_session;
 		SessionStatusListener*				m_sessionListener;
-		OffersPrinter*						m_offersPrinter;
 		OffersUpdater*						m_offersUpdater;
+		OffersWriter*						m_offersWriter;
 		ResponseListener4Offers*			m_responseListener4Offers;
 		ResponseListener4Orders*			m_responseListener4Orders;
 		ResponseListener4HistoryPrices*		m_responseListener4HistoryPrices;

@@ -1,32 +1,32 @@
 /*
-Copyright (C) 2018 Mihai Vasilian
+	Copyright (C) 2018 Mihai Vasilian
 
-This program is free software; you can redistribute it and/or modify it
-under the terms of the GNU General Public License as published by the
-Free Software Foundation; either version 2 of the License, or (at your
-option) any later version.
+	This program is free software; you can redistribute it and/or modify it
+	under the terms of the GNU General Public License as published by the
+	Free Software Foundation; either version 2 of the License, or (at your
+	option) any later version.
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-See the GNU General Public License for more details.
+	This program is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+	See the GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License along
-with this program. If not, see http://www.gnu.org/licenses/.
+	You should have received a copy of the GNU General Public License along
+	with this program. If not, see http://www.gnu.org/licenses/.
 
-contact: grayasm@gmail.com
+	contact: grayasm@gmail.com
 */
 
 #include "GetHistoryPrices.hpp"
 #include "unistd.hpp"
 #include "stream.hpp"
+#include "time.hpp"
+#include "filename.hpp"
 #include "LoginParams.hpp"
 #include "IniParams.hpp"
 #include "Session.hpp"
 #include "Offer.hpp"
 #include "ErrorCodes.hpp"
-#include "time.hpp"
-#include "filename.hpp"
 
 
 
@@ -111,7 +111,7 @@ void GetHistoryPrices()
 
 			std::stringstream ss;
 			ss << "I=" << hprice.GetInstrument().c_str() << ", ";
-			ss << "T=" << hprice.GetTime().tostring() << ", ";
+			ss << "T=" << hprice.GetTime().tostring().c_str() << ", ";
 			ss << "BO=" << hprice.GetBidOpen() << ", ";
 			ss << "BH=" << hprice.GetBidHigh() << ", ";
 			ss << "BL=" << hprice.GetBidLow() << ", ";

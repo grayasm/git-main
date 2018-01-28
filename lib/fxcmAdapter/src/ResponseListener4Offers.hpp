@@ -27,8 +27,8 @@ contact: grayasm@gmail.com
 #include "string.hpp"
 #include "event.hpp"
 #include "critical_section.hpp"
-#include "OffersPrinter.hpp"
 #include "OffersUpdater.hpp"
+#include "OffersWriter.hpp"
 
 
 namespace fxcm
@@ -36,7 +36,7 @@ namespace fxcm
 	class ResponseListener4Offers : public IO2GResponseListener
 	{
 	public:
-		ResponseListener4Offers(IO2GSession* session, bool outputOffers);
+		ResponseListener4Offers(IO2GSession* session);
 
 		// vtable begin
 		long addRef();
@@ -49,8 +49,8 @@ namespace fxcm
 		void SetRequestID(const misc::string& requestID);
 		bool WaitEvents();
 		IO2GResponse* GetResponse();
-		void SetOffersPrinter(OffersPrinter* op);
 		void SetOffersUpdater(OffersUpdater* ou);
+		void SetOffersWriter(OffersWriter* ow);
 
 
 	protected:
@@ -63,9 +63,8 @@ namespace fxcm
 		misc::event				m_ResponseEvent;
 		IO2GResponse*			m_Response;
 		misc::critical_section	m_CriticalSection;
-		OffersPrinter*			m_offersPrinter;
 		OffersUpdater*			m_offersUpdater;
-		bool					m_outputOffers;
+		OffersWriter*			m_offersWriter;
 	};
 } // namespace
 

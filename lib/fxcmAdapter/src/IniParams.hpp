@@ -93,6 +93,9 @@ namespace fxcm
 		const misc::string& GetHistoryFile() const;
 		void SetHistoryFile(const misc::string& val);
 
+		const misc::string& GetOffersFile() const;
+		void SetOffersFile(const misc::string& val);
+
 		double GetRangeInPips() const;
 		void SetRangeInPips(double val);
 
@@ -127,6 +130,7 @@ namespace fxcm
 		misc::string		m_dateFrom;
 		misc::string		m_dateTo;
 		misc::string		m_historyfile;
+		misc::string		m_offersfile;
 		double				m_rangeInPips;
 		double				m_rate;
 		double				m_rateStop;

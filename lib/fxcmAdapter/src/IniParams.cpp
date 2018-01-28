@@ -41,6 +41,7 @@ namespace fxcm
 	misc::string		g_DateFrom("datefrom");
 	misc::string		g_DateTo("dateto");
 	misc::string		g_HistoryFile("historyfile");
+	misc::string		g_OffersFile("offersfile");
 	misc::string		g_RangeInPips("rangeinpips");
 	misc::string		g_Rate("rate");
 	misc::string		g_RateStop("ratestop");
@@ -81,6 +82,11 @@ namespace fxcm
 		m_historyfile = iniReader.get(m_section, g_HistoryFile, emptys);
 		misc::trim(m_historyfile, '"'); // remove double quote at both ends
 		misc::trim(m_historyfile, ' '); // remove empty spaces at both ends
+
+		m_offersfile = iniReader.get(m_section, g_OffersFile, emptys);
+		misc::trim(m_offersfile, '"'); // remove double quote at both ends
+		misc::trim(m_offersfile, ' '); // remove empty spaces at both ends
+
 		
 		m_rangeInPips = iniReader.get(m_section, g_RangeInPips, double(0));
 		m_rate = iniReader.get(m_section, g_Rate, double(0));
@@ -122,6 +128,7 @@ namespace fxcm
 			m_dateFrom = tc.m_dateFrom;
 			m_dateTo = tc.m_dateTo;
 			m_historyfile = tc.m_historyfile;
+			m_offersfile = tc.m_offersfile;
 			m_rangeInPips = tc.m_rangeInPips;
 			m_rate = tc.m_rate;
 			m_rateStop = tc.m_rateStop;
@@ -289,6 +296,16 @@ namespace fxcm
 	{
 		m_historyfile = val;
 	}
+	
+	const misc::string& IniParams::GetOffersFile() const
+	{
+		return m_offersfile;
+	}
+
+	void IniParams::SetOffersFile(const misc::string& val)
+	{
+		m_offersfile = val;
+	}
 
 	double IniParams::GetRangeInPips() const
 	{
@@ -350,6 +367,7 @@ namespace fxcm
 		m_dateFrom = "";
 		m_dateTo = "";
 		m_historyfile = "";
+		m_offersfile = "";
 		m_rangeInPips = 0;
 		m_rate = 0;
 		m_rateStop = 0;

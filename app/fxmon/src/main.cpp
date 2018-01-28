@@ -30,8 +30,7 @@
 #include "stream.hpp"
 #include "Test.hpp"
 #include "GetHistoryPrices.hpp"
-
-
+#include "GetMarketOffers.hpp"
 
 
 int main(int /*argc*/, char** /*argv*/)
@@ -39,10 +38,10 @@ int main(int /*argc*/, char** /*argv*/)
 	// disable stdout buffer
 	setvbuf(stdout, NULL, _IONBF, 0);
 	
-	GetHistoryPrices();
+	// GetHistoryPrices();
 	// LoadHistoryPrices();
+	GetMarketOffers();
 
 	return 0;
 }
-
 

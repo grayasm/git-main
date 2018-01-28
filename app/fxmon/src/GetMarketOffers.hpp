@@ -17,11 +17,9 @@
 	contact: grayasm@gmail.com
 */
 
-#ifndef __GetHistoryPrices_hpp__
-#define __GetHistoryPrices_hpp__
+#ifndef __GetMarketOffers_hpp__
+#define __GetMarketOffers_hpp__
 
-void GetHistoryPrices();
-void LoadHistoryPrices();
+void GetMarketOffers();
 
-
-#endif // __GetHistorPrices_hpp__
+#endif // __GetMarketOffers_hpp__

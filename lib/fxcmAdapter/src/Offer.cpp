@@ -24,12 +24,17 @@
 
 namespace fxcm
 {
+	Offer::Offer()
+	{
+		Init();
+	}
+
 	Offer::Offer(
 		const misc::string& id,
 		const misc::string& instrument,
 		int precision,
 		double pipsize,
-		double date,
+		const misc::time& time,
 		double bid,
 		double ask)
 	{
@@ -37,7 +42,7 @@ namespace fxcm
 		m_instrument = instrument;
 		m_precision = precision;
 		m_pipsize = pipsize;
-		m_date = date;
+		m_time = time;
 		m_bid = bid;
 		m_ask = ask;
 	}
@@ -55,7 +60,7 @@ namespace fxcm
 			m_instrument = tc.m_instrument;
 			m_precision = tc.m_precision;
 			m_pipsize = tc.m_pipsize;
-			m_date = tc.m_date;
+			m_time = tc.m_time;
 			m_bid = tc.m_bid;
 			m_ask = tc.m_ask;
 		}
@@ -96,14 +101,14 @@ namespace fxcm
 		m_precision = precision;
 	}
 
-	double Offer::GetDate()
+	const misc::time& Offer::GetTime() const
 	{
-		return m_date;
+		return m_time;
 	}
 
-	void Offer::SetDate(double date)
+	void Offer::SetTime(const misc::time& time)
 	{
-		m_date = date;
+		m_time = time;
 	}
 
 	double Offer::GetPipSize() const
@@ -136,4 +141,14 @@ namespace fxcm
 		m_ask = ask;
 	}
 
+	void Offer::Init()
+	{
+		m_id = "";
+		m_instrument = "";
+		m_precision = 0;
+		// m_time;  - default
+		m_pipsize = 0;
+		m_bid = 0;
+		m_ask = 0;
+	}
 } // namespace
