@@ -108,8 +108,7 @@ namespace fxcm
 
 	void OffersWriter::WriteOffers()
 	{
-		// synchronize access to internal resource
-		misc::autocritical_section autoCS(m_criticalSection);
+		// m_CriticalSection is already locked
 
 		if (!m_isEnabled)
 			return;
@@ -124,7 +123,7 @@ namespace fxcm
 
 			misc::time tnow(::time(NULL));
 			char stamp[32];
-			sprintf(stamp, "%_2d_%2d_%2d_%2d_%2d_%2d",
+			sprintf(stamp, "_%2d_%2d_%2d_%2d_%2d_%2d",
 				tnow.year_(),
 				tnow.mon_(),
 				tnow.mday_(),
