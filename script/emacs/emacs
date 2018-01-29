@@ -328,7 +328,17 @@
 ;;(color-theme-xemacs)
 (color-theme-vim-colors)
 ;;(color-theme-jb-simple)
+
 ;;------------------------------------------------------------
+;; DO NOT CREATE BACKUPS ~
+; when working with build systems that pick files automatically
+; a ~ duplicate can screw things pretty bad
+
+(setq make-backup-files nil)
+
+
+;;------------------------------------------------------------
+;; python packages
 (require 'package)
 
 ;; use Melpa repository
