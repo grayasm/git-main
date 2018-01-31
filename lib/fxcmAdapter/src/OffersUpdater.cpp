@@ -107,7 +107,7 @@ namespace fxcm
 				}
 			}
 
-			static bool bDebug = true;
+			static bool bDebug = false;
 			if (bDebug)
 			{
 				char dateBuf[32] = { 0 };

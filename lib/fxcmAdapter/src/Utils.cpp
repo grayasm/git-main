@@ -56,4 +56,16 @@ namespace fxcm
 			tmBuf.tm_min,
 			tmBuf.tm_sec);
 	}
+
+	bool Utils::IsOpeningOrder(IO2GOrderRow* order)
+	{
+		const char* type = order->getType();
+		return type[0] == 'O';
+	}
+
+	bool Utils::IsClosingOrder(IO2GOrderRow* order)
+	{
+		const char* type = order->getType();
+		return type[0] == 'C';
+	}
 } // namespace

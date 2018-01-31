@@ -17,7 +17,7 @@
 	contact: grayasm@gmail.com
 */
 
-#include "ResponseListener4Orders.hpp"
+#include "ResponseListener4EntryOrders.hpp"
 #include "autocritical_section.hpp"
 #include "stream.hpp"
 #include <sstream>
@@ -27,7 +27,7 @@
 
 namespace fxcm
 {
-	ResponseListener4Orders::ResponseListener4Orders(IO2GSession* session)
+	ResponseListener4EntryOrders::ResponseListener4EntryOrders(IO2GSession* session)
 	{
 		m_Session = session;
 		m_Session->addRef();
@@ -38,14 +38,14 @@ namespace fxcm
 		// m_CriticalSection - is unlocked
 	}
 
-	long ResponseListener4Orders::addRef()
+	long ResponseListener4EntryOrders::addRef()
 	{
 		misc::autocritical_section autocs(m_CriticalSection);
 		m_RefCount++;
 		return m_RefCount;
 	}
 
-	long ResponseListener4Orders::release()
+	long ResponseListener4EntryOrders::release()
 	{
 		// protect m_CriticalSection against 'delete this'
 		{
@@ -59,7 +59,7 @@ namespace fxcm
 		return 0;
 	}
 
-	void ResponseListener4Orders::onRequestCompleted(const char* requestId, IO2GResponse* response)
+	void ResponseListener4EntryOrders::onRequestCompleted(const char* requestId, IO2GResponse* response)
 	{
 		if (response && m_RequestID == requestId)
 		{
@@ -70,7 +70,7 @@ namespace fxcm
 		}
 	}
 
-	void ResponseListener4Orders::onRequestFailed(const char* requestId, const char* error)
+	void ResponseListener4EntryOrders::onRequestFailed(const char* requestId, const char* error)
 	{
 		if (m_RequestID == requestId)
 		{
@@ -81,11 +81,11 @@ namespace fxcm
 		}
 	}
 
-	void ResponseListener4Orders::onTablesUpdates(IO2GResponse* tablesUpdates)
+	void ResponseListener4EntryOrders::onTablesUpdates(IO2GResponse* tablesUpdates)
 	{
 	}
 
-	void ResponseListener4Orders::SetRequestID(const misc::string& requestID)
+	void ResponseListener4EntryOrders::SetRequestID(const misc::string& requestID)
 	{
 		m_RequestID = requestID;
 		if (m_Response)
@@ -96,19 +96,19 @@ namespace fxcm
 		m_ResponseEvent.unlock();
 	}
 
-	bool ResponseListener4Orders::WaitEvents()
+	bool ResponseListener4EntryOrders::WaitEvents()
 	{
 		return (m_ResponseEvent.trylock(30000) == 0);
 	}
 
-	IO2GResponse* ResponseListener4Orders::GetResponse()
+	IO2GResponse* ResponseListener4EntryOrders::GetResponse()
 	{
 		if (m_Response)
 			m_Response->addRef();
 		return m_Response; // ~O2G2Ptr will release() it.
 	}
 
-	ResponseListener4Orders::~ResponseListener4Orders()
+	ResponseListener4EntryOrders::~ResponseListener4EntryOrders()
 	{
 		if (m_Response)
 			m_Response->release();

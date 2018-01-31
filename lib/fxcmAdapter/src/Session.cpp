@@ -76,12 +76,12 @@ namespace fxcm
 
 
 		/*
-			ResponseListener4Orders works as a separate thread to receive
+			ResponseListener4EntryOrders works as a separate thread to receive
 			Orders table updates. This listener should be able to handle most
 			common request for Orders table.
 		*/
-		m_responseListener4Orders = new ResponseListener4Orders(m_session);
-		m_session->subscribeResponse(m_responseListener4Orders);
+		m_responseListener4EntryOrders = new ResponseListener4EntryOrders(m_session);
+		m_session->subscribeResponse(m_responseListener4EntryOrders);
 
 		/*
 			ResponseListener4HistoryPrices works as a separate thread to receive
@@ -92,6 +92,16 @@ namespace fxcm
 
 		// The listener does not use HistoryPricesUpdater. Only the Session does
 		m_historyPricesUpdater = new HistoryPricesUpdater(m_session);
+
+
+		/*
+			ResponseListener4MarketOrders works as a separate thread to receive
+			notifications about Market Orders/Positions tables updates. 
+			This listener should be able to handle most common request related
+			to posting the initial Market Order and getting the resulted trades.
+		*/
+		m_responseListener4MarketOrders = new ResponseListener4MarketOrders(m_session);
+		m_session->subscribeResponse(m_responseListener4MarketOrders);
 	}
 
 	Session::~Session()
@@ -102,12 +112,14 @@ namespace fxcm
 			delete m_offersUpdater;
 		if (m_offersWriter)
 			delete m_offersWriter;
-		m_session->unsubscribeResponse(m_responseListener4Orders);
-		m_responseListener4Orders->release();
+		m_session->unsubscribeResponse(m_responseListener4EntryOrders);
+		m_responseListener4EntryOrders->release();
 		m_session->unsubscribeResponse(m_responseListener4HistoryPrices);
 		m_responseListener4HistoryPrices->release();
 		if (m_historyPricesUpdater)
 			delete m_historyPricesUpdater;
+		m_session->unsubscribeResponse(m_responseListener4MarketOrders);
+		m_responseListener4MarketOrders->release();
 		m_session->unsubscribeSessionStatus(m_sessionListener);
 		m_sessionListener->release();
 		m_session->release();
@@ -451,10 +463,10 @@ namespace fxcm
 			return ErrorCodes::ERR_NO_ORDERS_REQUEST;
 		}
 
-		m_responseListener4Orders->SetRequestID(request->getRequestID());
+		m_responseListener4EntryOrders->SetRequestID(request->getRequestID());
 		m_session->sendRequest(request);
 		// asynchronous request sent to server, waiting
-		if (!m_responseListener4Orders->WaitEvents())
+		if (!m_responseListener4EntryOrders->WaitEvents())
 		{
 			misc::cout << __FUNCTION__
 				<< ": Response waiting timeout expired" << std::endl;
@@ -462,7 +474,7 @@ namespace fxcm
 		}
 
 		O2G2Ptr<IO2GResponse> orderResponse =
-			m_responseListener4Orders->GetResponse();
+			m_responseListener4EntryOrders->GetResponse();
 		if (orderResponse)
 		{
 			if (orderResponse->getType() == O2GResponseType::GetOrders)
@@ -647,6 +659,85 @@ namespace fxcm
 
 		return ErrorCodes::ERR_SUCCESS;
 	} // GetHistoryPrices
+
+	int Session::OpenMarketOrder(const Offer& offer, int lots, bool buy)
+	{
+		if (m_sessionListener->IsDisconnected())
+		{
+			misc::cout << __FUNCTION__
+				<< ": Session disconnected" << std::endl;
+			return ErrorCodes::ERR_DISCONNECTED;
+		}
+
+		O2G2Ptr<IO2GAccountRow> account = GetAccount();
+		if (!account)
+		{
+			misc::cout << __FUNCTION__
+				<< ": Error invalid account" << std::endl;
+			return ErrorCodes::ERR_NO_ACCOUNT;
+		}
+
+		// must be 'netting account' -> maintenance type != 0
+		if (strcmp(account->getMaintenanceType(), "0") == 0)
+		{
+			misc::cout << __FUNCTION__
+				<< ": Error invalid account" << std::endl;
+			return ErrorCodes::ERR_NO_ACCOUNT;
+		}
+
+		O2G2Ptr<IO2GLoginRules> loginRules = m_session->getLoginRules();
+		if (!loginRules)
+		{
+			misc::cout << __FUNCTION__
+				<< ": Cannot get login rules" << std::endl;
+			return ErrorCodes::ERR_NO_LOGIN_RULES;
+		}
+
+		O2G2Ptr<IO2GTradingSettingsProvider> tradingSettingsProvider =
+			loginRules->getTradingSettingsProvider();
+		int iBaseUnitSize = tradingSettingsProvider->getBaseUnitSize(offer.GetInstrument().c_str(), account);
+		int iAmount = iBaseUnitSize * lots;
+
+		// create true market order request
+		O2G2Ptr<IO2GRequestFactory> requestFactory = m_session->getRequestFactory();
+		if (!requestFactory)
+		{
+			misc::cout << __FUNCTION__
+				<< ": Cannot create request factory" << std::endl;
+			return ErrorCodes::ERR_NO_REQUEST_FACTORY;
+		}
+
+		O2G2Ptr<IO2GValueMap> valuemap = requestFactory->createValueMap();
+		valuemap->setString(Command, O2G2::Commands::CreateOrder);
+		valuemap->setString(OrderType, O2G2::Orders::TrueMarketOpen);
+		valuemap->setString(TimeInForce, O2G2::TIF::GTC);
+		valuemap->setString(AccountID, account->getAccountID());
+		valuemap->setString(OfferID, offer.GetId().c_str());
+		valuemap->setString(BuySell, (buy == true ? "B" : "S")); // "B" or "S"
+		valuemap->setInt(Amount, iAmount);
+		valuemap->setString(CustomID, "TrueMarketOrder");
+		O2G2Ptr<IO2GRequest> request = requestFactory->createOrderRequest(valuemap);
+		if (!request)
+		{
+			misc::cout << __FUNCTION__
+				<< ": createOrderRequest failed with error: "
+				<< requestFactory->getLastError() << std::endl;
+			return ErrorCodes::ERR_NO_ORDERS_REQUEST;
+		}
+
+		m_responseListener4MarketOrders->SetRequestID(request->getRequestID());
+		m_session->sendRequest(request);
+		// asynchronous request sent to server, waiting
+		if (!m_responseListener4MarketOrders->WaitEvents())
+		{
+			misc::cout << __FUNCTION__
+				<< ": Response waiting timeout expired" << std::endl;
+			return ErrorCodes::ERR_TIMEOUT;
+		}
+
+
+		return ErrorCodes::ERR_SUCCESS;		
+	} // OpenMarketOrder
 
 	IO2GAccountRow* Session::GetAccount()
 	{

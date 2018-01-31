@@ -30,8 +30,9 @@ contact: grayasm@gmail.com
 #include "IniParams.hpp"
 #include "SessionStatusListener.hpp"
 #include "ResponseListener4Offers.hpp"
-#include "ResponseListener4Orders.hpp"
+#include "ResponseListener4EntryOrders.hpp"
 #include "ResponseListener4HistoryPrices.hpp"
+#include "ResponseListener4MarketOrders.hpp"
 #include "HistoryPricesUpdater.hpp"
 #include "TradingSettings.hpp"
 #include "TradingPermissions.hpp"
@@ -62,6 +63,7 @@ namespace fxcm
 		int GetHistoryPrices(const char* sInstrument, const char* sTimeframe,
 							 DATE dtFrom, DATE dtTo,
 							 HistoryPricesVec& historyPricesVec);
+		int OpenMarketOrder(const Offer& offer, int lots, bool buy);
 
 
 	private:
@@ -81,8 +83,9 @@ namespace fxcm
 		OffersUpdater*						m_offersUpdater;
 		OffersWriter*						m_offersWriter;
 		ResponseListener4Offers*			m_responseListener4Offers;
-		ResponseListener4Orders*			m_responseListener4Orders;
+		ResponseListener4EntryOrders*		m_responseListener4EntryOrders;
 		ResponseListener4HistoryPrices*		m_responseListener4HistoryPrices;
+		ResponseListener4MarketOrders*		m_responseListener4MarketOrders;
 		HistoryPricesUpdater*				m_historyPricesUpdater;
 		TradingSettingsVec					m_tradingSettingsVec;
 	};
