@@ -29,6 +29,7 @@
 #include "critical_section.hpp"
 #include "vector.hpp"
 #include "OrderMonitor.hpp"
+#include "Position.hpp"
 
 
 
@@ -68,6 +69,9 @@ namespace fxcm
 		IO2GResponse*			m_Response;
 		OrderMonitor*			m_OrderMonitor;
 		misc::critical_section	m_CriticalSection;
+		misc::vector<fx::Position>	m_trades;
+		misc::vector<fx::Position>	m_closedTrades;
+
 	};
 } // namespace
 

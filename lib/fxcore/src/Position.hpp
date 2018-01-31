@@ -34,26 +34,12 @@ namespace fx
 	//! Position closed or in the market.
 	class Position
 	{
-		misc::string	m_orderID;		// "222140555" order ID
-		misc::string	m_tradeID;		// "105902921" trade ID
-		bool			m_isOpen;       // false for closed position
-		Currency		m_currency;		// currency at the open price
-		bool			m_buy;          // false for sell position
-		double			m_amount;       // lot amount in K    
-		Price			m_close;		// market price when closed
-		double			m_commission;	// commission for entire amount opened/closed
-		double			m_interest;		// interest (need confirmation)
-
-
-		void Init();
-	    
 	public:
 		typedef misc::autoptr<Position>	Ptr;
 
 		Position();
 
-		Position(
-			const misc::string& orderID,
+		Position(const misc::string& orderID,
 			const misc::string& tradeID,
 			const Currency& currency,
 			bool buy,
@@ -65,10 +51,10 @@ namespace fx
 		Position(const Position& tc);
 		Position& operator=(const Position& tc);
 
-		//! Returns the entry order or market open order id.
+		//! Returns the market order for this position.
 		const misc::string& GetOrderID() const;
 
-		//! Returns the market open trade id. Null if entry order.
+		//! Returns the market open trade id. Empty if entry order.
 		const misc::string& GetTradeID() const;
 
 		//! Currency at the time this position entered the market.
@@ -131,6 +117,20 @@ namespace fx
 
 		//! Returns a string with internal data for debugging
 		misc::string ToString() const;
+
+	private:
+		void Init();
+
+	private:
+		misc::string	m_orderID;		// "222140555" order ID
+		misc::string	m_tradeID;		// "105902921" trade ID
+		bool			m_isOpen;       // false for closed position
+		Currency		m_currency;		// currency at the open price
+		bool			m_buy;          // false for sell position
+		double			m_amount;       // lot amount in K    
+		Price			m_close;		// market price where position was closed
+		double			m_commission;	// commission for entire amount opened/closed
+		double			m_interest;		// interest (need confirmation)
 	};
 
 

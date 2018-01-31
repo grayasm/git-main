@@ -33,6 +33,7 @@ namespace fxcm
 	misc::string		g_SecondaryID("secondaryid");
 	misc::string		g_Timeframe("timeframe");
 	misc::string		g_Account("account");
+	misc::string		g_AccountSymbol("accountSymbol");
 	misc::string		g_OrderType("ordertype");
 	misc::string		g_Status("status");
 	misc::string		g_ExpDate("expdate");
@@ -71,6 +72,7 @@ namespace fxcm
 		m_secondaryID = iniReader.get(m_section, g_SecondaryID, emptys);
 		m_timeframe = iniReader.get(m_section, g_Timeframe, emptys);
 		m_account = iniReader.get(m_section, g_Account, emptys);
+		m_accountSymbol = iniReader.get(m_section, g_AccountSymbol, emptys);
 		m_orderType = iniReader.get(m_section, g_OrderType, emptys);
 		m_status = iniReader.get(m_section, g_Status, emptys);
 		m_expDate = iniReader.get(m_section, g_ExpDate, emptys);
@@ -120,6 +122,7 @@ namespace fxcm
 			m_secondaryID = tc.m_secondaryID;
 			m_timeframe = tc.m_timeframe;
 			m_account = tc.m_account;
+			m_accountSymbol = tc.m_accountSymbol;
 			m_orderType = tc.m_orderType;
 			m_status = tc.m_status;
 			m_expDate = tc.m_expDate;
@@ -215,6 +218,16 @@ namespace fxcm
 	void IniParams::SetAccount(const misc::string& val)
 	{
 		m_account = val;
+	}
+
+	const misc::string& IniParams::GetAccountSymbol() const
+	{
+		return m_accountSymbol;
+	}
+
+	void IniParams::SetAccountSymbol(const misc::string& val)
+	{
+		m_accountSymbol = val;
 	}
 
 	const misc::string& IniParams::GetOrderType() const
@@ -359,6 +372,7 @@ namespace fxcm
 		m_secondaryID = "";
 		m_timeframe = "";
 		m_account = "";
+		m_accountSymbol = "";
 		m_orderType = "";
 		m_status = "";
 		m_expDate = "";

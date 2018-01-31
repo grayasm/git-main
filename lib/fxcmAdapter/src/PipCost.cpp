@@ -1,53 +1,41 @@
 /*
-  Copyright (C) 2014 Mihai Vasilian
+	Copyright (C) 2014 Mihai Vasilian
 
-  This program is free software; you can redistribute it and/or modify it
-  under the terms of the GNU General Public License as published by the
-  Free Software Foundation; either version 2 of the License, or (at your
-  option) any later version.
+	This program is free software; you can redistribute it and/or modify it
+	under the terms of the GNU General Public License as published by the
+	Free Software Foundation; either version 2 of the License, or (at your
+	option) any later version.
 
-  This program is distributed in the hope that it will be useful,
-  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-  See the GNU General Public License for more details.
+	This program is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+	See the GNU General Public License for more details.
 
-  You should have received a copy of the GNU General Public License along
-  with this program. If not, see http://www.gnu.org/licenses/.
+	You should have received a copy of the GNU General Public License along
+	with this program. If not, see http://www.gnu.org/licenses/.
 
-  contact: grayasm@gmail.com
+	contact: grayasm@gmail.com
 
-  resources:
-  www.forexnewbies.com/pip-value-formula
-  www.fxtrade.oanda.com/analysis/profit-calculator
-  www.dailyfx.com/forex_forum/forexconnect/634955-implementation-pipcost-tablemanager-2.html
+	resources:
+	www.forexnewbies.com/pip-value-formula
+	www.fxtrade.oanda.com/analysis/profit-calculator
+	www.dailyfx.com/forex_forum/forexconnect/634955-implementation-pipcost-tablemanager-2.html
 */
 
 
-
-#include "fxcmPipCost.hpp"
-
-// c
+#include "PipCost.hpp"
 #include <float.h>
-// c++
-
-
-// fxcm
-#include "ForexConnect.h"
-// #include "sample_tools.h"
-
-// local
 #include "strtok.hpp"
-#include "fxcmTradingSettings.hpp"
+
 
 
 namespace fxcm
 {	
-	PipCost::PipCost(
-		fxcm::IniParams& iniParams,
-		TradingSettings* tradingSettings,
-		const misc::vector<fx::Currency>& currencies)
-		: m_iniParams(iniParams)
-	{		
+	PipCost::PipCost(const IniParams& iniParams,
+					const TradingSettings& tradingSettings,
+					const misc::vector<fx::Currency>& currencies)
+	{
+		m_iniParams = iniParams;
 		m_tradingSettings = tradingSettings;
 		m_currencies = currencies;
 
@@ -85,7 +73,7 @@ namespace fxcm
 		const misc::string& acc_symbol = m_iniParams.GetAccountSymbol();
 		const misc::string& symbol = offer->getInstrument();
 
-		// TODO: get formula for these instruments.
+		// TODO: have to figure out how to calculate pip-cost for these ones
 		std::map<misc::string, double>::const_iterator it = m_nonCalculable.find(symbol);
 		if(it != m_nonCalculable.end())
 		{
@@ -95,7 +83,7 @@ namespace fxcm
 		}
 
 
-		const SymbolSettings& instrumentSettings = m_tradingSettings->GetTradingSettings(symbol);
+		const SymbolSettings& instrumentSettings = m_tradingSettings.GetTradingSettings(symbol);
 		int iBaseUnitSize = instrumentSettings.m_baseUnitSize;
 		double pointSize = offer->getPointSize();
 

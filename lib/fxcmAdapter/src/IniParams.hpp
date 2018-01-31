@@ -68,6 +68,9 @@ namespace fxcm
 		const misc::string& GetAccount() const;
 		void SetAccount(const misc::string& val);
 
+		const misc::string& GetAccountSymbol() const;
+		void SetAccountSymbol(const misc::string& val);
+
 		const misc::string& GetOrderType() const;
 		void SetOrderType(const misc::string& val);
 
@@ -122,6 +125,7 @@ namespace fxcm
 		misc::string		m_secondaryID;
 		misc::string		m_timeframe;
 		misc::string		m_account;
+		misc::string		m_accountSymbol;
 		misc::string		m_orderType;
 		misc::string		m_status;
 		misc::string		m_expDate;

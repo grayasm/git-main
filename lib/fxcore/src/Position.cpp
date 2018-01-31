@@ -33,19 +33,6 @@
 
 namespace fx
 {	    
-	void Position::Init()
-	{
-		// m_orderID
-		// m_tradeID
-		m_isOpen = false;
-		// m_currency;
-		m_buy = false;
-		m_amount = 0;
-		// m_close;
-		m_commission = 0;
-		m_interest = 0;
-	}
-
 	Position::Position()
 	{
 		Init();
@@ -268,7 +255,18 @@ namespace fx
 		return msg;
 	}
 
-
+	void Position::Init()
+	{
+		// m_orderID
+		// m_tradeID
+		m_isOpen = false;
+		// m_currency;
+		m_buy = false;
+		m_amount = 0;
+		// m_close;
+		m_commission = 0;
+		m_interest = 0;
+	}
 
 	//##########################################################################
 	bool openprice_greater::operator()(const Position& x, const Position& y) const
