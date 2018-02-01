@@ -38,9 +38,11 @@ namespace fxcm
 	class PipCost
 	{
 	public:
+		typedef misc::vector<TradingSettings> TradingSettingsVec;
+
 		//! currencies must contain current bid/ask price
 		PipCost(const IniParams& iniParams,
-				const TradingSettings& tradingSettings,
+				const TradingSettingsVec& tradingSettings,
 				const misc::vector<fx::Currency>& currencies);
 		
 		PipCost(const PipCost&) = delete;
@@ -50,7 +52,7 @@ namespace fxcm
 
 	private:
 		IniParams					m_iniParams;
-		TradingSettings				m_tradingSettings;
+		TradingSettingsVec			m_tradingSettings;
 		misc::vector<fx::Currency>	m_currencies;
 		std::map<misc::string, double>	m_nonCalculable;
 	};

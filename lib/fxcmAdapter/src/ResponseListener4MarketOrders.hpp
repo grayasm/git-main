@@ -52,14 +52,15 @@ namespace fxcm
 		bool WaitEvents();
 		IO2GResponse* GetResponse();
 
+		const misc::vector<IO2GTradeRow*>& GetTrades() const;
+		const misc::vector<IO2GClosedTradeRow*> GetClosedTrades() const;
+		void ClearResult();
 
 	protected:
 		~ResponseListener4MarketOrders();
 
 	private:
-		void PrintResult() const;
-		void PrintTrades(const misc::vector<IO2GTradeRow*>& trades, const misc::string& sOrderID) const;
-		void PrintClosedTrades(const misc::vector<IO2GClosedTradeRow*>& closedTrades, const misc::string& sOrderID) const;
+		void SetResult();		
 
 	private:
 		long					m_RefCount;
@@ -69,8 +70,8 @@ namespace fxcm
 		IO2GResponse*			m_Response;
 		OrderMonitor*			m_OrderMonitor;
 		misc::critical_section	m_CriticalSection;
-		misc::vector<fx::Position>	m_trades;
-		misc::vector<fx::Position>	m_closedTrades;
+		misc::vector<IO2GTradeRow*>	m_trades;
+		misc::vector<IO2GClosedTradeRow*>	m_closedTrades;
 
 	};
 } // namespace

@@ -38,6 +38,8 @@ namespace fxcm
 		m_Response = NULL;
 		m_OrderMonitor = NULL;
 		// m_CriticalSection - is unlocked
+		// m_trades; - empty
+		// m_closedTrades; - empty
 	}
 
 	long ResponseListener4MarketOrders::addRef()
@@ -130,6 +132,7 @@ namespace fxcm
 							<< "Rate='" << order->getRate() << "', "
 							<< "TimeInForce='" << order->getTimeInForce() << "'"
 							<< std::endl;
+
 						m_OrderMonitor = new OrderMonitor(order);
 					}
 				}
@@ -143,7 +146,11 @@ namespace fxcm
 
 						if (m_OrderMonitor->IsOrderCompleted())
 						{
-							PrintResult();
+							SetResult();
+
+							delete m_OrderMonitor;
+							m_OrderMonitor = NULL;
+
 							m_ResponseEvent.unlock();
 						}
 					}
@@ -161,7 +168,11 @@ namespace fxcm
 
 						if (m_OrderMonitor->IsOrderCompleted())
 						{
-							PrintResult();
+							SetResult();
+
+							delete m_OrderMonitor;
+							m_OrderMonitor = NULL;
+
 							m_ResponseEvent.unlock();
 						}
 					}
@@ -179,7 +190,11 @@ namespace fxcm
 
 						if (m_OrderMonitor->IsOrderCompleted())
 						{
-							PrintResult();
+							SetResult();
+
+							delete m_OrderMonitor;
+							m_OrderMonitor = NULL;
+
 							m_ResponseEvent.unlock();
 						}
 					}
@@ -197,7 +212,11 @@ namespace fxcm
 
 						if (m_OrderMonitor->IsOrderCompleted())
 						{
-							PrintResult();
+							SetResult();
+
+							delete m_OrderMonitor;
+							m_OrderMonitor = NULL;
+
 							m_ResponseEvent.unlock();
 						}
 					}
@@ -250,29 +269,49 @@ namespace fxcm
 		// m_ResponseEvent will CloseHandle itself on ~dtor
 	}
 
-	void ResponseListener4MarketOrders::PrintResult() const
+	const misc::vector<IO2GTradeRow*>& ResponseListener4MarketOrders::GetTrades() const
+	{
+		return m_trades;
+	}
+
+	const misc::vector<IO2GClosedTradeRow*> ResponseListener4MarketOrders::GetClosedTrades() const
+	{
+		return m_closedTrades;
+	}
+
+	void ResponseListener4MarketOrders::ClearResult()
+	{
+		for (size_t i = 0; i < m_trades.size(); ++i)
+			m_trades[i]->release();
+
+		for (size_t i = 0; i < m_closedTrades.size(); ++i)
+			m_closedTrades[i]->release();
+
+		m_trades.clear();
+		m_closedTrades.clear();
+	}
+
+	void ResponseListener4MarketOrders::SetResult()
 	{
 		if (m_OrderMonitor)
 		{
-			misc::vector<IO2GTradeRow*> trades;
-			misc::vector<IO2GClosedTradeRow*> closedTrades;
+			// clear all previous trades (if any)
+			ClearResult();
 
+			// set the result
 			OrderMonitor::ExecutionResult result = m_OrderMonitor->GetResult();
 			O2G2Ptr<IO2GOrderRow> order = m_OrderMonitor->GetOrder();
-
 			misc::string orderID = order->getOrderID();
-
-			m_OrderMonitor->GetTrades(trades);
-			m_OrderMonitor->GetClosedTrades(closedTrades);
+			
 
 			switch (result)
 			{
 			case OrderMonitor::Canceled:
 			{
-				if (trades.size() > 0)
+				if (m_trades.size() > 0)
 				{
-					PrintTrades(trades, orderID);
-					PrintClosedTrades(closedTrades, orderID);
+					m_OrderMonitor->GetTrades(m_trades);
+					m_OrderMonitor->GetClosedTrades(m_closedTrades);
 
 					misc::cout << "A part of the order has been canceled. "
 						<< "Amount = " << m_OrderMonitor->GetRejectAmount() << std::endl;
@@ -293,8 +332,8 @@ namespace fxcm
 			break;
 			case OrderMonitor::PartialRejected:
 			{
-				PrintTrades(trades, orderID);
-				PrintClosedTrades(closedTrades, orderID);
+				m_OrderMonitor->GetTrades(m_trades);
+				m_OrderMonitor->GetClosedTrades(m_closedTrades);
 
 				misc::cout << "A part of the order has been rejected. "
 					<< "Amount = " << m_OrderMonitor->GetRejectAmount() << std::endl;
@@ -303,55 +342,12 @@ namespace fxcm
 			break;
 			case OrderMonitor::Executed:
 			{
-				PrintTrades(trades, orderID);
-				PrintClosedTrades(closedTrades, orderID);
+				m_OrderMonitor->GetTrades(m_trades);
+				m_OrderMonitor->GetClosedTrades(m_closedTrades);
 			}
 			break;
 			}
 		}
-	}
-
-	void ResponseListener4MarketOrders::PrintTrades(const misc::vector<IO2GTradeRow*>& trades, const misc::string& sOrderID) const
-	{
-		if (trades.size() == 0)
-			return;
-
-		misc::cout << "For the order: OrderID=" << sOrderID
-			<< " the following positions have been opened: " << std::endl;
-
-		for (size_t i = 0; i < trades.size(); ++i)
-		{
-			O2G2Ptr<IO2GTradeRow> trade = trades[i];
-			misc::string tradeID = trade->getTradeID();
-			int amount = trade->getAmount();
-			double rate = trade->getOpenRate();
-
-			misc::cout << "Trade ID: " << tradeID << ", "
-				<< "Amount: " << amount << ", "
-				<< "Rate: " << rate << std::endl;
-		}
-	}
-
-	void ResponseListener4MarketOrders::PrintClosedTrades(const misc::vector<IO2GClosedTradeRow*>& closedTrades, const misc::string& sOrderID) const
-	{
-		if (closedTrades.size() == 0)
-			return;
-
-		misc::cout << "For the order: OrderID=" << sOrderID
-			<< " the following positions have been closed: " << std::endl;
-
-		for (size_t i = 0; i < closedTrades.size(); ++i)
-		{
-			IO2GClosedTradeRow *closedTrade = closedTrades[i];
-			misc::string tradeID = closedTrade->getTradeID();
-			int amount = closedTrade->getAmount();
-			double rate = closedTrade->getCloseRate();
-
-			misc::cout << "Closed Trade ID: " << tradeID << ", "
-				<< "Amount: " << amount << ", "
-				<< "Closed Rate: " << rate << std::endl;
-			closedTrade->release();
-		}
-	}
-
+	} // SetResult
+	
 } // namespace

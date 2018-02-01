@@ -26,13 +26,14 @@
 #include "PipCost.hpp"
 #include <float.h>
 #include "strtok.hpp"
+#include "stream.hpp"
 
 
 
 namespace fxcm
 {	
 	PipCost::PipCost(const IniParams& iniParams,
-					const TradingSettings& tradingSettings,
+					const TradingSettingsVec& tradingSettings,
 					const misc::vector<fx::Currency>& currencies)
 	{
 		m_iniParams = iniParams;
@@ -83,8 +84,22 @@ namespace fxcm
 		}
 
 
-		const SymbolSettings& instrumentSettings = m_tradingSettings.GetTradingSettings(symbol);
-		int iBaseUnitSize = instrumentSettings.m_baseUnitSize;
+		TradingSettings instrumentSettings;
+		for (size_t i = 0; i < m_tradingSettings.size(); ++i)
+		{
+			const TradingSettings& tsi = m_tradingSettings[i];
+			if (tsi.GetInstrument() == symbol)
+			{
+				instrumentSettings = tsi;
+				break;
+			}
+		}
+
+		if (instrumentSettings.GetInstrument().empty())
+			throw misc::exception("Cannot calculate pipCost.");
+
+
+		int iBaseUnitSize = instrumentSettings.GetBaseUnitSize();
 		double pointSize = offer->getPointSize();
 
 		misc::strtok tokenizer(symbol, "/");

@@ -724,7 +724,6 @@ namespace fxcm
 				<< requestFactory->getLastError() << std::endl;
 			return ErrorCodes::ERR_NO_ORDERS_REQUEST;
 		}
-
 		m_responseListener4MarketOrders->SetRequestID(request->getRequestID());
 		m_session->sendRequest(request);
 		// asynchronous request sent to server, waiting
@@ -734,6 +733,36 @@ namespace fxcm
 				<< ": Response waiting timeout expired" << std::endl;
 			return ErrorCodes::ERR_TIMEOUT;
 		}
+
+
+		const misc::vector<IO2GTradeRow*>& trades =
+			m_responseListener4MarketOrders->GetTrades();
+
+		for (size_t i = 0; i < trades.size(); ++i)
+		{
+			IO2GTradeRow* trade = trades[i];
+			misc::string openOrderID = trade->getOpenOrderID();
+			misc::string tradeID = trade->getTradeID();
+
+			misc::string symbol = offer.GetInstrument();
+			fx::Price price(offer.GetBid(), offer.GetAsk());
+			double margin = tradingSettingsProvider->getMMR(symbol.c_str(), account);
+			double pipCost = 0;
+			double rate2pip = 0;
+		}
+
+
+
+		fx::Position omposition;
+		misc::string& orderID,
+			const misc::string& tradeID,
+			const Currency& currency,
+			bool buy,
+			double amount,
+			double commission,
+			double interest
+
+
 
 
 		return ErrorCodes::ERR_SUCCESS;		
