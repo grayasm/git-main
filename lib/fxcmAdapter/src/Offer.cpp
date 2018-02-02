@@ -39,7 +39,7 @@ namespace fxcm
 		double ask,
 		bool isTradingOpen)
 	{
-		m_id = id;
+		m_offerID = id;
 		m_instrument = instrument;
 		m_precision = precision;
 		m_pointSize = pipsize;
@@ -58,7 +58,7 @@ namespace fxcm
 	{
 		if (this != &tc)
 		{
-			m_id = tc.m_id;
+			m_offerID = tc.m_offerID;
 			m_instrument = tc.m_instrument;
 			m_precision = tc.m_precision;
 			m_pointSize = tc.m_pointSize;
@@ -74,14 +74,14 @@ namespace fxcm
 	{
 	}
 
-	const misc::string& Offer::GetId() const
+	const misc::string& Offer::GetOfferID() const
 	{
-		return m_id;
+		return m_offerID;
 	}
 
-	void Offer::SetId(const misc::string& id)
+	void Offer::SetOfferID(const misc::string& id)
 	{
-		m_id = id;
+		m_offerID = id;
 	}
 
 	const misc::string& Offer::GetInstrument() const
@@ -156,7 +156,7 @@ namespace fxcm
 
 	void Offer::Init()
 	{
-		m_id = "";
+		m_offerID = "";
 		m_instrument = "";
 		m_precision = 0;
 		// m_time;  - default

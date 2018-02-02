@@ -31,7 +31,7 @@ namespace fxcm
 	public:
 		Offer();
 
-		Offer(	const misc::string& id,
+		Offer(	const misc::string& offerID,
 				const misc::string& instrument,
 				int precision,
 				double pipsize,
@@ -44,8 +44,8 @@ namespace fxcm
 		Offer& operator=(const Offer& tc);
 		~Offer();
 
-		const misc::string& GetId() const;
-		void SetId(const misc::string& id);
+		const misc::string& GetOfferID() const;
+		void SetOfferID(const misc::string& id);
 
 		const misc::string& GetInstrument() const;
 		void SetInstrument(const misc::string& instrument);
@@ -72,7 +72,7 @@ namespace fxcm
 		void Init();
 
 	private:
-		misc::string		m_id;
+		misc::string		m_offerID;
 		misc::string		m_instrument;
 		int					m_precision;
 		misc::time			m_time;

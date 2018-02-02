@@ -44,35 +44,73 @@ void RunTransaction()
 	fxcm::Session session(*loginParams, *iniParams);
 	if (!session.Login())
 		return;
-	
+
 	session.GetOffers();
 
-	misc::vector<fx::Position> trades;
+	misc::vector<fx::Position> result;
+	fx::Position curpos;
 	fxcm::Offer offer0, offer1;
+	double lastPL = 0;
 
 	while (true)
 	{
 		msleep(2000);
 
-		
 		session.GetLastOffer(offer1, "EUR/USD");
+
 		if (offer0.GetInstrument().empty())
 		{
 			offer0 = offer1;
 			continue;
 		}
 
-		double pips = offer1.GetAsk() - offer0.GetAsk();
-		if ( pips > 0.0001)
+
+		// check if to enter market
+		if (curpos.GetCurrency().GetSymbol().empty())
 		{
-			session.OpenMarketOrder(offer1, 1, true, trades);
-			offer0 = offer1;
+			double pips = (offer1.GetAsk() - offer0.GetAsk()) / 0.0001;
+
+			if (pips > 2)
+				session.OpenPosition(offer1, 1, true, result);
+			else if (pips < -2)
+				session.OpenPosition(offer1, 1, false, result);
+
+			if (!result.empty())
+			{
+				curpos = result[0];
+				lastPL = 0;
+			}
+
 			continue;
 		}
 
-		if (trades.size() == 3)
-			break;
-	}
+		// manage the open position
+		fx::Price curprice(offer1.GetAsk(), offer1.GetBid());
+		double curPL = curpos.GetPL(curprice);
+		double diffPL = curPL - lastPL;
+
+		if (diffPL > 5)
+		{
+			lastPL += 5;
+			continue;
+		}
+
+		if (diffPL < -5)
+		{
+			session.ClosePosition(offer1, curpos, result);
+
+			if (result.empty()) // error
+				break;
+
+			session.OpenPosition(offer1, 1, !curpos.IsBuy(), result);
+
+			if (result.empty()) // error
+				break;
+			
+			curpos = result[0];
+			lastPL = 0;
+		}
+	} // while
 
 	session.Logout();
 }

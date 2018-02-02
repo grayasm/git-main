@@ -64,9 +64,11 @@ namespace fxcm
 		int GetHistoryPrices(const char* sInstrument, const char* sTimeframe,
 							 DATE dtFrom, DATE dtTo,
 							 HistoryPricesVec& historyPricesVec);
-		int OpenMarketOrder(const Offer& offer, int lots, bool buy,
-							misc::vector<fx::Position>& result);
-
+		int OpenPosition(const Offer& offer, int lots, bool buy,
+						misc::vector<fx::Position>& result);
+		int ClosePosition(const Offer& offer, const fx::Position& position,
+						misc::vector<fx::Position>& result);
+		
 
 	private:
 		Session();

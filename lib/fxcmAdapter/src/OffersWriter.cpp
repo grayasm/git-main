@@ -153,7 +153,7 @@ namespace fxcm
 			{
 				const Offer& offer = m_offersVec[i];
 				std::stringstream ss;
-				ss << "Id=" << offer.GetId().c_str() << ", ";
+				ss << "Id=" << offer.GetOfferID().c_str() << ", ";
 				ss << "I=" << offer.GetInstrument().c_str() << ", ";
 				ss << "Pr=" << offer.GetPrecision() << ", ";
 				ss << "T=" << offer.GetTime().tostring().c_str() << ", ";
