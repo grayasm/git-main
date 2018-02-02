@@ -22,15 +22,9 @@
 #define __PipCost_hpp__
 
 
-#include <stddef.h>
-#include <ForexConnect.h>
 #include <map>
 #include "string.hpp"
-#include "vector.hpp"
-#include "IniParams.hpp"
-#include "TradingSettings.hpp"
-#include "Currency.hpp"
-
+#include "Offer.hpp"
 
 
 namespace fxcm
@@ -38,22 +32,17 @@ namespace fxcm
 	class PipCost
 	{
 	public:
-		typedef misc::vector<TradingSettings> TradingSettingsVec;
-
-		//! currencies must contain current bid/ask price
-		PipCost(const IniParams& iniParams,
-				const TradingSettingsVec& tradingSettings,
-				const misc::vector<fx::Currency>& currencies);
+		PipCost();
 		
 		PipCost(const PipCost&) = delete;
 		PipCost& operator=(const PipCost&) = delete;
 
-		double CalcPipCost(IO2GOfferRow* offer) const;
+		double CalcPipCost(
+			const Offer& offer,
+			const misc::string& acc_symbol,
+			int iBaseUnitSize) const;
 
 	private:
-		IniParams					m_iniParams;
-		TradingSettingsVec			m_tradingSettings;
-		misc::vector<fx::Currency>	m_currencies;
 		std::map<misc::string, double>	m_nonCalculable;
 	};
 } // namespace

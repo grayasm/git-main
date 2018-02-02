@@ -72,6 +72,9 @@ namespace fxcm
 			O2G2Ptr<IO2GOfferRow> offerRow = offersResponseReader->getRow(i);
 
 			misc::string instrument(offerRow->getInstrument());
+			misc::string tradingStatus(offerRow->getTradingStatus());
+			bool isTradingOpen = (tradingStatus == "O"); // "O" or "C"
+
 
 			// update the last offer map
 			OffersMap::iterator it = m_offersMap.find(instrument);
@@ -79,7 +82,7 @@ namespace fxcm
 			{
 				misc::time oftime;
 				Utils::FormatDate(offerRow->getTime(), oftime);
-
+				
 				Offer newOffer(
 					offerRow->getOfferID(),
 					offerRow->getInstrument(),
@@ -87,7 +90,8 @@ namespace fxcm
 					offerRow->getPointSize(),
 					oftime,
 					offerRow->getBid(),
-					offerRow->getAsk());
+					offerRow->getAsk(),
+					isTradingOpen);
 
 				OffersMap::value_type ofpair(newOffer.GetInstrument(), newOffer);
 				m_offersMap.insert(ofpair);
@@ -104,6 +108,7 @@ namespace fxcm
 					it->second.SetTime(oftime);
 					it->second.SetBid(offerRow->getBid());
 					it->second.SetAsk(offerRow->getAsk());
+					it->second.SetIsTradingOpen(isTradingOpen);
 				}
 			}
 
@@ -118,7 +123,8 @@ namespace fxcm
 					<< "I=" << offerRow->getInstrument() << ", "
 					<< "T=" << dateBuf << ", "
 					<< "Bid=" << std::fixed << offerRow->getBid() << ", "
-					<< "Ask=" << std::fixed << offerRow->getAsk()
+					<< "Ask=" << std::fixed << offerRow->getAsk() << ", "
+					<< (isTradingOpen == true ? "Tr-Open" : "Tr-Closed")
 					<< std::endl;
 			}
 		}
@@ -142,4 +148,5 @@ namespace fxcm
 
 		return ErrorCodes::ERR_SUCCESS;
 	}
+
 } // namespace

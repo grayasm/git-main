@@ -37,6 +37,7 @@ contact: grayasm@gmail.com
 #include "TradingSettings.hpp"
 #include "TradingPermissions.hpp"
 #include "Position.hpp"
+#include "PipCost.hpp"
 
 
 namespace fxcm
@@ -63,7 +64,8 @@ namespace fxcm
 		int GetHistoryPrices(const char* sInstrument, const char* sTimeframe,
 							 DATE dtFrom, DATE dtTo,
 							 HistoryPricesVec& historyPricesVec);
-		int OpenMarketOrder(const Offer& offer, int lots, bool buy);
+		int OpenMarketOrder(const Offer& offer, int lots, bool buy,
+							misc::vector<fx::Position>& result);
 
 
 	private:
@@ -88,6 +90,7 @@ namespace fxcm
 		ResponseListener4MarketOrders*		m_responseListener4MarketOrders;
 		HistoryPricesUpdater*				m_historyPricesUpdater;
 		TradingSettingsVec					m_tradingSettingsVec;
+		PipCost								m_pipCost;
 	};
 } // namespace
 

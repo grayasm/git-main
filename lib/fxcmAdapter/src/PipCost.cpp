@@ -29,17 +29,10 @@
 #include "stream.hpp"
 
 
-
 namespace fxcm
 {	
-	PipCost::PipCost(const IniParams& iniParams,
-					const TradingSettingsVec& tradingSettings,
-					const misc::vector<fx::Currency>& currencies)
+	PipCost::PipCost()
 	{
-		m_iniParams = iniParams;
-		m_tradingSettings = tradingSettings;
-		m_currencies = currencies;
-
 		// update known non-calculable list at the moment
 		m_nonCalculable["USD/MXN"] = 0.01;
 		m_nonCalculable["USD/ZAR"] = 0.01;
@@ -69,40 +62,27 @@ namespace fxcm
 		m_nonCalculable["Bund"] = 0.;
 	}
 
-	double PipCost::CalcPipCost(IO2GOfferRow* offer) const
+	double PipCost::CalcPipCost(
+		const Offer& offer,
+		const misc::string& acc_symbol,
+		int iBaseUnitSize ) const
 	{
-		const misc::string& acc_symbol = m_iniParams.GetAccountSymbol();
-		const misc::string& symbol = offer->getInstrument();
+		const misc::string& instrument = offer.GetInstrument();
 
 		// TODO: have to figure out how to calculate pip-cost for these ones
-		std::map<misc::string, double>::const_iterator it = m_nonCalculable.find(symbol);
+		std::map<misc::string, double>::const_iterator it =
+			m_nonCalculable.find(instrument);
+
 		if(it != m_nonCalculable.end())
 		{
 			double pipCost = (*it).second;
-			misc::cout << "\npipCost[ " << symbol.c_str() << " ]= " << pipCost;
+			misc::cout << "\npipCost[ " << instrument.c_str() << " ]= " << pipCost;
 			return pipCost;
 		}
 
+		double pointSize = offer.GetPointSize();
 
-		TradingSettings instrumentSettings;
-		for (size_t i = 0; i < m_tradingSettings.size(); ++i)
-		{
-			const TradingSettings& tsi = m_tradingSettings[i];
-			if (tsi.GetInstrument() == symbol)
-			{
-				instrumentSettings = tsi;
-				break;
-			}
-		}
-
-		if (instrumentSettings.GetInstrument().empty())
-			throw misc::exception("Cannot calculate pipCost.");
-
-
-		int iBaseUnitSize = instrumentSettings.GetBaseUnitSize();
-		double pointSize = offer->getPointSize();
-
-		misc::strtok tokenizer(symbol, "/");
+		misc::strtok tokenizer(instrument, "/");
 		if(tokenizer.count() != 2)
 			throw misc::exception("Cannot calculate pipCost.");
 		
@@ -116,8 +96,8 @@ namespace fxcm
 		
 		if(acc_symbol == tokenizer.tokens().back())
 		{
-			double pipCost = (double)iBaseUnitSize * pointSize;
-			misc::cout << "\npipCost[ " << symbol.c_str() << " ]= " << pipCost;
+			double pipCost = iBaseUnitSize * pointSize;
+			misc::cout << "\npipCost[ " << instrument.c_str() << " ]= " << pipCost;
 			return pipCost;
 		}
 
@@ -133,9 +113,9 @@ namespace fxcm
 		
 		if(acc_symbol == tokenizer.tokens().front())
 		{
-			double ask = offer->getAsk();			
+			double ask = offer.GetAsk();
 			double pipCost = iBaseUnitSize * pointSize / ask;
-			misc::cout << "\npipCost[ " << symbol.c_str() << " ]= " << pipCost;
+			misc::cout << "\npipCost[ " << instrument.c_str() << " ]= " << pipCost;
 			return pipCost;
 		}
 
@@ -160,29 +140,29 @@ namespace fxcm
 		//}
 
 		
-		misc::string acc_quote= tokenizer.tokens().back(); acc_quote += "/"; acc_quote += acc_symbol;
-		misc::string acc_base = acc_symbol; acc_base += "/"; acc_base += tokenizer.tokens().back();
-		
-		for(misc::vector<fx::Currency>::const_iterator it = m_currencies.begin();
-			it != m_currencies.end(); ++it)
-		{
-			const fx::Currency& curr = *it;
-			if(acc_quote == curr.GetSymbol())
-			{
-				double bid = curr.GetPrice().GetSell(); // bid
-				double pipCost = (double)iBaseUnitSize * pointSize * bid;
-				misc::cout << "\npipCost[ " << symbol.c_str() << " ]= " << pipCost;
-				return pipCost;
-			}
+		misc::string acc_quote= tokenizer.tokens().back();
+		acc_quote += "/";
+		acc_quote += acc_symbol;
 
-			if(acc_base == curr.GetSymbol())
-			{
-				double ask = curr.GetPrice().GetBuy(); // ask
-				double pipCost = (double)iBaseUnitSize * pointSize / ask;
-				misc::cout << "\npipCost[ " << symbol.c_str() << " ]= " << pipCost;
-				return pipCost;
-			}
-		}		
+		misc::string acc_base = acc_symbol;
+		acc_base += "/";
+		acc_base += tokenizer.tokens().back();
+		
+		if(acc_quote == instrument)
+		{
+			double bid = offer.GetBid(); // bid
+			double pipCost = (double)iBaseUnitSize * pointSize * bid;
+			misc::cout << "\npipCost[ " << instrument.c_str() << " ]= " << pipCost;
+			return pipCost;
+		}
+
+		if(acc_base == instrument)
+		{
+			double ask = offer.GetAsk(); // ask
+			double pipCost = (double)iBaseUnitSize * pointSize / ask;
+			misc::cout << "\npipCost[ " << instrument.c_str() << " ]= " << pipCost;
+			return pipCost;
+		}
 
 		throw misc::exception("Cannot calculate PipCost.");
 	}

@@ -660,7 +660,8 @@ namespace fxcm
 		return ErrorCodes::ERR_SUCCESS;
 	} // GetHistoryPrices
 
-	int Session::OpenMarketOrder(const Offer& offer, int lots, bool buy)
+	int Session::OpenMarketOrder(const Offer& offer, int lots, bool buy,
+								misc::vector<fx::Position>& result)
 	{
 		if (m_sessionListener->IsDisconnected())
 		{
@@ -724,6 +725,8 @@ namespace fxcm
 				<< requestFactory->getLastError() << std::endl;
 			return ErrorCodes::ERR_NO_ORDERS_REQUEST;
 		}
+
+
 		m_responseListener4MarketOrders->SetRequestID(request->getRequestID());
 		m_session->sendRequest(request);
 		// asynchronous request sent to server, waiting
@@ -735,38 +738,40 @@ namespace fxcm
 		}
 
 
+
+		// collect open trades
 		const misc::vector<IO2GTradeRow*>& trades =
 			m_responseListener4MarketOrders->GetTrades();
 
 		for (size_t i = 0; i < trades.size(); ++i)
 		{
 			IO2GTradeRow* trade = trades[i];
+
 			misc::string openOrderID = trade->getOpenOrderID();
 			misc::string tradeID = trade->getTradeID();
-
 			misc::string symbol = offer.GetInstrument();
-			fx::Price price(offer.GetBid(), offer.GetAsk());
-			double margin = tradingSettingsProvider->getMMR(symbol.c_str(), account);
-			double pipCost = 0;
-			double rate2pip = 0;
+			bool isBuy = strcmp(trade->getBuySell(), O2G2::Buy) == 0;
+			double openRate = trade->getOpenRate();
+			double buyRate = (isBuy == true ? openRate : FLT_MAX); // @ask
+			double sellRate = (isBuy == true ? FLT_MAX : openRate); // @bid
+			fx::Price openQuote(buyRate, sellRate);
+			double MMR = tradingSettingsProvider->getMMR(symbol.c_str(), account);
+			double pipCost = m_pipCost.CalcPipCost(offer,
+				m_iniParams.GetAccountSymbol(), iBaseUnitSize);
+			double rate2pip = 1.0 / offer.GetPointSize();
+			fx::Currency currency(symbol, openQuote, MMR, pipCost, rate2pip);
+			double commission = 2 * trade->getCommission(); // half at open, half at close
+			double interest = trade->getRolloverInterest(); // TODO: adds up every day
+			fx::Position position(openOrderID, tradeID, currency, isBuy,
+				iAmount, commission, interest);
+			result.push_back(position);
 		}
 
-
-
-		fx::Position omposition;
-		misc::string& orderID,
-			const misc::string& tradeID,
-			const Currency& currency,
-			bool buy,
-			double amount,
-			double commission,
-			double interest
-
-
-
+		m_responseListener4MarketOrders->ClearResult();
 
 		return ErrorCodes::ERR_SUCCESS;		
 	} // OpenMarketOrder
+
 
 	IO2GAccountRow* Session::GetAccount()
 	{

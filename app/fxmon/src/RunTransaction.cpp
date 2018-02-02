@@ -31,6 +31,7 @@ void RunTransaction()
 	fxcm::LoginParams::Ptr loginParams = new fxcm::LoginParams("monitor.ini");
 	fxcm::IniParams::Ptr iniParams = new fxcm::IniParams("monitor.ini");
 
+
 	// checkObligatoryParams
 	if (loginParams->GetLogin().empty() ||
 		loginParams->GetPassword().empty() ||
@@ -43,19 +44,35 @@ void RunTransaction()
 	fxcm::Session session(*loginParams, *iniParams);
 	if (!session.Login())
 		return;
-
+	
 	session.GetOffers();
 
-	msleep(2000ul); // wait to update
+	misc::vector<fx::Position> trades;
+	fxcm::Offer offer0, offer1;
 
-	// outside trading hours?
-	fxcm::Offer offer;
-	session.GetLastOffer(offer, "EUR/USD");
+	while (true)
+	{
+		msleep(2000);
 
-	session.OpenMarketOrder(offer, 1, true);
+		
+		session.GetLastOffer(offer1, "EUR/USD");
+		if (offer0.GetInstrument().empty())
+		{
+			offer0 = offer1;
+			continue;
+		}
 
-	// during hours?
-	msleep(2000ul);
+		double pips = offer1.GetAsk() - offer0.GetAsk();
+		if ( pips > 0.0001)
+		{
+			session.OpenMarketOrder(offer1, 1, true, trades);
+			offer0 = offer1;
+			continue;
+		}
+
+		if (trades.size() == 3)
+			break;
+	}
 
 	session.Logout();
 }

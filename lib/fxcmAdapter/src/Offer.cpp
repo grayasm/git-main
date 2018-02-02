@@ -36,15 +36,17 @@ namespace fxcm
 		double pipsize,
 		const misc::time& time,
 		double bid,
-		double ask)
+		double ask,
+		bool isTradingOpen)
 	{
 		m_id = id;
 		m_instrument = instrument;
 		m_precision = precision;
-		m_pipsize = pipsize;
+		m_pointSize = pipsize;
 		m_time = time;
 		m_bid = bid;
 		m_ask = ask;
+		m_isTradingOpen = isTradingOpen;
 	}
 
 	Offer::Offer(const Offer& tc)
@@ -59,10 +61,11 @@ namespace fxcm
 			m_id = tc.m_id;
 			m_instrument = tc.m_instrument;
 			m_precision = tc.m_precision;
-			m_pipsize = tc.m_pipsize;
+			m_pointSize = tc.m_pointSize;
 			m_time = tc.m_time;
 			m_bid = tc.m_bid;
 			m_ask = tc.m_ask;
+			m_isTradingOpen = tc.m_isTradingOpen;
 		}
 		return *this;
 	}
@@ -111,14 +114,14 @@ namespace fxcm
 		m_time = time;
 	}
 
-	double Offer::GetPipSize() const
+	double Offer::GetPointSize() const
 	{
-		return m_pipsize;
+		return m_pointSize;
 	}
 
-	void Offer::SetPipSize(double pipsize)
+	void Offer::SetPointSize(double pipsize)
 	{
-		m_pipsize = pipsize;
+		m_pointSize = pipsize;
 	}
 
 	double Offer::GetBid() const
@@ -141,14 +144,25 @@ namespace fxcm
 		m_ask = ask;
 	}
 
+	bool Offer::GetIsTradingOpen() const
+	{
+		return m_isTradingOpen;
+	}
+
+	void Offer::SetIsTradingOpen(bool isOpen)
+	{
+		m_isTradingOpen = isOpen;
+	}
+
 	void Offer::Init()
 	{
 		m_id = "";
 		m_instrument = "";
 		m_precision = 0;
 		// m_time;  - default
-		m_pipsize = 0;
+		m_pointSize = 0;
 		m_bid = 0;
 		m_ask = 0;
+		m_isTradingOpen = false;
 	}
 } // namespace

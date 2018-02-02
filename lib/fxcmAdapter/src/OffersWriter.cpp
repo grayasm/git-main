@@ -88,6 +88,9 @@ namespace fxcm
 			if (offerRow->isTimeValid())
 				Utils::FormatDate(offerRow->getTime(), oftime);
 
+			misc::string tradingStatus(offerRow->getTradingStatus());
+			bool isTradingOpen = (tradingStatus == "O"); // "O" or "C"
+
 			Offer newOffer(
 				offerRow->getOfferID(),
 				offerRow->getInstrument(),
@@ -95,7 +98,8 @@ namespace fxcm
 				offerRow->getPointSize(),
 				oftime,
 				offerRow->getBid(),
-				offerRow->getAsk());
+				offerRow->getAsk(),
+				isTradingOpen);
 
 			m_offersVec.push_back(newOffer);
 		}
@@ -153,7 +157,7 @@ namespace fxcm
 				ss << "I=" << offer.GetInstrument().c_str() << ", ";
 				ss << "Pr=" << offer.GetPrecision() << ", ";
 				ss << "T=" << offer.GetTime().tostring().c_str() << ", ";
-				ss << "PS=" << offer.GetPipSize() << ", ";
+				ss << "PS=" << offer.GetPointSize() << ", ";
 				ss << "B=" << offer.GetBid() << ", ";
 				ss << "A=" << offer.GetAsk() << "\n";
 				

@@ -31,7 +31,6 @@
 #include "Offer.hpp"
 
 
-
 namespace fxcm
 {
 	class OffersUpdater
@@ -42,14 +41,12 @@ namespace fxcm
 
 		OffersUpdater(IO2GSession* session);
 		~OffersUpdater();
+		// disable copying
+		OffersUpdater(const OffersUpdater&) = delete;
+		OffersUpdater& operator=(const OffersUpdater&) = delete;
 
 		void UpdateOffers(IO2GResponse* response);
 		int GetLastOffer(Offer& offer, const char* sInstrument);
-		
-	private:
-		// disable copying
-		OffersUpdater(const OffersUpdater&);
-		OffersUpdater& operator=(const OffersUpdater&);
 
 	private:
 		IO2GSession*					m_session;

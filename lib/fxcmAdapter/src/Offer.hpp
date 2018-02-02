@@ -37,7 +37,9 @@ namespace fxcm
 				double pipsize,
 				const misc::time& time,
 				double bid,
-				double ask);
+				double ask,
+				bool isTradingOpen);
+
 		Offer(const Offer& tc);
 		Offer& operator=(const Offer& tc);
 		~Offer();
@@ -54,14 +56,17 @@ namespace fxcm
 		const misc::time& GetTime() const;
 		void SetTime(const misc::time& time);
 
-		double GetPipSize() const;
-		void SetPipSize(double pipsize);
+		double GetPointSize() const;
+		void SetPointSize(double pipsize);
 
 		double GetBid() const;
 		void SetBid(double bid);
 
 		double GetAsk() const;
 		void SetAsk(double ask);
+
+		bool GetIsTradingOpen() const;
+		void SetIsTradingOpen(bool isOpen);
 
 	private:
 		void Init();
@@ -71,9 +76,10 @@ namespace fxcm
 		misc::string		m_instrument;
 		int					m_precision;
 		misc::time			m_time;
-		double				m_pipsize;
-		double				m_bid;
-		double				m_ask;
+		double				m_pointSize;
+		double				m_bid;		// sell at bid
+		double				m_ask;		// buy at ask
+		bool				m_isTradingOpen;
 	};
 } // namespace
 
