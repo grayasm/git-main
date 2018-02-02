@@ -78,7 +78,7 @@ namespace fx
 		return *this;
 	}
 
-	misc::string Currency::GetSymbol() const
+	const misc::string& Currency::GetSymbol() const
 	{
 		return m_symbol;
 	}

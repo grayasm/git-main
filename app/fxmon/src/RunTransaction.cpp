@@ -42,20 +42,56 @@ void RunTransaction()
 
 	bool isConnected = false;
 	fxcm::Session session(*loginParams, *iniParams);
-	if (!session.Login())
-		return;
-
-	session.GetOffers();
-
-	misc::vector<fx::Position> result;
+	
+	
+	fxcm::Offer offer0, offer1; 
 	fx::Position curpos;
-	fxcm::Offer offer0, offer1;
-	double lastPL = 0;
+	misc::vector<fx::Position> result;
+	double totalPL = 0;
+	double incPL = 2;	// renko size
+	int lots = 1;
+
 
 	while (true)
 	{
+		// outside trading hours?
+		misc::time tnow(::time(NULL));
+		if ((tnow.wday() == misc::time::SAT) ||
+			(tnow.wday() == misc::time::FRI && tnow.hour_() >= 22) ||
+			(tnow.wday() == misc::time::SUN && tnow.hour_() < 22))
+		{
+			if (isConnected)
+			{
+				if (session.Logout())
+					isConnected = false;
+			}
+
+			// idle 1H
+			msleep(1000ul * misc::time::hourSEC);
+			continue;
+		}
+
+		// trading is active
+		if (!isConnected)
+		{
+			isConnected = session.Login();
+			if (isConnected)
+				session.GetOffers();
+		}
+
+		if (!isConnected)
+		{
+			// idle 1min
+			msleep(1000ul * misc::time::minSEC);
+			continue;
+		}
+
+		// connected and getting quotes
+		// idle 2sec
 		msleep(2000);
 
+
+		// run trading with 1 position (renko:2)
 		session.GetLastOffer(offer1, "EUR/USD");
 
 		if (offer0.GetInstrument().empty())
@@ -65,50 +101,68 @@ void RunTransaction()
 		}
 
 
-		// check if to enter market
+		// trade daily between CET: 09:00 - 22:00
+		// 9:00 Frankfurt open, 22:00 is 1h before NewYork close
+		bool canOpen = (tnow.hour_() >= 8 && tnow.hour_() <= 21);
 		if (curpos.GetCurrency().GetSymbol().empty())
 		{
 			double pips = (offer1.GetAsk() - offer0.GetAsk()) / 0.0001;
 
-			if (pips > 2)
-				session.OpenPosition(offer1, 1, true, result);
-			else if (pips < -2)
-				session.OpenPosition(offer1, 1, false, result);
+			if (pips > incPL && canOpen  )
+				session.OpenPosition(offer1, lots, true, result);
+			else if (pips < -incPL && canOpen)
+				session.OpenPosition(offer1, lots, false, result);
+			else
+				continue;
 
-			if (!result.empty())
-			{
-				curpos = result[0];
-				lastPL = 0;
-			}
+			if (result.size() != 1)
+				break;
+
+			curpos = result[0];
+			totalPL = 0;
 
 			continue;
 		}
 
-		// manage the open position
+		// Manage the position
 		fx::Price curprice(offer1.GetAsk(), offer1.GetBid());
 		double curPL = curpos.GetPL(curprice);
-		double diffPL = curPL - lastPL;
+		double curGPL = curpos.GetGPL(curprice);
+		double diffPL = curPL - totalPL;
 
-		if (diffPL > 5)
+
+		if (diffPL > incPL)
 		{
-			lastPL += 5;
+			totalPL += incPL;
 			continue;
 		}
 
-		if (diffPL < -5)
+		if (diffPL < -2*incPL)
 		{
-			session.ClosePosition(offer1, curpos, result);
+			int res = fxcm::ErrorCodes::ERR_SUCCESS;
+			res = session.ClosePosition(offer1, curpos, result);
 
-			if (result.empty()) // error
-				break;
+			if (result.empty() || res != fxcm::ErrorCodes::ERR_SUCCESS)
+				break; // error
 
-			session.OpenPosition(offer1, 1, !curpos.IsBuy(), result);
+			// reset the trade
+			curpos = fx::Position();
+			totalPL = 0;
+			result.clear();
+			offer0 = fxcm::Offer();
 
-			if (result.empty()) // error
-				break;
-			
-			curpos = result[0];
-			lastPL = 0;
+			// continue if allowed
+			if (canOpen)
+			{
+				res = session.OpenPosition(offer1, lots, !curpos.IsBuy(), result);
+
+				if (result.size() != 1 || res != fxcm::ErrorCodes::ERR_SUCCESS)
+					break; // error
+
+				curpos = result[0];
+				totalPL = 0;
+				offer0 = offer1;
+			}			
 		}
 	} // while
 

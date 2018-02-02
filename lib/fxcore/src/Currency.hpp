@@ -49,7 +49,7 @@ namespace fx
 		Currency(const Currency& tc);
 		Currency& operator=(const Currency& tc);
 
-		misc::string GetSymbol() const;
+		const misc::string& GetSymbol() const;
 		const Price& GetPrice() const;		
 		double GetMargin() const;
 		double GetPipCost() const;
