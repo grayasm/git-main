@@ -40,7 +40,7 @@ def f(x, y=None):
 
 
 print (f(23))       # prints: [23]
-print (f(42))       # prints: [23]
+print (f(42))       # prints: [42]
 
 
 # *** Attributes of Function Objects ***
