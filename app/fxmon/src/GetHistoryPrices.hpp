@@ -24,4 +24,4 @@ void GetHistoryPrices();
 void LoadHistoryPrices();
 
 
-#endif // __GetHistorPrices_hpp__
+#endif // __GetHistoryPrices_hpp__

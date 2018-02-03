@@ -33,7 +33,7 @@ namespace fxcm
 		const misc::string& id,
 		const misc::string& instrument,
 		int precision,
-		double pipsize,
+		double pointSize,
 		const misc::time& time,
 		double bid,
 		double ask,
@@ -42,7 +42,7 @@ namespace fxcm
 		m_offerID = id;
 		m_instrument = instrument;
 		m_precision = precision;
-		m_pointSize = pipsize;
+		m_pointSize = pointSize;
 		m_time = time;
 		m_bid = bid;
 		m_ask = ask;

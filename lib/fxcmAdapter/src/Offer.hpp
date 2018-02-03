@@ -34,7 +34,7 @@ namespace fxcm
 		Offer(	const misc::string& offerID,
 				const misc::string& instrument,
 				int precision,
-				double pipsize,
+				double pointSize,
 				const misc::time& time,
 				double bid,
 				double ask,
