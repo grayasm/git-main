@@ -75,14 +75,25 @@ namespace fxcm
 			misc::string tradingStatus(offerRow->getTradingStatus());
 			bool isTradingOpen = (tradingStatus == "O"); // "O" or "C"
 
+			// prevent to retain an invalid offer like:
+			// Id=1, I=EUR/USD, Pr=0, T=1970-JAN-1 0:0:0, PS=0, B=0, A=0
+			if (!offerRow->isTimeValid() ||
+				!offerRow->isBidValid() ||
+				!offerRow->isAskValid())
+				continue;
+
+			misc::time oftime;
+			Utils::FormatDate(offerRow->getTime(), oftime);
+
+			if (oftime.year_() == 1970)
+				continue;
+			if (offerRow->getPointSize() == 0)
+				continue;
 
 			// update the last offer map
 			OffersMap::iterator it = m_offersMap.find(instrument);
 			if (it == m_offersMap.end())
 			{
-				misc::time oftime;
-				Utils::FormatDate(offerRow->getTime(), oftime);
-				
 				Offer newOffer(
 					offerRow->getOfferID(),
 					offerRow->getInstrument(),
@@ -98,18 +109,10 @@ namespace fxcm
 			}
 			else
 			{
-				if (offerRow->isTimeValid() &&
-					offerRow->isBidValid() &&
-					offerRow->isAskValid())
-				{
-					misc::time oftime;
-					Utils::FormatDate(offerRow->getTime(), oftime);
-
-					it->second.SetTime(oftime);
-					it->second.SetBid(offerRow->getBid());
-					it->second.SetAsk(offerRow->getAsk());
-					it->second.SetIsTradingOpen(isTradingOpen);
-				}
+				it->second.SetTime(oftime);
+				it->second.SetBid(offerRow->getBid());
+				it->second.SetAsk(offerRow->getAsk());
+				it->second.SetIsTradingOpen(isTradingOpen);
 			}
 
 			static bool bDebug = false;

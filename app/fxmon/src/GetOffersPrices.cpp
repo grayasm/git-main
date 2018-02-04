@@ -187,7 +187,14 @@ void OffersReader::ParseFile(const misc::string& filePath,
 			} // while(pch)
 
 			if (m_instrument == offer.GetInstrument())
+			{
 				result.push_back(offer);
+
+#ifdef DEBUG
+				if (result.size() % 1000 == 0)
+					misc::cout << "fetched " << result.size() << std::endl;
+#endif
+			}
 
 			fline.resize(0);
 			continue;

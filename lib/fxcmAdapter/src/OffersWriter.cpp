@@ -84,9 +84,20 @@ namespace fxcm
 		{
 			O2G2Ptr<IO2GOfferRow> offerRow = offersResponseReader->getRow(i);
 
+			// prevent to retain an invalid offer like:
+			// Id=1, I=EUR/USD, Pr=0, T=1970-JAN-1 0:0:0, PS=0, B=0, A=0
+			if (!offerRow->isTimeValid() ||
+				!offerRow->isBidValid() ||
+				!offerRow->isAskValid())
+				continue;
+
 			misc::time oftime;
-			if (offerRow->isTimeValid())
-				Utils::FormatDate(offerRow->getTime(), oftime);
+			Utils::FormatDate(offerRow->getTime(), oftime);
+
+			if (oftime.year_() == 1970)
+				continue;
+			if (offerRow->getPointSize() == 0)
+				continue;
 
 			misc::string tradingStatus(offerRow->getTradingStatus());
 			bool isTradingOpen = (tradingStatus == "O"); // "O" or "C"
