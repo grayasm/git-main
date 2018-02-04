@@ -23,6 +23,7 @@ contact: grayasm@gmail.com
 #include "stream.hpp"
 #include <time.h>
 #include <math.h>
+#include <float.h>
 #include "ResponseListener4Offers.hpp"
 #include "OffersUpdater.hpp"
 #include "OffersWriter.hpp"
