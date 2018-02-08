@@ -37,6 +37,7 @@ namespace fxcm
 		const misc::time& time,
 		double bid,
 		double ask,
+		double vol,
 		bool isTradingOpen)
 	{
 		m_offerID = id;
@@ -46,6 +47,7 @@ namespace fxcm
 		m_time = time;
 		m_bid = bid;
 		m_ask = ask;
+		m_volume = vol;
 		m_isTradingOpen = isTradingOpen;
 	}
 
@@ -65,6 +67,7 @@ namespace fxcm
 			m_time = tc.m_time;
 			m_bid = tc.m_bid;
 			m_ask = tc.m_ask;
+			m_volume = tc.m_volume;
 			m_isTradingOpen = tc.m_isTradingOpen;
 		}
 		return *this;
@@ -144,6 +147,16 @@ namespace fxcm
 		m_ask = ask;
 	}
 
+	double Offer::GetVolume() const
+	{
+		return m_volume;
+	}
+
+	void Offer::SetVolume(double vol)
+	{
+		m_volume = vol;
+	}
+
 	bool Offer::GetIsTradingOpen() const
 	{
 		return m_isTradingOpen;
@@ -163,6 +176,7 @@ namespace fxcm
 		m_pointSize = 0;
 		m_bid = 0;
 		m_ask = 0;
+		m_volume = 0;
 		m_isTradingOpen = false;
 	}
 } // namespace

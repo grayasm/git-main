@@ -99,6 +99,12 @@ namespace fxcm
 		const misc::string& GetOffersFile() const;
 		void SetOffersFile(const misc::string& val);
 
+		bool GetEnableOfferUpdater() const;
+		void SetEnableOfferUpdater(bool enable);
+
+		bool GetEnableOfferWriter() const;
+		void SetEnableOfferWriter(bool enable);
+
 		double GetRangeInPips() const;
 		void SetRangeInPips(double val);
 
@@ -135,6 +141,8 @@ namespace fxcm
 		misc::string		m_dateTo;
 		misc::string		m_historyfile;
 		misc::string		m_offersfile;
+		bool				m_enableOfferUpdater;
+		bool				m_enableOfferWriter;
 		double				m_rangeInPips;
 		double				m_rate;
 		double				m_rateStop;

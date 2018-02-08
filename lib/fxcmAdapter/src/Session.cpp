@@ -58,9 +58,17 @@ namespace fxcm
 			Session as well as ResponseListener4Offers can output the Offers.
 			OffersUpdater deals with locking, setting and getting the last Offers.
 			OffersWriter deals with locking and writing all Offers to file.
+			To offer better performance any of them can be disabled from inifile.
 		*/
-		m_offersUpdater = new OffersUpdater(m_session);
-		m_offersWriter = new OffersWriter(m_session, m_iniParams);
+		if (m_iniParams.GetEnableOfferUpdater())
+			m_offersUpdater = new OffersUpdater(m_session);
+		else
+			m_offersUpdater = NULL;
+
+		if (iniParams.GetEnableOfferWriter())
+			m_offersWriter = new OffersWriter(m_session, m_iniParams);
+		else
+			m_offersWriter = NULL;
 
 		/*
 			ResponseListener4Offers works as a separate thread to receive
