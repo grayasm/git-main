@@ -6,8 +6,9 @@ if [ `id -u` != 0 ]; then
 fi
 
 # test new commands
-# cd /tmp
-# exit
+cd /tmp
+
+exit
 
 
 # Aurora R2Carbon
@@ -236,7 +237,7 @@ chcon -Rv -u system_u -r object_r -t usr_t /usr/share/themes/Clearlooks-Phenix-F
 rm 174540-Clearlooks-Phenix-Faded.tar.gz
 
 
-# Greybird alternative (full bottom) window decorations for XFCE/XFWM4
+# Greybird alternative (full buttom) window decorations for XFCE/XFWM4
 wget https://dl.opendesktop.org/api/files/download/id/1460765969/171328-Greybird-alt-fb-2015-09-09.zip
 unzip 171328-Greybird-alt-fb-2015-09-09.zip
 rm -rfv Greybird-alt-fb/.git
@@ -291,8 +292,26 @@ chown -Rv root:root /usr/share/themes/4deb
 chcon -Rv -u system_u -r object_r -t usr_t /usr/share/themes/4deb
 rm 166997-4deb.zip
 
-
-
+# Window decorations: Clearlooks-Xfce-Colors themes for xfwm4
+wget https://dl.opendesktop.org/api/files/downloadfile/id/1460767136/s/e7c0466e23f4da98a13efaf43d7f4b5d/t/1518282916/u/90384-Clearlooks-Xfce-Colors.zip
+unzip 90384-Clearlooks-Xfce-Colors.zip
+rm -rfv /usr/share/themes/Clearlooks-Xfce-Wise
+rm -rfv /usr/share/themes/Clearlooks-Xfce-Wine
+rm -rfv /usr/share/themes/Clearlooks-Xfce-Human
+rm -rfv /usr/share/themes/Clearlooks-Xfce-Classic
+mv Clearlooks-Xfce-Wise /usr/share/themes/
+mv Clearlooks-Xfce-Wine /usr/share/themes/
+mv Clearlooks-Xfce-Human /usr/share/themes/
+mv Clearlooks-Xfce-Classic /usr/share/themes/
+chown -Rv root:root /usr/share/themes/Clearlooks-Xfce-Wise
+chown -Rv root:root /usr/share/themes/Clearlooks-Xfce-Wine
+chown -Rv root:root /usr/share/themes/Clearlooks-Xfce-Human
+chown -Rv root:root /usr/share/themes/Clearlooks-Xfce-Classic
+chcon -Rv -u system_u -r object_r -t usr_t /usr/share/themes/Clearlooks-Xfce-Wise
+chcon -Rv -u system_u -r object_r -t usr_t /usr/share/themes/Clearlooks-Xfce-Wine
+chcon -Rv -u system_u -r object_r -t usr_t /usr/share/themes/Clearlooks-Xfce-Human
+chcon -Rv -u system_u -r object_r -t usr_t /usr/share/themes/Clearlooks-Xfce-Classic
+rm 90384-Clearlooks-Xfce-Colors.zip
 
 # continue from top of page :
-# https://www.xfce-look.org/browse/cat/138/page/18/ord/latest/
+# https://www.xfce-look.org/browse/cat/138/page/22/ord/latest/
