@@ -102,6 +102,7 @@ namespace fxcm
 					oftime,
 					offerRow->getBid(),
 					offerRow->getAsk(),
+					offerRow->getVolume(),
 					isTradingOpen);
 
 				OffersMap::value_type ofpair(newOffer.GetInstrument(), newOffer);
@@ -112,6 +113,7 @@ namespace fxcm
 				it->second.SetTime(oftime);
 				it->second.SetBid(offerRow->getBid());
 				it->second.SetAsk(offerRow->getAsk());
+				it->second.SetVolume(offerRow->getVolume());
 				it->second.SetIsTradingOpen(isTradingOpen);
 			}
 
@@ -127,7 +129,8 @@ namespace fxcm
 					<< "T=" << dateBuf << ", "
 					<< "Bid=" << std::fixed << offerRow->getBid() << ", "
 					<< "Ask=" << std::fixed << offerRow->getAsk() << ", "
-					<< (isTradingOpen == true ? "Tr-Open" : "Tr-Closed")
+					<< "Vol=" << std::fixed << offerRow->getVolume() << ", "
+					<< (isTradingOpen == true ? "TS-O" : "TS-C")
 					<< std::endl;
 			}
 		}

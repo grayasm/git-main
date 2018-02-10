@@ -43,6 +43,8 @@ namespace fxcm
 	misc::string		g_DateTo("dateto");
 	misc::string		g_HistoryFile("historyfile");
 	misc::string		g_OffersFile("offersfile");
+	misc::string		g_EnableOfferUpdater("enableOfferUpdater");
+	misc::string		g_EnableOfferWriter("enableOfferWriter");
 	misc::string		g_RangeInPips("rangeinpips");
 	misc::string		g_Rate("rate");
 	misc::string		g_RateStop("ratestop");
@@ -89,6 +91,9 @@ namespace fxcm
 		misc::trim(m_offersfile, '"'); // remove double quote at both ends
 		misc::trim(m_offersfile, ' '); // remove empty spaces at both ends
 
+		// enable offerUpdater and offerWriter by default, if not specified
+		m_enableOfferUpdater = iniReader.get(m_section, g_EnableOfferUpdater, bool(true));
+		m_enableOfferWriter = iniReader.get(m_section, g_EnableOfferWriter, bool(true));
 		
 		m_rangeInPips = iniReader.get(m_section, g_RangeInPips, double(0));
 		m_rate = iniReader.get(m_section, g_Rate, double(0));
@@ -132,6 +137,8 @@ namespace fxcm
 			m_dateTo = tc.m_dateTo;
 			m_historyfile = tc.m_historyfile;
 			m_offersfile = tc.m_offersfile;
+			m_enableOfferUpdater = tc.m_enableOfferUpdater;
+			m_enableOfferWriter = tc.m_enableOfferWriter;
 			m_rangeInPips = tc.m_rangeInPips;
 			m_rate = tc.m_rate;
 			m_rateStop = tc.m_rateStop;
@@ -320,6 +327,26 @@ namespace fxcm
 		m_offersfile = val;
 	}
 
+	bool IniParams::GetEnableOfferUpdater() const
+	{
+		return m_enableOfferUpdater;
+	}
+
+	void IniParams::SetEnableOfferUpdater(bool enable)
+	{
+		m_enableOfferUpdater = enable;
+	}
+
+	bool IniParams::GetEnableOfferWriter() const
+	{
+		return m_enableOfferWriter;
+	}
+
+	void IniParams::SetEnableOfferWriter(bool enable)
+	{
+		m_enableOfferWriter = enable;
+	}
+
 	double IniParams::GetRangeInPips() const
 	{
 		return m_rangeInPips;
@@ -382,6 +409,8 @@ namespace fxcm
 		m_dateTo = "";
 		m_historyfile = "";
 		m_offersfile = "";
+		m_enableOfferUpdater = true;
+		m_enableOfferWriter = true;
 		m_rangeInPips = 0;
 		m_rate = 0;
 		m_rateStop = 0;

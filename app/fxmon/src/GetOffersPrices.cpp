@@ -182,6 +182,11 @@ void OffersReader::ParseFile(const misc::string& filePath,
 					misc::to_value(pch, val);
 					offer.SetAsk(val);
 				}
+				else if (s1 == "Vol") {
+					double val;
+					misc::to_value(pch, val);
+					offer.SetVolume(val);
+				}
 
 				pch = strtok(NULL, ",=");
 			} // while(pch)

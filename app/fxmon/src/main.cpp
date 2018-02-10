@@ -31,6 +31,7 @@
 #include "Test.hpp"
 #include "GetHistoryPrices.hpp"
 #include "GetMarketOffers.hpp"
+#include "TestTransaction.hpp"
 #include "RunTransaction.hpp"
 
 
@@ -42,6 +43,7 @@ int main(int /*argc*/, char** /*argv*/)
 	// GetHistoryPrices();
 	// LoadHistoryPrices();
 	GetMarketOffers();
+	// TestTransaction();
 	// RunTransaction();
 
 	return 0;

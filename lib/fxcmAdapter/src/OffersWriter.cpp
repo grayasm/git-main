@@ -110,6 +110,7 @@ namespace fxcm
 				oftime,
 				offerRow->getBid(),
 				offerRow->getAsk(),
+				offerRow->getVolume(),
 				isTradingOpen);
 
 			m_offersVec.push_back(newOffer);
@@ -170,7 +171,8 @@ namespace fxcm
 				ss << "T=" << offer.GetTime().tostring().c_str() << ", ";
 				ss << "PS=" << offer.GetPointSize() << ", ";
 				ss << "B=" << offer.GetBid() << ", ";
-				ss << "A=" << offer.GetAsk() << "\n";
+				ss << "A=" << offer.GetAsk() << ", ";
+				ss << "Vol=" << offer.GetVolume() << "\n";
 				
 				std::string str(ss.str());
 				fwrite(str.c_str(), 1, str.size(), pf);

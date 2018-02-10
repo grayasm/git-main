@@ -38,6 +38,7 @@ namespace fxcm
 				const misc::time& time,
 				double bid,
 				double ask,
+				double vol,
 				bool isTradingOpen);
 
 		Offer(const Offer& tc);
@@ -65,6 +66,9 @@ namespace fxcm
 		double GetAsk() const;
 		void SetAsk(double ask);
 
+		double GetVolume() const;
+		void SetVolume(double vol);
+
 		bool GetIsTradingOpen() const;
 		void SetIsTradingOpen(bool isOpen);
 
@@ -79,6 +83,7 @@ namespace fxcm
 		double				m_pointSize;
 		double				m_bid;		// sell at bid
 		double				m_ask;		// buy at ask
+		double				m_volume;
 		bool				m_isTradingOpen;
 	};
 } // namespace
