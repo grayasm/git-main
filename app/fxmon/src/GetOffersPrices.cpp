@@ -39,6 +39,23 @@ OffersReader::OffersReader(const misc::string& instrument)
 	m_offerFileVec.push_back("d:\\GitHub\\fxcm-offers\\Offers_2018_02_01_17_57_54.txt");
 	m_offerFileVec.push_back("d:\\GitHub\\fxcm-offers\\Offers_2018_02_02_05_01_58.txt");
 	m_offerFileVec.push_back("d:\\GitHub\\fxcm-offers\\Offers_2018_02_02_14_48_53.txt");
+
+	m_offerFileVec.push_back("d:\\GitHub\\fxcm-offers\\Offers_2018_02_04_22_45_41.txt");
+	m_offerFileVec.push_back("d:\\GitHub\\fxcm-offers\\Offers_2018_02_05_09_12_33.txt");
+	m_offerFileVec.push_back("d:\\GitHub\\fxcm-offers\\Offers_2018_02_05_17_22_37.txt");
+	m_offerFileVec.push_back("d:\\GitHub\\fxcm-offers\\Offers_2018_02_06_01_34_38.txt");
+	m_offerFileVec.push_back("d:\\GitHub\\fxcm-offers\\Offers_2018_02_06_08_21_48.txt");
+	m_offerFileVec.push_back("d:\\GitHub\\fxcm-offers\\Offers_2018_02_06_15_12_35.txt");
+	m_offerFileVec.push_back("d:\\GitHub\\fxcm-offers\\Offers_2018_02_06_22_10_50.txt");
+	m_offerFileVec.push_back("d:\\GitHub\\fxcm-offers\\Offers_2018_02_07_08_35_18.txt");
+	m_offerFileVec.push_back("d:\\GitHub\\fxcm-offers\\Offers_2018_02_07_16_26_38.txt");
+	m_offerFileVec.push_back("d:\\GitHub\\fxcm-offers\\Offers_2018_02_08_00_52_15.txt");
+	m_offerFileVec.push_back("d:\\GitHub\\fxcm-offers\\Offers_2018_02_08_09_13_24.txt");
+	m_offerFileVec.push_back("d:\\GitHub\\fxcm-offers\\Offers_2018_02_08_10_52_10.txt");
+	m_offerFileVec.push_back("d:\\GitHub\\fxcm-offers\\Offers_2018_02_08_18_11_10.txt");
+	m_offerFileVec.push_back("d:\\GitHub\\fxcm-offers\\Offers_2018_02_09_02_44_08.txt");
+	m_offerFileVec.push_back("d:\\GitHub\\fxcm-offers\\Offers_2018_02_09_11_40_19.txt");
+	m_offerFileVec.push_back("d:\\GitHub\\fxcm-offers\\Offers_2018_02_09_18_21_58.txt");
 	
 	m_ofvPos = 0;
 	// m_offersVec; - empty
@@ -134,6 +151,10 @@ void OffersReader::ParseFile(const misc::string& filePath,
 				}
 				else if (s1 == "I") {
 					offer.SetInstrument(pch);
+
+					// break early
+					if (m_instrument != offer.GetInstrument())
+						break; // while(pch!=NULL) {...}
 				}
 				else if (s1 == "Pr") {
 					double val;
