@@ -33,112 +33,124 @@ void ClosePosition(const fxcm::Offer& offer, fx::Position& curpos);
 
 void TestTransaction()
 {
-	misc::string instr("EUR/USD");
-	OffersReader oreader(instr);
-	fxcm::Offer offer;
-	fx::Price price;
-	fx::Transaction tr;
+	bool isConnected = false;
+
+	OffersReader oreader("EUR/USD");
+	fxcm::Offer initialOffer, offer;
+	fx::Position curpos;
+	double totalPL = 0;
+	double renkoPL = 15;	// renko size
+	double pointSize = 0.0001; // EUR/USD
+	int lotsK = 1;
+
+	//  Frankfurt: Xetra trading takes place from 9.00a.m. until 5.30 p.m. CET. (UTC+100)
+	//  New York:  Core Trading Session: 9:30 AM TO 4:00 PM ET (UTC-500)
+	int hopen = 8;		// CET 9:00 is Frankfurt open
+	int hclose = 18;	// CET 23:00 is New York close
+
 	double closedPL = 0;
 	double closedGPL = 0;
-
-	fx::Price maxprice(0, 0);
-	double PL2Enter = -50;		// price - maxprice = it's a retrace
-	double trLimit = 70;		// profit on entire transaction
-	double trStop = -500;		// loss on entire transaction
-	int iAmount = 1;			// lots in k
-	double price2pip = 1 / 0.0001;
-
-
 
 	while (true)
 	{
 		if (!oreader.GetOffer(offer))
 			break;
-		
-		price = fx::Price(offer.GetAsk(), offer.GetBid());
-		if (price.GetBuy() > maxprice.GetBuy() &&
-			price.GetSell() > maxprice.GetSell())
-			maxprice = price;		
 
+		bool canOpen = true;		
 		misc::time tnow = offer.GetTime();
-		bool canOpen = (tnow.hour_() > 8 && tnow.hour_() < 22);
-		
-		if (!canOpen)
+
+		// outside trading hours?
+		if ((tnow.wday() == misc::time::SAT) ||
+			(tnow.wday() == misc::time::FRI && tnow.hour_() >= 22) ||
+			(tnow.wday() == misc::time::SUN && tnow.hour_() < 22))
 		{
-			if (tr.Size() > 0)
-			{
-				tr.Close(instr, price);
-				closedPL  += tr.GetPL(instr, price);
-				closedGPL += tr.GetGPL(instr, price);
-				
-				misc::cout << "EndofDay: " << 
-					"Pos=" << tr.Size() << " closedPL=" << closedPL <<
-					" closedGPL=" << closedGPL << std::endl;
-
-				tr = fx::Transaction();
-			}
-
-			continue;
+			canOpen = false;
 		}
 
-		// must calculate anything on tr?
-		if (!tr.IsEmpty())
+		// when can I open a position?
+		if (canOpen)
+			canOpen = (tnow.hour_() >= hopen && tnow.hour_() <= hclose);
+		bool noPosition = curpos.GetCurrency().GetSymbol().empty();
+
+		// no trade is open ? -> do nothing;
+		if (!canOpen && noPosition)
+			continue;
+
+		if (noPosition)
 		{
-			double curPL = tr.GetPL(instr, price);
-			if (curPL > trLimit) // close in profit
+			// start a new trading day?
+			if (initialOffer.GetInstrument().empty())
 			{
-				tr.Close(instr, price);
-				closedPL += curPL;
-				closedGPL += tr.GetGPL(instr, price);
-				misc::cout << "Prof: " << "Pos=" << tr.Size()
-					<< " trPL=" << curPL
-					<< " closedPL=" << closedPL 
-					<< " closedGPL=" << closedGPL << std::endl;
-				tr = fx::Transaction();
-				maxprice = price;
+				initialOffer = offer;
 				continue;
 			}
 
-			if (curPL < trStop) // close in loss
-			{
-				tr.Close(instr, price);
-				closedPL += curPL;
-				closedGPL += tr.GetGPL(instr, price);
-				misc::cout << "Loss: Pos=" << tr.Size()
-					<< " trPL=" << curPL
-					<< " closedPL=" << closedPL
-					<< " closedGPL=" << closedGPL << std::endl;
-				tr = fx::Transaction();
-				maxprice = price;
-				continue;
-			}
+			double pips = (offer.GetAsk() - initialOffer.GetAsk()) / pointSize;
 
-			if (tr.GetPositions().back().GetPL(price) < PL2Enter)
-			{
-				fx::Position pos;
-				OpenPosition(offer, iAmount, true, pos);
-				tr.Add(pos);
+			if (pips > renkoPL && canOpen)
+				OpenPosition(offer, lotsK, true, curpos);
+			else if (pips < -renkoPL && canOpen)
+				OpenPosition(offer, lotsK, false, curpos);
+			else
 				continue;
-			}
 
-			// anything else?
+			totalPL = 0;
 			continue;
 		}
 
+		// Manage the position
+		fx::Price curprice(offer.GetAsk(), offer.GetBid());
+		double curPL = curpos.GetPL(curprice); // PL for 1k
+		double curGPL = curpos.GetGPL(curprice);
+		double diffPL = curPL - totalPL;
 
-		if (tr.IsEmpty()) // calculate first position
+		if (diffPL > renkoPL)
 		{
-			double diffPL = (price.GetBuy() - maxprice.GetBuy())*price2pip;
-			if (diffPL < PL2Enter)
-			{
-				fx::Position pos;
-				OpenPosition(offer, iAmount, true, pos);
-				tr.Add(pos);
-			}
-
+			totalPL += renkoPL;
 			continue;
 		}
-	}
+
+		if (diffPL < -2 * renkoPL)
+		{
+			ClosePosition(offer, curpos);
+
+			closedPL += curPL;
+			closedGPL += curGPL;
+
+			misc::cout << "curPL=" << curPL << " closedGPL=" << closedGPL
+				<< std::endl;
+
+			// reset initialOffer at the end of the day
+			if (!canOpen)
+			{
+				initialOffer = fxcm::Offer();
+				curpos = fx::Position();
+				totalPL = 0;
+			}
+			else
+			{
+				bool isBuy = curpos.IsBuy(); // trend reversed
+				OpenPosition(offer, lotsK, !isBuy, curpos);
+				totalPL = 0;
+			}
+		}
+	} // while
+
+
+	FILE *pf = fopen("TradeResult.txt", "a+");
+	if (pf == NULL)
+		return;
+
+	misc::string slog;
+	slog += "closedPL=";
+	slog += misc::from_value(closedPL, 2);
+	slog += " closedGPL=";
+	slog += misc::from_value(closedGPL, 2);
+	slog += "\n";
+
+	fwrite(slog.c_str(), sizeof(char), slog.size(), pf);
+	fclose(pf);
+
 }
 
 
@@ -164,12 +176,49 @@ void OpenPosition(const fxcm::Offer& offer, int lots, bool buy, fx::Position& re
 		0,		// commission
 		0);		// interest
 
-	misc::cout << "Open position" << std::endl;
+	FILE *pf = fopen("TradeResult.txt", "a+");
+	if (pf == NULL)
+		return;
 
+	misc::string slog;
+	slog += offer.GetTime().tostring();
+	slog += (buy == true ? ", B:" : ", S:");
+	slog += (buy == true ? misc::from_value(offer.GetAsk(), 5) :
+						 misc::from_value(offer.GetBid(), 5));
+	slog += ", L(k)=";
+	slog += misc::from_value(lots);
+	slog += "\n";
+
+	fwrite(slog.c_str(), sizeof(char), slog.size(), pf);
+	fclose(pf);
 }
 
 void ClosePosition(const fxcm::Offer& offer, fx::Position& curpos)
 {
 	fx::Price price(offer.GetAsk(), offer.GetBid()); //buy@ask, sell@bid
 	curpos.Close(price);
+
+	FILE *pf = fopen("TradeResult.txt", "a+");
+	if (pf == NULL)
+		return;
+
+
+	bool buy = curpos.IsBuy();
+
+	misc::string slog;
+	slog += offer.GetTime().tostring();
+	slog += (buy == true ? ", S:" : ", B:");
+	slog += (buy == true ? misc::from_value(offer.GetBid(), 5) :
+						misc::from_value(offer.GetAsk(), 5));
+	slog += ", L(k)=";
+	slog += misc::from_value(curpos.GetAmount(), 0);
+
+	slog += ", PL(1k)=";
+	slog += misc::from_value(curpos.GetPL(), 2);
+	slog += ", GPL=";
+	slog += misc::from_value(curpos.GetGPL(), 0);
+	slog += "\n";
+
+	fwrite(slog.c_str(), sizeof(char), slog.size(), pf);
+	fclose(pf);
 }
