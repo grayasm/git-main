@@ -25,7 +25,7 @@
 int main(int argc, char** argv)
 {
     const int MAX=5;
-    int i, a[MAX], sum;
+    int i, a[MAX], sum=0;
 
 
 #pragma omp parallel for shared(a, sum) private(i)

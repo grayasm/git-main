@@ -25,6 +25,11 @@ add_executable(04_incorrect_omp            04_incorrect_omp.cpp)
 add_executable(05_omp_get_thread_num       05_omp_get_thread_num.cpp)
 target_compile_definitions(05_omp_get_thread_num PUBLIC _OPENMP=201107)
 
+# on Windows <math.h> guards M_PI with _USE_MATH_DEFINES
+if(WIN32)
+  target_compile_definitions(04_incorrect_omp PUBLIC _USE_MATH_DEFINES)
+endif(WIN32)
+
 set (CMAKE_C_FLAGS       ${CMAKE_C_FLAGS_2})
 set (CMAKE_CXX_FLAGS     ${CMAKE_CXX_FLAGS_2})
 add_executable(06_disable_omp              06_disable_omp.cpp)

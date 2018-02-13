@@ -10,11 +10,11 @@
  - a counter is used for incrementing/decrementing
  - an upper or lower bound is specified
 
- Obviously it cannt be used with a list.
+ Obviously it cannot be used with a list.
  - the iterators are not random-access
  - even if the loop if faked: for(size_t i=0; i<lst.size(); ++i){ cb++; ..}
    the icrementation of lst.begin() must be sequential
- - the only way it works is to iterator over i=0; i<lst.size() and inside
+ - the only way it works is to iterate over i=0; i<lst.size() and inside
    each thread to start incrementing lst.begin() up to i position.
 */
 

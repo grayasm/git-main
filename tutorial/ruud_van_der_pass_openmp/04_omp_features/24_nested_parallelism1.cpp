@@ -27,7 +27,7 @@ int main(int argc, char* argv[])
 
 #pragma omp parallel num_threads(2) firstprivate(tid)
         {
-	        printf ("TID %d: thread %d - inner parallel region\n",
+	        printf ("\tTID %d: thread %d - inner parallel region\n",
 	                tid, omp_get_thread_num ());
 
         }/* end of inner parallel region */

@@ -28,7 +28,7 @@ int main(int argc, char** argv)
 		}/* End of single block. */
 
 #pragma omp for
-		for(size_t i=0; i<4; ++i)
+		for(int i=0; i<4; ++i)
 		{
 			printf("omp for    th= %d\n", omp_get_thread_num ());
 		}
