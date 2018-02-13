@@ -900,7 +900,7 @@ namespace fxcm
 			double commission = closedTrade->getCommission(); // we got now the entire value
 			double interest = closedTrade->getRolloverInterest(); // TODO: adds up every day
 			fx::Position closeposition(closeOrderID, tradeID, currency, isBuy,
-				iAmount, commission, interest);
+				amount, commission, interest);
 
 			double closeRate = closedTrade->getCloseRate();
 			double buyClose = (isBuy == true ? FLT_MAX : closeRate);
@@ -908,7 +908,7 @@ namespace fxcm
 			fx::Price closeQuote(buyClose, sellClose);
 			closeposition.Close(closeQuote);
 
-			result.push_back(position);
+			result.push_back(closeposition);
 		}
 
 		m_responseListener4MarketOrders->ClearResult();
@@ -936,7 +936,8 @@ namespace fxcm
 						O2G2Ptr<IO2GAccountRow> account = reader->getRow(i);
 						if (account)
 						{
-							if (m_loginParams.GetAccount() == account->getAccountID())
+							const char* accountID = account->getAccountID();
+							if (m_loginParams.GetAccount() == accountID)
 							{
 								if (strcmp(account->getMarginCallFlag(), "N") == 0 &&
 									(strcmp(account->getAccountKind(), "32") == 0 ||

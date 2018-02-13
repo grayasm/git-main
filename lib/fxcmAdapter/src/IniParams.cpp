@@ -45,6 +45,8 @@ namespace fxcm
 	misc::string		g_OffersFile("offersfile");
 	misc::string		g_EnableOfferUpdater("enableOfferUpdater");
 	misc::string		g_EnableOfferWriter("enableOfferWriter");
+	misc::string		g_LoggingFile("loggingfile");
+	misc::string		g_EnableLogging("enableLogging");
 	misc::string		g_RangeInPips("rangeinpips");
 	misc::string		g_Rate("rate");
 	misc::string		g_RateStop("ratestop");
@@ -91,9 +93,14 @@ namespace fxcm
 		misc::trim(m_offersfile, '"'); // remove double quote at both ends
 		misc::trim(m_offersfile, ' '); // remove empty spaces at both ends
 
-		// enable offerUpdater and offerWriter by default, if not specified
 		m_enableOfferUpdater = iniReader.get(m_section, g_EnableOfferUpdater, bool(true));
 		m_enableOfferWriter = iniReader.get(m_section, g_EnableOfferWriter, bool(true));
+
+		m_loggingfile = iniReader.get(m_section, g_LoggingFile, emptys);
+		misc::trim(m_loggingfile, '"'); // remove double quote at both ends
+		misc::trim(m_loggingfile, ' '); // remove empty spaces at both ends
+
+		m_enableLogging = iniReader.get(m_section, g_EnableLogging, bool(false));
 		
 		m_rangeInPips = iniReader.get(m_section, g_RangeInPips, double(0));
 		m_rate = iniReader.get(m_section, g_Rate, double(0));
@@ -139,6 +146,8 @@ namespace fxcm
 			m_offersfile = tc.m_offersfile;
 			m_enableOfferUpdater = tc.m_enableOfferUpdater;
 			m_enableOfferWriter = tc.m_enableOfferWriter;
+			m_loggingfile = tc.m_loggingfile;
+			m_enableLogging = tc.m_enableLogging;
 			m_rangeInPips = tc.m_rangeInPips;
 			m_rate = tc.m_rate;
 			m_rateStop = tc.m_rateStop;
@@ -347,6 +356,26 @@ namespace fxcm
 		m_enableOfferWriter = enable;
 	}
 
+	const misc::string& IniParams::GetLoggingFile() const
+	{
+		return m_loggingfile;
+	}
+
+	void IniParams::SetLoggingFile(const misc::string& val)
+	{
+		m_loggingfile = val;
+	}
+
+	bool IniParams::GetEnableLogging() const
+	{
+		return m_enableLogging;
+	}
+
+	void IniParams::SetEnableLogging(bool enable)
+	{
+		m_enableLogging = enable;
+	}
+
 	double IniParams::GetRangeInPips() const
 	{
 		return m_rangeInPips;
@@ -411,6 +440,8 @@ namespace fxcm
 		m_offersfile = "";
 		m_enableOfferUpdater = true;
 		m_enableOfferWriter = true;
+		m_loggingfile = "";
+		m_enableLogging = false;
 		m_rangeInPips = 0;
 		m_rate = 0;
 		m_rateStop = 0;

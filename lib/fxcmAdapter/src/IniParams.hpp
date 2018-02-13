@@ -105,6 +105,12 @@ namespace fxcm
 		bool GetEnableOfferWriter() const;
 		void SetEnableOfferWriter(bool enable);
 
+		const misc::string& GetLoggingFile() const;
+		void SetLoggingFile(const misc::string& val);
+
+		bool GetEnableLogging() const;
+		void SetEnableLogging(bool enable);
+
 		double GetRangeInPips() const;
 		void SetRangeInPips(double val);
 
@@ -143,6 +149,8 @@ namespace fxcm
 		misc::string		m_offersfile;
 		bool				m_enableOfferUpdater;
 		bool				m_enableOfferWriter;
+		misc::string		m_loggingfile;
+		bool				m_enableLogging;
 		double				m_rangeInPips;
 		double				m_rate;
 		double				m_rateStop;
