@@ -17,8 +17,8 @@
 	contact: grayasm@gmail.com
 */
 
-#ifndef __GetOffersPrices_hpp__
-#define __GetOffersPrices_hpp__
+#ifndef __OffersReader_hpp__
+#define __OffersReader_hpp__
 
 #include "vector.hpp"
 #include "string.hpp"
@@ -48,4 +48,4 @@ private:
 	int	m_ovPos;
 };
 
-#endif // __GetOffersPrices_hpp__
+#endif // __OffersReader_hpp__

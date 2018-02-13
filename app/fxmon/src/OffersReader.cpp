@@ -17,7 +17,7 @@
 	contact: grayasm@gmail.com
 */
 
-#include "GetOffersPrices.hpp"
+#include "OffersReader.hpp"
 #include "unistd.hpp"
 #include "filename.hpp"
 #include "stream.hpp"
