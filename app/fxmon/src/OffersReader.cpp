@@ -142,7 +142,7 @@ void OffersReader::ParseFile(const misc::string& filePath,
 			{
 				i++;
 
-				if (i % 2 != 0) { // One of: {Id I Pr T PS B A}  BO BH BL BC AO AH AL AC V}
+				if (i % 2 != 0) { // One of: {Id I Pr T PS B A Vol}
 					s1 = misc::string(pch);
 					misc::trim(s1);
 				}

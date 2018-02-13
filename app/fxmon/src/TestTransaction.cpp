@@ -18,7 +18,8 @@
 */
 
 #include "TestTransaction.hpp"
-#include "GetOffersPrices.hpp"
+#include "OffersReader.hpp"
+#include "HistoryPricesReader.hpp"
 #include "unistd.hpp"
 #include "stream.hpp"
 #include "strconv.hpp"
@@ -35,7 +36,8 @@ void TestTransaction()
 {
 	bool isConnected = false;
 
-	OffersReader oreader("EUR/USD");
+	// OffersReader oreader("EUR/USD");
+	HistoryPricesReader oreader("EUR/USD");
 	fxcm::Offer initialOffer, offer;
 	fx::Position curpos;
 	double totalPL = 0;
