@@ -39,6 +39,8 @@ public:
 private:
 	void ParseFile(const misc::string& filePath,
 		misc::vector<fxcm::Offer>& result);
+	void Interpolate(const fxcm::Offer& beg, const fxcm::Offer& end,
+		misc::vector<fxcm::Offer>& result);
 
 private:
 	misc::string	m_instrument;
