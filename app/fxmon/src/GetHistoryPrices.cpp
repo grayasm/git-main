@@ -185,7 +185,7 @@ void LoadHistoryPrices()
 					misc::trim(s1);
 				}
 				else if (s1 == "I") {
-					hp->SetInstrument(s1.c_str());
+					hp->SetInstrument(pch);
 				}
 				else if (s1 == "T")
 				{

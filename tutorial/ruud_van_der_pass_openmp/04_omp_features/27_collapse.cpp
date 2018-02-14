@@ -55,7 +55,7 @@ int main(int argc, char** argv)
 			for (k=0; k < o; k++)
 			{
 				a[i][j][k] = omp_get_thread_num ();
-				printf ("%d %d %d %d\n", i, j, k, a[i][j][k]);
+				printf ("i=%d j=%d k=%d a(th_num)=%d\n", i, j, k, a[i][j][k]);
 
 			}/* end of parallel region */
 

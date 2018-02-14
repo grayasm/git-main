@@ -4,7 +4,7 @@
 
     syntax: num_threads(scalar-integer-expression )
 
-    strangly enough num_threads(30) will parallelize with 30 threads although
+    strangely enough num_threads(30) will parallelize with 30 threads although
     the cpu has only 4 or 8.
  */
 

@@ -47,11 +47,11 @@
 
   Main Memory: outside CPU (the slowest to access)
 
-  The structure of a program influences the the best usage of the CPU cache.
+  The structure of a program influences the best usage of the CPU cache.
       When a processor of an SMP stores results of local computations in its
       private cache, the new values are accessible only to code executing on
       that processor. These data must be displaced from private cache into
-      memory but the time not known. The other cores may in fact access
+      memory but the time is not known. The other cores may in fact access
       old data from memory and this is known as the "memory consistency problem"
 
       OpenMP memory model provides for shared and private data and specifies
@@ -62,7 +62,7 @@
   -------------------
   OpenMP is a shared-memory application programming interface (API).
   OpenMP is intended to be suitable for implementation on a broad range of
-  SMP architectures (previous PCF X3H5 attemps wouldn't run on all SMP).
+  SMP architectures (previous PCF X3H5 attempts wouldn't run on all SMP).
   OpenMP is not a new programming language but a notation.
 
   1.5 Creating an OpenMP Program

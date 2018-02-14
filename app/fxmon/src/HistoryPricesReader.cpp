@@ -1,0 +1,252 @@
+/*
+	Copyright (C) 2018 Mihai Vasilian
+
+	This program is free software; you can redistribute it and/or modify it
+	under the terms of the GNU General Public License as published by the
+	Free Software Foundation; either version 2 of the License, or (at your
+	option) any later version.
+
+	This program is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+	See the GNU General Public License for more details.
+
+	You should have received a copy of the GNU General Public License along
+	with this program. If not, see http://www.gnu.org/licenses/.
+
+	contact: grayasm@gmail.com
+*/
+
+
+#include "HistoryPricesReader.hpp"
+#include "HistoryPrice.hpp"
+#include "unistd.hpp"
+#include "filename.hpp"
+#include "stream.hpp"
+
+
+HistoryPricesReader::HistoryPricesReader(const misc::string& instrument)
+{
+	m_instrument = instrument;
+
+	m_offerFileVec.push_back("d:\\GitHub\\fxcm-history\\EUR_USD_2017.txt");
+	m_offerFileVec.push_back("d:\\GitHub\\fxcm-history\\EUR_USD_2017_1.txt");
+	m_offerFileVec.push_back("d:\\GitHub\\fxcm-history\\EUR_USD_2017_2.txt");
+	m_offerFileVec.push_back("d:\\GitHub\\fxcm-history\\EUR_USD_2017_3.txt");
+	
+	m_ofvPos = 0;
+	// m_offersVec; - empty
+	m_ovPos = 0;
+}
+
+HistoryPricesReader::~HistoryPricesReader()
+{
+}
+
+bool HistoryPricesReader::GetOffer(fxcm::Offer& offer)
+{
+	if (m_ovPos < m_offersVec.size())
+	{
+		offer = m_offersVec[m_ovPos++];
+		if (offer.GetPrecision() == 0 || offer.GetPointSize() == 0 ||
+			offer.GetBid() == 0.0 || offer.GetAsk() == 0.0)
+		{
+			// invalid quote
+			return GetOffer(offer);
+		}
+
+		return true;
+	}
+
+	if (m_ofvPos < m_offerFileVec.size())
+	{
+		m_offersVec.resize(0);
+		m_ovPos = 0;
+		ParseFile(m_offerFileVec[m_ofvPos++], m_offersVec);
+		return GetOffer(offer);
+	}
+
+	return false;
+}
+
+
+void HistoryPricesReader::ParseFile(const misc::string& filePath,
+	misc::vector<fxcm::Offer>& result)
+{
+	misc::filename historyFile(filePath);
+	if (!historyFile.access(F_OK))
+		return; // error
+
+	FILE* pf = fopen(historyFile.get_path().c_str(), "r");
+	if (pf == NULL)
+		return; // error
+
+	const int bufsz = 1000000;
+	char buf[bufsz];
+	int bufmax = 0;
+	int bufpos = 0;
+
+	fxcm::HistoryPrice* hp = new fxcm::HistoryPrice(
+		"",
+		"",
+		misc::time(),
+		0, 0, 0, 0,
+		0, 0, 0, 0,
+		0);
+
+	// some details are only for EUR/USD (for now)
+	if (m_instrument != "EUR/USD")
+	{
+		fclose(pf);
+		return;
+	}
+
+	fxcm::Offer offer(
+		"0",
+		"EUR/USD",
+		5,		// precision
+		0.0001, // pointSize
+		misc::time(),
+		0,		// bid
+		0,		// ask
+		0,		// vol
+		true);	// trading is open
+
+	misc::string fline;
+	char c;
+
+	while (true) //(c = fgetc(pf)) != EOF)
+	{
+		if (bufpos < bufmax) {
+			c = buf[bufpos++];
+		}
+		else if (!feof(pf)) {
+			bufmax = fread(buf, sizeof(char), bufsz, pf);
+			bufpos = 0;
+			continue;
+		}
+		else {
+			// end of stream
+			break;
+		}
+
+
+		if (c == '\n')
+		{
+			char* pch;
+			char str[1000];
+			strcpy(str, fline.c_str());
+			misc::string s1;
+			int i = 0;
+
+			pch = strtok(str, ",=");
+			while (pch != NULL)
+			{
+				i++;
+
+				if (i % 2 != 0) { // One of: {I T BO BH BL BC AO AH AL AC V}
+					s1 = misc::string(pch);
+					misc::trim(s1);
+				}
+				else if (s1 == "I") {
+					hp->SetInstrument(pch);
+				}
+				else if (s1 == "T")
+				{
+					//"2018-JAN-12 23:00:00"
+					int year, day, hour, min, sec;
+					char mon[5];
+					sscanf(pch, "%d-%3s-%d %d:%d:%d",
+						&year, mon, &day, &hour, &min, &sec);
+
+					misc::time::Month tmon;
+					if (strcmp(mon, "JAN") == 0) tmon = misc::time::JAN;
+					else if (strcmp(mon, "FEB") == 0) tmon = misc::time::FEB;
+					else if (strcmp(mon, "MAR") == 0) tmon = misc::time::MAR;
+					else if (strcmp(mon, "APR") == 0) tmon = misc::time::APR;
+					else if (strcmp(mon, "MAY") == 0) tmon = misc::time::MAY;
+					else if (strcmp(mon, "JUN") == 0) tmon = misc::time::JUN;
+					else if (strcmp(mon, "JUL") == 0) tmon = misc::time::JUL;
+					else if (strcmp(mon, "AUG") == 0) tmon = misc::time::AUG;
+					else if (strcmp(mon, "SEP") == 0) tmon = misc::time::SEP;
+					else if (strcmp(mon, "OCT") == 0) tmon = misc::time::OCT;
+					else if (strcmp(mon, "NOV") == 0) tmon = misc::time::NOV;
+					else if (strcmp(mon, "DEC") == 0) tmon = misc::time::DEC;
+					else
+						throw misc::exception("Cannot convert the month from history file");
+
+					misc::time hptime(year, tmon, day, hour, min, sec);
+					hp->SetTime(hptime);
+				}
+				else {
+					double val;
+					misc::to_value(pch, val);
+
+					if (s1 == "BO") hp->SetBidOpen(val);
+					else if (s1 == "BH") hp->SetBidHigh(val);
+					else if (s1 == "BL") hp->SetBidLow(val);
+					else if (s1 == "BC") hp->SetBidClose(val);
+					else if (s1 == "AO") hp->SetAskOpen(val);
+					else if (s1 == "AH") hp->SetAskHigh(val);
+					else if (s1 == "AL") hp->SetAskLow(val);
+					else if (s1 == "AC") hp->SetAskClose(val);
+					else if (s1 == "V") hp->SetVolume((int)val);
+					else
+						throw misc::exception("Cannot convert ID from history file");
+				}
+
+				pch = strtok(NULL, ",=");
+			} // while(pch)
+
+			if (m_instrument == hp->GetInstrument())
+			{
+				static int offerID = 0;
+				offerID++;
+				offer.SetOfferID(misc::from_value(offerID));
+				offer.SetTime(hp->GetTime());
+				offer.SetBid(hp->GetBidOpen());
+				offer.SetAsk(hp->GetAskOpen());
+				offer.SetVolume(hp->GetVolume() / 4);
+				// add Open Offer
+				result.push_back(offer);
+
+				offerID++;
+				offer.SetOfferID(misc::from_value(offerID));
+				offer.SetTime(hp->GetTime() + 15);
+				bool highFirst = (hp->GetAskOpen() > hp->GetAskClose());
+				offer.SetBid(highFirst == true ? hp->GetBidHigh() : hp->GetBidLow());
+				offer.SetAsk(highFirst == true ? hp->GetAskHigh() : hp->GetAskLow());
+				// add High Offer (if highFirst)
+				result.push_back(offer);
+
+				offerID++;
+				offer.SetOfferID(misc::from_value(offerID));
+				offer.SetTime(hp->GetTime() + 30);
+				offer.SetBid(highFirst == true ? hp->GetBidLow() : hp->GetBidHigh());
+				offer.SetAsk(highFirst == true ? hp->GetAskLow() : hp->GetAskHigh());
+				// add Low Offer (if highFirst)
+				result.push_back(offer);
+
+				offerID++;
+				offer.SetOfferID(misc::from_value(offerID));
+				offer.SetTime(hp->GetTime() + 45);
+				offer.SetBid(hp->GetBidClose());
+				offer.SetAsk(hp->GetAskClose());
+				// add Close Offer
+				result.push_back(offer);
+
+#ifdef DEBUG
+				if (result.size() % 1000 == 0)
+					misc::cout << "fetched " << result.size() << std::endl;
+#endif
+			}
+
+			fline.resize(0);
+			continue;
+		} // c == '\n'
+
+		fline.append(1, c);
+	}
+
+	fclose(pf);
+}

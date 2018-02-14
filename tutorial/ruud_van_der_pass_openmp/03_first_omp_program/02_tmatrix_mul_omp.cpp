@@ -45,7 +45,7 @@ public:
 		std::vector<T> tmp;
 		tmp.resize(m_row*m_col, T(0));
 
-		size_t r,c,i;
+		int r,c,i;
 #pragma omp parallel for shared(tmp) private(r,c,i)
 		for (r=0; r<m_row; ++r)
 		{

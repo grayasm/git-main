@@ -51,12 +51,12 @@
   2.3.4 Thread Synchronization
   ----------------------------
     Barrier:
-          by default, OpenMP gets threads to wait at the end of a worksharing
+          by default, OpenMP gets threads to wait at the end of a work-sharing
           construct or parallel region until all threads in the team executing
           it have finished their portion of the work.
 
     Atomic update feature:
-          a thread attempts to execute code that is protected by a such a
+          a thread attempts to execute code that is protected by such a
           feature, and it is already being executed by another thread, then
           the former will have to wait for its turn.
 
@@ -87,7 +87,7 @@
           - give threads slightly different amounts of work
           - domain decomposition: split domain in subdomains, one per thread.
             This strategy is often referred to as
-            SPMD (single program muliple data) programming.
+            SPMD (single program multiple data) programming.
 
   2.5 Correctness Considerations
   ------------------------------
