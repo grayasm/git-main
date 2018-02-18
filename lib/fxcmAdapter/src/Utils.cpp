@@ -57,6 +57,13 @@ namespace fxcm
 			tmBuf.tm_sec);
 	}
 
+	void Utils::FormatDate(DATE date, time_t& timet)
+	{
+		misc::time mtime;
+		FormatDate(date, mtime);
+		timet = mtime.totime_t();
+	}
+
 	bool Utils::IsOpeningOrder(IO2GOrderRow* order)
 	{
 		const char* type = order->getType();

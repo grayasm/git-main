@@ -85,7 +85,7 @@ namespace fx
 		double GetMMR(const misc::string& symbol) const;
 
 		//! Close all opened positions of symbol at give quote.
-		void Close(const misc::string& symbol, const Price& rate);
+		void Close(const misc::string& symbol, const Price& rate, time_t tclose);
 
 		//! Return the total profit for all positions of symbol at the give quote.
 		//! Closed positions of symbol will be calculated at their closing price.

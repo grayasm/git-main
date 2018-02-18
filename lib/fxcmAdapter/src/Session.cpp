@@ -28,6 +28,7 @@ contact: grayasm@gmail.com
 #include "OffersUpdater.hpp"
 #include "OffersWriter.hpp"
 #include "ErrorCodes.hpp"
+#include "Utils.hpp"
 
 
 
@@ -773,8 +774,10 @@ namespace fxcm
 			int amount = trade->getAmount() / iBaseUnitSize;
 			double commission = 2 * trade->getCommission(); // half at open, half at close
 			double interest = trade->getRolloverInterest(); // TODO: adds up every day
+			time_t topen = 0;
+			Utils::FormatDate(trade->getOpenTime(), topen);
 			fx::Position position(openOrderID, tradeID, currency, isBuy,
-				amount, commission, interest);
+				amount, commission, interest, topen);
 			result.push_back(position);
 		}
 
@@ -828,7 +831,7 @@ namespace fxcm
 		O2G2Ptr<IO2GTradingSettingsProvider> tradingSettingsProvider =
 			loginRules->getTradingSettingsProvider();
 		int iBaseUnitSize = tradingSettingsProvider->getBaseUnitSize(offer.GetInstrument().c_str(), account);
-		int iAmount = iBaseUnitSize * position.GetAmount();
+		int iAmount = iBaseUnitSize * (int)position.GetAmount();
 
 		O2G2Ptr<IO2GPermissionChecker> permissionChecker =
 			loginRules->getPermissionChecker();
@@ -899,14 +902,18 @@ namespace fxcm
 			int amount = closedTrade->getAmount() / iBaseUnitSize;
 			double commission = closedTrade->getCommission(); // we got now the entire value
 			double interest = closedTrade->getRolloverInterest(); // TODO: adds up every day
+			time_t topen = 0;
+			Utils::FormatDate(closedTrade->getOpenTime(), topen);
 			fx::Position closeposition(closeOrderID, tradeID, currency, isBuy,
-				amount, commission, interest);
+				amount, commission, interest, topen);
 
 			double closeRate = closedTrade->getCloseRate();
 			double buyClose = (isBuy == true ? FLT_MAX : closeRate);
 			double sellClose = (isBuy == true ? closeRate : FLT_MAX);
 			fx::Price closeQuote(buyClose, sellClose);
-			closeposition.Close(closeQuote);
+			time_t tclose = 0;
+			Utils::FormatDate(closedTrade->getCloseTime(), tclose);
+			closeposition.Close(closeQuote, tclose);
 
 			result.push_back(closeposition);
 		}
@@ -915,6 +922,131 @@ namespace fxcm
 
 		return ErrorCodes::ERR_SUCCESS;
 	} // ClosePosition
+
+	int Session::GetOpenPositions(const Offer& offer,
+								  misc::vector<fx::Position>& result)
+	{
+		if (m_sessionListener->IsDisconnected())
+		{
+			misc::cout << __FUNCTION__
+				<< ": Session disconnected" << std::endl;
+			return ErrorCodes::ERR_DISCONNECTED;
+		}
+
+		O2G2Ptr<IO2GAccountRow> account = GetAccount();
+		if (!account)
+		{
+			misc::cout << __FUNCTION__
+				<< ": Error invalid account" << std::endl;
+			return ErrorCodes::ERR_NO_ACCOUNT;
+		}
+
+		// must be 'netting account' -> maintenance type != 0
+		if (strcmp(account->getMaintenanceType(), "0") == 0)
+		{
+			misc::cout << __FUNCTION__
+				<< ": Error invalid account" << std::endl;
+			return ErrorCodes::ERR_NO_ACCOUNT;
+		}
+
+		O2G2Ptr<IO2GLoginRules> loginRules = m_session->getLoginRules();
+		if (!loginRules)
+		{
+			misc::cout << __FUNCTION__
+				<< ": Cannot get login rules" << std::endl;
+			return ErrorCodes::ERR_NO_LOGIN_RULES;
+		}
+
+		O2G2Ptr<IO2GTradingSettingsProvider> tradingSettingsProvider =
+			loginRules->getTradingSettingsProvider();
+		int iBaseUnitSize = tradingSettingsProvider->getBaseUnitSize(offer.GetInstrument().c_str(), account);
+
+		O2G2Ptr<IO2GRequestFactory> requestFactory = m_session->getRequestFactory();
+		if (!requestFactory)
+		{
+			misc::cout << __FUNCTION__
+				<< ": Cannot create request factory" << std::endl;
+			return ErrorCodes::ERR_NO_REQUEST_FACTORY;
+		}
+
+		O2G2Ptr<IO2GRequest> request =
+			requestFactory->createRefreshTableRequestByAccount(Trades, account->getAccountID());
+		if (!request)
+		{
+			misc::cout << __FUNCTION__
+				<< ": createRefreshTableRequestByAccount failed with error: "
+				<< requestFactory->getLastError() << std::endl;
+			return ErrorCodes::ERR_NO_TRADES_REQUEST;
+		}
+
+		m_responseListener4MarketOrders->SetRequestID(request->getRequestID());
+		m_session->sendRequest(request);
+		// asynchronous request sent to server, waiting
+		if (!m_responseListener4MarketOrders->WaitEvents())
+		{
+			misc::cout << __FUNCTION__
+				<< ": Response waiting timeout expired" << std::endl;
+			return ErrorCodes::ERR_TIMEOUT;
+		}
+
+		O2G2Ptr<IO2GResponse> response =
+			m_responseListener4MarketOrders->GetResponse();
+		if (!response)
+		{
+			misc::cout << __FUNCTION__
+				<< ": Failed to get the response" << std::endl;
+			return ErrorCodes::ERR_NO_TRADES_RESPONSE;
+		}
+		O2G2Ptr<IO2GResponseReaderFactory> readerFactory =
+			m_session->getResponseReaderFactory();
+		if (!readerFactory)
+		{
+			misc::cout << __FUNCTION__
+				<< ": Cannot create response reader factory" << std::endl;
+			return ErrorCodes::ERR_NO_RESPONSE_READER_FACTORY;
+		}
+		O2G2Ptr<IO2GTradesTableResponseReader> tradesResponseReader =
+			readerFactory->createTradesTableReader(response);
+		if (!tradesResponseReader)
+		{
+			misc::cout << __FUNCTION__
+				<< ": Cannot create trades table reader" << std::endl;
+			return ErrorCodes::ERR_NO_RESPONSE_READER;
+		}
+
+		for (int i = 0; i < tradesResponseReader->size(); ++i)
+		{
+			IO2GTradeRow* trade = tradesResponseReader->getRow(i);
+
+			if (offer.GetOfferID() == trade->getOfferID())
+			{
+				misc::string openOrderID = trade->getOpenOrderID();
+				misc::string tradeID = trade->getTradeID();
+				misc::string symbol = offer.GetInstrument();
+				bool isBuy = strcmp(trade->getBuySell(), O2G2::Buy) == 0;
+				double openRate = trade->getOpenRate();
+				double buyRate = (isBuy == true ? openRate : FLT_MAX); // @ask
+				double sellRate = (isBuy == true ? FLT_MAX : openRate); // @bid
+				fx::Price openQuote(buyRate, sellRate);
+				double MMR = tradingSettingsProvider->getMMR(symbol.c_str(), account);
+				double pipCost = m_pipCost.CalcPipCost(offer,
+					m_iniParams.GetAccountSymbol(), iBaseUnitSize);
+				double rate2pip = 1.0 / offer.GetPointSize();
+				fx::Currency currency(symbol, openQuote, MMR, pipCost, rate2pip);
+				int amount = trade->getAmount() / iBaseUnitSize;
+				double commission = 2 * trade->getCommission(); // half at open, half at close
+				double interest = trade->getRolloverInterest(); // TODO: adds up every day
+				time_t topen = 0;
+				Utils::FormatDate(trade->getOpenTime(), topen);
+				fx::Position position(openOrderID, tradeID, currency, isBuy,
+					amount, commission, interest, topen);
+				result.push_back(position);
+			}
+		}
+
+		return ErrorCodes::ERR_SUCCESS;
+	} // GetOpenPositions
+
 
 	IO2GAccountRow* Session::GetAccount()
 	{

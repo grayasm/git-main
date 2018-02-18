@@ -111,6 +111,7 @@ void HistoryPricesReader::ParseFile(const misc::string& filePath,
 		0,		// ask
 		0,		// vol
 		true);	// trading is open
+	fxcm::Offer offerOHLC[4] = { offer, offer, offer, offer };
 
 	misc::string fline;
 	char c;
@@ -207,8 +208,9 @@ void HistoryPricesReader::ParseFile(const misc::string& filePath,
 				offer.SetBid(hp->GetBidOpen());
 				offer.SetAsk(hp->GetAskOpen());
 				offer.SetVolume(hp->GetVolume() / 4);
-				// add Open Offer
-				result.push_back(offer);
+				// Open Offer
+				offerOHLC[0] = offer;				
+				
 
 				offerID++;
 				offer.SetOfferID(misc::from_value(offerID));
@@ -216,24 +218,31 @@ void HistoryPricesReader::ParseFile(const misc::string& filePath,
 				bool highFirst = (hp->GetAskOpen() > hp->GetAskClose());
 				offer.SetBid(highFirst == true ? hp->GetBidHigh() : hp->GetBidLow());
 				offer.SetAsk(highFirst == true ? hp->GetAskHigh() : hp->GetAskLow());
-				// add High Offer (if highFirst)
-				result.push_back(offer);
+				// High Offer (if highFirst)
+				offerOHLC[1] = offer;
+
 
 				offerID++;
 				offer.SetOfferID(misc::from_value(offerID));
 				offer.SetTime(hp->GetTime() + 30);
 				offer.SetBid(highFirst == true ? hp->GetBidLow() : hp->GetBidHigh());
 				offer.SetAsk(highFirst == true ? hp->GetAskLow() : hp->GetAskHigh());
-				// add Low Offer (if highFirst)
-				result.push_back(offer);
+				// Low Offer (if highFirst)
+				offerOHLC[2] = offer;
+				
 
 				offerID++;
 				offer.SetOfferID(misc::from_value(offerID));
 				offer.SetTime(hp->GetTime() + 45);
 				offer.SetBid(hp->GetBidClose());
 				offer.SetAsk(hp->GetAskClose());
-				// add Close Offer
-				result.push_back(offer);
+				// Close Offer
+				offerOHLC[3] = offer;
+
+
+				Interpolate(offerOHLC[0], offerOHLC[1], result);
+				Interpolate(offerOHLC[1], offerOHLC[2], result);
+				Interpolate(offerOHLC[2], offerOHLC[3], result);
 
 #ifdef DEBUG
 				if (result.size() % 1000 == 0)
@@ -249,4 +258,46 @@ void HistoryPricesReader::ParseFile(const misc::string& filePath,
 	}
 
 	fclose(pf);
+}
+
+
+void HistoryPricesReader::Interpolate(const fxcm::Offer& beg, const fxcm::Offer& end,
+	misc::vector<fxcm::Offer>& result)
+{
+	// clear result outside if needed!!
+
+	double rate2pip = 1 / beg.GetPointSize();
+	double pip2rate = beg.GetPointSize();
+
+	double bidb = beg.GetBid();
+	double bide = end.GetBid();
+	double bidpips = (bide - bidb) * rate2pip;
+
+	double askb = beg.GetAsk();
+	double aske = end.GetAsk();
+	double askpips = (aske - askb) * rate2pip;
+
+	int count = (int)std::max<double>(fabs(bidpips), fabs(askpips));
+	int div = (count > 0 ? count : 1);
+
+	double vol = (beg.GetVolume() + end.GetVolume()) / (count + 1);
+	misc::time tdiff = end.GetTime() - beg.GetTime();
+	double secdiff =
+		((double)(tdiff.hour_() * misc::time::hourSEC +
+		tdiff.min_() * misc::time::minSEC +
+		tdiff.sec_())) / div;
+
+	fxcm::Offer offer(beg);
+	for (int i = 0; i <= count; ++i)
+	{
+		misc::string offerID(beg.GetOfferID());
+		offerID += "-INT-";
+		offerID += misc::from_value(i);
+		offer.SetOfferID(offerID);
+		offer.SetTime(beg.GetTime() + i * secdiff);
+		offer.SetBid(beg.GetBid() + (i * bidpips / div) * pip2rate);
+		offer.SetAsk(beg.GetAsk() + (i * askpips / div) * pip2rate);
+		offer.SetVolume(vol);
+		result.push_back(offer);
+	}
 }

@@ -38,6 +38,7 @@ namespace fxcm
 		// mm.dd.YYYY HH:MM:SS
 		static void FormatDate(DATE date, char* buff);
 		static void FormatDate(DATE date, misc::time& time);
+		static void FormatDate(DATE date, time_t& timet);
 
 		static bool IsOpeningOrder(IO2GOrderRow* order);
 		static bool IsClosingOrder(IO2GOrderRow* order);

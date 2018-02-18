@@ -56,8 +56,8 @@ void GetMarketOffers()
 					isConnected = false;
 			}
 
-			// idle 1H
-			msleep(1000ul * misc::time::hourSEC);
+			// idle 1min
+			msleep(1000ul * misc::time::minSEC);
 			continue;
 		}
 

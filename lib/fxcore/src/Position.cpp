@@ -45,7 +45,8 @@ namespace fx
 		bool buy,
 		double amount,
 		double commission,
-		double interest)
+		double interest,
+		time_t topen)
 	{
 		m_orderID = orderID;
 		m_tradeID = tradeID;
@@ -55,6 +56,8 @@ namespace fx
 		m_amount = amount;
 		m_commission = commission;
 		m_interest = interest;
+		m_topen = topen;
+		m_tclose = 0;
 	}
 
 	Position::~Position()
@@ -79,6 +82,8 @@ namespace fx
 			m_close = tc.m_close;
 			m_commission = tc.m_commission;
 			m_interest = tc.m_interest;
+			m_topen = tc.m_topen;
+			m_tclose = tc.m_tclose;
 		}
 		return *this;
 	}
@@ -113,13 +118,14 @@ namespace fx
 		return m_isOpen;
 	}
 
-	void Position::Close(const Price& close)
+	void Position::Close(const Price& close, time_t tclose)
 	{
 		if(!m_isOpen)
 			throw misc::exception("Position is already closed.");
 
 		m_close = close;
 		m_isOpen = false;
+		m_tclose = tclose;
 	}
 
 	double Position::GetMMR() const
@@ -215,6 +221,16 @@ namespace fx
 		return m_interest;
 	}
 
+	time_t Position::GetOpenTime() const
+	{
+		return m_topen;
+	}
+
+	time_t Position::GetCloseTime() const
+	{
+		return m_tclose;
+	}
+
 	Price Position::GetQuotes(double pips) const
 	{
 		if(!m_isOpen)
@@ -251,7 +267,7 @@ namespace fx
 		msg += "MC: ";
 		msg += (m_close.GetBuy()  == FLT_MAX ? "0" : misc::from_value(m_close.GetBuy(),  digits)); msg += "-";
 		msg += (m_close.GetSell() == FLT_MAX ? "0" : misc::from_value(m_close.GetSell(), digits)); msg += "; ";
-		
+
 		return msg;
 	}
 
@@ -266,6 +282,8 @@ namespace fx
 		// m_close;
 		m_commission = 0;
 		m_interest = 0;
+		m_topen = 0;
+		m_tclose = 0;
 	}
 
 	//##########################################################################
