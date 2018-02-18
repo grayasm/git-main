@@ -45,6 +45,7 @@ int main(int /*argc*/, char** /*argv*/)
 	GetMarketOffers();
 	// TestTransaction();
 	// RunTransaction();
+	// test2();
 
 	return 0;
 }

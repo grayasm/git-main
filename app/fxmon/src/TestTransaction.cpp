@@ -37,9 +37,9 @@ void TestTransaction()
 {
 	bool isConnected = false;
 
-	// OffersReader oreader("EUR/USD");
+	OffersReader oreader("EUR/USD");
 	// HistoryPricesReader oreader("EUR/USD");
-	HistdatacomReader oreader("EUR/USD");
+	// HistdatacomReader oreader("EUR/USD");
 
 	fxcm::Offer initialOffer, offer;
 	fx::Position curpos;
@@ -51,10 +51,12 @@ void TestTransaction()
 	//  Frankfurt: Xetra trading takes place from 9.00a.m. until 5.30 p.m. CET. (UTC+100)
 	//  New York:  Core Trading Session: 9:30 AM TO 4:00 PM ET (UTC-500)
 	int hopen = 8;		// CET 9:00 is Frankfurt open
-	int hclose = 18;	// CET 23:00 is New York close
+	int hclose = 17;	// CET 23:00 is New York close
 
 	double closedPL = 0;
 	double closedGPL = 0;
+	
+
 
 	while (true)
 	{
@@ -100,6 +102,7 @@ void TestTransaction()
 				continue;
 
 			totalPL = 0;
+
 			continue;
 		}
 
@@ -108,6 +111,7 @@ void TestTransaction()
 		double curPL = curpos.GetPL(curprice); // PL for 1k
 		double curGPL = curpos.GetGPL(curprice);
 		double diffPL = curPL - totalPL;
+
 
 		if (diffPL > renkoPL)
 		{
@@ -121,9 +125,10 @@ void TestTransaction()
 
 			closedPL += curPL;
 			closedGPL += curGPL;
-
+			
 			misc::cout << "curPL=" << curPL << " closedGPL=" << closedGPL
 				<< std::endl;
+
 
 			// reset initialOffer at the end of the day
 			if (!canOpen)
@@ -179,7 +184,8 @@ void OpenPosition(const fxcm::Offer& offer, int lots, bool buy, fx::Position& re
 		buy,
 		lots,	// K lots
 		0,		// commission
-		0);		// interest
+		0,		// interest
+		offer.GetTime().totime_t());
 
 	FILE *pf = fopen("TradeResult.txt", "a+");
 	if (pf == NULL)
@@ -201,7 +207,7 @@ void OpenPosition(const fxcm::Offer& offer, int lots, bool buy, fx::Position& re
 void ClosePosition(const fxcm::Offer& offer, fx::Position& curpos)
 {
 	fx::Price price(offer.GetAsk(), offer.GetBid()); //buy@ask, sell@bid
-	curpos.Close(price);
+	curpos.Close(price, offer.GetTime().totime_t());
 
 	FILE *pf = fopen("TradeResult.txt", "a+");
 	if (pf == NULL)

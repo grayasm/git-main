@@ -45,7 +45,8 @@ namespace fx
 			bool buy,
 			double amount,
 			double commission,
-			double interest);
+			double interest,
+			time_t topen);
 
 		~Position();
 		Position(const Position& tc);
@@ -70,7 +71,7 @@ namespace fx
 		bool IsOpen() const;    
 
 		//! Request to close this position at the given price.
-		void Close(const Price& close);
+		void Close(const Price& close, time_t tclose);
 		
 		//! Total margin allocated for this position.
 		double GetMMR() const;
@@ -111,6 +112,13 @@ namespace fx
 		//! Get the interest.
 		double GetInterest() const;
 
+		//! Get the time at open
+		time_t GetOpenTime() const;
+
+		//! Get the time at close
+		//! Calculate the duration as time_t seconds = tclose - topen;
+		time_t GetCloseTime() const;
+		
 		//! Returns the market price where this position would have the
 		//! given number of pips.
 		Price GetQuotes(double pips) const;
@@ -131,6 +139,8 @@ namespace fx
 		Price			m_close;		// market price where position was closed
 		double			m_commission;	// commission for entire amount opened/closed
 		double			m_interest;		// interest (need confirmation)
+		time_t			m_topen;		// time_t at open
+		time_t			m_tclose;		// time_t at close
 	};
 
 

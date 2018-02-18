@@ -126,7 +126,7 @@ namespace fx
 		return (buyMMR > sellMMR ? buyMMR : sellMMR);
 	}
 
-	void Transaction::Close(const misc::string& symbol, const Price& rate)
+	void Transaction::Close(const misc::string& symbol, const Price& rate, time_t tclose)
 	{
 		for(PosIt bit = m_positions.begin(); bit != m_positions.end(); ++bit)
 		{
@@ -134,7 +134,7 @@ namespace fx
 			if(pos.GetCurrency().GetSymbol() == symbol &&
 				pos.IsOpen())
 			{
-				pos.Close(rate);
+				pos.Close(rate, tclose);
 			}
 		}
 	}

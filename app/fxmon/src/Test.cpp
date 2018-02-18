@@ -46,28 +46,26 @@ int test2()
 	fxcm::Session session(*loginParams, *iniParams);
 	session.Login();
 	session.GetOffers();
-	session.GetOrders();
+	
+	// session.GetOrders();
+	
+	msleep(2000);
+	
+	int ret = 0;
 
-	misc::vector<fxcm::HistoryPrice> historyPricesVec;
-	int toff = misc::time::hourSEC;
-	misc::time tbeg(2018, misc::time::JAN, 8, 0, 0, 0);
-	misc::time tnext = tbeg + toff;
-	misc::time tend(2018, misc::time::JAN, 12, 23, 59, 0);
-
-	for (; tbeg < tend; tbeg += toff, tnext += toff)
+	fxcm::Offer offer;
+	ret = session.GetLastOffer(offer, "EUR/USD");
+	if (ret == fxcm::ErrorCodes::ERR_SUCCESS)
 	{
-		DATE dtFrom, dtTo;
-		Time2DATE(tbeg.totime_t(), dtFrom);
-		Time2DATE(tnext.totime_t(), dtTo);
+		misc::vector<fx::Position> result;
+		session.GetOpenPositions(offer, result);
+		
+		misc::cout << "\n";
+		for (int i = 0; i < result.size(); ++i)
+			misc::cout << result[i].ToString() << std::endl;
+	}	
 
-		session.GetHistoryPrices(
-			"EUR/USD", "m1",
-			dtFrom, dtTo,
-			historyPricesVec);
-	}
-	
-	session.Logout();
-	
+	session.Logout();	
 	return 0;
 }
 
