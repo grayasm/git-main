@@ -127,7 +127,7 @@ void RunTransaction()
 			break; // error with the price feed
 
 		// when can I open a position
-		bool canOpen = true; // (tnow.hour_() >= hopen && tnow.hour_() <= hclose);
+		bool canOpen = (tnow.hour_() >= hopen && tnow.hour_() < hclose);
 		if (!canOpen && tr.IsEmpty())
 		{
 			msleep(1000 * misc::time::minSEC); // slow down a bit
