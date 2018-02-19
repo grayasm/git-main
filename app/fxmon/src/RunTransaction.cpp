@@ -66,7 +66,7 @@ void RunTransaction()
 	fx::Price price;
 	fx::Transaction tr;
 	double totalPL = 0;
-	double renkoPL = 2; // renko size
+	double renkoPL = 15; // renko size
 	int lots = 1;
 	bool buy = true;
 
