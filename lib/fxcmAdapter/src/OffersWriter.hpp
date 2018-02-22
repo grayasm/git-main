@@ -39,8 +39,8 @@ namespace fxcm
 	class OffersWriter
 	{
 	public:
-		typedef misc::autoptr<OffersWriter>	Ptr;
-		typedef misc::vector<Offer>			OffersVec;
+		typedef misc::autoptr<OffersWriter>		Ptr;
+		typedef misc::vector<fx::Offer>			OffersVec;
 
 		// no copy
 		OffersWriter() = delete;

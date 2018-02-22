@@ -36,8 +36,8 @@ namespace fxcm
 	class OffersUpdater
 	{
 	public:
-		typedef misc::autoptr<OffersUpdater>	Ptr;
-		typedef std::map<misc::string, Offer>	OffersMap;
+		typedef misc::autoptr<OffersUpdater>		Ptr;
+		typedef std::map<misc::string, fx::Offer>	OffersMap;
 
 		OffersUpdater(IO2GSession* session);
 		~OffersUpdater();
@@ -46,7 +46,7 @@ namespace fxcm
 		OffersUpdater& operator=(const OffersUpdater&) = delete;
 
 		void UpdateOffers(IO2GResponse* response);
-		int GetLastOffer(Offer& offer, const char* sInstrument);
+		int GetLastOffer(fx::Offer& offer, const char* sInstrument);
 
 	private:
 		IO2GSession*					m_session;

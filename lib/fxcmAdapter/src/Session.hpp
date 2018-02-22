@@ -60,15 +60,15 @@ namespace fxcm
 		int GetTradingSettings(TradingSettingsVec& tsvec, bool refresh = false);
 		int GetTradingPermissions(const char* sInstrument, TradingPermissions& tp);
 		int GetOrders();
-		int GetLastOffer(Offer& offer, const char* sInstrument);
+		int GetLastOffer(fx::Offer& offer, const char* sInstrument);
 		int GetHistoryPrices(const char* sInstrument, const char* sTimeframe,
 							 DATE dtFrom, DATE dtTo,
 							 HistoryPricesVec& historyPricesVec);
-		int OpenPosition(const Offer& offer, int lots, bool buy,
+		int OpenPosition(const fx::Offer& offer, int lots, bool buy,
 						misc::vector<fx::Position>& result);
-		int ClosePosition(const Offer& offer, const fx::Position& position,
+		int ClosePosition(const fx::Offer& offer, const fx::Position& position,
 						misc::vector<fx::Position>& result);
-		int GetOpenPositions(const Offer& offer,
+		int GetOpenPositions(const fx::Offer& offer,
 						misc::vector<fx::Position>& result);
 		
 

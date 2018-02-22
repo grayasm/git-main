@@ -38,7 +38,7 @@ namespace fxcm
 		PipCost& operator=(const PipCost&) = delete;
 
 		double CalcPipCost(
-			const Offer& offer,
+			const fx::Offer& offer,
 			const misc::string& acc_symbol,
 			int iBaseUnitSize) const;
 

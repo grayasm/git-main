@@ -24,7 +24,7 @@
 #include "string.hpp"
 #include "time.hpp"
 
-namespace fxcm
+namespace fx
 {
 	class Offer
 	{

@@ -102,7 +102,7 @@ namespace fxcm
 			misc::string tradingStatus(offerRow->getTradingStatus());
 			bool isTradingOpen = (tradingStatus == "O"); // "O" or "C"
 
-			Offer newOffer(
+			fx::Offer newOffer(
 				offerRow->getOfferID(),
 				offerRow->getInstrument(),
 				offerRow->getDigits(),
@@ -163,7 +163,7 @@ namespace fxcm
 		{
 			for (size_t i = 0; i < m_offersVec.size(); ++i)
 			{
-				const Offer& offer = m_offersVec[i];
+				const fx::Offer& offer = m_offersVec[i];
 				std::stringstream ss;
 				ss << "Id=" << offer.GetOfferID().c_str() << ", ";
 				ss << "I=" << offer.GetInstrument().c_str() << ", ";

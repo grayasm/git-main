@@ -22,7 +22,7 @@
 #include "Offer.hpp"
 
 
-namespace fxcm
+namespace fx
 {
 	Offer::Offer()
 	{

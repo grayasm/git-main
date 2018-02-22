@@ -527,7 +527,7 @@ namespace fxcm
 		return ErrorCodes::ERR_SUCCESS;
 	} // GetOrders
 
-	int Session::GetLastOffer(Offer& offer, const char* sInstrument)
+	int Session::GetLastOffer(fx::Offer& offer, const char* sInstrument)
 	{
 		if (m_offersUpdater)
 			return m_offersUpdater->GetLastOffer(offer, sInstrument);
@@ -670,7 +670,7 @@ namespace fxcm
 		return ErrorCodes::ERR_SUCCESS;
 	} // GetHistoryPrices
 
-	int Session::OpenPosition(const Offer& offer, int lots, bool buy,
+	int Session::OpenPosition(const fx::Offer& offer, int lots, bool buy,
 							  misc::vector<fx::Position>& result)
 	{
 		if (m_sessionListener->IsDisconnected())
@@ -787,7 +787,7 @@ namespace fxcm
 	} // OpenPosition
 
 
-	int Session::ClosePosition(const Offer& offer, const fx::Position& position,
+	int Session::ClosePosition(const fx::Offer& offer, const fx::Position& position,
 							   misc::vector<fx::Position>& result)
 	{
 		if (m_sessionListener->IsDisconnected())
@@ -923,7 +923,7 @@ namespace fxcm
 		return ErrorCodes::ERR_SUCCESS;
 	} // ClosePosition
 
-	int Session::GetOpenPositions(const Offer& offer,
+	int Session::GetOpenPositions(const fx::Offer& offer,
 								  misc::vector<fx::Position>& result)
 	{
 		if (m_sessionListener->IsDisconnected())

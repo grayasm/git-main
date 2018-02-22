@@ -63,7 +63,7 @@ namespace fxcm
 	}
 
 	double PipCost::CalcPipCost(
-		const Offer& offer,
+		const fx::Offer& offer,
 		const misc::string& acc_symbol,
 		int iBaseUnitSize ) const
 	{

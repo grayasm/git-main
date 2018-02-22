@@ -94,7 +94,7 @@ namespace fxcm
 			OffersMap::iterator it = m_offersMap.find(instrument);
 			if (it == m_offersMap.end())
 			{
-				Offer newOffer(
+				fx::Offer newOffer(
 					offerRow->getOfferID(),
 					offerRow->getInstrument(),
 					offerRow->getDigits(),
@@ -136,7 +136,7 @@ namespace fxcm
 		}
 	}
 
-	int OffersUpdater::GetLastOffer(Offer& offer, const char* sInstrument)
+	int OffersUpdater::GetLastOffer(fx::Offer& offer, const char* sInstrument)
 	{
 		// synchronize access to internal resource
 		misc::autocritical_section autoCS(m_criticalSection);
