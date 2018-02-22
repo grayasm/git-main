@@ -33,6 +33,7 @@ HistoryPricesReader::HistoryPricesReader(const misc::string& instrument)
 	m_offerFileVec.push_back("d:\\GitHub\\fxcm-history\\EUR_USD_2017_1.txt");
 	m_offerFileVec.push_back("d:\\GitHub\\fxcm-history\\EUR_USD_2017_2.txt");
 	m_offerFileVec.push_back("d:\\GitHub\\fxcm-history\\EUR_USD_2017_3.txt");
+	// m_offerFileVec.push_back("d:\\GitHub\\fxcm-history\\EUR_USD_2017_4_testing.txt");
 	
 	m_ofvPos = 0;
 	// m_offersVec; - empty
@@ -43,7 +44,7 @@ HistoryPricesReader::~HistoryPricesReader()
 {
 }
 
-bool HistoryPricesReader::GetOffer(fxcm::Offer& offer)
+bool HistoryPricesReader::GetOffer(fx::Offer& offer)
 {
 	if (m_ovPos < m_offersVec.size())
 	{
@@ -71,7 +72,7 @@ bool HistoryPricesReader::GetOffer(fxcm::Offer& offer)
 
 
 void HistoryPricesReader::ParseFile(const misc::string& filePath,
-	misc::vector<fxcm::Offer>& result)
+	misc::vector<fx::Offer>& result)
 {
 	misc::filename historyFile(filePath);
 	if (!historyFile.access(F_OK))
@@ -101,7 +102,7 @@ void HistoryPricesReader::ParseFile(const misc::string& filePath,
 		return;
 	}
 
-	fxcm::Offer offer(
+	fx::Offer offer(
 		"0",
 		"EUR/USD",
 		5,		// precision
@@ -111,7 +112,7 @@ void HistoryPricesReader::ParseFile(const misc::string& filePath,
 		0,		// ask
 		0,		// vol
 		true);	// trading is open
-	fxcm::Offer offerOHLC[4] = { offer, offer, offer, offer };
+	fx::Offer offerOHLC[4] = { offer, offer, offer, offer };
 
 	misc::string fline;
 	char c;
@@ -261,8 +262,8 @@ void HistoryPricesReader::ParseFile(const misc::string& filePath,
 }
 
 
-void HistoryPricesReader::Interpolate(const fxcm::Offer& beg, const fxcm::Offer& end,
-	misc::vector<fxcm::Offer>& result)
+void HistoryPricesReader::Interpolate(const fx::Offer& beg, const fx::Offer& end,
+	misc::vector<fx::Offer>& result)
 {
 	// clear result outside if needed!!
 
@@ -287,7 +288,7 @@ void HistoryPricesReader::Interpolate(const fxcm::Offer& beg, const fxcm::Offer&
 		tdiff.min_() * misc::time::minSEC +
 		tdiff.sec_())) / div;
 
-	fxcm::Offer offer(beg);
+	fx::Offer offer(beg);
 	for (int i = 0; i <= count; ++i)
 	{
 		misc::string offerID(beg.GetOfferID());

@@ -79,7 +79,7 @@ OffersReader::~OffersReader()
 {
 }
 	
-bool OffersReader::GetOffer(fxcm::Offer& offer)
+bool OffersReader::GetOffer(fx::Offer& offer)
 {
 	if (m_ovPos < m_offersVec.size())
 	{
@@ -107,7 +107,7 @@ bool OffersReader::GetOffer(fxcm::Offer& offer)
 
 
 void OffersReader::ParseFile(const misc::string& filePath,
-							 misc::vector<fxcm::Offer>& result)
+							 misc::vector<fx::Offer>& result)
 {	
 	misc::filename offerFile(filePath);
 	if (!offerFile.access(F_OK))
@@ -122,7 +122,7 @@ void OffersReader::ParseFile(const misc::string& filePath,
 	int bufmax = 0;
 	int bufpos = 0;
 	
-	fxcm::Offer offer;
+	fx::Offer offer;
 	misc::string fline;
 	char c;
 

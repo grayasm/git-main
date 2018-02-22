@@ -23,6 +23,7 @@
 
 
 int test2();
+int test3();
 
 
 #endif // __Test_hpp__

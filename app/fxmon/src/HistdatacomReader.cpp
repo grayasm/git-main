@@ -63,7 +63,7 @@ HistdatacomReader::~HistdatacomReader()
 {
 }
 
-bool HistdatacomReader::GetOffer(fxcm::Offer& offer)
+bool HistdatacomReader::GetOffer(fx::Offer& offer)
 {
 	if (m_ovPos < m_offersVec.size())
 	{
@@ -91,7 +91,7 @@ bool HistdatacomReader::GetOffer(fxcm::Offer& offer)
 
 
 void HistdatacomReader::ParseFile(const misc::string& filePath,
-	misc::vector<fxcm::Offer>& result)
+	misc::vector<fx::Offer>& result)
 {
 	misc::filename offerFile(filePath);
 	if (!offerFile.access(F_OK))
@@ -107,7 +107,7 @@ void HistdatacomReader::ParseFile(const misc::string& filePath,
 	int bufpos = 0;
 
 	// assume EUR/USD for now
-	fxcm::Offer offer(
+	fx::Offer offer(
 		"0",
 		"EUR/USD",
 		5,		// precision

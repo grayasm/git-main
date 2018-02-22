@@ -29,8 +29,8 @@
 #include "Transaction.hpp"
 
 
-void OpenPosition(const fxcm::Offer& offer, int lots, bool buy, fx::Position& result);
-void ClosePosition(const fxcm::Offer& offer, fx::Position& curpos);
+static void OpenPosition(const fx::Offer& offer, int lots, bool buy, fx::Position& result);
+static void ClosePosition(const fx::Offer& offer, fx::Position& curpos);
 
 
 void TestTransaction()
@@ -41,7 +41,7 @@ void TestTransaction()
 	// HistoryPricesReader oreader("EUR/USD");
 	// HistdatacomReader oreader("EUR/USD");
 
-	fxcm::Offer initialOffer, offer;
+	fx::Offer initialOffer, offer;
 	fx::Position curpos;
 	double totalPL = 0;
 	double renkoPL = 15;	// renko size
@@ -133,7 +133,7 @@ void TestTransaction()
 			// reset initialOffer at the end of the day
 			if (!canOpen)
 			{
-				initialOffer = fxcm::Offer();
+				initialOffer = fx::Offer();
 				curpos = fx::Position();
 				totalPL = 0;
 			}
@@ -164,7 +164,7 @@ void TestTransaction()
 }
 
 
-void OpenPosition(const fxcm::Offer& offer, int lots, bool buy, fx::Position& result)
+void OpenPosition(const fx::Offer& offer, int lots, bool buy, fx::Position& result)
 {
 	static int orderID = 0;
 	static int tradeID = 0;
@@ -204,7 +204,7 @@ void OpenPosition(const fxcm::Offer& offer, int lots, bool buy, fx::Position& re
 	fclose(pf);
 }
 
-void ClosePosition(const fxcm::Offer& offer, fx::Position& curpos)
+void ClosePosition(const fx::Offer& offer, fx::Position& curpos)
 {
 	fx::Price price(offer.GetAsk(), offer.GetBid()); //buy@ask, sell@bid
 	curpos.Close(price, offer.GetTime().totime_t());

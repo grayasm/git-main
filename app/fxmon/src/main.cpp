@@ -42,10 +42,10 @@ int main(int /*argc*/, char** /*argv*/)
 	
 	// GetHistoryPrices();
 	// LoadHistoryPrices();
-	GetMarketOffers();
+	// GetMarketOffers();
 	// TestTransaction();
 	// RunTransaction();
-	// test2();
+	test3();
 
 	return 0;
 }

@@ -28,14 +28,14 @@
 
 void OpenPosition(	const fxcm::IniParams& iniParams,
 					fxcm::Session& session,
-					const fxcm::Offer& offer,
+					const fx::Offer& offer,
 					int lots,
 					bool buy,
 					fx::Transaction& result);
 
 void ClosePosition(	const fxcm::IniParams& iniParams,
 					fxcm::Session& session,
-					const fxcm::Offer& offer,
+					const fx::Offer& offer,
 					const fx::Transaction& trIn,
 					fx::Transaction& trOut); // return closed transaction
 
@@ -62,7 +62,7 @@ void RunTransaction()
 
 
 	misc::string instr("EUR/USD");
-	fxcm::Offer initialOffer, offer;
+	fx::Offer initialOffer, offer;
 	fx::Price price;
 	fx::Transaction tr;
 	double totalPL = 0;
@@ -196,7 +196,7 @@ void RunTransaction()
 			// reset initialOffer at the end of the day
 			if (!canOpen)
 			{
-				initialOffer = fxcm::Offer();
+				initialOffer = fx::Offer();
 				tr = fx::Transaction();
 				totalPL = 0;
 			}
@@ -215,7 +215,7 @@ void RunTransaction()
 
 void OpenPosition(	const fxcm::IniParams& iniParams,
 					fxcm::Session& session,
-					const fxcm::Offer& offer,
+					const fx::Offer& offer,
 					int lots,
 					bool buy,
 					fx::Transaction& result)
@@ -245,7 +245,7 @@ void OpenPosition(	const fxcm::IniParams& iniParams,
 
 void ClosePosition(	const fxcm::IniParams& iniParams,
 					fxcm::Session& session,
-					const fxcm::Offer& offer,
+					const fx::Offer& offer,
 					const fx::Transaction& trIn,
 					fx::Transaction& trOut) // return closed transaction
 {

@@ -33,20 +33,20 @@ public:
 	HistoryPricesReader& operator=(const HistoryPricesReader&) = delete;
 
 	// return all recorded offers in receiving order; false if at the end;
-	bool GetOffer(fxcm::Offer& offer);
+	bool GetOffer(fx::Offer& offer);
 
 
 private:
 	void ParseFile(const misc::string& filePath,
-		misc::vector<fxcm::Offer>& result);
-	void Interpolate(const fxcm::Offer& beg, const fxcm::Offer& end,
-		misc::vector<fxcm::Offer>& result);
+		misc::vector<fx::Offer>& result);
+	void Interpolate(const fx::Offer& beg, const fx::Offer& end,
+		misc::vector<fx::Offer>& result);
 
 private:
 	misc::string	m_instrument;
 	misc::vector<misc::string>	m_offerFileVec;
 	int	m_ofvPos;
-	misc::vector<fxcm::Offer>	m_offersVec;
+	misc::vector<fx::Offer>	m_offersVec;
 	int	m_ovPos;
 };
 
