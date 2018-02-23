@@ -41,7 +41,7 @@ namespace fx
 		};
 
 		SMA();
-		SMA(int period, PriceOrigin po, Timeframe sec);
+		SMA(const misc::string& instrument, int period, PriceOrigin po, Timeframe sec);
 		~SMA();
 
 		SMA(const SMA& tc);
@@ -54,12 +54,13 @@ namespace fx
 		void Update(const fx::Offer& offer);
 
 		//! return current average
-		void GetValue(fx::Price& average);
+		void GetValue(fx::Price& average) const;
 
 	private:
 		void Init();
 
 	private:
+		misc::string	m_instrument;
 		int				m_period;
 		PriceOrigin		m_priceOrigin;
 		Timeframe		m_timeframe;

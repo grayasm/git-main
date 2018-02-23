@@ -27,7 +27,7 @@ contact: grayasm@gmail.com
 #include "critical_section.hpp"
 #include "autoptr.hpp"
 #include "vector.hpp"
-#include "HistoryPrice.hpp"
+#include "OHLCPrice.hpp"
 
 
 namespace fxcm
@@ -35,7 +35,7 @@ namespace fxcm
 	class HistoryPricesUpdater
 	{
 	public:
-		typedef misc::vector<HistoryPrice> HistoryPricesVec;
+		typedef misc::vector<fx::OHLCPrice> HistoryPricesVec;
 
 		HistoryPricesUpdater(IO2GSession* session);
 		~HistoryPricesUpdater();

@@ -1,30 +1,35 @@
 /*
-Copyright (C) 2018 Mihai Vasilian
+	Copyright (C) 2018 Mihai Vasilian
 
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version 2
-of the License, or (at your option) any later version.
+	This program is free software; you can redistribute it and/or
+	modify it under the terms of the GNU General Public License
+	as published by the Free Software Foundation; either version 2
+	of the License, or (at your option) any later version.
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+	This program is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License
-along with this program; if not, write to the Free Software Foundation, Inc.
-51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+	You should have received a copy of the GNU General Public License
+	along with this program; if not, write to the Free Software Foundation,
+	Inc. 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 contact: grayasm@gmail.com
 */
 
 
-#include "HistoryPrice.hpp"
+#include "OHLCPrice.hpp"
 
 
-namespace fxcm
+namespace fx
 {
-	HistoryPrice::HistoryPrice
+	OHLCPrice::OHLCPrice()
+	{
+		Init();
+	}
+
+	OHLCPrice::OHLCPrice
 	(
 		const char* instrument,			// 'EUR/USD'
 		const char* timeframe,			// m1 , H1 , ...
@@ -48,12 +53,12 @@ namespace fxcm
 		m_volume = volume;
 	}
 
-	HistoryPrice::HistoryPrice(const HistoryPrice& tc)
+	OHLCPrice::OHLCPrice(const OHLCPrice& tc)
 	{
 		*this = tc;
 	}
 
-	HistoryPrice& HistoryPrice::operator = (const HistoryPrice& tc)
+	OHLCPrice& OHLCPrice::operator = (const OHLCPrice& tc)
 	{
 		if (this != &tc)
 		{
@@ -73,127 +78,143 @@ namespace fxcm
 		return *this;
 	}
 
-	HistoryPrice::~HistoryPrice()
+	OHLCPrice::~OHLCPrice()
 	{
 	}
 
-	const misc::string& HistoryPrice::GetInstrument() const
+	const misc::string& OHLCPrice::GetInstrument() const
 	{
 		return m_instrument;
 	}
 
-	void HistoryPrice::SetInstrument(const char* instrument)
+	void OHLCPrice::SetInstrument(const char* instrument)
 	{
 		m_instrument = instrument;
 	}
 
-	const misc::string& HistoryPrice::GetTimeframe() const
+	const misc::string& OHLCPrice::GetTimeframe() const
 	{
 		return m_timeframe;
 	}
 
-	void HistoryPrice::SetTimeframe(const char* timeframe)
+	void OHLCPrice::SetTimeframe(const char* timeframe)
 	{
 		m_timeframe = timeframe;
 	}
 
-	const misc::time& HistoryPrice::GetTime() const
+	const misc::time& OHLCPrice::GetTime() const
 	{
 		return m_time;
 	}
 
-	void HistoryPrice::SetTime(const misc::time& val)
+	void OHLCPrice::SetTime(const misc::time& val)
 	{
 		m_time = val;
 	}
 
-	double HistoryPrice::GetBidOpen() const
+	double OHLCPrice::GetBidOpen() const
 	{
 		return m_bidOpen;
 	}
 
-	void HistoryPrice::SetBidOpen(double val)
+	void OHLCPrice::SetBidOpen(double val)
 	{
 		m_bidOpen = val;
 	}
 
-	double HistoryPrice::GetBidHigh() const
+	double OHLCPrice::GetBidHigh() const
 	{
 		return m_bidHigh;
 	}
 
-	void HistoryPrice::SetBidHigh(double val)
+	void OHLCPrice::SetBidHigh(double val)
 	{
 		m_bidHigh = val;
 	}
 
-	double HistoryPrice::GetBidLow() const
+	double OHLCPrice::GetBidLow() const
 	{
 		return m_bidLow;
 	}
 
-	void HistoryPrice::SetBidLow(double val)
+	void OHLCPrice::SetBidLow(double val)
 	{
 		m_bidLow = val;
 	}
 
-	double HistoryPrice::GetBidClose() const
+	double OHLCPrice::GetBidClose() const
 	{
 		return m_bidClose;
 	}
 
-	void HistoryPrice::SetBidClose(double val)
+	void OHLCPrice::SetBidClose(double val)
 	{
 		m_bidClose = val;
 	}
 
-	double HistoryPrice::GetAskOpen() const
+	double OHLCPrice::GetAskOpen() const
 	{
 		return m_askOpen;
 	}
 
-	void HistoryPrice::SetAskOpen(double val)
+	void OHLCPrice::SetAskOpen(double val)
 	{
 		m_askOpen = val;
 	}
 
-	double HistoryPrice::GetAskHigh() const
+	double OHLCPrice::GetAskHigh() const
 	{
 		return m_askHigh;
 	}
 
-	void HistoryPrice::SetAskHigh(double val)
+	void OHLCPrice::SetAskHigh(double val)
 	{
 		m_askHigh = val;
 	}
 
-	double HistoryPrice::GetAskLow() const
+	double OHLCPrice::GetAskLow() const
 	{
 		return m_askLow;
 	}
 
-	void HistoryPrice::SetAskLow(double val)
+	void OHLCPrice::SetAskLow(double val)
 	{
 		m_askLow = val;
 	}
 
-	double HistoryPrice::GetAskClose() const
+	double OHLCPrice::GetAskClose() const
 	{
 		return m_askClose;
 	}
 
-	void HistoryPrice::SetAskClose(double val)
+	void OHLCPrice::SetAskClose(double val)
 	{
 		m_askClose = val;
 	}
 
-	int HistoryPrice::GetVolume() const
+	int OHLCPrice::GetVolume() const
 	{
 		return m_volume;
 	}
 
-	void HistoryPrice::SetVolume(int val)
+	void OHLCPrice::SetVolume(int val)
 	{
 		m_volume = val;
+	}
+
+	void OHLCPrice::Init()
+	{
+		// m_instrument; - empty
+		// m_timeframe; - empty
+		// m_time; - default
+		m_bidOpen = 0;
+		m_bidHigh = 0;
+		m_bidLow = 0;
+		m_bidClose = 0;
+		m_askOpen = 0;
+		m_askHigh = 0;
+		m_askLow = 0;
+		m_askClose = 0;
+		m_volume = 0;
 	}
 } // namespace

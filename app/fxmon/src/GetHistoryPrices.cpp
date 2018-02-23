@@ -77,7 +77,7 @@ void GetHistoryPrices()
 	if (!session.Login())
 		return; // error
 
-	misc::vector<fxcm::HistoryPrice> historyPricesVec;
+	misc::vector<fx::OHLCPrice> historyPricesVec;
 	for (; tFrom < tTo; tFrom += toff, tEnd += toff)
 	{
 		if (tEnd > tTo)
@@ -107,7 +107,7 @@ void GetHistoryPrices()
 
 		for (size_t i = 0; i < historyPricesVec.size(); ++i)
 		{
-			const fxcm::HistoryPrice& hprice = historyPricesVec[i];
+			const fx::OHLCPrice& hprice = historyPricesVec[i];
 
 			std::stringstream ss;
 			ss << "I=" << hprice.GetInstrument().c_str() << ", ";
@@ -154,8 +154,8 @@ void LoadHistoryPrices()
 	if (pf == NULL)
 		return; // error
 	
-	misc::vector<fxcm::HistoryPrice> historyPricesVec;
-	fxcm::HistoryPrice* hp = new fxcm::HistoryPrice(
+	misc::vector<fx::OHLCPrice> historyPricesVec;
+	fx::OHLCPrice* hp = new fx::OHLCPrice(
 		"", 
 		"",
 		misc::time(),

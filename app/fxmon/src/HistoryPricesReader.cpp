@@ -19,7 +19,7 @@
 
 
 #include "HistoryPricesReader.hpp"
-#include "HistoryPrice.hpp"
+#include "OHLCPrice.hpp"
 #include "unistd.hpp"
 #include "filename.hpp"
 #include "stream.hpp"
@@ -33,6 +33,7 @@ HistoryPricesReader::HistoryPricesReader(const misc::string& instrument)
 	m_offerFileVec.push_back("d:\\GitHub\\fxcm-history\\EUR_USD_2017_1.txt");
 	m_offerFileVec.push_back("d:\\GitHub\\fxcm-history\\EUR_USD_2017_2.txt");
 	m_offerFileVec.push_back("d:\\GitHub\\fxcm-history\\EUR_USD_2017_3.txt");
+
 	// m_offerFileVec.push_back("d:\\GitHub\\fxcm-history\\EUR_USD_2017_4_testing.txt");
 	
 	m_ofvPos = 0;
@@ -87,7 +88,7 @@ void HistoryPricesReader::ParseFile(const misc::string& filePath,
 	int bufmax = 0;
 	int bufpos = 0;
 
-	fxcm::HistoryPrice* hp = new fxcm::HistoryPrice(
+	fx::OHLCPrice* hp = new fx::OHLCPrice(
 		"",
 		"",
 		misc::time(),

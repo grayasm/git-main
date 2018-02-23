@@ -27,6 +27,7 @@
 #include "Offer.hpp"
 #include "Position.hpp"
 #include "Transaction.hpp"
+#include "ATR.hpp"
 
 
 static void OpenPosition(const fx::Offer& offer, int lots, bool buy, fx::Position& result);
@@ -37,14 +38,15 @@ void TestTransaction()
 {
 	bool isConnected = false;
 
-	OffersReader oreader("EUR/USD");
-	// HistoryPricesReader oreader("EUR/USD");
+	// OffersReader oreader("EUR/USD");
+	HistoryPricesReader oreader("EUR/USD");
 	// HistdatacomReader oreader("EUR/USD");
 
+	fx::ATR atr("EUR/USD", 14, misc::time::hourSEC);
 	fx::Offer initialOffer, offer;
 	fx::Position curpos;
 	double totalPL = 0;
-	double renkoPL = 15;	// renko size
+	double renkoPL = 0;	// renko size ATR(14)
 	double pointSize = 0.0001; // EUR/USD
 	int lotsK = 1;
 
@@ -63,6 +65,8 @@ void TestTransaction()
 		if (!oreader.GetOffer(offer))
 			break;
 
+		atr.Update(offer);
+
 		bool canOpen = true;		
 		misc::time tnow = offer.GetTime();
 
@@ -78,6 +82,12 @@ void TestTransaction()
 		if (canOpen)
 			canOpen = (tnow.hour_() >= hopen && tnow.hour_() <= hclose);
 		bool noPosition = curpos.GetCurrency().GetSymbol().empty();
+		
+		if (!atr.IsValid())
+			continue;
+
+		atr.GetValue(renkoPL);
+		renkoPL *= (1. / pointSize);
 
 		// no trade is open ? -> do nothing;
 		if (!canOpen && noPosition)

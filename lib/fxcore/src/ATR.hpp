@@ -23,7 +23,7 @@
 
 #include <list>
 #include "Offer.hpp"
-#include "Price.hpp"
+#include "OHLCPrice.hpp"
 
 
 namespace fx
@@ -31,41 +31,31 @@ namespace fx
 	class ATR
 	{
 	public:
-		typedef std::list<fx::Offer>	OfferList;
-		typedef time_t					Timeframe;
-
-		enum PriceOrigin
-		{
-			PRICE_CLOSE = 0,
-			PRICE_OPEN
-		};
+		typedef std::list<fx::OHLCPrice>	OHLCPriceList;
+		typedef time_t						Timeframe;
 
 		ATR();
-		ATR(int period, PriceOrigin po, Timeframe sec);
+		ATR(const misc::string& instrument, int period, Timeframe sec);
 		~ATR();
-
 		ATR(const ATR& tc);
 		ATR& operator=(const ATR& tc);
 
-		//! true if it can calculate the average for the given period
+		const misc::string& GetInstrument() const;
 		bool IsValid() const;
-
-		//! complete the timeframe period and update current average
 		void Update(const fx::Offer& offer);
-
-		//! return current average
-		void GetValue(fx::Price& average);
+		void GetValue(double& average) const;
 
 	private:
 		void Init();
 
 	private:
-		int				m_period;
-		PriceOrigin		m_priceOrigin;
-		Timeframe		m_timeframe;
-		OfferList		m_offerList;
-		fx::Offer		m_lastOffer;
-		fx::Price		m_lastSum;
+		misc::string		m_instrument;
+		int					m_period;
+		Timeframe			m_timeframe;
+		OHLCPriceList		m_priceList;
+		fx::OHLCPrice		m_lastOHLC;
+		double				m_medATR;
+		double				m_ATR;
 	};
 } // namespace
 

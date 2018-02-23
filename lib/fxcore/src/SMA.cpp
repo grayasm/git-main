@@ -28,10 +28,11 @@ namespace fx
 		Init();
 	}
 
-	SMA::SMA(int period, PriceOrigin po, Timeframe sec)
+	SMA::SMA(const misc::string& instrument, int period, PriceOrigin po, Timeframe sec)
 	{
 		Init();
 
+		m_instrument = instrument;
 		m_period = period;
 		m_priceOrigin = po;
 		m_timeframe = sec;
@@ -51,6 +52,7 @@ namespace fx
 	{
 		if (this != &tc)
 		{
+			m_instrument = tc.m_instrument;
 			m_period = tc.m_period;
 			m_priceOrigin = tc.m_priceOrigin;
 			m_timeframe = tc.m_timeframe;
@@ -71,6 +73,9 @@ namespace fx
 	{
 		if (m_period < 2)
 			throw misc::exception("SMA is invalid");
+
+		if (m_instrument != offer.GetInstrument())
+			throw misc::exception("SMA offer is invalid");
 
 		if (m_lastOffer.GetInstrument().empty())
 		{
@@ -127,7 +132,7 @@ namespace fx
 		m_lastOffer = offer;
 	}
 
-	void SMA::GetValue(fx::Price& average)
+	void SMA::GetValue(fx::Price& average) const
 	{
 		if (m_period < 2 || m_offerList.size() != m_period)
 			throw misc::exception("SMA is invalid");

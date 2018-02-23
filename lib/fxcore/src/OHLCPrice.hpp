@@ -1,35 +1,36 @@
 /*
-Copyright (C) 2018 Mihai Vasilian
+	Copyright (C) 2018 Mihai Vasilian
 
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version 2
-of the License, or (at your option) any later version.
+	This program is free software; you can redistribute it and/or
+	modify it under the terms of the GNU General Public License
+	as published by the Free Software Foundation; either version 2
+	of the License, or (at your option) any later version.
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+	This program is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License
-along with this program; if not, write to the Free Software Foundation, Inc.
-51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+	You should have received a copy of the GNU General Public License
+	along with this program; if not, write to the Free Software Foundation,
+	Inc. 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-contact: grayasm@gmail.com
+	contact: grayasm@gmail.com
 */
 
-#ifndef __HistoryPrice_hpp__
-#define __HistoryPrice_hpp__
+#ifndef __OHLCPrice_hpp__
+#define __OHLCPrice_hpp__
 
 #include "string.hpp"
 #include "time.hpp"
 
-namespace fxcm
+namespace fx
 {
-	class HistoryPrice
+	class OHLCPrice
 	{
 	public:
-		HistoryPrice(
+		OHLCPrice();
+		OHLCPrice(
 			const char* instrument,			// 'EUR/USD'
 			const char* timeframe,			// m1 , H1 , ...
 			misc::time time,				// UTC
@@ -37,9 +38,9 @@ namespace fxcm
 			double AskOpen, double AskHigh, double AskLow, double AskClose,
 			int volume);
 
-		HistoryPrice(const HistoryPrice& tc);
-		HistoryPrice& operator=(const HistoryPrice& tc);
-		~HistoryPrice();
+		OHLCPrice(const OHLCPrice& tc);
+		OHLCPrice& operator=(const OHLCPrice& tc);
+		~OHLCPrice();
 
 		const misc::string& GetInstrument() const;
 		void SetInstrument(const char* instrument);
@@ -78,6 +79,9 @@ namespace fxcm
 		void SetVolume(int val);
 
 	private:
+		void Init();
+
+	private:
 		misc::string m_instrument;
 		misc::string m_timeframe;
 		misc::time m_time;
@@ -87,4 +91,4 @@ namespace fxcm
 	};
 } // namespace
 
-#endif // __HistoryPrice_hpp__
+#endif // __OHLCPrice_hpp__

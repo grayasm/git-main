@@ -20,6 +20,7 @@
 
 #include "unistd.hpp"
 #include "stream.hpp"
+#include "math.hpp"
 
 #include "LoginParams.hpp"
 #include "IniParams.hpp"
@@ -31,6 +32,7 @@
 #include <list>
 #include "Price.hpp"
 #include "SMA.hpp"
+#include "ATR.hpp"
 #include "Position.hpp"
 #include "Transaction.hpp"
 
@@ -89,8 +91,8 @@ int test3()
 
 	fx::Offer prev_offer, curr_offer;
 	
-	fx::SMA sma1(10, fx::SMA::PRICE_CLOSE, misc::time::hourSEC); // (F)ast
-	fx::SMA sma2(70, fx::SMA::PRICE_CLOSE, misc::time::hourSEC);// (S)low
+	fx::SMA sma1("EUR/USD", 10, fx::SMA::PRICE_CLOSE, misc::time::hourSEC); // (F)ast
+	fx::SMA sma2("EUR/USD", 70, fx::SMA::PRICE_CLOSE, misc::time::hourSEC);// (S)low
 
 	double prevBuy1 = 0, currBuy1 = 0;
 	double prevBuy2 = 0, currBuy2 = 0;
@@ -181,6 +183,39 @@ int test3()
 	fclose(pf);
 	return 0;
 }
+
+int test4()
+{
+	// OffersReader oreader("EUR/USD");
+	HistoryPricesReader oreader("EUR/USD");
+	// HistdatacomReader oreader("EUR/USD");
+
+	fx::Offer offer;
+	fx::ATR atr("EUR/USD", 14, misc::time::hourSEC);
+	double prevATR = 0;
+
+	while (oreader.GetOffer(offer))
+	{
+		atr.Update(offer);
+
+		if (atr.IsValid())
+		{
+			double currATR = 0;
+			atr.GetValue(currATR);
+
+			if (math::is_neq(prevATR, currATR))
+			{
+				misc::cout << "ATR=" << currATR << " RENKO=" <<
+					currATR * 1 / offer.GetPointSize() <<
+					std::endl;
+				prevATR = currATR;
+			}
+		}
+	}
+
+	return 0;
+}
+
 
 static void Time2DATE(time_t tt, DATE& dt)
 {

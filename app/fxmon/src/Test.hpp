@@ -24,6 +24,7 @@
 
 int test2();
 int test3();
+int test4();
 
 
 #endif // __Test_hpp__

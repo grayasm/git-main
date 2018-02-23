@@ -46,7 +46,7 @@ namespace fxcm
 	{
 	public:
 		typedef misc::vector<TradingSettings> TradingSettingsVec;
-		typedef misc::vector<HistoryPrice> HistoryPricesVec;
+		typedef misc::vector<fx::OHLCPrice> HistoryPricesVec;
 
 	public:
 		Session(const fxcm::LoginParams& loginParams,

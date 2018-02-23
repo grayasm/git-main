@@ -574,7 +574,7 @@ namespace fxcm
 
 
 		/*	Instrument and Timeframe are not available to the market data reader
-			so this needs to be set somewhere to reach the HistoryPrice.
+			so this needs to be set somewhere to reach the OHLCPrice.
 			Clear prices on successive calls.
 		*/
 		if (m_historyPricesUpdater)

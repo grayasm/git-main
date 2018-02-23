@@ -110,7 +110,7 @@ namespace fxcm
 				double askClose = reader->getAskClose(ii);
 				int volume = reader->getVolume(ii);
 
-				HistoryPrice histPrice(
+				fx::OHLCPrice histPrice(
 					m_instrument.c_str(),
 					m_timeframe.c_str(),
 					mTime,
