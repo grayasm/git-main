@@ -28,10 +28,11 @@
 #include "Position.hpp"
 #include "Transaction.hpp"
 #include "ATR.hpp"
+#include "math.hpp"
 
 
 static void OpenPosition(const fx::Offer& offer, int lots, bool buy, fx::Position& result);
-static void ClosePosition(const fx::Offer& offer, fx::Position& curpos);
+static void ClosePosition(const fx::Offer& offer, fx::Position& curpos, double renkoPL);
 
 
 void TestTransaction()
@@ -88,6 +89,9 @@ void TestTransaction()
 
 		atr.GetValue(renkoPL);
 		renkoPL *= (1. / pointSize);
+		if (renkoPL < 15.0)
+			renkoPL = 15.0;
+
 
 		// no trade is open ? -> do nothing;
 		if (!canOpen && noPosition)
@@ -131,7 +135,7 @@ void TestTransaction()
 
 		if (diffPL < -2 * renkoPL)
 		{
-			ClosePosition(offer, curpos);
+			ClosePosition(offer, curpos, renkoPL);
 
 			closedPL += curPL;
 			closedGPL += curGPL;
@@ -214,7 +218,7 @@ void OpenPosition(const fx::Offer& offer, int lots, bool buy, fx::Position& resu
 	fclose(pf);
 }
 
-void ClosePosition(const fx::Offer& offer, fx::Position& curpos)
+void ClosePosition(const fx::Offer& offer, fx::Position& curpos, double renkoPL)
 {
 	fx::Price price(offer.GetAsk(), offer.GetBid()); //buy@ask, sell@bid
 	curpos.Close(price, offer.GetTime().totime_t());
@@ -238,6 +242,8 @@ void ClosePosition(const fx::Offer& offer, fx::Position& curpos)
 	slog += misc::from_value(curpos.GetPL(), 2);
 	slog += ", GPL=";
 	slog += misc::from_value(curpos.GetGPL(), 0);
+	slog += ", RENKO=";
+	slog += misc::from_value(renkoPL, 2);
 	slog += "\n";
 
 	fwrite(slog.c_str(), sizeof(char), slog.size(), pf);
