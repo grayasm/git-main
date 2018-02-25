@@ -24,6 +24,10 @@
 #include "Session.hpp"
 #include "ErrorCodes.hpp"
 #include "Transaction.hpp"
+#include "SMA.hpp"
+#include "ATR.hpp"
+#include "Range.hpp"
+
 
 
 void OpenPosition(	const fxcm::IniParams& iniParams,
@@ -60,21 +64,26 @@ void RunTransaction()
 		loginParams->GetConnection().empty())
 		return;
 
-
 	misc::string instr("EUR/USD");
 	fx::Offer initialOffer, offer;
 	fx::Price price;
 	fx::Transaction tr;
+	fx::Range range;
+	fx::ATR atr(instr, 14, misc::time::hourSEC);
+	fx::SMA sma(instr, 7, fx::SMA::PRICE_CLOSE, misc::time::hourSEC);
 	double totalPL = 0;
-	double renkoPL = 15; // renko size
+	double renkoPL = 0; // renko size ATR(14)
 	int lots = 1;
 	bool buy = true;
 
 
-	//  Frankfurt: Xetra trading takes place from 9.00a.m. until 5.30 p.m. CET. (UTC+100)
-	//  New York:  Core Trading Session: 9:30 AM TO 4:00 PM ET (UTC-500)
-	int hopen = 8;		// 9 a.m. Frankfurt Open
-	int hclose = 18;	// 18-5=13 pm New York, closing 16 pm
+	// Frankfurt: open 8.00 UTC
+	// London   : open 9.00 UTC
+	// New York : open 14.00 UTC
+	// Don't open new positions after 17.00 UTC = 12.00 EST (New York)
+
+	int hopen = 8;
+	int hclose = 17;
 
 	double closedPL = 0;
 	double closedGPL = 0;
@@ -126,10 +135,31 @@ void RunTransaction()
 		if (session.GetLastOffer(offer, instr.c_str()) != fxcm::ErrorCodes::ERR_SUCCESS)
 			break; // error with the price feed
 
+		// update ATR, SMA
+		atr.Update(offer);
+		sma.Update(offer);
+
+		if (!atr.IsValid())
+			continue;
+
+		if (!sma.IsValid())
+			continue;
+
+		atr.GetValue(renkoPL);
+		renkoPL *= (1. / offer.GetPointSize());
+		if (renkoPL < 15.0)
+			renkoPL = 15.0;
+
+		
 		// when can I open a position
 		bool canOpen = (tnow.hour_() >= hopen && tnow.hour_() < hclose);
 		if (!canOpen && tr.IsEmpty())
 		{
+			// reset protective range over the night
+			if (!canOpen && (range.IsMinValid() || range.IsMaxValid()))
+				range = fx::Range();
+
+
 			msleep(1000 * misc::time::minSEC); // slow down a bit
 			continue;
 		}
@@ -149,13 +179,39 @@ void RunTransaction()
 
 			if (pips > renkoPL && canOpen)
 			{
+				// check if range is in place
+				canOpen = !range.IsMaxValid() ||
+					(offer.GetAsk() > range.GetMax().GetBuy());
+
+				// buy higher than sma value
+				if (canOpen && range.IsMaxValid())
+				{
+					fx::Price smaval;
+					sma.GetValue(smaval);
+					canOpen = offer.GetAsk() > smaval.GetBuy();
+				}
+
 				buy = true;
-				OpenPosition(*iniParams, session, offer, lots, buy, tr);
+				if (canOpen)
+					OpenPosition(*iniParams, session, offer, lots, buy, tr);
 			}
 			else if (pips < -renkoPL && canOpen)
 			{
+				// check if range is in place
+				canOpen = !range.IsMinValid() ||
+					(offer.GetAsk() < range.GetMin().GetBuy());
+
+				// sell lower than sma value
+				if (canOpen && range.IsMinValid())
+				{
+					fx::Price smaval;
+					sma.GetValue(smaval);
+					canOpen = offer.GetAsk() < smaval.GetBuy();
+				}
+
 				buy = false;
-				OpenPosition(*iniParams, session, offer, lots, buy, tr);
+				if (canOpen)
+					OpenPosition(*iniParams, session, offer, lots, buy, tr);
 			}				
 			else
 				continue;
@@ -192,6 +248,58 @@ void RunTransaction()
 
 			if (!tr.IsEmpty())
 				continue; // error during ClosePosition!
+
+
+			// if positive, reset previous range (if any)
+			if (curPL > 0)
+			{
+				range = fx::Range();
+			}
+			else
+			{
+				if (buy)
+				{
+					fx::Price limprice(
+						offer.GetAsk() + 15.0 * offer.GetPointSize(),
+						offer.GetBid() + 15.0 * offer.GetPointSize());
+					range.SetMax(limprice);
+				}
+				else
+				{
+					fx::Price limprice(
+						offer.GetAsk() - 15.0 * offer.GetPointSize(),
+						offer.GetBid() - 15.0 * offer.GetPointSize());
+					range.SetMin(limprice);
+				}
+			} // reset range
+
+
+			// do not open in a range
+			if (canOpen)
+			{
+				bool isBuy = !buy; // enter opposite direction
+				if (isBuy && range.IsMaxValid())
+				{
+					canOpen = (offer.GetAsk() > range.GetMax().GetBuy());
+
+					// buy higher than sma value
+					fx::Price smaval;
+					sma.GetValue(smaval);
+					if (canOpen)
+						canOpen = offer.GetAsk() > smaval.GetBuy();
+				}
+				else if (!isBuy && range.IsMinValid())
+				{
+					canOpen = (offer.GetAsk() < range.GetMin().GetBuy());
+
+					// sell lower than sma value
+					fx::Price smaval;
+					sma.GetValue(smaval);
+					if (canOpen)
+						canOpen = offer.GetAsk() < smaval.GetBuy();
+				}
+			}
+
 
 			// reset initialOffer at the end of the day
 			if (!canOpen)

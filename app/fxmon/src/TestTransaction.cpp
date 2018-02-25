@@ -27,38 +27,47 @@
 #include "Offer.hpp"
 #include "Position.hpp"
 #include "Transaction.hpp"
+#include "Range.hpp"
+#include "SMA.hpp"
 #include "ATR.hpp"
 #include "math.hpp"
 
 
-static void OpenPosition(const fx::Offer& offer, int lots, bool buy, fx::Position& result);
-static void ClosePosition(const fx::Offer& offer, fx::Position& curpos, double renkoPL);
+static void OpenPosition(const fx::Offer& offer, int lots, bool buy, fx::Position& result, double renkoPL);
+static void ClosePosition(const fx::Offer& offer, fx::Position& curpos, double renkoPL, double totalPL, double totalGPL);
 
 
 void TestTransaction()
 {
+	unlink("TradeResult.txt");
+
 	bool isConnected = false;
 
 	// OffersReader oreader("EUR/USD");
-	HistoryPricesReader oreader("EUR/USD");
-	// HistdatacomReader oreader("EUR/USD");
+	// HistoryPricesReader oreader("EUR/USD");
+	HistdatacomReader oreader("EUR/USD");
 
 	fx::ATR atr("EUR/USD", 14, misc::time::hourSEC);
+	fx::SMA sma("EUR/USD", 7, fx::SMA::PRICE_CLOSE, misc::time::hourSEC);
+	
 	fx::Offer initialOffer, offer;
 	fx::Position curpos;
+	fx::Range range;
 	double totalPL = 0;
-	double renkoPL = 0;	// renko size ATR(14)
+	double renkoPL = 0;		// renko size ATR(14)
 	double pointSize = 0.0001; // EUR/USD
 	int lotsK = 1;
 
-	//  Frankfurt: Xetra trading takes place from 9.00a.m. until 5.30 p.m. CET. (UTC+100)
-	//  New York:  Core Trading Session: 9:30 AM TO 4:00 PM ET (UTC-500)
-	int hopen = 8;		// CET 9:00 is Frankfurt open
-	int hclose = 17;	// CET 23:00 is New York close
+	// Frankfurt: open 8.00 UTC
+	// London   : open 9.00 UTC
+	// New York : open 14.00 UTC
+	// Don't open new positions after 17.00 UTC = 12.00 EST (New York)
+
+	int hopen = 8;
+	int hstop = 17;
 
 	double closedPL = 0;
 	double closedGPL = 0;
-	
 
 
 	while (true)
@@ -66,25 +75,23 @@ void TestTransaction()
 		if (!oreader.GetOffer(offer))
 			break;
 
-		atr.Update(offer);
-
-		bool canOpen = true;		
+		// check for outside trading hours
 		misc::time tnow = offer.GetTime();
-
-		// outside trading hours?
 		if ((tnow.wday() == misc::time::SAT) ||
 			(tnow.wday() == misc::time::FRI && tnow.hour_() >= 22) ||
 			(tnow.wday() == misc::time::SUN && tnow.hour_() < 22))
 		{
-			canOpen = false;
+			continue;
 		}
 
-		// when can I open a position?
-		if (canOpen)
-			canOpen = (tnow.hour_() >= hopen && tnow.hour_() <= hclose);
-		bool noPosition = curpos.GetCurrency().GetSymbol().empty();
-		
+		// update ATR, SMA
+		atr.Update(offer);
+		sma.Update(offer);
+
 		if (!atr.IsValid())
+			continue;
+
+		if (!sma.IsValid())
 			continue;
 
 		atr.GetValue(renkoPL);
@@ -93,6 +100,18 @@ void TestTransaction()
 			renkoPL = 15.0;
 
 
+		// when can I open a position?
+		bool canOpen = true;		
+		if (canOpen)
+			canOpen = (tnow.hour_() >= hopen && tnow.hour_() <= hstop);
+
+		// reset protective range over the night
+		if (!canOpen && (range.IsMinValid() || range.IsMaxValid()))
+			range = fx::Range();
+
+
+		bool noPosition = curpos.GetCurrency().GetSymbol().empty();
+		
 		// no trade is open ? -> do nothing;
 		if (!canOpen && noPosition)
 			continue;
@@ -109,9 +128,38 @@ void TestTransaction()
 			double pips = (offer.GetAsk() - initialOffer.GetAsk()) / pointSize;
 
 			if (pips > renkoPL && canOpen)
-				OpenPosition(offer, lotsK, true, curpos);
+			{
+				// check if range is in place
+				canOpen = !range.IsMaxValid() ||
+					(offer.GetAsk() > range.GetMax().GetBuy());
+
+				// buy higher than sma value
+				if (canOpen && range.IsMaxValid())
+				{
+					fx::Price smaval;
+					sma.GetValue(smaval);
+					canOpen = offer.GetAsk() > smaval.GetBuy();
+				}
+
+				if (canOpen)
+					OpenPosition(offer, lotsK, true, curpos, renkoPL);
+			}				
 			else if (pips < -renkoPL && canOpen)
-				OpenPosition(offer, lotsK, false, curpos);
+			{
+				// check if range is in place
+				canOpen = !range.IsMinValid() ||
+					(offer.GetAsk() < range.GetMin().GetBuy());
+				// sell lower than sma value
+				if (canOpen && range.IsMinValid())
+				{
+					fx::Price smaval;
+					sma.GetValue(smaval);
+					canOpen = offer.GetAsk() < smaval.GetBuy();
+				}
+
+				if (canOpen)
+					OpenPosition(offer, lotsK, false, curpos, renkoPL);
+			}				
 			else
 				continue;
 
@@ -126,7 +174,6 @@ void TestTransaction()
 		double curGPL = curpos.GetGPL(curprice);
 		double diffPL = curPL - totalPL;
 
-
 		if (diffPL > renkoPL)
 		{
 			totalPL += renkoPL;
@@ -135,26 +182,75 @@ void TestTransaction()
 
 		if (diffPL < -2 * renkoPL)
 		{
-			ClosePosition(offer, curpos, renkoPL);
-
 			closedPL += curPL;
 			closedGPL += curGPL;
+
+			ClosePosition(offer, curpos, renkoPL, closedPL, closedGPL);
 			
 			misc::cout << "curPL=" << curPL << " closedGPL=" << closedGPL
 				<< std::endl;
 
+			// if positive, reset previous range (if any)
+			if (curPL > 0)
+			{
+				range = fx::Range();
+			}
+			else
+			{
+				if (curpos.IsBuy())
+				{
+					fx::Price limprice(
+						offer.GetAsk() + 15.0 * pointSize,
+						offer.GetBid() + 15.0 * pointSize);
+					range.SetMax(limprice);
+				}
+				else
+				{
+					// renkoPL
+					fx::Price limprice(
+						offer.GetAsk() - 15.0 * pointSize,
+						offer.GetBid() - 15.0 * pointSize);
+					range.SetMin(limprice);
+				}
+			}
 
-			// reset initialOffer at the end of the day
+			
+			// do not open in a range
+			if (canOpen)
+			{
+				bool isBuy = !curpos.IsBuy(); // enter opposite direction
+				if (isBuy && range.IsMaxValid())
+				{
+					canOpen = (offer.GetAsk() > range.GetMax().GetBuy());
+					// buy higher than sma value
+					fx::Price smaval;
+					sma.GetValue(smaval);
+					if (canOpen)
+						canOpen = offer.GetAsk() > smaval.GetBuy();
+				}					
+				else if (!isBuy && range.IsMinValid())
+				{
+					canOpen = (offer.GetAsk() < range.GetMin().GetBuy());
+					// sell lower than sma value
+					fx::Price smaval;
+					sma.GetValue(smaval);
+					if (canOpen)
+						canOpen = offer.GetAsk() < smaval.GetBuy();
+				}
+			}
+
+			
 			if (!canOpen)
 			{
+				// reset initialOffer at the end of the day
 				initialOffer = fx::Offer();
 				curpos = fx::Position();
 				totalPL = 0;
 			}
 			else
 			{
-				bool isBuy = curpos.IsBuy(); // trend reversed
-				OpenPosition(offer, lotsK, !isBuy, curpos);
+				bool isBuy = curpos.IsBuy(); // enter opposite direction
+				OpenPosition(offer, lotsK, !isBuy, curpos, renkoPL);
 				totalPL = 0;
 			}
 		}
@@ -178,7 +274,7 @@ void TestTransaction()
 }
 
 
-void OpenPosition(const fx::Offer& offer, int lots, bool buy, fx::Position& result)
+void OpenPosition(const fx::Offer& offer, int lots, bool buy, fx::Position& result, double renkoPL)
 {
 	static int orderID = 0;
 	static int tradeID = 0;
@@ -207,18 +303,21 @@ void OpenPosition(const fx::Offer& offer, int lots, bool buy, fx::Position& resu
 
 	misc::string slog;
 	slog += offer.GetTime().tostring();
-	slog += (buy == true ? ", B:" : ", S:");
+	slog += (buy == true ? " B:" : " S:");
 	slog += (buy == true ? misc::from_value(offer.GetAsk(), 5) :
 						 misc::from_value(offer.GetBid(), 5));
-	slog += ", L(k)=";
-	slog += misc::from_value(lots);
+	// slog += ", L(k)=";
+	// slog += misc::from_value(lots);
+	slog += "  RENKO=";
+	slog += misc::from_value(renkoPL, 2);
 	slog += "\n";
 
 	fwrite(slog.c_str(), sizeof(char), slog.size(), pf);
 	fclose(pf);
 }
 
-void ClosePosition(const fx::Offer& offer, fx::Position& curpos, double renkoPL)
+void ClosePosition(const fx::Offer& offer, fx::Position& curpos, double renkoPL,
+	double totalPL, double totalGPL)
 {
 	fx::Price price(offer.GetAsk(), offer.GetBid()); //buy@ask, sell@bid
 	curpos.Close(price, offer.GetTime().totime_t());
@@ -231,21 +330,28 @@ void ClosePosition(const fx::Offer& offer, fx::Position& curpos, double renkoPL)
 	bool buy = curpos.IsBuy();
 
 	misc::string slog;
+	if (curpos.GetPL() < 0)
+		slog += "\t";
 	slog += offer.GetTime().tostring();
-	slog += (buy == true ? ", S:" : ", B:");
+	slog += (buy == true ? " S:" : " B:");
 	slog += (buy == true ? misc::from_value(offer.GetBid(), 5) :
 						misc::from_value(offer.GetAsk(), 5));
-	slog += ", L(k)=";
-	slog += misc::from_value(curpos.GetAmount(), 0);
+	//slog += ", L(k)=";
+	//slog += misc::from_value(curpos.GetAmount(), 0);
 
-	slog += ", PL(1k)=";
+	slog += "  currPL=";
 	slog += misc::from_value(curpos.GetPL(), 2);
-	slog += ", GPL=";
-	slog += misc::from_value(curpos.GetGPL(), 0);
-	slog += ", RENKO=";
+	//slog += "   totalPL=";
+	//slog += misc::from_value(totalPL, 0);
+	slog += "  totalGPL=";
+	slog += misc::from_value(totalGPL, 0);
+	slog += "  RENKO=";
 	slog += misc::from_value(renkoPL, 2);
 	slog += "\n";
+	if (curpos.GetPL() < 0)
+		slog += "\t---------------------------------------------------------\n";
 
 	fwrite(slog.c_str(), sizeof(char), slog.size(), pf);
 	fclose(pf);
 }
+
