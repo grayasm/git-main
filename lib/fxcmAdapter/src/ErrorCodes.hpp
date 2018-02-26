@@ -21,6 +21,7 @@ contact: grayasm@gmail.com
 #ifndef __ErrorCodes_hpp__
 #define __ErrorCodes_hpp__
 
+#include "string.hpp"
 
 namespace fxcm
 {
@@ -51,10 +52,12 @@ namespace fxcm
 			ERR_NO_ACCOUNT = -118
 		};
 
-	public:
+		static misc::string GetText(ErrorId id);
+	
+	private:
+		// abstract class
 		ErrorCodes();
 		~ErrorCodes();
-		const char* GetText(ErrorId id) const;
 	};
 } // namespace
 

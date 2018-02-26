@@ -43,8 +43,8 @@ int main(int /*argc*/, char** /*argv*/)
 	// GetHistoryPrices();
 	// LoadHistoryPrices();
 	// GetMarketOffers();
-	TestTransaction();
-	// RunTransaction();
+	// TestTransaction();
+	RunTransaction();
 	// test3();
 	// test4();
 

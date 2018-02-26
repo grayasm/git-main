@@ -22,8 +22,12 @@
 #ifndef __MarketPlugin_hpp__
 #define __MarketPlugin_hpp__
 
+
+#include "vector.hpp"
 #include "Offer.hpp"
-#include "Transaction.hpp"
+#include "Position.hpp"
+
+
 
 namespace fx
 {
@@ -39,11 +43,11 @@ namespace fx
 		virtual void OpenPosition(	const fx::Offer& offer,
 									int lots,
 									bool buy,
-									fx::Transaction& result) = 0;
+									misc::vector<fx::Position>& result) = 0;
 
 		virtual void ClosePosition(	const fx::Offer& offer,
 									const fx::Position& pos,
-									fx::Transaction& result) = 0;
+									misc::vector<fx::Position>& result) = 0;
 	};
 } // namespace
 
