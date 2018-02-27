@@ -47,24 +47,27 @@ void MarketPlugin4fxcm::OpenPosition(
 	if (ret != fxcm::ErrorCodes::ERR_SUCCESS)
 	{
 		 misc::cout << __FUNCTION__ <<
-			 ": m_session->OpenPosition returned error=" <<
+			 ": m_session->OpenPosition returned error: " <<
 			 fxcm::ErrorCodes::GetText((fxcm::ErrorCodes::ErrorId)ret).c_str()
 			 << std::endl;
 	}
 
-	misc::string message(offer.GetTime().tostring());
-	message += " => Open Position: \n";
-	result = fx::Transaction(); // clear the result
-
-	for (size_t i = 0; i < openPositions.size(); ++i)
+	// Log open position action.
+	if (m_iniParams.GetEnableLogging())
 	{
-		const fx::Position& pos = openPositions[i];
-		result.Add(pos);
-		message += pos.ToString();
-		message += "\n";
+		misc::string msg("Open  at: ");
+		msg += offer.GetTime().tostring();
+		msg += " count=";
+		msg += misc::from_value(result.size());
+		msg += " position(s)\n";
+		for (size_t i = 0; i < result.size(); ++i)
+		{
+			msg += result[i].ToString();
+			msg += "\n";
+		}
+		Log(msg);
 	}
 
-	Log(iniParams, message);
 }
 
 void MarketPlugin4fxcm::ClosePosition(
@@ -72,5 +75,46 @@ void MarketPlugin4fxcm::ClosePosition(
 	const fx::Position& pos,
 	misc::vector<fx::Position>& result)
 {
+	int ret = m_session->ClosePosition(offer, pos, result);
 
+	if (ret != fxcm::ErrorCodes::ERR_SUCCESS)
+	{
+		misc::cout << __FUNCTION__ <<
+			": m_session->ClosePosition returned error: " <<
+			fxcm::ErrorCodes::GetText((fxcm::ErrorCodes::ErrorId)ret).c_str()
+			<< std::endl;
+	}
+
+	// Log close position action.
+	if (m_iniParams.GetEnableLogging())
+	{
+		double curPL = 0, curGPL = 0;
+		misc::string msg("Close at: ");
+		msg += offer.GetTime().tostring();
+		msg += " count=";
+		msg += misc::from_value(result.size());
+		msg += " position(s)\n";
+		for (size_t i = 0; i < result.size(); ++i)
+		{
+			msg += result[i].ToString();
+			msg += " curPL="; msg += misc::from_value(curPL, 2);
+			msg += " curGPL="; msg += misc::from_value(curGPL, 2);
+			msg += "\n";
+		}
+		Log(msg);
+	}	
+}
+
+
+void MarketPlugin4fxcm::Log(const misc::string& msg)
+{
+	if (!m_iniParams.GetEnableLogging())
+		return;
+
+	FILE *pf = fopen(m_iniParams.GetLoggingFile().c_str(), "a+");
+	if (pf == NULL)
+		return;
+
+	fwrite(msg.c_str(), sizeof(char), msg.size(), pf);
+	fclose(pf);
 }

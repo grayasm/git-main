@@ -20,3 +20,39 @@
 #include "StrategyRenkoAtr.hpp"
 
 
+namespace fx
+{
+	StrategyRenkoAtr::StrategyRenkoAtr(
+		fx::MarketPlugin* plugin,
+		const misc::string& instrument,
+		double renkoMinValue,
+		int atrPeriod, time_t atrTimeframe,
+		int smaPeriod, time_t smaTimeframe, fx::SMA::PriceOrigin po,
+		int openHour, int closeHour)
+	{
+		m_plugin = plugin;
+		m_instrument = instrument;
+		m_renkoMinValue = renkoMinValue;
+		m_atrPeriod = atrPeriod;
+		m_atrTimeframe = atrTimeframe;
+		m_smaPeriod = smaPeriod;
+		m_smaTimeframe = smaTimeframe;
+		m_smaPriceOrigin = po;
+		m_openHour = openHour;
+		m_closeHour = closeHour;
+	}
+
+	StrategyRenkoAtr::~StrategyRenkoAtr()
+	{
+	}
+	
+	void StrategyRenkoAtr::Update(const fx::Offer& offer)
+	{
+
+	}
+
+	bool StrategyRenkoAtr::IsCanceled() const
+	{
+
+	}
+} // namespace

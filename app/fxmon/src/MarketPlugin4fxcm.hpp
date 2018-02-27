@@ -45,6 +45,9 @@ public:
 	// --- end of virtual table ---
 
 private:
+	void Log(const misc::string& msg);
+
+private:
 	fxcm::Session*		m_session;
 	fxcm::IniParams		m_iniParams;
 };
