@@ -5,6 +5,13 @@
 # svn diff   $HOME/Code/svn-trunk
 # svn commit $HOME/Code/svn-trunk
 
+# ---------------------------- SSH --------------------------------------------
+echo "Stop and disable ip(6)tables services"
+systemctl stop iptables.service
+systemctl stop ip6tables.service
+
+systemctl disable iptables.service
+systemctl disable ip6tables.service
 
 # ---------------------------- IPV4 -------------------------------------------
 echo "Flush all ipv4 chains and list default rules"
@@ -20,12 +27,6 @@ ip6tables -L
 # -----------------------------------------------------------------------------
 service iptables save
 service ip6tables save
-
-systemctl disable iptables.service
-systemctl disable ip6tables.service
-
-systemctl stop iptables.service
-systemctl stop ip6tables.service
 
 systemctl list-unit-files | grep 'iptables'
 systemctl list-unit-files | grep 'ip6tables'
