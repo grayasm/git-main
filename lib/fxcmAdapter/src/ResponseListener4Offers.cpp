@@ -104,7 +104,8 @@ namespace fxcm
 					loginRules->isTableLoadedByDefault(Offers) +
 					loginRules->getTableRefreshResponse(Offers)
 			*/
-			misc::cout << __FUNCTION__ << " response::TablesUpdates" << std::endl;
+
+			// misc::cout << __FUNCTION__ << " response::TablesUpdates" << std::endl;
 			if (m_offersUpdater)
 				m_offersUpdater->UpdateOffers(tablesUpdates);
 			if (m_offersWriter)

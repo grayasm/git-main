@@ -41,8 +41,8 @@ namespace fx
 		// m_range - default with FLT_MAX;
 		m_totalPL = 0;
 		m_closedGPL = 0;
-		m_openHour = 0;
-		m_closeHour = 0;
+		m_openHour = openHour;
+		m_closeHour = closeHour;
 		m_isCancelled = false;
 	}
 
@@ -246,8 +246,8 @@ namespace fx
 			else
 			{
 				// Trading still possible
-				buy = !buy;
-				OpenPosition(offer, !buy);
+				bool isBuy = !buy;	// enter opposite direction
+				OpenPosition(offer, isBuy);
 				m_totalPL = 0;
 			}
 		} // (diffPL < -2 * renkoPL)
@@ -312,6 +312,8 @@ namespace fx
 			return;
 		}
 
+		SetValidMarketTime(tnow, totaltime);
+
 		for (time_t i = 0; i < totaltime; i += misc::time::hourSEC)
 		{
 			misc::time from = tnow - (totaltime - i);
@@ -336,9 +338,7 @@ namespace fx
 			int ret = m_plugin->GetOHLCPrices(m_instrument, "m1", from, to, result);
 
 			if (ret != 0)
-			{
-				m_isCancelled = true;
-				return;
+			{ // may get some weekend data, don't react for now.
 			}
 
 			misc::vector<fx::OHLCPrice>::iterator it = result.begin();
@@ -408,7 +408,6 @@ namespace fx
 		int period = m_sma.GetPeriod();
 		time_t timeframe = m_sma.GetTimeframe();
 		fx::SMA::PriceOrigin po = m_sma.GetPriceOrigin();
-
 		time_t totaltime = timeframe * (period + period / 2);
 
 		if (totaltime < misc::time::minSEC)
@@ -418,6 +417,8 @@ namespace fx
 			m_isCancelled = true;
 			return;
 		}
+
+		SetValidMarketTime(tnow, totaltime);
 
 		for (time_t i = 0; i < totaltime; i += misc::time::hourSEC)
 		{
@@ -443,9 +444,7 @@ namespace fx
 			int ret = m_plugin->GetOHLCPrices(m_instrument, "m1", from, to, result);
 
 			if (ret != 0)
-			{
-				m_isCancelled = true;
-				return;
+			{ // may get some weekend data, don't react for now.
 			}
 
 			misc::vector<fx::OHLCPrice>::iterator it = result.begin();
@@ -480,6 +479,42 @@ namespace fx
 				": SMA indicator could not be initialized" << std::endl;
 			m_isCancelled = true;
 			return;
+		}
+	}
+
+	void StrategyRenkoAtr::SetValidMarketTime(misc::time& tend, time_t& interval) const
+	{
+		/*	Avoid weekend time interval.
+			FRI 16:55 EST -> SUN 17:15 EST		 converted to UTC:
+			FRI 22:00 UTC -> SUN 22:15 UTC
+			And also avoid legal holidays (at least for FXCM).
+			25-DEC and 01-JAN
+		*/
+
+		while ((tend.wday() == misc::time::SAT) ||
+			(tend.wday() == misc::time::FRI && tend.hour_() >= 22) ||
+			(tend.wday() == misc::time::SUN && tend.hour_() < 22) ||
+			(tend.mon_() == misc::time::Month::DEC && tend.mday_() == 25) ||
+			(tend.mon_() == misc::time::Month::JAN && tend.mday_() == 1))
+		{
+			tend -= misc::time::hourSEC;
+		}
+
+		time_t adjustinterv = interval;
+		misc::time tbeg = tend - adjustinterv;
+		while ((tbeg.wday() == misc::time::SAT) ||
+			(tbeg.wday() == misc::time::FRI && tbeg.hour_() >= 22) ||
+			(tbeg.wday() == misc::time::SUN && tbeg.hour_() < 22) ||
+			(tbeg.mon_() == misc::time::Month::DEC && tbeg.mday_() == 25) ||
+			(tbeg.mon_() == misc::time::Month::JAN && tbeg.mday_() == 1))
+		{
+			adjustinterv += misc::time::hourSEC;
+			tbeg = tend - adjustinterv;
+		}
+
+		if (adjustinterv != interval) // it was adjusted
+		{
+			interval += adjustinterv;
 		}
 	}
 } // namespace

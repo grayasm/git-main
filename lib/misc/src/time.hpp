@@ -97,7 +97,7 @@ namespace misc
 		int sec_() const;			// _ suffixed to avoid nasty macros
 		int min_() const;
 		int hour_() const;
-		int mday_() const;
+		int mday_() const;			// 1 up to 31
 		int mon_() const;			// Jan=1, Feb=2, ..., Dec=12
 		int year_() const;			// between 1900 and 2038(32) or 3000(64bit)
 

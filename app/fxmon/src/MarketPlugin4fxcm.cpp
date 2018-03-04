@@ -98,6 +98,8 @@ int MarketPlugin4fxcm::ClosePosition(
 		msg += " position(s)\n";
 		for (size_t i = 0; i < result.size(); ++i)
 		{
+			curPL += result[i].GetPL();
+			curGPL += result[i].GetGPL();
 			msg += result[i].ToString();
 			msg += " curPL="; msg += misc::from_value(curPL, 2);
 			msg += " curGPL="; msg += misc::from_value(curGPL, 2);

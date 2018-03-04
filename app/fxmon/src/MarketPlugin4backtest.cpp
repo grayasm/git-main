@@ -33,7 +33,7 @@ MarketPlugin4backtest::MarketPlugin4backtest(
 	m_iniParams = iniParams;
 	m_orderID = 0;
 	m_tradeID = 0;
-	// m_posvec - clean;	
+	// m_posvec - clean;
 }
 
 MarketPlugin4backtest::~MarketPlugin4backtest()
@@ -102,7 +102,7 @@ int MarketPlugin4backtest::ClosePosition(
 
 			fx::Price price(offer.GetAsk(), offer.GetBid());
 			cpos.Close(price, offer.GetTime().totime_t());
-
+			
 			result.push_back(cpos);
 			m_posvec.erase(it);
 
@@ -121,6 +121,8 @@ int MarketPlugin4backtest::ClosePosition(
 		msg += " position(s)\n";
 		for (size_t i = 0; i < result.size(); ++i)
 		{
+			curPL += result[i].GetPL();
+			curGPL += result[i].GetGPL();
 			msg += result[i].ToString();
 			msg += " curPL="; msg += misc::from_value(curPL, 2);
 			msg += " curGPL="; msg += misc::from_value(curGPL, 2);
@@ -158,8 +160,6 @@ int MarketPlugin4backtest::GetOHLCPrices(
 
 	return ret;
 }
-
-
 
 void MarketPlugin4backtest::Log(const misc::string& msg)
 {

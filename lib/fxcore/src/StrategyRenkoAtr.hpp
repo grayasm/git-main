@@ -59,6 +59,7 @@ namespace fx
 		void ClosePosition(const fx::Offer& offer);
 		void InitializeATR(const fx::Offer& offer);
 		void InitializeSMA(const fx::Offer& offer);
+		void SetValidMarketTime(misc::time& tm, time_t& interval) const;
 
 	private:
 		fx::MarketPlugin*		m_plugin;

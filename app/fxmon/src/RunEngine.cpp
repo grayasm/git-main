@@ -42,31 +42,33 @@ void RunEngine()
 
 
 	bool isConnected = false;
+	int hOpen = 0;
+	int hClose = 24; //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! only for testing!!!!!!
 	fx::Offer offer;
 	misc::string instrument("EUR/USD");
 	fxcm::Session session(*loginParams, *iniParams);
 	MarketPlugin4fxcm plugin(&session, *iniParams);
-	fx::StrategyRenkoAtr strategy(&plugin, instrument, 15, 8, 17);
+	fx::StrategyRenkoAtr strategy(&plugin, instrument, 15, 0, 24);
 	
 
 	while (true)
 	{
 		// outside trading hours?
 		misc::time tnow(::time(NULL));
-		//if ((tnow.wday() == misc::time::SAT) ||
-		//	(tnow.wday() == misc::time::FRI && tnow.hour_() >= 22) ||
-		//	(tnow.wday() == misc::time::SUN && tnow.hour_() < 22))
-		//{
-		//	if (isConnected)
-		//	{
-		//		if (session.Logout())
-		//			isConnected = false;
-		//	}
+		if ((tnow.wday() == misc::time::SAT) ||
+			(tnow.wday() == misc::time::FRI && tnow.hour_() >= 22) ||
+			(tnow.wday() == misc::time::SUN && tnow.hour_() < 22))
+		{
+			if (isConnected)
+			{
+				if (session.Logout())
+					isConnected = false;
+			}
 
-		//	// idle 1m
-		//	msleep(1000ul * misc::time::minSEC);
-		//	continue;
-		//}
+			// idle 1m
+			msleep(1000ul * misc::time::minSEC);
+			continue;
+		}
 
 		// trading is active
 		if (!isConnected)
