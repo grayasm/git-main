@@ -34,18 +34,19 @@ namespace fx
 	/*	The core does not need to know login details, if or when to logout,
 		or any other particular details about a broker. It is enough for now
 		to provide few simple methods to open and close one or more positions.
+		On SUCCESS return value is zero.
 	*/
 	class MarketPlugin
 	{
 	public:
 		virtual ~MarketPlugin();
 
-		virtual void OpenPosition(	const fx::Offer& offer,
+		virtual int OpenPosition(	const fx::Offer& offer,
 									int lots,
 									bool buy,
 									misc::vector<fx::Position>& result) = 0;
 
-		virtual void ClosePosition(	const fx::Offer& offer,
+		virtual int ClosePosition(	const fx::Offer& offer,
 									const fx::Position& pos,
 									misc::vector<fx::Position>& result) = 0;
 	};

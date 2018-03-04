@@ -36,7 +36,7 @@ MarketPlugin4fxcm::~MarketPlugin4fxcm()
 
 }
 
-void MarketPlugin4fxcm::OpenPosition(
+int MarketPlugin4fxcm::OpenPosition(
 	const fx::Offer& offer,
 	int lots,
 	bool buy,
@@ -68,9 +68,10 @@ void MarketPlugin4fxcm::OpenPosition(
 		Log(msg);
 	}
 
+	return ret;
 }
 
-void MarketPlugin4fxcm::ClosePosition(
+int MarketPlugin4fxcm::ClosePosition(
 	const fx::Offer& offer,
 	const fx::Position& pos,
 	misc::vector<fx::Position>& result)
@@ -102,7 +103,9 @@ void MarketPlugin4fxcm::ClosePosition(
 			msg += "\n";
 		}
 		Log(msg);
-	}	
+	}
+
+	return ret;
 }
 
 

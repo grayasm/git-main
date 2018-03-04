@@ -34,12 +34,12 @@ public:
 	~MarketPlugin4fxcm();
 
 	// --- virtual table ---
-	void OpenPosition(	const fx::Offer& offer,
+	int OpenPosition(	const fx::Offer& offer,
 						int lots,
 						bool buy,
 						misc::vector<fx::Position>& result);
 
-	void ClosePosition(	const fx::Offer& offer,
+	int ClosePosition(	const fx::Offer& offer,
 						const fx::Position& pos,
 						misc::vector<fx::Position>& result);
 	// --- end of virtual table ---

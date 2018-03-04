@@ -26,13 +26,12 @@
 
 //c++
 // local
-#include "exception.hpp"
-#include "stream.hpp"
 #include "Test.hpp"
 #include "GetHistoryPrices.hpp"
 #include "GetMarketOffers.hpp"
 #include "TestTransaction.hpp"
 #include "RunTransaction.hpp"
+#include "RunEngine.hpp"
 
 
 int main(int /*argc*/, char** /*argv*/)
@@ -44,7 +43,8 @@ int main(int /*argc*/, char** /*argv*/)
 	// LoadHistoryPrices();
 	// GetMarketOffers();
 	// TestTransaction();
-	RunTransaction();
+	// RunTransaction();
+	RunEngine();
 	// test3();
 	// test4();
 

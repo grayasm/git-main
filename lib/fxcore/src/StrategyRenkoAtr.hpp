@@ -42,33 +42,43 @@ namespace fx
 		StrategyRenkoAtr(
 			fx::MarketPlugin* plugin,
 			const misc::string& instrument,
-			double renkoMinValue,
-			int atrPeriod, time_t atrTimeframe,
-			int smaPeriod, time_t smaTimeframe, fx::SMA::PriceOrigin po,
-			int openHour, int closeHour);
+			double renkoMin,
+			int openHour,
+			int closeHour);
+
 		~StrategyRenkoAtr();
 		StrategyRenkoAtr(const StrategyRenkoAtr& tc) = delete;
 		StrategyRenkoAtr& operator=(const StrategyRenkoAtr& tc) = delete;
 
 		void Update(const fx::Offer& offer);
 		bool IsCanceled() const;
+		double GetClosedGPL() const;
+
+	private:
+		void OpenPosition(const fx::Offer& offer, bool buy);
+		void ClosePosition(const fx::Offer& offer);
 
 	private:
 		fx::MarketPlugin*		m_plugin;
 		misc::string			m_instrument;
-		double					m_renkoMinValue;	// ex: PL=15 
-		int						m_atrPeriod;
-		time_t					m_atrTimeframe;
-		int						m_smaPeriod;
-		time_t					m_smaTimeframe;
-		fx::SMA::PriceOrigin	m_smaPriceOrigin;
-		int						m_openHour;
-		int						m_closeHour;
+		double					m_renkoMin;	// ex: PL=15 
 		fx::ATR					m_atr;
 		fx::SMA					m_sma;
-		double					m_renkoPL;
-		bool					m_canOpen;
-		fx::Transaction			m_transaction;				
+		/// --------------------------
+		fx::Transaction			m_tr;
+		fx::Offer				m_initialOffer;
+		fx::Range				m_range;
+		double					m_totalPL;
+		double					m_closedGPL;
+		int						m_openHour;
+		int						m_closeHour;
+		bool					m_isCancelled;
+		
+		
+		
+
+		
+
 	};
 } // namespace
 
