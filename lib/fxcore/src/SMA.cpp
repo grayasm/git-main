@@ -28,14 +28,14 @@ namespace fx
 		Init();
 	}
 
-	SMA::SMA(const misc::string& instrument, int period, PriceOrigin po, Timeframe sec)
+	SMA::SMA(const misc::string& instrument, int period, Timeframe sec, PriceOrigin po)
 	{
 		Init();
 
 		m_instrument = instrument;
 		m_period = period;
-		m_priceOrigin = po;
 		m_timeframe = sec;
+		m_priceOrigin = po;
 	}
 
 	SMA::~SMA()
@@ -54,14 +54,34 @@ namespace fx
 		{
 			m_instrument = tc.m_instrument;
 			m_period = tc.m_period;
-			m_priceOrigin = tc.m_priceOrigin;
 			m_timeframe = tc.m_timeframe;
+			m_priceOrigin = tc.m_priceOrigin;
 			m_offerList = tc.m_offerList;
 			m_lastOffer = tc.m_lastOffer;
 			m_lastSum = tc.m_lastSum;
 		}
 
 		return *this;
+	}
+
+	const misc::string& SMA::GetInstrument() const
+	{
+		return m_instrument;
+	}
+
+	int SMA::GetPeriod() const
+	{
+		return m_period;
+	}
+
+	SMA::Timeframe SMA::GetTimeframe() const
+	{
+		return m_timeframe;
+	}
+
+	SMA::PriceOrigin SMA::GetPriceOrigin() const
+	{
+		return m_priceOrigin;
 	}
 
 	bool SMA::IsValid() const
@@ -146,8 +166,8 @@ namespace fx
 	void SMA::Init()
 	{
 		m_period = -1;
-		m_priceOrigin = PRICE_CLOSE;
 		m_timeframe = 0;
+		m_priceOrigin = PRICE_CLOSE;
 		// m_offerList; - clean
 		// m_lastOffer; - default
 		m_lastSum = fx::Price(0, 0);

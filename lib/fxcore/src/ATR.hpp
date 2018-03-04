@@ -41,9 +41,11 @@ namespace fx
 		ATR& operator=(const ATR& tc);
 
 		const misc::string& GetInstrument() const;
+		int GetPeriod() const;
+		Timeframe GetTimeframe() const;
 		bool IsValid() const;
 		void Update(const fx::Offer& offer);
-		void GetValue(double& average) const;
+		void GetValue(double& average) const;		
 
 	private:
 		void Init();

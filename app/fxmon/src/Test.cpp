@@ -91,8 +91,8 @@ int test3()
 
 	fx::Offer prev_offer, curr_offer;
 	
-	fx::SMA sma1("EUR/USD", 10, fx::SMA::PRICE_CLOSE, misc::time::hourSEC); // (F)ast
-	fx::SMA sma2("EUR/USD", 70, fx::SMA::PRICE_CLOSE, misc::time::hourSEC);// (S)low
+	fx::SMA sma1("EUR/USD", 10, misc::time::hourSEC, fx::SMA::PRICE_CLOSE); // (F)ast
+	fx::SMA sma2("EUR/USD", 70, misc::time::hourSEC, fx::SMA::PRICE_CLOSE);// (S)low
 
 	double prevBuy1 = 0, currBuy1 = 0;
 	double prevBuy2 = 0, currBuy2 = 0;

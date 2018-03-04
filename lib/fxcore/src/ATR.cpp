@@ -74,6 +74,16 @@ namespace fx
 		return m_instrument;
 	}
 
+	int ATR::GetPeriod() const
+	{
+		return m_period - 1;
+	}
+
+	ATR::Timeframe ATR::GetTimeframe() const
+	{
+		return m_timeframe;
+	}
+
 	bool ATR::IsValid() const
 	{
 		return (m_period - 1 > 1 && m_period == m_priceList.size() && m_ATR > 0);

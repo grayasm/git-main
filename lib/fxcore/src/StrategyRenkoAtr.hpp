@@ -57,6 +57,8 @@ namespace fx
 	private:
 		void OpenPosition(const fx::Offer& offer, bool buy);
 		void ClosePosition(const fx::Offer& offer);
+		void InitializeATR(const fx::Offer& offer);
+		void InitializeSMA(const fx::Offer& offer);
 
 	private:
 		fx::MarketPlugin*		m_plugin;

@@ -53,20 +53,20 @@ void RunEngine()
 	{
 		// outside trading hours?
 		misc::time tnow(::time(NULL));
-		if ((tnow.wday() == misc::time::SAT) ||
-			(tnow.wday() == misc::time::FRI && tnow.hour_() >= 22) ||
-			(tnow.wday() == misc::time::SUN && tnow.hour_() < 22))
-		{
-			if (isConnected)
-			{
-				if (session.Logout())
-					isConnected = false;
-			}
+		//if ((tnow.wday() == misc::time::SAT) ||
+		//	(tnow.wday() == misc::time::FRI && tnow.hour_() >= 22) ||
+		//	(tnow.wday() == misc::time::SUN && tnow.hour_() < 22))
+		//{
+		//	if (isConnected)
+		//	{
+		//		if (session.Logout())
+		//			isConnected = false;
+		//	}
 
-			// idle 1m
-			msleep(1000ul * misc::time::minSEC);
-			continue;
-		}
+		//	// idle 1m
+		//	msleep(1000ul * misc::time::minSEC);
+		//	continue;
+		//}
 
 		// trading is active
 		if (!isConnected)

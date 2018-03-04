@@ -139,21 +139,24 @@ namespace misc
 
 	time time::operator-(const time& beg) const
 	{
-		double sec = difftime(m_t, beg.m_t);
-		int d=0,h=0,m=0,s=0;
-		reduce(sec, d, h, m, s);
-		time ret(1970, 0, 1+d, 0+h, 0+m, 0+s);
+		double diff = difftime(m_t, beg.m_t);
+
+		if (diff < 0)
+			throw misc::exception("time is invalid");
+
+		time ret((time_t)diff);
 		return ret;
 	}
 
 	time time::operator+(const time& off) const
 	{
 		time orig(1970, 0, 1, 0, 0, 0);
-		double sec = difftime(off.m_t, orig.m_t);
-		int d=0,h=0,m=0,s=0;
-		reduce(sec, d, h, m, s);
-		time ret(m_tm.tm_year + 1900, m_tm.tm_mon, m_tm.tm_mday + d, 
-				 m_tm.tm_hour + h, m_tm.tm_min + m, m_tm.tm_sec + s);
+		double diff = difftime(off.m_t, orig.m_t);
+
+		if (diff < 0)
+			throw misc::exception("time is invalid");
+
+		time ret(m_t + (time_t)diff);
 		return ret;
 	}
 	
@@ -332,20 +335,12 @@ namespace misc
 		m_tm = *gmtime(&m_t);	
 	}
 	
-	void time::reduce(double sec, int& days, int& hours, int& minutes, int& seconds) const
-	{
-		days = (int)(sec / 86400.);
-		hours = (int)((sec - days * 86400) / 3600.);
-		minutes = (int)((sec - days * 86400 - hours * 3600) / 60.);
-		seconds = (int)(sec - days * 86400 - hours * 3600 - minutes * 60);
-	}
-
-	int time::yisleap(int year)
+	int time::yisleap(int year) const
 	{
 		return (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0);
 	}
 
-	int time::get_yday(int day, enum Month mon, int year)
+	int time::get_yday(int day, enum Month mon, int year) const
 	{
 		if(day < 1 || mon < JAN || mon > DEC || year < 1900)
 			throw misc::exception("time is invalid");

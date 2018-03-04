@@ -18,8 +18,9 @@
 */
 
 #include "MarketPlugin4fxcm.hpp"
-#include "ErrorCodes.hpp"
 #include "stream.hpp"
+#include "ErrorCodes.hpp"
+#include "Utils.hpp"
 
 
 
@@ -103,6 +104,32 @@ int MarketPlugin4fxcm::ClosePosition(
 			msg += "\n";
 		}
 		Log(msg);
+	}
+
+	return ret;
+}
+
+int MarketPlugin4fxcm::GetOHLCPrices(
+	const misc::string& instrument,
+	const misc::string& timeframe,
+	const misc::time& from,
+	const misc::time& to,
+	misc::vector<fx::OHLCPrice>& result)
+{
+	DATE dtFrom = 0, dtTo = 0;
+
+	fxcm::Utils::TimeToDate(from, dtFrom);
+	fxcm::Utils::TimeToDate(to, dtTo);
+
+	int ret = m_session->GetHistoryPrices(instrument.c_str(),
+		timeframe.c_str(), dtFrom, dtTo, result);
+
+	if (ret != fxcm::ErrorCodes::ERR_SUCCESS)
+	{
+		misc::cout << __FUNCTION__ <<
+			": m_session->GetOHLCPrices returned error: " <<
+			fxcm::ErrorCodes::GetText((fxcm::ErrorCodes::ErrorId)ret).c_str()
+			<< std::endl;
 	}
 
 	return ret;

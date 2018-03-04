@@ -25,6 +25,7 @@
 
 #include "vector.hpp"
 #include "Offer.hpp"
+#include "OHLCPrice.hpp"
 #include "Position.hpp"
 
 
@@ -49,6 +50,12 @@ namespace fx
 		virtual int ClosePosition(	const fx::Offer& offer,
 									const fx::Position& pos,
 									misc::vector<fx::Position>& result) = 0;
+
+		virtual int GetOHLCPrices(	const misc::string& instrument,
+									const misc::string& timeframe,
+									const misc::time& from,
+									const misc::time& to,
+									misc::vector<fx::OHLCPrice>& result) = 0;
 	};
 } // namespace
 

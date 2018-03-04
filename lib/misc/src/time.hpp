@@ -123,14 +123,13 @@ namespace misc
 		
 		void init(time_t t);
 		void init(struct tm t);
-		void reduce(double sec, int& days, int& hours, int& minutes, int& seconds) const;
-		int	yisleap(int year);
+		int	yisleap(int year) const;
 		/*	day		[1-31]
 		 *  mon		[JAN-DEC]
 		 *	year	[1900 - ...]
 		 *	return	[0-365]
 		 */
-		int get_yday(int day, enum Month mon, int year);
+		int get_yday(int day, enum Month mon, int year) const;
 		
 	private:
 		time_t		m_t;

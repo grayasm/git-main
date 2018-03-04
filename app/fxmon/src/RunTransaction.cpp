@@ -70,7 +70,7 @@ void RunTransaction()
 	fx::Transaction tr;
 	fx::Range range;
 	fx::ATR atr(instr, 14, misc::time::hourSEC);
-	fx::SMA sma(instr, 7, fx::SMA::PRICE_CLOSE, misc::time::hourSEC);
+	fx::SMA sma(instr, 7, misc::time::hourSEC, fx::SMA::PRICE_CLOSE);
 	double totalPL = 0;
 	double renkoPL = 0; // renko size ATR(14)
 	int lots = 1;

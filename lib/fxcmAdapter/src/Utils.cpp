@@ -64,6 +64,13 @@ namespace fxcm
 		timet = mtime.totime_t();
 	}
 
+	void Utils::TimeToDate(const misc::time& time, DATE& date)
+	{
+		time_t tt = time.totime_t();
+		struct tm *tmt = gmtime(&tt);
+		CO2GDateUtils::CTimeToOleTime(tmt, &date);
+	}
+
 	bool Utils::IsOpeningOrder(IO2GOrderRow* order)
 	{
 		const char* type = order->getType();

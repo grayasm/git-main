@@ -30,8 +30,10 @@ class MarketPlugin4fxcm : public fx::MarketPlugin
 public:
 	MarketPlugin4fxcm(	fxcm::Session* session,
 						const fxcm::IniParams& iniParams);
-
 	~MarketPlugin4fxcm();
+
+	MarketPlugin4fxcm(const MarketPlugin4fxcm&) = delete;
+	MarketPlugin4fxcm& operator=(const MarketPlugin4fxcm&) = delete;
 
 	// --- virtual table ---
 	int OpenPosition(	const fx::Offer& offer,
@@ -42,6 +44,12 @@ public:
 	int ClosePosition(	const fx::Offer& offer,
 						const fx::Position& pos,
 						misc::vector<fx::Position>& result);
+
+	int GetOHLCPrices(	const misc::string& instrument,
+						const misc::string& timeframe,
+						const misc::time& from,
+						const misc::time& to,
+						misc::vector<fx::OHLCPrice>& result);
 	// --- end of virtual table ---
 
 private:

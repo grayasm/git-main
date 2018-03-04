@@ -41,19 +41,19 @@ namespace fx
 		};
 
 		SMA();
-		SMA(const misc::string& instrument, int period, PriceOrigin po, Timeframe sec);
+		SMA(const misc::string& instrument, int period, Timeframe sec, PriceOrigin po);
 		~SMA();
 
 		SMA(const SMA& tc);
 		SMA& operator=(const SMA& tc);
 
-		//! true if it can calculate the average for the given period
+		const misc::string& GetInstrument() const;
+		int GetPeriod() const;
+		Timeframe GetTimeframe() const;
+		PriceOrigin GetPriceOrigin() const;
+
 		bool IsValid() const; 
-
-		//! complete the timeframe period and update current average
 		void Update(const fx::Offer& offer);
-
-		//! return current average
 		void GetValue(fx::Price& average) const;
 
 	private:
@@ -61,9 +61,9 @@ namespace fx
 
 	private:
 		misc::string	m_instrument;
-		int				m_period;
-		PriceOrigin		m_priceOrigin;
+		int				m_period;		
 		Timeframe		m_timeframe;
+		PriceOrigin		m_priceOrigin;
 		OfferList		m_offerList;
 		fx::Offer		m_lastOffer;
 		fx::Price		m_lastSum;
