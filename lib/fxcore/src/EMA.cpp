@@ -18,17 +18,17 @@
 	contact: grayasm@gmail.com
 */
 
-#include "SMA.hpp"
+#include "EMA.hpp"
 
 
 namespace fx
 {
-	SMA::SMA()
+	EMA::EMA()
 	{
 		Init();
 	}
 
-	SMA::SMA(const misc::string& instrument, int period, Timeframe sec, PriceOrigin po)
+	EMA::EMA(const misc::string& instrument, int period, Timeframe sec, PriceOrigin po)
 	{
 		Init();
 
@@ -36,19 +36,20 @@ namespace fx
 		m_period = period;
 		m_timeframe = sec;
 		m_priceOrigin = po;
+		m_multiplier = 2.0 / (m_period + 1.0);
 	}
 
-	SMA::~SMA()
+	EMA::~EMA()
 	{
 
 	}
 
-	SMA::SMA(const SMA& tc)
+	EMA::EMA(const EMA& tc)
 	{
 		*this = tc;
 	}
 
-	SMA& SMA::operator=(const SMA& tc)
+	EMA& EMA::operator=(const EMA& tc)
 	{
 		if (this != &tc)
 		{
@@ -64,38 +65,38 @@ namespace fx
 		return *this;
 	}
 
-	const misc::string& SMA::GetInstrument() const
+	const misc::string& EMA::GetInstrument() const
 	{
 		return m_instrument;
 	}
 
-	int SMA::GetPeriod() const
+	int EMA::GetPeriod() const
 	{
 		return m_period;
 	}
 
-	SMA::Timeframe SMA::GetTimeframe() const
+	EMA::Timeframe EMA::GetTimeframe() const
 	{
 		return m_timeframe;
 	}
 
-	SMA::PriceOrigin SMA::GetPriceOrigin() const
+	EMA::PriceOrigin EMA::GetPriceOrigin() const
 	{
 		return m_priceOrigin;
 	}
 
-	bool SMA::IsValid() const
+	bool EMA::IsValid() const
 	{
 		return (m_period > 1 && m_period == m_offerList.size());
 	}
 
-	void SMA::Update(const fx::Offer& offer)
+	void EMA::Update(const fx::Offer& offer)
 	{
 		if (m_period < 2)
-			throw misc::exception("SMA is invalid");
+			throw misc::exception("EMA is invalid");
 
 		if (m_instrument != offer.GetInstrument())
-			throw misc::exception("SMA offer is invalid");
+			throw misc::exception("EMA offer is invalid");
 
 		if (m_lastOffer.GetInstrument().empty())
 		{
@@ -152,10 +153,10 @@ namespace fx
 		m_lastOffer = offer;
 	}
 
-	void SMA::GetValue(fx::Price& average) const
+	void EMA::GetValue(fx::Price& average) const
 	{
 		if (m_period < 2 || m_offerList.size() != m_period)
-			throw misc::exception("SMA is invalid");
+			throw misc::exception("EMA is invalid");
 
 		double buy = (m_lastSum.GetBuy() + m_lastOffer.GetAsk()) / (m_period + 1);
 		double sell = (m_lastSum.GetSell() + m_lastOffer.GetBid()) / (m_period + 1);
@@ -163,11 +164,12 @@ namespace fx
 		average = fx::Price(buy, sell);
 	}
 
-	void SMA::Init()
+	void EMA::Init()
 	{
 		m_period = -1;
 		m_timeframe = 0;
 		m_priceOrigin = PRICE_CLOSE;
+		m_multiplier = 0;
 		// m_offerList; - clean
 		// m_lastOffer; - default
 		m_lastSum = fx::Price(0, 0);

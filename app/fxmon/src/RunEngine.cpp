@@ -42,13 +42,14 @@ void RunEngine()
 
 
 	bool isConnected = false;
-	int hOpen = 0;
-	int hClose = 24; //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! only for testing!!!!!!
+	int hOpen = 8;
+	int hClose = 17;
+	double renkoMin = 15;
 	fx::Offer offer;
 	misc::string instrument("EUR/USD");
 	fxcm::Session session(*loginParams, *iniParams);
 	MarketPlugin4fxcm plugin(&session, *iniParams);
-	fx::StrategyRenkoAtr strategy(&plugin, instrument, 15, 0, 24);
+	fx::StrategyRenkoAtr strategy(&plugin, instrument, renkoMin, hOpen, hClose);
 	
 
 	while (true)

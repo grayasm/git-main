@@ -18,8 +18,8 @@
 	contact: grayasm@gmail.com
 */
 
-#ifndef __SMA_hpp__
-#define __SMA_hpp__
+#ifndef __EMA_hpp__
+#define __EMA_hpp__
 
 #include <list>
 #include "Offer.hpp"
@@ -28,7 +28,7 @@
 
 namespace fx
 {
-	class SMA
+	class EMA
 	{
 	public:
 		typedef std::list<fx::Offer>	OfferList;
@@ -40,12 +40,12 @@ namespace fx
 			PRICE_OPEN
 		};
 
-		SMA();
-		SMA(const misc::string& instrument, int period, Timeframe sec, PriceOrigin po);
-		~SMA();
+		EMA();
+		EMA(const misc::string& instrument, int period, Timeframe sec, PriceOrigin po);
+		~EMA();
 
-		SMA(const SMA& tc);
-		SMA& operator=(const SMA& tc);
+		EMA(const EMA& tc);
+		EMA& operator=(const EMA& tc);
 
 		const misc::string& GetInstrument() const;
 		int GetPeriod() const;
@@ -61,14 +61,15 @@ namespace fx
 
 	private:
 		misc::string	m_instrument;
-		int				m_period;		
+		int				m_period;
 		Timeframe		m_timeframe;
 		PriceOrigin		m_priceOrigin;
+		double			m_multiplier;
 		OfferList		m_offerList;
 		fx::Offer		m_lastOffer;
 		fx::Price		m_lastSum;
 	};
 } // namespace
 
-#endif // __SMA_hpp__
+#endif // __EMA_hpp__
 
