@@ -325,13 +325,13 @@ namespace fx
 				(from.wday() == misc::time::SUN && from.hour_() < 22))
 				continue;
 
-			// stop at last minute candle
+			// stop one candle before offer timestamp
 			misc::time tvalid = tnow - misc::time::minSEC;
 			if (to > tvalid)
 				to = tvalid;
 
-			// interval maybe too short?
-			if (from > to)
+			// last interval too short?
+			if (from + misc::time::minSEC > to)
 				break;
 		
 			misc::vector<fx::OHLCPrice> result;
@@ -431,13 +431,13 @@ namespace fx
 				(from.wday() == misc::time::SUN && from.hour_() < 22))
 				continue;
 
-			// stop at last minute candle
+			// stop one candle before offer timestamp
 			misc::time tvalid = tnow - misc::time::minSEC;
 			if (to > tvalid)
 				to = tvalid;
 
-			// interval maybe too short?
-			if (from > to)
+			// last interval too short?
+			if (from + misc::time::minSEC > to)
 				break;
 
 			misc::vector<fx::OHLCPrice> result;
@@ -484,13 +484,18 @@ namespace fx
 
 	void StrategyRenkoAtr::SetValidMarketTime(misc::time& tend, time_t& interval) const
 	{
+		/*	Sanitize,
+			Broker may return error for intervals 19:12:04 -> 19:13:00
+		*/
+		tend -= tend.sec_();
+
+
 		/*	Avoid weekend time interval.
 			FRI 16:55 EST -> SUN 17:15 EST		 converted to UTC:
 			FRI 22:00 UTC -> SUN 22:15 UTC
 			And also avoid legal holidays (at least for FXCM).
 			25-DEC and 01-JAN
 		*/
-
 		while ((tend.wday() == misc::time::SAT) ||
 			(tend.wday() == misc::time::FRI && tend.hour_() >= 22) ||
 			(tend.wday() == misc::time::SUN && tend.hour_() < 22) ||
