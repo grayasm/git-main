@@ -165,6 +165,7 @@ namespace fx
 
 	void SMA::Init()
 	{
+		m_instrument = "";
 		m_period = -1;
 		m_timeframe = 0;
 		m_priceOrigin = PRICE_CLOSE;

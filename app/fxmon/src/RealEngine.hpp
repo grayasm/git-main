@@ -20,7 +20,7 @@
 #ifndef __RunEngine_hpp__
 #define __RunEngine_hpp__
 
-void RunEngine();
+void RealEngine();
 
 
 #endif // __RunEngine_hpp__

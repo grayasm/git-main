@@ -35,8 +35,8 @@ namespace fx
 		m_instrument = instrument;
 		m_period = period;
 		m_timeframe = sec;
-		m_priceOrigin = po;
 		m_multiplier = 2.0 / (m_period + 1.0);
+		m_firstSMA = fx::SMA(instrument, period, sec, po);
 	}
 
 	EMA::~EMA()
@@ -56,10 +56,11 @@ namespace fx
 			m_instrument = tc.m_instrument;
 			m_period = tc.m_period;
 			m_timeframe = tc.m_timeframe;
-			m_priceOrigin = tc.m_priceOrigin;
-			m_offerList = tc.m_offerList;
+			m_multiplier = tc.m_multiplier;
+			m_firstSMA = tc.m_firstSMA;
 			m_lastOffer = tc.m_lastOffer;
-			m_lastSum = tc.m_lastSum;
+			m_emaList = tc.m_emaList;
+			m_currEMA = tc.m_currEMA;
 		}
 
 		return *this;
@@ -82,12 +83,12 @@ namespace fx
 
 	EMA::PriceOrigin EMA::GetPriceOrigin() const
 	{
-		return m_priceOrigin;
+		return m_firstSMA.GetPriceOrigin();
 	}
 
 	bool EMA::IsValid() const
 	{
-		return (m_period > 1 && m_period == m_offerList.size());
+		return (m_period > 1 && m_period == m_emaList.size());
 	}
 
 	void EMA::Update(const fx::Offer& offer)
@@ -98,80 +99,67 @@ namespace fx
 		if (m_instrument != offer.GetInstrument())
 			throw misc::exception("EMA offer is invalid");
 
-		if (m_lastOffer.GetInstrument().empty())
+
+		/*	http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:moving_averages
+			Example for 10 period EMA:
+			Initial SMA: 10_period_SUM / 10			
+			Multiplier: (2 / (Time periods + 1) ) = (2 / (10 + 1) ) = 0.1818 (18.18%)
+			EMA: {Close - EMA(previous)} x multiplier + EMA(previous).
+		*/
+		
+		//	1st EMA is an SMA.
+		if (!m_firstSMA.IsValid())
 		{
+			m_firstSMA.Update(offer);
 			m_lastOffer = offer;
 			return;
 		}
+
+		if (m_emaList.empty())
+		{
+			fx::Price price;
+			m_firstSMA.GetValue(price);
+			m_emaList.push_back(price);
+		}
+
+		double currb = offer.GetAsk();
+		double lastb = m_emaList.back().GetBuy();
+		double calcb = (currb - lastb) * m_multiplier + lastb;
+
+		double currs = offer.GetBid();
+		double lasts = m_emaList.back().GetSell();
+		double calcs = (currs - lasts) * m_multiplier + lasts;
+
+		m_currEMA = fx::Price(calcb, calcs);
 		
-		if (m_offerList.empty())
+		if (offer.GetTime() - m_lastOffer.GetTime() >= m_timeframe)
 		{
-			const misc::time& prevtime = m_lastOffer.GetTime();
-			const misc::time& currtime = offer.GetTime();			
+			m_emaList.push_back(m_currEMA);
+			m_lastOffer = offer;
 
-			// begin at full hour even if the timeframe is ex: 3min
-			if ((currtime.totime_t() - prevtime.totime_t() >= m_timeframe) &&
-				(currtime.hour_() != prevtime.hour_()))
-			{
-				m_offerList.push_back(offer);
-				m_lastOffer = offer;
-			}
-
-			return;
+			// keep period list constant
+			if (m_emaList.size() > m_period)
+				m_emaList.pop_front();
 		}
-
-
-		const misc::time& lasttime = m_offerList.back().GetTime();
-		const misc::time& prevtime = m_lastOffer.GetTime();
-		const misc::time& currtime = offer.GetTime();
-
-		if (currtime.totime_t() - lasttime.totime_t() >= m_timeframe)
-		{
-			if (m_priceOrigin == PRICE_CLOSE)
-				m_offerList.push_back(m_lastOffer);
-			else // PRICE_OPEN
-				m_offerList.push_back(offer);
-
-			// keep period constant
-			if (m_offerList.size() > m_period)
-				m_offerList.pop_front();
-			
-			// calculate the sum
-			if (m_offerList.size() == m_period)
-			{
-				double buy = 0, sell = 0;
-				for (OfferList::iterator it = m_offerList.begin();
-					it != m_offerList.end(); ++it)
-				{
-					buy += it->GetAsk();
-					sell += it->GetBid();
-				}
-				m_lastSum = fx::Price(buy, sell);
-			}
-		}
-
-		m_lastOffer = offer;
 	}
 
 	void EMA::GetValue(fx::Price& average) const
 	{
-		if (m_period < 2 || m_offerList.size() != m_period)
+		if (m_period < 2 || m_emaList.size() != m_period)
 			throw misc::exception("EMA is invalid");
 
-		double buy = (m_lastSum.GetBuy() + m_lastOffer.GetAsk()) / (m_period + 1);
-		double sell = (m_lastSum.GetSell() + m_lastOffer.GetBid()) / (m_period + 1);
-		
-		average = fx::Price(buy, sell);
+		average = m_currEMA;
 	}
 
 	void EMA::Init()
 	{
+		m_instrument = "";
 		m_period = -1;
 		m_timeframe = 0;
-		m_priceOrigin = PRICE_CLOSE;
 		m_multiplier = 0;
-		// m_offerList; - clean
-		// m_lastOffer; - default
-		m_lastSum = fx::Price(0, 0);
+		// m_firstSMA - default;
+		// m_lastOffer - default;
+		// m_emaList - clean;
+		// m_currEMA - default; FLT_MAX
 	}
 } // namespace

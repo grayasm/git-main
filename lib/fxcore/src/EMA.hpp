@@ -22,8 +22,10 @@
 #define __EMA_hpp__
 
 #include <list>
+#include "SMA.hpp"
 #include "Offer.hpp"
 #include "Price.hpp"
+
 
 
 namespace fx
@@ -31,15 +33,10 @@ namespace fx
 	class EMA
 	{
 	public:
-		typedef std::list<fx::Offer>	OfferList;
-		typedef time_t					Timeframe;
-
-		enum PriceOrigin
-		{
-			PRICE_CLOSE=0,
-			PRICE_OPEN
-		};
-
+		typedef time_t						Timeframe;
+		typedef fx::SMA::PriceOrigin		PriceOrigin;
+		typedef std::list<fx::Price>		EMAList;
+		
 		EMA();
 		EMA(const misc::string& instrument, int period, Timeframe sec, PriceOrigin po);
 		~EMA();
@@ -63,11 +60,12 @@ namespace fx
 		misc::string	m_instrument;
 		int				m_period;
 		Timeframe		m_timeframe;
-		PriceOrigin		m_priceOrigin;
 		double			m_multiplier;
-		OfferList		m_offerList;
+		fx::SMA			m_firstSMA;
 		fx::Offer		m_lastOffer;
-		fx::Price		m_lastSum;
+		EMAList			m_emaList;
+		fx::Price		m_currEMA;
+		
 	};
 } // namespace
 

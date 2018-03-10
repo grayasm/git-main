@@ -17,7 +17,7 @@
 	contact: grayasm@gmail.com
 */
 
-#include "RunEngine.hpp"
+#include "RealEngine.hpp"
 #include "unistd.hpp"
 #include "stream.hpp"
 #include "IniParams.hpp"
@@ -27,7 +27,7 @@
 #include "MarketPlugin4fxcm.hpp"
 
 
-void RunEngine()
+void RealEngine()
 {
 	fxcm::LoginParams::Ptr loginParams = new fxcm::LoginParams("monitor.ini");
 	fxcm::IniParams::Ptr iniParams = new fxcm::IniParams("monitor.ini");
