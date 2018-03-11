@@ -17,20 +17,20 @@
 	contact: grayasm@gmail.com
 */
 
-#ifndef __OffersReader_hpp__
-#define __OffersReader_hpp__
+#ifndef __HistoryFxcmliveReader_hpp__
+#define __HistoryFxcmliveReader_hpp__
 
 #include "vector.hpp"
 #include "string.hpp"
 #include "Offer.hpp"
 
-class OffersReader
+class HistoryFxcmliveReader
 {
 public:
-	OffersReader(const misc::string& instrument);
-	~OffersReader();
-	OffersReader(const OffersReader&) = delete;
-	OffersReader& operator=(const OffersReader&) = delete;
+	HistoryFxcmliveReader(const misc::string& instrument);
+	~HistoryFxcmliveReader();
+	HistoryFxcmliveReader(const HistoryFxcmliveReader&) = delete;
+	HistoryFxcmliveReader& operator=(const HistoryFxcmliveReader&) = delete;
 
 	// return all recorded offers in receiving order; false if at the end;
 	bool GetOffer(fx::Offer& offer);
@@ -48,4 +48,4 @@ private:
 	int	m_ovPos;
 };
 
-#endif // __OffersReader_hpp__
+#endif // __HistoryFxcmliveReader_hpp__

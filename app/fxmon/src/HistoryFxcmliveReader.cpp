@@ -17,13 +17,13 @@
 	contact: grayasm@gmail.com
 */
 
-#include "OffersReader.hpp"
+#include "HistoryFxcmliveReader.hpp"
 #include "unistd.hpp"
 #include "filename.hpp"
 #include "stream.hpp"
 
 
-OffersReader::OffersReader(const misc::string& instrument)
+HistoryFxcmliveReader::HistoryFxcmliveReader(const misc::string& instrument)
 {
 	m_instrument = instrument;
 
@@ -39,7 +39,6 @@ OffersReader::OffersReader(const misc::string& instrument)
 	m_offerFileVec.push_back("d:\\GitHub\\fxcm-offers\\Offers_2018_02_01_17_57_54.txt");
 	m_offerFileVec.push_back("d:\\GitHub\\fxcm-offers\\Offers_2018_02_02_05_01_58.txt");
 	m_offerFileVec.push_back("d:\\GitHub\\fxcm-offers\\Offers_2018_02_02_14_48_53.txt");
-
 	m_offerFileVec.push_back("d:\\GitHub\\fxcm-offers\\Offers_2018_02_04_22_45_41.txt");
 	m_offerFileVec.push_back("d:\\GitHub\\fxcm-offers\\Offers_2018_02_05_09_12_33.txt");
 	m_offerFileVec.push_back("d:\\GitHub\\fxcm-offers\\Offers_2018_02_05_17_22_37.txt");
@@ -69,7 +68,6 @@ OffersReader::OffersReader(const misc::string& instrument)
 	m_offerFileVec.push_back("d:\\GitHub\\fxcm-offers\\Offers_2018_02_15_22_40_34.txt");
 	m_offerFileVec.push_back("d:\\GitHub\\fxcm-offers\\Offers_2018_02_16_09_46_05.txt");
 	m_offerFileVec.push_back("d:\\GitHub\\fxcm-offers\\Offers_2018_02_16_17_31_18.txt");
-
 	m_offerFileVec.push_back("d:\\GitHub\\fxcm-offers\\Offers_2018_02_18_22_06_08.txt");
 	m_offerFileVec.push_back("d:\\GitHub\\fxcm-offers\\Offers_2018_02_19_11_17_55.txt");
 	m_offerFileVec.push_back("d:\\GitHub\\fxcm-offers\\Offers_2018_02_20_02_33_26.txt");
@@ -81,6 +79,32 @@ OffersReader::OffersReader(const misc::string& instrument)
 	m_offerFileVec.push_back("d:\\GitHub\\fxcm-offers\\Offers_2018_02_22_17_24_52.txt");
 	m_offerFileVec.push_back("d:\\GitHub\\fxcm-offers\\Offers_2018_02_23_06_20_51.txt");
 	m_offerFileVec.push_back("d:\\GitHub\\fxcm-offers\\Offers_2018_02_23_16_14_04.txt");
+	m_offerFileVec.push_back("d:\\GitHub\\fxcm-offers\\Offers_2018_02_25_22_05_04.txt");
+	m_offerFileVec.push_back("d:\\GitHub\\fxcm-offers\\Offers_2018_02_26_09_45_09.txt");
+	m_offerFileVec.push_back("d:\\GitHub\\fxcm-offers\\Offers_2018_02_26_19_43_22.txt");
+	m_offerFileVec.push_back("d:\\GitHub\\fxcm-offers\\Offers_2018_02_27_09_14_23.txt");
+	m_offerFileVec.push_back("d:\\GitHub\\fxcm-offers\\Offers_2018_02_27_18_36_56.txt");
+	m_offerFileVec.push_back("d:\\GitHub\\fxcm-offers\\Offers_2018_02_28_07_09_13.txt");
+	m_offerFileVec.push_back("d:\\GitHub\\fxcm-offers\\Offers_2018_02_28_16_23_56.txt");
+	m_offerFileVec.push_back("d:\\GitHub\\fxcm-offers\\Offers_2018_03_01_05_01_12.txt");
+	m_offerFileVec.push_back("d:\\GitHub\\fxcm-offers\\Offers_2018_03_01_15_47_38.txt");
+	m_offerFileVec.push_back("d:\\GitHub\\fxcm-offers\\Offers_2018_03_02_01_55_28.txt");
+	m_offerFileVec.push_back("d:\\GitHub\\fxcm-offers\\Offers_2018_03_02_13_17_17.txt");
+	m_offerFileVec.push_back("d:\\GitHub\\fxcm-offers\\Offers_2018_03_02_21_46_47.txt");
+	m_offerFileVec.push_back("d:\\GitHub\\fxcm-offers\\Offers_2018_03_04_22_04_43.txt");
+	m_offerFileVec.push_back("d:\\GitHub\\fxcm-offers\\Offers_2018_03_05_08_28_30.txt");
+	m_offerFileVec.push_back("d:\\GitHub\\fxcm-offers\\Offers_2018_03_05_15_46_36.txt");
+	m_offerFileVec.push_back("d:\\GitHub\\fxcm-offers\\Offers_2018_03_06_01_47_59.txt");
+	m_offerFileVec.push_back("d:\\GitHub\\fxcm-offers\\Offers_2018_03_06_11_52_17.txt");
+	m_offerFileVec.push_back("d:\\GitHub\\fxcm-offers\\Offers_2018_03_06_18_13_45.txt");
+	m_offerFileVec.push_back("d:\\GitHub\\fxcm-offers\\Offers_2018_03_07_04_13_05.txt");
+	m_offerFileVec.push_back("d:\\GitHub\\fxcm-offers\\Offers_2018_03_07_13_01_53.txt");
+	m_offerFileVec.push_back("d:\\GitHub\\fxcm-offers\\Offers_2018_03_07_19_37_40.txt");
+	m_offerFileVec.push_back("d:\\GitHub\\fxcm-offers\\Offers_2018_03_08_08_00_10.txt");
+	m_offerFileVec.push_back("d:\\GitHub\\fxcm-offers\\Offers_2018_03_08_15_06_50.txt");
+	m_offerFileVec.push_back("d:\\GitHub\\fxcm-offers\\Offers_2018_03_08_23_36_58.txt");
+	m_offerFileVec.push_back("d:\\GitHub\\fxcm-offers\\Offers_2018_03_09_10_24_19.txt");
+	m_offerFileVec.push_back("d:\\GitHub\\fxcm-offers\\Offers_2018_03_09_17_02_12.txt");
 
 	
 	m_ofvPos = 0;
@@ -88,11 +112,11 @@ OffersReader::OffersReader(const misc::string& instrument)
 	m_ovPos = 0;
 }
 
-OffersReader::~OffersReader()
+HistoryFxcmliveReader::~HistoryFxcmliveReader()
 {
 }
 	
-bool OffersReader::GetOffer(fx::Offer& offer)
+bool HistoryFxcmliveReader::GetOffer(fx::Offer& offer)
 {
 	if (m_ovPos < m_offersVec.size())
 	{
@@ -119,7 +143,7 @@ bool OffersReader::GetOffer(fx::Offer& offer)
 }
 
 
-void OffersReader::ParseFile(const misc::string& filePath,
+void HistoryFxcmliveReader::ParseFile(const misc::string& filePath,
 							 misc::vector<fx::Offer>& result)
 {	
 	misc::filename offerFile(filePath);

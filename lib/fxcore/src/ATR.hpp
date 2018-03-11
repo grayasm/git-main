@@ -45,7 +45,8 @@ namespace fx
 		Timeframe GetTimeframe() const;
 		bool IsValid() const;
 		void Update(const fx::Offer& offer);
-		void GetValue(double& average) const;		
+		void GetValue(double& average) const;
+		const misc::time& GetRefTime() const; // begin of current timeframe
 
 	private:
 		void Init();
@@ -54,8 +55,10 @@ namespace fx
 		misc::string		m_instrument;
 		int					m_period;
 		Timeframe			m_timeframe;
-		OHLCPriceList		m_priceList;
+		// ----------------------------
+		misc::time			m_reftime;
 		fx::OHLCPrice		m_lastOHLC;
+		OHLCPriceList		m_priceList;
 		double				m_medATR;
 		double				m_ATR;
 	};

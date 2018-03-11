@@ -18,7 +18,9 @@
 */
 
 #include "StrategyRenkoAtr.hpp"
+#include <math.h>
 #include "stream.hpp"
+#include "TimeUtils.hpp"
 
 
 namespace fx
@@ -33,13 +35,14 @@ namespace fx
 		m_plugin = plugin;
 		m_instrument = instrument;
 		m_renkoMin = renkoMin;
-		m_atr = fx::ATR(m_instrument, 14, misc::time::hourSEC);
-		m_sma = fx::SMA(m_instrument, 7, misc::time::hourSEC, fx::SMA::PRICE_CLOSE);
+		m_atr14 = fx::ATR(m_instrument, 14, misc::time::hourSEC);
+		m_sma7 = fx::SMA(m_instrument, 7, misc::time::hourSEC, fx::SMA::PRICE_CLOSE);
 		/// ---------------------
 		// m_tr - clean;
 		// m_initialOffer - clean;
 		// m_range - default with FLT_MAX;
 		m_totalPL = 0;
+		m_closedPL = 0;
 		m_closedGPL = 0;
 		m_openHour = openHour;
 		m_closeHour = closeHour;
@@ -62,29 +65,24 @@ namespace fx
 		if (offer.GetInstrument() != m_instrument)
 			return;
 
-		// Initialize indicators (ATR, SMA)
-		if (!m_atr.IsValid())
+		// Build all indicators
+		if (!m_atr14.IsValid() || !m_sma7.IsValid())
 		{
-			InitializeATR(offer);
+			BuildAllIndicators(offer);
 			return;
 		}
 
-		if (!m_sma.IsValid())
-		{
-			InitializeSMA(offer);
-			return;
-		}
 
 		// update ATR, SMA
-		m_atr.Update(offer);
-		m_sma.Update(offer);
+		m_atr14.Update(offer);
+		m_sma7.Update(offer);
 
 		
 		// Renko brick is ATR(14)
 		double price2pip = 1. / offer.GetPointSize();
 		double pip2price = offer.GetPointSize();
 		double renkoPL = 0;
-		m_atr.GetValue(renkoPL);
+		m_atr14.GetValue(renkoPL);
 		renkoPL *= price2pip;
 		if (renkoPL < m_renkoMin)
 			renkoPL = m_renkoMin;
@@ -127,7 +125,7 @@ namespace fx
 				if (canOpen && m_range.IsMaxValid())
 				{
 					fx::Price smaval;
-					m_sma.GetValue(smaval);
+					m_sma7.GetValue(smaval);
 					canOpen = offer.GetAsk() > smaval.GetBuy();
 				}
 
@@ -145,7 +143,7 @@ namespace fx
 				if (canOpen && m_range.IsMinValid())
 				{
 					fx::Price smaval;
-					m_sma.GetValue(smaval);
+					m_sma7.GetValue(smaval);
 					canOpen = offer.GetAsk() < smaval.GetBuy();
 				}
 
@@ -178,6 +176,7 @@ namespace fx
 
 			ClosePosition(offer);
 
+			m_closedPL += curPL;
 			m_closedGPL += curGPL;
 			misc::cout << "curPL=" << curPL << " closedGPL=" << m_closedGPL
 				<< std::endl;
@@ -221,7 +220,7 @@ namespace fx
 
 					// buy higher than SMA value
 					fx::Price smaval;
-					m_sma.GetValue(smaval);
+					m_sma7.GetValue(smaval);
 					if (canOpen)
 						canOpen = offer.GetAsk() > smaval.GetBuy();
 				}
@@ -231,7 +230,7 @@ namespace fx
 
 					// sell lower than SMA value
 					fx::Price smaval;
-					m_sma.GetValue(smaval);
+					m_sma7.GetValue(smaval);
 					if (canOpen)
 						canOpen = offer.GetAsk() < smaval.GetBuy();
 				}
@@ -256,6 +255,16 @@ namespace fx
 	bool StrategyRenkoAtr::IsCanceled() const
 	{
 		return m_isCancelled;
+	}
+
+	double StrategyRenkoAtr::GetClosedPL() const
+	{
+		return m_closedPL;
+	}
+
+	double StrategyRenkoAtr::GetClosedGPL() const
+	{
+		return m_closedGPL;
 	}
 
 	void StrategyRenkoAtr::OpenPosition(const fx::Offer& offer, bool buy)
@@ -296,13 +305,16 @@ namespace fx
 			it = tmp;
 		}		
 	}
-
-	void StrategyRenkoAtr::InitializeATR(const fx::Offer& offer)
+	
+	void StrategyRenkoAtr::BuildAllIndicators(const fx::Offer& offer)
 	{
 		misc::time tnow = offer.GetTime();
-		int period = m_atr.GetPeriod();
-		time_t timeframe = m_atr.GetTimeframe();
-		time_t totaltime = timeframe * (period + period / 2);
+		
+		double smaSec = 1.5 * m_sma7.GetPeriod() * m_sma7.GetTimeframe();
+		double atrSec = 1.5 * m_atr14.GetPeriod() * m_atr14.GetTimeframe();
+
+		double maxSec = (smaSec < atrSec ? atrSec : smaSec);
+		time_t totaltime = (time_t) ::ceil(maxSec);
 
 		if (totaltime < misc::time::minSEC)
 		{
@@ -312,13 +324,13 @@ namespace fx
 			return;
 		}
 
-		SetValidMarketTime(tnow, totaltime);
+		fx::TimeUtils::SetValidMarketTime(tnow, totaltime);
 
 		for (time_t i = 0; i < totaltime; i += misc::time::hourSEC)
 		{
 			misc::time from = tnow - (totaltime - i);
 			misc::time to = tnow - (totaltime - i - misc::time::hourSEC);
-			
+
 			// don't ask for history prices from outside trading hours
 			if ((from.wday() == misc::time::SAT) ||
 				(from.wday() == misc::time::FRI && from.hour_() >= 22) ||
@@ -333,7 +345,7 @@ namespace fx
 			// last interval too short?
 			if (from + misc::time::minSEC > to)
 				break;
-		
+
 			misc::vector<fx::OHLCPrice> result;
 			int ret = m_plugin->GetOHLCPrices(m_instrument, "m1", from, to, result);
 
@@ -345,135 +357,74 @@ namespace fx
 			for (; it != result.end(); ++it)
 			{
 				const fx::OHLCPrice& ohlc = *it;
-				
+
+				// Open
 				fx::Offer openo(offer);
 				openo.SetTime(ohlc.GetTime() - 59);
 				openo.SetBid(ohlc.GetBidOpen());
 				openo.SetAsk(ohlc.GetAskOpen());
 				openo.SetVolume(ohlc.GetVolume() / 4);
-				m_atr.Update(openo);
 
+				m_atr14.Update(openo);
+				m_sma7.Update(openo);
+				
+				// High
 				fx::Offer higho(offer);
 				higho.SetBid(ohlc.GetBidHigh());
 				higho.SetAsk(ohlc.GetAskHigh());
 				higho.SetVolume(ohlc.GetVolume() / 4);
 
+				// Low
 				fx::Offer lowo(offer);
 				lowo.SetBid(ohlc.GetBidLow());
 				lowo.SetAsk(ohlc.GetAskLow());
 				lowo.SetVolume(ohlc.GetVolume() / 4);
 
-
 				// open above close
 				if (ohlc.GetBidOpen() > ohlc.GetBidClose())
-				{					
-					higho.SetTime(ohlc.GetTime() - 45);					
-					m_atr.Update(higho);
-										
+				{
+					higho.SetTime(ohlc.GetTime() - 45);
+					m_atr14.Update(higho);
+					m_sma7.Update(higho);
+
 					lowo.SetTime(ohlc.GetTime() - 30);
-					m_atr.Update(lowo);
+					m_atr14.Update(lowo);
+					m_sma7.Update(lowo);
 				}
 				else  // open below close
 				{
 					lowo.SetTime(ohlc.GetTime() - 45);
-					m_atr.Update(lowo);
+					m_atr14.Update(lowo);
+					m_sma7.Update(lowo);
 
 					higho.SetTime(ohlc.GetTime() - 30);
-					m_atr.Update(higho);
+					m_atr14.Update(higho);
+					m_sma7.Update(higho);
 				}
 
+
+				// Close
 				fx::Offer closeo(offer);
 				closeo.SetTime(ohlc.GetTime());
 				closeo.SetBid(ohlc.GetBidClose());
 				closeo.SetAsk(ohlc.GetAskClose());
 				closeo.SetVolume(ohlc.GetVolume() / 4);
-				m_atr.Update(closeo);
-
+				m_atr14.Update(closeo);
+				m_sma7.Update(closeo);
 			} // for(result)
 		} // for(time_t i)
 
 
-		if (!m_atr.IsValid())
+		// Check indicators
+		if (!m_atr14.IsValid())
 		{
 			misc::cout << __FUNCTION__ <<
 				": ATR indicator could not be initialized" << std::endl;
 			m_isCancelled = true;
 			return;
 		}
-	}
 
-	void StrategyRenkoAtr::InitializeSMA(const fx::Offer& offer)
-	{
-		misc::time tnow = offer.GetTime();
-		int period = m_sma.GetPeriod();
-		time_t timeframe = m_sma.GetTimeframe();
-		fx::SMA::PriceOrigin po = m_sma.GetPriceOrigin();
-		time_t totaltime = timeframe * (period + period / 2);
-
-		if (totaltime < misc::time::minSEC)
-		{
-			misc::cout << __FUNCTION__ <<
-				": totaltime < misc::time::minSEC" << std::endl;
-			m_isCancelled = true;
-			return;
-		}
-
-		SetValidMarketTime(tnow, totaltime);
-
-		for (time_t i = 0; i < totaltime; i += misc::time::hourSEC)
-		{
-			misc::time from = tnow - (totaltime - i);
-			misc::time to = tnow - (totaltime - i - misc::time::hourSEC);
-
-			// don't ask for history prices from outside trading hours
-			if ((from.wday() == misc::time::SAT) ||
-				(from.wday() == misc::time::FRI && from.hour_() >= 22) ||
-				(from.wday() == misc::time::SUN && from.hour_() < 22))
-				continue;
-
-			// stop one candle before offer timestamp
-			misc::time tvalid = tnow - misc::time::minSEC;
-			if (to > tvalid)
-				to = tvalid;
-
-			// last interval too short?
-			if (from + misc::time::minSEC > to)
-				break;
-
-			misc::vector<fx::OHLCPrice> result;
-			int ret = m_plugin->GetOHLCPrices(m_instrument, "m1", from, to, result);
-
-			if (ret != 0)
-			{ // may get some weekend data, don't react for now.
-			}
-
-			misc::vector<fx::OHLCPrice>::iterator it = result.begin();
-			for (; it != result.end(); ++it)
-			{
-				const fx::OHLCPrice& ohlc = *it;
-
-				fx::Offer histoffer(offer);
-				histoffer.SetTime(ohlc.GetTime());
-
-				if (po == fx::SMA::PRICE_OPEN)
-				{
-					histoffer.SetBid(ohlc.GetBidOpen());
-					histoffer.SetAsk(ohlc.GetAskOpen());
-				}
-				else if (po == fx::SMA::PRICE_CLOSE)
-				{
-					histoffer.SetBid(ohlc.GetBidClose());
-					histoffer.SetAsk(ohlc.GetAskClose());
-				}
-
-				histoffer.SetVolume(ohlc.GetVolume());
-				m_sma.Update(histoffer);
-
-			} // for(result)
-		} // for(time_t i)
-
-
-		if (!m_sma.IsValid())
+		if (!m_sma7.IsValid())
 		{
 			misc::cout << __FUNCTION__ <<
 				": SMA indicator could not be initialized" << std::endl;
@@ -482,44 +433,4 @@ namespace fx
 		}
 	}
 
-	void StrategyRenkoAtr::SetValidMarketTime(misc::time& tend, time_t& interval) const
-	{
-		/*	Sanitize,
-			Broker may return error for intervals 19:12:04 -> 19:13:00
-		*/
-		tend -= tend.sec_();
-
-
-		/*	Avoid weekend time interval.
-			FRI 16:55 EST -> SUN 17:15 EST		 converted to UTC:
-			FRI 22:00 UTC -> SUN 22:15 UTC
-			And also avoid legal holidays (at least for FXCM).
-			25-DEC and 01-JAN
-		*/
-		while ((tend.wday() == misc::time::SAT) ||
-			(tend.wday() == misc::time::FRI && tend.hour_() >= 22) ||
-			(tend.wday() == misc::time::SUN && tend.hour_() < 22) ||
-			(tend.mon_() == misc::time::Month::DEC && tend.mday_() == 25) ||
-			(tend.mon_() == misc::time::Month::JAN && tend.mday_() == 1))
-		{
-			tend -= misc::time::hourSEC;
-		}
-
-		time_t adjustinterv = interval;
-		misc::time tbeg = tend - adjustinterv;
-		while ((tbeg.wday() == misc::time::SAT) ||
-			(tbeg.wday() == misc::time::FRI && tbeg.hour_() >= 22) ||
-			(tbeg.wday() == misc::time::SUN && tbeg.hour_() < 22) ||
-			(tbeg.mon_() == misc::time::Month::DEC && tbeg.mday_() == 25) ||
-			(tbeg.mon_() == misc::time::Month::JAN && tbeg.mday_() == 1))
-		{
-			adjustinterv += misc::time::hourSEC;
-			tbeg = tend - adjustinterv;
-		}
-
-		if (adjustinterv != interval) // it was adjusted
-		{
-			interval += adjustinterv;
-		}
-	}
 } // namespace

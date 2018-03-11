@@ -260,6 +260,59 @@ int test4()
 }
 
 
+int test5()
+{
+	// OffersReader oreader("EUR/USD");
+	// HistoryPricesReader oreader("EUR/USD");
+	HistdatacomReader oreader("EUR/USD");
+
+	fx::Offer offer;
+	fx::ATR atr("EUR/USD", 14, misc::time::hourSEC);
+	
+	misc::time reftime;
+
+	FILE* f1 = fopen("ATR_2017.txt", "w+");
+	if (f1) fclose(f1);
+
+
+	while (oreader.GetOffer(offer))
+	{
+		atr.Update(offer);
+
+		if (reftime.totime_t() == 0)
+			reftime = offer.GetTime();
+
+		if (!atr.IsValid())
+			continue;
+
+		if (reftime.hour_() != offer.GetTime().hour_())
+		{
+			// reftime = sma.GetRefTime(); // current candle
+
+			FILE* pf = fopen("ATR_2017.txt", "a+");
+			if (pf == NULL)
+				continue;
+
+			std::stringstream ss;
+			ss << offer.GetTime().tostring() << " ";
+			double mid = 0;
+			atr.GetValue(mid);
+			mid *= 1 / (0.0001);
+
+			ss << "ATR=" << mid << std::endl;
+
+			std::string str = ss.str();
+			fwrite(str.c_str(), sizeof(char), str.size(), pf);
+			fclose(pf);
+
+			reftime = atr.GetRefTime();
+		}
+	}
+
+	return 0;
+}
+
+
 static void Time2DATE(time_t tt, DATE& dt)
 {
 	struct tm *tmNow = gmtime(&tt);

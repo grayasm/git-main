@@ -72,14 +72,15 @@ int MarketPlugin4backtest::OpenPosition(
 	// Log open position action.
 	if (m_iniParams.GetEnableLogging())
 	{
-		misc::string msg("Open  at: ");
+		misc::string msg("Open  ");
 		msg += offer.GetTime().tostring();
-		msg += " count=";
-		msg += misc::from_value(result.size());
-		msg += " position(s)\n";
 		for (size_t i = 0; i < result.size(); ++i)
 		{
-			msg += result[i].ToString();
+			const fx::Position& ipos = result[i];
+			msg += ipos.IsBuy() == true ? " B=" : " S=";
+			msg += ipos.IsBuy() == true ?
+				misc::from_value(offer.GetAsk(), 5) :
+				misc::from_value(offer.GetBid(), 5);
 			msg += "\n";
 		}
 		Log(msg);
@@ -114,24 +115,27 @@ int MarketPlugin4backtest::ClosePosition(
 	if (m_iniParams.GetEnableLogging())
 	{
 		double curPL = 0, curGPL = 0;
-		misc::string msg("Close at: ");
+		misc::string msg("Close ");
 		msg += offer.GetTime().tostring();
-		msg += " count=";
-		msg += misc::from_value(result.size());
-		msg += " position(s)\n";
 		for (size_t i = 0; i < result.size(); ++i)
 		{
-			curPL += result[i].GetPL();
-			curGPL += result[i].GetGPL();
-			msg += result[i].ToString();
-			msg += " curPL="; msg += misc::from_value(curPL, 2);
-			msg += " curGPL="; msg += misc::from_value(curGPL, 2);
+			const fx::Position& ipos = result[i];
+
+			curPL += ipos.GetPL();
+			curGPL += ipos.GetGPL();
+			
+			msg += ipos.IsBuy() == true ? " S=" : " B=";
+			msg += ipos.IsBuy() == true ?
+				misc::from_value(offer.GetBid(), 5) :
+				misc::from_value(offer.GetAsk(), 5);
+
+			msg += " PL="; msg += misc::from_value(curPL, 2);
+			msg += " GPL="; msg += misc::from_value(curGPL, 2);
 			msg += "\n";
 		}
 		Log(msg);
 	}
-
-
+	
 	return (!result.empty() == true ? 0 : -1);
 }
 

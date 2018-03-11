@@ -52,26 +52,26 @@ namespace fx
 
 		void Update(const fx::Offer& offer);
 		bool IsCanceled() const;
+		double GetClosedPL() const;
 		double GetClosedGPL() const;
 
 	private:
 		void OpenPosition(const fx::Offer& offer, bool buy);
 		void ClosePosition(const fx::Offer& offer);
-		void InitializeATR(const fx::Offer& offer);
-		void InitializeSMA(const fx::Offer& offer);
-		void SetValidMarketTime(misc::time& tm, time_t& interval) const;
+		void BuildAllIndicators(const fx::Offer& offer);
 
 	private:
 		fx::MarketPlugin*		m_plugin;
 		misc::string			m_instrument;
 		double					m_renkoMin;	// ex: PL=15 
-		fx::ATR					m_atr;
-		fx::SMA					m_sma;
+		fx::ATR					m_atr14;
+		fx::SMA					m_sma7;
 		/// --------------------------
 		fx::Transaction			m_tr;
 		fx::Offer				m_initialOffer;
 		fx::Range				m_range;
 		double					m_totalPL;
+		double					m_closedPL;
 		double					m_closedGPL;
 		int						m_openHour;
 		int						m_closeHour;

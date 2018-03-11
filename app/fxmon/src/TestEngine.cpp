@@ -25,6 +25,7 @@
 #include "StrategyRenkoAtr.hpp"
 #include "MarketPlugin4backtest.hpp"
 #include "HistdatacomReader.hpp"
+#include "HistoryFxcmliveReader.hpp"
 
 
 
@@ -41,13 +42,23 @@ void TestEngine()
 		loginParams->GetConnection().empty())
 		return;
 
+	if (iniParams->GetEnableLogging())
+	{
+		const misc::string& lfile = iniParams->GetLoggingFile();
+		FILE* fp = fopen(lfile.c_str(), "w+");
+		if (fp)
+			fclose(fp);
+	}
+
 
 	fx::Offer offer;
 	misc::string instrument("EUR/USD");
 	fxcm::Session session(*loginParams, *iniParams);
 	MarketPlugin4backtest plugin(&session, *iniParams);
 	fx::StrategyRenkoAtr strategy(&plugin, instrument, 15, 8, 17);
-	HistdatacomReader oreader(instrument);
+	// HistdatacomReader oreader(instrument);
+	HistoryFxcmliveReader oreader(instrument);
+
 
 	// needs session for history prices only
 	session.Login();
@@ -56,7 +67,6 @@ void TestEngine()
 	{
 		if (!oreader.GetOffer(offer))
 			break;
-
 
 		// check for outside trading hours
 		misc::time tnow = offer.GetTime();
@@ -76,5 +86,19 @@ void TestEngine()
 
 	session.Logout();
 
+	// log total GPL
+	if (iniParams->GetEnableLogging())
+	{
+		const misc::string& lfile = iniParams->GetLoggingFile();
+		FILE* fp = fopen(lfile.c_str(), "a");
+		if (fp)
+		{
+			std::stringstream ss;
+			ss << "closedPL=" << strategy.GetClosedPL() <<
+				" closedGPL=" << strategy.GetClosedGPL() << std::endl;
+			fwrite(ss.str().c_str(), sizeof(char), ss.str().size(), fp);
+			fclose(fp);
+		}
+	}
 }
 
