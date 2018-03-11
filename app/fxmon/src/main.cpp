@@ -27,11 +27,10 @@
 //c++
 // local
 #include "Test.hpp"
-#include "GetHistoryPrices.hpp"
-#include "GetMarketOffers.hpp"
-#include "TestTransaction.hpp"
-#include "RunTransaction.hpp"
+#include "HistoryPricesGetter.hpp"
 #include "RealEngine.hpp"
+#include "TestEngine.hpp"
+
 
 
 int main(int /*argc*/, char** /*argv*/)
@@ -41,13 +40,9 @@ int main(int /*argc*/, char** /*argv*/)
 	
 	// GetHistoryPrices();
 	// LoadHistoryPrices();
-	// GetMarketOffers();
-	// TestTransaction();
-	// RunTransaction();
-	RealEngine();
-	// test3();
+	// RealEngine();
+	TestEngine();
 	// test4();
 
 	return 0;
 }
-

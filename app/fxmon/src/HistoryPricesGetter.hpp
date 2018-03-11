@@ -17,11 +17,11 @@
 	contact: grayasm@gmail.com
 */
 
-#ifndef __GetHistoryPrices_hpp__
-#define __GetHistoryPrices_hpp__
+#ifndef __HistoryPricesGetter_hpp__
+#define __HistoryPricesGetter_hpp__
 
 void GetHistoryPrices();
 void LoadHistoryPrices();
 
 
-#endif // __GetHistoryPrices_hpp__
+#endif // __HistoryPricesGetter_hpp__

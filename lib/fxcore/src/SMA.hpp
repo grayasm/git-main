@@ -31,13 +31,13 @@ namespace fx
 	class SMA
 	{
 	public:
-		typedef std::list<fx::Offer>	OfferList;
+		typedef std::list<fx::Price>	PriceList;
 		typedef time_t					Timeframe;
 
 		enum PriceOrigin
 		{
-			PRICE_CLOSE=0,
-			PRICE_OPEN
+			PRICE_OPEN = 0,
+			PRICE_CLOSE
 		};
 
 		SMA();
@@ -55,6 +55,7 @@ namespace fx
 		bool IsValid() const; 
 		void Update(const fx::Offer& offer);
 		void GetValue(fx::Price& average) const;
+		const misc::time& GetRefTime() const; // begin of current timeframe
 
 	private:
 		void Init();
@@ -64,8 +65,11 @@ namespace fx
 		int				m_period;		
 		Timeframe		m_timeframe;
 		PriceOrigin		m_priceOrigin;
-		OfferList		m_offerList;
-		fx::Offer		m_lastOffer;
+		// ---------------------
+		misc::time		m_reftime;
+		fx::Price		m_priceO;
+		fx::Price		m_priceC;
+		PriceList		m_offerList;
 		fx::Price		m_lastSum;
 	};
 } // namespace

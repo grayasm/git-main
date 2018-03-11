@@ -17,7 +17,7 @@
 	contact: grayasm@gmail.com
 */
 
-#include "GetHistoryPrices.hpp"
+#include "HistoryPricesGetter.hpp"
 #include "unistd.hpp"
 #include "stream.hpp"
 #include "time.hpp"

@@ -17,9 +17,9 @@
 	contact: grayasm@gmail.com
 */
 
-#ifndef __TestTransaction_hpp__
-#define __TestTransaction_hpp__
+#ifndef __TestEngine_hpp__
+#define __TestEngine_hpp__
 
-void TestTransaction();
+void TestEngine();
 
-#endif // __TestTransaction_hpp__
+#endif // __TestEngine_hpp__

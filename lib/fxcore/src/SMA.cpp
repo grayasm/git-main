@@ -56,8 +56,10 @@ namespace fx
 			m_period = tc.m_period;
 			m_timeframe = tc.m_timeframe;
 			m_priceOrigin = tc.m_priceOrigin;
+			m_reftime = tc.m_reftime;
+			m_priceO = tc.m_priceO;
+			m_priceC = tc.m_priceC;
 			m_offerList = tc.m_offerList;
-			m_lastOffer = tc.m_lastOffer;
 			m_lastSum = tc.m_lastSum;
 		}
 
@@ -97,59 +99,67 @@ namespace fx
 		if (m_instrument != offer.GetInstrument())
 			throw misc::exception("SMA offer is invalid");
 
-		if (m_lastOffer.GetInstrument().empty())
+		// begin at full hour even if the timeframe is ex: 3min
+		if (m_reftime.totime_t() == 0)
 		{
-			m_lastOffer = offer;
-			return;
-		}
-		
-		if (m_offerList.empty())
-		{
-			const misc::time& prevtime = m_lastOffer.GetTime();
-			const misc::time& currtime = offer.GetTime();			
-
-			// begin at full hour even if the timeframe is ex: 3min
-			if ((currtime.totime_t() - prevtime.totime_t() >= m_timeframe) &&
-				(currtime.hour_() != prevtime.hour_()))
-			{
-				m_offerList.push_back(offer);
-				m_lastOffer = offer;
-			}
+			m_reftime = offer.GetTime();
+			m_reftime -= m_reftime.sec_();
+			m_reftime += (60 - m_reftime.min_()) * misc::time::minSEC;
 
 			return;
 		}
 
-
-		const misc::time& lasttime = m_offerList.back().GetTime();
-		const misc::time& prevtime = m_lastOffer.GetTime();
 		const misc::time& currtime = offer.GetTime();
+		if (currtime < m_reftime)
+			return;
+		
+		misc::time nextt = m_reftime + m_timeframe;
 
-		if (currtime.totime_t() - lasttime.totime_t() >= m_timeframe)
+		// get the open price (only the first candle goes here)
+		if (m_priceO.GetBuy() == 0 && currtime >= m_reftime)
 		{
-			if (m_priceOrigin == PRICE_CLOSE)
-				m_offerList.push_back(m_lastOffer);
-			else // PRICE_OPEN
-				m_offerList.push_back(offer);
+			m_priceO = fx::Price(offer.GetAsk(), offer.GetBid());
+		}
+		// every price can close the candle
+		else if (currtime < nextt)
+		{
+			m_priceC = fx::Price(offer.GetAsk(), offer.GetBid());
+		}
+		// candle has just closed
+		else if (currtime >= nextt)
+		{
+			// handle the list
+			if (m_priceOrigin == PRICE_OPEN)
+				m_offerList.push_back(m_priceO);
+			else
+				m_offerList.push_back(m_priceC);
 
 			// keep period constant
 			if (m_offerList.size() > m_period)
 				m_offerList.pop_front();
+
+			// new candle has just started
+			m_priceO = fx::Price(offer.GetAsk(), offer.GetBid());
+			m_priceC = m_priceO; // updated for GetValue(..)
+
+			// current candle open (including weekend gap)
+			while (currtime >= m_reftime + m_timeframe)
+				m_reftime += m_timeframe;
+
 			
 			// calculate the sum
 			if (m_offerList.size() == m_period)
 			{
 				double buy = 0, sell = 0;
-				for (OfferList::iterator it = m_offerList.begin();
-					it != m_offerList.end(); ++it)
+				PriceList::iterator it = m_offerList.begin();
+				for (; it != m_offerList.end(); ++it)
 				{
-					buy += it->GetAsk();
-					sell += it->GetBid();
+					buy += it->GetBuy();
+					sell += it->GetSell();
 				}
 				m_lastSum = fx::Price(buy, sell);
 			}
 		}
-
-		m_lastOffer = offer;
 	}
 
 	void SMA::GetValue(fx::Price& average) const
@@ -157,10 +167,25 @@ namespace fx
 		if (m_period < 2 || m_offerList.size() != m_period)
 			throw misc::exception("SMA is invalid");
 
-		double buy = (m_lastSum.GetBuy() + m_lastOffer.GetAsk()) / (m_period + 1);
-		double sell = (m_lastSum.GetSell() + m_lastOffer.GetBid()) / (m_period + 1);
+		double buy = 0, sell = 0;
+
+		if (m_priceOrigin == PRICE_OPEN)
+		{
+			buy = (m_lastSum.GetBuy() + m_priceO.GetBuy()) / (m_period + 1);
+			sell = (m_lastSum.GetSell() + m_priceO.GetSell()) / (m_period + 1);
+		}
+		else
+		{
+			buy = (m_lastSum.GetBuy() + m_priceC.GetBuy()) / (m_period + 1);
+			sell = (m_lastSum.GetSell() + m_priceO.GetSell()) / (m_period + 1);
+		}		
 		
 		average = fx::Price(buy, sell);
+	}
+
+	const misc::time& SMA::GetRefTime() const
+	{
+		return m_reftime;
 	}
 
 	void SMA::Init()
@@ -169,8 +194,10 @@ namespace fx
 		m_period = -1;
 		m_timeframe = 0;
 		m_priceOrigin = PRICE_CLOSE;
-		// m_offerList; - clean
-		// m_lastOffer; - default
+		// m_reftime - default
+		m_priceO = fx::Price(0, 0);
+		m_priceC = fx::Price(0, 0);
+		// m_offerList - clean
 		m_lastSum = fx::Price(0, 0);
 	}
 } // namespace

@@ -26,12 +26,6 @@
 
 namespace fx
 {
-	void Price::Init()
-	{
-		m_buy = FLT_MAX;
-		m_sell = FLT_MAX;
-	}
-
 	Price::Price()
 	{
 		Init();
@@ -73,7 +67,13 @@ namespace fx
 	double Price::GetSell() const
 	{
 		return m_sell;
-	}	
+	}
+
+	void Price::Init()
+	{
+		m_buy = FLT_MAX;
+		m_sell = FLT_MAX;
+	}
 
 } // namespace fx
 

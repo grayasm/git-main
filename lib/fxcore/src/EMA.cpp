@@ -58,9 +58,11 @@ namespace fx
 			m_timeframe = tc.m_timeframe;
 			m_multiplier = tc.m_multiplier;
 			m_firstSMA = tc.m_firstSMA;
-			m_lastOffer = tc.m_lastOffer;
-			m_emaList = tc.m_emaList;
+			m_reftime = tc.m_reftime;
+			m_priceO = tc.m_priceO;
+			m_priceC = tc.m_priceC;
 			m_currEMA = tc.m_currEMA;
+			m_emaList = tc.m_emaList;
 		}
 
 		return *this;
@@ -99,7 +101,6 @@ namespace fx
 		if (m_instrument != offer.GetInstrument())
 			throw misc::exception("EMA offer is invalid");
 
-
 		/*	http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:moving_averages
 			Example for 10 period EMA:
 			Initial SMA: 10_period_SUM / 10			
@@ -111,35 +112,76 @@ namespace fx
 		if (!m_firstSMA.IsValid())
 		{
 			m_firstSMA.Update(offer);
-			m_lastOffer = offer;
 			return;
 		}
 
 		if (m_emaList.empty())
 		{
+			// add first EMA
 			fx::Price price;
 			m_firstSMA.GetValue(price);
 			m_emaList.push_back(price);
+
+			// begin of current timeframe
+			m_reftime = m_firstSMA.GetRefTime();
+
+			// open and close of current candle
+			m_priceO = fx::Price(offer.GetAsk(), offer.GetBid());
+			m_priceC = m_priceO;
+
+			return;
 		}
 
-		double currb = offer.GetAsk();
-		double lastb = m_emaList.back().GetBuy();
-		double calcb = (currb - lastb) * m_multiplier + lastb;
+		const misc::time& currtime = offer.GetTime();
+		misc::time nextt = m_reftime + m_timeframe;
 
-		double currs = offer.GetBid();
+
+		// every price can close the candle
+		if (currtime < nextt)
+		{
+			m_priceC = fx::Price(offer.GetAsk(), offer.GetBid());
+		}
+
+		// calculate current EMA
+		double currb = 0, currs = 0;
+		if (m_firstSMA.GetPriceOrigin() == fx::SMA::PRICE_OPEN)
+		{
+			currb = m_priceO.GetBuy();
+			currs = m_priceO.GetSell();
+		}
+		else
+		{
+			currb = m_priceC.GetBuy();
+			currs = m_priceC.GetSell();
+		}
+
+		double lastb = m_emaList.back().GetBuy();
 		double lasts = m_emaList.back().GetSell();
+
+		double calcb = (currb - lastb) * m_multiplier + lastb;
 		double calcs = (currs - lasts) * m_multiplier + lasts;
 
 		m_currEMA = fx::Price(calcb, calcs);
-		
-		if (offer.GetTime() - m_lastOffer.GetTime() >= m_timeframe)
-		{
-			m_emaList.push_back(m_currEMA);
-			m_lastOffer = offer;
 
-			// keep period list constant
+
+		// is current candle closed?
+		if (currtime >= nextt)
+		{
+			// handle the list
+			m_emaList.push_back(m_currEMA);
+
+			// keep period constant
 			if (m_emaList.size() > m_period)
 				m_emaList.pop_front();
+
+			
+			// new candle has just started
+			m_priceO = fx::Price(offer.GetAsk(), offer.GetBid());
+			m_priceC = m_priceO;
+
+			// current candle open (including weekend gap)
+			while (currtime >= m_reftime + m_timeframe)
+				m_reftime += m_timeframe;
 		}
 	}
 
@@ -151,6 +193,11 @@ namespace fx
 		average = m_currEMA;
 	}
 
+	const misc::time& EMA::GetRefTime() const
+	{
+		return m_reftime;
+	}
+
 	void EMA::Init()
 	{
 		m_instrument = "";
@@ -158,8 +205,10 @@ namespace fx
 		m_timeframe = 0;
 		m_multiplier = 0;
 		// m_firstSMA - default;
-		// m_lastOffer - default;
+		// m_reftime - default;
+		m_priceO = fx::Price(0, 0);
+		m_priceC = fx::Price(0, 0);
+		m_currEMA = fx::Price(0, 0);
 		// m_emaList - clean;
-		// m_currEMA - default; FLT_MAX
 	}
 } // namespace

@@ -52,6 +52,7 @@ namespace fx
 		bool IsValid() const; 
 		void Update(const fx::Offer& offer);
 		void GetValue(fx::Price& average) const;
+		const misc::time& GetRefTime() const;	// begin of current candle
 
 	private:
 		void Init();
@@ -61,11 +62,13 @@ namespace fx
 		int				m_period;
 		Timeframe		m_timeframe;
 		double			m_multiplier;
+		// -----------------------
 		fx::SMA			m_firstSMA;
-		fx::Offer		m_lastOffer;
-		EMAList			m_emaList;
+		misc::time		m_reftime;
+		fx::Price		m_priceO;
+		fx::Price		m_priceC;		
 		fx::Price		m_currEMA;
-		
+		EMAList			m_emaList;
 	};
 } // namespace
 

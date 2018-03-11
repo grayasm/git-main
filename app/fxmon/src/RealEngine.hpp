@@ -17,11 +17,11 @@
 	contact: grayasm@gmail.com
 */
 
-#ifndef __RunEngine_hpp__
-#define __RunEngine_hpp__
+#ifndef __RealEngine_hpp__
+#define __RealEngine_hpp__
 
 void RealEngine();
 
 
-#endif // __RunEngine_hpp__
+#endif // __RealEngine_hpp__
 

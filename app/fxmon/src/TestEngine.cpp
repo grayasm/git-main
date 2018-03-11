@@ -17,7 +17,6 @@
 	contact: grayasm@gmail.com
 */
 
-#include "TestTransaction.hpp"
 #include "unistd.hpp"
 #include "stream.hpp"
 #include "IniParams.hpp"
@@ -29,7 +28,7 @@
 
 
 
-void TestTransaction()
+void TestEngine()
 {
 	fxcm::LoginParams::Ptr loginParams = new fxcm::LoginParams("monitor.ini");
 	fxcm::IniParams::Ptr iniParams = new fxcm::IniParams("monitor.ini");

@@ -29,9 +29,11 @@
 #include "ErrorCodes.hpp"
 #include "time.hpp"
 #include "HistoryPricesReader.hpp"
+#include "HistdatacomReader.hpp"
 #include <list>
 #include "Price.hpp"
 #include "SMA.hpp"
+#include "EMA.hpp"
 #include "ATR.hpp"
 #include "Position.hpp"
 #include "Transaction.hpp"
@@ -187,28 +189,69 @@ int test3()
 int test4()
 {
 	// OffersReader oreader("EUR/USD");
-	HistoryPricesReader oreader("EUR/USD");
-	// HistdatacomReader oreader("EUR/USD");
+	// HistoryPricesReader oreader("EUR/USD");
+	HistdatacomReader oreader("EUR/USD");
 
-	fx::Offer offer;
-	fx::ATR atr("EUR/USD", 14, misc::time::hourSEC);
-	double prevATR = 0;
+	fx::Offer offer, lastoffer;
+	fx::EMA ema("EUR/USD", 14, misc::time::hourSEC, fx::SMA::PRICE_CLOSE);
+	fx::SMA sma("EUR/USD", 14, misc::time::hourSEC, fx::SMA::PRICE_CLOSE);
+	
+	misc::time reftime;
+
+	FILE* f1 = fopen("EMA_2017.txt", "w+");
+	if (f1) fclose(f1);
+	FILE* f2 = fopen("SMA_2017.txt", "w+");
+	if (f2) fclose(f2);
 
 	while (oreader.GetOffer(offer))
 	{
-		atr.Update(offer);
+		ema.Update(offer);
+		sma.Update(offer);
 
-		if (atr.IsValid())
+		if (lastoffer.GetInstrument().empty())
+			lastoffer = offer;
+
+		if (!ema.IsValid() || !sma.IsValid())
+			continue;
+
+		if (reftime != sma.GetRefTime())
 		{
-			double currATR = 0;
-			atr.GetValue(currATR);
+			reftime = sma.GetRefTime(); // current candle
 
-			if (math::is_neq(prevATR, currATR))
+			// ---- EMA ----
 			{
-				misc::cout << "ATR=" << currATR << " RENKO=" <<
-					currATR * 1 / offer.GetPointSize() <<
+				FILE* pf = fopen("EMA_2017.txt", "a+");
+				if (pf == NULL)
+					continue;
+
+				std::stringstream ss;
+				ss << offer.GetTime().tostring() << " ";
+				fx::Price pr;
+				ema.GetValue(pr);
+				ss << "Bid=" << pr.GetSell() << " Ask=" << pr.GetBuy() <<
 					std::endl;
-				prevATR = currATR;
+
+				std::string str = ss.str();
+				fwrite(str.c_str(), sizeof(char), str.size(), pf);
+				fclose(pf);
+			}
+			
+			// ---- SMA ----
+			{
+				FILE* pf = fopen("SMA_2017.txt", "a+");
+				if (pf == NULL)
+					continue;
+
+				std::stringstream ss;
+				ss << offer.GetTime().tostring() << " ";
+				fx::Price pr;
+				sma.GetValue(pr);
+				ss << "Bid=" << pr.GetSell() << " Ask=" << pr.GetBuy() <<
+					std::endl;
+
+				std::string str = ss.str();
+				fwrite(str.c_str(), sizeof(char), str.size(), pf);
+				fclose(pf);
 			}
 		}
 	}

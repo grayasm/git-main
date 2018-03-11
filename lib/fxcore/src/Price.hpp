@@ -37,7 +37,6 @@ namespace fx
 	*/
 	class Price
 	{
-		void Init();
 	public:
 		typedef misc::autoptr<Price> Ptr;
 
@@ -49,6 +48,9 @@ namespace fx
 
 		double GetBuy() const;
 		double GetSell() const;
+
+	private:
+		void Init();
 
 	private:
 		double	m_buy;
