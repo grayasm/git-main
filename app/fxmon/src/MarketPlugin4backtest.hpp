@@ -22,6 +22,7 @@
 #define __MarketPlugin4backtest_hpp__
 
 #include "vector.hpp"
+#include "critical_section.hpp"
 #include "IniParams.hpp"
 #include "Session.hpp"
 #include "MarketPlugin.hpp"
@@ -63,6 +64,7 @@ private:
 private:
 	fxcm::Session*					m_session;
 	fxcm::IniParams					m_iniParams;
+	misc::critical_section			m_criticalSection;
 	int								m_orderID;
 	int								m_tradeID;
 	misc::vector<fx::Position>		m_posvec;

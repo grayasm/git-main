@@ -81,11 +81,6 @@ namespace fx
 		return m_timeframe;
 	}
 
-	SMA::PriceOrigin SMA::GetPriceOrigin() const
-	{
-		return m_priceOrigin;
-	}
-
 	bool SMA::IsValid() const
 	{
 		return (m_period > 1 && m_period == m_offerList.size());
@@ -162,6 +157,17 @@ namespace fx
 		}
 	}
 
+
+	const misc::time& SMA::GetRefTime() const
+	{
+		return m_reftime;
+	}
+
+	SMA::PriceOrigin SMA::GetPriceOrigin() const
+	{
+		return m_priceOrigin;
+	}
+
 	void SMA::GetValue(fx::Price& average) const
 	{
 		if (m_period < 2 || m_offerList.size() != m_period)
@@ -178,14 +184,9 @@ namespace fx
 		{
 			buy = (m_lastSum.GetBuy() + m_priceC.GetBuy()) / (m_period + 1);
 			sell = (m_lastSum.GetSell() + m_priceO.GetSell()) / (m_period + 1);
-		}		
-		
-		average = fx::Price(buy, sell);
-	}
+		}
 
-	const misc::time& SMA::GetRefTime() const
-	{
-		return m_reftime;
+		average = fx::Price(buy, sell);
 	}
 
 	void SMA::Init()

@@ -21,6 +21,7 @@
 
 #include "stream.hpp"
 #include "strconv.hpp"
+#include "autocritical_section.hpp"
 #include "Utils.hpp"
 #include "ErrorCodes.hpp"
 
@@ -31,6 +32,7 @@ MarketPlugin4backtest::MarketPlugin4backtest(
 {
 	m_session = session;
 	m_iniParams = iniParams;
+	// m_criticalSection - default;
 	m_orderID = 0;
 	m_tradeID = 0;
 	// m_posvec - clean;
@@ -48,6 +50,8 @@ int MarketPlugin4backtest::OpenPosition(
 	bool buy,
 	misc::vector<fx::Position>& result)
 {
+	misc::autocritical_section acs(m_criticalSection);
+
 	fx::Currency curr(
 		offer.GetInstrument(),
 		fx::Price(offer.GetAsk(), offer.GetBid()),
@@ -94,6 +98,8 @@ int MarketPlugin4backtest::ClosePosition(
 	const fx::Position& pos,
 	misc::vector<fx::Position>& result)
 {
+	misc::autocritical_section acs(m_criticalSection);
+
 	misc::vector<fx::Position>::iterator it = m_posvec.begin();
 	for (; it != m_posvec.end(); ++it)
 	{
@@ -146,6 +152,8 @@ int MarketPlugin4backtest::GetOHLCPrices(
 	const misc::time& to,
 	misc::vector<fx::OHLCPrice>& result)
 {
+	misc::autocritical_section acs(m_criticalSection);
+
 	DATE dtFrom = 0, dtTo = 0;
 
 	fxcm::Utils::TimeToDate(from, dtFrom);
@@ -167,6 +175,8 @@ int MarketPlugin4backtest::GetOHLCPrices(
 
 void MarketPlugin4backtest::Log(const misc::string& msg)
 {
+	misc::autocritical_section acs(m_criticalSection);
+
 	if (!m_iniParams.GetEnableLogging())
 		return;
 

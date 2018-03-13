@@ -254,6 +254,11 @@ namespace fx
 		}
 	}
 
+	const misc::time& ATR::GetRefTime() const
+	{
+		return m_reftime;
+	}
+
 	void ATR::GetValue(double& average) const
 	{
 		if (m_period -1 < 2 || m_priceList.size() != m_period)
@@ -261,11 +266,6 @@ namespace fx
 
 		// return last ATR (true average)
 		average = m_ATR;
-	}
-
-	const misc::time& ATR::GetRefTime() const
-	{
-		return m_reftime;
 	}
 
 	void ATR::Init()

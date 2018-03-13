@@ -30,6 +30,7 @@
 #include "HistoryPricesGetter.hpp"
 #include "RealEngine.hpp"
 #include "TestEngine.hpp"
+#include "OMPEngine.hpp"
 
 
 
@@ -41,7 +42,8 @@ int main(int /*argc*/, char** /*argv*/)
 	// GetHistoryPrices();
 	// LoadHistoryPrices();
 	// RealEngine();
-	TestEngine();
+	// TestEngine();
+	OMPEngine();
 	// test5();
 
 	return 0;

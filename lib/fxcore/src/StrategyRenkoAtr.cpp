@@ -303,7 +303,7 @@ namespace fx
 
 			misc::vector<fx::Position>::iterator tmp = npos.erase(it);
 			it = tmp;
-		}		
+		}
 	}
 	
 	void StrategyRenkoAtr::BuildAllIndicators(const fx::Offer& offer)

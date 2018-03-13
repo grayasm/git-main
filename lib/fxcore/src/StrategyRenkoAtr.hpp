@@ -23,7 +23,6 @@
 
 #include "autoptr.hpp"
 #include "Offer.hpp"
-#include "Position.hpp"
 #include "Transaction.hpp"
 #include "MarketPlugin.hpp"
 #include "Range.hpp"

@@ -22,17 +22,18 @@
 #define __SMA_hpp__
 
 #include <list>
+#include "IND.hpp"
 #include "Offer.hpp"
 #include "Price.hpp"
 
 
 namespace fx
 {
-	class SMA
+	class SMA : public IND
 	{
 	public:
 		typedef std::list<fx::Price>	PriceList;
-		typedef time_t					Timeframe;
+		// Timeframe is time_t
 
 		enum PriceOrigin
 		{
@@ -47,15 +48,17 @@ namespace fx
 		SMA(const SMA& tc);
 		SMA& operator=(const SMA& tc);
 
-		const misc::string& GetInstrument() const;
-		int GetPeriod() const;
-		Timeframe GetTimeframe() const;
-		PriceOrigin GetPriceOrigin() const;
+		// --- virtual table ---
+		const misc::string& GetInstrument() const override;
+		int GetPeriod() const override;
+		Timeframe GetTimeframe() const override;
+		bool IsValid() const override;
+		void Update(const fx::Offer& offer) override;
+		const misc::time& GetRefTime() const override;
+		// --- end of virtual table ---
 
-		bool IsValid() const; 
-		void Update(const fx::Offer& offer);
+		PriceOrigin GetPriceOrigin() const;
 		void GetValue(fx::Price& average) const;
-		const misc::time& GetRefTime() const; // begin of current timeframe
 
 	private:
 		void Init();

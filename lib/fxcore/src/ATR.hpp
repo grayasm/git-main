@@ -22,17 +22,18 @@
 #define __ATR_hpp__
 
 #include <list>
+#include "IND.hpp"
 #include "Offer.hpp"
 #include "OHLCPrice.hpp"
 
 
 namespace fx
 {
-	class ATR
+	class ATR : public IND
 	{
 	public:
 		typedef std::list<fx::OHLCPrice>	OHLCPriceList;
-		typedef time_t						Timeframe;
+		// Timeframe is time_t
 
 		ATR();
 		ATR(const misc::string& instrument, int period, Timeframe sec);
@@ -40,13 +41,16 @@ namespace fx
 		ATR(const ATR& tc);
 		ATR& operator=(const ATR& tc);
 
-		const misc::string& GetInstrument() const;
-		int GetPeriod() const;
-		Timeframe GetTimeframe() const;
-		bool IsValid() const;
-		void Update(const fx::Offer& offer);
+		// --- virtual table ---
+		const misc::string& GetInstrument() const override;
+		int GetPeriod() const override;
+		Timeframe GetTimeframe() const override;
+		bool IsValid() const override;
+		void Update(const fx::Offer& offer) override;
+		const misc::time& GetRefTime() const override;
+		// --- end of virtual table ---
+
 		void GetValue(double& average) const;
-		const misc::time& GetRefTime() const; // begin of current timeframe
 
 	private:
 		void Init();

@@ -17,6 +17,7 @@
 	contact: grayasm@gmail.com
 */
 
+#include "TestEngine.hpp"
 #include "unistd.hpp"
 #include "stream.hpp"
 #include "IniParams.hpp"

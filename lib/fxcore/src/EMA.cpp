@@ -83,10 +83,6 @@ namespace fx
 		return m_timeframe;
 	}
 
-	EMA::PriceOrigin EMA::GetPriceOrigin() const
-	{
-		return m_firstSMA.GetPriceOrigin();
-	}
 
 	bool EMA::IsValid() const
 	{
@@ -185,17 +181,22 @@ namespace fx
 		}
 	}
 
+	const misc::time& EMA::GetRefTime() const
+	{
+		return m_reftime;
+	}
+
+	EMA::PriceOrigin EMA::GetPriceOrigin() const
+	{
+		return m_firstSMA.GetPriceOrigin();
+	}
+
 	void EMA::GetValue(fx::Price& average) const
 	{
 		if (m_period < 2 || m_emaList.size() != m_period)
 			throw misc::exception("EMA is invalid");
 
 		average = m_currEMA;
-	}
-
-	const misc::time& EMA::GetRefTime() const
-	{
-		return m_reftime;
 	}
 
 	void EMA::Init()
