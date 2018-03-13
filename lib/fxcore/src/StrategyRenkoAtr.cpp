@@ -252,7 +252,7 @@ namespace fx
 		} // (diffPL < -2 * renkoPL)
 	} // Update(Offer)
 
-	bool StrategyRenkoAtr::IsCanceled() const
+	bool StrategyRenkoAtr::IsCancelled() const
 	{
 		return m_isCancelled;
 	}

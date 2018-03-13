@@ -50,7 +50,7 @@ namespace fx
 		StrategyRenkoAtr& operator=(const StrategyRenkoAtr& tc) = delete;
 
 		void Update(const fx::Offer& offer);
-		bool IsCanceled() const;
+		bool IsCancelled() const;
 		double GetClosedPL() const;
 		double GetClosedGPL() const;
 

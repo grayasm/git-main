@@ -36,18 +36,39 @@ namespace fx
 		if (offer.GetInstrument().empty() || offer.GetTime().totime_t() == 0)
 			throw misc::exception("IndicatorBuilder: invalid offer");
 
-		for (size_t i = 0; i < indicators.size(); ++i)
-			if (indicators[i] == NULL || indicators[i]->IsValid())
-				throw misc::exception("IndicatorBuilder: indicator is NULL or valid");
-
 		misc::time tnow = offer.GetTime();
 		double maxSec = 0;
+		misc::string strTimeframe("H1");
+		time_t timeInc = 60 * misc::time::hourSEC;
+
 		for (size_t i = 0; i < indicators.size(); ++i)
 		{
 			fx::IND* ind = indicators[i];
-			double indSec = 1.5 * ind->GetPeriod() * ind->GetTimeframe();
+
+			if (ind == NULL || ind->IsValid())
+				throw misc::exception("IndicatorBuilder: indicator is NULL or valid");
+
+			time_t timeframe = ind->GetTimeframe();
+			if (timeframe < misc::time::hourSEC)
+			{
+				strTimeframe = "m1";
+				timeInc = 60 * misc::time::minSEC;
+			}				
+
+			int period = ind->GetPeriod();
+			double indSec = (double)period * timeframe;
 			maxSec = misc::max(maxSec, indSec);
-		}
+		} // for(indicators)
+
+
+		// EMA always needs 1 full period x timeframe for first SMA
+		// and additional 1 full period x timeframe for EMA
+		maxSec *= 2.0;
+
+		// Weekend correction = 2 days for each full week.
+		int weeksNo = misc::max(1.0, maxSec / (7.0 * misc::time::daySEC));
+		maxSec += 2.0 * misc::time::daySEC * weeksNo;
+
 
 		time_t totaltime = (time_t) ::ceil(maxSec);
 
@@ -56,10 +77,10 @@ namespace fx
 
 		fx::TimeUtils::SetValidMarketTime(tnow, totaltime);
 
-		for (time_t i = 0; i < totaltime; i += misc::time::hourSEC)
+		for (time_t i = 0; i < totaltime; i += timeInc)
 		{
 			misc::time from = tnow - (totaltime - i);
-			misc::time to = tnow - (totaltime - i - misc::time::hourSEC);
+			misc::time to = tnow - (totaltime - i - timeInc);
 
 			// don't ask for history prices from outside trading hours
 			if ((from.wday() == misc::time::SAT) ||
@@ -77,7 +98,7 @@ namespace fx
 				break;
 
 			misc::vector<fx::OHLCPrice> result;		
-			int ret = plugin->GetOHLCPrices(offer.GetInstrument(), "m1", from, to, result);
+			int ret = plugin->GetOHLCPrices(offer.GetInstrument(), strTimeframe.c_str(), from, to, result);
 
 			if (ret != 0)
 			{ // may get some weekend data, don't react for now.

@@ -98,7 +98,7 @@ void RealEngine()
 
 		strategy.Update(offer);
 
-		if (strategy.IsCanceled())
+		if (strategy.IsCancelled())
 			break; // error with the strategy
 
 	} // while
