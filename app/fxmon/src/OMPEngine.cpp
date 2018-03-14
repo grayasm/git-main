@@ -52,6 +52,7 @@ void OMPEngine()
 	fxcm::Session session(*loginParams, *iniParams);
 	MarketPlugin4backtest plugin(&session, *iniParams);
 	HistdatacomReader oreader(instrument);
+	misc::time reftime;
 
 	misc::vector<fx::IND*> smaVec;	
 	
@@ -72,6 +73,9 @@ void OMPEngine()
 	
 	if (!oreader.GetOffer(offer))
 		return; // cannot get the offer?
+
+	reftime = offer.GetTime();
+	misc::cout << reftime.tostring() << std::endl;
 
 	// needs session for history prices only
 	session.Login();
@@ -103,6 +107,12 @@ void OMPEngine()
 	{
 		if (!oreader.GetOffer(offer))
 			break;
+
+		if (reftime.mon_() != offer.GetTime().mon_())
+		{
+			reftime = offer.GetTime();
+			misc::cout << reftime.tostring() << std::endl;
+		}
 
 		// check for outside trading hours
 		misc::time tnow = offer.GetTime();
@@ -140,10 +150,13 @@ void OMPEngine()
 		double PL = strategyVec[i]->GetClosedPL();
 		double GPL = strategyVec[i]->GetClosedGPL();
 
-		misc::cout << "SMA(" << period1 << ", " << (timeframe1 == 60 ? "H" : "D")
+		misc::cout << "SMA(" << period1 << ", "
+			<< (timeframe1 == misc::time::hourSEC ? "H" : "D")
 			<< ") PL=" << misc::from_value(PL, 2).c_str()
 			<< " GPL=" << misc::from_value(GPL, 2).c_str() << std::endl;
 	}
+
+	misc::cout << "Destroying...\n";
 
 	for (int i = 0; i < strategyVec.size(); ++i)
 		delete strategyVec[i];

@@ -62,8 +62,8 @@ namespace fx
 		fx::Transaction				m_tr;
 		double						m_prevBid1;
 		double						m_prevBid2;
-		double						m_totalPL;
-		double						m_totalGPL;
+		double						m_closedPL;
+		double						m_closedGPL;
 		bool						m_isCancelled;
 	};
 } // namespace

@@ -34,6 +34,7 @@ namespace fx
 
 		// adjust both 'to' and 'interval' to valid market hours
 		static void SetValidMarketTime(misc::time& to, time_t& interval);
+
 	};
 } // namespace
 

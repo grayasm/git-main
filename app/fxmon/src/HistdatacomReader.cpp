@@ -28,7 +28,8 @@ HistdatacomReader::HistdatacomReader(const misc::string& instrument)
 	m_instrument = instrument;
 
 	
-	m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2017\\DAT_ASCII_EURUSD_T_201701.csv");
+	m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2017\\DAT_ASCII_EURUSD_T_201701_0.csv");//fast
+	m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2017\\DAT_ASCII_EURUSD_T_201701_1.csv");
 	m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2017\\DAT_ASCII_EURUSD_T_201701_2.csv");
 	m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2017\\DAT_ASCII_EURUSD_T_201702.csv");
 	m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2017\\DAT_ASCII_EURUSD_T_201702_2.csv");

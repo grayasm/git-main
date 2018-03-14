@@ -29,6 +29,13 @@ namespace fx
 		*/
 		to -= to.sec_();
 
+		/*	For each full week add 2 extra days to compensate for
+			FRI 22:00 -> SUN 22:00 outside trading hours.
+		*/
+		int weeks = interval / (7 * misc::time::daySEC);
+		interval += weeks * (2 * misc::time::daySEC);
+
+
 		/*	Shift back to time, outside weekend hours.
 
 			FRI 16:55 EST -> SUN 17:15 EST	coresponding to:
@@ -67,4 +74,6 @@ namespace fx
 			interval += adjustedinterval;
 		}
 	}
+
+
 } // namespace

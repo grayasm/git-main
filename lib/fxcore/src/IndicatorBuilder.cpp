@@ -38,8 +38,7 @@ namespace fx
 
 		misc::time tnow = offer.GetTime();
 		double maxSec = 0;
-		misc::string strTimeframe("H1");
-		time_t timeInc = 60 * misc::time::hourSEC;
+		misc::string stimeFrame("H1");
 
 		for (size_t i = 0; i < indicators.size(); ++i)
 		{
@@ -48,57 +47,71 @@ namespace fx
 			if (ind == NULL || ind->IsValid())
 				throw misc::exception("IndicatorBuilder: indicator is NULL or valid");
 
-			time_t timeframe = ind->GetTimeframe();
-			if (timeframe < misc::time::hourSEC)
-			{
-				strTimeframe = "m1";
-				timeInc = 60 * misc::time::minSEC;
-			}				
+			time_t tfval = ind->GetTimeframe();
+			if (tfval < misc::time::hourSEC)
+				stimeFrame = "m1";
 
-			int period = ind->GetPeriod();
-			double indSec = (double)period * timeframe;
+			double indSec = (double)ind->GetPeriod() * tfval;
 			maxSec = misc::max(maxSec, indSec);
 		} // for(indicators)
 
-
-		// EMA always needs 1 full period x timeframe for first SMA
-		// and additional 1 full period x timeframe for EMA
+		//	EMA always needs:
+		//	1 full period x timeframe for first SMA
+		//	1 full period x timeframe for itself (EMA)
 		maxSec *= 2.0;
 
-		// Weekend correction = 2 days for each full week.
-		int weeksNo = misc::max(1.0, maxSec / (7.0 * misc::time::daySEC));
-		maxSec += 2.0 * misc::time::daySEC * weeksNo;
-
-
 		time_t totaltime = (time_t) ::ceil(maxSec);
+		int timeFrame = (stimeFrame == "H1" ?
+			misc::time::hourSEC :
+			misc::time::minSEC);
+		int tinc = (stimeFrame == "H1" ?
+			24 * misc::time::hourSEC :
+			60 * misc::time::minSEC);
 
 		if (totaltime < misc::time::minSEC)
 			throw misc::exception("IndicatorBuilder: timeframe is invalid");
 
 		fx::TimeUtils::SetValidMarketTime(tnow, totaltime);
 
-		for (time_t i = 0; i < totaltime; i += timeInc)
+		time_t ti = 0;
+		while (ti < totaltime)
 		{
-			misc::time from = tnow - (totaltime - i);
-			misc::time to = tnow - (totaltime - i - timeInc);
+			// out of valid range
+			if (ti > totaltime - tinc)
+				tinc = totaltime - ti;
 
-			// don't ask for history prices from outside trading hours
-			if ((from.wday() == misc::time::SAT) ||
-				(from.wday() == misc::time::FRI && from.hour_() >= 22) ||
-				(from.wday() == misc::time::SUN && from.hour_() < 22))
-				continue;
-
-			// stop one candle before offer timestamp
-			misc::time tvalid = tnow - misc::time::minSEC;
-			if (to > tvalid)
-				to = tvalid;
-
-			// last interval too short?
-			if (from + misc::time::minSEC > to)
+			if (tinc <= timeFrame)
 				break;
 
+			misc::time from = tnow - (totaltime - ti);
+			misc::time to = tnow - (totaltime - ti - tinc);
+
+			// don't ask for history prices from outside trading hours
+			misc::time::WDay wday = from.wday();
+			if ((wday == misc::time::SAT) ||
+				(wday == misc::time::FRI && from.hour_() >= 22) ||
+				(wday == misc::time::SUN && from.hour_() < 22))
+			{
+				// adjust minutes to full hour (doesn't matter in weekend)
+				int subMin = from.min_() * misc::time::minSEC;
+
+				if (wday == misc::time::SUN)
+				{
+					int addHours = (22 - from.hour_()) * misc::time::hourSEC;
+					ti += (addHours - subMin);
+				}
+				else
+				{
+					int addDays = (7 - (int)wday) * misc::time::daySEC;
+					int addHours = (22 - from.hour_()) * misc::time::hourSEC;
+					ti += (addDays + addHours - subMin);
+				}
+
+				continue;
+			}
+
 			misc::vector<fx::OHLCPrice> result;		
-			int ret = plugin->GetOHLCPrices(offer.GetInstrument(), strTimeframe.c_str(), from, to, result);
+			int ret = plugin->GetOHLCPrices(offer.GetInstrument(), stimeFrame.c_str(), from, to, result);
 
 			if (ret != 0)
 			{ // may get some weekend data, don't react for now.
@@ -111,6 +124,10 @@ namespace fx
 
 				Update(offer, ohlc, indicators);
 			}
+
+			ti += tinc;
+			if (ti >= totaltime)
+				break;
 		} // for(totaltime)
 
 

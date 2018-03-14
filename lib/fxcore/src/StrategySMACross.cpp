@@ -40,8 +40,8 @@ namespace fx
 		// m_tr - default
 		m_prevBid1 = 0;
 		m_prevBid2 = 0;
-		m_totalPL = 0;
-		m_totalGPL = 0;
+		m_closedPL = 0;
+		m_closedGPL = 0;
 		m_isCancelled = false;
 	}
 
@@ -91,14 +91,26 @@ namespace fx
 		if (m_prevBid1 > m_prevBid2 && bid1 <= bid2)
 		{
 			if (!m_tr.IsEmpty())
+			{
+				fx::Price price(offer.GetAsk(), offer.GetBid());
+				m_closedPL += m_tr.GetPL(m_instrument, price);
+				m_closedGPL += m_tr.GetGPL(m_instrument, price);
+
 				ClosePosition(offer);
+			}
 			
 			OpenPosition(offer, false); // sell
 		}
 		else if (m_prevBid1 < m_prevBid2 && bid1 >= bid2)
 		{
 			if (!m_tr.IsEmpty())
+			{
+				fx::Price price(offer.GetAsk(), offer.GetBid());
+				m_closedPL += m_tr.GetPL(m_instrument, price);
+				m_closedGPL += m_tr.GetGPL(m_instrument, price);
+
 				ClosePosition(offer);
+			}
 
 			OpenPosition(offer, true);	// buy
 		}
@@ -115,12 +127,12 @@ namespace fx
 
 	double StrategySMACross::GetClosedPL() const
 	{
-		return m_totalPL;
+		return m_closedPL;
 	}
 
 	double StrategySMACross::GetClosedGPL() const
 	{
-		return m_totalGPL;
+		return m_closedGPL;
 	}
 
 	void StrategySMACross::OpenPosition(const fx::Offer& offer, bool buy)

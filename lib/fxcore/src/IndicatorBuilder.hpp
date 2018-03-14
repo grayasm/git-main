@@ -22,9 +22,11 @@
 #define __IndicatorBuilder_hpp__
 
 #include "MarketPlugin.hpp"
-#include "Offer.hpp"
 #include "vector.hpp"
+#include "time.hpp"
 #include "IND.hpp"
+#include "Offer.hpp"
+
 
 
 namespace fx
