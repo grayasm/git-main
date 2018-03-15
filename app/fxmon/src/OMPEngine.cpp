@@ -18,6 +18,9 @@
 */
 
 #include "OMPEngine.hpp"
+#include <omp.h>
+#include <map>
+#include <functional>
 #include "unistd.hpp"
 #include "stream.hpp"
 #include "IniParams.hpp"
@@ -27,7 +30,6 @@
 #include "StrategySMACross.hpp"
 #include "MarketPlugin4backtest.hpp"
 #include "HistdatacomReader.hpp"
-
 
 
 void OMPEngine()
@@ -53,19 +55,23 @@ void OMPEngine()
 	MarketPlugin4backtest plugin(&session, *iniParams);
 	HistdatacomReader oreader(instrument);
 	misc::time reftime;
-
-	misc::vector<fx::IND*> smaVec;	
+	misc::vector<fx::IND*> smaVec;
+	misc::vector<fx::StrategySMACross*> strategyVec;
+	typedef misc::pair<misc::string, fx::StrategySMACross*> CrossPair;
+	misc::vector<CrossPair> crossVec;
 	
+
+
+
 	// SMA(2, 1H) -> SMA(48, 1H)
 	// SMA(2, 1D) -> SMA(60, 1D)
-
-	for (int i = 2; i <= 48; ++i)
+	for (int i = 2; i <= 12; ++i)	// 48hours
 	{
 		fx::SMA* sma = new fx::SMA(instrument, i, misc::time::hourSEC, fx::SMA::PRICE_CLOSE);
 		smaVec.push_back(sma);
 	}
 
-	for (int i = 2; i <= 60; ++i)
+	for (int i = 2; i <= 4; ++i)	// 60days
 	{
 		fx::SMA* sma = new fx::SMA(instrument, i, misc::time::daySEC, fx::SMA::PRICE_CLOSE);
 		smaVec.push_back(sma);
@@ -82,26 +88,33 @@ void OMPEngine()
 
 	fx::IndicatorBuilder::Build(&plugin, offer, smaVec);
 	
-	misc::vector<fx::StrategySMACross*> strategyVec;
-	for (int i = 0; i < smaVec.size(); ++i)
+	
+	for (int i = 0; i < smaVec.size()-1; ++i)
 	{
-		int j = smaVec.size() - i - 1;
-		if (i > j)
-			break;
+		for (int j = i + 1; j < smaVec.size(); ++j)
+		{
+			fx::SMA* sma1 = static_cast<fx::SMA*>(smaVec[i]);
+			fx::SMA* sma2 = static_cast<fx::SMA*>(smaVec[j]);
 
-		fx::SMA* sma1 = static_cast<fx::SMA*>(smaVec[i]);
-		fx::SMA* sma2 = static_cast<fx::SMA*>(smaVec[j]);
+			fx::StrategySMACross* strategy =
+				new fx::StrategySMACross(
+				&plugin,
+				instrument,
+				*sma1,
+				*sma2);
+			strategyVec.push_back(strategy);
 
-		fx::StrategySMACross* strategy =
-			new fx::StrategySMACross(
-			&plugin,
-			instrument,
-			*sma1,
-			*sma2);
-		strategyVec.push_back(strategy);
+			std::stringstream ss;
+			ss << "SMA1(" << sma1->GetPeriod() << ",";
+			ss << (sma1->GetTimeframe() == misc::time::hourSEC ? "H) " : "D) ");
+			ss << "SMA2(" << sma2->GetPeriod() << ",";
+			ss << (sma2->GetTimeframe() == misc::time::hourSEC ? "H) " : "D) ");
+			misc::string str(ss.str().c_str());
+			CrossPair cpair(str, strategy);
+			crossVec.push_back(cpair);
+		}
 	}
-
-
+	
 
 	while (true)
 	{
@@ -111,6 +124,7 @@ void OMPEngine()
 		if (reftime.mon_() != offer.GetTime().mon_())
 		{
 			reftime = offer.GetTime();
+			// show some progress, otherwise confusing and very slow
 			misc::cout << reftime.tostring() << std::endl;
 		}
 
@@ -123,40 +137,49 @@ void OMPEngine()
 			continue;
 		}
 
-		for (size_t i = 0; i < strategyVec.size(); ++i)
-		{
-			fx::StrategySMACross* strategy = strategyVec[i];
-			if (strategy->IsCancelled())
-				return; // error in strategy
 
-			strategy->Update(offer);
-		}
+		int i = 0;
+#pragma omp parallel shared(strategyVec, offer) private(i)
+		{
+#pragma omp for
+			for (i = 0; i < strategyVec.size(); ++i)
+			{
+				strategyVec[i]->Update(offer);
+
+				// printf("thread %d strategyVec[%d]\n", omp_get_thread_num(), i);
+			}
+		} // omp parallel
+		
 	} // while
 
 	session.Logout();
 
-	for (int i = 0; i < smaVec.size(); ++i)
+	std::function<bool(const CrossPair&, const CrossPair&)> lmdbpred
+		= [](const CrossPair& cp1, const CrossPair& cp2) -> bool
 	{
-		int j = smaVec.size() - i - 1;
-		if (i > j)
-			break;
+		return (cp1.second->GetClosedGPL() > cp2.second->GetClosedGPL());
+	};
 
-		int period1 = smaVec[i]->GetPeriod();
-		time_t timeframe1 = smaVec[i]->GetTimeframe();
+	misc::sort(crossVec.begin(), crossVec.end(), lmdbpred);
 
-		int period2 = smaVec[j]->GetPeriod();
-		time_t timeframe2 = smaVec[j]->GetTimeframe();
+	// use logging only summary data
+	FILE* fp = fopen(iniParams->GetLoggingFile().c_str(), "w+");
 
-		double PL = strategyVec[i]->GetClosedPL();
-		double GPL = strategyVec[i]->GetClosedGPL();
-
-		misc::cout << "SMA(" << period1 << ", "
-			<< (timeframe1 == misc::time::hourSEC ? "H" : "D")
-			<< ") PL=" << misc::from_value(PL, 2).c_str()
-			<< " GPL=" << misc::from_value(GPL, 2).c_str() << std::endl;
+	
+	for (misc::vector<CrossPair>::iterator it = crossVec.begin();
+		 it != crossVec.end() && fp != NULL; ++it)
+	{
+		std::stringstream ss;
+		ss << it->first;
+		ss << " PL=" << it->second->GetClosedPL();
+		ss << " GPL=" << it->second->GetClosedGPL() << std::endl;
+		std::string str(ss.str());
+		fwrite(str.c_str(), sizeof(char), str.size(), fp);
 	}
 
-	misc::cout << "Destroying...\n";
+	if (fp) fclose(fp);
+
+	misc::cout << "Log file update.\nDestroying...\n";
 
 	for (int i = 0; i < strategyVec.size(); ++i)
 		delete strategyVec[i];

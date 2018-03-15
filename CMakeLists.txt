@@ -10,6 +10,15 @@ if(UNIX)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
 endif(UNIX)
 
+# Add omp support
+find_package(OpenMP REQUIRED)
+if(WIN32)
+	add_compile_options(${OpenMP_CXX_FLAGS})
+elseif(UNIX)
+	# fix: ld cannot resolve omp_get_thread_num() and similar
+	set (CMAKE_C_FLAGS    "${CMAKE_C_FLAGS}    ${OpenMP_C_FLAGS}")
+	set (CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS}  ${OpenMP_CXX_FLAGS}")
+endif(WIN32)
 
 
 add_subdirectory(world/CppUnit/cppunit/src/cppunit)
