@@ -65,13 +65,13 @@ void OMPEngine()
 
 	// SMA(2, 1H) -> SMA(48, 1H)
 	// SMA(2, 1D) -> SMA(60, 1D)
-	for (int i = 2; i <= 12; ++i)	// 48hours
+	for (int i = 2; i <= 48; ++i)	// 48hours
 	{
 		fx::SMA* sma = new fx::SMA(instrument, i, misc::time::hourSEC, fx::SMA::PRICE_CLOSE);
 		smaVec.push_back(sma);
 	}
 
-	for (int i = 2; i <= 4; ++i)	// 60days
+	for (int i = 2; i <= 20; ++i)	// 60days
 	{
 		fx::SMA* sma = new fx::SMA(instrument, i, misc::time::daySEC, fx::SMA::PRICE_CLOSE);
 		smaVec.push_back(sma);
