@@ -23,15 +23,16 @@
 	PSAR formula:
 	-------------
 	SAR(i) = SAR(i-1) + AF ( EP - SAR(i-1));
-	SAR(i) > Low(i-1) || SAR(i) > Low(i-2) -> SAR(i) = min(Low(i-2), Low(i-1));
 
-	EP: highest trade's price for a long, or
-		lowest trade's price for a short;
-	AF: initial is 0.02 and is increased with 0.02 for each new High/Low
-		up to its maximum value of 0.2;
-	SAR:	first SAR(i) value is the High/Low of the trade of previous position;
-	SAR:	never move the SAR(i) above the lowest position between today and
-		yesterday, e.g. SAR(i) < min(Low(i-2), Low(i-1)) always;
+	if position is buy: SAR(i) <= min(L(i-1), L(i-2));
+	if position is sell: SAR(i) >= max(H(i-1), H(i-2));
+
+	EP: extreme price of the trade (Highest for a buy, Lowest for a sell)
+	AF: start with +0.02 and increment with +0.02 
+		for each new High/Low up to maximum +0.2
+	SAR:first SAR value is the EP of previous position
+	OBS:never move SAR(i) higher than min of today and yesterday low (if buy)
+		never move SAR(i) lower than max of today and yesterday high (if sell)
 */
 
 
@@ -47,14 +48,16 @@ namespace fx
 	PSAR::PSAR(
 		const misc::string& instrument,
 		Timeframe sec,
-		double af,
-		double afInc,
-		double afMax,
+		bool buy,
 		const fx::Price& sar)
 	{
 		Init();
-		
-		
+	
+		m_instrument = instrument;
+		m_timeframe = sec;
+		m_buy = buy;
+		m_AF = 0.02;
+		m_SAR = sar;
 	}
 
 	PSAR::~PSAR()
@@ -84,7 +87,7 @@ namespace fx
 
 	int PSAR::GetPeriod() const
 	{
-		return m_period;
+
 	}
 
 	PSAR::Timeframe PSAR::GetTimeframe() const
@@ -99,78 +102,127 @@ namespace fx
 
 	void PSAR::Update(const fx::Offer& offer)
 	{
-		if (m_instrument != offer.GetInstrument())
-			throw misc::exception("PSAR offer is invalid");
-
-		//	PSAR is already active. Normalize it to last valid timeframe.
+		// Normalize to last valid timeframe as PSAR is always active.
 		if (m_reftime.totime_t() == 0)
 		{
 			m_reftime = offer.GetTime();
-
 			if (m_timeframe >= misc::time::minSEC)
 				m_reftime -= m_reftime.sec_();
-
 			if (m_timeframe >= misc::time::hourSEC)
-				m_reftime -= m_reftime.min_() * misc::time::minSEC;
-
+				m_reftime -= m_reftime.min_();
 			if (m_timeframe >= misc::time::daySEC)
-				m_reftime -= m_reftime.hour_() * misc::time::hourSEC;
+				m_reftime -= m_reftime.hour_();
 		}
 
+		misc::time nextt = m_reftime + m_timeframe;
 		const misc::time& currtime = offer.GetTime();
 		
-		misc::time nextt = m_reftime + m_timeframe;
-
+		// inside current bar (timeframe) - we use SAR already calculated;
 		if (currtime < nextt)
 		{
 			double bid = offer.GetBid();
 			double ask = offer.GetAsk();
 
-			if (m_ohlcList.empty())
-				m_ohlcList.push_back(fx::OHLCPrice());
-			
-			fx::OHLCPrice& ohlc = m_ohlcList.back();
-
-			if (ohlc.GetBidOpen() == 0) // uninitialized
+			if (m_ohlc[1].GetBidOpen() == 0) // uninitialized
 			{
-				ohlc.SetBidOpen(bid);
-				ohlc.SetBidHigh(bid);
-				ohlc.SetBidLow(bid);
-				ohlc.SetBidClose(bid);
+				m_ohlc[1].SetBidOpen(bid);
+				m_ohlc[1].SetBidHigh(bid);
+				m_ohlc[1].SetBidLow(bid);
+				m_ohlc[1].SetBidClose(bid);
 
-				ohlc.SetAskOpen(ask);
-				ohlc.SetAskHigh(ask);
-				ohlc.SetAskLow(ask);
-				ohlc.SetAskClose(ask);
+				m_ohlc[1].SetAskOpen(ask);				
+				m_ohlc[1].SetAskHigh(ask);
+				m_ohlc[1].SetAskLow(ask);				
+				m_ohlc[1].SetAskClose(ask);
+
+				m_EP = fx::Price(offer.GetAsk(), offer.GetBid());
 			}
 			else
 			{
-				ohlc.SetBidClose(bid);
-				ohlc.SetAskClose(ask);
+				m_ohlc[1].SetBidClose(bid);	// can close anytime soon
+				m_ohlc[1].SetAskClose(ask);
 
-				if (ohlc.GetBidHigh() < bid)
-					ohlc.SetBidHigh(bid);
-				if (ohlc.GetBidLow() > bid)
-					ohlc.SetBidLow(bid);
-				if (ohlc.GetAskHigh() < ask)
-					ohlc.SetAskHigh(ask);
-				if (ohlc.GetAskLow() > ask)
-					ohlc.SetAskLow(ask);
-			}
-
-			/*	Include the current INCOMPLETE OHLC bar into PSAR.
-			*/
-			if (m_ohlcList.size() == m_period)
-			{
-				double bSAR = m_SAR.GetBuy();
-				double bEP = m_EP.GetBuy();
-				double bLL = 0;
+				if (bid > m_ohlc[1].GetBidHigh())
+				{
+					m_ohlc[1].SetBidHigh(bid);
+					m_ohlc[1].SetAskHigh(ask);
+				}
+				else if (bid < m_ohlc[1].GetBidLow())
+				{
+					m_ohlc[1].SetBidLow(bid);
+					m_ohlc[1].SetAskLow(ask);
+				}
 			}
 		}
+		// we closed 1 bar (timeframe) - must calculate the SAR for next bar
+		else if (currtime >= nextt)
+		{
+			// track EP & AF
+			if (m_buy && m_ohlc[1].GetBidHigh() > m_EP.GetSell())
+			{
+				m_EP = fx::Price(m_ohlc[1].GetAskHigh(), m_ohlc[1].GetBidHigh());
+				m_AF += 0.02;
+			}
+			else if (!m_buy && m_ohlc[1].GetAskLow() < m_EP.GetBuy())
+			{
+				m_EP = fx::Price(m_ohlc[1].GetAskLow(), m_ohlc[1].GetBidLow());
+				m_AF += 0.02;
+			}
+
+
+			// track LP (limit price to adjust the SAR if needed)
+			fx::Price LP(0, 0);
+			if (m_ohlc[0].GetBidOpen() == 0)
+			{
+				if (m_buy)
+					LP = fx::Price(m_ohlc[1].GetAskLow(), m_ohlc[1].GetBidLow());
+				else
+					LP = fx::Price(m_ohlc[1].GetAskHigh(), m_ohlc[1].GetBidHigh());
+			}
+			else
+			{
+				if (m_buy)
+				{
+					double 
+				}
+				else
+				{
+
+				}
+			}
+
+			
+		}
+		
+		
+
+
+		
+		
+		// track MP (minim or maxim price allowed for SAR)
+		fx::Price MP(0, 0);
+
+		// SAR = SARp + AF (EP - SARp);
+		double bSAR = m_SAR.GetBuy() + m_AF * (m_EP.GetBuy() - m_SAR.GetBuy());
+		double sSAR = m_SAR.GetSell() + m_AF * (m_EP.GetSell() - m_SAR.GetSell());
+		fx::Price SAR2(bSAR, sSAR);
+		
+		// SAR not higher than LOW of previous 2 time frames (for buy)
+		// SAR not lower than HIGH of previous 2 time frames (for sell)
+		if ((m_buy && sSAR > MP.GetSell()) ||
+			(!m_buy && bSAR < MP.GetBuy()))
+			SAR2 = MP;
+		
+		m_SAR = SAR2;
 	}
 
 	const misc::time& PSAR::GetRefTime() const
 	{
 		return m_reftime;
+	}
+
+	void PSAR::Init()
+	{
+
 	}
 } // namespace

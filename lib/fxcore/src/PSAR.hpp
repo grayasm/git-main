@@ -34,15 +34,10 @@ namespace fx
 	class PSAR : public IND
 	{
 	public:
-		typedef std::list<fx::OHLCPrice>	OHLCList;
-
 		PSAR();
 		PSAR(const misc::string& instrument,
 			Timeframe sec,
 			bool buy,
-			double af,
-			double afInc,
-			double afMax,
 			const fx::Price& sar);
 
 		~PSAR();
@@ -58,23 +53,21 @@ namespace fx
 		const misc::time& GetRefTime() const override;
 		// --- end of virtual table ---
 
+
 	private:
 		void Init();
 
 	private:
 		misc::string	m_instrument;
 		Timeframe		m_timeframe;
-		int				m_period;
 		bool			m_buy;
-		double			m_afIni;
-		double			m_afInc;
-		double			m_afMax;
+		double			m_AF;
 		fx::Price		m_SAR;
 		// --------------------
 		misc::time		m_reftime;
-		double			m_af;
-		OHLCList		m_ohlcList;
+		fx::OHLCPrice	m_ohlc[2];
 		fx::Price		m_EP;
+		
 	};
 } // namespace
 
