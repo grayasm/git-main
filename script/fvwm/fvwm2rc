@@ -139,22 +139,21 @@ AddToMenu                       FvwmInternetMenu "Internet" Title
 + "%$[fvwm_icons]/24x24-xchat.png%xchat"                           FvwmXChat
 + "%$[fvwm_icons]/24x24-google-chrome.png%chrome"                  FvwmChrome
 + "%$[fvwm_icons]/24x24-midori.png%midori"                         FvwmMidori
-+ "%$[fvwm_icons]/24x24-dukascopy-live.png%dukascopy-live"         FvwmDukascopy
+
 
 DestroyMenu                     FvwmMediaMenu
 AddToMenu                       FvwmMediaMenu "MMedia" Title
 + "%$[fvwm_icons]/24x24-vlc.xpm%vlc"                               FvwmVlc
 + "%$[fvwm_icons]/24x24-xmms.xpm%xmms"                             FvwmXmms
 + "%$[fvwm_icons]/24x24-smplayer.png%smplayer"                     FvwmSMPlayer
-+ "%$[fvwm_icons]/24x24-tvmaxe.png%tv-maxe"                        FvwmTvMaxe
 
 
 DestroyMenu                     FvwmImageMenu
 AddToMenu                       FvwmImageMenu "Image" Title
-+ "%$[fvwm_icons]/24x24-gwenview.png%gwenview"                     FvwmGwenview
++ "%$[fvwm_icons]/24x24-eog.png%ristretto"                         FvwmRistretto
 + "%$[fvwm_icons]/24x24-gimp.png%gimp"                             FvwmGimp
 + "%$[fvwm_icons]/24x24-pinta.png%pinta"                           FvwmPinta
-+ "%$[fvwm_icons]/24x24-ksnapshot.png%ksnapshot"                   FvwmKsnapshot
++ "%$[fvwm_icons]/24x24-applets-screenshooter"                     FvwmXfceScreenshooter
 + "%$[fvwm_icons]/24x24-simplescreenrecorder.png%simplescreenrecorder" FvwmSimplescreenrecorder
 
 
@@ -309,7 +308,7 @@ AddToFunc                       FvwmVirtualBox
 
 DestroyFunc                     FvwmWebBrowser
 AddToFunc                       FvwmWebBrowser
-+ I Exec                        exec firefox
++ I Exec                        exec /opt/firefox/firefox
 
 DestroyFunc                     FvwmMidori
 AddToFunc                       FvwmMidori
@@ -321,7 +320,7 @@ AddToFunc                       FvwmThunderbird
 
 DestroyFunc                     FvwmEmacs
 AddToFunc                       FvwmEmacs
-+ I Exec                        exec emacs
++ I Exec                        exec /opt/emacs-25.3/bin/emacs
 
 DestroyFunc                     FvwmSmartgit
 AddToFunc                       FvwmSmartgit
@@ -345,7 +344,9 @@ AddToFunc                       FvwmXChat
 
 DestroyFunc                     FvwmSkype
 AddToFunc                       FvwmSkype
-+ I Exec                        exec skype
++ I Exec                        exec flatpak run com.skype.Client
+# install with: flatpak --user install ~/Downloads/com.skype.Client.flatpakref
+# remove with: flatpak --user uninstall com.skype.Client
 
 DestroyFunc                     FvwmLibreOffice
 AddToFunc                       FvwmLibreOffice
@@ -386,10 +387,6 @@ DestroyFunc                     FvwmSMPlayer
 AddToFunc                       FvwmSMPlayer
 + I Exec                        exec smplayer
 
-DestroyFunc                     FvwmTvMaxe
-AddToFunc                       FvwmTvMaxe
-+ I Exec                        exec tvmaxe
-
 DestroyFunc                     FvwmGimp
 AddToFunc                       FvwmGimp
 + I Exec                        exec gimp
@@ -398,13 +395,17 @@ DestroyFunc                     FvwmPinta
 AddToFunc                       FvwmPinta
 + I Exec                        exec pinta
 
-DestroyFunc                     FvwmKsnapshot
-AddToFunc                       FvwmKsnapshot
-+ I Exec                        exec ksnapshot
+DestroyFunc                     FvwmXfceScreenshooter
+AddToFunc                       FvwmXfceScreenshooter
++ I Exec                        exec xfce4-screenshooter
 
 DestroyFunc                     FvwmGwenview
 AddToFunc                       FvwmGwenview
 + I Exec                        exec gwenview
+
+DestroyFunc                     FvwmRistretto
+AddToFunc                       FvwmRistretto
++ I Exec                        exec ristretto
 
 DestroyFunc                     FvwmSimplescreenrecorder
 AddToFunc                       FvwmSimplescreenrecorder
@@ -420,11 +421,11 @@ AddToFunc                       FvwmKWrite
 
 DestroyFunc                     FvwmMeld
 AddToFunc                       FvwmMeld
-+ I Exec                        exec /opt/meld-1.8.6/bin/meld
++ I Exec                        exec meld
 
 DestroyFunc                     FvwmNetbeans
 AddToFunc                       FvwmNetbeans
-+ I Exec                        exec /opt/netbeans-8.0.2/bin/netbeans
++ I Exec                        exec /opt/eclipse-4.6.3/eclipse
 
 DestroyFunc                     FvwmDdd
 AddToFunc                       FvwmDdd
@@ -446,9 +447,6 @@ DestroyFunc                     FvwmPaprefs
 AddToFunc                       FvwmPaprefs
 + I Exec                        exec paprefs
 
-DestroyFunc                     FvwmDukascopy
-AddToFunc                       FvwmDukascopy
-+ I Exec                        exec $[HOME]/JForex/start.sh
 
 DestroyFunc                     FvwmXpdf
 AddToFunc                       FvwmXpdf
