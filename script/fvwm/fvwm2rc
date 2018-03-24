@@ -188,7 +188,7 @@ AddToMenu                       FvwmAccessoriesMenu "Accessories" Title
 + "%$[fvwm_icons]/24x24-multimedia-volume-control.png%pavucontrol" FvwmPavucontrol
 + "%$[fvwm_icons]/24x24-preferences-desktop.png%paprefs"           FvwmPaprefs
 + "%$[fvwm_icons]/24x24-preferences-desktop-font.png%xfontsel"     FvwmXfontsel
-+ "%$[fvwm_icons]/24x24-ktimer.png%xclock"                         FvwmXclock
++ "%$[fvwm_icons]/24x24-gnome-clock.png%xclock"                    FvwmXclock
 
 
 DestroyMenu                     FvwmWindowOpsMenu
@@ -375,7 +375,7 @@ AddToFunc                       FvwmSpotify
 
 DestroyFunc                     FvwmXclock
 AddToFunc                       FvwmXclock
-+ I Exec                        exec xclock -d -face Monospace-11:bold -padding 2 -update 1
++ I Exec                        exec xclock -d -face Monospace-11:bold -strftime "%b %F %H:%M:%S" -padding 1 -update 1
 DestroyFunc                     FvwmFirefox
 AddToFunc                       FvwmFirefox
 + I Exec                        exec firefox
