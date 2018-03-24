@@ -143,8 +143,9 @@ AddToMenu                       FvwmInternetMenu "Internet" Title
 
 DestroyMenu                     FvwmMediaMenu
 AddToMenu                       FvwmMediaMenu "MMedia" Title
-+ "%$[fvwm_icons]/24x24-vlc.xpm%vlc"                               FvwmVlc
 + "%$[fvwm_icons]/24x24-xmms.xpm%xmms"                             FvwmXmms
++ "%$[fvwm_icons]/24x24-spotify-client.png%spotify"                FvwmSpotify
++ "%$[fvwm_icons]/24x24-vlc.xpm%vlc"                               FvwmVlc
 + "%$[fvwm_icons]/24x24-smplayer.png%smplayer"                     FvwmSMPlayer
 
 
@@ -153,7 +154,7 @@ AddToMenu                       FvwmImageMenu "Image" Title
 + "%$[fvwm_icons]/24x24-eog.png%ristretto"                         FvwmRistretto
 + "%$[fvwm_icons]/24x24-gimp.png%gimp"                             FvwmGimp
 + "%$[fvwm_icons]/24x24-pinta.png%pinta"                           FvwmPinta
-+ "%$[fvwm_icons]/24x24-applets-screenshooter"                     FvwmXfceScreenshooter
++ "%$[fvwm_icons]/24x24-applets-screenshooter.png%screenshooter"   FvwmXfceScreenshooter
 + "%$[fvwm_icons]/24x24-simplescreenrecorder.png%simplescreenrecorder" FvwmSimplescreenrecorder
 
 
@@ -367,6 +368,10 @@ AddToFunc                       FvwmXfontsel
 DestroyFunc                     FvwmVlc
 AddToFunc                       FvwmVlc
 + I Exec                        exec vlc
+
+DestroyFunc                     FvwmSpotify
+AddToFunc                       FvwmSpotify
++ I Exec                        exec spotify
 
 DestroyFunc                     FvwmXclock
 AddToFunc                       FvwmXclock
