@@ -35,6 +35,7 @@
 #include "SMA.hpp"
 #include "EMA.hpp"
 #include "ATR.hpp"
+#include "SAR.hpp"
 #include "Position.hpp"
 #include "Transaction.hpp"
 
@@ -306,6 +307,81 @@ int test5()
 			fclose(pf);
 
 			reftime = atr.GetRefTime();
+		}
+	}
+
+	return 0;
+}
+
+
+int test6()
+{
+	// OffersReader oreader("EUR/USD");
+	// HistoryPricesReader oreader("EUR/USD");
+	HistdatacomReader oreader("EUR/USD");
+
+	fx::Offer offer;
+	fx::SAR sar("EUR/USD", 14, misc::time::daySEC);
+	time_t timeframe = misc::time::daySEC;
+	fx::Price sarp(0, 0), epp(0, 0);
+	fx::OHLCPrice ohlc;
+	misc::time reftime, nextt;
+	bool isBuy = true;
+	double af = 0;
+
+	FILE* f1 = fopen("PSAR_2017.txt", "w+");
+	if (f1) fclose(f1);
+
+
+	while (oreader.GetOffer(offer))
+	{
+		sar.Update(offer);
+
+		if (reftime.totime_t() == 0)
+		{
+			reftime = offer.GetTime();
+			nextt = reftime + timeframe;
+		}			
+
+		if (!sar.IsValid())
+			continue;
+		
+		if (offer.GetTime() >= nextt || isBuy != sar.GetIsBuy())
+		{
+			FILE* pf = fopen("PSAR_2017.txt", "a+");
+			if (pf == NULL)
+				continue;
+
+			std::stringstream ss;
+			ss << offer.GetTime().tostring() << " ";
+			ss << (sar.GetIsBuy() == true ? "L " : "S ");
+			ss << " SAR=";
+			sar.GetValue(sarp);
+			ss << sarp.GetBuy() << "," << sarp.GetSell();
+			sar.GetOHLC(ohlc);
+			ss << " AO:" << ohlc.GetAskOpen();
+			ss << " AH:" << ohlc.GetAskHigh();
+			ss << " AL:" << ohlc.GetAskLow();
+			ss << " AC:" << ohlc.GetAskClose();
+			
+			sar.GetEP(epp);
+			ss << " EP=" << epp.GetBuy() << "," << epp.GetSell();
+
+			sar.GetAF(af);
+			ss << " AF:" << af;
+			ss << std::endl;
+
+			std::string str = ss.str();
+			fwrite(str.c_str(), sizeof(char), str.size(), pf);
+			fclose(pf);
+
+			if (offer.GetTime() >= nextt)
+			{
+				reftime = sar.GetRefTime();
+				nextt = reftime + timeframe;
+			}
+			
+			isBuy = sar.GetIsBuy();
 		}
 	}
 

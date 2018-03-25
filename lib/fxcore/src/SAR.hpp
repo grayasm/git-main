@@ -31,18 +31,19 @@
 
 namespace fx
 {
-	class PSAR : public IND
+	class SAR : public IND
 	{
 	public:
-		PSAR();
-		PSAR(const misc::string& instrument,
-			Timeframe sec,
-			bool buy,
-			const fx::Price& sar);
+		typedef std::list<fx::OHLCPrice>	OHLCPriceList;
+		typedef std::list<fx::Price>		SARList;
+		// Timeframe is time_t
 
-		~PSAR();
-		PSAR(const PSAR& tc);
-		PSAR& operator=(const PSAR& tc);
+		SAR();
+		SAR(const misc::string& instrument, int period, Timeframe sec);
+
+		~SAR();
+		SAR(const SAR& tc);
+		SAR& operator=(const SAR& tc);
 
 		// --- virtual table ---
 		const misc::string& GetInstrument() const override;
@@ -53,21 +54,28 @@ namespace fx
 		const misc::time& GetRefTime() const override;
 		// --- end of virtual table ---
 
+		bool GetIsBuy() const;
+		void GetValue(fx::Price& sar) const;
+		void GetOHLC(fx::OHLCPrice& ohlc) const;
+		void GetEP(fx::Price& ep) const;
+		void GetAF(double& af) const;
 
 	private:
 		void Init();
 
 	private:
-		misc::string	m_instrument;
-		Timeframe		m_timeframe;
-		bool			m_buy;
-		double			m_AF;
-		fx::Price		m_SAR;
-		// --------------------
-		misc::time		m_reftime;
-		fx::OHLCPrice	m_ohlc[2];
-		fx::Price		m_EP;
-		
+		misc::string		m_instrument;
+		int					m_period;
+		Timeframe			m_timeframe;
+		// --------------------------
+		misc::time			m_reftime;
+		fx::OHLCPrice		m_lastOHLC;
+		OHLCPriceList		m_priceList;
+		SARList				m_sarList;
+		bool				m_isBuy;
+		double				m_AF;
+		fx::Price			m_EP;
+		fx::Price			m_SAR;		
 	};
 } // namespace
 
