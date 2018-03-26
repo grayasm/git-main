@@ -23,8 +23,8 @@
 #include "IniParams.hpp"
 #include "Session.hpp"
 #include "ErrorCodes.hpp"
-// #include "StrategyRenkoAtr.hpp"
-#include "StrategySMACross.hpp"
+#include "StrategyRenkoAtr.hpp"
+// #include "StrategySMACross.hpp"
 #include "MarketPlugin4backtest.hpp"
 #include "HistdatacomReader.hpp"
 // #include "HistoryFxcmliveReader.hpp"
@@ -58,10 +58,10 @@ void TestEngine()
 	MarketPlugin4backtest plugin(&session, *iniParams);
 	HistdatacomReader oreader(instrument);
 	// HistoryFxcmliveReader oreader(instrument);
-	fx::SMA sma1(instrument, 4, misc::time::hourSEC, fx::SMA::PRICE_CLOSE);
-	fx::SMA sma2(instrument, 60, misc::time::daySEC, fx::SMA::PRICE_CLOSE);
-	fx::StrategySMACross strategy(&plugin, instrument, sma1, sma2);
-	// fx::StrategyRenkoAtr strategy(&plugin, instrument, 15, 8, 17);
+	// fx::SMA sma1(instrument, 4, misc::time::hourSEC, fx::SMA::PRICE_CLOSE);
+	// fx::SMA sma2(instrument, 60, misc::time::daySEC, fx::SMA::PRICE_CLOSE);
+	// fx::StrategySMACross strategy(&plugin, instrument, sma1, sma2);
+	fx::StrategyRenkoAtr strategy(&plugin, instrument, 15, 7, 16);
 
 
 
@@ -76,8 +76,8 @@ void TestEngine()
 		// check for outside trading hours
 		misc::time tnow = offer.GetTime();
 		if ((tnow.wday() == misc::time::SAT) ||
-			(tnow.wday() == misc::time::FRI && tnow.hour_() >= 22) ||
-			(tnow.wday() == misc::time::SUN && tnow.hour_() < 22))
+			(tnow.wday() == misc::time::FRI && tnow.hour_() >= 21) ||
+			(tnow.wday() == misc::time::SUN && tnow.hour_() < 21))
 		{
 			continue;
 		}

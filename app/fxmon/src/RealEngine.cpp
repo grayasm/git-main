@@ -42,8 +42,8 @@ void RealEngine()
 
 
 	bool isConnected = false;
-	int hOpen = 8;
-	int hClose = 17;
+	int hOpen = 7;
+	int hClose = 16;
 	double renkoMin = 15;
 	fx::Offer offer;
 	misc::string instrument("EUR/USD");
@@ -57,8 +57,8 @@ void RealEngine()
 		// outside trading hours?
 		misc::time tnow(::time(NULL));
 		if ((tnow.wday() == misc::time::SAT) ||
-			(tnow.wday() == misc::time::FRI && tnow.hour_() >= 22) ||
-			(tnow.wday() == misc::time::SUN && tnow.hour_() < 22))
+			(tnow.wday() == misc::time::FRI && tnow.hour_() >= 21) ||
+			(tnow.wday() == misc::time::SUN && tnow.hour_() < 21))
 		{
 			if (isConnected)
 			{
