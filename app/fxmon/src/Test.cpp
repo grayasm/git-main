@@ -36,6 +36,7 @@
 #include "EMA.hpp"
 #include "ATR.hpp"
 #include "SAR.hpp"
+#include "BAR.hpp"
 #include "Position.hpp"
 #include "Transaction.hpp"
 
@@ -383,6 +384,66 @@ int test6()
 			
 			isBuy = sar.GetIsBuy();
 		}
+	}
+
+	return 0;
+}
+
+int test7()
+{
+	// OffersReader oreader("EUR/USD");
+	// HistoryPricesReader oreader("EUR/USD");
+	HistdatacomReader oreader("EUR/USD");
+
+	fx::Offer offer;
+	fx::BAR bar("EUR/USD", 14, misc::time::daySEC);
+	time_t timeframe = misc::time::daySEC;
+	fx::OHLCPrice ohlc0, ohlc2;
+
+
+	FILE* f1 = fopen("BAR_2017.txt", "w+");
+	if (f1) fclose(f1);
+
+
+	while (oreader.GetOffer(offer))
+	{
+		bar.Update(offer);
+
+		if (!bar.IsValid())
+			continue;
+
+		ohlc2 = bar.GetOHLC();
+
+		double bid = ohlc2.GetBidOpen();
+		double ask = ohlc2.GetAskOpen();
+
+		bool newbar =
+			(ohlc2.GetAskHigh() == ask && ohlc2.GetAskLow() == ask && ohlc2.GetAskClose() == ask) &&
+			(ohlc2.GetBidHigh() == bid && ohlc2.GetBidLow() == bid && ohlc2.GetBidClose() == bid);
+
+		// on open the bar has the same price
+		if (newbar)
+		{
+			FILE* pf = fopen("BAR_2017.txt", "a+");
+			if (pf == NULL)
+				continue;
+
+			std::stringstream ss;
+			ss << offer.GetTime().tostring() << " ";
+			ss << " BAR";
+			ss << " AO:" << ohlc0.GetAskOpen();
+			ss << " AH:" << ohlc0.GetAskHigh();
+			ss << " AL:" << ohlc0.GetAskLow();
+			ss << " AC:" << ohlc0.GetAskClose();
+
+			ss << std::endl;
+
+			std::string str = ss.str();
+			fwrite(str.c_str(), sizeof(char), str.size(), pf);
+			fclose(pf);
+		}
+
+		ohlc0 = ohlc2;
 	}
 
 	return 0;

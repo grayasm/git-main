@@ -19,20 +19,21 @@
 */
 
 
-#include "OHLCBar.hpp"
+#include "BAR.hpp"
 
 namespace fx
 {
-	OHLCBar::OHLCBar()
+	BAR::BAR()
 	{
 		Init();
 	}
 
-	OHLCBar::OHLCBar(const misc::string& instrument, Timeframe sec)
+	BAR::BAR(const misc::string& instrument, int period, Timeframe sec)
 	{
 		Init();
 
 		m_instrument = instrument;
+		m_period = period;
 		m_timeframe = sec;
 
 		//----------------------
@@ -46,18 +47,18 @@ namespace fx
 		m_lastOHLC.SetTimeframe(sTimeframe.c_str());
 	}
 
-	OHLCBar::~OHLCBar()
+	BAR::~BAR()
 	{
 	}
 
-	OHLCBar::OHLCBar(const OHLCBar& tc)
+	BAR::BAR(const BAR& tc)
 	{
 		Init();
 
 		*this = tc;
 	}
 
-	OHLCBar& OHLCBar::operator=(const OHLCBar& tc)
+	BAR& BAR::operator=(const BAR& tc)
 	{
 		if (this != &tc)
 		{
@@ -69,10 +70,31 @@ namespace fx
 		return *this;
 	}
 
-	void OHLCBar::Update(const fx::Offer& offer)
+	const misc::string& BAR::GetInstrument() const
+	{
+		return m_instrument;
+	}
+
+	int BAR::GetPeriod() const
+	{
+		return m_period;
+	}
+
+	BAR::Timeframe BAR::GetTimeframe() const
+	{
+		return m_timeframe;
+	}
+
+	bool BAR::IsValid() const
+	{
+		return (m_period > 1 && m_period == m_priceList.size());
+	}
+
+
+	void BAR::Update(const fx::Offer& offer)
 	{
 		if (m_instrument != offer.GetInstrument())
-			throw misc::exception("OHLCBar offer is invalid");
+			throw misc::exception("BAR offer is invalid");
 
 		// begin at next timeframe normalized up to daily candle
 		if (m_reftime.totime_t() == 0)
@@ -86,7 +108,9 @@ namespace fx
 			if (m_timeframe >= misc::time::daySEC)
 				m_reftime -= (m_reftime.hour_() * misc::time::hourSEC);
 
-			m_reftime += m_timeframe;
+			// if offer is inside the bar, then move to next timeframe
+			if (m_reftime != offer.GetTime())
+				m_reftime += m_timeframe;
 		}
 
 		const misc::time& currtime = offer.GetTime();
@@ -132,6 +156,13 @@ namespace fx
 		}
 		else if (currtime >= nextt)
 		{
+			// handle the list
+			m_priceList.push_back(m_lastOHLC);
+
+			// keep period constant
+			if (m_priceList.size() > m_period)
+				m_priceList.pop_front();
+
 			// new candle has just started
 			double bid = offer.GetBid();
 			double ask = offer.GetAsk();
@@ -152,21 +183,30 @@ namespace fx
 		}
 	}
 
-	const fx::OHLCPrice& OHLCBar::GetOHLC() const
+	const misc::time& BAR::GetRefTime() const
 	{
-		// for .GetBidOpen() == 0 current Bar is uninitialized
+		return m_reftime;
+	}
+
+	const fx::OHLCPrice& BAR::GetOHLC() const
+	{
+		if (m_period < 2 || m_priceList.size() != m_period)
+			throw misc::exception("BAR is invalid");
+
 		return m_lastOHLC;
 	}
 
-	void OHLCBar::Init()
+	void BAR::Init()
 	{
 		m_instrument = "";
+		m_period = -1;
 		m_timeframe = 0;
 		// m_reftime - default
 		m_lastOHLC = fx::OHLCPrice("", "", misc::time(),
 									0, 0, 0, 0,
 									0, 0, 0, 0,
 									0);
+		// m_priceList - default
 	}
 
 } // namespace

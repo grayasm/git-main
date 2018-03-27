@@ -18,29 +18,38 @@
 	contact: grayasm@gmail.com
 */
 
-#ifndef __OHLCBar_hpp__
-#define __OHLCBar_hpp__
+#ifndef __BAR_hpp__
+#define __BAR_hpp__
 
+#include <list>
 #include "string.hpp"
 #include "time.hpp"
+#include "IND.hpp"
 #include "Offer.hpp"
 #include "OHLCPrice.hpp"
 
 
 namespace fx
 {
-	class OHLCBar
+	class BAR : public IND
 	{
 	public:
-		typedef time_t	Timeframe;
+		typedef std::list<fx::OHLCPrice>	OHLCPriceList;
 
-		OHLCBar();
-		OHLCBar(const misc::string& instrument, Timeframe sec);
-		~OHLCBar();
-		OHLCBar(const OHLCBar& tc);
-		OHLCBar& operator=(const OHLCBar& tc);
+		BAR();
+		BAR(const misc::string& instrument, int period, Timeframe sec);
+		~BAR();
+		BAR(const BAR& tc);
+		BAR& operator=(const BAR& tc);
 		
-		void Update(const fx::Offer& offer);
+		// --- virtual table ---
+		const misc::string& GetInstrument() const override;
+		int GetPeriod() const override;
+		Timeframe GetTimeframe() const override;
+		bool IsValid() const override;
+		void Update(const fx::Offer& offer) override;
+		const misc::time& GetRefTime() const override;
+		// --- end of virtual table ---
 
 		const fx::OHLCPrice& GetOHLC() const;
 		
@@ -50,11 +59,13 @@ namespace fx
 
 	private:
 		misc::string		m_instrument;
+		int					m_period;
 		time_t				m_timeframe;
 		// ----------------------------
 		misc::time			m_reftime;
 		fx::OHLCPrice		m_lastOHLC;
+		OHLCPriceList		m_priceList;
 	};
 } // namespace
 
-#endif // __OHLCBar_hpp__
+#endif // __BAR_hpp__
