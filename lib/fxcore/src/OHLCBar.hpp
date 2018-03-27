@@ -18,8 +18,8 @@
 	contact: grayasm@gmail.com
 */
 
-#ifndef __OHLCUtils_hpp__
-#define __OHLCUtils_hpp__
+#ifndef __OHLCBar_hpp__
+#define __OHLCBar_hpp__
 
 #include "string.hpp"
 #include "time.hpp"
@@ -29,16 +29,32 @@
 
 namespace fx
 {
-	class OHLCUtils
+	class OHLCBar
 	{
 	public:
-		OHLCUtils(const misc::string& instrument, time_t timeframe);
+		typedef time_t	Timeframe;
 
+		OHLCBar();
+		OHLCBar(const misc::string& instrument, Timeframe sec);
+		~OHLCBar();
+		OHLCBar(const OHLCBar& tc);
+		OHLCBar& operator=(const OHLCBar& tc);
+		
 		void Update(const fx::Offer& offer);
 
 		const fx::OHLCPrice& GetOHLC() const;
+		
 
+	private:
+		void Init();
+
+	private:
+		misc::string		m_instrument;
+		time_t				m_timeframe;
+		// ----------------------------
+		misc::time			m_reftime;
+		fx::OHLCPrice		m_lastOHLC;
 	};
 } // namespace
 
-#endif // __OHLCUtils_hpp__
+#endif // __OHLCBar_hpp__
