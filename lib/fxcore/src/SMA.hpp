@@ -23,8 +23,11 @@
 
 #include <list>
 #include "IND.hpp"
+#include "BAR.hpp"
+#include "HABAR.hpp"
 #include "Offer.hpp"
 #include "Price.hpp"
+
 
 
 namespace fx
@@ -32,8 +35,15 @@ namespace fx
 	class SMA : public IND
 	{
 	public:
+		typedef misc::autoptr<SMA>		Ptr;
 		typedef std::list<fx::Price>	PriceList;
 		// Timeframe is time_t
+
+		enum BarType
+		{
+			BT_BAR = 0,
+			BT_HABAR
+		};
 
 		enum PriceOrigin
 		{
@@ -42,7 +52,11 @@ namespace fx
 		};
 
 		SMA();
-		SMA(const misc::string& instrument, int period, Timeframe sec, PriceOrigin po);
+		SMA(const misc::string& instrument,
+			int period,
+			Timeframe sec,
+			PriceOrigin po,
+			BarType barType);
 		~SMA();
 
 		SMA(const SMA& tc);
@@ -62,17 +76,16 @@ namespace fx
 
 	private:
 		void Init();
+		fx::BAR::Ptr CreateBar() const;
 
 	private:
 		misc::string	m_instrument;
 		int				m_period;		
 		Timeframe		m_timeframe;
 		PriceOrigin		m_priceOrigin;
+		BarType			m_barType;
 		// ---------------------
-		misc::time		m_reftime;
-		fx::Price		m_priceO;
-		fx::Price		m_priceC;
-		PriceList		m_offerList;
+		fx::BAR*		m_bar;
 		fx::Price		m_lastSum;
 	};
 } // namespace

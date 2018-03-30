@@ -28,7 +28,12 @@ namespace fx
 		Init();
 	}
 
-	SMA::SMA(const misc::string& instrument, int period, Timeframe sec, PriceOrigin po)
+	SMA::SMA(
+		const misc::string& instrument,
+		int period,
+		Timeframe sec,
+		PriceOrigin po,
+		BarType barType)
 	{
 		Init();
 
@@ -36,6 +41,7 @@ namespace fx
 		m_period = period;
 		m_timeframe = sec;
 		m_priceOrigin = po;
+		m_barType = barType;
 	}
 
 	SMA::~SMA()
@@ -56,10 +62,24 @@ namespace fx
 			m_period = tc.m_period;
 			m_timeframe = tc.m_timeframe;
 			m_priceOrigin = tc.m_priceOrigin;
-			m_reftime = tc.m_reftime;
-			m_priceO = tc.m_priceO;
-			m_priceC = tc.m_priceC;
-			m_offerList = tc.m_offerList;
+			m_barType = tc.m_barType;
+			switch (tc.m_barType)
+			{
+				case BT_BAR:
+				{
+					fx::BAR* ptr = static_cast<fx::BAR*>(tc.m_bar);
+					m_bar = new fx::BAR(*ptr);
+				}
+				break;
+				case BT_HABAR:
+				{
+					fx::HABAR* ptr = static_cast<fx::HABAR*>(tc.m_bar);
+					m_bar = new fx::HABAR(*ptr);
+					break;
+				}
+				default:
+					throw misc::exception("SMA unknown BAR type");
+			}
 			m_lastSum = tc.m_lastSum;
 		}
 
@@ -83,74 +103,51 @@ namespace fx
 
 	bool SMA::IsValid() const
 	{
-		return (m_period > 1 && m_period == m_offerList.size());
+		return (m_period > 1 && m_period == m_bar->GetOHLCList().size());
 	}
 
 	void SMA::Update(const fx::Offer& offer)
 	{
-		if (m_period < 2)
-			throw misc::exception("SMA is invalid");
-
 		if (m_instrument != offer.GetInstrument())
 			throw misc::exception("SMA offer is invalid");
 
-		// begin at full hour even if the timeframe is ex: 3min
-		if (m_reftime.totime_t() == 0)
-		{
-			m_reftime = offer.GetTime();
-			m_reftime -= m_reftime.sec_();
-			m_reftime += (60 - m_reftime.min_()) * misc::time::minSEC;
+		const misc::time& reftime = m_bar->GetRefTime();
 
-			return;
-		}
+		// let the BAR normalize the timeframe
+		if (reftime.totime_t() == 0)
+			return m_bar->Update(offer);
 
+		// wait for the reference time to begin
 		const misc::time& currtime = offer.GetTime();
-		if (currtime < m_reftime)
-			return;
-		
-		misc::time nextt = m_reftime + m_timeframe;
+		if (currtime < reftime)
+			return m_bar->Update(offer);
 
-		// get the open price (only the first candle goes here)
-		if (m_priceO.GetBuy() == 0 && currtime >= m_reftime)
+		// inside current timeframe?
+		bool isNew = m_bar->IsNew(offer);
+		if (!isNew)
 		{
-			m_priceO = fx::Price(offer.GetAsk(), offer.GetBid());
+			m_bar->Update(offer);
 		}
-		// every price can close the candle
-		else if (currtime < nextt)
+		else
 		{
-			m_priceC = fx::Price(offer.GetAsk(), offer.GetBid());
-		}
-		// candle has just closed
-		else if (currtime >= nextt)
-		{
-			// handle the list
-			if (m_priceOrigin == PRICE_OPEN)
-				m_offerList.push_back(m_priceO);
-			else
-				m_offerList.push_back(m_priceC);
-
-			// keep period constant
-			if (m_offerList.size() > m_period)
-				m_offerList.pop_front();
-
-			// new candle has just started
-			m_priceO = fx::Price(offer.GetAsk(), offer.GetBid());
-			m_priceC = m_priceO; // updated for GetValue(..)
-
-			// current candle open (including weekend gap)
-			while (currtime >= m_reftime + m_timeframe)
-				m_reftime += m_timeframe;
-
-			
 			// calculate the sum
-			if (m_offerList.size() == m_period)
+			const BAR::OHLCPriceList& priceList = m_bar->GetOHLCList();
+			if (priceList.size() == m_period)
 			{
 				double buy = 0, sell = 0;
-				PriceList::iterator it = m_offerList.begin();
-				for (; it != m_offerList.end(); ++it)
+				BAR::OHLCPriceList::const_iterator it = priceList.begin();
+				for (; it != priceList.end(); ++it)
 				{
-					buy += it->GetBuy();
-					sell += it->GetSell();
+					if (m_priceOrigin == PRICE_OPEN)
+					{
+						buy += it->GetAskOpen();
+						sell += it->GetBidOpen();
+					}
+					else if (m_priceOrigin == PRICE_CLOSE)
+					{
+						buy += it->GetAskClose();
+						sell += it->GetBidClose();
+					}
 				}
 				m_lastSum = fx::Price(buy, sell);
 			}
@@ -160,7 +157,7 @@ namespace fx
 
 	const misc::time& SMA::GetRefTime() const
 	{
-		return m_reftime;
+		return m_bar->GetRefTime();
 	}
 
 	SMA::PriceOrigin SMA::GetPriceOrigin() const
@@ -170,20 +167,20 @@ namespace fx
 
 	void SMA::GetValue(fx::Price& average) const
 	{
-		if (m_period < 2 || m_offerList.size() != m_period)
+		if (m_period < 2 || m_bar->GetOHLCList().size() != m_period)
 			throw misc::exception("SMA is invalid");
 
 		double buy = 0, sell = 0;
-
 		if (m_priceOrigin == PRICE_OPEN)
 		{
-			buy = (m_lastSum.GetBuy() + m_priceO.GetBuy()) / (m_period + 1);
-			sell = (m_lastSum.GetSell() + m_priceO.GetSell()) / (m_period + 1);
+			buy = m_lastSum.GetBuy() / m_period;
+			sell = m_lastSum.GetSell() / m_period;
 		}
 		else
 		{
-			buy = (m_lastSum.GetBuy() + m_priceC.GetBuy()) / (m_period + 1);
-			sell = (m_lastSum.GetSell() + m_priceO.GetSell()) / (m_period + 1);
+			const fx::OHLCPrice& ohlc = m_bar->GetOHLC();
+			buy = (m_lastSum.GetBuy() + ohlc.GetAskClose()) / (m_period + 1);
+			sell = (m_lastSum.GetSell() + ohlc.GetBidClose()) / (m_period + 1);
 		}
 
 		average = fx::Price(buy, sell);
@@ -195,10 +192,8 @@ namespace fx
 		m_period = -1;
 		m_timeframe = 0;
 		m_priceOrigin = PRICE_CLOSE;
-		// m_reftime - default
-		m_priceO = fx::Price(0, 0);
-		m_priceC = fx::Price(0, 0);
-		// m_offerList - clean
+		m_barType = BT_BAR;
+		m_bar = NULL;
 		m_lastSum = fx::Price(0, 0);
 	}
 } // namespace

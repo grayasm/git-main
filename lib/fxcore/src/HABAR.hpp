@@ -28,6 +28,8 @@ namespace fx
 	class HABAR : protected BAR
 	{
 	public:
+		typedef misc::autoptr<HABAR>	Ptr;
+
 		HABAR();
 		HABAR(const misc::string& instrument, int period, Timeframe sec);
 		~HABAR();
@@ -43,8 +45,11 @@ namespace fx
 		const misc::time& GetRefTime() const override;
 		// --- end of virtual table ---
 
-		bool IsNew(const misc::time& currtime) const;
-		const fx::OHLCPrice& GetHA() const;
+		// --- BAR virtual table ---
+		bool IsNew(const fx::Offer& offer) const override;
+		const fx::OHLCPrice& GetOHLC() const override;
+		const BAR::OHLCPriceList& GetOHLCList() const override;
+		// --- end of BAR virtual table ---
 
 	private:
 		void Init();

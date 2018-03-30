@@ -31,9 +31,11 @@
 
 namespace fx
 {
+
 	class BAR : public IND
 	{
 	public:
+		typedef misc::autoptr<BAR>			Ptr;
 		typedef std::list<fx::OHLCPrice>	OHLCPriceList;
 
 		BAR();
@@ -51,14 +53,17 @@ namespace fx
 		const misc::time& GetRefTime() const override;
 		// --- end of virtual table ---
 
-		bool IsNew(const misc::time& currtime) const;
-		const fx::OHLCPrice& GetOHLC() const;
+		// --- own virtual table ---
+		virtual bool IsNew(const fx::Offer& offer) const;
+		virtual const fx::OHLCPrice& GetOHLC() const;
+		virtual const OHLCPriceList& GetOHLCList() const;
+		// --- end of own virtual table ---
 		
 
 	private:
 		void Init();
 
-	protected:
+	private:
 		misc::string		m_instrument;
 		int					m_period;
 		time_t				m_timeframe;

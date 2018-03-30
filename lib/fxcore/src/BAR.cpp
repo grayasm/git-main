@@ -37,14 +37,8 @@ namespace fx
 		m_timeframe = sec;
 
 		//----------------------
-		misc::string sTimeframe;
-		if (sec == misc::time::minSEC) sTimeframe = "m1";
-		if (sec == misc::time::hourSEC) sTimeframe = "H1";
-		if (sec == misc::time::daySEC) sTimeframe = "D1"; // not tested
-		else sTimeframe = "Unknown"; // not supported
-		
 		m_lastOHLC.SetInstrument(instrument.c_str());
-		m_lastOHLC.SetTimeframe(sTimeframe.c_str());
+		m_lastOHLC.SetTimeframe(""); // not used for now
 	}
 
 	BAR::~BAR()
@@ -190,18 +184,21 @@ namespace fx
 		return m_reftime;
 	}
 
-	bool BAR::IsNew(const misc::time& currtime) const
+	bool BAR::IsNew(const fx::Offer& offer) const
 	{
+		const misc::time& currtime = offer.GetTime();
 		misc::time nextt = m_reftime + m_timeframe;
 		return (currtime >= nextt);
 	}
 
 	const fx::OHLCPrice& BAR::GetOHLC() const
 	{
-		if (m_period < 2 || m_priceList.size() != m_period)
-			throw misc::exception("BAR is invalid");
-
 		return m_lastOHLC;
+	}
+
+	const BAR::OHLCPriceList& BAR::GetOHLCList() const
+	{
+		return m_priceList;
 	}
 
 	void BAR::Init()
