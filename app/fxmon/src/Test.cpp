@@ -37,6 +37,7 @@
 #include "ATR.hpp"
 #include "SAR.hpp"
 #include "BAR.hpp"
+#include "HABAR.hpp"
 #include "Position.hpp"
 #include "Transaction.hpp"
 
@@ -396,45 +397,48 @@ int test7()
 	HistdatacomReader oreader("EUR/USD");
 
 	fx::Offer offer;
-	fx::BAR bar("EUR/USD", 14, misc::time::daySEC);
-	time_t timeframe = misc::time::daySEC;
-	fx::OHLCPrice ohlc0, ohlc2;
+	fx::BAR bar("EUR/USD", 14, misc::time::hourSEC);
+	time_t timeframe = misc::time::hourSEC;
+	bool isNew = false;
+	fx::OHLCPrice ohlc;
+	misc::time bartime;
+	
 
-
-	FILE* f1 = fopen("BAR_2017.txt", "w+");
+	misc::string logfile("BAR_2017.txt");
+	FILE* f1 = fopen(logfile.c_str(), "w+");
 	if (f1) fclose(f1);
 
 
 	while (oreader.GetOffer(offer))
 	{
+		if (!bar.IsValid())
+		{
+			bar.Update(offer);
+			continue;
+		}
+	
+		isNew = bar.IsNew(offer.GetTime());
+		if (isNew)
+		{
+			ohlc = bar.GetOHLC();
+			bartime = bar.GetRefTime();
+		}			
+
 		bar.Update(offer);
 
-		if (!bar.IsValid())
-			continue;
-
-		ohlc2 = bar.GetOHLC();
-
-		double bid = ohlc2.GetBidOpen();
-		double ask = ohlc2.GetAskOpen();
-
-		bool newbar =
-			(ohlc2.GetAskHigh() == ask && ohlc2.GetAskLow() == ask && ohlc2.GetAskClose() == ask) &&
-			(ohlc2.GetBidHigh() == bid && ohlc2.GetBidLow() == bid && ohlc2.GetBidClose() == bid);
-
-		// on open the bar has the same price
-		if (newbar)
+		if (isNew)
 		{
-			FILE* pf = fopen("BAR_2017.txt", "a+");
+			FILE* pf = fopen(logfile.c_str(), "a+");
 			if (pf == NULL)
 				continue;
 
 			std::stringstream ss;
-			ss << offer.GetTime().tostring() << " ";
+			ss << bartime.tostring() << " ";
 			ss << " BAR";
-			ss << " AO:" << ohlc0.GetAskOpen();
-			ss << " AH:" << ohlc0.GetAskHigh();
-			ss << " AL:" << ohlc0.GetAskLow();
-			ss << " AC:" << ohlc0.GetAskClose();
+			ss << " AO:" << ohlc.GetAskOpen();
+			ss << " AH:" << ohlc.GetAskHigh();
+			ss << " AL:" << ohlc.GetAskLow();
+			ss << " AC:" << ohlc.GetAskClose();
 
 			ss << std::endl;
 
@@ -442,8 +446,69 @@ int test7()
 			fwrite(str.c_str(), sizeof(char), str.size(), pf);
 			fclose(pf);
 		}
+	}
 
-		ohlc0 = ohlc2;
+	return 0;
+}
+
+
+int test8()
+{
+	// OffersReader oreader("EUR/USD");
+	// HistoryPricesReader oreader("EUR/USD");
+	HistdatacomReader oreader("EUR/USD");
+
+	fx::Offer offer;
+	fx::HABAR habar("EUR/USD", 14, misc::time::hourSEC);
+	time_t timeframe = misc::time::hourSEC;
+	bool isNew = false;
+	fx::OHLCPrice ohlc;
+	misc::time hatime;
+	
+	
+
+	misc::string logfile("HABAR_2017.txt");
+	FILE* f1 = fopen(logfile.c_str(), "w+");
+	if (f1) fclose(f1);
+
+
+	while (oreader.GetOffer(offer))
+	{
+		if (!habar.IsValid())
+		{
+			habar.Update(offer);
+			continue;
+		}
+
+		isNew = habar.IsNew(offer.GetTime());
+		if (isNew)
+		{
+			ohlc = habar.GetHA();
+			hatime = habar.GetRefTime();
+		}			
+
+		habar.Update(offer);
+
+		if (isNew)
+		{
+			FILE* pf = fopen(logfile.c_str(), "a+");
+			if (pf == NULL)
+				continue;
+
+			std::stringstream ss;
+			ss << hatime.tostring() << " ";
+			ss << " BAR";
+			ss << " AO:" << ohlc.GetAskOpen();
+			ss << " AH:" << ohlc.GetAskHigh();
+			ss << " AL:" << ohlc.GetAskLow();
+			ss << " AC:" << ohlc.GetAskClose();
+
+			ss << std::endl;
+
+			std::string str = ss.str();
+			fwrite(str.c_str(), sizeof(char), str.size(), pf);
+			fclose(pf);
+		}
 	}
 
 	return 0;

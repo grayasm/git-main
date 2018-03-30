@@ -44,7 +44,7 @@ int main(int /*argc*/, char** /*argv*/)
 	// RealEngine();
 	// TestEngine();
 	// OMPEngine();
-	test7();
+	test8();
 
 	return 0;
 }

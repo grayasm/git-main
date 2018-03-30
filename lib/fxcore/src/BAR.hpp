@@ -51,13 +51,14 @@ namespace fx
 		const misc::time& GetRefTime() const override;
 		// --- end of virtual table ---
 
+		bool IsNew(const misc::time& currtime) const;
 		const fx::OHLCPrice& GetOHLC() const;
 		
 
 	private:
 		void Init();
 
-	private:
+	protected:
 		misc::string		m_instrument;
 		int					m_period;
 		time_t				m_timeframe;

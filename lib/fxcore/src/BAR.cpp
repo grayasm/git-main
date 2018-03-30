@@ -63,9 +63,11 @@ namespace fx
 		if (this != &tc)
 		{
 			m_instrument = tc.m_instrument;
+			m_period = tc.m_period;
 			m_timeframe = tc.m_timeframe;
 			m_reftime = tc.m_reftime;
 			m_lastOHLC = tc.m_lastOHLC;
+			m_priceList = tc.m_priceList;
 		}
 		return *this;
 	}
@@ -186,6 +188,12 @@ namespace fx
 	const misc::time& BAR::GetRefTime() const
 	{
 		return m_reftime;
+	}
+
+	bool BAR::IsNew(const misc::time& currtime) const
+	{
+		misc::time nextt = m_reftime + m_timeframe;
+		return (currtime >= nextt);
 	}
 
 	const fx::OHLCPrice& BAR::GetOHLC() const
