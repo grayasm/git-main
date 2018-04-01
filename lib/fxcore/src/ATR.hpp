@@ -23,6 +23,7 @@
 
 #include <list>
 #include "IND.hpp"
+#include "BAR.hpp"
 #include "Offer.hpp"
 #include "OHLCPrice.hpp"
 
@@ -60,9 +61,7 @@ namespace fx
 		int					m_period;
 		Timeframe			m_timeframe;
 		// ----------------------------
-		misc::time			m_reftime;
-		fx::OHLCPrice		m_lastOHLC;
-		OHLCPriceList		m_priceList;
+        fx::BAR             m_bar;
 		double				m_medATR;
 		double				m_ATR;
 	};

@@ -46,7 +46,7 @@ namespace misc
 	}
 	
 	/*	UTC time format.
-	 *	year	Year. 1900 or greater
+	 *	year	Year. 1970 or greater
 	 *  mon		Month. [JAN-DEC]
 	 *  day		Day.   [1-31]
 	 *  hour	Hours. [0-23]
@@ -55,7 +55,7 @@ namespace misc
 	 */
 	time::time(int year, enum Month mon, int day, int hour, int min, int sec)
 	{
-		if( year < 1900 || mon < JAN || mon > DEC ||
+		if( year < 1970 || mon < JAN || mon > DEC ||
 			day < 1 || hour < 0 || min < 0 || sec < 0 )
 			throw misc::exception("time is invalid");
 

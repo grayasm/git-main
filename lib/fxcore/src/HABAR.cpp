@@ -37,15 +37,17 @@
 
 namespace fx
 {
-	HABAR::HABAR() : BAR()
+	HABAR::HABAR()
 	{
 		Init();
 	}
 
 	HABAR::HABAR(const misc::string& instrument, int period, Timeframe sec)
-		: BAR(instrument, period, sec)
 	{
 		Init();
+
+		m_bar = fx::BAR(instrument, period, sec);
+		m_lastHA.SetInstrument(instrument.c_str());
 	}
 
 	HABAR::~HABAR()
@@ -53,7 +55,6 @@ namespace fx
 	}
 
 	HABAR::HABAR(const HABAR& tc)
-		: BAR(tc)
 	{
 		Init();
 
@@ -64,8 +65,7 @@ namespace fx
 	{
 		if (this != &tc)
 		{
-			BAR::operator=(tc);
-
+			m_bar = tc.m_bar;
 			m_lastHA = tc.m_lastHA;
 			m_haList = tc.m_haList;
 		}
@@ -74,47 +74,40 @@ namespace fx
 
 	const misc::string& HABAR::GetInstrument() const
 	{
-		return BAR::GetInstrument();
+		return m_bar.GetInstrument();
 	}
 
 	int HABAR::GetPeriod() const
 	{
-		return BAR::GetPeriod();
+		return m_bar.GetPeriod();
 	}
 
 	HABAR::Timeframe HABAR::GetTimeframe() const
 	{
-		return BAR::GetTimeframe();
+		return m_bar.GetTimeframe();
 	}
 
 	bool HABAR::IsValid() const
 	{
-		return BAR::IsValid();
+		return m_bar.IsValid();
 	}
 
 	void HABAR::Update(const fx::Offer& offer)
 	{
-		if (BAR::GetInstrument() != offer.GetInstrument())
+		if (m_bar.GetInstrument() != offer.GetInstrument())
 			throw misc::exception("HABAR offer is invalid");
 
-		const misc::time& reftime = BAR::GetRefTime();
 
-		// let the BAR normalize the timeframe
-		if (reftime.totime_t() == 0)
-			return BAR::Update(offer);
-
-		// wait for the reference time to begin
-		const misc::time& currtime = offer.GetTime();
-		if (currtime < reftime)
-			return BAR::Update(offer);
+        if (m_bar.GetOHLC().GetBidOpen() == 0)  // uninitialized
+            return m_bar.Update(offer);
 
 
 		// inside current timeframe?
-		bool isNew = BAR::IsNew(offer);
+		bool isNew = m_bar.IsNew(offer);
 		if (!isNew)
 		{
-			BAR::Update(offer);
-			const fx::OHLCPrice& ohlc = BAR::GetOHLC(); // current BAR
+			m_bar.Update(offer);
+			const fx::OHLCPrice& ohlc = m_bar.GetOHLC(); // current BAR
 
 			// first bar
 			if (m_haList.empty())
@@ -167,12 +160,12 @@ namespace fx
 			m_haList.push_back(m_lastHA);
 
 			// keep period constant
-			if (m_haList.size() > BAR::GetPeriod())
+			if (m_haList.size() > m_bar.GetPeriod())
 				m_haList.pop_front();
 
-			// new candle has just started
-			BAR::Update(offer);
-			const fx::OHLCPrice& ohlc = BAR::GetOHLC(); // current BAR
+			// paint a new bar
+            m_bar.Update(offer);
+			const fx::OHLCPrice& ohlc = m_bar.GetOHLC(); // current BAR (new)
 
 			// HA-Open
 			const fx::OHLCPrice& prevHA = m_haList.back();
@@ -211,12 +204,12 @@ namespace fx
 
 	const misc::time& HABAR::GetRefTime() const
 	{
-		return BAR::GetRefTime();
+		return m_bar.GetRefTime();
 	}
 
 	bool HABAR::IsNew(const fx::Offer& offer) const
 	{
-		return BAR::IsNew(offer);
+		return m_bar.IsNew(offer);
 	}
 
 	const fx::OHLCPrice& HABAR::GetOHLC() const
@@ -231,6 +224,7 @@ namespace fx
 
 	void HABAR::Init()
 	{
+		// m_bar - default;
 		m_lastHA = fx::OHLCPrice("", "", misc::time(),
 								0, 0, 0, 0,
 								0, 0, 0, 0,

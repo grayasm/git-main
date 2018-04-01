@@ -24,6 +24,7 @@
 #include <list>
 #include "string.hpp"
 #include "IND.hpp"
+#include "BAR.hpp"
 #include "Price.hpp"
 #include "OHLCPrice.hpp"
 
@@ -68,9 +69,7 @@ namespace fx
 		int					m_period;
 		Timeframe			m_timeframe;
 		// --------------------------
-		misc::time			m_reftime;
-		fx::OHLCPrice		m_lastOHLC;
-		OHLCPriceList		m_priceList;
+        fx::BAR             m_bar;
 		SARList				m_sarList;
 		bool				m_isBuy;
 		double				m_AF;

@@ -55,8 +55,8 @@ namespace fx
 		SMA(const misc::string& instrument,
 			int period,
 			Timeframe sec,
-			PriceOrigin po,
-			BarType barType);
+			BarType barType,
+			PriceOrigin po);
 		~SMA();
 
 		SMA(const SMA& tc);
@@ -76,16 +76,15 @@ namespace fx
 
 	private:
 		void Init();
-		fx::BAR::Ptr CreateBar() const;
 
 	private:
 		misc::string	m_instrument;
 		int				m_period;		
 		Timeframe		m_timeframe;
-		PriceOrigin		m_priceOrigin;
 		BarType			m_barType;
+		PriceOrigin		m_priceOrigin;		
 		// ---------------------
-		fx::BAR*		m_bar;
+		fx::BARB*		m_bar;
 		fx::Price		m_lastSum;
 	};
 } // namespace

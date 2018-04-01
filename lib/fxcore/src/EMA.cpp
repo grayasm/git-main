@@ -1,21 +1,21 @@
 /*
-	Copyright (C) 2018 Mihai Vasilian
+    Copyright (C) 2018 Mihai Vasilian
 
-	This program is free software; you can redistribute it and/or
-	modify it under the terms of the GNU General Public License
-	as published by the Free Software Foundation; either version 2
-	of the License, or (at your option) any later version.
+    This program is free software; you can redistribute it and/or
+    modify it under the terms of the GNU General Public License
+    as published by the Free Software Foundation; either version 2
+    of the License, or (at your option) any later version.
 
-	This program is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-	GNU General Public License for more details.
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
 
-	You should have received a copy of the GNU General Public License
-	along with this program; if not, write to the Free Software Foundation, Inc.
-	51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+    You should have received a copy of the GNU General Public License
+    along with this program; if not, write to the Free Software Foundation, Inc.
+    51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-	contact: grayasm@gmail.com
+    contact: grayasm@gmail.com
 */
 
 #include "EMA.hpp"
@@ -28,24 +28,49 @@ namespace fx
 		Init();
 	}
 
-	EMA::EMA(const misc::string& instrument, int period, Timeframe sec, PriceOrigin po)
+	EMA::EMA(
+        const misc::string& instrument,
+		int period,
+		Timeframe sec,
+		BarType barType,
+		PriceOrigin po)
 	{
 		Init();
 
-		m_instrument = instrument;
+        m_instrument = instrument;
 		m_period = period;
 		m_timeframe = sec;
+		m_barType = barType;
+        m_priceOrigin = po;
 		m_multiplier = 2.0 / (m_period + 1.0);
-		m_firstSMA = fx::SMA(instrument, period, sec, po);
+		switch (barType)
+		{
+			case fx::SMA::BT_BAR:
+			{
+				m_bar = new fx::BAR(instrument, period, sec);
+                break;
+			}
+			case fx::SMA::BT_HABAR:
+			{
+				m_bar = new fx::HABAR(instrument, period, sec);
+				break;
+			}
+			default:
+				throw misc::exception("SMA unknown BAR type");
+		}		
+		m_firstSMA = fx::SMA(instrument, period, sec, barType, po);
 	}
 
 	EMA::~EMA()
 	{
-
+        if (m_bar)
+            delete m_bar;
 	}
 
 	EMA::EMA(const EMA& tc)
 	{
+		Init();
+
 		*this = tc;
 	}
 
@@ -56,11 +81,38 @@ namespace fx
 			m_instrument = tc.m_instrument;
 			m_period = tc.m_period;
 			m_timeframe = tc.m_timeframe;
+            m_barType = tc.m_barType;
+            m_priceOrigin = tc.m_priceOrigin;
 			m_multiplier = tc.m_multiplier;
+            if (tc.m_bar)
+            {
+                switch (tc.m_barType)
+                {
+                    case fx::SMA::BT_BAR:
+                    {
+                        fx::BAR* ptr = static_cast<fx::BAR*>(tc.m_bar);
+                        if (m_bar)
+                            delete m_bar;
+                        m_bar = new fx::BAR(*ptr);
+                        break;
+                    }
+                    case fx::SMA::BT_HABAR:
+                    {
+                        fx::HABAR* ptr = static_cast<fx::HABAR*>(tc.m_bar);
+                        if (m_bar)
+                            delete m_bar;
+                        m_bar = new fx::HABAR(*ptr);
+                        break;
+                    }
+                    default:
+                        throw misc::exception("SMA unknown BAR type");
+                }
+            }
+            else
+            {
+                m_bar = NULL;
+            }
 			m_firstSMA = tc.m_firstSMA;
-			m_reftime = tc.m_reftime;
-			m_priceO = tc.m_priceO;
-			m_priceC = tc.m_priceC;
 			m_currEMA = tc.m_currEMA;
 			m_emaList = tc.m_emaList;
 		}
@@ -86,7 +138,10 @@ namespace fx
 
 	bool EMA::IsValid() const
 	{
-		return (m_period > 1 && m_period == m_emaList.size());
+		return (m_period > 1 &&
+                m_period == m_emaList.size() &&
+                m_currEMA.GetBuy() > 0 &&
+                m_currEMA.GetSell() > 0);
 	}
 
 	void EMA::Update(const fx::Offer& offer)
@@ -108,82 +163,65 @@ namespace fx
 		if (!m_firstSMA.IsValid())
 		{
 			m_firstSMA.Update(offer);
-			return;
+            m_bar->Update(offer);   // time alignment			
+            return;
 		}
 
+
+        // add 1st EMA
 		if (m_emaList.empty())
 		{
-			// add first EMA
 			fx::Price price;
 			m_firstSMA.GetValue(price);
 			m_emaList.push_back(price);
-
-			// begin of current timeframe
-			m_reftime = m_firstSMA.GetRefTime();
-
-			// open and close of current candle
-			m_priceO = fx::Price(offer.GetAsk(), offer.GetBid());
-			m_priceC = m_priceO;
-
-			return;
 		}
 
-		const misc::time& currtime = offer.GetTime();
-		misc::time nextt = m_reftime + m_timeframe;
 
+        bool isNew = m_bar->IsNew(offer);
 
-		// every price can close the candle
-		if (currtime < nextt)
-		{
-			m_priceC = fx::Price(offer.GetAsk(), offer.GetBid());
-		}
+        // inside current timeframe?
+        if (!isNew)
+        {
+            m_bar->Update(offer);
+            const fx::OHLCPrice& ohlc = m_bar->GetOHLC();
 
-		// calculate current EMA
-		double currb = 0, currs = 0;
-		if (m_firstSMA.GetPriceOrigin() == fx::SMA::PRICE_OPEN)
-		{
-			currb = m_priceO.GetBuy();
-			currs = m_priceO.GetSell();
-		}
-		else
-		{
-			currb = m_priceC.GetBuy();
-			currs = m_priceC.GetSell();
-		}
+            double buy = 0, sell = 0;
+            if (m_priceOrigin == fx::SMA::PRICE_OPEN)
+            {
+                buy = ohlc.GetAskOpen();
+                sell = ohlc.GetBidOpen();
+            }
+            else
+            {
+                buy = ohlc.GetAskClose();
+                sell = ohlc.GetBidClose();
+            }
 
-		double lastb = m_emaList.back().GetBuy();
-		double lasts = m_emaList.back().GetSell();
+            double lastb = m_emaList.back().GetBuy();
+            double lasts = m_emaList.back().GetSell();
 
-		double calcb = (currb - lastb) * m_multiplier + lastb;
-		double calcs = (currs - lasts) * m_multiplier + lasts;
+            double calcb = (buy - lastb) * m_multiplier + lastb;
+            double calcs = (sell - lasts) * m_multiplier + lasts;
 
-		m_currEMA = fx::Price(calcb, calcs);
+            m_currEMA = fx::Price(calcb, calcs);
+        }
+        else
+        {
+            // handle the list
+            m_emaList.push_back(m_currEMA);
 
+            // keep period constant
+            if (m_emaList.size() > m_period)
+                m_emaList.pop_front();
 
-		// is current candle closed?
-		if (currtime >= nextt)
-		{
-			// handle the list
-			m_emaList.push_back(m_currEMA);
-
-			// keep period constant
-			if (m_emaList.size() > m_period)
-				m_emaList.pop_front();
-
-			
-			// new candle has just started
-			m_priceO = fx::Price(offer.GetAsk(), offer.GetBid());
-			m_priceC = m_priceO;
-
-			// current candle open (including weekend gap)
-			while (currtime >= m_reftime + m_timeframe)
-				m_reftime += m_timeframe;
-		}
+            // paint a new bar
+            m_bar->Update(offer);
+        }
 	}
 
 	const misc::time& EMA::GetRefTime() const
 	{
-		return m_reftime;
+		return m_bar->GetRefTime();
 	}
 
 	EMA::PriceOrigin EMA::GetPriceOrigin() const
@@ -193,8 +231,13 @@ namespace fx
 
 	void EMA::GetValue(fx::Price& average) const
 	{
-		if (m_period < 2 || m_emaList.size() != m_period)
-			throw misc::exception("EMA is invalid");
+        if (m_period < 2 ||
+            m_emaList.size() != m_period ||
+            m_currEMA.GetBuy() == 0 ||
+            m_currEMA.GetSell() == 0)
+        {
+            throw misc::exception("EMA is invalid");
+        }
 
 		average = m_currEMA;
 	}
@@ -204,11 +247,11 @@ namespace fx
 		m_instrument = "";
 		m_period = -1;
 		m_timeframe = 0;
+        m_barType = fx::SMA::BT_BAR;
+        m_priceOrigin = fx::SMA::PRICE_CLOSE;
 		m_multiplier = 0;
+		m_bar = NULL;
 		// m_firstSMA - default;
-		// m_reftime - default;
-		m_priceO = fx::Price(0, 0);
-		m_priceC = fx::Price(0, 0);
 		m_currEMA = fx::Price(0, 0);
 		// m_emaList - clean;
 	}

@@ -186,7 +186,10 @@ namespace fx
 
 	bool BAR::IsNew(const fx::Offer& offer) const
 	{
-		const misc::time& currtime = offer.GetTime();
+        if (m_reftime.totime_t() == 0)  // not initialized
+            return false;
+
+		const misc::time& currtime = offer.GetTime();    
 		misc::time nextt = m_reftime + m_timeframe;
 		return (currtime >= nextt);
 	}

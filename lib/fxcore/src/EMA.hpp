@@ -24,6 +24,7 @@
 #include <list>
 #include "IND.hpp"
 #include "SMA.hpp"
+#include "BARB.hpp"
 #include "Offer.hpp"
 #include "Price.hpp"
 
@@ -34,12 +35,17 @@ namespace fx
 	class EMA : public IND
 	{
 	public:
+		typedef fx::SMA::BarType			BarType;
 		typedef fx::SMA::PriceOrigin		PriceOrigin;
 		typedef std::list<fx::Price>		EMAList;
 		// Timeframe is time_t
 		
 		EMA();
-		EMA(const misc::string& instrument, int period, Timeframe sec, PriceOrigin po);
+		EMA(const misc::string& instrument,
+			int period,
+			Timeframe sec,
+			BarType barType,
+			PriceOrigin po);
 		~EMA();
 
 		EMA(const EMA& tc);
@@ -64,12 +70,12 @@ namespace fx
 		misc::string	m_instrument;
 		int				m_period;
 		Timeframe		m_timeframe;
+		BarType			m_barType;
+        PriceOrigin     m_priceOrigin;
 		double			m_multiplier;
 		// -----------------------
+		fx::BARB*		m_bar;
 		fx::SMA			m_firstSMA;
-		misc::time		m_reftime;
-		fx::Price		m_priceO;
-		fx::Price		m_priceC;		
 		fx::Price		m_currEMA;
 		EMAList			m_emaList;
 	};

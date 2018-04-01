@@ -45,6 +45,7 @@ namespace fx
 		m_instrument = instrument;
 		m_period = period + 1;	// the 1st previous close is extra
 		m_timeframe = sec;
+        m_bar = fx::BAR(instrument, m_period, sec); // use the extra candle
 	}
 
 	ATR::~ATR()
@@ -53,6 +54,8 @@ namespace fx
 
 	ATR::ATR(const ATR& tc)
 	{
+        Init();
+
 		*this = tc;
 	}
 
@@ -63,9 +66,7 @@ namespace fx
 			m_instrument = tc.m_instrument;
 			m_period = tc.m_period;
 			m_timeframe = tc.m_timeframe;
-			m_reftime = tc.m_reftime;
-			m_lastOHLC = tc.m_lastOHLC;
-			m_priceList = tc.m_priceList;
+            m_bar = tc.m_bar;
 			m_medATR = tc.m_medATR;
 			m_ATR = tc.m_ATR;
 		}
@@ -90,179 +91,118 @@ namespace fx
 
 	bool ATR::IsValid() const
 	{
-		return (m_period - 1 > 1 && m_period == m_priceList.size() && m_ATR > 0);
+		return (m_period - 1 > 1 &&
+                m_period == m_bar.GetOHLCList().size() &&
+                m_medATR != -1 &&
+                m_ATR != -1);
 	}
 
 	void ATR::Update(const fx::Offer& offer)
 	{
-		if (m_period - 1 < 2)
-			throw misc::exception("ATR is invalid");
-
 		if (m_instrument != offer.GetInstrument())
 			throw misc::exception("ATR offer is invalid");
 
+        // offer will paint a new bar?
+        bool isNew = m_bar.IsNew(offer);
 
-		// begin at full hour even if the timeframe is ex: 3min
-		if (m_reftime.totime_t() == 0)
-		{
-			m_reftime = offer.GetTime();
-			m_reftime -= m_reftime.sec_();
-			m_reftime += (60 - m_reftime.min_()) * misc::time::minSEC;
-			return;
-		}
+        if (!isNew)
+        {
+            m_bar.Update(offer);
+            const fx::OHLCPrice& ohlc = m_bar.GetOHLC();
+            const fx::BARB::OHLCPriceList& ohlcList = m_bar.GetOHLCList();
 
-		const misc::time& currtime = offer.GetTime();
-		
-		// wait for the reference time to begin with
-		if (currtime < m_reftime)
-			return;
+            /*  Calculate an intermediary ATR if enough data is available.
+                If bigger than current ATR, update it to reflect the volatility.
+            */
+            if (m_medATR != -1 && ohlcList.size() == m_period)
+            {
+                // current TR
+                double prevC = ohlcList.back().GetBidClose();
+                double currH = ohlc.GetBidHigh();
+                double currL = ohlc.GetBidLow();
 
-		misc::time nextt = m_reftime + m_timeframe;
-		if (currtime < nextt)
-		{
-			double bid = offer.GetBid();
-			double ask = offer.GetAsk();
+                double v1 = currH - currL;
+                double v2 = fabs(currH - prevC);
+                double v3 = fabs(currL - prevC);
 
-			if (m_lastOHLC.GetBidOpen() == 0)	// uninitialized
-			{
-				m_lastOHLC.SetBidOpen(bid);
-				m_lastOHLC.SetBidHigh(bid);
-				m_lastOHLC.SetBidLow(bid);
-				m_lastOHLC.SetBidClose(bid);
+                double TR = std::max(v1, std::max(v2, v3));
 
-				m_lastOHLC.SetAskOpen(ask);
-				m_lastOHLC.SetAskHigh(ask);
-				m_lastOHLC.SetAskLow(ask);
-				m_lastOHLC.SetAskClose(ask);
-			}
-			else
-			{
-				m_lastOHLC.SetBidClose(bid);
-				m_lastOHLC.SetAskClose(ask);
+                double n = m_period - 1.0;
+                double ATR = (m_medATR * (n - 1) + TR) / n;
 
-				if (m_lastOHLC.GetBidHigh() < bid)
-					m_lastOHLC.SetBidHigh(bid);
-				if (m_lastOHLC.GetBidLow() > bid)
-					m_lastOHLC.SetBidLow(bid);
-				if (m_lastOHLC.GetAskHigh() < ask)
-					m_lastOHLC.SetAskHigh(ask);
-				if (m_lastOHLC.GetAskLow() > ask)
-					m_lastOHLC.SetAskLow(ask);
-			}
+                m_ATR = misc::max(m_ATR, ATR);
+            }
+        }
+        else
+        {
+            const fx::OHLCPrice& ohlc = m_bar.GetOHLC();
+            const fx::BARB::OHLCPriceList& ohlcList = m_bar.GetOHLCList();
 
+            /*	Current OHLC bar is complete.
+                Calculate a new ATR value if possible.
+            */
+            if (ohlcList.size() == m_period)
+            {
+                /*  Calculate the median ATR
+                    TR = max[(currH - currL), abs(currH - prevC), abs(currL - prevC)]
+                    ATR = (ATR(t - 1) x (n - 1) + TR(t)) / n		(true average)
+                    ATR(t - 1) = sum(TRi) / n  where i = 1->n	(median)
+                */
 
-			/*	Include the current INCOMPLETE OHLC bar into ATR,
-				but be sure to read the book:
-				"New Concepts in Technical Trading Systems.pdf"
-				by J. Welles Wilder Jr.
-				and decide if this is correct or not.
-			*/
-			if (m_priceList.size() == m_period)
-			{
-				// current TR
-				double prevC = m_priceList.back().GetBidClose();
-				double currH = m_lastOHLC.GetBidHigh();
-				double currL = m_lastOHLC.GetBidLow();
+                m_medATR = 0;
+                m_ATR = 0;
 
-				double v1 = currH - currL;
-				double v2 = fabs(currH - prevC);
-				double v3 = fabs(currL - prevC);
+                OHLCPriceList::const_iterator previt = ohlcList.begin();
+                OHLCPriceList::const_iterator currit = previt;
+                ++currit;
 
-				double TR = std::max(v1, std::max(v2, v3));
+                for (; currit != ohlcList.end(); ++previt, ++currit)
+                {
+                    double prevC = previt->GetBidClose();
+                    double currH = currit->GetBidHigh();
+                    double currL = currit->GetBidLow();
 
-				double n = m_period - 1.0;
-				m_ATR = (m_medATR * (n - 1) + TR) / n;
-			}
-		}
-		else if (currtime >= nextt)
-		{
-			/*	Current OHLC bar is complete (e.g. m_lastOHLC)
-				Calculate a new ATR value if possible, then save it.
-			*/
-			if (m_priceList.size() == m_period)
-			{
-				// calculate the median ATR
-				// TR = max[(currH - currL), abs(currH - prevC), abs(currL - prevC)]
-				// ATR = (ATR(t - 1) x (n - 1) + TR(t)) / n		(true average)
-				// ATR(t - 1) = sum(TRi) / n  where i = 1->n	(median)
+                    double v1 = currH - currL;
+                    double v2 = fabs(currH - prevC);
+                    double v3 = fabs(currL - prevC);
 
-				m_medATR = 0;
-				m_ATR = 0;
+                    double TR = std::max(v1, std::max(v2, v3));
 
-				OHLCPriceList::iterator previt = m_priceList.begin();
-				OHLCPriceList::iterator currit = previt;
-				++currit;
+                    m_medATR += TR;
+                }
 
-				for (; currit != m_priceList.end(); ++previt, ++currit)
-				{
-					double prevC = previt->GetBidClose();
-					double currH = currit->GetBidHigh();
-					double currL = currit->GetBidLow();
+                double n = m_period - 1.0;
+                m_medATR /= n;
 
-					double v1 = currH - currL;
-					double v2 = fabs(currH - prevC);
-					double v3 = fabs(currL - prevC);
+                // current TR
+                double prevC = ohlcList.back().GetBidClose();
+                double currH = ohlc.GetBidHigh();
+                double currL = ohlc.GetBidLow();
 
-					double TR = std::max(v1, std::max(v2, v3));
+                double v1 = currH - currL;
+                double v2 = fabs(currH - prevC);
+                double v3 = fabs(currL - prevC);
 
-					m_medATR += TR;
-				}
+                double TR = std::max(v1, std::max(v2, v3));
 
-				double n = m_period - 1.0;
-				m_medATR /= n;
+                m_ATR = (m_medATR * (n - 1) + TR) / n;
+            }
 
-				// current TR
-				double prevC = m_priceList.back().GetBidClose();
-				double currH = m_lastOHLC.GetBidHigh();
-				double currL = m_lastOHLC.GetBidLow();
-
-				double v1 = currH - currL;
-				double v2 = fabs(currH - prevC);
-				double v3 = fabs(currL - prevC);
-
-				double TR = std::max(v1, std::max(v2, v3));
-
-				m_ATR = (m_medATR * (n - 1) + TR) / n;
-			}
-			
-
-			// handle the list
-			m_priceList.push_back(m_lastOHLC);
-
-			// keep period constant
-			if (m_priceList.size() > m_period)
-				m_priceList.pop_front();
-			
-			// new candle has just started
-			double bid = offer.GetBid();
-			double ask = offer.GetAsk();
-
-			m_lastOHLC.SetBidOpen(bid);
-			m_lastOHLC.SetBidHigh(bid);
-			m_lastOHLC.SetBidLow(bid);
-			m_lastOHLC.SetBidClose(bid);
-
-			m_lastOHLC.SetAskOpen(ask);
-			m_lastOHLC.SetAskHigh(ask);
-			m_lastOHLC.SetAskLow(ask);
-			m_lastOHLC.SetAskClose(ask);
-
-
-			// current candle open (including weekend gap)
-			while (currtime >= m_reftime + m_timeframe)
-				m_reftime += m_timeframe;
-		}
+            // paint a new bar
+            m_bar.Update(offer);
+        }
 	}
 
 	const misc::time& ATR::GetRefTime() const
 	{
-		return m_reftime;
+		return m_bar.GetRefTime();
 	}
 
 	void ATR::GetValue(double& average) const
 	{
-		if (m_period -1 < 2 || m_priceList.size() != m_period)
-			throw misc::exception("SMA is invalid");
+		if (m_period - 1 < 2 || m_bar.GetOHLCList().size() != m_period ||
+            m_medATR == -1 || m_ATR == -1)
+			throw misc::exception("ATR is invalid");
 
 		// return last ATR (true average)
 		average = m_ATR;
@@ -273,13 +213,8 @@ namespace fx
 		m_instrument = "";
 		m_period = -1;
 		m_timeframe = 0;
-		// m_reftime - default
-		m_lastOHLC = fx::OHLCPrice("", "", misc::time(),
-									0, 0, 0, 0,
-									0, 0, 0, 0,
-									0);
-		// m_priceList - clean		
-		m_medATR = 0;
-		m_ATR = 0;
+        // m_bar - default;
+		m_medATR = -1;
+		m_ATR = -1;
 	}
 } // namespace

@@ -24,7 +24,7 @@
 #include <list>
 #include "string.hpp"
 #include "time.hpp"
-#include "IND.hpp"
+#include "BARB.hpp"
 #include "Offer.hpp"
 #include "OHLCPrice.hpp"
 
@@ -32,11 +32,10 @@
 namespace fx
 {
 
-	class BAR : public IND
+	class BAR : public BARB
 	{
 	public:
 		typedef misc::autoptr<BAR>			Ptr;
-		typedef std::list<fx::OHLCPrice>	OHLCPriceList;
 
 		BAR();
 		BAR(const misc::string& instrument, int period, Timeframe sec);
@@ -44,20 +43,20 @@ namespace fx
 		BAR(const BAR& tc);
 		BAR& operator=(const BAR& tc);
 		
-		// --- virtual table ---
+		// --- IND virtual table ---
 		const misc::string& GetInstrument() const override;
 		int GetPeriod() const override;
 		Timeframe GetTimeframe() const override;
 		bool IsValid() const override;
 		void Update(const fx::Offer& offer) override;
 		const misc::time& GetRefTime() const override;
-		// --- end of virtual table ---
+		// --- end of IND virtual table ---
 
-		// --- own virtual table ---
-		virtual bool IsNew(const fx::Offer& offer) const;
-		virtual const fx::OHLCPrice& GetOHLC() const;
-		virtual const OHLCPriceList& GetOHLCList() const;
-		// --- end of own virtual table ---
+		// --- BARB virtual table ---
+		bool IsNew(const fx::Offer& offer) const;
+		const fx::OHLCPrice& GetOHLC() const;
+		const OHLCPriceList& GetOHLCList() const;
+		// --- end of BARB virtual table ---
 		
 
 	private:

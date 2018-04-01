@@ -59,6 +59,7 @@ namespace fx
 		m_instrument = instrument;
 		m_period = period;
 		m_timeframe = sec;
+        m_bar = fx::BAR(instrument, period, sec);
 	}
 
 	SAR::~SAR()
@@ -79,9 +80,7 @@ namespace fx
 			m_instrument = tc.m_instrument;
 			m_period = tc.m_period;
 			m_timeframe = tc.m_timeframe;
-			m_reftime = tc.m_reftime;
-			m_lastOHLC = tc.m_lastOHLC;
-			m_priceList = tc.m_priceList;
+            m_bar = tc.m_bar;
 			m_sarList = tc.m_sarList;
 			m_isBuy = tc.m_isBuy;
 			m_AF = tc.m_AF;
@@ -108,177 +107,111 @@ namespace fx
 
 	bool SAR::IsValid() const
 	{
-		return (m_period - 1 > 1 &&
-			m_period == m_priceList.size() &&
-			m_period == m_sarList.size());
+		return (m_period > 1 &&
+			m_period == m_bar.GetOHLCList().size() &&
+			m_period == m_sarList.size() &&
+            m_SAR.GetBuy() > 0 &&
+            m_SAR.GetSell() > 0);
 	}
 
 	void SAR::Update(const fx::Offer& offer)
 	{
-		if (m_period - 1 < 2)
-			throw misc::exception("SAR is invalid");
-
 		if (m_instrument != offer.GetInstrument())
 			throw misc::exception("SAR offer is invalid");
 
-		// begin at next timeframe normalized up to daily candle;
-		if (m_reftime.totime_t() == 0)
-		{
-			m_reftime = offer.GetTime();
 
-			if (m_timeframe >= misc::time::minSEC)
-				m_reftime -= m_reftime.sec_();
-			if (m_timeframe >= misc::time::hourSEC)
-				m_reftime -= (m_reftime.min_() * misc::time::minSEC);
-			if (m_timeframe >= misc::time::daySEC)
-				m_reftime -= (m_reftime.hour_() * misc::time::hourSEC);
+        // offer will paint a new bar?
+        bool isNew = m_bar.IsNew(offer);
 
-			m_reftime += m_timeframe;
-		}
+        if (!isNew)
+        {
+            m_bar.Update(offer);
+        }
+        else
+        {
+            /*	Current OHLC bar is complete.
+                Calculate the SAR.
+            */
+            const fx::OHLCPrice& ohlc = m_bar.GetOHLC();
+            const fx::BAR::OHLCPriceList& ohlcList = m_bar.GetOHLCList();
 
-		const misc::time& currtime = offer.GetTime();
+            if (ohlcList.empty())	// first SAR value is simple
+            {
+                m_isBuy = ohlc.GetAskOpen() < ohlc.GetAskClose();
+                m_AF = 0.00;    // avoid 0.04 on next candle
 
-		// wait for the reference time to begin with
-		if (currtime < m_reftime)
-			return;
-
-		misc::time nextt = m_reftime + m_timeframe;
-		if (currtime < nextt)
-		{
-			double bid = offer.GetBid();
-			double ask = offer.GetAsk();
-
-			if (m_lastOHLC.GetBidOpen() == 0) // uninitialized
-			{
-				m_lastOHLC.SetBidOpen(bid);
-				m_lastOHLC.SetBidHigh(bid);
-				m_lastOHLC.SetBidLow(bid);
-				m_lastOHLC.SetBidClose(bid);
-
-				m_lastOHLC.SetAskOpen(ask);
-				m_lastOHLC.SetAskHigh(ask);
-				m_lastOHLC.SetAskLow(ask);
-				m_lastOHLC.SetAskClose(ask);
-
-				m_EP = fx::Price(offer.GetAsk(), offer.GetBid());
-			}
-			else
-			{
-				m_lastOHLC.SetBidClose(bid);	// can close anytime soon
-				m_lastOHLC.SetAskClose(ask);
-
-				if (bid > m_lastOHLC.GetBidHigh())
-				{
-					m_lastOHLC.SetBidHigh(bid);
-					m_lastOHLC.SetAskHigh(ask);
-				}
-				else if (bid < m_lastOHLC.GetBidLow())
-				{
-					m_lastOHLC.SetBidLow(bid);
-					m_lastOHLC.SetAskLow(ask);
-				}
-			}
-		}
-		else if (currtime >= nextt)
-		{
-			/*	Current OHLC bar is complete (e.g. m_lastOHLC).
-				Calculate the SAR.
-			*/
-			if (m_priceList.empty())	// first SAR value is simple
-			{
-				m_isBuy = m_lastOHLC.GetAskOpen() < m_lastOHLC.GetAskClose();
-				m_AF = 0.02;
-
-				if (m_isBuy)
-				{
-					m_EP = fx::Price(m_lastOHLC.GetAskHigh(), m_lastOHLC.GetBidHigh());
-					m_SAR = fx::Price(m_lastOHLC.GetAskLow(), m_lastOHLC.GetBidLow());
-				}
-				else
-				{
-					m_EP = fx::Price(m_lastOHLC.GetAskLow(), m_lastOHLC.GetBidLow());
-					m_SAR = fx::Price(m_lastOHLC.GetAskHigh(), m_lastOHLC.GetBidHigh());
-				}
-			}
-			else
-			{
-				// track EP & AF
-				if (m_isBuy && m_lastOHLC.GetBidHigh() > m_EP.GetSell())
-				{
-					m_EP = fx::Price(m_lastOHLC.GetAskHigh(), m_lastOHLC.GetBidHigh());
-					m_AF += 0.02;
-				}
-				else if (!m_isBuy && m_lastOHLC.GetAskLow() < m_EP.GetBuy())
-				{
-					m_EP = fx::Price(m_lastOHLC.GetAskLow(), m_lastOHLC.GetBidLow());
-					m_AF += 0.02;
-				}
-				if (m_AF < 0.02) m_AF = 0.02;	// SAR reversed in this timeframe (0.00)
-				if (m_AF > 0.20) m_AF = 0.2;	// SAR maxim value
+                if (m_isBuy)
+                {
+                    m_EP = fx::Price(ohlc.GetAskHigh(), ohlc.GetBidHigh());
+                    m_SAR = fx::Price(ohlc.GetAskLow(), ohlc.GetBidLow());
+                }
+                else
+                {
+                    m_EP = fx::Price(ohlc.GetAskLow(), ohlc.GetBidLow());
+                    m_SAR = fx::Price(ohlc.GetAskHigh(), ohlc.GetBidHigh());
+                }
+            }
+            else
+            {
+                // track EP & AF
+                if (m_isBuy && ohlc.GetBidHigh() > m_EP.GetSell())
+                {
+                    m_EP = fx::Price(ohlc.GetAskHigh(), ohlc.GetBidHigh());
+                    m_AF += 0.02;
+                }
+                else if (!m_isBuy && ohlc.GetAskLow() < m_EP.GetBuy())
+                {
+                    m_EP = fx::Price(ohlc.GetAskLow(), ohlc.GetBidLow());
+                    m_AF += 0.02;
+                }
+                if (m_AF < 0.02) m_AF = 0.02;	// SAR reversed in this timeframe (0.00)
+                if (m_AF > 0.20) m_AF = 0.2;	// SAR maxim value
 
 
-				// SAR = SARp + AF (EP - SARp);
-				double buy = m_SAR.GetBuy() + m_AF * (m_EP.GetBuy() - m_SAR.GetBuy());
-				double sell = m_SAR.GetSell() + m_AF * (m_EP.GetSell() - m_SAR.GetSell());
+                // SAR = SARp + AF (EP - SARp);
+                double buy = m_SAR.GetBuy() + m_AF * (m_EP.GetBuy() - m_SAR.GetBuy());
+                double sell = m_SAR.GetSell() + m_AF * (m_EP.GetSell() - m_SAR.GetSell());
 
 
-				/*	Never move SAR above lower of current or previous ohlc if long.
-					Never move SAR below higher of current or previous ohlc if short.
-				*/
-				fx::Price LP(0, 0);		// the limit
-				const fx::OHLCPrice& ohlc = m_priceList.back();
-				if (m_isBuy)
-					LP = fx::Price(
-					misc::min(ohlc.GetAskLow(), m_lastOHLC.GetAskLow()),
-					misc::min(ohlc.GetBidLow(), m_lastOHLC.GetBidLow()));
-				else
-					LP = fx::Price(
-					misc::max(ohlc.GetAskHigh(), m_lastOHLC.GetAskHigh()),
-					misc::max(ohlc.GetBidHigh(), m_lastOHLC.GetBidHigh()));
+                /*	Never move SAR above lower of current or previous ohlc if long.
+                    Never move SAR below higher of current or previous ohlc if short.
+                */
+                fx::Price LP(0, 0);		// the limit
+                const fx::OHLCPrice& prevohlc = ohlcList.back();
+                if (m_isBuy)
+                    LP = fx::Price(
+                        misc::min(prevohlc.GetAskLow(), ohlc.GetAskLow()),
+                        misc::min(prevohlc.GetBidLow(), ohlc.GetBidLow()));
+                else
+                    LP = fx::Price(
+                        misc::max(prevohlc.GetAskHigh(), ohlc.GetAskHigh()),
+                        misc::max(prevohlc.GetBidHigh(), ohlc.GetBidHigh()));
 
 
-				if ((m_isBuy && sell > LP.GetSell()) ||
-					(!m_isBuy && buy < LP.GetBuy()))
-				{
-					buy = LP.GetBuy();
-					sell = LP.GetSell();
-				}
+                if ((m_isBuy && sell > LP.GetSell()) ||
+                    (!m_isBuy && buy < LP.GetBuy()))
+                {
+                    buy = LP.GetBuy();
+                    sell = LP.GetSell();
+                }
 
-				m_SAR = fx::Price(buy, sell);
-			}
+                m_SAR = fx::Price(buy, sell);
+            }
 
-			// handle the list
-			m_priceList.push_back(m_lastOHLC);
-			m_sarList.push_back(m_SAR);
+            // handle the list
+            m_sarList.push_back(m_SAR);
 
-			// keep period constant (sarList adds new SAR frequently)
-			while (m_priceList.size() > m_period)
-				m_priceList.pop_front();
-			while (m_sarList.size() > m_period)
-				m_sarList.pop_front();
+            // keep period constant
+            if (m_sarList.size() > m_period)
+                m_sarList.pop_front();
 
-			// new candle has just started
-			double bid = offer.GetBid();
-			double ask = offer.GetAsk();
-
-			m_lastOHLC.SetBidOpen(bid);
-			m_lastOHLC.SetBidHigh(bid);
-			m_lastOHLC.SetBidLow(bid);
-			m_lastOHLC.SetBidClose(bid);
-
-			m_lastOHLC.SetAskOpen(ask);
-			m_lastOHLC.SetAskHigh(ask);
-			m_lastOHLC.SetAskLow(ask);
-			m_lastOHLC.SetAskClose(ask);
-
-			// current candle open (including weekend gap)
-			while (currtime >= m_reftime + m_timeframe)
-				m_reftime += m_timeframe;
-		}
+            // paint a new bar
+            m_bar.Update(offer);
+        }
 
 
 		// check every Offer to see if SAR reversed
-		if (!m_priceList.empty())
+		if (!m_bar.GetOHLCList().empty())
 		{
 			if ((m_isBuy && offer.GetBid() < m_SAR.GetSell()) ||
 				(!m_isBuy && offer.GetAsk() > m_SAR.GetBuy()))
@@ -290,7 +223,7 @@ namespace fx
 				m_EP = fx::Price(offer.GetAsk(), offer.GetBid());
 
 				m_sarList.push_back(m_SAR);
-				while (m_sarList.size() > m_period)
+				if (m_sarList.size() > m_period)
 					m_sarList.pop_front();
 			}
 		}
@@ -298,7 +231,7 @@ namespace fx
 
 	const misc::time& SAR::GetRefTime() const
 	{
-		return m_reftime;
+		return m_bar.GetRefTime();
 	}
 
 	bool SAR::GetIsBuy() const
@@ -308,18 +241,23 @@ namespace fx
 
 	void SAR::GetValue(fx::Price& sar) const
 	{
-		if (m_period - 1 < 2 || m_priceList.size() != m_period)
-			throw misc::exception("SAR is invalid");
+        if (m_period < 2 ||
+            m_bar.GetOHLCList().size() != m_period ||
+            m_SAR.GetBuy() == 0 ||
+            m_SAR.GetSell() == 0)
+        {
+            throw misc::exception("SAR is invalid");
+        }
 
 		sar = m_SAR;
 	}
 
 	void SAR::GetOHLC(fx::OHLCPrice& ohlc) const
 	{
-		if (m_period - 1 < 2 || m_priceList.size() != m_period)
+		if (m_period < 2 || m_bar.GetOHLCList().size() != m_period)
 			throw misc::exception("SAR is invalid");
 
-		ohlc = m_priceList.back();
+		ohlc = m_bar.GetOHLC();
 	}
 
 	void SAR::GetEP(fx::Price& ep) const
@@ -337,12 +275,7 @@ namespace fx
 		m_instrument = "";
 		m_period = -1;
 		m_timeframe = 0;
-		// m_reftime - default
-		m_lastOHLC = fx::OHLCPrice("", "", misc::time(),
-									0, 0, 0, 0,
-									0, 0, 0, 0,
-									0);
-		// m_priceList - clean
+        // m_bar - default
 		// m_sarList - clean
 		m_isBuy = false;
 		m_AF = 0.02;

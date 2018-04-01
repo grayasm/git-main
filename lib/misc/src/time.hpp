@@ -60,7 +60,7 @@ namespace misc
 		time(time_t t);
 		
 		/*	UTC time format.
-		 *	year	Year. 1900 or greater
+		 *	year	Year. 1970 or greater
 		 *  mon		Month. [JAN-DEC]
 		 *  day		Day.   [1-31]
 		 *  hour	Hours. [0-23]
@@ -99,7 +99,7 @@ namespace misc
 		int hour_() const;
 		int mday_() const;			// 1 up to 31
 		int mon_() const;			// Jan=1, Feb=2, ..., Dec=12
-		int year_() const;			// between 1900 and 2038(32) or 3000(64bit)
+		int year_() const;			// between 1970 and 2038(32) or 3000(64bit)
 
 		enum WDay wday() const;		// day of week
 		int yday() const;			// day of the year
@@ -112,7 +112,7 @@ namespace misc
 		
 	private:
 		/*	UTC time format.
-		 *	year	Year. 1900 or greater
+		 *	year	Year. 1970 or greater
 		 *  mon		Month. [0-11]
 		 *  day		Day.   [1-31]
 		 *  hour	Hours. [0-23]
@@ -126,7 +126,7 @@ namespace misc
 		int	yisleap(int year) const;
 		/*	day		[1-31]
 		 *  mon		[JAN-DEC]
-		 *	year	[1900 - ...]
+		 *	year	[1970 - ...]
 		 *	return	[0-365]
 		 */
 		int get_yday(int day, enum Month mon, int year) const;

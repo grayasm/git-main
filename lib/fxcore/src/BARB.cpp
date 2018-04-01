@@ -12,30 +12,30 @@
 	GNU General Public License for more details.
 
 	You should have received a copy of the GNU General Public License
-	along with this program; if not, write to the Free Software Foundation, Inc.
-	51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+	along with this program; if not, write to the Free Software Foundation,
+	Inc. 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 	contact: grayasm@gmail.com
 */
 
-#include "IND.hpp"
+#include "BARB.hpp"
 
 namespace fx
 {
-	IND::IND()
+	BARB::BARB()
 	{
 	}
 
-	IND::IND(const IND&)
+	BARB::BARB(const BARB&)
 	{
 	}
 
-	IND& IND::operator=(const IND&)
+	BARB& BARB::operator=(const BARB&)
 	{
 		return *this;
 	}
 
-	IND::~IND()
+	BARB::~BARB()
 	{
 	}
 } // namespace

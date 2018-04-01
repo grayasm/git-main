@@ -21,11 +21,12 @@
 #ifndef __HABAR_hpp__
 #define __HABAR_hpp__
 
+#include "BARB.hpp"
 #include "BAR.hpp"
 
 namespace fx
 {
-	class HABAR : protected BAR
+	class HABAR : public BARB
 	{
 	public:
 		typedef misc::autoptr<HABAR>	Ptr;
@@ -36,25 +37,26 @@ namespace fx
 		HABAR(const HABAR& tc);
 		HABAR& operator=(const HABAR& tc);
 
-		// --- virtual table ---
+		// --- IND virtual table ---
 		const misc::string& GetInstrument() const override;
 		int GetPeriod() const override;
 		Timeframe GetTimeframe() const override;
 		bool IsValid() const override;
 		void Update(const fx::Offer& offer) override;
 		const misc::time& GetRefTime() const override;
-		// --- end of virtual table ---
+		// --- end of IND virtual table ---
 
-		// --- BAR virtual table ---
+		// --- BARB virtual table ---
 		bool IsNew(const fx::Offer& offer) const override;
 		const fx::OHLCPrice& GetOHLC() const override;
-		const BAR::OHLCPriceList& GetOHLCList() const override;
-		// --- end of BAR virtual table ---
+		const OHLCPriceList& GetOHLCList() const override;
+		// --- end of BARB virtual table ---
 
 	private:
 		void Init();
 
 	private:
+		fx::BAR				m_bar;
 		fx::OHLCPrice		m_lastHA;
 		OHLCPriceList		m_haList;
 	};

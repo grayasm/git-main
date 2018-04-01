@@ -37,7 +37,7 @@ namespace fx
 		m_instrument = instrument;
 		m_renkoMin = renkoMin;
 		m_atr14 = fx::ATR(m_instrument, 14, misc::time::hourSEC);
-		m_sma7 = fx::SMA(m_instrument, 7, misc::time::hourSEC, fx::SMA::PRICE_CLOSE);
+        m_sma7 = fx::SMA(m_instrument, 7, misc::time::hourSEC, fx::SMA::BT_BAR, fx::SMA::PRICE_CLOSE);
 		/// ---------------------
 		// m_tr - clean;
 		// m_initialOffer - clean;
