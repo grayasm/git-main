@@ -110,6 +110,8 @@ namespace fx
             }
             else
             {
+                if (m_bar)
+                    delete m_bar;
                 m_bar = NULL;
             }
 			m_firstSMA = tc.m_firstSMA;
@@ -134,8 +136,7 @@ namespace fx
 	{
 		return m_timeframe;
 	}
-
-
+    
 	bool EMA::IsValid() const
 	{
 		return (m_period > 1 &&
@@ -146,9 +147,6 @@ namespace fx
 
 	void EMA::Update(const fx::Offer& offer)
 	{
-		if (m_period < 2)
-			throw misc::exception("EMA is invalid");
-
 		if (m_instrument != offer.GetInstrument())
 			throw misc::exception("EMA offer is invalid");
 

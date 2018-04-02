@@ -200,9 +200,13 @@ namespace fx
 
 	void ATR::GetValue(double& average) const
 	{
-		if (m_period - 1 < 2 || m_bar.GetOHLCList().size() != m_period ||
-            m_medATR == -1 || m_ATR == -1)
-			throw misc::exception("ATR is invalid");
+        if (m_period - 1 < 2 ||
+            m_bar.GetOHLCList().size() != m_period ||
+            m_medATR == -1 ||
+            m_ATR == -1)
+        {
+            throw misc::exception("ATR is invalid");
+        }
 
 		// return last ATR (true average)
 		average = m_ATR;

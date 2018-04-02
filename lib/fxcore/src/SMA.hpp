@@ -85,7 +85,7 @@ namespace fx
 		PriceOrigin		m_priceOrigin;		
 		// ---------------------
 		fx::BARB*		m_bar;
-		fx::Price		m_lastSum;
+		fx::Price		m_sumMinus1P;
 	};
 } // namespace
 

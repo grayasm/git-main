@@ -89,12 +89,16 @@ namespace fx
 					case BT_BAR:
 					{
 						fx::BAR* ptr = static_cast<fx::BAR*>(tc.m_bar);
+                        if (m_bar)
+                            delete m_bar;
 						m_bar = new fx::BAR(*ptr);
 						break;
 					}
 					case BT_HABAR:
 					{
 						fx::HABAR* ptr = static_cast<fx::HABAR*>(tc.m_bar);
+                        if (m_bar)
+                            delete m_bar;
 						m_bar = new fx::HABAR(*ptr);
 						break;
 					}
@@ -104,9 +108,11 @@ namespace fx
 			}
 			else
 			{
+                if (m_bar)
+                    delete m_bar;
 				m_bar = NULL;
 			}
-			m_lastSum = tc.m_lastSum;
+			m_sumMinus1P = tc.m_sumMinus1P;
 		}
 
 		return *this;
@@ -129,13 +135,13 @@ namespace fx
 
 	bool SMA::IsValid() const
 	{
-        /*  EMA can still get an invalid m_lastSum just when m_period + 1 begins.
-            Fixed by checking m_lastSum also.
+        /*  EMA can still get an invalid m_sumMinus1P just when m_period + 1 begins.
+            Fixed by checking m_sumMinus1P also.
         */
 		return (m_period > 1 &&
                 m_period == m_bar->GetOHLCList().size() && 
-                m_lastSum.GetBuy() > 0 &&
-                m_lastSum.GetSell() > 0);
+                m_sumMinus1P.GetBuy() > 0 &&
+                m_sumMinus1P.GetSell() > 0);
 	}
 
 	void SMA::Update(const fx::Offer& offer)
@@ -146,32 +152,30 @@ namespace fx
 		// offer will paint a new bar?
 		bool isNew = m_bar->IsNew(offer);
 
-        m_bar->Update(offer);   // can update, ohlc not used.
+        m_bar->Update(offer);
 
-		if (isNew)
-		{
-			// calculate the sum
-			const BAR::OHLCPriceList& priceList = m_bar->GetOHLCList();
-			if (priceList.size() == m_period)
-			{
-				double buy = 0, sell = 0;
-				BAR::OHLCPriceList::const_iterator it = priceList.begin();
-				for (; it != priceList.end(); ++it)
-				{
-					if (m_priceOrigin == PRICE_OPEN)
-					{
-						buy += it->GetAskOpen();
-						sell += it->GetBidOpen();
-					}
-					else if (m_priceOrigin == PRICE_CLOSE)
-					{
-						buy += it->GetAskClose();
-						sell += it->GetBidClose();
-					}
-				}
-				m_lastSum = fx::Price(buy, sell);
-			}            
-		}
+		const BAR::OHLCPriceList& priceList = m_bar->GetOHLCList();
+        if (isNew && priceList.size() == m_period)
+        {
+            // SMA(i) will use (m_period - 1) prices + the current candle(i)
+            double buy = 0, sell = 0;
+            BAR::OHLCPriceList::const_iterator it = priceList.begin();
+            it++;
+            for (; it != priceList.end(); ++it)
+            {
+                if (m_priceOrigin == PRICE_OPEN)
+                {
+                    buy += it->GetAskOpen();
+                    sell += it->GetBidOpen();
+                }
+                else if (m_priceOrigin == PRICE_CLOSE)
+                {
+                    buy += it->GetAskClose();
+                    sell += it->GetBidClose();
+                }
+            }
+            m_sumMinus1P = fx::Price(buy, sell);
+        }
 	}
 
 
@@ -189,23 +193,24 @@ namespace fx
 	{
         if (m_period < 2 ||
             m_bar->GetOHLCList().size() != m_period ||
-            m_lastSum.GetBuy() == 0 ||
-            m_lastSum.GetSell() == 0)
+            m_sumMinus1P.GetBuy() == 0 ||
+            m_sumMinus1P.GetSell() == 0)
         {
 		    throw misc::exception("SMA is invalid");
         }
 
+        const fx::OHLCPrice& ohlc = m_bar->GetOHLC();
 		double buy = 0, sell = 0;
+
 		if (m_priceOrigin == PRICE_OPEN)
 		{
-			buy = m_lastSum.GetBuy() / m_period;
-			sell = m_lastSum.GetSell() / m_period;
+			buy = (m_sumMinus1P.GetBuy() + ohlc.GetAskOpen()) / m_period;
+			sell = (m_sumMinus1P.GetSell() + ohlc.GetBidOpen()) / m_period;
 		}
 		else
 		{
-			const fx::OHLCPrice& ohlc = m_bar->GetOHLC();
-			buy = (m_lastSum.GetBuy() + ohlc.GetAskClose()) / (m_period + 1);
-			sell = (m_lastSum.GetSell() + ohlc.GetBidClose()) / (m_period + 1);
+			buy = (m_sumMinus1P.GetBuy() + ohlc.GetAskClose()) / m_period;
+			sell = (m_sumMinus1P.GetSell() + ohlc.GetBidClose()) / m_period;
 		}
 
 		average = fx::Price(buy, sell);
@@ -219,6 +224,6 @@ namespace fx
 		m_priceOrigin = PRICE_CLOSE;
 		m_barType = BT_BAR;
 		m_bar = NULL;
-		m_lastSum = fx::Price(0, 0);
+		m_sumMinus1P = fx::Price(0, 0);
 	}
 } // namespace

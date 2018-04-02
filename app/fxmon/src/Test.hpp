@@ -29,6 +29,7 @@ int test5();
 int test6();
 int test7();
 int test8();
+int test9();
 
 #endif // __Test_hpp__
 

@@ -38,6 +38,7 @@
 #include "SAR.hpp"
 #include "BAR.hpp"
 #include "HABAR.hpp"
+#include "LWMA.hpp"
 #include "Position.hpp"
 #include "Transaction.hpp"
 
@@ -537,6 +538,68 @@ int test8()
 	return 0;
 }
 
+
+int test9()
+{
+    // OffersReader oreader("EUR/USD");
+    // HistoryPricesReader oreader("EUR/USD");
+    HistdatacomReader oreader("EUR/USD");
+
+    fx::Offer offer;
+    fx::LWMA lwma("EUR/USD", 14, misc::time::hourSEC, fx::SMA::BT_BAR, fx::SMA::PRICE_CLOSE);
+    time_t timeframe = misc::time::hourSEC;
+    bool isNew = false;
+    fx::Price average;
+    misc::time matime;
+
+
+    misc::string logfile("LWMA_2017.txt");
+    FILE* f1 = fopen(logfile.c_str(), "w+");
+    if (f1) fclose(f1);
+
+
+    while (oreader.GetOffer(offer))
+    {
+        if (!lwma.IsValid())
+        {
+            lwma.Update(offer);
+            continue;
+        }
+
+        const misc::time& reftime = lwma.GetRefTime();
+        misc::time nexttime = reftime + timeframe;
+        isNew =  (offer.GetTime() >= nexttime);
+
+        if (isNew)
+        {
+            lwma.GetValue(average);
+            matime = lwma.GetRefTime();
+        }
+
+        lwma.Update(offer);
+
+        if (isNew)
+        {
+            FILE* pf = fopen(logfile.c_str(), "a+");
+            if (pf == NULL)
+                continue;
+
+            std::stringstream ss;
+            ss << matime.tostring() << " ";
+            ss << " BAR";
+            ss << " A:" << average.GetBuy();
+            ss << " B:" << average.GetSell();
+            
+            ss << std::endl;
+
+            std::string str = ss.str();
+            fwrite(str.c_str(), sizeof(char), str.size(), pf);
+            fclose(pf);
+        }
+    }
+
+    return 0;
+}
 
 static void Time2DATE(time_t tt, DATE& dt)
 {
