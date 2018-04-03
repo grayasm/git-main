@@ -23,11 +23,13 @@
 #include "IniParams.hpp"
 #include "Session.hpp"
 #include "ErrorCodes.hpp"
-#include "StrategyRenkoAtr.hpp"
+//#include "StrategyRenkoAtr.hpp"
 // #include "StrategySMACross.hpp"
+#include "StrategyLWMACross.hpp"
 #include "MarketPlugin4backtest.hpp"
 #include "HistdatacomReader.hpp"
 // #include "HistoryFxcmliveReader.hpp"
+
 
 
 
@@ -52,21 +54,39 @@ void TestEngine()
 			fclose(fp);
 	}
 
+
+    // initialize the indicators only and get technical data about instrument
+    // no position will be opened or closed in the market here
+    misc::string instrument("USD/JPY");
+    fxcm::Session session(*loginParams, *iniParams);
+    session.Login();
+    fxcm::Session::TradingSettingsVec tsvec;
+    session.GetTradingSettings(tsvec);
+    fxcm::TradingSettings ts;
+    for (size_t i = 0; i < tsvec.size(); ++i)
+    {
+        if (tsvec[i].GetInstrument() == instrument)
+        {
+            ts = tsvec[i];
+            break;
+        }
+    }
+    if (ts.GetInstrument().empty())
+        return;
+    // ----------------------------
+
+
+
 	fx::Offer offer;
-	misc::string instrument("EUR/USD");
-	fxcm::Session session(*loginParams, *iniParams);
-	MarketPlugin4backtest plugin(&session, *iniParams);
-	HistdatacomReader oreader(instrument);
+	MarketPlugin4backtest plugin(&session, *iniParams, tsvec);
+	HistdatacomReader oreader(instrument, 2017, 3, ts.GetBaseUnitSize());
 	// HistoryFxcmliveReader oreader(instrument);
 	// fx::SMA sma1(instrument, 4, misc::time::hourSEC, fx::SMA::PRICE_CLOSE);
 	// fx::SMA sma2(instrument, 60, misc::time::daySEC, fx::SMA::PRICE_CLOSE);
 	// fx::StrategySMACross strategy(&plugin, instrument, sma1, sma2);
-	fx::StrategyRenkoAtr strategy(&plugin, instrument, 15, 7, 16);
+	// fx::StrategyRenkoAtr strategy(&plugin, instrument, 15, 7, 16);
+    fx::StrategyLWMACross strategy(&plugin, instrument);
 
-
-
-	// needs session for history prices only
-	session.Login();
 
 	while (true)
 	{

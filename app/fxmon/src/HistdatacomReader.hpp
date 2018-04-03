@@ -27,7 +27,12 @@
 class HistdatacomReader
 {
 public:
-	HistdatacomReader(const misc::string& instrument);
+	HistdatacomReader(
+        const misc::string& instrument,
+        int year,
+        int precision,
+        double pointSize);
+
 	~HistdatacomReader();
 	HistdatacomReader(const HistdatacomReader&) = delete;
 	HistdatacomReader& operator=(const HistdatacomReader&) = delete;
@@ -37,11 +42,20 @@ public:
 
 
 private:
-	void ParseFile(const misc::string& filePath,
+	void ParseFile(
+        const misc::string& filePath,
 		misc::vector<fx::Offer>& result);
+
+    void LoadEURUSD2008();
+    void LoadEURUSD2017();
+    void LoadUSDJPY2017();
+
 
 private:
 	misc::string				m_instrument;
+    int                         m_year;
+    int                         m_precision;
+    double                      m_pointSize;
 	misc::vector<misc::string>	m_offerFileVec;
 	int							m_ofvPos;
 	misc::vector<fx::Offer>		m_offersVec;

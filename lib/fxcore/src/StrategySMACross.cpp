@@ -52,7 +52,7 @@ namespace fx
 	void StrategySMACross::Update(const fx::Offer& offer)
 	{
 		/*	In case the market plugin (session) encounters an error
-		the strategy is disabled until the issue is fixed.
+		    the strategy is disabled until the issue is fixed.
 		*/
 		if (m_isCancelled)
 			return;
@@ -68,7 +68,7 @@ namespace fx
 			return;
 		}
 
-		// update ATR, SMA
+		// update indicators
 		m_sma1.Update(offer);
 		m_sma2.Update(offer);
 

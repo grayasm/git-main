@@ -23,75 +23,30 @@
 #include "stream.hpp"
 
 
-HistdatacomReader::HistdatacomReader(const misc::string& instrument)
+HistdatacomReader::HistdatacomReader(
+    const misc::string& instrument,
+    int year,
+    int precision,
+    double pointSize)
 {
 	m_instrument = instrument;
-
-	
-	m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2017\\DAT_ASCII_EURUSD_T_201701_0.csv");//fast
-	m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2017\\DAT_ASCII_EURUSD_T_201701_1.csv");
-	m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2017\\DAT_ASCII_EURUSD_T_201701_2.csv");
-	m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2017\\DAT_ASCII_EURUSD_T_201702.csv");
-	m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2017\\DAT_ASCII_EURUSD_T_201702_2.csv");
-	m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2017\\DAT_ASCII_EURUSD_T_201703.csv");
-	m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2017\\DAT_ASCII_EURUSD_T_201703_2.csv");
-	m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2017\\DAT_ASCII_EURUSD_T_201704.csv");
-	m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2017\\DAT_ASCII_EURUSD_T_201704_2.csv");
-	m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2017\\DAT_ASCII_EURUSD_T_201705.csv");
-	m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2017\\DAT_ASCII_EURUSD_T_201705_2.csv");
-	m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2017\\DAT_ASCII_EURUSD_T_201706.csv");
-	m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2017\\DAT_ASCII_EURUSD_T_201706_2.csv");
-	m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2017\\DAT_ASCII_EURUSD_T_201707.csv");
-	m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2017\\DAT_ASCII_EURUSD_T_201707_2.csv");
-	m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2017\\DAT_ASCII_EURUSD_T_201708.csv");
-	m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2017\\DAT_ASCII_EURUSD_T_201708_2.csv");
-	m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2017\\DAT_ASCII_EURUSD_T_201709.csv");
-	m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2017\\DAT_ASCII_EURUSD_T_201709_2.csv");
-	m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2017\\DAT_ASCII_EURUSD_T_201710.csv");
-	m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2017\\DAT_ASCII_EURUSD_T_201710_2.csv");
-	m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2017\\DAT_ASCII_EURUSD_T_201711.csv");
-	m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2017\\DAT_ASCII_EURUSD_T_201711_2.csv");
-	m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2017\\DAT_ASCII_EURUSD_T_201712.csv");
-	m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2017\\DAT_ASCII_EURUSD_T_201712_2.csv");
-	
-	/*
-	m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2008\\DAT_ASCII_EURUSD_T_200801.csv");
-	m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2008\\DAT_ASCII_EURUSD_T_200801_2.csv");
-	m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2008\\DAT_ASCII_EURUSD_T_200802.csv");
-	m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2008\\DAT_ASCII_EURUSD_T_200802_2.csv");
-	m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2008\\DAT_ASCII_EURUSD_T_200803.csv");
-	m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2008\\DAT_ASCII_EURUSD_T_200803_2.csv");
-	m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2008\\DAT_ASCII_EURUSD_T_200803_3.csv");
-	m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2008\\DAT_ASCII_EURUSD_T_200804.csv");
-	m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2008\\DAT_ASCII_EURUSD_T_200804_2.csv");
-	m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2008\\DAT_ASCII_EURUSD_T_200804_3.csv");
-	m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2008\\DAT_ASCII_EURUSD_T_200805.csv");
-	m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2008\\DAT_ASCII_EURUSD_T_200805_2.csv");
-	m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2008\\DAT_ASCII_EURUSD_T_200806.csv");
-	m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2008\\DAT_ASCII_EURUSD_T_200806_2.csv");
-	m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2008\\DAT_ASCII_EURUSD_T_200807.csv");
-	m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2008\\DAT_ASCII_EURUSD_T_200807_2.csv");
-	m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2008\\DAT_ASCII_EURUSD_T_200808.csv");
-	m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2008\\DAT_ASCII_EURUSD_T_200808_2.csv");
-	m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2008\\DAT_ASCII_EURUSD_T_200808_3.csv");
-	m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2008\\DAT_ASCII_EURUSD_T_200809.csv");
-	m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2008\\DAT_ASCII_EURUSD_T_200809_2.csv");
-	m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2008\\DAT_ASCII_EURUSD_T_200809_3.csv");
-	m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2008\\DAT_ASCII_EURUSD_T_200809_4.csv");
-	m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2008\\DAT_ASCII_EURUSD_T_200810.csv");
-	m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2008\\DAT_ASCII_EURUSD_T_200810_2.csv");
-	m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2008\\DAT_ASCII_EURUSD_T_200810_3.csv");
-	m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2008\\DAT_ASCII_EURUSD_T_200810_4.csv");
-	m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2008\\DAT_ASCII_EURUSD_T_200810_5.csv");
-	m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2008\\DAT_ASCII_EURUSD_T_200811.csv");
-	m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2008\\DAT_ASCII_EURUSD_T_200811_2.csv");
-	m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2008\\DAT_ASCII_EURUSD_T_200811_3.csv");
-	m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2008\\DAT_ASCII_EURUSD_T_200811_4.csv");
-	m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2008\\DAT_ASCII_EURUSD_T_200812.csv");
-	m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2008\\DAT_ASCII_EURUSD_T_200812_2.csv");
-	m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2008\\DAT_ASCII_EURUSD_T_200812_3.csv");
-	m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2008\\DAT_ASCII_EURUSD_T_200812_4.csv");
-	*/
+    m_year = year;
+    m_precision = precision;
+    m_pointSize = pointSize;
+    
+    if (m_instrument == "EUR/USD")
+    {
+        if (m_year == 2008)         LoadEURUSD2008();
+        else if (m_year == 2017)    LoadEURUSD2017();
+        else throw misc::exception("HistdatacomReader unknown year for EUR/USD");
+    }
+    else if (m_instrument == "USD/JPY")
+    {
+        if (m_year == 2017)         LoadUSDJPY2017();
+        else throw misc::exception("HistdatacomReader unknown year for USD/JPY");
+    }
+    else
+        throw misc::exception("Unknown instrument");
 
 	m_ofvPos = 0;
 	// m_offersVec; - empty
@@ -148,9 +103,9 @@ void HistdatacomReader::ParseFile(const misc::string& filePath,
 	// assume EUR/USD for now
 	fx::Offer offer(
 		"0",
-		"EUR/USD",
-		5,		// precision
-		0.0001, // pointSize
+		m_instrument,
+		m_precision,    // precision
+		m_pointSize,    // pointSize
 		misc::time(),
 		0,		// bid
 		0,		// ask
@@ -268,4 +223,102 @@ void HistdatacomReader::ParseFile(const misc::string& filePath,
 	}
 
 	fclose(pf);
+}
+
+
+void HistdatacomReader::LoadEURUSD2008()
+{
+    m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2008\\DAT_ASCII_EURUSD_T_200801.csv");
+    m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2008\\DAT_ASCII_EURUSD_T_200801_2.csv");
+    m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2008\\DAT_ASCII_EURUSD_T_200802.csv");
+    m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2008\\DAT_ASCII_EURUSD_T_200802_2.csv");
+    m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2008\\DAT_ASCII_EURUSD_T_200803.csv");
+    m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2008\\DAT_ASCII_EURUSD_T_200803_2.csv");
+    m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2008\\DAT_ASCII_EURUSD_T_200803_3.csv");
+    m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2008\\DAT_ASCII_EURUSD_T_200804.csv");
+    m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2008\\DAT_ASCII_EURUSD_T_200804_2.csv");
+    m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2008\\DAT_ASCII_EURUSD_T_200804_3.csv");
+    m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2008\\DAT_ASCII_EURUSD_T_200805.csv");
+    m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2008\\DAT_ASCII_EURUSD_T_200805_2.csv");
+    m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2008\\DAT_ASCII_EURUSD_T_200806.csv");
+    m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2008\\DAT_ASCII_EURUSD_T_200806_2.csv");
+    m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2008\\DAT_ASCII_EURUSD_T_200807.csv");
+    m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2008\\DAT_ASCII_EURUSD_T_200807_2.csv");
+    m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2008\\DAT_ASCII_EURUSD_T_200808.csv");
+    m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2008\\DAT_ASCII_EURUSD_T_200808_2.csv");
+    m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2008\\DAT_ASCII_EURUSD_T_200808_3.csv");
+    m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2008\\DAT_ASCII_EURUSD_T_200809.csv");
+    m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2008\\DAT_ASCII_EURUSD_T_200809_2.csv");
+    m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2008\\DAT_ASCII_EURUSD_T_200809_3.csv");
+    m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2008\\DAT_ASCII_EURUSD_T_200809_4.csv");
+    m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2008\\DAT_ASCII_EURUSD_T_200810.csv");
+    m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2008\\DAT_ASCII_EURUSD_T_200810_2.csv");
+    m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2008\\DAT_ASCII_EURUSD_T_200810_3.csv");
+    m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2008\\DAT_ASCII_EURUSD_T_200810_4.csv");
+    m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2008\\DAT_ASCII_EURUSD_T_200810_5.csv");
+    m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2008\\DAT_ASCII_EURUSD_T_200811.csv");
+    m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2008\\DAT_ASCII_EURUSD_T_200811_2.csv");
+    m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2008\\DAT_ASCII_EURUSD_T_200811_3.csv");
+    m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2008\\DAT_ASCII_EURUSD_T_200811_4.csv");
+    m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2008\\DAT_ASCII_EURUSD_T_200812.csv");
+    m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2008\\DAT_ASCII_EURUSD_T_200812_2.csv");
+    m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2008\\DAT_ASCII_EURUSD_T_200812_3.csv");
+    m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2008\\DAT_ASCII_EURUSD_T_200812_4.csv");
+}
+
+void HistdatacomReader::LoadEURUSD2017()
+{
+    m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2017\\DAT_ASCII_EURUSD_T_201701_0.csv");//fast
+    m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2017\\DAT_ASCII_EURUSD_T_201701_1.csv");
+    m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2017\\DAT_ASCII_EURUSD_T_201701_2.csv");
+    m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2017\\DAT_ASCII_EURUSD_T_201702.csv");
+    m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2017\\DAT_ASCII_EURUSD_T_201702_2.csv");
+    m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2017\\DAT_ASCII_EURUSD_T_201703.csv");
+    m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2017\\DAT_ASCII_EURUSD_T_201703_2.csv");
+    m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2017\\DAT_ASCII_EURUSD_T_201704.csv");
+    m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2017\\DAT_ASCII_EURUSD_T_201704_2.csv");
+    m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2017\\DAT_ASCII_EURUSD_T_201705.csv");
+    m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2017\\DAT_ASCII_EURUSD_T_201705_2.csv");
+    m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2017\\DAT_ASCII_EURUSD_T_201706.csv");
+    m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2017\\DAT_ASCII_EURUSD_T_201706_2.csv");
+    m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2017\\DAT_ASCII_EURUSD_T_201707.csv");
+    m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2017\\DAT_ASCII_EURUSD_T_201707_2.csv");
+    m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2017\\DAT_ASCII_EURUSD_T_201708.csv");
+    m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2017\\DAT_ASCII_EURUSD_T_201708_2.csv");
+    m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2017\\DAT_ASCII_EURUSD_T_201709.csv");
+    m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2017\\DAT_ASCII_EURUSD_T_201709_2.csv");
+    m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2017\\DAT_ASCII_EURUSD_T_201710.csv");
+    m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2017\\DAT_ASCII_EURUSD_T_201710_2.csv");
+    m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2017\\DAT_ASCII_EURUSD_T_201711.csv");
+    m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2017\\DAT_ASCII_EURUSD_T_201711_2.csv");
+    m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2017\\DAT_ASCII_EURUSD_T_201712.csv");
+    m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\eur_usd_2017\\DAT_ASCII_EURUSD_T_201712_2.csv");
+}
+
+void HistdatacomReader::LoadUSDJPY2017()
+{
+    m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\usd_jpy_2017\\DAT_ASCII_USDJPY_T_201701_1.csv");
+    m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\usd_jpy_2017\\DAT_ASCII_USDJPY_T_201701_2.csv");
+    m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\usd_jpy_2017\\DAT_ASCII_USDJPY_T_201702_1.csv");
+    m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\usd_jpy_2017\\DAT_ASCII_USDJPY_T_201702_2.csv");
+    m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\usd_jpy_2017\\DAT_ASCII_USDJPY_T_201703_1.csv");
+    m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\usd_jpy_2017\\DAT_ASCII_USDJPY_T_201703_2.csv");
+    m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\usd_jpy_2017\\DAT_ASCII_USDJPY_T_201704_1.csv");
+    m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\usd_jpy_2017\\DAT_ASCII_USDJPY_T_201704_2.csv");
+    m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\usd_jpy_2017\\DAT_ASCII_USDJPY_T_201705_1.csv");
+    m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\usd_jpy_2017\\DAT_ASCII_USDJPY_T_201705_2.csv");
+    m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\usd_jpy_2017\\DAT_ASCII_USDJPY_T_201706_1.csv");
+    m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\usd_jpy_2017\\DAT_ASCII_USDJPY_T_201706_2.csv");
+    m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\usd_jpy_2017\\DAT_ASCII_USDJPY_T_201707_1.csv");
+    m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\usd_jpy_2017\\DAT_ASCII_USDJPY_T_201707_2.csv");
+    m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\usd_jpy_2017\\DAT_ASCII_USDJPY_T_201708_1.csv");
+    m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\usd_jpy_2017\\DAT_ASCII_USDJPY_T_201708_2.csv");
+    m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\usd_jpy_2017\\DAT_ASCII_USDJPY_T_201709_1.csv");
+    m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\usd_jpy_2017\\DAT_ASCII_USDJPY_T_201709_2.csv");
+    m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\usd_jpy_2017\\DAT_ASCII_USDJPY_T_201710_1.csv");
+    m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\usd_jpy_2017\\DAT_ASCII_USDJPY_T_201710_2.csv");
+    m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\usd_jpy_2017\\DAT_ASCII_USDJPY_T_201711_1.csv");
+    m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\usd_jpy_2017\\DAT_ASCII_USDJPY_T_201711_2.csv");
+    m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\usd_jpy_2017\\DAT_ASCII_USDJPY_T_201712_1.csv");
+    m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\usd_jpy_2017\\DAT_ASCII_USDJPY_T_201712_2.csv");
 }

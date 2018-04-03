@@ -35,7 +35,8 @@ class MarketPlugin4backtest : public fx::MarketPlugin
 public:
 	// session is used only for OHLC history prices
 	MarketPlugin4backtest(	fxcm::Session* session,
-							const fxcm::IniParams& iniParams);
+							const fxcm::IniParams& iniParams,
+                            const fxcm::Session::TradingSettingsVec& tsvec);
 	~MarketPlugin4backtest();
 
 	MarketPlugin4backtest(const MarketPlugin4backtest&) = delete;
@@ -62,12 +63,14 @@ private:
 	void Log(const misc::string& msg);
 
 private:
-	fxcm::Session*					m_session;
-	fxcm::IniParams					m_iniParams;
-	misc::critical_section			m_criticalSection;
-	int								m_orderID;
-	int								m_tradeID;
-	misc::vector<fx::Position>		m_posvec;
+	fxcm::Session*					    m_session;
+	fxcm::IniParams					    m_iniParams;
+    fxcm::Session::TradingSettingsVec   m_tsvec;
+    fxcm::PipCost                       m_pipCost;
+	misc::critical_section			    m_criticalSection;
+	int								    m_orderID;
+	int								    m_tradeID;
+	misc::vector<fx::Position>		    m_posvec;
 };
 
 #endif // __MarketPlugin4backtest_hpp__

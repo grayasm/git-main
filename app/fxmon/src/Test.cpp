@@ -194,7 +194,7 @@ int test4()
 {
 	// OffersReader oreader("EUR/USD");
 	// HistoryPricesReader oreader("EUR/USD");
-	HistdatacomReader oreader("EUR/USD");
+	HistdatacomReader oreader("EUR/USD", 2017, 3, 0.0001);
 
 	fx::Offer offer;
     fx::EMA ema("EUR/USD", 14, misc::time::hourSEC, fx::SMA::BT_BAR, fx::SMA::PRICE_CLOSE);
@@ -281,7 +281,7 @@ int test5()
 {
 	// OffersReader oreader("EUR/USD");
 	// HistoryPricesReader oreader("EUR/USD");
-	HistdatacomReader oreader("EUR/USD");
+    HistdatacomReader oreader("EUR/USD", 2017, 3, 0.0001);
 
 	fx::Offer offer;
 	fx::ATR atr("EUR/USD", 14, misc::time::hourSEC);
@@ -342,7 +342,7 @@ int test6()
 {
 	// OffersReader oreader("EUR/USD");
 	// HistoryPricesReader oreader("EUR/USD");
-	HistdatacomReader oreader("EUR/USD");
+    HistdatacomReader oreader("EUR/USD", 2017, 3, 0.0001);
 
 	fx::Offer offer;
     fx::SAR sar("EUR/USD", 14, misc::time::hourSEC);
@@ -419,7 +419,7 @@ int test7()
 {
 	// OffersReader oreader("EUR/USD");
 	// HistoryPricesReader oreader("EUR/USD");
-	HistdatacomReader oreader("EUR/USD");
+    HistdatacomReader oreader("EUR/USD", 2017, 3, 0.0001);
 
 	fx::Offer offer;
 	fx::BAR bar("EUR/USD", 14, misc::time::hourSEC);
@@ -481,7 +481,7 @@ int test8()
 {
 	// OffersReader oreader("EUR/USD");
 	// HistoryPricesReader oreader("EUR/USD");
-	HistdatacomReader oreader("EUR/USD");
+    HistdatacomReader oreader("EUR/USD", 2017, 3, 0.0001);
 
 	fx::Offer offer;
 	fx::HABAR habar("EUR/USD", 14, misc::time::hourSEC);
@@ -543,7 +543,7 @@ int test9()
 {
     // OffersReader oreader("EUR/USD");
     // HistoryPricesReader oreader("EUR/USD");
-    HistdatacomReader oreader("EUR/USD");
+    HistdatacomReader oreader("EUR/USD", 2017, 3, 0.0001);
 
     fx::Offer offer;
     fx::LWMA lwma("EUR/USD", 14, misc::time::hourSEC, fx::SMA::BT_BAR, fx::SMA::PRICE_CLOSE);

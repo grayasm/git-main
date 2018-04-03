@@ -49,11 +49,30 @@ void OMPEngine()
 		return; // cannot let > 500 strategies write in one file; turn it off;
 
 
+
+
 	fx::Offer offer;
 	misc::string instrument("EUR/USD");
 	fxcm::Session session(*loginParams, *iniParams);
-	MarketPlugin4backtest plugin(&session, *iniParams);
-	HistdatacomReader oreader(instrument);
+    session.Login();
+    fxcm::Session::TradingSettingsVec tsvec;
+    session.GetTradingSettings(tsvec);
+    fxcm::TradingSettings ts;
+    for (size_t i = 0; i < tsvec.size(); ++i)
+    {
+        if (tsvec[i].GetInstrument() == instrument)
+        {
+            ts = tsvec[i];
+            break;
+        }
+    }
+    if (ts.GetInstrument().empty())
+        return;
+    // ----------------------------
+
+
+	MarketPlugin4backtest plugin(&session, *iniParams, tsvec);
+	HistdatacomReader oreader(instrument, 2017, 5, ts.GetBaseUnitSize());
 	misc::time reftime;
 	misc::vector<fx::IND*> smaVec;
 	misc::vector<fx::StrategySMACross*> strategyVec;
@@ -83,9 +102,7 @@ void OMPEngine()
 	reftime = offer.GetTime();
 	misc::cout << reftime.tostring() << std::endl;
 
-	// needs session for history prices only
-	session.Login();
-
+	
 	fx::IndicatorBuilder::Build(&plugin, offer, smaVec);
 	
 	

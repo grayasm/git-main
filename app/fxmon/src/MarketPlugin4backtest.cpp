@@ -28,10 +28,13 @@
 
 MarketPlugin4backtest::MarketPlugin4backtest(
 	fxcm::Session* session,
-	const fxcm::IniParams& iniParams)
+    const fxcm::IniParams& iniParams,
+    const fxcm::Session::TradingSettingsVec& tsvec)
 {
 	m_session = session;
 	m_iniParams = iniParams;
+    m_tsvec = tsvec;
+    // m_pipCost - default;
 	// m_criticalSection - default;
 	m_orderID = 0;
 	m_tradeID = 0;
@@ -52,12 +55,25 @@ int MarketPlugin4backtest::OpenPosition(
 {
 	misc::autocritical_section acs(m_criticalSection);
 
+    double MMR = 0, pipCost = 0, pointSize = 0;
+    for (size_t i = 0; i < m_tsvec.size(); ++i)
+    {
+        const fxcm::TradingSettings& ts = m_tsvec[i];
+        if (ts.GetInstrument() == offer.GetInstrument())
+        {
+            MMR = ts.GetMMR();
+            pipCost = m_pipCost.CalcPipCost(offer, "EUR", 1000); // 1000 = 1k
+            pointSize = ts.GetBaseUnitSize();
+            break;
+        }
+    }
+
 	fx::Currency curr(
 		offer.GetInstrument(),
 		fx::Price(offer.GetAsk(), offer.GetBid()),
-		2.5,			// margin for EUR/USD: 2.5 let's say
-		0.08,			// pipCost
-		1.0 / offer.GetPointSize()); // rate2pip
+		MMR,			    // margin
+		pipCost,		    // pipCost
+		1.0 / pointSize);   // rate2pip
 
 	fx::Position pos(
 		misc::from_value(m_orderID++),
