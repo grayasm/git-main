@@ -31,8 +31,6 @@
 // #include "HistoryFxcmliveReader.hpp"
 
 
-
-
 void TestEngine()
 {
 	fxcm::LoginParams::Ptr loginParams = new fxcm::LoginParams("monitor.ini");
@@ -55,14 +53,17 @@ void TestEngine()
 	}
 
 
-    // initialize the indicators only and get technical data about instrument
-    // no position will be opened or closed in the market here
+    // get instrument data for backtesting.
     misc::string instrument("USD/JPY");
+    fxcm::TradingSettings ts;   // for MMR
+    fx::Offer offer;            // for pointSize and Precision
+    int ret = fxcm::ErrorCodes::ERR_SUCCESS;
     fxcm::Session session(*loginParams, *iniParams);
     session.Login();
     fxcm::Session::TradingSettingsVec tsvec;
-    session.GetTradingSettings(tsvec);
-    fxcm::TradingSettings ts;
+    ret = session.GetTradingSettings(tsvec);
+    if (ret != fxcm::ErrorCodes::ERR_SUCCESS)
+        return;
     for (size_t i = 0; i < tsvec.size(); ++i)
     {
         if (tsvec[i].GetInstrument() == instrument)
@@ -73,13 +74,27 @@ void TestEngine()
     }
     if (ts.GetInstrument().empty())
         return;
+    ret = session.GetOffers();
+    if (ret != fxcm::ErrorCodes::ERR_SUCCESS)
+        return;
+    msleep(3000); // wait to get the offers
+    ret = session.GetLastOffer(offer, instrument.c_str());
+    if (ret != fxcm::ErrorCodes::ERR_SUCCESS)
+        return;
+    if (offer.GetInstrument().empty() ||
+        offer.GetPointSize() == 0 ||
+        offer.GetPrecision() == 0)
+        return;
+    session.Logout();   // to turn off the Offers traffic
+    msleep(2000);       // wait 2 sec before logging in again
+    session.Login();    // need to get history data for indicators
     // ----------------------------
 
 
 
-	fx::Offer offer;
+	
 	MarketPlugin4backtest plugin(&session, *iniParams, tsvec);
-	HistdatacomReader oreader(instrument, 2017, 3, ts.GetBaseUnitSize());
+	HistdatacomReader oreader(offer, 2017);
 	// HistoryFxcmliveReader oreader(instrument);
 	// fx::SMA sma1(instrument, 4, misc::time::hourSEC, fx::SMA::PRICE_CLOSE);
 	// fx::SMA sma2(instrument, 60, misc::time::daySEC, fx::SMA::PRICE_CLOSE);

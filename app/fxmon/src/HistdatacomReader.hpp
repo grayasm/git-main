@@ -27,12 +27,7 @@
 class HistdatacomReader
 {
 public:
-	HistdatacomReader(
-        const misc::string& instrument,
-        int year,
-        int precision,
-        double pointSize);
-
+	HistdatacomReader(const fx::Offer& offer, int year);
 	~HistdatacomReader();
 	HistdatacomReader(const HistdatacomReader&) = delete;
 	HistdatacomReader& operator=(const HistdatacomReader&) = delete;
@@ -52,10 +47,8 @@ private:
 
 
 private:
-	misc::string				m_instrument;
-    int                         m_year;
-    int                         m_precision;
-    double                      m_pointSize;
+    fx::Offer                   m_offer;
+    int                         m_year;    
 	misc::vector<misc::string>	m_offerFileVec;
 	int							m_ofvPos;
 	misc::vector<fx::Offer>		m_offersVec;

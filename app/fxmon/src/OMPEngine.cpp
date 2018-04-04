@@ -34,6 +34,9 @@
 
 void OMPEngine()
 {
+    if (true)
+        return; // fix the offer and HistdatacomReader
+
 	fxcm::LoginParams::Ptr loginParams = new fxcm::LoginParams("monitor.ini");
 	fxcm::IniParams::Ptr iniParams = new fxcm::IniParams("monitor.ini");
 
@@ -72,7 +75,7 @@ void OMPEngine()
 
 
 	MarketPlugin4backtest plugin(&session, *iniParams, tsvec);
-	HistdatacomReader oreader(instrument, 2017, 5, ts.GetBaseUnitSize());
+	HistdatacomReader oreader(offer, 2017);
 	misc::time reftime;
 	misc::vector<fx::IND*> smaVec;
 	misc::vector<fx::StrategySMACross*> strategyVec;

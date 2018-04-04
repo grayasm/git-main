@@ -55,15 +55,18 @@ int MarketPlugin4backtest::OpenPosition(
 {
 	misc::autocritical_section acs(m_criticalSection);
 
-    double MMR = 0, pipCost = 0, pointSize = 0;
+    misc::string acc_symbol = m_iniParams.GetAccountSymbol();
+    double MMR = 0, pipCost = 0;
+    int iBaseUnitSize = 0;    
     for (size_t i = 0; i < m_tsvec.size(); ++i)
     {
         const fxcm::TradingSettings& ts = m_tsvec[i];
         if (ts.GetInstrument() == offer.GetInstrument())
         {
             MMR = ts.GetMMR();
-            pipCost = m_pipCost.CalcPipCost(offer, "EUR", 1000); // 1000 = 1k
-            pointSize = ts.GetBaseUnitSize();
+            iBaseUnitSize = ts.GetBaseUnitSize();
+            // account in EUR, base unit size must be 1000 (e.g. 1k lot size)
+            pipCost = m_pipCost.CalcPipCost(offer, acc_symbol.c_str(), iBaseUnitSize);            
             break;
         }
     }
@@ -73,7 +76,7 @@ int MarketPlugin4backtest::OpenPosition(
 		fx::Price(offer.GetAsk(), offer.GetBid()),
 		MMR,			    // margin
 		pipCost,		    // pipCost
-		1.0 / pointSize);   // rate2pip
+		1.0 / offer.GetPointSize());// rate2pip
 
 	fx::Position pos(
 		misc::from_value(m_orderID++),

@@ -38,7 +38,8 @@ namespace fx
 
 		misc::time tnow = offer.GetTime();
 		double maxSec = 0;
-		misc::string stimeFrame("H1");
+		misc::string stimeFrame("H1");  // fxcm error for D1: use m1 or H1
+        time_t min_tfval = misc::time::hourSEC;
 
 		for (size_t i = 0; i < indicators.size(); ++i)
 		{
@@ -48,7 +49,8 @@ namespace fx
 				throw misc::exception("IndicatorBuilder: indicator is NULL or valid");
 
 			time_t tfval = ind->GetTimeframe();
-			if (tfval < misc::time::hourSEC)
+            min_tfval = misc::min(min_tfval, tfval);
+			if (min_tfval < misc::time::hourSEC)
 				stimeFrame = "m1";
 
 			double indSec = (double)ind->GetPeriod() * tfval;
@@ -61,9 +63,7 @@ namespace fx
 		maxSec *= 2.0;
 
 		time_t totaltime = (time_t) ::ceil(maxSec);
-		int timeFrame = (stimeFrame == "H1" ?
-			misc::time::hourSEC :
-			misc::time::minSEC);
+		int timeFrame = min_tfval;
 		int tinc = (stimeFrame == "H1" ?
 			24 * misc::time::hourSEC :
 			60 * misc::time::minSEC);

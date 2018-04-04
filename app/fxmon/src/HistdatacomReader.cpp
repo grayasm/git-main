@@ -23,24 +23,19 @@
 #include "stream.hpp"
 
 
-HistdatacomReader::HistdatacomReader(
-    const misc::string& instrument,
-    int year,
-    int precision,
-    double pointSize)
+HistdatacomReader::HistdatacomReader(const fx::Offer& offer, int year)
 {
-	m_instrument = instrument;
+    m_offer = offer;
     m_year = year;
-    m_precision = precision;
-    m_pointSize = pointSize;
-    
-    if (m_instrument == "EUR/USD")
+    // ------------
+	const misc::string& instrument = offer.GetInstrument();    
+    if (instrument == "EUR/USD")
     {
         if (m_year == 2008)         LoadEURUSD2008();
         else if (m_year == 2017)    LoadEURUSD2017();
         else throw misc::exception("HistdatacomReader unknown year for EUR/USD");
     }
-    else if (m_instrument == "USD/JPY")
+    else if (instrument == "USD/JPY")
     {
         if (m_year == 2017)         LoadUSDJPY2017();
         else throw misc::exception("HistdatacomReader unknown year for USD/JPY");
@@ -84,7 +79,8 @@ bool HistdatacomReader::GetOffer(fx::Offer& offer)
 }
 
 
-void HistdatacomReader::ParseFile(const misc::string& filePath,
+void HistdatacomReader::ParseFile(
+    const misc::string& filePath,
 	misc::vector<fx::Offer>& result)
 {
 	misc::filename offerFile(filePath);
@@ -102,10 +98,10 @@ void HistdatacomReader::ParseFile(const misc::string& filePath,
 
 	// assume EUR/USD for now
 	fx::Offer offer(
-		"0",
-		m_instrument,
-		m_precision,    // precision
-		m_pointSize,    // pointSize
+		m_offer.GetOfferID(),
+        m_offer.GetInstrument(),
+		m_offer.GetPrecision(),    // precision
+		m_offer.GetPointSize(),    // pointSize
 		misc::time(),
 		0,		// bid
 		0,		// ask
@@ -205,15 +201,12 @@ void HistdatacomReader::ParseFile(const misc::string& filePath,
 				pch = strtok(NULL, ",=");
 			} // while(pch)
 
-			if (m_instrument == offer.GetInstrument())
-			{
-				result.push_back(offer);
-
+			
+			result.push_back(offer);
 #ifdef DEBUG
-				if (result.size() % 1000 == 0)
-					misc::cout << "fetched " << result.size() << std::endl;
+			if (result.size() % 1000 == 0)
+				misc::cout << "fetched " << result.size() << std::endl;
 #endif
-			}
 
 			fline.resize(0);
 			continue;
@@ -297,6 +290,7 @@ void HistdatacomReader::LoadEURUSD2017()
 
 void HistdatacomReader::LoadUSDJPY2017()
 {
+    m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\usd_jpy_2017\\DAT_ASCII_USDJPY_T_201701_0.csv"); // fast
     m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\usd_jpy_2017\\DAT_ASCII_USDJPY_T_201701_1.csv");
     m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\usd_jpy_2017\\DAT_ASCII_USDJPY_T_201701_2.csv");
     m_offerFileVec.push_back("d:\\GitHub\\histdatacom-history\\usd_jpy_2017\\DAT_ASCII_USDJPY_T_201702_1.csv");
