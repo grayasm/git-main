@@ -595,6 +595,113 @@ int test9()
     return 0;
 }
 
+
+int test10()
+{
+    fx::Offer offer("0", "USD/JPY", 3, 0.01, misc::time(), 0, 0, 0, true);
+    HistdatacomReader oreader(offer, 2017);
+    
+    time_t timeframe = misc::time::daySEC;
+    fx::BAR  bar("USD/JPY", 14, timeframe);
+    fx::HABAR habar("USD/JPY", 14, timeframe);
+    fx::LWMA lwma("USD/JPY", 14, timeframe, fx::SMA::BT_HABAR, fx::SMA::PRICE_CLOSE);
+    
+    
+
+
+    misc::string logbar("BAR_2017.txt");
+    misc::string loghabar("HABAR_2017.txt");
+    misc::string loglwma("LWMA_2017.txt");
+
+    FILE* f1 = fopen(logbar.c_str(), "w+");
+    FILE* f2 = fopen(loghabar.c_str(), "w+");
+    FILE* f3 = fopen(loglwma.c_str(), "w+");
+    if (f1) fclose(f1);
+    if (f2) fclose(f2);
+    if (f3) fclose(f3);
+
+
+    while (oreader.GetOffer(offer))
+    {
+        if (!bar.IsValid() ||
+            !habar.IsValid() ||
+            !lwma.IsValid())
+        {
+            bar.Update(offer);
+            habar.Update(offer);
+            lwma.Update(offer);
+            continue;
+        }
+
+        if (bar.GetRefTime() != habar.GetRefTime() ||
+            bar.GetRefTime() != lwma.GetRefTime())
+        {
+            throw misc::exception("time is inconsistent");
+        }
+
+        const misc::time& reftime = bar.GetRefTime();
+        misc::time nexttime = reftime + timeframe;
+        bool isNew = (offer.GetTime() >= nexttime);
+
+        if (isNew)
+        {
+            f1 = fopen(logbar.c_str(), "a+");
+            f2 = fopen(loghabar.c_str(), "a+");
+            f3 = fopen(loglwma.c_str(), "a+");
+
+            // write bar data -------------
+            fx::OHLCPrice ohlc = bar.GetOHLC();
+            std::stringstream ss;
+            ss << bar.GetRefTime().tostring() << " ";
+            ss << " BAR";
+            ss << " AO:" << ohlc.GetAskOpen();
+            ss << " AH:" << ohlc.GetAskHigh();
+            ss << " AL:" << ohlc.GetAskLow();
+            ss << " AC:" << ohlc.GetAskClose();
+            ss << std::endl;
+            std::string str = ss.str();
+            fwrite(str.c_str(), sizeof(char), str.size(), f1);
+            fclose(f1);
+
+            // write habar data -----------
+            ohlc = habar.GetOHLC();
+            // std::stringstream ss;
+            ss = std::stringstream();
+            ss << habar.GetRefTime().tostring() << " ";
+            ss << " HA-BAR";
+            ss << " AO:" << ohlc.GetAskOpen();
+            ss << " AH:" << ohlc.GetAskHigh();
+            ss << " AL:" << ohlc.GetAskLow();
+            ss << " AC:" << ohlc.GetAskClose();
+            ss << std::endl;
+            str = ss.str();
+            fwrite(str.c_str(), sizeof(char), str.size(), f2);
+            fclose(f2);
+
+            // write lwma data ------------
+            fx::Price average;
+            lwma.GetValue(average);
+            // std::stringstream ss;
+            ss = std::stringstream();
+            ss << lwma.GetRefTime().tostring() << " ";
+            ss << " LWMA";
+            ss << " A:" << average.GetBuy();
+            ss << " B:" << average.GetSell();
+            ss << std::endl;
+            str = ss.str();
+            fwrite(str.c_str(), sizeof(char), str.size(), f3);
+            fclose(f3);
+        }
+
+
+        bar.Update(offer);
+        habar.Update(offer);
+        lwma.Update(offer);
+    }
+
+    return 0;
+}
+
 static void Time2DATE(time_t tt, DATE& dt)
 {
 	struct tm *tmNow = gmtime(&tt);

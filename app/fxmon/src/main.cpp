@@ -42,9 +42,9 @@ int main(int /*argc*/, char** /*argv*/)
 	// GetHistoryPrices();
 	// LoadHistoryPrices();
 	// RealEngine();
-	TestEngine();
+	// TestEngine();
 	// OMPEngine();
-	// test9();
+	test10();
 
 	return 0;
 }
