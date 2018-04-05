@@ -45,8 +45,7 @@ namespace fx
         m_closedGPL = 0;
         m_isCancelled = false;
         // -------------------
-        m_prevBid1 = 0;
-        m_prevBid2 = 0;
+        
     }
 
     StrategyLWMACross::~StrategyLWMACross()
@@ -73,29 +72,32 @@ namespace fx
             BuildAllIndicators(offer);
             return;
         }
+       
 
-        
+        bool canOpen = false, isBuy = false;
+        if (offer.GetTime() >= m_habar.GetRefTime() + misc::time::daySEC)
+        {
+            const fx::OHLCPrice& ohlc = m_habar.GetOHLC();
+            const fx::BAR::OHLCPriceList& ohlcList = m_habar.GetOHLCList();
+            const fx::OHLCPrice& prevohlc = ohlcList.back();
+            bool prevLong = (prevohlc.GetAskOpen() < prevohlc.GetAskClose());
+            bool currLong = (ohlc.GetAskOpen() < ohlc.GetAskClose());
+            canOpen = (prevLong != currLong);
+            isBuy = !prevLong && currLong;
+        }
+
         // update indicators
         m_habar.Update(offer);
         m_lwma1.Update(offer);
         m_lwma2.Update(offer);
 
-        fx::Price lwma1P, lwma2P;
-        m_lwma1.GetValue(lwma1P);
-        m_lwma2.GetValue(lwma2P);
 
-        if (m_prevBid1 == 0)
-        {
-            m_prevBid1 = lwma1P.GetSell();
-            m_prevBid2 = lwma2P.GetSell();
-            return;
-        }
+        //fx::Price lwma1P, lwma2P;
+        //m_lwma1.GetValue(lwma1P);
+        //m_lwma2.GetValue(lwma2P);
 
-        double bid1 = lwma1P.GetSell();
-        double bid2 = lwma2P.GetSell();
-
-        // check crossing LWMA curves
-        if (m_prevBid1 > m_prevBid2 && bid1 <= bid2)
+   
+        if (canOpen && !isBuy)
         {
             if (!m_tr.IsEmpty())
             {
@@ -108,7 +110,7 @@ namespace fx
 
             OpenPosition(offer, false); // sell
         }
-        else if (m_prevBid1 < m_prevBid2 && bid1 >= bid2)
+        else if (canOpen && isBuy)
         {
             if (!m_tr.IsEmpty())
             {
@@ -122,8 +124,8 @@ namespace fx
             OpenPosition(offer, true); // buy
         }
 
-        m_prevBid1 = lwma1P.GetSell();
-        m_prevBid2 = lwma2P.GetSell();
+        //m_prevBid1 = lwma1P.GetSell();
+        //m_prevBid2 = lwma2P.GetSell();
     }
 
 

@@ -65,8 +65,6 @@ namespace fx
         double                  m_closedGPL;
         bool                    m_isCancelled;
         // ------------------------------
-        double                  m_prevBid1;
-        double                  m_prevBid2;
     };
 } // namespace
 

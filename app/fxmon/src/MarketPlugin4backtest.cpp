@@ -65,8 +65,19 @@ int MarketPlugin4backtest::OpenPosition(
         {
             MMR = ts.GetMMR();
             iBaseUnitSize = ts.GetBaseUnitSize();
-            // account in EUR, base unit size must be 1000 (e.g. 1k lot size)
-            pipCost = m_pipCost.CalcPipCost(offer, acc_symbol.c_str(), iBaseUnitSize);            
+            std::map<misc::string, double>::iterator it = m_pipCostMap.find(offer.GetInstrument());
+            if (it == m_pipCostMap.end())
+            {
+                // account in EUR, base unit size must be 1000 (e.g. 1k lot size)
+                pipCost = m_pipCost.CalcPipCost(offer, acc_symbol.c_str(), iBaseUnitSize);
+                std::pair<misc::string, double> costpair(offer.GetInstrument(), pipCost);
+                m_pipCostMap.insert(costpair);
+            }
+            else
+            {
+                pipCost = it->second;
+            }
+            
             break;
         }
     }

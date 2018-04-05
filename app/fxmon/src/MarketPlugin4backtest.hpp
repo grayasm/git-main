@@ -67,6 +67,7 @@ private:
 	fxcm::IniParams					    m_iniParams;
     fxcm::Session::TradingSettingsVec   m_tsvec;
     fxcm::PipCost                       m_pipCost;
+    std::map<misc::string, double>      m_pipCostMap;
 	misc::critical_section			    m_criticalSection;
 	int								    m_orderID;
 	int								    m_tradeID;

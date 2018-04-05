@@ -89,8 +89,14 @@ void TestEngine()
     msleep(2000);       // wait 2 sec before logging in again
     session.Login();    // need to get history data for indicators
     // ----------------------------
-
-
+    //    Strategy Header
+    std::stringstream ss;
+    ss << "TestEngine\n" << "Login=" << loginParams->GetLogin().c_str() << "\n"
+        << "Connection=" << loginParams->GetConnection().c_str() << "\n"
+        << "Acc Symbol=" << loginParams->GetAccountSymbol().c_str() << "\n"
+        << "Instrument=" << instrument.c_str() << "\n\n\n";
+    misc::cout << ss.str().c_str();
+    // ----------------------------
 
 	
 	MarketPlugin4backtest plugin(&session, *iniParams, tsvec);
