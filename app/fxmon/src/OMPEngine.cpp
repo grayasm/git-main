@@ -34,9 +34,6 @@
 
 void OMPEngine()
 {
-    if (true)
-        return; // fix the offer and HistdatacomReader
-
 	fxcm::LoginParams::Ptr loginParams = new fxcm::LoginParams("monitor.ini");
 	fxcm::IniParams::Ptr iniParams = new fxcm::IniParams("monitor.ini");
 
@@ -52,29 +49,28 @@ void OMPEngine()
 		return; // cannot let > 500 strategies write in one file; turn it off;
 
 
-
-
-	fx::Offer offer;
+    // MarketPlugin4backtest needs a valid session to calculate things
+    // like the pip cost, MMR, iBaseUnitSize, etc.
+    // Depending on the traded instrument, the pipCost calculator may need
+    // access to other offers to convert the quote into account currency.
 	misc::string instrument("EUR/USD");
-	fxcm::Session session(*loginParams, *iniParams);
+    int ret = 0;
+    fx::Offer offer;
+
+    fxcm::Session session(*loginParams, *iniParams);
     session.Login();
-    fxcm::Session::TradingSettingsVec tsvec;
-    session.GetTradingSettings(tsvec);
-    fxcm::TradingSettings ts;
-    for (size_t i = 0; i < tsvec.size(); ++i)
-    {
-        if (tsvec[i].GetInstrument() == instrument)
-        {
-            ts = tsvec[i];
-            break;
-        }
-    }
-    if (ts.GetInstrument().empty())
+    session.GetOffers();
+    msleep(3000); // wait to get the offers
+    
+    ret = session.GetLastOffer(offer, instrument.c_str());
+    if (ret != fxcm::ErrorCodes::ERR_SUCCESS ||
+        offer.GetInstrument().empty() ||
+        offer.GetPointSize() == 0 ||
+        offer.GetPrecision() == 0)
         return;
-    // ----------------------------
 
 
-	MarketPlugin4backtest plugin(&session, *iniParams, tsvec);
+	MarketPlugin4backtest plugin(&session, *iniParams);
 	HistdatacomReader oreader(offer, 2017);
 	misc::time reftime;
 	misc::vector<fx::IND*> smaVec;
@@ -82,9 +78,7 @@ void OMPEngine()
 	typedef misc::pair<misc::string, fx::StrategySMACross*> CrossPair;
 	misc::vector<CrossPair> crossVec;
 	
-
-
-
+    
 	// SMA(2, 1H) -> SMA(48, 1H)
 	// SMA(2, 1D) -> SMA(60, 1D)
 	for (int i = 2; i <= 48; ++i)	// 48hours

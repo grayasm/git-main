@@ -32,18 +32,22 @@ namespace fxcm
 	class PipCost
 	{
 	public:
+        typedef std::map<misc::string, double>      PipCostMap;
+        typedef std::map<misc::string, fx::Offer>   OffersMap;
+
 		PipCost();
 		
 		PipCost(const PipCost&) = delete;
 		PipCost& operator=(const PipCost&) = delete;
 
 		double CalcPipCost(
-			const fx::Offer& offer,
+            const misc::string& instrument,
 			const misc::string& acc_symbol,
-			int iBaseUnitSize) const;
+			int iBaseUnitSize,
+            const OffersMap& offers) const;
 
 	private:
-		std::map<misc::string, double>	m_nonCalculable;
+        PipCostMap      m_nonCalculable;
 	};
 } // namespace
 

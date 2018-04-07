@@ -63,22 +63,27 @@ namespace fxcm
 	}
 
 	double PipCost::CalcPipCost(
-		const fx::Offer& offer,
+		const misc::string& instrument,
 		const misc::string& acc_symbol,
-		int iBaseUnitSize ) const
+		int iBaseUnitSize,
+        const OffersMap& offers) const
 	{
-		const misc::string& instrument = offer.GetInstrument();
-
 		// TODO: have to figure out how to calculate pip-cost for these ones
-		std::map<misc::string, double>::const_iterator it =
+		std::map<misc::string, double>::const_iterator ncIt =
 			m_nonCalculable.find(instrument);
 
-		if(it != m_nonCalculable.end())
+		if(ncIt != m_nonCalculable.end())
 		{
-			double pipCost = (*it).second;
+			double pipCost = (*ncIt).second;
 			misc::cout << "\npipCost[ " << instrument.c_str() << " ]= " << pipCost;
 			return pipCost;
 		}
+
+        OffersMap::const_iterator oit = offers.find(instrument);
+        if (oit == offers.end())
+            throw misc::exception("PipCost cannot find the offer");
+        const fx::Offer& offer = oit->second;
+
 
 		double pointSize = offer.GetPointSize();
 
@@ -147,18 +152,20 @@ namespace fxcm
 		misc::string acc_base = acc_symbol;
 		acc_base += "/";
 		acc_base += tokenizer.tokens().back();
-		
-		if(acc_quote == instrument)
+
+        oit = offers.find(acc_quote);
+        if (oit != offers.end())
 		{
-			double bid = offer.GetBid(); // bid
+            double bid = oit->second.GetBid(); // bid
 			double pipCost = (double)iBaseUnitSize * pointSize * bid;
 			misc::cout << "\npipCost[ " << instrument.c_str() << " ]= " << pipCost;
 			return pipCost;
 		}
 
-		if(acc_base == instrument)
+        oit = offers.find(acc_base);
+        if (oit != offers.end())
 		{
-			double ask = offer.GetAsk(); // ask
+            double ask = oit->second.GetAsk(); // ask
 			double pipCost = (double)iBaseUnitSize * pointSize / ask;
 			misc::cout << "\npipCost[ " << instrument.c_str() << " ]= " << pipCost;
 			return pipCost;

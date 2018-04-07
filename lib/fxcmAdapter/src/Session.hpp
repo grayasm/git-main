@@ -47,6 +47,7 @@ namespace fxcm
 	public:
 		typedef misc::vector<TradingSettings> TradingSettingsVec;
 		typedef misc::vector<fx::OHLCPrice> HistoryPricesVec;
+        typedef std::map<misc::string, fx::Offer> OffersMap;
 
 	public:
 		Session(const fxcm::LoginParams& loginParams,
@@ -61,6 +62,7 @@ namespace fxcm
 		int GetTradingPermissions(const char* sInstrument, TradingPermissions& tp);
 		int GetOrders();
 		int GetLastOffer(fx::Offer& offer, const char* sInstrument);
+        int GetAllOffers(OffersMap& offers);
 		int GetHistoryPrices(const char* sInstrument, const char* sTimeframe,
 							 DATE dtFrom, DATE dtTo,
 							 HistoryPricesVec& historyPricesVec);
@@ -94,7 +96,7 @@ namespace fxcm
 		ResponseListener4MarketOrders*		m_responseListener4MarketOrders;
 		HistoryPricesUpdater*				m_historyPricesUpdater;
 		TradingSettingsVec					m_tradingSettingsVec;
-		PipCost								m_pipCost;
+        PipCost                             m_pipCost;
 	};
 } // namespace
 

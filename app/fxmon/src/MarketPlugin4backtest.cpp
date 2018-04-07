@@ -28,12 +28,10 @@
 
 MarketPlugin4backtest::MarketPlugin4backtest(
 	fxcm::Session* session,
-    const fxcm::IniParams& iniParams,
-    const fxcm::Session::TradingSettingsVec& tsvec)
+    const fxcm::IniParams& iniParams)
 {
 	m_session = session;
 	m_iniParams = iniParams;
-    m_tsvec = tsvec;
     // m_pipCost - default;
 	// m_criticalSection - default;
 	m_orderID = 0;
@@ -55,23 +53,41 @@ int MarketPlugin4backtest::OpenPosition(
 {
 	misc::autocritical_section acs(m_criticalSection);
 
+    misc::string instrument = offer.GetInstrument();
     misc::string acc_symbol = m_iniParams.GetAccountSymbol();
     double MMR = 0, pipCost = 0;
-    int iBaseUnitSize = 0;    
-    for (size_t i = 0; i < m_tsvec.size(); ++i)
+    int iBaseUnitSize = 0, ret = 0;
+
+    // get trading settings once per session
+    if (m_tsVec.empty())
     {
-        const fxcm::TradingSettings& ts = m_tsvec[i];
-        if (ts.GetInstrument() == offer.GetInstrument())
+        ret = m_session->GetTradingSettings(m_tsVec);
+        if (ret != fxcm::ErrorCodes::ERR_SUCCESS)
+            return ret;
+    }
+
+
+    // get Instrument data: MMR=2.5  baseUnitSize=1000  pipCost=0.9
+    for (size_t i = 0; i < m_tsVec.size(); ++i)
+    {
+        const fxcm::TradingSettings& ts = m_tsVec[i];
+        if (ts.GetInstrument() == instrument)
         {
             MMR = ts.GetMMR();
             iBaseUnitSize = ts.GetBaseUnitSize();
-            std::map<misc::string, double>::iterator it = m_pipCostMap.find(offer.GetInstrument());
+
+            std::map<misc::string, double>::iterator it = 
+                m_pipCostMap.find(offer.GetInstrument());
             if (it == m_pipCostMap.end())
             {
-                // account in EUR, base unit size must be 1000 (e.g. 1k lot size)
-                pipCost = m_pipCost.CalcPipCost(offer, acc_symbol.c_str(), iBaseUnitSize);
-                std::pair<misc::string, double> costpair(offer.GetInstrument(), pipCost);
-                m_pipCostMap.insert(costpair);
+                fxcm::PipCost::OffersMap offers;
+                ret = m_session->GetAllOffers(offers);
+                if (ret != fxcm::ErrorCodes::ERR_SUCCESS)
+                    return ret;
+
+                pipCost = m_pipCost.CalcPipCost(instrument, acc_symbol,
+                                                iBaseUnitSize, offers);
+                m_pipCostMap.insert(std::make_pair(instrument, pipCost));
             }
             else
             {

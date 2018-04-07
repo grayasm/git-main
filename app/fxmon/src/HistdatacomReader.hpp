@@ -43,7 +43,9 @@ private:
 
     void LoadEURUSD2008();
     void LoadEURUSD2017();
+    void LoadEURJPY2017();
     void LoadUSDJPY2017();
+    void LoadGBPJPY2017();
 
 
 private:

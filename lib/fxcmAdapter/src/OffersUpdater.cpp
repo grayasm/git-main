@@ -155,4 +155,13 @@ namespace fxcm
 		return ErrorCodes::ERR_SUCCESS;
 	}
 
+    int OffersUpdater::GetAllOffers(OffersMap& offers)
+    {
+        // synchronize access to internal resource
+        misc::autocritical_section autoCS(m_criticalSection);
+
+        offers = m_offersMap;
+
+        return ErrorCodes::ERR_SUCCESS;
+    }
 } // namespace

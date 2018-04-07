@@ -253,8 +253,6 @@ namespace fxcm
 			return ErrorCodes::ERR_SUCCESS;
 		}
 
-		m_tradingSettingsVec.clear();
-
 		O2G2Ptr<IO2GLoginRules> loginRules = m_session->getLoginRules();
 		if (!loginRules)
 		{
@@ -291,6 +289,9 @@ namespace fxcm
 				<< ": Cannot create response reader factory" << std::endl;
 			return ErrorCodes::ERR_NO_RESPONSE_READER_FACTORY;
 		}
+
+        // prepare to fill
+        m_tradingSettingsVec.clear();
 
 		O2G2Ptr<IO2GAccountsTableResponseReader> accountsReader =
 			factory->createAccountsTableReader(accountsResponse);
@@ -344,7 +345,7 @@ namespace fxcm
 			ts.SetMMR2(mmr2);
 			ts.SetEMR(emr);
 			ts.SetLMR(lmr);
-			tsvec.push_back(ts);
+            m_tradingSettingsVec.push_back(ts);
 
 			bool bDebug = false;
 			if (bDebug)
@@ -386,6 +387,10 @@ namespace fxcm
 					<< "-" << maxTrailingStep << std::endl;
 			}
 		}
+
+
+        tsvec = m_tradingSettingsVec;
+
 
 		return ErrorCodes::ERR_SUCCESS;
 	} // GetTradingSettings
@@ -536,6 +541,16 @@ namespace fxcm
 			<< ": OffersUpdater instance is not available" << std::endl;
 		return ErrorCodes::ERR_NO_OFFER_AVAILABLE;
 	} // GetLastOffer
+
+    int Session::GetAllOffers(OffersMap& offers)
+    {
+        if (m_offersUpdater)
+            return m_offersUpdater->GetAllOffers(offers);
+
+        misc::cout << __FUNCTION__
+            << ": OffersUpdater instance is not available" << std::endl;
+        return ErrorCodes::ERR_NO_OFFER_AVAILABLE;
+    } // GetAllOffers
 
 	int Session::GetHistoryPrices(	const char* sInstrument, const char* sTimeframe,
 									DATE dtFrom, DATE dtTo,
@@ -753,6 +768,9 @@ namespace fxcm
 		const misc::vector<IO2GTradeRow*>& trades =
 			m_responseListener4MarketOrders->GetTrades();
 
+        PipCost::OffersMap pipcostOffers;
+        m_offersUpdater->GetAllOffers(pipcostOffers);
+
 		result.clear();
 		for (size_t i = 0; i < trades.size(); ++i)
 		{
@@ -767,8 +785,8 @@ namespace fxcm
 			double sellRate = (isBuy == true ? FLT_MAX : openRate); // @bid
 			fx::Price openQuote(buyRate, sellRate);
 			double MMR = tradingSettingsProvider->getMMR(symbol.c_str(), account);
-			double pipCost = m_pipCost.CalcPipCost(offer,
-				m_iniParams.GetAccountSymbol(), iBaseUnitSize);
+			double pipCost = m_pipCost.CalcPipCost(offer.GetInstrument(),
+                m_iniParams.GetAccountSymbol(), iBaseUnitSize, pipcostOffers);
 			double rate2pip = 1.0 / offer.GetPointSize();
 			fx::Currency currency(symbol, openQuote, MMR, pipCost, rate2pip);
 			int amount = trade->getAmount() / iBaseUnitSize;
@@ -1014,6 +1032,10 @@ namespace fxcm
 			return ErrorCodes::ERR_NO_RESPONSE_READER;
 		}
 
+        PipCost::OffersMap pipcostOffers;
+        m_offersUpdater->GetAllOffers(pipcostOffers);
+
+
 		for (int i = 0; i < tradesResponseReader->size(); ++i)
 		{
 			IO2GTradeRow* trade = tradesResponseReader->getRow(i);
@@ -1029,8 +1051,8 @@ namespace fxcm
 				double sellRate = (isBuy == true ? FLT_MAX : openRate); // @bid
 				fx::Price openQuote(buyRate, sellRate);
 				double MMR = tradingSettingsProvider->getMMR(symbol.c_str(), account);
-				double pipCost = m_pipCost.CalcPipCost(offer,
-					m_iniParams.GetAccountSymbol(), iBaseUnitSize);
+				double pipCost = m_pipCost.CalcPipCost(offer.GetInstrument(),
+					m_iniParams.GetAccountSymbol(), iBaseUnitSize, pipcostOffers);
 				double rate2pip = 1.0 / offer.GetPointSize();
 				fx::Currency currency(symbol, openQuote, MMR, pipCost, rate2pip);
 				int amount = trade->getAmount() / iBaseUnitSize;

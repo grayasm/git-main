@@ -53,54 +53,29 @@ void TestEngine()
 	}
 
 
-    // get instrument data for backtesting.
-    misc::string instrument("USD/JPY");
-    fxcm::TradingSettings ts;   // for MMR
-    fx::Offer offer;            // for pointSize and Precision
-    int ret = fxcm::ErrorCodes::ERR_SUCCESS;
+    // MarketPlugin4backtest needs a valid session to calculate things
+    // like the pip cost, MMR, iBaseUnitSize, etc.
+    // Depending on the traded instrument, the pipCost calculator may need
+    // access to other offers to convert the quote into account currency.
+    misc::string instrument("GBP/JPY");
+    int ret = 0;
+    fx::Offer offer;
+
     fxcm::Session session(*loginParams, *iniParams);
     session.Login();
-    fxcm::Session::TradingSettingsVec tsvec;
-    ret = session.GetTradingSettings(tsvec);
-    if (ret != fxcm::ErrorCodes::ERR_SUCCESS)
-        return;
-    for (size_t i = 0; i < tsvec.size(); ++i)
-    {
-        if (tsvec[i].GetInstrument() == instrument)
-        {
-            ts = tsvec[i];
-            break;
-        }
-    }
-    if (ts.GetInstrument().empty())
-        return;
-    ret = session.GetOffers();
-    if (ret != fxcm::ErrorCodes::ERR_SUCCESS)
-        return;
+    session.GetOffers();
     msleep(3000); // wait to get the offers
+
     ret = session.GetLastOffer(offer, instrument.c_str());
-    if (ret != fxcm::ErrorCodes::ERR_SUCCESS)
-        return;
-    if (offer.GetInstrument().empty() ||
+    if (ret != fxcm::ErrorCodes::ERR_SUCCESS ||
+        offer.GetInstrument().empty() ||
         offer.GetPointSize() == 0 ||
         offer.GetPrecision() == 0)
         return;
-    session.Logout();   // to turn off the Offers traffic
-    msleep(2000);       // wait 2 sec before logging in again
-    session.Login();    // need to get history data for indicators
-    // ----------------------------
-    //    Strategy Header
-    std::stringstream ss;
-    ss << "TestEngine\n" << "Login=" << loginParams->GetLogin().c_str() << "\n"
-        << "Connection=" << loginParams->GetConnection().c_str() << "\n"
-        << "Acc Symbol=" << loginParams->GetAccountSymbol().c_str() << "\n"
-        << "Instrument=" << instrument.c_str() << "\n\n\n";
-    misc::cout << ss.str().c_str();
-    // ----------------------------
-
 	
-	MarketPlugin4backtest plugin(&session, *iniParams, tsvec);
+	MarketPlugin4backtest plugin(&session, *iniParams);
 	HistdatacomReader oreader(offer, 2017);
+
 	// HistoryFxcmliveReader oreader(instrument);
 	// fx::SMA sma1(instrument, 4, misc::time::hourSEC, fx::SMA::PRICE_CLOSE);
 	// fx::SMA sma2(instrument, 60, misc::time::daySEC, fx::SMA::PRICE_CLOSE);

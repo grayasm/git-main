@@ -47,6 +47,7 @@ namespace fxcm
 
 		void UpdateOffers(IO2GResponse* response);
 		int GetLastOffer(fx::Offer& offer, const char* sInstrument);
+        int GetAllOffers(OffersMap& offers);
 
 	private:
 		IO2GSession*					m_session;
