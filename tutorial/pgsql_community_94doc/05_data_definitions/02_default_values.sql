@@ -43,11 +43,19 @@ SELECT * FROM my_table;
 DROP TABLE my_table;
 CREATE TABLE my_table (product_name  text,
                        product_no    SERIAL,
-                       date_time     clock_timestamp());
+                       date_time     timestamp with time zone DEFAULT clock_timestamp());
 
 INSERT INTO my_table (product_name) VALUES ('left door'),
                                            ('right door'),
                                            ('front shield'),
                                            ('back shield');
-
 SELECT * FROM my_table;
+/*
+ product_name | product_no |           date_time
+--------------+------------+-------------------------------
+ left door    |          1 | 2018-05-27 11:21:25.452235+02
+ right door   |          2 | 2018-05-27 11:21:25.452335+02
+ front shield |          3 | 2018-05-27 11:21:25.45234+02
+ back shield  |          4 | 2018-05-27 11:21:25.452344+02
+(4 rows)
+*/

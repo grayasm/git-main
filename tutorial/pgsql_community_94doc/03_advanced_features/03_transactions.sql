@@ -12,7 +12,7 @@ DROP TABLE IF EXISTS accounts, branches;
 CREATE TABLE accounts(name varchar(80), branch_name varchar(80), balance real);
 CREATE TABLE branches(name varchar(80), balance real);
 
--- popule the tables with data
+-- populate the tables with data
 INSERT INTO accounts VALUES('Alice', 'New York', 1200.12);
 INSERT INTO accounts VALUES('Bob', 'Chicago', 425.43);
 INSERT INTO accounts VALUES('Wally', 'Detroit', 125.13);

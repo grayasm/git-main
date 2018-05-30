@@ -106,3 +106,13 @@ WORK AS REGULAR USER
 
     # to login from console to db as user pgmihai, type from regular account:
     psql -d mytestdb -U pgmihai
+
+
+GET STARTED
+-----------
+    \cd /home/mihai/Code/git-main/tutorial/pgsql_community_94doc/01_getting_started
+    \i 01_access_to_database.sql
+    \dt               -- to list all tables
+    \dt a_table_name  -- to see the table description
+    \df               -- to list all functions
+    \?                -- further help

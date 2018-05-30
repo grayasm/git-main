@@ -48,4 +48,4 @@ SELECT name, altitude FROM ONLY cities WHERE altitude > 500;
 
 
 -- clean up
-DROP TABLE weather, capitals, cities;
+DROP TABLE capitals, cities;
