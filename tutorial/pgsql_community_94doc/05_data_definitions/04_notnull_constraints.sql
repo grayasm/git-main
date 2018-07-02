@@ -6,7 +6,7 @@
 */
 
 
-/*  [Not-Null constraint forbids a NULL value coresp. to that column.]*/
+/*      Not-Null constraint forbids a NULL value coresp. to that column.*/
 DROP TABLE IF EXISTS products;
 CREATE TABLE products (
         product_no    integer NOT NULL,
@@ -29,7 +29,7 @@ SELECT * FROM products;
 
 
 
-/*  [A column can have more than one costraint.]*/
+/*      A column can have more than one costraint.*/
 DROP TABLE products;
 CREATE TABLE products (
         product_no    integer   NOT NULL,

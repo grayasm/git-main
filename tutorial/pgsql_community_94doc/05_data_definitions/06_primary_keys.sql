@@ -6,8 +6,8 @@
 */
 
 
-/*    [A primary key constraint is simply a combination of a unique constraint
-       and a not-null contraint.]*/
+/*      A primary key constraint is simply a combination of a unique constraint
+        and a not-null contraint. */
 
 DROP TABLE IF EXISTS products;
 CREATE TABLE products (
@@ -25,7 +25,7 @@ DETAIL:  Key (product_no)=(1) already exists.
 */
 
 
-/*    [Use syntax PRIMARY  KEY  ]*/
+/*      Use syntax PRIMARY  KEY  */
 DROP TABLE products;
 CREATE TABLE products (
         product_no    integer   PRIMARY KEY,
@@ -48,7 +48,7 @@ SELECT * FROM products;
 */
 
 
-/*    [PRIMARY KEY can also constrain more than one column.]*/
+/*      PRIMARY KEY can also constrain more than one column.  */
 DROP TABLE products;
 CREATE TABLE products (
         a    integer,

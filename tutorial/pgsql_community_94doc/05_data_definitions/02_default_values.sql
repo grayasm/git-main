@@ -11,10 +11,10 @@
 DROP TABLE IF EXISTS my_table CASCADE;
 
 
-/*  1.  When a new row is added and no values are specified for some columns
-        the default value is null value.
+/*     When a new row is added and no values are specified for some columns
+       the default value is null value.
 
-    2.  A column can be asigned a default value; e.g. DEFAULT keyword.
+       A column can be asigned a default value; e.g. DEFAULT keyword.
 */
 CREATE TABLE my_table (product integer,
                        name    text,
@@ -37,7 +37,7 @@ SELECT * FROM my_table;
 */
 
 
-/*  3.  The default value can be an expression evaluated whenever the value is
+/*      The default value can be an expression evaluated whenever the value is
         inserted.
 */
 DROP TABLE my_table;

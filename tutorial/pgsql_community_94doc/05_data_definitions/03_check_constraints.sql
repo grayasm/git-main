@@ -7,7 +7,7 @@
 
 
 
-/*  [Check if a column value is positive.]*/
+/*      Check if a column value is positive.*/
 DROP TABLE IF EXISTS products;
 CREATE TABLE products (
         product_no    integer,
@@ -24,7 +24,7 @@ LINE 4:         (102, 'bad violated'  -3.3);
 */
 
 
-/*  [Give a constraint a separate name.]*/
+/*      Give a constraint a separate name.*/
 DROP TABLE products;
 CREATE TABLE products (
         product_no    integer,
@@ -41,7 +41,7 @@ LINE 4:         (102, 'bad violated'  -3.3);
 */
 
 
-/*  [A check constraint can also refer to several columns.]*/
+/*      A check constraint can also refer to several columns.*/
 DROP TABLE products;
 CREATE TABLE products (
         product_no              integer,
@@ -57,7 +57,7 @@ DETAIL:  Failing row contains (10, invalid, 10, 10).
 */
 
 
-/*  [Use a more flexible syntax.]*/
+/*      Use a more flexible syntax.*/
 DROP TABLE products;
 CREATE TABLE products (
         product_no          integer,

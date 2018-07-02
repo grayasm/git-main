@@ -6,7 +6,7 @@
 */
 
 
-/*  [Unique constraints ensure the column value is unique across all rows.]*/
+/*      Unique constraints ensure the column value is unique across all rows.*/
 DROP TABLE IF EXISTS products;
 CREATE TABLE products (
         product_no    integer   UNIQUE,
@@ -30,8 +30,8 @@ SELECT * FROM products;
 */
 
 
-/*  [When a unique constraints refers to a group of columns, the columns are
-    listed separated by commas:]*/
+/*      When a unique constraints refers to a group of columns, the columns are
+        listed separated by commas: */
 DROP TABLE products;
 CREATE TABLE products (
         pname         text,

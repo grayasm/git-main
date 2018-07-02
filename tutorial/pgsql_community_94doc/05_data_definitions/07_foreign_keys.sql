@@ -7,10 +7,11 @@
 */
 
 
-/*      [A foreign key constraint specifies that the values in a column (or a
+/*      A foreign key constraint specifies that the values in a column (or a
         group of columns) must match the values appearing in some row of another
         table. We say this maintains the referential integrity between two
-        related tables.]*/
+        related tables.
+*/
 DROP TABLE IF EXISTS products CASCADE;
 DROP TABLE IF EXISTS orders CASCADE;
 
@@ -35,13 +36,14 @@ DETAIL:  Key (product_no)=(330) is not present in table "products".
 
 
 
-/*      [We know that foreign keys disallow creation of orders that do not
+/*      We know that foreign keys disallow creation of orders that do not
         relate to any products. What if a product is removed after an order
         is created that references it?
         SQL allows few options:
         - disallow deleting a referenced product
         - delete the orders as well
-        - something else? */
+        - something else?
+*/
 DROP TABLE products CASCADE;
 DROP TABLE orders CASCADE;
 DROP TABLE IF EXISTS order_items;
