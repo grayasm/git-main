@@ -27,3 +27,14 @@ CREATE TABLE test (
 INSERT INTO test VALUES
         (11, tstzrange('2018-05-24 18:16:00', '2018-05-24 18:17:00')),
         (10, tstzrange('2018-06-24 18:16:00', '2018-06-24 18:17:00'));
+
+INSERT INTO test VALUES
+        (11, tstzrange('2018-05-24 18:16:20', '2018-05-24 18:19:00'));
+
+/*
+psql:08_exclusion_constraints.sql:32: ERROR:  conflicting key value violates
+     exclusion constraint "test_start_end_excl"
+DETAIL:
+Key (start_end)=(["2018-05-24 18:16:20+02","2018-05-24 18:19:00+02"))
+conflicts with existing key
+    (start_end)=(["2018-05-24 18:16:00+02","2018-05-24 18:17:00+02")).
