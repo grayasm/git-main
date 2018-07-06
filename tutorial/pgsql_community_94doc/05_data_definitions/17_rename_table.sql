@@ -1,32 +1,28 @@
 /*  Chapter 5. Data Definition
-    5.7. Schemas
-    5.7.2. The Public Schema
+    5.5.8 Renaming a Table
 
     psql -d mytestdb -U pgmihai
-    \i 20_the_public_schema.sql
-	\dn -- to list all schemas in a database
+    \i 17_rename_table.sql
 */
 
-/*      By default, tables created without specifying the schema name, are
-        automatically put into a schema named "public".
-		Every new database contains such a schema.
-*/
 
-DROP TABLE IF EXISTS public.products CASCADE;
+/*      To rename a table: */
+DROP TABLE IF EXISTS products, items CASCADE;
 
-CREATE TABLE public.products (
+CREATE TABLE products (
         product_no    integer   PRIMARY KEY,
         name          text,
         price         numeric
         );
 
-INSERT INTO public.products VALUES
+INSERT INTO products VALUES
         (1, 'left door', 9.99),
         (2, 'right door', 9.99),
         (3, 'front shield', 11.50);
-		
-SELECT * from public.products;
 
+ALTER TABLE products RENAME TO items;
+
+SELECT * FROM items;
 /*
  product_no |     name     | price
 ------------+--------------+-------
