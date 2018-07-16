@@ -146,6 +146,16 @@ chmod -Rv 644 /usr/share/themes/AuroraElementary/gtk-2.0/
 rm 85879-AuroraElementary-0.2.tar.gz
 
 
+# ClearLooks-Ice - real nice theme
+wget https://dl.opendesktop.org/api/files/downloadfile/id/1460764347/s/8adc02fe7119b3fefadad50ba1591fce/t/1531766914/u/23870-ClearLooks-Ice.tar.gz
+tar zxvf 23870-ClearLooks-Ice.tar.gz
+rm -rfv /usr/share/themes/ClearLooks-Ice
+mv ClearLooks-Ice /usr/share/themes/
+chown -Rv root:root /usr/share/themes/ClearLooks-Ice
+chcon -Rv -u system_u -r object_r -t usr_t /usr/share/themes/ClearLooks-Ice
+rm 23870-ClearLooks-Ice.tar.gz
+
+
 # Window Decorations
 # Ambiance (Ubuntu), +hidpi (Extra Large Buttons)
 # Plastik, +hidpi + RedmondXP-hidpi (Too Large)
