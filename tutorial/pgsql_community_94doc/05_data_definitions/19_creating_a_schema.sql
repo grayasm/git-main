@@ -4,27 +4,27 @@
 
     psql -d mytestdb -U pgmihai
     \i 19_creating_a_schema.sql
-	\dn -- to list all schemas in a database
+    \dn -- to list all schemas in a database
 */
 
 /*      A database contains one or more named schemas.
         PostgreSQL default schema is named 'public'.
-		In a schema there are objects like:
-		Collations, Domains, Functions, Sequences, Tables, Views, etc.
-		
-		The same object NAME can be used in different schemas without conflict.
-		Schemas are analogous to directories at the operating system level,
-		except that schemas cannot be nested.
+        In a schema there are objects like:
+        Collations, Domains, Functions, Sequences, Tables, Views, etc.
 
-		> Schemas allow many users to use one database without interfering with
-		  each other. Inside the database, each user will use his own schema
-		  with his own tables inside.
-		  
-		> Schemas organizes database objects into logical groups to make them
-		  more manageable.
+        The same object NAME can be used in different schemas without conflict.
+        Schemas are analogous to directories at the operating system level,
+        except that schemas cannot be nested.
 
-		> Schemas can contain 3rd-party applications so they do not collide
-		  with names of other objects.
+        > Schemas allow many users to use one database without interfering with
+          each other. Inside the database, each user will use his own schema
+          with his own tables inside.
+
+        > Schemas organizes database objects into logical groups to make them
+          more manageable.
+
+        > Schemas can contain 3rd-party applications so they do not collide
+          with names of other objects.
 */
 
 
@@ -40,7 +40,7 @@ CREATE TABLE myschema.products (
         price         numeric
         );
 
-/*      Drop a schema if it's empty. 
+/*      Drop a schema if it's empty.
 psql:19_creating_a_schema.sql:44: ERROR:  cannot drop schema myschema because other objects depend on it
 */
 DROP SCHEMA myschema;
