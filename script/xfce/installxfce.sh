@@ -30,3 +30,6 @@ XFCE="f22-backgrounds-xfce gtk-xfce-engine \
 echo "Installing Xfce for CentOS"
 yum group install "Xfce"
 yum install $XFCE
+
+
+

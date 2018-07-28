@@ -31,21 +31,40 @@ if [ ! -f /etc/yum.repos.d/fedora19.repo ]; then
 fi
 
 
-THEMES="clearlooks-phenix-common clearlooks-phenix-gtk2-theme \
-        clearlooks-phenix-xfwm4-theme dmz-cursor-themes \
-        xfwm4-themes bluecurve-gtk-themes hicolor-icon-theme \
-        mate-icon-theme-faenza zukitwo-gtk2-theme zukitwo-xfwm4-theme \
-        moka-icon-theme"
+ENGINE="gtk-murrine-engine gtk-nimbus-engine \
+        gtk-nodoka-engine gtk-nodoka-engine-extras \
+        gtk-unico-engine gtk-aurora-engine gtk-equinox-engine \
+        xfwm4-theme-nodoka libia_ora-gnome"
+echo "Installing Theme Engines"
+yum --enablerepo=fedora19 install $ENGINE
 
+
+
+THEMES="clearlooks-phenix-common clearlooks-phenix-gtk2-theme \
+        clearlooks-phenix-xfwm4-theme xfwm4-themes bluecurve-gtk-themes  \
+        zukitwo-gtk2-theme zukitwo-xfwm4-theme \
+	iaora-gnome-theme light-theme-gnome \
+        nodoka-theme-gnome"
 echo "Installing Xfce themes for CentOS"
-yum install $THEMES
+yum --enablerepo=fedora19 install $THEMES
+
+
+
+ICONS="mate-icon-theme-faenza dmz-cursor-themes hicolor-icon-theme \
+       moka-icon-theme gnome-icon-theme gnome-colors-icon-theme \
+       gnome-icon-theme-extras gnome-icon-theme-legacy \
+       gnome-icon-theme-symbolic"
+echo "Installing Icons for CentOS"
+yum --enablerepo=fedora19 install $ICONS
+
 
 REDHAT_THEMES="bluecurve-cursor-theme bluecurve-icon-theme \
-              clearlooks-compact-gnome-theme clearlooks-phenix-common \
-              clearlooks-phenix-gtk2-theme clearlooks-phenix-gtk3-theme \
-              clearlooks-phenix-xfwm4-theme fedora-icon-theme \
-              gnome-theme-curvylooks gnome-themes humanity-icon-theme \
-              tango-icon-theme xfce4-icon-theme"
-
+               clearlooks-compact-gnome-theme clearlooks-phenix-common \
+               clearlooks-phenix-gtk2-theme clearlooks-phenix-gtk3-theme \
+               clearlooks-phenix-xfwm4-theme fedora-icon-theme \
+               gnome-theme-curvylooks gnome-themes gnome-themes-legacy \
+	       gnome-themes-standard humanity-icon-theme \
+               tango-icon-theme xfce4-icon-theme"
 echo "Installing RedHat Artwork for Xfce"
-yum install $REDHAT_THEMES
+yum --enablerepo=fedora19 install $REDHAT_THEMES
+
