@@ -15,22 +15,22 @@ CREATE TABLE products (
         price         numeric
         );
 
-ALTER TABLE products RENAME TO items;
+ALTER TABLE products RENAME COLUMN product_no TO product_number;
 
-INSERT INTO items VALUES
+INSERT INTO products VALUES
         (1, 'left door', 99.999),
         (2, 'right door', 99.999),
         (3, 'front shield', 49.999),
 		(4, 'back shield', 100.999);
 
-SELECT * FROM items;
+SELECT * FROM products;
 
 /*
- product_no |     name     |  price
-------------+--------------+---------
-          1 | left door    |  99.999
-          2 | right door   |  99.999
-          3 | front shield |  49.999
-          4 | back shield  | 100.999
+ product_number |     name     |  price  
+----------------+--------------+---------
+              1 | left door    |  99.999
+              2 | right door   |  99.999
+              3 | front shield |  49.999
+              4 | back shield  | 100.999
 (4 rows)
 */
