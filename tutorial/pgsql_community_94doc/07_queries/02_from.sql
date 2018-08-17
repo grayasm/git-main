@@ -6,6 +6,7 @@
     \i 02_from.sql
 */
 
+
 /*      FROM table_reference [,table_reference [, ...]]
 
         If more than one table reference is listed in the FROM clause,
@@ -13,27 +14,25 @@
         their rows is formed).
 */
 
-DROP TABLE IF EXISTS t1,t2,t3 CASCADE;
-CREATE TABLE t1 (i1 numeric);
-CREATE TABLE t2 (j1 numeric, j2 numeric);
-CREATE TABLE t3 (k1 numeric, k2 numeric, k3 numeric);
+DROP TABLE IF EXISTS t1,t2 CASCADE;
+CREATE TABLE t1 (num integer, name text);
+CREATE TABLE t2 (num integer, value text);
 
-INSERT INTO t1 VALUES (1);
-INSERT INTO t2 VALUES (2.0, 2.1), (2.2, 2.3);
-INSERT INTO t3 VALUES (3.0, 3.1, 3.2),
-                      (3.3, 3.4, 3.5),
-                      (3.6, 3.7, 3.8);
+INSERT INTO t1 VALUES (1,'a'), (2,'b'), (3,'c');
+INSERT INTO t2 VALUES (1,'x'), (2,'y'), (3,'z');
 
-SELECT * FROM t1, t2, t3;
-
+SELECT * FROM t1, t2;
 /*
- i1 | j1  | j2  | k1  | k2  | k3  
-----+-----+-----+-----+-----+-----
-  1 | 2.0 | 2.1 | 3.0 | 3.1 | 3.2
-  1 | 2.0 | 2.1 | 3.3 | 3.4 | 3.5
-  1 | 2.0 | 2.1 | 3.6 | 3.7 | 3.8
-  1 | 2.2 | 2.3 | 3.0 | 3.1 | 3.2
-  1 | 2.2 | 2.3 | 3.3 | 3.4 | 3.5
-  1 | 2.2 | 2.3 | 3.6 | 3.7 | 3.8
-(6 rows)
+ num | name | num | value 
+-----+------+-----+-------
+   1 | a    |   1 | x
+   1 | a    |   2 | y
+   1 | a    |   3 | z
+   2 | b    |   1 | x
+   2 | b    |   2 | y
+   2 | b    |   3 | z
+   3 | c    |   1 | x
+   3 | c    |   2 | y
+   3 | c    |   3 | z
+(9 rows)
 */
