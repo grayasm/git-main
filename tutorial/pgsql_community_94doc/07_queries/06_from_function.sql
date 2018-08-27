@@ -7,17 +7,20 @@
     \i 06_from_function.sql
 */
 
-
-/*      Table functions are functions that 
-        > TABLE
-        > VIEW
-        > SUBQUERY.
-
-        The columns returned by a table function can be included in a
-        > SELECT
-        > JOIN
-        > WHERE
+/*      Table functions are functions that produce a set of rows, made up of
+        either
+        - base data types (scalar types) or
+        - composite data types (table rows).
+        
+        They are used like
+        > a table
+        > a view, or 
+        > a subquery
+        in the FROM clause of a query. Columns returned by table functions
+        can be included in SELECT , JOIN , or WHERE clauses in the same manner
+        as columns of a table, view, or subquery.
 */
+
 
 
 DROP TABLE    IF EXISTS t1      CASCADE;
