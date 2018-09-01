@@ -6,7 +6,7 @@
     \i 10_window_function_processing.sql
 */
 
-/*      window_function(arg1,arg2,..) OVER (PARTITION BY expr ORDER BY expr);
+/*      window_function(arg1,arg2,..) OVER (PARTITION BY expr ORDER BY expr)
 
         window_funtion: any built-in or user-defined aggregate function.
         PARTITION BY  : used to devide rows into groups or partitions.
@@ -14,39 +14,83 @@
                         specified by ORDER BY clause especially for the window
                         functions that are sensitive to the order such as
                         fist_value(), last_value(), nth_value().
+
+        ex: SELECT x, wf(y) OVER (PARTITION BY z ORDER BY w), ...
 */
 
-DROP TABLE IF EXISTS groups,products CASCADE;
-CREATE TABLE groups (id         SERIAL PRIMARY KEY,
-                     name       VARCHAR(255) NOT NULL);
-                     
-CREATE TABLE products (id       SERIAL PRIMARY KEY,
-                       name     VARCHAR(255) NOT NULL,
-                       price    DECIMAL,
-                       id2      INT NOT NULL,
-                       FOREIGN KEY(id2) REFERENCES groups(id));
+DROP TABLE IF EXISTS pers,finc CASCADE;
+CREATE TABLE pers (id INTEGER, nume TEXT, job TEXT);
+CREATE TABLE finc (id INTEGER, salary NUMERIC);
 
-INSERT INTO groups (name) VALUES ('handy'), ('laptop'), ('tablet');
-INSERT INTO products (name, id2, price) VALUES ('Microsoft Lumia', 1, 200),
-                                               ('HTC One',         1, 400),
-                                               ('Nexus',           1, 500),
-                                               ('iPhone',          1, 900), --avg=500
-                                               ('HP Elite',        2, 1200),
-                                               ('Lenovo Thinkpad', 2, 700),
-                                               ('Sony VAIO',       2, 700),
-                                               ('Dell Vostro',     2, 800), --avg=850
-                                               ('iPad',            3, 700),
-                                               ('Kindle Fire',     3, 150),
-                                               ('Samsung Galaxy Tab',3,200);--avg=350
+INSERT INTO pers VALUES (1, 'An Hua', 'aplication engineer'),
+                        (2, 'Ai Hia', 'aplication engineer'),
+                        (3, 'Ao Tua', 'aplication engineer'),
+                        (4, 'Pi Yng', 'principal developer'),
+                        (5, 'Si Tog', 'senior developer'),
+                        (6, 'Si Toa', 'senior developer'),
+                        (7, 'Si Tao', 'senior developer'),
+                        (8, 'Di Hao', 'developer'),
+                        (9, 'Di Jia', 'developer'),
+                       (10, 'Di Mao', 'developer'),
+                       (11, 'Di Dao', 'developer');
+
+INSERT INTO finc VALUES (1, 1000.0),
+                        (2, 1040.0),
+                        (3, 1050.0), -- average=1030
+                        (4, 5000.0), -- unique
+                        (5, 3000.0),
+                        (6, 3040.0),
+                        (7, 3080.0), -- average=3040
+                        (8, 2000.0),
+                        (9, 2020.0),
+                       (10, 2010.0),
+                       (11, 2010.0); -- average=2010
 
 
+/*  Comparing AVG(x) as aggregate versus window function. */
 
-SELECT avg(price) FROM products;
+
+/*  An aggregate function aggregates data from a set of rows into a single row.
+    To apply the aggregate function to subsets of rows use GROUP BY clause. */
+
+SELECT job, AVG(salary)
+       FROM pers INNER JOIN finc USING(id)
+       GROUP BY job;
+
 /*
-         avg          
-----------------------
- 586.3636363636363636
-(1 row)
+         job         |          avg          
+---------------------+-----------------------
+ aplication engineer | 1030.0000000000000000
+ developer           | 2010.0000000000000000
+ senior developer    | 3040.0000000000000000
+ principal developer | 5000.0000000000000000
+(4 rows)
 */
 
-SELECT name,avg(price) FROM products INNER JOIN groups USING (id) GROUP BY name;
+
+
+
+/*  A window function operates on a set of rows, but it does not reduce the
+    number of rows returned by the query.
+    A window function returns a value from the rows in a window. */
+
+SELECT job, AVG(salary) OVER (PARTITION BY job)
+       FROM pers INNER JOIN finc USING(id);
+       
+/*
+         job         |          avg          
+---------------------+-----------------------
+ aplication engineer | 1030.0000000000000000
+ aplication engineer | 1030.0000000000000000
+ aplication engineer | 1030.0000000000000000
+ developer           | 2010.0000000000000000
+ developer           | 2010.0000000000000000
+ developer           | 2010.0000000000000000
+ developer           | 2010.0000000000000000
+ principal developer | 5000.0000000000000000
+ senior developer    | 3040.0000000000000000
+ senior developer    | 3040.0000000000000000
+ senior developer    | 3040.0000000000000000
+(11 rows)
+*/
+
