@@ -8,7 +8,7 @@
 
 /*      A query is the process of retrieving data from a database with SELECT.
         The general syntax of command SELECT is:
-        [WITH with_queries] SELECT _list_ FROM _table_ [sort_specification]
+        [WITH with_queries] SELECT sel_list FROM table_expr [sort_specification]
 
         You can use SELECT to:
         > do a simple query

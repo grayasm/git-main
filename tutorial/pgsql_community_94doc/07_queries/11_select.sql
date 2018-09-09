@@ -3,7 +3,7 @@
     7.3.1   SelectList Items
 
     psql -d mytestdb -U pgmihai
-    \i 11_selectlist_items.sql
+    \i 11_select.sql
 */
 
 
