@@ -24,21 +24,20 @@ CREATE TABLE orders(id          SERIAL PRIMARY KEY,
                     );
 
 INSERT INTO orders (region,product,quantity,amount) VALUES
-       ('Dealu Mare', 'Vin Alb',     10,   370.0), -- 37/L
-       ('Dealu Mare', 'Vin Rosu',    20,   640.0), -- 32/L
-       ('Dealu Mare', 'Vin Spumos',  30,  1620.0), -- 54/L
-       ('Murfatlar',  'Vin Alb',     1,     54.0), -- 54/L
-       ('Murfatlar',  'Vin Rosu',    21,  2310.0), -- 110/L
-       ('Murfatlar',  'Vin Spumos',  41,  5535.0), -- 135/L
-       ('Dragasani',  'Vin Alb',     5,    195.0), -- 39/L
-       ('Dragasani',  'Vin Rosu',    35,  1505.0), -- 43/L
-       ('Dragasani',  'Vin Spumos',  65,  4225.0), -- 65/L
-       ('Cotnari',    'Vin Alb',     30,   750.0), -- 25/L
-       ('Cotnari',    'Vin Rosu',    60,  3120.0), -- 52/L
-       ('Cotnari',    'Vin Spumos',  90,  5310.0); -- 59/L
+('regio1', 'p1', 100, 1000), ('regio2', 'p1', 10, 100), ('regio3', 'p1', 1, 10),
+('regio1', 'p2', 120, 1200), ('regio2', 'p2', 12, 120), ('regio3', 'p2', 2, 20),
+('regio1', 'p3', 130, 1300), ('regio2', 'p3', 13, 130), ('regio3', 'p3', 3, 30),
+('regio1', 'p4', 140, 1400), ('regio2', 'p4', 14, 140), ('regio3', 'p4', 4, 40),
+('regio1', 'p5', 150, 1500), ('regio2', 'p5', 15, 150), ('regio3', 'p5', 5, 50),
+('regio1', 'p6', 160, 1600), ('regio2', 'p6', 16, 150), ('regio3', 'p6', 6, 60),
+('regio1', 'p7', 170, 1700), ('regio2', 'p7', 17, 160), ('regio3', 'p7', 7, 70),
+('regio1', 'p8', 180, 1800), ('regio2', 'p8', 18, 170), ('regio3', 'p8', 8, 80),
+('regio1', 'p9', 190, 1900), ('regio2', 'p9', 19, 180), ('regio3', 'p9', 9, 90);
+
 
 
 -- display per-product sales totals in only the top sales regions
+-- each SELECT is dependent on previous SELECT
 WITH regional_sales AS (
                     SELECT region, SUM(amount) AS total_sales
                     FROM orders
@@ -55,23 +54,20 @@ WITH regional_sales AS (
      FROM   orders
      WHERE  region IN (SELECT region FROM top_regions)
      GROUP BY region, product;
+     
 
 /*
-   region   |  product   | product_units | product_sales 
-------------+------------+---------------+---------------
- Cotnari    | Vin Rosu   |            60 |        3120.0
- Murfatlar  | Vin Alb    |             1 |          54.0
- Murfatlar  | Vin Spumos |            41 |        5535.0
- Dealu Mare | Vin Rosu   |            20 |         640.0
- Dealu Mare | Vin Spumos |            30 |        1620.0
- Dealu Mare | Vin Alb    |            10 |         370.0
- Murfatlar  | Vin Rosu   |            21 |        2310.0
- Cotnari    | Vin Alb    |            30 |         750.0
- Cotnari    | Vin Spumos |            90 |        5310.0
- Dragasani  | Vin Rosu   |            35 |        1505.0
- Dragasani  | Vin Alb    |             5 |         195.0
- Dragasani  | Vin Spumos |            65 |        4225.0
-(12 rows)
+ region | product | product_units | product_sales 
+--------+---------+---------------+---------------
+ regio1 | p8      |           180 |          1800
+ regio1 | p5      |           150 |          1500
+ regio1 | p1      |           100 |          1000
+ regio1 | p6      |           160 |          1600
+ regio1 | p9      |           190 |          1900
+ regio1 | p7      |           170 |          1700
+ regio1 | p2      |           120 |          1200
+ regio1 | p3      |           130 |          1300
+ regio1 | p4      |           140 |          1400
+(9 rows)
+        Add ORDER BY product; to get the ordering;
 */
-
-
