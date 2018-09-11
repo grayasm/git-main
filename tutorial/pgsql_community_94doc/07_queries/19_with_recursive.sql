@@ -40,6 +40,28 @@ WITH RECURSIVE t(n) AS (
 */
 
 
+/*      A helpful trick for testing queries when you are not certain if they
+        might loop is to place a LIMIT in the parent query.
+        For example, this query would loop forever without the LIMIT :
+*/
+WITH RECURSIVE t(n) AS (
+     SELECT 1
+     UNION ALL
+     SELECT n+1 FROM t
+     )
+     SELECT n FROM t LIMIT 3;
+/*
+ n 
+---
+ 1
+ 2
+ 3
+(3 rows)
+*/
+
+
+
+
 -- return all subordinates (direct or indirect) of the manager with id=2
 DROP TABLE IF EXISTS employees CASCADE;
 CREATE TABLE employees (employee_id  SERIAL PRIMARY KEY,
@@ -92,4 +114,102 @@ WITH RECURSIVE subordinates AS (
           19 |          8 | Nathan Ferguson
           20 |          8 | Kevin Rampling
 (10 rows)
+*/
+
+
+
+/*      https://www.fusionbox.com/blog/detail/graph-algorithms-in-a-database-recursive-ctes-and-topological-sort-with-postgres/620/
+
+        Topological sort of a generic graph in SQL
+        The example is a general directed graph, where each task vertex may
+        have links to any number of other task vertices.
+
+        (6)--->(5)--->(1)
+                |\     |
+                | \    |
+                |  \   |
+                v   v  v
+        (3)--->(7)--> (2)
+                 \     |
+                  \    |
+                   \   v
+                    v (4)
+*/
+DROP TABLE IF EXISTS edges CASCADE;
+CREATE TABLE edges (start_id INT, end_id INT);
+INSERT INTO edges VALUES (6, 5),
+                         (1, 2),
+                         (5, 1),
+                         (3, 7),
+                         (5, 7),
+                         (7, 2),
+                         (7, 4),
+                         (2, 4);
+
+/*      This sort assumes there are no cycles (impossible to topologically sort
+        the graph). It uses the edges rather than the nodes.
+        SELECT DISTINCT avoids following the same path at the same depth twice.
+        MAX(depth) gives the rank of a node, ASC from left to right.
+*/
+WITH RECURSIVE traverse(id, depth) AS (
+     SELECT edges.start_id, 0
+            FROM edges LEFT OUTER JOIN edges AS e2 ON edges.start_id = e2.end_id
+            WHERE e2.end_id IS NULL
+     UNION ALL
+     SELECT DISTINCT edges.end_id, traverse.depth + 1
+            FROM traverse INNER JOIN edges ON edges.start_id = traverse.id
+     )
+     SELECT id FROM traverse
+     GROUP BY id
+     ORDER BY MAX(depth);
+/*
+ id 
+----
+  3
+  6
+  5
+  7
+  1
+  2
+  4
+(7 rows)
+*/
+
+
+
+/*      The final step to topologically sorting a generic graph in SQL
+        is cycle detection. The only way is to use Postgres's Array data type
+        so that each row stores the full path taken to a vertex. That way we
+        can terminate the path when we encounter a vertex that's already in our
+        path history (which means we've found a cycle). We use a special column
+        to set a cycle flag so that we'll know at the end that we hit a cycle
+        somewhere.
+*/
+WITH RECURSIVE traverse(id, path, cycle) AS (
+     SELECT edges.start_id, ARRAY[edges.start_id], false
+            FROM edges LEFT OUTER JOIN edges AS e2 ON edges.start_id = e2.end_id
+            WHERE e2.end_id IS NULL
+     UNION ALL
+     SELECT DISTINCT edges.end_id,
+                     traverse.path || edges.end_id,
+                     edges.end_id = ANY(traverse.path)
+            FROM traverse INNER JOIN edges ON edges.start_id = traverse.id
+            WHERE NOT cycle
+     )
+     SELECT traverse.id
+     FROM traverse LEFT OUTER JOIN traverse AS any_cycles ON any_cycles.cycle = true
+     WHERE any_cycles.cycle IS NULL
+     GROUP BY traverse.id
+     ORDER BY MAX(array_length(traverse.path, 1));
+/*
+ id 
+----
+  6
+  3
+  5
+  1
+  7
+  2
+  4
+(7 rows)
 */
