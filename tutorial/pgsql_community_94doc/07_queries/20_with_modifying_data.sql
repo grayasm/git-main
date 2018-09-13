@@ -92,3 +92,51 @@ SELECT * FROM tab1;
            8 |          4 | man2-w1
 (4 rows)
 */
+
+
+/*      Data modifying statements in WITH:
+        > are executed only once in a snapshot
+        > substatements are executed in parallel with the main query
+        > the order is unpredicatable unless RETURNING is used, which is the
+          only way to communicate changes between a subquery and the main query
+        > a row is updated only 1 time in a snapshot. 
+        > a table must not have a conditional rule, ALSO or INSTEAD clauses that
+          expand to multiple statements
+*/
+DROP TABLE IF EXISTS table1,table2 CASCADE;
+CREATE TABLE table1 (v NUMERIC);
+CREATE TABLE table2 (v NUMERIC);
+INSERT INTO table1 VALUES (1), (2), (3), (4), (5);
+INSERT INTO table2 VALUES (1), (2), (3), (4), (5);
+
+WITH t AS (
+     UPDATE table1 SET v = v * 10
+     RETURNING *
+     )
+     SELECT * FROM table1;
+/*
+ v 
+---
+ 1
+ 2
+ 3
+ 4
+ 5
+(5 rows)
+*/
+
+WITH t AS (
+     UPDATE table2 SET v = v * 10
+     RETURNING *
+     )
+     SELECT * FROM t;
+/*
+ v  
+----
+ 10
+ 20
+ 30
+ 40
+ 50
+(5 rows)
+*/
