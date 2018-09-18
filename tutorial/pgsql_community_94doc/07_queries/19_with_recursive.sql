@@ -7,7 +7,7 @@
 */
 
 /*      http://www.postgresqltutorial.com/postgresql-recursive-query
-        The syntax of a recursive CTE is:
+        The syntax of a recursive CTE (Common Table Expression) is:
 
         WITH RECURSIVE cte_name (
              CTE_query_definition       -- non-recursive term
