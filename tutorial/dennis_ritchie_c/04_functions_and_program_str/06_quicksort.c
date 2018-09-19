@@ -54,4 +54,26 @@ main()
 }
 /*
   -50 -45 -34 -22 -10 13 21 32 44 50
+
+  We can write a shorter version of qsort like this:
+
+  void qsort(int v[], int l, int r)
+  {
+    int i, j, p;                // i, j and the p(pivot)
+    
+    if(l >= r)
+      return;
+
+    i = l-1;                    // initial i is -1
+    j = l;                      // initial j is 0
+    p = r;                      // pivot is last element
+
+    for(; j < p; ++j)           // do the partition
+        if(v[j] < v[p])
+            swap(v, ++i, j);
+
+    swap(v, ++i, p);            // move the pivot
+    qsort(v, l, i-1);           // sort left partition
+    qsort(v, i+1, r);           // sort right partition
+  }
 */
