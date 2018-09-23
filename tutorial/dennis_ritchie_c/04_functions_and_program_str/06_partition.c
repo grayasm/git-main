@@ -3,20 +3,19 @@
    explains the partition concept very well.
 
    For partitioning you need to have:
-   1) a pivot - usually the right most element of the range
-   2) a i,j position - usually the left most element of the range
+   1) p the pivot: usually the right most element of the range
+   2) i,j position: usually j the first element of the range and i=j-1
 
-   In a for loop over j position compare element at j if less then pivot:
-   If elem[j] < pivot then swap elem[j] with elem[i] and increment i,
-   otherwise continue the loop with incrementing j position.
+   Loop over j position and compare elem[j] with elem[p]:
+   If elem[j] < elem[p] then increment i and swap elem[i] with elem[j];
+   Else continue with next j position.
 
-   At the end of the loop all elements less the pivot will be at the left of i.
-   The i position is where the pivot should be. The partitioning ends with
-   swapping pivot with elem[i].
+   When finished, increment i and swap it with the pivot element.
+   At this point all elements less than the pivot are to the left.
 
-   Repeating the partitioning for the entire range for couple of times will
-   reorder all elements accordingly. The best however is to recursively call
-   parition, one time for each of the ranges [l, i] & [i+1, r].
+   This must be repeated recursively for the range [l, i-1] and [i+1, r]
+   where l is the left and r is the right most element of the range,
+   and i is the pivot.
 */
 #include <stdio.h>
 
@@ -29,13 +28,13 @@ main()
     int p, i, j;                  /* pivot p, i and j */
                                   /* <-- start of paritioning */
     p = 4;
-    i = 0;
     j = 0;
+    i = j-1;
 
     for (; j < p; ++j)
         if (v[j] < v[p])
-            swap(v, j, i++);
-    swap(v, p, i);
+            swap(v, ++i, j);
+    swap(v, ++i, p);
                                   /* <-- end of paritioning */
     printv(v, 5);
 }

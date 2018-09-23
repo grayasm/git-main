@@ -64,16 +64,16 @@ main()
     if(l >= r)
       return;
 
-    i = l-1;                    // initial i is -1
-    j = l;                      // initial j is 0
-    p = r;                      // pivot is last element
+    i = l-1;
+    j = l;
+    p = r;
 
-    for(; j < p; ++j)           // do the partition
+    for(; j < p; ++j)           // <-- start paritioning
         if(v[j] < v[p])
             swap(v, ++i, j);
+    swap(v, ++i, p);            // <-- end partitioning
 
-    swap(v, ++i, p);            // move the pivot
-    qsort(v, l, i-1);           // sort left partition
-    qsort(v, i+1, r);           // sort right partition
+    qsort(v, l, i-1);           // sort left side
+    qsort(v, i+1, r);           // sort right side
   }
 */
