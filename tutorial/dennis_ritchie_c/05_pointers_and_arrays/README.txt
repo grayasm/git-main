@@ -12,7 +12,7 @@
      variable, therefore pa=a; pa++; are legal and a=pa; a++; are illegal
   6. when an array name is passed to a function, what is passed is the location
      of the initial element
-  7. it is possible to index backwards p[-1] or p[-2] for for positions that
+  7. it is possible to index backwards p[-1] or p[-2] for positions that
      precede p[0]
   8. it is illegal to refer to objects that are not within the array bounds
   9. pointers and integers are not interchangeable. Zero is the sole exception

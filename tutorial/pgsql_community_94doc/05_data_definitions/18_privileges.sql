@@ -15,9 +15,9 @@
         
         Ordinarily, only the object's owner (or a superuser) can GRANT or REVOKE
         privileges on an object.
-        It is possible to grant a privilege "with grant option", which gives
+        It is possible to grant a privilege with GRANT option, which gives
         the recipient the right to grant it in turn to others. If the grant
-        option is revoked then all who received the privilege from that
+        option is REVOKE-ed then all who received the privilege from that
         recipient (directly or through a chain of grants) will lose
         the privilege. More on GRANT and REVOKE commands.
 */
