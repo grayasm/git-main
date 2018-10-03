@@ -1,4 +1,4 @@
-/* Cap. 1 - A Tutorial Introduction
+/* Cap. 1 - A Tutorial Introduction, pag.6
 
    Normally you are at liberty to give functions whatever names you like,
    but "main" is special - your program begins executing at the beginning
