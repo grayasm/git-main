@@ -35,5 +35,5 @@ class ModTest(unittest.TestCase):
         self.assertRaises((AttributeError, TypeError), mod.reverseWords, 1)
 
 
-if __name_ == '__main__':
+if __name__ == '__main__':
     unittest.main()
