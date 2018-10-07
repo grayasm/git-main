@@ -1,6 +1,6 @@
 /* Cap.5 Pointers and Arrays, pag.117
 
-   This program searches for a patter in the input.
+   This program searches for a pattern in the input.
    Use options: -x to print line that do not match the pattern, otherwise
                    will print lines that do match with the pattern
                 -n will print also the line number
