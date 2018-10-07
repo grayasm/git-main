@@ -3,7 +3,6 @@
 #
 # The parameters are specific to i3bar (status bar UI tool).
 # i3bar is similar in functionality with dzen2, xmobar, lemonbar.
-# Author: https://gist.github.com/rafi/6063132
 
 general {
         colors = true
@@ -20,7 +19,8 @@ general {
 order += "cpu_usage"
 order += "disk /"
 # order += "disk /mnt/sdb1"
-order += "ethernet enp6s0"
+order += "ethernet _first_"
+order += "wireless _first_"
 order += "tztime local"
 order += "battery 0"
 
@@ -30,7 +30,7 @@ cpu_usage {
 
 disk / {
      prefix_type = "decimal"
-     format = "sda1: %total | %free free"
+     format = "sda1: %free free"
 }
 
 disk /mnt/sdb1 {
@@ -38,8 +38,14 @@ disk /mnt/sdb1 {
      format = "sdb1: %total|%free free"
 }
 
-ethernet enp6s0 {
+ethernet _first_ {
      format_up = "E: %ip (%speed)"
+     format_down = "E: down"
+}
+
+wireless _first_ {
+     format_up = "W: %quality at %essid, %ip"
+     format_down = "W: down"
 }
 
 tztime local {
@@ -49,5 +55,12 @@ tztime local {
 
 battery 0 {
      format = "%status %percentage %remaining"
-     path = "/sys/class/power_supply/BAT0/uevent"
+     format_down = "No battery"
+     status_chr = "⚡ CHR"
+     status_bat = "🔋 BAT"
+     status_unk = "? UNK"
+     status_full = "☻ FULL"
+     path = "/sys/class/power_supply/BAT%d/uevent"
+     low_threshold = 10
+     threshold_type = time
 }
