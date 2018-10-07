@@ -28,6 +28,9 @@ print ("decompressed message:", repr(decompressed_message))
 #    Using the zlib module to compress a group fo files.
 
 for file in glob.glob("../10_file_and_text_op/*"):
+    #IsADirectoryError: [Errno 21] Is a directory: '../10_file_and_text_op/locale'
+    if file.endswith("locale"):
+        continue
     indata = open(file, "rb").read()
     outdata = zlib.compress(indata, zlib.Z_BEST_COMPRESSION)
     print (file, len(indata), "=>", len(outdata), end="")
