@@ -1,4 +1,4 @@
-/* Cap.1 A Tutorial Introduction, pag.10
+/* Cap.1 A Tutorial Introduction, pag.9
 
    integer division truncates: any fractional part is discarded.
 */
