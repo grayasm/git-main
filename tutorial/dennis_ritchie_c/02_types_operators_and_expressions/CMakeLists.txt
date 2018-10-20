@@ -2,6 +2,7 @@
 
 add_executable(01_static                  01_static.c)
 add_executable(02_convert_s_to_integer    02_convert_s_to_integer.c)
+add_executable(03_printbits               03_printbits.c)
 
 add_executable(ex2-01_ranges              ex2-01_ranges.c)
 add_executable(ex2-02_loop                ex2-02_loop.c)

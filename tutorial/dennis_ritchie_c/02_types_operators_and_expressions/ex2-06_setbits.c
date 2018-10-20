@@ -35,10 +35,10 @@ unsigned setbits(unsigned x, unsigned p, unsigned n, unsigned y)
     unsigned a,b,c,d,m;
     unsigned f,g,i,j;
 
-    
+
     a = ~(~(unsigned)0 << n); /* 0000 0111 */
     b = ~a;                   /* 1111 1000 */
-    
+
     c = (a << p);             /* 0111 0000 */
     d = ~(~b << p);           /* 1000 1111 */
 

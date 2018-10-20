@@ -21,8 +21,10 @@
      floating point in an expression like: f + i
  10. the implicit arithmetic conversion promotes the "lower" type to the "higher"
      type before the operation proceeds
- 11. binary ^ xor with 1 toggles the bit:  1001 ^ 1111 = 0110
- 12. unary negation ~ flips all bits: ~(~0 << 2) << 1  = 0110
- 13. these are called bitwise operators: <<  >>  &  |  ^
- 14. writing code that depends on order of evaluation is a bad programming
+ 11. bitwise operators are applied to integer operands: char, short, int, long
+ 12. bitwise operators: & | ^ << >> ~
+ 13. binary xor ^ with 1 toggles the bit:  1001 ^ 1111 = 0110
+ 14. unary negation ~ flips all bits: ~(~(unsigned)0 << 2) << 1  = 0110
+ 15. writing code that depends on order of evaluation is a bad programming
      practice in any language
+     printf("%d %d\n", ++n, power(2, n)); /* WRONG */
