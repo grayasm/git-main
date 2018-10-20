@@ -121,6 +121,10 @@
 (require 'fill-column-indicator)
 (add-hook 'after-change-major-mode-hook 'fci-mode)
 
+; highlight lines that go beyond 1 and 2 columns limit defined in 'whitespace-line-column' (e.g. 80 chars)
+(require 'whitespace)
+(setq whitespace-style '(face empty tabs lines-tail trailing))
+(global-whitespace-mode t)
 
 ;------------------------------------------------------------
 ; Emacs ColorTheme guide: http://emacswiki.org/emacs/ColorTheme
