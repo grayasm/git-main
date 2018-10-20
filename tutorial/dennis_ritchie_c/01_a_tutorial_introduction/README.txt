@@ -9,14 +9,14 @@
      the integer to floating-point before the operation is done
   5. in printf %% will escape the % itself
   6. in stdio.h EOF is -1
-  7. the semicolon at the end of while(true); is called a null statement
+  7. the semicolon at the end of if(ret); is called a null statement
   8. use parameter for a variable named in the parenthesized list in a function
      definition, and argument for the value used in a call of the function
   9. formal argument and actual argument are sometimes used for the same
      distinction
  10. in C all function arguments are passed "by value"
- 11. delimit expressions with , e.g: s[i]=0, printf("%s",s), i=0, s[i++] = c;
- 12. declaration is where the variable is stated but no storage is allocated
- 13. definition is where the variable is created and storage is assigned
- 14. extern keyword should appear at the beginning of a function where a
+ 11. declaration is where the variable is stated but no storage is allocated
+ 12. definition is where the variable is created and storage is assigned
+ 13. extern keyword should appear at the beginning of a function where a
      variable is used but its definition is in another file
+ 14. delimit expressions with , e.g: s[i]=0, printf("%s",s), i=0, s[i++] = c;
