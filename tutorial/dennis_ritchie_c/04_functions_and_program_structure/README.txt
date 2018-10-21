@@ -3,6 +3,8 @@
                       pag.67 - 92
 
   1. if the return type is omitted, int is assumed
+     dummy() {}
+     main() { dummy(); }
   2. a static variable or function is valid only in the file where it is declared
   3. external static is most used for variables but can be applied to functions
      as well
