@@ -19,4 +19,3 @@
  12. definition is where the variable is created and storage is assigned
  13. extern keyword should appear at the beginning of a function where a
      variable is used but its definition is in another file
- 14. delimit expressions with , e.g: s[i]=0, printf("%s",s), i=0, s[i++] = c;
