@@ -43,5 +43,3 @@
      } flags;
  12. Fields need not be named. Unnamed fields (a colon and width) are used for
      padding. Special width 0 forces alignment to next word boundary.
-
-README is complete but the examples past pag.140 are missing.
