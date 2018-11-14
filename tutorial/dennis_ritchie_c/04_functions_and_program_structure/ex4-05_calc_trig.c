@@ -81,10 +81,10 @@ void dofunc(char s[])
     else if (strcmp(s, "pow") == 0) {   /* x to the power of y */
         op2 = pop();
         op1 = pop();
-        if (op1 == 0 && op2 <= 0)
+        if (op1 == 0 || op2 <= 0)
              printf("error: domain (%g^%g)\n", op1, op2);
         else
-            push(pow(pop(), op2));
+            push(pow(op1, op2));
     } else {
         printf("error: unknown command %s\n", s);
     }

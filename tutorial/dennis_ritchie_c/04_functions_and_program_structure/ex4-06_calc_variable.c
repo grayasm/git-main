@@ -3,123 +3,154 @@
    Exercise 4-6: Add commands for handling variables. (It's easy to provide
                  twenty-six variables with single-letter names). Add a variable
                  for the most recently printed value.
+
+                 The RPN notation for assigning to variable is like this 10 A =
+                 Example calculation:
+                 10 A = 20 B = A B +    (will print: 30)
+                 20 A = A  B =          (will print error: stack empty)
+                 20 A = A  B = 2 B +    (will print: 22)
 */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <math.h>
 
-#define NONE     0
-#define LEFT     1
-#define RIGHT    2
-#define FUNCTION 3
+#include<stdio.h>
+#include<stdlib.h>
 
+#define MAXOP 100
+#define NUMBER '0'
 
-int main()
+int getop(char[]);
+void push(double);
+double pop(void);
+
+/* reverse polish calculator */
+
+int main(void)
 {
-    int c;
-    double l, r;
-    int state;
-    int i;
-    char ci[200];
+    int type, var = 0;
+    double op2, v;
+    char s[MAXOP];
+    double variable[26];
 
-    c = 0;
-    l = r = 0.0;
-    ci[0] = '\0';
+    while ((type = getop(s)) != EOF)
+    {
+        switch (type)
+        {
+        case NUMBER:
+            push(atof(s));
+            break;
+        case '+':
+            push(pop() + pop());
+            break;
+        case '*':
+            push(pop()*pop());
+            break;
+        case '-':
+            op2 = pop();
+            push(pop() - op2);
+            break;
+        case '/':
+            op2 = pop();
+            if (op2 != 0.0)
+                push(pop() / op2);
+            else
+                printf("error:zero divisor\n");
+            break;
+        case '=':
+            pop();
+            if (var >= 'A' && var <= 'Z')
+                variable[var - 'A'] = pop();
+            else
+                printf("error: novariablename\n");
+            break;
+
+        case '\n':
+            v = pop();
+            printf("\t%.8g\n", v);
+            break;
+        default:
+            if (type >= 'A' && type <= 'Z')
+                push(variable[type - 'A']);
+            else if (type == 'v')
+                push(v);
+            else
+                printf("error: unknown command %s\n", s);
+            break;
+        }
+        var = type;
+    }
+    return 0;
+}
+
+
+#define MAXVAL 100
+
+int sp = 0;
+double val[MAXVAL];
+
+void push(double f)
+{
+    if (sp < MAXVAL)
+        val[sp++] = f;
+    else
+        printf("error:stack full, cant push %g\n", f);
+}
+
+
+double pop(void)
+{
+    if (sp > 0)
+        return val[--sp];
+    else
+    {
+        printf("error: stack empty\n");
+        return 0.0;
+    }
+}
+
+#include<ctype.h>
+
+int getch(void);
+void ungetch(int);
+
+int getop(char s[])
+{
+    int i, c;
+
+    while ((s[0] = c = getch()) == ' ' || c == '\t')
+        ;
+    s[1] = '\0';
+    if (!isdigit(c) && c != '.')
+        return c;
+
     i = 0;
-    state = NONE;
+    if (isdigit(c))
+        while (isdigit(s[++i] = c = getch()))
+            ;
 
+    if (c == '.')
+        while (isdigit(s[++i] = c = getch()))
+            ;
 
-    while ((c = getchar()) != EOF) {
-        if (c == '\n') {
-            state = NONE;
-            i = 0;
-            ci[0] = '\0';
-            printf(" r=%f\n", l);
-            l = r = 0.0;
-            goto Next;
-        }
+    s[i] = '\0';
+    if (c != EOF)
+        ungetch(c);
+    return NUMBER;
+}
 
-        if ((state == NONE || state == LEFT) && c >= '0' && c <= '9') {
-            ci[i++] = c;
-            goto Next;
-        }
+#define BUFSIZE 100
 
-        if (c == ' ' && state == NONE && i > 0) {
-            ci[i] = '\0';
-            l = atof(ci);
-            state = LEFT;
-            i = 0;
-            goto Next;
-        }
+char buf[BUFSIZE];
+int bufp = 0;
 
-        if (c == ' ' && state == LEFT && i > 0) {
-            ci[i] = '\0';
-            r = atof(ci);
-            state = RIGHT;
-            i = 0;
-            goto Next;
-        }
+int getch(void)
+{
+    return (bufp > 0) ? buf[--bufp] : getchar();
+}
 
-        if (c == '-' || c == '+' || c == '/' || c == '*') {
-
-            if (state == LEFT && i > 0) {          /* 4 3-  */
-                ci[i] = '\0';
-                r = atoi(ci);
-            }
-            else if (state == LEFT && i == 0)      /* 4 3 - + */
-                goto Error;
-
-            if (c == '-') l = l - r;
-            else if (c == '+') l = l + r;
-            else if (c == '/') l = l / r;
-            else if (c == '*') l = l * r;
-
-            r = 0;
-            i = 0;
-            state = LEFT;
-            goto Next;
-        }
-
-        /* 180 90 - sin [with arg in degrees] */
-        if (state == LEFT && c >= 'a' && c <= 'z') {
-            ci[i++] = c;
-            state = FUNCTION;
-            goto Next;
-        }
-
-        if (state == FUNCTION && c >= 'a' && c <= 'z') {
-            ci[i++] = c;
-            goto Next;
-        }
-
-        if (c == ' ' && state == FUNCTION) {
-            ci[i] = '\0';
-
-            if      (strcmp(ci, "sin") == 0) l = sin(l * M_PI / 180.0);
-            else if (strcmp(ci, "cos") == 0) l = cos(l * M_PI / 180.0);
-            else if (strcmp(ci, "tan") == 0)
-                l = sin(l * M_PI/180.) / cos(l * M_PI/180.0);
-
-            r = 0;
-            i = 0;
-            ci[0] = '\0';
-            state = LEFT;
-            goto Next;
-        }
-
-        if (c == ' ' || c == '\t')
-            goto Next;
-
-    Error:
-        printf("%c\nIllegal expression\n", c);
-        break;
-
-
-    Next:
-        putchar(c);
-    } /* while */
-
-
-    return EXIT_SUCCESS;
+void ungetch(int c)
+{
+    if (bufp >= BUFSIZE)
+        printf("ungetch: too many characters\n");
+    else
+        buf[bufp++] = c;
 }
