@@ -2,7 +2,7 @@
 
    Exercise 5-6: Rewrite appropriate programs from earlier chapters and
                  exercises with pointers instead of array indexing. Good
-                 posibilities include geline (Chapters 1 and 4), atoi, itoa
+                 possibilities include getline (Chapters 1 and 4), atoi, itoa
                  and their variants (Chapters 2, 3 and 4), reverse (Chapter 3)
                  and strindex and getop (Chapter 4).
 */
@@ -14,7 +14,8 @@
 
 int strindex(const char *s, const char *t);
 void reverse(char *s);
-void itoa(int n, char *s);
+void itoa_(int n, char *s);
+int atoi_(const char *s);
 int getop(char *s);
 int getline_(char *s, int lim);
 
@@ -52,8 +53,8 @@ void reverse(char *s)
     }
 }
 
-/* itoa:  convert n to characters in s */
-void itoa(int n, char *s)
+/* itoa_:  convert n to characters in s */
+void itoa_(int n, char *s)
 {
     int sign;
     char *p;
@@ -126,8 +127,8 @@ int getline_(char *s, int lim)
     return s - p;
 }
 
-/* atoi:  convert string s to integer */
-int atoi(const char *s)
+/* atoi_:  convert string s to integer */
+int atoi_(const char *s)
 {
     int n, sign;
 
