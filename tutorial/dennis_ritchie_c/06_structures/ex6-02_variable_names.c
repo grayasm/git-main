@@ -5,9 +5,7 @@
                  identical in the first 6 characters, but different somewhere
                  thereafter. Don't count words within strings and comments.
                  Make 6 a parameter that can be set from the command line.
-*/
 
-/*
 http://www.learntosolveit.com/cprogramming/Ex_6.2_identical_variables.html
 */
 
