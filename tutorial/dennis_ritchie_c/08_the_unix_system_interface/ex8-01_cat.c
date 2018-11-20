@@ -4,42 +4,64 @@
                  open and close instead of their standard library equivalents.
                  Perform experiments to determine the relative speeds of the
                  two versions.
+                 
+   http://www.learntosolveit.com/cprogramming/Ex_8.1_mycat.html
 */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <fcntl.h>  /* File Control Operations */
-#include <unistd.h> /* Symbolic Constants */
+#include<stdio.h>
+#include<fcntl.h>
+#include<stdarg.h>
+#include<stdlib.h>
 
+void error(char *fmt,...);
+void filecopy(int ,int );
 
-/* cat:  concatenate files */
-int main(int argc, char *argv[])
+#define STDIN 0
+#define STDOUT 1
+#define STDERR 2
+
+/* cat: concatenate files - read/write/open/close */
+
+int main(int argc,char *argv[])
 {
     int fd;
-    void filecopy(int ifd, int ofd);
-    char *prog = argv[0];   /* program name for errors */
-
-    if (argc == 1) /* no args; copy standard input */
-        filecopy(0, 1);
+    
+    if(argc == 1)
+        filecopy(STDIN, STDOUT);
     else
-        while (--argc > 0)
-            if ((fd = open(*++argv, O_RDONLY, 0)) == -1) {
-                fprintf(stderr, "%s: can't open %s\n", prog, *argv);
-                exit(1);
-            } else {
-                filecopy(fd, 1);
+        while(--argc > 0)
+            if((fd = open(*++argv,O_RDONLY)) == -1)
+                error("cat:can't open %s",*argv);
+            else
+            {
+                filecopy(fd, STDOUT);
                 close(fd);
             }
-    exit(EXIT_SUCCESS);
+    return 0;
+}
+
+/* filecopy: copy file ifd to ofd */
+void filecopy(int ifd,int ofd)
+{
+    int n;
+    char buf[BUFSIZ];
+    
+    while((n=read(ifd,buf,BUFSIZ)) > 0)
+        if(write(ofd,buf,n) != n)
+            error("cat:write error");
 }
 
 
-/* filecopy:  copy file ifd to file ofd */
-void filecopy(int ifd, int ofd)
+/* error: print an error message and die */
+void error(char *fmt,...)
 {
-    char buf[BUFSIZ];
-    int c;
-
-    while ((c = read(ifd, buf, BUFSIZ)) > 0)  /* read from ifd */
-        write (ofd, buf, c);                  /* write to ofd */
+    va_list args;
+    
+    va_start(args,fmt);
+    fprintf((FILE *) STDERR,"error: ");
+    vfprintf((FILE *) STDERR, fmt, args);
+    fprintf((FILE *) STDERR, "\n");
+    va_end(args);
+    
+    exit(1);
 }
