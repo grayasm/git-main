@@ -1,5 +1,17 @@
 #!/bin/bash
 
+# a) Run wget url with the initial path from opendesktop.org
+#    e.g. wget https://www.opendesktop.org/p/1015014/startdownload?file_id=1460764027&file_name=48568-Clearlooks-XPSilver.tar.bz2&file_type=application/x-bzip2&file_size=1513
+# b) It will download /tmp/48568-Clearlooks-XPSilver.tar.bz2 (html file)
+# c) Open it with gedit and search for:
+#    downloadlink is now: domain/api/files/download/id/ID/s/TOKEN/t/TIMESTAMP/u/USERID/FILE_NAME
+# d) Compose the url by hand, replacing ID,TOKEN,TIMESTAMP,USERID with
+#    variables from the html file:
+#      var hash = 'b9961e...
+#      var timetamp = '1543146704';
+#      var userid = '56800';
+
+
 if [ `id -u` != 0 ]; then
 	echo "you must be root"
 	exit
@@ -154,6 +166,16 @@ mv ClearLooks-Ice /usr/share/themes/
 chown -Rv root:root /usr/share/themes/ClearLooks-Ice
 chcon -Rv -u system_u -r object_r -t usr_t /usr/share/themes/ClearLooks-Ice
 rm 23870-ClearLooks-Ice.tar.gz
+
+
+# Clearlooks XPSilver - real nice theme
+wget https://dl.opendesktop.org/api/files/downloadfile/id/1460764027/s/effee4048da8e6eb93e95ab602bfc1cd4f8ae863c2269b5669665db44128bb64697c89d21f0d9143ef2e1afdc06f4648d735321bd1c48d75e2528642a715cf25/t/1543154161/u/56800/48568-Clearlooks-XPSilver.tar.bz2
+tar -jxvf 48568-Clearlooks-XPSilver.tar.bz2
+rm -rfv /usr/share/themes/Clearlooks-XPSilver
+mv Clearlooks-XPSilver /usr/share/themes/
+chown -Rv root:root /usr/share/themes/Clearlooks-XPSilver
+chcon -Rv -u system_u -r object_r -t usr_t /usr/share/themes/Clearlooks-XPSilver
+rm 48568-Clearlooks-XPSilver.tar.bz2
 
 
 # Window Decorations
