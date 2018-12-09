@@ -24,6 +24,7 @@ fi
 # keep file attributes for now
 cp    -afRv  /home/mihai/Code/git-main/script/vasilian.net/*  $WWWDIR
 rm    -v  $WWWDIR/httpd.update
+rm    -v  $WWWDIR/template.html
 chown -v  root:root     /srv/http
 chown -Rv apache:apache $WWWDIR
 
