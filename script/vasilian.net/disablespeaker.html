@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Disable PC speaker</title>
+<link href="main.css" rel="stylesheet" type="text/css" media="all">
+</head>
+<body>
+<a href="index.html">Back to main index</a>
+<h2>Disable the PC speaker</h2>
+
+<p>
+<a href="https://wiki.archlinux.org/index.php/PC_speaker" target="_blank">Disable speaker beep.</a>
+</p>
+
+<p>Remove the kernel module.</p>
+<pre>
+rmmod pcspkr
+</pre>
+
+<p>Permanently blacklis the kernel module.</p>
+<pre>
+echo "blacklist pcspkr" > /etc/modprobe.d/nobeep.conf
+</pre>
+<br>
+
+<a href="index.html">Back to main index</a>
+<br>
+<br>
+</body>
+</html>

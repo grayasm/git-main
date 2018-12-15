@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Migrate www.vasilian.net to next CentOS</title>
+<link href="main.css" rel="stylesheet" type="text/css" media="all">
+</head>
+<body>
+<a href="index.html">Back to main index</a>
+<h2>Migrate www.vasilian.net to next CentOS</h2>
+<p>
+Check <a href="dyndnsvasilian.html" target="_blank">how to set the domain name servers.</a>
+</p>
+<p>
+After I bought this domain, I used 
+<a href="https://www.digitalocean.com/community/tutorials/how-to-set-up-apache-virtual-hosts-on-centos-7" target="_blank">this guide</a> 
+to setup an Apache virtual host.<br>
+This guide assumes that DNS records have been setup correctly (A record for ipv4, AAA record for ipv6)
+</p>
+
+<pre>
+sshocean                          # login to DigitalOcean as root
+yum install httpd httpd-tools     # user & group "apache" get created now
+
+mkdir /srv/http
+chown -v root:root /srv/http      # if this is not on DigitalOcean check SELinux also
+
+mkdir /srv/http/vasilian.net
+chown -v apache:apache /srv/http/vasilian.net
+</pre>
+
+<p>Transfer the website content to host</p>
+
+<pre>
+su mihai
+cd $HOME/
+mkdir Code
+git clone https://github.com/grayasm/git-main.git git-main
+exit               # back to root
+
+cd /home/mihai/Code/git-main/script/vasilian.net
+./httpd.update     # transfer the content
+</pre>
+
+<p>Now continue with the server setup.</p>
+<pre>
+chown -Rv apache:apache /srv/http/vasilian.net
+cd /etc/httpd
+mkdir -v sites-enabled sites-available
+cd conf
+</pre>
+
+<p>Edit the server configuration.</p>
+<pre>
+emacs httpd.conf
+
+# change as follows:
+DocumentRoot         "/srv/http"
+
+<Directory           "/srv/http">
+
+    AllowOverride    None
+
+    Require          all granted
+
+</Directory>
+
+# add at the end of file
+IncludeOptional      sites-enabled/*.conf
+</pre>
+
+<p>Edit vasilian.net.conf</p>
+
+<pre>
+cd /etc/httpd/sites-available
+touch vasilian.net.conf           # end edit
+
+# change as follows:
+
+<VirtualHost    *:80>
+
+    ServerName       www.vasilian.net
+
+    ServerAlias      vasilian.net
+
+    DocumentRoot     /srv/http/vasilian.net
+
+    ErrorLog         /srv/http/vasilian.net/error.log
+
+    CustomLog        /srv/http/vasilian.net/requests.log combined
+
+</VirtualHost>
+</pre>
+
+<p>Finish the configuration and do the first test.</p>
+<pre>
+ln -s /etc/httpd/sites-available/vasilian.net.conf /etc/httpd/sites-enabled/vasilian.net.conf
+
+systemctl enable httpd.service
+
+systemctl start  httpd.service
+</pre>
