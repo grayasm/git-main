@@ -2,37 +2,11 @@
 <html>
 <head>
 <title>LightDM display manager</title>
-<style type="text/css">
-body {
-	font-family: Arial, Helvetica, Tahoma, Geneva, Verdana, sans-serif;
-	font-size: 1em;
-}
-p.h1 {
-	font-family: Georgia, "Book Antiqua", Palatino, "Times New Roman", Times, serif;
-	font-size: 2em;
-}
-p.h2 {
-	font-family: Georgia, "Book Antiqua", Palatino, "Times New Roman", Times, serif;
-	font-size: 1.5em;
-}
-pre {
-	font-family: Consolas, "Courier New", Courier, Monaco, monospace;
-   font-size: 0.8em;	
-	background-color: #ebf1f5;
-	color: #000000;
-	border-style: solid;
-	border-width: 1px;
-	border-color: #bbccdd;
-	padding-top: 1em;
-	padding-right: 1em;
-	padding-left: 1em;
-	padding-bottom: 1em;	
-}
-</style>
+<link href="main.css" rel="stylesheet" type="text/css" media="all">
 </head>
 <body>
 <a href="index.html">Back to main index</a>
-<p class="h1">LightDM Display Manager</p>
+<h1>LightDM Display Manager</h1>
 <p>
 Created on: 09-Dec-2018<br>
 Updated on: 09-Dec-2018<br>
@@ -40,35 +14,46 @@ Updated on: 09-Dec-2018<br>
 <p>LightDM on archlinux wiki page: 
 <a href="https://wiki.archlinux.org/index.php/LightDM" target="_blank">LightDM</a>
 </p>
+<p>This is how it looks installed on CentOS.</p>
 <pre>
 yum list installed | grep lightdm
 lightdm.x86_64                 1.25.0-1.el7     @epel      
 lightdm-gobject.x86_64         1.25.0-1.el7     @epel      
 lightdm-gtk.x86_64             1.8.5-19.el7     @epel      
 lightdm-gtk-common.noarch      1.8.5-19.el7     @epel
-
+</pre>
+<p>Install lightdm packages.</p>
+<pre>
 yum install lightdm lightdm-gtk lightdm-gobject lightdm-gtk-common
+</pre>
 
-# the gtk-greeter uses gtk3 css style
+<p>lightdm-gtk-greeter uses a gtk3 css style</p>
+<pre>
 emacs  /etc/lightdm/lightdm.conf &
 greeter-session=lightdm-gtk-greeter
 
-# enable the service
+# save & enable the service
 systemctl enable lightdm.service
+</pre>
 
-# get the background image
+<p>
+The background image is 2560x1080, so you may need to change it.<br>
+Also, install the theme lightdm-gtk-clearlooks-grey.
+</p>
+<pre>
 cd /usr/share/pixmaps
 wget ftp://vasilian.net/Misc/enterprise_os_2560x1080.jpg
 
-# get the lightdm-theme
 cd /tmp
 wget ftp://vasilian.net/Misc/lightdm-gtk-clearlooks-grey.tar.gz
 tar -zxvf lightdm-gtk-clearlooks-grey.tar.gz
 mv lightdm-gtk-clearlooks-grey  /usr/share/themes
 chown -Rv root:root /usr/share/themes/lightdm-gtk-clearlooks-grey
 chcon -Rv -u system_u -t usr_t /usr/share/themes/lightdm-gtk-clearlooks-grey
+</pre>
 
-# edit the greeter settings
+<p>Edit the gtk greeter settings.</p>
+<pre>
 emacs  /etc/lightdm/lightdm-gtk-greeter.conf &
 
 [greeter]

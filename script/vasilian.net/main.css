@@ -1,0 +1,28 @@
+body {
+	font-family: Arial, Helvetica, Tahoma, Geneva, Verdana, sans-serif;
+	font-size: 1em;
+}
+
+h1 {
+	font-family: Georgia, "Book Antiqua", Palatino, "Times New Roman", Times, serif;
+	font-size: 2em;
+}
+
+h2 {
+	font-family: Georgia, "Book Antiqua", Palatino, "Times New Roman", Times, serif;
+	font-size: 1.5em;
+}
+
+pre {
+    font-family:  Consolas, "Courier New", Courier, Monaco, monospace;
+    font-size: 1em;
+    background-color: #ebf1f5;
+    color: #000000;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #bbccdd;
+    padding-top: 1em;
+    padding-right: 1em;
+    padding-left: 1em;
+    padding-bottom: 1em;
+}
