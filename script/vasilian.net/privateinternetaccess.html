@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Template page</title>
+<link href="main.css" rel="stylesheet" type="text/css" media="all">
+</head>
+<body>
+<a href="index.html">Back to main index</a>
+<h1>Setup Private Internet Access</h1>
+
+<img src="images/private_internet_access.jpg" alt="private internet access">
+
+<p>
+The PrivateInternetAccess (PIA) <a href="https://www.privateinternetaccess.com/installer/pia-nm.sh" target="_blank">installation script</a> 
+is working partially. TV channels do not work with this. I prefer to install PIA manually to control the protocol 
+(TCP instead of UDP), encryption cipher, authentication, certificate, port, etc. You need to install first the 
+openvpn and NetworkManager software (see also NetworkManager-wifi, bluetooth, ssh, and more).
+</p>
+
+<pre>
+yum install openvpn
+yum install NetworkManager-openvpn NetworkManager-openvpn-gnome
+yum install network-manager-applet
+</pre>
+
+<p>
+Run from the console nm-applet to activate the NetworkManager applet in XFCE bar. This should be remembered after a restart. 
+Now, reboot and make sure the applet shows up. Right-click to edit the connection.
+</p>
+
+<img src="images/network_manager_applet.jpg" alt="network manager applet">
+<p>Let's download the prerequisites files.</p>
+
+<pre>
+cd /opt
+mkdir pia-openvpn-ip-tcp && cd pia-openvpn-ip-tcp
+wget http://www.privateinternetaccess.com/openvpn/ca.crt
+wget http://www.privateinternetaccess.com/openvpn/ca.rsa.2048.crt
+wget http://www.privateinternetaccess.com/openvpn/ca.rsa.4096.crt
+wget https://www.privateinternetaccess.com/openvpn/openvpn-ip-tcp.zip
+unzip openvpn-ip-tcp.zip
+</pre>
+
+<p>Now let's add one VPN connection.</p>
+<img src="images/add_vpn_connection.png" alt="add a vpn connection">
+
+<p>For the VPN details see table(1) port 501 with protocol TCP, encryption AES-256-CBC, auth SHA256 with ca.rsa.4096.crt 
+To get the PIA server ip for Romania look inside  /opt/pia-openvpn-ip-tcp/Romania.ovpn
+</p>
+
+<img src="images/pia_romania.png" alt="PIA Romania">
+
+<p>On the Proxy tab check "For browser only". We use directly the IP address so IPv4 DNS entries are not needed. 
+Other dialog settings remain on the default. 
+Click Advanced -> General and set data according to table (1), port 501
+</p>
+
+<img src="images/openvpn_advanced_options_general.png" alt="openvpn advanced options - general">
+
+<p>Here is the Advanced Security page.</p>
+<img src="images/openvpn_advanced_options_security.png" alt="openvpn advanced options - security">
+
+<p>The "TLS Authentication" and "Proxies" tabs remains unchanged. Save the VPN connection. 
+To see the its details, as root:</p>
+
+<pre>
+cd /etc/NetworkManager/system-connections
+cat PIA-Romania 
+[connection]
+id=PIA-Romania
+uuid=a29bbbb3-495b-49d1-b617-cd6d28605315
+type=vpn
+autoconnect=false
+permissions=
+[vpn]
+auth=SHA256
+ca=/opt/pia-openvpn-ip-tcp/ca.rsa.4096.crt
+cipher=AES-256-CBC
+comp-lzo=yes
+connection-type=password
+dev-type=tun
+password-flags=0
+port=501
+proto-tcp=yes
+remote=185.210.218.102
+username=p4684088
+service-type=org.freedesktop.NetworkManager.openvpn
+[ipv4]
+dns-search=
+method=auto
+[ipv6]
+addr-gen-mode=stable-privacy
+dns-search=
+ip6-privacy=0
+method=auto
+[proxy]
+browser-only=true
+</pre>
+
+<p>To connect to "PIA-Romania" left click NM applet -> VPN Connections-> PIA Romania and check it.</p>
+
+<br>
+<br>
+<a href="index.html">Back to main index</a>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

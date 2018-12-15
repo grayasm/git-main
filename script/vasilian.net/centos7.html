@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Install CentOS-7</title>
+<link href="main.css" rel="stylesheet" type="text/css" media="all">
+</head>
+<body>
+<a href="index.html">Back to main index</a>
+<h1>CentOS-7 Installation Instructions</h1>
+<p>Have some reading about  
+<a href="https://www.centos.org/forums/viewtopic.php?f=47&t=47088" target="_blank">Minimal GNOME Desktop</a> install and
+<a href="https://www.dokuwiki.tachtler.net/doku.php?id=tachtler:centos_7_-_minimal_desktop_installation" target="_blank">the German blog</a>. 
+Here to read about <a href="https://wiki.centos.org/AdditionalResources/Repositories" target="_blank">CentOS repositories</a>.
+<br>
+<br>
+Warning: always use <a href="https://wiki.centos.org/PackageManagement/Yum/Priorities" target="_blank">priority setting</a> 
+for all repositories with enabled=1.
+</p>
+
+<pre>
+yum install yum-plugin-priorities
+cd /etc/yum.repos.d/
+ls -lh
+</pre>
+
+<p>For each repository with enabled=1 add priority=[1 to 99]</p>
+<p>Install <a href="https://fedoraproject.org/wiki/EPEL" target="_blank">epel repo</a>, The Fedora Special Interest Group</p>
+<pre>
+yum install epel-release
+</pre>
+
+<p>Install elrepo with priority=30 for <a href="http://elrepo.org/tiki/kmod-nvidia" target="_blank">kmod-nvidia</a></p>
+
+<p>Install adobe with priority=40, see <a href="https://wiki.centos.org/TipsAndTricks/MultimediaOnCentOS7" target="_blank">here</a></p>
+
+<p>Install vasilian repository for some extras</p>
+
+<pre>
+cd > /etc/yum.repos.d/vasilian.repo << EOF
+name=Vasilian packages for CentOS7
+baseurl=ftp://vasilian.net/CentOS/$releasever/extras/$basearch/
+enabled=1
+gpgcheck=1
+gpgkey=ftp://vasilian.net/RPM-GPG-KEY-vasilian
+protect=0
+priority=90
+EOF
+</pre>
+
+<p>
+CentOS7 (1406 at least) is based on fedora19. I can add this repository and keep it disabled. 
+I use it only for few packages that I cannot find anywhere else (art work, some xfce4 goodies, theme engines, etc).
+</p>
+<pre>
+cat > /etc/yum.repos.d/fedora19.repo << EOF
+[fedora19]
+name=Fedora19 repository as the base for CentOS7
+baseurl=http://archives.fedoraproject.org/pub/archive/fedora/linux/releases/19/Everything/$basearch/os/
+#mirrorlist=
+enabled=0
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-19-primary
+protect=0
+priority=90
+EOF
+</pre>
+
+<p>Now let's get the <a href="https://github.com/xsuchy/fedora-upgrade" target="_blank">gpg-key</a> 
+for <a href="https://getfedora.org/keys/obsolete.html" target="_blank">fedora19</a>
+</p>
+
+<pre>
+cd /tmp
+wget https://getfedora.org/static/FB4B18E6.txt
+mv FB4B18E6.txt RPM-GPG-KEY-fedora-19-primary
+cp /tmp/RPM-GPG-KEY-fedora-19-primary  /etc/pki/rpm-gpg
+chown -v root:root  /etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-19-primary
+chmod 644 /etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-19-primary
+chcon -u system_u -t cert_t -v /etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-19-primary
+</pre>
+
+<p>Use --enablerepo= to install from disabled repository.</p>
+<pre>
+yum --enablerepo=fedora19 install xfce4-mixer
+</pre>
+
+<p>If something gets really broken it is better to remove all f19 packages. Check first what is installed</p>
+
+<pre>
+yum list installed | grep fedora19
+</pre>
+
+<p>Here is how to list the packages dependencies.</p>
+<pre>
+yum install yum-utils
+repoquery --enablerepo=fedora19 --requires pavucontrol
+repoquery --enablerepo=fedora19 --list gnome-desktop
+</pre>
+
+<p>For Mate/Xfce Desktop I always add the beautiful aurora engine.</p>
+<pre>
+yum --enablerepo=fedora19 install gtk-aurora-engine
+</pre>
+
+<p>Xfce themes are not all installed by default.</p>
+<pre>
+yum search engine
+yum install gtk-murrine-engine gtk-unico-engine gtk-xfce-engine gtk2-engines xfce4-session-engines
+</pre>
+
+<p>Bluecurve, Clearlooks, Curvylooks etc.</p>
+
+<pre>
+yum --enablerepo=fedora19 install  bluecurve-cursor-theme bluecurve-icon-theme clearlooks-compact-gnome-theme
+yum --enablerepo=fedora19 install  clearlooks-phenix-common clearlooks-phenix-gtk2-theme clearlooks-phenix-gtk3-theme
+yum --enablerepo=fedora19 install  clearlooks-phenix-xfwm4-theme fedora-icon-theme gnome-theme-curvylooks
+yum --enablerepo=fedora19 install  gnome-themes humanity-icon-theme tango-icon-theme xfce4-icon-theme
+</pre>
+
+<p>Set Thunar automount feature.</p>
+<pre>
+yum install udisks2 gvfs gvfs-fuse gvfs-gphoto2 gvfs-smb gvfs-archive
+yum install thunar-volman ntfs-3g
+</pre>
+
+<p>Set Thunar <a href="https://docs.xfce.org/xfce/thunar/custom-actions" target="_blank">custom actions</a> feature.</p>
+
+<p>Set up <a href="privateinternetaccess.html" target="_blank">Private Internet Access</a>.
+
+<p>Optional install <a href="https://www.cyberciti.biz/faq/centos-linux-install-gcc-c-c-compiler/" target="_blank">the development tools</a>
+
+<p>Optional disable <a href="https://www.how2centos.com/disable-selinux-centos-6/" target="_blank">selinux</a> or use chcon to change file's context</p>
+
+<p>Optional, set grub GRUB_TIMEOUT=600</p>
+
+<p>Optional install <a href="https://www.if-not-true-then-false.com/2010/install-adobe-acrobat-pdf-reader-on-fedora-centos-red-hat-rhel/" target="_blank">acroread</a> 
+if evince is not around.</p>
+ 
+<pre>
+AdbeRdr9.5.5-1_i486linux_enu.rpm requires pangox-compat.i686 (nux-dextop) which may be masked by .x86_64 (epel)
+</pre>
+
+<p>Check if Cannon Pixma MP230 scanner/printer is installed</p>
+<pre>
+rpm -q --requires cnijfilter-mp230series | grep libpangox
+libpangox-1.0.so.0()(64bit)
+libpangoxft-1.0.so.0()(64bit)
+yum info pangox-compat.x86_64    # this shows (epel) as source repo
+</pre>
+
+<p>To install pangox-compat.i686 (nux-dextop) we need to run yum install with (epel) disabled</p>
+
+
+<pre>
+cd /etc/yum.repo.d
+emacs -nw epel.repo        # and set enabled=0
+emacs -nw nux-dextop.repo  # and set enabled=1
+yum search pangox-compat   # now the .i686 version should be visible
+yum install pangox-compat.i686
+emacs -nw epel.repo        # check enabled=1 priority=20 (or similar)
+emacs -nw nux-dextop.repo  # check enabled=1 priority=50 (or similar)
+# now Adobe PDF Reader 32bit should install
+yum localinstall AdbeRdr9.5.5-1_i486linux_enu.rpm libcanberra-gtk2.i686 adwaita-gtk2-theme.i686 PackageKit-gtk3-module.i686
+</pre>
+
+<p>Optional, install Netbeans in 2 steps:</p>
+
+<p>
+a. <a href="https://www.oracle.com/technetwork/java/javase/downloads/jdk-netbeans-jsp-142931.html" target="_blank">JDK+NetBeans</a> 
+from Oracle. <br>
+b. <a href="https://netbeans.org/downloads/index.html" target="_blank">NetBeans for C++</a> from netbeans.org
+</p>
+
+<p>Enable <a href="http://blog.bobbyallen.me/2015/02/14/enabling-anti-aliased-fonts-in-netbeans/" target="_blank">anti-aliased fonts</a> 
+in netbeans.</p>
+
+<p>Optional <a href="https://www.tecmint.com/install-virtualbox-on-redhat-centos-fedora/" target="_blank">virtualbox</a> and 
+<a href="https://wiki.centos.org/HowTos/Virtualization/VirtualBox/CentOSguest" target="_blank">centos as guest</a>.
+</p>
+
+<p>
+Optional vmware-player. On vmware.com <a href="https://my.vmware.com/en/web/vmware/downloads" target="_blank">downloads page</a> 
+get the "VMware Workstation Player" .bundle file, chmod +x and run it as root. It will be installed system wide.
+</p>
+
+<pre>
+cd /usr/bin && ls -la | grep vmware
+/usr/bin/vmware-installer -l                                   # to list all installed products
+/usr/bin/vmware-installer -u {product-name} {product-version}  # to uninstall
+</pre>
+
+<p>Install <a href="https://www.itzgeek.com/how-tos/linux/centos-how-tos/install-kvm-qemu-on-centos-7-rhel-7.html#axzz3YyA5SYtv" target="_blank">kvm-qemu</a> 
+in CentOS-7. By default 'Virtual Machine Manager' shows and error when ran as normal user: "system policy prevents management of local virtualized systems" 
+We need to configure polkit to run virsh as normal user like this:</p>
+
+<pre>
+pkaction --verbose --action-id org.libvirt.unix.manage
+cd /etc/polkit-1/localauthority/50-local.d/
+touch 50-org.example.libvirt-access.pkla
+emacs 50-org.example.libvirt-access.pkla
+
+[libvirt Admin Access]
+Identity=unix-group:virt
+Action=org.libvirt.unix.manage
+ResultAny=yes
+ResultInactive=yes
+ResultActive=yes
+</pre>
+
+<pre>
+cat /etc/group   # if there is no virt group, use kvm or qemu where $USER is added
+usermod -a -G virt $USER
+emacs ~/.bash_aliases
+
+if test -x `which virsh`; then
+    export LIBVIRT_DEFAULT_URI=qemu:///system
+fi
+</pre>
+
+<p>Now 'Virtual Machine Manager' should run without error.</p>
+
+<p>Optional <a href="https://www.mono-project.com/docs/getting-started/install/linux/#centos-fedora-and-derivatives" target="_blank">mono</a> 
+for developers.<br>
+Install a screenshot program.
+</p>
+
+<pre>
+yum install gnome-screenshot
+yum --enablerepo=fedora19 install xfce4-screenshooter
+</pre>
+
+<p>Setup <a href="https://www.krizna.com/centos/setup-network-centos-7/" target="_blank">network on CentOS-7</a></p>
+
+<p>Setup laptop <a href="https://unix.stackexchange.com/questions/229711/why-cant-this-centos-7-server-see-wifi-connections" target="_blank">wifi card</a>.</p>
+
+<p>Gnome Login Sound plays a <a href="http://soundbible.com/tags-computer.html" target="_blank">sound</a> whenever the user logs in.<br>
+Copy the file as /usr/share/sounds/desktop-login.wav <br>
+erase ~/.cache/event-sound-cache.tdb.* <br>
+Check System->Preferences->Startup Applications->GNOME Login Sound, test its command.
+</p>
+
+<pre>
+/usr/bin/canberra-gtk-play --id="desktop-login" --description="GNOME Login" # or
+canberra-gtk-play -f /usr/share/sounds/desktop-login.wav   # or
+aplay /usr/share/sounds/desktop-login.wav
+</pre>
+
+<p>If the server sound seems dead:</p>
+<pre>
+yum remove pulseaudio
+alsamixer # to get a fix
+</pre>
+
+<p>What services can be disabled on CentOS/Fedora14 
+<a href="https://unix.stackexchange.com/questions/9242/which-services-can-be-disabled-on-fedora-14" target="_blank">here</a>
+</p>
+
+<pre>
+systemctl list-unit-files | grep enabled
+
+accounts-daemon.service                     enabled
+auditd.service                              enabled
+chronyd.service                             enabled
+crond.service                               enabled
+dbus-org.freedesktop.NetworkManager.service enabled
+dbus-org.freedesktop.nm-dispatcher.service  enabled
+display-manager.service                     enabled
+gdm.service                                 enabled
+getty@.service                              enabled
+irqbalance.service                          enabled
+kdump.service                               enabled
+lm_sensors.service                          enabled
+mdmonitor.service                           enabled
+microcode.service                           enabled
+NetworkManager-dispatcher.service           enabled
+NetworkManager.service                      enabled
+rsyslog.service                             enabled
+rtkit-daemon.service                        enabled
+systemd-readahead-collect.service           enabled
+systemd-readahead-drop.service              enabled
+systemd-readahead-replay.service            enabled
+tuned.service                               enabled
+default.target                              enabled
+graphical.target                            enabled
+remote-fs.target                            enabled
+</pre>
+
+<p>Optional the <a href="http://hivelogic.com/articles/top-10-programming-fonts/" target="_blank">top 10 programming fonts</a></p>
+
+<pre>
+yum search inconsolata
+yum install levien-inconsolata-fonts
+</pre>
+
+<p>Optional <a href="https://www.marksimonson.com/fonts/view/anonymous-pro" target="_blank">Anonymous Pro Font</a></p>
+
+<pre>
+cd /tmp
+wget http://www.marksimonson.com/assets/content/fonts/AnonymousPro-1.002.zip
+unzip AnonymousPro-1.002.zip
+mv AnonymousPro-1.002.001  /usr/share/fonts/
+cd /usr/share/fonts
+chown -Rv root:root AnonymousPro-1.002.001
+chcon -u system_u -t fonts_t -Rv AnonymousPro-1.002.001/
+fc-cache /usr/share/fonts/AnonymousPro-1.002.001
+</pre>
+
+<p>Monaco (From OSX)</p>
+
+<pre>
+cd /usr/share/fonts
+mkdir Monaco && cd Monaco
+wget http://www.gringod.com/wp-upload/MONACO.TTF  # or manually
+chown -Rv root:root Monaco
+chcon -u system_u -t fonts_t -Rv Monaco/
+fc-cache /usr/share/fonts/Monaco
+</pre>
+
+<br>
+<br>
+<a href="index.html">Back to main index</a>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
