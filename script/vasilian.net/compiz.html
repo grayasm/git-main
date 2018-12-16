@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Install compiz on CentOS</title>
+<link href="main.css" rel="stylesheet" type="text/css" media="all">
+</head>
+<body>
+<a href="index.html">Back to main index</a>
+<h1>Install compiz on CentOS</h1>
+
+<pre>
+yum search compiz
+yum install compiz-mate  compiz  emerald emerald-themes emerald-themes-extra
+
+yum provides gtk-window-decorator
+</pre>
+
+Startup applications
+<pre>
+compiz --replace
+gtk-window-decorator --replace
+</pre>
+
+<br>
+<br>
+<a href="index.html">Back to main index</a>
+</body>
+</html>
+
