@@ -26,3 +26,24 @@ pre {
     padding-left: 1em;
     padding-bottom: 1em;
 }
+table, th, td {
+	border: 1px solid black;
+	border-collapse: collapse;
+	padding: 5px;
+	text-align: left;
+}
+
+table th {
+  background-color: grey;
+  color: white;
+}
+
+table tr:nth-child(even) {
+  background-color: #eee;
+}
+
+table tr:nth-child(odd) {
+ background-color: #fff;
+}
+
+
