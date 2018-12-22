@@ -44,7 +44,7 @@ INSERT INTO sbinary (bval) VALUES (E'\\x012');              -- error
 INSERT INTO sbinary (bval) VALUES (E'\\x01 23 45 67 89');   -- ok
 SELECT * FROM sbinary;
 /*
- id |     bval     
+ id |     bval
 ----+--------------
   1 | \x0123456789
   2 | \x0123456789
@@ -69,7 +69,7 @@ INSERT INTO sbinary (bval) VALUES (E'english text'), -- \x656e676c69736820746578
 SELECT * FROM sbinary WHERE id > 2;
 
 /*
- id |            bval            
+ id |            bval
 ----+----------------------------
   3 | \x656e676c6973682074657874
   4 | \x0061
