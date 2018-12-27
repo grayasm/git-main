@@ -25,7 +25,7 @@ ls -lh
 </pre>
 
 <p>For each repository with enabled=1 add priority=[1 to 99]</p>
-<p>Install <a href="https://fedoraproject.org/wiki/EPEL" target="_blank">epel repo</a>, The Fedora Special Interest Group</p>
+<p>Install epel with priority=30, see <a href="https://fedoraproject.org/wiki/EPEL" target="_blank">epel repo</a>, The Fedora Special Interest Group</p>
 <pre>
 yum install epel-release
 </pre>
@@ -141,7 +141,15 @@ if evince is not around.</p>
 AdbeRdr9.5.5-1_i486linux_enu.rpm requires pangox-compat.i686 (nux-dextop) which may be masked by .x86_64 (epel)
 </pre>
 
-<p>Check if Cannon Pixma MP230 scanner/printer is installed</p>
+
+<p>Get Cannon Pixma MP230 scanner/printer packages</p>
+<pre>
+cd /tmp
+wget ftp://vasilian.net/pixma-mp230/cnijfilter-mp230series-3.80-1-rpm.tar.gz
+wget ftp://vasilian.net/pixma-mp230/scangearmp-mp230series-2.00-1-rpm.tar.gz
+</pre>
+
+<p>Check if it is installed</p>
 <pre>
 rpm -q --requires cnijfilter-mp230series | grep libpangox
 libpangox-1.0.so.0()(64bit)
