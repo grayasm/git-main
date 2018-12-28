@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>debian kernel</title>
+<link href="main.css" rel="stylesheet" type="text/css" media="all">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+</head>
+<body>
+<a href="index.html">Back to main index</a>
+<h1>debian-kernel</h1>
+
+<p>Make sure 
+<a href="https://backports.debian.org/Instructions/" target="_blank">backports</a> 
+repo is added to /etc/apt/source.list</p>
+
+<pre>
+apt-cache search linux-image
+apt-cache search linux-source
+</pre>
+
+<p>To install from backports</p>
+<pre>
+apt-get -t squeeze-backports install "package"
+</pre>
+
+<p>To find current kernel parameters</p>
+<pre>
+cat /boot/config-`uname -r` | grep HZ
+cat /boot/config-`uname -r` | grep PREEMPT
+</pre>
+
+<p>Is timer frequency disabled ?</p>
+
+<pre>
+CONFIG_NO_HZ=y   #disables the next
+CONFIG_HZ=250    #parameter
+</pre>
+
+<p>High resolution timers take priority.</p>
+
+<pre>
+cat /boot/config-`uname -r` | grep CONFIG_HIGH_RES_TIMERS
+CONFIG_HIGH_RES_TIMERS=y
+</pre>
+
+<a href="https://stackoverflow.com/questions/4956206/change-linux-kernel-timer" target="_blank">Timer thread on SO</a><br><br>
+<a href="https://www.advenage.com/topics/linux-timer-interrupt-frequency" target="_blank">Linux kernel timer interrupt frequency</a>
+
+<pre>
+mihk@debian:~/Downloads/tmp$ ./a.out
+kernel timer interrupt frequency is approx. 4016 Hz
+# current freq. > 1000 Hz
+</pre>
+
+<a href="https://wiki.linuxfoundation.org/realtime/documentation/howto/tools/cyclictest/start" target="_blank">High resolution test program</a><br><br>
+<a href="http://forums.debian.net/viewtopic.php?f=16&t=36525" target="_blank">Compile and install the kernel</a>
+<br>
+<br>
+<a href="index.html">Back to main index</a>
+<br>
+</body>
+</html>
