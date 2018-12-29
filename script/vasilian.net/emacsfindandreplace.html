@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>emacs find-and-replace</title>
+<link href="main.css" rel="stylesheet" type="text/css" media="all">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+</head>
+<body>
+<a href="index.html">Back to main index</a>
+<h1>Emacs find-and-replace</h1>
+
+
+<p>Using emacs to recursively
+<a href="http://stackoverflow.com/questions/270930/using-emacs-to-recursively-find-and-replace-in-text-files-not-already-open" target="_blank">
+find-and-replace</a> 
+in text files not already open.
+</p>
+
+<pre>
+M-x find-name-dired: you will be prompted for a root directory and a filename pattern.
+Press   t     to "toggle mark" for all files found.
+Press   Q     for "Query-Replace in Files...": you will be prompted for query/substitution regexps.
+Proceed as with query-replace-regexp: SPACE to replace and move to next match, n to skip a match, etc.
+C-x C-s :    Save the current buffer in its visited file on disk (save-buffer).
+C-x s   :    Save any or all buffers in their visited files (save-some-buffers).
+</pre>
+
+<p>
+More about here: 
+<a href="http://www.delorie.com/gnu/docs/emacs/emacs_113.html" target="_blank">saving files</a>
+</p>
+
+<br>
+<a href="index.html">Back to main index</a>
+</body>
+</html>

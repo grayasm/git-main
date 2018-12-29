@@ -56,14 +56,10 @@ emacs httpd.conf
 
 # change as follows:
 DocumentRoot         "/srv/http"
-
-<Directory           "/srv/http">
-
+&lt;Directory           "/srv/http"&gt;
     AllowOverride    None
-
     Require          all granted
-
-</Directory>
+&lt;/Directory&gt;
 
 # add at the end of file
 IncludeOptional      sites-enabled/*.conf
@@ -76,27 +72,23 @@ cd /etc/httpd/sites-available
 touch vasilian.net.conf           # end edit
 
 # change as follows:
-
-<VirtualHost    *:80>
-
+&lt;VirtualHost    *:80&gt;
     ServerName       www.vasilian.net
-
     ServerAlias      vasilian.net
-
     DocumentRoot     /srv/http/vasilian.net
-
     ErrorLog         /srv/http/vasilian.net/error.log
-
     CustomLog        /srv/http/vasilian.net/requests.log combined
-
-</VirtualHost>
+&lt;/VirtualHost&gt;
 </pre>
 
 <p>Finish the configuration and do the first test.</p>
 <pre>
 ln -s /etc/httpd/sites-available/vasilian.net.conf /etc/httpd/sites-enabled/vasilian.net.conf
-
 systemctl enable httpd.service
-
 systemctl start  httpd.service
 </pre>
+
+<br>
+<a href="index.html">Back to main index</a>
+</body>
+</html>
