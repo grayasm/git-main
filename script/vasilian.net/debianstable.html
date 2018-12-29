@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>debian stable</title>
+<link href="main.css" rel="stylesheet" type="text/css" media="all">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+</head>
+<body>
+<a href="index.html">Back to main index</a>
+<h1>debian-stable</h1>
+
+
+<p>Debian repositories are in /etc/apt/sources.list</p>
+<pre>
+deb       http://site.example.com/debian distribution component1 component2 component3
+deb-src   http://site.example.com/debian distribution component1 component2 component3
+</pre>
+
+<p>Where <br>
+deb = binary <br>
+deb-src = source code<br>
+distribution = name alias (sqeeze, wheezy, jessie, sid) or release class (oldstable, stable, testing, unstable)<br>
+component = main contrib non-free<br>
+
+
+<p>Add wheezy (stable as of 2014.08.10) closest mirror</p>
+
+<pre>
+deb      http://debian.netcologne.de/debian/    wheezy  main contrib non-free
+deb-src  http://debian.netcologne.de/debian/    wheezy  main contrib non-free
+</pre>
+
+<p>Add wheezy multimedia closest mirror</p>
+
+<pre>
+deb     http://debian.netcologne.de/deb-multimedia.org      wheezy main non-free
+deb-src http://debian.netcologne.de/deb-multimedia.org      wheezy main non-free
+</pre>
+
+<p>Update from the repositories</p>
+
+<pre>
+apt-get install deb-multimedia-keyring
+apt-get update
+</pre>
+
+<p>Wheezy Backports - (to be used with precaution) { pepperflashplugin-nonfree }</p>
+
+<pre>
+deb http://debian.netcologne.de/debian wheezy-backports main contrib non-free
+</pre>
+
+<p>Here is how to install from <a href="https://backports.debian.org/Instructions/" target="_blank">backports</a></p>
+
+<p><b>Public key not available</b> (potential problem) see 
+<a href="https://stackoverflow.com/questions/1139127/how-to-trust-a-apt-repository-debian-apt-get-update-error-public-key-is-not-av"
+target="_blank">GPG error</a></p>
+
+<p>Install some nice <a href="https://wiki.debian.org/Fonts" target="_blank">fonts</a></p><br>
+
+<pre>
+apt-get install fonts-liberation  ttf-mscorefonts-installer
+</pre>
+
+<p>Install the fonts packed with <a href="https://wiki.debian.org/ppviewerFonts" target="_blank">PowerPointViewer.exe</a><br>
+As of 12.2018 the .exe is no longer there.</p>
+
+<pre>
+cd ~/Downloads
+wget http://download.microsoft.com/download/E/6/7/E675FFFC-2A6D-4AB0-B3EB-27C9F8C8F696/PowerPointViewer.exe
+file PowerPointViewer.exe
+md5sum PowerPointViewer.exe 
+
+# s35ff8ebbea457ba426b47ff6d8377284  PowerPointViewer.exe 
+sha256sum PowerPointViewer.exe 
+
+# 249473568eba7a1e4f95498acba594e0f42e6581add4dead70c1dfb908a09423  PowerPointViewer.exe
+
+stat PowerPointViewer.exe
+apt-get install unar
+unar PowerPointViewer.exe
+cd PowerPointViewer/
+less EULA
+file EULA
+iconv -f UTF16LE EULA | less
+unar ppviewer.cab
+cd ppviewer/
+file * | grep font
+cp *.TTF *.TTC ~/.fonts/
+
+#-Take care with this
+# cp *.TTF *.TTC  /usr/local/share/fonts
+</pre>
+
+<p>Install <a href="https://wiki.debian.org/PDF" target="_blank">Adbobe PDF Reader</a></p>
+
+<p>From deb-multimedia install</p>
+
+<pre>
+apt-get install acroread mozilla-acroread
+apt-get install xchm  # kchmviewer - requires 80% of kde packages (not for xfce)
+</pre>
+
+<p>Install VirtualBox 4.1.18 or 4.3.12 from wheezy-backports, see <a href="https://wiki.debian.org/VirtualBox" target="_blank">here</a></p>
+
+<p>No sound with version < 4.3.12</p>
+
+<pre>
+apt-get install linux-headers-$(uname -r|sed 's,[^-]*-[^-]*-,,')
+apt-get install -t wheezy-backports virtualbox
+</pre>
+
+<p>Read how to install the <a href="https://wiki.debian.org/NvidiaGraphicsDrivers" target="_blank">nvidia</a> driver</p>
+
+<p>Read how to install <a href="https://wiki.debian.org/skype" target="_blank">skype</a></p>
+
+<p>Enable multi-arch</p>
+
+<pre>
+dpkg --add-architecture i386
+apt-get update
+</pre>
+
+<p>
+This may be obsolete.<br>
+Go to skype.com and download the latest .deb package
+</p>
+
+<pre>
+dpkg -i skype-debian_4.3.0.37-1_i386.deb   # replace version number
+
+# it will fail with missing dependencies; fix it with:
+apt-get install -f
+
+# redo skype install command
+dpkg -i skype-debian_4.3.0.37-1_i386.deb
+
+# if it didn't work download the dynamic version
+tar jxvf skype-4.2.0.13.tar.bz2
+
+mv skype-4.2.0.13 /opt/
+cd /opt
+chown root:root skype-4.2.0.13
+ln -s skype-4.2.0.13 skype
+cd skype
+emacs skype.desktop
+
+
+# change the icon location to
+Icon=/opt/skype/icons/SkypeBlue_256x256.png
+cp skype.desktop /usr/share/applications/
+
+# noticeable the dependencies are:
+libasound2:i386
+libaudio2:i386
+libavahi-client3:i386
+libavahi-common-data:i386
+libavahi-common3:i386
+libcups2:i386
+libdbus-1-3:i386
+libexpat1:i386
+libffi6:i386
+libfontconfig1:i386
+libfreetype6:i386
+libglib2.0-0:i386
+libgmp10:i386
+libgnutls28:i386
+libgssapi-krb5-2:i386
+libgstreamer-plugins-base0.10-0:i386
+libgstreamer0.10-0:i386
+libhogweed2:i386
+libice6:i386
+libjbig0:i386
+libjpeg8:i386
+libk5crypto3:i386
+libkeyutils1:i386
+libkrb5-3:i386
+libkrb5support0:i386
+liblcms1:i386
+libmng1:i386
+libnettle4:i386
+liborc-0.4-0:i386
+libp11-kit0:i386
+libpng12-0:i386
+libqt4-dbus:i386
+libqt4-network:i386
+libqt4-xml:i386
+libqtcore4:i386
+libqtdbus4:i386
+libqtgui4:i386
+libqtwebkit4:i386
+libsm6:i386
+libsqlite3-0:i386
+libssl1.0.0:i386
+libstdc++6:i386
+libtasn1-6:i386
+libtiff5:i386
+libx11-6:i386
+libxau6:i386
+libxcb1:i386
+libxdmcp6:i386
+libxext6:i386
+libxml2:i386
+libxrender1:i386
+libxss1:i386
+libxt6:i386
+libxv1:i386
+</pre>
+
+<p><a href="https://wiki.debian.org/PulseAudio" target="_blank">PulseAudio</a> is required by skype, virtualbox, etc</p>
+
+<pre>
+ps aux | grep pulse
+apt-get install pulseaudio paprefs pavucontrol pavumeter paman
+</pre>
+
+<p>Continue with: gimp, pinta, etc</p>
+
+<br>
+<a href="index.html">Back to main index</a>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
