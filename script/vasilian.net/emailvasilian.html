@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>email on vasilian.net</title>
+<link href="main.css" rel="stylesheet" type="text/css" media="all">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+</head>
+<body>
+<a href="index.html">Back to main index</a>
+<h1>email on vasilian.net</h1>
+
+<p>
+Start reading <a href="https://www.digitalocean.com/community/tutorials/why-you-may-not-want-to-run-your-own-mail-server" target="_blank">this document</a> 
+about why you may not want to run an email server.<br><br>
+
+I decided to use (1) MTA=Postfix (2) MDA=Dovecot and (3) IMAP server.<br><br>
+
+I have not yet decided on Spam Filter, AntiVirus and Webmail.<br><br>
+
+Here is <a href="http://shearer.org/MTA_Comparison" target="_blank">an overview</a> about existing MTA programs.<br><br>
+
+Add required DNS entries for the email programs.<br><br>
+
+Here is <a href="https://www.digitalocean.com/community/tutorials/how-to-create-a-spf-record-for-your-domain-with-google-apps" target="_blank">a guide</a> 
+on why and how to add the SPF record.<br><br>
+
+Here is a <a href="https://en.wikipedia.org/wiki/MX_record" target="_blank">wiki page</a> 
+on the MX record (it will always map to an A, AAA record).
+</p>
+
+<br>
+<img src="images/dns_records.png" alt="DNS records">
+<br>
+
+<p>
+Here is an article about <a href="https://www.wireload.net/news/2011/12/understanding_email_routing_ie_mx-records.html" target="_blank">email routing</a>. 
+Observe the last command: 
+</p>
+
+<pre>
+dig vasilian.net mx
+</pre>
+
+<p>
+We head now further into installing the <a href="https://certbot.eff.org/lets-encrypt/centosrhel7-apache" target="_blank">Let's Encrypt Certbot</a> 
+and creating a SSL certificate for the domain and subdomains.<br>
+
+<pre>
+certbot --apache
+</pre>
+
+<p>
+This will detect only the www and domain name, but will not show the mail. subdomain<br><br>
+
+You have to re-run with <a href="https://certbot.eff.org/docs/using.html#re-creating-and-updating-existing-certificates" target="_blank">expand option</a> 
+to include also the mail.vasilian.net
+</p>
+
+<pre>
+certbot --expand  www.vasilian.net,vasilian.net,mail.vasilian.net
+</pre>
+
+<p>
+Here is a page for <a href="https://www.liquidweb.com/kb/how-to-display-list-all-jobs-in-cron-crontab/" target="_blank">crontab commands</a>  
+to list all jobs for current user or for all users.<br><br>
+
+To easily create a crontab job use <a href="https://crontab-generator.org/" target="_blank">this generator.</a>
+</p>
+
+<pre>
+crontab -l
+* * * * 1 certbot renew >/dev/null 2>&1
+</pre>
+
+<p>
+To check if SSL certificate is installed correctly use the <a href="https://www.ssllabs.com/ssltest/index.html" target="_blank">SSL Server Test page</a>.<br><br>
+
+Now it's time to install postfix and dovecot. The setup will use Maildir format (instead of mbox) and the SSL certificate that was previously generated.<br><br>
+
+I used <a href="https://www.krizna.com/centos/setup-mail-server-centos-7/" target="_blank">this installation guide</a> 
+for postfix and dovecot on CentOS7.<br><br>
+
+An <a href="https://www.digitalocean.com/community/tutorials/how-to-set-up-a-postfix-e-mail-server-with-dovecot" target="_blank">additional installation guide</a> 
+exists at DigitalOcean for Debian.<br><br>
+
+Also <a href="https://helpdesk.ssls.com/hc/en-us/articles/115000618805-Installing-and-configuring-an-SSL-certificate-on-Postfix-Dovecot-mail-server" target="_blank">here a 3rd guide</a>  
+I used for better overview on the parameters. This is for Ubuntu.<br><br>
+
+Here are my final changes for the setup.<br><br>
+
+/etc/postfix/main.cf
+</p>
+
+<pre>
+myhostname = mail.vasilian.net
+mydomain = vasilian.net
+myorigin = $mydomain
+inet_interfaces = all
+mydestination = $myhostname, localhost.$mydomain, localhost, $mydomain
+virtual_alias_maps = hash:/etc/postfix/virtual
+mynetworks = 127.0.0.0/8
+home_mailbox = Maildir/
+smtpd_sasl_type = dovecot
+smtpd_sasl_path = private/auth
+smtpd_sasl_local_domain =
+smtpd_sasl_security_options = noanonymous
+broken_sasl_auth_clients = yes
+smtpd_sasl_auth_enable = yes
+smtpd_recipient_restrictions = permit_sasl_authenticated,permit_mynetworks,reject_unauth_destination
+smtp_tls_security_level = may
+smtpd_tls_security_level = may
+smtp_tls_note_starttls_offer = yes
+smtpd_tls_loglevel = 1
+smtpd_tls_key_file = /etc/letsencrypt/live/vasilian.net/privkey.pem
+smtpd_tls_cert_file = /etc/letsencrypt/live/vasilian.net/fullchain.pem
+smtpd_tls_received_header = yes
+smtpd_tls_session_cache_timeout = 3600s
+tls_random_source = dev:/dev/urandom
+smtpd_use_tls = yes
+smtpd_tls_session_cache_database = btree:${data_directory}/smtpd_scache
+smtp_tls_session_cache_database = btree:${data_directory}/smtp_scache
+</pre>
+
+<br>
+<p>/etc/postfix/master.cf</p>
+
+<pre>
+# ==========================================================================                                                  
+# service type  private unpriv  chroot  wakeup  maxproc command + args                                                        
+#               (yes)   (yes)   (yes)   (never) (100)                                                                         
+# ==========================================================================                                                  
+smtp       inet  n       -       n       -       -       smtpd
+submission inet  n       -       y       -       -       smtpd
+   -o syslog_name=postfix/submission
+   -o smtpd_tls_security_level=may
+   -o smtpd_sasl_auth_enable=yes
+   -o smtpd_reject_unlisted_recipient=yes
+   -o smtpd_recipient_restrictions=permit_sasl_authenticated,reject
+   -o milter_macro_daemon_name=ORIGINATING
+smtps      inet  n       -       y       -       -       smtpd
+   -o syslog_name=postfix/smtps
+   -o smtpd_tls_wrappermode=yes
+   -o smtpd_sasl_auth_enable=yes
+   -o smtpd_reject_unlisted_recipient=yes
+   -o smtpd_recipient_restrictions=permit_sasl_authenticated,reject
+   -o milter_macro_daemon_name=ORIGINATING
+</pre>
+
+<br>
+<p>
+Edit /etc/postfix/virtual <br>
+here replace AT with @ <br>
+</p>
+
+<pre>
+mihaiATvasilian.net    mihai
+rootATvasilian.net     mihai
+</pre>
+
+<br>
+<p>
+Here is <a href="http://www.postfix.org/postconf.5.html#smtpd_reject_unlisted_recipient" target="_blank">a guide on postfix</a> 
+parameters. Of interest here was virtual(5) and $inet_interfaces.<br><br>
+
+However, after /etc/postfix/virtual file is edited the database must be re-generated with:
+</p>
+
+<pre>
+postmap /etc/postfix/virtual
+</pre>
+
+<p>Edit /etc/dovecot/dovecot.conf</p>
+
+<pre>
+protocols = imap pop3 imaps pop3s
+</pre>
+
+<p>Edit /etc/dovecot/conf.d/10-auth.conf.orig</p>
+
+<pre>
+disable_plaintext_auth = yes
+auth_mechanisms = plain login
+</pre>
+
+<p>Edit /etc/dovecot/conf.d/10-mail.conf.orig</p>
+
+<pre>
+mail_location = maildir:~/Maildir
+</pre>
+
+<p>Edit /etc/dovecot/conf.d/10-master.conf.orig</p>
+
+<pre>
+unix_listener /var/spool/postfix/private/auth {
+    mode = 0666
+    user = postfix
+    group = postfix
+}
+</pre>
+
+<p>Edit /etc/dovecot/conf.d/10-ssl.conf.orig</p>
+
+<pre>
+ssl_cert = &lt;/etc/letsencrypt/live/vasilian.net/fullchain.pem
+ssl_key  = &lt;/etc/letsencrypt/live/vasilian.net/privkey.pem
+</pre>
+
+<p>Edit /etc/dovecot/conf.d/20-pop3.conf.orig</p>
+
+<pre>
+pop3_uidl_format = %08Xu%08Xv
+</pre>
+
+<p>
+<a href="https://serverpilot.io/docs/how-to-set-ptr-records-and-reverse-dns" target="_blank">Here is a guide</a> 
+on how to set the reverse dns for DigitalOcean droplet.<br><br>
+
+Rename the droplet from <b>CentOS7-512MB-FRA1-01</b> to <b>vasilian.net</b><br><br>
+
+and DigitalOcean will automatically assign a PTR record for the domain.
+</p>
+
+<img src="images/reverse_dns.png" alt="Reverse DNS">
+
+<p>Check if the IP has a reverse dns with:</p>
+
+<pre>
+host 138.68.68.112
+112.68.68.138.in-addr.arpa domain name pointer vasilian.net.
+</pre>
+
+<br>
+<br>
+<a href="index.html">Back to main index</a>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+

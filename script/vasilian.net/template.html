@@ -15,7 +15,10 @@ The <b>page</b> <i>content</i> goes here.<br>
 While working on this text I realized that I must be really sure not to go over|80 character mark.
 </p>
 </p>
-<!-- Code block -->
+<!--	Code block
+		Inside you cannot use    <Document>    text    </Document>
+		You have to escape as &lt;Document&gt; text &lt;/Document&gt; 
+-->
 <pre>
 yum list installed | grep lightdm
 lightdm.x86_64                 1.25.0-1.el7     @epel
