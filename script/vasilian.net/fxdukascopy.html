@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>FX-Dukascopy</title>
+<link href="main.css" rel="stylesheet" type="text/css" media="all">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+</head>
+<body>
+<a href="index.html">Back to main index</a>
+<h1>FX-Dukascopy</h1>
+
+<br>
+<img src="images/fx-dukascopy.png" alt="FX-Dukascopy">
+<p>Add 2 shortcuts for JForex client (Demo & Live) from Dukascopy</p>  
+
+<pre>
+cd /usr/share/applications
+touch dukascopy-demo.desktop
+touch dukascopy-live.desktop
+
+cat > dukascopy-demo.desktop << EOF
+[Desktop Entry]
+Encoding=UTF-8
+Name=Dukascopy JForex Demo
+Comment=Dukascopy JForex Demo Account
+Exec=javaws https://demo-login.dukascopy.com/client/demo/jclient/jforex.jnlp
+Icon=/usr/share/icons/dukascopy-live.png
+Categories=Application;
+Version=1.0
+Type=Application
+Terminal=0
+EOF
+
+cat > dukascopy-live.desktop << EOF
+[Desktop Entry]
+Encoding=UTF-8
+Name=Dukascopy JForex Live
+Comment=Dukascopy JForex Live Account
+Exec=javaws https://live-login.dukascopy.com/client/live/jclient/jforex.jnlp
+Icon=/usr/share/icons/dukascopy-live.png
+Categories=Application;
+Version=1.0
+Type=Application
+Terminal=0
+EOF
+</pre>
+
+<p>Add the icons. Meantime these <b>were removed from sites.google.com</b></p>
+
+<pre>
+cd /usr/share/icons
+wget https://sites.google.com/site/grayasm/fx/dukascopy-demo.png
+wget https://sites.google.com/site/grayasm/fx/dukascopy-live.png
+chown -v root:root dukascopy*.png
+chmod 644 dukascopy*.png
+</pre>
+
+<p>Troubleshoot an error message:</p>
+
+<pre>
+rmdir ~/.icedtea 
+</pre>
+
+<br>
+<a href="index.html">Back to main index</a>
+</body>
+</html>
