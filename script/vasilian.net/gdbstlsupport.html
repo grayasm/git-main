@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>gdb C++ STL Support</title>
+<link href="main.css" rel="stylesheet" type="text/css" media="all">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+</head>
+<body>
+<a href="index.html">Back to main index</a>
+<h1>gdb C++ STL Support</h1>
+
+<p>
+Read about gdb STL support <a href="http://sourceware.org/gdb/wiki/STLSupport" target="_blank">here</a><br>
+Check-out the latest Python libstdc++ printers to a place on your machine.
+</p>
+
+<pre>
+cd ~/Downloads
+svn co svn://gcc.gnu.org/svn/gcc/trunk/libstdc++-v3/python
+sudo mkdir /opt/gdb_printers
+sudo mv python /opt/gdb_printers/
+sudo chown -Rv root:root /opt/gdb_printers/
+ll /opt/gdb_printers/python
+
+cd ~
+cat > .gdbinit << EOF
+python
+import sys
+sys.path.insert(0, '/opt/gdb_printers/python')
+from libstdcxx.v6.printers import register_libstdcxx_printers
+register_libstdcxx_printers (None)
+end
+EOF
+</pre>
+
+<p>Use command print in gdb console.</p>
+<br>
+<a href="index.html">Back to main index</a>
+</body>
+</html>
