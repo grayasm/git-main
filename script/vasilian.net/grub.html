@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Grub</title>
+<link href="main.css" rel="stylesheet" type="text/css" media="all">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+</head>
+<body>
+<a href="index.html">Back to main index</a>
+<h1>Grub</h1>
+
+<p>
+Grub supports background (RGB 8bit) image via GFXMODE<br><br>
+
+When processing an image in Gimp, set image to RGB 8bit=256 colors via Image->Mode->Indexed and then Export-> as .png<br><br>
+
+For my big screen, download an image 2560x1080, 21:9 aspect ratio<br><br>
+</p>
+
+<pre>
+su
+cd /usr/share/grub
+wget https://sites.google.com/site/grayasm/grub/linux_2560x1080.png
+chown root:root linux_2560x1080.png
+chmod 644 linux_2560x1080.png
+chcon -u system_u -t usr_t linux_2560x1080.png
+</pre>
+
+<p>Setup grub default parameters</p>
+
+<pre>
+cat /etc/default/grub
+
+GRUB_TIMEOUT="600"
+GRUB_BACKGROUND="/usr/share/grub/linux_2560x1080.png"
+GRUB_DISTRIBUTOR="$(sed 's, release .*$,,g' /etc/system-release)"
+GRUB_DEFAULT="saved"
+GRUB_SAVEDEFAULT="true"
+GRUB_DISABLE_SUBMENU="true"
+GRUB_TERMINAL_OUTPUT="gfxterm"
+GRUB_CMDLINE_LINUX="crashkernel=auto"
+GRUB_DISABLE_RECOVERY="true"
+GRUB_GFXMODE="1920x1080"
+export GRUB_COLOR_NORMAL="light-gray/black"
+export GRUB_COLOR_HIGHLIGHT="magenta/black"
+GRUB_DISABLE_OS_PROBER="true"
+</pre>
+
+<p>To edit grub in UI via grub-customizer</p>
+
+<pre>
+yum install grub-customizer
+grub-customizer
+</pre>
+
+<p>Kernel option to boot</p>
+<img src="images/grub-general-settings.png" alt="GRUB General Settings">
+
+<p>Grub background image</p>
+<img src="images/grub-appearance-settings.png" alt="GRUB Appearance Settings">
+
+<p>All options in the advanced tab</p>
+<img src="images/grub-customizer-settings.png" alt="GRUB Customizer Settings">
+
+<p>
+Menu Save option would be equivalent with grub2-mkconfig<br><br>
+Save grug configuration
+</p>
+
+<pre>
+grub2-mkconfig -o /boot/grub2/grub.cfg
+</pre>
+
+<br>
+<a href="index.html">Back to main index</a>
+</body>
+</html>
