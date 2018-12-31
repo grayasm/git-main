@@ -1,56 +1,130 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>Template page</title>
+<title>SELinux</title>
 <link href="main.css" rel="stylesheet" type="text/css" media="all">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 </head>
 <body>
 <a href="index.html">Back to main index</a>
-<h1>H1 header if you need h1</h1>
-<h2>1.1. H2 header if you need h2</h2>
+<h1>SELinux</h1>
+
+<p><a href="https://wiki.centos.org/HowTos/SELinux" target="_blank">selinux</a> (Security-Enhanced Linux (SELinux) 
+is a mandatory access control (MAC) security mechanism implemented in the kernel.)<br><br>
+
+Legacy access control: traditional discretionary access control (DAC)<br>
+
+<pre>
+<b>Modes:</b>
+enforcing : enforce the SELinux security policy, denying access and logging actions
+permissive: only warn and log actions (for debugging)
+disabled  : turned off
+</pre>
+
+<p>To configure selinux rules from a GUI tool, do:</p>
+<pre>
+yum install policycoreutils-gui  policycoreutils  policycoreutils-python
+
+system-config-selinux
+</pre>
+
+<img src="images/selinux-ui.png" alt="selinux ui">
+
+<p>Display SELinux status</p>
+<pre>
+sestatus
+</pre>
+
+<p>Display the security context for a file or folder.</p>
+
+<pre>
+ls -Z /etc/yum.repos.d/
+-rw-r--r--. root root system_u:object_r:system_conf_t:s0 CentOS-Base.repo
+-rw-r--r--. root root system_u:object_r:system_conf_t:s0 CentOS-CR.repo
+-rw-r--r--. root root system_u:object_r:system_conf_t:s0 CentOS-Debuginfo.repo
+-rw-r--r--. root root system_u:object_r:system_conf_t:s0 CentOS-fasttrack.repo
+-rw-r--r--. root root system_u:object_r:system_conf_t:s0 CentOS-Media.repo
+-rw-r--r--. root root system_u:object_r:system_conf_t:s0 CentOS-Sources.repo
+-rw-r--r--. root root system_u:object_r:system_conf_t:s0 CentOS-Vault.repo
+</pre>
+
+
+<p>-Z implemented in most utilities will show the SELinux context</p>
+
+<pre>
+ps axZ
+</pre>
+
+<p>SELinux security context fields <b>unconfirmed_u:object_r:user_home_t:s0</b> are based on <b>user:role:type:mls</b></p>
+
+<p>SELinux security context of Apache web server.</p>
+
+<pre>
+ps axZ | grep httpd
+system_u:system_r:httpd_t:s0   634 ?  Ss  0:00  /usr/bin/httpd -DFOREGROUND
+</pre>
+
+<pre>
+ls -Z $HOME/.bashrc
+-rw-r--r--. mihai mihai unconfined_u:object_r:user_home_t:s0 /home/mihai/.bashrc
+</pre>
+
+<p>Access is allowed between similar types. <b>httpd_t</b> can read <b>httpd_sys_content_t</b> but nothing else, 
+like files from home directory with <b>user_home_t</b>.
+</p>
+
+<p>SELinux may deny access due to:<br><br>
+1) a mislabeled file<br><br>
+
+2) a process running under the wrong SELinux context<br><br>
+
+3) a bug in policy (a rule not anticipated when the policy was written)<br><br>
+
+4) an intrusion attempt<br>
+</p>
+
+<p>Analyse log messages</p>
+
+<pre>
+cat /var/log/audit/audit.log | grep avc     # if auditd service is running or,
+cat /var/log/messages        | grep avc     # if auditd is not running.
+</pre>
+
+<p>Analyze log files in human-readable format.</p>
+
+<pre>
+yum install setroubleshoot
+sealert -b   # gui tool
+sealert -a /var/log/audit/audit.log > /root/mylogfile.txt
+</pre>
+
+<p>Change SELinux security context: chcon  similar with chown,chmod</p>
+
+<pre>
+man chcon   # --user or -u , --role or -r , --type or -t
+
+touch $HOME/file
+chcon --user system_u --role object_r --type usr_t   -v  $HOME/file
+chcon -u unconfined_u -r object_r -t user_home_t -v  $HOME/file
+
+cd /var/www/html
+chcon --type=httpd_sys_content_t index.html  # or recursive and verbose
+chcon -Rv --type=httpd_sys_content_t  /var/www/html
+</pre>
 
 <p>
-The <b>page</b> <i>content</i> goes here.<br>
-While working on this text I realized that I must be really sure not to go over|80 character mark.
-</p>
-</p>
-<!--	Code block
-		Inside you cannot use    <Document>    text    </Document>
-		You have to escape as &lt;Document&gt; text &lt;/Document&gt; 
--->
-<pre>
-yum list installed | grep lightdm
-lightdm.x86_64                 1.25.0-1.el7     @epel
-lightdm-gobject.x86_64         1.25.0-1.el7     @epel
-lightdm-gtk.x86_64             1.8.5-19.el7     @epel
-</pre>
-<!-- Quote block -->
-<pre style="border-left-width: 4px;">
-<b>somebody wrote:</b>
-yum list installed | grep lightdm
-lightdm.x86_64                 1.25.0-1.el7     @epel
-lightdm-gobject.x86_64         1.25.0-1.el7     @epel
-lightdm-gtk.x86_64             1.8.5-19.el7     @epel
-</pre>
-<p>some image to insert</p>
-<img src="images/domain_name_registration.png" alt="domain name registration">
-<p>template of a table</p>
-<table>
-<tr>
-<th>Header 1</th>
-<th>Header 2</th>
-</tr>
-<tr>
-<td>cell 1</td>
-<td>cell 2</td>
-</tr>
-<tr>
-<td>cell 3</td>
-<td>cell 4</td>
-</tr>
-</table>
-<p>and so on...</p>
+The context set with chcon will survive the reboot but not the file system relabeling.<br><br>
 
+Write a policy module and merge it into base local rules.
+</p>
+
+<pre>
+semanage fcontext -a -t httpd_sys_content_t "/html(/.*)?"   # to add a file context of type httpd_sys_content_t for everything under /html.
+</pre>
+
+<p>To relabel the entire filesystem SELinux security context (after it was disabled,upgrade,etc) see the link at the top.</p>
+
+<br>
+<a href="index.html">Back to main index</a>
 </body>
 </html>
