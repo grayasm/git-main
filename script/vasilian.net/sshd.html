@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Secure Shell</title>
+<link href="main.css" rel="stylesheet" type="text/css" media="all">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+</head>
+<body>
+<a href="index.html">Back to main index</a>
+<h1>Secure Shell</h1>
+
+<p>Install openssh with:</p>
+<pre>
+yum install openssh
+</pre>
+
+<p>
+Configure ssh client<br>
+emacs /etc/ssh/ssh_config
+</p>
+<pre>
+Host *
+HashKnownHosts yes
+StrictHostKeyChecking ask
+Protocol 2
+</pre>
+
+
+<p>
+Configure ssh daemon<br>
+emacs /etc/sshd_config
+</p>
+
+<pre>
+Port 22
+ListenAddress 0.0.0.0
+Protocol 2
+PermitRootLogin no
+MaxAuthTries 6
+MaxSessions 10
+PasswordAuthentication no
+ChallengeResponseAuthentication no
+AllowUsers mihai
+Subsystem    sftp    /usr/lib/ssh/sftp-server
+</pre>
+
+<p>
+Open ssh port 22 in firewall (iptables)<br><br>
+
+Check /etc/hosts.allow and /hosts.deny<br><br>
+
+Start the service
+</p>
+
+<pre>
+systemctl  enable  sshd.service
+systemctl  start   sshd
+</pre>
+
+<p>Login to server with the user account and generate the ssh keys</p>
+
+<p>Generate an <b>ECDSA</b> (Elliptic Curve Digital Signature Algorithm) on 521 bits - cannot be imported by Putty</p>
+<pre>
+ssh-keygen -b 521 -t ecdsa
+</pre>
+
+<p>Generate a <b>RSA</b> (Rivest-Shamir-Adleman) on 4096 bits -can be imported by Putty</p>
+<pre>
+ssh-keygen -t rsa -b 4096
+</pre>
+
+<p>Use ecdsa or rsa suffix depending on which key was created<br><br>
+
+The public key (id_ecdsa.pub / id_rsa.pub) contains data for the server<br><br>
+
+The private key (id_ecdsa / id_rsa) contains private data for the client (mobile@localdomain)
+</p>
+
+<pre>
+cat ~/.ssh/id_ecdsa.pub
+cat ~/.ssh/id_ecdsa
+cat ~/.ssh/id_ecdsa.pub >> ~/.ssh/authorized_keys
+chmod 600 ~/.ssh/authorized_keys
+</pre>
+
+<p>Save both keys id_ecdsa and id_ecdsa.pub (email)</p>
+
+<pre>
+rm ~/.ssh/id_ecdsa
+rm ~/.ssh/id_ecdsa.pub
+</pre>
+
+<p>Download private key (id_ecdsa) from email on client computer (mobile#localdomain)</p>
+
+<pre>
+mv ~/.ssh/id_ecdsa ~/.ssh/id_ecdsa_home_key
+chmod 400 ~/.ssh/id_ecdsa_home_key
+</pre>
+
+<p>I do not set a ssh-agent as I need to remember always the pass-phrase for my keys</p>
+
+<p>Login into sshd on my home server (192.168.0.128, port 22)</p>
+
+<pre>
+ssh -l mihai -i ~/.ssh/id_ecdsa_home_key 192.168.0.128
+</pre>
+
+<p>ssh login with X11 forwarding</p>
+<pre>
+ssh -X -l mihai -i ~/.ssh/id_rsa  192.168.0.128
+</pre>
+
+<p>Set up a connection alias</p>
+<pre>
+emacs ~/.bashrc
+
+alias server='ssh -l mihai -i ~/.ssh/id_rsa_home_key 192.168.0.128'
+
+# copy files into server's home over ssh
+scp_copy(){
+    scp -i $HOME/.ssh/id_rsa_home_key $1  mihai@vasilian.net:$HOME
+}
+
+alias scp2server=scp_copy
+</pre>
+
+<br>
+<a href="index.html">Back to main index</a>
+</body>
+</html>
