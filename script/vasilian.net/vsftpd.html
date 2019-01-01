@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>vsftpd</title>
+<link href="main.css" rel="stylesheet" type="text/css" media="all">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+</head>
+<body>
+<a href="index.html">Back to main index</a>
+<h1>vsftpd</h1>
+
+<p>
+Very secure FTP Daemon - lightweight, stable and secure FPT server for UNIX-like systems.<br><br>
+
+Install the server with:
+</p>
+
+<pre>
+yum install vsftpd
+</pre>
+
+<p>
+Before configuring this ftp service understand the difference between:<br><br>
+
+(1) Active FTP and (2) Passive FTP from <a href="http://slacksite.com/other/ftp.html" target="_blank">here</a> <br><br>
+
+The following configuration goes explicit for Passive FTP + handling the firewall rules on the server's iptables. <br><br>
+
+Configuration for anonymous only ( inspired from <a href="https://wjholden.com/vsftpd-help.html" target="_blank">gentoo</a> ) plus additional Passive parameters to match iptables opened ports 40000 to 40099 (100 ports).
+</p>
+
+<pre>
+cat /etc/vsftpd/vsftpd.conf
+
+anonymous_enable=YES
+no_anon_password=YES
+anon_root=/srv/ftp
+
+local_enable=NO
+write_enable=NO
+local_umask=022
+anon_upload_enable=NO
+anon_mkdir_write_enable=NO
+dirlist_enable=YES
+dirmessage_enable=YES
+chown_uploads=NO
+xferlog_enable=YES
+connect_from_port_20=YES
+idle_session_timeout=600
+data_connection_timeout=120
+ascii_upload_enable=NO
+ascii_download_enable=NO
+ftpd_banner=--[ftp service]--
+chroot_local_user=NO
+chroot_list_enable=NO
+# (default follows)
+#chroot_list_file=/etc/vsftpd/vsftpd.chroot_list
+background=YES
+listen=YES
+ls_recurse_enable=NO
+listen=NO
+pam_service_name=vsftpd
+userlist_enable=YES
+tcp_wrappers=YES
+
+
+# passive FTP (PASV command)
+pasv_enable=YES
+port_enable=YES
+ftp_data_port=20
+listen_port=21
+max_clients=100
+max_per_ip=100
+max_login_fails=3
+pasv_min_port=40000
+pasv_max_port=40099
+</pre>
+
+<p>Start server  (watch the errors related to /etc/vsftpd/vsftpd.conf content)</p>
+
+<pre>
+systemctl  start  vsftpd.service
+systemctl  enable vsftpd.service
+</pre>
+
+<p>Configure iptables firewall rules (TCP is a new chain where all tcp traffic is forwarded from INPUT chain)</p>
+<pre>
+iptables -A TCP -p tcp --dport 20 -j ACCEPT
+iptables -A TCP -p tcp --dport 21 -j ACCEPT
+iptables -A TCP -p tcp --dport 40000:40099 -j ACCEPT
+</pre>
+
+<p>
+FTP does not implement udp protocol<br><br>  
+
+<a href="http://ftptest.net/" target="_blank">Check</a> if the server is running and accesible (check DSL router also for port forwarding).
+</p>
+
+<br>
+<a href="index.html">Back to main index</a>
+</body>
+</html>
