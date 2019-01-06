@@ -31,7 +31,8 @@ CUSTOM INITIALIZATION
 
 START THE SERVICE
 -----------------
-    # change $PGDATA (to custom db location)
+    # change $PGDATA (to custom db location) !!!The .service file is overwritten
+    #                                           when updating CentOS system
     emacs /usr/lib/systemd/system/postgresql.service &
 
     # Location of database directory
@@ -45,6 +46,18 @@ START THE SERVICE
 
     # check if default database directory is empty
     ll /var/lib/pgsql/data
+
+TIMEZONE
+--------------
+    # The data type "timestamp with time zone" will use the timezone=
+    # setting from postgresql.conf in the data directory.
+    emacs /mnt/sdb1/1TBpostgres/pgsql/data/postgresql.conf
+
+    log_timezone = 'GMT'
+    timezone = 'GMT'
+
+    # reload the postgresql.conf file
+    systemctl restart postgresql.service
 
 
 ADMINISTRATION
