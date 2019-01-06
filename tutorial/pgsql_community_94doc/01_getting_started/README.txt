@@ -49,14 +49,15 @@ START THE SERVICE
 
 TIMEZONE
 --------------
-    # The data type "timestamp with time zone" will use the timezone=
-    # setting from postgresql.conf in the data directory.
+    # Set TimeZone, DateStyle and IntervalStyle in postgresql.conf
     emacs /mnt/sdb1/1TBpostgres/pgsql/data/postgresql.conf
 
-    log_timezone = 'GMT'
     timezone = 'GMT'
+    log_timezone = 'GMT'
+    datestyle = 'iso, mdy'
+    intervalstyle = 'postgres'
 
-    # reload the postgresql.conf file
+    # save and reload the postgresql.conf file
     systemctl restart postgresql.service
 
 
