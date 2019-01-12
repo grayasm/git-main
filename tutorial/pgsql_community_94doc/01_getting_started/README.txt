@@ -87,7 +87,7 @@ ADMINISTRATION
     nmap localhost
     5432/tcp open   postgresql
 
-    # from current logged user (miha) start pgadmin3
+    # from current logged user (mihai) start pgadmin3
     pgadmin3
 
     # add connection to a server with the following details:
@@ -116,7 +116,7 @@ WORK AS REGULAR USER
     # Password: ***nix/usr pass***
 
 
-    # pgadmin3 allow to save, change and run .sql files on selected database.
+    # pgadmin3 allows to save, change and run .sql files on selected database.
 
     # to login from console to db as user pgmihai, type from regular account:
     psql -d mytestdb -U pgmihai
