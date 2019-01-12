@@ -151,7 +151,7 @@ SELECT * FROM tstampwtz;
 
    DateStyle takes 2 values:
        1st) the default date/time output, e.g. ISO outputs YYYY-MM-DD
-       2nd) the interpretation of ambigous input, e.g. input is one of MDY forms
+       2nd) the interpretation of ambiguous input, e.g. input is one of MDY forms
 
    Possible values are:
    ISO: ISO8601 style dates and times (YYYY-MM-DD HH:MM:SS). This is default.
@@ -172,7 +172,7 @@ SHOW DateStyle;
 
 INSERT INTO date0 (date_) VALUES
        ('1999-01-08'), -- ISO 8601; January 8 in any mode (recommended format)
-  ('January 8, 1999'), -- unambigous in any datestyle input mode
+  ('January 8, 1999'), -- unambiguous in any datestyle input mode
          ('1/8/1999'), -- January 8 in MDY mode; August 1 in DMY mode
         ('1/18/1999'), -- January 18 in MDY mode; rejected in other modes
          ('01/02/03'), -- January 2, 2003 in MDY mode
