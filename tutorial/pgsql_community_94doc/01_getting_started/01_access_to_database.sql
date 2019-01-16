@@ -4,6 +4,8 @@
     (b) from command line:
     psql -d mytestdb -U pgmihai
     \i 01_test.sql
+    help:  \?
+    clear: \qecho '\033[2J'
 */
 
 SELECT version();
