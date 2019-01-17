@@ -278,7 +278,7 @@ SELECT * FROM timewtz;
    sql_standard    : +6-5 +4 +3:02:01
    postgres        : 6 years 5 mons 4 days 03:02:01
    postgres_verbose: @ 6 years 5 mons 4 days 3 hours 2 mins 1 sec
-   iso8601         : P6Y5M4DT3H2M1S
+   iso_8601        : P6Y5M4DT3H2M1S
 */
 
 -- input examples:
