@@ -7,9 +7,9 @@
 general {
         colors = true
         interval = 1
-        color_good = "#FF00FF"
-        color_bad = "#FF00FF"
-        color_degraded = "#FF00FF"
+        color_good = "#98FF80"          # light-green,  wifi OK
+        color_degraded = "#FFE580"      # light-orange, bad signal
+        color_bad =  "#FF8082"          # light-red,    no signal
         output_format = "i3bar"
 }
 
