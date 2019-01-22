@@ -130,3 +130,33 @@ GET STARTED
     \dt a_table_name  -- to see the table description
     \df               -- to list all functions
     \?                -- further help
+
+
+MIGRATE DATABASE TO MAJOR VERSION (9.2->11.1)
+---------------------------------------------
+    # 1) dump "mytestdb" with version 9.2 and backup pgsql directory
+    su - postgres
+    cd ~
+    pwd
+    /var/lib/pgsql
+    pg_dump -U pgmihai -Fc mytestdb > mytestdb.dump
+    # exit to root, /tmp
+
+    systemctl stop     postgresql.service
+    systemctl disable  postgresql.service
+    mv /var/lib/pgsql /var/lib/pgsql.old
+
+    # 2) uninstall version 9.2 and install version 11.1
+    # 3) run from the beginning all the steps for INITIALIZATION, ADMINISTRATION
+    #    and WORKING AS REGULAR USER, up to creating "mytestdb"
+
+    su - postgres
+    /usr/pgsql-11/bin/pgsql
+    DROP DATABASE IF EXISTS mytestdb;
+    \q
+
+
+    # 4) restore "mytestdb" from the .dump file
+    /usr/pgsql-11/bin/pg_restore -U postgres -C -d postgres -Fc mytestdb.dump
+    '***root*** pass'
+    # done.
