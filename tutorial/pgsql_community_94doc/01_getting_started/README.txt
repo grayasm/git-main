@@ -1,6 +1,6 @@
-----------------
-INSTALL PACKAGES
-----------------
+----------------------------
+INSTALL PACKAGES (ver. 9.2)
+----------------------------
     yum info postgresql
     yum info pgadmin3
 
@@ -132,9 +132,11 @@ GET STARTED
     \?                -- further help
 
 
-MIGRATE DATABASE TO MAJOR VERSION (9.2->11.1)
----------------------------------------------
-    # 1) dump "mytestdb" with version 9.2 and backup pgsql directory
+MIGRATE THE DATABASE TO A NEW MAJOR VERSION (9.2 -> 11.1)
+---------------------------------------------------------
+    # Dump "mytestdb" with current version (9.2)
+
+    # as root from /tmp
     su - postgres
     cd ~
     pwd
@@ -144,19 +146,20 @@ MIGRATE DATABASE TO MAJOR VERSION (9.2->11.1)
 
     systemctl stop     postgresql.service
     systemctl disable  postgresql.service
+
+    # Backup pgsql when DB is in a custom location
+    mv /mnt/sdb1/1TBpostgres/pgsql  /mnt/sdb1/1TBpostgres/pgsql.old
+
+    # Backup pgsql when DB is the default directory
     mv /var/lib/pgsql /var/lib/pgsql.old
 
-    # 2) uninstall version 9.2 and install version 11.1
-    # 3) run from the beginning all the steps for INITIALIZATION, ADMINISTRATION
-    #    and WORKING AS REGULAR USER, up to creating "mytestdb"
 
-    su - postgres
-    /usr/pgsql-11/bin/pgsql
-    DROP DATABASE IF EXISTS mytestdb;
-    \q
+UNINSTALL THE SERVER
+--------------------
+    yum remove postgresql postgresql-contrib postgresql-libs postgresql-server
+    yum remove pgadmin3
+    yum remove pgcenter pg_top pg_view
 
-
-    # 4) restore "mytestdb" from the .dump file
-    /usr/pgsql-11/bin/pg_restore -U postgres -C -d postgres -Fc mytestdb.dump
-    '***root*** pass'
-    # done.
+---------------------------
+CONTINUE WITH README-11.txt
+---------------------------
