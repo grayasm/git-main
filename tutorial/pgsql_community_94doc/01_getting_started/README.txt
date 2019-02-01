@@ -132,26 +132,23 @@ GET STARTED
     \?                -- further help
 
 
-MIGRATE THE DATABASE TO A NEW MAJOR VERSION (9.2 -> 11.1)
----------------------------------------------------------
+MIGRATE THE DATABASE ( VERSION 9.2 to 11.1)
+-------------------------------------------
     # Dump "mytestdb" with current version (9.2)
 
-    # as root from /tmp
+    # for the custom installation
     su - postgres
-    cd ~
-    pwd
-    /var/lib/pgsql
+    cd /mnt/sdb1/1TBpostgres/pgsql
     pg_dump -U pgmihai -Fc mytestdb > mytestdb.dump
     # exit to root, /tmp
+
 
     systemctl stop     postgresql.service
     systemctl disable  postgresql.service
 
-    # Backup pgsql when DB is in a custom location
+    su - postgres
     mv /mnt/sdb1/1TBpostgres/pgsql  /mnt/sdb1/1TBpostgres/pgsql.old
-
-    # Backup pgsql when DB is the default directory
-    mv /var/lib/pgsql /var/lib/pgsql.old
+    # exit to root, /tmp
 
 
 UNINSTALL THE SERVER

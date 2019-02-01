@@ -1,36 +1,51 @@
------------------------------
+----------------------------------------
+BACKUP CURRENT DATABASE - SEE README.txt
+----------------------------------------
+
 INSTALL PACKAGES (ver. 11.1)
 -----------------------------
 
     rpm -Uvh https://yum.postgresql.org/11/redhat/rhel-7-x86_64/pgdg-centos11-11-2.noarch.rpm
     emacs /etc/yum.repos.d/pgdg-11-centos.repo
-    # priority=50
+    # priority=9
 
-    yum clean all
-    yum update
-    yum search postgresql11
-    yum install postgresql11 postgresql11-contrib postgresql11-libs \
-                postgresql11-server
-    yum install pg_top11
-
-    # HN: What a clusterfuck of a disaster pgadmin4 is.
-    #     Fails to install due to pgadmin4-web's python dependencies
+    yum info postgresql11
     yum info pgadmin4
+
+    yum install postgresql11 postgresql11-contrib postgresql11-libs postgresql11-server
+    yum install pgadmin4
+    yum install pgcenter pg_top11
 
 
 DEFAULT INITIALIZATION
 ----------------------
-    # default database location is /var/lib/pgsql/11/data
-    ls -l /usr/pgsql-11/bin
+    # in default location: /var/lib/pgsql/data
     sudo /usr/pgsql-11/bin/postgresql-11-setup initdb
 
-CUSTOM INITIALIZATION (see README.txt)
---------------------------------------
+
+CUSTOM INITIALIZATION
+---------------------
+    # to initialize the database at a different location:
+    mkdir -pv /mnt/sdb1/1TBpostgres/pgsql
+    chmod 700 /mnt/sdb1/1TBpostgres
+    chown -Rv postgres:postgres /mnt/sdb1/1TBpostgres/pgsql
+    chcon -u system_u -r object_r -t postgresql_db_t \
+          -Rv /mnt/sdb1/1TBpostgres/pgsql
+
+    su - postgres
+    /usr/pgsql-11/bin/initdb -D /mnt/sdb1/1TBpostgres/pgsql/data
+    # exit to root, /tmp    
+
+
 START THE SERVICE
 -----------------
-    # change $PGDATA (to custom db location) if needed
-    locate postgresql-11.service
+    # change $PGDATA (to custom db location) !!!The .service file is overwritten
+    #                                           when updating CentOS system
     emacs /usr/lib/systemd/system/postgresql-11.service &
+
+    # Environment=PGDATA=/var/lib/pgsql/data
+    Environment=PGDATA=/mnt/sdb1/1TBpostgres/pgsql/data
+
 
     systemctl enable postgresql-11.service
     systemctl start  postgresql-11.service
@@ -39,8 +54,10 @@ START THE SERVICE
     # check if default database directory is empty
     ll /var/lib/pgsql/11/data
 
-TIMEZONE (use README.txt)
--------------------------
+*********************************
+TIMEZONE (same as in  README.txt)
+*********************************
+
 ADMINISTRATION
 --------------
     # (a) set a password for server administrator 'postgres'
@@ -51,7 +68,7 @@ ADMINISTRATION
     exit  # to root
 
     # (b) enable socket connections for all users on localhost
-    emacs /var/lib/pgsql/11/data/pg_hba.conf &
+    emacs /mnt/sdb1/1TBpostgres/pgsql/data/pg_hba.conf &
 
     # custom configuration (mihai)
     # TYPE  DATABASE        USER            ADDRESS                 METHOD
@@ -77,7 +94,14 @@ RESTORE THE DATABASE
     \q
 
     # restore "mytestdb" from the .dump file
-    cd /var/lib/pgsql.old
+    cd /mnt/sdb1/1TBpostgres/pgsql.old
     /usr/pgsql-11/bin/pg_restore -U postgres -C -d postgres -Fc mytestdb.dump
     '***root*** pass'
+    
     # done
+
+
+PGADMIN4
+--------
+    cat /var/log/httpd/error_log
+    IOError: [Errno 13] Permission denied: '/var/log/pgadmin/pgadmin4.log'
