@@ -4,17 +4,11 @@ all:
 clean:
 	echo "Done"
 
-
-# Either install all files invidually or run a for loop over win10-fonts dir:
-#
-# for file in /path/to/win10-fonts/*;do
-#     install -m 755 "$file" ~/
-# done
-
+# Copy this as Makefile inside win10-fonts.tar.gz
 
 # make DESTDIR=/opt/win10-fonts install
 install:
-	install -D -m 0644 AdobeArabic-BoldItalic.otf 	$(DESTDIR)/AdobeArabic-BoldItalic.otf
+	install -D -m 0644 AdobeArabic-BoldItalic.otf	$(DESTDIR)/AdobeArabic-BoldItalic.otf
 	install -D -m 0644 AdobeArabic-Bold.otf			$(DESTDIR)/AdobeArabic-Bold.otf
 	install -D -m 0644 AdobeArabic-Italic.otf		$(DESTDIR)/AdobeArabic-Italic.otf
 	install -D -m 0644 AdobeArabic-Regular.otf		$(DESTDIR)/AdobeArabic-Regular.otf
@@ -413,6 +407,13 @@ install:
 	install -D -m 0644 yumindb.ttf					$(DESTDIR)/yumindb.ttf
 	install -D -m 0644 yuminl.ttf					$(DESTDIR)/yuminl.ttf
 	install -D -m 0644 yumin.ttf					$(DESTDIR)/yumin.ttf
+
+
+# An easier solution may be to loop over win10-fonts/* and install each file:
+#
+# for file in /path/to/win10-fonts/*;do
+#     install -m 755 "$file" ~/
+# done
 
 
 .PHONY: all clean install
