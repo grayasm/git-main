@@ -1,12 +1,12 @@
 /*  Cap.2 The SQL Language,
-2.3 Creating a new table.
+    2.3 Creating a new table.
 
-Run with:
-psql -d mytestdb -U pgmihai   # give password
-\i 01_create_new_table.sql
+    Run with:
+    psql -d mytestdb -U pgmihai   # give password
+    \i 01_create_new_table.sql
 
-If table already exists, delete it with
-DROP TABLE <table_name>;
+    If table already exists, delete it with
+    DROP TABLE <table_name>;
 */
 
 CREATE TABLE weather(
@@ -19,7 +19,7 @@ CREATE TABLE weather(
 
 
 /*  The second example will store cities and their associated
-geographical location:
+    geographical location:
 */
 CREATE TABLE cities(
        name        varchar(80),

@@ -11,8 +11,8 @@
     after November 28. You can correct the data as follows:
 */
 UPDATE weather
-	SET temp_hi = temp_hi - 2, temp_lo = temp_lo - 2
-	WHERE date > '1994-11-28';
+       SET temp_hi = temp_hi - 2, temp_lo = temp_lo - 2
+       WHERE date > '1994-11-28';
 
 /*
      city      | temp_lo | temp_hi | prcp |    date

@@ -19,13 +19,13 @@ INSERT INTO cities VALUES ('San Francisco', '(-194.0, 53.0)');
     An alternative syntax allows you to list the columns explicitly.
 */
 INSERT INTO weather (city, temp_lo, temp_hi, prcp, date)
-	VALUES ('San Francisco', 43, 57, 0.0, '1994-11-29');
+       VALUES ('San Francisco', 43, 57, 0.0, '1994-11-29');
 
 /*  You can list the columns in a different order if you wish or even omit
     some columns, e.g. if the precipitation is unknown.
 */
 INSERT INTO weather (date, city, temp_hi, temp_lo)
-	VALUES ('1994-11-29', 'Hayward', 54, 37);
+       VALUES ('1994-11-29', 'Hayward', 54, 37);
 
 /*  Copy 03_weather.txt to /tmp before running this .sql file
     On CentOS only DB superuser is allowed to COPY from file.

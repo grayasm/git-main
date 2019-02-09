@@ -20,7 +20,7 @@ SELECT max(temp_lo) FROM weather;
     In this case we accomplish the desired result by using a SUBQUERY.
 */
 SELECT city FROM weather
-	WHERE temp_lo = (SELECT max(temp_lo) FROM weather);
+       WHERE temp_lo = (SELECT max(temp_lo) FROM weather);
 
 
 /*  Aggregates are also useful in combination with GROUP BY clauses.
@@ -28,26 +28,26 @@ SELECT city FROM weather
     with:
 */
 SELECT city, max(temp_lo)
-	FROM weather
-	GROUP BY city;
+       FROM weather
+       GROUP BY city;
 
 
 /*  We can filter these grouped rows using HAVING.
 */
 SELECT city, max(temp_lo)
-	FROM weather
-	GROUP BY city
-	HAVING max(temp_lo) < 40;
+       FROM weather
+       GROUP BY city
+       HAVING max(temp_lo) < 40;
 
 
 /*  Finally, if we only care about cities whose names begin with "S" we might
     do:
 */
 SELECT city, max(temp_lo)
-	FROM weather
-	WHERE city LIKE 'S%'
-	GROUP BY city
-	HAVING max(temp_lo) < 40;
+       FROM weather
+       WHERE city LIKE 'S%'
+       GROUP BY city
+       HAVING max(temp_lo) < 40;
 
 
 /*  The fundamental different beween WHERE and HAVING is this:
