@@ -1,4 +1,5 @@
-xterm*faceName: Monospace:size=10
+xterm*faceName: Consolas:size=14
+#xterm*faceName: Monospace:size=13
 XTerm*background: gray13
 XTerm*foreground: white
 XTerm*pointerColor: red
