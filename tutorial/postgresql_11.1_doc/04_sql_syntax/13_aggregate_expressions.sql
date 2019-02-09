@@ -1,18 +1,18 @@
 /*  Chapter 4.2 Value Expressions
     4.2.7 Aggregate Expressions
-	
-	psql -d mytestdb -U pgmihai
-	\dt  --list all tables
-	\df  --list all functions
-	\i 13_aggregate_expressions.sql
+
+    psql -d mytestdb -U pgmihai
+    \dt  --list all tables
+    \df  --list all functions
+    \i 13_aggregate_expressions.sql
 */
 
 /*  Aggregate functions compute a single result from a set of input values.
-	They are split in 3 categories:
-	1) general purpose aggregate functions
-	2) aggregate functions for statistics
-	3) ordered-set aggregate functions
-	4) hypothetical-set aggregate functions
+    They are split in 3 categories:
+    1) general purpose aggregate functions
+    2) aggregate functions for statistics
+    3) ordered-set aggregate functions
+    4) hypothetical-set aggregate functions
 */
 
 DROP TABLE IF EXISTS my_table CASCADE;
@@ -36,7 +36,7 @@ SELECT avg(salary) FROM my_table;
  37142.8571428571
  */
 
- 
+
 --  2) Aggregate functions for statistics
 /* regr_count(Y, X)  ;number of input rows in which both expressions are nonnull
 */
