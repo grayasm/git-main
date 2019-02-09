@@ -11,9 +11,9 @@
 DROP TABLE IF EXISTS empsalary;
 
 CREATE TABLE empsalary(
-	depname		varchar(80),
-	empno		int,
-	salary		real
+       depname        varchar(80),
+       empno          int,
+       salary         real
 );
 
 INSERT INTO empsalary VALUES ('develop', 11, 5200);
@@ -34,11 +34,11 @@ INSERT INTO empsalary VALUES ('sales', 4, 4800);
     single output row - the rows retain their separate identities.
 */
 SELECT depname, empno, salary, avg(salary)
-	OVER (PARTITION BY depname)
-	FROM empsalary;
+       OVER (PARTITION BY depname)
+       FROM empsalary;
 
 /*
-  depname  | empno | salary |       avg        
+  depname  | empno | salary |       avg
 -----------+-------+--------+------------------
  develop   |    11 |   5200 |             5020
  develop   |     7 |   4200 |             5020
@@ -61,11 +61,11 @@ SELECT depname, empno, salary, avg(salary)
     into the same partition as the current row.
 */
 SELECT depname, empno, salary, rank()
-	OVER (PARTITION BY depname ORDER BY salary DESC)
-	FROM empsalary;
+       OVER (PARTITION BY depname ORDER BY salary DESC)
+       FROM empsalary;
 
 /*
-  depname  | empno | salary | rank 
+  depname  | empno | salary | rank
 -----------+-------+--------+------
  develop   |     8 |   6000 |    1
  develop   |    10 |   5200 |    2
@@ -92,7 +92,7 @@ SELECT depname, empno, salary, rank()
 SELECT salary, sum(salary) OVER() FROM empsalary;
 
 /*
- salary |  sum  
+ salary |  sum
 --------+-------
    5200 | 47100
    4200 | 47100
@@ -110,11 +110,11 @@ SELECT salary, sum(salary) OVER() FROM empsalary;
 /*  If we add an ORDER BY clause, we get very different results.
 */
 SELECT depname, salary, sum(salary)
-	OVER (ORDER BY salary)
-	FROM empsalary;
+       OVER (ORDER BY salary)
+       FROM empsalary;
 
 /*
-  depname  | salary |  sum  
+  depname  | salary |  sum
 -----------+--------+-------
  personnel |   3500 |  3500
  personnel |   3900 |  7400
@@ -136,14 +136,14 @@ SELECT depname, salary, sum(salary)
     are performed, you can use a sub-select.
 */
 SELECT depname, empno, salary
-    FROM (SELECT depname, empno, salary, rank()
-          OVER (PARTITION BY depname ORDER BY salary DESC, empno) AS pos
-          FROM empsalary
-         ) AS ss
-    WHERE pos < 3;
+       FROM (SELECT depname, empno, salary, rank()
+            OVER (PARTITION BY depname ORDER BY salary DESC, empno) AS pos
+            FROM empsalary
+            ) AS ss
+       WHERE pos < 3;
 
 /*
-  depname  | empno | salary 
+  depname  | empno | salary
 -----------+-------+--------
  develop   |     8 |   6000
  develop   |    10 |   5200
@@ -151,7 +151,7 @@ SELECT depname, empno, salary
  personnel |     5 |   3500
  sales     |     1 |   5000
  sales     |     3 |   4800
-*/	
+*/
 
 
 /*  The above query shows the rows from the inner query having rank() less
@@ -161,11 +161,11 @@ SELECT depname, empno, salary
     be named in a WINDOW clause and then referenced in OVER.
  */
 SELECT sum(salary) OVER w, avg(salary) OVER w
-	FROM empsalary
-	WINDOW w AS (PARTITION BY depname ORDER BY salary DESC);
+       FROM empsalary
+       WINDOW w AS (PARTITION BY depname ORDER BY salary DESC);
 
 /*
-  sum  |       avg        
+  sum  |       avg
 -------+------------------
   6000 |             6000
  16400 | 5466.66666666667

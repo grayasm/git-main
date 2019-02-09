@@ -30,16 +30,16 @@ INSERT INTO branches VALUES('Detroit', 65000000.0);  -- 65 mil
 BEGIN;
 UPDATE accounts SET balance = balance - 100.00 WHERE name  = 'Alice';
 UPDATE branches SET balance = balance - 100.00
-	WHERE name = (SELECT branch_name FROM accounts WHERE name = 'Alice');
+       WHERE name = (SELECT branch_name FROM accounts WHERE name = 'Alice');
 UPDATE accounts SET balance = balance + 100.00 WHERE name = 'Bob';
 UPDATE branches SET balance = balance + 100.00
-	WHERE name = (SELECT branch_name FROM accounts WHERE name = 'Bob');
+       WHERE name = (SELECT branch_name FROM accounts WHERE name = 'Bob');
 COMMIT;
 
 -- list content of accounts;
 SELECT * FROM accounts ORDER BY name;
 /*
- name  | branch_name | balance 
+ name  | branch_name | balance
 -------+-------------+---------
  Alice | New York    | 1100.12
  Bob   | Chicago     |  525.43
@@ -54,16 +54,16 @@ SELECT * FROM accounts ORDER BY name;
 BEGIN;
 UPDATE accounts SET balance = balance - 100.00 WHERE name  = 'Alice';
 UPDATE branches SET balance = balance - 100.00
-	WHERE name = (SELECT branch_name FROM accounts WHERE name = 'Alice');
+       WHERE name = (SELECT branch_name FROM accounts WHERE name = 'Alice');
 UPDATE accounts SET balance = balance + 100.00 WHERE name = 'Bob';
 UPDATE branches SET balance = balance + 100.00
-	WHERE name = (SELECT branch_name FROM accounts WHERE name = 'Bob');
+       WHERE name = (SELECT branch_name FROM accounts WHERE name = 'Bob');
 ROLLBACK;
 
 -- list content of accounts;
 SELECT * FROM accounts ORDER BY name;
 /*
- name  | branch_name | balance 
+ name  | branch_name | balance
 -------+-------------+---------
  Alice | New York    | 1100.12
  Bob   | Chicago     |  525.43
@@ -79,23 +79,23 @@ SELECT * FROM accounts ORDER BY name;
 BEGIN;
 UPDATE accounts SET balance = balance - 100.00 WHERE name  = 'Alice';
 UPDATE branches SET balance = balance - 100.00
-	WHERE name = (SELECT branch_name FROM accounts WHERE name = 'Alice');
+       WHERE name = (SELECT branch_name FROM accounts WHERE name = 'Alice');
 SAVEPOINT alice_savepoint;
 
 UPDATE accounts SET balance = balance + 100.00 WHERE name = 'Bob';
 UPDATE branches SET balance = balance + 100.00
-	WHERE name = (SELECT branch_name FROM accounts WHERE name = 'Bob');
+       WHERE name = (SELECT branch_name FROM accounts WHERE name = 'Bob');
 ROLLBACK TO alice_savepoint;
 
 UPDATE accounts SET balance = balance + 100.00 WHERE name = 'Wally';
 UPDATE branches SET balance = balance + 100.00
-	WHERE name = (SELECT branch_name FROM accounts WHERE name = 'Wally');
+       WHERE name = (SELECT branch_name FROM accounts WHERE name = 'Wally');
 COMMIT;
 
 -- list content of accounts;
 SELECT * FROM accounts ORDER BY name;
 /*
- name  | branch_name | balance 
+ name  | branch_name | balance
 -------+-------------+---------
  Alice | New York    | 1000.12
  Bob   | Chicago     |  525.43

@@ -12,8 +12,8 @@ DROP TABLE IF EXISTS cities;
 
 /*  Inheritance is a concept from object-oriented databases. It opens up
     interesting new posibilities of database design.
-	For this example, capitals are also cities. We want an easy eay to list
-	all cities including the capitals and to update/write to DB fast.
+    For this example, capitals are also cities. We want an easy eay to list
+    all cities including the capitals and to update/write to DB fast.
 */
 CREATE TABLE cities (name text, population real, altitude int);
 CREATE TABLE capitals(stats char(2)) INHERITS (cities);
@@ -34,7 +34,7 @@ SELECT name, altitude FROM cities WHERE altitude > 500;
  Madison   |      845
 */
 
- 
+
 /*  To find all the cities that are not state capitals at altitude > 500
 */
 SELECT name, altitude FROM ONLY cities WHERE altitude > 500;
