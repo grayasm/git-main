@@ -34,7 +34,7 @@ CUSTOM INITIALIZATION
 
     su - postgres
     /usr/pgsql-11/bin/initdb -D /mnt/sdb1/1TBpostgres/pgsql/data
-    # exit to root, /tmp    
+    # exit to root, /tmp
 
 
 START THE SERVICE
@@ -97,7 +97,7 @@ RESTORE THE DATABASE
     cd /mnt/sdb1/1TBpostgres/pgsql.old
     /usr/pgsql-11/bin/pg_restore -U postgres -C -d postgres -Fc mytestdb.dump
     '***root*** pass'
-    
+
     # done
 
 
