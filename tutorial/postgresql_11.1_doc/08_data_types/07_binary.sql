@@ -3,7 +3,10 @@
 
     psql -d mytestdb -U pgmihai
     \i 07_binary.sql
+    \?
+    \qecho '\033[2J'
 */
+
 
 /*
       Name        Storage Size                   Description

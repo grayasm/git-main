@@ -4,8 +4,8 @@
 
     psql -d mytestdb -U pgmihai
     \i 11_date_time_interval_intput.sql
-    help:  \?
-    clear: \qecho '\033[2J'
+    \?
+    \qecho '\033[2J'
 */
 
 

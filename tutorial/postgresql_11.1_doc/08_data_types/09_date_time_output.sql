@@ -4,6 +4,8 @@
 
     psql -d mytestdb -U pgmihai
     \i 09_date_time_output.sql
+    \?
+    \qecho '\033[2J'
 */
 
 

@@ -3,9 +3,8 @@
 
     psql -d mytestdb -U pgmihai
     \i 13_boolean.sql
-
-    help:  \?
-    clear: \qecho '\033[2J'
+    \?
+    \qecho '\033[2J'
 */
 
 

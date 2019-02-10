@@ -4,9 +4,8 @@
 
     psql -d mytestdb -U pgmihai
     \i 15_enum_ordering.sql
-
-    help:  \?
-    clear: \qecho '\033[2J'
+    \?
+    \qecho '\033[2J'
 */
 
 

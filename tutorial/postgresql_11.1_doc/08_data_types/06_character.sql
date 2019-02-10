@@ -3,6 +3,8 @@
 
     psql -d mytestdb -U pgmihai
     \i 06_character.sql
+    \?
+    \qecho '\033[2J'
 */
 
 
@@ -23,7 +25,7 @@
     char(n) will padd with spaces to the specified witdh n.
     Padded spaces will have an influence only in collations. See the example.
     char without (n) will store 1 character.
-    
+
     text type stores strings of any length.
     -------------------------------------------------------------------------
     The blank-padded types will use increased storage, and a few extra CPU

@@ -4,6 +4,8 @@
 
     psql -d mytestdb -U pgmihai
     \i 01_numeric_integer.sql
+    \?
+    \qecho '\033[2J'
 */
 
 /*  Name      Size      Description               Range
@@ -32,7 +34,7 @@ INSERT INTO integers VALUES ('min', -32768, -9223372036854775808, -2147483648),
                             ('mid', 0, 0, 0);
 SELECT * FROM integers;
 /*
- name |   si   |          bi          |     ni      
+ name |   si   |          bi          |     ni
 ------+--------+----------------------+-------------
  min  | -32768 | -9223372036854775808 | -2147483648
  max  |  32767 |  9223372036854775807 |  2147483647
@@ -50,7 +52,7 @@ INSERT INTO integers_ext VALUES
             ('mid', 0, 0, 0);
 SELECT * FROM integers_ext;
 /*
- name |   i2   |          i8          |     i4      
+ name |   i2   |          i8          |     i4
 ------+--------+----------------------+-------------
  min  | -32768 | -9223372036854775808 | -2147483648
  max  |  32767 |  9223372036854775807 |  2147483647

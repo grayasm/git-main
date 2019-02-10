@@ -3,6 +3,8 @@
 
     psql -d mytestdb -U pgmihai
     \i 05_monetary.sql
+    \?
+    \qecho '\033[2J'
 */
 
 /*  Name      Size      Description               Range
@@ -13,7 +15,7 @@
 
     The output is lc_monetary locale sensitive and by default it outputs
     its values in the US locale format: $1,200.00
-    
+
     Internet wisdom at: https://postgrespro.com/list/thread-id/2286891
     "I personally find it pretty useless to be honest - especially because the
     currency symbol depends on the client. So if I store money value in the
@@ -33,7 +35,7 @@ CREATE TABLE finance (
     name        CHAR(200),
     ammount     money
     );
-    
+
 INSERT INTO finance(name, ammount) VALUES ('Michael', 2470.00),
                                           ('Ammy',    1300.00),
                                           ('Julia',     50.00),
@@ -61,8 +63,3 @@ SELECT '12.34'::float8::numeric::money;
     in 2 stages:
 */
 SELECT '52093.89'::money::numeric::float8;
-
-
-
-
-

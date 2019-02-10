@@ -4,9 +4,8 @@
 
     psql -d mytestdb -U pgmihai
     \i 19_geo_line.sql
-
-    help:  \?
-    clear: \qecho '\033[2J'
+    \?
+    \qecho '\033[2J'
 */
 
 /*  Geometric Types
@@ -22,4 +21,3 @@
     circle   24 bytes      Circle (center point and radius)   <(x,y),r>
     ----------------------------------------------------------------------------
 */
-

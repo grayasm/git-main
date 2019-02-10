@@ -4,10 +4,10 @@
 
     psql -d mytestdb -U pgmihai
     \i 18_geo_point.sql
-
-    help:  \?
-    clear: \qecho '\033[2J'
+    \?
+    \qecho '\033[2J'
 */
+
 
 /*  Geometric Types
     Name      Storage Size  Description Representation

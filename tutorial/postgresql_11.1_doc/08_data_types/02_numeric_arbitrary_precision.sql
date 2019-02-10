@@ -4,6 +4,8 @@
 
     psql -d mytestdb -U pgmihai
     \i 02_numeric_arbitrary_precision.sql
+    \?
+    \qecho '\033[2J'
 */
 
 /*  Name      Size      Description                  Range
@@ -41,7 +43,7 @@ INSERT INTO products (name, price) VALUES ('Phone', 500.215),
                                           ('Tablet', 500.214);
 SELECT * FROM products;
 /*
- id |  name  | price  
+ id |  name  | price
 ----+--------+--------
   1 | Phone  | 500.22
   2 | Tablet | 500.21
@@ -59,7 +61,7 @@ DETAIL:  A field with precision 5, scale 2 must round to an absolute value less 
 UPDATE products SET price = 'NaN' WHERE id = 1;
 SELECT * FROM products ORDER BY price ASC;
 /*
- id |  name  | price  
+ id |  name  | price
 ----+--------+--------
   2 | Tablet | 500.21
   1 | Phone  |    NaN

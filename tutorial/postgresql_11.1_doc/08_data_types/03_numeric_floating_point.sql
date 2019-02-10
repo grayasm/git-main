@@ -4,6 +4,8 @@
 
     psql -d mytestdb -U pgmihai
     \i 03_numeric_floating_point.sql
+    \?
+    \qecho '\033[2J'
 */
 
 
@@ -18,7 +20,7 @@
     float(24)         4 bytes   same as real         mantissa has 24 bits
     float(53)         8 bytes   same as d.prec.      mantissa has 53 bits
    ---------------------------------------------------------------------------
-   
+
     These types are implementations of IEEE Standard 754 for Binary Floating-
     Point Arithmetic (single and double precision, respectively), to the extent
     that the underlying processor, operating system, and compiler support it.

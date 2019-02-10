@@ -4,9 +4,8 @@
 
     psql -d mytestdb -U pgmihai
     \i 16_enum_type_safety.sql
-
-    help:  \?
-    clear: \qecho '\033[2J'
+    \?
+    \qecho '\033[2J'
 */
 
 
