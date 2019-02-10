@@ -2,8 +2,10 @@
     2.8 Updates
 
     Run with:
-    psql -d mytestdb -U pgmihai   # give password
+    psql -d mytestdb -U pgmihai
     \i 07_updates.sql
+    \?
+    \qecho '\033[2J'
 */
 
 

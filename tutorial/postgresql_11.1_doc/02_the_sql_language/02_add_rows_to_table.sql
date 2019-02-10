@@ -2,8 +2,10 @@
     2.4 Populating a Table with Rows
 
     Run with:
-    psql -d mytestdb -U pgmihai   # give password
+    psql -d mytestdb -U pgmihai
     \i 02_add_rows_to_table.sql
+    \?
+    \qecho '\033[2J'
 */
 
 INSERT INTO weather VALUES ('San Francisco', 46, 50, 0.25, '1994-11-27');

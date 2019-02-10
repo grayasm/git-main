@@ -2,8 +2,10 @@
     2.5 Querying a Table
 
     Run with:
-    psql -d mytestdb -U pgmihai   # give password
+    psql -d mytestdb -U pgmihai
     \i 04_querying_a_table.sql
+    \?
+    \qecho '\033[2J'
 */
 
 SELECT * FROM weather;  -- retrieve all rows from weather;

@@ -2,8 +2,10 @@
     2.3 Creating a new table.
 
     Run with:
-    psql -d mytestdb -U pgmihai   # give password
+    psql -d mytestdb -U pgmihai
     \i 01_create_new_table.sql
+    \?
+    \qecho '\033[2J'
 
     If table already exists, delete it with
     DROP TABLE <table_name>;

@@ -2,8 +2,10 @@
     2.9 Deletions
 
     Run with:
-    psql -d mytestdb -U pgmihai   # give password
+    psql -d mytestdb -U pgmihai
     \i 08_deletions.sql
+    \?
+    \qecho '\033[2J'
 */
 
 

@@ -2,8 +2,10 @@
     2.6 Joins Between Tables
 
     Run with:
-    psql -d mytestdb -U pgmihai   # give password
+    psql -d mytestdb -U pgmihai
     \i 05_joins_between_tables.sql
+    \?
+    \qecho '\033[2J'
 */
 
 
