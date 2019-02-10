@@ -3,6 +3,8 @@
 
     psql -d mytestdb -U pgmihai
     \i 14_combining_queries.sql
+    \?
+    \qecho '\033[2J'
 */
 
 
@@ -20,11 +22,11 @@
         The UNION operator combines result sets of two or more SELECT statements
         into a single result set.
         The following rules applies to the queries:
-        
+
         > Both queries must return the same number of columns.
         > The corresponding columns in the queries must have compatible data
           types.
-       
+
        The UNION operator removes all duplicate rows unless the UNION ALL
        is used. To sort the result by a column use ORDER BY clause.
 */
@@ -103,11 +105,11 @@ INSERT INTO keys_empl VALUES (1, '2012-10-10'),
 INSERT INTO hipo_empl VALUES (1, '2012-10-10'),
                              (4, '2011-02-01'),
                              (6, '2013-12-12');
-                             
+
 
 SELECT * FROM keys_empl INTERSECT SELECT * FROM hipo_empl;
 /*
- id |   _date    
+ id |   _date
 ----+------------
   1 | 2012-10-10
   6 | 2013-12-12
@@ -124,7 +126,7 @@ SELECT * FROM keys_empl INTERSECT SELECT * FROM hipo_empl;
         The follwing rules are mandatory:
         > The number of columns and their orders must be the same in the
           two queries.
-        > The data types of the respective columns must be compatible.        
+        > The data types of the respective columns must be compatible.
 */
 
 DROP TABLE IF EXISTS film,inventory CASCADE;
@@ -150,7 +152,7 @@ SELECT inventory.id, inventory.title
        FROM inventory INNER JOIN film ON film.id = inventory.id
        ORDER BY id;
 /*
- id |             title              
+ id |             title
 ----+--------------------------------
   2 | Beauty and the Beast
   5 | Jumanji: Welcome to the Jungle
@@ -166,7 +168,7 @@ SELECT film.id, film.title
             FROM inventory INNER JOIN film ON film.id = inventory.id
        ORDER BY id;
 /*
- id |             title              
+ id |             title
 ----+--------------------------------
   1 | Star Wars: The Last Jedi
   3 | The Fate of the Furious

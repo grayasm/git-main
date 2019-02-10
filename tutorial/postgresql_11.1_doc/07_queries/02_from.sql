@@ -4,6 +4,8 @@
 
     psql -d mytestdb -U pgmihai
     \i 02_from.sql
+    \?
+    \qecho '\033[2J'
 */
 
 
@@ -23,7 +25,7 @@ INSERT INTO t2 VALUES (1,'x'), (2,'y'), (3,'z');
 
 SELECT * FROM t1, t2;
 /*
- num | name | num | value 
+ num | name | num | value
 -----+------+-----+-------
    1 | a    |   1 | x
    1 | a    |   2 | y

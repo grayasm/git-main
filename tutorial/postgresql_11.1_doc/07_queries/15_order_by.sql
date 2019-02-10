@@ -3,6 +3,8 @@
 
     psql -d mytestdb -U pgmihai
     \i 15_sorting_rows.sql
+    \?
+    \qecho '\033[2J'
 */
 
 
@@ -31,7 +33,7 @@ INSERT INTO t1 VALUES (1, 2, 3),
 
 SELECT a, b FROM t1 ORDER BY a+b, c; -- any expression that would be valid
 /*
- a | b 
+ a | b
 ---+---
  1 | 2
  2 | 1
@@ -42,13 +44,13 @@ SELECT a, b FROM t1 ORDER BY a+b, c; -- any expression that would be valid
  2 | 3
  3 | 2
  3 | 3
- 3 |  
+ 3 |
 (10 rows)
 */
 
 SELECT a,b,c FROM t1 ORDER BY a ASC, b ASC NULLS FIRST, c DESC; -- use ASC,DESC
 /*
- a | b | c 
+ a | b | c
 ---+---+---
  1 | 2 | 3
  1 | 2 | 2
@@ -56,7 +58,7 @@ SELECT a,b,c FROM t1 ORDER BY a ASC, b ASC NULLS FIRST, c DESC; -- use ASC,DESC
  2 | 1 | 1
  2 | 2 | 1
  2 | 3 | 1
- 3 |   |  
+ 3 |   |
  3 | 1 | 3
  3 | 2 | 2
  3 | 3 | 1
@@ -65,7 +67,7 @@ SELECT a,b,c FROM t1 ORDER BY a ASC, b ASC NULLS FIRST, c DESC; -- use ASC,DESC
 
 SELECT a+b AS sum, c FROM t1 ORDER BY sum; -- by column label 'sum'
 /*
- sum | c 
+ sum | c
 -----+---
    3 | 2
    3 | 1
@@ -76,13 +78,13 @@ SELECT a+b AS sum, c FROM t1 ORDER BY sum; -- by column label 'sum'
    5 | 1
    5 | 2
    6 | 1
-     |  
+     |
 (10 rows)
 */
 
 SELECT a,max(b) FROM t1 GROUP BY a ORDER BY 1; -- by number of output column: 1
 /*
- a | max 
+ a | max
 ---+-----
  1 |   2
  2 |   3
@@ -93,4 +95,3 @@ SELECT a,max(b) FROM t1 GROUP BY a ORDER BY 1; -- by number of output column: 1
 
 --SELECT a+b AS sum, c FROM t1 ORDER BY sum+c;  <-- wrong, restricted to reduce
 --                                                  the ambiguity.
-

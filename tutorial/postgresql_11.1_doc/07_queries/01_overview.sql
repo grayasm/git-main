@@ -3,6 +3,8 @@
 
     psql -d mytestdb -U pgmihai
     \i 01_overview.sql
+    \?
+    \qecho '\033[2J'
 */
 
 

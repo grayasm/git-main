@@ -5,6 +5,8 @@
 
     psql -d mytestdb -U pgmihai
     \i 05_from_subquery.sql
+    \?
+    \qecho '\033[2J'
 */
 
 
@@ -21,7 +23,7 @@ INSERT INTO products VALUES (1, 'Butter', 2.99), (2, 'Milk', 3.45),
 
 SELECT a.* FROM (SELECT * FROM products) AS a;
 /*
- id |  name  | price 
+ id |  name  | price
 ----+--------+-------
   1 | Butter |  2.99
   2 | Milk   |  3.45
@@ -33,7 +35,7 @@ SELECT a.* FROM (SELECT * FROM products) AS a;
 SELECT * FROM (VALUES ('anne','smith'),('bob','johnes'),('joe','blow'))
         AS names(first,last);
 /*
- first |  last  
+ first |  last
 -------+--------
  anne  | smith
  bob   | johnes

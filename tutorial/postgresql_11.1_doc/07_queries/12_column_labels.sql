@@ -4,6 +4,8 @@
 
     psql -d mytestdb -U pgmihai
     \i 12_column_labels.sql
+    \?
+    \qecho '\033[2J'
 */
 
 

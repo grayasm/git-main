@@ -4,6 +4,8 @@
 
     psql -d mytestdb -U pgmihai
     \i 09_group_by_and_having.sql
+    \?
+    \qecho '\033[2J'
 */
 
 
@@ -31,7 +33,7 @@ INSERT INTO t1 VALUES ('a', 3),
 SELECT * FROM t1;
 SELECT x FROM t1 GROUP BY x;
 /*
- x 
+ x
 ---
  c
  b
@@ -41,7 +43,7 @@ SELECT x FROM t1 GROUP BY x;
 
 SELECT x, sum(y) FROM t1 GROUP BY x;
 /*
- x | sum 
+ x | sum
 ---+-----
  c |   2
  b |   5
@@ -51,7 +53,7 @@ SELECT x, sum(y) FROM t1 GROUP BY x;
 
 SELECT x, sum(y) FROM t1 GROUP BY x HAVING sum(y) > 3;
 /*
- x | sum 
+ x | sum
 ---+-----
  b |   5
  a |   4
@@ -60,7 +62,7 @@ SELECT x, sum(y) FROM t1 GROUP BY x HAVING sum(y) > 3;
 
 SELECT x, sum(y) FROM t1 GROUP BY x HAVING x < 'c';
 /*
- x | sum 
+ x | sum
 ---+-----
  b |   5
  a |   4

@@ -4,6 +4,8 @@
 
     psql -d mytestdb -U pgmihai
     \i 20_with_modifying_data.sql
+    \?
+    \qecho '\033[2J'
 */
 
 
@@ -37,13 +39,13 @@ WITH moved_rows AS (
 SELECT * FROM products;
 SELECT * FROM products_log;
 /*
- num | nume |   _date    
+ num | nume |   _date
 -----+------+------------
    1 | p1   | 2010-01-01
    5 | p5   | 2015-01-01
 (2 rows)
 
- num | nume |   _date    
+ num | nume |   _date
 -----+------+------------
    2 | p2   | 2012-01-01
    3 | p3   | 2013-01-01
@@ -84,7 +86,7 @@ WITH RECURSIVE with_tab1 (employee_id, manager_id, nume) AS (
 -- show the result
 SELECT * FROM tab1;
 /*
- employee_id | manager_id |   nume   
+ employee_id | manager_id |   nume
 -------------+------------+----------
            1 |            | boss
            2 |          1 | sub-boss
@@ -99,7 +101,7 @@ SELECT * FROM tab1;
         > substatements are executed in parallel with the main query
         > the order is unpredicatable unless RETURNING is used, which is the
           only way to communicate changes between a subquery and the main query
-        > a row is updated only 1 time in a snapshot. 
+        > a row is updated only 1 time in a snapshot.
         > a table must not have a conditional rule, ALSO or INSTEAD clauses that
           expand to multiple statements
 */
@@ -115,7 +117,7 @@ WITH t AS (
      )
      SELECT * FROM table1;
 /*
- v 
+ v
 ---
  1
  2
@@ -131,7 +133,7 @@ WITH t AS (
      )
      SELECT * FROM t;
 /*
- v  
+ v
 ----
  10
  20

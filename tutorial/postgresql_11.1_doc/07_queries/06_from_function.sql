@@ -5,16 +5,18 @@
 
     psql -d mytestdb -U pgmihai
     \i 06_from_function.sql
+    \?
+    \qecho '\033[2J'
 */
 
 /*      Table functions are functions that produce a set of rows, made up of
         either
         - base data types (scalar types) or
         - composite data types (table rows).
-        
+
         They are used like
         > a table
-        > a view, or 
+        > a view, or
         > a subquery
         in the FROM clause of a query. Columns returned by table functions
         can be included in SELECT , JOIN , or WHERE clauses in the same manner
@@ -48,7 +50,7 @@ LANGUAGE 'sql' VOLATILE;
 
 SELECT * FROM return_table(1) AS a;         -- FROM function returning table
 /*
- num_ | val_ 
+ num_ | val_
 ------+------
     2 | b
     3 | c
@@ -57,7 +59,7 @@ SELECT * FROM return_table(1) AS a;         -- FROM function returning table
 
 SELECT * FROM return_out(2) AS b;           -- FROM function returning SETOF
 /*
- num | val 
+ num | val
 -----+-----
    3 | c
 (1 row)
@@ -67,7 +69,7 @@ SELECT * FROM return_out(2) AS b;           -- FROM function returning SETOF
 CREATE VIEW vw1 AS SELECT * FROM return_table(0);
 SELECT * FROM vw1;                          -- FROM view
 /*
- num_ | val_ 
+ num_ | val_
 ------+------
     1 | a
     2 | b
@@ -80,7 +82,7 @@ SELECT * FROM t1 WHERE num IN               -- FROM subquery
             SELECT num FROM return_out(0) AS a WHERE a.num <> 1
        );
 /*
- num | val 
+ num | val
 -----+-----
    2 | b
    3 | c

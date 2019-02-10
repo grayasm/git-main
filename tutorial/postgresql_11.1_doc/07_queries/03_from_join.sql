@@ -5,6 +5,8 @@
 
     psql -d mytestdb -U pgmihai
     \i 03_join.sql
+    \?
+    \qecho '\033[2J'
 */
 
 
@@ -27,7 +29,7 @@ INSERT INTO t2 VALUES (1,'x'), (3,'y'), (5,'z');
 
 SELECT * FROM t1 CROSS JOIN t2;
 /*
- num | name | num | value 
+ num | name | num | value
 -----+------+-----+-------
    1 | a    |   1 | x
    1 | a    |   3 | y
@@ -43,7 +45,7 @@ SELECT * FROM t1 CROSS JOIN t2;
 
 SELECT * FROM t1 INNER JOIN t2 ON t1.num = t2.num;
 /*
- num | name | num | value 
+ num | name | num | value
 -----+------+-----+-------
    1 | a    |   1 | x
    3 | c    |   3 | y
@@ -52,7 +54,7 @@ SELECT * FROM t1 INNER JOIN t2 ON t1.num = t2.num;
 
 SELECT * FROM t1 INNER JOIN t2 USING (num);
 /*
- num | name | value 
+ num | name | value
 -----+------+-------
    1 | a    | x
    3 | c    | y
@@ -61,7 +63,7 @@ SELECT * FROM t1 INNER JOIN t2 USING (num);
 
 SELECT * FROM t1 NATURAL INNER JOIN t2;
 /*
- num | name | value 
+ num | name | value
 -----+------+-------
    1 | a    | x
    3 | c    | y
@@ -70,27 +72,27 @@ SELECT * FROM t1 NATURAL INNER JOIN t2;
 
 SELECT * FROM t1 LEFT JOIN t2 ON t1.num = t2.num;
 /*
- num | name | num | value 
+ num | name | num | value
 -----+------+-----+-------
    1 | a    |   1 | x
-   2 | b    |     | 
+   2 | b    |     |
    3 | c    |   3 | y
 (3 rows)
 */
 
 SELECT * FROM t1 LEFT JOIN t2 USING (num);
 /*
- num | name | value 
+ num | name | value
 -----+------+-------
    1 | a    | x
-   2 | b    | 
+   2 | b    |
    3 | c    | y
 (3 rows)
 */
 
 SELECT * FROM t1 RIGHT JOIN t2 ON t1.num = t2.num;
 /*
- num | name | num | value 
+ num | name | num | value
 -----+------+-----+-------
    1 | a    |   1 | x
    3 | c    |   3 | y
@@ -100,10 +102,10 @@ SELECT * FROM t1 RIGHT JOIN t2 ON t1.num = t2.num;
 
 SELECT * FROM t1 FULL JOIN t2 ON t1.num = t2.num;
 /*
- num | name | num | value 
+ num | name | num | value
 -----+------+-----+-------
    1 | a    |   1 | x
-   2 | b    |     | 
+   2 | b    |     |
    3 | c    |   3 | y
      |      |   5 | z
 (4 rows)
@@ -111,17 +113,17 @@ SELECT * FROM t1 FULL JOIN t2 ON t1.num = t2.num;
 
 SELECT * FROM t1 LEFT JOIN t2 ON t1.num = t2.num AND t2.value = 'x';
 /*
- num | name | num | value 
+ num | name | num | value
 -----+------+-----+-------
    1 | a    |   1 | x
-   2 | b    |     | 
-   3 | c    |     | 
+   2 | b    |     |
+   3 | c    |     |
 (3 rows)
 */
 
 SELECT * FROM t1 LEFT JOIN t2 ON t1.num = t2.num WHERE t2.value = 'x';
 /*
- num | name | num | value 
+ num | name | num | value
 -----+------+-----+-------
    1 | a    |   1 | x
 (1 row)

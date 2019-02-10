@@ -4,6 +4,8 @@
 
     psql -d mytestdb -U pgmihai
     \i 10_window_function_processing.sql
+    \?
+    \qecho '\033[2J'
 */
 
 /*      http://www.postgresqltutorial.com/postgresql-window-function/
@@ -67,7 +69,7 @@ SELECT job, AVG(salary)
        GROUP BY job;
 
 /*
-         job         |          avg          
+         job         |          avg
 ---------------------+-----------------------
  aplication engineer | 1030.0000000000000000
  developer           | 2010.0000000000000000
@@ -85,9 +87,9 @@ SELECT job, AVG(salary)
 
 SELECT job, AVG(salary) OVER (PARTITION BY job)
        FROM pers INNER JOIN finc USING(id);
-       
+
 /*
-         job         |          avg          
+         job         |          avg
 ---------------------+-----------------------
  aplication engineer | 1030.0000000000000000
  aplication engineer | 1030.0000000000000000
@@ -114,7 +116,7 @@ SELECT nume, job, salary, ROW_NUMBER() OVER (PARTITION BY job ORDER BY salary)
        FROM pers INNER JOIN finc USING(id);
 
 /*
-  nume  |         job         | salary | row_number 
+  nume  |         job         | salary | row_number
 --------+---------------------+--------+------------
  An Hua | aplication engineer | 1000.0 |          1
  Ai Hia | aplication engineer | 1040.0 |          2
@@ -139,7 +141,7 @@ SELECT nume, job, salary, RANK() OVER (PARTITION BY job ORDER BY salary)
        FROM pers INNER JOIN finc USING(id);
 
 /*
-  nume  |         job         | salary | rank 
+  nume  |         job         | salary | rank
 --------+---------------------+--------+------
  An Hua | aplication engineer | 1000.0 |    1
  Ai Hia | aplication engineer | 1040.0 |    2
@@ -164,7 +166,7 @@ SELECT nume, job, salary, FIRST_VALUE(salary) OVER (PARTITION BY job ORDER BY sa
        FROM pers INNER JOIN finc USING(id);
 
 /*
-  nume  |         job         | salary | lowest_salary_per_group 
+  nume  |         job         | salary | lowest_salary_per_group
 --------+---------------------+--------+-------------------------
  An Hua | aplication engineer | 1000.0 |                  1000.0
  Ai Hia | aplication engineer | 1040.0 |                  1000.0
@@ -188,7 +190,7 @@ SELECT nume, job, salary, LAST_VALUE(salary)
        FROM pers INNER JOIN finc USING(id);
 
 /*
-  nume  |         job         | salary | highest_salary_per_group 
+  nume  |         job         | salary | highest_salary_per_group
 --------+---------------------+--------+--------------------------
  An Hua | aplication engineer | 1000.0 |                   1050.0
  Ai Hia | aplication engineer | 1040.0 |                   1050.0

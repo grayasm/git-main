@@ -4,6 +4,8 @@
 
     psql -d mytestdb -U pgmihai
     \i 11_select.sql
+    \?
+    \qecho '\033[2J'
 */
 
 

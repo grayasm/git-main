@@ -5,6 +5,8 @@
 
     psql -d mytestdb -U pgmihai
     \i 04_from_alias.sql
+    \?
+    \qecho '\033[2J'
 */
 
 
@@ -12,7 +14,7 @@
         > is a temporary name (shortcut) of a table or a complex table reference
         > is valid only in the query where it is defined
         > the name it replaces cannot be used in the query afterwards
-        
+
         FROM table_reference [AS] alias
 */
 
@@ -27,7 +29,7 @@ SELECT * FROM some_very_long_table_name AS a JOIN
               another_fairly_long_name AS b
               ON a.id = b.num;
 /*
- id | name | num | value 
+ id | name | num | value
 ----+------+-----+-------
   1 | a    |   1 | x
   3 | c    |   3 | y
@@ -38,7 +40,7 @@ SELECT * FROM some_very_long_table_name AS mother JOIN
               some_very_long_table_name AS child
               ON mother.id = child.id;
 /*
- id | name | id | name 
+ id | name | id | name
 ----+------+----+------
   1 | a    |  1 | a
   2 | b    |  2 | b
@@ -50,7 +52,7 @@ SELECT * FROM some_very_long_table_name AS a (id_, name_) JOIN
               another_fairly_long_name AS b(id_, value_)
               ON a.id_ = b.id_;
 /*
- id_ | name_ | id_ | value_ 
+ id_ | name_ | id_ | value_
 -----+-------+-----+--------
    1 | a     |   1 | x
    3 | c     |   3 | y
@@ -61,7 +63,7 @@ SELECT a.* FROM some_very_long_table_name AS a JOIN
                 another_fairly_long_name AS b
                 ON a.id = b.num;
 /*
- id | name 
+ id | name
 ----+------
   1 | a
   3 | c
@@ -74,7 +76,7 @@ SELECT c.* FROM (some_very_long_table_name AS a JOIN
                  ON a.id = b.num)
                  AS c;
 /*
- id | name | num | value 
+ id | name | num | value
 ----+------+-----+-------
   1 | a    |   1 | x
   3 | c    |   3 | y

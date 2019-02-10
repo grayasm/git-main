@@ -4,6 +4,8 @@
 
     psql -d mytestdb -U pgmihai
     \i 08_where.sql
+    \?
+    \qecho '\033[2J'
 */
 
 

@@ -4,6 +4,8 @@
 
     psql -d mytestdb -U pgmihai
     \i 18_with.sql
+    \?
+    \qecho '\033[2J'
 */
 
 
@@ -54,10 +56,10 @@ WITH regional_sales AS (
      FROM   orders
      WHERE  region IN (SELECT region FROM top_regions)
      GROUP BY region, product;
-     
+
 
 /*
- region | product | product_units | product_sales 
+ region | product | product_units | product_sales
 --------+---------+---------------+---------------
  regio1 | p8      |           180 |          1800
  regio1 | p5      |           150 |          1500

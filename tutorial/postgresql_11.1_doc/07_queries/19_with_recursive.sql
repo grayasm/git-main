@@ -4,6 +4,8 @@
 
     psql -d mytestdb -U pgmihai
     \i 19_with_recursive.sql
+    \?
+    \qecho '\033[2J'
 */
 
 /*      http://www.postgresqltutorial.com/postgresql-recursive-query
@@ -33,7 +35,7 @@ WITH RECURSIVE t(n) AS (
      )
      SELECT SUM(n) FROM t;
 /*
- sum  
+ sum
 ------
  5050
 (1 row)
@@ -51,7 +53,7 @@ WITH RECURSIVE t(n) AS (
      )
      SELECT n FROM t LIMIT 3;
 /*
- n 
+ n
 ---
  1
  2
@@ -101,7 +103,7 @@ WITH RECURSIVE subordinates AS (
      )
      SELECT * FROM subordinates;
 /*
- employee_id | manager_id |    full_name    
+ employee_id | manager_id |    full_name
 -------------+------------+-----------------
            2 |          1 | Megan Berry
            6 |          2 | Bella Tucker
@@ -163,7 +165,7 @@ WITH RECURSIVE traverse(id, depth) AS (
      GROUP BY id
      ORDER BY MAX(depth);
 /*
- id 
+ id
 ----
   3
   6
@@ -202,7 +204,7 @@ WITH RECURSIVE traverse(id, path, cycle) AS (
      GROUP BY traverse.id
      ORDER BY MAX(array_length(traverse.path, 1));
 /*
- id 
+ id
 ----
   6
   3

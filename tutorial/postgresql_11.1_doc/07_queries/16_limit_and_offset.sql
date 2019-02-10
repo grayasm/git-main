@@ -3,6 +3,8 @@
 
     psql -d mytestdb -U pgmihai
     \i 16 limit_and_offset.sql
+    \?
+    \qecho '\033[2J'
 */
 
 
@@ -35,7 +37,7 @@ INSERT INTO film(title) VALUES ('Star Wars: The Last Jedi'),
 
 SELECT max(id) FROM film;
 /*
- max 
+ max
 -----
   10
 (1 row)
@@ -43,7 +45,7 @@ SELECT max(id) FROM film;
 
 SELECT id,title FROM film ORDER BY id LIMIT 5;
 /*
- id |             title              
+ id |             title
 ----+--------------------------------
   1 | Star Wars: The Last Jedi
   2 | Beauty and the Beast
@@ -55,7 +57,7 @@ SELECT id,title FROM film ORDER BY id LIMIT 5;
 
 SELECT id,title FROM film ORDER BY id LIMIT 4 OFFSET 3;
 /*
- id |             title              
+ id |             title
 ----+--------------------------------
   4 | Despicable Me 3
   5 | Jumanji: Welcome to the Jungle

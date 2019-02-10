@@ -4,6 +4,8 @@
 
     psql -d mytestdb -U pgmihai
     \i 13_distinct.sql
+    \?
+    \qecho '\033[2J'
 */
 
 
@@ -36,19 +38,19 @@ INSERT INTO t1 (bcolor, fcolor) VALUES  ('red', 'red'),
 -- DISTINCT on one column
 SELECT DISTINCT bcolor FROM t1 ORDER BY bcolor;
 /*
- bcolor 
+ bcolor
 --------
  blue
  green
  red
- 
+
 (4 rows)
 */
 
 --DISTINCT on multiple columns
 SELECT DISTINCT bcolor,fcolor FROM t1 ORDER BY bcolor,fcolor;
 /*
- bcolor | fcolor 
+ bcolor | fcolor
 --------+--------
  blue   | blue
  blue   | green
@@ -59,7 +61,7 @@ SELECT DISTINCT bcolor,fcolor FROM t1 ORDER BY bcolor,fcolor;
  red    | blue
  red    | green
  red    | red
- red    | 
+ red    |
         | red
 (11 rows)
 */
@@ -67,7 +69,7 @@ SELECT DISTINCT bcolor,fcolor FROM t1 ORDER BY bcolor,fcolor;
 -- DISTINCT ON ... ORDER BY ..., for each group of duplicates keeps the first row.
 SELECT DISTINCT ON(bcolor) bcolor, fcolor FROM t1 ORDER BY bcolor,fcolor;
 /*
- bcolor | fcolor 
+ bcolor | fcolor
 --------+--------
  blue   | blue
  green  | blue

@@ -5,6 +5,8 @@
 
     psql -d mytestdb -U pgmihai
     \i 07_from_lateral.sql
+    \?
+    \qecho '\033[2J'
 */
 
 
