@@ -3,6 +3,8 @@
 
     psql -d mytestdb -U pgmihai
     \i 01_inserting_data.sql
+    \?
+    \qecho '\033[2J'
 */
 
 /*      To create a new row, you can use one of the following:
@@ -36,14 +38,14 @@ INSERT INTO products (product_no, name, price) VALUES
 
 SELECT * FROM products;
 /*
- product_no |  name  | price 
+ product_no |  name  | price
 ------------+--------+-------
           1 | Cheese |  9.99
           2 | Cheese |  2.99
           3 | Cheese |  1.99
-          4 | Cheese |      
-          5 | Cheese |      
-            |        |      
+          4 | Cheese |
+          5 | Cheese |
+            |        |
           7 | Cheese |  9.99
           8 | Bread  |  1.99
           9 | Milk   |  2.99

@@ -3,6 +3,8 @@
 
     psql -d mytestdb -U pgmihai
     \i 02_updating_data.sql
+    \?
+    \qecho '\033[2J'
 */
 
 
@@ -40,7 +42,7 @@ UPDATE products SET product_no = product_no + 100,
 
 SELECT * FROM products;
 /*
- product_no |  name  | price 
+ product_no |  name  | price
 ------------+--------+-------
           1 | Bread  |  1.99
           2 | Milk   |  2.99
