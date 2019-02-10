@@ -1,11 +1,14 @@
 /*  Chapter 1. Getting Started
     Run:
-    (a) from pgadmin3 using GUI tool
-    (b) from command line:
-    psql -d mytestdb -U pgmihai
-    \i 01_test.sql
-    help:  \?
-    clear: \qecho '\033[2J'
+    (a) from command line:
+
+    get shell to database :     psql -d mytestdb -U pgmihai
+    run sql file          :     \i 01_test.sql
+    help                  :     \?
+    clear screen          :     \qecho '\033[2J'
+
+    (b) from pgadmin3 using GUI tool
+    (c) from pgadmin4 (probably using the web interface)
 */
 
 SELECT version();
