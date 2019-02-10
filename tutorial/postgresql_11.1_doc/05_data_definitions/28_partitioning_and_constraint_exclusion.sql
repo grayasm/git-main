@@ -4,6 +4,8 @@
 
     psql -d mytestdb -U pgmihai
     \i 27_partitioning_and_constraint_exclusion.sql
+    \?
+    \qecho '\033[2J'
 */
 
 
@@ -97,7 +99,7 @@ INSERT INTO measurement VALUES
 SET constraint_exclusion = on;
 SELECT count(*) FROM measurement WHERE logdate >= DATE '2018-10-01';
 /*
- count 
+ count
 -------
      3
 (1 row)
@@ -109,7 +111,7 @@ SELECT count(*) FROM measurement WHERE logdate >= DATE '2018-10-01';
 SET constraint_exclusion = off;
 EXPLAIN SELECT count(*) FROM measurement WHERE logdate >= DATE '2018-10-01';
 /*
-                                         QUERY PLAN                                         
+                                         QUERY PLAN
 --------------------------------------------------------------------------------------------
  Aggregate  (cost=67.20..67.21 rows=1 width=0)
    ->  Append  (cost=0.00..64.25 rows=1181 width=0)
@@ -125,7 +127,7 @@ EXPLAIN SELECT count(*) FROM measurement WHERE logdate >= DATE '2018-10-01';
 SET constraint_exclusion = on;
 EXPLAIN SELECT count(*) FROM measurement WHERE logdate >= DATE '2018-10-01';
 /*
-                                         QUERY PLAN                                         
+                                         QUERY PLAN
 --------------------------------------------------------------------------------------------
  Aggregate  (cost=33.60..33.61 rows=1 width=0)
    ->  Append  (cost=0.00..32.12 rows=591 width=0)

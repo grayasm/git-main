@@ -3,6 +3,8 @@
 
     psql -d mytestdb -U pgmihai
     \i 25_inheritance.sql
+    \?
+    \qecho '\033[2J'
 */
 
 

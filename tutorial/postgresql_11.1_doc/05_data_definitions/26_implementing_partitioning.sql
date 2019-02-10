@@ -4,6 +4,8 @@
 
     psql -d mytestdb -U pgmihai
     \i 26_implementing_partitioning.sql
+    \?
+    \qecho '\033[2J'
 */
 
 /*      Partitioning refers to splitting what is logically one large table into

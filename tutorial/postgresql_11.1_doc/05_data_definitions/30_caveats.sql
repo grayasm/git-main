@@ -4,6 +4,8 @@
 
     psql -d mytestdb -U pgmihai
     \i 30_caveats.sql
+    \?
+    \qecho '\033[2J'
 */
 
 
@@ -71,10 +73,10 @@ FOR EACH ROW EXECUTE PROCEDURE measurement_insert_trigger();
 
 
 /*      Insert and display some partitions data. */
-INSERT INTO measurement
-        VALUES(1001, '2017-12-29', 0, 0),
-              (1001, '2018-01-01', 1, 1),
-              (1001, '2018-01-29', 2, 2);
+INSERT INTO measurement VALUES
+       (1001, '2017-12-29', 0, 0),
+       (1001, '2018-01-01', 1, 1),
+       (1001, '2018-01-29', 2, 2);
 
 UPDATE measurement MY_TABLE SET A = A + 1;  -- normal form
 

@@ -3,6 +3,8 @@
 
     psql -d mytestdb -U pgmihai
     \i 32_other_database_objects.sql
+    \?
+    \qecho '\033[2J'
 */
 
 

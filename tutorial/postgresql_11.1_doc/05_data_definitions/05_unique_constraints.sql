@@ -3,6 +3,8 @@
 
     psql -d mytestdb -U pgmihai
     \i 05_unique_constraints.sql
+    \?
+    \qecho '\033[2J'
 */
 
 

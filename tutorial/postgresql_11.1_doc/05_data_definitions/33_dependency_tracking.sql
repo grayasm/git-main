@@ -3,6 +3,8 @@
 
     psql -d mytestdb -U pgmihai
     \i 33_dependency_tracking.sql
+    \?
+    \qecho '\033[2J'
 */
 
 
@@ -17,7 +19,7 @@ CREATE TABLE products (
         product_no      integer PRIMARY KEY,
         name            text,
         price           numeric);
-        
+
 CREATE TABLE orders (
         order_it        integer PRIMARY KEY,
         product_no      integer REFERENCES products (product_no),

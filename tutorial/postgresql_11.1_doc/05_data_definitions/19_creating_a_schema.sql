@@ -4,6 +4,9 @@
 
     psql -d mytestdb -U pgmihai
     \i 19_creating_a_schema.sql
+    \?
+    \qecho '\033[2J'
+
     \dn -- to list all schemas in a database
 */
 

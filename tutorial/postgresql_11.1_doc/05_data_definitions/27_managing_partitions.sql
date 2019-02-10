@@ -4,6 +4,8 @@
 
     psql -d mytestdb -U pgmihai
     \i 27_managing_partitions.sql
+    \?
+    \qecho '\033[2J'
 */
 
 
@@ -97,7 +99,7 @@ INSERT INTO measurement
 
 SELECT * FROM measurement;
 /*
- city_id |  logdate   | peaktemp | unitsales 
+ city_id |  logdate   | peaktemp | unitsales
 ---------+------------+----------+-----------
     1001 | 2010-01-02 |        0 |         2
     1001 | 2010-07-09 |       28 |        20
@@ -111,7 +113,7 @@ SELECT * FROM measurement;
 DROP TABLE measurement_y2010;
 SELECT * FROM measurement;
 /*
- city_id |  logdate   | peaktemp | unitsales 
+ city_id |  logdate   | peaktemp | unitsales
 ---------+------------+----------+-----------
     1001 | 2011-04-08 |       15 |        15
 (1 row)
@@ -124,7 +126,7 @@ SELECT * FROM measurement;
 ALTER TABLE measurement_y2011 NO INHERIT measurement;
 SELECT * FROM measurement;
 /*
- city_id | logdate | peaktemp | unitsales 
+ city_id | logdate | peaktemp | unitsales
 ---------+---------+----------+-----------
 (0 rows)
 */
@@ -143,7 +145,7 @@ INSERT INTO measurement VALUES
         (1002, '2012-04-30', 12, 12);
 SELECT * FROM measurement;
 /*
- city_id |  logdate   | peaktemp | unitsales 
+ city_id |  logdate   | peaktemp | unitsales
 ---------+------------+----------+-----------
     1002 | 2012-01-31 |        0 |         0
     1002 | 2012-02-29 |        5 |         5
@@ -173,7 +175,7 @@ ALTER TABLE measurement_y2013 INHERIT measurement;
 SELECT * FROM measurement;
 
 /*
- city_id |  logdate   | peaktemp | unitsales 
+ city_id |  logdate   | peaktemp | unitsales
 ---------+------------+----------+-----------
     1002 | 2012-01-31 |        0 |         0
     1002 | 2012-02-29 |        5 |         5
@@ -185,5 +187,3 @@ SELECT * FROM measurement;
     1003 | 2013-08-31 |       35 |       300
 (8 rows)
 */
-
-        

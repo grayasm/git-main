@@ -4,6 +4,8 @@
 
     psql -d mytestdb -U pgmihai
     \i 22_the_system_catalog_schema.sql
+    \?
+    \qecho '\033[2J'
 */
 
 

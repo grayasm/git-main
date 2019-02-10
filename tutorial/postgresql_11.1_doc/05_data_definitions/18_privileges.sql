@@ -3,6 +3,8 @@
 
     psql -d mytestdb -U pgmihai
     \i 18_privileges.sql
+    \?
+    \qecho '\033[2J'
 */
 
 
@@ -12,7 +14,7 @@
         There are different kinds of privileges:
         SELECT,  INSERT,  UPDATE,  DELETE,  TRUNCATE,  REFERENCES,  TRIGGER,
         CREATE,  CONNECT,  TEMPORARY,  EXECUTE  and USAGE.
-        
+
         Ordinarily, only the object's owner (or a superuser) can GRANT or REVOKE
         privileges on an object.
         It is possible to grant a privilege with GRANT option, which gives
@@ -27,7 +29,7 @@ CREATE TABLE products (
         name          text,
         price         numeric
         );
-        
+
 ALTER TABLE products OWNER TO pgmihai2;
 /*
 psql:18_privileges.sql:23: ERROR:  role "pgmihai2" does not exist

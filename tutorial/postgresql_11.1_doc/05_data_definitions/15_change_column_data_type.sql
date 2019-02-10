@@ -1,9 +1,11 @@
 /*  Chapter 5. Data Definition
     5.5. Modifying Tables
     5.5.6 Changing a Column's Data Type
-	
-	psql -d mytestdb -U pgmihai
+
+    psql -d mytestdb -U pgmihai
     \i 15_change_column_data_type.sql
+    \?
+    \qecho '\033[2J'
 */
 
 /*      To convert a column to a different data type, use a command like: */
@@ -22,14 +24,14 @@ INSERT INTO products VALUES
 
 /*      This will succeed only if each entry in the column can be converted
         to the new type by an implicit cast. If a more complex conversion is
-		needed, you can add a USING clause that specifies how to compute
-		the new values from the old.
+        needed, you can add a USING clause that specifies how to compute
+        the new values from the old.
 */
 ALTER TABLE products ALTER COLUMN price TYPE numeric (10,2);
 
 INSERT INTO products VALUES
         (4, 'back shield', 100.999);
-		
+
 SELECT * FROM products;
 
 /*

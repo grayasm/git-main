@@ -4,6 +4,8 @@
 
     psql -d mytestdb -U pgmihai
     \i 29_alternative_partitioning_methods.sql
+    \?
+    \qecho '\033[2J'
 */
 
 /*      A different approach to redirecting inserts into the appropriate
@@ -66,11 +68,10 @@ INSERT INTO measurement
 
 SELECT * FROM measurement;
 /*
- city_id |  logdate   | peaktemp | unitsales 
+ city_id |  logdate   | peaktemp | unitsales
 ---------+------------+----------+-----------
     1001 | 2017-01-02 |        0 |         2
     1001 | 2017-07-09 |       28 |        20
     1001 | 2018-04-08 |       15 |        15
 (3 rows)
 */
-

@@ -4,12 +4,14 @@
 
     psql -d mytestdb -U pgmihai
     \i 21_the_schema_search_path.sql
+    \?
+    \qecho '\033[2J'
 */
 
 /*      The system determines the table by following the 'search path' which is
         a list of schemas. The first matching table is considered.
-		If there is no match in the 'search path', an error is reported, even if
-		matching table names exist in other schema in the database.
+        If there is no match in the 'search path', an error is reported, even if
+        matching table names exist in other schema in the database.
 */
 
 SHOW search_path;
@@ -61,5 +63,3 @@ SELECT * FROM myschema.products;
 
 /*      Clean up. */
 SET search_path TO public;
-
-

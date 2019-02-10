@@ -4,12 +4,15 @@
 
     psql -d mytestdb -U pgmihai
     \i 20_the_public_schema.sql
-	\dn -- to list all schemas in a database
+    \?
+    \qecho '\033[2J'
+
+    \dn -- to list all schemas in a database
 */
 
 /*      By default, tables created without specifying the schema name, are
         automatically put into a schema named "public".
-		Every new database contains such a schema.
+        Every new database contains such a schema.
 */
 
 DROP TABLE IF EXISTS public.products CASCADE;
@@ -24,7 +27,7 @@ INSERT INTO public.products VALUES
         (1, 'left door', 9.99),
         (2, 'right door', 9.99),
         (3, 'front shield', 11.50);
-		
+
 SELECT * from public.products;
 
 /*

@@ -3,6 +3,8 @@
 
     psql -d mytestdb -U pgmihai
     \i 04_notnull_constraints.sql
+    \?
+    \qecho '\033[2J'
 */
 
 

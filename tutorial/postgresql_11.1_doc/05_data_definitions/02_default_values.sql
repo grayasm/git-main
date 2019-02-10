@@ -2,9 +2,9 @@
     5.2. Default Values
 
     psql -d mytestdb -U pgmihai
-    \dt  --list all tables
-    \df  --list all functions
     \i 02_default_values.sql
+    \?
+    \qecho '\033[2J'
 */
 
 

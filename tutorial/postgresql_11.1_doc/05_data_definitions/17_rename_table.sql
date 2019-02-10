@@ -3,6 +3,8 @@
 
     psql -d mytestdb -U pgmihai
     \i 17_rename_table.sql
+    \?
+    \qecho '\033[2J'
 */
 
 

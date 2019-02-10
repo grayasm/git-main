@@ -1,9 +1,11 @@
 /*  Chapter 5. Data Definition
     5.5. Modifying Tables
     5.5.2 Removing a Column
-	
-	psql -d mytestdb -U pgmihai
+
+    psql -d mytestdb -U pgmihai
     \i 10_table_remove_column.sql
+    \?
+    \qecho '\033[2J'
 */
 
 /*      To remove a column, use a command like: */
@@ -12,7 +14,7 @@ CREATE TABLE products (
         product_no    integer   UNIQUE,
         name          text,
         price         numeric,
-		description   text CHECK (description <> '')
+        description   text CHECK (description <> '')
         );
 ALTER TABLE products DROP COLUMN description;
 

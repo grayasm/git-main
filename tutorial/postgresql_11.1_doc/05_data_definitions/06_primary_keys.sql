@@ -3,6 +3,8 @@
 
     psql -d mytestdb -U pgmihai
     \i 06_primary_keys.sql
+    \?
+    \qecho '\033[2J'
 */
 
 

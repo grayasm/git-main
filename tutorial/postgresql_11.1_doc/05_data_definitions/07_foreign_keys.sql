@@ -1,9 +1,10 @@
 /*  Chapter 5. Data Definition
     5.3.5. Foreign Keys
 
-
     psql -d mytestdb -U pgmihai
     \i 07_foreign_keys.sql
+    \?
+    \qecho '\033[2J'
 */
 
 
