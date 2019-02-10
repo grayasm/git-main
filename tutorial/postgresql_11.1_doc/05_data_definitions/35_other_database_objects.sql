@@ -1,8 +1,8 @@
 /*  Chapter 5. Data Definition
-    5.11. Other database objects
+    5.12. Other database objects
 
     psql -d mytestdb -U pgmihai
-    \i 32_other_database_objects.sql
+    \i 35_other_database_objects.sql
     \?
     \qecho '\033[2J'
 */

@@ -1,8 +1,8 @@
 /*  Chapter 5. Data Definition
-    5.10. Foreign data.
+    5.11. Foreign data.
 
     psql -d mytestdb -U pgmihai
-    \i 31_foreign_data.sql
+    \i 34_foreign_data.sql
     \?
     \qecho '\033[2J'
 */
