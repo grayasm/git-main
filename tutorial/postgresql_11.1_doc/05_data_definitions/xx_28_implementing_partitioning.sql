@@ -1,9 +1,10 @@
 /*  Chapter 5. Data Definition
-    5.9. Partitioning
-    5.9.2. Implementing paritioning
+    5.10. Partitioning
+    5.10.2 Declarative partitioning
+    5.9.2. Implementing paritioning -- removed in 11.1
 
     psql -d mytestdb -U pgmihai
-    \i 26_implementing_partitioning.sql
+    \i 28_implementing_partitioning.sql
     \?
     \qecho '\033[2J'
 */

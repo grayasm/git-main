@@ -1,9 +1,9 @@
 /*  Chapter 5. Data Definition
-    5.7. Schemas
-    5.7.3. The Schema Search Path.
+    5.8. Schemas
+    5.8.3. The Schema Search Path.
 
     psql -d mytestdb -U pgmihai
-    \i 21_the_schema_search_path.sql
+    \i 22_the_schema_search_path.sql
     \?
     \qecho '\033[2J'
 */

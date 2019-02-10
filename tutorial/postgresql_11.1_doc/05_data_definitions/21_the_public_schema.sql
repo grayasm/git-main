@@ -1,9 +1,9 @@
 /*  Chapter 5. Data Definition
-    5.7. Schemas
-    5.7.2. The Public Schema
+    5.8. Schemas
+    5.8.2. The Public Schema
 
     psql -d mytestdb -U pgmihai
-    \i 20_the_public_schema.sql
+    \i 21_the_public_schema.sql
     \?
     \qecho '\033[2J'
 

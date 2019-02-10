@@ -1,8 +1,8 @@
 /*  Chapter 5. Data Definition
-    5.8. Inheritance
+    5.9. Inheritance
 
     psql -d mytestdb -U pgmihai
-    \i 25_inheritance.sql
+    \i 27_inheritance.sql
     \?
     \qecho '\033[2J'
 */

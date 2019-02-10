@@ -1,9 +1,9 @@
 /*  Chapter 5. Data Definition
-    5.7. Schemas
-    5.7.5. The System Catalog Schema
+    5.8. Schemas
+    5.8.5. The System Catalog Schema
 
     psql -d mytestdb -U pgmihai
-    \i 22_the_system_catalog_schema.sql
+    \i 24_the_system_catalog_schema.sql
     \?
     \qecho '\033[2J'
 */

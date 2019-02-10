@@ -1,9 +1,9 @@
 /*  Chapter 5. Data Definition
-    5.7. Schemas
-    5.7.1. Creating a Schema
+    5.8. Schemas
+    5.8.1. Creating a Schema
 
     psql -d mytestdb -U pgmihai
-    \i 19_creating_a_schema.sql
+    \i 20_creating_a_schema.sql
     \?
     \qecho '\033[2J'
 

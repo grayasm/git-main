@@ -1,9 +1,9 @@
 /*  Chapter 5. Data Definition
-    5.7. Schemas
-    5.7.7. Portability
+    5.8. Schemas
+    5.8.7. Portability
 
     psql -d mytestdb -U pgmihai
-    \i 24_portability.sql
+    \i 26_portability.sql
     \?
     \qecho '\033[2J'
 */
