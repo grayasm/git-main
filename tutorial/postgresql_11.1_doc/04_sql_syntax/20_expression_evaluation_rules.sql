@@ -1,10 +1,11 @@
 /*  Chapter 4.2. Value Expressions
     4.2.14. Expression Evaluation Rules
 
+    Run with:
     psql -d mytestdb -U pgmihai
-    \dt  --list all tables
-    \df  --list all functions
     \i 20_expression_evaluation_rules.sql
+    \?
+    \qecho '\033[2J'
 */
 
 DROP TABLE IF EXISTS my_table CASCADE;

@@ -1,10 +1,11 @@
 /*  Chapter 4.3. Calling Functions
     4.3.2. Using Named Notation
 
+    Run with:
     psql -d mytestdb -U pgmihai
-    \dt  --list all tables
-    \df  --list all functions
     \i 22_using_named_notation.sql
+    \?
+    \qecho '\033[2J'
 */
 
 DROP TABLE IF EXISTS my_table CASCADE;

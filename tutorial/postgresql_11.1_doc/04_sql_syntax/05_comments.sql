@@ -1,11 +1,13 @@
 /*  Chapter 4.1 Lexical Structure
     4.1.5 Comments
 
-    run with:
-    psql -d mytestdb -U pgmihai         # give password
-    \dt                                 # list all tables
-    \i 05_comments.sql                  # run this script
+    Run with:
+    psql -d mytestdb -U pgmihai
+    \i 05_comments.sql
+    \?
+    \qecho '\033[2J'
 */
+
 
 -- This is a standard SQL comment
 DROP TABLE IF EXISTS my_table;

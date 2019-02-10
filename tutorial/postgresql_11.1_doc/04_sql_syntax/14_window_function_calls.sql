@@ -1,10 +1,11 @@
 /*  Chapter 4.2 Value Expressions
     4.2.8 Window Function Calls
 
+    Run with:
     psql -d mytestdb -U pgmihai
-    \dt  --list all tables
-    \df  --list all functions
     \i 14_window_function_calls.sql
+    \?
+    \qecho '\033[2J'
 */
 
 
@@ -80,8 +81,8 @@ SELECT avg(price) FROM products;
 
 -- Let's apply the aggregate function to subsets of rows (e.g. GROUP BY clause);
 SELECT group_name, avg(price) FROM products
-	INNER JOIN product_groups USING (group_id)
-	GROUP BY group_name;
+       INNER JOIN product_groups USING (group_id)
+       GROUP BY group_name;
 
 /*
  group_name |         avg

@@ -1,9 +1,11 @@
 /*  Chapter 4.1 Lexical Structure
     4.1.1 Identifiers and keywords
 
-    Run sample with:
+    Run with:
     psql -d mytestdb -U pgmihai
     \i 01_identifiers_and_keywords.sql
+    \?
+    \qecho '\033[2J'
 */
 
 

@@ -1,10 +1,11 @@
 /*  Chapter 4.2. Value Expressions
     4.2.13. Row Constructors
 
+    Run with:
     psql -d mytestdb -U pgmihai
-    \dt  --list all tables
-    \df  --list all functions
     \i 19_row_constructors.sql
+    \?
+    \qecho '\033[2J'
 */
 
 

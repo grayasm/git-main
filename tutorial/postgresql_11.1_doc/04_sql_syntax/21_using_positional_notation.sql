@@ -1,10 +1,12 @@
 /*  Chapter 4.3. Calling Functions
     4.3.1. Using Positional Notation
 
+    Run with:
     psql -d mytestdb -U pgmihai
-    \dt  --list all tables
-    \df  --list all functions
     \i 21_using_positional_notation.sql
+    \?
+    \df
+    \qecho '\033[2J'
 */
 
 DROP FUNCTION IF EXISTS concat_lower_or_upper (a text, b text, uppercase boolean);

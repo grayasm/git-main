@@ -1,9 +1,11 @@
 /*  Chapter 4.1 Lexical Structure
     4.1.2 Constants
 
-    Run sample with:
+    Run with:
     psql -d mytestdb -U pgmihai
     \i 02_constants.sql
+    \?
+    \qecho '\033[2J'
 */
 
 

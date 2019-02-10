@@ -1,10 +1,11 @@
 /*  Chapter 4.2 Value Expressions
     4.2.9 Type Casts
 
+    Run with:
     psql -d mytestdb -U pgmihai
-    \dt  --list all tables
-    \df  --list all functions
     \i 15_type_casts.sql
+    \?
+    \qecho '\033[2J'
 */
 
 

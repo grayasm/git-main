@@ -3,9 +3,11 @@
 
     https://www.postgresql.org/docs/9.0/static/functions-logical.html
 
-    run with:
-    psql -d mytestdb -U pgmihai  # give password
+    Run with:
+    psql -d mytestdb -U pgmihai
     \i 03_operators.sql
+    \?
+    \qecho '\033[2J'
 */
 
 

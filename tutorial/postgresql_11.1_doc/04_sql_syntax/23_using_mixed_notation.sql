@@ -2,9 +2,10 @@
     4.3.3. Using Mixed Notation
 
     psql -d mytestdb -U pgmihai
-    \dt  --list all tables
-    \df  --list all functions
     \i 23_using_mixed_notation.sql
+    \?
+    \df
+    \qecho '\033[2J'
 */
 
 DROP TABLE IF EXISTS my_table CASCADE;

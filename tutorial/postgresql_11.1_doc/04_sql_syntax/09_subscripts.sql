@@ -1,11 +1,11 @@
 /*  Chapter 4.2 Value Expressions
     4.2.3 Subscripts
 
-    run sample with:
-    psql -d mytestdb -U pgmihai        # give password
-    \dt                                # list all tables
-    \df                                # list all functions
+    Run with:
+    psql -d mytestdb -U pgmihai
     \i 09_subscripts.sql
+    \?
+    \qecho '\033[2J'
 */
 
 

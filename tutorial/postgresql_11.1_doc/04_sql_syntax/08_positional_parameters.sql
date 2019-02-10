@@ -1,10 +1,11 @@
 /*  Chapter 4.2 Value Expressions
     4.2.2 Positional Parameters
 
-    run sample with:
-    psql -d mytestdb -U pgmihai     # give password
-    \dt                             # list all tables
+    Run with:
+    psql -d mytestdb -U pgmihai
     \i 08_positional_parameters.sql
+    \?
+    \qecho '\033[2J'
 */
 
 

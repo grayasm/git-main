@@ -1,10 +1,11 @@
 /*  Chapter 4.1 Lexical Structure
     4.1.6 Operator Precedence
 
-    run with:
-    psql -d mytestdb -U pgmihai             # give password
-    \dt                                     # list all tables
+    Run with:
+    psql -d mytestdb -U pgmihai
     \i 06_operator_precedence.sql
+    \?
+    \qecho '\033[2J'
 */
 
 

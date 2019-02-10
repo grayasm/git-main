@@ -1,11 +1,13 @@
 /*  Chapter 4.2 Value Expressions
     4.2.6 Function Calls
 
-    run sample with:
+    Run with:
     psql -d mytestdb -U pgmihai
+    \i 12_function_calls.sql
+    \?
     \dt  --list tables
     \df  --list functions
-    \i 12_function_calls.sql
+    \qecho '\033[2J'
 */
 
 

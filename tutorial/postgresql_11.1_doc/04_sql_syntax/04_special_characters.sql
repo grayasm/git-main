@@ -2,9 +2,10 @@
     4.1.4 Special Characters
 
     run:
-    psql -d mytestdb -U pgmihai  # give passworld
-    \dt                          # to list all tables
+    psql -d mytestdb -U pgmihai
     \i 04_special_characters.sql
+    \?
+    \qecho '\033[2J'
 */
 
 
