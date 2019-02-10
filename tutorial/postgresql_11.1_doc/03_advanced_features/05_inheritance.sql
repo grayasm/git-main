@@ -2,9 +2,13 @@
     3.6 Inheritance
 
     Run with:
-    psql -d mytestdb -U pgmihai   # give password
+    psql -d mytestdb -U pgmihai
     \i 05_inheritance.sql
+    \?
+    \qecho '\033[2J'
 */
+
+
 DROP TABLE IF EXISTS weather; -- from prev example;
 DROP TABLE IF EXISTS capitals;
 DROP TABLE IF EXISTS cities;

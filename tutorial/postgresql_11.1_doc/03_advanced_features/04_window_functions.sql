@@ -2,8 +2,10 @@
     3.5 Window Functions
 
     Run with:
-    psql -d mytestdb -U pgmihai   # give password
+    psql -d mytestdb -U pgmihai
     \i 04_window_functions.sql
+    \?
+    \qecho '\033[2J'
 */
 
 

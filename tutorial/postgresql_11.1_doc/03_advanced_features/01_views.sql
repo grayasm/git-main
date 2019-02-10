@@ -2,8 +2,10 @@
     3.2 Views
 
     Run with:
-    psql -d mytestdb -U pgmihai   # give password
+    psql -d mytestdb -U pgmihai
     \i 01_views.sql
+    \?
+    \qecho '\033[2J'
 */
 
 

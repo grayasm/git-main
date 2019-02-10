@@ -2,8 +2,10 @@
     3.3 Foreign Keys
 
     Run with:
-    psql -d mytestdb -U pgmihai   # give password
+    psql -d mytestdb -U pgmihai
     \i 02_foreign_keys.sql
+    \?
+    \qecho '\033[2J'
 */
 
 
