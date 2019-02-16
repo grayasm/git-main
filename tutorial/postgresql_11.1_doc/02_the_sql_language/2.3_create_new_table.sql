@@ -3,7 +3,7 @@
 
     Run with:
     psql -d mytestdb -U pgmihai
-    \i 01_create_new_table.sql
+    \i 2.3_create_new_table.sql
     \?
     \qecho '\033[2J'
 

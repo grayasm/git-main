@@ -3,7 +3,7 @@
 
     Run with:
     psql -d mytestdb -U pgmihai
-    \i 08_deletions.sql
+    \i 2.9_deletions.sql
     \?
     \qecho '\033[2J'
 */

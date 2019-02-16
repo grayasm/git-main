@@ -3,7 +3,7 @@
 
     Run with:
     psql -d mytestdb -U pgmihai
-    \i 05_joins_between_tables.sql
+    \i 2.6_joins_between_tables.sql
     \?
     \qecho '\033[2J'
 */

@@ -3,7 +3,7 @@
 
     Run with:
     psql -d mytestdb -U pgmihai
-    \i 07_updates.sql
+    \i 2.8_updates.sql
     \?
     \qecho '\033[2J'
 */

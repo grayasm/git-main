@@ -3,7 +3,7 @@
 
     Run with:
     psql -d mytestdb -U pgmihai
-    \i 04_querying_a_table.sql
+    \i 2.5_querying_a_table.sql
     \?
     \qecho '\033[2J'
 */
