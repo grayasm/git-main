@@ -3,7 +3,7 @@
 
     Run with:
     psql -d mytestdb -U pgmihai
-    \i 04_window_functions.sql
+    \i 3.5_window_functions.sql
     \?
     \qecho '\033[2J'
 */

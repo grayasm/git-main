@@ -3,7 +3,7 @@
 
     Run with:
     psql -d mytestdb -U pgmihai
-    \i 01_views.sql
+    \i 3.2_views.sql
     \?
     \qecho '\033[2J'
 */

@@ -3,7 +3,7 @@
 
     Run with:
     psql -d mytestdb -U pgmihai
-    \i 02_foreign_keys.sql
+    \i 3.3_foreign_keys.sql
     \?
     \qecho '\033[2J'
 */
