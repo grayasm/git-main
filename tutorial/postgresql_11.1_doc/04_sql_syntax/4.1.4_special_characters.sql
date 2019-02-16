@@ -3,7 +3,7 @@
 
     run:
     psql -d mytestdb -U pgmihai
-    \i 04_special_characters.sql
+    \i 4.1.4_special_characters.sql
     \?
     \qecho '\033[2J'
 */

@@ -1,10 +1,10 @@
 /*  Chapter 4.3. Calling Functions
-    4.3.2. Using Named Notation
+    4.3.3. Using Mixed Notation
 
-    Run with:
     psql -d mytestdb -U pgmihai
-    \i 22_using_named_notation.sql
+    \i 4.3.3_using_mixed_notation.sql
     \?
+    \df
     \qecho '\033[2J'
 */
 
@@ -39,29 +39,16 @@ SELECT concat_lower_or_upper(c1, c2, c3) FROM my_table;
 */
 
 
-/*  In Named Notation, each argument's name is specified using := to separate it
-    from the argument expression. Example:
+/*  The Mixed Notation combines positional and named notation.
+    However, named arguments CANNOT precede positional arguments (logic).
+    Example:
 */
-SELECT  concat_lower_or_upper (a := c1, b := c2, uppercase := c3)
+SELECT  concat_lower_or_upper (c1, c2, uppercase := true)
         FROM my_table;
 /*
    concat_lower_or_upper
 ---------------------------
  0A LOWERCASE 0B LOWERCASE
- 1a camelcase 1b camelcase
- 2a uppercase 2b uppercase
-*/
-
-
-/*  In Named Notation one advantage is that the arguments may be specified
-    in any order. Example:
-*/
-SELECT  concat_lower_or_upper (uppercase := c3, b := c2, a := c1)
-        FROM my_table;
-/*
-   concat_lower_or_upper
----------------------------
- 0A LOWERCASE 0B LOWERCASE
- 1a camelcase 1b camelcase
- 2a uppercase 2b uppercase
+ 1A CAMELCASE 1B CAMELCASE
+ 2A UPPERCASE 2B UPPERCASE
 */

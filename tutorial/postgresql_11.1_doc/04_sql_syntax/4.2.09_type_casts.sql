@@ -3,7 +3,7 @@
 
     Run with:
     psql -d mytestdb -U pgmihai
-    \i 15_type_casts.sql
+    \i 4.2.09_type_casts.sql
     \?
     \qecho '\033[2J'
 */

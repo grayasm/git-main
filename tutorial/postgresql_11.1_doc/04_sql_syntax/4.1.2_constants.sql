@@ -3,7 +3,7 @@
 
     Run with:
     psql -d mytestdb -U pgmihai
-    \i 02_constants.sql
+    \i 4.1.2_constants.sql
     \?
     \qecho '\033[2J'
 */

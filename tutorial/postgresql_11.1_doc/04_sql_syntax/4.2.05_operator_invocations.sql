@@ -3,7 +3,7 @@
 
     Run with:
     psql -d mytestdb -U pgmihai
-    \i 11_operator_invocations.sql
+    \i 4.2.05_operator_invocations.sql
     \?
     \qecho '\033[2J'
 */

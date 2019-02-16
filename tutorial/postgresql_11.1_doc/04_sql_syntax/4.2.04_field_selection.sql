@@ -3,7 +3,7 @@
 
     Run with:
     psql -d mytestdb -U pgmihai
-    \i 10_field_selection.sql
+    \i 4.2.04_field_selection.sql
     \?
     \qecho '\033[2J'
 */

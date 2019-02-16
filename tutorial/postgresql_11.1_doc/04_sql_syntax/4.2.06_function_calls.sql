@@ -3,7 +3,7 @@
 
     Run with:
     psql -d mytestdb -U pgmihai
-    \i 12_function_calls.sql
+    \i 4.2.06_function_calls.sql
     \?
     \dt  --list tables
     \df  --list functions

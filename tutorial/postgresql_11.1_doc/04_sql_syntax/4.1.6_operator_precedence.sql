@@ -3,7 +3,7 @@
 
     Run with:
     psql -d mytestdb -U pgmihai
-    \i 06_operator_precedence.sql
+    \i 4.1.6_operator_precedence.sql
     \?
     \qecho '\033[2J'
 */

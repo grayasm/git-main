@@ -3,7 +3,7 @@
 
     Run with:
     psql -d mytestdb -U pgmihai
-    \i 19_row_constructors.sql
+    \i 4.2.13_row_constructors.sql
     \?
     \qecho '\033[2J'
 */

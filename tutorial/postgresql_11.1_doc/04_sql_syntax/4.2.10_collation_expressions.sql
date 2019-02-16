@@ -3,7 +3,7 @@
 
     Run with:
     psql -d mytestdb -U pgmihai
-    \i 16_collation_expressions.sql
+    \i 4.2.10_collation_expressions.sql
     \?
     \qecho '\033[2J'
 */

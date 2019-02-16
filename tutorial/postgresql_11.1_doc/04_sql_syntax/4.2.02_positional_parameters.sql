@@ -3,7 +3,7 @@
 
     Run with:
     psql -d mytestdb -U pgmihai
-    \i 08_positional_parameters.sql
+    \i 4.2.02_positional_parameters.sql
     \?
     \qecho '\033[2J'
 */

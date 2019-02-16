@@ -3,7 +3,7 @@
 
     Run with:
     psql -d mytestdb -U pgmihai
-    \i 01_identifiers_and_keywords.sql
+    \i 4.1.1_identifiers_and_keywords.sql
     \?
     \qecho '\033[2J'
 */

@@ -3,7 +3,7 @@
 
     Run with:
     psql -d mytestdb -U pgmihai
-    \i 21_using_positional_notation.sql
+    \i 4.3.1_using_positional_notation.sql
     \?
     \df
     \qecho '\033[2J'

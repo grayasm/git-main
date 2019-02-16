@@ -3,7 +3,7 @@
 
     Run with:
     psql -d mytestdb -U pgmihai
-    \i 07_column_references.sql
+    \i 4.2.01_column_references.sql
     \?
     \qecho '\033[2J'
 */

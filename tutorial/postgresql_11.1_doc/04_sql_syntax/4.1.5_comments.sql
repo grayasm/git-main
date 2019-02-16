@@ -3,7 +3,7 @@
 
     Run with:
     psql -d mytestdb -U pgmihai
-    \i 05_comments.sql
+    \i 4.1.5_comments.sql
     \?
     \qecho '\033[2J'
 */

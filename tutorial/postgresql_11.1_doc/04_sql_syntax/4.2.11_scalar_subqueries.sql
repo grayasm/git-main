@@ -3,7 +3,7 @@
 
     Run with:
     psql -d mytestdb -U pgmihai
-    \i 17_scalar_subqueries.sql
+    \i 4.2.11_scalar_subqueries.sql
     \?
     \qecho '\033[2J'
 */

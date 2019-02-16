@@ -3,7 +3,7 @@
 
     Run with:
     psql -d mytestdb -U pgmihai
-    \i 13_aggregate_expressions.sql
+    \i 4.2.07_aggregate_expressions.sql
     \?
     \qecho '\033[2J'
 */

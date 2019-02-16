@@ -5,7 +5,7 @@
 
     Run with:
     psql -d mytestdb -U pgmihai
-    \i 03_operators.sql
+    \i 4.1.3_operators.sql
     \?
     \qecho '\033[2J'
 */
