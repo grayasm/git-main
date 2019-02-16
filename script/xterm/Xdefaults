@@ -1,7 +1,7 @@
 xterm*faceName: Consolas:size=14
 #xterm*faceName: Monospace:size=13
-XTerm*background: gray13
-XTerm*foreground: white
+XTerm*background: #232221
+XTerm*foreground: #eeefde
 XTerm*pointerColor: red
 XTerm*pointerColorBackground: yellow
 XTerm*cursorColor: green
