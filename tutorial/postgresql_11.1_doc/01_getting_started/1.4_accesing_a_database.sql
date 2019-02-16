@@ -3,7 +3,10 @@
     (a) from command line:
 
     get shell to database :     psql -d mytestdb -U pgmihai
-    run sql file          :     \i 01_test.sql
+    run sql file          :     \i 1.4_accesing_a_database.sql
+    list all roles(users) :     \du
+    list all tables       :     \dt
+    select * from table   :     table tbl_name;
     help                  :     \?
     clear screen          :     \qecho '\033[2J'
 
