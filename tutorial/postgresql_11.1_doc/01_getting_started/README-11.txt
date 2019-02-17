@@ -54,9 +54,20 @@ START THE SERVICE
     # check if default database directory is empty
     ll /var/lib/pgsql/11/data
 
-*********************************
-TIMEZONE (same as in  README.txt)
-*********************************
+
+TIMEZONE
+--------
+    # Set TimeZone, DateStyle and IntervalStyle in postgresql.conf
+    emacs /mnt/sdb1/1TBpostgres/pgsql/data/postgresql.conf
+
+    timezone = 'GMT'
+    log_timezone = 'GMT'
+    datestyle = 'iso, mdy'
+    intervalstyle = 'postgres'
+
+    # save and reload the postgresql.conf file
+    systemctl restart postgresql-11.service
+
 
 ADMINISTRATION
 --------------
