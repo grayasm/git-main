@@ -38,7 +38,7 @@ CREATE ROLE joe WITH PASSWORD 'NotImportant';
 GRANT CREATE, USAGE ON SCHEMA myschema TO joe;
 SET ROLE joe;
 
--- user joe
+-- user joe has create privilege
 CREATE TABLE myschema.products (
        product_no    INTEGER  PRIMARY KEY,
        name          TEXT,
@@ -56,7 +56,7 @@ SET ROLE postgres;
 GRANT SELECT,UPDATE ON ALL TABLES IN SCHEMA myschema TO pgmihai;
 SET ROLE pgmihai;
 
--- user pgmihai
+-- user pgmihai has update privilege
 UPDATE myschema.products SET price = 55.5 WHERE name = 'p5'; -- UPDATE 1
 
 
