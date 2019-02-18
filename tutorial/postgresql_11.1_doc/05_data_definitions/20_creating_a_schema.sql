@@ -2,7 +2,9 @@
     5.8. Schemas
     5.8.1. Creating a Schema
 
-    psql -d mytestdb -U pgmihai
+    Run as user=postgres
+
+    psql -d mytestdb -U postgres
     \i 20_creating_a_schema.sql
     \?
     \qecho '\033[2J'
@@ -51,7 +53,21 @@ DROP SCHEMA myschema;
 /*      Drop a schema including all contained objects. */
 DROP SCHEMA myschema CASCADE;
 
-/*      Create a schema that will be owned by someone else.
-psql:19_creating_a_schema.sql:50: ERROR:  role "pgmihai2" does not exist
+/*      Create a schema that will be owned by someone else. */
+CREATE ROLE joe;
+CREATE SCHEMA joeschema AUTHORIZATION joe;
+
+\dn
+/*
+   List of schemas
+   Name    |  Owner
+-----------+----------
+ joeschema | joe
+ public    | postgres
+(2 rows)
 */
-CREATE SCHEMA schemaname AUTHORIZATION pgmihai2;
+
+
+/*      Clean up */
+DROP SCHEMA joeschema;
+DROP ROLE joe;
