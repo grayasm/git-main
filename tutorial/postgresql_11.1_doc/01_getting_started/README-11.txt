@@ -68,6 +68,13 @@ TIMEZONE
     # save and reload the postgresql.conf file
     systemctl restart postgresql-11.service
 
+QUERY TUNING
+------------
+    emacs /mnt/sdb1/1TBpostgres/pgsql/data/postgresql.conf
+
+    # optimizes queries over partition tables
+    enable_partition_pruning = on
+
 
 ADMINISTRATION
 --------------
