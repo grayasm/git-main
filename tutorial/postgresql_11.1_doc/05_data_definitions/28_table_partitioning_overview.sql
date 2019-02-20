@@ -9,26 +9,22 @@
 
 
 
-/*  Partitioning refers to splitting what is logically one very large table into
-    smaller physical pieces. Partitioning can provide several benefits:
-      > dramatically improved performance when most rows are in a single
-        partition
-      > partitioning reduces the index size making it more likely to fit in
-        memory
-      > queries or updates across a single partition are faster due to a
-        sequential scan of that partition compared with random access reads
-        scattered across the whole table
-      > bulk loads and deletes can be acomplished by adding or removing
-        partitions
-      > seldom used data can be migrated data to cheaper and slower storage
-        media
+/*  Partitioning refers to splitting what is logically one large table into
+    smaller physical pieces. Query performance can be improved dramatically
+    when heavily accessed rows of the table are in a single partition or a
+    small number of partitions. The partition reduces the index size making
+    it more likely that the heavily-used parts of the indexes fit in memory.
 
-    Partitioning types:
-    -------------------
-    Declarative - first in PostgreSQL-10
-    Inheritance - existed before PostgreSQL-10
+    The benefits are worthwile when a table is very large, which is when
+    the size of the table exceeds the physical memory of the database server.
 
-    Forms of partitioning:
+    PostgreSQL offers two types of partitioning:
+    --------------------------------------------
+    1) Declarative paritioning, first released in version 10
+    2) Using table inheritance, released before version 10
+
+    The (1) Declarative partitioning offers built-in support for the following
+    forms of partitioning:
     ----------------------
     Range: the table is partitioned into "ranges" defined by a key column or set
            of columns, with no overlap between the ranges of values assigned to
