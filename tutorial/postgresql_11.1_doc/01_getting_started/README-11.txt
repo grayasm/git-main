@@ -72,9 +72,11 @@ QUERY TUNING
 ------------
     emacs /mnt/sdb1/1TBpostgres/pgsql/data/postgresql.conf
 
-    # optimizes queries over partition tables
+    # optimizes queries over partition tables (declarative partitioning)
     enable_partition_pruning = on
 
+    # prevents accessing unnecessarily child tables (inheritance parititioning)
+    constraint_exclusion = partition       # on, off, or partition
 
 ADMINISTRATION
 --------------
