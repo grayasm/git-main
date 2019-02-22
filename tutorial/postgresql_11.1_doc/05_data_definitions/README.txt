@@ -29,7 +29,7 @@
      The Privileges       ex:
      The System Catalog   ex: SELECT datname FROM pg_catalog.pg_database;
      Usage Patterns       ex: create a schema per user with search_path=$user
-     Portability          ex: no 'public' schema in SQL standard 
+     Portability          ex: no 'public' schema in SQL standard
    Ineritance             ex: CREATE TABLE t2 (..) INHERITS (t1);
    Paritioning            ex: CREATE TABLE ty2018 (CHECK(..)) INHERITS (t);
      Foreign data         ex: SQL/MED specs, foreign server, foreign tables,..

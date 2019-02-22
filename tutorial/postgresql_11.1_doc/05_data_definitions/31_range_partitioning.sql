@@ -9,7 +9,49 @@
 */
 
 
-/*  http://pgdash.io/blog/partition-postgres-11.html
+DROP TABLE IF EXISTS collections CASCADE;
+
+CREATE TABLE collections (
+       key               SERIAL,
+       ts                TIMESTAMP WITH TIME ZONE NOT NULL,
+       input_id          INTEGER NOT NULL,
+       value             NUMERIC
+       )
+       PARTITION BY RANGE (ts);
+
+CREATE TABLE input_2017 PARTITION OF collections(key,ts,input_id,value)
+       FOR VALUES FROM('2017-01-01 00:00:00') TO ('2018-01-01 00:00:00');
+CREATE TABLE input_2018 PARTITION OF collections(key,ts,input_id,value)
+       FOR VALUES FROM('2018-01-01 00:00:00') TO ('2019-01-01 00:00:00');
+
+INSERT INTO collections(ts,input_id,value) VALUES
+       ('2017-01-01 23:00:00'::timestamp, 1, 0.98),
+       ('2017-08-01 23:00:00'::timestamp, 1, 1.23),
+       ('2018-01-01 23:00:00'::timestamp, 2, 1.34);
+
+SELECT * FROM input_2018;
+UPDATE collections SET ts='2018-08-01 23:00:00' WHERE ts='2017-08-01 23:00:00';
+SELECT * FROM collections;
+/*
+ key |           ts           | input_id | value
+-----+------------------------+----------+-------
+   1 | 2017-01-01 23:00:00+01 |        1 |  0.98
+   3 | 2018-01-01 23:00:00+01 |        2 |  1.34  <-- moved into 2nd partition
+   2 | 2018-08-01 23:00:00+02 |        1 |  1.23      but preserved key=3
+(3 rows)
+*/
+
+
+
+
+/*  Read further if you have time about:
+    UPDATE,
+    CREATE TABLE ... DEFAULT
+    CREATE INDEX,
+    FOREIGN KEY,
+    UNIQUE INDEX
+
+    http://pgdash.io/blog/partition-postgres-11.html
 
     1.  Update Moves Rows Across Partitions
 
@@ -90,14 +132,60 @@ Indexes:
         foreign key. But in v11, foreign keys are allowed.
 */
 DROP TABLE IF EXISTS invoices CASCADE;
-DROP TABLE IF EXISTS sale_ammounts_1 CASCADE;
+DROP TABLE IF EXISTS sales CASCADE;
 
 CREATE TABLE invoices (
        invoice_id     INTEGER PRIMARY KEY
        );
 
-CREATE TABLE sale_ammounts_1 (
+CREATE TABLE sales (
        saledate       DATE NOT NULL,
        invoiceid      INTEGER REFERENCES invoices(invoice_id)
        )
        PARTITION BY RANGE(saledate);
+
+CREATE TABLE sales_y2016 PARTITION OF sales
+       FOR VALUES FROM ('2016-01-01') TO ('2017-01-01');
+CREATE TABLE sales_y2017 PARTITION OF sales
+       FOR VALUES FROM ('2017-01-01') TO ('2018-01-01');
+INSERT INTO invoices VALUES
+       (1001),
+       (1002);
+INSERT INTO sales VALUES
+       ('2016-05-15', 1001),
+       ('2017-08-10', 1002);
+
+
+/*  5. Unique Indexes
+
+       In Postgres 10, you had to enforce unique constraints at child tables.
+       It was not possible to create a unique index on the master.
+       With Postgres 11, you can create a unique index on the master
+*/
+DROP TABLE IF EXISTS sales CASCADE;
+CREATE TABLE sales (
+       saledate       DATE NOT NULL,
+       invoiceid      INTEGER REFERENCES invoices(invoice_id),
+       UNIQUE (saledate, invoiceid)
+       )
+       PARTITION BY RANGE(saledate);
+
+/*      and Postgres will take care of creating indexes on all existing and
+        future child tables.
+*/
+CREATE TABLE sales_y2016 PARTITION OF sales
+       FOR VALUES FROM ('2016-01-01') TO ('2017-01-01');
+\d sales_y2016
+
+/*
+              Table "public.sales_y2016"
+  Column   |  Type   | Collation | Nullable | Default
+-----------+---------+-----------+----------+---------
+ saledate  | date    |           | not null |
+ invoiceid | integer |           |          |
+Partition of: sales FOR VALUES FROM ('2016-01-01') TO ('2017-01-01')
+Indexes:
+    "sales_y2016_saledate_invoiceid_key" UNIQUE CONSTRAINT, btree (saledate, invoiceid)
+Foreign-key constraints:
+    "sales_invoiceid_fkey" FOREIGN KEY (invoiceid) REFERENCES invoices(invoice_id)
+*/
