@@ -15,7 +15,7 @@
                                $$
                         LANGUAGE 'sql' VOLATILE;
                         SELECT * FROM f(1) AS a;
-    
+
     LATERAL subquery:   SELECT * FROM t1, LATERAL (SELECT * FROM t2 WHERE t1.id=t2.id) AS a;
     The WHERE clause:   SELECT * FROM t1 WHERE x BETWEEN (SELECT x FROM t2 WHERE y=t1.x+10) AND 100;
     The GROUP BY and
@@ -50,4 +50,3 @@
                              RETURNING *
                              )
                              SELECT * FROM t;
-    
