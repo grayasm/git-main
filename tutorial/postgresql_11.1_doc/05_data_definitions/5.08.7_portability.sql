@@ -3,7 +3,7 @@
     5.8.7. Portability
 
     psql -d mytestdb -U pgmihai
-    \i 26_portability.sql
+    \i 5.08.7_portability.sql
     \?
     \qecho '\033[2J'
 */

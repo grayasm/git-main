@@ -3,7 +3,7 @@
     5.8.3. The Schema Search Path.
 
     psql -d mytestdb -U pgmihai
-    \i 22_the_schema_search_path.sql
+    \i 5.08.3_the_schema_search_path.sql
     \?
     \qecho '\033[2J'
 */

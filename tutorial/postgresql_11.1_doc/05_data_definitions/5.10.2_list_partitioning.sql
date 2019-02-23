@@ -3,7 +3,7 @@
     5.10.2 Declarative Partitioning (PARTITION BY LIST)
 
     psql -d mytestdb -U pgmihai
-    \i 32_list_partitioning.sql
+    \i 5.10.2_list_partitioning.sql
     \?
     \qecho '\033[2J'
 */

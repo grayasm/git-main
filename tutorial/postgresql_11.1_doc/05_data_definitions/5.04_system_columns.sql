@@ -2,7 +2,7 @@
     5.4 System Columns
 
     psql -d mytestdb -U pgmihai
-    \i 09_system_columns.sql
+    \i 5.04_system_columns.sql
     \?
     \qecho '\033[2J'
 */

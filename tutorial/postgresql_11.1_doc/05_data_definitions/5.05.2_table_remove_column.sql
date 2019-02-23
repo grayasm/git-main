@@ -3,7 +3,7 @@
     5.5.2 Removing a Column
 
     psql -d mytestdb -U pgmihai
-    \i 10_table_remove_column.sql
+    \i 5.05.2_table_remove_column.sql
     \?
     \qecho '\033[2J'
 */

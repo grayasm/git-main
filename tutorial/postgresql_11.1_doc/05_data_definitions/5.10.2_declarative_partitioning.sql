@@ -2,7 +2,7 @@
     5.10.2. Declarative Partitioning
 
     psql -d mytestdb -U pgmihai
-    \i 29_declarative_partitioning.sql
+    \i 5.10.2_declarative_partitioning.sql
     \?
     \qecho '\033[2J'
 

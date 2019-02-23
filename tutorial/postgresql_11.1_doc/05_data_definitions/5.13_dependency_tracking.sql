@@ -2,7 +2,7 @@
     5.13. Dependency tracking.
 
     psql -d mytestdb -U pgmihai
-    \i 36_dependency_tracking.sql
+    \i 5.13_dependency_tracking.sql
     \?
     \qecho '\033[2J'
 */

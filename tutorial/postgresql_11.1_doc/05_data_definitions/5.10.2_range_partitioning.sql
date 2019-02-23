@@ -3,7 +3,7 @@
     5.10.2 Declarative Partitioning (PARTITION BY RANGE)
 
     psql -d mytestdb -U pgmihai
-    \i 31_range_partitioning.sql
+    \i 5.10.2_range_partitioning.sql
     \?
     \qecho '\033[2J'
 */

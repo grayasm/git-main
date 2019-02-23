@@ -3,7 +3,7 @@
     5.5.7 Renaming a Column
 
     psql -d mytestdb -U pgmihai
-    \i 16_rename_column.sql
+    \i 5.05.7_rename_column.sql
     \?
     \qecho '\033[2J'
 */

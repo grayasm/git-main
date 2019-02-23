@@ -2,7 +2,7 @@
     5.3.5. Foreign Keys
 
     psql -d mytestdb -U pgmihai
-    \i 07_foreign_keys.sql
+    \i 5.03.5_foreign_keys.sql
     \?
     \qecho '\033[2J'
 */

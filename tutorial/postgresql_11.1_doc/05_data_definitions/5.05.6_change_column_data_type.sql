@@ -3,7 +3,7 @@
     5.5.6 Changing a Column's Data Type
 
     psql -d mytestdb -U pgmihai
-    \i 15_change_column_data_type.sql
+    \i 5.05.6_change_column_data_type.sql
     \?
     \qecho '\033[2J'
 */

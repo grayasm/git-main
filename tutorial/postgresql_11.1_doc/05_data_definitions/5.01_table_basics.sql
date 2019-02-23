@@ -2,13 +2,13 @@
     5.1. Table Basics
 
     psql -d mytestdb -U pgmihai
-    \i 01_table_basics.sql
+    \i 5.01_table_basics.sql
     \?
     \qecho '\033[2J'
 */
 
 
-/*      SQL does not guarantee the order of the rows in a table.
+/*     ` SQL does not guarantee the order of the rows in a table.
         When the table is read the rows will appear in unspecified order,
         unless sorted.
         Columns have types and semantics: cannot assign text to numerical type.

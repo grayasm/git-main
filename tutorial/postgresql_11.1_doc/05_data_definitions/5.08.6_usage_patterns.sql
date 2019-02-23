@@ -3,7 +3,7 @@
     5.8.6. Usage Patterns
 
     psql -d mytestdb -U pgmihai
-    \i 25_usage_patterns.sql
+    \i 5.08.6_usage_patterns.sql
     \?
     \qecho '\033[2J'
 */

@@ -2,7 +2,7 @@
     5.12. Other database objects
 
     psql -d mytestdb -U pgmihai
-    \i 35_other_database_objects.sql
+    \i 5.12_other_database_objects.sql
     \?
     \qecho '\033[2J'
 */

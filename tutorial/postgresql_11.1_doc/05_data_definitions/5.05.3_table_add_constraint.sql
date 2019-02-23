@@ -3,7 +3,7 @@
     5.5.3 Adding a Constraint
 
     psql -d mytestdb -U pgmihai
-    \i 12_table_add_constraint.sql
+    \i 5.05.3_table_add_constraint.sql
     \?
     \qecho '\033[2J'
 */

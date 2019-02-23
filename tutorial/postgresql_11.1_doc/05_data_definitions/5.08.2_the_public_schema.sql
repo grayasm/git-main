@@ -3,7 +3,7 @@
     5.8.2. The Public Schema
 
     psql -d mytestdb -U pgmihai
-    \i 21_the_public_schema.sql
+    \i 5.08.2_the_public_schema.sql
     \?
     \qecho '\033[2J'
 

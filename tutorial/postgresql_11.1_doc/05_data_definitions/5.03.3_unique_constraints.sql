@@ -2,7 +2,7 @@
     5.3.3.     Unique Constraints
 
     psql -d mytestdb -U pgmihai
-    \i 05_unique_constraints.sql
+    \i 5.03.3_unique_constraints.sql
     \?
     \qecho '\033[2J'
 */

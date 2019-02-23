@@ -3,7 +3,7 @@
 
     # for this sample connect over localhost as user=postgres
     psql -h 127.0.0.1 -d mytestdb -U postgres
-    \i 19_row_security_policies.sql
+    \i 5.07_row_security_policies.sql
     \?
     \qecho '\033[2J'
 */

@@ -2,7 +2,7 @@
     5.11. Foreign data.
 
     psql -d mytestdb -U pgmihai
-    \i 34_foreign_data.sql
+    \i 5.11_foreign_data.sql
     \?
     \qecho '\033[2J'
 */

@@ -1,9 +1,9 @@
 /*  Chapter 5. Data Definition
-    5.9. Partitioning
-    5.9.6. Caveats
+    5.10.3 Implementation Using Inheritance
+    5.10.3.3 Caveats
 
     psql -d mytestdb -U pgmihai
-    \i 30_caveats.sql
+    \i 5.10.3_partitioning_caveats.sql
     \?
     \qecho '\033[2J'
 */

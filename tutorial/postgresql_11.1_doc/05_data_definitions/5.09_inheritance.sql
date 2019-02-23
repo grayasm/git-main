@@ -2,7 +2,7 @@
     5.9. Inheritance
 
     psql -d mytestdb -U pgmihai
-    \i 27_inheritance.sql
+    \i 5.09_inheritance.sql
     \?
     \qecho '\033[2J'
 */

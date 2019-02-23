@@ -2,7 +2,7 @@
     5.5.8 Renaming a Table
 
     psql -d mytestdb -U pgmihai
-    \i 17_rename_table.sql
+    \i 5.05.8_rename_table.sql
     \?
     \qecho '\033[2J'
 */
