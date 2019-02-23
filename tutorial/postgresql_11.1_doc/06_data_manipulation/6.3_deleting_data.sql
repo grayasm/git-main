@@ -2,7 +2,7 @@
     6.3     Deleting Data
 
     psql -d mytestdb -U pgmihai
-    \i 03_deleting_data.sql
+    \i 6.3_deleting_data.sql
     \?
     \qecho '\033[2J'
 */

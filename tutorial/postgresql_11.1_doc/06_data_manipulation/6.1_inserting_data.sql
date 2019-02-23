@@ -2,7 +2,7 @@
     6.1.   Inserting Data
 
     psql -d mytestdb -U pgmihai
-    \i 01_inserting_data.sql
+    \i 6.1_inserting_data.sql
     \?
     \qecho '\033[2J'
 */

@@ -2,7 +2,7 @@
     6.2     Updating Data
 
     psql -d mytestdb -U pgmihai
-    \i 02_updating_data.sql
+    \i 6.2_updating_data.sql
     \?
     \qecho '\033[2J'
 */
