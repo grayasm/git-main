@@ -50,10 +50,14 @@ SELECT * FROM points;
 SELECT (point(1,1) + point(5,9));       -- (6,10)
 SELECT (point(3,5) - point(1,1));       -- (2,4)
 
+-- https://www.reddit.com/r/PostgreSQL/comments/ai7cid/pointx1y1pointx2y2_formula/
+
 -- point(x1,y1) * point(x2,y2) = point(x1*x2-y1*y2, x1*y2+y1*x2);
 SELECT (point(2,3) * point(-2,-3));     -- (5,-12)
 
--- point(x1,y1) / point(x2,y2) = don't know yet.
+
+pt1 / pt2 = x2 * x2
+-- point(x1,y1) / point(x2,y2) =
 SELECT (point(2,3) / point(-2,-3));     -- (-1,0)
 
 -- distance between 2 points
