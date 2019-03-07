@@ -4,7 +4,7 @@
     7.2.1.4 Table Functions
 
     psql -d mytestdb -U pgmihai
-    \i 06_from_function.sql
+    \i 7.02.1_from_function.sql
     \?
     \qecho '\033[2J'
 */

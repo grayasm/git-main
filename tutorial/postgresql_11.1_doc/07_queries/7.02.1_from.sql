@@ -3,7 +3,7 @@
     7.2.1   The FROM Clause
 
     psql -d mytestdb -U pgmihai
-    \i 02_from.sql
+    \i 7.02.1_from.sql
     \?
     \qecho '\033[2J'
 */

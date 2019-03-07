@@ -3,7 +3,7 @@
     7.3.1   SelectList Items
 
     psql -d mytestdb -U pgmihai
-    \i 11_select.sql
+    \i 7.03.1_select.sql
     \?
     \qecho '\033[2J'
 */

@@ -4,7 +4,7 @@
     7.2.1.5 LATERAL Subquery
 
     psql -d mytestdb -U pgmihai
-    \i 07_from_lateral.sql
+    \i 7.02.1_from_lateral.sql
     \?
     \qecho '\033[2J'
 */

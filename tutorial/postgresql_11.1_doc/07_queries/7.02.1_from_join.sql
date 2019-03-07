@@ -4,7 +4,7 @@
     7.2.1.1 Joined Tables
 
     psql -d mytestdb -U pgmihai
-    \i 03_join.sql
+    \i 7.02.1_from_join.sql
     \?
     \qecho '\033[2J'
 */

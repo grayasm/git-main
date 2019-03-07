@@ -3,7 +3,7 @@
     7.2.3   The GROUP BY and HAVING clauses
 
     psql -d mytestdb -U pgmihai
-    \i 09_group_by_and_having.sql
+    \i 7.02.3_group_by_and_having.sql
     \?
     \qecho '\033[2J'
 */

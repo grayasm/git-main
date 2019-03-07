@@ -3,7 +3,7 @@
     7.8.2   Data modifying statements in WITH
 
     psql -d mytestdb -U pgmihai
-    \i 20_with_modifying_data.sql
+    \i 7.08.2_with_modifying_data.sql
     \?
     \qecho '\033[2J'
 */

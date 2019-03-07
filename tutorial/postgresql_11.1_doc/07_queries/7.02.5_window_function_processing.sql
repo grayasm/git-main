@@ -3,7 +3,7 @@
     7.2.4   Window Function Processing
 
     psql -d mytestdb -U pgmihai
-    \i 10_window_function_processing.sql
+    \i 7.02.5_window_function_processing.sql
     \?
     \qecho '\033[2J'
 */

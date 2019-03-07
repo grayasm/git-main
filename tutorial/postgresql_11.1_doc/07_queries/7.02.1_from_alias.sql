@@ -4,7 +4,7 @@
     7.2.1.2 The Table and Column Aliases
 
     psql -d mytestdb -U pgmihai
-    \i 04_from_alias.sql
+    \i 7.02.1_from_alias.sql
     \?
     \qecho '\033[2J'
 */

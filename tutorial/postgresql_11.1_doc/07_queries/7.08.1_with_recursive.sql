@@ -3,7 +3,7 @@
             WITH RECURSIVE
 
     psql -d mytestdb -U pgmihai
-    \i 19_with_recursive.sql
+    \i 7.08.1_with_recursive.sql
     \?
     \qecho '\033[2J'
 */

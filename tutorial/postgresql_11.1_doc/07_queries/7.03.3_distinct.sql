@@ -3,7 +3,7 @@
     7.3.3   DISTINCT
 
     psql -d mytestdb -U pgmihai
-    \i 13_distinct.sql
+    \i 7.03.3_distinct.sql
     \?
     \qecho '\033[2J'
 */

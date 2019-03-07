@@ -4,7 +4,7 @@
     7.2.1.3 Subqueries
 
     psql -d mytestdb -U pgmihai
-    \i 05_from_subquery.sql
+    \i 7.02.1_from_subquery.sql
     \?
     \qecho '\033[2J'
 */
