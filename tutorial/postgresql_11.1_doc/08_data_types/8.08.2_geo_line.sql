@@ -27,6 +27,8 @@
     where A and B are not both zero. Values of type line are input and output
     in the following form:
     {A,B,C} <-- not fully implemented in PostgreSQL 9.2.24 in CentOS7.5
+
+    Alternatively, any of the following forms can be used for input:
     [ (x1, y1) , (x2, y2) ]
     ( (x1, y2) , (x2, y2) )
       (x1, y1) , (x2, y2)
@@ -35,21 +37,21 @@
 
 DROP TABLE IF EXISTS lines CASCADE;
 
-CREATE TABLE lines (id SERIAL, line_ lseg);
+CREATE TABLE lines (id SERIAL, line_ line);
 
 INSERT INTO lines(line_) VALUES
-       (CAST('[(2,0), (0,4)]'::text AS lseg)),
-       (CAST('((2,0), (0,4))'::text AS lseg)),
-       (CAST(' (2,0), (0,4) '::text AS lseg)),
-       (CAST('  2,0 ,  0,4  '::text AS lseg));
+       (CAST('{2,-1,3}'::text AS line)),   -- y = 2x + 3
+       (CAST('{2,-2,3}'::text AS line)),   -- y =(2x + 3)/2
+       (CAST('{2,-2,0}'::text AS line));   -- y = 2x
 
 SELECT * FROM lines;
 /*
- id |     line_
-----+---------------
-  1 | [(2,0),(0,4)]
-  2 | [(2,0),(0,4)]
-  3 | [(2,0),(0,4)]
-  4 | [(2,0),(0,4)]
-(4 rows)
+ id |  line_
+----+----------
+  1 | {2,-1,3}
+  2 | {2,-2,3}
+  3 | {2,-2,0}
+(3 rows)
 */
+
+/*  For the alternative form see line segments sample. */

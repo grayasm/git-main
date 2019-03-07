@@ -50,15 +50,23 @@ SELECT * FROM points;
 SELECT (point(1,1) + point(5,9));       -- (6,10)
 SELECT (point(3,5) - point(1,1));       -- (2,4)
 
--- https://www.reddit.com/r/PostgreSQL/comments/ai7cid/pointx1y1pointx2y2_formula/
+/*  https://www.reddit.com/r/PostgreSQL/comments/ai7cid/pointx1y1pointx2y2_formula
+    * and / works similar as with complex numbers
+    (a+bi)(c+di) = ac + adi + bci + bdi^2 =
+                 = ac + adi + bci - bd =
+                 = ac - bd  + (ad + bc)i
+    point(x1,y1) * point(x2,y2) = point(x1x2-y1y2, x1y2+y1x2);
 
--- point(x1,y1) * point(x2,y2) = point(x1*x2-y1*y2, x1*y2+y1*x2);
+    (a+bi)/(c+di)= (a+bi)(c-di)/(c+di)(c-di) =
+                 = (ac - adi + cbi - bdi^2)/(c^2 - cdi + cdi -d^2i^2)=
+                 = (ac - adi + cbi + bd)/(c^2 +d^2) =
+                 = (ac + bd)/(c^2 + d^2) + (cb - ad)i/(c^2 + d^2);
+    point(x1,y1) / point(x2,y2) =
+                 point((x1x2 + y1y2)/(x2x2 + y2y2), (x2y1-x1y2)/(x2x2 + y2y2));
+*/
 SELECT (point(2,3) * point(-2,-3));     -- (5,-12)
-
-
-pt1 / pt2 = x2 * x2
--- point(x1,y1) / point(x2,y2) =
 SELECT (point(2,3) / point(-2,-3));     -- (-1,0)
+
 
 -- distance between 2 points
 SELECT (point(4,-2) <-> point(-2,-2));  -- 6
