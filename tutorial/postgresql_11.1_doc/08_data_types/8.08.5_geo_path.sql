@@ -46,10 +46,10 @@ DROP TABLE IF EXISTS paths CASCADE;
 CREATE TABLE paths (id SERIAL, path_ path);
 
 INSERT INTO paths(path_) VALUES
-       (CAST('[ (0, 0), (5, 0), (5, 10), (0, 10)         ]'::text AS path)),
-       (CAST('( (0, 0), (5, 0), (5, 10), (0, 10), (0, 0) )'::text AS path)),
-       (CAST('  (0, 0), (5, 0), (5, 10), (0, 10), (0, 0)  '::text AS path)),
-       (CAST('  (0, 0 ,  5, 0 ,  5, 10 ,  0, 10 ,  0, 0)  '::text AS path)),
-       (CAST('   0, 0 ,  5, 0 ,  5, 10 ,  0, 10 ,  0, 0   '::text AS path));
+       (CAST('[ (0, 0), (5, 0), (5, 10), (0, 10)         ]'::text AS path)),--O
+       (CAST('( (0, 0), (5, 0), (5, 10), (0, 10), (0, 0) )'::text AS path)),--C
+       (CAST('  (0, 0), (5, 0), (5, 10), (0, 10), (0, 0)  '::text AS path)),--C
+       (CAST('  (0, 0 ,  5, 0 ,  5, 10 ,  0, 10 ,  0, 0)  '::text AS path)),--C
+       (CAST('   0, 0 ,  5, 0 ,  5, 10 ,  0, 10 ,  0, 0   '::text AS path));--C
 
 SELECT * FROM paths;

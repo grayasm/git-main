@@ -21,3 +21,7 @@
     circle   24 bytes      Circle (center point and radius)   <(x,y),r>
     ----------------------------------------------------------------------------
 */
+
+/*  Polygons are represented by lists of points (the vertexes of the polygon).
+    Polygons are very similar to closed paths, but are stored differently and
+    have their own set of support routines.
