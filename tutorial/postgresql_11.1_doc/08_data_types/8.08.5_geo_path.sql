@@ -21,3 +21,35 @@
     circle   24 bytes      Circle (center point and radius)   <(x,y),r>
     ----------------------------------------------------------------------------
 */
+
+
+/*  Paths are represented by lists of connected points. Paths can be open,
+    where the first and last points in the list are considered not connected,
+    or closed, where the first and last points are considered connected.
+
+    Values of the type path are specified using any of hte following syntaxes:
+
+    [ (x1, y1) , ... , (xn, yn) ]
+    ( (x1, y1) , ... , (xn, yn) )
+      (x1, y1) , ... , (xn, yn)
+      (x1, y1  , ... ,  xn, yn)
+       x1, y1  , ... ,  xn, yn
+
+   where the points are the end points of the line segments comprising the path.
+   Square brackets [] indicate an open path, while parantheses () indicate a
+   closed path. When the outermost parantheses are omitted, a closed path is
+   assumed.
+*/
+
+DROP TABLE IF EXISTS paths CASCADE;
+
+CREATE TABLE paths (id SERIAL, path_ path);
+
+INSERT INTO paths(path_) VALUES
+       (CAST('[ (0, 0), (5, 0), (5, 10), (0, 10)         ]'::text AS path)),
+       (CAST('( (0, 0), (5, 0), (5, 10), (0, 10), (0, 0) )'::text AS path)),
+       (CAST('  (0, 0), (5, 0), (5, 10), (0, 10), (0, 0)  '::text AS path)),
+       (CAST('  (0, 0 ,  5, 0 ,  5, 10 ,  0, 10 ,  0, 0)  '::text AS path)),
+       (CAST('   0, 0 ,  5, 0 ,  5, 10 ,  0, 10 ,  0, 0   '::text AS path));
+
+SELECT * FROM paths;
