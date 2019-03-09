@@ -23,5 +23,38 @@
 */
 
 /*  Polygons are represented by lists of points (the vertexes of the polygon).
-    Polygons are very similar to closed paths, but are stored differently and
+    Polygons are very similar to CLOSED PATHS, but are stored differently and
     have their own set of support routines.
+
+    Values of type polygon are specified using any of the following syntaxes:
+
+    ( (x1, y1) , ... , (xn, yn) )
+      (x1, y1) , ... , (xn, yn)
+      (x1, y1  , ... ,  xn, yn)
+       x1, y1  , ... ,  xn, yn
+
+    where the points are the end points of the line segments comprising the
+    boundary of the polygon.
+    Polygons are output using the first syntax.
+*/
+
+DROP TABLE IF EXISTS polygons CASCADE;
+
+CREATE TABLE polygons (id SERIAL, polygon_ polygon);
+
+INSERT INTO polygons(polygon_) VALUES
+       (CAST('((0,0), (5,0), (5,10), (0,10), (0,0))'::text AS polygon)),
+       (CAST(' (0,0), (5,0), (5,10), (0,10), (0,0) '::text AS polygon)),
+       (CAST(' (0,0,   5,0,   5,10,   0,10,   0,0) '::text AS polygon)),
+       (CAST('  0,0,   5,0,   5,10,   0,10,   0,0  '::text AS polygon));
+
+SELECT * FROM polygons;
+/*
+ id |             polygon_
+----+-----------------------------------
+  1 | ((0,0),(5,0),(5,10),(0,10),(0,0))
+  2 | ((0,0),(5,0),(5,10),(0,10),(0,0))
+  3 | ((0,0),(5,0),(5,10),(0,10),(0,0))
+  4 | ((0,0),(5,0),(5,10),(0,10),(0,0))
+(4 rows)
+*/

@@ -21,3 +21,36 @@
     circle   24 bytes      Circle (center point and radius)   <(x,y),r>
     ----------------------------------------------------------------------------
 */
+
+
+/*  Circles are represented by a center point and radius.
+    Values of type circle are specified using any of the following syntaxes:
+
+    < (x, y) , r >
+    ( (x, y) , r )
+      (x, y) , r
+       x, y  , r
+
+    where (x, y) is the center point and r is the radius of the circle.
+    Circles are output using the first syntax.
+*/
+
+DROP TABLE IF EXISTS circles CASCADE;
+
+CREATE TABLE circles (id SERIAL, circle_ circle);
+
+INSERT INTO circles (circle_) VALUES
+       (CAST('< (10, 10), 14.142135624 >'::text AS circle)),
+       (CAST('( (10, 10), 14.142135624 )'::text AS circle)),
+--     (CAST('  (10, 10), 14.142135624  '::text AS circle)), --invalid syntax?
+       (CAST('   10, 10 , 14.142135624  '::text AS circle));
+
+SELECT * FROM circles;
+/*
+ id |        circle_
+----+------------------------
+  1 | <(10,10),14.142135624>
+  2 | <(10,10),14.142135624>
+  3 | <(10,10),14.142135624>
+(3 rows)
+*/
