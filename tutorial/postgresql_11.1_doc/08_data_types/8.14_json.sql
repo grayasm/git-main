@@ -1,6 +1,6 @@
 /*  Cap.8   Data Types
-    8.8.    Geometry Types
-    8.8.2   Lines
+    8.14.   JSON Types
+    8.14.1  
 
     psql -d mytestdb -U pgmihai
     \i 19_geo_line.sql

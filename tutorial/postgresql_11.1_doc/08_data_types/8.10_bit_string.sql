@@ -15,12 +15,15 @@
         bit varying(n),
 
         where n is a positive integer.
+
         bit(n) type data must match the length n exactly; it is an error to
         attempt to store shorter or longer bit strings.
+
         bit varying(n) data is of variable length up to the maximum length n;
-        longer strings will be rejected. Writing bit without a length is
-        equivalent to bit(1), while bit varying without a length specification
-        means unlimited length.
+        longer strings will be rejected.
+
+        Writing bit without a length is equivalent to bit(1), while bit varying
+        without a length specification means unlimited length.
 */
 
 
