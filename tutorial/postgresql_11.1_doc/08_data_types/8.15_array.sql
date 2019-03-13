@@ -54,6 +54,7 @@ INSERT INTO sal_emp VALUES
      '{{"breakfast", "consulting"}, {"meeting", "lunch"}}');
 
 
+/*----------------------------------------------------------------------------*/
 /*      Accessing Arrays */
 SELECT name FROM sal_emp WHERE pay_by_quarter[1] <> pay_by_quarter[2];
 /*
@@ -138,6 +139,8 @@ SELECT cardinality(schedule) FROM sal_emp WHERE name = 'Carol';
 */
 
 
+
+/*----------------------------------------------------------------------------*/
 /*      Modify Arrays */
 UPDATE sal_emp SET pay_by_quarter = '{25000,25000,27000,27000}'
     WHERE name = 'Carol';
@@ -276,6 +279,7 @@ SELECT array_append(ARRAY[1, 2], NULL);
 */
 
 
+/*----------------------------------------------------------------------------*/
 /*      Searching in Arrays */
 SELECT * FROM sal_emp WHERE pay_by_quarter[1] = 10000 OR
                             pay_by_quarter[2] = 10000 OR

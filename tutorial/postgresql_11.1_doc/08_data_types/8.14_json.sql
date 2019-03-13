@@ -175,4 +175,10 @@ SELECT jdoc->'guid', jdoc->'name' FROM api WHERE jdoc->'tags' ? 'qui';
 
 CREATE INDEX idxgintags ON api USING GIN ((jdoc->'tags'));
 
-SELECT jdoc->'guid', jdoc->'name' FROM api WHERE jdoc @> '{"tags":["gui"]}';
+SELECT jdoc->'guid', jdoc->'name' FROM api WHERE jdoc @> '{"tags":["qui"]}';
+/*
+                ?column?                |    ?column?
+----------------------------------------+-----------------
+ "9c36adc1-7fb5-4d5b-83b4-90356a46061a" | "Angela Barton"
+(1 row)
+*/
