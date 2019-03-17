@@ -2,7 +2,7 @@
     7.4     Combining queries
 
     psql -d mytestdb -U pgmihai
-    \i 7.04.0_combining_queries.sql
+    \i   4.0_combining_queries.sql
     \?
     \qecho '\033[2J'
 */

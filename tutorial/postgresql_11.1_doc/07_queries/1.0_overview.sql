@@ -2,7 +2,7 @@
     7.1     Overview
 
     psql -d mytestdb -U pgmihai
-    \i 7.01.0_overview.sql
+    \i   1.0_overview.sql
     \?
     \qecho '\033[2J'
 */

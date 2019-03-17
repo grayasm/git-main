@@ -2,7 +2,7 @@
     7.5     Sorting rows
 
     psql -d mytestdb -U pgmihai
-    \i 7.05.0_order_by.sql
+    \i   5.0_order_by.sql
     \?
     \qecho '\033[2J'
 */

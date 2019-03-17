@@ -3,7 +3,7 @@
     7.8.1   SELECT in WITH
 
     psql -d mytestdb -U pgmihai
-    \i 7.08.1_with.sql
+    \i   8.1_with.sql
     \?
     \qecho '\033[2J'
 */

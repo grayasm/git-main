@@ -3,7 +3,7 @@
     7.3.2   Column Labels
 
     psql -d mytestdb -U pgmihai
-    \i 7.03.2_column_labels.sql
+    \i   3.2_column_labels.sql
     \?
     \qecho '\033[2J'
 */

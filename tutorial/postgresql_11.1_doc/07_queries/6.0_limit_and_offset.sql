@@ -2,7 +2,7 @@
     7.6     LIMIT and OFFET
 
     psql -d mytestdb -U pgmihai
-    \i 7.06.0_limit_and_offset.sql
+    \i   6.0_limit_and_offset.sql
     \?
     \qecho '\033[2J'
 */

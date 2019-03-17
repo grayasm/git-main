@@ -2,7 +2,7 @@
     7.7     VALUES lists
 
     psql -d mytestdb -U pgmihai
-    \i 7.07.0_values_lists.sql
+    \i   7.0_values_lists.sql
     \?
     \qecho '\033[2J'
 */

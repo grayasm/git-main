@@ -3,7 +3,7 @@
     7.2.2   The WHERE Clause
 
     psql -d mytestdb -U pgmihai
-    \i 7.02.2_where.sql
+    \i   2.2_where.sql
     \?
     \qecho '\033[2J'
 */

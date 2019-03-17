@@ -1,9 +1,9 @@
 /*  Cap.7   Queries
     7.2     Table Expressions
-    7.2.4   Window Function Processing
+    7.2.5   Window Function Processing
 
     psql -d mytestdb -U pgmihai
-    \i 7.02.5_window_function_processing.sql
+    \i   2.5_window_function_processing.sql
     \?
     \qecho '\033[2J'
 */
