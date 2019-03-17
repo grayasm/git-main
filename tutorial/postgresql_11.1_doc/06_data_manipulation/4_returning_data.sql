@@ -2,7 +2,7 @@
     6.4     Returning Data From Modified Rows
 
     psql -d mytestdb -U pgmihai
-    \i 6.4_returning_data.sql
+    \i   4_returning_data.sql
     \?
     \qecho '\033[2J'
 */
