@@ -1,9 +1,8 @@
 /*  Cap.3 Advanced Features
     3.6 Inheritance
 
-    Run with:
     psql -d mytestdb -U pgmihai
-    \i 3.6_inheritance.sql
+    \i   6_inheritance.sql
     \?
     \qecho '\033[2J'
 */

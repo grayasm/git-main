@@ -1,9 +1,8 @@
 /*  Cap.3 Advanced Features
     3.5 Window Functions
 
-    Run with:
     psql -d mytestdb -U pgmihai
-    \i 3.5_window_functions.sql
+    \i   5_window_functions.sql
     \?
     \qecho '\033[2J'
 */

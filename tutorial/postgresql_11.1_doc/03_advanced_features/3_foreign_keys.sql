@@ -1,9 +1,8 @@
 /*  Cap.3 Advanced Features
     3.3 Foreign Keys
 
-    Run with:
     psql -d mytestdb -U pgmihai
-    \i 3.3_foreign_keys.sql
+    \i   3_foreign_keys.sql
     \?
     \qecho '\033[2J'
 */

@@ -1,9 +1,8 @@
 /*  Cap.3 Advanced Features
     3.4 Transactions
 
-    Run with:
     psql -d mytestdb -U pgmihai
-    \i 3.4_transactions.sql
+    \i   4_transactions.sql
     \?
     \qecho '\033[2J'
 */
