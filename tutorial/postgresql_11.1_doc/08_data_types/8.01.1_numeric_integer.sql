@@ -8,15 +8,15 @@
     \qecho '\033[2J'
 */
 
-/*  Name      Size      Description               Range
-   ---------+---------+-----------------------+-------------------------
-   smallint   2 bytes   small-range integer       -32768 to +32767
+/*  Name      Alias   Size      Description             Range
+   ---------+-------+---------+---------------------+--------------------
+   smallint   int2    2 bytes   small-range integer     -32768 to +32767
 
-   integer    4 bytes   typical choice for        -2147483648 to
-                        integer                   +2147483647
+   integer    int4    4 bytes   typical choice for      -2147483648 to
+                                integer                 +2147483647
 
-   bigint     8 bytes   large-range integer       -9223372036854775808 to
-                                                  +9223372036854775807
+   bigint     int8    8 bytes   large-range integer     -9223372036854775808 to
+                                                        +9223372036854775807
    ---------------------------------------------------------------------
    The smallint is used only if desk space is at a premium.
    The bigint is used when the range of the integer is insufficient.
