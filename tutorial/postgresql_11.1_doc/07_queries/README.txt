@@ -20,6 +20,7 @@
     The WHERE clause:   SELECT * FROM t1 WHERE x BETWEEN (SELECT x FROM t2 WHERE y=t1.x+10) AND 100;
     The GROUP BY and
     HAVING clauses  :   SELECT x,sum(y) FROM t1 GROUP BY x HAVING sum(y) > 3;
+    Grouping sets   :   SELECT a, b FROM t GROUP BY GROUPING SETS ((a), (b));
     Window function :   SELECT x, avg(y) OVER (PARTITION BY x) FROM t1 INNER JOIN t2 USING(id);
     The SELECT list :   SELECT t1.*, t2.x FROM t1 INNER JOIN t2 USING(id);
     Column labels   :   SELECT x, x+y+z AS sum FROM t1;
