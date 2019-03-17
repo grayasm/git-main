@@ -1,9 +1,8 @@
 /*  Cap.2 The SQL Language,
     2.5 Querying a Table
 
-    Run with:
     psql -d mytestdb -U pgmihai
-    \i 2.5_querying_a_table.sql
+    \i   5_select.sql
     \?
     \qecho '\033[2J'
 */

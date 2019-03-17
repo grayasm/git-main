@@ -1,9 +1,8 @@
 /*  Cap.2 The SQL Language,
     2.7 Aggregate Functions
 
-    Run with:
     psql -d mytestdb -U pgmihai
-    \i 2.7_aggregate_functions.sql
+    \i   7_aggregate_functions.sql
     \?
     \qecho '\033[2J'
 */

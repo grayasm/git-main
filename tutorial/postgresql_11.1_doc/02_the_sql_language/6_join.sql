@@ -1,9 +1,8 @@
 /*  Cap.2 The SQL Language,
     2.6 Joins Between Tables
 
-    Run with:
     psql -d mytestdb -U pgmihai
-    \i 2.6_joins_between_tables.sql
+    \i   6_join.sql
     \?
     \qecho '\033[2J'
 */

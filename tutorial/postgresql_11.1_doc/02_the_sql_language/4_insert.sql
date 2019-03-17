@@ -1,9 +1,8 @@
 /*  Cap.2 The SQL Language,
     2.4 Populating a Table with Rows
 
-    Run with:
     psql -d mytestdb -U pgmihai
-    \i 2.4_add_rows_to_table.sql
+    \i   4_insert.sql
     \?
     \qecho '\033[2J'
 */

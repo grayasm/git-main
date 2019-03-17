@@ -1,9 +1,8 @@
 /*  Cap.2 The SQL Language,
     2.9 Deletions
 
-    Run with:
     psql -d mytestdb -U pgmihai
-    \i 2.9_deletions.sql
+    \i   9_delete.sql
     \?
     \qecho '\033[2J'
 */

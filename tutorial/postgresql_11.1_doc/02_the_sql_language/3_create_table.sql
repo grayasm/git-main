@@ -1,9 +1,8 @@
 /*  Cap.2 The SQL Language,
     2.3 Creating a new table.
 
-    Run with:
     psql -d mytestdb -U pgmihai
-    \i 2.3_create_new_table.sql
+    \i   3_create_table.sql
     \?
     \qecho '\033[2J'
 

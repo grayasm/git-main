@@ -1,9 +1,8 @@
 /*  Cap.2 The SQL Language,
     2.8 Updates
 
-    Run with:
     psql -d mytestdb -U pgmihai
-    \i 2.8_updates.sql
+    \i   8_update.sql
     \?
     \qecho '\033[2J'
 */
