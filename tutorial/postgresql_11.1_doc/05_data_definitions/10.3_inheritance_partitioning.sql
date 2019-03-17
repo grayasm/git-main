@@ -3,7 +3,7 @@
     5.10.3 Implementation Using Inheritance
 
     psql -d mytestdb -U pgmihai
-    \i 5.10.3_inheritance_paritioning.sql
+    \i   10.3_inheritance_paritioning.sql
     \?
     \qecho '\033[2J'
 */

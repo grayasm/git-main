@@ -2,7 +2,7 @@
     5.10.1. Overview
 
     psql -d mytestdb -U pgmihai
-    \i 5.10.1_table_partitioning_overview.sql
+    \i   10.1_table_partitioning_overview.sql
     \?
     \qecho '\033[2J'
 */

@@ -3,7 +3,7 @@
     5.10.3.3 Caveats
 
     psql -d mytestdb -U pgmihai
-    \i 5.10.3_partitioning_caveats.sql
+    \i   10.3_partitioning_caveats.sql
     \?
     \qecho '\033[2J'
 */

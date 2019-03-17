@@ -5,7 +5,7 @@
     Run as user=postgres
 
     psql -d mytestdb -U postgres
-    \i 5.08.1_creating_a_schema.sql
+    \i   08.1_creating_a_schema.sql
     \?
     \qecho '\033[2J'
 

@@ -4,7 +4,7 @@
     Run as user=postgres
 
     psql -d mytestdb -U postgres
-    \i 5.06.0_privileges.sql
+    \i   06.0_privileges.sql
     \?
     \qecho '\033[2J'
 */

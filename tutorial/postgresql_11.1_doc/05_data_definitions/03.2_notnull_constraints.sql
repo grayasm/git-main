@@ -2,7 +2,7 @@
     5.3.2.     Not-Null Constraints
 
     psql -d mytestdb -U pgmihai
-    \i 5.03.2_notnull_constraints.sql
+    \i   03.2_notnull_constraints.sql
     \?
     \qecho '\033[2J'
 */

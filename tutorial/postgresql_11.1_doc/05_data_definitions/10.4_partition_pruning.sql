@@ -2,7 +2,7 @@
     5.10.4 Partition Pruning
 
     psql -d mytestdb -U pgmihai
-    \i 5.10.4_partition_pruning.sql
+    \i   10.4_partition_pruning.sql
     \?
     \qecho '\033[2J'
 */

@@ -3,7 +3,7 @@
     5.5.1 Adding a column
 
     psql -d mytestdb -U pgmihai
-    \i 5.05.1_table_add_column.sql
+    \i   05.1_table_add_column.sql
     \?
     \qecho '\033[2J'
 */

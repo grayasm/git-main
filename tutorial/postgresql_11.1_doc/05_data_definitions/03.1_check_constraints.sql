@@ -2,7 +2,7 @@
     5.3.1.  Check Constraints
 
     psql -d mytestdb -U pgmihai
-    \i 5.03.1_check_constraints.sql
+    \i   03.1_check_constraints.sql
     \?
     \qecho '\033[2J'
 */

@@ -2,7 +2,7 @@
     5.10.5. Paritioning and Constraint Exclusion
 
     psql -d mytestdb -U pgmihai
-    \i 5.10.5_constraint_exclusion.sql
+    \i   10.5_constraint_exclusion.sql
     \?
     \qecho '\033[2J'
 */

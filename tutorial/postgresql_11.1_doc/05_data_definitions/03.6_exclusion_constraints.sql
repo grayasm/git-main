@@ -2,7 +2,7 @@
     5.3.6. Exclusion Constraints
 
     psql -d mytestdb -U pgmihai
-    \i 5.03.6_exclusion_constraints.sql
+    \i   03.6_exclusion_constraints.sql
     \?
     \qecho '\033[2J'
 */

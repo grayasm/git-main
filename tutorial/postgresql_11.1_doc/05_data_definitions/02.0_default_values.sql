@@ -2,7 +2,7 @@
     5.2. Default Values
 
     psql -d mytestdb -U pgmihai
-    \i 5.02.0_default_values.sql
+    \i   02.0_default_values.sql
     \?
     \qecho '\033[2J'
 */

@@ -5,7 +5,7 @@
     Run as user=postgres
 
     psql -d mytestdb -U postgres
-    \i 5.08.4_schemas_and_privileges.sql
+    \i   08.4_schemas_and_privileges.sql
     \?
     \qecho '\033[2J'
 */

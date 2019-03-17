@@ -3,7 +3,7 @@
     5.10.2 Declarative Partitioning (PARTITION BY HASH)
 
     psql -d mytestdb -U pgmihai
-    \i 5.10.2_hash_paritioning.sql
+    \i   10.2_hash_paritioning.sql
     \?
     \qecho '\033[2J'
 */

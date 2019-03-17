@@ -3,7 +3,7 @@
     5.8.5. The System Catalog Schema
 
     psql -d mytestdb -U pgmihai
-    \i 5.08.5_the_system_catalog_schema.sql
+    \i   08.5_the_system_catalog_schema.sql
     \?
     \qecho '\033[2J'
 */

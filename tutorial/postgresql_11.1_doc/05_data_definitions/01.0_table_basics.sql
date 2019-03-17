@@ -2,7 +2,7 @@
     5.1. Table Basics
 
     psql -d mytestdb -U pgmihai
-    \i 5.01.0_table_basics.sql
+    \i   01.0_table_basics.sql
     \?
     \qecho '\033[2J'
 */

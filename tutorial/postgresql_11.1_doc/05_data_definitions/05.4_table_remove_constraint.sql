@@ -3,7 +3,7 @@
     5.5.4 Removing a Constraint
 
     psql -d mytestdb -U pgmihai
-    \i 5.05.4_table_remove_constraint.sql
+    \i   05.4_table_remove_constraint.sql
     \?
     \qecho '\033[2J'
 */

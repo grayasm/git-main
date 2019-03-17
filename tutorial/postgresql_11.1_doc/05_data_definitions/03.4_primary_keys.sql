@@ -2,7 +2,7 @@
     5.3.4. Primary Keys
 
     psql -d mytestdb -U pgmihai
-    \i 5.03.4_primary_keys.sql
+    \i   03.4_primary_keys.sql
     \?
     \qecho '\033[2J'
 */

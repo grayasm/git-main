@@ -3,7 +3,7 @@
     5.5.5 Changing a Column's Default Value
 
     psql -d mytestdb -U pgmihai
-    \i 5.05.5_change_column_default_value.sql
+    \i   05.5_change_column_default_value.sql
     \?
     \qecho '\033[2J'
 */
