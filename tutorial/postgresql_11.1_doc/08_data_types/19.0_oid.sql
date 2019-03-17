@@ -2,7 +2,7 @@
     8.19.   Object Identifier Types
 
     psql -d mytestdb -U pgmihai
-    \i 8.19_oid.sql
+    \i   19.0_oid.sql
     \?
     \qecho '\033[2J'
 */

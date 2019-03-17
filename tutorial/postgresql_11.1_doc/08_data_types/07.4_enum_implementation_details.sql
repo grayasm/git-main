@@ -3,7 +3,7 @@
     8.7.4.  Implementation Details
 
     psql -d mytestdb -U pgmihai
-    \i 17_enum_implementation_details.sql
+    \i   07.4_enum_implementation_details.sql
     \?
     \qecho '\033[2J'
 */

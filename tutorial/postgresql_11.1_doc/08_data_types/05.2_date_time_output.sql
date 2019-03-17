@@ -3,7 +3,7 @@
     8.5.2   Date/Time Output
 
     psql -d mytestdb -U pgmihai
-    \i 09_date_time_output.sql
+    \i   05.2_date_time_output.sql
     \?
     \qecho '\033[2J'
 */

@@ -3,7 +3,7 @@
     8.11.1  tsvector
 
     psql -d mytestdb -U pgmihai
-    \i 8.11.1_text_search_tsvector.sql
+    \i   11.1_text_search_tsvector.sql
     \?
     \qecho '\033[2J'
 */

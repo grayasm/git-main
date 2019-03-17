@@ -13,10 +13,11 @@
 
     # run as user=postgres , required for last part (extension btree_gist)
     psql -d mytestdb -U postgres
-    \i 8.17_range.sql
+    \i   17.0_range.sql
     \?
     \qecho '\033[2J'
 */
+
 
 SET ROLE pgmihai;
 

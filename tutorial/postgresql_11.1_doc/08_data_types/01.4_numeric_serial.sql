@@ -3,10 +3,11 @@
     8.1.4   Serial Types
 
     psql -d mytestdb -U pgmihai
-    \i 04_numeric_serial.sql
+    \i   01.4_numeric_serial.sql
     \?
     \qecho '\033[2J'
 */
+
 
 /*  The data types smallserial,serial and bigserial are not true types.
     They are a notational convenience for creating unique identifier columns

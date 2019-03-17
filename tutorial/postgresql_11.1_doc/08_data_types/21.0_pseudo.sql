@@ -2,7 +2,7 @@
     8.21.   Pseudo-Types
 
     psql -d mytestdb -U pgmihai
-    \i 8.21_pseudo_type.sql
+    \i   21.0_pseudo.sql
     \?
     \qecho '\033[2J'
 */

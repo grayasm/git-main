@@ -2,10 +2,11 @@
     8.2     Monetary Types
 
     psql -d mytestdb -U pgmihai
-    \i 05_monetary.sql
+    \i   02.0_monetary.sql
     \?
     \qecho '\033[2J'
 */
+
 
 /*  Name      Size      Description               Range
    ---------+---------+-----------------------+--------------------------

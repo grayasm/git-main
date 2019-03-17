@@ -3,10 +3,11 @@
     8.1.2   Arbitrary Precision Numbers
 
     psql -d mytestdb -U pgmihai
-    \i 02_numeric_arbitrary_precision.sql
+    \i   01.2_numeric_arbitrary_precision.sql
     \?
     \qecho '\033[2J'
 */
+
 
 /*  Name      Size      Description                  Range
    ---------+---------+---------------------------+---------------------------

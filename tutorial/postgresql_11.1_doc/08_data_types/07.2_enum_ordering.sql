@@ -3,7 +3,7 @@
     8.7.2.  Ordering
 
     psql -d mytestdb -U pgmihai
-    \i 15_enum_ordering.sql
+    \i   07.2_enum_ordering.sql
     \?
     \qecho '\033[2J'
 */

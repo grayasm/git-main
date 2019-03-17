@@ -3,7 +3,7 @@
     8.7.1.  Declaration of Enumerated Types
 
     psql -d mytestdb -U pgmihai
-    \i 14_enum_declaration.sql
+    \i   07.1_enum_declaration.sql
     \?
     \qecho '\033[2J'
 */

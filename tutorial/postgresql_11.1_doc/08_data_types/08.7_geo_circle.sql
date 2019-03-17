@@ -1,12 +1,13 @@
 /*  Cap.8   Data Types
     8.8.    Geometry Types
-    8.8.2   Lines
+    8.8.7   Circles
 
     psql -d mytestdb -U pgmihai
-    \i 19_geo_line.sql
+    \i   08.7_geo_circle.sql
     \?
     \qecho '\033[2J'
 */
+
 
 /*  Geometric Types
     Name      Storage Size  Description Representation

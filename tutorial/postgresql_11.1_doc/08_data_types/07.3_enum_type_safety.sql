@@ -3,7 +3,7 @@
     8.7.3.  Type Safety
 
     psql -d mytestdb -U pgmihai
-    \i 16_enum_type_safety.sql
+    \i   07.3_enum_type_safety.sql
     \?
     \qecho '\033[2J'
 */

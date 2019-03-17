@@ -3,7 +3,7 @@
     8.5.4   Interval Input
 
     psql -d mytestdb -U pgmihai
-    \i 11_date_time_interval_intput.sql
+    \i   05.4_date_time_interval_intput.sql
     \?
     \qecho '\033[2J'
 */

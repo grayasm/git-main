@@ -2,7 +2,7 @@
     8.3     Character Types
 
     psql -d mytestdb -U pgmihai
-    \i 06_character.sql
+    \i   03.0_character.sql
     \?
     \qecho '\033[2J'
 */

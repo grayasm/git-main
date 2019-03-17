@@ -8,7 +8,7 @@
     8.15.6  Array Input and Output Syntax
 
     psql -d mytestdb -U pgmihai
-    \i 8.15_array.sql
+    \i   15.0_array.sql
     \?
     \qecho '\033[2J'
 */

@@ -2,7 +2,7 @@
     8.5     Boolean Type
 
     psql -d mytestdb -U pgmihai
-    \i 13_boolean.sql
+    \i   06.0_boolean.sql
     \?
     \qecho '\033[2J'
 */

@@ -2,7 +2,7 @@
     8.18.   Domain Types
 
     psql -d mytestdb -U pgmihai
-    \i 8.18_domain.sql
+    \i   18.0_domain.sql
     \?
     \qecho '\033[2J'
 */

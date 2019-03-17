@@ -8,7 +8,7 @@
     8.16.6  Composite Type Input and Output Syntax
 
     psql -d mytestdb -U pgmihai
-    \i 8.16_composite.sql
+    \i   16.0_composite.sql
     \?
     \qecho '\033[2J'
 */

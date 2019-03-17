@@ -3,7 +3,7 @@
     8.5.3   Time Zones
 
     psql -d mytestdb -U pgmihai
-    \i 10_date_time_zones.sql
+    \i   05.3_date_time_zones.sql
     \?
     \qecho '\033[2J'
 */

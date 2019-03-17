@@ -3,10 +3,11 @@
     8.1.1   Integer Types
 
     psql -d mytestdb -U pgmihai
-    \i 01_numeric_integer.sql
+    \i   01.1_numeric_integer.sql
     \?
     \qecho '\033[2J'
 */
+
 
 /*  Name      Alias   Size      Description             Range
    ---------+-------+---------+---------------------+--------------------

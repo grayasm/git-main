@@ -2,10 +2,11 @@
     8.12.   UUID Type
 
     psql -d mytestdb -U pgmihai
-    \i 8.12_uuid.sql
+    \i   12.0_uuid.sql
     \?
     \qecho '\033[2J'
 */
+
 
 /*      The data type uuid stores Universally Unique Identifiers (UUID) as
         defined by RFC 4122, ISO IEC 9834-8:2005, and related standards.

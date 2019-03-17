@@ -1,9 +1,9 @@
 /*  Cap.8   Data Types
     8.11.   Text Search Types
-    8.8.2   tsquery
+    8.11.2  tsquery
 
     psql -d mytestdb -U pgmihai
-    \i 8.11.2_text_search_tsquery.sql
+    \i   11.2_text_search_tsquery.sql
     \?
     \qecho '\033[2J'
 */

@@ -3,7 +3,7 @@
     8.8.4   Boxes
 
     psql -d mytestdb -U pgmihai
-    \i 8.08.4_geo_box.sql
+    \i   08.4_geo_box.sql
     \?
     \qecho '\033[2J'
 */

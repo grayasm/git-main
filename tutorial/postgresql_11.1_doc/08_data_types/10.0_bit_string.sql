@@ -2,10 +2,11 @@
     8.10.   Bit String Types
 
     psql -d mytestdb -U pgmihai
-    \i 8.10_bit_string.sql
+    \i   10.0_bit_string.sql
     \?
     \qecho '\033[2J'
 */
+
 
 /*
         Bit strings are strings of 1's and 0's. They can be used to store or

@@ -7,7 +7,7 @@
     8.14.5  Transforms
 
     psql -d mytestdb -U pgmihai
-    \i 8.14_json.sql
+    \i   14.0_json.sql
     \?
     \qecho '\033[2J'
 */

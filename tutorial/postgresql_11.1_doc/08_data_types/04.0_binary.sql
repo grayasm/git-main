@@ -2,7 +2,7 @@
     8.4     Binary Data Types
 
     psql -d mytestdb -U pgmihai
-    \i 07_binary.sql
+    \i   04.0_binary.sql
     \?
     \qecho '\033[2J'
 */

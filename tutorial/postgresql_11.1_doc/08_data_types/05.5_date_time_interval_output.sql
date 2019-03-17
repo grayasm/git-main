@@ -3,7 +3,7 @@
     8.5.5   Interval Output
 
     psql -d mytestdb -U pgmihai
-    \i 12_date_time_interval_output.sql
+    \i   05.5_date_time_interval_output.sql
     \?
     \qecho '\033[2J'
 */

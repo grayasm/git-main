@@ -5,7 +5,7 @@
     8.13.3  Accessing XML Values
 
     psql -d mytestdb -U pgmihai
-    \i 8.13_xml.sql
+    \i   13.0_xml.sql
     \?
     \qecho '\033[2J'
 */

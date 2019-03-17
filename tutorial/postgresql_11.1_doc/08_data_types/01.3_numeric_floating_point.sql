@@ -3,7 +3,7 @@
     8.1.3   Floating-Point Types
 
     psql -d mytestdb -U pgmihai
-    \i 03_numeric_floating_point.sql
+    \i   01.3_numeric_floating_point.sql
     \?
     \qecho '\033[2J'
 */

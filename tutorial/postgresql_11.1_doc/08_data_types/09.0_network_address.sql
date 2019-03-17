@@ -7,7 +7,7 @@
     8.9.5   macadd8
 
     psql -d mytestdb -U pgmihai
-    \i 8.09_network_address_types
+    \i   09.0_network_address.sql
     \?
     \qecho '\033[2J'
 */

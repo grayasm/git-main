@@ -2,7 +2,7 @@
     8.20.   pg_lsn Type
 
     psql -d mytestdb -U pgmihai
-    \i 8.20_pg_lsn.sql
+    \i   20.0_pg_lsn.sql
     \?
     \qecho '\033[2J'
 */

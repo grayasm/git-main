@@ -3,7 +3,7 @@
     8.8.1   Points
 
     psql -d mytestdb -U pgmihai
-    \i 18_geo_point.sql
+    \i   08.1_geo_point.sql
     \?
     \qecho '\033[2J'
 */

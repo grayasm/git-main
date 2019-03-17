@@ -3,7 +3,7 @@
     8.8.2   Lines
 
     psql -d mytestdb -U pgmihai
-    \i 19_geo_line.sql
+    \i   08.2_geo_line.sql
     \?
     \qecho '\033[2J'
 */
