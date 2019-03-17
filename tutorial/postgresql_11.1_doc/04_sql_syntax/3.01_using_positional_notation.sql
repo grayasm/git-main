@@ -1,9 +1,8 @@
 /*  Chapter 4.3. Calling Functions
     4.3.1. Using Positional Notation
 
-    Run with:
     psql -d mytestdb -U pgmihai
-    \i 4.3.01_using_positional_notation.sql
+    \i   3.01_using_positional_notation.sql
     \?
     \df
     \qecho '\033[2J'

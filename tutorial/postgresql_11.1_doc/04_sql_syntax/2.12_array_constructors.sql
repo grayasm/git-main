@@ -1,9 +1,8 @@
 /*  Chapter 4.2. Value Expressions
     4.2.12. Array Constructors
 
-    Run with:
     psql -d mytestdb -U pgmihai
-    \i 4.2.12_array_constructors.sql
+    \i   2.12_array_constructors.sql
     \?
     \qecho '\033[2J'
 */

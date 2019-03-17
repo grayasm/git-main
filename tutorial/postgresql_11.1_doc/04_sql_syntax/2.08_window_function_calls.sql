@@ -1,9 +1,8 @@
 /*  Chapter 4.2 Value Expressions
     4.2.8 Window Function Calls
 
-    Run with:
     psql -d mytestdb -U pgmihai
-    \i 4.2.08_window_function_calls.sql
+    \i   2.08_window_function_calls.sql
     \?
     \qecho '\033[2J'
 */

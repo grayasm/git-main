@@ -1,9 +1,8 @@
 /*  Chapter 4.2 Value Expressions
     4.2.5 Operator Invocations
 
-    Run with:
     psql -d mytestdb -U pgmihai
-    \i 4.2.05_operator_invocations.sql
+    \i   2.05_operator_invocations.sql
     \?
     \qecho '\033[2J'
 */

@@ -1,9 +1,8 @@
 /*  Chapter 4.2 Value Expressions
     4.2.4 Field Selection
 
-    Run with:
     psql -d mytestdb -U pgmihai
-    \i 4.2.04_field_selection.sql
+    \i   2.04_field_selection.sql
     \?
     \qecho '\033[2J'
 */

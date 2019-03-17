@@ -1,9 +1,8 @@
 /*  Chapter 4.2 Value Expressions
     4.2.6 Function Calls
 
-    Run with:
     psql -d mytestdb -U pgmihai
-    \i 4.2.06_function_calls.sql
+    \i   2.06_function_calls.sql
     \?
     \dt  --list tables
     \df  --list functions

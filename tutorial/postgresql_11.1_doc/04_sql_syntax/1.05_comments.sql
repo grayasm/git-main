@@ -1,9 +1,8 @@
 /*  Chapter 4.1 Lexical Structure
     4.1.5 Comments
 
-    Run with:
     psql -d mytestdb -U pgmihai
-    \i 4.1.05_comments.sql
+    \i   1.05_comments.sql
     \?
     \qecho '\033[2J'
 */

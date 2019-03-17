@@ -2,7 +2,7 @@
     4.3.3. Using Mixed Notation
 
     psql -d mytestdb -U pgmihai
-    \i 4.3.03_using_mixed_notation.sql
+    \i   3.03_using_mixed_notation.sql
     \?
     \df
     \qecho '\033[2J'

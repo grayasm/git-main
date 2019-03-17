@@ -1,9 +1,8 @@
 /*  Chapter 4.2. Value Expressions
     4.2.14. Expression Evaluation Rules
 
-    Run with:
     psql -d mytestdb -U pgmihai
-    \i 4.2.14_expression_evaluation_rules.sql
+    \i   2.14_expression_evaluation_rules.sql
     \?
     \qecho '\033[2J'
 */

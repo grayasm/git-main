@@ -3,9 +3,8 @@
 
     https://www.postgresql.org/docs/9.0/static/functions-logical.html
 
-    Run with:
     psql -d mytestdb -U pgmihai
-    \i 4.1.03_operators.sql
+    \i   1.03_operators.sql
     \?
     \qecho '\033[2J'
 */

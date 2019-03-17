@@ -1,9 +1,8 @@
 /*  Chapter 4.2 Value Expressions
     4.2.1 Column References
 
-    Run with:
     psql -d mytestdb -U pgmihai
-    \i 4.2.01_column_references.sql
+    \i   2.01_column_references.sql
     \?
     \qecho '\033[2J'
 */

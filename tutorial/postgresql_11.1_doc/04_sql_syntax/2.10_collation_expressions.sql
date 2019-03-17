@@ -1,9 +1,8 @@
 /*  Chapter 4.2 Value Expressions
     4.2.10 Collation Expressions
 
-    Run with:
     psql -d mytestdb -U pgmihai
-    \i 4.2.10_collation_expressions.sql
+    \i   2.10_collation_expressions.sql
     \?
     \qecho '\033[2J'
 */

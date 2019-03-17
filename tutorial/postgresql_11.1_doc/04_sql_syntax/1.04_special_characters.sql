@@ -1,9 +1,8 @@
 /*  Chapter 4.1 Lexical Structure
     4.1.4 Special Characters
 
-    run:
     psql -d mytestdb -U pgmihai
-    \i 4.1.04_special_characters.sql
+    \i   1.04_special_characters.sql
     \?
     \qecho '\033[2J'
 */

@@ -1,9 +1,8 @@
 /*  Chapter 4.2 Value Expressions
     4.2.9 Type Casts
 
-    Run with:
     psql -d mytestdb -U pgmihai
-    \i 4.2.09_type_casts.sql
+    \i   2.09_type_casts.sql
     \?
     \qecho '\033[2J'
 */

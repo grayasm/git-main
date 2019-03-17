@@ -1,9 +1,8 @@
 /*  Chapter 4.3. Calling Functions
     4.3.2. Using Named Notation
 
-    Run with:
     psql -d mytestdb -U pgmihai
-    \i 4.3.02_using_named_notation.sql
+    \i   3.02_using_named_notation.sql
     \?
     \qecho '\033[2J'
 */
