@@ -72,7 +72,7 @@ int main(int argc, char** argv)
       utility
     */
 
-#if 1
+#if 0
     CPPUNIT_TEST_SUITE_REGISTRATION(test_algorithm);
     CPPUNIT_TEST_SUITE_REGISTRATION(test_functional);
     CPPUNIT_TEST_SUITE_REGISTRATION(test_numeric);
@@ -97,7 +97,8 @@ int main(int argc, char** argv)
       tree
     */
 	
-#if 1
+	CPPUNIT_TEST_SUITE_REGISTRATION(test_vector);
+#if 0
     CPPUNIT_TEST_SUITE_REGISTRATION(test_autoptr);
     CPPUNIT_TEST_SUITE_REGISTRATION(test_exception);
     CPPUNIT_TEST_SUITE_REGISTRATION(test_generic_array);
@@ -130,7 +131,7 @@ int main(int argc, char** argv)
       time 
    */
 
-#if 1
+#if 0
     CPPUNIT_TEST_SUITE_REGISTRATION(test_filename);
     CPPUNIT_TEST_SUITE_REGISTRATION(test_critical_section);
 	CPPUNIT_TEST_SUITE_REGISTRATION(test_autocritical_section);
