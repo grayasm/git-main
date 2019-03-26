@@ -26,7 +26,7 @@
 #include "iterator.hpp"
 
 
-namespace stl
+namespace misc
 {
 
     template <typename T1, typename T2>
@@ -105,9 +105,9 @@ namespace stl
 //////////////////////////////////////////////////////////////////////////
 //additional functionality
     template<typename Iterator>
-    typename stl::iterator_traits<Iterator>::iterator_category it_cat(const Iterator&)
+    typename misc::iterator_traits<Iterator>::iterator_category it_cat(const Iterator&)
     {
-        typename stl::iterator_traits<Iterator>::iterator_category cat;
+        typename misc::iterator_traits<Iterator>::iterator_category cat;
         return cat;
     }
 
@@ -284,7 +284,7 @@ namespace stl
 //////////////////////////////////////////////////////////////////////////
 //advance function
     template<typename InputIterator, typename Difference>
-    inline void advance(InputIterator& where, Difference offset, stl::input_iterator_tag)
+    inline void advance(InputIterator& where, Difference offset, misc::input_iterator_tag)
     {
         //negative values only for bidirectional_iterator_tag and random_access_iterator_tag
         for(; 0 < offset; --offset)
@@ -294,7 +294,7 @@ namespace stl
     }
 
     template<typename ForwardIterator, typename Difference>
-    inline void advance(ForwardIterator& where, Difference offset, stl::forward_iterator_tag)
+    inline void advance(ForwardIterator& where, Difference offset, misc::forward_iterator_tag)
     {
         //negative values only for bidirectional_iterator_tag and random_access_iterator_tag
         for(; 0 < offset; --offset)
@@ -304,7 +304,7 @@ namespace stl
     }
 
     template<typename BidirectionalIterator, typename Difference>
-    inline void advance(BidirectionalIterator& where, Difference offset, stl::bidirectional_iterator_tag)
+    inline void advance(BidirectionalIterator& where, Difference offset, misc::bidirectional_iterator_tag)
     {
         for(; 0 < offset; --offset)
         {
@@ -318,7 +318,7 @@ namespace stl
     }
 
     template<typename RandomIterator, typename Difference>
-    inline void advance(RandomIterator& where, Difference offset, stl::random_access_iterator_tag)
+    inline void advance(RandomIterator& where, Difference offset, misc::random_access_iterator_tag)
     {
         where += offset;
     }
@@ -327,16 +327,16 @@ namespace stl
     template<typename Iterator, typename Difference>
     inline void advance(Iterator& where, Difference offset)
     {
-        stl::advance(where, offset, stl::it_cat(where));//it_cat is Iterator::iterator_category;
+        misc::advance(where, offset, misc::it_cat(where));//it_cat is Iterator::iterator_category;
     }
 
 //////////////////////////////////////////////////////////////////////////
 //distance function
     template<typename InputIterator>
-    inline typename stl::iterator_traits<InputIterator>::difference_type
-    distance(InputIterator first, InputIterator last, stl::input_iterator_tag)
+    inline typename misc::iterator_traits<InputIterator>::difference_type
+    distance(InputIterator first, InputIterator last, misc::input_iterator_tag)
     {
-        typename stl::iterator_traits<InputIterator>::difference_type offset = 0;
+        typename misc::iterator_traits<InputIterator>::difference_type offset = 0;
         for(; first != last; ++first)
         {
             ++offset;
@@ -345,10 +345,10 @@ namespace stl
     }
 
     template<typename ForwardIterator>
-    inline typename stl::iterator_traits<ForwardIterator>::difference_type
-    distance(ForwardIterator first, ForwardIterator last, stl::forward_iterator_tag)
+    inline typename misc::iterator_traits<ForwardIterator>::difference_type
+    distance(ForwardIterator first, ForwardIterator last, misc::forward_iterator_tag)
     {
-        typename stl::iterator_traits<ForwardIterator>::difference_type offset = 0;
+        typename misc::iterator_traits<ForwardIterator>::difference_type offset = 0;
         for(; first != last; ++first)
         {
             ++offset;
@@ -357,10 +357,10 @@ namespace stl
     }
 
     template<typename BidirectionalIterator>
-    inline typename stl::iterator_traits<BidirectionalIterator>::difference_type
-    distance(BidirectionalIterator first, BidirectionalIterator last, stl::bidirectional_iterator_tag)
+    inline typename misc::iterator_traits<BidirectionalIterator>::difference_type
+    distance(BidirectionalIterator first, BidirectionalIterator last, misc::bidirectional_iterator_tag)
     {
-        typename stl::iterator_traits<BidirectionalIterator>::difference_type offset = 0;
+        typename misc::iterator_traits<BidirectionalIterator>::difference_type offset = 0;
         for(; first != last; ++first)
         {
             ++offset;
@@ -370,24 +370,24 @@ namespace stl
 
 
     template<typename RandomIterator>
-    inline typename stl::iterator_traits<RandomIterator>::difference_type
-    distance(RandomIterator first, RandomIterator last, stl::random_access_iterator_tag)
+    inline typename misc::iterator_traits<RandomIterator>::difference_type
+    distance(RandomIterator first, RandomIterator last, misc::random_access_iterator_tag)
     {
         return last - first;
     }
 
 
     template<typename Iterator>
-    inline typename stl::iterator_traits<Iterator>::difference_type
+    inline typename misc::iterator_traits<Iterator>::difference_type
     distance(Iterator first, Iterator last)
     {
-        return stl::distance(first, last, stl::it_cat(first));
+        return misc::distance(first, last, misc::it_cat(first));
     }
 
 //////////////////////////////////////////////////////////////////////////
 //back insert iterator
     template <typename Container>
-    class back_insert_iterator : public iterator<stl::output_iterator_tag, typename Container::value_type>
+    class back_insert_iterator : public iterator<misc::output_iterator_tag, typename Container::value_type>
     {
     protected:
         Container* container;
@@ -425,15 +425,15 @@ namespace stl
 
 // return a back_insert_iterator
     template<typename Container>
-    inline stl::back_insert_iterator<Container> back_inserter(Container& cont)
+    inline misc::back_insert_iterator<Container> back_inserter(Container& cont)
     {
-        return stl::back_insert_iterator<Container>(cont);
+        return misc::back_insert_iterator<Container>(cont);
     }
 
 //////////////////////////////////////////////////////////////////////////
 //front insert iterator
     template <class Container>
-    class front_insert_iterator : public iterator<stl::output_iterator_tag, typename Container::value_type>
+    class front_insert_iterator : public iterator<misc::output_iterator_tag, typename Container::value_type>
     {
     protected:
         Container* container;
@@ -471,15 +471,15 @@ namespace stl
 
 // return front_insert_iterator
     template<typename Container>
-    inline stl::front_insert_iterator<Container> front_inserter(Container& cont)
+    inline misc::front_insert_iterator<Container> front_inserter(Container& cont)
     {
-        return stl::front_insert_iterator<Container>(cont);
+        return misc::front_insert_iterator<Container>(cont);
     }
 
 //////////////////////////////////////////////////////////////////////////
 //insert iterator
     template <class Container>
-    class insert_iterator : public iterator<stl::output_iterator_tag, typename Container::value_type>
+    class insert_iterator : public iterator<misc::output_iterator_tag, typename Container::value_type>
     {
     protected:
         Container* container;
@@ -520,9 +520,9 @@ namespace stl
 
 // return insert_iterator
     template<typename Container, class Iterator>
-    inline stl::insert_iterator<Container> inserter(Container& cont, Iterator position)
+    inline misc::insert_iterator<Container> inserter(Container& cont, Iterator position)
     {
-        return stl::insert_iterator<Container>(cont, position);
+        return misc::insert_iterator<Container>(cont, position);
     }
 
 
