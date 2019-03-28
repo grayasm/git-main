@@ -24,7 +24,7 @@
 
 
 
-namespace misc
+namespace stl
 {
 	exception::exception()
 	{

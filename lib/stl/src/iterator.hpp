@@ -78,7 +78,7 @@ namespace stl
 
     template <typename T> struct iterator_traits<T*> {
         typedef random_access_iterator_tag iterator_category;
-        typedef ptrdiff_t difference_type;
+        typedef long difference_type; // ptrdiff_t
         typedef T value_type;
         typedef T* pointer;
         typedef T& reference;
@@ -86,7 +86,7 @@ namespace stl
 
     template <typename T> struct iterator_traits<const T*> {
         typedef random_access_iterator_tag iterator_category;
-        typedef ptrdiff_t difference_type;
+        typedef long difference_type; // ptrdiff_t
         typedef T value_type;
         typedef const T* pointer;
         typedef const T& reference;
