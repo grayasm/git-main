@@ -17,18 +17,15 @@
   contact: grayasm@gmail.com
 */
 
+#ifndef __vector_hpp__
+#define __vector_hpp__
+
 
 #include "iterator.hpp"
 #include "exception.hpp"
 #include "memory.hpp"
 #include "memmanip.hpp"
 
-//        typedef std::vector<iterator_base*>             iterator_array;
-#include <vector>
-
-
-#ifndef __vector_hpp__
-#define __vector_hpp__
 
 namespace stl
 {
@@ -60,7 +57,7 @@ namespace stl
         typedef typename container::size_type       size_type;
         typedef typename stl::vector_iterator_base<container>   base2;
         friend class stl::vector<typename container::value_type, typename container::allocator_type>;
-        friend class vector_const_iterator<container>;
+        friend class stl::vector_const_iterator<container>;
 
 
     private:
@@ -74,14 +71,8 @@ namespace stl
         vector_iterator(container* cont, size_type pos)
         {
             init();
-
             base2::m_cont = cont;
             base2::m_pos = pos;
-
-            if (base2::m_cont)
-            {
-                base2::m_cont->add_iterator(this);
-            }
         }
 
     public:
@@ -99,28 +90,14 @@ namespace stl
 
         ~vector_iterator()
         {
-            if (base2::m_cont)
-            {
-                base2::m_cont->remove_iterator(this);
-            }
         }
 
         vector_iterator& operator=(const vector_iterator& it)
         {
             if (this != &it)
             {
-                if (base2::m_cont)
-                {
-                    base2::m_cont->remove_iterator(this);
-                }
-
                 base2::m_cont = it.m_cont;
                 base2::m_pos = it.m_pos;
-
-                if (base2::m_cont)
-                {
-                    base2::m_cont->add_iterator(this);
-                }
             }
             return *this;
         }
@@ -242,7 +219,7 @@ namespace stl
 
             return (*base2::m_cont)[base2::m_pos + off];
         }
-    };  // iterator
+    };  // vector_iterator
 
 
     template<typename container>
@@ -274,14 +251,8 @@ namespace stl
         vector_const_iterator(container* cont, size_type pos)
         {
             init();
-
             base2::m_cont = cont;
             base2::m_pos = pos;
-
-            if (base2::m_cont)
-            {
-                base2::m_cont->add_iterator(this);
-            }
         }
 
     public:
@@ -298,47 +269,22 @@ namespace stl
 
         ~vector_const_iterator()
         {
-            if (base2::m_cont)
-            {
-                base2::m_cont->remove_iterator(this);
-            }
         }
 
         vector_const_iterator& operator=(const vector_const_iterator& it)
         {
             if (this != &it)
             {
-                if (base2::m_cont)
-                {
-                    base2::m_cont->remove_iterator(this);
-                }
-
                 base2::m_cont = it.m_cont;
                 base2::m_pos = it.m_pos;
-
-                if (base2::m_cont)
-                {
-                    base2::m_cont->add_iterator(this);
-                }
-
             }
             return *this;
         }
 
         vector_const_iterator& operator=(const vector_iterator<container>& it)
         {
-            if (base2::m_cont)
-            {
-                base2::m_cont->remove_iterator(this);
-            }
-
             base2::m_cont = it.m_cont;
             base2::m_pos = it.m_pos;
-
-            if (base2::m_cont)
-            {
-                base2::m_cont->add_iterator(this);
-            }
 
             return *this;
         }
@@ -466,7 +412,7 @@ namespace stl
 
             return (*base2::m_cont)[base2::m_pos + off];
         }
-    };  // const_iterator
+    };  // vector_const_iterator
 
 
     template<typename container>
@@ -502,11 +448,6 @@ namespace stl
 
             base2::m_cont = cont;
             base2::m_pos = pos;
-
-            if (base2::m_cont)
-            {
-                base2::m_cont->add_iterator(this);
-            }
         }
 
     public:
@@ -524,28 +465,14 @@ namespace stl
 
         ~vector_reverse_iterator()
         {
-            if (base2::m_cont != 0)
-            {
-                base2::m_cont->remove_iterator(this);
-            }
         }
 
         vector_reverse_iterator& operator=(const vector_reverse_iterator& it)
         {
             if (this != &it)
             {
-                if (base2::m_cont)
-                {
-                    base2::m_cont->remove_iterator(this);
-                }
-
                 base2::m_cont = it.m_cont;
                 base2::m_pos = it.m_pos;
-
-                if (base2::m_cont)
-                {
-                    base2::m_cont->add_iterator(this);
-                }
             }
             return *this;
         }
@@ -667,7 +594,7 @@ namespace stl
 
             return (*base2::m_cont)[base2::m_pos - off];
         }
-    };  // reverse_iterator
+    };  // vector_reverse_iterator
 
 
     template<typename container>
@@ -688,7 +615,6 @@ namespace stl
         friend class vector<typename container::value_type, typename container::allocator_type>;
 
 
-
     private:
         inline void init()
         {
@@ -703,11 +629,6 @@ namespace stl
 
             base2::m_cont = cont;
             base2::m_pos = pos;
-
-            if (base2::m_cont)
-            {
-                base2::m_cont->add_iterator(this);
-            }
         }
 
     public:
@@ -724,46 +645,22 @@ namespace stl
 
         ~vector_const_reverse_iterator()
         {
-            if (base2::m_cont)
-            {
-                base2::m_cont->remove_iterator(this);
-            }
         }
 
         vector_const_reverse_iterator& operator=(const vector_const_reverse_iterator& it)
         {
             if (this != &it)
             {
-                if (base2::m_cont)
-                {
-                    base2::m_cont->remove_iterator(this);
-                }
-
                 base2::m_cont = it.m_cont;
                 base2::m_pos = it.m_pos;
-
-                if (base2::m_cont)
-                {
-                    base2::m_cont->add_iterator(this);
-                }
             }
             return *this;
         }
 
         vector_const_reverse_iterator& operator=(const vector_reverse_iterator<container>& it)
         {
-            if (base2::m_cont)
-            {
-                base2::m_cont->remove_iterator(this);
-            }
-
             base2::m_cont = it.m_cont;
             base2::m_pos = it.m_pos;
-
-            if (base2::m_cont)
-            {
-                base2::m_cont->add_iterator(this);
-            }
 
             return *this;
         }
@@ -892,7 +789,7 @@ namespace stl
 
             return (*base2::m_cont)[base2::m_pos - off];
         }
-    };  // const_reverse_iterator
+    };  // vector_const_reverse_iterator
 
 
     /*
@@ -942,8 +839,8 @@ namespace stl
         typedef typename vector_reverse_iterator<container>		    reverse_iterator;
         typedef typename vector_const_reverse_iterator<container>   const_reverse_iterator;
 
-        typedef vector_iterator_base<container>         iterator_base;
-        typedef std::vector<iterator_base*>             iterator_array;
+        //typedef vector_iterator_base<container>         iterator_base;
+        //typedef std::vector<iterator_base*>             iterator_array;
 
     private:
         value_type*             m_data;
@@ -953,11 +850,12 @@ namespace stl
 
 
         // debug_iterator implementation
-        iterator_array*         m_itarray;
+/*        iterator_array*         m_itarray;
         friend class vector_iterator<container>;
         friend class vector_const_iterator<container>;
         friend class vector_reverse_iterator<container>;
         friend class vector_const_reverse_iterator<container>;
+ */
 
 
     private:
@@ -967,13 +865,6 @@ namespace stl
             m_size = 0;
             m_capacity = 0;
             m_allocator = alloc;
-
-            // ms comp warn 4127
-            int hasITDBG = 0;// (attributes & stl::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING);
-            if (hasITDBG)
-            {
-                m_itarray = new iterator_array;
-            }
         }
 
         inline void mem_alloc(size_type cap)
@@ -997,15 +888,15 @@ namespace stl
             pointer mem = 0;
 
             // ms comp warn 4127
-            int hasPOD = 0;// (attributes & stl::GENERIC_ARRAY_HAS_POD_TYPE);
-            if (hasPOD)
-            {
-                stl::mem_realloc_pod(&mem, cap + 1, m_data, m_size, m_allocator);
-            }
-            else
-            {
+            //int hasPOD = 0;// (attributes & stl::GENERIC_ARRAY_HAS_POD_TYPE);
+            //if (hasPOD)
+            //{
+            //    stl::mem_realloc_pod(&mem, cap + 1, m_data, m_size, m_allocator);
+            //}
+            //else
+            //{
                 stl::mem_realloc(&mem, cap + 1, m_data, m_size, m_allocator);
-            }
+            //}
 
             m_data = mem;
             m_capacity = cap;
@@ -1061,8 +952,8 @@ namespace stl
             if (m_capacity < size) throw stl::exception("bad size");
 
             // ms comp warn 4127
-            int hasPOD = 0;// (attributes & stl::GENERIC_ARRAY_HAS_POD_TYPE);
-            if (size < m_size && !hasPOD)
+            // int hasPOD = 0; // (attributes & stl::GENERIC_ARRAY_HAS_POD_TYPE);
+            if (size < m_size) // && !hasPOD)
             {
                 // Non POD types;
                 value_type* unused = m_data + size;
@@ -1111,129 +1002,29 @@ namespace stl
         inline void memcpy_impl(pointer dest, const_pointer src, size_type bytes)
         {
             // ms comp warn 4127
-            int hasPOD = 0;// (attributes & stl::GENERIC_ARRAY_HAS_POD_TYPE);
-            if (hasPOD)
-            {
-                stl::mem_copy_pod(dest, src, bytes);
-            }
-            else
-            {
+            //int hasPOD = 0;// (attributes & stl::GENERIC_ARRAY_HAS_POD_TYPE);
+            //if (hasPOD)
+            //{
+            //    stl::mem_copy_pod(dest, src, bytes);
+            //}
+            //else
+            //{
                 stl::mem_copy(dest, src, bytes);
-            }
+            //}
         }
 
         inline void memmove_impl(pointer dest, const_pointer src, size_type bytes) const
         {
             // ms comp warn 4127
-            int hasPOD = 0;// (attributes & stl::GENERIC_ARRAY_HAS_POD_TYPE);
-            if (hasPOD)
-            {
-                stl::mem_move_pod(dest, src, bytes);
-            }
-            else
-            {
+            //int hasPOD = 0;// (attributes & stl::GENERIC_ARRAY_HAS_POD_TYPE);
+            //if (hasPOD)
+            //{
+            //    stl::mem_move_pod(dest, src, bytes);
+            //}
+            //else
+            //{
                 stl::mem_move(dest, src, bytes);
-            }
-        }
-
-
-        // debug_iterator implementation
-        inline void add_iterator(iterator_base* it)
-        {
-            // ms comp warn 4127
-            int hasITDBG = 0;// (attributes & stl::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING);
-            if (!hasITDBG)
-            {
-                return;
-            }
-
-            if (it->m_cont != this)
-                throw stl::exception("invalid debug iterator");
-
-            //	extra test for debugging
-#if CHECK_ITERATOR_DUPLICATES
-            for (size_t i = 0; i < m_itarray->size(); ++i)
-            {
-                if (it == (*m_itarray)[i])
-                    throw stl::exception("duplicate iterator");
-            }
-#endif
-
-            m_itarray->push_back(it);
-        }
-
-        inline void remove_iterator(iterator_base* it)
-        {
-            // ms comp warn 4127
-            int hasITDBG = 0;// (attributes & stl::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING);
-            if (!hasITDBG)
-            {
-                return;
-            }
-
-            /* container must match */
-            if (it->m_cont != this)
-                throw stl::exception("invalid debug iterator");
-
-            //	Before iterator gets destroyed, it asks for removal.
-            for (typename iterator_array::iterator beg = m_itarray->begin(); beg != m_itarray->end();)
-            {
-                iterator_base* iter = *beg;
-                if (it == iter)
-                {
-                    iter->m_cont = 0;
-                    beg = m_itarray->erase(beg);
-                    return; // no duplicates
-                }
-                else
-                {
-                    ++beg;
-                }
-            }
-        }
-
-        inline void invalidate_iterators()
-        {
-            // ms comp warn 4127
-            int hasITDBG = 0;// (attributes & stl::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING);
-            if (!hasITDBG)
-            {
-                return;
-            }
-
-            /*	When a container gets deleted, all its iterators
-            are invalidated.
-            */
-            for (size_t i = 0; i < m_itarray->size(); ++i)
-            {
-                (*m_itarray)[i]->m_cont = 0;
-            }
-            m_itarray->resize(0);
-        }
-
-        inline void invalidate_iterators_gte(size_t pos)
-        {
-            /* invalidate container iterators at element's pos >= pos */
-            // ms comp warn 4127
-            int hasITDBG = 0;// (attributes & stl::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING);
-            if (!hasITDBG)
-            {
-                return;
-            }
-
-            for (typename iterator_array::iterator beg = m_itarray->begin(); beg != m_itarray->end();)
-            {
-                iterator_base* iter = *beg;
-                if (iter->m_pos >= pos)
-                {
-                    iter->m_cont = 0;
-                    beg = m_itarray->erase(beg);
-                }
-                else
-                {
-                    ++beg;
-                }
-            }
+            //}
         }
 
 	public:       
@@ -1246,7 +1037,7 @@ namespace stl
             eos<T>(0);
 		}
 
-		explicit vector(size_type n, const T& value = T())
+		explicit vector(size_type n, const T& c = T()) // T vs value_type
 		{
             const Allocator& alloc = Allocator();
             init(alloc);
@@ -1275,30 +1066,21 @@ namespace stl
 
 		~vector()
 		{
-            // ms comp warn 4127
-            int hasPOD = 0; // (attributes & stl::GENERIC_ARRAY_HAS_POD_TYPE);
-            if (hasPOD)
-            {
-                m_allocator.deallocate(m_data, 0);
-            }
-            else
-            {
+            //// ms comp warn 4127
+            //int hasPOD = 0; // (attributes & stl::GENERIC_ARRAY_HAS_POD_TYPE);
+            //if (hasPOD)
+            //{
+            //    m_allocator.deallocate(m_data, 0);
+            //}
+            //else
+            //{
                 stl::mem_destroy(&m_data, m_size, m_allocator);
                 m_allocator.deallocate(m_data, 0);
-            }
+            //}
 
             m_data = 0;
             m_size = 0;
             m_capacity = 0;
-
-
-            // ms comp warn 4127
-            int hasITDBG = 0; // (attributes & stl::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING);
-            if (hasITDBG)
-            {
-                invalidate_iterators();
-                delete m_itarray;
-            }
 		}
 
 		container& operator=(const container& x)
@@ -1306,21 +1088,226 @@ namespace stl
             return assign(x);
 		}
 
+        /* $21.3.5 modifiers ( assign ) */
+        inline container& assign(const container& str)
+        {
+            //self assignment
+            if (this != &str)
+            {
+                size_type size = str.size();
+
+                if (size > 0)
+                {
+                    grow(size);
+
+                    memcpy_impl(m_data, str.m_data, size * sizeof(value_type));
+                }
+
+                eos<T>(size);
+            }
+
+            return *this;
+        }
+
+
+    private:
+        /*
+        implementation of:
+        template <class InputIterator>
+        string& assign ( InputIterator first, InputIterator last );
+        */
+        inline container& assign_impl(const iterator& first, const iterator& last)
+        {
+            if (first.m_cont != last.m_cont || first.m_cont == 0)
+                throw stl::exception("invalid iterator");
+
+            difference_type dist = last - first;
+
+            if (dist < 0)
+                dist = 0; // erase this array
+
+            if (dist > 0)
+            {
+                grow(dist);
+
+                //self assignment
+                if (this == first.m_cont)
+                {
+                    memmove_impl(m_data, &((*first.m_cont)[first.m_pos]), dist * sizeof(value_type));
+                }
+                else
+                {
+                    memcpy_impl(m_data, &((*first.m_cont)[first.m_pos]), dist * sizeof(value_type));
+                }
+            }
+
+            eos<T>(dist);
+
+            return *this;
+        }
+
+        inline container& assign_impl(const const_iterator& first, const const_iterator& last)
+        {
+            if (first.m_cont != last.m_cont || first.m_cont == 0)
+                throw stl::exception("invalid iterator");
+
+            difference_type dist = last - first;
+
+            if (dist < 0)
+                dist = 0; // erase this array
+
+            if (dist > 0)
+            {
+                grow(dist);
+
+                //self assignment
+                if (this == first.m_cont)
+                {
+                    memmove_impl(m_data, &((*first.m_cont)[first.m_pos]), dist * numbytes);
+                }
+                else
+                {
+                    memcpy_impl(m_data, &((*first.m_cont)[first.m_pos]), dist * numbytes);
+                }
+            }
+
+            eos<T>(dist);
+
+            return *this;
+        }
+
+        inline container& assign_impl(const reverse_iterator& first, const reverse_iterator& last)
+        {
+            if (first.m_cont != last.m_cont || first.m_cont == 0)
+                throw stl::exception("invalid iterator");
+
+            difference_type dist = last - first;
+
+            if (dist < 0)
+                dist = 0; // erase this array
+
+            if (dist > 0)
+            {
+                grow(dist);
+
+                //self assignment
+                if (this == first.m_cont)
+                {
+                    erase(0, last.m_pos + 1);
+                }
+                else
+                {
+                    memcpy_impl(m_data, &((*last.m_cont)[last.m_pos + 1]), dist * numbytes);
+                }
+
+                swap_range(0, dist);
+            }
+
+            eos<T>(dist);
+
+            return *this;
+        }
+
+        inline container& assign_impl(const const_reverse_iterator& first, const const_reverse_iterator& last)
+        {
+            //validate containers
+            if (first.m_cont != last.m_cont || first.m_cont == 0)
+                throw stl::exception("invalid iterator");
+
+            size_type dist = last - first;
+
+            if (dist < 0)
+                dist = 0; // erase this array
+
+            if (dist > 0)
+            {
+                grow(dist);
+
+                //self assignment
+                if (this == first.m_cont)
+                {
+                    erase(0, last.m_pos + 1);
+                }
+                else
+                {
+                    memcpy_impl(m_data, &((*last.m_cont)[last.m_pos + 1]), dist * numbytes);
+                }
+
+                swap_range(0, dist);
+            }
+
+            eos<T>(dist);
+
+            return *this;
+        }
+
+        /*
+        -due to specialization for assign_impl(const iterator& ...) and friends,
+        compiler cannot find any suitable assign_impl for next code:
+
+        float fptr[]={0,...};
+        stl::generic_array<float> fcont(fptr, fptr+10);
+        */
+
+        inline container& assign_impl(const value_type* first, const value_type* last)
+        {
+            difference_type dist = last - first;
+
+            if (dist < 0)
+                dist = 0; // erase this array
+
+            if (dist > 0)
+            {
+                grow(dist);
+
+                memcpy_impl(m_data, first, dist * numbytes);
+            }
+
+            eos<T>(dist);
+
+            return *this;
+        }
+
+
+        template<typename InputIterator>
+        inline container& assign_impl(InputIterator first, InputIterator last, stl::random_access_iterator_tag)
+        {
+            return assign_impl(first, last);
+        }
+
+        template<typename InputIterator>
+        inline container& assign_impl(InputIterator n, InputIterator value, stl::input_iterator_tag)
+        {
+            if (n < 0)
+                n = 0; // erase this array
+
+            if (n > 0)
+            {
+                grow(n);
+
+                stl::mem_set<value_type>(m_data, value, n * numbytes);
+            }
+
+            eos<T>(n);
+
+            return *this;
+        }
+
+    public:
 		template <class InputIterator>
 		void assign(InputIterator first, InputIterator last)
 		{
-            return assign_impl(first, last, typename stl::iterator_traits<InputIterator>::iterator_category());
+            //return
+            assign_impl(first, last, typename stl::iterator_traits<InputIterator>::iterator_category());
 		}
 
-		void assign(size_type n, const T& u)
+        void assign(size_type count, const value_type& val)
 		{
-            invalidate_iterators();
-
             if (count > 0)
             {
                 grow(count);
 
-                stl::mem_set(m_data, val, count * numbytes);
+                stl::mem_set(m_data, val, count * sizeof(value_type));
             }
 
             eos<T>(count);
@@ -1388,8 +1375,6 @@ namespace stl
 		{
             if (m_size > sz)
             {
-                invalidate_iterators_gte(sz > 0 ? sz - 1 : 0);
-
                 eos<T>(sz);
             }
             else if (m_size < sz)
@@ -1513,9 +1498,6 @@ namespace stl
                 difference_type dist = last - first;
                 if (dist > 0)
                 {
-                    // invalidate for effective insert only
-                    invalidate_iterators_gte(p1);
-
                     size_type size = m_size + dist;
                     grow(size);
 
@@ -1543,9 +1525,6 @@ namespace stl
                 difference_type dist = last - first;
                 if (dist > 0)
                 {
-                    // invalidate for effective insert only
-                    invalidate_iterators_gte(p1);
-
                     size_type size = m_size + dist;
                     grow(size);
 
@@ -1573,9 +1552,6 @@ namespace stl
                 difference_type dist = last - first;
                 if (dist > 0)
                 {
-                    // invalidate for effective insert only
-                    invalidate_iterators_gte(p1);
-
                     size_type size = m_size + dist;
                     grow(size);
 
@@ -1605,9 +1581,6 @@ namespace stl
                 difference_type dist = last - first;
                 if (dist > 0)
                 {
-                    // invalidate for effective insert only
-                    invalidate_iterators_gte(p1);
-
                     size_type size = m_size + dist;
                     grow(size);
 
@@ -1632,9 +1605,6 @@ namespace stl
         {
             if (n2)
             {
-                // invalidate for effective insert only
-                invalidate_iterators_gte(p1);
-
                 size_type size = m_size + n2;
 
                 grow(size);
@@ -1665,9 +1635,6 @@ namespace stl
             {
                 size_type size = m_size + n;
                 size_type p1 = position.m_pos;
-
-                // invalidate for effective insert only
-                invalidate_iterators_gte(p1);
 
                 grow(size);
 
@@ -1741,6 +1708,11 @@ namespace stl
 
             eos<T>(0);
 		}
+
+        allocator_type get_allocator() const
+        {
+            return m_allocator;
+        }
 
 #if 1	// Until the ambiguity with global operators gets solved, execute this.
 		bool operator==(const container& Right)
