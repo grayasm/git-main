@@ -25,6 +25,7 @@
 #include "exception.hpp"
 #include "memory.hpp"
 #include "memmanip.hpp"
+#include <new>
 
 
 namespace stl
@@ -59,18 +60,9 @@ namespace stl
         friend class stl::vector<typename container::value_type, typename container::allocator_type>;
         friend class stl::vector_const_iterator<container>;
 
-
-    private:
-        inline void init()
-        {
-            base2::m_cont = 0;
-            base2::m_pos = 0;
-        }
-
     private:
         vector_iterator(container* cont, size_type pos)
         {
-            init();
             base2::m_cont = cont;
             base2::m_pos = pos;
         }
@@ -78,26 +70,26 @@ namespace stl
     public:
         vector_iterator()
         {
-            init();
+            base2::m_cont = 0;
+            base2::m_pos = 0;
         }
 
 
-        vector_iterator(const vector_iterator& it)
+        vector_iterator(const vector_iterator& tc)
         {
-            init();
-            *this = it;
+            *this = tc;
         }
 
         ~vector_iterator()
         {
         }
 
-        vector_iterator& operator=(const vector_iterator& it)
+        vector_iterator& operator=(const vector_iterator& tc)
         {
-            if (this != &it)
+            if (this != &tc)
             {
-                base2::m_cont = it.m_cont;
-                base2::m_pos = it.m_pos;
+                base2::m_cont = tc.m_cont;
+                base2::m_pos = tc.m_pos;
             }
             return *this;
         }
@@ -241,16 +233,8 @@ namespace stl
 
 
     private:
-        inline void init()
-        {
-            base2::m_cont = 0;
-            base2::m_pos = 0;
-        }
-
-    private:
         vector_const_iterator(container* cont, size_type pos)
         {
-            init();
             base2::m_cont = cont;
             base2::m_pos = pos;
         }
@@ -258,41 +242,40 @@ namespace stl
     public:
         vector_const_iterator()
         {
-            init();
+            base2::m_cont = 0;
+            base2::m_pos = 0;
         }
 
-        vector_const_iterator(const vector_const_iterator& it)
+        vector_const_iterator(const vector_const_iterator& tc)
         {
-            init();
-            *this = it;
+            *this = tc;
+        }
+
+        vector_const_iterator(const vector_iterator<container>& tc)
+        {
+            *this = tc;
         }
 
         ~vector_const_iterator()
         {
         }
 
-        vector_const_iterator& operator=(const vector_const_iterator& it)
+        vector_const_iterator& operator=(const vector_const_iterator& tc)
         {
-            if (this != &it)
+            if (this != &tc)
             {
-                base2::m_cont = it.m_cont;
-                base2::m_pos = it.m_pos;
+                base2::m_cont = tc.m_cont;
+                base2::m_pos = tc.m_pos;
             }
             return *this;
         }
 
-        vector_const_iterator& operator=(const vector_iterator<container>& it)
+        vector_const_iterator& operator=(const vector_iterator<container>& tc)
         {
-            base2::m_cont = it.m_cont;
-            base2::m_pos = it.m_pos;
+            base2::m_cont = tc.m_cont;
+            base2::m_pos = tc.m_pos;
 
             return *this;
-        }
-
-        vector_const_iterator(const vector_iterator<container>& it)
-        {
-            init();
-            *this = it;
         }
 
         reference operator*() const
@@ -373,7 +356,8 @@ namespace stl
 
         difference_type operator-(const vector_const_iterator& it) const
         {
-            return base2::m_pos - it.m_pos;
+            //return base2::m_pos - it.m_pos;
+            return static_cast<difference_type>(base2::m_post - it.m_pos);
         }
 
         bool operator==(const vector_const_iterator& it) const
@@ -435,7 +419,7 @@ namespace stl
 
 
     private:
-        inline void init()
+        void init()
         {
             base2::m_cont = 0;
             base2::m_pos = 0;
@@ -616,7 +600,7 @@ namespace stl
 
 
     private:
-        inline void init()
+        void init()
         {
             base2::m_cont = 0;
             base2::m_pos = 0;
@@ -859,20 +843,20 @@ namespace stl
 
 
     private:
-        inline void init(const Allocator& alloc)
+        void init() //(const Allocator& alloc)
         {
             m_data = 0;
             m_size = 0;
             m_capacity = 0;
-            m_allocator = alloc;
+            // m_allocator - by default;
         }
 
-        inline void mem_alloc(size_type cap)
+        void allocate(size_type cap)
         {
             pointer mem = 0;
 
             /* buy memory, no ctor() called */
-            mem = m_allocator.allocate(cap + 1);
+            mem = m_allocator.allocate(cap);
 
             if (mem == 0)
                 throw stl::exception("bad allocation");
@@ -881,7 +865,7 @@ namespace stl
             m_capacity = cap;
         }
 
-        inline void grow(size_type cap)
+        void grow(size_type cap)
         {
             if (m_capacity >= cap) return;
 
@@ -895,59 +879,59 @@ namespace stl
             //}
             //else
             //{
-                stl::mem_realloc(&mem, cap + 1, m_data, m_size, m_allocator);
+                stl::mem_realloc(&mem, cap, m_data, m_size, m_allocator);
             //}
 
             m_data = mem;
             m_capacity = cap;
         }
 
+//        template<typename T2>
+//        inline size_t length(const value_type* ptr) const
+//        {
+//            return length(ptr, stl::vector_spec<T2>());
+//        }
+//
+//        template<typename T2>
+//        inline size_t length(const value_type* ptr, stl::vector_spec<T2>) const
+//        {
+//            if (ptr == 0) throw stl::exception("null pointer");
+//            const value_type* p = ptr;
+//            while (*p != 0)
+//                p++;
+//            return (p - ptr);
+//        }
+//
+//        inline size_t length(const value_type* ptr, stl::vector_spec<char>) const
+//        {
+//            return ::strlen(ptr);
+//        }
+//
+//        inline size_t length(const value_type* ptr, stl::vector_spec<unsigned char>) const
+//        {
+//#if defined _WIN32
+//            return ::_mbslen(ptr);
+//#else // LINUX
+//            /*	I will find out that this doesn't work when the string will hold
+//            some Russian characters.
+//            */
+//            return ::strlen((const char*)ptr);
+//#endif
+//        }
+//
+//        inline size_t length(const value_type* ptr, stl::vector_spec<wchar_t>) const
+//        {
+//            return ::wcslen(ptr);
+//        }
+//
         template<typename T2>
-        inline size_t length(const value_type* ptr) const
-        {
-            return length(ptr, stl::vector_spec<T2>());
-        }
-
-        template<typename T2>
-        inline size_t length(const value_type* ptr, stl::vector_spec<T2>) const
-        {
-            if (ptr == 0) throw stl::exception("null pointer");
-            const value_type* p = ptr;
-            while (*p != 0)
-                p++;
-            return (p - ptr);
-        }
-
-        inline size_t length(const value_type* ptr, stl::vector_spec<char>) const
-        {
-            return ::strlen(ptr);
-        }
-
-        inline size_t length(const value_type* ptr, stl::vector_spec<unsigned char>) const
-        {
-#if defined _WIN32
-            return ::_mbslen(ptr);
-#else // LINUX
-            /*	I will find out that this doesn't work when the string will hold
-            some Russian characters.
-            */
-            return ::strlen((const char*)ptr);
-#endif
-        }
-
-        inline size_t length(const value_type* ptr, stl::vector_spec<wchar_t>) const
-        {
-            return ::wcslen(ptr);
-        }
-
-        template<typename T2>
-        inline void eos(size_type size)
+        void eos(size_type size)
         {
             eos(size, stl::vector_spec<T2>());
         }
 
         template<typename T2>
-        inline void eos(size_type size, stl::vector_spec<T2>)
+        void eos(size_type size, stl::vector_spec<T2>)
         {
             if (m_capacity < size) throw stl::exception("bad size");
 
@@ -962,28 +946,28 @@ namespace stl
             m_size = size;
         }
 
-        inline void eos(size_type size, stl::vector_spec<char>)
+        void eos(size_type size, stl::vector_spec<char>)
         {
             if (m_capacity < size) throw stl::exception("bad size");
             m_size = size;
             m_data[m_size] = 0;
         }
 
-        inline void eos(size_type size, stl::vector_spec<unsigned char>)
+        void eos(size_type size, stl::vector_spec<unsigned char>)
         {
             if (m_capacity < size) throw stl::exception("bad size");
             m_size = size;
             m_data[m_size] = 0;
         }
 
-        inline void eos(size_type size, stl::vector_spec<wchar_t>)
+        void eos(size_type size, stl::vector_spec<wchar_t>)
         {
             if (m_capacity < size) throw stl::exception("bad size");
             m_size = size;
             m_data[m_size] = 0;
         }
 
-        inline void swap_range(size_type beg, size_type end)
+        void swap_range(size_type beg, size_type end)
         {
             if (beg < end)
             {
@@ -994,73 +978,78 @@ namespace stl
             }
         }
 
-        inline bool inside(const value_type* ptr) const
-        {
-            return (m_data <= ptr && m_data + m_size >= ptr);
-        }
+        //inline bool inside(const value_type* ptr) const
+        //{
+        //    return (m_data <= ptr && m_data + m_size >= ptr);
+        //}
 
-        inline void memcpy_impl(pointer dest, const_pointer src, size_type bytes)
-        {
-            // ms comp warn 4127
-            //int hasPOD = 0;// (attributes & stl::GENERIC_ARRAY_HAS_POD_TYPE);
-            //if (hasPOD)
-            //{
-            //    stl::mem_copy_pod(dest, src, bytes);
-            //}
-            //else
-            //{
-                stl::mem_copy(dest, src, bytes);
-            //}
-        }
+        //inline void memcpy_impl(pointer dest, const_pointer src, size_type bytes)
+        //{
+        //    // ms comp warn 4127
+        //    //int hasPOD = 0;// (attributes & stl::GENERIC_ARRAY_HAS_POD_TYPE);
+        //    //if (hasPOD)
+        //    //{
+        //    //    stl::mem_copy_pod(dest, src, bytes);
+        //    //}
+        //    //else
+        //    //{
+        //        stl::mem_copy(dest, src, bytes);
+        //    //}
+        //}
 
-        inline void memmove_impl(pointer dest, const_pointer src, size_type bytes) const
-        {
-            // ms comp warn 4127
-            //int hasPOD = 0;// (attributes & stl::GENERIC_ARRAY_HAS_POD_TYPE);
-            //if (hasPOD)
-            //{
-            //    stl::mem_move_pod(dest, src, bytes);
-            //}
-            //else
-            //{
-                stl::mem_move(dest, src, bytes);
-            //}
-        }
+        //inline void memmove_impl(pointer dest, const_pointer src, size_type bytes) const
+        //{
+        //    // ms comp warn 4127
+        //    //int hasPOD = 0;// (attributes & stl::GENERIC_ARRAY_HAS_POD_TYPE);
+        //    //if (hasPOD)
+        //    //{
+        //    //    stl::mem_move_pod(dest, src, bytes);
+        //    //}
+        //    //else
+        //    //{
+        //        stl::mem_move(dest, src, bytes);
+        //    //}
+        //}
 
 	public:       
 		// $23.2.4.1 construct/copy/destroy:
 		vector()
 		{
-            const Allocator& alloc = Allocator();
-            init(alloc);
-            mem_alloc(1);
-            eos<T>(0);
+            //const Allocator& alloc = Allocator();
+            init(); // alloc);
+            allocate(1);
+            // eos<T>(0);
+            m_size = 0;
 		}
 
 		explicit vector(size_type n, const T& c = T()) // T vs value_type
 		{
-            const Allocator& alloc = Allocator();
-            init(alloc);
-            mem_alloc(1);       // avoid 0 capacity with n=0
-            eos<T>(0);          // safety
+            // const Allocator& alloc = Allocator();
+            init();// alloc);
+            allocate(1);       // avoid 0 capacity with n=0
+            // eos<T>(0);          // safety
+            m_size = 0;
             assign(n, c);
 		}
 
 		template <class InputIterator>
 		vector(InputIterator first, InputIterator last)
 		{
-            const Allocator& alloc = Allocator();
-            init(alloc);
-            mem_alloc(1);       // avoid 0 capacity
-            eos<T>(0);          // safety
+            // const Allocator& alloc = Allocator();
+            init();// alloc);
+            allocate(1);       // avoid 0 capacity
+            // eos<T>(0);          // safety
+            m_size = 0;
             assign(first, last);
 		}
 
-		vector(const container& x)
+        vector(const container& x)
+            : m_allocator(x.get_allocator())
 		{
-            init(x.get_allocator());
-            mem_alloc(1);       // avoid 0 capacity with x.empty()
-            eos<T>(0);          // protect against self assignment
+            init();// x.get_allocator());
+            allocate(1);       // avoid 0 capacity with x.empty()
+            // eos<T>(0);          // protect against self assignment
+            m_size = 0;
             assign(x);        // may return with no action
 		}
 
@@ -1089,21 +1078,22 @@ namespace stl
 		}
 
         /* $21.3.5 modifiers ( assign ) */
-        inline container& assign(const container& str)
+        inline container& assign(const container& tc)
         {
             //self assignment
-            if (this != &str)
+            if (this != &tc)
             {
-                size_type size = str.size();
+                size_type size = tc.size();
 
                 if (size > 0)
                 {
                     grow(size);
 
-                    memcpy_impl(m_data, str.m_data, size * sizeof(value_type));
+                    stl::mem_copy(m_data, tc.m_data, size * sizeof(value_type));
                 }
 
-                eos<T>(size);
+                // eos<T>(size);
+                m_size = 0;
             }
 
             return *this;
@@ -1112,9 +1102,9 @@ namespace stl
 
     private:
         /*
-        implementation of:
-        template <class InputIterator>
-        string& assign ( InputIterator first, InputIterator last );
+            implementation of:
+            template <class InputIterator>
+            string& assign ( InputIterator first, InputIterator last );
         */
         inline container& assign_impl(const iterator& first, const iterator& last)
         {
@@ -1123,6 +1113,7 @@ namespace stl
 
             difference_type dist = last - first;
 
+//FIXME: how can dist be negative??
             if (dist < 0)
                 dist = 0; // erase this array
 
@@ -1133,14 +1124,17 @@ namespace stl
                 //self assignment
                 if (this == first.m_cont)
                 {
-                    memmove_impl(m_data, &((*first.m_cont)[first.m_pos]), dist * sizeof(value_type));
+                    // memmove_impl(m_data, &((*first.m_cont)[first.m_pos]), dist * sizeof(value_type));
+                    stl::mem_move(m_data, &((*first.m_cont)[first.m_pos]), dist * sizeof(value_type));
                 }
                 else
                 {
-                    memcpy_impl(m_data, &((*first.m_cont)[first.m_pos]), dist * sizeof(value_type));
+                    // memcpy_impl(m_data, &((*first.m_cont)[first.m_pos]), dist * sizeof(value_type));
+                    stl::mem_copy(m_data, &((*first.m_cont)[first.m_pos]), dist * sizeof(value_type));
                 }
             }
 
+//FIXME: different behaviour when dist < m_size;
             eos<T>(dist);
 
             return *this;
@@ -1242,11 +1236,11 @@ namespace stl
         }
 
         /*
-        -due to specialization for assign_impl(const iterator& ...) and friends,
-        compiler cannot find any suitable assign_impl for next code:
+            -due to specialization for assign_impl(const iterator& ...) and friends,
+            compiler cannot find any suitable assign_impl for next code:
 
-        float fptr[]={0,...};
-        stl::generic_array<float> fcont(fptr, fptr+10);
+            float fptr[]={0,...};
+            stl::generic_array<float> fcont(fptr, fptr+10);
         */
 
         inline container& assign_impl(const value_type* first, const value_type* last)
@@ -1284,8 +1278,7 @@ namespace stl
             if (n > 0)
             {
                 grow(n);
-
-                stl::mem_set<value_type>(m_data, value, n * numbytes);
+                stl::mem_set<value_type>(m_data, value, n * sizeof(value_type));
             }
 
             eos<T>(n);
@@ -1464,7 +1457,8 @@ namespace stl
             // call copy constructor not copy operator
             new(&m_data[m_size])value_type(x);
 
-            eos<T>(m_size + 1);
+            //eos<T>(m_size + 1);
+            ++m_size;
 		}
 
         // 23.2.4.3 modifiers (vector):
@@ -1472,6 +1466,12 @@ namespace stl
 		{
             if (m_size)
             {
+/*FIXME: test the following
+            push_back(A(10));
+            pop_back();
+            push_back(A(11));
+            Q: when is A(10) destroyed, if ever??
+*/
                 eos<T>(m_size - 1);
             }
 		}

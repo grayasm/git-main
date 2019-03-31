@@ -1,24 +1,20 @@
 
 
 #include <stdio.h>
+#include <list>
+#include <limits>
 #include "vector.hpp"
 
 
 
 int main()
 {
-    stl::vector<int, stl::allocator<int>> ivec;
-    ivec.push_back(10);
-    ivec.push_back(20);
-    int val = 0;
-    val = ivec.front();
-    val = ivec.back();
-    for (stl::vector<int>::iterator it = ivec.begin();
-        it != ivec.end(); ++it)
-    {
-        val = *it;
-    }
+    stl::vector<int> vi(10, 10);
+    stl::vector<int>::iterator cit = vi.begin();
+    stl::vector<int>::iterator eit = vi.end();
     
+    long diff = eit - cit;
 
-	return 0;
+
+    return 0;
 }

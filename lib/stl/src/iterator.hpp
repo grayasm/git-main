@@ -37,7 +37,7 @@ namespace stl
 
     template<typename category,
              typename T,
-             typename diff = long int,
+             typename diff = long,
              typename ptr = T*,
              typename ref = T&>
     struct iterator
@@ -53,7 +53,7 @@ namespace stl
 
     template<typename category,
              typename T,
-             typename diff = long int,
+             typename diff = long,
              typename const_ptr = const T*,
              typename const_ref = const T&>
     struct const_iterator

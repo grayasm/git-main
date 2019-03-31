@@ -579,17 +579,24 @@ namespace stl
             dst[i] = val;
     }
 
+    template<>
     inline void mem_set(char* dst, char val, size_t bytes)
     {
+        /*
+            void * memset ( void * ptr, int value, size_t num );
+            Sets the first num bytes of the block of memory pointed by ptr
+            to the specified value (interpreted as an unsigned char).
+        */
         ::memset(dst, val, bytes);
     }
 
+    template<>
     inline void mem_set(unsigned char* dst, unsigned char val, size_t bytes)
     {
         ::memset(dst, val, bytes);
     }
 
-
+    template<>
     inline void mem_set(wchar_t* dst, wchar_t val, size_t bytes)
     {
         /*
@@ -599,6 +606,87 @@ namespace stl
         if(bytes % sizeof(wchar_t)) throw stl::exception("invalid bytes value");
         ::wmemset(dst, val, bytes / sizeof(wchar_t));
     }
+
+    template<>
+    inline void mem_set(short* dst, short val, size_t bytes)
+    {
+        size_t elems = bytes / sizeof(short);
+        for (size_t i = 0; i < elems; ++i)
+            dst[i] = val;
+    }
+
+    template<>
+    inline void mem_set(unsigned short* dst, unsigned short val, size_t bytes)
+    {
+        size_t elems = bytes / sizeof(unsigned short);
+        for (size_t i = 0; i < elems; ++i)
+            dst[i] = val;
+    }
+
+    template<>
+    inline void mem_set(int* dst, int val, size_t bytes)
+    {
+        size_t elems = bytes / sizeof(int);
+        for (size_t i = 0; i < elems; ++i)
+            dst[i] = val;
+    }
+
+    template<>
+    inline void mem_set(unsigned int* dst, unsigned int val, size_t bytes)
+    {
+        size_t elems = bytes / sizeof(unsigned int);
+        for (size_t i = 0; i < elems; ++i)
+            dst[i] = val;
+    }
+
+    template<>
+    inline void mem_set(long* dst, long val, size_t bytes)
+    {
+        size_t elems = bytes / sizeof(long);
+        for (size_t i = 0; i < elems; ++i)
+            dst[i] = val;
+    }
+
+    template<>
+    inline void mem_set(unsigned long* dst, unsigned long val, size_t bytes)
+    {
+        size_t elems = bytes / sizeof(unsigned long);
+        for (size_t i = 0; i < elems; ++i)
+            dst[i] = val;
+    }
+
+    template<>
+    inline void mem_set(double* dst, double val, size_t bytes)
+    {
+        size_t elems = bytes / sizeof(double);
+        for (size_t i = 0; i < elems; ++i)
+            dst[i] = val;
+    }
+
+    template<>
+    inline void mem_set(float* dst, float val, size_t bytes)
+    {
+        size_t elems = bytes / sizeof(float);
+        for (size_t i = 0; i < elems; ++i)
+            dst[i] = val;
+    }
+
+    template<>
+    inline void mem_set(long long* dst, long long val, size_t bytes)
+    {
+        size_t elems = bytes / sizeof(long long);
+        for (size_t i = 0; i < elems; ++i)
+            dst[i] = val;
+    }
+
+    template<>
+    inline void mem_set(unsigned long long* dst, unsigned long long val, size_t bytes)
+    {
+        size_t elems = bytes / sizeof(unsigned long long);
+        for (size_t i = 0; i < elems; ++i)
+            dst[i] = val;
+    }
+
 
     //////////////////////////////////////////////////////////////////////////
 
@@ -634,10 +722,10 @@ namespace stl
             {
                 for(size_t i=0; i < size; ++i)
                 {
-			T* d1 = (*dest) + i;
-			T* s1 = src + i;
-			new(d1)T(*s1);
-			s1->T::~T();
+                    T* d1 = (*dest) + i;
+                    T* s1 = src + i;
+                    new(d1)T(*s1);
+                    s1->T::~T();
                 }
 
                 // release memory at src
@@ -649,7 +737,7 @@ namespace stl
     template<typename T, typename Allocator>
     void mem_realloc_pod(T** dest, size_t cap, T* src, size_t size, Allocator& allocator)
     {
-	(void)allocator;
+        (void)allocator;
         if(cap <= size)
         {
             *dest = src;
