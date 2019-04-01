@@ -356,8 +356,7 @@ namespace stl
 
         difference_type operator-(const vector_const_iterator& it) const
         {
-            //return base2::m_pos - it.m_pos;
-            return static_cast<difference_type>(base2::m_post - it.m_pos);
+            return static_cast<difference_type>(base2::m_pos - it.m_pos);
         }
 
         bool operator==(const vector_const_iterator& it) const
@@ -419,17 +418,8 @@ namespace stl
 
 
     private:
-        void init()
-        {
-            base2::m_cont = 0;
-            base2::m_pos = 0;
-        }
-
-    private:
         vector_reverse_iterator(container* cont, size_type pos)
         {
-            init();
-
             base2::m_cont = cont;
             base2::m_pos = pos;
         }
@@ -437,13 +427,13 @@ namespace stl
     public:
         vector_reverse_iterator()
         {
-            init();
+            base2::m_cont = 0;
+            base2::m_pos = 0;
         }
 
 
         vector_reverse_iterator(const vector_reverse_iterator& it)
         {
-            init();
             *this = it;
         }
 
@@ -539,7 +529,7 @@ namespace stl
 
         difference_type operator-(const vector_reverse_iterator& it) const
         {
-            return it.m_pos - base2::m_pos;
+            return static_cast<difference_type>(it.m_pos - base2::m_pos);
         }
 
         bool operator==(const vector_reverse_iterator& it) const
@@ -600,17 +590,8 @@ namespace stl
 
 
     private:
-        void init()
-        {
-            base2::m_cont = 0;
-            base2::m_pos = 0;
-        }
-
-    private:
         vector_const_reverse_iterator(container* cont, size_type pos)
         {
-            init();
-
             base2::m_cont = cont;
             base2::m_pos = pos;
         }
@@ -618,12 +599,12 @@ namespace stl
     public:
         vector_const_reverse_iterator()
         {
-            init();
+            base2::m_cont = 0;
+            base2::m_pos = 0;
         }
 
         vector_const_reverse_iterator(const vector_const_reverse_iterator& it)
         {
-            init();
             *this = it;
         }
 
@@ -734,7 +715,7 @@ namespace stl
 
         difference_type operator-(const vector_const_reverse_iterator& it) const
         {
-            return it.m_pos - base2::m_pos;
+            return static_cast<difference_type>(it.m_pos - base2::m_pos);
         }
 
         bool operator==(const vector_const_reverse_iterator& it) const
@@ -823,35 +804,22 @@ namespace stl
         typedef typename vector_reverse_iterator<container>		    reverse_iterator;
         typedef typename vector_const_reverse_iterator<container>   const_reverse_iterator;
 
-        //typedef vector_iterator_base<container>         iterator_base;
-        //typedef std::vector<iterator_base*>             iterator_array;
-
     private:
         value_type*             m_data;
         size_type               m_size;
         size_type               m_capacity;
         allocator_type          m_allocator;
 
-
-        // debug_iterator implementation
-/*        iterator_array*         m_itarray;
-        friend class vector_iterator<container>;
-        friend class vector_const_iterator<container>;
-        friend class vector_reverse_iterator<container>;
-        friend class vector_const_reverse_iterator<container>;
- */
-
-
     private:
-        void init() //(const Allocator& alloc)
+        inline void init()
         {
             m_data = 0;
             m_size = 0;
             m_capacity = 0;
-            // m_allocator - by default;
+            // m_allocator - default ctor;
         }
 
-        void allocate(size_type cap)
+        inline void allocate(size_type cap)
         {
             pointer mem = 0;
 
@@ -865,106 +833,27 @@ namespace stl
             m_capacity = cap;
         }
 
-        void grow(size_type cap)
+        inline void grow(size_type cap)
         {
             if (m_capacity >= cap) return;
 
             pointer mem = 0;
-
-            // ms comp warn 4127
-            //int hasPOD = 0;// (attributes & stl::GENERIC_ARRAY_HAS_POD_TYPE);
-            //if (hasPOD)
-            //{
-            //    stl::mem_realloc_pod(&mem, cap + 1, m_data, m_size, m_allocator);
-            //}
-            //else
-            //{
-                stl::mem_realloc(&mem, cap, m_data, m_size, m_allocator);
-            //}
-
+            stl::mem_realloc(&mem, cap, m_data, m_size, m_allocator);
+            
             m_data = mem;
             m_capacity = cap;
         }
 
-//        template<typename T2>
-//        inline size_t length(const value_type* ptr) const
-//        {
-//            return length(ptr, stl::vector_spec<T2>());
-//        }
-//
-//        template<typename T2>
-//        inline size_t length(const value_type* ptr, stl::vector_spec<T2>) const
-//        {
-//            if (ptr == 0) throw stl::exception("null pointer");
-//            const value_type* p = ptr;
-//            while (*p != 0)
-//                p++;
-//            return (p - ptr);
-//        }
-//
-//        inline size_t length(const value_type* ptr, stl::vector_spec<char>) const
-//        {
-//            return ::strlen(ptr);
-//        }
-//
-//        inline size_t length(const value_type* ptr, stl::vector_spec<unsigned char>) const
-//        {
-//#if defined _WIN32
-//            return ::_mbslen(ptr);
-//#else // LINUX
-//            /*	I will find out that this doesn't work when the string will hold
-//            some Russian characters.
-//            */
-//            return ::strlen((const char*)ptr);
-//#endif
-//        }
-//
-//        inline size_t length(const value_type* ptr, stl::vector_spec<wchar_t>) const
-//        {
-//            return ::wcslen(ptr);
-//        }
-//
-        template<typename T2>
-        void eos(size_type size)
-        {
-            eos(size, stl::vector_spec<T2>());
-        }
-
-        template<typename T2>
-        void eos(size_type size, stl::vector_spec<T2>)
+        inline void endof(size_type size)
         {
             if (m_capacity < size) throw stl::exception("bad size");
 
-            // ms comp warn 4127
-            // int hasPOD = 0; // (attributes & stl::GENERIC_ARRAY_HAS_POD_TYPE);
-            if (size < m_size) // && !hasPOD)
+            if (size < m_size)
             {
-                // Non POD types;
                 value_type* unused = m_data + size;
-                stl::mem_destroy(&unused, m_size - size, m_allocator);
+                stl::mem_destroy<value_type>(&unused, m_size - size, m_allocator);
             }
             m_size = size;
-        }
-
-        void eos(size_type size, stl::vector_spec<char>)
-        {
-            if (m_capacity < size) throw stl::exception("bad size");
-            m_size = size;
-            m_data[m_size] = 0;
-        }
-
-        void eos(size_type size, stl::vector_spec<unsigned char>)
-        {
-            if (m_capacity < size) throw stl::exception("bad size");
-            m_size = size;
-            m_data[m_size] = 0;
-        }
-
-        void eos(size_type size, stl::vector_spec<wchar_t>)
-        {
-            if (m_capacity < size) throw stl::exception("bad size");
-            m_size = size;
-            m_data[m_size] = 0;
         }
 
         void swap_range(size_type beg, size_type end)
@@ -978,94 +867,43 @@ namespace stl
             }
         }
 
-        //inline bool inside(const value_type* ptr) const
-        //{
-        //    return (m_data <= ptr && m_data + m_size >= ptr);
-        //}
-
-        //inline void memcpy_impl(pointer dest, const_pointer src, size_type bytes)
-        //{
-        //    // ms comp warn 4127
-        //    //int hasPOD = 0;// (attributes & stl::GENERIC_ARRAY_HAS_POD_TYPE);
-        //    //if (hasPOD)
-        //    //{
-        //    //    stl::mem_copy_pod(dest, src, bytes);
-        //    //}
-        //    //else
-        //    //{
-        //        stl::mem_copy(dest, src, bytes);
-        //    //}
-        //}
-
-        //inline void memmove_impl(pointer dest, const_pointer src, size_type bytes) const
-        //{
-        //    // ms comp warn 4127
-        //    //int hasPOD = 0;// (attributes & stl::GENERIC_ARRAY_HAS_POD_TYPE);
-        //    //if (hasPOD)
-        //    //{
-        //    //    stl::mem_move_pod(dest, src, bytes);
-        //    //}
-        //    //else
-        //    //{
-        //        stl::mem_move(dest, src, bytes);
-        //    //}
-        //}
 
 	public:       
 		// $23.2.4.1 construct/copy/destroy:
 		vector()
 		{
-            //const Allocator& alloc = Allocator();
-            init(); // alloc);
+            init();
             allocate(1);
-            // eos<T>(0);
             m_size = 0;
 		}
 
-		explicit vector(size_type n, const T& c = T()) // T vs value_type
+		explicit vector(size_type n, const T& c = T())
 		{
-            // const Allocator& alloc = Allocator();
-            init();// alloc);
-            allocate(1);       // avoid 0 capacity with n=0
-            // eos<T>(0);          // safety
-            m_size = 0;
+            init();
+            allocate(1);
             assign(n, c);
 		}
 
 		template <class InputIterator>
 		vector(InputIterator first, InputIterator last)
 		{
-            // const Allocator& alloc = Allocator();
-            init();// alloc);
-            allocate(1);       // avoid 0 capacity
-            // eos<T>(0);          // safety
-            m_size = 0;
+            init();
+            allocate(1);
             assign(first, last);
 		}
 
         vector(const container& x)
             : m_allocator(x.get_allocator())
 		{
-            init();// x.get_allocator());
-            allocate(1);       // avoid 0 capacity with x.empty()
-            // eos<T>(0);          // protect against self assignment
-            m_size = 0;
-            assign(x);        // may return with no action
+            init();
+            allocate(1);
+            assign(x);
 		}
 
 		~vector()
 		{
-            //// ms comp warn 4127
-            //int hasPOD = 0; // (attributes & stl::GENERIC_ARRAY_HAS_POD_TYPE);
-            //if (hasPOD)
-            //{
-            //    m_allocator.deallocate(m_data, 0);
-            //}
-            //else
-            //{
-                stl::mem_destroy(&m_data, m_size, m_allocator);
-                m_allocator.deallocate(m_data, 0);
-            //}
+            stl::mem_destroy<value_type>(&m_data, m_size, m_allocator);
+            m_allocator.deallocate(m_data, 0);
 
             m_data = 0;
             m_size = 0;
@@ -1078,7 +916,7 @@ namespace stl
 		}
 
         /* $21.3.5 modifiers ( assign ) */
-        inline container& assign(const container& tc)
+        container& assign(const container& tc)
         {
             //self assignment
             if (this != &tc)
@@ -1089,11 +927,10 @@ namespace stl
                 {
                     grow(size);
 
-                    stl::mem_copy(m_data, tc.m_data, size * sizeof(value_type));
+                    stl::mem_copy<value_type>(m_data, tc.m_data, size * sizeof(value_type));
                 }
-
-                // eos<T>(size);
-                m_size = 0;
+                
+                endof(size);
             }
 
             return *this;
@@ -1111,11 +948,7 @@ namespace stl
             if (first.m_cont != last.m_cont || first.m_cont == 0)
                 throw stl::exception("invalid iterator");
 
-            difference_type dist = last - first;
-
-//FIXME: how can dist be negative??
-            if (dist < 0)
-                dist = 0; // erase this array
+            size_type dist = last - first;
 
             if (dist > 0)
             {
@@ -1124,18 +957,22 @@ namespace stl
                 //self assignment
                 if (this == first.m_cont)
                 {
-                    // memmove_impl(m_data, &((*first.m_cont)[first.m_pos]), dist * sizeof(value_type));
-                    stl::mem_move(m_data, &((*first.m_cont)[first.m_pos]), dist * sizeof(value_type));
+                    stl::mem_move<value_type>(m_data, &((*first.m_cont)[first.m_pos]), dist * sizeof(value_type));
                 }
                 else
                 {
-                    // memcpy_impl(m_data, &((*first.m_cont)[first.m_pos]), dist * sizeof(value_type));
-                    stl::mem_copy(m_data, &((*first.m_cont)[first.m_pos]), dist * sizeof(value_type));
+                    stl::mem_copy<value_type>(m_data, &((*first.m_cont)[first.m_pos]), dist * sizeof(value_type));
                 }
             }
 
 //FIXME: different behaviour when dist < m_size;
-            eos<T>(dist);
+            // eos<T>(dist);
+            if (dist < m_size)
+            {
+                value_type* unused = m_data + dist;
+                stl::mem_destroy(&unused, m_size - dist, m_allocator);
+            }
+            m_size = dist;
 
             return *this;
         }
@@ -1157,15 +994,24 @@ namespace stl
                 //self assignment
                 if (this == first.m_cont)
                 {
-                    memmove_impl(m_data, &((*first.m_cont)[first.m_pos]), dist * numbytes);
+                    //memmove_impl(m_data, &((*first.m_cont)[first.m_pos]), dist * numbytes);
+                    stl::mem_move<value_type>(m_data, &((*first.m_cont)[first.m_pos]), dist * numbytes);
                 }
                 else
                 {
-                    memcpy_impl(m_data, &((*first.m_cont)[first.m_pos]), dist * numbytes);
+                    //memcpy_impl(m_data, &((*first.m_cont)[first.m_pos]), dist * numbytes);
+                    stl::mem_copy<value_type>(m_data, &((*first.m_cont)[first.m_pos]), dist * numbytes);
                 }
             }
 
-            eos<T>(dist);
+            // eos<T>(dist);
+            if (dist < m_size)
+            {
+                value_type* unused = m_data + dist;
+                stl::mem_destroy(&unused, m_size - dist, m_allocator);
+            }
+            m_size = dist;
+
 
             return *this;
         }
@@ -1191,13 +1037,20 @@ namespace stl
                 }
                 else
                 {
-                    memcpy_impl(m_data, &((*last.m_cont)[last.m_pos + 1]), dist * numbytes);
+                    //memcpy_impl(m_data, &((*last.m_cont)[last.m_pos + 1]), dist * numbytes);
+                    stl::mem_copy<value_type>(m_data, &((*last.m_cont)[last.m_pos + 1]), dist * numbytes);
                 }
 
                 swap_range(0, dist);
             }
 
-            eos<T>(dist);
+            // eos<T>(dist);
+            if (dist < m_size)
+            {
+                value_type* unused = m_data + dist;
+                stl::mem_destroy(&unused, m_size - dist, m_allocator);
+            }
+            m_size = dist;
 
             return *this;
         }
@@ -1224,13 +1077,20 @@ namespace stl
                 }
                 else
                 {
-                    memcpy_impl(m_data, &((*last.m_cont)[last.m_pos + 1]), dist * numbytes);
+                    //memcpy_impl(m_data, &((*last.m_cont)[last.m_pos + 1]), dist * numbytes);
+                    stl::mem_copy<value_type>(m_dat, &((*last.m_cont)[last.m_pos + 1]), dist * numbytes);
                 }
 
                 swap_range(0, dist);
             }
 
-            eos<T>(dist);
+            // eos<T>(dist);
+            if (dist < m_size)
+            {
+                value_type* unused = m_data + dist;
+                stl::mem_destroy(&unused, m_size - dist, m_allocator);
+            }
+            m_size = dist;
 
             return *this;
         }
@@ -1254,10 +1114,17 @@ namespace stl
             {
                 grow(dist);
 
-                memcpy_impl(m_data, first, dist * numbytes);
+                //memcpy_impl(m_data, first, dist * numbytes);
+                stl::mem_copy<value_type>(m_data, first, dist * numbytes);
             }
 
-            eos<T>(dist);
+            // eos<T>(dist);
+            if (dist < m_size)
+            {
+                value_type* unused = m_data + dist;
+                stl::mem_destroy(&unused, m_size - dist, m_allocator);
+            }
+            m_size = dist;
 
             return *this;
         }
@@ -1281,7 +1148,14 @@ namespace stl
                 stl::mem_set<value_type>(m_data, value, n * sizeof(value_type));
             }
 
-            eos<T>(n);
+            // eos<T>(dist);
+            size_type dist = n;
+            if (dist < m_size)
+            {
+                value_type* unused = m_data + dist;
+                stl::mem_destroy(&unused, m_size - dist, m_allocator);
+            }
+            m_size = dist;
 
             return *this;
         }
@@ -1303,7 +1177,14 @@ namespace stl
                 stl::mem_set(m_data, val, count * sizeof(value_type));
             }
 
-            eos<T>(count);
+            // eos<T>(dist);
+            size_type dist = count;
+            if (dist < m_size)
+            {
+                value_type* unused = m_data + dist;
+                stl::mem_destroy(&unused, m_size - dist, m_allocator);
+            }
+            m_size = dist;
 
             // return *this;
 		}
@@ -1368,7 +1249,14 @@ namespace stl
 		{
             if (m_size > sz)
             {
-                eos<T>(sz);
+                // eos<T>(dist);
+                size_type dist = sz;
+                if (dist < m_size)
+                {
+                    value_type* unused = m_data + dist;
+                    stl::mem_destroy(&unused, m_size - dist, m_allocator);
+                }
+                m_size = dist;
             }
             else if (m_size < sz)
             {
@@ -1376,7 +1264,14 @@ namespace stl
 
                 stl::mem_set(&m_data[m_size], c, (sz - m_size) * numbytes);
 
-                eos<T>(sz);
+                // eos<T>(dist);
+                size_type dist = sz;
+                if (dist < m_size)
+                {
+                    value_type* unused = m_data + dist;
+                    stl::mem_destroy(&unused, m_size - dist, m_allocator);
+                }
+                m_size = dist;
             }
 		}
 
@@ -1472,7 +1367,15 @@ namespace stl
             push_back(A(11));
             Q: when is A(10) destroyed, if ever??
 */
-                eos<T>(m_size - 1);
+                
+                //eos<T>(m_size - 1);
+                size_type dist = m_size - 1;
+                if (dist < m_size)
+                {
+                    value_type* unused = m_data + dist;
+                    stl::mem_destroy(&unused, m_size - dist, m_allocator);
+                }
+                m_size = dist;
             }
 		}
 
@@ -1501,10 +1404,19 @@ namespace stl
                     size_type size = m_size + dist;
                     grow(size);
 
-                    memmove_impl(&m_data[p1 + dist], &m_data[p1], (m_size - p1) * numbytes);
-                    memcpy_impl(&m_data[p1], &((*first.m_cont)[first.m_pos]), dist * numbytes);
+                    // memmove_impl(&m_data[p1 + dist], &m_data[p1], (m_size - p1) * numbytes);
+                    stl::mem_move<value_type>(&m_data[p1 + dist], &m_data[p1], (m_size - p1) * sizeof(value_type));
+                    //memcpy_impl(&m_data[p1], &((*first.m_cont)[first.m_pos]), dist * sizeof(value_type));
+                    stl::mem_copy<value_type>(&m_data[p1], &((*first.m_cont)[first.m_pos]), dist * sizeof(value_type));
 
-                    eos<T>(size);
+                    //eos<T>(size);
+                    size_type dist = size;
+                    if (dist < m_size)
+                    {
+                        value_type* unused = m_data + dist;
+                        stl::mem_destroy(&unused, m_size - dist, m_allocator);
+                    }
+                    m_size = dist;
                 }
             }
         }
@@ -1528,10 +1440,19 @@ namespace stl
                     size_type size = m_size + dist;
                     grow(size);
 
-                    memmove_impl(&m_data[p1 + dist], &m_data[p1], (m_size - p1) * numbytes);
-                    memcpy_impl(&m_data[p1], &((*first.m_cont)[first.m_pos]), dist * numbytes);
+                    //memmove_impl(&m_data[p1 + dist], &m_data[p1], (m_size - p1) * numbytes);
+                    stl::mem_move<value_type>(&m_data[p1 + dist], &m_data[p1], (m_size - p1) * numbytes);
+                    //memcpy_impl(&m_data[p1], &((*first.m_cont)[first.m_pos]), dist * numbytes);
+                    stl::mem_copy<value_type>(&m_data[p1], &((*first.m_cont)[first.m_pos]), dist * numbytes);
 
-                    eos<T>(size);
+                    //eos<T>(size);
+                    size_type dist = size;
+                    if (dist < m_size)
+                    {
+                        value_type* unused = m_data + dist;
+                        stl::mem_destroy(&unused, m_size - dist, m_allocator);
+                    }
+                    m_size = dist;
                 }
             }
         }
@@ -1555,12 +1476,21 @@ namespace stl
                     size_type size = m_size + dist;
                     grow(size);
 
-                    memmove_impl(&m_data[p1 + dist], &m_data[p1], (m_size - p1) * numbytes);
-                    memcpy_impl(&m_data[p1], &((*last.m_cont)[last.m_pos + 1]), dist * numbytes);
+                    //memmove_impl(&m_data[p1 + dist], &m_data[p1], (m_size - p1) * numbytes);
+                    stl::mem_move<value_type>(&m_data[p1 + dist], &m_data[p1], (m_size - p1) * numbytes);
+                    //memcpy_impl(&m_data[p1], &((*last.m_cont)[last.m_pos + 1]), dist * numbytes);
+                    stl::mem_copy<value_type>(&m_data[p1], &((*last.m_cont)[last.m_pos + 1]), dist * numbytes);
 
                     swap_range(p1, p1 + dist);
 
-                    eos<T>(size);
+                    //eos<T>(size);
+                    size_type dist = size;
+                    if (dist < m_size)
+                    {
+                        value_type* unused = m_data + dist;
+                        stl::mem_destroy(&unused, m_size - dist, m_allocator);
+                    }
+                    m_size = dist;
                 }
             }
         }
@@ -1584,12 +1514,21 @@ namespace stl
                     size_type size = m_size + dist;
                     grow(size);
 
-                    memmove_impl(&m_data[p1 + dist], &m_data[p1], (m_size - p1) * numbytes);
-                    memcpy_impl(&m_data[p1], &((*last.m_cont)[last.m_pos + 1]), dist * numbytes);
+                    //memmove_impl(&m_data[p1 + dist], &m_data[p1], (m_size - p1) * numbytes);
+                    stl::mem_move<value_type>(&m_data[p1 + dist], &m_data[p1], (m_size - p1) * numbytes);
+                    //memcpy_impl(&m_data[p1], &((*last.m_cont)[last.m_pos + 1]), dist * numbytes);
+                    stl::mem_copy<value_type>(&m_data[p1], &((*last.m_cont)[last.m_pos + 1]), dist * numbytes);
 
                     swap_range(p1, p1 + dist);
 
-                    eos<T>(size);
+                    //eos<T>(size);
+                    size_type dist = size;
+                    if (dist < m_size)
+                    {
+                        value_type* unused = m_data + dist;
+                        stl::mem_destroy(&unused, m_size - dist, m_allocator);
+                    }
+                    m_size = dist;
                 }
             }
         }
@@ -1609,11 +1548,19 @@ namespace stl
 
                 grow(size);
 
-                memmove_impl(&m_data[p1 + n2], &m_data[p1], (m_size - p1) * numbytes);
+                //memmove_impl(&m_data[p1 + n2], &m_data[p1], (m_size - p1) * numbytes);
+                stl::mem_move<value_type>(&m_data[p1 + n2], &m_data[p1], (m_size - p1) * numbytes);
 
-                stl::mem_set(&m_data[p1], value, n2 * numbytes);
+                stl::mem_set<value_type>(&m_data[p1], value, n2 * numbytes);
 
-                eos<T>(size);
+                //eos<T>(size);
+                size_type dist = size;
+                if (dist < m_size)
+                {
+                    value_type* unused = m_data + dist;
+                    stl::mem_destroy(&unused, m_size - dist, m_allocator);
+                }
+                m_size = dist;
             }
         }
 
@@ -1638,11 +1585,19 @@ namespace stl
 
                 grow(size);
 
-                memmove_impl(&m_data[p1 + n], &m_data[p1], (m_size - p1) * numbytes);
+                //memmove_impl(&m_data[p1 + n], &m_data[p1], (m_size - p1) * numbytes);
+                stl::mem_move<value_type>(&m_data[p1 + n], &m_data[p1], (m_size - p1) * sizeof(value_type));
 
-                stl::mem_set(&m_data[p1], x, n * numbytes);
+                stl::mem_set<value_type>(&m_data[p1], x, n * numbytes);
 
-                eos<T>(size);
+                //eos<T>(size);
+                size_type dist = size;
+                if (dist < m_size)
+                {
+                    value_type* unused = m_data + dist;
+                    stl::mem_destroy<value_type>(&unused, m_size - dist, m_allocator);
+                }
+                m_size = dist;
             }
 		}
 
@@ -1662,11 +1617,19 @@ namespace stl
 
             size_type p1 = position.m_pos;
 
-            invalidate_iterators_gte(p1);
+            //invalidate_iterators_gte(p1);
 
-            memmove_impl(&m_data[p1], &m_data[p1 + 1], (m_size - p1 - 1) * numbytes);
+            //memmove_impl(&m_data[p1], &m_data[p1 + 1], (m_size - p1 - 1) * numbytes);
+            stl::mem_move<value_type>(&m_data[p1], &m_data[p1 + 1], (m_size - p1 - 1) * sizeof(value_type));
 
-            eos<T>(m_size - 1);
+            //eos<T>(m_size - 1);
+            size_type dist = (m_size - 1);
+            if (dist < m_size)
+            {
+                value_type* unused = m_data + dist;
+                stl::mem_destroy<value_type>(&unused, m_size - dist, m_allocator);
+            }
+            m_size = dist;
 
             return position;
 		}
@@ -1679,34 +1642,48 @@ namespace stl
             difference_type dist = last - first;
             if (dist > 0)
             {
-                invalidate_iterators_gte(first.m_pos);
+                //invalidate_iterators_gte(first.m_pos);
 
                 //fill the gap
                 if (last.m_pos < m_size)
                 {
-                    memmove_impl(&m_data[first.m_pos], &m_data[last.m_pos], (m_size - last.m_pos) * numbytes);
+                    //memmove_impl(&m_data[first.m_pos], &m_data[last.m_pos], (m_size - last.m_pos) * numbytes);
+                    stl::mem_move<value_type>(&m_data[first.m_pos], &m_data[last.m_pos], (m_size - last.m_pos) * sizeof(value_type));
                 }
 
-                eos<T>(m_size - dist);
+                //eos<T>(m_size - dist);
+                size_type dist = (m_size - dist);
+                if (dist < m_size)
+                {
+                    value_type* unused = m_data + dist;
+                    stl::mem_destroy<value_type>(&unused, m_size - dist, m_allocator);
+                }
+                m_size = dist;
             }
 
             return first;
 		}
 
-		void swap(container& x)
+		void swap(container& ts)
 		{
-            stl::swap<Allocator>(m_allocator, vec.m_allocator);
-            stl::swap<pointer>(m_data, vec.m_data);
-            stl::swap<size_type>(m_size, vec.m_size);
-            stl::swap<size_type>(m_capacity, vec.m_capacity);
-            stl::swap<iterator_array*>(m_itarray, vec.m_itarray);
+            stl::swap<Allocator>(m_allocator, ts.m_allocator);
+            stl::swap<pointer>(m_data, ts.m_data);
+            stl::swap<size_type>(m_size, ts.m_size);
+            stl::swap<size_type>(m_capacity, ts.m_capacity);
 		}
 
 		void clear()
 		{
-            invalidate_iterators();
+            //invalidate_iterators();
 
-            eos<T>(0);
+            //eos<T>(0);
+            size_type dist = 0;
+            if (dist < m_size)
+            {
+                value_type* unused = m_data + dist;
+                stl::mem_destroy(&unused, m_size - dist, m_allocator);
+            }
+            m_size = dist;
 		}
 
         allocator_type get_allocator() const
@@ -1714,45 +1691,43 @@ namespace stl
             return m_allocator;
         }
 
-#if 1	// Until the ambiguity with global operators gets solved, execute this.
-		bool operator==(const container& Right)
-		{
-			return vector_ops::operator ==(*this, Right);
-		}
-
-		bool operator<(const container& Right)
-		{
-			return vector_ops::operator <(*this, Right);
-		}
-		
-		bool operator!=(const container& Right)
-		{
-			return !(*this == Right);
-		}
-		
-		bool operator>(const container& Right)
-		{			
-			return (*this != Right) && !(*this < Right);
-		}
-
-		bool operator>=(const container& Right)
-		{
-			return !(*this < Right);
-		}
-
-		bool operator<=(const container& Right)
-		{
-			return (*this < Right) || (*this == Right);
-		}
-		
-#endif
+//#if 1	// Until the ambiguity with global operators gets solved, execute this.
+//		bool operator==(const container& Right)
+//		{
+//			return vector_ops::operator ==(*this, Right);
+//		}
+//
+//		bool operator<(const container& Right)
+//		{
+//			return vector_ops::operator <(*this, Right);
+//		}
+//		
+//		bool operator!=(const container& Right)
+//		{
+//			return !(*this == Right);
+//		}
+//		
+//		bool operator>(const container& Right)
+//		{			
+//			return (*this != Right) && !(*this < Right);
+//		}
+//
+//		bool operator>=(const container& Right)
+//		{
+//			return !(*this < Right);
+//		}
+//
+//		bool operator<=(const container& Right)
+//		{
+//			return (*this < Right) || (*this == Right);
+//		}
+//		
+//#endif
 	};  // class
 
-
-
-#if 0	//Ambiguity in fxcm application. Disabled until it gets fixed.
+    
 	template<typename T, typename Allocator>
-	bool operator== (
+	inline bool operator== (
 		const stl::vector<T, Allocator>& Left,
 		const stl::vector<T, Allocator>& Right)
 	{
@@ -1772,7 +1747,7 @@ namespace stl
 	}
 
 	template<typename T, typename Allocator>
-	bool operator< (
+	inline bool operator< (
 		const stl::vector<T, Allocator>& Left,
 		const stl::vector<T, Allocator>& Right)
 	{
@@ -1781,7 +1756,7 @@ namespace stl
 	}
 
 	template<typename T, typename Allocator>
-	bool operator!= (
+	inline bool operator!= (
 		const stl::vector<T, Allocator>& Left,
 		const stl::vector<T, Allocator>& Right)
 	{
@@ -1789,7 +1764,7 @@ namespace stl
 	}
 
 	template<typename T, typename Allocator>
-	bool operator> (
+	inline bool operator> (
 		const stl::vector<T, Allocator>& Left,
 		const stl::vector<T, Allocator>& Right)
 	{
@@ -1797,7 +1772,7 @@ namespace stl
 	}
 
 	template<typename T, typename Allocator>
-	bool operator>= (
+	inline bool operator>= (
 		const stl::vector<T, Allocator>& Left,
 		const stl::vector<T, Allocator>& Right)
 	{
@@ -1805,7 +1780,7 @@ namespace stl
 	}
 
 	template<typename T, typename Allocator>
-	bool operator<= (
+	inline bool operator<= (
 		const stl::vector<T, Allocator>& Left,
 		const stl::vector<T, Allocator>& Right)
 	{
@@ -1820,7 +1795,7 @@ namespace stl
 	{
 		return Left.swap(Right);
 	}
-#endif
+
 }  // namespace
 
 #endif//__vector_hpp__
