@@ -25,6 +25,7 @@
 #include "exception.hpp"
 #include "memory.hpp"
 #include "memmanip.hpp"
+#include "algorithm.hpp"
 #include <new>
 
 
@@ -862,7 +863,8 @@ namespace stl
             {
                 for (size_type i = beg, j = end - 1; i < j; ++i, --j)
                 {
-                    stl::swap<value_type>(m_data[i], m_data[j]);
+                    //stl::swap<value_type>(m_data[i], m_data[j]);
+                    stl::swap(m_data[i], m_data[j]);
                 }
             }
         }
@@ -936,19 +938,57 @@ namespace stl
             return *this;
         }
 
+        void assign(size_type count, const value_type& val)
+		{
+            if (count > 0)
+            {
+                grow(count);
+
+                stl::mem_set<value_type>(m_data, val, count * sizeof(value_type));
+            }
+
+            endof(count);
+		}
+
+        template <class InputIterator>
+        void assign(InputIterator first, InputIterator last)
+        {
+            assign_(first, last);
+        }
 
     private:
-        /*
-            implementation of:
-            template <class InputIterator>
-            string& assign ( InputIterator first, InputIterator last );
-        */
-        inline container& assign_impl(const iterator& first, const iterator& last)
+        container& assign_(const value_type* first, const value_type* last)
+        {
+            // if last < first then let it blow up.
+            size_type dist = static_cast<size_type>(last - first);
+
+            if (dist > 0)
+            {
+                grow(dist);
+
+                // self assignment
+                if (m_size > 0 && m_data <= first && (m_data + m_size) > first)
+                {
+                    stl::mem_move<value_type>(m_data, first, dist * sizeof(value_type));
+                }
+                else
+                {
+                    stl::mem_copy<value_type>(m_data, first, dist * sizeof(value_type));
+                }
+            }
+
+            endof(dist);
+
+            return *this;
+        }
+
+        container& assign_(const iterator& first, const iterator& last)
         {
             if (first.m_cont != last.m_cont || first.m_cont == 0)
                 throw stl::exception("invalid iterator");
 
-            size_type dist = last - first;
+            // if last < first then let it blow up.
+            size_type dist = static_cast<size_type>(last - first);
 
             if (dist > 0)
             {
@@ -965,27 +1005,18 @@ namespace stl
                 }
             }
 
-//FIXME: different behaviour when dist < m_size;
-            // eos<T>(dist);
-            if (dist < m_size)
-            {
-                value_type* unused = m_data + dist;
-                stl::mem_destroy(&unused, m_size - dist, m_allocator);
-            }
-            m_size = dist;
+            endof(dist);
 
             return *this;
         }
 
-        inline container& assign_impl(const const_iterator& first, const const_iterator& last)
+        container& assign_(const const_iterator& first, const const_iterator& last)
         {
             if (first.m_cont != last.m_cont || first.m_cont == 0)
                 throw stl::exception("invalid iterator");
 
-            difference_type dist = last - first;
-
-            if (dist < 0)
-                dist = 0; // erase this array
+            // if n < 0 then let it explode.
+            size_type dist = static_cast<size_type>(last - first);
 
             if (dist > 0)
             {
@@ -994,37 +1025,77 @@ namespace stl
                 //self assignment
                 if (this == first.m_cont)
                 {
-                    //memmove_impl(m_data, &((*first.m_cont)[first.m_pos]), dist * numbytes);
                     stl::mem_move<value_type>(m_data, &((*first.m_cont)[first.m_pos]), dist * numbytes);
                 }
                 else
                 {
-                    //memcpy_impl(m_data, &((*first.m_cont)[first.m_pos]), dist * numbytes);
                     stl::mem_copy<value_type>(m_data, &((*first.m_cont)[first.m_pos]), dist * numbytes);
                 }
             }
 
-            // eos<T>(dist);
-            if (dist < m_size)
-            {
-                value_type* unused = m_data + dist;
-                stl::mem_destroy(&unused, m_size - dist, m_allocator);
-            }
-            m_size = dist;
+            endof(dist);
 
+            return *this;
+        }
+        
+        template<typename InputIterator>
+        container& assign_(InputIterator first, InputIterator last, stl::forward_iterator_tag)
+        {
+            difference_type dist = stl::distance(first, last);
+
+            if (dist > 0)
+            {
+                grow(dist);
+
+                for (size_type i = 0; first != last; ++first, ++i)
+                {
+                    T* d1 = m_data + i;
+                    const T& s1 = *first;
+                    if (d1 != &s1)
+                    {
+                        d1->T::~T(); //faults when object at d1 was not yet created;
+                        new(d1)T(s1);
+                    }
+                }
+            }
+
+            endof(dist);
 
             return *this;
         }
 
-        inline container& assign_impl(const reverse_iterator& first, const reverse_iterator& last)
+
+        template<typename InputIterator>
+        container& assign_(InputIterator n, InputIterator value, stl::input_iterator_tag)
+        {
+            // if n < 0 then let it blow up.
+            size_type dist = static_cast<size_type>(n);
+            if (dist > 0)
+            {
+                grow(dist);
+
+                stl::mem_set<value_type>(m_data, value, dist * sizeof(value_type));
+            }
+
+            endof(dist);
+
+            return *this;
+        }
+
+        template <class InputIterator>
+        container& assign_(InputIterator first, InputIterator last)
+        {
+            return assign_(first, last, typename stl::iterator_traits<InputIterator>::iterator_category());
+        }
+
+#if 0
+        container& assign_impl(const reverse_iterator& first, const reverse_iterator& last)
         {
             if (first.m_cont != last.m_cont || first.m_cont == 0)
                 throw stl::exception("invalid iterator");
 
-            difference_type dist = last - first;
-
-            if (dist < 0)
-                dist = 0; // erase this array
+            // if last < first then let it blow than to cover it up.
+            size_type dist = static_cast<size_type>(last - first);
 
             if (dist > 0)
             {
@@ -1033,161 +1104,58 @@ namespace stl
                 //self assignment
                 if (this == first.m_cont)
                 {
+                    //TODO: see below, check for correctness
+                    //erase(0, last.m_pos + 1);
+                }
+                else
+                {
+                    //TODO: copying in reverse means [0,1,2,3,4,5] -> [5,4,3,2,1,0] ; check if this is done correctly!!!
+                    stl::mem_copy<value_type>(m_data, &((*last.m_cont)[last.m_pos + 1]), dist * sizeof(value_type));
+                }
+
+                swap_range(0, dist);
+            }
+
+            endof(dist);
+
+            return *this;
+        }
+
+        container& assign_impl(const const_reverse_iterator& first, const const_reverse_iterator& last)
+        {
+            //validate containers
+            if (first.m_cont != last.m_cont || first.m_cont == 0)
+                throw stl::exception("invalid iterator");
+
+            // if last < first then let it blow than to cover it up.
+            size_type dist = static_cast<size_type>(last - first);
+
+            if (dist > 0)
+            {
+                grow(dist);
+
+                //self assignment
+                if (this == first.m_cont)
+                {
+                    //TODO: see below, check for correctness
                     erase(0, last.m_pos + 1);
                 }
                 else
                 {
-                    //memcpy_impl(m_data, &((*last.m_cont)[last.m_pos + 1]), dist * numbytes);
+                    //TODO: copying in reverse means [0,1,2,3,4,5] -> [5,4,3,2,1,0] ; check if this is done correctly!!!
                     stl::mem_copy<value_type>(m_data, &((*last.m_cont)[last.m_pos + 1]), dist * numbytes);
                 }
 
                 swap_range(0, dist);
             }
 
-            // eos<T>(dist);
-            if (dist < m_size)
-            {
-                value_type* unused = m_data + dist;
-                stl::mem_destroy(&unused, m_size - dist, m_allocator);
-            }
-            m_size = dist;
+            endof(dist);
 
             return *this;
         }
-
-        inline container& assign_impl(const const_reverse_iterator& first, const const_reverse_iterator& last)
-        {
-            //validate containers
-            if (first.m_cont != last.m_cont || first.m_cont == 0)
-                throw stl::exception("invalid iterator");
-
-            size_type dist = last - first;
-
-            if (dist < 0)
-                dist = 0; // erase this array
-
-            if (dist > 0)
-            {
-                grow(dist);
-
-                //self assignment
-                if (this == first.m_cont)
-                {
-                    erase(0, last.m_pos + 1);
-                }
-                else
-                {
-                    //memcpy_impl(m_data, &((*last.m_cont)[last.m_pos + 1]), dist * numbytes);
-                    stl::mem_copy<value_type>(m_dat, &((*last.m_cont)[last.m_pos + 1]), dist * numbytes);
-                }
-
-                swap_range(0, dist);
-            }
-
-            // eos<T>(dist);
-            if (dist < m_size)
-            {
-                value_type* unused = m_data + dist;
-                stl::mem_destroy(&unused, m_size - dist, m_allocator);
-            }
-            m_size = dist;
-
-            return *this;
-        }
-
-        /*
-            -due to specialization for assign_impl(const iterator& ...) and friends,
-            compiler cannot find any suitable assign_impl for next code:
-
-            float fptr[]={0,...};
-            stl::generic_array<float> fcont(fptr, fptr+10);
-        */
-
-        inline container& assign_impl(const value_type* first, const value_type* last)
-        {
-            difference_type dist = last - first;
-
-            if (dist < 0)
-                dist = 0; // erase this array
-
-            if (dist > 0)
-            {
-                grow(dist);
-
-                //memcpy_impl(m_data, first, dist * numbytes);
-                stl::mem_copy<value_type>(m_data, first, dist * numbytes);
-            }
-
-            // eos<T>(dist);
-            if (dist < m_size)
-            {
-                value_type* unused = m_data + dist;
-                stl::mem_destroy(&unused, m_size - dist, m_allocator);
-            }
-            m_size = dist;
-
-            return *this;
-        }
-
-
-        template<typename InputIterator>
-        inline container& assign_impl(InputIterator first, InputIterator last, stl::random_access_iterator_tag)
-        {
-            return assign_impl(first, last);
-        }
-
-        template<typename InputIterator>
-        inline container& assign_impl(InputIterator n, InputIterator value, stl::input_iterator_tag)
-        {
-            if (n < 0)
-                n = 0; // erase this array
-
-            if (n > 0)
-            {
-                grow(n);
-                stl::mem_set<value_type>(m_data, value, n * sizeof(value_type));
-            }
-
-            // eos<T>(dist);
-            size_type dist = n;
-            if (dist < m_size)
-            {
-                value_type* unused = m_data + dist;
-                stl::mem_destroy(&unused, m_size - dist, m_allocator);
-            }
-            m_size = dist;
-
-            return *this;
-        }
+#endif
 
     public:
-		template <class InputIterator>
-		void assign(InputIterator first, InputIterator last)
-		{
-            //return
-            assign_impl(first, last, typename stl::iterator_traits<InputIterator>::iterator_category());
-		}
-
-        void assign(size_type count, const value_type& val)
-		{
-            if (count > 0)
-            {
-                grow(count);
-
-                stl::mem_set(m_data, val, count * sizeof(value_type));
-            }
-
-            // eos<T>(dist);
-            size_type dist = count;
-            if (dist < m_size)
-            {
-                value_type* unused = m_data + dist;
-                stl::mem_destroy(&unused, m_size - dist, m_allocator);
-            }
-            m_size = dist;
-
-            // return *this;
-		}
 
         //$21.3.2 iterators
 		iterator begin()
@@ -1788,13 +1756,13 @@ namespace stl
 	}
 
 	// specialized algorithms:
-	template<typename T, typename Allocator>
-	void swap (
-		stl::vector<T, Allocator>& Left, 
-		stl::vector<T, Allocator>& Right)
-	{
-		return Left.swap(Right);
-	}
+	//template<typename T, typename Allocator>
+	//void swap (
+	//	stl::vector<T, Allocator>& Left, 
+	//	stl::vector<T, Allocator>& Right)
+	//{
+	//	return Left.swap(Right);
+	//}
 
 }  // namespace
 

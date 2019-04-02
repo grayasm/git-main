@@ -31,7 +31,7 @@
 #include "memory.hpp"
 
 
-namespace misc
+namespace stl
 {
 	namespace algobase
 	{
@@ -87,14 +87,14 @@ namespace misc
 		count_if(InputIterator first, InputIterator last, Predicate pred);
 
 		template<typename InputIterator1, typename InputIterator2>
-		misc::pair<InputIterator1, InputIterator2>
+		stl::pair<InputIterator1, InputIterator2>
 		mismatch(
 			InputIterator1 first1, InputIterator1 last1,
 			InputIterator2 first2);
 
 		template<typename InputIterator1, typename InputIterator2,
 				 typename BinaryPredicate>
-		misc::pair<InputIterator1, InputIterator2>
+		stl::pair<InputIterator1, InputIterator2>
 		mismatch(
 			InputIterator1 first1, InputIterator1 last1,
 			InputIterator2 first2,
@@ -360,11 +360,11 @@ namespace misc
 
 
 		template<typename ForwardIterator, typename T>
-		misc::pair<ForwardIterator, ForwardIterator>
+		stl::pair<ForwardIterator, ForwardIterator>
 		equal_range(ForwardIterator first, ForwardIterator last, const T& value);
 
 		template<typename ForwardIterator, typename T, typename Compare>
-		misc::pair<ForwardIterator, ForwardIterator>
+		stl::pair<ForwardIterator, ForwardIterator>
 		equal_range(ForwardIterator first, ForwardIterator last, const T& value,
 					Compare comp);
 
@@ -634,24 +634,24 @@ namespace misc
 			ForwardIterator2 first2, ForwardIterator2 last2)
 		{
 			typedef typename
-				misc::iterator_traits<ForwardIterator2>::difference_type Dist;
+				stl::iterator_traits<ForwardIterator2>::difference_type Dist;
 
-			const Dist dist1 = misc::distance(first2, last2);
+			const Dist dist1 = stl::distance(first2, last2);
 
 			if (!dist1)
 				return last1;
 
-			typename misc::iterator_traits<ForwardIterator1>::difference_type
-				dist2 = misc::distance(first1, last1);
+			typename stl::iterator_traits<ForwardIterator1>::difference_type
+				dist2 = stl::distance(first1, last1);
 
 			ForwardIterator1 res = last1;
 
 			while (dist2 >= dist1)
 			{
-				if (misc::algobase::equal (first2, last2, first1))
+				if (stl::algobase::equal (first2, last2, first1))
 					res  = first1;
 
-				dist2 = misc::distance(++first1, last1);
+				dist2 = stl::distance(++first1, last1);
 			}
 			return res;
 		}
@@ -665,23 +665,23 @@ namespace misc
 			BinaryPredicate pred)
 		{
 			typedef typename
-				misc::iterator_traits<ForwardIterator1>::difference_type Dist;
+				stl::iterator_traits<ForwardIterator1>::difference_type Dist;
 
-			const Dist dist1 = misc::distance(first2, last2);
+			const Dist dist1 = stl::distance(first2, last2);
 
 			if (!dist1)
 				return last1;
 			
-			Dist dist2 = misc::distance(first1, last1);
+			Dist dist2 = stl::distance(first1, last1);
 
 			ForwardIterator1  res = last1;
 
 			while (dist2 >= dist1)
 			{
-				if (misc::algobase::equal (first2, last2, first1, pred))
+				if (stl::algobase::equal (first2, last2, first1, pred))
 					res = first1;
 
-				dist2 = misc::distance(++first1, last1);
+				dist2 = stl::distance(++first1, last1);
 			}
 			return res;
 
@@ -697,7 +697,7 @@ namespace misc
 				return last1;
 
 			for (ForwardIterator1 next = first1; !(next == last1); ++next)
-				if (!(misc::algobase::find(first2, last2, *next) == last2))
+				if (!(stl::algobase::find(first2, last2, *next) == last2))
 					return next;
 
 			return last1;
@@ -758,11 +758,11 @@ namespace misc
 
 		// 25.1.6 - Count [lib.alg.count]
 		template <typename InputIterator, typename TypeT>
-		inline typename misc::iterator_traits<InputIterator>::difference_type
+		inline typename stl::iterator_traits<InputIterator>::difference_type
 		count(InputIterator first, InputIterator last, const TypeT &val)
 		{
 			typedef typename
-				misc::iterator_traits<InputIterator>::difference_type Dist;
+				stl::iterator_traits<InputIterator>::difference_type Dist;
 
 			Dist n = 0;
 			for ( ; !(first == last); ++first)
@@ -773,11 +773,11 @@ namespace misc
 
 
 		template <typename InputIterator, typename Predicate>
-		inline typename misc::iterator_traits<InputIterator>::difference_type
+		inline typename stl::iterator_traits<InputIterator>::difference_type
 		count_if(InputIterator first, InputIterator last, Predicate pred)
 		{
 			typedef typename
-				misc::iterator_traits<InputIterator>::difference_type Dist;
+				stl::iterator_traits<InputIterator>::difference_type Dist;
 
 			Dist n = 0;
 			for ( ; !(first == last); ++first)
@@ -809,7 +809,7 @@ namespace misc
 
 		// 25.1.7 - Mismatch [lib.mismatch]
 		template <typename InputIterator1, typename InputIterator2>
-		inline misc::pair<InputIterator1, InputIterator2> mismatch(
+		inline stl::pair<InputIterator1, InputIterator2> mismatch(
 			InputIterator1 first1, InputIterator1 last1, InputIterator2 first2)
 		{
 			while (!(first1 == last1) && *first1 == *first2)
@@ -817,13 +817,13 @@ namespace misc
 				++first1;
 				++first2;
 			}
-			return misc::pair<InputIterator1, InputIterator2> (first1, first2);
+			return stl::pair<InputIterator1, InputIterator2> (first1, first2);
 		}
 
 
 		template <typename InputIterator1, typename InputIterator2,
 				  typename BinaryPredicate>
-		inline misc::pair<InputIterator1, InputIterator2> mismatch(
+		inline stl::pair<InputIterator1, InputIterator2> mismatch(
 			InputIterator1 first1, InputIterator1 last1,
 			InputIterator2 first2,
 			BinaryPredicate pred)
@@ -834,7 +834,7 @@ namespace misc
 				++first1;
 				++first2;
 			}
-			return misc::pair<InputIterator1, InputIterator2> (first1, first2);
+			return stl::pair<InputIterator1, InputIterator2> (first1, first2);
 		}
 
 
@@ -844,7 +844,7 @@ namespace misc
 			InputIterator1 first1, InputIterator1 last1,
 			InputIterator2 first2)
 		{
-			return last1 == misc::algobase::mismatch (first1, last1, first2).first;
+			return last1 == stl::algobase::mismatch (first1, last1, first2).first;
 		}
 
 
@@ -856,7 +856,7 @@ namespace misc
 			BinaryPredicate pred)
 		{
 			return
-				last1 == misc::algobase::mismatch(first1, last1, first2, pred).first;
+				last1 == stl::algobase::mismatch(first1, last1, first2, pred).first;
 		}
 
 
@@ -869,13 +869,13 @@ namespace misc
 			ForwardIterator2 first2, ForwardIterator2 last2)
 		{
 			typedef typename
-				misc::iterator_traits<ForwardIterator1>::difference_type Dist1;
+				stl::iterator_traits<ForwardIterator1>::difference_type Dist1;
 
 			typedef typename
-				misc::iterator_traits<ForwardIterator2>::difference_type Dist2;
+				stl::iterator_traits<ForwardIterator2>::difference_type Dist2;
 
-			Dist1 dist1 = misc::distance(first1, last1);
-			Dist2 dist2 = misc::distance(first2, last2);
+			Dist1 dist1 = stl::distance(first1, last1);
+			Dist2 dist2 = stl::distance(first2, last2);
 
 			if (dist1 < dist2)
 				return last1;
@@ -914,14 +914,14 @@ namespace misc
 			BinaryPredicate pred)
 		{
 			typedef typename
-				misc::iterator_traits<ForwardIterator1>::difference_type Dist1;
+				stl::iterator_traits<ForwardIterator1>::difference_type Dist1;
 
 			typedef typename
-				misc::iterator_traits<ForwardIterator2>::difference_type Dist2;
+				stl::iterator_traits<ForwardIterator2>::difference_type Dist2;
 
 
-			Dist1 dist1 = misc::distance(first1, last1);
-			Dist2 dist2 = misc::distance(first2, last2);
+			Dist1 dist1 = stl::distance(first1, last1);
+			Dist2 dist2 = stl::distance(first2, last2);
 
 			if (dist1 < dist2) return last1;
 
@@ -962,12 +962,12 @@ namespace misc
 			if (count)
 			{
 				typedef typename
-					misc::iterator_traits<ForwardIterator>::difference_type Dist;
+					stl::iterator_traits<ForwardIterator>::difference_type Dist;
 
 				if (count <= 0)
 					return last;
 
-				const Dist dist = misc::distance(first, last);
+				const Dist dist = stl::distance(first, last);
 
 				if (dist < Dist (count))
 					return last;
@@ -1012,10 +1012,10 @@ namespace misc
 			if(count)
 			{
 				typedef typename
-					misc::iterator_traits<ForwardIterator>::difference_type Dist;
+					stl::iterator_traits<ForwardIterator>::difference_type Dist;
 
 
-				const Dist dist = misc::distance(first, last);
+				const Dist dist = stl::distance(first, last);
 				const ptrdiff_t int_count = count; //check the type
 
 				if (dist < int_count || int_count <= 0)
@@ -1087,7 +1087,7 @@ namespace misc
 		template <typename ForwardIterator1, typename ForwardIterator2>
 		inline void iter_swap(ForwardIterator1 a, ForwardIterator2 b)
 		{
-			misc::algobase::swap(*a, *b);
+			stl::algobase::swap(*a, *b);
 		}
 
 		// 25.2.2, p3
@@ -1097,7 +1097,7 @@ namespace misc
 			ForwardIterator2 first2)
 		{
 			for (; !(first1 == last1); ++first1, ++first2)
-				misc::algobase::iter_swap(first1, first2);
+				stl::algobase::iter_swap(first1, first2);
 			return first2;
 		}
 
@@ -1281,10 +1281,10 @@ namespace misc
 			ForwardIterator first, ForwardIterator last,
 			const TypeT &value)
 		{
-			first = misc::algobase::find(first, last, value);
+			first = stl::algobase::find(first, last, value);
 			ForwardIterator next = first;
 			return first == last ?
-				first : misc::algobase::remove_copy(++next, last, first, value);
+				first : stl::algobase::remove_copy(++next, last, first, value);
 		}
 
 
@@ -1292,10 +1292,10 @@ namespace misc
 		inline ForwardIterator remove_if(
 			ForwardIterator first, ForwardIterator last, Predicate pred)
 		{
-			first = misc::algobase::find_if(first, last, pred);
+			first = stl::algobase::find_if(first, last, pred);
 			ForwardIterator next = first;
 			return first == last ?
-				first : misc::algobase::remove_copy_if(++next, last, first, pred);
+				first : stl::algobase::remove_copy_if(++next, last, first, pred);
 		}
 
 
@@ -1303,7 +1303,7 @@ namespace misc
 		inline ForwardIterator unique_copy(
 			InputIterator first, InputIterator last,
 			ForwardIterator res,
-			misc::forward_iterator_tag)
+			stl::forward_iterator_tag)
 		{
 			if (first == last)
 				return res;
@@ -1322,10 +1322,10 @@ namespace misc
 		inline BidirectionalIterator unique_copy(
 			InputIterator first, InputIterator last,
 			BidirectionalIterator res,
-			misc::bidirectional_iterator_tag)
+			stl::bidirectional_iterator_tag)
 		{
-			return misc::algobase::unique_copy(
-				first, last, res, misc::forward_iterator_tag());
+			return stl::algobase::unique_copy(
+				first, last, res, stl::forward_iterator_tag());
 		}
 
 
@@ -1333,10 +1333,10 @@ namespace misc
 		inline RandomAccessIterator unique_copy(
 			InputIterator first, InputIterator last,
 			RandomAccessIterator res,
-			misc::random_access_iterator_tag)
+			stl::random_access_iterator_tag)
 		{
-			return misc::algobase::unique_copy(
-				first, last, res, misc::forward_iterator_tag());
+			return stl::algobase::unique_copy(
+				first, last, res, stl::forward_iterator_tag());
 		}
 
 
@@ -1344,9 +1344,9 @@ namespace misc
 		inline OutputIterator unique_copy(
 			InputIterator first, InputIterator last,
 			OutputIterator res,
-			misc::output_iterator_tag)
+			stl::output_iterator_tag)
 		{
-			typedef typename misc::iterator_traits<InputIterator>::value_type TypeT;
+			typedef typename stl::iterator_traits<InputIterator>::value_type TypeT;
 
 			if (first == last)
 				return res;
@@ -1373,7 +1373,7 @@ namespace misc
 			InputIterator first, InputIterator last,
 			ForwardIterator res,
 			BinaryPredicate pred,
-			misc::forward_iterator_tag)
+			stl::forward_iterator_tag)
 		{
 			if (first == last)
 				return res;
@@ -1399,10 +1399,10 @@ namespace misc
 			InputIterator first, InputIterator last,
 			BidirectionalIterator res,
 			BinaryPredicate pred,
-			misc::bidirectional_iterator_tag)
+			stl::bidirectional_iterator_tag)
 		{
-			return misc::algobase::unique_copy(
-				first, last, res, pred, misc::forward_iterator_tag());
+			return stl::algobase::unique_copy(
+				first, last, res, pred, stl::forward_iterator_tag());
 		}
 
 
@@ -1412,10 +1412,10 @@ namespace misc
 			InputIterator first, InputIterator last,
 			RandomAccessIterator res,
 			BinaryPredicate pred,
-			misc::random_access_iterator_tag)
+			stl::random_access_iterator_tag)
 		{
-			return misc::algobase::unique_copy(
-				first, last, res, pred, misc::forward_iterator_tag());
+			return stl::algobase::unique_copy(
+				first, last, res, pred, stl::forward_iterator_tag());
 		}
 
 
@@ -1425,9 +1425,9 @@ namespace misc
 			InputIterator first, InputIterator last,
 			OutputIterator res,
 			BinaryPredicate pred,
-			misc::output_iterator_tag)
+			stl::output_iterator_tag)
 		{
-			typedef typename misc::iterator_traits<InputIterator>::value_type TypeT;
+			typedef typename stl::iterator_traits<InputIterator>::value_type TypeT;
 
 			if (first == last)
 				return res;
@@ -1451,7 +1451,7 @@ namespace misc
 		template <typename ForwardIterator>
 		inline ForwardIterator unique(ForwardIterator first, ForwardIterator last)
 		{
-			first = misc::algobase::adjacent_find(first, last);
+			first = stl::algobase::adjacent_find(first, last);
 
 			if (first == last)
 				return first;
@@ -1464,9 +1464,9 @@ namespace misc
 					break;
 			}
 
-			return misc::algobase::unique_copy
+			return stl::algobase::unique_copy
 				(next, last, first,
-				 misc::iterator_traits<ForwardIterator>::iterator_category());
+				 stl::iterator_traits<ForwardIterator>::iterator_category());
 		}
 
 
@@ -1474,7 +1474,7 @@ namespace misc
 		inline ForwardIterator unique(
 			ForwardIterator first, ForwardIterator last, BinaryPredicate pred)
 		{
-			first = misc::algobase::adjacent_find (first, last, pred);
+			first = stl::algobase::adjacent_find (first, last, pred);
 
 			if (first == last)
 				return first;
@@ -1487,9 +1487,9 @@ namespace misc
 					break;
 			}                
 
-			return misc::algobase::unique_copy
+			return stl::algobase::unique_copy
 				(next, last, first, pred,
-				 misc::iterator_traits<ForwardIterator>::iterator_category());
+				 stl::iterator_traits<ForwardIterator>::iterator_category());
 		}
 
 
@@ -1497,9 +1497,9 @@ namespace misc
 		inline OutputIterator unique_copy(
 			InputIterator first, InputIterator last, OutputIterator res)
 		{
-			return  misc::algobase::unique_copy
+			return  stl::algobase::unique_copy
 				(first, last, res,
-				 misc::iterator_traits<OutputIterator>::iterator_category());
+				 stl::iterator_traits<OutputIterator>::iterator_category());
 		}
 
 
@@ -1509,20 +1509,20 @@ namespace misc
 			InputIterator first, InputIterator last, OutputIterator res,
 			BinaryPredicate pred)
 		{
-			return misc::algobase::unique_copy(
+			return stl::algobase::unique_copy(
 				first, last, res, pred,
-				misc::iterator_traits<OutputIterator>::iterator_category());
+				stl::iterator_traits<OutputIterator>::iterator_category());
 		}
 
 
 		template <typename BidirectionalIterator>
 		inline void reverse(
 			BidirectionalIterator first, BidirectionalIterator last,
-			misc::bidirectional_iterator_tag)
+			stl::bidirectional_iterator_tag)
 		{
 			for (; !(first == last) && !(first == --last); ++first)
 			{
-				misc::algobase::iter_swap(first, last);
+				stl::algobase::iter_swap(first, last);
 			}
 		}
 
@@ -1530,13 +1530,13 @@ namespace misc
 		template <typename RandomAccessIterator>
 		inline void reverse(
 			RandomAccessIterator first, RandomAccessIterator last,
-			misc::random_access_iterator_tag)
+			stl::random_access_iterator_tag)
 		{
 			if (!(first == last))
 			{
 				for (; first < --last; ++first)
 				{
-					misc::algobase::iter_swap(first, last);
+					stl::algobase::iter_swap(first, last);
 				}
 			}
 		}
@@ -1545,9 +1545,9 @@ namespace misc
 		template <typename BidirectionalIterator>
 		inline void reverse(BidirectionalIterator first, BidirectionalIterator last)
 		{
-			misc::algobase::reverse(first, last,
+			stl::algobase::reverse(first, last,
 					typename
-						misc::iterator_traits<BidirectionalIterator>::iterator_category());
+						stl::iterator_traits<BidirectionalIterator>::iterator_category());
 		}
 
 
@@ -1568,11 +1568,11 @@ namespace misc
 		template <typename ForwardIterator>
 		inline void rotate(
 			ForwardIterator first, ForwardIterator middle, ForwardIterator last,
-			misc::forward_iterator_tag)
+			stl::forward_iterator_tag)
 		{
 			for (ForwardIterator i = middle; ; )
 			{
-				misc::algobase::iter_swap (first, i);
+				stl::algobase::iter_swap (first, i);
 				++i;
 				if (++first == middle)
 				{
@@ -1595,11 +1595,11 @@ namespace misc
 			BidirectionalIterator first,
 			BidirectionalIterator middle,
 			BidirectionalIterator last,
-			misc::bidirectional_iterator_tag)
+			stl::bidirectional_iterator_tag)
 		{
-			misc::algobase::reverse(first, middle);
-			misc::algobase::reverse(middle, last);
-			misc::algobase::reverse(first, last);
+			stl::algobase::reverse(first, middle);
+			stl::algobase::reverse(middle, last);
+			stl::algobase::reverse(first, last);
 		}
 
 
@@ -1626,7 +1626,7 @@ namespace misc
 				Dist shift)
 		{
 			typedef typename
-				misc::iterator_traits<RandomAccessIterator>::value_type TypeT;
+				stl::iterator_traits<RandomAccessIterator>::value_type TypeT;
 
 			const TypeT value = *first2;
 			RandomAccessIterator it1 = first2;
@@ -1657,13 +1657,13 @@ namespace misc
 			RandomAccessIterator first,
 			RandomAccessIterator middle,
 			RandomAccessIterator last,
-			misc::random_access_iterator_tag)
+			stl::random_access_iterator_tag)
 		{
 			typedef typename
-				misc::iterator_traits<RandomAccessIterator>::difference_type Dist;
+				stl::iterator_traits<RandomAccessIterator>::difference_type Dist;
 
 			for (Dist n = gcd (last - first, middle - first); n--; )
-				misc::algobase::rotate_cycle(first, last, first + n, middle - first);
+				stl::algobase::rotate_cycle(first, last, first + n, middle - first);
 		}
 
 
@@ -1674,8 +1674,8 @@ namespace misc
 		{
 			if (!(first == middle || middle == last))
 			{
-				misc::algobase::rotate(first, middle, last,
-					typename misc::iterator_traits<ForwardIterator>::iterator_category());
+				stl::algobase::rotate(first, middle, last,
+					typename stl::iterator_traits<ForwardIterator>::iterator_category());
 			}
 		}
 
@@ -1685,8 +1685,8 @@ namespace misc
 			ForwardIterator first, ForwardIterator middle, ForwardIterator last,
 			OutputIterator res)
 		{
-			return misc::algobase::copy(first, middle,
-				misc::algobase::copy (middle, last, res));
+			return stl::algobase::copy(first, middle,
+				stl::algobase::copy (middle, last, res));
 		}
 
 
@@ -1697,15 +1697,15 @@ namespace misc
 		{
 			if (!(first == last))
 			{
-				typename misc::iterator_traits<RandomAccessIterator>::difference_type
+				typename stl::iterator_traits<RandomAccessIterator>::difference_type
 					limit = 2;
 
 				for (RandomAccessIterator i = first; !(++i == last); ++limit)
 				{
 					const typename
-						misc::iterator_traits<RandomAccessIterator>::difference_type
+						stl::iterator_traits<RandomAccessIterator>::difference_type
 						rndoff(rand(limit));
-					misc::algobase::iter_swap (i, first + rndoff);
+					stl::algobase::iter_swap (i, first + rndoff);
 				}
 			}
 		}
@@ -1715,7 +1715,7 @@ namespace misc
 		inline void random_shuffle(
 			RandomAccessIterator first, RandomAccessIterator last)
 		{
-			misc::algobase::random_shuffle(first, last, ::rand());
+			stl::algobase::random_shuffle(first, last, ::rand());
 		}
 
 
@@ -1744,7 +1744,7 @@ namespace misc
 					else
 						break;
 				}
-				misc::algobase::iter_swap (first, last);
+				stl::algobase::iter_swap (first, last);
 			}
 		}
 
@@ -1763,18 +1763,18 @@ namespace misc
 				return !(pred (*first) == false) ? last : first;
 
 			BidirectionalIterator middle = first;
-			misc::advance(middle, dist / 2);
+			stl::advance(middle, dist / 2);
 			BidirectionalIterator first_cut =
-				misc::algobase::inplace_stable_partition(
+				stl::algobase::inplace_stable_partition(
 					first, middle, pred, dist/2);
 
 			BidirectionalIterator second_cut =
-				misc::algobase::inplace_stable_partition(
+				stl::algobase::inplace_stable_partition(
 					middle, last, pred, dist-dist/2);
 
-			misc::algobase::rotate (first_cut, middle, second_cut);
-			dist = misc::distance(middle, second_cut);
-			misc::advance (first_cut, dist);
+			stl::algobase::rotate (first_cut, middle, second_cut);
+			dist = stl::distance(middle, second_cut);
+			stl::advance (first_cut, dist);
 			return first_cut;
 		}
 
@@ -1812,7 +1812,7 @@ namespace misc
 
 				if (!(first == last))
 				{
-					misc::raw_storage_iterator<Pointer, TypeT> res3 (res2);
+					stl::raw_storage_iterator<Pointer, TypeT> res3 (res2);
 					for (; !(first == last); ++first)
 					{
 						if (!(pred (*first) == false))
@@ -1829,25 +1829,25 @@ namespace misc
 					}
 					fill_pointer = dist;
 				}
-				misc::algobase::copy (buf, buf + dist, res1);
+				stl::algobase::copy (buf, buf + dist, res1);
 				return res1;
 			}
 			BidirectionalIterator middle = first;
-			misc::advance (middle, dist / 2);
+			stl::advance (middle, dist / 2);
 
 			BidirectionalIterator first_cut =
-				misc::algobase::stable_partition_adaptive(
+				stl::algobase::stable_partition_adaptive(
 					first, middle, pred, Dist(dist/2), buf, buf_size, fill_pointer,
 					(TypeT*)0);
 
 			BidirectionalIterator second_cut =
-				misc::algobase::stable_partition_adaptive(
+				stl::algobase::stable_partition_adaptive(
 					middle, last, pred, Dist(dist - dist/2), buf, buf_size,
 					fill_pointer, (TypeT*)0);
 
-			misc::algobase::rotate (first_cut, middle, second_cut);
-			dist = misc::distance(middle, second_cut);
-			misc::advance (first_cut, dist);
+			stl::algobase::rotate (first_cut, middle, second_cut);
+			dist = stl::distance(middle, second_cut);
+			stl::advance (first_cut, dist);
 			return first_cut;
 		}
 
@@ -1857,32 +1857,32 @@ namespace misc
 			BidirectionalIterator first, BidirectionalIterator last, Predicate pred)
 		{
 			typedef typename
-				misc::iterator_traits<BidirectionalIterator>::value_type TypeT;
+				stl::iterator_traits<BidirectionalIterator>::value_type TypeT;
 			typedef typename
-				misc::iterator_traits<BidirectionalIterator>::difference_type Dist;
+				stl::iterator_traits<BidirectionalIterator>::difference_type Dist;
 
 
-			const Dist dist = misc::distance<BidirectionalIterator>(first, last);
+			const Dist dist = stl::distance<BidirectionalIterator>(first, last);
 
 			if (!dist)
 				return last;
 
-			misc::pair<TypeT*, Dist> pair = misc::get_temporary_buffer<TypeT>(dist);
+			stl::pair<TypeT*, Dist> pair = stl::get_temporary_buffer<TypeT>(dist);
 
 			if (pair.first == 0)
 				return
-					misc::algobase::inplace_stable_partition(first, last, pred, dist);
+					stl::algobase::inplace_stable_partition(first, last, pred, dist);
 
 			Dist fill = 0;
 
 			const BidirectionalIterator res =
-				misc::algobase::stable_partition_adaptive(
+				stl::algobase::stable_partition_adaptive(
 					first, last, pred, dist, pair.first, pair.second, fill, (TypeT*)0);
 
 			for (TypeT *ptr = pair.first + fill; !(pair.first == ptr--); )
 				(*ptr).~TypeT ();
 
-			misc::return_temporary_buffer (pair.first);
+			stl::return_temporary_buffer (pair.first);
 
 			return res;
 
@@ -1905,7 +1905,7 @@ namespace misc
 				if (!(first < last))
 					return first;
 
-				misc::algobase::iter_swap (first, last);
+				stl::algobase::iter_swap (first, last);
 			}
 		}
 
@@ -1940,22 +1940,22 @@ namespace misc
 			RandomAccessIterator last)
 		{
 			typedef typename
-				misc::iterator_traits<RandomAccessIterator>::value_type TypeT;
+				stl::iterator_traits<RandomAccessIterator>::value_type TypeT;
 
 			const TypeT value = *last;
 
 			if (value < *first)
 			{
-				misc::algobase::copy_backward (first, last, last + 1);
+				stl::algobase::copy_backward (first, last, last + 1);
 				*first = value;
 			}
 			else
 			{
-				misc::algobase::unguarded_linear_insert(
+				stl::algobase::unguarded_linear_insert(
 					last, value,
-					misc::less<
+					stl::less<
 					typename
-					misc::iterator_traits<RandomAccessIterator>::value_type>());
+					stl::iterator_traits<RandomAccessIterator>::value_type>());
 			}
 		}
 
@@ -1969,18 +1969,18 @@ namespace misc
 			Compare comp)
 		{
 			typedef typename
-				misc::iterator_traits<RandomAccessIterator>::value_type TypeT;
+				stl::iterator_traits<RandomAccessIterator>::value_type TypeT;
 
 			const TypeT value = *last;
 
 			if (comp (value, *first))
 			{
-				misc::algobase::copy_backward(first, last, last + 1);
+				stl::algobase::copy_backward(first, last, last + 1);
 				*first = value;
 			}
 			else
 			{
-				misc::algobase::unguarded_linear_insert(last, value, comp);
+				stl::algobase::unguarded_linear_insert(last, value, comp);
 			}
 		}
 
@@ -1995,7 +1995,7 @@ namespace misc
 			{
 				for (RandomAccessIterator i = first + 1; !(i == last); ++i)
 				{
-					misc::algobase::linear_insert(first, i, comp);
+					stl::algobase::linear_insert(first, i, comp);
 				}
 			}
 		}
@@ -2009,7 +2009,7 @@ namespace misc
 			RandomAccessIterator first, RandomAccessIterator last, Compare comp)
 		{
 			for(RandomAccessIterator i = first; !(i == last); ++i)
-				misc::algobase::unguarded_linear_insert(i, *i, comp);
+				stl::algobase::unguarded_linear_insert(i, *i, comp);
 		}
 
 
@@ -2027,15 +2027,15 @@ namespace misc
 			{
 				if (0 == max_depth)
 				{
-					misc::algobase::partial_sort(first, last, last, comp);
+					stl::algobase::partial_sort(first, last, last, comp);
 					break;
 				}
 
 				RandomAccessIterator cut =
-					misc::algobase::unguarded_partition(
+					stl::algobase::unguarded_partition(
 						first,
 						last,
-						misc::algobase::median(
+						stl::algobase::median(
 							*first,
 							*(first + (last - first) /2),
 							*(last - 1),
@@ -2044,7 +2044,7 @@ namespace misc
 
 				// limit the depth of the recursion tree to log2 (last - first)
 				// where first and last are the initial values passed in from sort()
-				misc::algobase::introsort_loop(cut, last, max_depth /= 2, comp);
+				stl::algobase::introsort_loop(cut, last, max_depth /= 2, comp);
 				last = cut;
 			}
 		}
@@ -2056,14 +2056,14 @@ namespace misc
 		{
 			if (last - first > qs_threshold)
 			{
-				misc::algobase::insertion_sort(first, first + qs_threshold, comp);
+				stl::algobase::insertion_sort(first, first + qs_threshold, comp);
 
-				misc::algobase::unguarded_insertion_sort(
+				stl::algobase::unguarded_insertion_sort(
 					first + qs_threshold, last, comp);
 			}
 			else
 			{
-				misc::algobase::insertion_sort (first, last, comp);
+				stl::algobase::insertion_sort (first, last, comp);
 			}
 		}
 
@@ -2078,8 +2078,8 @@ namespace misc
 			if (!(first == last))
 			{
 				// introsort guarantees O(N * log(N)) in the worst case
-				misc::algobase::introsort_loop (first, last, last - first, comp);
-				misc::algobase::final_insertion_sort (first, last, comp);
+				stl::algobase::introsort_loop (first, last, last - first, comp);
+				stl::algobase::final_insertion_sort (first, last, comp);
 			}
 		}
 
@@ -2087,11 +2087,11 @@ namespace misc
 		template <typename RandomAccessIterator>
 		inline void sort(RandomAccessIterator first, RandomAccessIterator last)
 		{
-			misc::algobase::sort(
+			stl::algobase::sort(
 				first,
 				last,
-				misc::less<typename
-				misc::iterator_traits<RandomAccessIterator>::value_type>());
+				stl::less<typename
+				stl::iterator_traits<RandomAccessIterator>::value_type>());
 		}
 
 
@@ -2110,7 +2110,7 @@ namespace misc
 			if (dist1 + dist2 == 2)
 			{
 				if (comp (*middle, *first))
-					misc::algobase::iter_swap (first, middle);
+					stl::algobase::iter_swap (first, middle);
 				return;
 			}
 
@@ -2123,34 +2123,34 @@ namespace misc
 			{
 				dist11 = dist1 / 2;
 
-				misc::advance (first_cut, dist11);
+				stl::advance (first_cut, dist11);
 
-				second_cut = misc::algobase::lower_bound(
+				second_cut = stl::algobase::lower_bound(
 					middle, last, *first_cut, comp);
 
-				dist22 = misc::distance(middle, second_cut);
+				dist22 = stl::distance(middle, second_cut);
 			}
 			else
 			{
 				dist22 = dist2 / 2;
 
-				misc::advance (second_cut, dist22);
-				first_cut = misc::algobase::upper_bound(
+				stl::advance (second_cut, dist22);
+				first_cut = stl::algobase::upper_bound(
 					first, middle, *second_cut, comp);
 
-				dist11 = misc::distance(first, first_cut);
+				dist11 = stl::distance(first, first_cut);
 			}
 
-			misc::algobase::rotate (first_cut, middle, second_cut);
+			stl::algobase::rotate (first_cut, middle, second_cut);
 
 			BidirectionalIterator middle2 = first_cut;
 
-			misc::advance (middle2, dist22);
+			stl::advance (middle2, dist22);
 
-			misc::algobase::merge_without_buffer(
+			stl::algobase::merge_without_buffer(
 				first, first_cut, middle2, dist11, dist22, comp);
 
-			misc::algobase::merge_without_buffer(
+			stl::algobase::merge_without_buffer(
 				middle2, second_cut, last, dist1 - dist11, dist2 - dist22, comp);
 		}
 
@@ -2163,14 +2163,14 @@ namespace misc
 		{
 			if (last - first < 15)
 			{
-				misc::algobase::insertion_sort (first, last, comp);
+				stl::algobase::insertion_sort (first, last, comp);
 			}
 			else
 			{
 				RandomAccessIterator middle = first + (last - first) / 2;
-				misc::algobase::inplace_stable_sort(first, middle, comp);
-				misc::algobase::inplace_stable_sort(middle, last, comp);
-				misc::algobase::merge_without_buffer(
+				stl::algobase::inplace_stable_sort(first, middle, comp);
+				stl::algobase::inplace_stable_sort(middle, last, comp);
+				stl::algobase::merge_without_buffer(
 					first, middle, last, middle - first, last - middle, comp);
 			}
 		}
@@ -2189,15 +2189,15 @@ namespace misc
 
 			while (last - first >= two_step)
 			{
-				res = misc::algobase::merge(
+				res = stl::algobase::merge(
 					first, first + step, first + step, first + two_step, res, comp);
 
 				first += two_step;
 			}
 
-			step = misc::algobase::min(Dist (last - first), step);
+			step = stl::algobase::min(Dist (last - first), step);
 
-			misc::algobase::merge(first, first+step, first+step, last, res, comp);
+			stl::algobase::merge(first, first+step, first+step, last, res, comp);
 		}
 
 
@@ -2210,10 +2210,10 @@ namespace misc
 		{
 			while (last - first >= chunk_size)
 			{
-				misc::algobase::insertion_sort (first, first + chunk_size, comp);
+				stl::algobase::insertion_sort (first, first + chunk_size, comp);
 				first += chunk_size;
 			}
-			misc::algobase::insertion_sort (first, last, comp);
+			stl::algobase::insertion_sort (first, last, comp);
 		}
 
 
@@ -2225,20 +2225,20 @@ namespace misc
 			Compare comp)
 		{
 			typedef typename
-				misc::iterator_traits<RandomAccessIterator>::difference_type Dist;
+				stl::iterator_traits<RandomAccessIterator>::difference_type Dist;
 
 			const Dist dist  = last - first;
 			const Pointer bufend = buf + dist;
 
 			Dist step = 7;   // STL chunk size
 
-			misc::algobase::chunk_insertion_sort(first, last, step, comp);
+			stl::algobase::chunk_insertion_sort(first, last, step, comp);
 
 			while (step < dist)
 			{
-				misc::algobase::merge_sort_loop(first, last, buf, step, comp);
+				stl::algobase::merge_sort_loop(first, last, buf, step, comp);
 				step *= 2;
-				misc::algobase::merge_sort_loop(buf, bufend, first, step, comp);
+				stl::algobase::merge_sort_loop(buf, bufend, first, step, comp);
 				step *= 2;
 			}
 		}
@@ -2274,22 +2274,22 @@ namespace misc
 
 			if (dist > buf_size)
 			{
-				misc::algobase::stable_sort_adaptive(
+				stl::algobase::stable_sort_adaptive(
 					first, middle, buf, buf_size, comp);
 
-				misc::algobase::stable_sort_adaptive(
+				stl::algobase::stable_sort_adaptive(
 					middle, last, buf, buf_size, comp);
 			}
 			else
 			{
-				misc::algobase::merge_sort_with_buffer(
+				stl::algobase::merge_sort_with_buffer(
 					first, middle, buf, comp);
 
-				misc::algobase::merge_sort_with_buffer(
+				stl::algobase::merge_sort_with_buffer(
 					middle, last, buf, comp);
 			}
 
-			misc::algobase::merge_adaptive(
+			stl::algobase::merge_adaptive(
 				first, middle, last,
 				Dist (middle - first),
 				Dist (last - middle), buf, buf_size, comp);
@@ -2304,36 +2304,36 @@ namespace misc
 			if (!(first == last))
 			{
 				typedef typename
-					misc::iterator_traits<RandomAccessIterator>::value_type TypeT;
+					stl::iterator_traits<RandomAccessIterator>::value_type TypeT;
 
 				typedef typename
-					misc::iterator_traits<RandomAccessIterator>::difference_type Dist;
+					stl::iterator_traits<RandomAccessIterator>::difference_type Dist;
 
 
 				//call an extension of get_temporary_buffer<>() in case partial
 				//typename specialization (and iterator_traits<>) isn't supported
 				//by compiler
-				misc::pair<TypeT*, Dist> p =
-					misc::get_temporary_buffer<TypeT>(Dist(last - first));
+				stl::pair<TypeT*, Dist> p =
+					stl::get_temporary_buffer<TypeT>(Dist(last - first));
 
 				if (p.first == 0)
 				{
-					misc::algobase::inplace_stable_sort (first, last, comp);
+					stl::algobase::inplace_stable_sort (first, last, comp);
 				}
 				else
 				{
-					Dist len = misc::algobase::min(Dist(p.second), Dist(last - first));
-					misc::algobase::copy(
+					Dist len = stl::algobase::min(Dist(p.second), Dist(last - first));
+					stl::algobase::copy(
 						first, first + len,
-						misc::raw_storage_iterator<TypeT*, TypeT>(p.first));
+						stl::raw_storage_iterator<TypeT*, TypeT>(p.first));
 
-					misc::algobase::stable_sort_adaptive(
+					stl::algobase::stable_sort_adaptive(
 						first, last, p.first, p.second, comp);
 
 					for (TypeT *ptr = p.first + len; !(p.first == --ptr); )
 						(*ptr).~TypeT ();
 
-					misc::return_temporary_buffer (p.first);
+					stl::return_temporary_buffer (p.first);
 				}
 			}
 		}
@@ -2343,11 +2343,11 @@ namespace misc
 		inline void stable_sort(
 			RandomAccessIterator first, RandomAccessIterator last)
 		{
-			misc::algobase::stable_sort(
+			stl::algobase::stable_sort(
 				first,
 				last,
-				misc::less<typename
-				misc::iterator_traits<RandomAccessIterator>::value_type>());
+				stl::less<typename
+				stl::iterator_traits<RandomAccessIterator>::value_type>());
 		}
 
 
@@ -2372,17 +2372,17 @@ namespace misc
 		{
 			if (!(first == middle))
 			{
-				misc::algobase::make_heap (first, middle, comp);
+				stl::algobase::make_heap (first, middle, comp);
 
 				for (RandomAccessIterator i = middle; i < last; ++i)
 				{
 					if (comp (*i, *first))
 					{
-						misc::algobase::pop_heap2(first, middle, i, *i, comp);
+						stl::algobase::pop_heap2(first, middle, i, *i, comp);
 					}
 				}
 
-				misc::algobase::sort_heap (first, middle, comp);
+				stl::algobase::sort_heap (first, middle, comp);
 			}
 		}
 
@@ -2395,10 +2395,10 @@ namespace misc
 			RandomAccessIterator last)
 		{
 
-			misc::algobase::partial_sort(
+			stl::algobase::partial_sort(
 				first, middle, last,
-				misc::less<
-				typename misc::iterator_traits<RandomAccessIterator>::value_type>());
+				stl::less<
+				typename stl::iterator_traits<RandomAccessIterator>::value_type>());
 		}
 
 
@@ -2422,7 +2422,7 @@ namespace misc
 			Compare comp)
 		{
 			typedef typename
-				misc::iterator_traits<RandomAccessIterator>::value_type Dist;
+				stl::iterator_traits<RandomAccessIterator>::value_type Dist;
 
 			if(first == last)
 				return first2;
@@ -2436,16 +2436,16 @@ namespace misc
 			for (; !(first == last) && !(res == last2); ++first, ++res)
 				*res = *first;
 
-			misc::algobase::make_heap (first2, res, comp);
+			stl::algobase::make_heap (first2, res, comp);
 
 			for (; !(first == last); ++first)
 			{
 				if (comp (*first, *first2))
-					misc::algobase::adjust_heap(
+					stl::algobase::adjust_heap(
 						first2, Dist(), Dist(res - first2), *first, comp);
 			}
 
-			misc::algobase::sort_heap(first2, res, comp);
+			stl::algobase::sort_heap(first2, res, comp);
 
 			return res;
 		}
@@ -2456,11 +2456,11 @@ namespace misc
 			InputIterator first1, InputIterator last1,
 			RandomAccessIterator first2, RandomAccessIterator last2)
 		{
-			return misc::algobase::partial_sort_copy(
+			return stl::algobase::partial_sort_copy(
 				first1, last1,
 				first2, last2,
-				misc::less<typename
-				misc::iterator_traits<InputIterator>::value_type>());
+				stl::less<typename
+				stl::iterator_traits<InputIterator>::value_type>());
 		}
 
 
@@ -2475,15 +2475,15 @@ namespace misc
 			if (!(first == last))
 			{
 				typedef typename
-					misc::iterator_traits<RandomAccessIterator>::value_type TypeT;
+					stl::iterator_traits<RandomAccessIterator>::value_type TypeT;
 
 				while (last - first > 3)
 				{
 					const RandomAccessIterator cut =
-						misc::algobase::unguarded_partition(
+						stl::algobase::unguarded_partition(
 							first,
 							last,
-							TypeT(misc::algobase::median(
+							TypeT(stl::algobase::median(
 									  *first, *(first + (last - first)/2), * (last - 1), comp)),
 							comp);
 
@@ -2493,7 +2493,7 @@ namespace misc
 						last = cut;
 				}
 
-				misc::algobase::insertion_sort (first, last, comp);
+				stl::algobase::insertion_sort (first, last, comp);
 			}
 		}
 
@@ -2503,12 +2503,12 @@ namespace misc
 			RandomAccessIterator nth,
 			RandomAccessIterator last)
 		{
-			misc::algobase::nth_element(
+			stl::algobase::nth_element(
 				first,
 				nth,
 				last,
-				misc::less<typename
-				misc::iterator_traits<RandomAccessIterator>::value_type>());
+				stl::less<typename
+				stl::iterator_traits<RandomAccessIterator>::value_type>());
 		}
 
 
@@ -2520,17 +2520,17 @@ namespace misc
 				ForwardIterator last,
 				const TypeT& value,
 				Compare comp,
-				misc::forward_iterator_tag)
+				stl::forward_iterator_tag)
 		{
 			typedef typename
-				misc::iterator_traits<ForwardIterator>::difference_type Dist;
+				stl::iterator_traits<ForwardIterator>::difference_type Dist;
 
-			for (Dist dist = misc::distance(first, last); dist; )
+			for (Dist dist = stl::distance(first, last); dist; )
 			{
 				const Dist half = dist / 2;
 				ForwardIterator middle = first;
 
-				misc::advance(middle, half);
+				stl::advance(middle, half);
 
 				if (comp (*middle, value))
 				{
@@ -2554,10 +2554,10 @@ namespace misc
 				RandomAccessIterator last,
 				const TypeT& value,
 				Compare comp,
-				misc::random_access_iterator_tag)
+				stl::random_access_iterator_tag)
 		{
 			typedef typename
-				misc::iterator_traits<RandomAccessIterator>::difference_type Dist;
+				stl::iterator_traits<RandomAccessIterator>::difference_type Dist;
 
 			for (Dist dist = last - first; dist > 0; )
 			{
@@ -2585,14 +2585,14 @@ namespace misc
 				ForwardIterator last,
 				const TypeT &value,
 				Compare comp,
-				misc::bidirectional_iterator_tag)
+				stl::bidirectional_iterator_tag)
 		{
-			return misc::algobase::lower_bound2(
+			return stl::algobase::lower_bound2(
 				first,
 				last,
 				value,
 				comp,
-				misc::iterator_traits<ForwardIterator>::iterator_category());
+				stl::iterator_traits<ForwardIterator>::iterator_category());
 		}
 
 
@@ -2604,12 +2604,12 @@ namespace misc
 			const TypeT &value,
 			Compare comp)
 		{
-			return misc::algobase::lower_bound2(
+			return stl::algobase::lower_bound2(
 				first,
 				last,
 				value,
 				comp,
-				typename misc::iterator_traits<ForwardIterator>::iterator_category());
+				typename stl::iterator_traits<ForwardIterator>::iterator_category());
 		}
 
 
@@ -2619,12 +2619,12 @@ namespace misc
 			ForwardIterator last,
 			const TypeT &value)
 		{
-			return misc::algobase::lower_bound(
+			return stl::algobase::lower_bound(
 				first,
 				last,
 				value,
-				misc::less<typename
-				misc::iterator_traits<ForwardIterator>::value_type>());
+				stl::less<typename
+				stl::iterator_traits<ForwardIterator>::value_type>());
 		}
 
 
@@ -2635,18 +2635,18 @@ namespace misc
 				ForwardIterator last,
 				const TypeT& value,
 				Compare comp,
-				misc::forward_iterator_tag)
+				stl::forward_iterator_tag)
 		{
 
 			typedef typename
-				misc::iterator_traits<ForwardIterator>::difference_type Dist;
+				stl::iterator_traits<ForwardIterator>::difference_type Dist;
 
-			for (Dist dist = misc::distance(first, last); dist;)
+			for (Dist dist = stl::distance(first, last); dist;)
 			{
 				const Dist half = dist / 2;
 				ForwardIterator middle = first;
 
-				misc::advance (middle, half);
+				stl::advance (middle, half);
 
 				if (comp (value, *middle))
 					dist = half;
@@ -2668,10 +2668,10 @@ namespace misc
 				RandomAccessIterator last,
 				const TypeT& value,
 				Compare comp,
-				misc::random_access_iterator_tag)
+				stl::random_access_iterator_tag)
 		{
 			typedef typename
-				misc::iterator_traits<RandomAccessIterator>::difference_type Dist;
+				stl::iterator_traits<RandomAccessIterator>::difference_type Dist;
 
 			for (Dist dist = last - first; dist; )
 			{
@@ -2702,14 +2702,14 @@ namespace misc
 				ForwardIterator last,
 				const TypeT &value,
 				Compare comp,
-				misc::bidirectional_iterator_tag)
+				stl::bidirectional_iterator_tag)
 		{
-			return misc::algobase::upper_bound2(
+			return stl::algobase::upper_bound2(
 				first,
 				last,
 				value,
 				comp,
-				misc::forward_iterator_tag ());
+				stl::forward_iterator_tag ());
 		}
 
 
@@ -2721,12 +2721,12 @@ namespace misc
 			const TypeT& value,
 			Compare comp)
 		{
-			return misc::algobase::upper_bound2(
+			return stl::algobase::upper_bound2(
 				first,
 				last,
 				value,
 				comp,
-				typename misc::iterator_traits<ForwardIterator>::iterator_category());
+				typename stl::iterator_traits<ForwardIterator>::iterator_category());
 		}
 
 
@@ -2736,33 +2736,33 @@ namespace misc
 			ForwardIterator last,
 			const TypeT& value)
 		{
-			return misc::algobase::upper_bound(
+			return stl::algobase::upper_bound(
 				first,
 				last,
 				value,
-				misc::less<typename
-				misc::iterator_traits<ForwardIterator>::value_type>());
+				stl::less<typename
+				stl::iterator_traits<ForwardIterator>::value_type>());
 		}
 
 
 
 		template <typename ForwardIterator, typename TypeT, typename Compare>
-			inline  misc::pair<ForwardIterator, ForwardIterator> equal_range2(
+			inline  stl::pair<ForwardIterator, ForwardIterator> equal_range2(
 				ForwardIterator first,
 				ForwardIterator last,
 				const TypeT& value,
 				Compare comp,
-				misc::forward_iterator_tag)
+				stl::forward_iterator_tag)
 		{
 			typedef typename
-				misc::iterator_traits<ForwardIterator>::difference_type Dist;
+				stl::iterator_traits<ForwardIterator>::difference_type Dist;
 
-			for (Dist dist = misc::distance(first, last); dist; )
+			for (Dist dist = stl::distance(first, last); dist; )
 			{
 				const Dist half = dist / 2;
 				ForwardIterator middle = first;
 
-				misc::advance (middle, half);
+				stl::advance (middle, half);
 
 				if (comp (*middle, value))
 				{
@@ -2777,32 +2777,32 @@ namespace misc
 				else
 				{
 					const ForwardIterator left =
-						misc::algobase::lower_bound (first, middle, value, comp);
+						stl::algobase::lower_bound (first, middle, value, comp);
 
-					misc::advance (first, dist);
+					stl::advance (first, dist);
 
 					const ForwardIterator right =
-						misc::algobase::upper_bound (++middle, first, value, comp);
+						stl::algobase::upper_bound (++middle, first, value, comp);
 
-					return misc::pair<ForwardIterator, ForwardIterator>(left, right);
+					return stl::pair<ForwardIterator, ForwardIterator>(left, right);
 				}
 			}
 
-			return misc::pair<ForwardIterator, ForwardIterator>(first, first);
+			return stl::pair<ForwardIterator, ForwardIterator>(first, first);
 		}
 
 
 
 		template <typename RandomAccessIterator, typename TypeT, typename Compare>
-			inline misc::pair<RandomAccessIterator, RandomAccessIterator> equal_range2(
+			inline stl::pair<RandomAccessIterator, RandomAccessIterator> equal_range2(
 				RandomAccessIterator first,
 				RandomAccessIterator last,
 				const TypeT& value,
 				Compare comp,
-				misc::random_access_iterator_tag)
+				stl::random_access_iterator_tag)
 		{
 			typedef typename
-				misc::iterator_traits<RandomAccessIterator>::difference_type Dist;
+				stl::iterator_traits<RandomAccessIterator>::difference_type Dist;
 
 			for (Dist dist = last - first; dist; )
 			{
@@ -2821,68 +2821,68 @@ namespace misc
 				else
 				{
 					const RandomAccessIterator left =
-						misc::algobase::lower_bound(first, middle, value, comp);
+						stl::algobase::lower_bound(first, middle, value, comp);
 
 					const RandomAccessIterator right =
-						misc::algobase::upper_bound(
+						stl::algobase::upper_bound(
 							middle + 1, first + dist, value, comp);
 
-					return misc::pair<RandomAccessIterator, RandomAccessIterator>(
+					return stl::pair<RandomAccessIterator, RandomAccessIterator>(
 						left, right);
 				}
 			}
 
-			return misc::pair<RandomAccessIterator, RandomAccessIterator>(
+			return stl::pair<RandomAccessIterator, RandomAccessIterator>(
 				first, first);
 		}
 
 
 		template <typename ForwardIterator, typename TypeT, typename Compare>
-			inline misc::pair<ForwardIterator, ForwardIterator> equal_range2(
+			inline stl::pair<ForwardIterator, ForwardIterator> equal_range2(
 				ForwardIterator first,
 				ForwardIterator last,
 				const TypeT &value,
 				Compare comp,
-				misc::bidirectional_iterator_tag)
+				stl::bidirectional_iterator_tag)
 		{
-			return misc::algobase::equal_range2(
+			return stl::algobase::equal_range2(
 				first,
 				last,
 				value,
 				comp,
-				misc::forward_iterator_tag());
+				stl::forward_iterator_tag());
 		}
 
 
 		// 25.3.3.3
 		template <typename ForwardIterator, typename TypeT, typename Compare>
-		inline misc::pair<ForwardIterator, ForwardIterator> equal_range(
+		inline stl::pair<ForwardIterator, ForwardIterator> equal_range(
 			ForwardIterator first,
 			ForwardIterator last,
 			const TypeT &value,
 			Compare comp)
 		{
-			return misc::algobase::equal_range2(
+			return stl::algobase::equal_range2(
 				first,
 				last,
 				value,
 				comp,
-				typename misc::iterator_traits<ForwardIterator>::iterator_category());
+				typename stl::iterator_traits<ForwardIterator>::iterator_category());
 		}
 
 
 		template <typename ForwardIterator, typename TypeT>
-		inline misc::pair<ForwardIterator, ForwardIterator> equal_range(
+		inline stl::pair<ForwardIterator, ForwardIterator> equal_range(
 			ForwardIterator first,
 			ForwardIterator last,
 			const TypeT &value)
 		{
-			return misc::algobase::equal_range(
+			return stl::algobase::equal_range(
 				first,
 				last,
 				value,
-				misc::less<typename
-				misc::iterator_traits<ForwardIterator>::value_type>());
+				stl::less<typename
+				stl::iterator_traits<ForwardIterator>::value_type>());
 		}
 
 
@@ -2895,7 +2895,7 @@ namespace misc
 			Compare comp)
 		{
 			ForwardIterator i =
-				misc::algobase::lower_bound (first, last, value, comp);
+				stl::algobase::lower_bound (first, last, value, comp);
 
 			return !(i == last) && !comp(value, *i);
 		}
@@ -2905,12 +2905,12 @@ namespace misc
 		inline bool binary_search(
 			ForwardIterator first, ForwardIterator last, const TypeT &value)
 		{
-			return misc::algobase::binary_search(
+			return stl::algobase::binary_search(
 				first,
 				last,
 				value,
-				misc::less<typename
-				misc::iterator_traits<ForwardIterator>::value_type>());
+				stl::less<typename
+				stl::iterator_traits<ForwardIterator>::value_type>());
 		}
 
 
@@ -2937,8 +2937,8 @@ namespace misc
 				}
 			}
 
-			return misc::algobase::copy(
-				first2, last2, misc::algobase::copy(first1, last1, res));
+			return stl::algobase::copy(
+				first2, last2, stl::algobase::copy(first1, last1, res));
 		}
 
 
@@ -2951,12 +2951,12 @@ namespace misc
 			InputIterator2 first2, InputIterator2 last2,
 			OutputIterator res)
 		{
-			return misc::algobase::merge(
+			return stl::algobase::merge(
 				first1, last1,
 				first2, last2,
 				res,
-				misc::less<typename
-				misc::iterator_traits<InputIterator1>::value_type>());
+				stl::less<typename
+				stl::iterator_traits<InputIterator1>::value_type>());
 		}
 
 
@@ -2975,25 +2975,25 @@ namespace misc
 			if (dist1 > dist2 && dist2 <= buf_size)
 			{
 				BidirectionalIterator2 buf_end =
-					misc::algobase::copy (middle, last, buf);
+					stl::algobase::copy (middle, last, buf);
 
-				misc::algobase::copy_backward (first, middle, last);
+				stl::algobase::copy_backward (first, middle, last);
 
-				return misc::algobase::copy (buf, buf_end, first);
+				return stl::algobase::copy (buf, buf_end, first);
 			}
 
 			if (dist1 <= buf_size)
 			{
 				BidirectionalIterator2 buf_end =
-					misc::algobase::copy (first, middle, buf);
+					stl::algobase::copy (first, middle, buf);
 
-				misc::algobase::copy (middle, last, first);
+				stl::algobase::copy (middle, last, first);
 
-				return misc::algobase::copy_backward (buf, buf_end, last);
+				return stl::algobase::copy_backward (buf, buf_end, last);
 			}
 
-			misc::algobase::rotate (first, middle, last);
-			misc::advance (first, dist2);
+			stl::algobase::rotate (first, middle, last);
+			stl::advance (first, dist2);
 			return first;
 		}
 
@@ -3007,10 +3007,10 @@ namespace misc
 			BidirectionalIterator3 res)
 		{
 			if (first1 == last1)
-				return misc::algobase::copy_backward (first2, last2, res);
+				return stl::algobase::copy_backward (first2, last2, res);
 
 			if (first2 == last2)
-				return misc::algobase::copy_backward (first1, last1, res);
+				return stl::algobase::copy_backward (first1, last1, res);
 
 			for (--last1, --last2; ; )
 			{
@@ -3018,14 +3018,14 @@ namespace misc
 				{
 					*--res = *last1;
 					if (first1 == last1)
-						return misc::algobase::copy_backward (first2, ++last2, res);
+						return stl::algobase::copy_backward (first2, ++last2, res);
 					--last1;
 				}
 				else
 				{
 					*--res = *last2;
 					if (first2 == last2)
-						return misc::algobase::copy_backward (first1, ++last1, res);
+						return stl::algobase::copy_backward (first1, ++last1, res);
 					--last2;
 				}
 			}
@@ -3043,10 +3043,10 @@ namespace misc
 		{
 
 			if (first1 == last1)
-				return misc::algobase::copy_backward (first2, last2, res);
+				return stl::algobase::copy_backward (first2, last2, res);
 
 			if (first2 == last2)
-				return misc::algobase::copy_backward (first1, last1, res);
+				return stl::algobase::copy_backward (first1, last1, res);
 
 			for (--last1, --last2; ; )
 			{
@@ -3054,14 +3054,14 @@ namespace misc
 				{
 					*--res = *last1;
 					if (first1 == last1)
-						return misc::algobase::copy_backward (first2, ++last2, res);
+						return stl::algobase::copy_backward (first2, ++last2, res);
 					--last1;
 				}
 				else
 				{
 					*--res = *last2;
 					if (first2 == last2)
-						return misc::algobase::copy_backward (first1, ++last1, res);
+						return stl::algobase::copy_backward (first1, ++last1, res);
 					--last2;
 				}
 			}
@@ -3083,13 +3083,13 @@ namespace misc
 
 			if (dist1 <= dist2 && dist1 <= buf_size)
 			{
-				Pointer buf_end = misc::algobase::copy (first, middle, buf);
-				misc::algobase::merge (buf, buf_end, middle, last, first, comp);
+				Pointer buf_end = stl::algobase::copy (first, middle, buf);
+				stl::algobase::merge (buf, buf_end, middle, last, first, comp);
 			}
 			else if (dist2 <= buf_size)
 			{
-				Pointer buf_end = misc::algobase::copy (middle, last, buf);
-				misc::algobase::merge_backward(
+				Pointer buf_end = stl::algobase::copy (middle, last, buf);
+				stl::algobase::merge_backward(
 					first, middle, buf, buf_end, last, comp);
 			}
 			else
@@ -3101,28 +3101,28 @@ namespace misc
 				if (dist1 > dist2)
 				{
 					dist11 = dist1 / 2;
-					misc::advance (first_cut, dist11);
+					stl::advance (first_cut, dist11);
 					second_cut =
-						misc::algobase::lower_bound (middle, last, *first_cut, comp);
-					dist22 = misc::distance(middle, second_cut);
+						stl::algobase::lower_bound (middle, last, *first_cut, comp);
+					dist22 = stl::distance(middle, second_cut);
 				}
 				else
 				{
 					dist22 = dist2 / 2;
-					misc::advance (second_cut, dist22);
+					stl::advance (second_cut, dist22);
 					first_cut =
-						misc::algobase::upper_bound (first, middle, *second_cut, comp);
-					dist11 = misc::distance(first, first_cut);
+						stl::algobase::upper_bound (first, middle, *second_cut, comp);
+					dist11 = stl::distance(first, first_cut);
 				}
 
 				BidirectionalIterator middle2 =
-					misc::algobase::rotate_adaptive(
+					stl::algobase::rotate_adaptive(
 						first_cut, middle, second_cut,
 						dist1 - dist11, dist22, buf, buf_size);
 
-				misc::algobase::merge_adaptive(
+				stl::algobase::merge_adaptive(
 					first, first_cut, middle2, dist11, dist22, buf, buf_size, comp);
-				misc::algobase::merge_adaptive(
+				stl::algobase::merge_adaptive(
 					middle2, second_cut, last,
 					dist1 - dist11, dist2 - dist22, buf, buf_size, comp);
 			}
@@ -3140,40 +3140,40 @@ namespace misc
 			if (!(first == middle || middle == last))
 			{
 				typedef typename
-					misc::iterator_traits<BidirectionalIterator>::difference_type Dist;
+					stl::iterator_traits<BidirectionalIterator>::difference_type Dist;
 
 				typedef typename
-					misc::iterator_traits<BidirectionalIterator>::value_type TypeT;
+					stl::iterator_traits<BidirectionalIterator>::value_type TypeT;
 
 
-				Dist dist1 = misc::distance(first, middle);
-				Dist dist2 = misc::distance(middle, last);
+				Dist dist1 = stl::distance(first, middle);
+				Dist dist2 = stl::distance(middle, last);
 
-				misc::pair<TypeT*, Dist> pair =
-					misc::get_temporary_buffer<TypeT>(dist1 + dist2);
+				stl::pair<TypeT*, Dist> pair =
+					stl::get_temporary_buffer<TypeT>(dist1 + dist2);
 
 				if (pair.first == 0)
 				{
-					misc::algobase::merge_without_buffer(
+					stl::algobase::merge_without_buffer(
 						first, middle, last, dist1, dist2, comp);
 				}
 				else
 				{
-					Dist dist = misc::algobase::min(pair.second, dist1 + dist2);
+					Dist dist = stl::algobase::min(pair.second, dist1 + dist2);
 
-					misc::algobase::fill_n(
-						misc::raw_storage_iterator<TypeT*, TypeT>(pair.first),
+					stl::algobase::fill_n(
+						stl::raw_storage_iterator<TypeT*, TypeT>(pair.first),
 						dist,
 						*first);
 
-					misc::algobase::merge_adaptive(
+					stl::algobase::merge_adaptive(
 						first, middle, last, dist1, dist2, pair.first, pair.second,
 						comp);
 
 					for (TypeT *ptr = pair.first + dist; !(pair.first == --ptr); )
 						(*ptr).~TypeT ();
 
-					misc::return_temporary_buffer (pair.first);
+					stl::return_temporary_buffer (pair.first);
 				}
 			}
 		}
@@ -3186,12 +3186,12 @@ namespace misc
 			BidirectionalIterator middle,
 			BidirectionalIterator last)
 		{
-			misc::algobase::inplace_merge(
+			stl::algobase::inplace_merge(
 				first,
 				middle,
 				last,
-				misc::less<typename
-				misc::iterator_traits<BidirectionalIterator>::value_type>());
+				stl::less<typename
+				stl::iterator_traits<BidirectionalIterator>::value_type>());
 		}
 
 		// 25.3.5 - Set operations on sorted structures
@@ -3223,11 +3223,11 @@ namespace misc
 			InputIterator1 first1, InputIterator1 last1,
 			InputIterator2 first2, InputIterator2 last2)
 		{
-			return misc::algobase::includes(
+			return stl::algobase::includes(
 				first1, last1,
 				first2, last2,
-				misc::less<typename
-				misc::iterator_traits<InputIterator1>::value_type>());
+				stl::less<typename
+				stl::iterator_traits<InputIterator1>::value_type>());
 		}
 
 
@@ -3260,8 +3260,8 @@ namespace misc
 				}
 			}
 
-			return misc::algobase::copy(
-				first2, last2, misc::algobase::copy (first1, last1, res));
+			return stl::algobase::copy(
+				first2, last2, stl::algobase::copy (first1, last1, res));
 		}
 
 
@@ -3272,12 +3272,12 @@ namespace misc
 			InputIterator2 first2, InputIterator2 last2,
 			OutputIterator res)
 		{
-			return misc::algobase::set_union(
+			return stl::algobase::set_union(
 				first1, last1,
 				first2, last2,
 				res,
-				misc::less<typename
-				misc::iterator_traits<InputIterator1>::value_type>());
+				stl::less<typename
+				stl::iterator_traits<InputIterator1>::value_type>());
 		}
 
 
@@ -3317,12 +3317,12 @@ namespace misc
 			InputIterator2 first2, InputIterator2 last2,
 			OutputIterator res)
 		{
-			return misc::algobase::set_intersection(
+			return stl::algobase::set_intersection(
 				first1, last1,
 				first2, last2,
 				res,
-				misc::less<typename
-				misc::iterator_traits<InputIterator1>::value_type>());
+				stl::less<typename
+				stl::iterator_traits<InputIterator1>::value_type>());
 		}
 
 
@@ -3352,7 +3352,7 @@ namespace misc
 				}
 			}
 
-			return misc::algobase::copy (first1, last1, res);
+			return stl::algobase::copy (first1, last1, res);
 		}
 
 
@@ -3364,12 +3364,12 @@ namespace misc
 			InputIterator2 first2, InputIterator2 last2,
 			OutputIterator res)
 		{
-			return misc::algobase::set_difference(
+			return stl::algobase::set_difference(
 				first1, last1,
 				first2, last2,
 				res,
-				misc::less<typename
-				misc::iterator_traits<InputIterator1>::value_type>());
+				stl::less<typename
+				stl::iterator_traits<InputIterator1>::value_type>());
 		}
 
 
@@ -3403,8 +3403,8 @@ namespace misc
 				}
 			}
 
-			return misc::algobase::copy(
-				first2, last2, misc::algobase::copy(first1, last1, res));
+			return stl::algobase::copy(
+				first2, last2, stl::algobase::copy(first1, last1, res));
 		}
 
 
@@ -3417,12 +3417,12 @@ namespace misc
 			InputIterator2 first2, InputIterator2 last2,
 			OutputIterator res)
 		{
-			return   misc::algobase::set_symmetric_difference(
+			return   stl::algobase::set_symmetric_difference(
 				first1, last1,
 				first2, last2,
 				res,
-				misc::less<typename
-				misc::iterator_traits<InputIterator1>::value_type>());
+				stl::less<typename
+				stl::iterator_traits<InputIterator1>::value_type>());
 		}
 
 
@@ -3456,10 +3456,10 @@ namespace misc
 			if (!(first == last))
 			{
 				typedef typename
-					misc::iterator_traits<RandomAccessIterator>::difference_type Dist;
+					stl::iterator_traits<RandomAccessIterator>::difference_type Dist;
 
 				--last;
-				misc::algobase::push_heap2(
+				stl::algobase::push_heap2(
 					first, Dist(last - first), Dist(), *last, comp);
 			}
 		}
@@ -3469,11 +3469,11 @@ namespace misc
 		template <typename RandomAccessIterator>
 		inline void push_heap (RandomAccessIterator first, RandomAccessIterator last)
 		{
-			misc::algobase::push_heap(
+			stl::algobase::push_heap(
 				first,
 				last,
-				misc::less<typename
-				misc::iterator_traits<RandomAccessIterator>::value_type>());
+				stl::less<typename
+				stl::iterator_traits<RandomAccessIterator>::value_type>());
 		}
 
 
@@ -3506,7 +3506,7 @@ namespace misc
 				holeIndex = _2ndChild - 1;
 			}
 
-			misc::algobase::push_heap2(first, holeIndex, topIndex, value, comp);
+			stl::algobase::push_heap2(first, holeIndex, topIndex, value, comp);
 		}
 
 
@@ -3520,10 +3520,10 @@ namespace misc
 				Compare cmp)
 		{
 			typedef typename
-				misc::iterator_traits<RandomAccessIterator>::difference_type Dist;
+				stl::iterator_traits<RandomAccessIterator>::difference_type Dist;
 
 			*res = *first;
-			misc::algobase::adjust_heap(first, Dist(), Dist(last-first), value, cmp);
+			stl::algobase::adjust_heap(first, Dist(), Dist(last-first), value, cmp);
 		}
 
 
@@ -3535,7 +3535,7 @@ namespace misc
 			if (!(first == last))
 			{
 				--last;
-				misc::algobase::pop_heap2(first, last, last, *last, comp);
+				stl::algobase::pop_heap2(first, last, last, *last, comp);
 			}
 		}
 
@@ -3544,10 +3544,10 @@ namespace misc
 		template <typename RandomAccessIterator>
 		inline void pop_heap(RandomAccessIterator first, RandomAccessIterator last)
 		{
-			misc::algobase::pop_heap(first, last,									 
-									 misc::less<
+			stl::algobase::pop_heap(first, last,									 
+									 stl::less<
 									 typename
-									 misc::iterator_traits<RandomAccessIterator>::value_type>());
+									 stl::iterator_traits<RandomAccessIterator>::value_type>());
 		}
 
 		// 25.3.6.3
@@ -3558,14 +3558,14 @@ namespace misc
 			if (!(last - first < 2))
 			{
 				typedef typename
-					misc::iterator_traits<RandomAccessIterator>::difference_type Dist;
+					stl::iterator_traits<RandomAccessIterator>::difference_type Dist;
 
 				const Dist dist = last - first;
 
 				for (Dist parent = dist / 2; 0 < parent; )
 				{
 					--parent;
-					misc::algobase::adjust_heap(
+					stl::algobase::adjust_heap(
 						first, parent, dist, *(first + parent), comp);
 				}
 			}
@@ -3576,11 +3576,11 @@ namespace misc
 		template <typename RandomAccessIterator>
 		inline void make_heap(RandomAccessIterator first, RandomAccessIterator last)
 		{
-			misc::algobase::make_heap(
+			stl::algobase::make_heap(
 				first,
 				last,
-				misc::less<typename
-				misc::iterator_traits<RandomAccessIterator>::value_type>());
+				stl::less<typename
+				stl::iterator_traits<RandomAccessIterator>::value_type>());
 		}
 
 
@@ -3591,7 +3591,7 @@ namespace misc
 		{
 			for (; last - first > 1; --last)
 			{
-				misc::algobase::pop_heap(first, last, comp);
+				stl::algobase::pop_heap(first, last, comp);
 			}
 		}
 
@@ -3600,11 +3600,11 @@ namespace misc
 		template <typename RandomAccessIterator>
 		inline void sort_heap(RandomAccessIterator first, RandomAccessIterator last)
 		{
-			misc::algobase::sort_heap(
+			stl::algobase::sort_heap(
 				first,
 				last,
-				misc::less<typename
-				misc::iterator_traits<RandomAccessIterator>::value_type>());
+				stl::less<typename
+				stl::iterator_traits<RandomAccessIterator>::value_type>());
 		}
 
 
@@ -3710,11 +3710,11 @@ namespace misc
 		inline ForwardIterator min_element(
 			ForwardIterator first, ForwardIterator last)
 		{
-			return misc::algobase::min_element(
+			return stl::algobase::min_element(
 				first,
 				last,
-				misc::less<typename
-				misc::iterator_traits<ForwardIterator>::value_type>());
+				stl::less<typename
+				stl::iterator_traits<ForwardIterator>::value_type>());
 		}
 
 
@@ -3745,11 +3745,11 @@ namespace misc
 		inline ForwardIterator max_element(
 			ForwardIterator first, ForwardIterator last)
 		{
-			return misc::algobase::max_element(
+			return stl::algobase::max_element(
 				first,
 				last,
-				misc::less<typename
-				misc::iterator_traits<ForwardIterator>::value_type>());
+				stl::less<typename
+				stl::iterator_traits<ForwardIterator>::value_type>());
 		}
 
 
@@ -3824,7 +3824,7 @@ namespace misc
 
 					while (comp (*i, *--j) == false);
 
-					misc::algobase::iter_swap (i, j);
+					stl::algobase::iter_swap (i, j);
 
 					first = ii;
 					res   = true;
@@ -3839,7 +3839,7 @@ namespace misc
 				}
 			}
 
-			misc::algobase::reverse (first, last);
+			stl::algobase::reverse (first, last);
 
 			return res;
 		}
@@ -3850,11 +3850,11 @@ namespace misc
 		inline bool next_permutation(
 			BidirectionalIterator first, BidirectionalIterator last)
 		{
-			return misc::algobase::next_permutation(
+			return stl::algobase::next_permutation(
 				first,
 				last,
-				misc::less<typename
-				misc::iterator_traits<BidirectionalIterator>::value_type>());
+				stl::less<typename
+				stl::iterator_traits<BidirectionalIterator>::value_type>());
 		}
 
 
@@ -3883,7 +3883,7 @@ namespace misc
 
 					while (comp (*--j, *i) == false);
 
-					misc::algobase::iter_swap (i, j);
+					stl::algobase::iter_swap (i, j);
 
 					first = ii;
 					res   = true;
@@ -3898,7 +3898,7 @@ namespace misc
 				}
 			}
 
-			misc::algobase::reverse (first, last);
+			stl::algobase::reverse (first, last);
 
 			return res;
 		}
@@ -3908,11 +3908,11 @@ namespace misc
 		inline bool prev_permutation(
 			BidirectionalIterator first, BidirectionalIterator last)
 		{
-			return misc::algobase::prev_permutation(
+			return stl::algobase::prev_permutation(
 				first,
 				last,
-				misc::less<typename
-				misc::iterator_traits<BidirectionalIterator>::value_type>());
+				stl::less<typename
+				stl::iterator_traits<BidirectionalIterator>::value_type>());
 		}
 
 	} // algobase

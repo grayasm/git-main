@@ -4,21 +4,28 @@
 #include <list>
 #include <limits>
 #include "vector.hpp"
-//#include <vector>
+#include <vector>
 
 
 
 int main()
 {
-    stl::vector<int> vi(10, 10);
-    stl::vector<int> v2;
-    stl::vector<int>::iterator it1, it2;
-    it1 = vi.begin() + 3;
-    it2 = vi.begin() + 5;
+    stl::vector<int> vi;
+    for (int i = 9; i > 0; i--)
+        vi.push_back(i);
 
-    v2.assign(it1, it2);
+    stl::vector<int> v2;
+    stl::vector<int>::reverse_iterator rit1, rit2;
+    rit1 = vi.rbegin();
+    rit2 = vi.rbegin() + 5;
+
+    v2.assign(rit1, rit2);
 
     size_t sz = v2.size();
+    for (int i = 0; i < v2.size(); ++i)
+        printf("%d ", v2[i]);
+
+    printf("\n");
 
     return 0;
 }

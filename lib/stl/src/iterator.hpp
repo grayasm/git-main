@@ -48,7 +48,7 @@ namespace stl
         typedef diff distance_type;
         typedef ptr pointer;
         typedef ref reference;
-    };//struct
+    };
 
 
     template<typename category,
@@ -64,8 +64,7 @@ namespace stl
         typedef diff distance_type;
         typedef const_ptr const_pointer;
         typedef const_ref const_reference;
-    };//struct
-
+    };
 
 
     template <typename Iterator> struct iterator_traits {

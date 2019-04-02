@@ -263,11 +263,6 @@ namespace stl
 	    }
     }
 
-	template<typename T, typename Allocator>
-	void mem_destroy_pod(T**, size_t, Allocator&)
-	{
-	}
-
     template<typename Allocator>
     void mem_destroy(char**, size_t, Allocator&)
     {
@@ -364,27 +359,25 @@ namespace stl
         }
     }
 
-    template<typename T>
-    inline void mem_copy_pod(T* dst, const T* src, size_t bytes)
-    {
-        ::memcpy(dst, src, bytes);
-    }
-
+    template<>
     inline void mem_copy(char* dst, const char* src, size_t bytes)
     {
         ::memcpy(dst, src, bytes);
     }
 
+    template<>
     inline void mem_copy(signed char* dst, const signed char* src, size_t bytes)
     {
         ::memcpy(dst, src, bytes);
     }
 
+    template<>
     inline void mem_copy(unsigned char* dst, const unsigned char* src, size_t bytes)
     {
         ::memcpy(dst, src, bytes);
     }
 
+    template<>
     inline void mem_copy(wchar_t* dst, const wchar_t* src, size_t bytes)
     {
         /*
@@ -395,51 +388,61 @@ namespace stl
         ::wmemcpy(dst, src, bytes / sizeof(wchar_t));
     }
 
+    template<>
     inline void mem_copy(short* dst, const short* src, size_t bytes)
     {
         ::memcpy(dst, src, bytes);
     }
 
+    template<>
     inline void mem_copy(unsigned short* dst, const unsigned short* src, size_t bytes)
     {
         ::memcpy(dst, src, bytes);
     }
 
+    template<>
     inline void mem_copy(int* dst, const int* src, size_t bytes)
     {
         ::memcpy(dst, src, bytes);
     }
 
+    template<>
     inline void mem_copy(unsigned int* dst, const unsigned int* src, size_t bytes)
     {
         ::memcpy(dst, src, bytes);
     }
 
+    template<>
     inline void mem_copy(long* dst, const long* src, size_t bytes)
     {
         ::memcpy(dst, src, bytes);
     }
 
+    template<>
     inline void mem_copy(unsigned long* dst, const unsigned long* src, size_t bytes)
     {
         ::memcpy(dst, src, bytes);
     }
 
+    template<>
     inline void mem_copy(double* dst, const double* src, size_t bytes)
     {
         ::memcpy(dst, src, bytes);
     }
 
+    template<>
     inline void mem_copy(float* dst, const float* src, size_t bytes)
     {
         ::memcpy(dst, src, bytes);
     }
 
+    template<>
     inline void mem_copy(long long* dst, const long long* src, size_t bytes)
     {
         ::memcpy(dst, src, bytes);
     }
 
+    template<>
     inline void mem_copy(unsigned long long* dst, const unsigned long long* src, size_t bytes)
     {
         ::memcpy(dst, src, bytes);
@@ -486,12 +489,6 @@ namespace stl
                 new(d1)T(*s1);
             }
         }
-    }
-
-    template<typename T>
-    inline void mem_move_pod(T* dst, const T* src, size_t bytes)
-    {
-        ::memmove(dst, src, bytes);
     }
 
     inline void mem_move(char* dst, const char* src, size_t bytes)
@@ -731,22 +728,6 @@ namespace stl
                 // release memory at src
                 allocator.deallocate(src, 0);
             }
-        }
-    }
-
-    template<typename T, typename Allocator>
-    void mem_realloc_pod(T** dest, size_t cap, T* src, size_t size, Allocator& allocator)
-    {
-        (void)allocator;
-        if(cap <= size)
-        {
-            *dest = src;
-        }
-        else
-        {
-            /* src must be returned by an earlier call to malloc(), calloc() or realloc() */
-            *dest = (T*)::realloc(src, cap * sizeof(T));
-            if(*dest == 0) throw stl::exception("bad allocation");
         }
     }
 

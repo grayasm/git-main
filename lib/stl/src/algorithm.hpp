@@ -29,7 +29,7 @@
 #include "algobase.hpp"
 
 
-namespace misc
+namespace stl
 {
 	//////////////////////////////////////////////////////////////////////////
 	//Non-modifying sequence operations:
@@ -39,7 +39,7 @@ namespace misc
 	template<typename InputIterator, typename Function>
 	inline Function for_each(InputIterator first, InputIterator last, Function f)
 	{
-		return misc::algobase::for_each(first, last, f);
+		return stl::algobase::for_each(first, last, f);
 	}
 
 
@@ -47,7 +47,7 @@ namespace misc
 	template<typename InputIterator, typename T>
 	inline InputIterator find ( InputIterator first, InputIterator last, const T& value )
 	{
-		return misc::algobase::find<InputIterator, T>(first, last, value);
+		return stl::algobase::find<InputIterator, T>(first, last, value);
 	}
 
 
@@ -77,7 +77,7 @@ namespace misc
 	template<typename InputIterator, typename Predicate>
 	inline InputIterator find_if ( InputIterator first, InputIterator last, Predicate pred )
 	{
-		return misc::algobase::find_if(first, last, pred);
+		return stl::algobase::find_if(first, last, pred);
 	}
 
 
@@ -88,7 +88,7 @@ namespace misc
 									   ForwardIterator2 first2, ForwardIterator2 last2)
 	{
 
-		return misc::algobase::find_end(first1, last1, first2, last2);
+		return stl::algobase::find_end(first1, last1, first2, last2);
 	}
 
 
@@ -99,7 +99,7 @@ namespace misc
 									   BinaryPredicate pred )
 	{
 
-		return misc::algobase::find_end(first1, last1, first2, last2, pred);
+		return stl::algobase::find_end(first1, last1, first2, last2, pred);
 	}
 
 
@@ -109,7 +109,7 @@ namespace misc
 											ForwardIterator2 first2, ForwardIterator2 last2)
 	{
 
-		return misc::algobase::find_first_of(first1, last1, first2, last2);
+		return stl::algobase::find_first_of(first1, last1, first2, last2);
 	}
 
 
@@ -120,7 +120,7 @@ namespace misc
 											BinaryPredicate pred )
 	{
 
-		return misc::algobase::find_first_of(first1, last1, first2, last2, pred);
+		return stl::algobase::find_first_of(first1, last1, first2, last2, pred);
 	}
 
 	//adjacent_find   Find equal adjacent elements in range (function template )
@@ -128,7 +128,7 @@ namespace misc
 	inline ForwardIterator adjacent_find ( ForwardIterator first, ForwardIterator last )
 	{
 
-		return misc::algobase::adjacent_find(first, last);
+		return stl::algobase::adjacent_find(first, last);
 	}
 
 
@@ -137,44 +137,44 @@ namespace misc
 										   BinaryPredicate pred )
 	{
 
-		return misc::algobase::adjacent_find(first, last, pred);
+		return stl::algobase::adjacent_find(first, last, pred);
 	}
 
 
 	//count   Count appearances of value in range (function template)
 	template <typename InputIterator, typename T>
-	inline typename misc::iterator_traits<InputIterator>::difference_type
+	inline typename stl::iterator_traits<InputIterator>::difference_type
 	count ( InputIterator first, InputIterator last, const T& value )
 	{
 
-		return misc::algobase::count(first, last, value);
+		return stl::algobase::count(first, last, value);
 	}
 
 
 	//count_if   Return number of elements in range satisfying condition (function template)
 	template <typename InputIterator, typename Predicate>
-	inline typename misc::iterator_traits<InputIterator>::difference_type
+	inline typename stl::iterator_traits<InputIterator>::difference_type
 	count_if ( InputIterator first, InputIterator last, Predicate pred )
 	{
-		return misc::algobase::count_if(first, last, pred);
+		return stl::algobase::count_if(first, last, pred);
 	}
 
 
 	//mismatch   Return first position where two ranges differ (function template )
 	template <typename InputIterator1, typename InputIterator2>
-	inline misc::pair<InputIterator1, InputIterator2>
+	inline stl::pair<InputIterator1, InputIterator2>
 	mismatch (InputIterator1 first1, InputIterator1 last1, InputIterator2 first2 )
 	{
-		return misc::algobase::mismatch(first1, last1, first2);
+		return stl::algobase::mismatch(first1, last1, first2);
 	}
 
 
 	template <typename InputIterator1, typename InputIterator2, typename BinaryPredicate>
-	inline misc::pair<InputIterator1, InputIterator2>
+	inline stl::pair<InputIterator1, InputIterator2>
 	mismatch (InputIterator1 first1, InputIterator1 last1, InputIterator2 first2,
 			  BinaryPredicate pred )
 	{
-		return misc::algobase::mismatch(first1, last1, first2, pred);
+		return stl::algobase::mismatch(first1, last1, first2, pred);
 	}
 
 
@@ -224,7 +224,7 @@ namespace misc
 	inline ForwardIterator1 search ( ForwardIterator1 first1, ForwardIterator1 last1,
 									 ForwardIterator2 first2, ForwardIterator2 last2)
 	{
-		return misc::algobase::search(first1, last1, first2, last2);
+		return stl::algobase::search(first1, last1, first2, last2);
 	}
 
 
@@ -233,7 +233,7 @@ namespace misc
 									 ForwardIterator2 first2, ForwardIterator2 last2,
 									 BinaryPredicate pred )
 	{
-		return misc::algobase::search(first1, last1, first2, last2, pred);
+		return stl::algobase::search(first1, last1, first2, last2, pred);
 	}
 
 
@@ -243,7 +243,7 @@ namespace misc
 	inline ForwardIterator search_n ( ForwardIterator first, ForwardIterator last,
 									  Size count, const T& value )
 	{
-		return misc::algobase::search_n(first, last, count, value);
+		return stl::algobase::search_n(first, last, count, value);
 	}
 
 
@@ -251,7 +251,7 @@ namespace misc
 	inline ForwardIterator search_n ( ForwardIterator first, ForwardIterator last,
 									  Size count, const T& value, BinaryPredicate pred )
 	{
-		return misc::algobase::search_n(first, last, count, value, pred);
+		return stl::algobase::search_n(first, last, count, value, pred);
 	}
 
 	//////////////////////////////////////////////////////////////////////////
@@ -303,7 +303,7 @@ namespace misc
 	{
 		while (first1 != last1)
 		{
-			misc::swap(*first1++, *first2++);
+			stl::swap(*first1++, *first2++);
 		}
 
 		return first2;
@@ -314,7 +314,7 @@ namespace misc
 	template <typename ForwardIterator1, typename ForwardIterator2>
 	inline void iter_swap ( ForwardIterator1 a, ForwardIterator2 b )
 	{
-		misc::swap(*a, *b);
+		stl::swap(*a, *b);
 	}
 
 
@@ -551,7 +551,7 @@ namespace misc
 	inline OutputIterator unique_copy ( InputIterator first, InputIterator last,
 										OutputIterator result )
 	{
-		typename misc::iterator_traits<InputIterator>::value_type value = *first;
+		typename stl::iterator_traits<InputIterator>::value_type value = *first;
 		*result=*first;
 
 		while (++first != last)
@@ -570,7 +570,7 @@ namespace misc
 	inline OutputIterator unique_copy ( InputIterator first, InputIterator last,
 										OutputIterator result, BinaryPredicate pred )
 	{
-		typename misc::iterator_traits<InputIterator>::value_type value = *first;
+		typename stl::iterator_traits<InputIterator>::value_type value = *first;
 		*result=*first;
 
 		while (++first != last)
@@ -591,7 +591,7 @@ namespace misc
 	{
 		while ((first != last) && (first != --last))
 		{
-			misc::swap (*first++,*last);
+			stl::swap (*first++,*last);
 		}
 	}
 
@@ -617,7 +617,7 @@ namespace misc
 		ForwardIterator next = middle;
 		while (first!=next)
 		{
-			misc::swap (*first++,*next++);
+			stl::swap (*first++,*next++);
 			if (next == last)
 			{
 				next=middle;
@@ -635,8 +635,8 @@ namespace misc
 	inline OutputIterator rotate_copy ( ForwardIterator first, ForwardIterator middle,
 										ForwardIterator last, OutputIterator result )
 	{
-		result = misc::copy (middle,last,result);
-		return misc::copy (first,middle,result);
+		result = stl::copy (middle,last,result);
+		return stl::copy (first,middle,result);
 	}
 
 
@@ -648,12 +648,12 @@ namespace misc
 								 RandomNumberGenerator& randfn )
 	{
 		if(first > last)
-			throw misc::exception("Invalid iterators");
-		typename misc::iterator_traits<RandomAccessIterator>::difference_type i, n;
+			throw stl::exception("Invalid iterators");
+		typename stl::iterator_traits<RandomAccessIterator>::difference_type i, n;
 		n = (last-first);
 		for (i=1; i<n; ++i)
 		{
-			misc::swap (first[i], first[ randfn(i+1) ]);
+			stl::swap (first[i], first[ randfn(i+1) ]);
 		}        
 	}
 
@@ -668,12 +668,12 @@ namespace misc
 		RandomNumberGenerator& randfn )
 	{
 		if(first > last)
-			throw misc::exception("Invalid iterators");
+			throw stl::exception("Invalid iterators");
 		if(first == last)
 			return;
 		for (RandomAccessIterator it = first + 1; it != last; ++it)
 		{
-			misc::iter_swap (it, first + randfn((it - first) + 1));
+			stl::iter_swap (it, first + randfn((it - first) + 1));
 		}
 	}
 
@@ -684,13 +684,13 @@ namespace misc
 		RandomNumberGenerator& randfn )
 	{
 		if(first > last)
-			throw misc::exception("Invalid iterators");
+			throw stl::exception("Invalid iterators");
 		if(first == last)
 			return;
-		typedef typename misc::iterator_traits<RandomAccessIterator>::difference_type Diff;
+		typedef typename stl::iterator_traits<RandomAccessIterator>::difference_type Diff;
 		RandomAccessIterator next = first;
 		for (Diff index = 2; ++next != last; ++index)
-			misc::iter_swap(next, first + Diff(randfn(index) % index));
+			stl::iter_swap(next, first + Diff(randfn(index) % index));
 	}
 
 	// STLport\stlport\stl\_algo.c:549
@@ -700,11 +700,11 @@ namespace misc
 		RandomNumberGenerator& randfn )
 	{
 		if(first > last)
-			throw misc::exception("Invalid iterators");
+			throw stl::exception("Invalid iterators");
 		if (first == last)
 			return;
 		for (RandomAccessIterator it = first + 1; it != last; ++it)
-			misc::iter_swap(it, first + randfn((it - first) + 1));
+			stl::iter_swap(it, first + randfn((it - first) + 1));
 	}
 
 	// apache_stl\include\algorithm.cc:591
@@ -714,20 +714,20 @@ namespace misc
 		RandomNumberGenerator& randfn )
 	{
 		if(first > last)
-			throw misc::exception("Invalid iterators");
+			throw stl::exception("Invalid iterators");
 
 		if (!(first == last))
 		{
-			typedef typename misc::iterator_traits<RandomAccessIterator>::difference_type DiffT;
+			typedef typename stl::iterator_traits<RandomAccessIterator>::difference_type DiffT;
 			DiffT limit = 2;
 			for (RandomAccessIterator it = first; !(++it == last); ++limit)
 			{
 				const DiffT rndoff (randfn (limit));
 
 				if (0 <= rndoff && rndoff < limit)
-					throw misc::exception("ApacheSTL's random_shuffle error.");
+					throw stl::exception("ApacheSTL's random_shuffle error.");
 
-				misc::iter_swap (it, first + rndoff);
+				stl::iter_swap (it, first + rndoff);
 			}
 		}
 	}
@@ -740,11 +740,11 @@ namespace misc
 		RandomAccessIterator first, RandomAccessIterator last,
 		RandomNumberGenerator& randfn )
 	{		
-		typename misc::iterator_traits<RandomAccessIterator>::difference_type i, n;
+		typename stl::iterator_traits<RandomAccessIterator>::difference_type i, n;
 		n = (last-first);
 		for (i=n-1; i>0; --i)
 		{
-			misc::swap (first[i], first[ randfn(i+1) ]);
+			stl::swap (first[i], first[ randfn(i+1) ]);
 		}
 	}
 	// end of different implementations
@@ -756,12 +756,12 @@ namespace misc
 	inline void random_shuffle ( RandomAccessIterator first, RandomAccessIterator last )
 	{		
 		if(first > last)
-			throw misc::exception("Invalid iterators");
-		typename misc::iterator_traits<RandomAccessIterator>::difference_type i, n;
+			throw stl::exception("Invalid iterators");
+		typename stl::iterator_traits<RandomAccessIterator>::difference_type i, n;
 		n = (last-first);
 		for (i=1; i<n; ++i)
 		{
-			misc::swap (first[i], first[ ::rand()%(i+1) ]);
+			stl::swap (first[i], first[ ::rand()%(i+1) ]);
 		}
 	}
 
@@ -776,12 +776,12 @@ namespace misc
 	inline void random_shuffle_GNU ( RandomAccessIterator first, RandomAccessIterator last )
 	{
 		if(first > last)
-			throw misc::exception("Invalid iterators");
+			throw stl::exception("Invalid iterators");
 		if(first == last)
 			return;
 		for (RandomAccessIterator it = first + 1; it != last; ++it)
 		{
-			misc::iter_swap (it, first + ::rand() % ((it - first) + 1));
+			stl::iter_swap (it, first + ::rand() % ((it - first) + 1));
 		}
 	}
 
@@ -790,7 +790,7 @@ namespace misc
 	inline void random_shuffle_DINKUMWARE( RandomAccessIterator first, RandomAccessIterator last )
 	{
 		if( first > last )
-			throw misc::exception("Invalid iterator");
+			throw stl::exception("Invalid iterator");
 
 		const int _RANDOM_BITS = 15;	// minimum random bits from rand()
 		const int _RANDOM_MAX = (1U << _RANDOM_BITS) - 1;
@@ -806,7 +806,7 @@ namespace misc
 				_Rn = _Rn << _RANDOM_BITS | (::rand() & _RANDOM_MAX);
 
 			// swap a pair
-			misc::iter_swap(next, first + ptrdiff_t(_Rn % index));
+			stl::iter_swap(next, first + ptrdiff_t(_Rn % index));
 		}
 	}
 
@@ -815,12 +815,12 @@ namespace misc
 	inline void random_shuffle_STLPORT ( RandomAccessIterator first, RandomAccessIterator last )
 	{
 		if( first > last )
-			throw misc::exception("Invalid iterator");
+			throw stl::exception("Invalid iterator");
 		if (first == last)
 			return;
 
 		for (RandomAccessIterator it = first + 1; it != last; ++it)
-			misc::iter_swap(it, first + ::rand() % ((it - first) + 1));
+			stl::iter_swap(it, first + ::rand() % ((it - first) + 1));
 	}
 
 	// apache_stl\include\algorithm.cc:591
@@ -828,11 +828,11 @@ namespace misc
 	inline void random_shuffle_APACHESTL ( RandomAccessIterator first, RandomAccessIterator last )
 	{
 		if(first > last)
-			throw misc::exception("Invalid iterator");
+			throw stl::exception("Invalid iterator");
 
 		if (!(first == last)) 
 		{
-			typedef typename misc::iterator_traits<RandomAccessIterator>::difference_type DiffT;
+			typedef typename stl::iterator_traits<RandomAccessIterator>::difference_type DiffT;
 			DiffT limit = 2;
 
 			for (RandomAccessIterator it = first; !(++it == last); ++limit) 
@@ -840,8 +840,8 @@ namespace misc
 				const DiffT rndoff ( ::rand() % limit );
 
 				if( !(0 <= rndoff && rndoff < limit) )
-					throw misc::exception("ApacheSTL's random_shuffle exception.");
-				misc::iter_swap (it, first + rndoff);
+					throw stl::exception("ApacheSTL's random_shuffle exception.");
+				stl::iter_swap (it, first + rndoff);
 			}
 		}
 	}
@@ -851,12 +851,12 @@ namespace misc
 	template <typename RandomAccessIterator>
 	inline void random_shuffle_CPPREFERENCE_COM ( RandomAccessIterator first, RandomAccessIterator last )
 	{
-		typename misc::iterator_traits<RandomAccessIterator>::difference_type i, n;
+		typename stl::iterator_traits<RandomAccessIterator>::difference_type i, n;
 		n = (last-first);
 		// reversed order of iteration
 		for (i=n-1; i>0; --i)
 		{
-			misc::swap (first[i], first[ ::rand()%(i+1) ]);
+			stl::swap (first[i], first[ ::rand()%(i+1) ]);
 		}
 	}
 	// end of implementations.
@@ -891,7 +891,7 @@ namespace misc
 				break;
 			}
 
-			misc::swap (*first++,*last);
+			stl::swap (*first++,*last);
 		}
 		return first;
 	}
@@ -903,7 +903,7 @@ namespace misc
 													BidirectionalIterator last,
 													Predicate pred )
 	{
-		return misc::algobase::stable_partition(first, last, pred);
+		return stl::algobase::stable_partition(first, last, pred);
 	}
 
 
@@ -924,7 +924,7 @@ namespace misc
 		{
 			pivot = (first+last)/2;
 
-			misc::swap(values[first], values[pivot]);
+			stl::swap(values[first], values[pivot]);
 
 			k = values[first];
 			start = (first+1);
@@ -947,9 +947,9 @@ namespace misc
 				}
 			}
 
-			misc::swap(values[first], values[end]);
-			misc::quicksort(values,first,(end-1));
-			misc::quicksort(values,(end+1),last);
+			stl::swap(values[first], values[end]);
+			stl::quicksort(values,first,(end-1));
+			stl::quicksort(values,(end+1),last);
 		}
 	}
 
@@ -959,14 +959,14 @@ namespace misc
 	template<typename RandomAccessIterator>
 	inline void sort(RandomAccessIterator first, RandomAccessIterator last)
 	{
-		misc::algobase::sort(first, last);
+		stl::algobase::sort(first, last);
 	}
 
 
 	template <typename RandomAccessIterator, typename Compare>
 	inline void sort ( RandomAccessIterator first, RandomAccessIterator last, Compare comp )
 	{
-		misc::algobase::sort(first, last, comp);
+		stl::algobase::sort(first, last, comp);
 	}
 
 
@@ -976,14 +976,14 @@ namespace misc
 	template <typename RandomAccessIterator>
 	inline void stable_sort ( RandomAccessIterator first, RandomAccessIterator last )
 	{
-		misc::algobase::stable_sort(first, last);
+		stl::algobase::stable_sort(first, last);
 	}
 
 	template <typename RandomAccessIterator, typename Compare>
 	inline void stable_sort ( RandomAccessIterator first, RandomAccessIterator last,
 							  Compare comp )
 	{
-		misc::algobase::stable_sort(first, last, comp);
+		stl::algobase::stable_sort(first, last, comp);
 	}
 
 
@@ -997,14 +997,14 @@ namespace misc
 	inline void partial_sort ( RandomAccessIterator first, RandomAccessIterator middle,
 							   RandomAccessIterator last )
 	{
-		misc::algobase::partial_sort(first, middle, last);
+		stl::algobase::partial_sort(first, middle, last);
 	}
 
 	template <typename RandomAccessIterator, typename Compare>
 	inline void partial_sort ( RandomAccessIterator first, RandomAccessIterator middle,
 							   RandomAccessIterator last, Compare comp )
 	{
-		misc::algobase::partial_sort(first, middle, last, comp);
+		stl::algobase::partial_sort(first, middle, last, comp);
 	}
 
 
@@ -1015,7 +1015,7 @@ namespace misc
 						RandomAccessIterator result_first,
 						RandomAccessIterator result_last )
 	{
-		return misc::algobase::partial_sort_copy(first, last, result_first, result_last);
+		return stl::algobase::partial_sort_copy(first, last, result_first, result_last);
 	}
 
 
@@ -1026,7 +1026,7 @@ namespace misc
 						RandomAccessIterator result_first,
 						RandomAccessIterator result_last, Compare comp )
 	{
-		return misc::algobase::partial_sort_copy(first, last, result_first, result_last, comp);
+		return stl::algobase::partial_sort_copy(first, last, result_first, result_last, comp);
 	}
 
 
@@ -1035,7 +1035,7 @@ namespace misc
 	inline void nth_element ( RandomAccessIterator first, RandomAccessIterator nth,
 							  RandomAccessIterator last )
 	{
-		misc::algobase::nth_element(first, nth, last);
+		stl::algobase::nth_element(first, nth, last);
 	}
 
 
@@ -1044,7 +1044,7 @@ namespace misc
 	inline void nth_element ( RandomAccessIterator first, RandomAccessIterator nth,
 							  RandomAccessIterator last, Compare comp )
 	{
-		misc::algobase::nth_element(first, nth, last, comp);
+		stl::algobase::nth_element(first, nth, last, comp);
 	}
 
 
@@ -1056,13 +1056,13 @@ namespace misc
 	inline ForwardIterator lower_bound ( ForwardIterator first, ForwardIterator last, const T& value )
 	{
 		ForwardIterator it;
-		typename misc::iterator_traits<ForwardIterator>::difference_type count, step;
-		count = misc::distance(first,last);
+		typename stl::iterator_traits<ForwardIterator>::difference_type count, step;
+		count = stl::distance(first,last);
 		while (count > 0)
 		{
 			it = first;
 			step = count / 2;
-			misc::advance (it,step);
+			stl::advance (it,step);
 
 			if (*it<value) // or: if (comp(*it,value)), for the comp version
 			{
@@ -1083,13 +1083,13 @@ namespace misc
 										 const T& value, Compare comp )
 	{
 		ForwardIterator it;
-		typename misc::iterator_traits<ForwardIterator>::difference_type count, step;
-		count = misc::distance(first,last);
+		typename stl::iterator_traits<ForwardIterator>::difference_type count, step;
+		count = stl::distance(first,last);
 		while (count>0)
 		{
 			it = first;
 			step = count/2;
-			misc::advance (it,step);
+			stl::advance (it,step);
 
 			if (comp(*it,value))
 			{
@@ -1110,15 +1110,15 @@ namespace misc
 	inline ForwardIterator upper_bound ( ForwardIterator first, ForwardIterator last, const T& value )
 	{
 		ForwardIterator it;
-		typename misc::iterator_traits<ForwardIterator>::difference_type count, step;
+		typename stl::iterator_traits<ForwardIterator>::difference_type count, step;
 
-		count = misc::distance(first,last);
+		count = stl::distance(first,last);
 
 		while (count > 0)
 		{
 			it = first;
 			step = count / 2;
-			misc::advance (it,step);
+			stl::advance (it,step);
 
 			if ( !(value<*it) )
 			{
@@ -1138,15 +1138,15 @@ namespace misc
 	inline ForwardIterator upper_bound ( ForwardIterator first, ForwardIterator last, const T& value, Compare comp )
 	{
 		ForwardIterator it;
-		typename misc::iterator_traits<ForwardIterator>::difference_type count, step;
+		typename stl::iterator_traits<ForwardIterator>::difference_type count, step;
 
-		count = misc::distance(first,last);
+		count = stl::distance(first,last);
 
 		while (count > 0)
 		{
 			it = first;
 			step = count / 2;
-			misc::advance (it,step);
+			stl::advance (it,step);
 
 			if ( !comp(value,*it) )
 			{
@@ -1165,26 +1165,26 @@ namespace misc
 
 	//equal_range   Get subrange of equal elements (function template)
 	template <typename ForwardIterator, typename T>
-	inline misc::pair<ForwardIterator,ForwardIterator>
+	inline stl::pair<ForwardIterator,ForwardIterator>
 	equal_range ( ForwardIterator first, ForwardIterator last, const T& value )
 	{
-		ForwardIterator it = misc::lower_bound (first,last,value);
-		return misc::make_pair( it, misc::upper_bound(it,last,value) );
+		ForwardIterator it = stl::lower_bound (first,last,value);
+		return stl::make_pair( it, stl::upper_bound(it,last,value) );
 	}
 
 	template <typename ForwardIterator, typename T, typename Compare>
-	inline misc::pair<ForwardIterator,ForwardIterator>
+	inline stl::pair<ForwardIterator,ForwardIterator>
 	equal_range ( ForwardIterator first, ForwardIterator last, const T& value,
 				  Compare comp )
 	{
-		return misc::algobase::equal_range(first, last, value, comp);
+		return stl::algobase::equal_range(first, last, value, comp);
 	}
 
 	//binary_search   Test if value exists in sorted array (function template)
 	template <typename ForwardIterator, typename T>
 	inline bool binary_search ( ForwardIterator first, ForwardIterator last, const T& value )
 	{
-		first = misc::lower_bound<ForwardIterator, T>(first,last,value);
+		first = stl::lower_bound<ForwardIterator, T>(first,last,value);
 		return (first != last && !(value < *first));
 	}
 
@@ -1193,7 +1193,7 @@ namespace misc
 	inline bool binary_search ( ForwardIterator first, ForwardIterator last,
 								const T& value, Compare comp )
 	{
-		return misc::algobase::binary_search(first, last, value, comp);
+		return stl::algobase::binary_search(first, last, value, comp);
 	}
 
 	//////////////////////////////////////////////////////////////////////////
@@ -1211,12 +1211,12 @@ namespace misc
 			*result++ = (*first2<*first1) ? *first2++ : *first1++;
 			if (first1==last1)
 			{
-				return misc::copy(first2,last2,result);
+				return stl::copy(first2,last2,result);
 			}
 
 			if (first2==last2)
 			{
-				return misc::copy(first1,last1,result);
+				return stl::copy(first1,last1,result);
 			}
 		}
 	}
@@ -1240,12 +1240,12 @@ namespace misc
 
 			if (first1==last1)
 			{
-				return misc::copy(first2,last2,result);
+				return stl::copy(first2,last2,result);
 			}
 
 			if (first2==last2)
 			{
-				return misc::copy(first1,last1,result);
+				return stl::copy(first1,last1,result);
 			}
 		}
 	}
@@ -1256,7 +1256,7 @@ namespace misc
 	inline void inplace_merge ( BidirectionalIterator first, BidirectionalIterator middle,
 								BidirectionalIterator last )
 	{
-		misc::algobase::inplace_merge(first, middle, last);
+		stl::algobase::inplace_merge(first, middle, last);
 	}
 
 
@@ -1264,7 +1264,7 @@ namespace misc
 	inline void inplace_merge ( BidirectionalIterator first, BidirectionalIterator middle,
 								BidirectionalIterator last, Compare comp )
 	{
-		misc::algobase::inplace_merge(first, middle, last, comp);
+		stl::algobase::inplace_merge(first, middle, last, comp);
 	}
 
 
@@ -1302,7 +1302,7 @@ namespace misc
 	inline bool includes ( InputIterator1 first1, InputIterator1 last1,
 						   InputIterator2 first2, InputIterator2 last2, Compare comp )
 	{
-		return misc::algobase::includes(first1, last1, first2, last2, comp);
+		return stl::algobase::includes(first1, last1, first2, last2, comp);
 	}
 
 
@@ -1316,12 +1316,12 @@ namespace misc
 		{
 			if (first1 == last1)
 			{
-				return misc::copy(first2,last2,result);
+				return stl::copy(first2,last2,result);
 			}
 
 			if (first2 == last2)
 			{
-				return misc::copy(first1,last1,result);
+				return stl::copy(first1,last1,result);
 			}
 
 			if (*first1 < *first2)
@@ -1347,7 +1347,7 @@ namespace misc
 									  InputIterator2 first2, InputIterator2 last2,
 									  OutputIterator result, Compare comp )
 	{
-		return misc::algobase::set_union(first1, last1, first2, last2, result, comp);
+		return stl::algobase::set_union(first1, last1, first2, last2, result, comp);
 	}
 
 
@@ -1383,7 +1383,7 @@ namespace misc
 											 InputIterator2 first2, InputIterator2 last2,
 											 OutputIterator result, Compare comp )
 	{
-		return misc::algobase::set_intersection(first1, last1, first2, last2, result, comp);
+		return stl::algobase::set_intersection(first1, last1, first2, last2, result, comp);
 	}
 
 
@@ -1409,7 +1409,7 @@ namespace misc
 				first2++;
 			}
 		}
-		return misc::copy(first1,last1,result);
+		return stl::copy(first1,last1,result);
 	}
 
 
@@ -1419,7 +1419,7 @@ namespace misc
 										   InputIterator2 first2, InputIterator2 last2,
 										   OutputIterator result, Compare comp )
 	{
-		return misc::algobase::set_difference(first1, last1, first2, last2, result, comp);
+		return stl::algobase::set_difference(first1, last1, first2, last2, result, comp);
 	}
 
 
@@ -1435,12 +1435,12 @@ namespace misc
 		{
 			if (first1 == last1)
 			{
-				return misc::copy(first2,last2,result);
+				return stl::copy(first2,last2,result);
 			}
 
 			if (first2 == last2)
 			{
-				return misc::copy(first1,last1,result);
+				return stl::copy(first1,last1,result);
 			}
 
 			if (*first1 < *first2)
@@ -1467,7 +1467,7 @@ namespace misc
 							   InputIterator2 first2, InputIterator2 last2,
 							   OutputIterator result, Compare comp )
 	{
-		return misc::algobase::set_symmetric_difference(first1, last1, first2, last2, result, comp);
+		return stl::algobase::set_symmetric_difference(first1, last1, first2, last2, result, comp);
 	}
 
 
@@ -1479,14 +1479,14 @@ namespace misc
 	template <typename RandomAccessIterator>
 	inline void push_heap ( RandomAccessIterator first, RandomAccessIterator last )
 	{
-		misc::algobase::push_heap(first, last);
+		stl::algobase::push_heap(first, last);
 	}
 
 	template <typename RandomAccessIterator, typename Compare>
 	inline void push_heap ( RandomAccessIterator first, RandomAccessIterator last,
 							Compare comp )
 	{
-		misc::algobase::push_heap(first, last, comp);
+		stl::algobase::push_heap(first, last, comp);
 	}
 
 
@@ -1495,14 +1495,14 @@ namespace misc
 	template <typename RandomAccessIterator>
 	inline void pop_heap ( RandomAccessIterator first, RandomAccessIterator last )
 	{
-		misc::algobase::pop_heap(first, last);
+		stl::algobase::pop_heap(first, last);
 	}
 
 	template <typename RandomAccessIterator, typename Compare>
 	inline void pop_heap ( RandomAccessIterator first, RandomAccessIterator last,
 						   Compare comp )
 	{
-		misc::algobase::pop_heap(first, last, comp);
+		stl::algobase::pop_heap(first, last, comp);
 	}
 
 
@@ -1510,14 +1510,14 @@ namespace misc
 	template <typename RandomAccessIterator>
 	inline void make_heap ( RandomAccessIterator first, RandomAccessIterator last )
 	{
-		misc::algobase::make_heap(first, last);
+		stl::algobase::make_heap(first, last);
 	}
 
 	template <typename RandomAccessIterator, typename Compare>
 	inline void make_heap ( RandomAccessIterator first, RandomAccessIterator last,
 							Compare comp )
 	{
-		misc::algobase::make_heap(first, last, comp);
+		stl::algobase::make_heap(first, last, comp);
 	}
 
 
@@ -1525,7 +1525,7 @@ namespace misc
 	template <typename RandomAccessIterator>
 	inline void sort_heap ( RandomAccessIterator first, RandomAccessIterator last )
 	{
-		misc::algobase::sort_heap(first, last);
+		stl::algobase::sort_heap(first, last);
 	}
 
 
@@ -1533,7 +1533,7 @@ namespace misc
 	inline void sort_heap ( RandomAccessIterator first, RandomAccessIterator last,
 							Compare comp )
 	{
-		misc::algobase::sort_heap(first, last, comp);
+		stl::algobase::sort_heap(first, last, comp);
 	}
 
 
@@ -1546,36 +1546,36 @@ namespace misc
 	template <typename T>
 	inline const T& (min) ( const T& a, const T& b )
 	{		
-		return (misc::algobase::min)(a, b);
+		return (stl::algobase::min)(a, b);
 	}
 
 	template <typename T, typename Compare>
 	inline const T& (min) ( const T& a, const T& b, Compare comp )
 	{
-		return (misc::algobase::min)(a, b, comp);
+		return (stl::algobase::min)(a, b, comp);
 	}
 
 	// extension -------------------------------------------------------------
 	template<typename T>
 	inline const T& (min) (const T& a, const T& b, const T& c)
 	{
-		const T& u = (misc::algobase::min) (a, b);
-		return (misc::algobase::min)(u, c);
+		const T& u = (stl::algobase::min) (a, b);
+		return (stl::algobase::min)(u, c);
 	}
 	template<typename T>
 	inline const T& (min) (const T& a, const T& b, const T& c, const T& d)
 	{
-		const T& u = (misc::algobase::min) (a, b);
-		const T& v = (misc::algobase::min) (u, c);
-		return (misc::algobase::min)(v, d);
+		const T& u = (stl::algobase::min) (a, b);
+		const T& v = (stl::algobase::min) (u, c);
+		return (stl::algobase::min)(v, d);
 	}
 	template<typename T>
 	inline const T& (min) (const T& a, const T& b, const T& c, const T& d, const T& e)
 	{
-		const T& u = (misc::algobase::min) (a, b);
-		const T& v = (misc::algobase::min) (u, c);
-		const T& w = (misc::algobase::min) (v, d);
-		return (misc::algobase::min)(w, e);
+		const T& u = (stl::algobase::min) (a, b);
+		const T& v = (stl::algobase::min) (u, c);
+		const T& w = (stl::algobase::min) (v, d);
+		return (stl::algobase::min)(w, e);
 	}	
 	// extension -------------------------------------------------------------
 	
@@ -1583,13 +1583,13 @@ namespace misc
 	template <typename T>
 	inline const T& (max) ( const T& a, const T& b )
 	{
-		return (misc::algobase::max)(a, b);
+		return (stl::algobase::max)(a, b);
 	}
 
 	template <typename T, typename Compare>
 	inline const T& (max) ( const T& a, const T& b, Compare comp )
 	{
-		return (misc::algobase::max)(a, b, comp);
+		return (stl::algobase::max)(a, b, comp);
 	}
 
 
@@ -1597,23 +1597,23 @@ namespace misc
 	template<typename T>
 	inline const T& (max) (const T& a, const T& b, const T& c)
 	{
-		const T& u = (misc::algobase::max) (a, b);
-		return (misc::algobase::max)(u, c);
+		const T& u = (stl::algobase::max) (a, b);
+		return (stl::algobase::max)(u, c);
 	}
 	template<typename T>
 	inline const T& (max) (const T& a, const T& b, const T& c, const T& d)
 	{
-		const T& u = (misc::algobase::max) (a, b);
-		const T& v = (misc::algobase::max) (u, c);
-		return (misc::algobase::max)(v, d);
+		const T& u = (stl::algobase::max) (a, b);
+		const T& v = (stl::algobase::max) (u, c);
+		return (stl::algobase::max)(v, d);
 	}
 	template<typename T>
 	inline const T& (max) (const T& a, const T& b, const T& c, const T& d, const T& e)
 	{
-		const T& u = (misc::algobase::max) (a, b);
-		const T& v = (misc::algobase::max) (u, c);
-		const T& w = (misc::algobase::max) (v, d);
-		return (misc::algobase::max)(w, e);
+		const T& u = (stl::algobase::max) (a, b);
+		const T& v = (stl::algobase::max) (u, c);
+		const T& w = (stl::algobase::max) (v, d);
+		return (stl::algobase::max)(w, e);
 	}	
 	// extension -------------------------------------------------------------
 
@@ -1695,7 +1695,7 @@ namespace misc
 										  InputIterator2 first2, InputIterator2 last2,
 										  Compare comp )
 	{
-		return misc::algobase::lexicographical_compare(first1, last1, first2, last2, comp);
+		return stl::algobase::lexicographical_compare(first1, last1, first2, last2, comp);
 	}
 
 
@@ -1704,7 +1704,7 @@ namespace misc
 	inline bool next_permutation (BidirectionalIterator first,
 								  BidirectionalIterator last )
 	{
-		return misc::algobase::next_permutation<BidirectionalIterator>(first, last);
+		return stl::algobase::next_permutation<BidirectionalIterator>(first, last);
 	}
 
 
@@ -1712,7 +1712,7 @@ namespace misc
 	inline bool next_permutation (BidirectionalIterator first,
 								  BidirectionalIterator last, Compare comp)
 	{
-		return misc::algobase::next_permutation<BidirectionalIterator>(first, last, comp);
+		return stl::algobase::next_permutation<BidirectionalIterator>(first, last, comp);
 	}
 
 
@@ -1721,7 +1721,7 @@ namespace misc
 	inline bool prev_permutation (BidirectionalIterator first,
 								  BidirectionalIterator last )
 	{
-		return misc::algobase::prev_permutation(first, last);
+		return stl::algobase::prev_permutation(first, last);
 	}
 
 
@@ -1729,7 +1729,7 @@ namespace misc
 	inline bool prev_permutation (BidirectionalIterator first,
 								  BidirectionalIterator last, Compare comp)
 	{
-		return misc::algobase::prev_permutation(first, last, comp);
+		return stl::algobase::prev_permutation(first, last, comp);
 	}
 
 }//namespace misc
