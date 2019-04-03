@@ -34,8 +34,8 @@ namespace stl
     template<typename container>
     struct vector_iterator_base
     {
-        container*						m_cont;
-        typename container::size_type	m_pos;
+        container*                        m_cont;
+        typename container::size_type    m_pos;
     };
 
     template<typename T, typename Allocator> class vector;
@@ -633,7 +633,6 @@ namespace stl
 
         vector_const_reverse_iterator(const vector_reverse_iterator<container>& it)
         {
-            init();
             *this = it;
         }
 
@@ -756,39 +755,16 @@ namespace stl
             return (*base2::m_cont)[base2::m_pos - off];
         }
     };  // vector_const_reverse_iterator
+    
 
-
-    /*
-        http://stackoverflow.com/questions/4944156/c-method-specialization-and-templates
-
-        It turns out that there's a provision in the C++ spec that explicitly
-        disallows specializing a template class or function nested inside of a
-        template class unless you also explicitly specialize the outer template as well.
-
-        If you want to specialize the template, your options will either be to
-        also specialize the outer template or to somehow fake up the behavior of
-        specialization by having the method dispatch to one of two different
-        implementations based on the template parameter.
-
-        Emulate the behavior of the explicit specialization
-        through a technique called tag dispatching.
-    */
-    template<typename T>
-    struct vector_spec
+    //    ISO/IEC 14882:2003  $23.2.4 Class template vector
+    template<typename T, typename Allocator = stl::allocator<T>>
+    class vector
     {
-        typedef T value;
-    };
+    public:
+        typedef vector<T, Allocator>                    container;
 
-
-
-	//	ISO/IEC 14882:2003  $23.2.4 Class template vector
-	template<typename T, typename Allocator = stl::allocator<T>>
-	class vector
-	{
-	public:
-		typedef vector<T, Allocator>                    container;
-
-		// types:
+        // types:
         typedef typename Allocator::value_type           value_type;
         typedef typename Allocator::size_type            size_type;
         typedef typename Allocator::difference_type      difference_type;
@@ -799,10 +775,10 @@ namespace stl
         typedef typename Allocator::pointer              pointer;
         typedef typename Allocator::const_pointer        const_pointer;
 
-	public:
-		typedef typename vector_iterator<container>		            iterator;
-        typedef typename vector_const_iterator<container>			const_iterator;
-        typedef typename vector_reverse_iterator<container>		    reverse_iterator;
+    public:
+        typedef typename vector_iterator<container>                    iterator;
+        typedef typename vector_const_iterator<container>            const_iterator;
+        typedef typename vector_reverse_iterator<container>            reverse_iterator;
         typedef typename vector_const_reverse_iterator<container>   const_reverse_iterator;
 
     private:
@@ -812,7 +788,7 @@ namespace stl
         allocator_type          m_allocator;
 
     private:
-        inline void init()
+        void init()
         {
             m_data = 0;
             m_size = 0;
@@ -820,7 +796,7 @@ namespace stl
             // m_allocator - default ctor;
         }
 
-        inline void allocate(size_type cap)
+        void allocate(size_type cap)
         {
             pointer mem = 0;
 
@@ -834,11 +810,10 @@ namespace stl
             m_capacity = cap;
         }
 
-        inline void grow(size_type cap)
+        void grow(size_type cap)
         {
             if (m_capacity >= cap) return;
 
-            pointer mem = 0;
             stl::mem_realloc(&mem, cap, m_data, m_size, m_allocator);
             
             m_data = mem;
@@ -870,52 +845,52 @@ namespace stl
         }
 
 
-	public:       
-		// $23.2.4.1 construct/copy/destroy:
-		vector()
-		{
+    public:       
+        // $23.2.4.1 construct/copy/destroy:
+        vector()
+        {
             init();
             allocate(1);
             m_size = 0;
-		}
+        }
 
-		explicit vector(size_type n, const T& c = T())
-		{
+        explicit vector(size_type n, const T& c = T())
+        {
             init();
             allocate(1);
             assign(n, c);
-		}
+        }
 
-		template <class InputIterator>
-		vector(InputIterator first, InputIterator last)
-		{
+        template <class InputIterator>
+        vector(InputIterator first, InputIterator last)
+        {
             init();
             allocate(1);
             assign(first, last);
-		}
+        }
 
         vector(const container& x)
             : m_allocator(x.get_allocator())
-		{
+        {
             init();
             allocate(1);
             assign(x);
-		}
+        }
 
-		~vector()
-		{
+        ~vector()
+        {
             stl::mem_destroy<value_type>(&m_data, m_size, m_allocator);
             m_allocator.deallocate(m_data, 0);
 
             m_data = 0;
             m_size = 0;
             m_capacity = 0;
-		}
+        }
 
-		container& operator=(const container& x)
-		{
+        container& operator=(const container& x)
+        {
             return assign(x);
-		}
+        }
 
         /* $21.3.5 modifiers ( assign ) */
         container& assign(const container& tc)
@@ -939,7 +914,7 @@ namespace stl
         }
 
         void assign(size_type count, const value_type& val)
-		{
+        {
             if (count > 0)
             {
                 grow(count);
@@ -948,7 +923,7 @@ namespace stl
             }
 
             endof(count);
-		}
+        }
 
         template <class InputIterator>
         void assign(InputIterator first, InputIterator last)
@@ -1158,63 +1133,63 @@ namespace stl
     public:
 
         //$21.3.2 iterators
-		iterator begin()
-		{
+        iterator begin()
+        {
             return iterator(this, 0);
-		}
+        }
 
-		const_iterator begin() const
-		{
+        const_iterator begin() const
+        {
             container* mutable_cont = const_cast<container*>(this);
             return const_iterator(mutable_cont, 0);
-		}
+        }
 
-		iterator end()
-		{
+        iterator end()
+        {
             return iterator(this, m_size);
-		}
+        }
 
-		const_iterator end() const
-		{
+        const_iterator end() const
+        {
             container* mutable_cont = const_cast<container*>(this);
             return const_iterator(mutable_cont, m_size);
-		}
+        }
 
-		reverse_iterator rbegin()
-		{
+        reverse_iterator rbegin()
+        {
             return reverse_iterator(this, static_cast<size_type>(m_size - 1));
-		}
+        }
 
-		const_reverse_iterator rbegin() const
-		{
+        const_reverse_iterator rbegin() const
+        {
             container* mutable_cont = const_cast<container*>(this);
             return const_reverse_iterator(mutable_cont, static_cast<size_type>(m_size - 1));
-		}
+        }
 
-		reverse_iterator rend()
-		{
+        reverse_iterator rend()
+        {
             return reverse_iterator(this, static_cast<size_type>(-1));
-		}
+        }
 
-		const_reverse_iterator rend() const
-		{
+        const_reverse_iterator rend() const
+        {
             container* mutable_cont = const_cast<container*>(this);
             return const_reverse_iterator(mutable_cont, static_cast<size_type>(-1));
-		}
+        }
 
-		// 23.2.4.2 capacity:
-		size_type size() const
-		{
+        // 23.2.4.2 capacity:
+        size_type size() const
+        {
             return m_size;
-		}
+        }
 
-		size_type max_size() const
-		{
+        size_type max_size() const
+        {
             return static_cast<size_type>(-1) / sizeof(value_type);
-		}
+        }
 
-		void resize(size_type sz, value_type c = value_type())
-		{
+        void resize(size_type sz, value_type c = value_type())
+        {
             if (m_size > sz)
             {
                 // eos<T>(dist);
@@ -1241,77 +1216,77 @@ namespace stl
                 }
                 m_size = dist;
             }
-		}
+        }
 
-		size_type capacity() const
-		{
+        size_type capacity() const
+        {
             return m_capacity;
-		}
+        }
 
-		bool empty() const
-		{
+        bool empty() const
+        {
             return m_size == 0;
-		}
+        }
 
-		void reserve(size_type n)
-		{
+        void reserve(size_type n)
+        {
             grow(n);
-		}
+        }
 
-		// element access:
-		reference operator[](size_type n)
-		{
+        // element access:
+        reference operator[](size_type n)
+        {
             if (n >= m_size) throw stl::exception("out of valid range");
             return m_data[n];
-		}
+        }
 
-		const_reference operator[](size_type n) const
-		{
+        const_reference operator[](size_type n) const
+        {
             if (n >= m_size) throw stl::exception("out of valid range");
             return m_data[n];
-		}
+        }
 
-		const_reference at(size_type n) const
-		{
+        const_reference at(size_type n) const
+        {
             if (n >= m_size) throw stl::exception("out of valid range");
             return m_data[n];
-		}
+        }
 
-		reference at(size_type n)
-		{
+        reference at(size_type n)
+        {
             if (n >= m_size) throw stl::exception("out of valid range");
             return m_data[n];
-		}
+        }
 
         /* ISO/IEC 14882:2003  23.2.4 Class template vector */
         // 23.2.4.2 element access:
-		reference front()
-		{
+        reference front()
+        {
             if (!m_size) throw stl::exception("out of valid range");
             return m_data[0];
-		}
+        }
 
-		const_reference front() const
-		{
+        const_reference front() const
+        {
             if (!m_size) throw stl::exception("out of valid range");
             return m_data[0];
-		}
+        }
 
-		reference back()
-		{
+        reference back()
+        {
             if (!m_size) throw stl::exception("out of valid range");
             return m_data[m_size - 1];
-		}
+        }
 
-		const_reference back() const
-		{
+        const_reference back() const
+        {
             if (!m_size) throw stl::exception("out of valid range");
             return m_data[m_size - 1];
-		}
+        }
 
         /* $21.3.5 modifiers ( push_back ) */
-		void push_back(const T& x)
-		{
+        void push_back(const T& x)
+        {
             if (m_size == m_capacity)
             {
                 grow(m_capacity * 2);
@@ -1322,11 +1297,11 @@ namespace stl
 
             //eos<T>(m_size + 1);
             ++m_size;
-		}
+        }
 
         // 23.2.4.3 modifiers (vector):
-		void pop_back()
-		{
+        void pop_back()
+        {
             if (m_size)
             {
 /*FIXME: test the following
@@ -1345,7 +1320,7 @@ namespace stl
                 }
                 m_size = dist;
             }
-		}
+        }
 
     private:
         /*
@@ -1534,14 +1509,14 @@ namespace stl
 
     public:
 
-		iterator insert(iterator position, const T& x)
-		{
+        iterator insert(iterator position, const T& x)
+        {
             insert(position, 1, x);
             return position;
-		}
+        }
 
-		void insert(iterator position, size_type n, const T& x)
-		{
+        void insert(iterator position, size_type n, const T& x)
+        {
             if (this != position.m_cont) throw stl::exception("invalid iterator");
             if (position.m_pos > m_size) throw stl::exception("out of valid range");
 
@@ -1567,19 +1542,19 @@ namespace stl
                 }
                 m_size = dist;
             }
-		}
+        }
 
-		template <class InputIterator>
-		void insert(iterator position, InputIterator first, InputIterator last)
-		{
+        template <class InputIterator>
+        void insert(iterator position, InputIterator first, InputIterator last)
+        {
             if (position.m_cont != this)
                 throw stl::exception("invalid iterator");
 
             insert_impl(position.m_pos, first, last, typename stl::iterator_traits<InputIterator>::iterator_category());
-		}
+        }
 
-		iterator erase(iterator position)
-		{
+        iterator erase(iterator position)
+        {
             if (position.m_cont != this) throw stl::exception("invalid iterator");
             if (position.m_pos >= m_size) throw stl::exception("out of valid range");
 
@@ -1600,10 +1575,10 @@ namespace stl
             m_size = dist;
 
             return position;
-		}
+        }
 
-		iterator erase(iterator first, iterator last)
-		{
+        iterator erase(iterator first, iterator last)
+        {
             if (first.m_cont != this || last.m_cont != this)
                 throw stl::exception("invalid iterator");
 
@@ -1630,18 +1605,18 @@ namespace stl
             }
 
             return first;
-		}
+        }
 
-		void swap(container& ts)
-		{
+        void swap(container& ts)
+        {
             stl::swap<Allocator>(m_allocator, ts.m_allocator);
             stl::swap<pointer>(m_data, ts.m_data);
             stl::swap<size_type>(m_size, ts.m_size);
             stl::swap<size_type>(m_capacity, ts.m_capacity);
-		}
+        }
 
-		void clear()
-		{
+        void clear()
+        {
             //invalidate_iterators();
 
             //eos<T>(0);
@@ -1652,117 +1627,117 @@ namespace stl
                 stl::mem_destroy(&unused, m_size - dist, m_allocator);
             }
             m_size = dist;
-		}
+        }
 
         allocator_type get_allocator() const
         {
             return m_allocator;
         }
 
-//#if 1	// Until the ambiguity with global operators gets solved, execute this.
-//		bool operator==(const container& Right)
-//		{
-//			return vector_ops::operator ==(*this, Right);
-//		}
+//#if 1    // Until the ambiguity with global operators gets solved, execute this.
+//        bool operator==(const container& Right)
+//        {
+//            return vector_ops::operator ==(*this, Right);
+//        }
 //
-//		bool operator<(const container& Right)
-//		{
-//			return vector_ops::operator <(*this, Right);
-//		}
-//		
-//		bool operator!=(const container& Right)
-//		{
-//			return !(*this == Right);
-//		}
-//		
-//		bool operator>(const container& Right)
-//		{			
-//			return (*this != Right) && !(*this < Right);
-//		}
+//        bool operator<(const container& Right)
+//        {
+//            return vector_ops::operator <(*this, Right);
+//        }
+//        
+//        bool operator!=(const container& Right)
+//        {
+//            return !(*this == Right);
+//        }
+//        
+//        bool operator>(const container& Right)
+//        {            
+//            return (*this != Right) && !(*this < Right);
+//        }
 //
-//		bool operator>=(const container& Right)
-//		{
-//			return !(*this < Right);
-//		}
+//        bool operator>=(const container& Right)
+//        {
+//            return !(*this < Right);
+//        }
 //
-//		bool operator<=(const container& Right)
-//		{
-//			return (*this < Right) || (*this == Right);
-//		}
-//		
+//        bool operator<=(const container& Right)
+//        {
+//            return (*this < Right) || (*this == Right);
+//        }
+//        
 //#endif
-	};  // class
+    };  // class
 
     
-	template<typename T, typename Allocator>
-	inline bool operator== (
-		const stl::vector<T, Allocator>& Left,
-		const stl::vector<T, Allocator>& Right)
-	{
-		
-		typedef stl::vector<T, Allocator> Cont;
-		
-		typename Cont::size_type sz = Left.size();
-		if(sz != Right.size())
-			return false;
+    template<typename T, typename Allocator>
+    inline bool operator== (
+        const stl::vector<T, Allocator>& Left,
+        const stl::vector<T, Allocator>& Right)
+    {
+        
+        typedef stl::vector<T, Allocator> Cont;
+        
+        typename Cont::size_type sz = Left.size();
+        if(sz != Right.size())
+            return false;
 
-		typename Cont::size_type j = 0;
-		while(j < sz && Left[j] == Right[j])
-			++j;
+        typename Cont::size_type j = 0;
+        while(j < sz && Left[j] == Right[j])
+            ++j;
 
-		return j == sz;
-		
-	}
+        return j == sz;
+        
+    }
 
-	template<typename T, typename Allocator>
-	inline bool operator< (
-		const stl::vector<T, Allocator>& Left,
-		const stl::vector<T, Allocator>& Right)
-	{
-		return stl::lexicographical_compare(
-			Left.begin(), Left.end(), Right.begin(), Right.end());
-	}
+    template<typename T, typename Allocator>
+    inline bool operator< (
+        const stl::vector<T, Allocator>& Left,
+        const stl::vector<T, Allocator>& Right)
+    {
+        return stl::lexicographical_compare(
+            Left.begin(), Left.end(), Right.begin(), Right.end());
+    }
 
-	template<typename T, typename Allocator>
-	inline bool operator!= (
-		const stl::vector<T, Allocator>& Left,
-		const stl::vector<T, Allocator>& Right)
-	{
-		return !(Left == Right);
-	}
+    template<typename T, typename Allocator>
+    inline bool operator!= (
+        const stl::vector<T, Allocator>& Left,
+        const stl::vector<T, Allocator>& Right)
+    {
+        return !(Left == Right);
+    }
 
-	template<typename T, typename Allocator>
-	inline bool operator> (
-		const stl::vector<T, Allocator>& Left,
-		const stl::vector<T, Allocator>& Right)
-	{
-		return (Left != Right) && !(Left < Right);
-	}
+    template<typename T, typename Allocator>
+    inline bool operator> (
+        const stl::vector<T, Allocator>& Left,
+        const stl::vector<T, Allocator>& Right)
+    {
+        return (Left != Right) && !(Left < Right);
+    }
 
-	template<typename T, typename Allocator>
-	inline bool operator>= (
-		const stl::vector<T, Allocator>& Left,
-		const stl::vector<T, Allocator>& Right)
-	{
-		return !(Left < Right);
-	}
+    template<typename T, typename Allocator>
+    inline bool operator>= (
+        const stl::vector<T, Allocator>& Left,
+        const stl::vector<T, Allocator>& Right)
+    {
+        return !(Left < Right);
+    }
 
-	template<typename T, typename Allocator>
-	inline bool operator<= (
-		const stl::vector<T, Allocator>& Left,
-		const stl::vector<T, Allocator>& Right)
-	{
-		return (Left < Right) || (Left == Right);
-	}
+    template<typename T, typename Allocator>
+    inline bool operator<= (
+        const stl::vector<T, Allocator>& Left,
+        const stl::vector<T, Allocator>& Right)
+    {
+        return (Left < Right) || (Left == Right);
+    }
 
-	// specialized algorithms:
-	//template<typename T, typename Allocator>
-	//void swap (
-	//	stl::vector<T, Allocator>& Left, 
-	//	stl::vector<T, Allocator>& Right)
-	//{
-	//	return Left.swap(Right);
-	//}
+    // specialized algorithms:
+    //template<typename T, typename Allocator>
+    //void swap (
+    //    stl::vector<T, Allocator>& Left, 
+    //    stl::vector<T, Allocator>& Right)
+    //{
+    //    return Left.swap(Right);
+    //}
 
 }  // namespace
 

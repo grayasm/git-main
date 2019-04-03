@@ -73,7 +73,7 @@ namespace stl
     template<typename Allocator>
     void mem_alloc(short** dest, size_t cap, Allocator& allocator)
     {
-        *dest = (short*)::malloc(cap * sizeof(short));
+        *dest = allocator.allocate(cap, 0);
         if(*dest == 0) throw stl::exception("bad allocation");
     }
 
@@ -257,7 +257,7 @@ namespace stl
     template<typename T, typename Allocator>
     void mem_destroy(T** dest, size_t sz, Allocator& allocator)
     {
-	    for(size_t i=0; i < sz; ++i)
+	    for(size_t i = 0; i < sz; ++i)
 	    {		    
 		    allocator.destroy((*dest)+i);
 	    }
@@ -343,8 +343,8 @@ namespace stl
 
     //////////////////////////////////////////////////////////////////////////
     /* mem_copy */
-    template<typename T>
-    inline void mem_copy(T* dst, const T* src, size_t bytes)
+    template<typename T, typename Allocator>
+    inline void mem_copy(T* dst, const T* src, size_t bytes, Allocator& allocator)
     {
         size_t elems = bytes / sizeof(T);
         for(size_t i=0; i < elems; ++i)
@@ -352,33 +352,35 @@ namespace stl
             T* d1 = dst + i;
             const T* s1 = src + i;
             if(d1 != s1)
-            {				
-                d1->T::~T(); //faults when object at d1 was not yet created;
-                new(d1)T(*s1);
+            {		
+                allocator.destroy(d1);
+                allocator.construct(d1, *s1);
+                // d1->T::~T(); //faults when object at d1 was not yet created;
+                // new(d1)T(*s1);
             }
         }
     }
 
-    template<>
-    inline void mem_copy(char* dst, const char* src, size_t bytes)
+    template<typename Allocator>
+    inline void mem_copy(char* dst, const char* src, size_t bytes, Allocator&)
     {
         ::memcpy(dst, src, bytes);
     }
 
-    template<>
-    inline void mem_copy(signed char* dst, const signed char* src, size_t bytes)
+    template<typename Allocator>
+    inline void mem_copy(signed char* dst, const signed char* src, size_t bytes, Allocator&)
     {
         ::memcpy(dst, src, bytes);
     }
 
-    template<>
-    inline void mem_copy(unsigned char* dst, const unsigned char* src, size_t bytes)
+    template<typename Allocator>
+    inline void mem_copy(unsigned char* dst, const unsigned char* src, size_t bytes, Allocator&)
     {
         ::memcpy(dst, src, bytes);
     }
 
-    template<>
-    inline void mem_copy(wchar_t* dst, const wchar_t* src, size_t bytes)
+    template<typename Allocator>
+    inline void mem_copy(wchar_t* dst, const wchar_t* src, size_t bytes, Allocator&)
     {
         /*
           wchar_t *wmemcpy(wchar_t *dest,const wchar_t *src,size_t count);
@@ -388,73 +390,71 @@ namespace stl
         ::wmemcpy(dst, src, bytes / sizeof(wchar_t));
     }
 
-    template<>
-    inline void mem_copy(short* dst, const short* src, size_t bytes)
+    template<typename Allocator>
+    inline void mem_copy(short* dst, const short* src, size_t bytes, Allocator&)
     {
         ::memcpy(dst, src, bytes);
     }
 
-    template<>
-    inline void mem_copy(unsigned short* dst, const unsigned short* src, size_t bytes)
+    template<typename Allocator>
+    inline void mem_copy(unsigned short* dst, const unsigned short* src, size_t bytes, Allocator&)
     {
         ::memcpy(dst, src, bytes);
     }
 
-    template<>
-    inline void mem_copy(int* dst, const int* src, size_t bytes)
+    template<typename Allocator>
+    inline void mem_copy(int* dst, const int* src, size_t bytes, Allocator&)
     {
         ::memcpy(dst, src, bytes);
     }
 
-    template<>
-    inline void mem_copy(unsigned int* dst, const unsigned int* src, size_t bytes)
+    template<typename Allocator>
+    inline void mem_copy(unsigned int* dst, const unsigned int* src, size_t bytes, Allocator&)
     {
         ::memcpy(dst, src, bytes);
     }
 
-    template<>
-    inline void mem_copy(long* dst, const long* src, size_t bytes)
+    template<typename Allocator>
+    inline void mem_copy(long* dst, const long* src, size_t bytes, Allocator&)
     {
         ::memcpy(dst, src, bytes);
     }
 
-    template<>
-    inline void mem_copy(unsigned long* dst, const unsigned long* src, size_t bytes)
+    template<typename Allocator>
+    inline void mem_copy(unsigned long* dst, const unsigned long* src, size_t bytes, Allocator&)
     {
         ::memcpy(dst, src, bytes);
     }
 
-    template<>
-    inline void mem_copy(double* dst, const double* src, size_t bytes)
+    template<typename Allocator>
+    inline void mem_copy(double* dst, const double* src, size_t bytes, Allocator&)
     {
         ::memcpy(dst, src, bytes);
     }
 
-    template<>
-    inline void mem_copy(float* dst, const float* src, size_t bytes)
+    template<typename Allocator>
+    inline void mem_copy(float* dst, const float* src, size_t bytes, Allocator&)
     {
         ::memcpy(dst, src, bytes);
     }
 
-    template<>
-    inline void mem_copy(long long* dst, const long long* src, size_t bytes)
+    template<typename Allocator>
+    inline void mem_copy(long long* dst, const long long* src, size_t bytes, Allocator&)
     {
         ::memcpy(dst, src, bytes);
     }
 
-    template<>
-    inline void mem_copy(unsigned long long* dst, const unsigned long long* src, size_t bytes)
+    template<typename Allocator>
+    inline void mem_copy(unsigned long long* dst, const unsigned long long* src, size_t bytes, Allocator&)
     {
         ::memcpy(dst, src, bytes);
     }
 
     //////////////////////////////////////////////////////////////////////////
     /* mem_move */
-    template<typename T>
-    inline void mem_move(T* dst, const T* src, size_t bytes)
+    template<typename T, typename Allocator>
+    inline void mem_move(T* dst, const T* src, size_t bytes, Allocator& allocator)
     {
-		//TODO: test case for non_pod_type with overlapped code
-
         size_t elems = bytes / sizeof(T);
         if(src + elems < dst || dst + elems < src)
         {
@@ -463,8 +463,11 @@ namespace stl
             {
                 T* d1 = dst + i;
                 const T* s1 = src + i;
-                d1->T::~T();//faults when object at d1 was not yet created;
-                new(d1)T(*s1);
+                allocator.destroy(d1);
+                allocator.construct(d1, *s1);
+
+                // d1->T::~T();//faults when object at d1 was not yet created;
+                // new(d1)T(*s1);
             }
         }
         else if(src > dst)
@@ -474,8 +477,11 @@ namespace stl
             {
                 T* d1 = dst + i;
                 const T* s1 = src + i;
-                d1->T::~T();//faults when object at d1 was not yet created;
-                new(d1)T(*s1);
+                allocator.destroy(d1);
+                allocator.construct(d1, *s1);
+
+                // d1->T::~T();//faults when object at d1 was not yet created;
+                // new(d1)T(*s1);
             }
         }
         else if(dst > src)
@@ -485,28 +491,35 @@ namespace stl
             {
                 T* d1 = dst + i;
                 const T* s1 = src + i;
-                d1->T::~T();//faults when object at d1 was not yet created;
-                new(d1)T(*s1);
+                allocator.destroy(d1);
+                allocator.construct(d1, *s1);
+
+                // d1->T::~T();//faults when object at d1 was not yet created;
+                // new(d1)T(*s1);
             }
         }
     }
 
-    inline void mem_move(char* dst, const char* src, size_t bytes)
+    template<typename Allocator>
+    inline void mem_move(char* dst, const char* src, size_t bytes, Allocator&)
     {
         ::memmove(dst, src, bytes);
     }
 
-    inline void mem_move(signed char* dst, const signed char* src, size_t bytes)
+    template<typename Allocator>
+    inline void mem_move(signed char* dst, const signed char* src, size_t bytes, Allocator&)
     {
         ::memmove(dst, src, bytes);
     }
 
-    inline void mem_move(unsigned char* dst, const unsigned char* src, size_t bytes)
+    template<typename Allocator>
+    inline void mem_move(unsigned char* dst, const unsigned char* src, size_t bytes, Allocator&)
     {
         ::memmove(dst, src, bytes);
     }
 
-    inline void mem_move(wchar_t* dst, const wchar_t* src, size_t bytes)
+    template<typename Allocator>
+    inline void mem_move(wchar_t* dst, const wchar_t* src, size_t bytes, Allocator&)
     {
         /*
           wchar_t *wmemmove(wchar_t *dest, const wchar_t *src, size_t count);
@@ -516,52 +529,62 @@ namespace stl
         ::wmemmove(dst, src, bytes / sizeof(wchar_t));
     }
 
-    inline void mem_move(short* dst, const short* src, size_t bytes)
+    template<typename Allocator>
+    inline void mem_move(short* dst, const short* src, size_t bytes, Allocator&)
     {
         ::memmove(dst, src, bytes);
     }
 
-    inline void mem_move(unsigned short* dst, const unsigned short* src, size_t bytes)
+    template<typename Allocator>
+    inline void mem_move(unsigned short* dst, const unsigned short* src, size_t bytes, Allocator&)
     {
         ::memmove(dst, src, bytes);
     }
 
-    inline void mem_move(int* dst, const int* src, size_t bytes)
+    template<typename Allocator>
+    inline void mem_move(int* dst, const int* src, size_t bytes, Allocator&)
     {
         ::memmove(dst, src, bytes);
     }
 
-    inline void mem_move(unsigned int* dst, const unsigned int* src, size_t bytes)
+    template<typename Allocator>
+    inline void mem_move(unsigned int* dst, const unsigned int* src, size_t bytes, Allocator&)
     {
         ::memmove(dst, src, bytes);
     }
 
-    inline void mem_move(long* dst, const long* src, size_t bytes)
+    template<typename Allocator>
+    inline void mem_move(long* dst, const long* src, size_t bytes, Allocator&)
     {
         ::memmove(dst, src, bytes);
     }
 
-    inline void mem_move(unsigned long* dst, const unsigned long* src, size_t bytes)
+    template<typename Allocator>
+    inline void mem_move(unsigned long* dst, const unsigned long* src, size_t bytes, Allocator&)
     {
         ::memmove(dst, src, bytes);
     }
 
-    inline void mem_move(double* dst, const double* src, size_t bytes)
+    template<typename Allocator>
+    inline void mem_move(double* dst, const double* src, size_t bytes, Allocator&)
     {
         ::memmove(dst, src, bytes);
     }
 
-    inline void mem_move(float* dst, const float* src, size_t bytes)
+    template<typename Allocator>
+    inline void mem_move(float* dst, const float* src, size_t bytes, Allocator&)
     {
         ::memmove(dst, src, bytes);
     }
 
-    inline void mem_move(long long* dst, const long long* src, size_t bytes)
+    template<typename Allocator>
+    inline void mem_move(long long* dst, const long long* src, size_t bytes, Allocator&)
     {
         ::memmove(dst, src, bytes);
     }
 
-    inline void mem_move(unsigned long long* dst, const unsigned long long* src, size_t bytes)
+    template<typename Allocator>
+    inline void mem_move(unsigned long long* dst, const unsigned long long* src, size_t bytes, Allocator&)
     {
         ::memmove(dst, src, bytes);
     }
@@ -703,7 +726,7 @@ namespace stl
     */
 
     template<typename T, typename Allocator>
-    void mem_realloc(T** dest, size_t cap, T* src, size_t size, Allocator& allocator)
+    void mem_realloc(T** dest, size_t cap, T* src, size_t size, Allocator& alloc)
     {
         if(cap <= size)
         {
@@ -712,42 +735,50 @@ namespace stl
         else
         {
             // buy more memory
-            *dest = allocator.allocate(cap, 0);
+            *dest = alloc.allocate(cap, src);
             if(*dest == 0) throw stl::exception("bad allocation");
 
-            if(src)
+            if(*dest != src)
             {
-                for(size_t i=0; i < size; ++i)
+                for(size_t i = 0; i < size; ++i)
                 {
                     T* d1 = (*dest) + i;
                     T* s1 = src + i;
-                    new(d1)T(*s1);
-                    s1->T::~T();
+                    alloc.construct(d1, *s1);
+                    // new(d1)T(*s1);
+                    // s1->T::~T();
+                    alloc.destroy(s1);
                 }
 
                 // release memory at src
-                allocator.deallocate(src, 0);
+                alloc.deallocate(src, 0);
             }
         }
     }
 
     template<typename Allocator>
-    void mem_realloc(char** dest, size_t cap, char* src, size_t size, Allocator& /*allocator*/)
+    void mem_realloc(char** dest, size_t cap, char* src, size_t size, Allocator& alloc)
     {
         if(cap <= size)
         {
             *dest = src;
         }
         else
-        {			
-            /* src must be returned by an earlier call to malloc(), calloc() or realloc() */
-            *dest = (char*)::realloc(src, cap * sizeof(char));
-            if(*dest == 0) throw stl::exception("bad allocation");
+        {
+            /* src must be returned by an earlier call to alloc.allocate() */
+            *dest = alloc.allocate(cap, src);
+            if (*dest == 0) throw stl::exception("bad allocation");
+            if (*dest != src)
+            {
+                mem_copy<char>(*dest, src, size);
+                // release memory at src
+                alloc.deallocate(src);
+            }
         }
     }
 
     template<typename Allocator>
-    void mem_realloc(signed char** dest, size_t cap, signed char* src, size_t size, Allocator& /*allocator*/)
+    void mem_realloc(signed char** dest, size_t cap, signed char* src, size_t size, Allocator& alloc)
     {
         if(cap <= size)
         {

@@ -10,22 +10,18 @@
 
 int main()
 {
-    stl::vector<int> vi;
-    for (int i = 9; i > 0; i--)
-        vi.push_back(i);
+    stl::allocator<int> a;
+    int* p = a.allocate(2);
+    for (int i = 0; i < 2; ++i)
+        p[i] = i;
 
-    stl::vector<int> v2;
-    stl::vector<int>::reverse_iterator rit1, rit2;
-    rit1 = vi.rbegin();
-    rit2 = vi.rbegin() + 5;
+    p = a.allocate(10, p);
+    if (p)
+    for (int i = 2; i < 10; i++)
+        p[i] = i * 10;
 
-    v2.assign(rit1, rit2);
-
-    size_t sz = v2.size();
-    for (int i = 0; i < v2.size(); ++i)
-        printf("%d ", v2[i]);
-
-    printf("\n");
-
+    for (int i = 0; i < 10; i++)
+        printf("%d ", p[i]);
+    
     return 0;
 }
