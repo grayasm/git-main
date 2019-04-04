@@ -229,14 +229,12 @@ namespace stl
         
         pointer allocate(size_type n, allocator<void>::const_pointer  hint = 0)
         {
-            /*    Buy memory, no ctor is called.
-            *
-            *    The advantage of ::realloc used in memmanip.hpp is of resizing
-            *    in place, without copying. It requires however a pointer allocated
-            *    with malloc,calloc,realloc.
-            *    This forbids the use of operator new and delete as below:
-            *       return (pointer) ::operator new(n * sizeof(value_type));
-            *       ::operator delete(p);
+            /*  hint: 
+            Either 0 or a value previously obtained by another call to allocate
+            and not yet freed with deallocate. When it is not 0, this value may
+            be used as a hint to improve performance by allocating the new block
+            near the one specified. The address of an adjacent element is often
+            a good choice.
             */
 
             if (n > 0)

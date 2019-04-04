@@ -33,224 +33,31 @@ namespace stl
     //////////////////////////////////////////////////////////////////////////
     /*
       mem_alloc - buy memory, no ctor called
-      this is left here only for symetry of alloc,*realloc*,free
+      There is no need to specialize for <char>, <unsigned char> or similar.
+      Better: use the underling code directly where you need it.
+
+      template<typename T, typename Allocator>
+      void mem_alloc(T** dest, size_t cap, Allocator& allocator)
+      {
+            *dest = allocator.allocate(cap, 0);
+            if(*dest == 0) throw stl::exception("bad allocation");
+      }
     */
-    template<typename T, typename Allocator>
-    void mem_alloc(T** dest, size_t cap, Allocator& allocator)
-    {
-        *dest = allocator.allocate(cap, 0);
-        if(*dest == 0) throw stl::exception("bad allocation");
-    }
-
-    template<typename Allocator>
-    void mem_alloc(char** dest, size_t cap, Allocator& allocator)
-    {
-        *dest = allocator.allocate(cap, 0);
-        if(*dest == 0) throw stl::exception("bad allocation");
-    }
-
-    template<typename Allocator>
-    void mem_alloc(signed char** dest, size_t cap, Allocator& allocator)
-    {
-        *dest = allocator.allocate(cap, 0);
-        if(*dest == 0) throw stl::exception("bad allocation");
-    }
-
-    template<typename Allocator>
-    void mem_alloc(unsigned char** dest, size_t cap, Allocator& allocator)
-    {
-        *dest = allocator.allocate(cap, 0);
-        if(*dest == 0) throw stl::exception("bad allocation");
-    }
-
-    template<typename Allocator>
-    void mem_alloc(wchar_t** dest, size_t cap, Allocator& allocator)
-    {
-        *dest = allocator.allocate(cap, 0);
-        if(*dest == 0) throw stl::exception("bad allocation");
-    }
-
-    template<typename Allocator>
-    void mem_alloc(short** dest, size_t cap, Allocator& allocator)
-    {
-        *dest = allocator.allocate(cap, 0);
-        if(*dest == 0) throw stl::exception("bad allocation");
-    }
-
-
-    template<typename Allocator>
-    void mem_alloc(unsigned short** dest, size_t cap, Allocator& allocator)
-    {
-        *dest = allocator.allocate(cap, 0);
-        if(*dest == 0) throw stl::exception("bad allocation");
-    }
-
-
-    template<typename Allocator>
-    void mem_alloc(int** dest, size_t cap, Allocator& allocator)
-    {
-        *dest = allocator.allocate(cap, 0);
-        if(*dest == 0) throw stl::exception("bad allocation");
-    }
-
-
-    template<typename Allocator>
-    void mem_alloc(unsigned int** dest, size_t cap, Allocator& allocator)
-    {
-        *dest = allocator.allocate(cap, 0);
-        if(*dest == 0) throw stl::exception("bad allocation");
-    }
-
-
-    template<typename Allocator>
-    void mem_alloc(long** dest, size_t cap, Allocator& allocator)
-    {
-        *dest = allocator.allocate(cap, 0);
-        if(*dest == 0) throw stl::exception("bad allocation");
-    }
-
-
-    template<typename Allocator>
-    void mem_alloc(unsigned long** dest, size_t cap, Allocator& allocator)
-    {
-        *dest = allocator.allocate(cap, 0);
-        if(*dest == 0) throw stl::exception("bad allocation");
-    }
-
-
-    template<typename Allocator>
-    void mem_alloc(double** dest, size_t cap, Allocator& allocator)
-    {
-        *dest = allocator.allocate(cap, 0);
-        if(*dest == 0) throw stl::exception("bad allocation");
-    }
-
-
-    template<typename Allocator>
-    void mem_alloc(float** dest, size_t cap, Allocator& allocator)
-    {
-        *dest = allocator.allocate(cap, 0);
-        if(*dest == 0) throw stl::exception("bad allocation");
-    }
-
-    template<typename Allocator>
-    void mem_alloc(long long** dest, size_t cap, Allocator& allocator)
-    {
-        *dest = allocator.allocate(cap, 0);
-        if(*dest == 0) throw stl::exception("bad allocation");
-    }
-
-    template<typename Allocator>
-    void mem_alloc(unsigned long long** dest, size_t cap, Allocator& allocator)
-    {
-        *dest = allocator.allocate(cap, 0);
-        if(*dest == 0) throw stl::exception("bad allocation");
-    }
-
-
+    
     //////////////////////////////////////////////////////////////////////////
     /*
       mem_free - free memory, no dtor is called
-      this is left only for symetry of alloc,*realloc*,free
+      There is no need to specialize for <char>, <unsigned char> or similar.
+      Same: use the underling code directly where you need it.
+
+      template<typename T, typename Allocator>
+      void mem_free(T** dest, Allocator& allocator)
+      {
+            allocator.deallocate(*dest, 0);
+      }
     */
-    template<typename T, typename Allocator>
-    void mem_free(T** dest, Allocator& allocator)
-    {
-        allocator.deallocate(*dest, 0);
-    }
-
-    template<typename Allocator>
-    void mem_free(char** dest, Allocator& allocator)
-    {
-        allocator.deallocate(*dest, 0);
-    }
-
-    template<typename Allocator>
-    void mem_free(signed char** dest, Allocator& allocator)
-    {
-        allocator.deallocate(*dest, 0);
-    }
-
-    template<typename Allocator>
-    void mem_free(unsigned char** dest, Allocator& allocator)
-    {
-        allocator.deallocate(*dest, 0);
-    }
-
-    template<typename Allocator>
-    void mem_free(wchar_t** dest, Allocator& allocator)
-    {
-        allocator.deallocate(*dest, 0);
-    }
-
-    template<typename Allocator>
-    void mem_free(short** dest, Allocator& allocator)
-    {
-        allocator.deallocate(*dest, 0);
-    }
-
-
-    template<typename Allocator>
-    void mem_free(unsigned short** dest, Allocator& allocator)
-    {
-        allocator.deallocate(*dest, 0);
-    }
-
-
-    template<typename Allocator>
-    void mem_free(int** dest, Allocator& allocator)
-    {
-        allocator.deallocate(*dest, 0);
-    }
-
-
-    template<typename Allocator>
-    void mem_free(unsigned int** dest, Allocator& allocator)
-    {
-        allocator.deallocate(*dest, 0);
-    }
-
-
-    template<typename Allocator>
-    void mem_free(long** dest, Allocator& allocator)
-    {
-        allocator.deallocate(*dest, 0);
-    }
-
-
-    template<typename Allocator>
-    void mem_free(unsigned long** dest, Allocator& allocator)
-    {
-        allocator.deallocate(*dest, 0);
-    }
-
-
-    template<typename Allocator>
-    void mem_free(double** dest, Allocator& allocator)
-    {
-        allocator.deallocate(*dest, 0);
-    }
-
-
-    template<typename Allocator>
-    void mem_free(float** dest, Allocator& allocator)
-    {
-        allocator.deallocate(*dest, 0);
-    }
-
-    template<typename Allocator>
-    void mem_free(long long** dest, Allocator& allocator)
-    {
-        allocator.deallocate(*dest, 0);
-    }
-
-    template<typename Allocator>
-    void mem_free(unsigned long long** dest, Allocator& allocator)
-    {
-        allocator.deallocate(*dest, 0);
-    }
-
-	//////////////////////////////////////////////////////////////////////////
+    
+    //////////////////////////////////////////////////////////////////////////
     /*
       mem_destroy - call each element destructor, does not free memory
     */
@@ -258,7 +65,8 @@ namespace stl
     void mem_destroy(T** dest, size_t sz, Allocator& allocator)
     {
 	    for(size_t i = 0; i < sz; ++i)
-	    {		    
+	    {
+            // p->T::~T();
 		    allocator.destroy((*dest)+i);
 	    }
     }
@@ -353,10 +161,8 @@ namespace stl
             const T* s1 = src + i;
             if(d1 != s1)
             {		
-                allocator.destroy(d1);
+                allocator.destroy(d1);//faults when object at d1 was not yet created;
                 allocator.construct(d1, *s1);
-                // d1->T::~T(); //faults when object at d1 was not yet created;
-                // new(d1)T(*s1);
             }
         }
     }
@@ -463,11 +269,8 @@ namespace stl
             {
                 T* d1 = dst + i;
                 const T* s1 = src + i;
-                allocator.destroy(d1);
+                allocator.destroy(d1); //faults when object at d1 was not yet created;
                 allocator.construct(d1, *s1);
-
-                // d1->T::~T();//faults when object at d1 was not yet created;
-                // new(d1)T(*s1);
             }
         }
         else if(src > dst)
@@ -477,11 +280,8 @@ namespace stl
             {
                 T* d1 = dst + i;
                 const T* s1 = src + i;
-                allocator.destroy(d1);
+                allocator.destroy(d1); //faults when object at d1 was not yet created;
                 allocator.construct(d1, *s1);
-
-                // d1->T::~T();//faults when object at d1 was not yet created;
-                // new(d1)T(*s1);
             }
         }
         else if(dst > src)
@@ -491,11 +291,8 @@ namespace stl
             {
                 T* d1 = dst + i;
                 const T* s1 = src + i;
-                allocator.destroy(d1);
+                allocator.destroy(d1); //faults when object at d1 was not yet created;
                 allocator.construct(d1, *s1);
-
-                // d1->T::~T();//faults when object at d1 was not yet created;
-                // new(d1)T(*s1);
             }
         }
     }
@@ -590,7 +387,15 @@ namespace stl
     }
 
     //////////////////////////////////////////////////////////////////////////
-    /* memset */
+    /*  memset: void * memset ( void * ptr, int value, size_t num );
+        
+        Sets the first num bytes of the block of memory pointed by ptr
+        to the specified value (interpreted as an unsigned char).
+
+        !!Do not specialize for anything other than <char>, <unsigned char>
+        and <wchar_t> as the ::memset's value is casted to unsigned char.
+        You cannot memset bigger data type than that.
+     */
     template<typename T>
     inline void mem_set(T* dst, T val, size_t bytes)
     {
@@ -602,11 +407,6 @@ namespace stl
     template<>
     inline void mem_set(char* dst, char val, size_t bytes)
     {
-        /*
-            void * memset ( void * ptr, int value, size_t num );
-            Sets the first num bytes of the block of memory pointed by ptr
-            to the specified value (interpreted as an unsigned char).
-        */
         ::memset(dst, val, bytes);
     }
 
@@ -627,90 +427,6 @@ namespace stl
         ::wmemset(dst, val, bytes / sizeof(wchar_t));
     }
 
-    template<>
-    inline void mem_set(short* dst, short val, size_t bytes)
-    {
-        size_t elems = bytes / sizeof(short);
-        for (size_t i = 0; i < elems; ++i)
-            dst[i] = val;
-    }
-
-    template<>
-    inline void mem_set(unsigned short* dst, unsigned short val, size_t bytes)
-    {
-        size_t elems = bytes / sizeof(unsigned short);
-        for (size_t i = 0; i < elems; ++i)
-            dst[i] = val;
-    }
-
-    template<>
-    inline void mem_set(int* dst, int val, size_t bytes)
-    {
-        size_t elems = bytes / sizeof(int);
-        for (size_t i = 0; i < elems; ++i)
-            dst[i] = val;
-    }
-
-    template<>
-    inline void mem_set(unsigned int* dst, unsigned int val, size_t bytes)
-    {
-        size_t elems = bytes / sizeof(unsigned int);
-        for (size_t i = 0; i < elems; ++i)
-            dst[i] = val;
-    }
-
-    template<>
-    inline void mem_set(long* dst, long val, size_t bytes)
-    {
-        size_t elems = bytes / sizeof(long);
-        for (size_t i = 0; i < elems; ++i)
-            dst[i] = val;
-    }
-
-    template<>
-    inline void mem_set(unsigned long* dst, unsigned long val, size_t bytes)
-    {
-        size_t elems = bytes / sizeof(unsigned long);
-        for (size_t i = 0; i < elems; ++i)
-            dst[i] = val;
-    }
-
-    template<>
-    inline void mem_set(double* dst, double val, size_t bytes)
-    {
-        size_t elems = bytes / sizeof(double);
-        for (size_t i = 0; i < elems; ++i)
-            dst[i] = val;
-    }
-
-    template<>
-    inline void mem_set(float* dst, float val, size_t bytes)
-    {
-        size_t elems = bytes / sizeof(float);
-        for (size_t i = 0; i < elems; ++i)
-            dst[i] = val;
-    }
-
-    template<>
-    inline void mem_set(long long* dst, long long val, size_t bytes)
-    {
-        size_t elems = bytes / sizeof(long long);
-        for (size_t i = 0; i < elems; ++i)
-            dst[i] = val;
-    }
-
-    template<>
-    inline void mem_set(unsigned long long* dst, unsigned long long val, size_t bytes)
-    {
-        size_t elems = bytes / sizeof(unsigned long long);
-        for (size_t i = 0; i < elems; ++i)
-            dst[i] = val;
-    }
-
-
-    //////////////////////////////////////////////////////////////////////////
-
-
     //////////////////////////////////////////////////////////////////////////
     /*
       mem_realloc - buy more memory, and relocate to new address
@@ -726,7 +442,7 @@ namespace stl
     */
 
     template<typename T, typename Allocator>
-    void mem_realloc(T** dest, size_t cap, T* src, size_t size, Allocator& alloc)
+    void mem_realloc(T** dest, size_t cap, T* src, size_t size, Allocator& allocator)
     {
         if(cap <= size)
         {
@@ -735,7 +451,7 @@ namespace stl
         else
         {
             // buy more memory
-            *dest = alloc.allocate(cap, src);
+            *dest = allocator.allocate(cap, src);
             if(*dest == 0) throw stl::exception("bad allocation");
 
             if(*dest != src)
@@ -744,20 +460,18 @@ namespace stl
                 {
                     T* d1 = (*dest) + i;
                     T* s1 = src + i;
-                    alloc.construct(d1, *s1);
-                    // new(d1)T(*s1);
-                    // s1->T::~T();
-                    alloc.destroy(s1);
+                    allocator.construct(d1, *s1);
+                    allocator.destroy(s1);
                 }
 
                 // release memory at src
-                alloc.deallocate(src, 0);
+                allocator.deallocate(src, 0);
             }
         }
     }
 
     template<typename Allocator>
-    void mem_realloc(char** dest, size_t cap, char* src, size_t size, Allocator& alloc)
+    void mem_realloc(char** dest, size_t cap, char* src, size_t size, Allocator& allocator)
     {
         if(cap <= size)
         {
@@ -766,216 +480,308 @@ namespace stl
         else
         {
             /* src must be returned by an earlier call to alloc.allocate() */
-            *dest = alloc.allocate(cap, src);
+            *dest = allocator.allocate(cap, src);
             if (*dest == 0) throw stl::exception("bad allocation");
+
             if (*dest != src)
             {
-                mem_copy<char>(*dest, src, size);
+                ::memcpy(*dest, src, size * sizeof(char));
                 // release memory at src
-                alloc.deallocate(src);
+                allocator.deallocate(src, 0);
             }
         }
     }
 
     template<typename Allocator>
-    void mem_realloc(signed char** dest, size_t cap, signed char* src, size_t size, Allocator& alloc)
+    void mem_realloc(signed char** dest, size_t cap, signed char* src, size_t size, Allocator& allocator)
     {
-        if(cap <= size)
+        if (cap <= size)
         {
             *dest = src;
         }
         else
         {
-            /* src must be returned by an earlier call to malloc(), calloc() or realloc() */
-            *dest = (signed char*)::realloc(src, cap * sizeof(signed char));
-            if(*dest == 0) throw stl::exception("bad allocation");
+            /* src must be returned by an earlier call to alloc.allocate() */
+            *dest = allocator.allocate(cap, src);
+            if (*dest == 0) throw stl::exception("bad allocation");
+
+            if (*dest != src)
+            {
+                ::memcpy(*dest, src, size * sizeof(signed char));
+                // release memory at src
+                allocator.deallocate(src, 0);
+            }
+        }
+    }
+    
+    template<typename Allocator>
+    void mem_realloc(unsigned char** dest, size_t cap, unsigned char* src, size_t size, Allocator& allocator)
+    {
+        if (cap <= size)
+        {
+            *dest = src;
+        }
+        else
+        {
+            /* src must be returned by an earlier call to alloc.allocate() */
+            *dest = allocator.allocate(cap, src);
+            if (*dest == 0) throw stl::exception("bad allocation");
+
+            if (*dest != src)
+            {
+                ::memcpy(*dest, src, size * sizeof(unsigned char));
+                // release memory at src
+                allocator.deallocate(src, 0);
+            }
         }
     }
 
     template<typename Allocator>
-    void mem_realloc(unsigned char** dest, size_t cap, unsigned char* src, size_t size, Allocator& /*allocator*/)
+    void mem_realloc(wchar_t** dest, size_t cap, wchar_t* src, size_t size, Allocator& allocator)
     {
-        if(cap <= size)
+        if (cap <= size)
         {
             *dest = src;
         }
         else
         {
-            /* src must be returned by an earlier call to malloc(), calloc() or realloc() */
-            *dest = (unsigned char*)::realloc(src, cap * sizeof(unsigned char));
-            if(*dest == 0) throw stl::exception("bad allocation");
+            /* src must be returned by an earlier call to alloc.allocate() */
+            *dest = allocator.allocate(cap, src);
+            if (*dest == 0) throw stl::exception("bad allocation");
+
+            if (*dest != src)
+            {
+                ::memcpy(*dest, src, size * sizeof(wchar_t));
+                // release memory at src
+                allocator.deallocate(src, 0);
+            }
         }
     }
 
     template<typename Allocator>
-    void mem_realloc(wchar_t** dest, size_t cap, wchar_t* src, size_t size, Allocator& /*allocator*/)
+    void mem_realloc(short** dest, size_t cap, short* src, size_t size, Allocator& allocator)
     {
-        if(cap <= size)
+        if (cap <= size)
         {
             *dest = src;
         }
         else
         {
-            /* src must be returned by an earlier call to malloc(), calloc() or realloc() */
-            *dest = (wchar_t*)::realloc(src, cap * sizeof(wchar_t));
-            if(*dest == 0) throw stl::exception("bad allocation");
-        }
-    }
+            /* src must be returned by an earlier call to alloc.allocate() */
+            *dest = allocator.allocate(cap, src);
+            if (*dest == 0) throw stl::exception("bad allocation");
 
-    template<typename Allocator>
-    void mem_realloc(short** dest, size_t cap, short* src, size_t size, Allocator& /*allocator*/)
-    {
-        if(cap <= size)
-        {
-            *dest = src;
-        }
-        else
-        {
-            /* src must be returned by an earlier call to malloc(), calloc() or realloc() */
-            *dest = (short*)::realloc(src, cap * sizeof(short));
-            if(*dest == 0) throw stl::exception("bad allocation");
-        }
-    }
-
-
-    template<typename Allocator>
-    void mem_realloc(unsigned short** dest, size_t cap, unsigned short* src, size_t size, Allocator& /*allocator*/)
-    {
-        if(cap <= size)
-        {
-            *dest = src;
-        }
-        else
-        {
-            /* src must be returned by an earlier call to malloc(), calloc() or realloc() */
-            *dest = (unsigned short*)::realloc(src, cap * sizeof(unsigned short));
-            if(*dest == 0) throw stl::exception("bad allocation");
-        }
-    }
-
-
-    template<typename Allocator>
-    void mem_realloc(int** dest, size_t cap, int* src, size_t size, Allocator& /*allocator*/)
-    {
-        if(cap <= size)
-        {
-            *dest = src;
-        }
-        else
-        {
-            /* src must be returned by an earlier call to malloc(), calloc() or realloc() */
-            *dest = (int*)::realloc(src, cap * sizeof(int));
-            if(*dest == 0) throw stl::exception("bad allocation");
+            if (*dest != src)
+            {
+                ::memcpy(*dest, src, size * sizeof(short));
+                // release memory at src
+                allocator.deallocate(src, 0);
+            }
         }
     }
 
 
     template<typename Allocator>
-    void mem_realloc(unsigned int** dest, size_t cap, unsigned int* src, size_t size, Allocator& /*allocator*/)
+    void mem_realloc(unsigned short** dest, size_t cap, unsigned short* src, size_t size, Allocator& allocator)
     {
-        if(cap <= size)
+        if (cap <= size)
         {
             *dest = src;
         }
         else
         {
-            /* src must be returned by an earlier call to malloc(), calloc() or realloc() */
-            *dest = (unsigned int*)::realloc(src, cap * sizeof(unsigned int));
-            if(*dest == 0) throw stl::exception("bad allocation");
+            /* src must be returned by an earlier call to alloc.allocate() */
+            *dest = allocator.allocate(cap, src);
+            if (*dest == 0) throw stl::exception("bad allocation");
+
+            if (*dest != src)
+            {
+                ::memcpy(*dest, src, size * sizeof(unsigned short));
+                // release memory at src
+                allocator.deallocate(src, 0);
+            }
         }
     }
 
 
     template<typename Allocator>
-    void mem_realloc(long** dest, size_t cap, long* src, size_t size, Allocator& /*allocator*/)
+    void mem_realloc(int** dest, size_t cap, int* src, size_t size, Allocator& allocator)
     {
-        if(cap <= size)
+        if (cap <= size)
         {
             *dest = src;
         }
         else
         {
-            /* src must be returned by an earlier call to malloc(), calloc() or realloc() */
-            *dest = (long*)::realloc(src, cap * sizeof(long));
-            if(*dest == 0) throw stl::exception("bad allocation");
+            /* src must be returned by an earlier call to alloc.allocate() */
+            *dest = allocator.allocate(cap, src);
+            if (*dest == 0) throw stl::exception("bad allocation");
+
+            if (*dest != src)
+            {
+                ::memcpy(*dest, src, size * sizeof(int));
+                // release memory at src
+                allocator.deallocate(src, 0);
+            }
         }
     }
 
 
     template<typename Allocator>
-    void mem_realloc(unsigned long** dest, size_t cap, unsigned long* src, size_t size, Allocator& /*allocator*/)
+    void mem_realloc(unsigned int** dest, size_t cap, unsigned int* src, size_t size, Allocator& allocator)
     {
-        if(cap <= size)
+        if (cap <= size)
         {
             *dest = src;
         }
         else
         {
-            /* src must be returned by an earlier call to malloc(), calloc() or realloc() */
-            *dest = (unsigned long*)::realloc(src, cap * sizeof(unsigned long));
-            if(*dest == 0) throw stl::exception("bad allocation");
+            /* src must be returned by an earlier call to alloc.allocate() */
+            *dest = allocator.allocate(cap, src);
+            if (*dest == 0) throw stl::exception("bad allocation");
+
+            if (*dest != src)
+            {
+                ::memcpy(*dest, src, size * sizeof(unsigned int));
+                // release memory at src
+                allocator.deallocate(src, 0);
+            }
         }
     }
 
 
     template<typename Allocator>
-    void mem_realloc(double** dest, size_t cap, double* src, size_t size, Allocator& /*allocator*/)
+    void mem_realloc(long** dest, size_t cap, long* src, size_t size, Allocator& allocator)
     {
-        if(cap <= size)
+        if (cap <= size)
         {
             *dest = src;
         }
         else
         {
-            /* src must be returned by an earlier call to malloc(), calloc() or realloc() */
-            *dest = (double*)::realloc(src, cap * sizeof(double));
-            if(*dest == 0) throw stl::exception("bad allocation");
+            /* src must be returned by an earlier call to alloc.allocate() */
+            *dest = allocator.allocate(cap, src);
+            if (*dest == 0) throw stl::exception("bad allocation");
+
+            if (*dest != src)
+            {
+                ::memcpy(*dest, src, size * sizeof(long));
+                // release memory at src
+                allocator.deallocate(src, 0);
+            }
         }
     }
 
 
     template<typename Allocator>
-    void mem_realloc(float** dest, size_t cap, float* src, size_t size, Allocator& /*allocator*/)
+    void mem_realloc(unsigned long** dest, size_t cap, unsigned long* src, size_t size, Allocator& allocator)
     {
-        if(cap <= size)
+        if (cap <= size)
         {
             *dest = src;
         }
         else
         {
-            /* src must be returned by an earlier call to malloc(), calloc() or realloc() */
-            *dest = (float*)::realloc(src, cap * sizeof(float));
-            if(*dest == 0) throw stl::exception("bad allocation");
+            /* src must be returned by an earlier call to alloc.allocate() */
+            *dest = allocator.allocate(cap, src);
+            if (*dest == 0) throw stl::exception("bad allocation");
+
+            if (*dest != src)
+            {
+                ::memcpy(*dest, src, size * sizeof(unsigned long));
+                // release memory at src
+                allocator.deallocate(src, 0);
+            }
+        }
+    }
+
+
+    template<typename Allocator>
+    void mem_realloc(double** dest, size_t cap, double* src, size_t size, Allocator& allocator)
+    {
+        if (cap <= size)
+        {
+            *dest = src;
+        }
+        else
+        {
+            /* src must be returned by an earlier call to alloc.allocate() */
+            *dest = allocator.allocate(cap, src);
+            if (*dest == 0) throw stl::exception("bad allocation");
+
+            if (*dest != src)
+            {
+                ::memcpy(*dest, src, size * sizeof(double));
+                // release memory at src
+                allocator.deallocate(src, 0);
+            }
+        }
+    }
+
+
+    template<typename Allocator>
+    void mem_realloc(float** dest, size_t cap, float* src, size_t size, Allocator& allocator)
+    {
+        if (cap <= size)
+        {
+            *dest = src;
+        }
+        else
+        {
+            /* src must be returned by an earlier call to alloc.allocate() */
+            *dest = allocator.allocate(cap, src);
+            if (*dest == 0) throw stl::exception("bad allocation");
+
+            if (*dest != src)
+            {
+                ::memcpy(*dest, src, size * sizeof(float));
+                // release memory at src
+                allocator.deallocate(src, 0);
+            }
         }
     }
 
     template<typename Allocator>
-    void mem_realloc(long long** dest, size_t cap, long long* src, size_t size, Allocator& /*allocator*/)
+    void mem_realloc(long long** dest, size_t cap, long long* src, size_t size, Allocator& allocator)
     {
-        if(cap <= size)
+        if (cap <= size)
         {
             *dest = src;
         }
         else
         {
-            /* src must be returned by an earlier call to malloc(), calloc() or realloc() */
-            *dest = (long long*)::realloc(src, cap * sizeof(long long));
-            if(*dest == 0) throw stl::exception("bad allocation");
+            /* src must be returned by an earlier call to alloc.allocate() */
+            *dest = allocator.allocate(cap, src);
+            if (*dest == 0) throw stl::exception("bad allocation");
+
+            if (*dest != src)
+            {
+                ::memcpy(*dest, src, size * sizeof(long long));
+                // release memory at src
+                allocator.deallocate(src, 0);
+            }
         }
     }
 
     template<typename Allocator>
-    void mem_realloc(unsigned long long** dest, size_t cap, unsigned long long* src, size_t size, Allocator& /*allocator*/)
+    void mem_realloc(unsigned long long** dest, size_t cap, unsigned long long* src, size_t size, Allocator& allocator)
     {
-        if(cap <= size)
+        if (cap <= size)
         {
             *dest = src;
         }
         else
         {
-            /* src must be returned by an earlier call to malloc(), calloc() or realloc() */
-            *dest = (unsigned long long*)::realloc(src, cap * sizeof(unsigned long long));
-            if(*dest == 0) throw stl::exception("bad allocation");
+            /* src must be returned by an earlier call to alloc.allocate() */
+            *dest = allocator.allocate(cap, src);
+            if (*dest == 0) throw stl::exception("bad allocation");
+
+            if (*dest != src)
+            {
+                ::memcpy(*dest, src, size * sizeof(unsigned long long));
+                // release memory at src
+                allocator.deallocate(src, 0);
+            }
         }
     }
 

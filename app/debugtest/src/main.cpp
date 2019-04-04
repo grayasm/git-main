@@ -10,18 +10,12 @@
 
 int main()
 {
-    stl::allocator<int> a;
-    int* p = a.allocate(2);
-    for (int i = 0; i < 2; ++i)
-        p[i] = i;
+    stl::vector<float> fv;
+    for (float f = 0.f; f < 10.f; f += 1.1f)
+        fv.push_back(f);
 
-    p = a.allocate(10, p);
-    if (p)
-    for (int i = 2; i < 10; i++)
-        p[i] = i * 10;
-
-    for (int i = 0; i < 10; i++)
-        printf("%d ", p[i]);
+    for (int i = 0; i < fv.size(); ++i)
+        printf("%f ", fv[i]);
     
     return 0;
 }

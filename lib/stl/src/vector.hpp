@@ -814,6 +814,7 @@ namespace stl
         {
             if (m_capacity >= cap) return;
 
+            pointer mem = 0;
             stl::mem_realloc(&mem, cap, m_data, m_size, m_allocator);
             
             m_data = mem;
@@ -1190,32 +1191,14 @@ namespace stl
 
         void resize(size_type sz, value_type c = value_type())
         {
-            if (m_size > sz)
-            {
-                // eos<T>(dist);
-                size_type dist = sz;
-                if (dist < m_size)
-                {
-                    value_type* unused = m_data + dist;
-                    stl::mem_destroy(&unused, m_size - dist, m_allocator);
-                }
-                m_size = dist;
-            }
-            else if (m_size < sz)
+            if (sz > m_size)
             {
                 grow(sz);
 
-                stl::mem_set(&m_data[m_size], c, (sz - m_size) * numbytes);
-
-                // eos<T>(dist);
-                size_type dist = sz;
-                if (dist < m_size)
-                {
-                    value_type* unused = m_data + dist;
-                    stl::mem_destroy(&unused, m_size - dist, m_allocator);
-                }
-                m_size = dist;
+                stl::mem_set<value_type>(&m_data[m_size], c, (sz - m_size) * numbytes);
             }
+
+            endof(sz);
         }
 
         size_type capacity() const
@@ -1295,8 +1278,7 @@ namespace stl
             // call copy constructor not copy operator
             new(&m_data[m_size])value_type(x);
 
-            //eos<T>(m_size + 1);
-            ++m_size;
+            endof(m_size + 1);
         }
 
         // 23.2.4.3 modifiers (vector):
@@ -1310,15 +1292,8 @@ namespace stl
             push_back(A(11));
             Q: when is A(10) destroyed, if ever??
 */
-                
-                //eos<T>(m_size - 1);
-                size_type dist = m_size - 1;
-                if (dist < m_size)
-                {
-                    value_type* unused = m_data + dist;
-                    stl::mem_destroy(&unused, m_size - dist, m_allocator);
-                }
-                m_size = dist;
+
+                endof(m_size - 1);
             }
         }
 
@@ -1352,14 +1327,7 @@ namespace stl
                     //memcpy_impl(&m_data[p1], &((*first.m_cont)[first.m_pos]), dist * sizeof(value_type));
                     stl::mem_copy<value_type>(&m_data[p1], &((*first.m_cont)[first.m_pos]), dist * sizeof(value_type));
 
-                    //eos<T>(size);
-                    size_type dist = size;
-                    if (dist < m_size)
-                    {
-                        value_type* unused = m_data + dist;
-                        stl::mem_destroy(&unused, m_size - dist, m_allocator);
-                    }
-                    m_size = dist;
+                    endof(size);
                 }
             }
         }
@@ -1388,14 +1356,7 @@ namespace stl
                     //memcpy_impl(&m_data[p1], &((*first.m_cont)[first.m_pos]), dist * numbytes);
                     stl::mem_copy<value_type>(&m_data[p1], &((*first.m_cont)[first.m_pos]), dist * numbytes);
 
-                    //eos<T>(size);
-                    size_type dist = size;
-                    if (dist < m_size)
-                    {
-                        value_type* unused = m_data + dist;
-                        stl::mem_destroy(&unused, m_size - dist, m_allocator);
-                    }
-                    m_size = dist;
+                    endof(size);
                 }
             }
         }
@@ -1426,14 +1387,7 @@ namespace stl
 
                     swap_range(p1, p1 + dist);
 
-                    //eos<T>(size);
-                    size_type dist = size;
-                    if (dist < m_size)
-                    {
-                        value_type* unused = m_data + dist;
-                        stl::mem_destroy(&unused, m_size - dist, m_allocator);
-                    }
-                    m_size = dist;
+                    endof(size);
                 }
             }
         }
@@ -1464,14 +1418,7 @@ namespace stl
 
                     swap_range(p1, p1 + dist);
 
-                    //eos<T>(size);
-                    size_type dist = size;
-                    if (dist < m_size)
-                    {
-                        value_type* unused = m_data + dist;
-                        stl::mem_destroy(&unused, m_size - dist, m_allocator);
-                    }
-                    m_size = dist;
+                    endof(size);
                 }
             }
         }
@@ -1496,14 +1443,7 @@ namespace stl
 
                 stl::mem_set<value_type>(&m_data[p1], value, n2 * numbytes);
 
-                //eos<T>(size);
-                size_type dist = size;
-                if (dist < m_size)
-                {
-                    value_type* unused = m_data + dist;
-                    stl::mem_destroy(&unused, m_size - dist, m_allocator);
-                }
-                m_size = dist;
+                endof(size);
             }
         }
 
@@ -1533,14 +1473,7 @@ namespace stl
 
                 stl::mem_set<value_type>(&m_data[p1], x, n * numbytes);
 
-                //eos<T>(size);
-                size_type dist = size;
-                if (dist < m_size)
-                {
-                    value_type* unused = m_data + dist;
-                    stl::mem_destroy<value_type>(&unused, m_size - dist, m_allocator);
-                }
-                m_size = dist;
+                endof(size);
             }
         }
 
@@ -1565,14 +1498,8 @@ namespace stl
             //memmove_impl(&m_data[p1], &m_data[p1 + 1], (m_size - p1 - 1) * numbytes);
             stl::mem_move<value_type>(&m_data[p1], &m_data[p1 + 1], (m_size - p1 - 1) * sizeof(value_type));
 
-            //eos<T>(m_size - 1);
-            size_type dist = (m_size - 1);
-            if (dist < m_size)
-            {
-                value_type* unused = m_data + dist;
-                stl::mem_destroy<value_type>(&unused, m_size - dist, m_allocator);
-            }
-            m_size = dist;
+//todo: is the last element still valid? This will call alloc.destroy() on it!! Test this with classes.
+            endof(m_size - 1);
 
             return position;
         }
@@ -1585,8 +1512,6 @@ namespace stl
             difference_type dist = last - first;
             if (dist > 0)
             {
-                //invalidate_iterators_gte(first.m_pos);
-
                 //fill the gap
                 if (last.m_pos < m_size)
                 {
@@ -1594,14 +1519,8 @@ namespace stl
                     stl::mem_move<value_type>(&m_data[first.m_pos], &m_data[last.m_pos], (m_size - last.m_pos) * sizeof(value_type));
                 }
 
-                //eos<T>(m_size - dist);
-                size_type dist = (m_size - dist);
-                if (dist < m_size)
-                {
-                    value_type* unused = m_data + dist;
-                    stl::mem_destroy<value_type>(&unused, m_size - dist, m_allocator);
-                }
-                m_size = dist;
+//TODO: are the last elements valid?? This will call alloc.destroy() on them. Test will classes.
+                endof(m_size - dist);
             }
 
             return first;
@@ -1617,55 +1536,13 @@ namespace stl
 
         void clear()
         {
-            //invalidate_iterators();
-
-            //eos<T>(0);
-            size_type dist = 0;
-            if (dist < m_size)
-            {
-                value_type* unused = m_data + dist;
-                stl::mem_destroy(&unused, m_size - dist, m_allocator);
-            }
-            m_size = dist;
+            endof(0);
         }
 
         allocator_type get_allocator() const
         {
             return m_allocator;
         }
-
-//#if 1    // Until the ambiguity with global operators gets solved, execute this.
-//        bool operator==(const container& Right)
-//        {
-//            return vector_ops::operator ==(*this, Right);
-//        }
-//
-//        bool operator<(const container& Right)
-//        {
-//            return vector_ops::operator <(*this, Right);
-//        }
-//        
-//        bool operator!=(const container& Right)
-//        {
-//            return !(*this == Right);
-//        }
-//        
-//        bool operator>(const container& Right)
-//        {            
-//            return (*this != Right) && !(*this < Right);
-//        }
-//
-//        bool operator>=(const container& Right)
-//        {
-//            return !(*this < Right);
-//        }
-//
-//        bool operator<=(const container& Right)
-//        {
-//            return (*this < Right) || (*this == Right);
-//        }
-//        
-//#endif
     };  // class
 
     
@@ -1730,14 +1607,13 @@ namespace stl
         return (Left < Right) || (Left == Right);
     }
 
-    // specialized algorithms:
-    //template<typename T, typename Allocator>
-    //void swap (
-    //    stl::vector<T, Allocator>& Left, 
-    //    stl::vector<T, Allocator>& Right)
-    //{
-    //    return Left.swap(Right);
-    //}
+    template<typename T, typename Allocator>
+    void swap(
+        stl::vector<T, Allocator>& Left,
+        stl::vector<T, Allocator>& Right)
+    {
+        return Left.swap(Right);
+    }
 
 }  // namespace
 
