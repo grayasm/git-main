@@ -1014,7 +1014,10 @@ namespace stl
         template<typename InputIterator>
         container& assign_(InputIterator first, InputIterator last, stl::forward_iterator_tag)
         {
-            difference_type dist = stl::distance(first, last);
+            /*  Test with a.assign(b.rbegin(), b.rend());
+                if last < first then let it blow up.
+            */
+            size_type dist = static_cast<size_type>(stl::distance(first, last));
 
             if (dist > 0)
             {
@@ -1028,9 +1031,6 @@ namespace stl
                     {
                         m_allocator.destroy(d1);
                         m_allocator.construct(d1, s1);
-
-                        // d1->T::~T(); //faults when object at d1 was not yet created;
-                        // new(d1)T(s1);
                     }
                 }
             }
@@ -1044,16 +1044,18 @@ namespace stl
         template<typename InputIterator>
         container& assign_(InputIterator n, InputIterator value, stl::input_iterator_tag)
         {
-            // if n < 0 then let it blow up.
-            size_type dist = static_cast<size_type>(n);
-            if (dist > 0)
+            /*  Ex: a.assign(5, 0.5f);
+                if n < 0 then let it blow up.
+             */             
+            size_type size = static_cast<size_type>(n);
+            if (size > 0)
             {
-                grow(dist);
+                grow(size);
 
-                stl::mem_set(m_data, value, dist * sizeof(value_type));
+                stl::mem_set(m_data, value, size * sizeof(value_type));
             }
 
-            endof(dist);
+            endof(size);
 
             return *this;
         }
@@ -1065,7 +1067,6 @@ namespace stl
         }
 
     public:
-
         //$21.3.2 iterators
         iterator begin()
         {
@@ -1208,8 +1209,7 @@ namespace stl
                 grow(m_capacity * 2);
             }
 
-            // call copy constructor not copy operator
-            new(&m_data[m_size])value_type(x);
+            m_allocator.construct(&m_data[m_size], x);
 
             endof(m_size + 1);
         }
@@ -1217,18 +1217,47 @@ namespace stl
         // 23.2.4.3 modifiers (vector):
         void pop_back()
         {
-            if (m_size)
-            {
-/*FIXME: test the following
-            push_back(A(10));
-            pop_back();
-            push_back(A(11));
-            Q: when is A(10) destroyed, if ever??
-*/
+            if (m_size == 0) throw misc::exception("vector is empty")
+            
+            endof(m_size - 1);
+        }
 
-                endof(m_size - 1);
+        iterator insert(iterator position, const T& x)
+        {
+            insert(position, 1, x);
+            return position;
+        }
+
+        void insert(iterator position, size_type n, const T& x)
+        {
+            if (this != position.m_cont) throw stl::exception("invalid iterator");
+            if (position.m_pos > m_size) throw stl::exception("out of valid range");
+
+
+            if (n)
+            {
+                size_type size = m_size + n;
+                size_type p1 = position.m_pos;
+
+                grow(size);
+
+                stl::mem_move(&m_data[p1 + n], &m_data[p1], (m_size - p1) * sizeof(value_type), m_allocator);
+
+                stl::mem_set(&m_data[p1], x, n * sizeof(value_type));
+
+                endof(size);
             }
         }
+
+        template <class InputIterator>
+        void insert(iterator position, InputIterator first, InputIterator last)
+        {
+            if (position.m_cont != this)
+                throw stl::exception("invalid iterator");
+
+            insert_impl(position.m_pos, first, last, typename stl::iterator_traits<InputIterator>::iterator_category());
+        }
+
 
     private:
         /*
@@ -1373,41 +1402,6 @@ namespace stl
 
     public:
 
-        iterator insert(iterator position, const T& x)
-        {
-            insert(position, 1, x);
-            return position;
-        }
-
-        void insert(iterator position, size_type n, const T& x)
-        {
-            if (this != position.m_cont) throw stl::exception("invalid iterator");
-            if (position.m_pos > m_size) throw stl::exception("out of valid range");
-
-
-            if (n)
-            {
-                size_type size = m_size + n;
-                size_type p1 = position.m_pos;
-
-                grow(size);
-
-                stl::mem_move(&m_data[p1 + n], &m_data[p1], (m_size - p1) * sizeof(value_type), m_allocator);
-
-                stl::mem_set(&m_data[p1], x, n * sizeof(value_type));
-
-                endof(size);
-            }
-        }
-
-        template <class InputIterator>
-        void insert(iterator position, InputIterator first, InputIterator last)
-        {
-            if (position.m_cont != this)
-                throw stl::exception("invalid iterator");
-
-            insert_impl(position.m_pos, first, last, typename stl::iterator_traits<InputIterator>::iterator_category());
-        }
 
         iterator erase(iterator position)
         {

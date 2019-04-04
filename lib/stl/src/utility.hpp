@@ -114,72 +114,72 @@ namespace stl
     template<> struct iterator_traits<bool>
     {//get traits from bool type
         typedef input_iterator_tag iterator_category;
-        typedef bool value_type;
-        typedef bool difference_type;
-        typedef bool distance_type;
-        typedef bool* pointer;
-        typedef bool& reference;
+        typedef bool    value_type;
+        typedef long    difference_type;
+        typedef long    distance_type;
+        typedef bool*   pointer;
+        typedef bool&   reference;
     };
 
     template<> struct iterator_traits<char>
     {//get traits from char type
         typedef input_iterator_tag iterator_category;
-        typedef char value_type;
-        typedef char difference_type;
-        typedef char distance_type;
-        typedef char* pointer;
-        typedef char& reference;
+        typedef char    value_type;
+        typedef long    difference_type;
+        typedef long    distance_type;
+        typedef char*   pointer;
+        typedef char&   reference;
     };
 
 
     template<> struct iterator_traits<signed char>
     {   // get traits from signed char type
         typedef input_iterator_tag iterator_category;
-        typedef signed char value_type;
-        typedef signed char difference_type;
-        typedef signed char distance_type;
-        typedef signed char * pointer;
-        typedef signed char& reference;
+        typedef signed char     value_type;
+        typedef long            difference_type;
+        typedef long            distance_type;
+        typedef signed char*    pointer;
+        typedef signed char&    reference;
     };
 
     template<> struct iterator_traits<unsigned char>
     {   // get traits from unsigned char type
         typedef input_iterator_tag iterator_category;
-        typedef unsigned char value_type;
-        typedef unsigned char difference_type;
-        typedef unsigned char distance_type;
-        typedef unsigned char* pointer;
-        typedef unsigned char& reference;
+        typedef unsigned char   value_type;
+        typedef long            difference_type;
+        typedef long            distance_type;
+        typedef unsigned char*  pointer;
+        typedef unsigned char&  reference;
     };
 
 
     template<> struct iterator_traits<wchar_t>
     {   // get traits from wchar_t type
         typedef input_iterator_tag iterator_category;
-        typedef wchar_t value_type;
-        typedef wchar_t difference_type;
-        typedef wchar_t distance_type;
-        typedef wchar_t* pointer;
-        typedef wchar_t& reference;
+        typedef wchar_t     value_type;
+        typedef long        difference_type;
+        typedef long        distance_type;
+        typedef wchar_t*    pointer;
+        typedef wchar_t&    reference;
     };
 
 
     template<> struct iterator_traits<short>
     {   // get traits from short type
         typedef input_iterator_tag iterator_category;
-        typedef short value_type;
-        typedef short difference_type;
-        typedef short distance_type;
-        typedef short* pointer;
-        typedef short& reference;
+        typedef short   value_type;
+        typedef long    difference_type;
+        typedef long    distance_type;
+        typedef short*  pointer;
+        typedef short&  reference;
     };
 
     template<> struct iterator_traits<unsigned short>
     {   // get traits from unsigned short type
         typedef input_iterator_tag iterator_category;
-        typedef unsigned short value_type;
-        typedef unsigned short difference_type;
-        typedef unsigned short distance_type;
+        typedef unsigned short  value_type;
+        typedef long            difference_type;
+        typedef long            distance_type;
         typedef unsigned short* pointer;
         typedef unsigned short& reference;
     };
@@ -187,82 +187,82 @@ namespace stl
     template<> struct iterator_traits<int>
     {   // get traits from int type
         typedef input_iterator_tag iterator_category;
-        typedef int value_type;
-        typedef int difference_type;
-        typedef int distance_type;
-        typedef int* pointer;
-        typedef int& reference;
+        typedef int     value_type;
+        typedef long    difference_type;
+        typedef long    distance_type;
+        typedef int*    pointer;
+        typedef int&    reference;
     };
 
     template<> struct iterator_traits<unsigned int>
     {   // get traits from unsigned int type
         typedef input_iterator_tag iterator_category;
-        typedef unsigned int value_type;
-        typedef unsigned int difference_type;
-        typedef unsigned int distance_type;
-        typedef unsigned int* pointer;
-        typedef unsigned int& reference;
+        typedef unsigned int    value_type;
+        typedef long            difference_type;
+        typedef long            distance_type;
+        typedef unsigned int*   pointer;
+        typedef unsigned int&   reference;
     };
 
     template<> struct iterator_traits<long>
     {   // get traits from long type
         typedef input_iterator_tag iterator_category;
-        typedef long value_type;
-        typedef long difference_type;
-        typedef long distance_type;
-        typedef long* pointer;
-        typedef long& reference;
+        typedef long    value_type;
+        typedef long    difference_type;
+        typedef long    distance_type;
+        typedef long*   pointer;
+        typedef long&   reference;
     };
 
     template<> struct iterator_traits<unsigned long>
     {   // get traits from unsigned long type
         typedef input_iterator_tag iterator_category;
-        typedef unsigned long value_type;
-        typedef unsigned long difference_type;
-        typedef unsigned long distance_type;
-        typedef unsigned long* pointer;
-        typedef unsigned long& reference;
+        typedef unsigned long   value_type;
+        typedef long            difference_type;
+        typedef long            distance_type;
+        typedef unsigned long*  pointer;
+        typedef unsigned long&  reference;
     };
 
     template<> struct iterator_traits<double>
     {// get traits from double type
         typedef input_iterator_tag iterator_category;
-        typedef double value_type;
-        typedef double difference_type;
-        typedef double distance_type;
-        typedef double* pointer;
-        typedef double& reference;
+        typedef double      value_type;
+        typedef long        difference_type;
+        typedef long        distance_type;
+        typedef double*     pointer;
+        typedef double&     reference;
     };
 
     template<> struct iterator_traits<float>
     {// get traits from float type
         typedef input_iterator_tag iterator_category;
-        typedef float value_type;
-        typedef float difference_type;
-        typedef float distance_type;
-        typedef float* pointer;
-        typedef float& reference;
+        typedef float   value_type;
+        typedef long    difference_type;
+        typedef long    distance_type;
+        typedef float*  pointer;
+        typedef float&  reference;
     };
 
 
     template<> struct iterator_traits<long long>
     {   // get traits from long long type
         typedef input_iterator_tag iterator_category;
-        typedef long long value_type;
-        typedef long long difference_type;
-        typedef long long distance_type;
-        typedef long long* pointer;
-        typedef long long& reference;
+        typedef long long   value_type;
+        typedef long        difference_type;
+        typedef long        distance_type;
+        typedef long long*  pointer;
+        typedef long long&  reference;
     };
 
     template<> struct iterator_traits<unsigned long long>
     {   // get traits from unsigned long long type
         typedef input_iterator_tag iterator_category;
-        typedef unsigned long long value_type;
-        typedef unsigned long long difference_type;
-        typedef unsigned long long distance_type;
-        typedef unsigned long long* pointer;
-        typedef unsigned long long& reference;
+        typedef unsigned long long      value_type;
+        typedef long                    difference_type;
+        typedef long                    distance_type;
+        typedef unsigned long long*     pointer;
+        typedef unsigned long long&     reference;
     };
 
 //////////////////////////////////////////////////////////////////////////
@@ -372,7 +372,7 @@ namespace stl
     inline typename stl::iterator_traits<RandomIterator>::difference_type
     distance(RandomIterator first, RandomIterator last, stl::random_access_iterator_tag)
     {
-        return last - first;
+        return static_cast<stl::iterator_traits<RandomIterator>::difference_type>(last - first);
     }
 
 

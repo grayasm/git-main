@@ -6,20 +6,15 @@
 #include "vector.hpp"
 #include <vector>
 
+
 int main()
 {
-    int iv[10] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
-    stl::vector<int> vi;
-    for (int i = 0; i < 10; ++i)
-        vi.push_back(iv[i]);
+    int it[5] = { -1, -2, -3, -4, -5 };
+    stl::vector<int> vi(it, it + 5);
+    stl::vector<int> v2;
 
-    vi.assign(vi.begin(), vi.end());
-
-    for (int i = 0; i < 10; ++i)
-        printf("%d ", vi[i]);
-
-
-    
+    stl::vector<int>::const_iterator i1 = vi.begin(), i2 = vi.end();
+    v2.insert(v2.end(), i1, i2);    
 
     return 0;
 }
