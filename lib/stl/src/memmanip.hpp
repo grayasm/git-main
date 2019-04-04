@@ -60,6 +60,8 @@ namespace stl
     //////////////////////////////////////////////////////////////////////////
     /*
       mem_destroy - call each element destructor, does not free memory
+
+      Specialize for the basic types to avoid the for loop in <T,Allocator>.
     */
     template<typename T, typename Allocator>
     void mem_destroy(T** dest, size_t sz, Allocator& allocator)

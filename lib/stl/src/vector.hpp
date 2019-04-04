@@ -432,7 +432,6 @@ namespace stl
             base2::m_pos = 0;
         }
 
-
         vector_reverse_iterator(const vector_reverse_iterator& it)
         {
             *this = it;
@@ -636,7 +635,6 @@ namespace stl
             *this = it;
         }
 
-
         reference operator*() const
         {
             if (!base2::m_cont) throw stl::exception("invalid iterator");
@@ -765,20 +763,20 @@ namespace stl
         typedef vector<T, Allocator>                    container;
 
         // types:
-        typedef typename Allocator::value_type           value_type;
-        typedef typename Allocator::size_type            size_type;
-        typedef typename Allocator::difference_type      difference_type;
-        typedef Allocator                                allocator_type;
+        typedef typename Allocator::value_type          value_type;
+        typedef typename Allocator::size_type           size_type;
+        typedef typename Allocator::difference_type     difference_type;
+        typedef Allocator                               allocator_type;
 
-        typedef typename Allocator::reference            reference;
-        typedef typename Allocator::const_reference      const_reference;
-        typedef typename Allocator::pointer              pointer;
-        typedef typename Allocator::const_pointer        const_pointer;
+        typedef typename Allocator::reference           reference;
+        typedef typename Allocator::const_reference     const_reference;
+        typedef typename Allocator::pointer             pointer;
+        typedef typename Allocator::const_pointer       const_pointer;
 
     public:
-        typedef typename vector_iterator<container>                    iterator;
-        typedef typename vector_const_iterator<container>            const_iterator;
-        typedef typename vector_reverse_iterator<container>            reverse_iterator;
+        typedef typename vector_iterator<container>                 iterator;
+        typedef typename vector_const_iterator<container>           const_iterator;
+        typedef typename vector_reverse_iterator<container>         reverse_iterator;
         typedef typename vector_const_reverse_iterator<container>   const_reverse_iterator;
 
     private:
@@ -821,14 +819,14 @@ namespace stl
             m_capacity = cap;
         }
 
-        inline void endof(size_type size)
+        void endof(size_type size)
         {
             if (m_capacity < size) throw stl::exception("bad size");
 
             if (size < m_size)
             {
                 value_type* unused = m_data + size;
-                stl::mem_destroy<value_type>(&unused, m_size - size, m_allocator);
+                stl::mem_destroy(&unused, m_size - size, m_allocator);
             }
             m_size = size;
         }
@@ -839,7 +837,6 @@ namespace stl
             {
                 for (size_type i = beg, j = end - 1; i < j; ++i, --j)
                 {
-                    //stl::swap<value_type>(m_data[i], m_data[j]);
                     stl::swap(m_data[i], m_data[j]);
                 }
             }
@@ -880,7 +877,7 @@ namespace stl
 
         ~vector()
         {
-            stl::mem_destroy<value_type>(&m_data, m_size, m_allocator);
+            stl::mem_destroy(&m_data, m_size, m_allocator);
             m_allocator.deallocate(m_data, 0);
 
             m_data = 0;
@@ -905,7 +902,7 @@ namespace stl
                 {
                     grow(size);
 
-                    stl::mem_copy<value_type>(m_data, tc.m_data, size * sizeof(value_type));
+                    stl::mem_copy(m_data, tc.m_data, size * sizeof(value_type), m_allocator);
                 }
                 
                 endof(size);
@@ -920,7 +917,7 @@ namespace stl
             {
                 grow(count);
 
-                stl::mem_set<value_type>(m_data, val, count * sizeof(value_type));
+                stl::mem_set(m_data, val, count * sizeof(value_type));
             }
 
             endof(count);
@@ -936,7 +933,7 @@ namespace stl
         container& assign_(const value_type* first, const value_type* last)
         {
             // if last < first then let it blow up.
-            size_type dist = static_cast<size_type>(last - first);
+            size_type dist = static_cast<size_type>(last - first + 1);
 
             if (dist > 0)
             {
@@ -945,11 +942,11 @@ namespace stl
                 // self assignment
                 if (m_size > 0 && m_data <= first && (m_data + m_size) > first)
                 {
-                    stl::mem_move<value_type>(m_data, first, dist * sizeof(value_type));
+                    stl::mem_move(m_data, first, dist * sizeof(value_type), m_allocator);
                 }
                 else
                 {
-                    stl::mem_copy<value_type>(m_data, first, dist * sizeof(value_type));
+                    stl::mem_copy(m_data, first, dist * sizeof(value_type), m_allocator);
                 }
             }
 
@@ -973,11 +970,11 @@ namespace stl
                 //self assignment
                 if (this == first.m_cont)
                 {
-                    stl::mem_move<value_type>(m_data, &((*first.m_cont)[first.m_pos]), dist * sizeof(value_type));
+                    stl::mem_move(m_data, &((*first.m_cont)[first.m_pos]), dist * sizeof(value_type), m_allocator);
                 }
                 else
                 {
-                    stl::mem_copy<value_type>(m_data, &((*first.m_cont)[first.m_pos]), dist * sizeof(value_type));
+                    stl::mem_copy(m_data, &((*first.m_cont)[first.m_pos]), dist * sizeof(value_type), m_allocator);
                 }
             }
 
@@ -1001,11 +998,11 @@ namespace stl
                 //self assignment
                 if (this == first.m_cont)
                 {
-                    stl::mem_move<value_type>(m_data, &((*first.m_cont)[first.m_pos]), dist * numbytes);
+                    stl::mem_move(m_data, &((*first.m_cont)[first.m_pos]), dist * sizeof(value_type), m_allocator);
                 }
                 else
                 {
-                    stl::mem_copy<value_type>(m_data, &((*first.m_cont)[first.m_pos]), dist * numbytes);
+                    stl::mem_copy(m_data, &((*first.m_cont)[first.m_pos]), dist * sizeof(value_type), m_allocator);
                 }
             }
 
@@ -1029,8 +1026,11 @@ namespace stl
                     const T& s1 = *first;
                     if (d1 != &s1)
                     {
-                        d1->T::~T(); //faults when object at d1 was not yet created;
-                        new(d1)T(s1);
+                        m_allocator.destroy(d1);
+                        m_allocator.construct(d1, s1);
+
+                        // d1->T::~T(); //faults when object at d1 was not yet created;
+                        // new(d1)T(s1);
                     }
                 }
             }
@@ -1050,7 +1050,7 @@ namespace stl
             {
                 grow(dist);
 
-                stl::mem_set<value_type>(m_data, value, dist * sizeof(value_type));
+                stl::mem_set(m_data, value, dist * sizeof(value_type));
             }
 
             endof(dist);
@@ -1063,73 +1063,6 @@ namespace stl
         {
             return assign_(first, last, typename stl::iterator_traits<InputIterator>::iterator_category());
         }
-
-#if 0
-        container& assign_impl(const reverse_iterator& first, const reverse_iterator& last)
-        {
-            if (first.m_cont != last.m_cont || first.m_cont == 0)
-                throw stl::exception("invalid iterator");
-
-            // if last < first then let it blow than to cover it up.
-            size_type dist = static_cast<size_type>(last - first);
-
-            if (dist > 0)
-            {
-                grow(dist);
-
-                //self assignment
-                if (this == first.m_cont)
-                {
-                    //TODO: see below, check for correctness
-                    //erase(0, last.m_pos + 1);
-                }
-                else
-                {
-                    //TODO: copying in reverse means [0,1,2,3,4,5] -> [5,4,3,2,1,0] ; check if this is done correctly!!!
-                    stl::mem_copy<value_type>(m_data, &((*last.m_cont)[last.m_pos + 1]), dist * sizeof(value_type));
-                }
-
-                swap_range(0, dist);
-            }
-
-            endof(dist);
-
-            return *this;
-        }
-
-        container& assign_impl(const const_reverse_iterator& first, const const_reverse_iterator& last)
-        {
-            //validate containers
-            if (first.m_cont != last.m_cont || first.m_cont == 0)
-                throw stl::exception("invalid iterator");
-
-            // if last < first then let it blow than to cover it up.
-            size_type dist = static_cast<size_type>(last - first);
-
-            if (dist > 0)
-            {
-                grow(dist);
-
-                //self assignment
-                if (this == first.m_cont)
-                {
-                    //TODO: see below, check for correctness
-                    erase(0, last.m_pos + 1);
-                }
-                else
-                {
-                    //TODO: copying in reverse means [0,1,2,3,4,5] -> [5,4,3,2,1,0] ; check if this is done correctly!!!
-                    stl::mem_copy<value_type>(m_data, &((*last.m_cont)[last.m_pos + 1]), dist * numbytes);
-                }
-
-                swap_range(0, dist);
-            }
-
-            endof(dist);
-
-            return *this;
-        }
-#endif
 
     public:
 
@@ -1195,7 +1128,7 @@ namespace stl
             {
                 grow(sz);
 
-                stl::mem_set<value_type>(&m_data[m_size], c, (sz - m_size) * numbytes);
+                stl::mem_set(&m_data[m_size], c, (sz - m_size) * sizeof(value_type));
             }
 
             endof(sz);
@@ -1322,10 +1255,8 @@ namespace stl
                     size_type size = m_size + dist;
                     grow(size);
 
-                    // memmove_impl(&m_data[p1 + dist], &m_data[p1], (m_size - p1) * numbytes);
-                    stl::mem_move<value_type>(&m_data[p1 + dist], &m_data[p1], (m_size - p1) * sizeof(value_type));
-                    //memcpy_impl(&m_data[p1], &((*first.m_cont)[first.m_pos]), dist * sizeof(value_type));
-                    stl::mem_copy<value_type>(&m_data[p1], &((*first.m_cont)[first.m_pos]), dist * sizeof(value_type));
+                    stl::mem_move(&m_data[p1 + dist], &m_data[p1], (m_size - p1) * sizeof(value_type), m_allocator);
+                    stl::mem_copy(&m_data[p1], &((*first.m_cont)[first.m_pos]), dist * sizeof(value_type), m_allocator);
 
                     endof(size);
                 }
@@ -1351,10 +1282,8 @@ namespace stl
                     size_type size = m_size + dist;
                     grow(size);
 
-                    //memmove_impl(&m_data[p1 + dist], &m_data[p1], (m_size - p1) * numbytes);
-                    stl::mem_move<value_type>(&m_data[p1 + dist], &m_data[p1], (m_size - p1) * numbytes);
-                    //memcpy_impl(&m_data[p1], &((*first.m_cont)[first.m_pos]), dist * numbytes);
-                    stl::mem_copy<value_type>(&m_data[p1], &((*first.m_cont)[first.m_pos]), dist * numbytes);
+                    stl::mem_move(&m_data[p1 + dist], &m_data[p1], (m_size - p1) * sizeof(value_type), m_allocator);
+                    stl::mem_copy(&m_data[p1], &((*first.m_cont)[first.m_pos]), dist * sizeof(value_type), m_allocator);
 
                     endof(size);
                 }
@@ -1380,10 +1309,8 @@ namespace stl
                     size_type size = m_size + dist;
                     grow(size);
 
-                    //memmove_impl(&m_data[p1 + dist], &m_data[p1], (m_size - p1) * numbytes);
-                    stl::mem_move<value_type>(&m_data[p1 + dist], &m_data[p1], (m_size - p1) * numbytes);
-                    //memcpy_impl(&m_data[p1], &((*last.m_cont)[last.m_pos + 1]), dist * numbytes);
-                    stl::mem_copy<value_type>(&m_data[p1], &((*last.m_cont)[last.m_pos + 1]), dist * numbytes);
+                    stl::mem_move(&m_data[p1 + dist], &m_data[p1], (m_size - p1) * sizeof(value_type), m_allocator);
+                    stl::mem_copy(&m_data[p1], &((*last.m_cont)[last.m_pos + 1]), dist * sizeof(value_type), m_allocator);
 
                     swap_range(p1, p1 + dist);
 
@@ -1411,10 +1338,8 @@ namespace stl
                     size_type size = m_size + dist;
                     grow(size);
 
-                    //memmove_impl(&m_data[p1 + dist], &m_data[p1], (m_size - p1) * numbytes);
-                    stl::mem_move<value_type>(&m_data[p1 + dist], &m_data[p1], (m_size - p1) * numbytes);
-                    //memcpy_impl(&m_data[p1], &((*last.m_cont)[last.m_pos + 1]), dist * numbytes);
-                    stl::mem_copy<value_type>(&m_data[p1], &((*last.m_cont)[last.m_pos + 1]), dist * numbytes);
+                    stl::mem_move(&m_data[p1 + dist], &m_data[p1], (m_size - p1) * sizeof(value_type), m_allocator);
+                    stl::mem_copy(&m_data[p1], &((*last.m_cont)[last.m_pos + 1]), dist * sizeof(value_type), m_allocator);
 
                     swap_range(p1, p1 + dist);
 
@@ -1438,10 +1363,9 @@ namespace stl
 
                 grow(size);
 
-                //memmove_impl(&m_data[p1 + n2], &m_data[p1], (m_size - p1) * numbytes);
-                stl::mem_move<value_type>(&m_data[p1 + n2], &m_data[p1], (m_size - p1) * numbytes);
+                stl::mem_move(&m_data[p1 + n2], &m_data[p1], (m_size - p1) * sizeof(value_type), m_allocator);
 
-                stl::mem_set<value_type>(&m_data[p1], value, n2 * numbytes);
+                stl::mem_set(&m_data[p1], value, n2 * sizeof(value_type));
 
                 endof(size);
             }
@@ -1468,10 +1392,9 @@ namespace stl
 
                 grow(size);
 
-                //memmove_impl(&m_data[p1 + n], &m_data[p1], (m_size - p1) * numbytes);
-                stl::mem_move<value_type>(&m_data[p1 + n], &m_data[p1], (m_size - p1) * sizeof(value_type));
+                stl::mem_move(&m_data[p1 + n], &m_data[p1], (m_size - p1) * sizeof(value_type), m_allocator);
 
-                stl::mem_set<value_type>(&m_data[p1], x, n * numbytes);
+                stl::mem_set(&m_data[p1], x, n * sizeof(value_type));
 
                 endof(size);
             }
@@ -1493,10 +1416,7 @@ namespace stl
 
             size_type p1 = position.m_pos;
 
-            //invalidate_iterators_gte(p1);
-
-            //memmove_impl(&m_data[p1], &m_data[p1 + 1], (m_size - p1 - 1) * numbytes);
-            stl::mem_move<value_type>(&m_data[p1], &m_data[p1 + 1], (m_size - p1 - 1) * sizeof(value_type));
+            stl::mem_move(&m_data[p1], &m_data[p1 + 1], (m_size - p1 - 1) * sizeof(value_type), m_allocator);
 
 //todo: is the last element still valid? This will call alloc.destroy() on it!! Test this with classes.
             endof(m_size - 1);
@@ -1515,8 +1435,7 @@ namespace stl
                 //fill the gap
                 if (last.m_pos < m_size)
                 {
-                    //memmove_impl(&m_data[first.m_pos], &m_data[last.m_pos], (m_size - last.m_pos) * numbytes);
-                    stl::mem_move<value_type>(&m_data[first.m_pos], &m_data[last.m_pos], (m_size - last.m_pos) * sizeof(value_type));
+                    stl::mem_move(&m_data[first.m_pos], &m_data[last.m_pos], (m_size - last.m_pos) * sizeof(value_type), m_allocator);
                 }
 
 //TODO: are the last elements valid?? This will call alloc.destroy() on them. Test will classes.
