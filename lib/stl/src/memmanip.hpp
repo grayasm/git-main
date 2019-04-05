@@ -466,8 +466,9 @@ namespace stl
                     allocator.destroy(s1);
                 }
 
+                // The above may not be correct at all!!!
                 // release memory at src
-                allocator.deallocate(src, 0);
+                // allocator.deallocate(src, 0); --heap corruption after realloc
             }
         }
     }
@@ -487,9 +488,9 @@ namespace stl
 
             if (*dest != src)
             {
-                ::memcpy(*dest, src, size * sizeof(char));
+                // ::memcpy(*dest, src, size * sizeof(char));
                 // release memory at src
-                allocator.deallocate(src, 0);
+                // allocator.deallocate(src, 0); --heap corruption after realloc
             }
         }
     }
@@ -509,9 +510,9 @@ namespace stl
 
             if (*dest != src)
             {
-                ::memcpy(*dest, src, size * sizeof(signed char));
+                // ::memcpy(*dest, src, size * sizeof(signed char));
                 // release memory at src
-                allocator.deallocate(src, 0);
+                // allocator.deallocate(src, 0); --heap corruption after realloc
             }
         }
     }
@@ -531,9 +532,9 @@ namespace stl
 
             if (*dest != src)
             {
-                ::memcpy(*dest, src, size * sizeof(unsigned char));
+                // ::memcpy(*dest, src, size * sizeof(unsigned char));
                 // release memory at src
-                allocator.deallocate(src, 0);
+                // allocator.deallocate(src, 0); --heap corruption after realloc
             }
         }
     }
@@ -553,9 +554,9 @@ namespace stl
 
             if (*dest != src)
             {
-                ::memcpy(*dest, src, size * sizeof(wchar_t));
+                // ::memcpy(*dest, src, size * sizeof(wchar_t));
                 // release memory at src
-                allocator.deallocate(src, 0);
+                // allocator.deallocate(src, 0); --heap corruption after realloc
             }
         }
     }
@@ -575,9 +576,9 @@ namespace stl
 
             if (*dest != src)
             {
-                ::memcpy(*dest, src, size * sizeof(short));
+                // ::memcpy(*dest, src, size * sizeof(short));
                 // release memory at src
-                allocator.deallocate(src, 0);
+                // allocator.deallocate(src, 0); --heap corruption after realloc
             }
         }
     }
@@ -598,9 +599,9 @@ namespace stl
 
             if (*dest != src)
             {
-                ::memcpy(*dest, src, size * sizeof(unsigned short));
+                // ::memcpy(*dest, src, size * sizeof(unsigned short));
                 // release memory at src
-                allocator.deallocate(src, 0);
+                // allocator.deallocate(src, 0); --heap corruption after realloc
             }
         }
     }
@@ -621,9 +622,9 @@ namespace stl
 
             if (*dest != src)
             {
-                ::memcpy(*dest, src, size * sizeof(int));
+                // ::memcpy(*dest, src, size * sizeof(int));
                 // release memory at src
-                allocator.deallocate(src, 0);
+                // allocator.deallocate(src, 0); --heap corruption after realloc
             }
         }
     }
@@ -646,7 +647,7 @@ namespace stl
             {
                 ::memcpy(*dest, src, size * sizeof(unsigned int));
                 // release memory at src
-                allocator.deallocate(src, 0);
+                // allocator.deallocate(src, 0); --heap corruption after realloc
             }
         }
     }
@@ -669,7 +670,7 @@ namespace stl
             {
                 ::memcpy(*dest, src, size * sizeof(long));
                 // release memory at src
-                allocator.deallocate(src, 0);
+                // allocator.deallocate(src, 0); --heap corruption after realloc
             }
         }
     }
@@ -692,7 +693,7 @@ namespace stl
             {
                 ::memcpy(*dest, src, size * sizeof(unsigned long));
                 // release memory at src
-                allocator.deallocate(src, 0);
+                // allocator.deallocate(src, 0); --heap corruption after realloc
             }
         }
     }
@@ -715,7 +716,7 @@ namespace stl
             {
                 ::memcpy(*dest, src, size * sizeof(double));
                 // release memory at src
-                allocator.deallocate(src, 0);
+                // allocator.deallocate(src, 0); --heap corruption after realloc
             }
         }
     }
@@ -738,7 +739,7 @@ namespace stl
             {
                 ::memcpy(*dest, src, size * sizeof(float));
                 // release memory at src
-                allocator.deallocate(src, 0);
+                // allocator.deallocate(src, 0); --heap corruption after realloc
             }
         }
     }
@@ -760,7 +761,7 @@ namespace stl
             {
                 ::memcpy(*dest, src, size * sizeof(long long));
                 // release memory at src
-                allocator.deallocate(src, 0);
+                // allocator.deallocate(src, 0); --heap corruption after realloc
             }
         }
     }
@@ -782,7 +783,7 @@ namespace stl
             {
                 ::memcpy(*dest, src, size * sizeof(unsigned long long));
                 // release memory at src
-                allocator.deallocate(src, 0);
+                // allocator.deallocate(src, 0); --heap corruption after realloc
             }
         }
     }
