@@ -19,8 +19,8 @@
 
 
 
-#ifndef __misctest_util_hpp__
-#define __misctest_util_hpp__
+#ifndef time_printer_hpp
+#define time_printer_hpp
 
 
 #include "cpu_timer.hpp"
@@ -44,14 +44,14 @@ public:
         if(m_print_time)
         {
             double t0 = m_clck.end_clock();
-            misc::cout << m_msg << " time: " << std::fixed << t0 << " sec";
+            std::cout << m_msg << " time: " << std::fixed << t0 << " sec";
         }
     }
 private:
     const char* m_msg;
     bool m_print_time;
-    misc::cpu_timer m_clck;
+    sys::cpu_timer m_clck;
 }; // class
 
 
-#endif // __misctest_util_hpp__
+#endif // time_printer_hpp

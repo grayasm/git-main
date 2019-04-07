@@ -23,6 +23,8 @@ endif(WIN32)
 
 add_subdirectory(world/CppUnit/cppunit/src/cppunit)
 add_subdirectory(lib/stl)
+add_subdirectory(lib/sys)
+add_subdirectory(lib/stltest) #require sys
 add_subdirectory(lib/misc)
 add_subdirectory(lib/misctest)
 #add_subdirectory(lib/fxcore)

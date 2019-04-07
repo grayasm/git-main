@@ -49,7 +49,9 @@
 #include "test_thread.hpp"
 #include "test_tree.hpp"
 #include "test_utility.hpp"
+*/
 #include "test_vector.hpp"
+/*
 #include "test_time.hpp"
 */
 
@@ -96,58 +98,9 @@ int main(int argc, char** argv)
       queue
       priority_queue
       tree
-    */
-	
-#if 0
-    CPPUNIT_TEST_SUITE_REGISTRATION(test_autoptr);
-    CPPUNIT_TEST_SUITE_REGISTRATION(test_exception);
-    CPPUNIT_TEST_SUITE_REGISTRATION(test_generic_array);
+    */	
+
     CPPUNIT_TEST_SUITE_REGISTRATION(test_vector);
-    CPPUNIT_TEST_SUITE_REGISTRATION(test_generic_string);
-    CPPUNIT_TEST_SUITE_REGISTRATION(test_list);
-    CPPUNIT_TEST_SUITE_REGISTRATION(test_stack);
-    CPPUNIT_TEST_SUITE_REGISTRATION(test_deque);
-    CPPUNIT_TEST_SUITE_REGISTRATION(test_queue);
-    CPPUNIT_TEST_SUITE_REGISTRATION(test_priority_queue);
-//    CPPUNIT_TEST_SUITE_REGISTRATION(test_tree); -- exception test_tree::preorder_it (E)
-#endif
-
-
-    //////////////////////////////////////////////////////////////////////////
-    //misc libraries
-    /*
-      stdio
-      unistd
-      strconv
-      stream
-      filename
-      critical_section
-      mutex
-      semaphore
-      event
-      multi_lock
-      single_lock
-      thread
-      time 
-   */
-
-#if 0
-    CPPUNIT_TEST_SUITE_REGISTRATION(test_filename);
-    CPPUNIT_TEST_SUITE_REGISTRATION(test_critical_section);
-	CPPUNIT_TEST_SUITE_REGISTRATION(test_autocritical_section);
-    CPPUNIT_TEST_SUITE_REGISTRATION(test_mutex);
-    CPPUNIT_TEST_SUITE_REGISTRATION(test_semaphore);
-    CPPUNIT_TEST_SUITE_REGISTRATION(test_event);
-    CPPUNIT_TEST_SUITE_REGISTRATION(test_multi_lock);
-    CPPUNIT_TEST_SUITE_REGISTRATION(test_single_lock);
-    CPPUNIT_TEST_SUITE_REGISTRATION(test_thread);
-    CPPUNIT_TEST_SUITE_REGISTRATION(test_time);
-#endif
-	
-	//
-	//
-	// test bench
-	// CPPUNIT_TEST_SUITE_REGISTRATION(test_multi_lock);
 
 
     //////////////////////////////////////////////////////////////////////////

@@ -260,6 +260,8 @@ namespace stl
 
     //////////////////////////////////////////////////////////////////////////
     /* mem_move */
+//TODO: can apply move semantics to all move operations!!
+
     template<typename T, typename Allocator>
     inline void mem_move(T* dst, const T* src, size_t bytes, Allocator& allocator)
     {
@@ -458,23 +460,21 @@ namespace stl
                 from the old object with ::new(new_add)T(old_obj);
 
                 You can fix this by using a memory pool and controlling all
-                memory allocation (malloc, realloc, free).
+                memory allocation (malloc, calloc, realloc and free).
             */
             *dest = allocator.allocate(cap, 0);
             if(*dest == 0) throw stl::exception("bad allocation");
 
-            if(*dest != src)
+            // if(*dest != src)
+            for(size_t i = 0; i < size; ++i)
             {
-                for(size_t i = 0; i < size; ++i)
-                {
-                    T* d1 = (*dest) + i;
-                    T* s1 = src + i;
-                    allocator.construct(d1, *s1);
-                    allocator.destroy(s1);
-                }
-
-                allocator.deallocate(src, 0);
+                T* d1 = (*dest) + i;
+                T* s1 = src + i;
+                allocator.construct(d1, *s1);
+                allocator.destroy(s1);
             }
+
+            allocator.deallocate(src, 0);
         }
     }
 
