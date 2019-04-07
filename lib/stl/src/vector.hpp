@@ -816,7 +816,8 @@ namespace stl
             if (size < m_size)
             {
                 value_type* unused = m_data + size;
-                stl::mem_destroy(&unused, m_size - size, m_allocator);
+                size_type count = m_size - size;
+                stl::mem_destroy(&unused, count, m_allocator);
             }
             m_size = size;
         }
@@ -854,10 +855,10 @@ namespace stl
                 stl::mem_destroy(&m_data, m_size, m_allocator);
                 m_allocator.deallocate(m_data, 0);
             }
-            
-            //m_data = 0;
-            //m_size = 0;
-            //m_capacity = 0;
+
+            m_data = 0;
+            m_size = 0;
+            m_capacity = 0;
         }
 
         container& operator=(const container& x)
@@ -877,7 +878,7 @@ namespace stl
                 {
                     grow(size);
 
-                    stl::mem_copy(m_data, tc.m_data, size * sizeof(value_type), m_allocator);
+                    stl::mem_copy(m_data, m_size, tc.m_data, size, m_allocator);
                 }
                 
                 endof(size);
@@ -920,11 +921,11 @@ namespace stl
                 //self assignment
                 if (first.m_cont == this)
                 {
-                    stl::mem_move(m_data, &((*first.m_cont)[first.m_pos]), dist * sizeof(value_type), m_allocator);
+                    stl::mem_move(m_data, m_size, &((*first.m_cont)[first.m_pos]), dist, m_allocator);
                 }
                 else
                 {
-                    stl::mem_copy(m_data, &((*first.m_cont)[first.m_pos]), dist * sizeof(value_type), m_allocator);
+                    stl::mem_copy(m_data, m_size, &((*first.m_cont)[first.m_pos]), dist, m_allocator);
                 }
             }
 
@@ -946,11 +947,11 @@ namespace stl
                 //self assignment
                 if (this == first.m_cont)
                 {
-                    stl::mem_move(m_data, &((*first.m_cont)[first.m_pos]), dist * sizeof(value_type), m_allocator);
+                    stl::mem_move(m_data, m_size, &((*first.m_cont)[first.m_pos]), dist, m_allocator);
                 }
                 else
                 {
-                    stl::mem_copy(m_data, &((*first.m_cont)[first.m_pos]), dist * sizeof(value_type), m_allocator);
+                    stl::mem_copy(m_data, m_size, &((*first.m_cont)[first.m_pos]), dist, m_allocator);
                 }
             }
 
@@ -975,14 +976,32 @@ namespace stl
             {
                 grow(dist);
 
-                for (size_type i = 0; first != last; ++first, ++i)
+                const T& check = *first;
+
+                // Is the range inside this container ?
+                if (m_data <= &check && (m_data + m_size) > &check)
                 {
-                    T* d1 = m_data + i;
-                    const T& s1 = *first;
-                    if (d1 != &s1)
+                    container temp;
+                    temp.assign(first, last);
+
+                    stl::mem_move(m_data, m_size, &temp.front(), dist, m_allocator);
+                }
+                else// range is outside this container
+                {
+                    for (size_type i = 0; first != last; ++first, ++i)
                     {
-                        m_allocator.destroy(d1);
-                        m_allocator.construct(d1, s1);
+                        T* d1 = m_data + i;
+                        const T& s1 = *first;
+                        if (d1 != &s1)
+                        {
+                            // cannot destroy invalid objects in the destination
+                            if (i < m_size)
+                            {
+                                m_allocator.destroy(d1);
+                            }
+
+                            m_allocator.construct(d1, s1);
+                        }
                     }
                 }
             }
@@ -1019,11 +1038,11 @@ namespace stl
                 // Is range inside this container ?
                 if (m_data <= first && (m_data + m_size) > first)
                 {
-                    stl::mem_move(m_data, first, dist * sizeof(value_type), m_allocator);
+                    stl::mem_move(m_data, m_size, first, dist, m_allocator);
                 }
                 else
                 {
-                    stl::mem_copy(m_data, first, dist * sizeof(value_type), m_allocator);
+                    stl::mem_copy(m_data, m_size, first, dist, m_allocator);
                 }
             }
 
@@ -1300,18 +1319,35 @@ namespace stl
 
                     // move content unless insert position is end()
                     if (p < m_size)
-                        stl::mem_move(&m_data[p + dist], &m_data[p], (m_size - p) * sizeof(value_type), m_allocator);
+                    {
+                        // mem_move cannot destroy invalid objects in the destination
+                        size_type dst_valid_sz = 0;
+                        if (p + dist < m_size)
+                        {
+                            dst_valid_sz = m_size - p - dist;
+                        }
+                        stl::mem_move(&m_data[p + dist], dst_valid_sz, &m_data[p], (m_size - p), m_allocator);
+                    }
 
 //TODO: can this be moved?
-                    stl::mem_copy(&m_data[p], &temp.front(), dist * sizeof(value_type), m_allocator);
+                    stl::mem_copy(&m_data[p], m_size - p, &temp.front(), dist, m_allocator);
                 }
                 else// range is outside this container
                 {
                     // move content unless insert positions is end()
                     if (p < m_size)
-                        stl::mem_move(&m_data[p + dist], &m_data[p], (m_size - p) * sizeof(value_type), m_allocator);
+                    {
+                        // mem_move cannot destroy invalid objects in the destination
+                        size_type dst_valid_sz = 0;
+                        if (p + dist < m_size)
+                        {
+                            dst_valid_sz = m_size - p - dist;
+                        }
 
-                    stl::mem_copy(&m_data[p], &((*first.m_cont)[first.m_pos]), dist * sizeof(value_type), m_allocator);
+                        stl::mem_move(&m_data[p + dist], dst_valid_sz, &m_data[p], (m_size - p), m_allocator);
+                    }
+
+                    stl::mem_copy(&m_data[p], m_size - p, &((*first.m_cont)[first.m_pos]), dist, m_allocator);
                 }
 
                 endof(size);
@@ -1344,18 +1380,36 @@ namespace stl
 
                     // move content unless insert position is end()
                     if (p < m_size)
-                        stl::mem_move(&m_data[p + dist], &m_data[p], (m_size - p) * sizeof(value_type), m_allocator);
+                    {
+                        // mem_move cannot destroy invalid objects in the destination
+                        size_type dst_valid_sz = 0;
+                        if (p + dist < m_size)
+                        {
+                            dst_valid_sz = m_size - p - dist;
+                        }
+
+                        stl::mem_move(&m_data[p + dist], dst_valid_sz, &m_data[p], (m_size - p), m_allocator);
+                    }
 
 //TODO: can this be moved?
-                    stl::mem_copy(&m_data[p], &temp.front(), dist * sizeof(value_type), m_allocator);
+                    stl::mem_copy(&m_data[p], m_size - p, &temp.front(), dist, m_allocator);
                 }
                 else// range is outside this container
                 {
                     // move content unless insert positions is end()
                     if (p < m_size)
-                        stl::mem_move(&m_data[p + dist], &m_data[p], (m_size - p) * sizeof(value_type), m_allocator);
+                    {
+                        // mem_move cannot destroy invalid objects in the destination
+                        size_type dst_valid_sz = 0;
+                        if (p + dist < m_size)
+                        {
+                            dst_valid_sz = m_size - p - dist;
+                        }
 
-                    stl::mem_copy(&m_data[p], &((*first.m_cont)[first.m_pos]), dist * sizeof(value_type), m_allocator);
+                        stl::mem_move(&m_data[p + dist], dst_valid_sz, &m_data[p], (m_size - p), m_allocator);
+                    }
+
+                    stl::mem_copy(&m_data[p], m_size - p, &((*first.m_cont)[first.m_pos]), dist, m_allocator);
                 }
 
                 endof(size);
@@ -1397,16 +1451,34 @@ namespace stl
 
                     // move content unless insert position is end()
                     if (p < m_size)
-                        stl::mem_move(&m_data[p + dist], &m_data[p], (m_size - p) * sizeof(value_type), m_allocator);
+                    {
+                        // mem_move cannot destroy invalid objects in the destination
+                        size_type dst_valid_sz = 0;
+                        if (p + dist < m_size)
+                        {
+                            dst_valid_sz = m_size - p - dist;
+                        }
+
+                        stl::mem_move(&m_data[p + dist], dst_valid_sz, &m_data[p], (m_size - p), m_allocator);
+                    }
 
 //TODO: can this be moved?
-                    stl::mem_copy(&m_data[p], &temp.front(), dist * sizeof(value_type), m_allocator);
+                    stl::mem_copy(&m_data[p], m_size - p, &temp.front(), dist, m_allocator);
                 }
                 else// range is outside this container
                 {
                     // move content unless insert position is end()
                     if (p < m_size)
-                        stl::mem_move(&m_data[p + dist], &m_data[p], (m_size - p) * sizeof(value_type), m_allocator);
+                    {
+                        // mem_move cannot destroy invalid objects in the destination
+                        size_type dst_valid_sz = 0;
+                        if (p + dist < m_size)
+                        {
+                            dst_valid_sz = m_size - p - dist;
+                        }
+
+                        stl::mem_move(&m_data[p + dist], dst_valid_sz, &m_data[p], (m_size - p), m_allocator);
+                    }
 
                     for (size_type i = 0; first != last; ++first, ++i)
                     {
@@ -1439,7 +1511,16 @@ namespace stl
 
                     // move content unless insert position is end()
                     if (p < m_size)
-                        stl::mem_move(&m_data[p + n], &m_data[p], (m_size - p) * sizeof(value_type), m_allocator);
+                    {
+                        // mem_move cannot destroy invalid objects in the destination
+                        size_type dst_valid_sz = 0;
+                        if (p + n < m_size)
+                        {
+                            dst_valid_sz = m_size - p - n;
+                        }
+
+                        stl::mem_move(&m_data[p + n], dst_valid_sz, &m_data[p], (m_size - p), m_allocator);
+                    }
 
                     stl::mem_set<value_type>(&m_data[p], temp, n * sizeof(value_type), m_allocator);
                 }
@@ -1447,7 +1528,16 @@ namespace stl
                 {
                     // move content unless insert position is end()
                     if (p < m_size)
-                        stl::mem_move(&m_data[p + n], &m_data[p], (m_size - p) * sizeof(value_type), m_allocator);
+                    {
+                        // mem_move cannot destroy invalid objects in the destination
+                        size_type dst_valid_sz = 0;
+                        if (p + n < m_size)
+                        {
+                            dst_valid_sz = m_size - p - n;
+                        }
+
+                        stl::mem_move(&m_data[p + n], dst_valid_sz, &m_data[p], (m_size - p), m_allocator);
+                    }
 
                     stl::mem_set<value_type>(&m_data[p], value, n * sizeof(value_type), m_allocator);
                 }
@@ -1466,7 +1556,7 @@ namespace stl
 
             size_type p = position.m_pos;
 
-            stl::mem_move(&m_data[p], &m_data[p + 1], (m_size - p - 1) * sizeof(value_type), m_allocator);
+            stl::mem_move(&m_data[p], m_size - p, &m_data[p + 1], (m_size - p - 1), m_allocator);
 
             endof(m_size - 1);
 
@@ -1482,7 +1572,7 @@ namespace stl
             size_type dist = static_cast<size_type>(last - first);
             if (dist > 0)
             {
-                stl::mem_move(&m_data[first.m_pos], &m_data[last.m_pos], (m_size - last.m_pos) * sizeof(value_type), m_allocator);
+                stl::mem_move(&m_data[first.m_pos], m_size - first.m_pos, &m_data[last.m_pos], (m_size - last.m_pos), m_allocator);
 
                 endof(m_size - dist);
             }
