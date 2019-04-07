@@ -398,28 +398,29 @@ namespace stl
         and <wchar_t> as the ::memset's value is casted to unsigned char.
         You cannot memset bigger data type than that.
      */
-    template<typename T>
-    inline void mem_set(T* dst, T val, size_t bytes)
+    template<typename T, typename Allocator>
+    inline void mem_set(T* dst, const T& val, size_t bytes, Allocator& allocator)
     {
         size_t elems = bytes / sizeof(T);
-        for(size_t i = 0; i < elems; ++i)
-            dst[i] = val;
+        for (size_t i = 0; i < elems; ++i)
+            // dst[i] = val;
+            allocator.construct(&dst[i], val);
     }
 
-    template<>
-    inline void mem_set(char* dst, char val, size_t bytes)
+    template<typename Allocator>
+    inline void mem_set(char* dst, char val, size_t bytes, Allocator&)
     {
         ::memset(dst, val, bytes);
     }
 
-    template<>
-    inline void mem_set(unsigned char* dst, unsigned char val, size_t bytes)
+    template<typename Allocator>
+    inline void mem_set(unsigned char* dst, unsigned char val, size_t bytes, Allocator&)
     {
         ::memset(dst, val, bytes);
     }
 
-    template<>
-    inline void mem_set(wchar_t* dst, wchar_t val, size_t bytes)
+    template<typename Allocator>
+    inline void mem_set(wchar_t* dst, wchar_t val, size_t bytes, Allocator&)
     {
         /*
           wchar_t *wmemset(wchar_t *dest, wchar_t c, size_t count);
@@ -452,8 +453,14 @@ namespace stl
         }
         else
         {
-            // buy more memory
-            *dest = allocator.allocate(cap, src);
+            /*  If ::realloc allocates at a new address, it will also free the
+                current location, which means it is dangerous to construct
+                from the old object with ::new(new_add)T(old_obj);
+
+                You can fix this by using a memory pool and controlling all
+                memory allocation (malloc, realloc, free).
+            */
+            *dest = allocator.allocate(cap, 0);
             if(*dest == 0) throw stl::exception("bad allocation");
 
             if(*dest != src)
@@ -466,9 +473,7 @@ namespace stl
                     allocator.destroy(s1);
                 }
 
-                // The above may not be correct at all!!!
-                // release memory at src
-                // allocator.deallocate(src, 0); --heap corruption after realloc
+                allocator.deallocate(src, 0);
             }
         }
     }
@@ -482,16 +487,9 @@ namespace stl
         }
         else
         {
-            /* src must be returned by an earlier call to alloc.allocate() */
+            // calls ::realloc underneath - no need to free src (see allocator)
             *dest = allocator.allocate(cap, src);
             if (*dest == 0) throw stl::exception("bad allocation");
-
-            if (*dest != src)
-            {
-                // ::memcpy(*dest, src, size * sizeof(char));
-                // release memory at src
-                // allocator.deallocate(src, 0); --heap corruption after realloc
-            }
         }
     }
 
@@ -504,16 +502,9 @@ namespace stl
         }
         else
         {
-            /* src must be returned by an earlier call to alloc.allocate() */
+            // calls ::realloc underneath - no need to free src (see allocator)
             *dest = allocator.allocate(cap, src);
             if (*dest == 0) throw stl::exception("bad allocation");
-
-            if (*dest != src)
-            {
-                // ::memcpy(*dest, src, size * sizeof(signed char));
-                // release memory at src
-                // allocator.deallocate(src, 0); --heap corruption after realloc
-            }
         }
     }
     
@@ -526,16 +517,9 @@ namespace stl
         }
         else
         {
-            /* src must be returned by an earlier call to alloc.allocate() */
+            // calls ::realloc underneath - no need to free src (see allocator)
             *dest = allocator.allocate(cap, src);
             if (*dest == 0) throw stl::exception("bad allocation");
-
-            if (*dest != src)
-            {
-                // ::memcpy(*dest, src, size * sizeof(unsigned char));
-                // release memory at src
-                // allocator.deallocate(src, 0); --heap corruption after realloc
-            }
         }
     }
 
@@ -548,16 +532,9 @@ namespace stl
         }
         else
         {
-            /* src must be returned by an earlier call to alloc.allocate() */
+            // calls ::realloc underneath - no need to free src (see allocator)
             *dest = allocator.allocate(cap, src);
             if (*dest == 0) throw stl::exception("bad allocation");
-
-            if (*dest != src)
-            {
-                // ::memcpy(*dest, src, size * sizeof(wchar_t));
-                // release memory at src
-                // allocator.deallocate(src, 0); --heap corruption after realloc
-            }
         }
     }
 
@@ -570,16 +547,9 @@ namespace stl
         }
         else
         {
-            /* src must be returned by an earlier call to alloc.allocate() */
+            // calls ::realloc underneath - no need to free src (see allocator)
             *dest = allocator.allocate(cap, src);
             if (*dest == 0) throw stl::exception("bad allocation");
-
-            if (*dest != src)
-            {
-                // ::memcpy(*dest, src, size * sizeof(short));
-                // release memory at src
-                // allocator.deallocate(src, 0); --heap corruption after realloc
-            }
         }
     }
 
@@ -593,16 +563,9 @@ namespace stl
         }
         else
         {
-            /* src must be returned by an earlier call to alloc.allocate() */
+            // calls ::realloc underneath - no need to free src (see allocator)
             *dest = allocator.allocate(cap, src);
             if (*dest == 0) throw stl::exception("bad allocation");
-
-            if (*dest != src)
-            {
-                // ::memcpy(*dest, src, size * sizeof(unsigned short));
-                // release memory at src
-                // allocator.deallocate(src, 0); --heap corruption after realloc
-            }
         }
     }
 
@@ -616,16 +579,9 @@ namespace stl
         }
         else
         {
-            /* src must be returned by an earlier call to alloc.allocate() */
+            // calls ::realloc underneath - no need to free src (see allocator)
             *dest = allocator.allocate(cap, src);
             if (*dest == 0) throw stl::exception("bad allocation");
-
-            if (*dest != src)
-            {
-                // ::memcpy(*dest, src, size * sizeof(int));
-                // release memory at src
-                // allocator.deallocate(src, 0); --heap corruption after realloc
-            }
         }
     }
 
@@ -639,16 +595,9 @@ namespace stl
         }
         else
         {
-            /* src must be returned by an earlier call to alloc.allocate() */
+            // calls ::realloc underneath - no need to free src (see allocator)
             *dest = allocator.allocate(cap, src);
             if (*dest == 0) throw stl::exception("bad allocation");
-
-            if (*dest != src)
-            {
-                ::memcpy(*dest, src, size * sizeof(unsigned int));
-                // release memory at src
-                // allocator.deallocate(src, 0); --heap corruption after realloc
-            }
         }
     }
 
@@ -662,16 +611,9 @@ namespace stl
         }
         else
         {
-            /* src must be returned by an earlier call to alloc.allocate() */
+            // calls ::realloc underneath - no need to free src (see allocator)
             *dest = allocator.allocate(cap, src);
             if (*dest == 0) throw stl::exception("bad allocation");
-
-            if (*dest != src)
-            {
-                ::memcpy(*dest, src, size * sizeof(long));
-                // release memory at src
-                // allocator.deallocate(src, 0); --heap corruption after realloc
-            }
         }
     }
 
@@ -685,16 +627,9 @@ namespace stl
         }
         else
         {
-            /* src must be returned by an earlier call to alloc.allocate() */
+            // calls ::realloc underneath - no need to free src (see allocator)
             *dest = allocator.allocate(cap, src);
             if (*dest == 0) throw stl::exception("bad allocation");
-
-            if (*dest != src)
-            {
-                ::memcpy(*dest, src, size * sizeof(unsigned long));
-                // release memory at src
-                // allocator.deallocate(src, 0); --heap corruption after realloc
-            }
         }
     }
 
@@ -708,16 +643,9 @@ namespace stl
         }
         else
         {
-            /* src must be returned by an earlier call to alloc.allocate() */
+            // calls ::realloc underneath - no need to free src (see allocator)
             *dest = allocator.allocate(cap, src);
             if (*dest == 0) throw stl::exception("bad allocation");
-
-            if (*dest != src)
-            {
-                ::memcpy(*dest, src, size * sizeof(double));
-                // release memory at src
-                // allocator.deallocate(src, 0); --heap corruption after realloc
-            }
         }
     }
 
@@ -731,16 +659,9 @@ namespace stl
         }
         else
         {
-            /* src must be returned by an earlier call to alloc.allocate() */
+            // calls ::realloc underneath - no need to free src (see allocator)
             *dest = allocator.allocate(cap, src);
             if (*dest == 0) throw stl::exception("bad allocation");
-
-            if (*dest != src)
-            {
-                ::memcpy(*dest, src, size * sizeof(float));
-                // release memory at src
-                // allocator.deallocate(src, 0); --heap corruption after realloc
-            }
         }
     }
 
@@ -753,16 +674,9 @@ namespace stl
         }
         else
         {
-            /* src must be returned by an earlier call to alloc.allocate() */
+            // calls ::realloc underneath - no need to free src (see allocator)
             *dest = allocator.allocate(cap, src);
             if (*dest == 0) throw stl::exception("bad allocation");
-
-            if (*dest != src)
-            {
-                ::memcpy(*dest, src, size * sizeof(long long));
-                // release memory at src
-                // allocator.deallocate(src, 0); --heap corruption after realloc
-            }
         }
     }
 
@@ -775,16 +689,9 @@ namespace stl
         }
         else
         {
-            /* src must be returned by an earlier call to alloc.allocate() */
+            // calls ::realloc underneath - no need to free src (see allocator)
             *dest = allocator.allocate(cap, src);
             if (*dest == 0) throw stl::exception("bad allocation");
-
-            if (*dest != src)
-            {
-                ::memcpy(*dest, src, size * sizeof(unsigned long long));
-                // release memory at src
-                // allocator.deallocate(src, 0); --heap corruption after realloc
-            }
         }
     }
 

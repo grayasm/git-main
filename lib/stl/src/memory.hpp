@@ -241,6 +241,16 @@ namespace stl
             {
                 if (hint)
                 {
+                /*  https://en.cppreference.com/w/c/memory/realloc
+                    The reallocation is done by either:
+                a)  expanding or contracting the existing area pointed to by ptr,
+                    if possible. The contents of the area remain unchanged up to
+                    the lesser of the new and old sizes. If the area is expanded,
+                    the contents of the new part of the array are undefined.
+                b)  allocating a new memory block of size new_size bytes,
+                    copying memory area with size equal the lesser of the
+                    new and the old sizes, and freeing the old block.
+                */
                     return (pointer)::realloc((void*)hint, n * sizeof(value_type));
                 }
                 else
