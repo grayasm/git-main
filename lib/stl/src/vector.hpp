@@ -1243,7 +1243,16 @@ namespace stl
 
                 // move content unless insert position is end()
                 if (position.m_pos < m_size)
-                    stl::mem_move(&m_data[p + 1], &m_data[p], (m_size - p) * sizeof(value_type), m_allocator);
+                {
+                    // mem_move cannot destroy invalid objects in the destination
+                    size_type dst_valid_sz = 0;
+                    if (p + 1 < m_size)
+                    {
+                        dst_valid_sz = m_size - p - 1;
+                    }
+
+                    stl::mem_move(&m_data[p + 1], dst_valid_sz, &m_data[p], (m_size - p), m_allocator);
+                }
 
                 m_allocator.construct(&m_data[p], temp);
             }
@@ -1251,7 +1260,16 @@ namespace stl
             {
                 // move content unless insert position is end()
                 if (position.m_pos < m_size)
-                    stl::mem_move(&m_data[p + 1], &m_data[p], (m_size - p) * sizeof(value_type), m_allocator);
+                {
+                    // mem_move cannot destroy invalid objects in the destination
+                    size_type dst_valid_sz = 0;
+                    if (p + 1 < m_size)
+                    {
+                        dst_valid_sz = m_size - p - 1;
+                    }
+
+                    stl::mem_move(&m_data[p + 1], dst_valid_sz, &m_data[p], (m_size - p), m_allocator);
+                }
 
                 m_allocator.construct(&m_data[p], x);
             }
@@ -1281,7 +1299,16 @@ namespace stl
 
                     // move content unless insert position is end()
                     if (position.m_pos < m_size)
-                        stl::mem_move(&m_data[p + n], &m_data[p], (m_size - p) * sizeof(value_type), m_allocator);
+                    {
+                        // mem_move cannot destroy invalid objects in the destination
+                        size_type dst_valid_sz = 0;
+                        if (p + n < m_size)
+                        {
+                            dst_valid_sz = m_size - p - n;
+                        }
+
+                        stl::mem_move(&m_data[p + n], dst_valid_sz, &m_data[p], (m_size - p), m_allocator);
+                    }
 
                     stl::mem_set<value_type>(&m_data[p], temp, n * sizeof(value_type), m_allocator);
                 }
@@ -1289,7 +1316,16 @@ namespace stl
                 {
                     // move content unless insert position is end()
                     if (position.m_pos < m_size)
-                        stl::mem_move(&m_data[p + n], &m_data[p], (m_size - p) * sizeof(value_type), m_allocator);
+                    {
+                        // mem_move cannot destroy invalid objects in the destination
+                        size_type dst_valid_sz = 0;
+                        if (p + n < m_size)
+                        {
+                            dst_valid_sz = m_size - p - n;
+                        }
+
+                        stl::mem_move(&m_data[p + n], dst_valid_sz, &m_data[p], (m_size - p), m_allocator);
+                    }
 
                     stl::mem_set<value_type>(&m_data[p], x, n * sizeof(value_type), m_allocator);
                 }
@@ -1338,6 +1374,7 @@ namespace stl
                         {
                             dst_valid_sz = m_size - p - dist;
                         }
+
                         stl::mem_move(&m_data[p + dist], dst_valid_sz, &m_data[p], (m_size - p), m_allocator);
                     }
 

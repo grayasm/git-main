@@ -401,6 +401,12 @@ void test_vector::push_back()
         CPPUNIT_ASSERT(v2[i] == c1[i]);
     CPPUNIT_ASSERT(v2.size() == 5);
     CPPUNIT_ASSERT(v2.capacity() == 8);
+
+    stl::vector<Cx> v3;
+    v3.push_back(Cx(-1));
+    v3.push_back(Cx(-2));
+    v3.push_back(v3.front());
+
 }
 
 void test_vector::pop_back()
@@ -427,7 +433,7 @@ void test_vector::insert()
     v1.insert(v1.end(), c1[0]);
 
     CPPUNIT_ASSERT(v1.size() == 1);
-    CPPUNIT_ASSERT(v1.capacity() == 2);
+    CPPUNIT_ASSERT(v1.capacity() == 1);
     CPPUNIT_ASSERT(v1[0] == c1[0]);
 
     v1.insert(v1.begin(), v1.front()); // self assignment
