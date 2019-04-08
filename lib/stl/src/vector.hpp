@@ -893,7 +893,17 @@ namespace stl
             {
                 grow(count);
 
-                stl::mem_set<value_type>(m_data, val, count * sizeof(value_type), m_allocator);
+                // Is the address inside this container ?
+                if (m_data <= &val && (m_data + m_size) > &val)
+                {
+                    T temp(val);
+
+                    stl::mem_set<value_type>(m_data, temp, count * sizeof(value_type), m_allocator);
+                }
+                else// Address is outside this container.
+                {
+                    stl::mem_set<value_type>(m_data, val, count * sizeof(value_type), m_allocator);
+                }
             }
 
             endof(count);
@@ -1020,6 +1030,7 @@ namespace stl
             {
                 grow(size);
 
+                // Not a self assignment as value is a temporary copy.
                 stl::mem_set<value_type>(m_data, value, size * sizeof(value_type), m_allocator);
             }
 
@@ -1117,6 +1128,7 @@ namespace stl
             {
                 grow(sz);
 
+                // Not a self assignment as c is a temporary copy.
                 stl::mem_set<value_type>(&m_data[m_size], c, (sz - m_size) * sizeof(value_type), m_allocator);
             }
 
@@ -1208,7 +1220,7 @@ namespace stl
         // 23.2.4.3 modifiers (vector):
         void pop_back()
         {
-            if (m_size == 0) throw stl::exception("vector is empty")
+            if (m_size == 0) throw stl::exception("vector is empty");
             
             endof(m_size - 1);
         }
