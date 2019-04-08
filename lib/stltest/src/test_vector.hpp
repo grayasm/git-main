@@ -43,6 +43,8 @@ class test_vector : public CppUnit::TestFixture
     CPPUNIT_TEST(push_back);
     CPPUNIT_TEST(pop_back);
     CPPUNIT_TEST(insert);
+    CPPUNIT_TEST(erase);
+    CPPUNIT_TEST(perf1);        // for performance
     CPPUNIT_TEST_SUITE_END();
 
 
@@ -59,6 +61,9 @@ public:
     void push_back();
     void pop_back();
     void insert();
+    void erase();
+
+    void perf1();
 };
 
 
