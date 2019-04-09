@@ -616,13 +616,13 @@ void test_vector::perf1()
         time_printer tp(msg1);
 
         stl::vector<Cx> v1;
-        for (int i = 0; i < 10000; ++i)
+        for (int i = 0; i < 5000; ++i)
             v1.push_back(Cx(i));
         
         while (v1.size() > 0)
             v1.erase(v1.begin());
 
-        for (int i = 0; i < 10000; ++i)
+        for (int i = 0; i < 5000; ++i)
             v1.insert(v1.begin(), Cx(i));
 
         v1.erase(v1.begin(), v1.end());
@@ -639,13 +639,13 @@ void test_vector::perf1()
         time_printer tp(msg2);
         
         std::vector<Cx> v1;
-        for (int i = 0; i < 10000; ++i)
+        for (int i = 0; i < 5000; ++i)
             v1.push_back(Cx(i));
 
         while (v1.size() > 0)
             v1.erase(v1.begin());
 
-        for (int i = 0; i < 10000; ++i)
+        for (int i = 0; i < 5000; ++i)
             v1.insert(v1.begin(), Cx(i));
 
         v1.erase(v1.begin(), v1.end());

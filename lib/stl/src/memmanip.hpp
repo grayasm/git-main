@@ -153,8 +153,8 @@ namespace stl
 
     //////////////////////////////////////////////////////////////////////////
     /*  mem_copy 
-        -   dst_valid_sz is the size already initialized at dst address.
-            everything equal or beyond this count is memory not initialized.
+            dst_valid_sz is the size already initialized at dst address.
+            Everything equal or beyond this count is not initialized memory.
     */
     template<typename T, typename Allocator>
     inline void mem_copy(T* dst, size_t dst_valid_sz, const T* src, size_t count, Allocator& allocator)
@@ -287,6 +287,9 @@ namespace stl
             impossible to tell if the pointer was created by new/malloc or
             if it is an offset from another pointer.
             memmove does not touch the source memory (no ~T() call, no free())
+
+            dst_valid_sz is the size already initialized at dst address.
+            Everything equal or beyond this count is not initialized memory.
     */
 
     template<typename T, typename Allocator>
