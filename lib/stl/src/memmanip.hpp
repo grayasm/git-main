@@ -264,8 +264,30 @@ namespace stl
     }
 
     //////////////////////////////////////////////////////////////////////////
-    /* mem_move */
-//TODO: can apply move semantics to all move operations!!
+    /* mem_move - source: http://www.cplusplus.com/reference/cstring/memmove/
+    
+    void * memmove ( void * destination, const void * source, size_t num );
+    
+    Copies the values of num bytes from the location pointed by source to
+    the memory block pointed by destination. Copying takes place as if an
+    intermediate buffer were used, allowing the destination and source to
+    overlap.
+
+    The underlying type of the objects pointed by both the source and
+    destination pointers are irrelevant for this function; The result
+    is a binary copy of the data.
+
+    The function does not check for any terminating null character in source
+    - it always copies exactly num bytes.
+
+    To avoid overflows, the size of the arrays pointed by both the destination
+    and source parameters, shall be at least num bytes.
+
+    My obs: The source pointer is not released (tested). It would also be
+            impossible to tell if the pointer was created by new/malloc or
+            if it is an offset from another pointer.
+            memmove does not touch the source memory (no ~T() call, no free())
+    */
 
     template<typename T, typename Allocator>
     inline void mem_move(T* dst, size_t dst_valid_sz, const T* src, size_t count, Allocator& allocator)
@@ -278,6 +300,7 @@ namespace stl
                 T* d1 = dst + i;
                 const T* s1 = src + i;
 
+                // clean the destination, otherwise the pointer is leaked
                 if (i < dst_valid_sz)
                 {
                     allocator.destroy(d1); //faults when object at d1 was not yet created;
@@ -294,6 +317,7 @@ namespace stl
                 T* d1 = dst + i;
                 const T* s1 = src + i;
 
+                // clean the destination, otherwise the pointer is leaked
                 if (i < dst_valid_sz)
                 {
                     allocator.destroy(d1); //faults when object at d1 was not yet created;
@@ -310,6 +334,7 @@ namespace stl
                 T* d1 = dst + i;
                 const T* s1 = src + i;
 
+                // clean the destination, otherwise the pointer is leaked
                 if (i < dst_valid_sz)
                 {
                     allocator.destroy(d1); //faults when object at d1 was not yet created;

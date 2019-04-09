@@ -42,24 +42,16 @@ private:
 
 int main()
 {
-    Cx c3[5] = { -1, -2, -3, -4, -5 };
+    char s1[] = "this string is empty                ";
+    char s2[] = "this string is dirty                ";
 
-    // void assign_(iterator, iterator);
-    stl::vector<Cx> v4_, v5_;
-    v4_.assign(c3, c3 + 5);
-    v5_.assign(v4_.begin(), v4_.end()); // iterator
+    memmove(s1, s2, strlen(s2));
 
-    v5_.assign(v4_.begin(), v4_.end());
-    stl::vector<Cx>::reverse_iterator v5_rib = v5_.rbegin(), v5_rie = v5_.rend();
-    v5_.assign(v5_rib + 2, v5_rie); // reverse_iterator (self assignment)
+    Cx c1[5] = { -1, -2, -3, -4, -5 };
+    Cx c2[5] = { +1, +2, +3, +4, +5 };
+    Cx* p1[5] = { c1, c1 + 1, c1 + 2, c1 + 3, c1 + 4 };
 
-    for (int i = 0; i < v5_.size(); ++i)
-    {
-        int* p5 = v5_[i].get();
-        int* p4 = v4_[v4_.size() - i - 3].get();
+    stl::mem_move(c1, 5, c2, 5, stl::allocator<Cx>());
 
-        //CPPUNIT_ASSERT(v5_[i] == v4_[v4_.size() - i - 3]);
-    }
-    //CPPUNIT_ASSERT(v5_.size() == v4_.size() - 2);
     return 0;
 }

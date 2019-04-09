@@ -313,6 +313,25 @@ void test_vector::assign()
     for (int i = 0; i < v8.size(); ++i)
         CPPUNIT_ASSERT(v8[i] == c8[i]);
     CPPUNIT_ASSERT(v8.size() == 4);
+
+    // --- other situations worth testing ---
+
+    // I have the feeling that mem_move leaks memory
+    Cx c9[5] = { -1, -2, -3, -4, -5 };
+    stl::vector<Cx> v9;
+    v9.assign(c9, c9 + 5);
+
+    const Cx& elem4 = v9[4];
+    v9.assign(v9.begin() + 2, v9.end()); // move last 3 in front
+    CPPUNIT_ASSERT(v9.size() == 3); // elem4 is released - OK
+
+    int i10[5] = { -1, -2, -3, -4, -5 };
+    stl::vector<int> v10;
+    v10.assign(i10, i10 + 5);
+
+    int& elem4_1 = v10[4];
+    v10.assign(v10.begin() + 2, v10.end()); // most last 3 in front
+    CPPUNIT_ASSERT(v10.size() == 3);
 }
 
 void test_vector::resize()
