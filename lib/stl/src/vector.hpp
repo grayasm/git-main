@@ -26,7 +26,6 @@
 #include "memory.hpp"
 #include "memmanip.hpp"
 #include "algorithm.hpp"
-#include <new>
 
 
 namespace stl
