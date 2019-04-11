@@ -58,67 +58,38 @@ namespace stl
         typedef typename container::size_type       size_type;
         typedef typename stl::basic_string_iterator_base<container> base2;
         friend class stl::basic_string<typename container::value_type, typename container::allocator_type>;
-        friend class generic_array_const_iterator<container>;
+        friend class stl::basic_string_const_iterator<container>;
 
 
     private:
-        inline void init()
+        basic_string_iterator(container* cont, size_type pos)
+        {
+            base2::m_cont = cont;
+            base2::m_pos = pos;
+        }
+
+    public:
+        basic_string_iterator()
         {
             base2::m_cont = 0;
             base2::m_pos = 0;
         }
 
-    private:
-        generic_array_iterator(container* cont, size_type pos)
+        basic_string_iterator(const basic_string_iterator& it)
         {
-            init();
-
-            base2::m_cont = cont;
-            base2::m_pos = pos;
-
-            if (base2::m_cont)
-            {
-                base2::m_cont->add_iterator(this);
-            }
-        }
-
-    public:
-        generic_array_iterator()
-        {
-            init();
-        }
-
-
-        generic_array_iterator(const generic_array_iterator& it)
-        {
-            init();
             *this = it;
         }
 
-        ~generic_array_iterator()
+        ~basic_string_iterator()
         {
-            if (base2::m_cont)
-            {
-                base2::m_cont->remove_iterator(this);
-            }
         }
 
-        generic_array_iterator& operator=(const generic_array_iterator& it)
+        basic_string_iterator& operator=(const basic_string_iterator& it)
         {
             if (this != &it)
             {
-                if (base2::m_cont)
-                {
-                    base2::m_cont->remove_iterator(this);
-                }
-
                 base2::m_cont = it.m_cont;
                 base2::m_pos = it.m_pos;
-
-                if (base2::m_cont)
-                {
-                    base2::m_cont->add_iterator(this);
-                }
             }
             return *this;
         }
@@ -137,7 +108,7 @@ namespace stl
             return &(*base2::m_cont)[base2::m_pos];
         }
 
-        generic_array_iterator& operator++()
+        basic_string_iterator& operator++()
         {
             if (!base2::m_cont) throw stl::exception("invalid iterator");
 
@@ -145,16 +116,16 @@ namespace stl
             return *this;
         }
 
-        generic_array_iterator operator++(int)
+        basic_string_iterator operator++(int)
         {
             if (!base2::m_cont) throw stl::exception("invalid iterator");
 
-            generic_array_iterator<container> tmp = *this;
+            basic_string_iterator<container> tmp = *this;
             ++base2::m_pos;
             return tmp;
         }
 
-        generic_array_iterator& operator--()
+        basic_string_iterator& operator--()
         {
             if (!base2::m_cont) throw stl::exception("invalid iterator");
 
@@ -162,16 +133,16 @@ namespace stl
             return *this;
         }
 
-        generic_array_iterator operator--(int)
+        basic_string_iterator operator--(int)
         {
             if (!base2::m_cont) throw stl::exception("invalid iterator");
 
-            generic_array_iterator<container> tmp = *this;
+            basic_string_iterator<container> tmp = *this;
             --base2::m_pos;
             return tmp;
         }
 
-        generic_array_iterator& operator+=(difference_type off)
+        basic_string_iterator& operator+=(difference_type off)
         {
             if (!base2::m_cont) throw stl::exception("invalid iterator");
 
@@ -179,13 +150,13 @@ namespace stl
             return *this;
         }
 
-        generic_array_iterator operator+(difference_type off) const
+        basic_string_iterator operator+(difference_type off) const
         {
-            generic_array_iterator<container> tmp = *this;
+            basic_string_iterator<container> tmp = *this;
             return tmp += off;
         }
 
-        generic_array_iterator& operator-=(difference_type off)
+        basic_string_iterator& operator-=(difference_type off)
         {
             if (!base2::m_cont) throw stl::exception("invalid iterator");
 
@@ -193,43 +164,43 @@ namespace stl
             return *this;
         }
 
-        generic_array_iterator operator-(difference_type off) const
+        basic_string_iterator operator-(difference_type off) const
         {
-            generic_array_iterator<container> tmp = *this;
+            basic_string_iterator<container> tmp = *this;
             return tmp -= off;
         }
 
-        difference_type operator-(const generic_array_iterator& it) const
+        difference_type operator-(const basic_string_iterator& it) const
         {
             return static_cast<difference_type>(base2::m_pos - it.m_pos);
         }
 
-        bool operator==(const generic_array_iterator& it) const
+        bool operator==(const basic_string_iterator& it) const
         {
             return (base2::m_cont == it.m_cont && base2::m_pos == it.m_pos);
         }
 
-        bool operator!=(const generic_array_iterator& it) const
+        bool operator!=(const basic_string_iterator& it) const
         {
             return !(*this == it);
         }
 
-        bool operator<(const generic_array_iterator& it) const
+        bool operator<(const basic_string_iterator& it) const
         {
             return (base2::m_cont == it.m_cont && base2::m_pos < it.m_pos);
         }
 
-        bool operator>(const generic_array_iterator& it) const
+        bool operator>(const basic_string_iterator& it) const
         {
             return (base2::m_cont == it.m_cont && base2::m_pos > it.m_pos);
         }
 
-        bool operator<=(const generic_array_iterator& it) const
+        bool operator<=(const basic_string_iterator& it) const
         {
             return (base2::m_cont == it.m_cont && base2::m_pos <= it.m_pos);
         }
 
-        bool operator>=(const generic_array_iterator& it) const
+        bool operator>=(const basic_string_iterator& it) const
         {
             return (base2::m_cont == it.m_cont && base2::m_pos >= it.m_pos);
         }
@@ -244,9 +215,9 @@ namespace stl
 
 
     template<typename container>
-    class generic_array_const_iterator :
+    class basic_string_const_iterator :
         public stl::const_iterator<stl::random_access_iterator_tag, typename container::value_type>,
-        public basic_string_iterator_base<container>
+        public stl::basic_string_iterator_base<container>
     {
     public:
         typedef stl::const_iterator<stl::random_access_iterator_tag, typename container::value_type>  base;
@@ -257,94 +228,53 @@ namespace stl
         typedef typename base::const_pointer       pointer;
         typedef typename base::const_reference     reference;
         typedef typename container::size_type      size_type;
-        typedef typename stl::generic_array_iterator_base<container> base2;
-        friend class generic_array<typename container::value_type, typename container::allocator_type, container::nattributes>;
-
+        typedef typename stl::basic_string_iterator_base<container> base2;
+        friend class basic_string<typename container::value_type, typename container::allocator_type>;
 
     private:
-        inline void init()
+        basic_string_const_iterator(container* cont, size_type pos)
+        {
+            base2::m_cont = cont;
+            base2::m_pos = pos;
+        }
+
+    public:
+        basic_string_const_iterator()
         {
             base2::m_cont = 0;
             base2::m_pos = 0;
         }
 
-    private:
-        generic_array_const_iterator(container* cont, size_type pos)
+        basic_string_const_iterator(const basic_string_const_iterator& it)
         {
-            init();
-
-            base2::m_cont = cont;
-            base2::m_pos = pos;
-
-            if (base2::m_cont)
-            {
-                base2::m_cont->add_iterator(this);
-            }
-        }
-
-    public:
-        generic_array_const_iterator()
-        {
-            init();
-        }
-
-        generic_array_const_iterator(const generic_array_const_iterator& it)
-        {
-            init();
             *this = it;
         }
 
-        ~generic_array_const_iterator()
+        basic_string_const_iterator(const basic_string_iterator<container>& it)
         {
-            if (base2::m_cont)
-            {
-                base2::m_cont->remove_iterator(this);
-            }
+            *this = it;
         }
 
-        generic_array_const_iterator& operator=(const generic_array_const_iterator& it)
+        ~basic_string_const_iterator()
+        {
+        }
+
+        basic_string_const_iterator& operator=(const basic_string_const_iterator& it)
         {
             if (this != &it)
             {
-                if (base2::m_cont)
-                {
-                    base2::m_cont->remove_iterator(this);
-                }
-
                 base2::m_cont = it.m_cont;
                 base2::m_pos = it.m_pos;
-
-                if (base2::m_cont)
-                {
-                    base2::m_cont->add_iterator(this);
-                }
-
             }
             return *this;
         }
 
-        generic_array_const_iterator& operator=(const generic_array_iterator<container>& it)
+        basic_string_const_iterator& operator=(const basic_string_iterator<container>& it)
         {
-            if (base2::m_cont)
-            {
-                base2::m_cont->remove_iterator(this);
-            }
-
             base2::m_cont = it.m_cont;
             base2::m_pos = it.m_pos;
 
-            if (base2::m_cont)
-            {
-                base2::m_cont->add_iterator(this);
-            }
-
             return *this;
-        }
-
-        generic_array_const_iterator(const generic_array_iterator<container>& it)
-        {
-            init();
-            *this = it;
         }
 
         reference operator*() const
@@ -361,7 +291,7 @@ namespace stl
             return &(*base2::m_cont)[base2::m_pos];
         }
 
-        generic_array_const_iterator& operator++()
+        basic_string_const_iterator& operator++()
         {
             if (!base2::m_cont) throw stl::exception("invalid iterator");
 
@@ -369,16 +299,16 @@ namespace stl
             return *this;
         }
 
-        generic_array_const_iterator operator++(int)
+        basic_string_const_iterator operator++(int)
         {
             if (!base2::m_cont) throw stl::exception("invalid iterator");
 
-            generic_array_const_iterator<container> tmp = *this;
+            basic_string_const_iterator<container> tmp = *this;
             ++base2::m_pos;
             return tmp;
         }
 
-        generic_array_const_iterator& operator--()
+        basic_string_const_iterator& operator--()
         {
             if (!base2::m_cont) throw stl::exception("invalid iterator");
 
@@ -386,16 +316,16 @@ namespace stl
             return *this;
         }
 
-        generic_array_const_iterator operator--(int)
+        basic_string_const_iterator operator--(int)
         {
             if (!base2::m_cont) throw stl::exception("invalid iterator");
 
-            generic_array_const_iterator<container> tmp = *this;
+            basic_string_const_iterator<container> tmp = *this;
             --base2::m_pos;
             return tmp;
         }
 
-        generic_array_const_iterator& operator+=(difference_type off)
+        basic_string_const_iterator& operator+=(difference_type off)
         {
             if (!base2::m_cont) throw stl::exception("invalid iterator");
 
@@ -403,13 +333,13 @@ namespace stl
             return *this;
         }
 
-        generic_array_const_iterator operator+(difference_type off) const
+        basic_string_const_iterator operator+(difference_type off) const
         {
-            generic_array_const_iterator<container> tmp = *this;
+            basic_string_const_iterator<container> tmp = *this;
             return tmp += off;
         }
 
-        generic_array_const_iterator& operator-=(difference_type off)
+        basic_string_const_iterator& operator-=(difference_type off)
         {
             if (!base2::m_cont) throw stl::exception("invalid iterator");
 
@@ -417,43 +347,43 @@ namespace stl
             return *this;
         }
 
-        generic_array_const_iterator operator-(difference_type off) const
+        basic_string_const_iterator operator-(difference_type off) const
         {
-            generic_array_const_iterator<container> tmp = *this;
+            basic_string_const_iterator<container> tmp = *this;
             return tmp -= off;
         }
 
-        difference_type operator-(const generic_array_const_iterator& it) const
+        difference_type operator-(const basic_string_const_iterator& it) const
         {
-            return base2::m_pos - it.m_pos;
+            return static_cast<difference_type>(base2::m_pos - it.m_pos);
         }
 
-        bool operator==(const generic_array_const_iterator& it) const
+        bool operator==(const basic_string_const_iterator& it) const
         {
             return (base2::m_cont == it.m_cont && base2::m_pos == it.m_pos);
         }
 
-        bool operator!=(const generic_array_const_iterator& it) const
+        bool operator!=(const basic_string_const_iterator& it) const
         {
             return !(*this == it);
         }
 
-        bool operator<(const generic_array_const_iterator& it) const
+        bool operator<(const basic_string_const_iterator& it) const
         {
             return (base2::m_cont == it.m_cont && base2::m_pos < it.m_pos);
         }
 
-        bool operator>(const generic_array_const_iterator& it) const
+        bool operator>(const basic_string_const_iterator& it) const
         {
             return (base2::m_cont == it.m_cont && base2::m_pos > it.m_pos);
         }
 
-        bool operator<=(const generic_array_const_iterator& it) const
+        bool operator<=(const basic_string_const_iterator& it) const
         {
             return (base2::m_cont == it.m_cont && base2::m_pos <= it.m_pos);
         }
 
-        bool operator>=(const generic_array_const_iterator& it) const
+        bool operator>=(const basic_string_const_iterator& it) const
         {
             return (base2::m_cont == it.m_cont && base2::m_pos >= it.m_pos);
         }
@@ -468,9 +398,9 @@ namespace stl
 
 
     template<typename container>
-    class generic_array_reverse_iterator :
+    class basic_string_reverse_iterator :
         public stl::iterator<stl::random_access_iterator_tag, typename container::value_type>,
-        public basic_string_iterator_base<container>
+        public stl::basic_string_iterator_base<container>
     {
     public:
         typedef stl::iterator<stl::random_access_iterator_tag, typename container::value_type>    base;
@@ -481,69 +411,40 @@ namespace stl
         typedef typename base::pointer             pointer;
         typedef typename base::reference           reference;
         typedef typename container::size_type      size_type;
-        typedef typename stl::generic_array_iterator_base<container> base2;
-        friend class generic_array<typename container::value_type, typename container::allocator_type, container::nattributes>;
-        friend class generic_array_const_reverse_iterator<container>;
+        typedef typename stl::basic_string_iterator_base<container> base2;
+        friend class basic_string<typename container::value_type, typename container::allocator_type>;
+        friend class basic_string_const_reverse_iterator<container>;
 
 
     private:
-        inline void init()
+        basic_string_reverse_iterator(container* cont, size_type pos)
+        {
+            base2::m_cont = cont;
+            base2::m_pos = pos;
+        }
+
+    public:
+        basic_string_reverse_iterator()
         {
             base2::m_cont = 0;
             base2::m_pos = 0;
         }
 
-    private:
-        generic_array_reverse_iterator(container* cont, size_type pos)
+        basic_string_reverse_iterator(const basic_string_reverse_iterator& it)
         {
-            init();
-
-            base2::m_cont = cont;
-            base2::m_pos = pos;
-
-            if (base2::m_cont)
-            {
-                base2::m_cont->add_iterator(this);
-            }
-        }
-
-    public:
-        generic_array_reverse_iterator()
-        {
-            init();
-        }
-
-
-        generic_array_reverse_iterator(const generic_array_reverse_iterator& it)
-        {
-            init();
             *this = it;
         }
 
-        ~generic_array_reverse_iterator()
+        ~basic_string_reverse_iterator()
         {
-            if (base2::m_cont != 0)
-            {
-                base2::m_cont->remove_iterator(this);
-            }
         }
 
-        generic_array_reverse_iterator& operator=(const generic_array_reverse_iterator& it)
+        basic_string_reverse_iterator& operator=(const basic_string_reverse_iterator& it)
         {
             if (this != &it)
             {
-                if (base2::m_cont)
-                {
-                    base2::m_cont->remove_iterator(this);
-                }
-
                 base2::m_cont = it.m_cont;
                 base2::m_pos = it.m_pos;
-
-                if (base2::m_cont)
-                {
-                    base2::m_cont->add_iterator(this);
-                }
             }
             return *this;
         }
@@ -562,7 +463,7 @@ namespace stl
             return &(*base2::m_cont)[base2::m_pos];
         }
 
-        generic_array_reverse_iterator& operator++()
+        basic_string_reverse_iterator& operator++()
         {
             if (!base2::m_cont) throw stl::exception("invalid iterator");
 
@@ -570,16 +471,16 @@ namespace stl
             return *this;
         }
 
-        generic_array_reverse_iterator operator++(int)
+        basic_string_reverse_iterator operator++(int)
         {
             if (!base2::m_cont) throw stl::exception("invalid iterator");
 
-            generic_array_reverse_iterator<container> tmp = *this;
+            basic_string_reverse_iterator<container> tmp = *this;
             --base2::m_pos;
             return tmp;
         }
 
-        generic_array_reverse_iterator& operator--()
+        basic_string_reverse_iterator& operator--()
         {
             if (!base2::m_cont) throw stl::exception("invalid iterator");
 
@@ -587,16 +488,16 @@ namespace stl
             return *this;
         }
 
-        generic_array_reverse_iterator operator--(int)
+        basic_string_reverse_iterator operator--(int)
         {
             if (!base2::m_cont) throw stl::exception("invalid iterator");
 
-            generic_array_reverse_iterator<container> tmp = *this;
+            basic_string_reverse_iterator<container> tmp = *this;
             ++base2::m_pos;
             return tmp;
         }
 
-        generic_array_reverse_iterator& operator+=(difference_type off)
+        basic_string_reverse_iterator& operator+=(difference_type off)
         {
             if (!base2::m_cont) throw stl::exception("invalid iterator");
 
@@ -604,13 +505,13 @@ namespace stl
             return *this;
         }
 
-        generic_array_reverse_iterator operator+(difference_type off) const
+        basic_string_reverse_iterator operator+(difference_type off) const
         {
-            generic_array_reverse_iterator<container> tmp = *this;
+            basic_string_reverse_iterator<container> tmp = *this;
             return tmp += off;
         }
 
-        generic_array_reverse_iterator& operator-=(difference_type off)
+        basic_string_reverse_iterator& operator-=(difference_type off)
         {
             if (!base2::m_cont) throw stl::exception("invalid iterator");
 
@@ -618,43 +519,43 @@ namespace stl
             return *this;
         }
 
-        generic_array_reverse_iterator operator-(difference_type off) const
+        basic_string_reverse_iterator operator-(difference_type off) const
         {
-            generic_array_reverse_iterator<container> tmp = *this;
+            basic_string_reverse_iterator<container> tmp = *this;
             return tmp -= off;
         }
 
-        difference_type operator-(const generic_array_reverse_iterator& it) const
+        difference_type operator-(const basic_string_reverse_iterator& it) const
         {
-            return it.m_pos - base2::m_pos;
+            return static_cast<difference_type>(it.m_pos - base2::m_pos);
         }
 
-        bool operator==(const generic_array_reverse_iterator& it) const
+        bool operator==(const basic_string_reverse_iterator& it) const
         {
             return (base2::m_cont == it.m_cont && it.m_pos == base2::m_pos);
         }
 
-        bool operator!=(const generic_array_reverse_iterator& it) const
+        bool operator!=(const basic_string_reverse_iterator& it) const
         {
             return !(*this == it);
         }
 
-        bool operator<(const generic_array_reverse_iterator& it) const
+        bool operator<(const basic_string_reverse_iterator& it) const
         {
             return (base2::m_cont == it.m_cont && base2::m_pos > it.m_pos);
         }
 
-        bool operator>(const generic_array_reverse_iterator& it) const
+        bool operator>(const basic_string_reverse_iterator& it) const
         {
             return (base2::m_cont == it.m_cont && base2::m_pos < it.m_pos);
         }
 
-        bool operator<=(const generic_array_reverse_iterator& it) const
+        bool operator<=(const basic_string_reverse_iterator& it) const
         {
             return (base2::m_cont == it.m_cont && base2::m_pos >= it.m_pos);
         }
 
-        bool operator>=(const generic_array_reverse_iterator& it) const
+        bool operator>=(const basic_string_reverse_iterator& it) const
         {
             return (base2::m_cont == it.m_cont && base2::m_pos <= it.m_pos);
         }
@@ -669,9 +570,9 @@ namespace stl
 
 
     template<typename container>
-    class generic_array_const_reverse_iterator :
+    class basic_string_const_reverse_iterator :
         public stl::const_iterator<stl::random_access_iterator_tag, typename container::value_type>,
-        public basic_string_iterator_base<container>
+        public stl::basic_string_iterator_base<container>
     {
     public:
         typedef stl::const_iterator<stl::random_access_iterator_tag, typename container::value_type>  base;
@@ -682,96 +583,55 @@ namespace stl
         typedef typename base::const_pointer       pointer;
         typedef typename base::const_reference     reference;
         typedef typename container::size_type      size_type;
-        typedef typename stl::generic_array_iterator_base<container> base2;
-        friend class generic_array<typename container::value_type, typename container::allocator_type, container::nattributes>;
-
+        typedef typename stl::basic_string_iterator_base<container> base2;
+        friend class basic_string<typename container::value_type, typename container::allocator_type>;
 
 
     private:
-        inline void init()
+        basic_string_const_reverse_iterator(container* cont, size_type pos)
+        {
+            base2::m_cont = cont;
+            base2::m_pos = pos;
+        }
+
+    public:
+        basic_string_const_reverse_iterator()
         {
             base2::m_cont = 0;
             base2::m_pos = 0;
         }
 
-    private:
-        generic_array_const_reverse_iterator(container* cont, size_type pos)
+        basic_string_const_reverse_iterator(const basic_string_const_reverse_iterator& it)
         {
-            init();
-
-            base2::m_cont = cont;
-            base2::m_pos = pos;
-
-            if (base2::m_cont)
-            {
-                base2::m_cont->add_iterator(this);
-            }
-        }
-
-    public:
-        generic_array_const_reverse_iterator()
-        {
-            init();
-        }
-
-        generic_array_const_reverse_iterator(const generic_array_const_reverse_iterator& it)
-        {
-            init();
             *this = it;
         }
 
-        ~generic_array_const_reverse_iterator()
+        ~basic_string_const_reverse_iterator()
         {
-            if (base2::m_cont)
-            {
-                base2::m_cont->remove_iterator(this);
-            }
         }
 
-        generic_array_const_reverse_iterator& operator=(const generic_array_const_reverse_iterator& it)
+        basic_string_const_reverse_iterator& operator=(const basic_string_const_reverse_iterator& it)
         {
             if (this != &it)
             {
-                if (base2::m_cont)
-                {
-                    base2::m_cont->remove_iterator(this);
-                }
-
                 base2::m_cont = it.m_cont;
                 base2::m_pos = it.m_pos;
-
-                if (base2::m_cont)
-                {
-                    base2::m_cont->add_iterator(this);
-                }
             }
             return *this;
         }
 
-        generic_array_const_reverse_iterator& operator=(const generic_array_reverse_iterator<container>& it)
+        basic_string_const_reverse_iterator& operator=(const basic_string_reverse_iterator<container>& it)
         {
-            if (base2::m_cont)
-            {
-                base2::m_cont->remove_iterator(this);
-            }
-
             base2::m_cont = it.m_cont;
             base2::m_pos = it.m_pos;
 
-            if (base2::m_cont)
-            {
-                base2::m_cont->add_iterator(this);
-            }
-
             return *this;
         }
 
-        generic_array_const_reverse_iterator(const generic_array_reverse_iterator<container>& it)
+        basic_string_const_reverse_iterator(const basic_string_reverse_iterator<container>& it)
         {
-            init();
             *this = it;
         }
-
 
         reference operator*() const
         {
@@ -787,7 +647,7 @@ namespace stl
             return &(*base2::m_cont)[base2::m_pos];
         }
 
-        generic_array_const_reverse_iterator& operator++()
+        basic_string_const_reverse_iterator& operator++()
         {
             if (!base2::m_cont) throw stl::exception("invalid iterator");
 
@@ -795,16 +655,16 @@ namespace stl
             return *this;
         }
 
-        generic_array_const_reverse_iterator operator++(int)
+        basic_string_const_reverse_iterator operator++(int)
         {
             if (!base2::m_cont) throw stl::exception("invalid iterator");
 
-            generic_array_const_reverse_iterator<container> tmp = *this;
+            basic_string_const_reverse_iterator<container> tmp = *this;
             --base2::m_pos;
             return tmp;
         }
 
-        generic_array_const_reverse_iterator& operator--()
+        basic_string_const_reverse_iterator& operator--()
         {
             if (!base2::m_cont) throw stl::exception("invalid iterator");
 
@@ -812,16 +672,16 @@ namespace stl
             return *this;
         }
 
-        generic_array_const_reverse_iterator operator--(int)
+        basic_string_const_reverse_iterator operator--(int)
         {
             if (!base2::m_cont) throw stl::exception("invalid iterator");
 
-            generic_array_const_reverse_iterator<container> tmp = *this;
+            basic_string_const_reverse_iterator<container> tmp = *this;
             ++base2::m_pos;
             return tmp;
         }
 
-        generic_array_const_reverse_iterator& operator+=(difference_type off)
+        basic_string_const_reverse_iterator& operator+=(difference_type off)
         {
             if (!base2::m_cont) throw stl::exception("invalid iterator");
 
@@ -829,13 +689,13 @@ namespace stl
             return *this;
         }
 
-        generic_array_const_reverse_iterator operator+(difference_type off) const
+        basic_string_const_reverse_iterator operator+(difference_type off) const
         {
-            generic_array_const_reverse_iterator<container> tmp = *this;
+            basic_string_const_reverse_iterator<container> tmp = *this;
             return tmp += off;
         }
 
-        generic_array_const_reverse_iterator& operator-=(difference_type off)
+        basic_string_const_reverse_iterator& operator-=(difference_type off)
         {
             if (!base2::m_cont) throw stl::exception("invalid iterator");
 
@@ -843,43 +703,43 @@ namespace stl
             return *this;
         }
 
-        generic_array_const_reverse_iterator operator-(difference_type off) const
+        basic_string_const_reverse_iterator operator-(difference_type off) const
         {
-            generic_array_const_reverse_iterator<container> tmp = *this;
+            basic_string_const_reverse_iterator<container> tmp = *this;
             return tmp -= off;
         }
 
-        difference_type operator-(const generic_array_const_reverse_iterator& it) const
+        difference_type operator-(const basic_string_const_reverse_iterator& it) const
         {
-            return it.m_pos - base2::m_pos;
+            return static_cast<difference_type>(it.m_pos - base2::m_pos);
         }
 
-        bool operator==(const generic_array_const_reverse_iterator& it) const
+        bool operator==(const basic_string_const_reverse_iterator& it) const
         {
             return (base2::m_cont == it.m_cont && base2::m_pos == it.m_pos);
         }
 
-        bool operator!=(const generic_array_const_reverse_iterator& it) const
+        bool operator!=(const basic_string_const_reverse_iterator& it) const
         {
             return !(*this == it);
         }
 
-        bool operator<(const generic_array_const_reverse_iterator& it) const
+        bool operator<(const basic_string_const_reverse_iterator& it) const
         {
             return (base2::m_cont == it.m_cont && base2::m_pos > it.m_pos);
         }
 
-        bool operator>(const generic_array_const_reverse_iterator& it) const
+        bool operator>(const basic_string_const_reverse_iterator& it) const
         {
             return (base2::m_cont == it.m_cont && base2::m_pos < it.m_pos);
         }
 
-        bool operator<=(const generic_array_const_reverse_iterator& it) const
+        bool operator<=(const basic_string_const_reverse_iterator& it) const
         {
             return (base2::m_cont == it.m_cont && base2::m_pos >= it.m_pos);
         }
 
-        bool operator>=(const generic_array_const_reverse_iterator& it) const
+        bool operator>=(const basic_string_const_reverse_iterator& it) const
         {
             return (base2::m_cont == it.m_cont && base2::m_pos <= it.m_pos);
         }
@@ -893,73 +753,91 @@ namespace stl
     };  // const_reverse_iterator
 
 
-
-
-    /*
-    http://stackoverflow.com/questions/4944156/c-method-specialization-and-templates
-
-    It turns out that there's a provision in the C++ spec that explicitly
-    disallows specializing a template class or function nested inside of a
-    template class unless you also explicitly specialize the outer template as well.
-
-    If you want to specialize the template, your options will either be to
-    also specialize the outer template or to somehow fake up the behavior of
-    specialization by having the method dispatch to one of two different
-    implementations based on the template parameter.
-
-    Emulate the behavior of the explicit specialization
-    through a technique called tag dispatching.
-    */
-    template<typename T>
-    struct generic_array_spec
-    {
-        typedef T value;
-    };
-
-
     //  ISO/IEC 14882:2003  $21.3 Class template basic_string
     template<typename T, typename Allocator = stl::allocator<T>>
     class basic_string
     {
-        typedef typename stl::generic_array<T, Allocator> base;
-        typedef typename basic_string<T, Allocator> container;
-
     public:
+        typedef typename basic_string<T, Allocator>     container;
+
         // types:
-        typedef typename base::value_type                value_type;
-        typedef typename base::size_type                 size_type;
-        typedef typename base::difference_type           difference_type;
+        typedef typename Allocator::value_type              value_type;
+        typedef typename Allocator::size_type               size_type;
+        typedef typename Allocator::difference_type         difference_type;
+        typedef Allocator                                   allocator_type;
 
-        typedef typename base::reference                 reference;
-        typedef typename base::const_reference           const_reference;
-        typedef typename base::pointer                   pointer;
-        typedef typename base::const_pointer             const_pointer;
-
-
-    public:
-        typedef typename base::iterator                    iterator;
-        typedef typename base::const_iterator            const_iterator;
-        typedef typename base::reverse_iterator            reverse_iterator;
-        typedef typename base::const_reverse_iterator    const_reverse_iterator;
+        typedef typename Allocator::reference               reference;
+        typedef typename Allocator::const_reference         const_reference;
+        typedef typename Allocator::pointer                 pointer;
+        typedef typename Allocator::const_pointer           const_pointer;
 
     public:
-        static const size_type npos = base::npos;
+        typedef typename basic_string_iterator<container>           iterator;
+        typedef typename basic_string_const_iterator<container>     const_iterator;
+        typedef typename basic_string_reverse_iterator<container>   reverse_iterator;
+        typedef typename basic_string_const_reverse_iterator<container>  const_reverse_iterator;
+
+    private:
+        value_type*             m_data;
+        size_type               m_size;
+        size_type               m_capacity;
+        allocator_type          m_allocator;
+
+    public:
+        static const size_type npos = static_cast<size_type>(-1);
+
+
+    private:
+        inline void init()
+        {
+            m_data = 0;
+            m_size = 0;
+            m_capacity = 0;
+            // m_allocator - default ctor;
+        }
+
+        inline void grow(size_type cap)
+        {
+            if (m_capacity >= cap) return;
+
+            pointer mem = 0;
+            if (!m_data)
+                mem = m_allocator.allocate(cap);
+            else
+                stl::mem_realloc(&mem, cap, m_data, m_size, m_allocator);
+
+            if (mem == 0)
+                throw stl::exception("bad allocation");
+
+            m_data = mem;
+            m_capacity = cap;
+        }
+
+        inline void endof(size_type size)
+        {
+            if (size < m_size)
+            {
+                value_type* unused = m_data + size;
+                size_type count = m_size - size;
+                stl::mem_destroy(&unused, count, m_allocator);
+            }
+            m_size = size;
+        }
 
     public:
         /*! $21.3.1 */
         basic_string()
-            : base()
         {
+            init();
         }
 
         basic_string(const container& x)
-            : base(x)
         {
+            init();
+            assign(x);
         }
 
-
         basic_string(const container& str, size_type off, size_type count = npos)
-            : base(str, off, count)
         {
         }
 
