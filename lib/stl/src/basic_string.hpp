@@ -833,57 +833,111 @@ namespace stl
 
         basic_string(const container& x)
         {
-            init();
-            assign(x);
+            init(x.get_allocator());
+            mem_alloc(1);       // avoid 0 capacity with x.empty()
+            eos<T>(0);          // protect against self assignment
+            assign(x);        // may return with no action
         }
 
         basic_string(const container& str, size_type off, size_type count = npos)
         {
+            const Allocator& alloc = Allocator();
+            init(alloc);
+            mem_alloc(1);       // avoid 0 capacity with x.empty
+            eos<T>(0);          // protect against self assignment
+            assign(str, off, count);
         }
 
         basic_string(const value_type* ptr, size_type count)
-            : base(ptr, count)
+            //: base(ptr, count)
         {
+            const Allocator& alloc = Allocator();
+            init(alloc);
+            mem_alloc(1);       // avoid 0 capacity with ptr 0
+            eos<T>(0);          // safety
+            assign(ptr, count);
         }
 
         basic_string(const value_type* ptr)
-            : base(ptr)
+            //: base(ptr)
         {
+            const Allocator& alloc = Allocator();
+            init(alloc);
+            mem_alloc(1);       // avoid 0 capacity with ptr 0
+            eos<T>(0);          // safety
+            assign(ptr);
         }
 
 
         basic_string(size_type n, value_type c)
-            : base(n, c)
+            //: base(n, c)
         {
+            const Allocator& alloc = Allocator();
+            init(alloc);
+            mem_alloc(1);       // avoid 0 capacity with n=0
+            eos<T>(0);          // safety
+            assign(n, c);
         }
 
 
         template<class InputIterator>
         basic_string(InputIterator begin, InputIterator end)
-            : base(begin, end)
+            //: base(begin, end)
         {
+            const Allocator& alloc = Allocator();
+            init(alloc);
+            mem_alloc(1);       // avoid 0 capacity
+            eos<T>(0);          // safety
+            assign(begin, end);
+
         }
 
         ~basic_string()
         {
+            // ms comp warn 4127
+            int hasPOD = (attributes & misc::GENERIC_ARRAY_HAS_POD_TYPE);
+            if (hasPOD)
+            {
+                m_allocator.deallocate(m_data, 0);
+            }
+            else
+            {
+                misc::mem_destroy(&m_data, m_size, m_allocator);
+                m_allocator.deallocate(m_data, 0);
+            }
+
+            m_data = 0;
+            m_size = 0;
+            m_capacity = 0;
+
+
+            // ms comp warn 4127
+            int hasITDBG = (attributes & misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING);
+            if (hasITDBG)
+            {
+                invalidate_iterators();
+                delete m_itarray;
+            }
         }
 
         /* $21.3.1 (assignment operators) */
         container& operator=(const container& str)
         {
-            base::operator =(str);
-            return *this;
+            return assign(str);
         }
 
         container& operator=(const value_type* ptr)
         {
-            base::operator =(ptr);
-            return *this;
+            return assign(ptr);
         }
 
         container& operator=(value_type ch)
         {
-            base::operator =(ch);
+            invalidate_iterators();
+
+            /* simplified */
+            m_data[0] = ch;
+            eos<T>(1);
             return *this;
         }
 
@@ -891,104 +945,127 @@ namespace stl
         //$21.3.2 iterators
         iterator begin()
         {
-            return base::begin();
+            return iterator(this, 0);
         }
 
         const_iterator begin() const
         {
-            return base::begin();
+            container* mutable_cont = const_cast<container*>(this);
+            return const_iterator(mutable_cont, 0);
         }
 
         iterator end()
         {
-            return base::end();
+            return iterator(this, m_size);
         }
 
         const_iterator end() const
         {
-            return base::end();
+            container* mutable_cont = const_cast<container*>(this);
+            return const_iterator(mutable_cont, m_size);
         }
 
         reverse_iterator rbegin()
         {
-            return base::rbegin();
+            return reverse_iterator(this, static_cast<size_type>(m_size - 1));
         }
 
         const_reverse_iterator rbegin() const
         {
-            return base::rbegin();
+            container* mutable_cont = const_cast<container*>(this);
+            return const_reverse_iterator(mutable_cont, static_cast<size_type>(m_size - 1));
         }
 
         reverse_iterator rend()
         {
-            return base::rend();
+            return reverse_iterator(this, static_cast<size_type>(-1));
         }
 
         const_reverse_iterator rend() const
         {
-            return base::rend();
+            container* mutable_cont = const_cast<container*>(this);
+            return const_reverse_iterator(mutable_cont, static_cast<size_type>(-1));
         }
 
         //$21.3.3 capacity
         size_type size() const
         {
-            return base::size();
+            return m_size;
         }
 
         size_type length() const
         {
-            return base::length();
+            return m_size;
         }
 
         size_type max_size() const
         {
-            return base::max_size();
+            return static_cast<size_type>(-1) / sizeof(value_type);
         }
 
         void resize(size_type sz, value_type c = value_type())
         {
-            base::resize(sz,c);
+            if (m_size > sz)
+            {
+                invalidate_iterators_gte(sz > 0 ? sz - 1 : 0);
+
+                eos<T>(sz);
+            }
+            else if (m_size < sz)
+            {
+                grow(sz);
+
+                misc::mem_set(&m_data[m_size], c, (sz - m_size) * numbytes);
+
+                eos<T>(sz);
+            }
         }
 
         size_type capacity() const
         {
-            return base::capacity();
+            return m_capacity;
         }
 
         void reserve(size_type n)
         {
-            base::resize(n);
+            grow(n);
         }
 
         void clear( )
         {
-            base::clear();
+            invalidate_iterators();
+
+            eos<T>(0);
         }
 
         bool empty () const
         {
-            return base::empty();
+            return m_size == 0;
         }
 
         //$21.3.4 element access:
-        reference operator[] ( size_type n ) const
+        const_reference operator[] ( size_type n ) const
         {
-            return base::operator [](n);
+            if (n >= m_size) throw misc::exception("out of valid range");
+            return m_data[n];
         }
 
         reference operator[] ( size_type n )
         {
-            return base::operator [](n);
+            if (n >= m_size) throw misc::exception("out of valid range");
+            return m_data[n];
         }
 
-        reference at ( size_type n ) const
+        const_reference at ( size_type n ) const
         {
-            return base::at(n);
+            if (n >= m_size) throw misc::exception("out of valid range");
+            return m_data[n];
         }
 
         reference at ( size_type n )
         {
-            return base::at(n);
+            if (n >= m_size) throw misc::exception("out of valid range");
+            return m_data[n];
         }
 
         //$21.3.5 modifiers
@@ -996,101 +1073,548 @@ namespace stl
         /* $21.3.5 modifiers ( operator += (...) ) */
         container& operator+=(const container& str)
         {
-            base::operator +=(str);
-            return *this;
+            return append(str);
         }
 
         container& operator+=(const value_type* ptr)
         {
-            base::operator +=(ptr);
-            return *this;
+            return append(ptr);
         }
 
         container& operator+=(value_type ch)
         {
-            base::operator +=(ch);
-            return *this;
+            return append(1, ch);
         }
 
         /* $21.3.5 modifiers (append) */
         container& append(const container& str)
         {
-            base::append(str);
-            return *this;
+            return append(str, 0, npos);
         }
 
         container& append(const container& str, size_type p2, size_type n2)
         {
-            base::append(str,p2,n2);
+            size_type strLen = str.length();
+
+            if (strLen > 0)
+            {
+                if (p2 >= strLen) throw misc::exception("out of valid range");
+
+                if (n2 > strLen - p2)
+                    n2 = strLen - p2;
+
+                size_type size = m_size + n2;
+
+                grow(size);
+
+                memcpy_impl(&m_data[m_size], &str[p2], n2 * numbytes);
+
+                eos<T>(size);
+            }
+
             return *this;
         }
 
         container& append(const value_type* ptr, size_type n2)
         {
-            base::append(ptr,n2);
+            size_type ptrLen = length<value_type>(ptr);
+
+            if (ptrLen > 0)
+            {
+                if (n2 > ptrLen)
+                    n2 = ptrLen;
+
+                size_type size = m_size + n2;
+
+                grow(size);
+
+                memcpy_impl(&m_data[m_size], ptr, n2 * numbytes);
+
+                eos<T>(size);
+            }
+
             return *this;
         }
 
         container& append(const value_type* ptr)
         {
-            base::append(ptr);
-            return *this;
+            return append(ptr, npos);
         }
 
 
         container& append(size_type n, value_type value)
         {
-            base::append(n, value);
+            if (n > 0)
+            {
+                size_type size = m_size + n;
+
+                grow(size);
+
+                misc::mem_set(&m_data[m_size], value, n * numbytes);
+
+                eos<T>(size);
+            }
+            return *this;
+        }
+
+    private:
+        /*
+        implementation of:
+        template<typename InputIterator>
+        container& append(InputIterator first, InputIterator last);
+        */
+        inline container& append_impl(const iterator& first, const iterator& last)
+        {
+            if (first.m_cont != last.m_cont || first.m_cont == 0)
+                throw misc::exception("invalid iterator");
+
+            difference_type dist = last - first;
+            if (dist > 0)
+            {
+                size_type size = m_size + dist;
+
+                grow(size);
+
+                memcpy_impl(&m_data[m_size], &((*first.m_cont)[first.m_pos]), dist * numbytes);
+
+                eos<T>(size);
+            }
+
+            return *this;
+        }
+
+        inline container& append_impl(const const_iterator& first, const const_iterator& last)
+        {
+            if (first.m_cont != last.m_cont || first.m_cont == 0)
+                throw misc::exception("invalid iterator");
+
+            difference_type dist = last - first;
+            if (dist > 0)
+            {
+                size_type size = m_size + dist;
+
+                grow(size);
+
+                memcpy_impl(&m_data[m_size], &(*(first.m_cont)[first.m_pos]), dist * numbytes);
+
+                eos<T>(size);
+            }
+
+            return *this;
+        }
+
+        inline container& append_impl(const reverse_iterator& first, const reverse_iterator& last)
+        {
+            if (first.m_cont != last.m_cont || first.m_cont == 0)
+                throw misc::exception("invalid iterator");
+
+            difference_type dist = last - first;
+            if (dist > 0)
+            {
+                size_type size = m_size + dist;
+
+                grow(size);
+
+                memcpy_impl(&m_data[m_size], &((*last.m_cont)[last.m_pos + 1]), dist * numbytes);
+
+                swap_range(m_size, size);
+
+                eos<T>(size);
+            }
+
+            return *this;
+        }
+
+        inline container& append_impl(const const_reverse_iterator& first, const const_reverse_iterator& last)
+        {
+            if (first.m_cont != last.m_cont || first.m_cont == 0)
+                throw misc::exception("invalid iterator");
+
+            difference_type dist = last - first;
+            if (dist > 0)
+            {
+                size_type size = m_size + dist;
+
+                grow(size);
+
+                memcpy_impl(&m_data[m_size], &((*last.m_cont)[last.m_pos + 1]), dist * numbytes);
+
+                swap_range(m_size, size);
+
+                eos<T>(size);
+            }
+
             return *this;
         }
 
 
+        /*
+        -due to specialization for append_impl(const iterator& ...) and friends,
+        compiler cannot find any suitable append_impl for next code:
+
+        float fptr[]={0,...};
+        misc::generic_array<float> fcont;
+        fcont.append(fptr, fptr+10);
+        */
+        inline container& append_impl(const value_type* first, const value_type* last)
+        {
+            difference_type dist = last - first;
+            if (dist > 0)
+            {
+                size_type size = m_size + dist;
+
+                grow(size);
+
+                memcpy_impl(&m_data[m_size], first, dist * numbytes);
+
+                eos<T>(size);
+            }
+
+            return *this;
+        }
+
+        template<typename InputIterator>
+        inline container& append_impl(const InputIterator& first, const InputIterator& last, misc::random_access_iterator_tag)
+        {
+            return append_impl(first, last);
+        }
+
+        template<typename InputIterator>
+        inline container& append_impl(InputIterator n, InputIterator value, misc::input_iterator_tag)
+        {//e.g. str.append<int>(5, 0x2E);
+
+            if (n > 0)
+            {
+                size_type size = m_size + n;
+
+                grow(size);
+
+                misc::mem_set(&m_data[m_size], value, n * numbytes);
+
+                eos<T>(size);
+            }
+
+            return *this;
+        }
+    
+
+    public:
+
         template<typename InputIterator>
         container& append(InputIterator first, InputIterator last)
         {
-            base::append(first, last);
-            return *this;
+            return append_impl<InputIterator>(first, last, typename misc::iterator_traits<InputIterator>::iterator_category());
         }
 
 
         /* $21.3.5 modifiers ( push_back ) */
         void push_back(const value_type& x)
         {
-            base::push_back(x);
-        }
+            if (m_size == m_capacity)
+            {
+                grow(m_capacity * 2);
+            }
 
+            // call copy constructor not copy operator
+            new(&m_data[m_size])value_type(x);
+
+            eos<T>(m_size + 1);
+        }
 
         /* $21.3.5 modifiers ( assign ) */
         container& assign(const container& str)
         {
-            base::assign(str);
+            //self assignment
+            if (this != &str)
+            {
+                invalidate_iterators();
+
+                size_type size = str.length();
+
+                if (size > 0)
+                {
+                    grow(size);
+
+                    memcpy_impl(m_data, str.m_data, size * numbytes);
+                }
+
+                eos<T>(size);
+            }
+
             return *this;
         }
 
         container& assign(const container& str, size_type p2, size_type n2)
         {
-            base::assign(str, p2, n2);
+            invalidate_iterators();
+
+            size_type strLen = str.length();
+
+            if (p2 >= strLen) throw misc::exception("out of valid range");
+
+            if (n2 > strLen - p2)
+                n2 = strLen - p2;
+
+            if (n2 > 0)
+            {
+                grow(n2);
+
+                //self assignment
+                if (this == &str)
+                {
+                    memmove_impl(m_data, &str[p2], n2 * numbytes);
+                }
+                else
+                {
+                    memcpy_impl(m_data, &str[p2], n2 * numbytes);
+                }
+            }
+
+            eos<T>(n2);
+
             return *this;
         }
 
         container& assign(const value_type* ptr, size_type n2)
         {
-            base::assign(ptr, n2);
+            invalidate_iterators();
+
+            size_type ptrLen = length<value_type>(ptr);
+
+            if (n2 > ptrLen)
+                n2 = ptrLen;
+
+            if (n2 > 0)
+            {
+                grow(n2);
+
+                //ptr may overlap m_data
+                memmove_impl(m_data, ptr, n2 * numbytes);
+            }
+
+            eos<T>(n2);
+
             return *this;
         }
 
         container& assign(const value_type* ptr)
         {
-            base::assign(ptr);
-            return *this;
+            return assign(ptr, npos);
         }
 
         container& assign(size_type count, const value_type& val)
         {
-            base::assign(count, val);
+            invalidate_iterators();
+
+            if (count > 0)
+            {
+                grow(count);
+
+                misc::mem_set(m_data, val, count * numbytes);
+            }
+
+            eos<T>(count);
+
             return *this;
         }
 
+
+    private:
+        /*
+        implementation of:
+        template <class InputIterator>
+        string& assign ( InputIterator first, InputIterator last );
+        */
+        inline container& assign_impl(const iterator& first, const iterator& last)
+        {
+            if (first.m_cont != last.m_cont || first.m_cont == 0)
+                throw misc::exception("invalid iterator");
+
+            invalidate_iterators();
+
+            difference_type dist = last - first;
+
+            if (dist < 0)
+                dist = 0; // erase this array
+
+            if (dist > 0)
+            {
+                grow(dist);
+
+                //self assignment
+                if (this == first.m_cont)
+                {
+                    memmove_impl(m_data, &((*first.m_cont)[first.m_pos]), dist * numbytes);
+                }
+                else
+                {
+                    memcpy_impl(m_data, &((*first.m_cont)[first.m_pos]), dist * numbytes);
+                }
+            }
+
+            eos<T>(dist);
+
+            return *this;
+        }
+
+        inline container& assign_impl(const const_iterator& first, const const_iterator& last)
+        {
+            if (first.m_cont != last.m_cont || first.m_cont == 0)
+                throw misc::exception("invalid iterator");
+
+            invalidate_iterators();
+
+            difference_type dist = last - first;
+
+            if (dist < 0)
+                dist = 0; // erase this array
+
+            if (dist > 0)
+            {
+                grow(dist);
+
+                //self assignment
+                if (this == first.m_cont)
+                {
+                    memmove_impl(m_data, &((*first.m_cont)[first.m_pos]), dist * numbytes);
+                }
+                else
+                {
+                    memcpy_impl(m_data, &((*first.m_cont)[first.m_pos]), dist * numbytes);
+                }
+            }
+
+            eos<T>(dist);
+
+            return *this;
+        }
+
+        inline container& assign_impl(const reverse_iterator& first, const reverse_iterator& last)
+        {
+            if (first.m_cont != last.m_cont || first.m_cont == 0)
+                throw misc::exception("invalid iterator");
+
+            invalidate_iterators();
+
+            difference_type dist = last - first;
+
+            if (dist < 0)
+                dist = 0; // erase this array
+
+            if (dist > 0)
+            {
+                grow(dist);
+
+                //self assignment
+                if (this == first.m_cont)
+                {
+                    erase(0, last.m_pos + 1);
+                }
+                else
+                {
+                    memcpy_impl(m_data, &((*last.m_cont)[last.m_pos + 1]), dist * numbytes);
+                }
+
+                swap_range(0, dist);
+            }
+
+            eos<T>(dist);
+
+            return *this;
+        }
+
+        inline container& assign_impl(const const_reverse_iterator& first, const const_reverse_iterator& last)
+        {
+            //validate containers
+            if (first.m_cont != last.m_cont || first.m_cont == 0)
+                throw misc::exception("invalid iterator");
+
+            invalidate_iterators();
+
+            size_type dist = last - first;
+
+            if (dist < 0)
+                dist = 0; // erase this array
+
+            if (dist > 0)
+            {
+                grow(dist);
+
+                //self assignment
+                if (this == first.m_cont)
+                {
+                    erase(0, last.m_pos + 1);
+                }
+                else
+                {
+                    memcpy_impl(m_data, &((*last.m_cont)[last.m_pos + 1]), dist * numbytes);
+                }
+
+                swap_range(0, dist);
+            }
+
+            eos<T>(dist);
+
+            return *this;
+        }
+
+        /*
+        -due to specialization for assign_impl(const iterator& ...) and friends,
+        compiler cannot find any suitable assign_impl for next code:
+
+        float fptr[]={0,...};
+        misc::generic_array<float> fcont(fptr, fptr+10);
+        */
+
+        inline container& assign_impl(const value_type* first, const value_type* last)
+        {
+            invalidate_iterators();
+
+            difference_type dist = last - first;
+
+            if (dist < 0)
+                dist = 0; // erase this array
+
+            if (dist > 0)
+            {
+                grow(dist);
+
+                memcpy_impl(m_data, first, dist * numbytes);
+            }
+
+            eos<T>(dist);
+
+            return *this;
+        }
+
+
+        template<typename InputIterator>
+        inline container& assign_impl(InputIterator first, InputIterator last, misc::random_access_iterator_tag)
+        {
+            return assign_impl(first, last);
+        }
+
+        template<typename InputIterator>
+        inline container& assign_impl(InputIterator n, InputIterator value, misc::input_iterator_tag)
+        {
+            invalidate_iterators();
+
+            if (n < 0)
+                n = 0; // erase this array
+
+            if (n > 0)
+            {
+                grow(n);
+
+                misc::mem_set<value_type>(m_data, value, n * numbytes);
+            }
+
+            eos<T>(n);
+
+            return *this;
+        }
+
+    public:
         template <typename InputIterator>
         container& assign(InputIterator first, InputIterator last)
         {
