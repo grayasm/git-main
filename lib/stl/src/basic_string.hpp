@@ -211,7 +211,7 @@ namespace stl
 
             return (*base2::m_cont)[base2::m_pos + off];
         }
-    };  // iterator
+    };  // basic_string_iterator
 
 
     template<typename container>
@@ -245,34 +245,34 @@ namespace stl
             base2::m_pos = 0;
         }
 
-        basic_string_const_iterator(const basic_string_const_iterator& it)
+        basic_string_const_iterator(const basic_string_const_iterator& tc)
         {
-            *this = it;
+            *this = tc;
         }
 
-        basic_string_const_iterator(const basic_string_iterator<container>& it)
+        basic_string_const_iterator(const basic_string_iterator<container>& tc)
         {
-            *this = it;
+            *this = tc;
         }
 
         ~basic_string_const_iterator()
         {
         }
 
-        basic_string_const_iterator& operator=(const basic_string_const_iterator& it)
+        basic_string_const_iterator& operator=(const basic_string_const_iterator& tc)
         {
-            if (this != &it)
+            if (this != &tc)
             {
-                base2::m_cont = it.m_cont;
-                base2::m_pos = it.m_pos;
+                base2::m_cont = tc.m_cont;
+                base2::m_pos = tc.m_pos;
             }
             return *this;
         }
 
-        basic_string_const_iterator& operator=(const basic_string_iterator<container>& it)
+        basic_string_const_iterator& operator=(const basic_string_iterator<container>& tc)
         {
-            base2::m_cont = it.m_cont;
-            base2::m_pos = it.m_pos;
+            base2::m_cont = tc.m_cont;
+            base2::m_pos = tc.m_pos;
 
             return *this;
         }
@@ -394,7 +394,7 @@ namespace stl
 
             return (*base2::m_cont)[base2::m_pos + off];
         }
-    };  // const_iterator
+    };  // basic_string_const_iterator
 
 
     template<typename container>
@@ -430,21 +430,21 @@ namespace stl
             base2::m_pos = 0;
         }
 
-        basic_string_reverse_iterator(const basic_string_reverse_iterator& it)
+        basic_string_reverse_iterator(const basic_string_reverse_iterator& tc)
         {
-            *this = it;
+            *this = tc;
         }
 
         ~basic_string_reverse_iterator()
         {
         }
 
-        basic_string_reverse_iterator& operator=(const basic_string_reverse_iterator& it)
+        basic_string_reverse_iterator& operator=(const basic_string_reverse_iterator& tc)
         {
-            if (this != &it)
+            if (this != &tc)
             {
-                base2::m_cont = it.m_cont;
-                base2::m_pos = it.m_pos;
+                base2::m_cont = tc.m_cont;
+                base2::m_pos = tc.m_pos;
             }
             return *this;
         }
@@ -566,7 +566,7 @@ namespace stl
 
             return (*base2::m_cont)[base2::m_pos - off];
         }
-    };  // reverse_iterator
+    };  // basic_string_reverse_iterator
 
 
     template<typename container>
@@ -601,36 +601,36 @@ namespace stl
             base2::m_pos = 0;
         }
 
-        basic_string_const_reverse_iterator(const basic_string_const_reverse_iterator& it)
+        basic_string_const_reverse_iterator(const basic_string_const_reverse_iterator& tc)
         {
-            *this = it;
+            *this = tc;
         }
 
         ~basic_string_const_reverse_iterator()
         {
         }
 
-        basic_string_const_reverse_iterator& operator=(const basic_string_const_reverse_iterator& it)
+        basic_string_const_reverse_iterator& operator=(const basic_string_const_reverse_iterator& tc)
         {
-            if (this != &it)
+            if (this != &tc)
             {
-                base2::m_cont = it.m_cont;
-                base2::m_pos = it.m_pos;
+                base2::m_cont = tc.m_cont;
+                base2::m_pos = tc.m_pos;
             }
             return *this;
         }
 
-        basic_string_const_reverse_iterator& operator=(const basic_string_reverse_iterator<container>& it)
+        basic_string_const_reverse_iterator& operator=(const basic_string_reverse_iterator<container>& tc)
         {
-            base2::m_cont = it.m_cont;
-            base2::m_pos = it.m_pos;
+            base2::m_cont = tc.m_cont;
+            base2::m_pos = tc.m_pos;
 
             return *this;
         }
 
-        basic_string_const_reverse_iterator(const basic_string_reverse_iterator<container>& it)
+        basic_string_const_reverse_iterator(const basic_string_reverse_iterator<container>& tc)
         {
-            *this = it;
+            *this = tc;
         }
 
         reference operator*() const
@@ -750,7 +750,7 @@ namespace stl
 
             return (*base2::m_cont)[base2::m_pos - off];
         }
-    };  // const_reverse_iterator
+    };  // basic_string_const_reverse_iterator
 
 
     //  ISO/IEC 14882:2003  $21.3 Class template basic_string
@@ -758,7 +758,7 @@ namespace stl
     class basic_string
     {
     public:
-        typedef typename basic_string<T, Allocator>     container;
+        typedef typename basic_string<T, Allocator>         container;
 
         // types:
         typedef typename Allocator::value_type              value_type;
@@ -813,15 +813,37 @@ namespace stl
             m_capacity = cap;
         }
 
+//TODO: if specialized for char,unsigned char,wchar_t then there is no need to
+//      mem_destroy!!! -> then the whole endof(sz) can be replaced with
+//      m_size = size;!! but requires also '\0' end termination
         inline void endof(size_type size)
         {
-            if (size < m_size)
-            {
-                value_type* unused = m_data + size;
-                size_type count = m_size - size;
-                stl::mem_destroy(&unused, count, m_allocator);
-            }
             m_size = size;
+            m_data[m_size] = 0;
+        }
+
+//TODO: specialize only for char*,unsigned char*,wchar_t ??
+        inline size_type length(const value_type* ptr) const
+        {
+            if (ptr == 0)
+                throw stl::exception("null pointer");
+
+            const value_type* p = ptr;
+            while (*p != 0)
+                p++;
+            return (p - ptr);
+        }
+
+//TODO: remove this in the next iteration!!
+        inline void swap_range(size_type beg, size_type end)
+        {
+            if (beg < end)
+            {
+                for (size_type i = beg, j = end - 1; i < j; ++i, --j)
+                {
+                    misc::swap<value_type>(m_data[i], m_data[j]);
+                }
+            }
         }
 
     public:
@@ -829,42 +851,35 @@ namespace stl
         basic_string()
         {
             init();
+            grow(1);    // .c_str() is '\0' terminated
+            endof(0);
         }
 
-        basic_string(const container& x)
+        basic_string(const container& tc)
         {
-            init(x.get_allocator());
-            mem_alloc(1);       // avoid 0 capacity with x.empty()
-            eos<T>(0);          // protect against self assignment
-            assign(x);        // may return with no action
+            init();
+            grow(1);    // .c_str() is '\0' terminated
+            assign(tc);
         }
 
-        basic_string(const container& str, size_type off, size_type count = npos)
+        basic_string(const container& s, size_type off, size_type n = npos)
         {
-            const Allocator& alloc = Allocator();
-            init(alloc);
-            mem_alloc(1);       // avoid 0 capacity with x.empty
-            eos<T>(0);          // protect against self assignment
-            assign(str, off, count);
+            init();
+            grow(1);    // .c_str() is '\0' terminated
+            assign(s, off, n);
         }
 
         basic_string(const value_type* ptr, size_type count)
-            //: base(ptr, count)
         {
-            const Allocator& alloc = Allocator();
-            init(alloc);
-            mem_alloc(1);       // avoid 0 capacity with ptr 0
-            eos<T>(0);          // safety
+            init();
+            grow(1);    // .c_str() is '\0' terminated
             assign(ptr, count);
         }
 
         basic_string(const value_type* ptr)
-            //: base(ptr)
         {
-            const Allocator& alloc = Allocator();
-            init(alloc);
-            mem_alloc(1);       // avoid 0 capacity with ptr 0
-            eos<T>(0);          // safety
+            init();
+            grow(1);    // .c_str() is '\0' terminated
             assign(ptr);
         }
 
@@ -894,30 +909,11 @@ namespace stl
 
         ~basic_string()
         {
-            // ms comp warn 4127
-            int hasPOD = (attributes & misc::GENERIC_ARRAY_HAS_POD_TYPE);
-            if (hasPOD)
-            {
-                m_allocator.deallocate(m_data, 0);
-            }
-            else
-            {
-                misc::mem_destroy(&m_data, m_size, m_allocator);
-                m_allocator.deallocate(m_data, 0);
-            }
+            m_allocator.deallocate(m_data, 0); // always allocated
 
             m_data = 0;
             m_size = 0;
             m_capacity = 0;
-
-
-            // ms comp warn 4127
-            int hasITDBG = (attributes & misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING);
-            if (hasITDBG)
-            {
-                invalidate_iterators();
-                delete m_itarray;
-            }
         }
 
         /* $21.3.1 (assignment operators) */
@@ -1015,7 +1011,7 @@ namespace stl
             {
                 grow(sz);
 
-                misc::mem_set(&m_data[m_size], c, (sz - m_size) * numbytes);
+                stl::mem_set(&m_data[m_size], c, (sz - m_size) * numbytes);
 
                 eos<T>(sz);
             }
@@ -1046,25 +1042,25 @@ namespace stl
         //$21.3.4 element access:
         const_reference operator[] ( size_type n ) const
         {
-            if (n >= m_size) throw misc::exception("out of valid range");
+            if (n >= m_size) throw stl::exception("out of valid range");
             return m_data[n];
         }
 
         reference operator[] ( size_type n )
         {
-            if (n >= m_size) throw misc::exception("out of valid range");
+            if (n >= m_size) throw stl::exception("out of valid range");
             return m_data[n];
         }
 
         const_reference at ( size_type n ) const
         {
-            if (n >= m_size) throw misc::exception("out of valid range");
+            if (n >= m_size) throw stl::exception("out of valid range");
             return m_data[n];
         }
 
         reference at ( size_type n )
         {
-            if (n >= m_size) throw misc::exception("out of valid range");
+            if (n >= m_size) throw stl::exception("out of valid range");
             return m_data[n];
         }
 
@@ -1098,7 +1094,7 @@ namespace stl
 
             if (strLen > 0)
             {
-                if (p2 >= strLen) throw misc::exception("out of valid range");
+                if (p2 >= strLen) throw stl::exception("out of valid range");
 
                 if (n2 > strLen - p2)
                     n2 = strLen - p2;
@@ -1150,7 +1146,7 @@ namespace stl
 
                 grow(size);
 
-                misc::mem_set(&m_data[m_size], value, n * numbytes);
+                stl::mem_set(&m_data[m_size], value, n * numbytes);
 
                 eos<T>(size);
             }
@@ -1166,7 +1162,7 @@ namespace stl
         inline container& append_impl(const iterator& first, const iterator& last)
         {
             if (first.m_cont != last.m_cont || first.m_cont == 0)
-                throw misc::exception("invalid iterator");
+                throw stl::exception("invalid iterator");
 
             difference_type dist = last - first;
             if (dist > 0)
@@ -1186,7 +1182,7 @@ namespace stl
         inline container& append_impl(const const_iterator& first, const const_iterator& last)
         {
             if (first.m_cont != last.m_cont || first.m_cont == 0)
-                throw misc::exception("invalid iterator");
+                throw stl::exception("invalid iterator");
 
             difference_type dist = last - first;
             if (dist > 0)
@@ -1206,7 +1202,7 @@ namespace stl
         inline container& append_impl(const reverse_iterator& first, const reverse_iterator& last)
         {
             if (first.m_cont != last.m_cont || first.m_cont == 0)
-                throw misc::exception("invalid iterator");
+                throw stl::exception("invalid iterator");
 
             difference_type dist = last - first;
             if (dist > 0)
@@ -1228,7 +1224,7 @@ namespace stl
         inline container& append_impl(const const_reverse_iterator& first, const const_reverse_iterator& last)
         {
             if (first.m_cont != last.m_cont || first.m_cont == 0)
-                throw misc::exception("invalid iterator");
+                throw stl::exception("invalid iterator");
 
             difference_type dist = last - first;
             if (dist > 0)
@@ -1253,7 +1249,7 @@ namespace stl
         compiler cannot find any suitable append_impl for next code:
 
         float fptr[]={0,...};
-        misc::generic_array<float> fcont;
+        stl::generic_array<float> fcont;
         fcont.append(fptr, fptr+10);
         */
         inline container& append_impl(const value_type* first, const value_type* last)
@@ -1274,13 +1270,13 @@ namespace stl
         }
 
         template<typename InputIterator>
-        inline container& append_impl(const InputIterator& first, const InputIterator& last, misc::random_access_iterator_tag)
+        inline container& append_impl(const InputIterator& first, const InputIterator& last, stl::random_access_iterator_tag)
         {
             return append_impl(first, last);
         }
 
         template<typename InputIterator>
-        inline container& append_impl(InputIterator n, InputIterator value, misc::input_iterator_tag)
+        inline container& append_impl(InputIterator n, InputIterator value, stl::input_iterator_tag)
         {//e.g. str.append<int>(5, 0x2E);
 
             if (n > 0)
@@ -1289,7 +1285,7 @@ namespace stl
 
                 grow(size);
 
-                misc::mem_set(&m_data[m_size], value, n * numbytes);
+                stl::mem_set(&m_data[m_size], value, n * numbytes);
 
                 eos<T>(size);
             }
@@ -1303,7 +1299,7 @@ namespace stl
         template<typename InputIterator>
         container& append(InputIterator first, InputIterator last)
         {
-            return append_impl<InputIterator>(first, last, typename misc::iterator_traits<InputIterator>::iterator_category());
+            return append_impl<InputIterator>(first, last, typename stl::iterator_traits<InputIterator>::iterator_category());
         }
 
 
@@ -1322,84 +1318,103 @@ namespace stl
         }
 
         /* $21.3.5 modifiers ( assign ) */
-        container& assign(const container& str)
+        container& assign(const container& tc)
         {
             //self assignment
-            if (this != &str)
+            if (this != &tc)
             {
-                invalidate_iterators();
-
-                size_type size = str.length();
+                size_type size = tc.size();
 
                 if (size > 0)
                 {
-                    grow(size);
+                    grow(size + 1); // extra '\0'
 
-                    memcpy_impl(m_data, str.m_data, size * numbytes);
+                    stl::mem_copy(m_data, m_size, tc.m_data, size, m_allocator);
                 }
 
-                eos<T>(size);
+                endof(size);
             }
 
             return *this;
         }
 
-        container& assign(const container& str, size_type p2, size_type n2)
+        container& assign(const container& str, size_type off, size_type n)
         {
-            invalidate_iterators();
-
-            size_type strLen = str.length();
-
-            if (p2 >= strLen) throw misc::exception("out of valid range");
-
-            if (n2 > strLen - p2)
-                n2 = strLen - p2;
-
-            if (n2 > 0)
+            if (n > 0)
             {
-                grow(n2);
+                if (off + n > str.size())
+                    throw stl::exception("out of valid range");
 
-                //self assignment
+                // self assignment
                 if (this == &str)
                 {
-                    memmove_impl(m_data, &str[p2], n2 * numbytes);
+                    stl::mem_move(m_data, m_size, &m_data[off], n, m_allocator);
                 }
                 else
                 {
-                    memcpy_impl(m_data, &str[p2], n2 * numbytes);
+                    grow(n + 1);    // extra '\0'
+
+                    stl::mem_copy(m_data, m_size, &str[off], n, m_allocator);
                 }
             }
-
-            eos<T>(n2);
-
+            
+            endof(n);
+            
             return *this;
         }
 
-        container& assign(const value_type* ptr, size_type n2)
+        container& assign(const value_type* ptr, size_type n)
         {
-            invalidate_iterators();
-
-            size_type ptrLen = length<value_type>(ptr);
-
-            if (n2 > ptrLen)
-                n2 = ptrLen;
-
-            if (n2 > 0)
+            if (n > 0)
             {
-                grow(n2);
+                // Is the address inside this container ?
+                if (m_data <= ptr && (m_data + m_size) > ptr)
+                {
+                    if (m_data + m_size < ptr + n)
+                        throw stl::exception("out of valid range");
 
-                //ptr may overlap m_data
-                memmove_impl(m_data, ptr, n2 * numbytes);
+                    stl::mem_move(m_data, m_size, ptr, n, m_allocator);
+                }
+                else
+                {
+                    size_type size = length(ptr);   // without '\0' termination
+
+                    if (n > size)
+                        throw stl::exception("out of valid range");
+
+                    grow(n + 1);    // extra '\0'
+
+                    stl::mem_copy(m_data, m_size, ptr, n, m_allocator);
+                }
             }
 
-            eos<T>(n2);
+            endof(n);
 
             return *this;
         }
 
         container& assign(const value_type* ptr)
         {
-            return assign(ptr, npos);
+            size_type n = length(ptr);   // without '\0' termination
+
+            if (n > 0)
+            {
+                // Is the address inside this container ?
+                if (m_data <= ptr && (m_data + m_size) > ptr)
+                {
+                    stl::mem_move(m_data, m_size, ptr, n, m_allocator);
+                }
+                else
+                {
+                    grow(n + 1);    // extra '\0'
+
+                    stl::mem_copy(m_data, m_size, ptr, n, m_allocator);
+                }
+            }
+
+            endof(n);
+
+            return *this;
         }
 
         container& assign(size_type count, const value_type& val)
@@ -1410,7 +1425,7 @@ namespace stl
             {
                 grow(count);
 
-                misc::mem_set(m_data, val, count * numbytes);
+                stl::mem_set(m_data, val, count * numbytes);
             }
 
             eos<T>(count);
@@ -1428,7 +1443,7 @@ namespace stl
         inline container& assign_impl(const iterator& first, const iterator& last)
         {
             if (first.m_cont != last.m_cont || first.m_cont == 0)
-                throw misc::exception("invalid iterator");
+                throw stl::exception("invalid iterator");
 
             invalidate_iterators();
 
@@ -1460,7 +1475,7 @@ namespace stl
         inline container& assign_impl(const const_iterator& first, const const_iterator& last)
         {
             if (first.m_cont != last.m_cont || first.m_cont == 0)
-                throw misc::exception("invalid iterator");
+                throw stl::exception("invalid iterator");
 
             invalidate_iterators();
 
@@ -1492,7 +1507,7 @@ namespace stl
         inline container& assign_impl(const reverse_iterator& first, const reverse_iterator& last)
         {
             if (first.m_cont != last.m_cont || first.m_cont == 0)
-                throw misc::exception("invalid iterator");
+                throw stl::exception("invalid iterator");
 
             invalidate_iterators();
 
@@ -1527,7 +1542,7 @@ namespace stl
         {
             //validate containers
             if (first.m_cont != last.m_cont || first.m_cont == 0)
-                throw misc::exception("invalid iterator");
+                throw stl::exception("invalid iterator");
 
             invalidate_iterators();
 
@@ -1563,7 +1578,7 @@ namespace stl
         compiler cannot find any suitable assign_impl for next code:
 
         float fptr[]={0,...};
-        misc::generic_array<float> fcont(fptr, fptr+10);
+        stl::generic_array<float> fcont(fptr, fptr+10);
         */
 
         inline container& assign_impl(const value_type* first, const value_type* last)
@@ -1589,13 +1604,13 @@ namespace stl
 
 
         template<typename InputIterator>
-        inline container& assign_impl(InputIterator first, InputIterator last, misc::random_access_iterator_tag)
+        inline container& assign_impl(InputIterator first, InputIterator last, stl::random_access_iterator_tag)
         {
             return assign_impl(first, last);
         }
 
         template<typename InputIterator>
-        inline container& assign_impl(InputIterator n, InputIterator value, misc::input_iterator_tag)
+        inline container& assign_impl(InputIterator n, InputIterator value, stl::input_iterator_tag)
         {
             invalidate_iterators();
 
@@ -1606,7 +1621,7 @@ namespace stl
             {
                 grow(n);
 
-                misc::mem_set<value_type>(m_data, value, n * numbytes);
+                stl::mem_set<value_type>(m_data, value, n * numbytes);
             }
 
             eos<T>(n);
@@ -1618,333 +1633,1261 @@ namespace stl
         template <typename InputIterator>
         container& assign(InputIterator first, InputIterator last)
         {
-            base::assign(first, last);
-            return *this;
+            return append_impl<InputIterator>(first, last, typename stl::iterator_traits<InputIterator>::iterator_category());
         }
 
 
         /* $21.3.5 modifiers ( insert ) */
         container& insert(size_type p1, const container& str)
         {
-            base::insert(p1, str);
-            return *this;
+            return insert(p1, str, 0, npos);
         }
 
         container& insert(size_type p1, const container& str, size_type p2, size_type n2)
         {
-            base::insert(p1, str, p2, n2);
-            return *this;
+            if (this == &str)
+            {
+                return replace(p1, 0, *this, p2, n2);
+            }
+            else
+            {
+                //allow insert in end_lock() position;
+                if (p1 > m_size) throw stl::exception("out of valid range");
+
+                size_type strLen = str.length();
+                if (p2 >= strLen) throw stl::exception("out of valid range");
+
+                if (n2 > strLen - p2)
+                    n2 = strLen - p2;
+
+                if (n2)
+                {
+                    // invalidate for effective insert only
+                    invalidate_iterators_gte(p1);
+
+                    size_type size = m_size + n2;
+
+                    grow(size);
+
+                    memmove_impl(&m_data[p1 + n2], &m_data[p1], (m_size - p1) * numbytes);
+                    memcpy_impl(&m_data[p1], &str[p2], n2 * numbytes);
+
+
+                    eos<T>(size);
+                }
+                return *this;
+            }
         }
 
         container& insert(size_type p1, const value_type* ptr, size_type n2)
         {
-            base::insert(p1, ptr, n2);
-            return *this;
+            // if (inside(ptr))
+            if (m_data <= ptr && m_data + m_size > ptr)
+            {
+                return replace(p1, 0, *this, 0, n2);
+            }
+            else
+            {
+                //allow insert in end_lock() position;
+                if (p1 > m_size) throw stl::exception("out of valid range");
+
+                size_type ptrLen = length<value_type>(ptr);
+                if (n2 > ptrLen)
+                    n2 = ptrLen;
+
+                if (n2)
+                {
+                    // invalidate for effective insert only
+                    invalidate_iterators_gte(p1);
+
+                    size_type size = m_size + n2;
+
+                    grow(size);
+
+                    memmove_impl(&m_data[p1 + n2], &m_data[p1], (m_size - p1) * numbytes);
+                    memcpy_impl(&m_data[p1], ptr, n2 * numbytes);
+
+                    eos<T>(size);
+                }
+                return *this;
+            }
         }
 
         container& insert(size_type p1, const value_type* ptr)
         {
-            base::insert(p1, ptr);
-            return *this;
+            return insert(p1, ptr, npos);
         }
 
         container& insert(size_type p1, size_type n2, value_type ch)
         {
-            base::insert(p1, n2, ch);
+            //allow insert in end_lock() position;
+            if (p1 > m_size) throw stl::exception("out of valid range");
+
+            if (n2)
+            {
+                // invalidate for effective insert only
+                invalidate_iterators_gte(p1);
+
+                size_type size = m_size + n2;
+
+                grow(size);
+
+                memmove_impl(&m_data[p1 + n2], &m_data[p1], (m_size - p1) * numbytes);
+
+                stl::mem_set(&m_data[p1], ch, n2 * numbytes);
+
+                eos<T>(size);
+            }
+
             return *this;
         }
 
         iterator insert(iterator position, const value_type& x)
         {
-            return base::insert(position, x);
+            insert(position, 1, x);
+            return position;
         }
 
         void insert(iterator position, size_type n, const value_type& x)
         {
-            base::insert(position, n, x);
+            if (this != position.m_cont) throw stl::exception("invalid iterator");
+            if (position.m_pos > m_size) throw stl::exception("out of valid range");
+
+
+            if (n)
+            {
+                size_type size = m_size + n;
+                size_type p1 = position.m_pos;
+
+                // invalidate for effective insert only
+                invalidate_iterators_gte(p1);
+
+                grow(size);
+
+                memmove_impl(&m_data[p1 + n], &m_data[p1], (m_size - p1) * numbytes);
+
+                stl::mem_set(&m_data[p1], x, n * numbytes);
+
+                eos<T>(size);
+            }
         }
 
-        template <typename InputIterator>
-        void insert(iterator position, InputIterator first, InputIterator last)
+
+    private:
+        /*
+        implementation of:
+        template<class InputIterator>
+        void insert ( iterator p, InputIterator first, InputIterator last );
+        */
+        inline void insert_impl(size_type p1, const iterator& first, const iterator& last)
         {
-            base::insert(position, first, last);
+            if (this == first.m_cont)
+            {
+                replace_impl(p1, 0, first, last);
+            }
+            else
+            {
+                if (first.m_cont != last.m_cont || first.m_cont == 0)
+                    throw stl::exception("invalid iterator");
+
+                if (p1 > m_size) throw stl::exception("out of valid range");
+
+                difference_type dist = last - first;
+                if (dist > 0)
+                {
+                    // invalidate for effective insert only
+                    invalidate_iterators_gte(p1);
+
+                    size_type size = m_size + dist;
+                    grow(size);
+
+                    memmove_impl(&m_data[p1 + dist], &m_data[p1], (m_size - p1) * numbytes);
+                    memcpy_impl(&m_data[p1], &((*first.m_cont)[first.m_pos]), dist * numbytes);
+
+                    eos<T>(size);
+                }
+            }
         }
 
+        inline void insert_impl(size_type p1, const const_iterator& first, const const_iterator& last)
+        {
+            if (this == first.m_cont)
+            {
+                replace(p1, 0, first, last);
+            }
+            else
+            {
+                if (first.m_cont != last.m_cont || first.m_cont == 0)
+                    throw stl::exception("invalid iterator");
+
+                if (p1 > m_size) throw stl::exception("out of valid range");
+
+                difference_type dist = last - first;
+                if (dist > 0)
+                {
+                    // invalidate for effective insert only
+                    invalidate_iterators_gte(p1);
+
+                    size_type size = m_size + dist;
+                    grow(size);
+
+                    memmove_impl(&m_data[p1 + dist], &m_data[p1], (m_size - p1) * numbytes);
+                    memcpy_impl(&m_data[p1], &((*first.m_cont)[first.m_pos]), dist * numbytes);
+
+                    eos<T>(size);
+                }
+            }
+        }
+
+        inline void insert_impl(size_type p1, const reverse_iterator& first, const reverse_iterator& last)
+        {
+            if (this == first.m_cont)
+            {
+                replace(p1, 0, first, last);
+            }
+            else
+            {
+                if (first.m_cont != last.m_cont || first.m_cont == 0)
+                    throw stl::exception("invalid iterator");
+
+                if (p1 > m_size) throw stl::exception("out of valid range");
+
+                difference_type dist = last - first;
+                if (dist > 0)
+                {
+                    // invalidate for effective insert only
+                    invalidate_iterators_gte(p1);
+
+                    size_type size = m_size + dist;
+                    grow(size);
+
+                    memmove_impl(&m_data[p1 + dist], &m_data[p1], (m_size - p1) * numbytes);
+                    memcpy_impl(&m_data[p1], &((*last.m_cont)[last.m_pos + 1]), dist * numbytes);
+
+                    swap_range(p1, p1 + dist);
+
+                    eos<T>(size);
+                }
+            }
+        }
+
+        inline void insert_impl(size_type p1, const const_reverse_iterator& first, const const_reverse_iterator& last)
+        {
+            if (this == first.m_cont)
+            {
+                replace(p1, 0, first, last);
+            }
+            else
+            {
+                if (first.m_cont != last.m_cont || first.m_cont == 0)
+                    throw stl::exception("invalid iterator");
+
+                if (p1 > m_size) throw stl::exception("out of valid range");
+
+                difference_type dist = last - first;
+                if (dist > 0)
+                {
+                    // invalidate for effective insert only
+                    invalidate_iterators_gte(p1);
+
+                    size_type size = m_size + dist;
+                    grow(size);
+
+                    memmove_impl(&m_data[p1 + dist], &m_data[p1], (m_size - p1) * numbytes);
+                    memcpy_impl(&m_data[p1], &((*last.m_cont)[last.m_pos + 1]), dist * numbytes);
+
+                    swap_range(p1, p1 + dist);
+
+                    eos<T>(size);
+                }
+            }
+        }
+
+        template<typename InputIterator>
+        inline void insert_impl(size_type p1, const InputIterator& first, const InputIterator& last, stl::random_access_iterator_tag)
+        {
+            insert_impl(p1, first, last);
+        }
+
+        template<typename InputIterator>
+        inline void insert_impl(size_type p1, InputIterator n2, InputIterator value, stl::input_iterator_tag)
+        {
+            if (n2)
+            {
+                // invalidate for effective insert only
+                invalidate_iterators_gte(p1);
+
+                size_type size = m_size + n2;
+
+                grow(size);
+
+                memmove_impl(&m_data[p1 + n2], &m_data[p1], (m_size - p1) * numbytes);
+
+                stl::mem_set(&m_data[p1], value, n2 * numbytes);
+
+                eos<T>(size);
+            }
+        }
+
+
+    public:
+        template <typename InputIterator>
+        inline void insert(iterator position, InputIterator first, InputIterator last)
+        {
+            if (position.m_cont != this)
+                throw stl::exception("invalid iterator");
+
+            insert_impl(position.m_pos, first, last, typename stl::iterator_traits<InputIterator>::iterator_category());
+        }
 
         /* $21.3.5 modifiers ( erase ) */
         container& erase(size_type p1 = 0, size_type n1 = npos)
         {
-            base::erase(p1, n1);
+            if (p1 >= m_size) throw stl::exception("out of valid range");
+
+            if (n1 > m_size - p1)
+                n1 = m_size - p1;
+
+            if (n1)
+            {
+                // invalidate for effective erase only
+                invalidate_iterators_gte(p1);
+
+                memmove_impl(&m_data[p1], &m_data[p1 + n1], (m_size - p1 - n1) * numbytes);
+
+                eos<T>(m_size - n1);
+            }
+
             return *this;
         }
 
         iterator erase(iterator position)
         {
-            return base::erase(position);
+            if (position.m_cont != this) throw stl::exception("invalid iterator");
+            if (position.m_pos >= m_size) throw stl::exception("out of valid range");
+
+            size_type p1 = position.m_pos;
+
+            invalidate_iterators_gte(p1);
+
+            memmove_impl(&m_data[p1], &m_data[p1 + 1], (m_size - p1 - 1) * numbytes);
+
+            eos<T>(m_size - 1);
+
+            return position;
         }
 
         iterator erase(iterator first, iterator last)
         {
-            return base::erase(first, last);
+            if (first.m_cont != this || last.m_cont != this)
+                throw stl::exception("invalid iterator");
+
+            difference_type dist = last - first;
+            if (dist > 0)
+            {
+                invalidate_iterators_gte(first.m_pos);
+
+                //fill the gap
+                if (last.m_pos < m_size)
+                {
+                    memmove_impl(&m_data[first.m_pos], &m_data[last.m_pos], (m_size - last.m_pos) * numbytes);
+                }
+
+                eos<T>(m_size - dist);
+            }
+
+            return first;
         }
 
 
         /* $21.3.5 modifiers ( replace ) */
         container& replace(size_type p1, size_type n1, const container& str)
         {
-            base::replace(p1, n1, str);
-            return *this;
+            return replace(p1, n1, str, 0, str.length());
         }
 
         container& replace(size_type p1, size_type n1, const container& str, size_type p2, size_type n2)
         {
-            base::replace(p1, n1, str, p2, n2);
+            if (p1 >= m_size) throw stl::exception("out of valid range");
+            if (n1 > m_size - p1)
+                n1 = m_size - p1;
+            size_type str_size = str.length();
+            if (p2 > str_size) throw stl::exception("out of valid range");
+            if (n2 > str_size - p2)
+                n2 = str_size - p2;
+            size_type size = m_size - n1 + n2;
+
+            invalidate_iterators_gte(p1);
+
+            grow(size);
+
+            if (this != &str)
+            {
+                memmove_impl(&m_data[p1 + n2], &m_data[p1 + n1], (m_size - p1 - n1) * numbytes);
+                memcpy_impl(&m_data[p1], &str.m_data[p2], n2 * numbytes);
+
+            }
+            else if (p1 >= p2)
+            {
+                /*
+
+                |0|1|2|3|4|5|6|7|8|9|a|b|c|d|e|f|g|x|
+                |x|x|x|x|x|x|
+                |*|*|*|*|*|*|*|*|*|
+                m_size = 17
+                p1=4 n1=6
+                p2=4 n2=9
+                new_size = m_size - n1 + n2 = 20
+                |0|1|2|3|4|5|6|7|8|9|a|b|c|d|e|f|g|!|!|!|x|
+                (1) move tail up
+                s1 = p1 + n1 = 10
+                d1 = p1 + n2 = 13
+                k1 = m_size - s1 = 7
+                |0|1|2|3|4|5|6|7|8|9|a|b|c|a|b|c|d|e|f|g|x|
+                (2) move down
+                s2 = p2 = 4
+                d2 = p1 = 4
+                k2 = n2 = 9
+                |0|1|2|3|4|5|6|7|8|9|a|b|c|a|b|c|d|e|f|g|x|
+                */
+                memmove_impl(&m_data[p1 + n2], &m_data[p1 + n1], (m_size - p1 - n2) * numbytes);
+                memmove_impl(&m_data[p1], &m_data[p2], n2 * numbytes);
+            }
+            else if (p1 + n1 <= p2)
+            {
+                /*
+                |0|1|2|3|4|5|6|7|8|9|a|b|c|d|e|f|g|x|
+                |x|x|x|x|x|
+                |*|*|*|
+                m_size = 17
+                p1=2 n1=5
+                p2=7 n2=3
+                new_size = m_size - n1 + n2 = 15
+                |0|1|2|3|4|5|6|7|8|9|a|b|c|d|e|f|g|x|
+                (1) move tail up
+                s1 = p1 + n1 = 7
+                d1 = p1 + n2 = 5
+                k1 = m_size - s1 = 10
+                |0|1|2|3|4|7|8|9|a|b|c|d|e|f|g|f|g|x|
+                (2) move down
+                s2 = d1 + p2 - s1 = 5
+                d2 = p1 = 2
+                k2 = n2 = 3
+                |0|1|7|8|9|7|8|9|a|b|c|d|e|f|g|f|g|x|
+                |0|1|7|8|9|7|8|9|a|b|c|d|e|f|g|x|!|!|
+                */
+                memmove_impl(&m_data[p1 + n2], &m_data[p1 + n1], (m_size - p1 - n1) * numbytes);
+                memmove_impl(&m_data[p1], &m_data[p1 + n2 + p2 - p1 - n1], n2 * numbytes);
+            }
+            /* p1 + n1 > p2 , need to check additional condition */
+            else if (n1 < n2)
+            {
+                /*
+                |0|1|2|3|4|5|6|7|8|9|a|b|c|d|e|f|g|x|
+                |x|x|x|
+                |*|*|*|*|*|*|*|*|*|*|*|
+                m_size = 17
+                p1=2 n1=3
+                p2=4 n2=11
+                new_size = m_size - n1 + n2 = 25
+                |0|1|2|3|4|5|6|7|8|9|a|b|c|d|e|f|g|!|!|!|!|!|!|!|!|x|
+                (1) move tail up
+                s1 = p1 + n1 = 5
+                d1 = p1 + n2 = 13
+                k1 = m_size - s1 = 12
+                |0|1|2|3|4|5|6|7|8|9|a|b|c|5|6|7|8|9|a|b|c|d|e|f|g|x|
+                (2) move down 1st part
+                s2 = p2 = 4
+                d2 = p1 = 2
+                k2 = p1 + n1 - p2 = 1
+                |0|1|4|3|4|5|6|7|8|9|a|b|c|5|6|7|8|9|a|b|c|d|e|f|g|x|
+                (3) move down 2nd part
+                s3 = p1 + n2 = 13
+                d3 = p1 + k2 = 3
+                k3 = n2 - k2 = 10
+                |0|1|4|5|6|7|8|9|a|b|c|d|e|5|6|7|8|9|a|b|c|d|e|f|g|x|
+                */
+                memmove_impl(&m_data[p1 + n2], &m_data[p1 + n1], (m_size - p1 - n1) * numbytes);
+                memmove_impl(&m_data[p1], &m_data[p2], (p1 + n1 - p2) * numbytes);
+                memmove_impl(&m_data[p1 + p1 + n1 - p2], &m_data[p1 + n2], (n2 - p1 - n1 + p2) * numbytes);
+            }
+            /* p1 + n1 > p2 , it is assumed n1 >= n2, it can't be otherwise */
+            else
+            {
+                /*
+                |0|1|2|3|4|5|6|7|8|9|a|b|c|d|e|f|g|x|
+                |x|x|x|x|x|x|x|
+                |*|*|
+                m_size = 17
+                p1=2 n1=7
+                p2=8 n2=2
+                new_size = m_size - n1 + n2 = 12
+                |0|1|2|3|4|5|6|7|8|9|a|b|c|d|e|f|g|x|
+                (1) move down
+                s1 = p2 = 8
+                d1 = p1 = 2
+                k1 = n2 = 2
+                |0|1|8|9|4|5|6|7|8|9|a|b|c|d|e|f|g|x|
+                (2) move tail down
+                s2 = p1 + n1 = 9
+                d2 = p1 + n2 = 4
+                k2 = m_size - s2 = 8
+                |0|1|8|9|9|a|b|c|d|e|f|g|c|d|e|f|g|x|
+                |0|1|2|3|4|5|6|7|8|9|a|b|x|!|!|!|!|!|
+                */
+                memmove_impl(&m_data[p1], &m_data[p2], n2 * numbytes);
+                memmove_impl(&m_data[p1 + n2], &m_data[p1 + n1], (m_size - p1 - n1) * numbytes);
+            }
+
+            eos<T>(size);
             return *this;
         }
 
         container& replace(size_type p1, size_type n1, const value_type* ptr, size_type n2)
         {
-            base::replace(p1, n1, ptr, n2);
-            return *this;
+            //if (inside(ptr))
+            if (m_data <= ptr && m_data + m_size > ptr)
+            {
+                return replace(p1, n1, *this, ptr - m_data, n2);
+            }
+            else
+            {
+                if (p1 >= m_size) throw stl::exception("out of valid range");
+
+                invalidate_iterators_gte(p1);
+
+                if (n1 > m_size - p1)
+                    n1 = m_size - p1;
+                size_type ptrLen = length<value_type>(ptr);
+                if (n2 > ptrLen)
+                    n2 = ptrLen;
+
+                size_type size = m_size - n1 + n2;
+                grow(size);
+
+                //move tail
+                memmove_impl(&m_data[p1 + n2], &m_data[p1 + n1], (m_size - p1 - n1) * numbytes);
+                //copy data
+                memcpy_impl(&m_data[p1], ptr, n2 * numbytes);
+
+                eos<T>(size);
+                return *this;
+            }
         }
 
         container& replace(size_type p1, size_type n1, const value_type* ptr)
         {
-            base::replace(p1, n1, ptr);
-            return *this;
+            return replace(p1, n1, ptr, npos);
         }
 
         container& replace(size_type p1, size_type n1, size_type n2, value_type ch)
         {
-            base::replace(p1, n1, n2, ch);
+            if (p1 >= m_size) throw stl::exception("out of valid range");
+
+            invalidate_iterators_gte(p1);
+
+            if (n1 > m_size - p1)
+                n1 = m_size - p1;
+            size_type size = m_size - n1 + n2;
+
+            grow(size);
+
+            //move tail up
+            memmove_impl(&m_data[p1 + n2], &m_data[p1 + n1], (m_size - p1 - n1) * numbytes);
+
+            //set range
+            stl::mem_set(&m_data[p1], ch, n2 * numbytes);
+
+            eos<T>(size);
+
             return *this;
         }
 
         container& replace(iterator first, iterator last, const container& str)
         {
-            base::replace(first, last, str);
-            return *this;
+            if (first.m_cont != last.m_cont || first.m_cont != this)
+                throw stl::exception("invalid iterator");
+
+            difference_type dist = last - first;
+
+            if (dist < 0)
+                dist = 0;
+
+            return replace(first.m_pos, static_cast<size_type>(dist), str, 0, str.length());
         }
 
         container& replace(iterator first, iterator last, const value_type* ptr, size_type n2)
         {
-            base::replace(first, last, ptr, n2);
-            return *this;
+            if (first.m_cont != last.m_cont || first.m_cont != this)
+                throw stl::exception("invalid iterator");
+
+            difference_type dist = last - first;
+
+            if (dist < 0)
+                dist = 0;
+
+            return replace(first.m_pos, static_cast<size_type>(dist), ptr, n2);
         }
 
         container& replace(iterator first, iterator last, const value_type* ptr)
         {
-            base::replace(first, last, ptr);
-            return *this;
+            if (first.m_cont != last.m_cont || first.m_cont != this)
+                throw stl::exception("invalid iterator");
+
+            difference_type dist = last - first;
+
+            if (dist < 0)
+                dist = 0;
+
+            return replace(first.m_pos, dist, ptr, npos);
         }
 
         container& replace(iterator first, iterator last, size_type n2, value_type ch)
         {
-            base::replace(first, last, n2, ch);
-            return *this;
+            if (first.m_cont != last.m_cont || first.m_cont != this)
+                throw stl::exception("invalid iterator");
+
+            difference_type dist = last - first;
+
+            if (dist < 0)
+                dist = 0;
+
+            return replace(first.m_pos, dist, n2, ch);
         }
 
 
-        template<typename InputIterator>
-        container& replace(iterator first, iterator last, InputIterator first2, InputIterator last2)
+    private:
+        /* implementation of:
+        template <class InputIterator>
+        string& replace ( iterator first, iterator last, InputIterator First, InputIterator Last );
+        */
+        inline container& replace_impl(size_type p1, size_type n1, const iterator& first2, const iterator& last2)
         {
-            base::replace(first, last, first2, last2);
+            if (first2.m_cont != last2.m_cont || first2.m_cont == 0)
+                throw stl::exception("invalid iterator");
+
+            difference_type dist = last2 - first2;
+
+            if (dist < 0)
+                dist = 0;
+
+            return replace(p1, n1, *(first2.m_cont), first2.m_pos, dist);
+        }
+
+        inline container& replace_impl(size_type p1, size_type n1, const const_iterator& first2, const const_iterator& last2)
+        {
+            if (first2.m_cont != last2.m_cont || first2.m_cont == 0)
+                throw stl::exception("invalid iterator");
+
+            difference_type dist = last2 - first2;
+
+            if (dist < 0)
+                dist = 0;
+
+            return replace(p1, n1, first2.m_cont, first2.m_pos, dist);
+        }
+
+        inline container& replace_impl(size_type p1, size_type n1, const reverse_iterator& first2, const reverse_iterator& last2)
+        {
+            if (first2.m_cont != last2.m_cont || first2.m_cont == 0)
+                throw stl::exception("invalid iterator");
+
+            difference_type dist = last2 - first2;
+
+            if (dist < 0)
+                dist = 0;
+
+            replace(p1, n1, first2.m_cont, last2.m_pos + 1, dist);
+
+            swap_range(p1, p1 + dist);
+
             return *this;
+        }
+
+        inline container& replace_impl(size_type p1, size_type n1, const const_reverse_iterator& first2, const const_reverse_iterator& last2)
+        {
+            if (first2.m_cont != last2.m_cont || first2.m_cont == 0)
+                throw stl::exception("invalid iterator");
+
+            difference_type dist = last2 - first2;
+
+            if (dist < 0)
+                dist = 0;
+
+            replace(p1, n1, first2.m_cont, last2.m_pos + 1, dist);
+
+            swap_range(p1, p1 + dist);
+
+            return *this;
+        }
+
+        /*
+        -due to specialization for replace_impl(const iterator& ...) and friends,
+        compiler cannot find any suitable replace_impl for next code:
+
+        stl::generic_array<char> charr(10, 'x'), charr2(2, 'a');
+        charr.replace(charr.begin(), ++charr.begin(),
+        charr2.c_str(), charr2.c_str()+2);
+        */
+        inline container& replace_impl(size_type p1, size_type n1, const value_type* first, const value_type* last)
+        {
+            if (!first || !last)
+                throw stl::exception("invalid iterator");
+
+            difference_type dist = last - first;
+
+            if (dist < 0)
+                dist = 0;
+
+            return replace(p1, n1, first, dist);
+        }
+
+        template<typename InputIterator>
+        inline container& replace_impl(size_type p1, size_type n1, const InputIterator& first2, const InputIterator& last2, stl::random_access_iterator_tag)
+        {
+            return replace_impl(p1, n1, first2, last2);
+        }
+
+        template<typename InputIterator>
+        inline container& replace_impl(size_type p1, size_type n1, InputIterator n2, InputIterator value, stl::input_iterator_tag)
+        {
+            return replace(p1, n1, n2, value);
+        }
+
+    public:
+        template<typename InputIterator>
+        inline container& replace(iterator first, iterator last, InputIterator first2, InputIterator last2)
+        {
+            if (first.m_cont != last.m_cont || first.m_cont != this)
+                throw stl::exception("invalid iterator");
+
+            difference_type dist = last - first;
+
+            if (dist < 0)
+                dist = 0;
+
+            return replace_impl(first.m_pos, dist, first2, last2, typename stl::iterator_traits<InputIterator>::iterator_category());
         }
 
 
         /* $21.3.5 modifiers ( copy ) */
         size_type copy(value_type* ptr, size_type n1, size_type p1 = 0) const
         {
-            return base::copy(ptr, n1, p1);
+            if (p1 >= m_size) throw stl::exception("out of valid range");
+
+            if (n1 > m_size - p1)
+                n1 = m_size - p1;
+
+            memmove_impl(ptr, &m_data[p1], n1 * numbytes);
+
+            return n1;
         }
 
 
         /* $21.3.5 modifiers ( swap ) */
         void swap(container& str)
         {
-            base::swap(str);
+            stl::swap<Allocator>(m_allocator, vec.m_allocator);
+            stl::swap<pointer>(m_data, vec.m_data);
+            stl::swap<size_type>(m_size, vec.m_size);
+            stl::swap<size_type>(m_capacity, vec.m_capacity);
+            //stl::swap<iterator_array*>(m_itarray, vec.m_itarray);
         }
 
+//TODO: use template specialization to disable anything but char,unsigned char,wchar_t
+//      actually all that implements ::memcpy, ::memmove
+//      because it is clear that c_str() would not work with anything that does
+//      not end in '\0', right?
 
         /* $21.3.6 string operations */
         const value_type* c_str() const
         {
-            return base::c_str();
+            return m_data;      // if string is '\0' terminated.
         }
 
         const value_type* data() const
         {
-            return base::data();
+            return m_data;      // if string is '\0' terminated.
+        }
+
+
+        allocator_type get_allocator() const
+        {
+            return m_allocator;
         }
 
         /* $21.3.6 string operations (find) */
         size_type find(const container& str, size_type p1 = 0) const
         {
-            return base::find(str, p1);
+            return find(str.m_data, p1, str.length());
         }
 
         size_type find(const value_type* ptr, size_type p1, size_type n2) const
         {
-            return base::find(ptr, p1, n2);
+            if (p1 >= m_size) throw stl::exception("out of valid range");
+
+            size_type ptrLen = length<value_type>(ptr);
+
+            if (n2 > ptrLen) return npos;
+
+            if (n2)
+            {
+                //find
+                for (size_type i = p1; i + n2 <= m_size; ++i)
+                {
+                    size_type i2 = i;
+                    size_type j2 = 0;
+                    while (j2 < n2 && m_data[i2++] == ptr[j2++])
+                        ;
+                    if (j2 == n2)
+                        return i;
+                }
+            }
+
+            return npos;
         }
 
         size_type find(const value_type* ptr, size_type p1 = 0) const
         {
-            return base::find(ptr, p1);
+            return find(ptr, p1, length<value_type>(ptr));
         }
 
         size_type find(value_type ch, size_type p1 = 0) const
         {
-            return base::find(ch, p1);
+            for (size_type i = p1; i < m_size; ++i)
+            {
+                if (m_data[i] == ch)
+                    return i;
+            }
+
+            return npos;
         }
 
 
         /* $21.3.6 string operations (rfind) */
         size_type rfind(const container& str, size_type p1 = npos) const
         {
-            return base::rfind(str, p1);
+            return rfind(str.m_data, p1, str.length());
         }
 
         size_type rfind(const value_type* ptr, size_type p1, size_type n2) const
         {
-            return base::rfind(ptr, p1, n2);
+            if (p1 > m_size) p1 = m_size;
+            if (n2 > m_size) return npos;
+            if (p1 + n2 > m_size)
+                p1 = m_size - n2;
+            size_type ptrsz = length<value_type>(ptr);
+            if (n2 > ptrsz) return npos;
+
+            if (n2)
+            {
+                //rfind
+                for (size_type i = p1; i != npos; --i)
+                {
+                    size_type i2 = i;
+                    size_type j2 = 0;
+                    while (j2 < n2 && m_data[i2++] == ptr[j2++])
+                        ;
+
+                    if (j2 == n2)
+                        return i;
+                }
+            }
+
+            return npos;
         }
 
         size_type rfind(const value_type* ptr, size_type p1 = npos) const
         {
-            return base::rfind(ptr, p1);
+            return rfind(ptr, p1, length<value_type>(ptr));
         }
 
         size_type rfind(value_type ch, size_type p1 = npos) const
         {
-            return base::rfind(ch, p1);
+            p1 = stl::min<size_type>(p1, m_size - 1);
+
+            //rfind
+            for (size_type i = p1; i != npos; --i)
+            {
+                if (m_data[i] == ch)
+                    return i;
+            }
+
+            return npos;
         }
 
 
         /* $21.3.6 string operations (find_first_of) */
         size_type find_first_of(const container& str, size_type pos = 0) const
         {
-            return base::find_first_of(str, pos);
+            return find_first_of(str.m_data, pos, str.length());
         }
 
         size_type find_first_of(const value_type* ptr, size_type p1, size_type n2) const
         {
-            return base::find_first_of(ptr, p1, n2);
+            if (p1 > m_size) throw stl::exception("out of valid range");
+            size_type ptrsz = length<value_type>(ptr);
+            if (n2 > ptrsz)
+                n2 = ptrsz;
+
+            if (n2)
+            {
+                //find
+                for (size_type i = p1; i < m_size; ++i)
+                {
+                    for (size_type j = 0; j < n2; ++j)
+                    {
+                        if (m_data[i] == ptr[j])
+                            return i;
+                    }
+                }
+            }
+
+            return npos;
         }
 
         size_type find_first_of(const value_type* ptr, size_type p1 = 0) const
         {
-            return base::find_first_of(ptr, p1);
+            return find_first_of(ptr, p1, length<value_type>(ptr));
         }
 
         size_type find_first_of(value_type c, size_type p1 = 0) const
         {
-            return base::find_first_of(c, p1);
+            //find
+            for (size_type i = p1; i < m_size; ++i)
+            {
+                if (m_data[i] == c)
+                    return i;
+            }
+
+            return npos;
         }
 
         /* $21.3.6 string operations (find_last_of) */
         size_type find_last_of(const container& str, size_type p1 = npos) const
         {
-            return base::find_last_of(str, p1);
+            return find_last_of(str.c_str(), p1, str.length());
         }
 
         size_type find_last_of(const value_type* ptr, size_type p1, size_type n2) const
         {
-            return base::find_last_of(ptr, p1, n2);
+            if (p1 >= m_size) p1 = m_size - 1;
+            size_type ptrsz = length<value_type>(ptr);
+            if (n2 > ptrsz)
+                n2 = ptrsz;
+
+            if (n2)
+            {
+                //find
+                for (size_type i = p1; i != npos; --i)
+                {
+                    for (size_type j = 0; j < n2; ++j)
+                    {
+                        if (m_data[i] == ptr[j])
+                            return i;
+                    }
+                }
+            }
+
+            return npos;
         }
 
         size_type find_last_of(const value_type* ptr, size_type p1 = npos) const
         {
-            return base::find_last_of(ptr, p1);
+            return find_last_of(ptr, p1, length<value_type>(ptr));
         }
 
         size_type find_last_of(value_type ch, size_type p1 = npos) const
         {
-            return base::find_last_of(ch, p1);
+            if (p1 >= m_size) p1 = m_size - 1;
+
+            //find
+            for (size_type i = p1; i != npos; --i)
+            {
+                if (m_data[i] == ch)
+                    return i;
+            }
+
+            return npos;
         }
 
        /* $21.3.6 string operations (find_first_not_of) */
         size_type find_first_not_of(const container& str, size_type p1 = 0) const
         {
-            return base::find_first_not_of(str, p1);
+            return find_first_not_of(str.m_data, p1, str.length());
         }
 
         size_type find_first_not_of(const value_type* ptr, size_type p1, size_type n2) const
         {
-            return base::find_first_not_of(ptr, p1, n2);
+            if (p1 > m_size) throw stl::exception("out of valid range");
+            size_type ptrLen = length<value_type>(ptr);
+            if (n2 > ptrLen)
+                n2 = ptrLen;
+
+            if (n2)
+            {
+                //find
+                for (size_type i = p1; i < m_size; ++i)
+                {
+                    bool found = false;
+                    for (size_type j = 0; j < n2; ++j)
+                    {
+                        if (m_data[i] == ptr[j])
+                        {
+                            found = true;
+                            break;
+                        }
+                    }
+
+                    if (!found)
+                        return i; //m_data[i] is not in ptr
+                }
+            }
+
+            return npos;
         }
 
         size_type find_first_not_of(const value_type* ptr, size_type n1 = 0) const
         {
-            return base::find_first_not_of(ptr, n1);
+            return find_first_not_of(ptr, n1, length<value_type>(ptr));
         }
 
         size_type find_first_not_of(value_type ch, size_type p1 = 0) const
         {
-            return base::find_first_not_of(ch, p1);
+            if (p1 > m_size) throw stl::exception("out of valid range");
+
+            //find
+            for (size_type i = p1; i < m_size; ++i)
+            {
+                if (m_data[i] != ch)
+                    return i;
+            }
+
+            return npos;
         }
 
 
         /* $21.3.6 string operations (find_last_not_of) */
         size_type find_last_not_of(const container& str, size_type p1 = npos) const
         {
-            return base::find_last_not_of(str, p1);
+            return find_last_not_of(str.m_data, p1, str.length());
         }
 
         size_type find_last_not_of(const value_type* ptr, size_type p1, size_type n2) const
         {
-            return base::find_last_not_of(ptr, p1, n2);
+            if (p1 >= m_size)
+                p1 = m_size - 1;
+
+            size_type ptrLen = length<value_type>(ptr);
+            if (n2 > ptrLen)
+                n2 = ptrLen;
+
+            if (n2)
+            {
+                //find
+                for (size_type i = p1; i != npos; --i)
+                {
+                    bool found = false;
+                    for (size_type j = 0; j < n2; ++j)
+                    {
+                        if (m_data[i] == ptr[j])
+                        {
+                            found = true;
+                            break;
+                        }
+                    }
+
+                    if (!found)
+                        return i; // m_data[i] is not in ptr
+                }
+            }
+
+            return npos;
         }
 
         size_type find_last_not_of(const value_type* ptr, size_type p1 = npos) const
         {
-            return base::find_last_not_of(ptr, p1);
+            return find_last_not_of(ptr, p1, length<value_type>(ptr));
         }
 
         size_type find_last_not_of(value_type ch, size_type p1 = npos) const
         {
-            return base::find_last_not_of(ch, p1);
+            if (p1 >= m_size) p1 = m_size - 1;
+            //find
+            for (size_type i = p1; i != npos; --i)
+            {
+                if (m_data[i] != ch)
+                    return i;
+            }
+
+            return npos;
         }
 
 
         /* $21.3.6 string operations (substr) */
         container substr(size_type p1 = 0, size_type n1 = npos) const
         {
-            base b = base::substr(p1, n1);
-            return container(b.begin(), b.end());
+            if (p1 > m_size) throw stl::exception("ouf of valid range");
+            if (n1 > m_size - p1)
+                n1 = m_size - p1;
+
+            return container(&m_data[p1], n1);
         }
 
 
         /* $21.3.6 string operations (compare) */
         int compare(const container& str) const
         {
-            return base::compare(str);
+            size_type rsz = str.size();
+            size_type minsz = stl::min<size_type>(m_size, rsz);
+            size_type i = 0;
+            while (i < minsz && m_data[i] == str.m_data[i])
+            {
+                ++i;
+            }
+
+            if (i < minsz)
+            {
+                value_type c1 = m_data[i];
+                value_type c2 = str.m_data[i];
+                return ((c1 < c2) ? -1 : (c1 > c2));
+            }
+            else
+            {
+                return ((m_size < rsz) ? -1 : (m_size > rsz));
+            }
         }
 
         int compare(size_type p1, size_type n1, const container& str) const
         {
-            return base::compare(p1, n1, str);
+            if (p1 > m_size) throw stl::exception("out of valid range");
+            size_type lsz = m_size - p1;
+            size_type rsz = str.size();
+            size_type minsz = stl::min<size_type>(lsz, rsz, n1);
+
+            size_type i = 0;
+            while (i < minsz && m_data[p1] == str.m_data[i])
+            {
+                ++p1;
+                ++i;
+            }
+
+            if (i == n1)
+                return 0;
+
+            if (i == minsz)
+            {
+                return ((lsz < rsz) ? -1 : lsz > rsz);
+            }
+
+            value_type c1 = m_data[p1];
+            value_type c2 = str.m_data[i];
+            return ((c1 < c2) ? -1 : (c1 > c2));
         }
 
         int compare(size_type p1, size_type n1, const container& str, size_type p2, size_type n2) const
         {
-            return base::compare(p1, n1, str, p2, n2);
+            if (p1 > m_size || p2 > str.m_size) throw stl::exception("out of valid range");
+            size_type lsz = m_size - p1;
+            size_type rsz = str.m_size - p2;
+            size_type minsz = stl::min<size_type>(lsz, rsz, n1, n2);
+
+            size_type i = 0;
+            while (i < minsz && m_data[p1] == str.m_data[p2])
+            {
+                ++p1;
+                ++p2;
+                ++i;
+            }
+
+            if (i < minsz)
+            {
+                value_type c1 = m_data[p1];
+                value_type c2 = str.m_data[p2];
+                return ((c1 < c2) ? -1 : (c1 > c2));
+            }
+
+            if (n1 == n2 && n1 <= lsz && n1 <= rsz && i == n1)
+                return 0;
+
+            return ((lsz < rsz) ? -1 : lsz > rsz);
         }
 
         int compare(const value_type* ptr) const
         {
-            return base::compare(ptr);
+            size_type size = length<value_type>(ptr);
+            size_type minsz = stl::min<size_type>(m_size, size);
+            size_type i = 0;
+            while (i < minsz && m_data[i] == ptr[i])
+            {
+                ++i;
+            }
+
+            if (i < minsz)
+            {
+                value_type c1 = m_data[i];
+                value_type c2 = ptr[i];
+                return ((c1 < c2) ? -1 : (c1 > c2));
+            }
+            else
+            {
+                return ((m_size < size) ? -1 : m_size > size);
+            }
         }
 
         int compare(size_type p1, size_type n1, const value_type* ptr) const
         {
-            return base::compare(p1, n1, ptr);
+            if (p1 > m_size) throw stl::exception("out of valid range");
+
+            size_type lsz = m_size - p1;
+            size_type rsz = length<value_type>(ptr);
+            size_type minsz = stl::min<size_type>(lsz, rsz, n1);
+
+            size_type i = 0;
+            while (i < minsz && m_data[p1] == ptr[i])
+            {
+                ++p1;
+                ++i;
+            }
+
+            if (i == n1)
+                return 0;
+
+            if (i == minsz)
+            {
+                return ((lsz < rsz) ? -1 : lsz > rsz);
+            }
+
+            value_type c1 = m_data[p1];
+            value_type c2 = ptr[i];
+            return ((c1 < c2) ? -1 : (c1 > c2));
         }
 
         int compare(size_type p1, size_type n1, const value_type* ptr, size_type n2) const
         {
-            return base::compare(p1, n1, ptr, n2);
+            if (p1 > m_size) throw stl::exception("out of valid range");
+            size_type lsz = m_size - p1;
+            size_type rsz = length<value_type>(ptr);
+            size_type minsz = stl::min<size_type>(lsz, rsz, n1, n2);
+
+            size_type i = 0;
+            while (i < minsz && m_data[p1] == ptr[i])
+            {
+                ++p1;
+                ++i;
+            }
+
+            if (i < minsz)
+            {
+                value_type c1 = m_data[p1];
+                value_type c2 = ptr[i];
+                return ((c1 < c2) ? -1 : (c1 > c2));
+            }
+
+            if (n1 == n2 && n1 <= lsz && n1 <= rsz && i == n1)
+                return 0;
+
+            return ((lsz < rsz) ? -1 : lsz > rsz);
         }
 
         /*
@@ -1956,90 +2899,90 @@ namespace stl
          *    bool res = comp(s1, s2); <--- error
          *    
          *    Moving all global operators with left operand as stl::string, inside
-         *    generic_string class.
+         *    basic_string class.
          */
 
-        //Concatenates two string objects.
-        container operator+(const container& Right) const
-        {
-            stl::generic_string<T> res(*this);
-            res += Right;
-            return res;
-        }
-        
-        container operator+(const T* Right) const
-        {
-            container res(*this);
-            res += Right;
-            return res;
-        }
-        
-        container operator+(const T Right) const
-        {
-            container res(*this);
-            res += Right;
-            return res;
-        }
+        ////Concatenates two string objects.
+        //container operator+(const container& Right) const
+        //{
+        //    stl::basic_string<T> res(*this);
+        //    res += Right;
+        //    return res;
+        //}
+        //
+        //container operator+(const T* Right) const
+        //{
+        //    container res(*this);
+        //    res += Right;
+        //    return res;
+        //}
+        //
+        //container operator+(const T Right) const
+        //{
+        //    container res(*this);
+        //    res += Right;
+        //    return res;
+        //}
 
-        bool operator!=(const container& Right) const
-        {
-            return compare(Right) != 0;
-        }
-        
-        bool operator!=(const T* Right) const
-        {
-            return compare(Right) != 0;
-        }
+        //bool operator!=(const container& Right) const
+        //{
+        //    return compare(Right) != 0;
+        //}
+        //
+        //bool operator!=(const T* Right) const
+        //{
+        //    return compare(Right) != 0;
+        //}
 
-        bool operator==(const container& Right) const
-        {
-            return compare(Right) == 0;
-        }
+        //bool operator==(const container& Right) const
+        //{
+        //    return compare(Right) == 0;
+        //}
 
-        bool operator==(const T* Right) const
-        {
-            return compare(Right) == 0;
-        }
-        
-        bool operator<(const container& Right) const
-        {
-            return compare(Right) < 0;
-        }
+        //bool operator==(const T* Right) const
+        //{
+        //    return compare(Right) == 0;
+        //}
+        //
+        //bool operator<(const container& Right) const
+        //{
+        //    return compare(Right) < 0;
+        //}
 
-        bool operator<(const T* Right) const
-        {
-            return compare(Right) < 0;
-        }
+        //bool operator<(const T* Right) const
+        //{
+        //    return compare(Right) < 0;
+        //}
 
-        bool operator<=(const container& Right) const
-        {
-            return compare(Right) <= 0;
-        }
+        //bool operator<=(const container& Right) const
+        //{
+        //    return compare(Right) <= 0;
+        //}
 
-        bool operator<=(const T* Right) const
-        {
-            return compare(Right) <= 0;
-        }
+        //bool operator<=(const T* Right) const
+        //{
+        //    return compare(Right) <= 0;
+        //}
 
-        bool operator>(const container& Right) const
-        {
-            return compare(Right) > 0;
-        }
+        //bool operator>(const container& Right) const
+        //{
+        //    return compare(Right) > 0;
+        //}
 
-        bool operator>(const T* Right) const
-        {
-            return compare(Right) > 0;
-        }
+        //bool operator>(const T* Right) const
+        //{
+        //    return compare(Right) > 0;
+        //}
 
-        bool operator>=(const container& Right) const
-        {
-            return compare(Right) >= 0;
-        }
+        //bool operator>=(const container& Right) const
+        //{
+        //    return compare(Right) >= 0;
+        //}
 
-        bool operator>=(const T* Right) const
-        {
-            return compare(Right) >= 0;
-        }
+        //bool operator>=(const T* Right) const
+        //{
+        //    return compare(Right) >= 0;
+        //}
     };  // class
 }  // namespace
 
@@ -2047,10 +2990,10 @@ namespace stl
 //########################################################################
 // Operators
 // 
-// Commented operators are moved inside generic_string to avoid compiler errors
+// Commented operators are moved inside basic_string to avoid compiler errors
 // about unknown template arguments during matching of operands.
 
-#if 0
+
 
 /*
  *    MS Compiler issue error while trying to deduce template argument for stl::string
@@ -2059,237 +3002,211 @@ namespace stl
  *    bool res = comp(s1, s2); <--- error using global operators
  *    
  *    Moving all global operators with left operand as stl::string, inside
- *    generic_string class.
+ *    basic_string class.
  */
 
 //Concatenates two string objects.
-template<typename T, typename Allocator, int attributes>
-stl::generic_string<T, Allocator, attributes> operator+(
-    const stl::generic_string<T, Allocator, attributes>& Left,
-    const stl::generic_string<T, Allocator, attributes>& Right)
+template<typename T, typename Allocator>
+stl::basic_string<T, Allocator> operator+(
+    const stl::basic_string<T, Allocator>& Left,
+    const stl::basic_string<T, Allocator>& Right)
 {
-    stl::generic_string<T> res(Left);
+    stl::basic_string<T> res(Left);
     res += Right;
     return res;
 }
 
 
-template<typename T, typename Allocator, int attributes>
-stl::generic_string<T, Allocator, attributes> operator+(
-    const stl::generic_string<T, Allocator, attributes>& Left, const T* Right)
+template<typename T, typename Allocator>
+stl::basic_string<T, Allocator> operator+(
+    const stl::basic_string<T, Allocator>& Left, const T* Right)
 {
-    stl::generic_string<T> res(Left);
+    stl::basic_string<T> res(Left);
     res += Right;
     return res;
 }
 
-template<typename T, typename Allocator, int attributes>
-stl::generic_string<T, Allocator, attributes> operator+(
-    const stl::generic_string<T, Allocator, attributes>& Left, const T Right)
+template<typename T, typename Allocator>
+stl::basic_string<T, Allocator> operator+(
+    const stl::basic_string<T, Allocator>& Left, const T Right)
 {
-    stl::generic_string<T> res(Left);
-    res += Right;
-    return res;
-}
-#endif
-
-
-
-template<typename T, typename Allocator, int attributes>
-stl::generic_string<T, Allocator, attributes> operator+(
-    const T* Left, const stl::generic_string<T, Allocator, attributes>& Right)
-{
-    stl::generic_string<T> res(Left);
+    stl::basic_string<T> res(Left);
     res += Right;
     return res;
 }
 
-template<typename T, typename Allocator, int attributes>
-stl::generic_string<T, Allocator, attributes> operator+(
-    const T Left, const stl::generic_string<T, Allocator, attributes>& Right)
+template<typename T, typename Allocator>
+stl::basic_string<T, Allocator> operator+(
+    const T* Left, const stl::basic_string<T, Allocator>& Right)
 {
-    stl::generic_string<T> res(1, Left);
+    stl::basic_string<T> res(Left);
     res += Right;
     return res;
 }
 
+template<typename T, typename Allocator>
+stl::basic_string<T, Allocator> operator+(
+    const T Left, const stl::basic_string<T, Allocator>& Right)
+{
+    stl::basic_string<T> res(1, Left);
+    res += Right;
+    return res;
+}
 
-
-#if 0
 
 //Tests if the string object on the left side of the operator is not equal
 //to the string object on the right side.
-template<typename T, typename Allocator, int attributes>
+template<typename T, typename Allocator>
 bool operator!=(
-                const stl::generic_string<T, Allocator, attributes>& Left, 
-                const stl::generic_string<T, Allocator, attributes>& Right)
+                const stl::basic_string<T, Allocator>& Left, 
+                const stl::basic_string<T, Allocator>& Right)
 {
     return Left.compare(Right) != 0;
 }
 
-template<typename T, typename Allocator, int attributes>
-bool operator!=(const stl::generic_string<T, Allocator, attributes>& Left, const T* Right)
+template<typename T, typename Allocator>
+bool operator!=(const stl::basic_string<T, Allocator>& Left, const T* Right)
 {
     return Left.compare(Right) != 0;
 }
 
-#endif
 
-
-template<typename T, typename Allocator, int attributes>
-bool operator!=(const T* Left, const stl::generic_string<T, Allocator, attributes>& Right)
+template<typename T, typename Allocator>
+bool operator!=(const T* Left, const stl::basic_string<T, Allocator>& Right)
 {
     return Right.compare(Left) != 0;
 }
 
-
-
-#if 0
 //Tests if the string object on the left side of the operator is equal to the string object on the right side.
-template<typename T, typename Allocator, int attributes>
+template<typename T, typename Allocator>
 bool operator==(
-                const stl::generic_string<T, Allocator, attributes>& Left, 
-                const stl::generic_string<T, Allocator, attributes>& Right)
+                const stl::basic_string<T, Allocator>& Left, 
+                const stl::basic_string<T, Allocator>& Right)
 {
     return Left.compare(Right) == 0;
 }
 
-template<typename T, typename Allocator, int attributes>
-bool operator==(const stl::generic_string<T, Allocator, attributes>& Left, const T* Right)
+template<typename T, typename Allocator>
+bool operator==(const stl::basic_string<T, Allocator>& Left, const T* Right)
 {
     return Left.compare(Right) == 0;
 }
 
-#endif 
-
-
-
-template<typename T, typename Allocator, int attributes>
-bool operator==(const T* Left, const stl::generic_string<T, Allocator, attributes>& Right)
+template<typename T, typename Allocator>
+bool operator==(const T* Left, const stl::basic_string<T, Allocator>& Right)
 {
     return Right.compare(Left) == 0;
 }
 
-
-#if 0
 //Tests if the string object on the left side of the operator is less than to the string object on the right side.
-template<typename T, typename Allocator, int attributes>
+template<typename T, typename Allocator>
 bool operator<(
-                const stl::generic_string<T, Allocator, attributes>& Left, 
-                const stl::generic_string<T, Allocator, attributes>& Right)
+                const stl::basic_string<T, Allocator>& Left, 
+                const stl::basic_string<T, Allocator>& Right)
 {
     return Left.compare(Right) < 0;
 }
 
-template<typename T, typename Allocator, int attributes>
-bool operator<(const stl::generic_string<T, Allocator, attributes>& Left, const T* Right)
+template<typename T, typename Allocator>
+bool operator<(const stl::basic_string<T, Allocator>& Left, const T* Right)
 {
     return Left.compare(Right) < 0;
 }
 
-#endif
 
-
-
-template<typename T, typename Allocator, int attributes>
-bool operator<(const T* Left, const stl::generic_string<T, Allocator, attributes>& Right)
+template<typename T, typename Allocator>
+bool operator<(const T* Left, const stl::basic_string<T, Allocator>& Right)
 {
     return Right.compare(Left) > 0;
 }
 
 
-#if 0
+
 //Tests if the string object on the left side of the operator is less than or equal to the string object on the right side.
-template<typename T, typename Allocator, int attributes>
+template<typename T, typename Allocator>
 bool operator<=(
-                const stl::generic_string<T, Allocator, attributes>& Left, 
-                const stl::generic_string<T, Allocator, attributes>& Right)
+                const stl::basic_string<T, Allocator>& Left, 
+                const stl::basic_string<T, Allocator>& Right)
 {
     return Left.compare(Right) <= 0;
 }
 
-template<typename T, typename Allocator, int attributes>
-bool operator<=(const stl::generic_string<T, Allocator, attributes>& Left, const T* Right)
+template<typename T, typename Allocator>
+bool operator<=(const stl::basic_string<T, Allocator>& Left, const T* Right)
 {
     return Left.compare(Right) <= 0;
 }
 
-#endif
 
 
-template<typename T, typename Allocator, int attributes>
-bool operator<=(const T* Left, const stl::generic_string<T, Allocator, attributes>& Right)
+
+template<typename T, typename Allocator>
+bool operator<=(const T* Left, const stl::basic_string<T, Allocator>& Right)
 {
     return Right.compare(Left) >= 0;
 }
 
 //A template function that writes a string into the output stream.
-template<typename T, typename Allocator, int attributes>
+template<typename T, typename Allocator>
 std::basic_ostream<T>& operator<<(
-    std::basic_ostream<T>& Ostr, const stl::generic_string<T, Allocator, attributes>& str)
+    std::basic_ostream<T>& Ostr, const stl::basic_string<T, Allocator>& str)
 {
     Ostr << str.c_str();
     return Ostr;
 }
 
 
-#if 0
 //Tests if the string object on the left side of the operator is greater
 //than to the string object on the right side.
-template<typename T, typename Allocator, int attributes>
+template<typename T, typename Allocator>
 bool operator>(
-               const stl::generic_string<T, Allocator, attributes>& Left, 
-               const stl::generic_string<T, Allocator, attributes>& Right)
+               const stl::basic_string<T, Allocator>& Left, 
+               const stl::basic_string<T, Allocator>& Right)
 {
     return Left.compare(Right) > 0;
 }
 
-template<typename T, typename Allocator, int attributes>
-bool operator>(const stl::generic_string<T, Allocator, attributes>& Left, const T* Right)
+template<typename T, typename Allocator>
+bool operator>(const stl::basic_string<T, Allocator>& Left, const T* Right)
 {
     return Left.compare(Right) > 0;
 }
 
-#endif
 
-
-template<typename T, typename Allocator, int attributes>
-bool operator>(const T* Left, const stl::generic_string<T, Allocator, attributes>& Right)
+template<typename T, typename Allocator>
+bool operator>(const T* Left, const stl::basic_string<T, Allocator>& Right)
 {
     return Right.compare(Left) < 0;
 }
 
 
-#if 0
 //Tests if the string object on the left side of the operator is greater
 //than or equal to the string object on the right side.
-template<typename T, typename Allocator, int attributes>
+template<typename T, typename Allocator>
 bool operator>=(
-                const stl::generic_string<T, Allocator, attributes>& Left, 
-                const stl::generic_string<T, Allocator, attributes>& Right)
+                const stl::basic_string<T, Allocator>& Left, 
+                const stl::basic_string<T, Allocator>& Right)
 {
     return Left.compare(Right) >= 0;
 }
 
-template<typename T, typename Allocator, int attributes>
-bool operator>=(const stl::generic_string<T, Allocator, attributes>& Left, const T* Right)
+template<typename T, typename Allocator>
+bool operator>=(const stl::basic_string<T, Allocator>& Left, const T* Right)
 {
     return Left.compare(Right) >= 0;
 }
-#endif
 
 
-
-template<typename T, typename Allocator, int attributes>
-bool operator>=(const T* Left, const stl::generic_string<T, Allocator, attributes>& Right)
+template<typename T, typename Allocator>
+bool operator>=(const T* Left, const stl::basic_string<T, Allocator>& Right)
 {
     return Right.compare(Left) <= 0;
 }
 
 //A template function that reads a string from an input stream.
-template<typename T, typename Allocator, int attributes>
+template<typename T, typename Allocator>
 std::basic_istream<T>& operator>>(
-    std::basic_istream<T>& Istr, stl::generic_string<T, Allocator, attributes>& Right)
+    std::basic_istream<T>& Istr, stl::basic_string<T, Allocator>& Right)
 {
     std::basic_string<T> chunk;
     Istr >> chunk;
@@ -2299,12 +3216,12 @@ std::basic_istream<T>& operator>>(
 
 //Specialized template function
 //Exchanges the arrays of characters of two strings.
-template<typename T, typename Allocator, int attributes>
+template<typename T, typename Allocator>
 void swap(
-          stl::generic_string<T, Allocator, attributes>& Left, 
-          stl::generic_string<T, Allocator, attributes>& Right)
+          stl::basic_string<T, Allocator>& Left, 
+          stl::basic_string<T, Allocator>& Right)
 {
     Left.swap(Right);
 }
 
-#endif//__basic_string_hpp__
+#endif // __basic_string_hpp__

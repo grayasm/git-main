@@ -431,21 +431,21 @@ namespace stl
             base2::m_pos = 0;
         }
 
-        vector_reverse_iterator(const vector_reverse_iterator& it)
+        vector_reverse_iterator(const vector_reverse_iterator& tc)
         {
-            *this = it;
+            *this = tc;
         }
 
         ~vector_reverse_iterator()
         {
         }
 
-        vector_reverse_iterator& operator=(const vector_reverse_iterator& it)
+        vector_reverse_iterator& operator=(const vector_reverse_iterator& tc)
         {
-            if (this != &it)
+            if (this != &tc)
             {
-                base2::m_cont = it.m_cont;
-                base2::m_pos = it.m_pos;
+                base2::m_cont = tc.m_cont;
+                base2::m_pos = tc.m_pos;
             }
             return *this;
         }
@@ -602,36 +602,36 @@ namespace stl
             base2::m_pos = 0;
         }
 
-        vector_const_reverse_iterator(const vector_const_reverse_iterator& it)
+        vector_const_reverse_iterator(const vector_const_reverse_iterator& tc)
         {
-            *this = it;
+            *this = tc;
         }
 
         ~vector_const_reverse_iterator()
         {
         }
 
-        vector_const_reverse_iterator& operator=(const vector_const_reverse_iterator& it)
+        vector_const_reverse_iterator& operator=(const vector_const_reverse_iterator& tc)
         {
-            if (this != &it)
+            if (this != &tc)
             {
-                base2::m_cont = it.m_cont;
-                base2::m_pos = it.m_pos;
+                base2::m_cont = tc.m_cont;
+                base2::m_pos = tc.m_pos;
             }
             return *this;
         }
 
-        vector_const_reverse_iterator& operator=(const vector_reverse_iterator<container>& it)
+        vector_const_reverse_iterator& operator=(const vector_reverse_iterator<container>& tc)
         {
-            base2::m_cont = it.m_cont;
-            base2::m_pos = it.m_pos;
+            base2::m_cont = tc.m_cont;
+            base2::m_pos = tc.m_pos;
 
             return *this;
         }
 
-        vector_const_reverse_iterator(const vector_reverse_iterator<container>& it)
+        vector_const_reverse_iterator(const vector_reverse_iterator<container>& tc)
         {
-            *this = it;
+            *this = tc;
         }
 
         reference operator*() const
@@ -841,10 +841,10 @@ namespace stl
             assign(first, last);
         }
 
-        vector(const container& x)
+        vector(const container& tc)
         {
             init();
-            assign(x);
+            assign(tc);
         }
 
         ~vector()

@@ -50,6 +50,7 @@
 #include "test_tree.hpp"
 #include "test_utility.hpp"
 */
+#include "test_basic_string.hpp"
 #include "test_vector.hpp"
 /*
 #include "test_time.hpp"
@@ -100,7 +101,8 @@ int main(int argc, char** argv)
       tree
     */	
 
-    CPPUNIT_TEST_SUITE_REGISTRATION(test_vector);
+    // CPPUNIT_TEST_SUITE_REGISTRATION(test_vector);
+    CPPUNIT_TEST_SUITE_REGISTRATION(test_basic_string);
 
 
     //////////////////////////////////////////////////////////////////////////
