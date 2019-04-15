@@ -59,5 +59,10 @@ void test_basic_string::ctor()
 
     CPPUNIT_ASSERT(::strcmp(s6.c_str(), "Mike is a great guy!") == 0);
     CPPUNIT_ASSERT(::strcmp(s7.c_str(), "a great guy!") == 0);
-        
+
+    stl::basic_string<char> s8(0, 'c');
+    stl::basic_string<char> s9(5, '5');
+
+    CPPUNIT_ASSERT(::strcmp(s8.c_str(), "") == 0);
+    CPPUNIT_ASSERT(::strcmp(s9.c_str(), "55555") == 0);
 }

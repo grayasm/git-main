@@ -885,26 +885,19 @@ namespace stl
 
 
         basic_string(size_type n, value_type c)
-            //: base(n, c)
         {
-            const Allocator& alloc = Allocator();
-            init(alloc);
-            mem_alloc(1);       // avoid 0 capacity with n=0
-            eos<T>(0);          // safety
+            init();
+            grow(1);    // .c_str() is '\0' terminated
             assign(n, c);
         }
 
 
         template<class InputIterator>
         basic_string(InputIterator begin, InputIterator end)
-            //: base(begin, end)
         {
-            const Allocator& alloc = Allocator();
-            init(alloc);
-            mem_alloc(1);       // avoid 0 capacity
-            eos<T>(0);          // safety
+            init();
+            grow(1);    // .c_str() is '\0' terminated
             assign(begin, end);
-
         }
 
         ~basic_string()
@@ -1417,30 +1410,29 @@ namespace stl
             return *this;
         }
 
-        container& assign(size_type count, const value_type& val)
+        container& assign(size_type n, const value_type& c)
         {
-            invalidate_iterators();
-
-            if (count > 0)
+            if (n > 0)
             {
-                grow(count);
+                grow(n + 1);    // extra '\0'
 
-                stl::mem_set(m_data, val, count * numbytes);
+                stl::mem_set(m_data, c, n * sizeof(value_type), m_allocator);
             }
 
-            eos<T>(count);
+            endof(n);
 
             return *this;
         }
 
+        template <typename InputIterator>
+        container& assign(InputIterator first, InputIterator last)
+        {
+            //return append_(first, last, typename stl::iterator_traits<InputIterator>::iterator_category());
+            return assign_(first, last);
+        }
 
     private:
-        /*
-        implementation of:
-        template <class InputIterator>
-        string& assign ( InputIterator first, InputIterator last );
-        */
-        inline container& assign_impl(const iterator& first, const iterator& last)
+        inline container& assign_(iterator& first, iterator& last)
         {
             if (first.m_cont != last.m_cont || first.m_cont == 0)
                 throw stl::exception("invalid iterator");
@@ -1472,7 +1464,7 @@ namespace stl
             return *this;
         }
 
-        inline container& assign_impl(const const_iterator& first, const const_iterator& last)
+        inline container& assign_(const_iterator& first, const_iterator& last)
         {
             if (first.m_cont != last.m_cont || first.m_cont == 0)
                 throw stl::exception("invalid iterator");
@@ -1504,110 +1496,21 @@ namespace stl
             return *this;
         }
 
-        inline container& assign_impl(const reverse_iterator& first, const reverse_iterator& last)
+        template <typename InputIterator>
+        void assign_(InputIterator& first, InputIterator& last)
         {
-            if (first.m_cont != last.m_cont || first.m_cont == 0)
-                throw stl::exception("invalid iterator");
-
-            invalidate_iterators();
-
-            difference_type dist = last - first;
-
-            if (dist < 0)
-                dist = 0; // erase this array
-
-            if (dist > 0)
-            {
-                grow(dist);
-
-                //self assignment
-                if (this == first.m_cont)
-                {
-                    erase(0, last.m_pos + 1);
-                }
-                else
-                {
-                    memcpy_impl(m_data, &((*last.m_cont)[last.m_pos + 1]), dist * numbytes);
-                }
-
-                swap_range(0, dist);
-            }
-
-            eos<T>(dist);
-
-            return *this;
+            assign_(first, last, typename stl::iterator_traits<InputIterator>::iterator_category());
         }
-
-        inline container& assign_impl(const const_reverse_iterator& first, const const_reverse_iterator& last)
-        {
-            //validate containers
-            if (first.m_cont != last.m_cont || first.m_cont == 0)
-                throw stl::exception("invalid iterator");
-
-            invalidate_iterators();
-
-            size_type dist = last - first;
-
-            if (dist < 0)
-                dist = 0; // erase this array
-
-            if (dist > 0)
-            {
-                grow(dist);
-
-                //self assignment
-                if (this == first.m_cont)
-                {
-                    erase(0, last.m_pos + 1);
-                }
-                else
-                {
-                    memcpy_impl(m_data, &((*last.m_cont)[last.m_pos + 1]), dist * numbytes);
-                }
-
-                swap_range(0, dist);
-            }
-
-            eos<T>(dist);
-
-            return *this;
-        }
-
-        /*
-        -due to specialization for assign_impl(const iterator& ...) and friends,
-        compiler cannot find any suitable assign_impl for next code:
-
-        float fptr[]={0,...};
-        stl::generic_array<float> fcont(fptr, fptr+10);
-        */
-
-        inline container& assign_impl(const value_type* first, const value_type* last)
-        {
-            invalidate_iterators();
-
-            difference_type dist = last - first;
-
-            if (dist < 0)
-                dist = 0; // erase this array
-
-            if (dist > 0)
-            {
-                grow(dist);
-
-                memcpy_impl(m_data, first, dist * numbytes);
-            }
-
-            eos<T>(dist);
-
-            return *this;
-        }
-
 
         template<typename InputIterator>
-        inline container& assign_impl(InputIterator first, InputIterator last, stl::random_access_iterator_tag)
+        inline void assign_(InputIterator& first, InputIterator& last, stl::forward_iterator_tag)
         {
-            return assign_impl(first, last);
+            /*  Test with a.assign(b.rbegin(), b.rend());
+                if last < first then let it blow up.
+            */
+
         }
+
 
         template<typename InputIterator>
         inline container& assign_impl(InputIterator n, InputIterator value, stl::input_iterator_tag)
@@ -1629,14 +1532,117 @@ namespace stl
             return *this;
         }
 
-    public:
-        template <typename InputIterator>
-        container& assign(InputIterator first, InputIterator last)
+        //inline container& assign_impl(const reverse_iterator& first, const reverse_iterator& last)
+        //{
+        //    if (first.m_cont != last.m_cont || first.m_cont == 0)
+        //        throw stl::exception("invalid iterator");
+
+        //    invalidate_iterators();
+
+        //    difference_type dist = last - first;
+
+        //    if (dist < 0)
+        //        dist = 0; // erase this array
+
+        //    if (dist > 0)
+        //    {
+        //        grow(dist);
+
+        //        //self assignment
+        //        if (this == first.m_cont)
+        //        {
+        //            erase(0, last.m_pos + 1);
+        //        }
+        //        else
+        //        {
+        //            memcpy_impl(m_data, &((*last.m_cont)[last.m_pos + 1]), dist * numbytes);
+        //        }
+
+        //        swap_range(0, dist);
+        //    }
+
+        //    eos<T>(dist);
+
+        //    return *this;
+        //}
+
+        //inline container& assign_impl(const const_reverse_iterator& first, const const_reverse_iterator& last)
+        //{
+        //    //validate containers
+        //    if (first.m_cont != last.m_cont || first.m_cont == 0)
+        //        throw stl::exception("invalid iterator");
+
+        //    invalidate_iterators();
+
+        //    size_type dist = last - first;
+
+        //    if (dist < 0)
+        //        dist = 0; // erase this array
+
+        //    if (dist > 0)
+        //    {
+        //        grow(dist);
+
+        //        //self assignment
+        //        if (this == first.m_cont)
+        //        {
+        //            erase(0, last.m_pos + 1);
+        //        }
+        //        else
+        //        {
+        //            memcpy_impl(m_data, &((*last.m_cont)[last.m_pos + 1]), dist * numbytes);
+        //        }
+
+        //        swap_range(0, dist);
+        //    }
+
+        //    eos<T>(dist);
+
+        //    return *this;
+        //}
+
+        /*
+        -due to specialization for assign_impl(const iterator& ...) and friends,
+        compiler cannot find any suitable assign_impl for next code:
+
+        float fptr[]={0,...};
+        stl::generic_array<float> fcont(fptr, fptr+10);
+        */
+
+        inline container& assign_(value_type* first, value_type* last)
         {
-            return append_impl<InputIterator>(first, last, typename stl::iterator_traits<InputIterator>::iterator_category());
+            invalidate_iterators();
+
+            difference_type dist = last - first;
+
+            if (dist < 0)
+                dist = 0; // erase this array
+
+            if (dist > 0)
+            {
+                grow(dist);
+
+                memcpy_impl(m_data, first, dist * numbytes);
+            }
+
+            eos<T>(dist);
+
+            return *this;
         }
 
+        inline void assign_(const value_type* first, const value_type* last)
+        {
+            assign_(const_cast<value_type*>(first), const_cast<value_type*>(last));
+        }
 
+        //template<typename InputIterator>
+        //inline container& assign_impl(InputIterator first, InputIterator last, stl::random_access_iterator_tag)
+        //{
+        //    return assign_impl(first, last);
+        //}
+
+
+    public:
         /* $21.3.5 modifiers ( insert ) */
         container& insert(size_type p1, const container& str)
         {
