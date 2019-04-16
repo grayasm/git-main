@@ -65,4 +65,12 @@ void test_basic_string::ctor()
 
     CPPUNIT_ASSERT(::strcmp(s8.c_str(), "") == 0);
     CPPUNIT_ASSERT(::strcmp(s9.c_str(), "55555") == 0);
+
+    stl::basic_string<char> s10;
+    for (char c = '0'; c <= '9'; c++)
+        s10.push_back(c);
+    stl::basic_string<char> s11(s10.rbegin(), s10.rend());
+
+    CPPUNIT_ASSERT(::strcmp(s10.c_str(), "0123456789") == 0);
+    CPPUNIT_ASSERT(::strcmp(s11.c_str(), "9876543210") == 0);
 }

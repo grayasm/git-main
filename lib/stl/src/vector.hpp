@@ -1207,7 +1207,7 @@ namespace stl
         }
 
         /* $21.3.5 modifiers ( push_back ) */
-        void push_back(const T& x)
+        void push_back(const value_type& x)
         {
             // Is x address inside this container ?
             if (m_data <= &x && (m_data + m_size) > &x)

@@ -893,11 +893,11 @@ namespace stl
 
 
         template<class InputIterator>
-        basic_string(InputIterator begin, InputIterator end)
+        basic_string(InputIterator first, InputIterator last)
         {
             init();
             grow(1);    // .c_str() is '\0' terminated
-            assign(begin, end);
+            assign(first, last);
         }
 
         ~basic_string()
@@ -1299,15 +1299,36 @@ namespace stl
         /* $21.3.5 modifiers ( push_back ) */
         void push_back(const value_type& x)
         {
-            if (m_size == m_capacity)
+            // Is x address inside this container ?
+            if (m_data <= &x && (m_data + m_size) > &x)
             {
-                grow(m_capacity * 2);
+                T temp(x);
+
+                if (m_size == m_capacity)
+                {
+                    // can relocate m_data and invalidate &x
+                    if (!m_capacity)
+                        grow(2);
+                    else
+                        grow(m_capacity * 2);
+                }
+
+                m_allocator.construct(&m_data[m_size], temp);
+            }
+            else// x address is outside this container.
+            {
+                if (m_size == m_capacity)
+                {
+                    if (!m_capacity)
+                        grow(2);
+                    else
+                        grow(m_capacity * 2);
+                }
+
+                m_allocator.construct(&m_data[m_size], x);
             }
 
-            // call copy constructor not copy operator
-            new(&m_data[m_size])value_type(x);
-
-            eos<T>(m_size + 1);
+            endof(m_size + 1);
         }
 
         /* $21.3.5 modifiers ( assign ) */
@@ -1497,23 +1518,62 @@ namespace stl
         }
 
         template <typename InputIterator>
-        void assign_(InputIterator& first, InputIterator& last)
+        inline container& assign_(InputIterator& first, InputIterator& last)
         {
-            assign_(first, last, typename stl::iterator_traits<InputIterator>::iterator_category());
+            return assign_(first, last, typename stl::iterator_traits<InputIterator>::iterator_category());
         }
 
         template<typename InputIterator>
-        inline void assign_(InputIterator& first, InputIterator& last, stl::forward_iterator_tag)
+        inline container& assign_(InputIterator& first, InputIterator& last, stl::forward_iterator_tag)
         {
             /*  Test with a.assign(b.rbegin(), b.rend());
                 if last < first then let it blow up.
             */
+            size_type dist = static_cast<size_type>(stl::distance(first, last));
 
+            if (dist > 0)
+            {
+                const T& check = *first;
+
+                // Is the range inside this container ?
+                if (m_data <= &check && (m_data + m_size) > &check)
+                {
+                    container temp;
+                    temp.assign(first, last);
+
+                    // for safety, although could not invalidate the input for this case
+                    grow(dist);
+
+                    stl::mem_move(m_data, m_size, &temp.front(), dist, m_allocator);
+                }
+                else// range is outside this container
+                {
+                    grow(dist);
+
+                    for (size_type i = 0; first != last; ++first, ++i)
+                    {
+                        T* d1 = m_data + i;
+                        const T& s1 = *first;
+                        if (d1 != &s1)
+                        {
+                            // cannot destroy invalid objects in the destination
+                            if (i < m_size)
+                            {
+                                m_allocator.destroy(d1);
+                            }
+
+                            m_allocator.construct(d1, s1);
+                        }
+                    }
+                }
+            }
+
+            endof(dist);
         }
 
 
         template<typename InputIterator>
-        inline container& assign_impl(InputIterator n, InputIterator value, stl::input_iterator_tag)
+        inline container& assign_(InputIterator n, InputIterator value, stl::input_iterator_tag)
         {
             invalidate_iterators();
 
