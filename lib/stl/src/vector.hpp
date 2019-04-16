@@ -898,6 +898,7 @@ namespace stl
                     // can relocate m_data and invalidate &val
                     grow(count);
 
+//TODO: test with char,char*,const char* see if it goes where it should!!!!
                     stl::mem_set<value_type>(m_data, temp, count * sizeof(value_type), m_allocator);
                 }
                 else// Address is outside this container.

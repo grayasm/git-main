@@ -818,6 +818,9 @@ namespace stl
 //      m_size = size;!! but requires also '\0' end termination
         inline void endof(size_type size)
         {
+            if (size >= m_capacity)
+                throw stl::exception("out of valid range");
+
             m_size = size;
             m_data[m_size] = 0;
         }
@@ -1304,26 +1307,15 @@ namespace stl
             {
                 T temp(x);
 
-                if (m_size == m_capacity)
-                {
-                    // can relocate m_data and invalidate &x
-                    if (!m_capacity)
-                        grow(2);
-                    else
-                        grow(m_capacity * 2);
-                }
+                if (m_size + 1 == m_capacity)
+                    grow(m_capacity * 2);
 
                 m_allocator.construct(&m_data[m_size], temp);
             }
             else// x address is outside this container.
             {
-                if (m_size == m_capacity)
-                {
-                    if (!m_capacity)
-                        grow(2);
-                    else
-                        grow(m_capacity * 2);
-                }
+                if (m_size + 1 == m_capacity)
+                    grow(m_capacity * 2);
 
                 m_allocator.construct(&m_data[m_size], x);
             }
@@ -1337,7 +1329,7 @@ namespace stl
             //self assignment
             if (this != &tc)
             {
-                size_type size = tc.size();
+                size_type size = tc.size(); // without '\0'
 
                 if (size > 0)
                 {
@@ -1384,6 +1376,7 @@ namespace stl
                 // Is the address inside this container ?
                 if (m_data <= ptr && (m_data + m_size) > ptr)
                 {
+//TODO: (1)test by assigning the entire string, + (2)try assigning + 1 extra '\0'!!
                     if (m_data + m_size < ptr + n)
                         throw stl::exception("out of valid range");
 
@@ -1391,7 +1384,7 @@ namespace stl
                 }
                 else
                 {
-                    size_type size = length(ptr);   // without '\0' termination
+                    size_type size = length(ptr);   // without '\0'
 
                     if (n > size)
                         throw stl::exception("out of valid range");
@@ -1409,7 +1402,7 @@ namespace stl
 
         container& assign(const value_type* ptr)
         {
-            size_type n = length(ptr);   // without '\0' termination
+            size_type n = length(ptr);   // without '\0'
 
             if (n > 0)
             {
@@ -1435,9 +1428,24 @@ namespace stl
         {
             if (n > 0)
             {
-                grow(n + 1);    // extra '\0'
+//TODO: test if indeed on grow(n + 1) &c becomes invalid
 
-                stl::mem_set(m_data, c, n * sizeof(value_type), m_allocator);
+                // Is the address inside the container ?
+                if (m_data <= &c && (m_data + m_size) > &c)
+                {
+                    T temp(c);
+
+                    // can allocate m_data and invalidate &c
+                    grow(n + 1);
+
+                    stl::mem_set(m_data, temp, n * sizeof(value_type), m_allocator);
+                }
+                else// Address is outside this container
+                {
+                    grow(n + 1);
+
+                    stl::mem_set(m_data, c, n * sizeof(value_type), m_allocator);
+                }
             }
 
             endof(n);
@@ -1448,7 +1456,6 @@ namespace stl
         template <typename InputIterator>
         container& assign(InputIterator first, InputIterator last)
         {
-            //return append_(first, last, typename stl::iterator_traits<InputIterator>::iterator_category());
             return assign_(first, last);
         }
 
@@ -1542,33 +1549,40 @@ namespace stl
                     temp.assign(first, last);
 
                     // for safety, although could not invalidate the input for this case
-                    grow(dist);
+                    grow(dist + 1);
 
-                    stl::mem_move(m_data, m_size, &temp.front(), dist, m_allocator);
+                    stl::mem_move(m_data, m_size, temp.m_data, dist, m_allocator);
                 }
                 else// range is outside this container
                 {
-                    grow(dist);
+                    grow(dist + 1);
 
                     for (size_type i = 0; first != last; ++first, ++i)
                     {
                         T* d1 = m_data + i;
                         const T& s1 = *first;
-                        if (d1 != &s1)
-                        {
-                            // cannot destroy invalid objects in the destination
-                            if (i < m_size)
-                            {
-                                m_allocator.destroy(d1);
-                            }
+                        *d1 = s1;
 
-                            m_allocator.construct(d1, s1);
-                        }
+//TODO: remove all m_allocator.construct(..) calls
+//TODO: remove all m_allocator.destroy(..) calls
+
+                        //if (d1 != &s1)
+                        //{
+                        //    // cannot destroy invalid objects in the destination
+                        //    //if (i < m_size)
+                        //    //{
+                        //    //    m_allocator.destroy(d1);
+                        //    //}
+
+                        //    m_allocator.construct(d1, s1);
+                        //}
                     }
                 }
             }
 
             endof(dist);
+
+            return *this;
         }
 
 
