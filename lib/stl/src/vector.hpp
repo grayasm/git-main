@@ -971,6 +971,34 @@ namespace stl
             endof(dist);
         }
 
+        inline void assign_(value_type* first, value_type* last)
+        {
+            // if last < first then let it blow up.
+            size_type dist = static_cast<size_type>(last - first);
+
+            if (dist > 0)
+            {
+                grow(dist);
+
+                // Is range inside this container ?
+                if (m_data <= first && (m_data + m_size) > first)
+                {
+                    stl::mem_move(m_data, m_size, first, dist, m_allocator);
+                }
+                else
+                {
+                    stl::mem_copy(m_data, m_size, first, dist, m_allocator);
+                }
+            }
+
+            endof(dist);
+        }
+
+        inline void assign_(const value_type* first, const value_type* last)
+        {
+            assign_(const_cast<value_type*>(first), const_cast<value_type*>(last));
+        }
+
         template <typename InputIterator>
         void assign_(InputIterator& first, InputIterator& last)
         {
@@ -1041,34 +1069,6 @@ namespace stl
             }
 
             endof(size);
-        }
-
-        inline void assign_(value_type* first, value_type* last)
-        {
-            // if last < first then let it blow up.
-            size_type dist = static_cast<size_type>(last - first);
-
-            if (dist > 0)
-            {
-                grow(dist);
-
-                // Is range inside this container ?
-                if (m_data <= first && (m_data + m_size) > first)
-                {
-                    stl::mem_move(m_data, m_size, first, dist, m_allocator);
-                }
-                else
-                {
-                    stl::mem_copy(m_data, m_size, first, dist, m_allocator);
-                }
-            }
-
-            endof(dist);
-        }
-
-        inline void assign_(const value_type* first, const value_type* last)
-        {
-            assign_(const_cast<value_type*>(first), const_cast<value_type*>(last));
         }
 
     public:
@@ -1252,7 +1252,7 @@ namespace stl
         
         iterator insert(iterator position, const T& x)
         {
-            // allow to insert in position = end(), aka m_pos == msize;
+            // allow to insert in position = end(), aka m_pos == m_size;
             if (position.m_cont != this || position.m_pos > m_size)
                 throw stl::exception("invalid iterator");
 
@@ -1309,7 +1309,7 @@ namespace stl
 
         void insert(iterator position, size_type n, const T& x)
         {
-            // allow to insert in position = end(), aka m_pos == msize;
+            // allow to insert in position = end(), aka m_pos == m_size;
             if (position.m_cont != this || position.m_pos > m_size)
                 throw stl::exception("invalid iterator");
 
@@ -1374,7 +1374,7 @@ namespace stl
     private:
         inline void insert_(iterator& position, iterator& first, iterator& last)
         {
-            // allow to insert in position = end(), aka m_pos == msize;
+            // allow to insert in position = end(), aka m_pos == m_size;
             if (position.m_cont != this || position.m_pos > m_size)
                 throw stl::exception("invalid iterator");
             
@@ -1436,7 +1436,7 @@ namespace stl
 
         inline void insert_(iterator& position, const_iterator& first, const_iterator& last)
         {
-            // allow to insert in position = end(), aka m_pos == msize;
+            // allow to insert in position = end(), aka m_pos == m_size;
             if (position.m_cont != this || position.m_pos > m_size)
                 throw stl::exception("invalid iterator");
 
@@ -1498,7 +1498,7 @@ namespace stl
 
         inline void insert_(iterator& position, value_type* first, value_type* last)
         {
-            // allow to insert in position = end(), aka m_pos == msize;
+            // allow to insert in position = end(), aka m_pos == m_size;
             if (position.m_cont != this || position.m_pos > m_size)
                 throw stl::exception("invalid iterator");
 
@@ -1575,7 +1575,7 @@ namespace stl
         template<typename InputIterator>
         inline void insert_(iterator& position, InputIterator& first, InputIterator& last, stl::forward_iterator_tag)
         {
-            // allow to insert in position = end(), aka m_pos == msize;
+            // allow to insert in position = end(), aka m_pos == m_size;
             if (position.m_cont != this || position.m_pos > m_size)
                 throw stl::exception("invalid iterator");
 
@@ -1646,7 +1646,7 @@ namespace stl
         template<typename InputIterator>
         inline void insert_(iterator& position, InputIterator n, InputIterator value, stl::input_iterator_tag)
         {
-            // allow to insert in position = end(), aka m_pos == msize;
+            // allow to insert in position = end(), aka m_pos == m_size;
             if (position.m_cont != this || position.m_pos > m_size)
                 throw stl::exception("invalid iterator");
 

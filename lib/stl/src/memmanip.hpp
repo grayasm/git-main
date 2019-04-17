@@ -510,6 +510,8 @@ namespace stl
                 memory allocation (malloc, calloc, realloc and free).
             */
             *dest = allocator.allocate(cap, 0);
+//TODO: malloc, calloc, realloc should NOT throw exceptions right??
+//TODO: check and fix this if possible!!!
             if(*dest == 0) throw stl::exception("bad allocation");
 
             // if(*dest != src)

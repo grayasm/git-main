@@ -35,6 +35,13 @@ class test_basic_string : public CppUnit::TestFixture
 {
     CPPUNIT_TEST_SUITE(test_basic_string);
     CPPUNIT_TEST(ctor);
+    CPPUNIT_TEST(assign_op);
+    CPPUNIT_TEST(size);
+    CPPUNIT_TEST(resize);
+    CPPUNIT_TEST(reserve);
+    CPPUNIT_TEST(clear);
+    CPPUNIT_TEST(append_op);
+    CPPUNIT_TEST(append);
     CPPUNIT_TEST_SUITE_END();
 
 
@@ -43,6 +50,13 @@ public:
     void tearDown();
 
     void ctor();
+    void assign_op();
+    void size();    // + length + capacity
+    void resize();
+    void reserve();
+    void clear();   // + empty
+    void append_op();
+    void append();
 };
 
 
