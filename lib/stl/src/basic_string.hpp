@@ -1124,7 +1124,7 @@ namespace stl
             size_type n = length(ptr);    // without '\0'
             if (n > 0)
             {
-                if (n2 >= n)
+                if (n2 > n)
                     throw stl::exception("out of valid range");
 
                 size_type size = m_size + n2;
@@ -1208,6 +1208,8 @@ namespace stl
         }
 
     private:
+        //  You cannot trigger a const iterator& argument because the caller
+        //  has a copy of the arguments and the caller itself is not const.
         inline container& append_(iterator& first, iterator& last)
         {
             if (first.m_cont != last.m_cont || first.m_cont == 0)
@@ -1230,7 +1232,8 @@ namespace stl
             return *this;
         }
 
-//TODO: can I really trigger a test with a [const const_iterator& ] ?? to see how it resolves the specialization???
+        //  You cannot trigger a const const_iterator& argument because the
+        //  caller has a copy of the arguments and the caller itself is not const.
         inline container& append_(const_iterator& first, const_iterator& last)
         {
             if (first.m_cont != last.m_cont || first.m_cont == 0)

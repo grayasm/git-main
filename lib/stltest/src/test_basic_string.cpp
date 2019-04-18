@@ -225,15 +225,121 @@ void test_basic_string::append_op()
 void test_basic_string::append()
 {
     //  container& append(const container& str)
+    char c1[] = "0123456789";
+    stl::basic_string<char> s1(c1, c1 + 10);
+    s1.append(s1);  // from self
+    CPPUNIT_ASSERT(::strcmp(s1.c_str(), "01234567890123456789") == 0);
+
+    stl::basic_string<char> s2;
+    s2.append(s1);  // from other
+    CPPUNIT_ASSERT(::strcmp(s2.c_str(), "01234567890123456789") == 0);
+
     //  container& append(const container& str, size_type p2, size_type n2)
+    stl::basic_string<char> s3;
+    s3.append(s2, 10, 10);  // from other
+    CPPUNIT_ASSERT(::strcmp(s3.c_str(), "0123456789") == 0);
+    s3.append(s3, 0, 10);   // from self
+    CPPUNIT_ASSERT(::strcmp(s3.c_str(), "01234567890123456789") == 0);
+    
+    stl::basic_string<char> s4;
+    s4.append(s3, 10, -1);  // with npos
+    CPPUNIT_ASSERT(::strcmp(s4.c_str(), "0123456789") == 0);
+
     //  container& append(const value_type* ptr, size_type n2)
+    char c5[] = "0123456789";
+    stl::basic_string<char> s5;
+    s5.append(c5, 10);
+    CPPUNIT_ASSERT(::strcmp(s5.c_str(), "0123456789") == 0);
+
+    s5.append(s5.c_str(), s5.size());   // from self
+    CPPUNIT_ASSERT(::strcmp(s5.c_str(), "01234567890123456789") == 0);
+
     //  container& append(const value_type* ptr)
+    s5.resize(10);
+    s5.append(s5.c_str());
+    CPPUNIT_ASSERT(::strcmp(s5.c_str(), "01234567890123456789") == 0);
+
     //  container& append(size_type n, value_type value)
+    stl::basic_string<char> s6;
+    s6.append(5, '9');
+    CPPUNIT_ASSERT(::strcmp(s6.c_str(), "99999") == 0);
+    s6.append(5, s6[0]);
+    CPPUNIT_ASSERT(::strcmp(s6.c_str(), "9999999999") == 0);
+
     //  inline container& append_(iterator& first, iterator& last)
-//  inline container& append_(const iterator& first, const iterator& last) !!! see if it works
+    char c7[] = "0123456789";
+    stl::basic_string<char> s7(c7, c7 + 10);
+    stl::basic_string<char> s8;
+    s8.append(s7.begin(), s7.end());
+    CPPUNIT_ASSERT(::strcmp(s8.c_str(), "0123456789") == 0);
+    
+    const stl::basic_string<char>::iterator& s7b = s7.begin();
+    const stl::basic_string<char>::iterator& s7e = s7.end();
+    stl::basic_string<char> s9;
+    s9.append(s7b, s7e);
+    CPPUNIT_ASSERT(::strcmp(s9.c_str(), "0123456789") == 0);
+
     //  inline container& append_(const_iterator& first, const_iterator& last)
+    char c10[] = "0123456789";
+    stl::basic_string<char> s10(c10, c10 + 10);
+    const stl::basic_string<char>::const_iterator& s10b = s10.begin();
+    const stl::basic_string<char>::const_iterator& s10e = s10.end();
+    stl::basic_string<char> s11;
+    s11.append(s10b, s10e);
+    CPPUNIT_ASSERT(::strcmp(s11.c_str(), "0123456789") == 0);
+    
     //  inline container& append_(value_type* first, value_type* last)
+    char c12[] = "0123456789";
+    stl::basic_string<char> s12;
+    s12.append(c12, c12 + 10);      // from C array
+    CPPUNIT_ASSERT(::strcmp(s12.c_str(), "0123456789") == 0);
+
+    stl::basic_string<char> s13;
+    s13.append(s12.c_str(), s12.c_str() + 10);  // from other
+    CPPUNIT_ASSERT(::strcmp(s13.c_str(), "0123456789") == 0);
+
+    s13.append(s13.c_str(), s13.c_str() + 10);  // from self
+    CPPUNIT_ASSERT(::strcmp(s13.c_str(), "01234567890123456789") == 0);
+
     //  inline container& append_(const value_type* first, const value_type* last)
+    const char c14[] = "0123456789";
+    stl::basic_string<char> s14;
+    s14.append(c14, c14 + 10);
+    CPPUNIT_ASSERT(::strcmp(s14.c_str(), "0123456789") == 0);
+
+    const stl::basic_string<char>& s14a = s14;
+    s14.append(s14a.c_str(), s14a.c_str() + 8);
+    CPPUNIT_ASSERT(::strcmp(s14.c_str(), "012345678901234567") == 0);
+
     //  inline container& append_(InputIterator& first, InputIterator& last, stl::forward_iterator_tag)
+    char c15[] = "0123456789";
+    stl::basic_string<char> s15(c15, c15 + 10);
+    stl::basic_string<char> s16;
+    s16.append(s15.rbegin() + 2, s15.rend() - 2);   // reverse_iterator -- from other
+    CPPUNIT_ASSERT(::strcmp(s16.c_str(), "765432") == 0);
+
+//TODO: search again in this file and maybe in test_vector, and run additional
+//      tests where for .begin() add also .begin() + 2 or
+//      or where for .rbegin() add also .rbegin() + 2, .rend() - 2 or so.
+
+    s16.append(s16.rbegin() + 2, s16.rend() - 2);   // reverse_iterator -- from self
+    CPPUNIT_ASSERT(::strcmp(s16.c_str(), "76543245") == 0);
+
+    stl::basic_string<char> s17(c15, c15 + 10);
+    const stl::basic_string<char>& s17a = s17;
+    stl::basic_string<char> s18;
+    s18.append(s17a.rbegin() + 1, s17a.rend() - 1); // reverse_iterator -- from other
+    CPPUNIT_ASSERT(::strcmp(s18.c_str(), "87654321") == 0);
+
+    const stl::basic_string<char>& s18a = s18;
+    s18.append(s18a.rbegin() + 1, s18a.rend() - 1); // reverse_iterator -- from self
+    CPPUNIT_ASSERT(::strcmp(s18.c_str(), "87654321234567") == 0);
+
     //  inline container& append_(InputIterator n, InputIterator value, stl::input_iterator_tag)
+    stl::basic_string<char> s19;
+    s19.append(1, '0');
+    s19.append(2, '2');
+    s19.append(3, '3');
+    s19.append(5, s19[0]);
+    CPPUNIT_ASSERT(::strcmp(s19.c_str(), "02233300000") == 0);
 }
