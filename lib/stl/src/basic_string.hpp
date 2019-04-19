@@ -1372,6 +1372,8 @@ namespace stl
                 if (m_size + 1 == m_capacity)
                     grow(m_capacity * 2);
 
+//TODO: remove construct, assign directly
+//TODO: make sure nothing but char,unsigned char, wchar_t is allowed
                 m_allocator.construct(&m_data[m_size], temp);
             }
             else// x address is outside this container.

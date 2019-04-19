@@ -42,6 +42,8 @@ class test_basic_string : public CppUnit::TestFixture
     CPPUNIT_TEST(clear);
     CPPUNIT_TEST(append_op);
     CPPUNIT_TEST(append);
+    CPPUNIT_TEST(push_back);
+    CPPUNIT_TEST(assign);
     CPPUNIT_TEST_SUITE_END();
 
 
@@ -57,6 +59,8 @@ public:
     void clear();   // + empty
     void append_op();
     void append();
+    void push_back();
+    void assign();
 };
 
 

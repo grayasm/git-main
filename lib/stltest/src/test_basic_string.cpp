@@ -343,3 +343,39 @@ void test_basic_string::append()
     s19.append(5, s19[0]);
     CPPUNIT_ASSERT(::strcmp(s19.c_str(), "02233300000") == 0);
 }
+
+void test_basic_string::push_back()
+{
+    stl::basic_string<char> s1;
+
+    for (int i = 0; i < 10; ++i)
+        s1.push_back('0' + i);
+        
+    for (int i = 0; i < 10; ++i)
+        s1.push_back(s1[i]);
+
+    CPPUNIT_ASSERT(::strcmp(s1.c_str(), "01234567890123456789") == 0);
+}
+
+void test_basic_string::assign()
+{
+    //  container& assign(const container& tc)
+    char c1[] = "0123456789";
+    stl::basic_string<char> s1(c1, c1 + 10);
+    stl::basic_string<char> s2;
+    s2.assign(s1);
+    CPPUNIT_ASSERT(::strcmp(s2.c_str(), c1) == 0);
+    
+    //  container& assign(const container& str, size_type off, size_type n)
+    //  container& assign(const value_type* ptr, size_type n)
+    //  container& assign(const value_type* ptr)
+    //  container& assign(size_type n, const value_type& c)
+    //  container& assign(InputIterator first, InputIterator last)
+    //  inline container& assign_(iterator& first, iterator& last)
+    //  inline container& assign_(const_iterator& first, const_iterator& last)
+    //  inline container& assign_(value_type* first, value_type* last)
+    //  inline container& assign_(const value_type* first, const value_type* last)
+    //  inline container& assign_(InputIterator& first, InputIterator& last, stl::forward_iterator_tag)
+    //  inline container& assign_(InputIterator count, InputIterator value, stl::input_iterator_tag)
+
+}
