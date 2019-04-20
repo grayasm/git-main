@@ -758,7 +758,7 @@ namespace stl
     class basic_string
     {
     public:
-        typedef typename basic_string<T, Allocator>         container;
+        typedef          basic_string<T, Allocator>         container;
 
         // types:
         typedef typename Allocator::value_type              value_type;
@@ -772,10 +772,10 @@ namespace stl
         typedef typename Allocator::const_pointer           const_pointer;
 
     public:
-        typedef typename basic_string_iterator<container>           iterator;
-        typedef typename basic_string_const_iterator<container>     const_iterator;
-        typedef typename basic_string_reverse_iterator<container>   reverse_iterator;
-        typedef typename basic_string_const_reverse_iterator<container>  const_reverse_iterator;
+        typedef basic_string_iterator<container>                iterator;
+        typedef basic_string_const_iterator<container>          const_iterator;
+        typedef basic_string_reverse_iterator<container>        reverse_iterator;
+        typedef basic_string_const_reverse_iterator<container>  const_reverse_iterator;
 
     private:
         value_type*             m_data;
@@ -844,7 +844,7 @@ namespace stl
             {
                 for (size_type i = beg, j = end - 1; i < j; ++i, --j)
                 {
-                    misc::swap<value_type>(m_data[i], m_data[j]);
+                    stl::swap<value_type>(m_data[i], m_data[j]);
                 }
             }
         }
@@ -1741,11 +1741,10 @@ namespace stl
 
                     grow(size);
 
-                    memmove_impl(&m_data[pos + n2], &m_data[pos], (m_size - pos) * numbytes);
-                    memcpy_impl(&m_data[pos], &str[off], n2 * numbytes);
-
-
-                    eos<T>(size);
+//Linux build
+                    //memmove_impl(&m_data[pos + n2], &m_data[pos], (m_size - pos) * sizeof(value_type));
+                    //memcpy_impl(&m_data[pos], &str[off], n2 * sizeof(value_type));
+                    //eos<T>(size);
                 }
                 return *this;
             }
@@ -1769,7 +1768,7 @@ namespace stl
                 //allow insert in end_lock() position;
                 if (pos > m_size) throw stl::exception("out of valid range");
 
-                size_type ptrLen = length<value_type>(ptr);
+                size_type ptrLen = length(ptr);
                 if (n2 > ptrLen)
                     n2 = ptrLen;
 
@@ -1782,15 +1781,16 @@ namespace stl
 
                     grow(size);
 
-                    memmove_impl(&m_data[pos + n2], &m_data[pos], (m_size - pos) * numbytes);
-                    memcpy_impl(&m_data[pos], ptr, n2 * numbytes);
-
-                    eos<T>(size);
+//Linux build
+                    //memmove_impl(&m_data[pos + n2], &m_data[pos],
+                    //             (m_size - pos) * sizeof(value_type));
+                    //memcpy_impl(&m_data[pos], ptr, n2 * sizeof(value_type));
+                    //eos<T>(size);
                 }
                 return *this;
             }
         }
-        
+
         container& insert(size_type pos, size_type n, value_type c)
         {
             //allow insert in end_lock() position;
@@ -1805,11 +1805,11 @@ namespace stl
 
                 grow(size);
 
-                memmove_impl(&m_data[pos + n], &m_data[pos], (m_size - pos) * numbytes);
-
-                stl::mem_set(&m_data[pos], c, n * numbytes);
-
-                eos<T>(size);
+//Linux build
+                //memmove_impl(&m_data[pos + n], &m_data[pos],
+                //             (m_size - pos) * sizeof(value_type));
+                //stl::mem_set(&m_data[pos], c, n * numbytes);
+                //eos<T>(size);
             }
 
             return *this;
@@ -1831,11 +1831,11 @@ namespace stl
 
                 grow(size);
 
-                memmove_impl(&m_data[p1 + n], &m_data[p1], (m_size - p1) * numbytes);
-
-                stl::mem_set(&m_data[p1], x, n * numbytes);
-
-                eos<T>(size);
+//Linux build
+                //memmove_impl(&m_data[p1 + n], &m_data[p1],
+                //             (m_size - p1) * sizeof(value_type));
+                //stl::mem_set(&m_data[p1], x, n * numbytes);
+                //eos<T>(size);
             }
         }
 
@@ -1844,7 +1844,7 @@ namespace stl
             insert(pos, 1, c);
             return pos; // is it the correct iterator??
         }
-    
+
         template <typename InputIterator>
         void insert(iterator position, InputIterator first, InputIterator last)
         {
@@ -1855,6 +1855,8 @@ namespace stl
     private:
         inline void insert_(iterator& pos, iterator& first, iterator& last)
         {
+//Linux build
+            /*
             if (this == first.m_cont)
             {
                 replace_impl(p1, 0, first, last);
@@ -1875,16 +1877,19 @@ namespace stl
                     size_type size = m_size + dist;
                     grow(size);
 
-                    memmove_impl(&m_data[p1 + dist], &m_data[p1], (m_size - p1) * numbytes);
-                    memcpy_impl(&m_data[p1], &((*first.m_cont)[first.m_pos]), dist * numbytes);
-
-                    eos<T>(size);
+//Linux build
+                    //memmove_impl(&m_data[p1 + dist], &m_data[p1], (m_size - p1) * numbytes);
+                    //memcpy_impl(&m_data[p1], &((*first.m_cont)[first.m_pos]), dist * numbytes);
+                    //eos<T>(size);
                 }
             }
+            */
         }
 
         inline void insert_(iterator& pos, const_iterator& first, const_iterator& last)
         {
+//Linux build
+            /*
             if (this == first.m_cont)
             {
                 replace(p1, 0, first, last);
@@ -1905,12 +1910,13 @@ namespace stl
                     size_type size = m_size + dist;
                     grow(size);
 
-                    memmove_impl(&m_data[p1 + dist], &m_data[p1], (m_size - p1) * numbytes);
-                    memcpy_impl(&m_data[p1], &((*first.m_cont)[first.m_pos]), dist * numbytes);
-
-                    eos<T>(size);
+//Linux build
+                    //memmove_impl(&m_data[p1 + dist], &m_data[p1], (m_size - p1) * numbytes);
+                    //memcpy_impl(&m_data[p1], &((*first.m_cont)[first.m_pos]), dist * numbytes);
+                    //eos<T>(size);
                 }
             }
+            */
         }
 
         inline void insert_(iterator& position, value_type* first, value_type* last)
@@ -1941,11 +1947,10 @@ namespace stl
 
                 grow(size);
 
-                memmove_impl(&m_data[p1 + n2], &m_data[p1], (m_size - p1) * numbytes);
-
-                stl::mem_set(&m_data[p1], value, n2 * numbytes);
-
-                eos<T>(size);
+//Linux build
+                //memmove_impl(&m_data[p1 + n2], &m_data[p1], (m_size - p1) * numbytes);
+                //stl::mem_set(&m_data[p1], value, n2 * numbytes);
+                //eos<T>(size);
             }
         }
 
@@ -1962,12 +1967,12 @@ namespace stl
 
             if (n1)
             {
+
+//Linux build
                 // invalidate for effective erase only
-                invalidate_iterators_gte(p1);
-
-                memmove_impl(&m_data[p1], &m_data[p1 + n1], (m_size - p1 - n1) * numbytes);
-
-                eos<T>(m_size - n1);
+                //invalidate_iterators_gte(p1);
+                //memmove_impl(&m_data[p1], &m_data[p1 + n1], (m_size - p1 - n1) * numbytes);
+                //eos<T>(m_size - n1);
             }
 
             return *this;
@@ -1980,11 +1985,10 @@ namespace stl
 
             size_type p1 = position.m_pos;
 
-            invalidate_iterators_gte(p1);
-
-            memmove_impl(&m_data[p1], &m_data[p1 + 1], (m_size - p1 - 1) * numbytes);
-
-            eos<T>(m_size - 1);
+//Linux build
+            //invalidate_iterators_gte(p1);
+            //memmove_impl(&m_data[p1], &m_data[p1 + 1], (m_size - p1 - 1) * numbytes);
+            //eos<T>(m_size - 1);
 
             return position;
         }
@@ -1997,15 +2001,14 @@ namespace stl
             difference_type dist = last - first;
             if (dist > 0)
             {
-                invalidate_iterators_gte(first.m_pos);
-
+//Linux build
+                //invalidate_iterators_gte(first.m_pos);
                 //fill the gap
-                if (last.m_pos < m_size)
-                {
-                    memmove_impl(&m_data[first.m_pos], &m_data[last.m_pos], (m_size - last.m_pos) * numbytes);
-                }
-
-                eos<T>(m_size - dist);
+                //if (last.m_pos < m_size)
+                //{
+                //    memmove_impl(&m_data[first.m_pos], &m_data[last.m_pos], (m_size - last.m_pos) * numbytes);
+                //}
+                //eos<T>(m_size - dist);
             }
 
             return first;
@@ -2035,8 +2038,9 @@ namespace stl
 
             if (this != &str)
             {
-                memmove_impl(&m_data[p1 + n2], &m_data[p1 + n1], (m_size - p1 - n1) * numbytes);
-                memcpy_impl(&m_data[p1], &str.m_data[p2], n2 * numbytes);
+                memmove_impl(&m_data[p1 + n2], &m_data[p1 + n1],
+                             (m_size - p1 - n1) * sizeof(value_type));
+                memcpy_impl(&m_data[p1], &str.m_data[p2], n2 * sizeof(value_type));
 
             }
             else if (p1 >= p2)
@@ -2062,8 +2066,8 @@ namespace stl
                 k2 = n2 = 9
                 |0|1|2|3|4|5|6|7|8|9|a|b|c|a|b|c|d|e|f|g|x|
                 */
-                memmove_impl(&m_data[p1 + n2], &m_data[p1 + n1], (m_size - p1 - n2) * numbytes);
-                memmove_impl(&m_data[p1], &m_data[p2], n2 * numbytes);
+                memmove_impl(&m_data[p1 + n2], &m_data[p1 + n1], (m_size - p1 - n2) * sizeof(value_type));
+                memmove_impl(&m_data[p1], &m_data[p2], n2 * sizeof(value_type));
             }
             else if (p1 + n1 <= p2)
             {
@@ -2088,8 +2092,8 @@ namespace stl
                 |0|1|7|8|9|7|8|9|a|b|c|d|e|f|g|f|g|x|
                 |0|1|7|8|9|7|8|9|a|b|c|d|e|f|g|x|!|!|
                 */
-                memmove_impl(&m_data[p1 + n2], &m_data[p1 + n1], (m_size - p1 - n1) * numbytes);
-                memmove_impl(&m_data[p1], &m_data[p1 + n2 + p2 - p1 - n1], n2 * numbytes);
+                memmove_impl(&m_data[p1 + n2], &m_data[p1 + n1], (m_size - p1 - n1) * sizeof(value_type));
+                memmove_impl(&m_data[p1], &m_data[p1 + n2 + p2 - p1 - n1], n2 * sizeof(value_type));
             }
             /* p1 + n1 > p2 , need to check additional condition */
             else if (n1 < n2)
@@ -2119,9 +2123,9 @@ namespace stl
                 k3 = n2 - k2 = 10
                 |0|1|4|5|6|7|8|9|a|b|c|d|e|5|6|7|8|9|a|b|c|d|e|f|g|x|
                 */
-                memmove_impl(&m_data[p1 + n2], &m_data[p1 + n1], (m_size - p1 - n1) * numbytes);
-                memmove_impl(&m_data[p1], &m_data[p2], (p1 + n1 - p2) * numbytes);
-                memmove_impl(&m_data[p1 + p1 + n1 - p2], &m_data[p1 + n2], (n2 - p1 - n1 + p2) * numbytes);
+                memmove_impl(&m_data[p1 + n2], &m_data[p1 + n1], (m_size - p1 - n1) * sizeof(value_type));
+                memmove_impl(&m_data[p1], &m_data[p2], (p1 + n1 - p2) * sizeof(value_type));
+                memmove_impl(&m_data[p1 + p1 + n1 - p2], &m_data[p1 + n2], (n2 - p1 - n1 + p2) * sizeof(value_type));
             }
             /* p1 + n1 > p2 , it is assumed n1 >= n2, it can't be otherwise */
             else
@@ -2147,11 +2151,12 @@ namespace stl
                 |0|1|8|9|9|a|b|c|d|e|f|g|c|d|e|f|g|x|
                 |0|1|2|3|4|5|6|7|8|9|a|b|x|!|!|!|!|!|
                 */
-                memmove_impl(&m_data[p1], &m_data[p2], n2 * numbytes);
-                memmove_impl(&m_data[p1 + n2], &m_data[p1 + n1], (m_size - p1 - n1) * numbytes);
+                memmove_impl(&m_data[p1], &m_data[p2], n2 * sizeof(value_type));
+                memmove_impl(&m_data[p1 + n2], &m_data[p1 + n1], (m_size - p1 - n1) * sizeof(value_type));
             }
 
-            eos<T>(size);
+            //eos<T>(size);
+
             return *this;
         }
 
@@ -2170,7 +2175,7 @@ namespace stl
 
                 if (n1 > m_size - p1)
                     n1 = m_size - p1;
-                size_type ptrLen = length<value_type>(ptr);
+                size_type ptrLen = length(ptr);
                 if (n2 > ptrLen)
                     n2 = ptrLen;
 
@@ -2178,11 +2183,11 @@ namespace stl
                 grow(size);
 
                 //move tail
-                memmove_impl(&m_data[p1 + n2], &m_data[p1 + n1], (m_size - p1 - n1) * numbytes);
+                //memmove_impl(&m_data[p1 + n2], &m_data[p1 + n1], (m_size - p1 - n1) * sizeof(value_type));
                 //copy data
-                memcpy_impl(&m_data[p1], ptr, n2 * numbytes);
+                //memcpy_impl(&m_data[p1], ptr, n2 * sizeof(value_type));
 
-                eos<T>(size);
+                //eos<T>(size);
                 return *this;
             }
         }
@@ -2205,12 +2210,12 @@ namespace stl
             grow(size);
 
             //move tail up
-            memmove_impl(&m_data[p1 + n2], &m_data[p1 + n1], (m_size - p1 - n1) * numbytes);
+            //memmove_impl(&m_data[p1 + n2], &m_data[p1 + n1], (m_size - p1 - n1) * sizeof(value_type));
 
             //set range
-            stl::mem_set(&m_data[p1], ch, n2 * numbytes);
+            stl::mem_set(&m_data[p1], ch, n2 * sizeof(value_type));
 
-            eos<T>(size);
+            //eos<T>(size);
 
             return *this;
         }
@@ -2390,7 +2395,7 @@ namespace stl
             if (n1 > m_size - p1)
                 n1 = m_size - p1;
 
-            memmove_impl(ptr, &m_data[p1], n1 * numbytes);
+            //memmove_impl(ptr, &m_data[p1], n1 * sizeof(value_type));
 
             return n1;
         }
@@ -2399,10 +2404,10 @@ namespace stl
         /* $21.3.5 modifiers ( swap ) */
         void swap(container& str)
         {
-            stl::swap<Allocator>(m_allocator, vec.m_allocator);
-            stl::swap<pointer>(m_data, vec.m_data);
-            stl::swap<size_type>(m_size, vec.m_size);
-            stl::swap<size_type>(m_capacity, vec.m_capacity);
+            stl::swap<Allocator>(m_allocator, str.m_allocator);
+            stl::swap<pointer>(m_data, str.m_data);
+            stl::swap<size_type>(m_size, str.m_size);
+            stl::swap<size_type>(m_capacity, str.m_capacity);
             //stl::swap<iterator_array*>(m_itarray, vec.m_itarray);
         }
 
@@ -2438,7 +2443,7 @@ namespace stl
         {
             if (p1 >= m_size) throw stl::exception("out of valid range");
 
-            size_type ptrLen = length<value_type>(ptr);
+            size_type ptrLen = length(ptr);
 
             if (n2 > ptrLen) return npos;
 
@@ -2461,7 +2466,7 @@ namespace stl
 
         size_type find(const value_type* ptr, size_type p1 = 0) const
         {
-            return find(ptr, p1, length<value_type>(ptr));
+            return find(ptr, p1, length(ptr));
         }
 
         size_type find(value_type ch, size_type p1 = 0) const
@@ -2488,7 +2493,7 @@ namespace stl
             if (n2 > m_size) return npos;
             if (p1 + n2 > m_size)
                 p1 = m_size - n2;
-            size_type ptrsz = length<value_type>(ptr);
+            size_type ptrsz = length(ptr);
             if (n2 > ptrsz) return npos;
 
             if (n2)
@@ -2511,7 +2516,7 @@ namespace stl
 
         size_type rfind(const value_type* ptr, size_type p1 = npos) const
         {
-            return rfind(ptr, p1, length<value_type>(ptr));
+            return rfind(ptr, p1, length(ptr));
         }
 
         size_type rfind(value_type ch, size_type p1 = npos) const
@@ -2538,7 +2543,7 @@ namespace stl
         size_type find_first_of(const value_type* ptr, size_type p1, size_type n2) const
         {
             if (p1 > m_size) throw stl::exception("out of valid range");
-            size_type ptrsz = length<value_type>(ptr);
+            size_type ptrsz = length(ptr);
             if (n2 > ptrsz)
                 n2 = ptrsz;
 
@@ -2560,7 +2565,7 @@ namespace stl
 
         size_type find_first_of(const value_type* ptr, size_type p1 = 0) const
         {
-            return find_first_of(ptr, p1, length<value_type>(ptr));
+            return find_first_of(ptr, p1, length(ptr));
         }
 
         size_type find_first_of(value_type c, size_type p1 = 0) const
@@ -2584,7 +2589,7 @@ namespace stl
         size_type find_last_of(const value_type* ptr, size_type p1, size_type n2) const
         {
             if (p1 >= m_size) p1 = m_size - 1;
-            size_type ptrsz = length<value_type>(ptr);
+            size_type ptrsz = length(ptr);
             if (n2 > ptrsz)
                 n2 = ptrsz;
 
@@ -2606,7 +2611,7 @@ namespace stl
 
         size_type find_last_of(const value_type* ptr, size_type p1 = npos) const
         {
-            return find_last_of(ptr, p1, length<value_type>(ptr));
+            return find_last_of(ptr, p1, length(ptr));
         }
 
         size_type find_last_of(value_type ch, size_type p1 = npos) const
@@ -2632,7 +2637,7 @@ namespace stl
         size_type find_first_not_of(const value_type* ptr, size_type p1, size_type n2) const
         {
             if (p1 > m_size) throw stl::exception("out of valid range");
-            size_type ptrLen = length<value_type>(ptr);
+            size_type ptrLen = length(ptr);
             if (n2 > ptrLen)
                 n2 = ptrLen;
 
@@ -2661,7 +2666,7 @@ namespace stl
 
         size_type find_first_not_of(const value_type* ptr, size_type n1 = 0) const
         {
-            return find_first_not_of(ptr, n1, length<value_type>(ptr));
+            return find_first_not_of(ptr, n1, length(ptr));
         }
 
         size_type find_first_not_of(value_type ch, size_type p1 = 0) const
@@ -2690,7 +2695,7 @@ namespace stl
             if (p1 >= m_size)
                 p1 = m_size - 1;
 
-            size_type ptrLen = length<value_type>(ptr);
+            size_type ptrLen = length(ptr);
             if (n2 > ptrLen)
                 n2 = ptrLen;
 
@@ -2719,7 +2724,7 @@ namespace stl
 
         size_type find_last_not_of(const value_type* ptr, size_type p1 = npos) const
         {
-            return find_last_not_of(ptr, p1, length<value_type>(ptr));
+            return find_last_not_of(ptr, p1, length(ptr));
         }
 
         size_type find_last_not_of(value_type ch, size_type p1 = npos) const
@@ -2827,7 +2832,7 @@ namespace stl
 
         int compare(const value_type* ptr) const
         {
-            size_type size = length<value_type>(ptr);
+            size_type size = length(ptr);
             size_type minsz = stl::min<size_type>(m_size, size);
             size_type i = 0;
             while (i < minsz && m_data[i] == ptr[i])
@@ -2852,7 +2857,7 @@ namespace stl
             if (p1 > m_size) throw stl::exception("out of valid range");
 
             size_type lsz = m_size - p1;
-            size_type rsz = length<value_type>(ptr);
+            size_type rsz = length(ptr);
             size_type minsz = stl::min<size_type>(lsz, rsz, n1);
 
             size_type i = 0;
@@ -2879,7 +2884,7 @@ namespace stl
         {
             if (p1 > m_size) throw stl::exception("out of valid range");
             size_type lsz = m_size - p1;
-            size_type rsz = length<value_type>(ptr);
+            size_type rsz = length(ptr);
             size_type minsz = stl::min<size_type>(lsz, rsz, n1, n2);
 
             size_type i = 0;
@@ -3158,6 +3163,8 @@ bool operator<=(const T* Left, const stl::basic_string<T, Allocator>& Right)
     return Right.compare(Left) >= 0;
 }
 
+/*Linux build
+
 //A template function that writes a string into the output stream.
 template<typename T, typename Allocator>
 std::basic_ostream<T>& operator<<(
@@ -3166,7 +3173,7 @@ std::basic_ostream<T>& operator<<(
     Ostr << str.c_str();
     return Ostr;
 }
-
+*/
 
 //Tests if the string object on the left side of the operator is greater
 //than to the string object on the right side.
@@ -3215,6 +3222,8 @@ bool operator>=(const T* Left, const stl::basic_string<T, Allocator>& Right)
     return Right.compare(Left) <= 0;
 }
 
+/*Linux build
+
 //A template function that reads a string from an input stream.
 template<typename T, typename Allocator>
 std::basic_istream<T>& operator>>(
@@ -3225,6 +3234,7 @@ std::basic_istream<T>& operator>>(
     Right += chunk.c_str();
     return Istr;
 }
+*/
 
 //Specialized template function
 //Exchanges the arrays of characters of two strings.

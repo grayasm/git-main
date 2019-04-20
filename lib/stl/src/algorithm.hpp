@@ -25,7 +25,7 @@
 //c
 #include <cstring>
 //c++
-//misc
+//stl
 #include "algobase.hpp"
 
 
@@ -806,7 +806,7 @@ namespace stl
 				_Rn = _Rn << _RANDOM_BITS | (::rand() & _RANDOM_MAX);
 
 			// swap a pair
-			stl::iter_swap(next, first + ptrdiff_t(_Rn % index));
+			stl::iter_swap(next, first + /*ptrdiff_t*/ long(_Rn % index));
 		}
 	}
 
@@ -1732,13 +1732,8 @@ namespace stl
 		return stl::algobase::prev_permutation(first, last, comp);
 	}
 
-}//namespace misc
-
+} // stl
 
 
 
 #endif//__algorithm_hpp__
-
-
-
-

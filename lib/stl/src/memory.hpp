@@ -23,6 +23,7 @@
 
 #include "iterator.hpp"
 #include "utility.hpp"
+#include <stdlib.h>
 
 
 
@@ -42,31 +43,31 @@ namespace stl
         explicit raw_storage_iterator (OutputIterator x)
             : iter(x)
         {
-        };
+        }
 
         raw_storage_iterator<OutputIterator,T>& operator* ()
         {
             return *this;
-        };
+        }
 
         raw_storage_iterator<OutputIterator,T>& operator= (const T& element)
         {
             new (static_cast<void*>(&*iter)) T (element);
             return *this;
-        };
+        }
 
         raw_storage_iterator<OutputIterator,T>& operator++ ()
         {
             ++iter;
             return *this;
-        };
+        }
 
         raw_storage_iterator<OutputIterator,T> operator++ (int)
         {
             raw_storage_iterator<OutputIterator,T> tmp = *this;
             ++iter;
             return tmp;
-        };
+        }
     };
 
 
@@ -79,7 +80,8 @@ namespace stl
     */
 
     template <typename T>
-    stl::pair <T*,ptrdiff_t> get_temporary_buffer ( ptrdiff_t n )
+    //stl::pair <T*,ptrdiff_t> get_temporary_buffer ( ptrdiff_t n )
+    stl::pair <T*, long> get_temporary_buffer (long n)
     {
         // get raw temporary buffer of up to n elements
         T  *ptrbuff;
@@ -102,7 +104,8 @@ namespace stl
             }
         }
 
-        return (stl::pair<T*, ptrdiff_t>(ptrbuff, n));
+        // return (stl::pair<T*, ptrdiff_t>(ptrbuff, n));
+        return (stl::pair<T*, long>(ptrbuff, n));
     }
     //////////////////////////////////////////////////////////////////////////
     /*
@@ -189,7 +192,8 @@ namespace stl
     {
     public:
         typedef size_t          size_type;
-        typedef ptrdiff_t       difference_type;
+        //typedef ptrdiff_t       difference_type;
+        typedef long            difference_type;
         typedef T*              pointer;
         typedef const T*        const_pointer;
         typedef T&              reference;
@@ -203,33 +207,33 @@ namespace stl
         allocator() throw()
         {
         }
-        
+
         allocator(const allocator& /*alloc*/) throw()
         {
         }
-        
+
         template <class U>
         allocator(const allocator<U>& /*alloc*/) throw()
         {
         }
-        
+
         ~allocator() throw()
         {
         }
-        
+
         pointer address(reference x) const
         {
             return &x;
         }
-        
+
         const_pointer address(const_reference x) const
         {
             return &x;
         }
-        
+
         pointer allocate(size_type n, allocator<void>::const_pointer  hint = 0)
         {
-            /*  hint: 
+            /*  hint:
             Either 0 or a value previously obtained by another call to allocate
             and not yet freed with deallocate. When it is not 0, this value may
             be used as a hint to improve performance by allocating the new block
@@ -262,23 +266,23 @@ namespace stl
 
             return 0;
         }
-        
+
         void deallocate(pointer p, size_type)
         {
             ::free(p);
         }
-        
+
         size_type max_size() const throw()
         {
             return static_cast<size_type>(-1) / sizeof(value_type);
         }
-        
+
         void construct(pointer p, const_reference val)
         {
             /* construct with copy.ctor() */
             ::new(p)value_type(val);
         }
-        
+
         void destroy(pointer p)
         {
             p->T::~T();

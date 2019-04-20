@@ -372,7 +372,7 @@ namespace stl
     inline typename stl::iterator_traits<RandomIterator>::difference_type
     distance(RandomIterator first, RandomIterator last, stl::random_access_iterator_tag)
     {
-        return static_cast<stl::iterator_traits<RandomIterator>::difference_type>(last - first);
+        return static_cast<typename stl::iterator_traits<RandomIterator>::difference_type>(last - first);
     }
 
 

@@ -25,7 +25,7 @@
 //c
 #include <stdlib.h>
 //c++
-//misc
+//stl
 #include "functional.hpp"
 #include "utility.hpp"
 #include "memory.hpp"
@@ -1016,7 +1016,8 @@ namespace stl
 
 
 				const Dist dist = stl::distance(first, last);
-				const ptrdiff_t int_count = count; //check the type
+				// const ptrdiff_t int_count = count; //check the type
+                const long int_count = count;
 
 				if (dist < int_count || int_count <= 0)
 					return last;
@@ -1206,7 +1207,8 @@ namespace stl
 		template <typename OutputIterator, typename Size, typename TypeT>
 		inline void fill_n(OutputIterator first, Size n, const TypeT &val)
 		{
-			for (ptrdiff_t inx = n; 0 < inx; --inx, ++first)
+			for (//ptrdiff_t
+                long inx = n; 0 < inx; --inx, ++first)
 			{
 				*first = val;
 			}
@@ -1229,7 +1231,8 @@ namespace stl
 		template <typename OutputIterator, typename Size, typename Generator>
 		inline void generate_n(OutputIterator first, Size n, Generator gen)
 		{
-			for(ptrdiff_t inx = n; 0 < inx; --inx, ++first)
+			for(//ptrdiff_t
+                long inx = n; 0 < inx; --inx, ++first)
 			{
 				*first = gen ();
 			}
@@ -3917,12 +3920,8 @@ namespace stl
 
 	} // algobase
 
-} // misc
-
+} // stl
 
 
 
 #endif//__algobase_hpp__
-
-
-
