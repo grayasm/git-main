@@ -1094,24 +1094,25 @@ namespace stl
             return *this;
         }
 
-        container& append(const container& str, size_type p2, size_type n2)
+        container& append(const container& str, size_type off, size_type n)
         {
-            size_type n = str.length();    // without '\0'
+            size_type len = str.length();    // without '\0'
+
+            if (off >= len)
+                throw stl::exception("out of valid range");
+
+            if (n == npos)
+                n = len - off;
+            
             if (n > 0)
             {
-                if (p2 >= n)
-                    throw stl::exception("out of valid range");
-
-                if (n2 == npos)
-                    n2 = n - p2;
-
-                size_type size = m_size + n2;                
+                size_type size = m_size + n;
 
 //TODO: actually test this relocation!!!
                 // even if m_data is relocated, str remains valid
                 grow(size + 1);
 
-                stl::mem_copy(&m_data[m_size], m_size, &str[p2], n2, m_allocator);
+                stl::mem_copy(&m_data[m_size], m_size, &str.m_data[off], n, m_allocator);
 
                 endof(size);
             }
@@ -1412,24 +1413,35 @@ namespace stl
         {
             if (n > 0)
             {
-                if (off + n > str.size())
-                    throw stl::exception("out of valid range");
-
                 // self assignment
                 if (this == &str)
                 {
+                    if (off >= m_size)
+                        throw stl::exception("out of valid range");
+
+                    if (n == npos)
+                        n = m_size - off;
+
                     stl::mem_move(m_data, m_size, &m_data[off], n, m_allocator);
                 }
                 else
                 {
+                    size_type len = str.length();   // without '\0'
+
+                    if (off >= len)
+                        throw stl::exception("out of valid range");
+
+                    if (n == npos)
+                        n = len - off;
+
                     grow(n + 1);    // extra '\0'
 
-                    stl::mem_copy(m_data, m_size, &str[off], n, m_allocator);
+                    stl::mem_copy(m_data, m_size, &str.m_data[off], n, m_allocator);
                 }
             }
-            
+
             endof(n);
-            
+
             return *this;
         }
 
@@ -1448,9 +1460,9 @@ namespace stl
                 }
                 else
                 {
-                    size_type size = length(ptr);   // without '\0'
+                    size_type len = length(ptr);   // without '\0'
 
-                    if (n > size)
+                    if (n > len)
                         throw stl::exception("out of valid range");
 
                     grow(n + 1);    // extra '\0'
@@ -1466,21 +1478,25 @@ namespace stl
 
         container& assign(const value_type* ptr)
         {
-            size_type n = length(ptr);   // without '\0'
-
-            if (n > 0)
+            size_type n = 0;
+            
+            // Is the address inside this container ?
+            if (m_data <= ptr && (m_data + m_size) > ptr)
             {
-                // Is the address inside this container ?
-                if (m_data <= ptr && (m_data + m_size) > ptr)
-                {
+                n = m_size - (ptr - m_data);
+                if (n > 0)
                     stl::mem_move(m_data, m_size, ptr, n, m_allocator);
-                }
-                else
+            }
+            else
+            {
+                n = length(ptr);   // without '\0'
+
+                if (n > 0)
                 {
                     grow(n + 1);    // extra '\0'
 
                     stl::mem_copy(m_data, m_size, ptr, n, m_allocator);
-                }
+                }                
             }
 
             endof(n);
@@ -1684,7 +1700,7 @@ namespace stl
                 grow(n + 1);    // extra '\0'
 
                 // Not a self assignment as value is a temporary copy.
-                stl::mem_set<value_type>(m_data, value, n * sizeof(value_type), m_allocator);
+                stl::mem_set(m_data, value, n * sizeof(value_type), m_allocator);
             }
 
             endof(n);
@@ -1693,40 +1709,40 @@ namespace stl
         }
 
     public:
-        /* $21.3.5 modifiers ( insert ) */
-        container& insert(size_type p1, const container& str)
+        container& insert(size_type pos, const container& str)
         {
-            return insert(p1, str, 0, npos);
+            return insert(pos, str, 0, npos);
         }
 
-        container& insert(size_type p1, const container& str, size_type p2, size_type n2)
+        // n2 allowed as npos
+        container& insert(size_type pos, const container& str, size_type off, size_type n2)
         {
             if (this == &str)
             {
-                return replace(p1, 0, *this, p2, n2);
+                return replace(pos, 0, *this, off, n2);
             }
             else
             {
                 //allow insert in end_lock() position;
-                if (p1 > m_size) throw stl::exception("out of valid range");
+                if (pos > m_size) throw stl::exception("out of valid range");
 
                 size_type strLen = str.length();
-                if (p2 >= strLen) throw stl::exception("out of valid range");
+                if (off >= strLen) throw stl::exception("out of valid range");
 
-                if (n2 > strLen - p2)
-                    n2 = strLen - p2;
+                if (n2 > strLen - off)
+                    n2 = strLen - off;
 
                 if (n2)
                 {
                     // invalidate for effective insert only
-                    invalidate_iterators_gte(p1);
+                    invalidate_iterators_gte(pos);
 
                     size_type size = m_size + n2;
 
                     grow(size);
 
-                    memmove_impl(&m_data[p1 + n2], &m_data[p1], (m_size - p1) * numbytes);
-                    memcpy_impl(&m_data[p1], &str[p2], n2 * numbytes);
+                    memmove_impl(&m_data[pos + n2], &m_data[pos], (m_size - pos) * numbytes);
+                    memcpy_impl(&m_data[pos], &str[off], n2 * numbytes);
 
 
                     eos<T>(size);
@@ -1735,17 +1751,23 @@ namespace stl
             }
         }
 
-        container& insert(size_type p1, const value_type* ptr, size_type n2)
+        container& insert(size_type pos, const value_type* ptr)
+        {
+            return insert(pos, ptr, npos); //!!!!
+        }
+
+        // n2 not allowed as npos
+        container& insert(size_type pos, const value_type* ptr, size_type n2)
         {
             // if (inside(ptr))
             if (m_data <= ptr && m_data + m_size > ptr)
             {
-                return replace(p1, 0, *this, 0, n2);
+                return replace(pos, 0, *this, 0, n2);
             }
             else
             {
                 //allow insert in end_lock() position;
-                if (p1 > m_size) throw stl::exception("out of valid range");
+                if (pos > m_size) throw stl::exception("out of valid range");
 
                 size_type ptrLen = length<value_type>(ptr);
                 if (n2 > ptrLen)
@@ -1754,43 +1776,38 @@ namespace stl
                 if (n2)
                 {
                     // invalidate for effective insert only
-                    invalidate_iterators_gte(p1);
+                    invalidate_iterators_gte(pos);
 
                     size_type size = m_size + n2;
 
                     grow(size);
 
-                    memmove_impl(&m_data[p1 + n2], &m_data[p1], (m_size - p1) * numbytes);
-                    memcpy_impl(&m_data[p1], ptr, n2 * numbytes);
+                    memmove_impl(&m_data[pos + n2], &m_data[pos], (m_size - pos) * numbytes);
+                    memcpy_impl(&m_data[pos], ptr, n2 * numbytes);
 
                     eos<T>(size);
                 }
                 return *this;
             }
         }
-
-        container& insert(size_type p1, const value_type* ptr)
-        {
-            return insert(p1, ptr, npos);
-        }
-
-        container& insert(size_type p1, size_type n2, value_type ch)
+        
+        container& insert(size_type pos, size_type n, value_type c)
         {
             //allow insert in end_lock() position;
-            if (p1 > m_size) throw stl::exception("out of valid range");
+            if (pos > m_size) throw stl::exception("out of valid range");
 
-            if (n2)
+            if (n)
             {
                 // invalidate for effective insert only
-                invalidate_iterators_gte(p1);
+                invalidate_iterators_gte(pos);
 
-                size_type size = m_size + n2;
+                size_type size = m_size + n;
 
                 grow(size);
 
-                memmove_impl(&m_data[p1 + n2], &m_data[p1], (m_size - p1) * numbytes);
+                memmove_impl(&m_data[pos + n], &m_data[pos], (m_size - pos) * numbytes);
 
-                stl::mem_set(&m_data[p1], ch, n2 * numbytes);
+                stl::mem_set(&m_data[pos], c, n * numbytes);
 
                 eos<T>(size);
             }
@@ -1798,22 +1815,16 @@ namespace stl
             return *this;
         }
 
-        iterator insert(iterator position, const value_type& x)
+        void insert(iterator pos, size_type n, value_type c)
         {
-            insert(position, 1, x);
-            return position;
-        }
-
-        void insert(iterator position, size_type n, const value_type& x)
-        {
-            if (this != position.m_cont) throw stl::exception("invalid iterator");
-            if (position.m_pos > m_size) throw stl::exception("out of valid range");
+            if (this != pos.m_cont) throw stl::exception("invalid iterator");
+            if (pos.m_pos > m_size) throw stl::exception("out of valid range");
 
 
             if (n)
             {
                 size_type size = m_size + n;
-                size_type p1 = position.m_pos;
+                size_type p1 = pos.m_pos;
 
                 // invalidate for effective insert only
                 invalidate_iterators_gte(p1);
@@ -1828,14 +1839,21 @@ namespace stl
             }
         }
 
+        iterator insert(iterator pos, value_type c)
+        {
+            insert(pos, 1, c);
+            return pos; // is it the correct iterator??
+        }
+    
+        template <typename InputIterator>
+        void insert(iterator position, InputIterator first, InputIterator last)
+        {
+            insert_(position, first, last);
+        }
+
 
     private:
-        /*
-        implementation of:
-        template<class InputIterator>
-        void insert ( iterator p, InputIterator first, InputIterator last );
-        */
-        inline void insert_impl(size_type p1, const iterator& first, const iterator& last)
+        inline void insert_(iterator& pos, iterator& first, iterator& last)
         {
             if (this == first.m_cont)
             {
@@ -1865,7 +1883,7 @@ namespace stl
             }
         }
 
-        inline void insert_impl(size_type p1, const const_iterator& first, const const_iterator& last)
+        inline void insert_(iterator& pos, const_iterator& first, const_iterator& last)
         {
             if (this == first.m_cont)
             {
@@ -1895,72 +1913,18 @@ namespace stl
             }
         }
 
-        inline void insert_impl(size_type p1, const reverse_iterator& first, const reverse_iterator& last)
+        inline void insert_(iterator& position, value_type* first, value_type* last)
         {
-            if (this == first.m_cont)
-            {
-                replace(p1, 0, first, last);
-            }
-            else
-            {
-                if (first.m_cont != last.m_cont || first.m_cont == 0)
-                    throw stl::exception("invalid iterator");
 
-                if (p1 > m_size) throw stl::exception("out of valid range");
-
-                difference_type dist = last - first;
-                if (dist > 0)
-                {
-                    // invalidate for effective insert only
-                    invalidate_iterators_gte(p1);
-
-                    size_type size = m_size + dist;
-                    grow(size);
-
-                    memmove_impl(&m_data[p1 + dist], &m_data[p1], (m_size - p1) * numbytes);
-                    memcpy_impl(&m_data[p1], &((*last.m_cont)[last.m_pos + 1]), dist * numbytes);
-
-                    swap_range(p1, p1 + dist);
-
-                    eos<T>(size);
-                }
-            }
         }
 
-        inline void insert_impl(size_type p1, const const_reverse_iterator& first, const const_reverse_iterator& last)
+        inline void insert_(iterator& position, const value_type* first, const value_type* last)
         {
-            if (this == first.m_cont)
-            {
-                replace(p1, 0, first, last);
-            }
-            else
-            {
-                if (first.m_cont != last.m_cont || first.m_cont == 0)
-                    throw stl::exception("invalid iterator");
-
-                if (p1 > m_size) throw stl::exception("out of valid range");
-
-                difference_type dist = last - first;
-                if (dist > 0)
-                {
-                    // invalidate for effective insert only
-                    invalidate_iterators_gte(p1);
-
-                    size_type size = m_size + dist;
-                    grow(size);
-
-                    memmove_impl(&m_data[p1 + dist], &m_data[p1], (m_size - p1) * numbytes);
-                    memcpy_impl(&m_data[p1], &((*last.m_cont)[last.m_pos + 1]), dist * numbytes);
-
-                    swap_range(p1, p1 + dist);
-
-                    eos<T>(size);
-                }
-            }
+            insert_(position, const_cast<value_type*>(first), const_cast<value_type*>(last));
         }
 
         template<typename InputIterator>
-        inline void insert_impl(size_type p1, const InputIterator& first, const InputIterator& last, stl::random_access_iterator_tag)
+        inline void insert_(size_type p1, const InputIterator& first, const InputIterator& last, stl::random_access_iterator_tag)
         {
             insert_impl(p1, first, last);
         }
@@ -1987,14 +1951,6 @@ namespace stl
 
 
     public:
-        template <typename InputIterator>
-        inline void insert(iterator position, InputIterator first, InputIterator last)
-        {
-            if (position.m_cont != this)
-                throw stl::exception("invalid iterator");
-
-            insert_impl(position.m_pos, first, last, typename stl::iterator_traits<InputIterator>::iterator_category());
-        }
 
         /* $21.3.5 modifiers ( erase ) */
         container& erase(size_type p1 = 0, size_type n1 = npos)

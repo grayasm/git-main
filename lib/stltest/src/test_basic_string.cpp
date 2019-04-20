@@ -44,7 +44,8 @@ void test_basic_string::ctor()
 {
     stl::basic_string<char> s0;
     stl::basic_string<char> s1(s0);
-    stl::basic_string<char> s2(s1, 0, 0);
+    //stl::basic_string<char> s2(s1, 0, 0); -- does not make sense!
+    // it can happen only if s1 is not empty
 
 
     stl::basic_string<char> s3("a string", 8);
@@ -363,19 +364,138 @@ void test_basic_string::assign()
     char c1[] = "0123456789";
     stl::basic_string<char> s1(c1, c1 + 10);
     stl::basic_string<char> s2;
-    s2.assign(s1);
+    s2.assign(s1);      // from other
     CPPUNIT_ASSERT(::strcmp(s2.c_str(), c1) == 0);
+
+    s2.assign(s2);      // from self
+    CPPUNIT_ASSERT(::strcmp(s2.c_str(), "0123456789") == 0);
     
     //  container& assign(const container& str, size_type off, size_type n)
+    char c3[] = "0123456789";
+    stl::basic_string<char> s3(c3, c3 + 10);
+    stl::basic_string<char> s4;
+    s4.assign(s3, 0, 0);
+    CPPUNIT_ASSERT(s4.size() == 0);
+    CPPUNIT_ASSERT(::strcmp(s4.c_str(), "") == 0);
+
+    s4.assign(s3, 0, 10);
+    CPPUNIT_ASSERT(::strcmp(s4.c_str(), c3) == 0);
+
+    stl::basic_string<char> s5;
+    s5.assign(s3, 0, -1);
+    CPPUNIT_ASSERT(::strcmp(s5.c_str(), c3) == 0);
+
+    stl::basic_string<char> s6;
+    s6.assign(s3, 4, 6);
+    CPPUNIT_ASSERT(::strcmp(s6.c_str(), "456789") == 0);
+
+//TODO: check the returned type if not void for all in test_basic_string and test_vector
+    s6.assign(s6, 0, 4);    // from self
+    s6.assign(s6, 2, 2);
+    CPPUNIT_ASSERT(::strcmp(s6.c_str(), "67") == 0);
+
     //  container& assign(const value_type* ptr, size_type n)
+    char c7[] = "0123456789";
+    stl::basic_string<char> s7;
+    s7.assign(c7, 10);
+
+    CPPUNIT_ASSERT(::strcmp(s7.c_str(), c7) == 0);
+
+    s7.assign(s7.c_str() + 3, s7.size() - 3);   // from self
+    CPPUNIT_ASSERT(::strcmp(s7.c_str(), "3456789") == 0);
+    
     //  container& assign(const value_type* ptr)
+    char c8[] = "0123456789";
+    stl::basic_string<char> s8;
+    s8.assign(c8);
+    CPPUNIT_ASSERT(::strcmp(s8.c_str(), c8) == 0);
+    
+    s8.assign(s8.c_str());
+    CPPUNIT_ASSERT(::strcmp(s8.c_str(), c8) == 0);
+
+    s8.assign(s8.c_str() + 5);
+    CPPUNIT_ASSERT(::strcmp(s8.c_str(), "56789") == 0);
+
     //  container& assign(size_type n, const value_type& c)
+    stl::basic_string<char> s9;
+    s9.assign(3, '3');
+    s9.assign(4, '4').c_str();
+    CPPUNIT_ASSERT(::strcmp(s9.c_str(), "4444") == 0);
+    
     //  container& assign(InputIterator first, InputIterator last)
     //  inline container& assign_(iterator& first, iterator& last)
+    char c10[] = "0123456789";
+    stl::basic_string<char> s10(c10, c10 + 10);
+    stl::basic_string<char> s11;
+    s11.assign(s10.begin(), s10.end());     // from other
+    CPPUNIT_ASSERT(::strcmp(s10.c_str(), c10) == 0);
+
+    s11.assign(s11.begin() + 1, s11.end() - 1); // from self
+    CPPUNIT_ASSERT(::strcmp(s11.c_str(), "12345678") == 0);
+    
     //  inline container& assign_(const_iterator& first, const_iterator& last)
+    const stl::basic_string<char>& s11c = s11;
+    stl::basic_string<char> s12;
+    s12.assign(s11c.begin(), s11c.end());   // from other
+    CPPUNIT_ASSERT(::strcmp(s12.c_str(), "12345678") == 0);
+    
+    const stl::basic_string<char>& s12c = s12;
+    s12.assign(s12c.begin() + 1, s12c.end() - 1); // from self
+    CPPUNIT_ASSERT(::strcmp(s12.c_str(), "234567") == 0);
+
     //  inline container& assign_(value_type* first, value_type* last)
+    char c13[] = "0123456789";
+    stl::basic_string<char> s13;
+    s13.assign(c13, c13 + 10);  // from other
+    s13.assign(c13, c13 + 10).c_str();  // check the return type
+    CPPUNIT_ASSERT(::strcmp(s13.c_str(), c13) == 0);
+
+    s13.assign(&s13[0], &s13[0] + 10);  // from self
+    CPPUNIT_ASSERT(::strcmp(s13.c_str(), c13) == 0);
+
     //  inline container& assign_(const value_type* first, const value_type* last)
+    const char c14[] = "0123456789";
+    stl::basic_string<char> s14;
+    s14.assign(c14, c14 + 8);   // from other
+    s14.assign(c14, c14 + 10).c_str();
+    CPPUNIT_ASSERT(::strcmp(s14.c_str(), c14) == 0);
+
+    const stl::basic_string<char>& s14c = s14;
+    s14.assign(&s14c[0], &s14c[0] + 10);    // from self
+    CPPUNIT_ASSERT(::strcmp(s14.c_str(), c14) == 0);
+
     //  inline container& assign_(InputIterator& first, InputIterator& last, stl::forward_iterator_tag)
+    char c15[] = "0123456789";
+    stl::basic_string<char> s15(c15, c15 + 10);
+    stl::basic_string<char> s16;
+    s16.assign(s15.rbegin() + 1, s15.rend() - 1);   // from other
+    CPPUNIT_ASSERT(::strcmp(s16.c_str(), "87654321") == 0);
+
+    s16.assign(s16.rbegin() + 1, s16.rend() - 1).c_str(); // from self
+    CPPUNIT_ASSERT(::strcmp(s16.c_str(), "234567") == 0);
+
     //  inline container& assign_(InputIterator count, InputIterator value, stl::input_iterator_tag)
+    stl::basic_string<char> s17;
+    char count = 5;
+    char value = '5';
+    s17.assign(count, value).c_str();
+    CPPUNIT_ASSERT(::strcmp(s17.c_str(), "55555") == 0);
+}
+
+void test_basic_string::insert()
+{
+    //  container& insert(size_type p1, const container& str)
 
 }
+
+/*
+string (1)      string& insert (size_t pos, const string& str);
+substring (2)   string& insert (size_t pos, const string& str, size_t subpos, size_t sublen);
+c-string (3)    string& insert (size_t pos, const char* s);
+buffer (4)      string& insert (size_t pos, const char* s, size_t n);
+fill (5)        string& insert (size_t pos, size_t n, char c);
+                void insert (iterator p, size_t n, char c);
+haracter (6)    iterator insert (iterator p, char c);
+range (7)       template <class InputIterator>
+                void insert (iterator p, InputIterator first, InputIterator last);
+*/
