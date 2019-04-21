@@ -56,7 +56,7 @@ public:
         val = 0; //!!! always zero initialize; if constructed on the place of a
                  //!!! defunct Cx instance then it will automatically inherit
                  //!!! whatever garbage was there before
-        *this = c; 
+        *this = c;
     }
     Cx& operator=(const Cx& c) {
         if (this != &c) {
@@ -86,7 +86,7 @@ void test_vector::ctor()
 {
     // vector()
     stl::vector<char> v0;
-    
+
     // vector(size_t, const T&);
     stl::vector<short> v1((size_t)5, (short)-1);
     for (int i = 0; i < 5; ++i)
@@ -162,7 +162,7 @@ void test_vector::assign()
     stl::vector<int> v1;
     for (int i = 1; i < 6; ++i)
         v1.push_back(i);
-    
+
     stl::vector<int> v2;
     v2.assign(v1);
     for (size_t i = 0; i < v1.size(); ++i)

@@ -1,18 +1,12 @@
-
-
 #include <stdio.h>
 #include <list>
 #include <limits>
-#include <basic_string.hpp>
+#include <vector.hpp>
 
-namespace stl
-{
-    typedef basic_string<char> string;
-}
 
 int main()
 {
-    stl::string s;
+    stl::vector<int> v;
 
     return 0;
 }

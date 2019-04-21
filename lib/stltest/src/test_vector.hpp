@@ -33,7 +33,7 @@
 
 class test_vector : public CppUnit::TestFixture
 {
-    CPPUNIT_TEST_SUITE(test_vector);	
+    CPPUNIT_TEST_SUITE(test_vector);
 	CPPUNIT_TEST(ctor);
     CPPUNIT_TEST(assign_op);
     CPPUNIT_TEST(assign);

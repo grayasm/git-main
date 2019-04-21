@@ -61,7 +61,7 @@ int main(int argc, char** argv)
 {
 	// disable stdout buffer
 	setvbuf(stdout, NULL, _IONBF, 0);
-	
+
     //http://cppunit.sourceforge.net/doc/lastest/cppunit_cookbook.html
 
     //////////////////////////////////////////////////////////////////////////
@@ -99,10 +99,10 @@ int main(int argc, char** argv)
       queue
       priority_queue
       tree
-    */	
+    */
 
-    // CPPUNIT_TEST_SUITE_REGISTRATION(test_vector);
-    CPPUNIT_TEST_SUITE_REGISTRATION(test_basic_string);
+    CPPUNIT_TEST_SUITE_REGISTRATION(test_vector);
+    // CPPUNIT_TEST_SUITE_REGISTRATION(test_basic_string);
 
 
     //////////////////////////////////////////////////////////////////////////

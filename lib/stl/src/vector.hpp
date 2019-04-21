@@ -773,10 +773,10 @@ namespace stl
         typedef typename Allocator::const_pointer       const_pointer;
 
     public:
-        typedef typename vector_iterator<container>                 iterator;
-        typedef typename vector_const_iterator<container>           const_iterator;
-        typedef typename vector_reverse_iterator<container>         reverse_iterator;
-        typedef typename vector_const_reverse_iterator<container>   const_reverse_iterator;
+        typedef vector_iterator<container>              iterator;
+        typedef vector_const_iterator<container>        const_iterator;
+        typedef vector_reverse_iterator<container>      reverse_iterator;
+        typedef vector_const_reverse_iterator<container> const_reverse_iterator;
 
     private:
         value_type*             m_data;
