@@ -484,18 +484,94 @@ void test_basic_string::assign()
 
 void test_basic_string::insert()
 {
-    //  container& insert(size_type p1, const container& str)
+    //  container& insert(size_type pos, const container& str)
+    char c1[] = "0123456789";
+    stl::basic_string<char> s1(c1, c1 + 10);
+    
+    stl::basic_string<char> s2;
+    s2.insert(s2.size(), s1);   // in end() position
+    CPPUNIT_ASSERT(::strcmp(s2.c_str(), "0123456789") == 0);
 
+    s2.insert(0, s1);           // in 0 position
+    CPPUNIT_ASSERT(::strcmp(s2.c_str(), "01234567890123456789") == 0);
+
+    stl::basic_string<char> s3;
+    s3 = s1;
+    s3.insert(5, s1).c_str();   // in middle position (test return type)
+    CPPUNIT_ASSERT(::strcmp(s3.c_str(), "01234012345678956789") == 0);
+
+    //  container& insert(size_type pos, const container& str, size_type off, size_type n)
+    stl::basic_string<char> s4("0123456789");
+    stl::basic_string<char> s5("abcdef");
+
+    stl::basic_string<char> s6(s4), s7(s4), s8(s4);
+    s6.insert(0, s5, 0, s5.size());           // in 0 position
+    s7.insert(5, s5, 0, s5.size());           // in middle position
+    s8.insert(s8.size(), s5, 0, s5.size());   // in end() position
+
+    CPPUNIT_ASSERT(::strcmp(s6.c_str(), "abcdef0123456789") == 0);
+    CPPUNIT_ASSERT(::strcmp(s7.c_str(), "01234abcdef56789") == 0);
+    CPPUNIT_ASSERT(::strcmp(s8.c_str(), "0123456789abcdef") == 0);
+
+
+    stl::basic_string<char> s9(s4), s10(s4), s11(s4);
+    s9.insert(0, s5, 0, 3);                     // in 0 position
+    s10.insert(5, s5, 1, -1);                   // in middle position w/ -1
+    s11.insert(s11.size(), s5, 2, 4);           // in end() position
+
+    CPPUNIT_ASSERT(::strcmp(s9.c_str(), "abc0123456789") == 0);
+    CPPUNIT_ASSERT(::strcmp(s10.c_str(), "01234bcdef56789") == 0);
+    CPPUNIT_ASSERT(::strcmp(s11.c_str(), "0123456789cdef") == 0);
+
+    stl::basic_string<char> s12(s4);
+    s12.insert(2, s12, 2, 2).c_str();           // self insert w/ overlapping
+                                                // + test return type
+
+    CPPUNIT_ASSERT(::strcmp(s12.c_str(), "012323456789") == 0);
+
+    //  container& insert(size_type pos, const value_type* ptr)
+    stl::basic_string<char> s13("0123456789");
+    stl::basic_string<char> s14("abcdef");
+    
+    stl::basic_string<char> s15(s13), s16(s13), s17(s13);
+    s15.insert(0, s14.c_str() + 0);         // in 0 position
+    s16.insert(5, s14.c_str() + 3);         // in middle position
+    s17.insert(s17.size(), s14.c_str() + 3);// in end() position
+
+    CPPUNIT_ASSERT(::strcmp(s15.c_str(), "abcdef0123456789") == 0);
+    CPPUNIT_ASSERT(::strcmp(s16.c_str(), "01234def56789") == 0);
+    CPPUNIT_ASSERT(::strcmp(s17.c_str(), "0123456789def") == 0);
+
+    stl::basic_string<char> s18(s14), s19(s14), s20(s14);
+    s18.insert(s18.size(), s18.c_str() + 3);// in end() from self
+    s19.insert(5, s19.c_str() + 3);         // in middle from self
+    s20.insert(0, s20.c_str()).c_str();     // in 0 from self (test return)
+
+    CPPUNIT_ASSERT(::strcmp(s18.c_str(), "abcdefdef") == 0);
+    CPPUNIT_ASSERT(::strcmp(s19.c_str(), "abcdedeff") == 0);
+    CPPUNIT_ASSERT(::strcmp(s20.c_str(), "abcdefabcdef") == 0);
+
+    //  container& insert(size_type pos, const value_type* ptr, size_type n)
+    stl::basic_string<char> s21("0123456789");
+    stl::basic_string<char> s22(s21), s23(s21), s24(s21);
+    s22.insert(0, "abcdef", 6);             // in 0 position
+    s23.insert(5, "abcdef", 5);             // in middle position
+    s24.insert(s24.size(), "abcdef", 4);    // in end() position
+
+    CPPUNIT_ASSERT(::strcmp(s22.c_str(), "abcdef0123456789") == 0);
+    CPPUNIT_ASSERT(::strcmp(s23.c_str(), "01234abcde56789") == 0);
+    CPPUNIT_ASSERT(::strcmp(s24.c_str(), "0123456789abcd") == 0);
+
+    stl::basic_string<char> s25("ABCabc"), s26("ABCabc"), s27("ABCabc");
+    s25.insert(0, s25.c_str() + 1, 3).c_str();          // in 0 from self (+ return type)
+    s26.insert(5, s26.c_str() + 1, 3);                  // in middle from self
+    s27.insert(s27.size(), s27.c_str(), s27.size());    // in end() from self
+
+    CPPUNIT_ASSERT(::strcmp(s25.c_str(), "BCaABCabc") == 0);
+    CPPUNIT_ASSERT(::strcmp(s26.c_str(), "ABCabBCac") == 0);
+    CPPUNIT_ASSERT(::strcmp(s27.c_str(), "ABCabcABCabc") == 0);
+
+    stl::basic_string<char> s28("0123456789");
+    s28.insert(2, s28.c_str(), s28.size());
+    CPPUNIT_ASSERT(::strcmp(s28.c_str(), "0101234567893456789") == 0);
 }
-
-/*
-string (1)      string& insert (size_t pos, const string& str);
-substring (2)   string& insert (size_t pos, const string& str, size_t subpos, size_t sublen);
-c-string (3)    string& insert (size_t pos, const char* s);
-buffer (4)      string& insert (size_t pos, const char* s, size_t n);
-fill (5)        string& insert (size_t pos, size_t n, char c);
-                void insert (iterator p, size_t n, char c);
-haracter (6)    iterator insert (iterator p, char c);
-range (7)       template <class InputIterator>
-                void insert (iterator p, InputIterator first, InputIterator last);
-*/

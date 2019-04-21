@@ -101,8 +101,8 @@ int main(int argc, char** argv)
       tree
     */
 
-    CPPUNIT_TEST_SUITE_REGISTRATION(test_vector);
-    // CPPUNIT_TEST_SUITE_REGISTRATION(test_basic_string);
+    // CPPUNIT_TEST_SUITE_REGISTRATION(test_vector);
+    CPPUNIT_TEST_SUITE_REGISTRATION(test_basic_string);
 
 
     //////////////////////////////////////////////////////////////////////////
