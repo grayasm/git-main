@@ -1721,6 +1721,12 @@ namespace stl
             {
                 size_type size = m_size + len;
 
+                /*  Insert self content:
+                    A buffer is not required. When making room for the new
+                    content, a portion of m_data is moved beyond
+                    m_data+m_size which means the source m_data remains
+                    valid.
+                */
                 grow(size + 1);
 
                 // move content unless insert position is end()
@@ -1765,22 +1771,28 @@ namespace stl
 
                 size_type size = m_size + n;
 
-                grow(size + 1);
+                if (this == &str)
+                {
+                    container temp(&m_data[off], &m_data[off] + n);
 
-                // move content unless insert position is end()
-                if (pos < m_size)
-                {
-                    // size_type dst_valid_sz = (pos + n < m_size ? (m_size - pos - n) : 0);
-                    stl::mem_move(&m_data[pos + n], 0, &m_data[pos], (m_size - pos), m_allocator);
-                }
+                    grow(size + 1);
 
-                if (this == &str) // insert self content
-                {
-                    // size_type dst_valid_sz = (m_size - pos);
-                    stl::mem_move(&m_data[pos], 0, &m_data[off], n, m_allocator);
+                    // move content unless insert position is end()
+                    if (pos < m_size)
+                    {
+                        stl::mem_move(&m_data[pos + n], 0, &m_data[pos], (m_size - pos), m_allocator);
+                    }
+                    stl::mem_copy(&m_data[pos], 0, temp.m_data, n, m_allocator);
                 }
-                else // insert other's content
+                else
                 {
+                    grow(size + 1);
+
+                    // move content unless insert position is end()
+                    if (pos < m_size)
+                    {
+                        stl::mem_move(&m_data[pos + n], 0, &m_data[pos], (m_size - pos), m_allocator);
+                    }
                     stl::mem_copy(&m_data[pos], 0, &str.m_data[off], n, m_allocator);
                 }
 
@@ -1802,22 +1814,28 @@ namespace stl
             {
                 size_type size = m_size + len;
 
-                grow(size + 1);
+                if (m_data <= ptr && (m_data + m_size) > ptr)
+                {
+                    container temp(ptr, static_cast<const value_type*>(m_data + m_size));
 
-                // move content unless insert position is end()
-                if (pos < m_size)
-                {
-                    // size_type dst_valid_sz = (pos + len < m_size ? (m_size - pos - len) : 0);
-                    stl::mem_move(&m_data[pos + len], 0, &m_data[pos], (m_size - pos), m_allocator);
-                }
+                    grow(size + 1);
 
-                if (m_data <= ptr && (m_data + m_size) > ptr) // self content
-                {
-                    // size_type dst_valid_sz = m_size - pos;
-                    stl::mem_move(&m_data[pos], 0, ptr, len, m_allocator);
+                    // move content unless insert position is end()
+                    if (pos < m_size)
+                    {
+                        stl::mem_move(&m_data[pos + len], 0, &m_data[pos], (m_size - pos), m_allocator);
+                    }
+                    stl::mem_copy(&m_data[pos], 0, temp.m_data, len, m_allocator);
                 }
-                else // ptr is outside this container
+                else
                 {
+                    grow(size + 1);
+
+                    // move content unless insert position is end()
+                    if (pos < m_size)
+                    {
+                        stl::mem_move(&m_data[pos + len], 0, &m_data[pos], (m_size - pos), m_allocator);
+                    }
                     stl::mem_copy(&m_data[pos], 0, ptr, len, m_allocator);
                 }
 
@@ -1842,22 +1860,28 @@ namespace stl
 
                 size_type size = m_size + n;
 
-                grow(size + 1);
+                if (m_data <= ptr && (m_data + m_size) > ptr)
+                {
+                    container temp(ptr, ptr + n);
 
-                // move content unless insert position is end()
-                if (pos < m_size)
-                {
-                    // size_type dst_valid_sz = (pos + n < m_size ? (m_size - pos - n) : 0);
-                    stl::mem_move(&m_data[pos + n], 0, &m_data[pos], (m_size - pos), m_allocator);
-                }
+                    grow(size + 1);
 
-                if (m_data <= ptr && (m_data + m_size) > ptr) // self content
-                {
-                    // size_type dst_valid_sz = m_size - pos;
-                    stl::mem_move(&m_data[pos], 0, pt r, n, m_allocator);
+                    // move content unless insert position is end()
+                    if (pos < m_size)
+                    {
+                        stl::mem_move(&m_data[pos + n], 0, &m_data[pos], (m_size - pos), m_allocator);
+                    }
+                    stl::mem_move(&m_data[pos], 0, temp.m_data, n, m_allocator);
                 }
-                else // ptr is outside this container
+                else
                 {
+                    grow(size + 1);
+
+                    // move content unless insert position is end()
+                    if (pos < m_size)
+                    {
+                        stl::mem_move(&m_data[pos + n], 0, &m_data[pos], (m_size - pos), m_allocator);
+                    }
                     stl::mem_copy(&m_data[pos], 0, ptr, n, m_allocator);
                 }
 
@@ -1867,139 +1891,232 @@ namespace stl
             return *this;
         }
         
-        container& insert(size_type pos, size_type n, value_type c) // done
+        container& insert(size_type pos, size_type n, value_type c)
         {
-            //allow insert in end_lock() position;
-            if (pos > m_size) throw stl::exception("out of valid range");
+            // allow to insert in position = end(), aka pos == m_size;
+            if (pos > m_size)
+                throw stl::exception("out of valid range");
 
             if (n)
             {
-                // invalidate for effective insert only
-                invalidate_iterators_gte(pos);
-
                 size_type size = m_size + n;
 
-                grow(size);
+                grow(size + 1);
 
-                memmove_impl(&m_data[pos + n], &m_data[pos], (m_size - pos) * numbytes);
+                // move content unless insert position is end()
+                if (pos < m_size)
+                {
+                    stl::mem_move(&m_data[pos + n], 0, &m_data[pos], (m_size - pos), m_allocator);
+                }
 
-                stl::mem_set(&m_data[pos], c, n * numbytes);
+                stl::mem_set(&m_data[pos], c, n * sizeof(value_type), m_allocator);
 
-                eos<T>(size);
+                endof(size);
             }
 
             return *this;
         }
 
-        void insert(iterator pos, size_type n, value_type c) // done
+        void insert(iterator position, size_type n, value_type c)
         {
-            if (this != pos.m_cont) throw stl::exception("invalid iterator");
-            if (pos.m_pos > m_size) throw stl::exception("out of valid range");
-
+            if (this != position.m_cont || position.m_pos > m_size)
+                throw stl::exception("invalid iterator");
 
             if (n)
             {
+                size_type pos = position.m_pos;
                 size_type size = m_size + n;
-                size_type p1 = pos.m_pos;
 
-                // invalidate for effective insert only
-                invalidate_iterators_gte(p1);
+                grow(size + 1);
 
-                grow(size);
+                // move content unless insert position is end()
+                if (pos < m_size)
+                {
+                    stl::mem_move(&m_data[pos + n], 0, &m_data[pos], (m_size - pos), m_allocator);
+                }
 
-                memmove_impl(&m_data[p1 + n], &m_data[p1], (m_size - p1) * numbytes);
+                stl::mem_set(&m_data[pos], c, n * sizeof(value_type), m_allocator);
 
-                stl::mem_set(&m_data[p1], x, n * numbytes);
-
-                eos<T>(size);
+                endof(size);
             }
         }
 
-        iterator insert(iterator pos, value_type c) // done
+        iterator insert(iterator position, value_type c)
         {
-            insert(pos, 1, c);
-            return pos; // is it the correct iterator??
+            if (this != position.m_cont || position.m_pos > m_size)
+                throw stl::exception("invalid iterator");
+
+            size_type pos = position.m_pos;
+            size_type size = m_size + 1;
+
+            grow(size + 1);
+
+            // move content unless insert position is end()
+            if (pos < m_size)
+            {
+                stl::mem_move(&m_data[pos + 1], 0, &m_data[pos], (m_size - pos), m_allocator);
+            }
+
+            stl::mem_set(&m_data[pos], c, 1 * sizeof(value_type), m_allocator);
+
+            endof(size);
+
+            return position;
         }
     
         template <typename InputIterator>
-        void insert(iterator position, InputIterator first, InputIterator last) // done
+        void insert(iterator position, InputIterator first, InputIterator last)
         {
             insert_(position, first, last);
         }
 
 
     private:
-        inline void insert_(iterator& pos, iterator& first, iterator& last)
+        inline void insert_(iterator& position, iterator& first, iterator& last)
         {
-            if (this == first.m_cont)
-            {
-                replace_impl(p1, 0, first, last);
-            }
-            else
-            {
-                if (first.m_cont != last.m_cont || first.m_cont == 0)
-                    throw stl::exception("invalid iterator");
+            // allow to insert in position = end(), aka m_pos == m_size;
+            if (position.m_cont != this || position.m_pos > m_size)
+                throw stl::exception("invalid iterator");
 
-                if (p1 > m_size) throw stl::exception("out of valid range");
+            if (first.m_cont != last.m_cont || first.m_cont == 0)
+                throw stl::exception("invalid iterator");
 
-                difference_type dist = last - first;
-                if (dist > 0)
+            // if last < first then let it blow up.
+            size_type dist = static_cast<size_type>(last - first);
+            if (dist > 0)
+            {
+                size_type p = position.m_pos;
+                size_type size = m_size + dist;
+
+                grow(size + 1);
+
+                // Is the range inside this container ?
+                if (first.m_cont == this)
                 {
-                    // invalidate for effective insert only
-                    invalidate_iterators_gte(p1);
+//TODO: can be optimized by passing pointers (e.g. first.m_cont + first.m_pos,..)
+                    container temp;
+                    temp.assign(first, last);
 
-                    size_type size = m_size + dist;
-                    grow(size);
-
-                    memmove_impl(&m_data[p1 + dist], &m_data[p1], (m_size - p1) * numbytes);
-                    memcpy_impl(&m_data[p1], &((*first.m_cont)[first.m_pos]), dist * numbytes);
-
-                    eos<T>(size);
+                    // move content unless insert position is end()
+                    if (p < m_size)
+                    {
+                        stl::mem_move(&m_data[p + dist], 0, &m_data[p], (m_size - p), m_allocator);
+                    }
+                    stl::mem_copy(&m_data[p], 0, temp.m_data, dist, m_allocator);
                 }
+                else// range is outside this container
+                {
+                    // move content unless insert positions is end()
+                    if (p < m_size)
+                    {
+                        stl::mem_move(&m_data[p + dist], 0, &m_data[p], (m_size - p), m_allocator);
+                    }
+                    stl::mem_copy(&m_data[p], 0, &((*first.m_cont)[first.m_pos]), dist, m_allocator);
+                }
+
+                endof(size);
             }
         }
 
-        inline void insert_(iterator& pos, const_iterator& first, const_iterator& last)
+        inline void insert_(iterator& position, const_iterator& first, const_iterator& last)
         {
-            if (this == first.m_cont)
-            {
-                replace(p1, 0, first, last);
-            }
-            else
-            {
-                if (first.m_cont != last.m_cont || first.m_cont == 0)
-                    throw stl::exception("invalid iterator");
+            // allow to insert in position = end(), aka m_pos == m_size;
+            if (position.m_cont != this || position.m_pos > m_size)
+                throw stl::exception("invalid iterator");
 
-                if (p1 > m_size) throw stl::exception("out of valid range");
+            if (first.m_cont != last.m_cont || first.m_cont == 0)
+                throw stl::exception("invalid iterator");
 
-                difference_type dist = last - first;
-                if (dist > 0)
+            // if last < first then let it blow up.
+            size_type dist = static_cast<size_type>(last - first);
+            if (dist > 0)
+            {
+                size_type p = position.m_pos;
+                size_type size = m_size + dist;
+
+                grow(size + 1);
+
+                // Is the range inside this container ?
+                if (first.m_cont == this)
                 {
-                    // invalidate for effective insert only
-                    invalidate_iterators_gte(p1);
+                    container temp;
+                    temp.assign(first, last);
 
-                    size_type size = m_size + dist;
-                    grow(size);
-
-                    memmove_impl(&m_data[p1 + dist], &m_data[p1], (m_size - p1) * numbytes);
-                    memcpy_impl(&m_data[p1], &((*first.m_cont)[first.m_pos]), dist * numbytes);
-
-                    eos<T>(size);
+                    // move content unless insert position is end()
+                    if (p < m_size)
+                    {
+                        stl::mem_move(&m_data[p + dist], 0, &m_data[p], (m_size - p), m_allocator);
+                    }
+                    stl::mem_copy(&m_data[p], 0, temp.m_data, dist, m_allocator);
                 }
+                else// range is outside this container
+                {
+                    // move content unless insert positions is end()
+                    if (p < m_size)
+                    {
+                        stl::mem_move(&m_data[p + dist], 0, &m_data[p], (m_size - p), m_allocator);
+                    }
+
+                    stl::mem_copy(&m_data[p], 0, &((*first.m_cont)[first.m_pos]), dist, m_allocator);
+                }
+
+                endof(size);
             }
         }
 
         inline void insert_(iterator& position, value_type* first, value_type* last)
         {
+            // allow to insert in position = end(), aka m_pos == m_size;
+            if (position.m_cont != this || position.m_pos > m_size)
+                throw stl::exception("invalid iterator");
 
+            // if last < first then let it blow up.
+            size_type dist = static_cast<size_type>(last - first);
+
+            if (dist > 0)
+            {
+                size_type p = position.m_pos;
+                size_type size = m_size + dist;
+
+                const T& check = *first;
+
+                // Is the range inside this container ?
+                if (m_data <= &check && (m_data + m_size) > &check)
+                {
+                    container temp;
+                    temp.assign(first, last);
+
+                    // can relocate m_data and invalidate first,last pointers
+                    grow(size + 1);
+
+                    // move content unless insert position is end()
+                    if (p < m_size)
+                    {
+                        stl::mem_move(&m_data[p + dist], 0, &m_data[p], (m_size - p), m_allocator);
+                    }
+                    stl::mem_copy(&m_data[p], 0, temp.m_data, dist, m_allocator);
+                }
+                else// range is outside this container
+                {
+                    grow(size + 1);
+
+                    // move content unless insert position is end()
+                    if (p < m_size)
+                    {
+                        stl::mem_move(&m_data[p + dist], 0, &m_data[p], (m_size - p), m_allocator);
+                    }
+
+                    stl::mem_copy(&m_data[p], 0, first, dist, m_allocator);
+                }
+
+                endof(size);
+            }
         }
 
         inline void insert_(iterator& position, const value_type* first, const value_type* last)
         {
             insert_(position, const_cast<value_type*>(first), const_cast<value_type*>(last));
         }
-
-
 
         template<typename InputIterator>
         inline void insert_(iterator& position, InputIterator& first, InputIterator& last)
@@ -2010,482 +2127,894 @@ namespace stl
         template<typename InputIterator>
         inline void insert_(iterator& position, InputIterator& first, InputIterator& last, stl::forward_iterator_tag)
         {
+            // allow to insert in position = end(), aka m_pos == m_size;
+            if (position.m_cont != this || position.m_pos > m_size)
+                throw stl::exception("invalid iterator");
 
+            // first type can be stl::reverse_iterator, int* or some other iterator
+            // cannot check with: if(fist.m_cont != last.m_cont)
+
+            // if last < first then let it blow up.
+            size_type dist = static_cast<size_type>(stl::distance(first, last));
+            if (dist > 0)
+            {
+                size_type p = position.m_pos;
+                size_type size = m_size + dist;
+
+                const T& check = *first;
+
+                // Is the range inside this container ?
+                if (m_data <= &check && (m_data + m_size) > &check)
+                {
+                    container temp;
+                    temp.assign(first, last);
+
+                    // for safety, although could not invalidate the input for this case
+                    grow(size + 1);
+
+                    // move content unless insert position is end()
+                    if (p < m_size)
+                    {
+                        stl::mem_move(&m_data[p + dist], 0, &m_data[p], (m_size - p), m_allocator);
+                    }
+                    stl::mem_copy(&m_data[p], 0, temp.m_data, dist, m_allocator);
+                }
+                else// range is outside this container
+                {
+                    grow(size + 1);
+
+                    // move content unless insert position is end()
+                    if (p < m_size)
+                    {
+                        stl::mem_move(&m_data[p + dist], 0, &m_data[p], (m_size - p), m_allocator);
+                    }
+
+                    for (size_type i = 0; first != last; ++first, ++i)
+                    {
+                        // m_allocator.construct(&m_data[p + i], *first);
+                        m_data[p + i] = *first;
+                    }
+                }
+
+                endof(size);
+            }
         }
 
         template<typename InputIterator>
         inline void insert_(iterator& position, InputIterator n, InputIterator value, stl::input_iterator_tag)
         {
-            if (n2)
+            if (this != position.m_cont || position.m_pos > m_size)
+                throw stl::exception("invalid iterator");
+
+            if (n)
             {
-                // invalidate for effective insert only
-                invalidate_iterators_gte(p1);
+                size_type pos = position.m_pos;
+                size_type size = m_size + n;
 
-                size_type size = m_size + n2;
+                grow(size + 1);
 
-                grow(size);
+                // move content unless insert position is end()
+                if (pos < m_size)
+                {
+                    stl::mem_move(&m_data[pos + n], 0, &m_data[pos], (m_size - pos), m_allocator);
+                }
 
-                memmove_impl(&m_data[p1 + n2], &m_data[p1], (m_size - p1) * numbytes);
+                stl::mem_set(&m_data[pos], value, n * sizeof(value_type), m_allocator);
 
-                stl::mem_set(&m_data[p1], value, n2 * numbytes);
-
-                eos<T>(size);
+                endof(size);
             }
         }
 
 
     public:
-        container& erase(size_type p1 = 0, size_type n1 = npos)
+        /*  pos: Position of the first character to be erased.
+                 If this is greater than the string length, it throws
+                 out_of_range. The first character in str is denoted by
+                 a value of 0 (not 1).
+
+            len: Number of characters to erase (if the string is shorter,
+                 as many characters as possible are erased).
+                 A value of string::npos indicates all characters until
+                 the end of the string.
+        */
+        container& erase(size_type pos = 0, size_type len = npos)
         {
-            if (p1 >= m_size) throw stl::exception("out of valid range");
+            // cannot remove end() position
+            if (pos >= m_size)
+                throw stl::exception("invalid iterator");
 
-            if (n1 > m_size - p1)
-                n1 = m_size - p1;
+            if (len > m_size - pos)
+                len = m_size - pos;
 
-            if (n1)
+            size_type pend = pos + len;
+
+            if (pend < m_size)
             {
-                // invalidate for effective erase only
-                invalidate_iterators_gte(p1);
-
-                memmove_impl(&m_data[p1], &m_data[p1 + n1], (m_size - p1 - n1) * numbytes);
-
-                eos<T>(m_size - n1);
+                stl::mem_move(&m_data[pos], 0, &m_data[pend], (m_size - pend), m_allocator);
             }
+
+            endof(m_size - len);
 
             return *this;
         }
 
+        // position: Iterator to the character to be removed.
         iterator erase(iterator position)
         {
-            if (position.m_cont != this) throw stl::exception("invalid iterator");
-            if (position.m_pos >= m_size) throw stl::exception("out of valid range");
+            // cannot remove end() position
+            if (position.m_cont != this || position.m_pos >= m_size)
+                throw stl::exception("invalid iterator");
 
-            size_type p1 = position.m_pos;
+            size_type pos = position.m_pos;
 
-            invalidate_iterators_gte(p1);
+            stl::mem_move(&m_data[pos], 0, &m_data[pos + 1], (m_size - pos - 1), m_allocator);
 
-            memmove_impl(&m_data[p1], &m_data[p1 + 1], (m_size - p1 - 1) * numbytes);
-
-            eos<T>(m_size - 1);
+            endof(m_size - 1);
 
             return position;
         }
 
+        /*  first, last:
+                Iterators specifying a range within the string] to be removed
+                [first,last). i.e., the range includes all the characters
+                between first and last, including the character pointed
+                by first but not the one pointed by last.
+        */
         iterator erase(iterator first, iterator last)
         {
-            if (first.m_cont != this || last.m_cont != this)
+            if (first.m_cont != last.m_cont || first.m_cont != this)
                 throw stl::exception("invalid iterator");
 
-            difference_type dist = last - first;
+            // if last < first then let it blow up.
+            size_type dist = static_cast<size_type>(last - first);
             if (dist > 0)
             {
-                invalidate_iterators_gte(first.m_pos);
-
-                //fill the gap
-                if (last.m_pos < m_size)
+                size_type count = m_size - last.m_pos;
+                if (count)
                 {
-                    memmove_impl(&m_data[first.m_pos], &m_data[last.m_pos], (m_size - last.m_pos) * numbytes);
+                    stl::mem_move(&m_data[first.m_pos], 0, &m_data[last.m_pos], count, m_allocator);
                 }
 
-                eos<T>(m_size - dist);
+                endof(m_size - dist);
             }
 
             return first;
         }
 
+        /*  pos: Position of the first character to be replaced. If this is
+                 greater than the string length, it throws out_of_range.
 
-        /* $21.3.5 modifiers ( replace ) */
-        container& replace(size_type p1, size_type n1, const container& str)
+            len: Number of characters to replace (if the string is shorter,
+                 as many characters as possible are replaced).
+                 A value of string::npos indicates all characters until
+                 the end of the string.
+
+            str: Another string object, whose value is copied.
+        */
+        container& replace(size_type pos, size_type len, const container& str)
         {
-            return replace(p1, n1, str, 0, str.length());
-        }
+            if (pos >= m_size)
+                throw stl::exception("out of valid range");
 
-        container& replace(size_type p1, size_type n1, const container& str, size_type p2, size_type n2)
-        {
-            if (p1 >= m_size) throw stl::exception("out of valid range");
-            if (n1 > m_size - p1)
-                n1 = m_size - p1;
-            size_type str_size = str.length();
-            if (p2 > str_size) throw stl::exception("out of valid range");
-            if (n2 > str_size - p2)
-                n2 = str_size - p2;
-            size_type size = m_size - n1 + n2;
+            if (len > m_size - pos)
+                len = m_size - pos;
 
-            invalidate_iterators_gte(p1);
+            size_type slen = str.length();
+            size_type size = m_size - len + slen;
+            
+            grow(size + 1);
 
-            grow(size);
-
-            if (this != &str)
+            if (this == &str) // insert self content
             {
-                memmove_impl(&m_data[p1 + n2], &m_data[p1 + n1], (m_size - p1 - n1) * numbytes);
-                memcpy_impl(&m_data[p1], &str.m_data[p2], n2 * numbytes);
+                container temp(str);
 
+                size_type tail = m_size - pos - len;
+                if (tail)
+                {
+                    stl::mem_move(&m_data[pos + slen], 0, &m_data[pos + len], tail, m_allocator);
+                }
+                stl::mem_copy(&m_data[pos], 0, temp.m_data, slen, m_allocator);
             }
-            else if (p1 >= p2)
+            else // insert from another container
             {
-                /*
-
-                |0|1|2|3|4|5|6|7|8|9|a|b|c|d|e|f|g|x|
-                |x|x|x|x|x|x|
-                |*|*|*|*|*|*|*|*|*|
-                m_size = 17
-                p1=4 n1=6
-                p2=4 n2=9
-                new_size = m_size - n1 + n2 = 20
-                |0|1|2|3|4|5|6|7|8|9|a|b|c|d|e|f|g|!|!|!|x|
-                (1) move tail up
-                s1 = p1 + n1 = 10
-                d1 = p1 + n2 = 13
-                k1 = m_size - s1 = 7
-                |0|1|2|3|4|5|6|7|8|9|a|b|c|a|b|c|d|e|f|g|x|
-                (2) move down
-                s2 = p2 = 4
-                d2 = p1 = 4
-                k2 = n2 = 9
-                |0|1|2|3|4|5|6|7|8|9|a|b|c|a|b|c|d|e|f|g|x|
-                */
-                memmove_impl(&m_data[p1 + n2], &m_data[p1 + n1], (m_size - p1 - n2) * numbytes);
-                memmove_impl(&m_data[p1], &m_data[p2], n2 * numbytes);
-            }
-            else if (p1 + n1 <= p2)
-            {
-                /*
-                |0|1|2|3|4|5|6|7|8|9|a|b|c|d|e|f|g|x|
-                |x|x|x|x|x|
-                |*|*|*|
-                m_size = 17
-                p1=2 n1=5
-                p2=7 n2=3
-                new_size = m_size - n1 + n2 = 15
-                |0|1|2|3|4|5|6|7|8|9|a|b|c|d|e|f|g|x|
-                (1) move tail up
-                s1 = p1 + n1 = 7
-                d1 = p1 + n2 = 5
-                k1 = m_size - s1 = 10
-                |0|1|2|3|4|7|8|9|a|b|c|d|e|f|g|f|g|x|
-                (2) move down
-                s2 = d1 + p2 - s1 = 5
-                d2 = p1 = 2
-                k2 = n2 = 3
-                |0|1|7|8|9|7|8|9|a|b|c|d|e|f|g|f|g|x|
-                |0|1|7|8|9|7|8|9|a|b|c|d|e|f|g|x|!|!|
-                */
-                memmove_impl(&m_data[p1 + n2], &m_data[p1 + n1], (m_size - p1 - n1) * numbytes);
-                memmove_impl(&m_data[p1], &m_data[p1 + n2 + p2 - p1 - n1], n2 * numbytes);
-            }
-            /* p1 + n1 > p2 , need to check additional condition */
-            else if (n1 < n2)
-            {
-                /*
-                |0|1|2|3|4|5|6|7|8|9|a|b|c|d|e|f|g|x|
-                |x|x|x|
-                |*|*|*|*|*|*|*|*|*|*|*|
-                m_size = 17
-                p1=2 n1=3
-                p2=4 n2=11
-                new_size = m_size - n1 + n2 = 25
-                |0|1|2|3|4|5|6|7|8|9|a|b|c|d|e|f|g|!|!|!|!|!|!|!|!|x|
-                (1) move tail up
-                s1 = p1 + n1 = 5
-                d1 = p1 + n2 = 13
-                k1 = m_size - s1 = 12
-                |0|1|2|3|4|5|6|7|8|9|a|b|c|5|6|7|8|9|a|b|c|d|e|f|g|x|
-                (2) move down 1st part
-                s2 = p2 = 4
-                d2 = p1 = 2
-                k2 = p1 + n1 - p2 = 1
-                |0|1|4|3|4|5|6|7|8|9|a|b|c|5|6|7|8|9|a|b|c|d|e|f|g|x|
-                (3) move down 2nd part
-                s3 = p1 + n2 = 13
-                d3 = p1 + k2 = 3
-                k3 = n2 - k2 = 10
-                |0|1|4|5|6|7|8|9|a|b|c|d|e|5|6|7|8|9|a|b|c|d|e|f|g|x|
-                */
-                memmove_impl(&m_data[p1 + n2], &m_data[p1 + n1], (m_size - p1 - n1) * numbytes);
-                memmove_impl(&m_data[p1], &m_data[p2], (p1 + n1 - p2) * numbytes);
-                memmove_impl(&m_data[p1 + p1 + n1 - p2], &m_data[p1 + n2], (n2 - p1 - n1 + p2) * numbytes);
-            }
-            /* p1 + n1 > p2 , it is assumed n1 >= n2, it can't be otherwise */
-            else
-            {
-                /*
-                |0|1|2|3|4|5|6|7|8|9|a|b|c|d|e|f|g|x|
-                |x|x|x|x|x|x|x|
-                |*|*|
-                m_size = 17
-                p1=2 n1=7
-                p2=8 n2=2
-                new_size = m_size - n1 + n2 = 12
-                |0|1|2|3|4|5|6|7|8|9|a|b|c|d|e|f|g|x|
-                (1) move down
-                s1 = p2 = 8
-                d1 = p1 = 2
-                k1 = n2 = 2
-                |0|1|8|9|4|5|6|7|8|9|a|b|c|d|e|f|g|x|
-                (2) move tail down
-                s2 = p1 + n1 = 9
-                d2 = p1 + n2 = 4
-                k2 = m_size - s2 = 8
-                |0|1|8|9|9|a|b|c|d|e|f|g|c|d|e|f|g|x|
-                |0|1|2|3|4|5|6|7|8|9|a|b|x|!|!|!|!|!|
-                */
-                memmove_impl(&m_data[p1], &m_data[p2], n2 * numbytes);
-                memmove_impl(&m_data[p1 + n2], &m_data[p1 + n1], (m_size - p1 - n1) * numbytes);
+                size_type tail = m_size - pos - len;
+                if (tail)
+                {
+                    stl::mem_move(&m_data[pos + slen], 0, &m_data[pos + len], tail, m_allocator);
+                }
+                stl::mem_copy(&m_data[pos], 0, str.m_data, slen, m_allocator);
             }
 
-            eos<T>(size);
-            return *this;
-        }
-
-        container& replace(size_type p1, size_type n1, const value_type* ptr, size_type n2)
-        {
-            //if (inside(ptr))
-            if (m_data <= ptr && m_data + m_size > ptr)
-            {
-                return replace(p1, n1, *this, ptr - m_data, n2);
-            }
-            else
-            {
-                if (p1 >= m_size) throw stl::exception("out of valid range");
-
-                invalidate_iterators_gte(p1);
-
-                if (n1 > m_size - p1)
-                    n1 = m_size - p1;
-                size_type ptrLen = length<value_type>(ptr);
-                if (n2 > ptrLen)
-                    n2 = ptrLen;
-
-                size_type size = m_size - n1 + n2;
-                grow(size);
-
-                //move tail
-                memmove_impl(&m_data[p1 + n2], &m_data[p1 + n1], (m_size - p1 - n1) * numbytes);
-                //copy data
-                memcpy_impl(&m_data[p1], ptr, n2 * numbytes);
-
-                eos<T>(size);
-                return *this;
-            }
-        }
-
-        container& replace(size_type p1, size_type n1, const value_type* ptr)
-        {
-            return replace(p1, n1, ptr, npos);
-        }
-
-        container& replace(size_type p1, size_type n1, size_type n2, value_type ch)
-        {
-            if (p1 >= m_size) throw stl::exception("out of valid range");
-
-            invalidate_iterators_gte(p1);
-
-            if (n1 > m_size - p1)
-                n1 = m_size - p1;
-            size_type size = m_size - n1 + n2;
-
-            grow(size);
-
-            //move tail up
-            memmove_impl(&m_data[p1 + n2], &m_data[p1 + n1], (m_size - p1 - n1) * numbytes);
-
-            //set range
-            stl::mem_set(&m_data[p1], ch, n2 * numbytes);
-
-            eos<T>(size);
+            endof(size);
 
             return *this;
         }
 
-        container& replace(iterator first, iterator last, const container& str)
+        /*  first, last:
+                Replaces the part of the string in the range
+                between [first,last) by new contents.
+        */
+        inline container& replace(iterator first, iterator last, const container& str)
         {
             if (first.m_cont != last.m_cont || first.m_cont != this)
                 throw stl::exception("invalid iterator");
 
-            difference_type dist = last - first;
+            if (first.m_pos > last.m_pos || last.m_pos > m_size)
+                throw stl::exception("out of valid range");
 
-            if (dist < 0)
-                dist = 0;
+            size_type pos = first.m_pos;
+            size_type len = static_cast<size_type>(last.m_pos - first.m_pos);
+            size_type slen = str.length();
+            size_type size = m_size - len + slen;
 
-            return replace(first.m_pos, static_cast<size_type>(dist), str, 0, str.length());
+            grow(size + 1);
+
+            if (this == &str) // insert self content
+            {
+                container temp(str);
+
+                size_type tail = m_size - pos - len;
+                if (tail)
+                {
+                    stl::mem_move(&m_data[pos + slen], 0, &m_data[pos + len], tail, m_allocator);
+                }
+                stl::mem_copy(&m_data[pos], 0, temp.m_data, slen, m_allocator);
+            }
+            else // insert from another container
+            {
+                size_type tail = m_size - pos - len;
+                if (tail)
+                {
+                    stl::mem_move(&m_data[pos + slen], 0, &m_data[pos + len], tail, m_allocator);
+                }
+                stl::mem_copy(&m_data[pos], 0, str.m_data, slen, m_allocator);
+            }
+
+            endof(size);
+
+            return *this;
         }
 
-        container& replace(iterator first, iterator last, const value_type* ptr, size_type n2)
+
+        /*  pos: Position of the first character to be replaced. If this is
+                 greater than the string length, it throws out_of_range.
+            len: Number of characters to replace (if the string is shorter,
+                 as many characters as possible are replaced).
+                 A value of string::npos indicates all characters until
+                 the end of the string.
+            str: Another string object, whose value is copied.
+         subpos: Position of the first character in str that is copied to the
+                 object as replacement. If this is greater than str's length,
+                 it throws out_of_range.
+         sublen: Length of the substring to be copied (if the string is
+                 shorter, as many characters as possible are copied).
+                 A value of string::npos indicates all characters until
+                 the end of str.
+        */
+        container& replace(size_type pos, size_type len, const container& str, size_type subpos, size_type sublen)
         {
-            if (first.m_cont != last.m_cont || first.m_cont != this)
-                throw stl::exception("invalid iterator");
+            if (pos >= m_size)
+                throw stl::exception("out of valid range");
 
-            difference_type dist = last - first;
+            if (len > m_size - pos)
+                len = m_size - pos;
 
-            if (dist < 0)
-                dist = 0;
+            size_type slen = str.length();
 
-            return replace(first.m_pos, static_cast<size_type>(dist), ptr, n2);
+            if (subpos >= slen)
+                throw stl::exception("out of valid range");
+
+            if (sublen > slen - subpos)
+                sublen = slen - subpos;
+
+            size_type size = m_size - len + sublen;
+
+            grow(size + 1);
+
+            if (this == &str) // insert self content
+            {
+                container temp(str, subpos, sublen);
+
+                size_type tail = m_size - pos - len;
+                if (tail)
+                {
+                    stl::mem_move(&m_data[pos + sublen], 0, &m_data[pos + len], tail, m_allocator);
+                }
+                stl::mem_copy(&m_data[pos], 0, temp.m_data, sublen, m_allocator);
+            }
+            else // insert from another container
+            {
+                size_type tail = m_size - pos - len;
+                if (tail)
+                {
+                    stl::mem_move(&m_data[pos + sublen], 0, &m_data[pos + len], tail, m_allocator);
+                }
+                stl::mem_copy(&m_data[pos], 0, str.m_data, slen, m_allocator);
+            }
+
+            endof(size);
+
+            return *this;
         }
 
+        /*  pos: Position of the first character to be replaced. If this is
+                 greater than the string length, it throws out_of_range.
+            len: Number of characters to replace (if the string is shorter,
+                 as many characters as possible are replaced).
+                 A value of string::npos indicates all characters until the
+                 end of the string.
+            ptr: Pointer to an array of characters (such as a c-string).
+        */
+        container& replace(size_type pos, size_type len, const char* ptr)
+        {
+            if (pos >= m_size)
+                throw stl::exception("out of valid range");
+
+            if (len > m_size - pos)
+                len = m_size - pos;
+
+            size_type slen = length(ptr);
+            size_type size = m_size - len + slen;
+
+            grow(size + 1);
+
+            if (m_data <= ptr && (m_data + m_size > ptr)) // insert self content
+            {
+                container temp(ptr);
+
+                size_type tail = m_size - pos - len;
+                if (tail)
+                {
+                    stl::mem_move(&m_data[pos + slen], 0, &m_data[pos + len], tail, m_allocator);
+                }
+                stl::mem_copy(&m_data[pos], 0, temp.m_data, slen, m_allocator);
+            }
+            else // insert from another container
+            {
+                size_type tail = m_size - pos - len;
+                if (tail)
+                {
+                    stl::mem_move(&m_data[pos + slen], 0, &m_data[pos + len], tail, m_allocator);
+                }
+                stl::mem_copy(&m_data[pos], 0, ptr, slen, m_allocator);
+            }
+
+            endof(size);
+
+            return *this;
+        }
+
+        /*  first,last:
+                 Replaces the part of the string in the range
+                 between [first,last) by new contents.
+            ptr: Pointer to an array of characters (such as a c-string).
+        */
         container& replace(iterator first, iterator last, const value_type* ptr)
         {
             if (first.m_cont != last.m_cont || first.m_cont != this)
                 throw stl::exception("invalid iterator");
 
-            difference_type dist = last - first;
+            if (first.m_pos > last.m_pos || last.m_pos > m_size)
+                throw stl::exception("out of valid range");
 
-            if (dist < 0)
-                dist = 0;
+            size_type pos = first.m_pos;
+            size_type len = static_cast<size_type>(last.m_pos - first.m_pos);
+            size_type slen = length(ptr);
+            size_type size = m_size - len + slen;
 
-            return replace(first.m_pos, dist, ptr, npos);
+            grow(size + 1);
+
+            if (m_data <= ptr && (m_data + m_size) > ptr) // insert self content
+            {
+                container temp(ptr);
+
+                size_type tail = m_size - pos - len;
+                if (tail)
+                {
+                    stl::mem_move(&m_data[pos + slen], 0, &m_data[pos + len], tail, m_allocator);
+                }
+                stl::mem_copy(&m_data[pos], 0, temp.m_data, slen, m_allocator);
+            }
+            else // insert from another container
+            {
+                size_type tail = m_size - pos - len;
+                if (tail)
+                {
+                    stl::mem_move(&m_data[pos + slen], 0, &m_data[pos + len], tail, m_allocator);
+                }
+                stl::mem_copy(&m_data[pos], 0, ptr, slen, m_allocator);
+            }
+
+            endof(size);
+
+            return *this;
         }
 
-        container& replace(iterator first, iterator last, size_type n2, value_type ch)
+
+        /*  pos: Position of the first character to be replaced. If this is
+                 greater than the string length, it throws out_of_range.
+            len: Number of characters to replace (if the string is shorter,
+                 as many characters as possible are replaced).
+                 A value of string::npos indicates all characters until
+                 the end of the string.
+            ptr: Pointer to an array of characters (such as a c-string).
+              n: Number of characters to copy.
+        */
+        container& replace(size_type pos, size_type len, const value_type* ptr, size_type n)
+        {
+            if (pos >= m_size)
+                throw stl::exception("out of valid range");
+
+            if (len > m_size - pos)
+                len = m_size - pos;
+
+            size_type slen = length(ptr);
+
+            //  treat n as sublen from one of the previous methods
+            size_type sublen = n;
+            if (sublen > slen)
+                sublen = slen;
+
+            size_type size = m_size - len + sublen;
+
+            grow(size + 1);
+
+            if (m_data <= ptr && (m_data + m_size > ptr)) // insert self content
+            {
+                container temp(ptr);
+
+                size_type tail = m_size - pos - len;
+                if (tail)
+                {
+                    stl::mem_move(&m_data[pos + sublen], 0, &m_data[pos + len], tail, m_allocator);
+                }
+                stl::mem_copy(&m_data[pos], 0, temp.m_data, sublen, m_allocator);
+            }
+            else // insert from another container
+            {
+                size_type tail = m_size - pos - len;
+                if (tail)
+                {
+                    stl::mem_move(&m_data[pos + sublen], 0, &m_data[pos + len], tail, m_allocator);
+                }
+                stl::mem_copy(&m_data[pos], 0, ptr, sublen, m_allocator);
+            }
+
+            endof(size);
+
+            return *this;
+        }
+
+        /*  first,last:
+                 Replaces the part of the string in the range
+                 between [first,last) by new contents.
+            ptr: Pointer to an array of characters (such as a c-string).
+              n: Number of characters to copy.
+        */
+        container& replace(iterator first, iterator last, const value_type* ptr, size_type n)
         {
             if (first.m_cont != last.m_cont || first.m_cont != this)
                 throw stl::exception("invalid iterator");
 
-            difference_type dist = last - first;
+            if (first.m_pos > last.m_pos || last.m_pos > m_size)
+                throw stl::exception("out of valid range");
+            
+            size_type slen = length(ptr);
 
-            if (dist < 0)
-                dist = 0;
+            //  treat n as sublen from one of the previous methods
+            size_type sublen = n;
+            if (sublen > slen)
+                sublen = slen;
 
-            return replace(first.m_pos, dist, n2, ch);
+            size_type pos = first.m_pos;
+            size_type len = static_cast<size_type>(last.m_pos - first.m_pos);
+            size_type size = m_size - len + sublen;
+
+            grow(size + 1);
+
+            if (m_data <= ptr && (m_data + m_size) > ptr) // insert self content
+            {
+                container temp(ptr);
+
+                size_type tail = m_size - pos - len;
+                if (tail)
+                {
+                    stl::mem_move(&m_data[pos + sublen], 0, &m_data[pos + len], tail, m_allocator);
+                }
+//TODO: test with sublen == 0 and if tested ok, then add if (sublen) here...
+                stl::mem_copy(&m_data[pos], 0, temp.m_data, sublen, m_allocator);
+            }
+            else // insert from another container
+            {
+                size_type tail = m_size - pos - len;
+                if (tail)
+                {
+                    stl::mem_move(&m_data[pos + sublen], 0, &m_data[pos + len], tail, m_allocator);
+                }
+                stl::mem_copy(&m_data[pos], 0, ptr, sublen, m_allocator);
+            }
+
+            endof(size);
+
+            return *this;
+        }
+
+        /*  pos: Position of the first character to be replaced. If this is
+                 greater than the string length, it throws out_of_range.
+            len: Number of characters to replace (if the string is shorter,
+                 as many characters as possible are replaced).
+                 A value of string::npos indicates all characters until
+                 the end of the string.
+              n: Number of characters to copy.
+              c: Character value, repeated n times.
+        */
+        container& replace(size_type pos, size_type len, size_type n, value_type c)
+        {
+            if (pos >= m_size)
+                throw stl::exception("out of valid range");
+
+            if (len > m_size - pos)
+                len = m_size - pos;
+
+            size_type size = m_size - len + n;
+
+            grow(size + 1);
+
+            size_type tail = m_size - pos - len;
+            if (tail)
+            {
+                stl::mem_move(&m_data[pos + n], 0, &m_data[pos + len], tail, m_allocator);
+            }
+
+            if (n)
+            {
+                stl::mem_set(&m_data[pos], c, n * sizeof(value_type), m_allocator);
+            }
+
+            endof(size);
+
+            return *this;
+        }
+
+        /*  first,last:
+                 Replaces the part of the string in the range
+                 between [first,last) by new contents.
+              n: Number of characters to copy.
+              c: Character value, repeated n times.
+        */
+        container& replace(iterator first, iterator last, size_type n, value_type c)
+        {
+            if (first.m_cont != last.m_cont || first.m_cont != this)
+                throw stl::exception("invalid iterator");
+
+            if (first.m_pos > last.m_pos || last.m_pos > m_size)
+                throw stl::exception("out of valid range");
+
+            size_type pos = first.m_pos;
+            size_type len = static_cast<size_type>(last.m_pos - first.m_pos);
+            size_type size = m_size - len + n;
+
+            grow(size + 1);
+            
+            size_type tail = m_size - pos - len;
+            if (tail)
+            {
+                stl::mem_move(&m_data[pos + n], 0, &m_data[pos + len], tail, m_allocator);
+            }
+
+            if (n)
+            {
+                stl::mem_set(&m_data[pos], c, n * sizeof(value_type), m_allocator);
+            }
+
+            endof(size);
+
+            return *this;
+        }
+
+        //template <class InputIterator>
+        //string& replace(iterator i1, iterator i2, InputIterator first, InputIterator last);
+
+        /*  first,last:
+                 Replaces the part of the string in the range
+                 between [first,last) by new contents.
+            first2,last2:
+                 Input iterators to the initial and final positions in a range.
+                 The range used is [first2,last2), which includes all
+                 the characters between first and last, including the character
+                 pointed by first but not the character pointed by last.
+                 The function template argument InputIterator shall be
+                 an input iterator type that points to elements of a type
+                 convertible to char.
+        */
+        template<typename InputIterator>
+        container& replace(iterator first, iterator last, InputIterator first2, InputIterator last2)
+        {
+            return replace_(first, last, first2, last2);
         }
 
 
     private:
-        /* implementation of:
-        template <class InputIterator>
-        string& replace ( iterator first, iterator last, InputIterator First, InputIterator Last );
-        */
-        inline container& replace_impl(size_type p1, size_type n1, const iterator& first2, const iterator& last2)
-        {
-            if (first2.m_cont != last2.m_cont || first2.m_cont == 0)
-                throw stl::exception("invalid iterator");
-
-            difference_type dist = last2 - first2;
-
-            if (dist < 0)
-                dist = 0;
-
-            return replace(p1, n1, *(first2.m_cont), first2.m_pos, dist);
-        }
-
-        inline container& replace_impl(size_type p1, size_type n1, const const_iterator& first2, const const_iterator& last2)
-        {
-            if (first2.m_cont != last2.m_cont || first2.m_cont == 0)
-                throw stl::exception("invalid iterator");
-
-            difference_type dist = last2 - first2;
-
-            if (dist < 0)
-                dist = 0;
-
-            return replace(p1, n1, first2.m_cont, first2.m_pos, dist);
-        }
-
-        inline container& replace_impl(size_type p1, size_type n1, const reverse_iterator& first2, const reverse_iterator& last2)
-        {
-            if (first2.m_cont != last2.m_cont || first2.m_cont == 0)
-                throw stl::exception("invalid iterator");
-
-            difference_type dist = last2 - first2;
-
-            if (dist < 0)
-                dist = 0;
-
-            replace(p1, n1, first2.m_cont, last2.m_pos + 1, dist);
-
-            swap_range(p1, p1 + dist);
-
-            return *this;
-        }
-
-        inline container& replace_impl(size_type p1, size_type n1, const const_reverse_iterator& first2, const const_reverse_iterator& last2)
-        {
-            if (first2.m_cont != last2.m_cont || first2.m_cont == 0)
-                throw stl::exception("invalid iterator");
-
-            difference_type dist = last2 - first2;
-
-            if (dist < 0)
-                dist = 0;
-
-            replace(p1, n1, first2.m_cont, last2.m_pos + 1, dist);
-
-            swap_range(p1, p1 + dist);
-
-            return *this;
-        }
-
-        /*
-        -due to specialization for replace_impl(const iterator& ...) and friends,
-        compiler cannot find any suitable replace_impl for next code:
-
-        stl::generic_array<char> charr(10, 'x'), charr2(2, 'a');
-        charr.replace(charr.begin(), ++charr.begin(),
-        charr2.c_str(), charr2.c_str()+2);
-        */
-        inline container& replace_impl(size_type p1, size_type n1, const value_type* first, const value_type* last)
-        {
-            if (!first || !last)
-                throw stl::exception("invalid iterator");
-
-            difference_type dist = last - first;
-
-            if (dist < 0)
-                dist = 0;
-
-            return replace(p1, n1, first, dist);
-        }
-
-        template<typename InputIterator>
-        inline container& replace_impl(size_type p1, size_type n1, const InputIterator& first2, const InputIterator& last2, stl::random_access_iterator_tag)
-        {
-            return replace_impl(p1, n1, first2, last2);
-        }
-
-        template<typename InputIterator>
-        inline container& replace_impl(size_type p1, size_type n1, InputIterator n2, InputIterator value, stl::input_iterator_tag)
-        {
-            return replace(p1, n1, n2, value);
-        }
-
-    public:
-        template<typename InputIterator>
-        inline container& replace(iterator first, iterator last, InputIterator first2, InputIterator last2)
+        inline container& replace_(iterator& first, iterator& last, iterator& first2, iterator& last2)
         {
             if (first.m_cont != last.m_cont || first.m_cont != this)
                 throw stl::exception("invalid iterator");
 
-            difference_type dist = last - first;
+            if (first.m_pos > last.m_pos || last.m_pos > m_size)
+                throw stl::exception("out of valid range");
 
-            if (dist < 0)
-                dist = 0;
+            if (first2.m_cont != last2.m_cont)
+                throw stl::exception("invalid iterator");
 
-            return replace_impl(first.m_pos, dist, first2, last2, typename stl::iterator_traits<InputIterator>::iterator_category());
+            size_type pos = first.m_pos;
+            size_type len = static_cast<size_type>(last.m_pos - first.m_pos);
+            size_type slen = static_cast<size_type>(last2.m_pos - first2.m_pos);
+            size_type size = m_size - len + slen;
+
+            grow(size + 1);
+
+            if (first.m_cont == first2.m_cont) // insert self content
+            {
+                container temp(first2, last2);
+
+                size_type tail = m_size - pos - len;
+                if (tail)
+                {
+                    stl::mem_move(&m_data[pos + slen], 0, &m_data[pos + len], tail, m_allocator);
+                }
+                if (slen)
+                {
+                    stl::mem_copy(&m_data[pos], 0, temp.m_data, slen, m_allocator);
+                }
+            }
+            else // insert from another container
+            {
+                size_type tail = m_size - pos - len;
+                if (tail)
+                {
+                    stl::mem_move(&m_data[pos + slen], 0, &m_data[pos + len], tail, m_allocator);
+                }
+                if (slen)
+                {
+                    stl::mem_copy(&m_data[pos], 0, &*first2, slen, m_allocator);
+                }
+            }
+
+            endof(size);
+
+            return *this;
         }
 
-
-        /* $21.3.5 modifiers ( copy ) */
-        size_type copy(value_type* ptr, size_type n1, size_type p1 = 0) const
+        inline container& replace_(iterator& first, iterator& last, const_iterator& first2, const_iterator& last2)
         {
-            if (p1 >= m_size) throw stl::exception("out of valid range");
+            if (first.m_cont != last.m_cont || first.m_cont != this)
+                throw stl::exception("invalid iterator");
 
-            if (n1 > m_size - p1)
-                n1 = m_size - p1;
+            if (first.m_pos > last.m_pos || last.m_pos > m_size)
+                throw stl::exception("out of valid range");
 
-            memmove_impl(ptr, &m_data[p1], n1 * numbytes);
+            if (first2.m_cont != last2.m_cont)
+                throw stl::exception("invalid iterator");
 
-            return n1;
+            size_type pos = first.m_pos;
+            size_type len = static_cast<size_type>(last.m_pos - first.m_pos);
+            size_type slen = static_cast<size_type>(last2.m_pos - first2.m_pos);
+            size_type size = m_size - len + slen;
+
+            grow(size + 1);
+
+            if (first.m_cont == first2.m_cont) // insert self content
+            {
+                container temp(first2, last2);
+
+                size_type tail = m_size - pos - len;
+                if (tail)
+                {
+                    stl::mem_move(&m_data[pos + slen], 0, &m_data[pos + len], tail, m_allocator);
+                }
+                if (slen)
+                {
+                    stl::mem_copy(&m_data[pos], 0, temp.m_data, slen, m_allocator);
+                }
+            }
+            else // insert from another container
+            {
+                size_type tail = m_size - pos - len;
+                if (tail)
+                {
+                    stl::mem_move(&m_data[pos + slen], 0, &m_data[pos + len], tail, m_allocator);
+                }
+                if (slen)
+                {
+                    stl::mem_copy(&m_data[pos], 0, &*first2, slen, m_allocator);
+                }
+            }
+
+            endof(size);
+
+            return *this;
         }
 
+        inline container& replace_(iterator& first, iterator& last, value_type* first2, value_type* last2)
+        {
+            if (first.m_cont != last.m_cont || first.m_cont != this)
+                throw stl::exception("invalid iterator");
 
-        /* $21.3.5 modifiers ( swap ) */
+            if (first.m_pos > last.m_pos || last.m_pos > m_size)
+                throw stl::exception("out of valid range");
+
+            size_type pos = first.m_pos;
+            size_type len = static_cast<size_type>(last.m_pos - first.m_pos);
+            size_type slen = static_cast<size_type>(last2 - first2);
+            size_type size = m_size - len + slen;
+
+            grow(size + 1);
+
+            if (m_data <= first2 && (m_data + m_size) > first2) // insert self content
+            {
+                container temp(first2, last2);
+
+                size_type tail = m_size - pos - len;
+                if (tail)
+                {
+                    stl::mem_move(&m_data[pos + slen], 0, &m_data[pos + len], tail, m_allocator);
+                }
+                if (slen)
+                {
+                    stl::mem_copy(&m_data[pos], 0, temp.m_data, slen, m_allocator);
+                }
+            }
+            else // insert from another container
+            {
+                size_type tail = m_size - pos - len;
+                if (tail)
+                {
+                    stl::mem_move(&m_data[pos + slen], 0, &m_data[pos + len], tail, m_allocator);
+                }
+                if (slen)
+                {
+                    stl::mem_copy(&m_data[pos], 0, first2, slen, m_allocator);
+                }
+            }
+
+            endof(size);
+
+            return *this;
+        }
+
+        inline container& replace_(iterator& first, iterator& last, const value_type* first2, const value_type* last2)
+        {
+            return replace_(first, last, const_cast<value_type*>(first2), const_cast<value_type*>(last2));
+        }
+
+        template<typename InputIterator>
+        inline container& replace_(iterator& first, iterator& last, InputIterator& first2, InputIterator& last2)
+        {
+            return replace_(first, last, first2, last2, typename stl::iterator_traits<InputIterator>::iterator_category());
+        }
+
+        template<typename InputIterator>
+        inline container& replace_(iterator& first, iterator& last, InputIterator& first2, InputIterator& last2, stl::forward_iterator_tag)
+        {
+            // test with a reverse iterator
+            // s.replace(s.begin(), s.begin() + 2, str.rbegin(), str.rend());
+            if (first.m_cont != last.m_cont || first.m_cont != this)
+                throw stl::exception("invalid iterator");
+
+            if (first.m_pos > last.m_pos || last.m_pos > m_size)
+                throw stl::exception("out of valid range");
+
+            size_type pos = first.m_pos;
+            size_type len = static_cast<size_type>(last.m_pos - first.m_pos);
+            size_type slen = static_cast<size_type>(stl::distance(first2, last2));
+            size_type size = m_size - len + slen;
+
+            grow(size + 1);
+
+            const T& check = *first2;
+
+            if (m_data <= &check && (m_data + m_size) > &check) // insert self content
+            {
+                container temp(first2, last2);
+
+                size_type tail = m_size - pos - len;
+                if (tail)
+                {
+                    stl::mem_move(&m_data[pos + slen], 0, &m_data[pos + len], tail, m_allocator);
+                }
+                if (slen)
+                {
+                    stl::mem_copy(&m_data[pos], 0, temp.m_data, slen, m_allocator);
+                }
+            }
+            else // insert from another container
+            {
+                size_type tail = m_size - pos - len;
+                if (tail)
+                {
+                    stl::mem_move(&m_data[pos + slen], 0, &m_data[pos + len], tail, m_allocator);
+                }
+                // string.reverse_iterator, list.iterator, etc.
+                for (size_t i = 0; first2 != last2; ++first2, ++i)
+                {
+                    m_data[pos + i] = *first2;
+                }
+            }
+
+            endof(size);
+
+            return *this;
+        }
+
+        template<typename InputIterator>
+        inline container& replace_(iterator& first, iterator& last, InputIterator n, InputIterator value, stl::input_iterator_tag)
+        {
+            if (first.m_cont != last.m_cont || first.m_cont != this)
+                throw stl::exception("invalid iterator");
+
+            if (first.m_pos > last.m_pos || last.m_pos > m_size)
+                throw stl::exception("out of valid range");
+
+            size_type pos = first.m_pos;
+            size_type len = static_cast<size_type>(last.m_pos - first.m_pos);
+            size_type size = m_size - len + n;
+
+            grow(size + 1);
+
+            size_type tail = m_size - pos - len;
+            if (tail)
+            {
+                stl::mem_move(&m_data[pos + n], 0, &m_data[pos + len], tail, m_allocator);
+            }
+
+            if (n)
+            {
+                stl::mem_set(&m_data[pos], value, n * sizeof(value_type), m_allocator);
+            }
+
+            endof(size);
+
+            return *this;
+        }
+
+    public:
+
+        /*  Copy a substring of this object to ptr.
+            ptr: Pointer to an array of characters. The array shall contain
+                 enough storage for the copied characters.
+            len: Number of characters to copy (if the string is shorter,
+                 as many characters as possible are copied).
+            pos: Position of the first character to be copied. If this is
+                 greater than the string length, it throws out_of_range.
+                 Note: The first character in the string is denoted
+                 by a value of 0 (not 1).
+            ret: The number of characters copied to the array pointed by ptr.
+        */
+        size_type copy(value_type* ptr, size_type len, size_type pos = 0) const
+        {
+            if (pos >= m_size)
+                throw stl::exception("out of valid range");
+
+            if (len > m_size - pos)
+                len = m_size - pos;
+
+            if (m_data <= ptr && (m_data + m_size) > ptr)   // copy to self
+            {
+                stl::mem_move(ptr, 0, &m_data[pos], len, m_allocator);
+            }
+            else // destination is outside the range of this string
+            {
+                stl::mem_copy(ptr, 0, &m_data[pos], len, m_allocator);
+            }
+            return len;
+        }
+
         void swap(container& str)
         {
-            stl::swap<Allocator>(m_allocator, vec.m_allocator);
-            stl::swap<pointer>(m_data, vec.m_data);
-            stl::swap<size_type>(m_size, vec.m_size);
-            stl::swap<size_type>(m_capacity, vec.m_capacity);
-            //stl::swap<iterator_array*>(m_itarray, vec.m_itarray);
+            stl::swap(m_data, str.m_data);
+            stl::swap(m_size, str.m_size);
+            stl::swap(m_capacity, str.m_capacity);
+            stl::swap(m_allocator, str.m_allocator);
         }
 
 //TODO: use template specialization to disable anything but char,unsigned char,wchar_t
@@ -2493,15 +3022,14 @@ namespace stl
 //      because it is clear that c_str() would not work with anything that does
 //      not end in '\0', right?
 
-        /* $21.3.6 string operations */
         const value_type* c_str() const
         {
-            return m_data;      // if string is '\0' terminated.
+            return m_data;
         }
 
         const value_type* data() const
         {
-            return m_data;      // if string is '\0' terminated.
+            return m_data;
         }
 
 

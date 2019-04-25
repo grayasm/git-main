@@ -45,6 +45,10 @@ class test_basic_string : public CppUnit::TestFixture
     CPPUNIT_TEST(push_back);
     CPPUNIT_TEST(assign);
     CPPUNIT_TEST(insert);
+    CPPUNIT_TEST(erase);
+    CPPUNIT_TEST(replace);
+    CPPUNIT_TEST(copy);
+    CPPUNIT_TEST(swap);
     CPPUNIT_TEST_SUITE_END();
 
 
@@ -63,6 +67,10 @@ public:
     void push_back();
     void assign();
     void insert();
+    void erase();
+    void replace();
+    void copy();
+    void swap();
 };
 
 

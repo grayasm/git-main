@@ -1516,6 +1516,7 @@ namespace stl
                 if (m_data <= &check && (m_data + m_size) > &check)
                 {
                     container temp;
+//TODO: can be optimized by passing pointers (e.g. first.m_cont + first.m_pos, ..)
                     temp.assign(first, last);
 
                     // can relocate m_data and invalidate first,last pointers
