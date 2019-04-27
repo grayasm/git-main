@@ -753,7 +753,6 @@ namespace stl
     };  // basic_string_const_reverse_iterator
 
 
-    //  ISO/IEC 14882:2003  $21.3 Class template basic_string
     template<typename T, typename Allocator = stl::allocator<T>>
     class basic_string
     {
@@ -788,8 +787,17 @@ namespace stl
 
 
     private:
+        /*  1) memset only accepted types
+            2) discard allocator.construct and allocator.destroy
+        */
+        inline void check_type(char*) { }
+        inline void check_type(unsigned char*) { }
+        inline void check_type(wchar_t*) { }
+        
         inline void init()
         {
+            check_type(m_data);
+
             m_data = 0;
             m_size = 0;
             m_capacity = 0;
@@ -813,11 +821,9 @@ namespace stl
             m_capacity = cap;
         }
 
-//TODO: if specialized for char,unsigned char,wchar_t then there is no need to
-//      mem_destroy!!! -> then the whole endof(sz) can be replaced with
-//      m_size = size;!! but requires also '\0' end termination
         inline void endof(size_type size)
         {
+            // safety guard: if this throws the issue needs fixing.
             if (size >= m_capacity)
                 throw stl::exception("out of valid range");
 
@@ -825,7 +831,6 @@ namespace stl
             m_data[m_size] = 0;
         }
 
-//TODO: specialize only for char*,unsigned char*,wchar_t ??
         inline size_type length(const value_type* ptr) const
         {
             if (ptr == 0)
@@ -837,20 +842,7 @@ namespace stl
             return (p - ptr);
         }
 
-//TODO: remove this in the next iteration!!
-        inline void swap_range(size_type beg, size_type end)
-        {
-            if (beg < end)
-            {
-                for (size_type i = beg, j = end - 1; i < j; ++i, --j)
-                {
-                    misc::swap<value_type>(m_data[i], m_data[j]);
-                }
-            }
-        }
-
     public:
-        /*! $21.3.1 */
         basic_string()
         {
             init();
@@ -858,39 +850,33 @@ namespace stl
             endof(0);
         }
 
-        basic_string(const container& tc)
+        basic_string(const container& str)
         {
             init();
-            grow(1);    // .c_str() is '\0' terminated
-            assign(tc);
+            assign(str);
         }
 
-        basic_string(const container& s, size_type off, size_type n = npos)
+        basic_string(const container& str, size_type pos, size_type sublen = npos)
         {
             init();
-            grow(1);    // .c_str() is '\0' terminated
-            assign(s, off, n);
-        }
-
-        basic_string(const value_type* ptr, size_type n)
-        {
-            init();
-            grow(1);    // .c_str() is '\0' terminated
-            assign(ptr, n);
+            assign(str, pos, sublen);
         }
 
         basic_string(const value_type* ptr)
         {
             init();
-            grow(1);    // .c_str() is '\0' terminated
             assign(ptr);
         }
 
+        basic_string(const value_type* ptr, size_type n)
+        {
+            init();
+            assign(ptr, n);
+        }
 
         basic_string(size_type n, value_type c)
         {
             init();
-            grow(1);    // .c_str() is '\0' terminated
             assign(n, c);
         }
 
@@ -899,8 +885,7 @@ namespace stl
         basic_string(InputIterator first, InputIterator last)
         {
             init();
-            grow(1);    // .c_str() is '\0' terminated
-            assign(first, last);
+            assign_(first, last);       // take a shortcut
         }
 
         ~basic_string()
@@ -1033,31 +1018,34 @@ namespace stl
         //$21.3.4 element access:
         const_reference operator[] ( size_type n ) const
         {
-            if (n >= m_size) throw stl::exception("out of valid range");
+            //  if (n >= m_size)
+            //      throw stl::exception("out of valid range");
             return m_data[n];
         }
 
         reference operator[] ( size_type n )
         {
-            if (n >= m_size) throw stl::exception("out of valid range");
+            //  if (n >= m_size)
+            //      throw stl::exception("out of valid range");
             return m_data[n];
         }
 
         const_reference at ( size_type n ) const
         {
-            if (n >= m_size) throw stl::exception("out of valid range");
+            if (n >= m_size)
+                throw stl::exception("out of valid range");
+
             return m_data[n];
         }
 
         reference at ( size_type n )
         {
-            if (n >= m_size) throw stl::exception("out of valid range");
+            if (n >= m_size)
+                throw stl::exception("out of valid range");
+
             return m_data[n];
         }
 
-        //$21.3.5 modifiers
-
-        /* $21.3.5 modifiers ( operator += (...) ) */
         container& operator+=(const container& str)
         {
             return append(str);
@@ -1073,7 +1061,12 @@ namespace stl
             return append(1, ch);
         }
 
-        /* $21.3.5 modifiers (append) */
+        /*  Extends the basic_string by appending additional characters
+            at the end of its current value.
+            
+            str: Another basic_string object of the same type (with the same
+                 class template arguments), whose value is appended.
+        */
         container& append(const container& str)
         {
             size_type n = str.length();    // without '\0'
@@ -1094,25 +1087,34 @@ namespace stl
             return *this;
         }
 
-        container& append(const container& str, size_type off, size_type n)
-        {
-            size_type len = str.length();    // without '\0'
+        /*  subpos: Position of the first character in str that is copied
+                    to the object as a substring. If this is greater than
+                    str length, it throws out_of_range.
+            Note: The first character in str is denoted by a value of 0 (not 1).
 
-            if (off >= len)
+            sublen: Length of the substring to be copied (if the string is
+                    shorter, as many characters as possible are copied).
+                    A value of basic_string::npos indicates all characters
+                    until the end of str.
+        */
+        container& append(const container& str, size_type subpos, size_type sublen)
+        {
+            size_type strlen = str.length();    // without '\0'
+
+            if (subpos > strlen)
                 throw stl::exception("out of valid range");
 
-            if (n == npos)
-                n = len - off;
+            if (sublen > strlen - subpos)
+                sublen = strlen - subpos;
             
-            if (n > 0)
+            if (sublen)
             {
-                size_type size = m_size + n;
+                size_type size = m_size + sublen;
 
-//TODO: actually test this relocation!!!
-                // even if m_data is relocated, str remains valid
                 grow(size + 1);
 
-                stl::mem_copy(&m_data[m_size], m_size, &str.m_data[off], n, m_allocator);
+                // no need for memmove when appending from self
+                stl::mem_copy(&m_data[m_size], m_size, &str.m_data[subpos], sublen, m_allocator);
 
                 endof(size);
             }
@@ -1120,32 +1122,35 @@ namespace stl
             return *this;
         }
 
-        container& append(const value_type* ptr, size_type n2)
+        /*  Appends a copy of the first n characters in the array of characters
+            pointed by ptr.
+        */
+        container& append(const value_type* ptr, size_type n)
         {
-            size_type n = length(ptr);    // without '\0'
-            if (n > 0)
-            {
-                if (n2 > n)
-                    throw stl::exception("out of valid range");
+            size_type strlen = length(ptr);    // without '\0'
 
-                size_type size = m_size + n2;
+            if (strlen)
+            {
+                if (n > strlen)
+                    n = strlen;
+
+                size_type size = m_size + n;
 
                 // Is the range inside this container ?
                 if (m_data <= ptr && (m_data + m_size) > ptr)
                 {
-                    container temp;
-                    temp.assign(ptr, n2);
+                    container temp(ptr, ptr + n);
 
                     // can relocate m_data and free the old block
                     grow(size + 1);
 
-                    stl::mem_copy(&m_data[m_size], m_size, temp.m_data, n2, m_allocator);
+                    stl::mem_copy(&m_data[m_size], 0, temp.m_data, n, m_allocator);
                 }
                 else// range is outside this container
                 {
                     grow(size + 1);
 
-                    stl::mem_copy(&m_data[m_size], m_size, ptr, n2, m_allocator);
+                    stl::mem_copy(&m_data[m_size], m_size, ptr, n, m_allocator);
                 }
 
                 endof(size);
@@ -1157,16 +1162,15 @@ namespace stl
         container& append(const value_type* ptr)
         {
             size_type n = length(ptr);    // without '\0'
-            if (n > 0)
+
+            if (n)
             {
                 size_type size = m_size + n;
 
                 // Is the range inside this container ?
                 if (m_data <= ptr && (m_data + m_size) > ptr)
                 {
-                    container temp;
-//TODO: check that we avoid to call more than 1 time length(ptr)!!!!
-                    temp.assign_(ptr, ptr + n);
+                    container temp(ptr, ptr + n);
 
                     // can relocate m_data and free the old block
                     grow(size + 1);
@@ -1188,7 +1192,7 @@ namespace stl
         
         container& append(size_type n, value_type value)
         {
-            if (n > 0)
+            if (n)
             {
                 size_type size = m_size + n;
 
@@ -1218,7 +1222,7 @@ namespace stl
 
             // if last < first then let it blow up.
             size_type dist = static_cast<size_type>(last - first);
-            if (dist > 0)
+            if (dist)
             {
                 size_type size = m_size + dist;
 
@@ -1242,7 +1246,7 @@ namespace stl
 
             // if last < first then let it blow up.
             size_type dist = static_cast<size_type>(last - first);
-            if (dist > 0)
+            if (dist)
             {
                 size_type size = m_size + dist;
 
@@ -1262,7 +1266,7 @@ namespace stl
             // if last < first then let it blow up.
             size_type dist = static_cast<size_type>(last - first);
 
-            if (dist > 0)
+            if (dist)
             {
                 size_type size = m_size + dist;
 
@@ -1271,8 +1275,7 @@ namespace stl
                 // Is the range inside this container ?
                 if (m_data <= &check && (m_data + m_size) > &check)
                 {
-                    container temp;
-                    temp.assign(first, last);
+                    container temp(first, last);
 
                     // can relocate m_data and free the old block
                     grow(size + 1);
@@ -1311,7 +1314,7 @@ namespace stl
 
             // if last < first then let it blow up.
             size_type dist = static_cast<size_type>(stl::distance(first, last));
-            if (dist > 0)
+            if (dist)
             {
                 size_type size = m_size + dist;
 
@@ -1320,8 +1323,7 @@ namespace stl
                 // Is the range inside this container ?
                 if (m_data <= &check && (m_data + m_size) > &check)
                 {
-                    container temp;
-                    temp.assign(first, last);
+                    container temp(first, last);
 
                     // for safety, although could not invalidate the input for this case
                     grow(size + 1); // extra '\0'
@@ -1334,7 +1336,8 @@ namespace stl
 
                     for (size_type i = 0; first != last; ++first, ++i)
                     {
-                        m_allocator.construct(&m_data[m_size + i], *first);
+                        m_data[m_size + i] = *first;
+                        // m_allocator.construct(&m_data[m_size + i], *first);
                     }
                 }
 
@@ -1347,7 +1350,7 @@ namespace stl
         template<typename InputIterator>
         inline container& append_(InputIterator n, InputIterator value, stl::input_iterator_tag)
         {
-            if (n > 0)
+            if (n)
             {
                 size_type size = m_size + n;
 
@@ -1388,19 +1391,24 @@ namespace stl
             endof(m_size + 1);
         }
 
-        /* $21.3.5 modifiers ( assign ) */
-        container& assign(const container& tc)
+        /*  Assigns a new value to the string, replacing its current contents.
+            
+            str: Another basic_string object of the same type (with the same
+                 class template arguments), whose value is either copied or
+                 moved.
+        */
+        container& assign(const container& str)
         {
             //self assignment
-            if (this != &tc)
+            if (this != &str)
             {
-                size_type size = tc.size(); // without '\0'
+                size_type size = str.size(); // without '\0'
 
-                if (size > 0)
+                grow(size + 1); // extra '\0'  (critical when size is 0)
+
+                if (size)
                 {
-                    grow(size + 1); // extra '\0'
-
-                    stl::mem_copy(m_data, m_size, tc.m_data, size, m_allocator);
+                    stl::mem_copy(m_data, m_size, str.m_data, size, m_allocator);
                 }
 
                 endof(size);
@@ -1409,64 +1417,80 @@ namespace stl
             return *this;
         }
 
-        container& assign(const container& str, size_type off, size_type n)
+        /*  Assigns a new value to the string, replacing its current contents.
+
+            str: Another basic_string object of the same type (with the same
+                 class template arguments), whose value is either copied or
+                 moved.
+
+         subpos: Position of the first character in str that is copied
+                 to the object as a substring. If this is greater than
+                 str length, it throws out_of_range.
+           Note: The first character in str is denoted by a value of 0 (not 1).
+
+         sublen: Length of the substring to be copied (if the string is
+                 shorter, as many characters as possible are copied).
+                 A value of basic_string::npos indicates all characters
+                 until the end of str.
+        */
+        container& assign(const container& str, size_type subpos, size_type sublen)
         {
-            if (n > 0)
+            if (subpos > str.m_size)
+                throw stl::exception("out of valid range");
+
+//TODO: actually check how this happens with subpos = m_size;
+            if (sublen > str.m_size - subpos)
+                sublen = str.m_size - subpos;
+
+            // self assignment
+            if (this == &str)
             {
-                // self assignment
-                if (this == &str)
+                if (sublen)
                 {
-                    if (off >= m_size)
-                        throw stl::exception("out of valid range");
-
-                    if (n == npos)
-                        n = m_size - off;
-
-                    stl::mem_move(m_data, m_size, &m_data[off], n, m_allocator);
-                }
-                else
-                {
-                    size_type len = str.length();   // without '\0'
-
-                    if (off >= len)
-                        throw stl::exception("out of valid range");
-
-                    if (n == npos)
-                        n = len - off;
-
-                    grow(n + 1);    // extra '\0'
-
-                    stl::mem_copy(m_data, m_size, &str.m_data[off], n, m_allocator);
+                    stl::mem_move(m_data, m_size, &m_data[subpos], sublen, m_allocator);
                 }
             }
+            else
+            {
+                grow(sublen + 1);    // extra '\0'
 
-            endof(n);
+                if (sublen)
+                {
+                    stl::mem_copy(m_data, m_size, &str.m_data[subpos], sublen, m_allocator);
+                }
+            }
+            
+            endof(sublen);
 
             return *this;
         }
 
         container& assign(const value_type* ptr, size_type n)
         {
-            if (n > 0)
-            {
-                // Is the address inside this container ?
-                if (m_data <= ptr && (m_data + m_size) > ptr)
-                {
-//TODO: (1)test by assigning the entire string, + (2)try assigning + 1 extra '\0'!!
-                    if (m_data + m_size < ptr + n)
-                        throw stl::exception("out of valid range");
 
+            // Is the address inside this container ?
+            if (m_data <= ptr && (m_data + m_size) > ptr)
+            {
+//TODO: (1)test by assigning the entire string, + (2)try assigning + 1 extra '\0'!!
+                //if (m_data + m_size < ptr + n)
+                //    throw stl::exception("out of valid range");
+
+                if (n)
+                {
                     stl::mem_move(m_data, m_size, ptr, n, m_allocator);
                 }
-                else
+            }
+            else
+            {
+                //size_type len = length(ptr);   // without '\0'
+
+                //if (n > len)
+                //    throw stl::exception("out of valid range");
+
+                grow(n + 1);    // extra '\0'
+
+                if (n)
                 {
-                    size_type len = length(ptr);   // without '\0'
-
-                    if (n > len)
-                        throw stl::exception("out of valid range");
-
-                    grow(n + 1);    // extra '\0'
-
                     stl::mem_copy(m_data, m_size, ptr, n, m_allocator);
                 }
             }
@@ -1484,17 +1508,20 @@ namespace stl
             if (m_data <= ptr && (m_data + m_size) > ptr)
             {
                 n = m_size - (ptr - m_data);
-                if (n > 0)
+
+                if (n)
+                {
                     stl::mem_move(m_data, m_size, ptr, n, m_allocator);
+                }
             }
             else
             {
                 n = length(ptr);   // without '\0'
 
-                if (n > 0)
-                {
-                    grow(n + 1);    // extra '\0'
+                grow(n + 1);    // extra '\0'  (critical when n is 0)
 
+                if (n)
+                {
                     stl::mem_copy(m_data, m_size, ptr, n, m_allocator);
                 }                
             }
@@ -1506,28 +1533,31 @@ namespace stl
 
         container& assign(size_type n, const value_type& c)
         {
-            if (n > 0)
-            {
 //TODO: test if indeed on grow(n + 1) &c becomes invalid
 
-                // Is the address inside the container ?
-                if (m_data <= &c && (m_data + m_size) > &c)
+            // Is the address inside the container ?
+            if (m_data <= &c && (m_data + m_size) > &c)
+            {
+                T temp(c);
+
+                // can relocate m_data and invalidate &c
+                grow(n + 1);    // critical when n is 0
+
+                if (n)
                 {
-                    T temp(c);
-
-                    // can allocate m_data and invalidate &c
-                    grow(n + 1);
-
                     stl::mem_set(m_data, temp, n * sizeof(value_type), m_allocator);
                 }
-                else// Address is outside this container
-                {
-                    grow(n + 1);
+            }
+            else// Address is outside this container
+            {
+                grow(n + 1);    // critical when n is 0
 
+                if (n)
+                {
                     stl::mem_set(m_data, c, n * sizeof(value_type), m_allocator);
                 }
             }
-
+            
             endof(n);
 
             return *this;
@@ -1548,10 +1578,10 @@ namespace stl
             // if last < first then let it blow up.
             size_type n = static_cast<size_type>(last - first);
 
-            if (n > 0)
-            {
-                grow(n + 1);    // extra '\0'
+            grow(n + 1);    // extra '\0'   (critical when n is 0)
 
+            if (n)
+            {
                 //self assignment
                 if (first.m_cont == this)
                 {
@@ -1576,10 +1606,10 @@ namespace stl
             // if n < 0 then let it blow up.
             size_type n = static_cast<size_type>(last - first);
 
-            if (n > 0)
-            {
-                grow(n + 1);    // extra '\0'
+            grow(n + 1);    // extra '\0'   (critical when n is 0)
 
+            if (n)
+            {
                 //self assignment
                 if (this == first.m_cont)
                 {
@@ -1601,10 +1631,10 @@ namespace stl
             // if last < first then let it blow up.
             size_type n = static_cast<size_type>(last - first);
 
-            if (n > 0)
-            {
-                grow(n + 1); // extra '\0'
+            grow(n + 1); // extra '\0'  (critical when n is 0)
 
+            if (n)
+            {
                 // Is range inside this container ?
                 if (m_data <= first && (m_data + m_size) > first)
                 {
@@ -1641,46 +1671,33 @@ namespace stl
             */
             size_type n = static_cast<size_type>(stl::distance(first, last));
 
-            if (n > 0)
+            grow(n + 1);
+
+            if (n)
             {
                 const T& check = *first;
 
                 // Is the range inside this container ?
                 if (m_data <= &check && (m_data + m_size) > &check)
                 {
-                    container temp;
-                    temp.assign(first, last);
-
-                    // for safety, although could not invalidate the input for this case
-                    grow(n + 1);
-
-                    stl::mem_move(m_data, m_size, temp.m_data, n, m_allocator);
+                    container temp(first, last);
+                    
+                    if (n)
+                    {
+                        stl::mem_move(m_data, m_size, temp.m_data, n, m_allocator);
+                    }
                 }
                 else// range is outside this container
                 {
-                    grow(n + 1);
-
                     for (size_type i = 0; first != last; ++first, ++i)
                     {
-                        T* d1 = m_data + i;
-                        const T& s1 = *first;
-
-//TODO: remove all m_allocator.construct(..) calls
-//TODO: remove all m_allocator.destroy(..) calls
-
-                        if (d1 != &s1)
-                        {
-                            // cannot destroy invalid objects in the destination
-                            //if (i < m_size)
-                            //{
-                            //    m_allocator.destroy(d1);
-                            //}
-
-                            m_allocator.construct(d1, s1);
-                        }
+                        //  T* d1 = m_data + i;
+                        //  const T& s1 = *first;
+                        //  *d1 = s1;
+                        *(m_data + i) = *first;
                     }
                 }
-            }
+            }            
 
             endof(n);
 
@@ -1695,10 +1712,11 @@ namespace stl
                 if n < 0 then let it blow up.
             */
             size_type n = static_cast<size_type>(count);
-            if (n > 0)
-            {
-                grow(n + 1);    // extra '\0'
 
+            grow(n + 1);    // extra '\0'   (critical when n is 0)
+
+            if (n)
+            {
                 // Not a self assignment as value is a temporary copy.
                 stl::mem_set(m_data, value, n * sizeof(value_type), m_allocator);
             }
@@ -1773,7 +1791,7 @@ namespace stl
 
                 if (this == &str)
                 {
-                    container temp(&m_data[off], &m_data[off] + n);
+                    container temp(m_data + off, m_data + off + n);
 
                     grow(size + 1);
 
@@ -1983,7 +2001,7 @@ namespace stl
 
             // if last < first then let it blow up.
             size_type dist = static_cast<size_type>(last - first);
-            if (dist > 0)
+            if (dist)
             {
                 size_type p = position.m_pos;
                 size_type size = m_size + dist;
@@ -1994,8 +2012,7 @@ namespace stl
                 if (first.m_cont == this)
                 {
 //TODO: can be optimized by passing pointers (e.g. first.m_cont + first.m_pos,..)
-                    container temp;
-                    temp.assign(first, last);
+                    container temp(first, last);
 
                     // move content unless insert position is end()
                     if (p < m_size)
@@ -2039,8 +2056,7 @@ namespace stl
                 // Is the range inside this container ?
                 if (first.m_cont == this)
                 {
-                    container temp;
-                    temp.assign(first, last);
+                    container temp(first, last);
 
                     // move content unless insert position is end()
                     if (p < m_size)
@@ -2083,8 +2099,7 @@ namespace stl
                 // Is the range inside this container ?
                 if (m_data <= &check && (m_data + m_size) > &check)
                 {
-                    container temp;
-                    temp.assign(first, last);
+                    container temp(first, last);
 
                     // can relocate m_data and invalidate first,last pointers
                     grow(size + 1);
@@ -2146,8 +2161,7 @@ namespace stl
                 // Is the range inside this container ?
                 if (m_data <= &check && (m_data + m_size) > &check)
                 {
-                    container temp;
-                    temp.assign(first, last);
+                    container temp(first, last);
 
                     // for safety, although could not invalidate the input for this case
                     grow(size + 1);
@@ -2306,7 +2320,7 @@ namespace stl
 
             if (this == &str) // insert self content
             {
-                container temp(str);
+                container temp(m_data, m_data + m_size); // from str
 
                 size_type tail = m_size - pos - len;
                 if (tail)
@@ -2351,7 +2365,7 @@ namespace stl
 
             if (this == &str) // insert self content
             {
-                container temp(str);
+                container temp(m_data, m_data + m_size);
 
                 size_type tail = m_size - pos - len;
                 if (tail)
@@ -2445,7 +2459,7 @@ namespace stl
                  end of the string.
             ptr: Pointer to an array of characters (such as a c-string).
         */
-        container& replace(size_type pos, size_type len, const char* ptr)
+        container& replace(size_type pos, size_type len, const value_type* ptr)
         {
             if (pos >= m_size)
                 throw stl::exception("out of valid range");
@@ -2460,7 +2474,7 @@ namespace stl
 
             if (m_data <= ptr && (m_data + m_size > ptr)) // insert self content
             {
-                container temp(ptr);
+                container temp(ptr, ptr + slen);
 
                 size_type tail = m_size - pos - len;
                 if (tail)
@@ -2506,7 +2520,7 @@ namespace stl
 
             if (m_data <= ptr && (m_data + m_size) > ptr) // insert self content
             {
-                container temp(ptr);
+                container temp(ptr, ptr + slen);
 
                 size_type tail = m_size - pos - len;
                 if (tail)
@@ -2561,7 +2575,7 @@ namespace stl
 
             if (m_data <= ptr && (m_data + m_size > ptr)) // insert self content
             {
-                container temp(ptr);
+                container temp(ptr, ptr + slen);
 
                 size_type tail = m_size - pos - len;
                 if (tail)
@@ -2614,7 +2628,7 @@ namespace stl
 
             if (m_data <= ptr && (m_data + m_size) > ptr) // insert self content
             {
-                container temp(ptr);
+                container temp(ptr, ptr + slen);
 
                 size_type tail = m_size - pos - len;
                 if (tail)
@@ -3032,51 +3046,108 @@ namespace stl
             return m_data;
         }
 
-
         allocator_type get_allocator() const
         {
             return m_allocator;
         }
 
-        /* $21.3.6 string operations (find) */
-        size_type find(const container& str, size_type p1 = 0) const
+        /*  Finds the first substring equal to the given character sequence.
+            Search begins at pos, i.e. the found substring must not begin in
+            a position preceding pos.
+            Returns the position of the first character of the found substring
+            or npos if no such substring is found.
+        */
+        size_type find(const container& str, size_type pos = 0) const
         {
-            return find(str.m_data, p1, str.length());
-        }
+            size_type strlen = str.length();    // without '\0'
 
-        size_type find(const value_type* ptr, size_type p1, size_type n2) const
-        {
-            if (p1 >= m_size) throw stl::exception("out of valid range");
-
-            size_type ptrLen = length<value_type>(ptr);
-
-            if (n2 > ptrLen) return npos;
-
-            if (n2)
+            // str is bigger than this, or bigger than [pos, end) search range.
+            if (strlen > m_size || pos > (m_size - strlen))
+                return npos;
+            
+            for (size_type i = pos; i < m_size; ++i)
             {
-                //find
-                for (size_type i = p1; i + n2 <= m_size; ++i)
+                size_type j = i;
+                size_type k = 0;
+                while (j < m_size && k < strlen && m_data[j] == str.m_data[k])
                 {
-                    size_type i2 = i;
-                    size_type j2 = 0;
-                    while (j2 < n2 && m_data[i2++] == ptr[j2++])
-                        ;
-                    if (j2 == n2)
-                        return i;
+                    j++;
+                    k++;
                 }
+                if (k == strlen)
+                    return i;
             }
 
             return npos;
         }
 
-        size_type find(const value_type* ptr, size_type p1 = 0) const
+        /*  Finds the first substring equal to the character string
+            pointed to by ptr. The length of the string is determined
+            by the first null character using Traits::length(ptr).
+        */
+        size_type find(const value_type* ptr, size_type pos = 0) const
         {
-            return find(ptr, p1, length<value_type>(ptr));
+            size_type strlen = length(ptr);    // without '\0'
+
+            // ptr is bigger than this, or bigger than [pos, end) search range.
+            if (strlen > m_size || pos > (m_size - strlen))
+                return npos;
+
+            for (size_type i = pos; i < m_size; ++i)
+            {
+                size_type j = i;
+                size_type k = 0;
+                while (j < m_size && k < strlen && m_data[j] == ptr[k])
+                {
+                    j++;
+                    k++;
+                }
+                if (k == strlen)
+                    return i;
+            }
+
+            return npos;
+        }
+        
+        /*  Finds the first substring equal to the range [ptr, ptr+n).
+            This range may contain null characters.
+            Search in this object begins at pos, i.e. the found substring
+            must not begin in a position preceding pos.
+        */
+        size_type find(const value_type* ptr, size_type pos, size_type n) const
+        {
+            size_type strlen = n;   // no check for '\0' termination in ptr;
+
+            // ptr is bigger than this, or bigger than [pos, end) search range.
+            if (strlen > m_size || pos > (m_size - strlen))
+                return npos;
+
+            for (size_type i = pos; i < m_size; ++i)
+            {
+                size_type j = i;
+                size_type k = 0;
+                while (j < m_size && k < strlen && m_data[j] == ptr[k])
+                {
+                    j++;
+                    k++;
+                }
+                if (k == strlen)
+                    return i;
+            }
+
+            return npos;
         }
 
-        size_type find(value_type ch, size_type p1 = 0) const
+        /*  Finds the first character ch, treated as a single-character
+            substring.
+
+            pos: Position of the first character in the string to be
+                 considered in the search. If this is greater than the string
+                 length, the function never finds matches.
+        */
+        size_type find(value_type ch, size_type pos = 0) const
         {
-            for (size_type i = p1; i < m_size; ++i)
+            for (size_type i = pos; i < m_size; ++i)
             {
                 if (m_data[i] == ch)
                     return i;
@@ -3086,50 +3157,133 @@ namespace stl
         }
 
 
-        /* $21.3.6 string operations (rfind) */
-        size_type rfind(const container& str, size_type p1 = npos) const
-        {
-            return rfind(str.m_data, p1, str.length());
-        }
+        /*  Finds the last substring equal to str.
+            Search begins at pos, i.e. the found substring must not begin
+            in a position following pos. If npos or any value not smaller
+            than size()-1 is passed as pos, whole string will be searched.
 
-        size_type rfind(const value_type* ptr, size_type p1, size_type n2) const
+            str: Another string with the subject to search for.
+            pos: Position of the last character in the string to be considered
+                 as the beginning of a match. Any value greater or equal than
+                 the string length (including string::npos) means that the
+                 entire string is searched.
+            Note: The first character is denoted by a value of 0 (not 1).
+        */
+        size_type rfind(const container& str, size_type pos = npos) const
         {
-            if (p1 > m_size) p1 = m_size;
-            if (n2 > m_size) return npos;
-            if (p1 + n2 > m_size)
-                p1 = m_size - n2;
-            size_type ptrsz = length<value_type>(ptr);
-            if (n2 > ptrsz) return npos;
+            size_type strlen = str.length();
 
-            if (n2)
+            // if str is bigger than this, it cannot be a substring.
+            if (strlen > m_size)
+                return npos;
+
+            // adjust the last pos where str can fit into this
+            if (pos > (m_size - strlen))
+                pos = m_size - strlen;
+            
+            for (size_type i = pos; i != npos; --i)
             {
-                //rfind
-                for (size_type i = p1; i != npos; --i)
+                size_type j = i;
+                size_type k = 0;
+                while (j < m_size && k < strlen && m_data[j] == str.m_data[k])
                 {
-                    size_type i2 = i;
-                    size_type j2 = 0;
-                    while (j2 < n2 && m_data[i2++] == ptr[j2++])
-                        ;
-
-                    if (j2 == n2)
-                        return i;
+                    ++j;
+                    ++k;
                 }
+                if (k == strlen)
+                    return i;
             }
 
             return npos;
         }
 
-        size_type rfind(const value_type* ptr, size_type p1 = npos) const
+        /*  Finds the last substring equal to the character string pointed
+            to by ptr. The length of the string is determined by the first
+            null character using Traits::length(ptr).
+
+            ptr: Pointer to a character string to search for
+            pos: Position of the last character in the string to be considered
+                 as the beginning of a match. Any value greater or equal than
+                 the string length (including string::npos) means that the
+                 entire string is searched.
+            Note: The first character is denoted by a value of 0 (not 1).
+        */
+        size_type rfind(const value_type* ptr, size_type pos = npos) const
         {
-            return rfind(ptr, p1, length<value_type>(ptr));
+            size_type strlen = length(ptr);
+
+            // if ptr is bigger than this, it cannot be a substring.
+            if (strlen > m_size)
+                return npos;
+
+            // adjust the last pos where ptr can fit into this
+            if (pos > (m_size - strlen))
+                pos = m_size - strlen;
+
+            for (size_type i = pos; i != npos; --i)
+            {
+                size_type j = i;
+                size_type k = 0;
+                while (j < m_size && k < strlen && m_data[j] == ptr[k])
+                {
+                    ++j;
+                    ++k;
+                }
+                if (k == strlen)
+                    return i;
+            }
+
+            return npos;
         }
 
-        size_type rfind(value_type ch, size_type p1 = npos) const
-        {
-            p1 = stl::min<size_type>(p1, m_size - 1);
 
-            //rfind
-            for (size_type i = p1; i != npos; --i)
+        /*  Finds the last substring equal to the range [ptr, ptr + n).
+            This range can include null characters.
+
+            ptr: Pointer to a character string to search for
+            pos: Position of the last character in the string to be considered
+                 as the beginning of a match. Any value greater or equal than
+                 the string length (including string::npos) means that the
+                 entire string is searched.
+            Note: The first character is denoted by a value of 0 (not 1).
+        */
+        size_type rfind(const value_type* ptr, size_type pos, size_type n) const
+        {
+            size_type strlen = n;   // no check for '\0' termination in ptr;
+
+            // if ptr is bigger than this, it cannot be a substring.
+            if (strlen > m_size)
+                return npos;
+
+            // adjust the last pos where ptr can fit into this
+            if (pos > (m_size - strlen))
+                pos = m_size - strlen;
+
+            for (size_type i = pos; i != npos; --i)
+            {
+                size_type j = i;
+                size_type k = 0;
+                while (j < m_size && k < strlen && m_data[j] == ptr[k])
+                {
+                    ++j;
+                    ++k;
+                }
+                if (k == strlen)
+                    return i;
+            }
+
+            return npos;
+        }
+
+        size_type rfind(value_type ch, size_type pos = npos) const
+        {
+            if (!m_size)
+                return npos;
+            
+            if (pos > (m_size - 1))
+                pos = m_size - 1;
+
+            for (size_type i = pos; i != npos; --i)
             {
                 if (m_data[i] == ch)
                     return i;
@@ -3138,45 +3292,86 @@ namespace stl
             return npos;
         }
 
-
-        /* $21.3.6 string operations (find_first_of) */
+        /*  Searches the string for the first character that matches any
+            of the characters specified in its arguments.
+            When pos is specified, the search only includes characters
+            at or after position pos, ignoring any possible occurrences
+            before pos. Notice that it is enough for one single character
+            of the sequence to match (not all of them).
+            See string::find for a function that matches entire sequences.
+        */
         size_type find_first_of(const container& str, size_type pos = 0) const
         {
-            return find_first_of(str.m_data, pos, str.length());
-        }
+            if (pos >= m_size)
+                return npos;
 
-        size_type find_first_of(const value_type* ptr, size_type p1, size_type n2) const
-        {
-            if (p1 > m_size) throw stl::exception("out of valid range");
-            size_type ptrsz = length<value_type>(ptr);
-            if (n2 > ptrsz)
-                n2 = ptrsz;
+            size_type strlen = str.length(); // without '\0'
 
-            if (n2)
+            for (size_type i = pos; i < m_size; ++i)
             {
-                //find
-                for (size_type i = p1; i < m_size; ++i)
+                for (size_type j = 0; j < strlen; ++j)
                 {
-                    for (size_type j = 0; j < n2; ++j)
-                    {
-                        if (m_data[i] == ptr[j])
-                            return i;
-                    }
+                    if (m_data[i] == str.m_data[j])
+                        return i;
                 }
             }
 
             return npos;
         }
 
-        size_type find_first_of(const value_type* ptr, size_type p1 = 0) const
+        /*  Finds the first character equal to one of the characters in
+            character string pointed to by ptr. The length of the string
+            is determined by the first null character using Traits::length(ptr).
+        */
+        size_type find_first_of(const value_type* ptr, size_type pos = 0) const
         {
-            return find_first_of(ptr, p1, length<value_type>(ptr));
+            if (pos >= m_size)
+                return npos;
+
+            size_type strlen = length(ptr); // without '\0'
+
+            for (size_type i = pos; i < m_size; ++i)
+            {
+                for (size_type j = 0; j < strlen; ++j)
+                {
+                    if (m_data[i] == ptr[j])
+                        return i;
+                }
+            }
+
+            return npos;
         }
 
-        size_type find_first_of(value_type c, size_type p1 = 0) const
+        /*  Finds the first character equal to one of the characters
+            in the range [ptr, ptr + n). This range can include null
+            characters.
+        */
+        size_type find_first_of(const value_type* ptr, size_type pos, size_type n) const
         {
-            //find
-            for (size_type i = p1; i < m_size; ++i)
+            if (pos >= m_size)
+                return npos;
+
+            size_type strlen = n; // does not check for '\0' termination
+
+            for (size_type i = pos; i < m_size; ++i)
+            {
+                for (size_type j = 0; j < strlen; ++j)
+                {
+                    if (m_data[i] == ptr[j])
+                        return i;
+                }
+            }
+
+            return npos;
+        }
+
+        // Finds the first character equal to c.
+        size_type find_first_of(value_type c, size_type pos = 0) const
+        {
+            if (pos >= m_size)
+                return npos;
+
+            for (size_type i = pos; i < m_size; ++i)
             {
                 if (m_data[i] == c)
                     return i;
@@ -3185,665 +3380,773 @@ namespace stl
             return npos;
         }
 
-        /* $21.3.6 string operations (find_last_of) */
-        size_type find_last_of(const container& str, size_type p1 = npos) const
+        /*  Searches the string for the last character that matches
+            any of the characters specified in its arguments.
+            When pos is specified, the search only includes characters at or
+            before position pos, ignoring any possible occurrences after pos.
+        */
+        size_type find_last_of(const container& str, size_type pos = npos) const
         {
-            return find_last_of(str.c_str(), p1, str.length());
-        }
+            if (pos >= m_size)
+                pos = m_size - 1;
 
-        size_type find_last_of(const value_type* ptr, size_type p1, size_type n2) const
-        {
-            if (p1 >= m_size) p1 = m_size - 1;
-            size_type ptrsz = length<value_type>(ptr);
-            if (n2 > ptrsz)
-                n2 = ptrsz;
+            size_type strlen = str.length();
 
-            if (n2)
+            for (size_type i = pos; i != npos; --i)
             {
-                //find
-                for (size_type i = p1; i != npos; --i)
+                for (size_type j = 0; j < strlen; ++j)
                 {
-                    for (size_type j = 0; j < n2; ++j)
-                    {
-                        if (m_data[i] == ptr[j])
-                            return i;
-                    }
+                    if (m_data[i] == str.m_data[j])
+                        return i;
                 }
             }
 
             return npos;
         }
 
-        size_type find_last_of(const value_type* ptr, size_type p1 = npos) const
+        /*  Finds the last character equal to one of characters in character
+            string pointed to by ptr. The length of the string is determined
+            by the first null character using Traits::length(ptr).
+        */
+        size_type find_last_of(const value_type* ptr, size_type pos = npos) const
         {
-            return find_last_of(ptr, p1, length<value_type>(ptr));
-        }
+            if (pos >= m_size)
+                pos = m_size - 1;
 
-        size_type find_last_of(value_type ch, size_type p1 = npos) const
-        {
-            if (p1 >= m_size) p1 = m_size - 1;
+            size_type strlen = length(ptr); // without '\0'
 
-            //find
-            for (size_type i = p1; i != npos; --i)
+            for (size_type i = pos; i != npos; --i)
             {
-                if (m_data[i] == ch)
-                    return i;
-            }
-
-            return npos;
-        }
-
-       /* $21.3.6 string operations (find_first_not_of) */
-        size_type find_first_not_of(const container& str, size_type p1 = 0) const
-        {
-            return find_first_not_of(str.m_data, p1, str.length());
-        }
-
-        size_type find_first_not_of(const value_type* ptr, size_type p1, size_type n2) const
-        {
-            if (p1 > m_size) throw stl::exception("out of valid range");
-            size_type ptrLen = length<value_type>(ptr);
-            if (n2 > ptrLen)
-                n2 = ptrLen;
-
-            if (n2)
-            {
-                //find
-                for (size_type i = p1; i < m_size; ++i)
+                for (size_type j = 0; j < strlen; ++j)
                 {
-                    bool found = false;
-                    for (size_type j = 0; j < n2; ++j)
-                    {
-                        if (m_data[i] == ptr[j])
-                        {
-                            found = true;
-                            break;
-                        }
-                    }
-
-                    if (!found)
-                        return i; //m_data[i] is not in ptr
+                    if (m_data[i] == ptr[j])
+                        return i;
                 }
             }
 
             return npos;
         }
 
-        size_type find_first_not_of(const value_type* ptr, size_type n1 = 0) const
+        /*  Finds the last character equal to one of characters
+            in range [ptr, ptr+n). This range can include null characters.
+        */
+        size_type find_last_of(const value_type* ptr, size_type pos, size_type n) const
         {
-            return find_first_not_of(ptr, n1, length<value_type>(ptr));
-        }
+            if (pos >= m_size)
+                pos = m_size - 1;
 
-        size_type find_first_not_of(value_type ch, size_type p1 = 0) const
-        {
-            if (p1 > m_size) throw stl::exception("out of valid range");
+            size_type strlen = n; // does not check for '\0' inside ptr
 
-            //find
-            for (size_type i = p1; i < m_size; ++i)
+            for (size_type i = pos; i != npos; --i)
             {
-                if (m_data[i] != ch)
-                    return i;
-            }
-
-            return npos;
-        }
-
-
-        /* $21.3.6 string operations (find_last_not_of) */
-        size_type find_last_not_of(const container& str, size_type p1 = npos) const
-        {
-            return find_last_not_of(str.m_data, p1, str.length());
-        }
-
-        size_type find_last_not_of(const value_type* ptr, size_type p1, size_type n2) const
-        {
-            if (p1 >= m_size)
-                p1 = m_size - 1;
-
-            size_type ptrLen = length<value_type>(ptr);
-            if (n2 > ptrLen)
-                n2 = ptrLen;
-
-            if (n2)
-            {
-                //find
-                for (size_type i = p1; i != npos; --i)
+                for (size_type j = 0; j < strlen; ++j)
                 {
-                    bool found = false;
-                    for (size_type j = 0; j < n2; ++j)
-                    {
-                        if (m_data[i] == ptr[j])
-                        {
-                            found = true;
-                            break;
-                        }
-                    }
-
-                    if (!found)
-                        return i; // m_data[i] is not in ptr
+                    if (m_data[i] == ptr[j])
+                        return i;
                 }
             }
 
             return npos;
         }
 
-        size_type find_last_not_of(const value_type* ptr, size_type p1 = npos) const
+        // Finds the last character equal to c.
+        size_type find_last_of(value_type c, size_type pos = npos) const
         {
-            return find_last_not_of(ptr, p1, length<value_type>(ptr));
-        }
+            if (!m_size)
+                return npos;
 
-        size_type find_last_not_of(value_type ch, size_type p1 = npos) const
-        {
-            if (p1 >= m_size) p1 = m_size - 1;
-            //find
-            for (size_type i = p1; i != npos; --i)
+            if (pos > (m_size - 1))
+                pos = m_size - 1;
+
+            for (size_type i = pos; i != npos; --i)
             {
-                if (m_data[i] != ch)
+                if (m_data[i] == c)
                     return i;
             }
 
             return npos;
         }
 
-
-        /* $21.3.6 string operations (substr) */
-        container substr(size_type p1 = 0, size_type n1 = npos) const
+        /*  Searches the string for the first character that does
+            not match any of the characters specified in its arguments.
+            When pos is specified, the search only includes characters
+            at or after position pos, ignoring any possible occurrences
+            before that character.
+        */
+        size_type find_first_not_of(const container& str, size_type pos = 0) const
         {
-            if (p1 > m_size) throw stl::exception("ouf of valid range");
-            if (n1 > m_size - p1)
-                n1 = m_size - p1;
+            if (pos >= m_size)
+                return npos;
 
-            return container(&m_data[p1], n1);
+            size_type strlen = str.length(); // without '\0'
+
+            for (size_type i = pos; i < m_size; ++i)
+            {
+                bool found = false;
+                for (size_type j = 0; j < strlen; ++j)
+                {
+                    if (m_data[i] == str.m_data[j])
+                    {
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found)
+                    return i;
+            }
+
+            return npos;
         }
 
+        /*  Finds the first character equal to none of characters in character
+            string pointed to by ptr. The length of the string is determined
+            by the first null character using Traits::length(ptr).
+        */
+        size_type find_first_not_of(const value_type* ptr, size_type pos = 0) const
+        {
+            if (pos >= m_size)
+                return npos;
 
-        /* $21.3.6 string operations (compare) */
+            size_type strlen = length(ptr); // without '\0'
+
+            for (size_type i = pos; i < m_size; ++i)
+            {
+                bool found = false;
+                for (size_type j = 0; j < strlen; ++j)
+                {
+                    if (m_data[i] == ptr[j])
+                    {
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found)
+                    return i;
+            }
+
+            return npos;
+        }
+
+        /*  Finds the first character equal to none of characters
+            in range [ptr, ptr+n). This range can include null characters.
+        */
+        size_type find_first_not_of(const value_type* ptr, size_type pos, size_type n) const
+        {
+            if (pos >= m_size)
+                return npos;
+
+            size_type strlen = n; // does not check for '\0' inside ptr
+
+            for (size_type i = pos; i < m_size; ++i)
+            {
+                bool found = false;
+                for (size_type j = 0; j < strlen; ++j)
+                {
+                    if (m_data[i] == ptr[j])
+                    {
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found)
+                    return i;
+            }
+
+            return npos;
+        }
+
+        // Finds the first character not equal to c.
+        size_type find_first_not_of(value_type c, size_type pos = 0) const
+        {
+            if (pos >= m_size)
+                return npos;
+
+            for (size_type i = pos; i < m_size; ++i)
+            {
+                if (m_data[i] != c)
+                    return i;
+            }
+
+            return npos;
+        }
+
+        /*  Searches the string for the last character that does not match
+            any of the characters specified in its arguments.
+            When pos is specified, the search only includes characters at or
+            before position pos, ignoring any possible occurrences after pos.
+        */
+        size_type find_last_not_of(const container& str, size_type pos = npos) const
+        {
+            if (pos >= m_size)
+                pos = m_size - 1;
+
+            size_type strlen = str.length(); // without '\0'
+
+            for (size_type i = pos; i != npos; --i)
+            {
+                bool found = false;
+                for (size_type j = 0; j < strlen; ++j)
+                {
+                    if (m_data[i] == str.m_data[j])
+                    {
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found)
+                    return i;
+            }
+
+            return npos;
+        }
+
+        /*  Finds the last character equal to none of characters in character
+            string pointed to by ptr. The length of the string is determined
+            by the first null character using Traits::length(ptr).
+        */
+        size_type find_last_not_of(const value_type* ptr, size_type pos = npos) const
+        {
+            if (pos >= m_size)
+                pos = m_size - 1;
+
+            size_type strlen = length(ptr); // without '\0'
+
+            for (size_type i = pos; i != npos; --i)
+            {
+                bool found = false;
+                for (size_type j = 0; j < strlen; ++j)
+                {
+                    if (m_data[i] == ptr[j])
+                    {
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found)
+                    return i;
+            }
+
+            return npos;
+        }
+
+        /*  Finds the last character equal to none of characters in the
+            range [ptr, ptr + n). This range can include null characters.
+        */
+        size_type find_last_not_of(const value_type* ptr, size_type pos, size_type n) const
+        {
+            if (pos >= m_size)
+                pos = m_size - 1;
+
+            size_type strlen = n; // does not check for '\0' inside ptr
+
+            for (size_type i = pos; i != npos; --i)
+            {
+                bool found = false;
+                for (size_type j = 0; j < strlen; ++j)
+                {
+                    if (m_data[i] == ptr[j])
+                    {
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found)
+                    return i;
+            }
+
+            return npos;
+        }
+
+        // Finds the last character not equal to c.
+        size_type find_last_not_of(value_type c, size_type pos = npos) const
+        {
+            if (pos >= m_size)
+                pos = m_size - 1;
+
+            for (size_type i = pos; i != npos; --i)
+            {
+                if (m_data[i] != c)
+                    return i;
+            }
+
+            return npos;
+        }
+
+        /*  Returns a newly constructed string object with its value
+            initialized to a copy of a substring of this object.
+            The substring is the portion of the object that starts
+            at character position pos and spans len characters
+            (or until the end of the string, whichever comes first).
+
+            pos: Position of the first character to be copied as a substring.
+                 If this is equal to the string length, the function returns
+                 an empty string. If this is greater than the string length,
+                 it throws out_of_range.
+            Note: The first character is denoted by a value of 0 (not 1).
+
+            len: Number of characters to include in the substring
+            (if the string is shorter, as many characters as possible
+            are used). A value of string::npos indicates all characters
+            until the end of the string.
+        */
+        container substr(size_type pos = 0, size_type len = npos) const
+        {
+            if (pos > m_size)
+                throw stl::exception("out of valid range");
+
+            if (len > m_size - pos)
+                len = m_size - pos;
+
+            return container(&m_data[pos], &m_data[pos + len]);
+        }
+
+        
+
+        /*  Compares the value of this string to the sequence of characters
+            specified by its arguments.
+
+            str: Another string object, used entirely (or partially)
+                 as the comparing string.
+
+            Returns a signed integral indicating the relation between
+            the strings:
+                0: They compare equal
+               <0: Either the value of the first character that does not match
+                   is lower in the compared string, or all compared characters
+                   match but the compared string is shorter.
+               >0: Either the value of the first character that does not match
+                   is greater in the compared string, or all compared characters
+                   match but the compared string is longer.
+        */
         int compare(const container& str) const
         {
-            size_type rsz = str.size();
-            size_type minsz = stl::min<size_type>(m_size, rsz);
-            size_type i = 0;
-            while (i < minsz && m_data[i] == str.m_data[i])
-            {
-                ++i;
-            }
+            size_type strlen = str.length(); // without '\0'
+            size_type len = strlen;
 
-            if (i < minsz)
-            {
-                value_type c1 = m_data[i];
-                value_type c2 = str.m_data[i];
-                return ((c1 < c2) ? -1 : (c1 > c2));
-            }
+            if (len > m_size)
+                len = m_size;
+
+            size_type i = 0;
+            while (i < len && m_data[i] == str.m_data[i])
+                ++i;
+
+            if (i < len)
+                return (m_data[i] < str.m_data[i]) ? -1 : (m_data[i] > str.m_data[i]);
             else
-            {
-                return ((m_size < rsz) ? -1 : (m_size > rsz));
-            }
+                return (m_size < strlen) ? -1 : (m_size > strlen);
         }
 
-        int compare(size_type p1, size_type n1, const container& str) const
+
+        /*  Compares the value of this string to the sequence of characters
+            specified by its arguments.
+
+            pos: Position of the first character in the compared string.
+                 If this is greater than the string length, it throws
+                 out_of_range.
+            Note: The first character is denoted by a value of 0 (not 1).
+
+            len: Length of compared string (if the string is shorter, as many
+                 characters as possible). A value of string::npos indicates
+                 all characters until the end of the string.
+
+            str: Another string object, used entirely (or partially)
+                 as the comparing string.
+
+            Returns a signed integral indicating the relation between
+            the strings:
+                0: They compare equal
+               <0: Either the value of the first character that does not match
+                   is lower in the compared string, or all compared characters
+                   match but the compared string is shorter.
+               >0: Either the value of the first character that does not match
+                   is greater in the compared string, or all compared characters
+                   match but the compared string is longer.
+        */
+
+        int compare(size_type pos, size_type len, const container& str) const
         {
-            if (p1 > m_size) throw stl::exception("out of valid range");
-            size_type lsz = m_size - p1;
-            size_type rsz = str.size();
-            size_type minsz = stl::min<size_type>(lsz, rsz, n1);
+            if (pos > m_size)
+                throw stl::exception("out of valid range");
+
+            if (len > m_size - pos)
+                len = m_size - pos;
+
+            size_type strlen = str.length(); // without '\0'
+
+            size_type minlen = strlen;  // cannot change len due to final
+            if (minlen > m_size)        // compare with strlen to decide
+                minlen = m_size;        // for inequality
 
             size_type i = 0;
-            while (i < minsz && m_data[p1] == str.m_data[i])
-            {
-                ++p1;
+            while (i < minlen && m_data[pos + i] == str.m_data[i])
                 ++i;
-            }
 
-            if (i == n1)
-                return 0;
-
-            if (i == minsz)
-            {
-                return ((lsz < rsz) ? -1 : lsz > rsz);
-            }
-
-            value_type c1 = m_data[p1];
-            value_type c2 = str.m_data[i];
-            return ((c1 < c2) ? -1 : (c1 > c2));
+            if (i < minlen)
+                return (m_data[pos + i] < str.m_data[i]) ? -1 : (m_data[pos + i] > str.m_data[i]);
+            else
+                return (len < strlen) ? -1 : (len > strlen);
         }
 
-        int compare(size_type p1, size_type n1, const container& str, size_type p2, size_type n2) const
+
+        /*  subpos, sublen:
+                Same as pos and len above, but for the comparing string.
+        */
+        int compare(size_type pos, size_type len, const container& str, size_type subpos, size_type sublen) const
         {
-            if (p1 > m_size || p2 > str.m_size) throw stl::exception("out of valid range");
-            size_type lsz = m_size - p1;
-            size_type rsz = str.m_size - p2;
-            size_type minsz = stl::min<size_type>(lsz, rsz, n1, n2);
+            if (pos > m_size || subpos > str.m_size)
+                throw stl::exception("out of valid range");
+
+            if (len > m_size - pos)
+                len = m_size - pos;
+
+            if (sublen > str.m_size - subpos)
+                sublen = str.m_size - subpos;
+
+            size_type minlen = len;     // cannot change len due to final
+            if (minlen > sublen)        // compare with sublen to decide
+                minlen = sublen;        // for inequality
 
             size_type i = 0;
-            while (i < minsz && m_data[p1] == str.m_data[p2])
-            {
-                ++p1;
-                ++p2;
+            while (i < minlen && m_data[pos + i] == str.m_data[subpos + i])
                 ++i;
-            }
 
-            if (i < minsz)
-            {
-                value_type c1 = m_data[p1];
-                value_type c2 = str.m_data[p2];
-                return ((c1 < c2) ? -1 : (c1 > c2));
-            }
-
-            if (n1 == n2 && n1 <= lsz && n1 <= rsz && i == n1)
-                return 0;
-
-            return ((lsz < rsz) ? -1 : lsz > rsz);
+            if (i < minlen)
+                return (m_data[pos + i] < str.m_data[subpos + i]) ? -1 : (m_data[pos + i] > str.m_data[subpos + i]);
+            else
+                return (len < sublen) ? -1 : (len > sublen);
         }
 
+        /*  Compares the value of this string to the sequence of characters
+            specified by its arguments.
+        */
         int compare(const value_type* ptr) const
         {
-            size_type size = length<value_type>(ptr);
-            size_type minsz = stl::min<size_type>(m_size, size);
-            size_type i = 0;
-            while (i < minsz && m_data[i] == ptr[i])
-            {
-                ++i;
-            }
+            size_type strlen = length(ptr); // without '\0'
+            
+            size_type len = strlen;
+            if (len > m_size)
+                len = m_size;
 
-            if (i < minsz)
-            {
-                value_type c1 = m_data[i];
-                value_type c2 = ptr[i];
-                return ((c1 < c2) ? -1 : (c1 > c2));
-            }
+            size_type i = 0;
+            while (i < len && m_data[i] == ptr[i])
+                ++i;
+
+            if (i < len)
+                return (m_data[i] < ptr[i]) ? -1 : (m_data[i] > ptr[i]);
             else
-            {
-                return ((m_size < size) ? -1 : m_size > size);
-            }
+                return (m_size < strlen) ? -1 : (m_size > strlen);
         }
 
-        int compare(size_type p1, size_type n1, const value_type* ptr) const
+        /*  Compares the value of this string to the sequence of characters
+            specified by its arguments.
+        */
+        int compare(size_type pos, size_type len, const value_type* ptr) const
         {
-            if (p1 > m_size) throw stl::exception("out of valid range");
+            if (pos > m_size)
+                throw stl::exception("out of valid range");
 
-            size_type lsz = m_size - p1;
-            size_type rsz = length<value_type>(ptr);
-            size_type minsz = stl::min<size_type>(lsz, rsz, n1);
+            if (len > m_size - pos)
+                len = m_size - pos;
+
+            size_type strlen = length(ptr); // without '\0'
+
+            size_type minlen = strlen;  // cannot change len due to final
+            if (minlen > m_size)        // compare with strlen to decide
+                minlen = m_size;        // for inequality
 
             size_type i = 0;
-            while (i < minsz && m_data[p1] == ptr[i])
-            {
-                ++p1;
+            while (i < minlen && m_data[pos + i] == ptr[i])
                 ++i;
-            }
 
-            if (i == n1)
-                return 0;
-
-            if (i == minsz)
-            {
-                return ((lsz < rsz) ? -1 : lsz > rsz);
-            }
-
-            value_type c1 = m_data[p1];
-            value_type c2 = ptr[i];
-            return ((c1 < c2) ? -1 : (c1 > c2));
-        }
-
-        int compare(size_type p1, size_type n1, const value_type* ptr, size_type n2) const
-        {
-            if (p1 > m_size) throw stl::exception("out of valid range");
-            size_type lsz = m_size - p1;
-            size_type rsz = length<value_type>(ptr);
-            size_type minsz = stl::min<size_type>(lsz, rsz, n1, n2);
-
-            size_type i = 0;
-            while (i < minsz && m_data[p1] == ptr[i])
-            {
-                ++p1;
-                ++i;
-            }
-
-            if (i < minsz)
-            {
-                value_type c1 = m_data[p1];
-                value_type c2 = ptr[i];
-                return ((c1 < c2) ? -1 : (c1 > c2));
-            }
-
-            if (n1 == n2 && n1 <= lsz && n1 <= rsz && i == n1)
-                return 0;
-
-            return ((lsz < rsz) ? -1 : lsz > rsz);
+            if (i < minlen)
+                return (m_data[pos + i] < ptr[i]) ? -1 : (m_data[pos + i] > ptr[i]);
+            else
+                return (len < strlen) ? -1 : (len > strlen);
         }
 
         /*
-         *    MS Compiler issue fails to deduce template arguments for stl::string
-         *    while calling global operators with 1 or 2 string operands (as below).
-         *    
-         *    std::less<stl::string> comp;
-         *    stl::string s1("0"), s2("1");
-         *    bool res = comp(s1, s2); <--- error
-         *    
-         *    Moving all global operators with left operand as stl::string, inside
-         *    basic_string class.
-         */
+            pos: Position of the first character in the compared string.
+                 If this is greater than the string length, it throws
+                 out_of_range.
+            Note: The first character is denoted by a value of 0 (not 1).
 
-        ////Concatenates two string objects.
-        //container operator+(const container& Right) const
-        //{
-        //    stl::basic_string<T> res(*this);
-        //    res += Right;
-        //    return res;
-        //}
-        //
-        //container operator+(const T* Right) const
-        //{
-        //    container res(*this);
-        //    res += Right;
-        //    return res;
-        //}
-        //
-        //container operator+(const T Right) const
-        //{
-        //    container res(*this);
-        //    res += Right;
-        //    return res;
-        //}
+            len: Length of compared string (if the string is shorter, as many
+                 characters as possible). A value of string::npos indicates
+                 all characters until the end of the string.
 
-        //bool operator!=(const container& Right) const
-        //{
-        //    return compare(Right) != 0;
-        //}
-        //
-        //bool operator!=(const T* Right) const
-        //{
-        //    return compare(Right) != 0;
-        //}
+            ptr: Pointer to string array used as the comparing string.
+              n: The first n characters in the array are used as
+                 the comparing string.
 
-        //bool operator==(const container& Right) const
-        //{
-        //    return compare(Right) == 0;
-        //}
+            Returns a signed integral indicating the relation between
+            the strings:
+                0: They compare equal
+               <0: Either the value of the first character that does not match
+                   is lower in the compared string, or all compared characters
+                   match but the compared string is shorter.
+               >0: Either the value of the first character that does not match
+                   is greater in the compared string, or all compared characters
+                   match but the compared string is longer.
+        */
+        int compare(size_type pos, size_type len, const value_type* ptr, size_type n) const
+        {
+            if (pos > m_size)
+                throw stl::exception("out of valid range");
 
-        //bool operator==(const T* Right) const
-        //{
-        //    return compare(Right) == 0;
-        //}
-        //
-        //bool operator<(const container& Right) const
-        //{
-        //    return compare(Right) < 0;
-        //}
+            if (len > m_size - pos)
+                len = m_size - pos;
 
-        //bool operator<(const T* Right) const
-        //{
-        //    return compare(Right) < 0;
-        //}
+            size_type minlen = len;     // cannot change len due to final
+            if (minlen > n)             // compare with n to decide
+                minlen = n;             // for inequality
 
-        //bool operator<=(const container& Right) const
-        //{
-        //    return compare(Right) <= 0;
-        //}
+            size_type i = 0;
+            while (i < minlen && m_data[pos + i] == ptr[i])
+                ++i;
 
-        //bool operator<=(const T* Right) const
-        //{
-        //    return compare(Right) <= 0;
-        //}
-
-        //bool operator>(const container& Right) const
-        //{
-        //    return compare(Right) > 0;
-        //}
-
-        //bool operator>(const T* Right) const
-        //{
-        //    return compare(Right) > 0;
-        //}
-
-        //bool operator>=(const container& Right) const
-        //{
-        //    return compare(Right) >= 0;
-        //}
-
-        //bool operator>=(const T* Right) const
-        //{
-        //    return compare(Right) >= 0;
-        //}
+            if (i < minlen)
+                return (m_data[pos + i] < ptr[i]) ? -1 : (m_data[pos + i] > ptr[i]);
+            else
+                return (len < n) ? -1 : (len > n);
+        }
     };  // class
+
+    /*
+    string operator+ (const string& lhs, const string& rhs);
+    string operator+ (const string& lhs, const char*   rhs);
+    string operator+ (const char*   lhs, const string& rhs);
+    string operator+ (const string& lhs, char          rhs);
+    string operator+ (char          lhs, const string& rhs);
+    */
+
+
 }  // namespace
+
+
 
 
 //########################################################################
 // Operators
-// 
-// Commented operators are moved inside basic_string to avoid compiler errors
-// about unknown template arguments during matching of operands.
-
-
-
-/*
- *    MS Compiler issue error while trying to deduce template argument for stl::string
- *    std::less<stl::string> comp;
- *    stl::string s1("0"), s2("1");
- *    bool res = comp(s1, s2); <--- error using global operators
- *    
- *    Moving all global operators with left operand as stl::string, inside
- *    basic_string class.
- */
-
-//Concatenates two string objects.
-template<typename T, typename Allocator>
-stl::basic_string<T, Allocator> operator+(
-    const stl::basic_string<T, Allocator>& Left,
-    const stl::basic_string<T, Allocator>& Right)
-{
-    stl::basic_string<T> res(Left);
-    res += Right;
-    return res;
-}
-
-
-template<typename T, typename Allocator>
-stl::basic_string<T, Allocator> operator+(
-    const stl::basic_string<T, Allocator>& Left, const T* Right)
-{
-    stl::basic_string<T> res(Left);
-    res += Right;
-    return res;
-}
-
-template<typename T, typename Allocator>
-stl::basic_string<T, Allocator> operator+(
-    const stl::basic_string<T, Allocator>& Left, const T Right)
-{
-    stl::basic_string<T> res(Left);
-    res += Right;
-    return res;
-}
-
-template<typename T, typename Allocator>
-stl::basic_string<T, Allocator> operator+(
-    const T* Left, const stl::basic_string<T, Allocator>& Right)
-{
-    stl::basic_string<T> res(Left);
-    res += Right;
-    return res;
-}
-
-template<typename T, typename Allocator>
-stl::basic_string<T, Allocator> operator+(
-    const T Left, const stl::basic_string<T, Allocator>& Right)
-{
-    stl::basic_string<T> res(1, Left);
-    res += Right;
-    return res;
-}
-
-
-//Tests if the string object on the left side of the operator is not equal
-//to the string object on the right side.
-template<typename T, typename Allocator>
-bool operator!=(
-                const stl::basic_string<T, Allocator>& Left, 
-                const stl::basic_string<T, Allocator>& Right)
-{
-    return Left.compare(Right) != 0;
-}
-
-template<typename T, typename Allocator>
-bool operator!=(const stl::basic_string<T, Allocator>& Left, const T* Right)
-{
-    return Left.compare(Right) != 0;
-}
-
-
-template<typename T, typename Allocator>
-bool operator!=(const T* Left, const stl::basic_string<T, Allocator>& Right)
-{
-    return Right.compare(Left) != 0;
-}
-
-//Tests if the string object on the left side of the operator is equal to the string object on the right side.
-template<typename T, typename Allocator>
-bool operator==(
-                const stl::basic_string<T, Allocator>& Left, 
-                const stl::basic_string<T, Allocator>& Right)
-{
-    return Left.compare(Right) == 0;
-}
-
-template<typename T, typename Allocator>
-bool operator==(const stl::basic_string<T, Allocator>& Left, const T* Right)
-{
-    return Left.compare(Right) == 0;
-}
-
-template<typename T, typename Allocator>
-bool operator==(const T* Left, const stl::basic_string<T, Allocator>& Right)
-{
-    return Right.compare(Left) == 0;
-}
-
-//Tests if the string object on the left side of the operator is less than to the string object on the right side.
-template<typename T, typename Allocator>
-bool operator<(
-                const stl::basic_string<T, Allocator>& Left, 
-                const stl::basic_string<T, Allocator>& Right)
-{
-    return Left.compare(Right) < 0;
-}
-
-template<typename T, typename Allocator>
-bool operator<(const stl::basic_string<T, Allocator>& Left, const T* Right)
-{
-    return Left.compare(Right) < 0;
-}
-
-
-template<typename T, typename Allocator>
-bool operator<(const T* Left, const stl::basic_string<T, Allocator>& Right)
-{
-    return Right.compare(Left) > 0;
-}
-
-
-
-//Tests if the string object on the left side of the operator is less than or equal to the string object on the right side.
-template<typename T, typename Allocator>
-bool operator<=(
-                const stl::basic_string<T, Allocator>& Left, 
-                const stl::basic_string<T, Allocator>& Right)
-{
-    return Left.compare(Right) <= 0;
-}
-
-template<typename T, typename Allocator>
-bool operator<=(const stl::basic_string<T, Allocator>& Left, const T* Right)
-{
-    return Left.compare(Right) <= 0;
-}
-
-
-
-
-template<typename T, typename Allocator>
-bool operator<=(const T* Left, const stl::basic_string<T, Allocator>& Right)
-{
-    return Right.compare(Left) >= 0;
-}
-
-//A template function that writes a string into the output stream.
-template<typename T, typename Allocator>
-std::basic_ostream<T>& operator<<(
-    std::basic_ostream<T>& Ostr, const stl::basic_string<T, Allocator>& str)
-{
-    Ostr << str.c_str();
-    return Ostr;
-}
-
-
-//Tests if the string object on the left side of the operator is greater
-//than to the string object on the right side.
-template<typename T, typename Allocator>
-bool operator>(
-               const stl::basic_string<T, Allocator>& Left, 
-               const stl::basic_string<T, Allocator>& Right)
-{
-    return Left.compare(Right) > 0;
-}
-
-template<typename T, typename Allocator>
-bool operator>(const stl::basic_string<T, Allocator>& Left, const T* Right)
-{
-    return Left.compare(Right) > 0;
-}
-
-
-template<typename T, typename Allocator>
-bool operator>(const T* Left, const stl::basic_string<T, Allocator>& Right)
-{
-    return Right.compare(Left) < 0;
-}
-
-
-//Tests if the string object on the left side of the operator is greater
-//than or equal to the string object on the right side.
-template<typename T, typename Allocator>
-bool operator>=(
-                const stl::basic_string<T, Allocator>& Left, 
-                const stl::basic_string<T, Allocator>& Right)
-{
-    return Left.compare(Right) >= 0;
-}
-
-template<typename T, typename Allocator>
-bool operator>=(const stl::basic_string<T, Allocator>& Left, const T* Right)
-{
-    return Left.compare(Right) >= 0;
-}
-
-
-template<typename T, typename Allocator>
-bool operator>=(const T* Left, const stl::basic_string<T, Allocator>& Right)
-{
-    return Right.compare(Left) <= 0;
-}
-
-//A template function that reads a string from an input stream.
-template<typename T, typename Allocator>
-std::basic_istream<T>& operator>>(
-    std::basic_istream<T>& Istr, stl::basic_string<T, Allocator>& Right)
-{
-    std::basic_string<T> chunk;
-    Istr >> chunk;
-    Right += chunk.c_str();
-    return Istr;
-}
-
-//Specialized template function
-//Exchanges the arrays of characters of two strings.
-template<typename T, typename Allocator>
-void swap(
-          stl::basic_string<T, Allocator>& Left, 
-          stl::basic_string<T, Allocator>& Right)
-{
-    Left.swap(Right);
-}
+//
+////Concatenates two string objects.
+//template<typename T, typename Allocator>
+//stl::basic_string<T, Allocator> operator+(
+//    const stl::basic_string<T, Allocator>& Left,
+//    const stl::basic_string<T, Allocator>& Right)
+//{
+//    stl::basic_string<T> res(Left);
+//    res += Right;
+//    return res;
+//}
+//
+//
+//template<typename T, typename Allocator>
+//stl::basic_string<T, Allocator> operator+(
+//    const stl::basic_string<T, Allocator>& Left,
+//    const T* Right)
+//{
+//    stl::basic_string<T> res(Left);
+//    res += Right;
+//    return res;
+//}
+//
+//template<typename T, typename Allocator>
+//stl::basic_string<T, Allocator> operator+(
+//    const stl::basic_string<T, Allocator>& Left,
+//    const T Right)
+//{
+//    stl::basic_string<T> res(Left);
+//    res += Right;
+//    return res;
+//}
+//
+//template<typename T, typename Allocator>
+//stl::basic_string<T, Allocator> operator+(
+//    const T* Left, const stl::basic_string<T, Allocator>& Right)
+//{
+//    stl::basic_string<T> res(Left);
+//    res += Right;
+//    return res;
+//}
+//
+//template<typename T, typename Allocator>
+//stl::basic_string<T, Allocator> operator+(
+//    const T Left, const stl::basic_string<T, Allocator>& Right)
+//{
+//    stl::basic_string<T> res(1, Left);
+//    res += Right;
+//    return res;
+//}
+//
+//
+////Tests if the string object on the left side of the operator is not equal
+////to the string object on the right side.
+//template<typename T, typename Allocator>
+//bool operator!=(
+//                const stl::basic_string<T, Allocator>& Left, 
+//                const stl::basic_string<T, Allocator>& Right)
+//{
+//    return Left.compare(Right) != 0;
+//}
+//
+//template<typename T, typename Allocator>
+//bool operator!=(const stl::basic_string<T, Allocator>& Left, const T* Right)
+//{
+//    return Left.compare(Right) != 0;
+//}
+//
+//
+//template<typename T, typename Allocator>
+//bool operator!=(const T* Left, const stl::basic_string<T, Allocator>& Right)
+//{
+//    return Right.compare(Left) != 0;
+//}
+//
+////Tests if the string object on the left side of the operator is equal to the string object on the right side.
+//template<typename T, typename Allocator>
+//bool operator==(
+//                const stl::basic_string<T, Allocator>& Left, 
+//                const stl::basic_string<T, Allocator>& Right)
+//{
+//    return Left.compare(Right) == 0;
+//}
+//
+//template<typename T, typename Allocator>
+//bool operator==(const stl::basic_string<T, Allocator>& Left, const T* Right)
+//{
+//    return Left.compare(Right) == 0;
+//}
+//
+//template<typename T, typename Allocator>
+//bool operator==(const T* Left, const stl::basic_string<T, Allocator>& Right)
+//{
+//    return Right.compare(Left) == 0;
+//}
+//
+////Tests if the string object on the left side of the operator is less than to the string object on the right side.
+//template<typename T, typename Allocator>
+//bool operator<(
+//                const stl::basic_string<T, Allocator>& Left, 
+//                const stl::basic_string<T, Allocator>& Right)
+//{
+//    return Left.compare(Right) < 0;
+//}
+//
+//template<typename T, typename Allocator>
+//bool operator<(const stl::basic_string<T, Allocator>& Left, const T* Right)
+//{
+//    return Left.compare(Right) < 0;
+//}
+//
+//
+//template<typename T, typename Allocator>
+//bool operator<(const T* Left, const stl::basic_string<T, Allocator>& Right)
+//{
+//    return Right.compare(Left) > 0;
+//}
+//
+//
+//
+////Tests if the string object on the left side of the operator is less than or equal to the string object on the right side.
+//template<typename T, typename Allocator>
+//bool operator<=(
+//                const stl::basic_string<T, Allocator>& Left, 
+//                const stl::basic_string<T, Allocator>& Right)
+//{
+//    return Left.compare(Right) <= 0;
+//}
+//
+//template<typename T, typename Allocator>
+//bool operator<=(const stl::basic_string<T, Allocator>& Left, const T* Right)
+//{
+//    return Left.compare(Right) <= 0;
+//}
+//
+//
+//
+//
+//template<typename T, typename Allocator>
+//bool operator<=(const T* Left, const stl::basic_string<T, Allocator>& Right)
+//{
+//    return Right.compare(Left) >= 0;
+//}
+//
+////A template function that writes a string into the output stream.
+//template<typename T, typename Allocator>
+//std::basic_ostream<T>& operator<<(
+//    std::basic_ostream<T>& Ostr, const stl::basic_string<T, Allocator>& str)
+//{
+//    Ostr << str.c_str();
+//    return Ostr;
+//}
+//
+//
+////Tests if the string object on the left side of the operator is greater
+////than to the string object on the right side.
+//template<typename T, typename Allocator>
+//bool operator>(
+//               const stl::basic_string<T, Allocator>& Left, 
+//               const stl::basic_string<T, Allocator>& Right)
+//{
+//    return Left.compare(Right) > 0;
+//}
+//
+//template<typename T, typename Allocator>
+//bool operator>(const stl::basic_string<T, Allocator>& Left, const T* Right)
+//{
+//    return Left.compare(Right) > 0;
+//}
+//
+//
+//template<typename T, typename Allocator>
+//bool operator>(const T* Left, const stl::basic_string<T, Allocator>& Right)
+//{
+//    return Right.compare(Left) < 0;
+//}
+//
+//
+////Tests if the string object on the left side of the operator is greater
+////than or equal to the string object on the right side.
+//template<typename T, typename Allocator>
+//bool operator>=(
+//                const stl::basic_string<T, Allocator>& Left, 
+//                const stl::basic_string<T, Allocator>& Right)
+//{
+//    return Left.compare(Right) >= 0;
+//}
+//
+//template<typename T, typename Allocator>
+//bool operator>=(const stl::basic_string<T, Allocator>& Left, const T* Right)
+//{
+//    return Left.compare(Right) >= 0;
+//}
+//
+//
+//template<typename T, typename Allocator>
+//bool operator>=(const T* Left, const stl::basic_string<T, Allocator>& Right)
+//{
+//    return Right.compare(Left) <= 0;
+//}
+//
+////A template function that reads a string from an input stream.
+//template<typename T, typename Allocator>
+//std::basic_istream<T>& operator>>(
+//    std::basic_istream<T>& Istr, stl::basic_string<T, Allocator>& Right)
+//{
+//    std::basic_string<T> chunk;
+//    Istr >> chunk;
+//    Right += chunk.c_str();
+//    return Istr;
+//}
+//
+////Specialized template function
+////Exchanges the arrays of characters of two strings.
+//template<typename T, typename Allocator>
+//void swap(
+//          stl::basic_string<T, Allocator>& Left, 
+//          stl::basic_string<T, Allocator>& Right)
+//{
+//    Left.swap(Right);
+//}
 
 #endif // __basic_string_hpp__

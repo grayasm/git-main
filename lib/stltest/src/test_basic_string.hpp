@@ -34,6 +34,7 @@ contact: grayasm@gmail.com
 class test_basic_string : public CppUnit::TestFixture
 {
     CPPUNIT_TEST_SUITE(test_basic_string);
+    CPPUNIT_TEST(correctness);
     CPPUNIT_TEST(ctor);
     CPPUNIT_TEST(assign_op);
     CPPUNIT_TEST(size);
@@ -49,6 +50,15 @@ class test_basic_string : public CppUnit::TestFixture
     CPPUNIT_TEST(replace);
     CPPUNIT_TEST(copy);
     CPPUNIT_TEST(swap);
+    CPPUNIT_TEST(find);
+    CPPUNIT_TEST(rfind);
+    CPPUNIT_TEST(find_first_of);
+    CPPUNIT_TEST(find_last_of);
+    CPPUNIT_TEST(find_first_not_of);
+    CPPUNIT_TEST(find_last_not_of);
+    CPPUNIT_TEST(substr);
+    CPPUNIT_TEST(compare);
+    CPPUNIT_TEST(perf1);    
     CPPUNIT_TEST_SUITE_END();
 
 
@@ -56,6 +66,7 @@ public:
     void setUp();
     void tearDown();
 
+    void correctness(); // detect allowed types at compile time and trigger error
     void ctor();
     void assign_op();
     void size();    // + length + capacity
@@ -71,6 +82,15 @@ public:
     void replace();
     void copy();
     void swap();
+    void find();
+    void rfind();
+    void find_first_of();
+    void find_last_of();
+    void find_first_not_of();
+    void find_last_not_of();
+    void substr();
+    void compare();
+    void perf1();       // performance test    
 };
 
 

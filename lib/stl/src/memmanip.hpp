@@ -504,17 +504,15 @@ namespace stl
         {
             /*  If ::realloc allocates at a new address, it will also free the
                 current location, which means it is dangerous to construct
-                from the old object with ::new(new_add)T(old_obj);
+                from the old object with ::new(new_addr)T(old_obj);
 
                 You can fix this by using a memory pool and controlling all
                 memory allocation (malloc, calloc, realloc and free).
             */
             *dest = allocator.allocate(cap, 0);
-//TODO: malloc, calloc, realloc should NOT throw exceptions right??
-//TODO: check and fix this if possible!!!
-            if(*dest == 0) throw stl::exception("bad allocation");
+            if(*dest == 0)
+                throw stl::exception("bad allocation");
 
-            // if(*dest != src)
             for(size_t i = 0; i < size; ++i)
             {
                 T* d1 = (*dest) + i;
@@ -538,7 +536,6 @@ namespace stl
         {
             // calls ::realloc underneath - no need to free src (see allocator)
             *dest = allocator.allocate(cap, src);
-            if (*dest == 0) throw stl::exception("bad allocation");
         }
     }
 
@@ -553,7 +550,6 @@ namespace stl
         {
             // calls ::realloc underneath - no need to free src (see allocator)
             *dest = allocator.allocate(cap, src);
-            if (*dest == 0) throw stl::exception("bad allocation");
         }
     }
     
@@ -568,7 +564,6 @@ namespace stl
         {
             // calls ::realloc underneath - no need to free src (see allocator)
             *dest = allocator.allocate(cap, src);
-            if (*dest == 0) throw stl::exception("bad allocation");
         }
     }
 
@@ -583,7 +578,6 @@ namespace stl
         {
             // calls ::realloc underneath - no need to free src (see allocator)
             *dest = allocator.allocate(cap, src);
-            if (*dest == 0) throw stl::exception("bad allocation");
         }
     }
 
@@ -598,7 +592,6 @@ namespace stl
         {
             // calls ::realloc underneath - no need to free src (see allocator)
             *dest = allocator.allocate(cap, src);
-            if (*dest == 0) throw stl::exception("bad allocation");
         }
     }
 
@@ -614,7 +607,6 @@ namespace stl
         {
             // calls ::realloc underneath - no need to free src (see allocator)
             *dest = allocator.allocate(cap, src);
-            if (*dest == 0) throw stl::exception("bad allocation");
         }
     }
 
@@ -630,7 +622,6 @@ namespace stl
         {
             // calls ::realloc underneath - no need to free src (see allocator)
             *dest = allocator.allocate(cap, src);
-            if (*dest == 0) throw stl::exception("bad allocation");
         }
     }
 
@@ -646,7 +637,6 @@ namespace stl
         {
             // calls ::realloc underneath - no need to free src (see allocator)
             *dest = allocator.allocate(cap, src);
-            if (*dest == 0) throw stl::exception("bad allocation");
         }
     }
 
@@ -662,7 +652,6 @@ namespace stl
         {
             // calls ::realloc underneath - no need to free src (see allocator)
             *dest = allocator.allocate(cap, src);
-            if (*dest == 0) throw stl::exception("bad allocation");
         }
     }
 
@@ -678,7 +667,6 @@ namespace stl
         {
             // calls ::realloc underneath - no need to free src (see allocator)
             *dest = allocator.allocate(cap, src);
-            if (*dest == 0) throw stl::exception("bad allocation");
         }
     }
 
@@ -694,7 +682,6 @@ namespace stl
         {
             // calls ::realloc underneath - no need to free src (see allocator)
             *dest = allocator.allocate(cap, src);
-            if (*dest == 0) throw stl::exception("bad allocation");
         }
     }
 
@@ -710,7 +697,6 @@ namespace stl
         {
             // calls ::realloc underneath - no need to free src (see allocator)
             *dest = allocator.allocate(cap, src);
-            if (*dest == 0) throw stl::exception("bad allocation");
         }
     }
 
@@ -725,7 +711,6 @@ namespace stl
         {
             // calls ::realloc underneath - no need to free src (see allocator)
             *dest = allocator.allocate(cap, src);
-            if (*dest == 0) throw stl::exception("bad allocation");
         }
     }
 
@@ -740,7 +725,6 @@ namespace stl
         {
             // calls ::realloc underneath - no need to free src (see allocator)
             *dest = allocator.allocate(cap, src);
-            if (*dest == 0) throw stl::exception("bad allocation");
         }
     }
 

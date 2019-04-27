@@ -39,63 +39,124 @@ void test_basic_string::tearDown()
 {
 }
 
+void test_basic_string::correctness()
+{
+    typedef stl::basic_string<char> string;
+
+    string s1("abc");
+    string s2 = s1;
+   
+    
+
+}
+
 // Don't shoot for performance yet. Get everything correct first!
 void test_basic_string::ctor()
 {
-    stl::basic_string<char> s0;
-    stl::basic_string<char> s1(s0);
-    //stl::basic_string<char> s2(s1, 0, 0); -- does not make sense!
-    // it can happen only if s1 is not empty
+    typedef stl::basic_string<char> string;
 
+    //  basic_string()
+    string s0;
 
-    stl::basic_string<char> s3("a string", 8);
-    stl::basic_string<char> s4(s3);
-    stl::basic_string<char> s5(s4, 2, 6);
+    //  basic_string(const container& str)
+    string s1(s0);
+    CPPUNIT_ASSERT(::strcmp(s1.c_str(), "") == 0 && s1.size() == 0 && s1.empty());
 
+    char c2[] = "a string";
+    string s2(c2, c2 + 8);
+    string s3(s2);
     CPPUNIT_ASSERT(::strcmp(s3.c_str(), "a string") == 0);
-    CPPUNIT_ASSERT(::strcmp(s4.c_str(), "a string") == 0);
+
+    //  basic_string(const container& s, size_type pos, size_type sublen = npos)
+    string s4(s0, 0, 0);
+    CPPUNIT_ASSERT(::strcmp(s4.c_str(), "") == 0 && s4.size() == 0 && s4.empty());
+
+    string s5(s3, 2, -1);
     CPPUNIT_ASSERT(::strcmp(s5.c_str(), "string") == 0);
 
+    //  basic_string(const value_type* ptr)
+    string s6("");
+    CPPUNIT_ASSERT(::strcmp(s6.c_str(), "") == 0 && s6.size() == 0 && s6.empty());
 
-    stl::basic_string<char> s6("Mike is a great guy!");
-    stl::basic_string<char> s7(s6, 8, 12);
+    string s7("a string");
+    CPPUNIT_ASSERT(::strcmp(s7.c_str(), "a string") == 0);
 
-    CPPUNIT_ASSERT(::strcmp(s6.c_str(), "Mike is a great guy!") == 0);
-    CPPUNIT_ASSERT(::strcmp(s7.c_str(), "a great guy!") == 0);
-
-
-    stl::basic_string<char> s8(0, 'c');
-    stl::basic_string<char> s9(5, '5');
-
-    CPPUNIT_ASSERT(::strcmp(s8.c_str(), "") == 0);
-    CPPUNIT_ASSERT(::strcmp(s9.c_str(), "55555") == 0);
     
+    //  basic_string(const value_type* ptr, size_type n)
+    string s8("", 0);
+    CPPUNIT_ASSERT(::strcmp(s8.c_str(), "") == 0);
 
-    char c10[] = "0123456789"; // size=10
-    stl::basic_string<char> s10(c10, c10 + 10); //(char*,char*)
-    CPPUNIT_ASSERT(::strcmp(s10.c_str(), "0123456789") == 0);
+    string s9("a string", 5);
+    CPPUNIT_ASSERT(::strcmp(s9.c_str(), "a str") == 0);
 
+    //  basic_string(size_type n, value_type c)
+    string s10((size_t)0, (char)'c');
+    CPPUNIT_ASSERT(::strcmp(s10.c_str(), "") == 0 && s10.size() == 0 && s10.empty());
 
-    const char c11[] = "0123456789"; // size=10
-    stl::basic_string<char> s11(c11, c11 + 10); // (const char*,const char*)
-    CPPUNIT_ASSERT(::strcmp(s11.c_str(), "0123456789") == 0);
-
-
-    stl::basic_string<char> s12(s11.begin(), s11.end());//(iterator,iterator)
-    CPPUNIT_ASSERT(::strcmp(s12.c_str(), "0123456789") == 0);
-
-
-    const stl::basic_string<char>& s13 = s12;
-    stl::basic_string<char> s14(s13.begin(), s13.end());//(const_iterator,const_iterator)
-    CPPUNIT_ASSERT(::strcmp(s14.c_str(), "0123456789") == 0);
+    string s11((size_t)10, '?');
+    CPPUNIT_ASSERT(::strcmp(s11.c_str(), "??????????") == 0);
 
 
-    stl::basic_string<char> s15(s14.rbegin(), s14.rend()); // (reverse_iterator,reverse_iterator)
-    CPPUNIT_ASSERT(::strcmp(s15.c_str(), "9876543210") == 0);
+    //  basic_string(iterator first, iterator last)
+    string s12(s0.begin(), s0.end());//(iterator,iterator)
+    CPPUNIT_ASSERT(::strcmp(s12.c_str(), "") == 0);
 
+    string s13("the string");
+    string s14(s13.begin(), s13.end());
+    CPPUNIT_ASSERT(::strcmp(s14.c_str(), "the string") == 0);
 
-    stl::basic_string<char> s16(s13.rbegin(), s13.rend());// (const_reverse_iterator, const_reverse_iterator)
-    CPPUNIT_ASSERT(::strcmp(s16.c_str(), "9876543210") == 0);
+    //  basic_string(const_iterator first, const_iterator last)
+    const string& s0c = s0;
+    string s15(s0c.begin(), s0c.end());
+    CPPUNIT_ASSERT(::strcmp(s15.c_str(), "") == 0);
+
+    const string& s13c = s13;
+    string s16(s13c.begin(), s13c.end());
+    CPPUNIT_ASSERT(::strcmp(s16.c_str(), "the string") == 0);
+
+    //  basic_string(char* first, char* last)
+    char c17[] = "";
+    string s17(c17, c17 + 0);
+    CPPUNIT_ASSERT(::strcmp(s17.c_str(), "") == 0);
+
+    char c18[] = "0123456789";
+    string s18(c18, c18 + 10);
+    CPPUNIT_ASSERT(::strcmp(s18.c_str(), "0123456789") == 0);
+
+    //  basic_string(const char* first, const char* last)
+    const char c19[] = "";
+    string s19(c19, c19 + 0);
+    CPPUNIT_ASSERT(::strcmp(s19.c_str(), "") == 0);
+
+    const char c20[] = "0123456789";
+    string s20(c20, c20 + 10);
+    CPPUNIT_ASSERT(::strcmp(s20.c_str(), "0123456789") == 0);
+
+    //  basic_string(reverse_iterator first, reverse_iterator last)
+    string s21(s0.rbegin(), s0.rend());
+    CPPUNIT_ASSERT(::strcmp(s21.c_str(), "") == 0);
+
+    string s22(s20.rbegin() + 1, s20.rend() - 1);
+    CPPUNIT_ASSERT(::strcmp(s22.c_str(), "87654321") == 0);
+
+    //  basic_string(const_reverse_iterator first, ..);
+    string s23(s0c.rbegin(), s0c.rend());
+    CPPUNIT_ASSERT(::strcmp(s23.c_str(), "") == 0);
+
+    const string& s20c = s20;
+    string s24(s20c.rbegin() + 1, s20c.rend() - 1);
+    CPPUNIT_ASSERT(::strcmp(s24.c_str(), "87654321") == 0);
+
+    // basic_string(InputIterator n, InputIterator value)
+    char n = 0;
+    char c = '\0';
+    string s25(n, c);
+    CPPUNIT_ASSERT(::strcmp(s25.c_str(), "") == 0);
+
+    n = 5;
+    c = '?';
+    string s26(n, c);
+    CPPUNIT_ASSERT(::strcmp(s26.c_str(), "?????") == 0);
 }
 
 void test_basic_string::assign_op()
@@ -1028,4 +1089,727 @@ void test_basic_string::swap()
     CPPUNIT_ASSERT(::strcmp(s2.c_str(), c1) == 0 &&
                    s2.capacity() == c1cap &&
                    s2.size() == c1sz);
+}
+
+void test_basic_string::find()
+{
+    typedef stl::basic_string<char> string;
+    
+    // size_type find(const container& str, size_type pos = 0) const
+    string s1("ABCefgh1234");
+    size_t ret = s1.find(string(""), 2);
+    CPPUNIT_ASSERT(ret == 2);
+
+    ret = s1.find(string("ABC"), 1);
+    CPPUNIT_ASSERT(ret == -1);
+
+    ret = s1.find(string("efgh12"), 3);
+    CPPUNIT_ASSERT(ret == 3);
+
+    ret = s1.find(string("e"), 10);
+    CPPUNIT_ASSERT(ret == -1);
+
+    string s1a("");
+    ret = s1a.find(string(""));
+    CPPUNIT_ASSERT(ret == -1);
+
+    string s1b("");
+    ret = s1b.find(string("333"));
+    CPPUNIT_ASSERT(ret == -1);
+
+
+    // size_type find(const value_type* ptr, size_type pos = 0) const
+    string s2("ABCefgh1234");
+    ret = s2.find("", 2);
+    CPPUNIT_ASSERT(ret == 2);
+
+    ret = s2.find("ABC", 1);
+    CPPUNIT_ASSERT(ret == -1);
+
+    ret = s2.find("efgh12", 3);
+    CPPUNIT_ASSERT(ret == 3);
+
+    ret = s2.find("e", 10);
+    CPPUNIT_ASSERT(ret == -1);
+
+    string s2a("");
+    ret = s2a.find("");
+    CPPUNIT_ASSERT(ret == -1);
+
+    string s2b("");
+    ret = s2b.find("333");
+    CPPUNIT_ASSERT(ret == -1);
+
+
+    // size_type find(const value_type* ptr, size_type pos, size_type n) const
+    string s3("ABCefgh1234");
+    ret = s3.find("", 2, 0);
+    CPPUNIT_ASSERT(ret == 2);
+
+    ret = s3.find("ABC", 1, 3);
+    CPPUNIT_ASSERT(ret == -1);
+
+    ret = s3.find("efgh12", 3, 6);
+    CPPUNIT_ASSERT(ret == 3);
+
+    ret = s3.find("e", 10, 1);
+    CPPUNIT_ASSERT(ret == -1);
+
+    string s3a("");
+    ret = s3a.find("", 0, 0);
+    CPPUNIT_ASSERT(ret == -1);
+
+    string s3b("");
+    ret = s3b.find("333", 0, 3);
+    CPPUNIT_ASSERT(ret == -1);
+
+
+    // size_type find(value_type ch, size_type pos = 0) const
+    string s4("ABCefgh1234"); 
+    ret = s4.find('A', 1);
+    CPPUNIT_ASSERT(ret == -1);
+
+    ret = s4.find('e', 3);
+    CPPUNIT_ASSERT(ret == 3);
+
+    ret = s4.find('e', 10);
+    CPPUNIT_ASSERT(ret == -1);
+
+    string s4a("");
+    ret = s4a.find((char)0);
+    CPPUNIT_ASSERT(ret == -1);
+}
+
+void test_basic_string::rfind()
+{
+    typedef stl::basic_string<char> string;
+    size_t ret = 0;
+
+    //size_type rfind(const container& str, size_type pos = npos) const
+    string s1("");
+    ret = s1.rfind(string(""));
+    CPPUNIT_ASSERT(ret == 0);
+
+    ret = s1.rfind(string(""), 0);
+    CPPUNIT_ASSERT(ret == 0);
+
+    string s2("1234....1234....");
+    ret = s2.rfind(string("...."), 8);
+    CPPUNIT_ASSERT(ret == 4);
+    
+    ret = s2.rfind(string("...."), 14);
+    CPPUNIT_ASSERT(ret == 12);
+
+    ret = s2.rfind(string("...."), 3);
+    CPPUNIT_ASSERT(ret == -1);
+
+    ret = s2.rfind(string("e"));
+    CPPUNIT_ASSERT(ret == -1);
+
+    //size_type rfind(const value_type* ptr, size_type pos = npos) const
+    string s3("");
+    ret = s3.rfind("");
+    CPPUNIT_ASSERT(ret == 0);
+
+    ret = s3.rfind("", 0);
+    CPPUNIT_ASSERT(ret == 0);
+
+    string s4("1234....1234....");
+    ret = s4.rfind("....", 8);
+    CPPUNIT_ASSERT(ret == 4);
+
+    ret = s4.rfind("....", 14);
+    CPPUNIT_ASSERT(ret == 12);
+
+    ret = s4.rfind("....", 3);
+    CPPUNIT_ASSERT(ret == -1);
+
+    ret = s4.rfind("e");
+    CPPUNIT_ASSERT(ret == -1);
+
+    //size_type rfind(const value_type* ptr, size_type pos, size_type n) const
+    char c5[] = "rap\0" "rap";
+    string s5;
+    s5.append(c5, c5 + 8);
+    s5.append(c5, c5 + 8);
+
+    ret = s5.rfind(c5, -1, 7);  // ignore '\0' at [3] and [11]
+    CPPUNIT_ASSERT(ret == 8);
+    
+    string s6("");
+    ret = s6.rfind("", -1, 0);
+    CPPUNIT_ASSERT(ret == 0);
+
+    ret = s6.rfind("", -1, 0);
+    CPPUNIT_ASSERT(ret == 0);
+
+    string s7("1234....1234....");
+    ret = s7.rfind("....", 8, 4);
+    CPPUNIT_ASSERT(ret == 4);
+
+    ret = s7.rfind("....", 14, 4);
+    CPPUNIT_ASSERT(ret == 12);
+
+    ret = s7.rfind("....", 3, 4);
+    CPPUNIT_ASSERT(ret == -1);
+
+    ret = s7.rfind("e", -1, 1);
+    CPPUNIT_ASSERT(ret == -1);
+
+    // size_type rfind(value_type c, size_type pos = npos) const
+    string s8("");
+    ret = s8.rfind((char)0, -1);
+    CPPUNIT_ASSERT(ret == -1);
+
+    string s9("1234....1234....");
+    ret = s9.rfind('.', 8);
+    CPPUNIT_ASSERT(ret == 7);
+
+    ret = s9.rfind('.', 14);
+    CPPUNIT_ASSERT(ret == 14);
+
+    ret = s9.rfind('.', 3);
+    CPPUNIT_ASSERT(ret == -1);
+
+    ret = s9.rfind('e', -1);
+    CPPUNIT_ASSERT(ret == -1);
+}
+
+void test_basic_string::find_first_of()
+{
+    typedef stl::basic_string<char> string;
+    size_t ret = 0;
+
+    // size_type find_first_of(const container& str, size_type pos = 0) const
+    string s1("remove all vowels");
+    while ((ret = s1.find_first_of(string("aeiou"), ret)) != -1)
+        s1[ret] = '*';
+    CPPUNIT_ASSERT(::strcmp(s1.c_str(), "r*m*v* *ll v*w*ls") == 0);
+
+    string s2("");
+    ret = s2.find_first_of(string(""));
+    CPPUNIT_ASSERT(ret == -1);
+
+    string s2a("");
+    ret = s2a.find_first_of(string("aeiou"));
+    CPPUNIT_ASSERT(ret == -1);
+
+    // size_type find_first_of(const value_type* ptr, size_type pos = 0) const
+    string s3("remove all vowels");
+    ret = 0;
+    while ((ret = s3.find_first_of("aeiou", ret)) != -1)
+        s3[ret] = '*';
+    CPPUNIT_ASSERT(::strcmp(s3.c_str(), "r*m*v* *ll v*w*ls") == 0);
+
+    string s4("");
+    ret = s4.find_first_of("");
+    CPPUNIT_ASSERT(ret == -1);
+
+    ret = s4.find_first_of("aeiou");
+    CPPUNIT_ASSERT(ret == -1);
+
+    // size_type find_first_of(const value_type* ptr, size_type pos, size_type n) const
+    string s5("remove all vowels");
+    ret = 0;
+    while ((ret = s5.find_first_of("aeiou", ret, 5)) != -1)
+        s5[ret] = '*';
+    CPPUNIT_ASSERT(::strcmp(s5.c_str(), "r*m*v* *ll v*w*ls") == 0);
+
+    string s6("");
+    ret = s6.find_first_of("", 0, 0);
+    CPPUNIT_ASSERT(ret == -1);
+
+    ret = s6.find_first_of("aeiou", 0, 5);
+    CPPUNIT_ASSERT(ret == -1);
+
+
+    // size_type find_first_of(value_type c, size_type pos = 0) const
+    string s7("");
+    ret = s7.find_first_of((char)0);
+    CPPUNIT_ASSERT(ret == -1);
+
+    ret = s7.find_first_of('c');
+    CPPUNIT_ASSERT(ret == -1);
+
+    string s8("remove all vowels");
+    ret = s8.find_first_of('s');
+    CPPUNIT_ASSERT(ret == 16);
+}
+
+void test_basic_string::find_last_of()
+{
+    typedef stl::basic_string<char> string;
+    size_t ret = -1;
+
+    // size_type find_last_of(const container& str, size_type pos = 0) const
+    string s1("remove all vowels");
+    while ((ret = s1.find_last_of(string("aeiou"), ret)) != -1)
+        s1[ret] = '*';
+    CPPUNIT_ASSERT(::strcmp(s1.c_str(), "r*m*v* *ll v*w*ls") == 0);
+
+    string s2("");
+    ret = s2.find_last_of(string(""));
+    CPPUNIT_ASSERT(ret == -1);
+
+    string s2a("");
+    ret = s2a.find_last_of(string("aeiou"));
+    CPPUNIT_ASSERT(ret == -1);
+
+    // size_type find_last_of(const value_type* ptr, size_type pos = 0) const
+    string s3("remove all vowels");
+    ret = -1;
+    while ((ret = s3.find_last_of("aeiou", ret)) != -1)
+        s3[ret] = '*';
+    CPPUNIT_ASSERT(::strcmp(s3.c_str(), "r*m*v* *ll v*w*ls") == 0);
+
+    string s4("");
+    ret = s4.find_last_of("");
+    CPPUNIT_ASSERT(ret == -1);
+
+    ret = s4.find_last_of("aeiou");
+    CPPUNIT_ASSERT(ret == -1);
+
+    // size_type find_last_of(const value_type* ptr, size_type pos, size_type n) const
+    string s5("remove all vowels");
+    ret = -1;
+    while ((ret = s5.find_last_of("aeiou", ret, 5)) != -1)
+        s5[ret] = '*';
+    CPPUNIT_ASSERT(::strcmp(s5.c_str(), "r*m*v* *ll v*w*ls") == 0);
+
+    string s6("");
+    ret = s6.find_last_of("", -1, 0);
+    CPPUNIT_ASSERT(ret == -1);
+
+    ret = s6.find_last_of("aeiou", -1, 5);
+    CPPUNIT_ASSERT(ret == -1);
+
+
+    // size_type find_last_of(value_type c, size_type pos = 0) const
+    string s7("");
+    ret = s7.find_last_of((char)0);
+    CPPUNIT_ASSERT(ret == -1);
+
+    ret = s7.find_last_of('c');
+    CPPUNIT_ASSERT(ret == -1);
+
+    string s8("remove all vowels");
+    ret = s8.find_last_of('s');
+    CPPUNIT_ASSERT(ret == 16);
+}
+
+
+void test_basic_string::find_first_not_of()
+{
+    typedef stl::basic_string<char> string;
+    size_t ret = 0;
+
+    // size_type find_first_not_of(const container& str, size_type pos = 0) const
+    string s1("remove all vowels");
+    while ((ret = s1.find_first_not_of(string("aeiou "), ret)) != -1)
+        s1[ret++] = '*';
+    CPPUNIT_ASSERT(::strcmp(s1.c_str(), "*e*o*e a** *o*e**") == 0);
+
+    string s2("");
+    ret = s2.find_first_not_of(string(""));
+    CPPUNIT_ASSERT(ret == -1);
+
+    string s2a("");
+    ret = s2a.find_first_not_of(string("aeiou "));
+    CPPUNIT_ASSERT(ret == -1);
+
+    // size_type find_first_not_of(const value_type* ptr, size_type pos = 0) const
+    string s3("remove all vowels");
+    ret = 0;
+    while ((ret = s3.find_first_not_of("aeiou ", ret)) != -1)
+        s3[ret++] = '*';
+    CPPUNIT_ASSERT(::strcmp(s3.c_str(), "*e*o*e a** *o*e**") == 0);
+
+    string s4("");
+    ret = s4.find_first_not_of("");
+    CPPUNIT_ASSERT(ret == -1);
+
+    ret = s4.find_first_not_of("aeiou");
+    CPPUNIT_ASSERT(ret == -1);
+
+    // size_type find_first_not_of(const value_type* ptr, size_type pos, size_type n) const
+    string s5("remove all vowels");
+    ret = 0;
+    while ((ret = s5.find_first_not_of("aeiou ", ret, 6)) != -1)
+        s5[ret++] = '*';
+    CPPUNIT_ASSERT(::strcmp(s5.c_str(), "*e*o*e a** *o*e**") == 0);
+
+    string s6("");
+    ret = s6.find_first_not_of("", 0, 0);
+    CPPUNIT_ASSERT(ret == -1);
+
+    ret = s6.find_first_not_of("aeiou ", 0, 6);
+    CPPUNIT_ASSERT(ret == -1);
+
+
+    // size_type find_first_not_of(value_type c, size_type pos = 0) const
+    string s7("");
+    ret = s7.find_first_not_of((char)0);
+    CPPUNIT_ASSERT(ret == -1);
+
+    ret = s7.find_first_not_of('c');
+    CPPUNIT_ASSERT(ret == -1);
+
+    string s8("remove all vowels");
+    ret = s8.find_first_not_of('s');
+    CPPUNIT_ASSERT(ret == 0);
+}
+
+void test_basic_string::find_last_not_of()
+{
+    typedef stl::basic_string<char> string;
+    size_t ret = -1;
+
+    // size_type find_last_not_of(const container& str, size_type pos = 0) const
+    string s1("remove all vowels");
+    while ((ret = s1.find_last_not_of(string("aeiou *"), ret)) != -1)
+        s1[ret] = '*';
+    CPPUNIT_ASSERT(::strcmp(s1.c_str(), "*e*o*e a** *o*e**") == 0);
+
+    string s2("");
+    ret = s2.find_last_not_of(string(""));
+    CPPUNIT_ASSERT(ret == -1);
+
+    string s2a("");
+    ret = s2a.find_last_not_of(string("aeiou *"));
+    CPPUNIT_ASSERT(ret == -1);
+
+    // size_type find_last_not_of(const value_type* ptr, size_type pos = 0) const
+    string s3("remove all vowels");
+    ret = -1;
+    while ((ret = s3.find_last_not_of("aeiou *", ret)) != -1)
+        s3[ret] = '*';
+    CPPUNIT_ASSERT(::strcmp(s3.c_str(), "*e*o*e a** *o*e**") == 0);
+
+    string s4("");
+    ret = s4.find_last_not_of("");
+    CPPUNIT_ASSERT(ret == -1);
+
+    ret = s4.find_last_not_of("aeiou *");
+    CPPUNIT_ASSERT(ret == -1);
+
+    // size_type find_last_not_of(const value_type* ptr, size_type pos, size_type n) const
+    string s5("remove all vowels");
+    ret = -1;
+    while ((ret = s5.find_last_not_of("aeiou *", ret, 7)) != -1)
+        s5[ret] = '*';
+    CPPUNIT_ASSERT(::strcmp(s5.c_str(), "*e*o*e a** *o*e**") == 0);
+
+    string s6("");
+    ret = s6.find_last_not_of("", -1, 0);
+    CPPUNIT_ASSERT(ret == -1);
+
+    ret = s6.find_last_not_of("aeiou *", -1, 7);
+    CPPUNIT_ASSERT(ret == -1);
+
+
+    // size_type find_last_not_of(value_type c, size_type pos = 0) const
+    string s7("");
+    ret = s7.find_last_not_of((char)0);
+    CPPUNIT_ASSERT(ret == -1);
+
+    ret = s7.find_last_not_of('c');
+    CPPUNIT_ASSERT(ret == -1);
+
+    string s8("remove all vowels");
+    ret = s8.find_last_not_of('s');
+    CPPUNIT_ASSERT(ret == 15);
+}
+
+
+void test_basic_string::substr()
+{
+    typedef stl::basic_string<char> string;
+
+    string s1;
+    string subs1 = s1.substr(0);
+    CPPUNIT_ASSERT(::strcmp(subs1.c_str(), "") == 0);
+
+    string s2("Returns a newly constructed string object with its value"
+              "initialized to a copy of a substring of this object."
+              "The substring is the portion of the object that starts"
+              "at character position pos and spans len characters"
+              "(or until the end of the string, whichever comes first).");
+
+    size_t ret = s2.find("The substring");
+    string subs2 = s2.substr(ret, 13);
+    CPPUNIT_ASSERT(::strcmp(subs2.c_str(), "The substring") == 0);
+}
+
+
+void test_basic_string::compare()
+{
+    typedef stl::basic_string<char> string;
+    int ret = 0;
+
+    //  int compare(const container& str) const
+    string s1;
+    ret = s1.compare(string(""));
+    CPPUNIT_ASSERT(ret == 0);
+
+    string s2;
+    string s3("some");
+    CPPUNIT_ASSERT(s2.compare(s3) == -1);
+    CPPUNIT_ASSERT(s3.compare(s2) == 1);
+    
+    const char c4[] = "str\0";
+    string s4(c4, c4 + 4);      // with extra '\0'
+    string s5("str");           // w/o extra  '\0'
+    ret = s4.compare(s5);
+    CPPUNIT_ASSERT(ret == 1);
+
+    string s6("apple");
+    string s7("ppl");
+    ret = s6.compare(s7);
+    CPPUNIT_ASSERT(ret == -1);
+    
+
+    // int compare(size_type pos, size_type len, const container& str) const
+    string s8;
+    string s9;
+    ret = s8.compare(0, 0, s9);
+    CPPUNIT_ASSERT(ret == 0);
+
+    string s10("ABCDefgh1234");
+    string s11("efgh1234");
+    ret = s10.compare(0, -1, s11);
+    CPPUNIT_ASSERT(ret == -1);
+
+    ret = s10.compare(4, 9, s11);
+    CPPUNIT_ASSERT(ret == 0);
+
+    ret = s10.compare(4, 8, s11);
+    CPPUNIT_ASSERT(ret == 0);
+
+    ret = s10.compare(4, 7, s11);
+    CPPUNIT_ASSERT(ret == -1);
+
+
+    // int compare(size_type pos, size_type len, const container& str, size_type subpos, size_type sublen) const
+    string s12;
+    string s13;
+    ret = s12.compare(0, 0, s13, 0, 0);
+    CPPUNIT_ASSERT(ret == 0);
+
+    string s14("ABCDefgh1234");
+    string s15("efgh1234");
+    ret = s14.compare(0, -1, s15, 0, 8);
+    CPPUNIT_ASSERT(ret == -1);
+
+    ret = s14.compare(4, 9, s15, 0, 9);
+    CPPUNIT_ASSERT(ret == 0);
+
+    ret = s14.compare(4, 8, s15, 0, 8);
+    CPPUNIT_ASSERT(ret == 0);
+
+    ret = s14.compare(4, 7, s15, 0, 7);
+    CPPUNIT_ASSERT(ret == 0);
+
+    // int compare(const value_type* ptr) const
+    string s16;
+    ret = s16.compare("");
+    CPPUNIT_ASSERT(ret == 0);
+
+    s16.assign("this string");
+    ret = s16.compare("t");
+    CPPUNIT_ASSERT(ret == 1);
+
+    ret = s16.compare("this string");
+    CPPUNIT_ASSERT(ret == 0);
+
+    ret = s16.compare("this string is");
+    CPPUNIT_ASSERT(ret == -1);
+
+    // int compare(size_type pos, size_type len, const value_type* ptr) const
+    string s17;
+    ret = s17.compare(0, 0, "");
+    CPPUNIT_ASSERT(ret == 0);
+
+    s17.assign("ass");
+    ret = s17.compare(0, -1, "asm");
+    CPPUNIT_ASSERT(ret == 1);
+    
+    // int compare(size_type pos, size_type len, const value_type* ptr, size_type n) const
+    ret = s17.compare(0, -1, "ass\0", 3);
+    CPPUNIT_ASSERT(ret == 0);
+
+    s17.append(1, '\0');
+    ret = s17.compare(0, -1, "ass\0", 4);
+    CPPUNIT_ASSERT(ret == 0);
+}
+
+void test_basic_string::perf1()
+{
+    typedef stl::basic_string<char> string;
+
+    string s0(""
+        "Text messaging, or texting, is the act of composing and sending electronic messages,"
+        "typically consisting of alphabetic and numeric characters, between two or more users"
+        "of mobile devices, desktops / laptops, or other type of compatible computer."
+        "Text messages may be sent over a cellular network, or may also be sent via an Internet connection."
+        "The term originally referred to messages sent using the Short Message Service(SMS)."
+        "It has grown beyond alphanumeric text to include multimedia messages(known as MMS)"
+        "containing digital images, videos, and sound content, as well as ideograms known as"
+        "emoji(happy faces, sad faces, and other icons)."
+        "As of 2017, text messages are used by youth and adults for personal, family, business"
+        "and social purposes.Governmental and non - governmental organizations use text messaging"
+        "for communication between colleagues.In the 2010s, the sending of short informal messages"
+        "has become an accepted part of many cultures, as happened earlier with emailing.[1]"
+        "This makes texting a quick and easy way to communicate with friends, family and colleagues,"
+        "including in contexts where a call would be impolite or inappropriate(e.g., calling very"
+        "late at night or when one knows the other person is busy with family or work activities)."
+        "Like e - mail and voicemail, and unlike calls(in which the caller hopes to speak directly"
+        "with the recipient), texting does not require the caller and recipient to both be free at"
+        "the same moment; this permits communication even between busy individuals.Text messages"
+        "can also be used to interact with automated systems, for example, to order products or"
+        "services from e - commerce websites, or to participate in online contests.Advertisers and"
+        "service providers use direct text marketing to send messages to mobile users about"
+        "promotions, payment due dates, and other notifications instead of using postal mail, email,"
+        "or voicemail."
+        "Text messaging is most often used between private mobile phone users, as a substitute"
+        "for voice calls in situations where voice communication is impossible or undesirable"
+        "(e.g., during a school class or a work meeting).Texting is also used to communicate"
+        "very brief messages, such as informing someone that you will be late or reminding a"
+        "friend or colleague about a meeting.As with e - mail, informality and brevity have become"
+        "an accepted part of text messaging.Some text messages such as SMS can also be used for"
+        "the remote controlling of home appliances.It is widely used in domotics systems."
+        "Some amateurs have also built own systems to control(some of) their appliances via SMS.[16][17]"
+        "Other methods such as group messaging, which was patented in 2012 by the GM of Andrew Ferry,"
+        "Devin Peterson, Justin Cowart, Ian Ainsworth, Patrick Messinger, Jacob Delk, Jack Grande,"
+        "Austin Hughes, Brendan Blake, and Brooks Brasher are used to involve more than two people"
+        "into a text messaging conversation[citation needed].A Flash SMS is a type[18] of"
+        "text message that appears directly on the main screen without user interaction and"
+        "is not automatically stored in the inbox.It can be useful in cases such as an emergency"
+        "(e.g., fire alarm) or confidentiality(e.g., one - time password).[19]"
+        "Short message services are developing very rapidly throughout the world.SMS is particularly"
+        "popular in Europe, Asia(excluding Japan; see below), United States, Australia and New Zealand"
+        "and is also gaining influence in Africa.Popularity has grown to a sufficient extent that the"
+        "term texting(used as a verb meaning the act of mobile phone users sending short messages"
+        "back and forth) has entered the common lexicon.Young Asians consider SMS as the most popular"
+        "mobile phone application.[20] Fifty percent of American teens send fifty text messages or more"
+        "per day, making it their most frequent form of communication.[21] In China, SMS is very popular"
+        "and has brought service providers significant profit(18 billion short messages were sent"
+        "in 2001).[22] It is a very influential and powerful tool in the Philippines, where the average"
+        "user sends 10–12 text messages a day.The Philippines alone sends on average over 1 billion"
+        "text messages a day, [23] more than the annual average SMS volume of the countries in Europe,"
+        "and even China and India.SMS is hugely popular in India, where youngsters often exchange"
+        "lots of text messages, and companies provide alerts, infotainment, news, cricket scores"
+        "updates, railway / airline booking, mobile billing, and banking services on SMS.");
+
+    const char* msg1 = "\nstl::string time=";
+    const char* msg2 = "\nstd::string time=";
+
+    // stl::string
+    {
+        time_printer tp(msg1);
+
+        stl::basic_string<char> s1, s2, s3, s4, s5;
+        size_t len = s0.size();
+        
+        for (size_t i = 0; i < len; ++i)
+            s1.push_back(s0[i]);
+
+        while (s1.size() > 0)
+            s1.erase(s1.begin());
+
+        for (size_t i = 0; i < len; ++i)
+            s1.insert(s1.begin(), s0[len - i - 1]);
+
+        s1.erase(s1.begin(), s1.end());
+
+        s1.assign(10, '?');
+        for (size_t i = 0; i < 10; ++i)
+            s1.insert(s1.begin(), s1.begin(), s1.end());
+
+        s2.assign(s0.c_str());
+
+        for (size_t i = len - 1; i != -1; --i)
+            s2.replace(0, i, s2, 0, i);
+
+        for (size_t i = len; i != -1; --i)
+            s2.replace(s2.begin(), s2.begin() + (long)i, s2.begin(), s2.begin() + (long)i);
+
+        s3.assign("United States, Australia and New Zealand");
+        for (size_t i = 0; i < 10; ++i)
+        {
+            size_t ret = s2.find(s3);
+            size_t ret2 = ret;
+        }
+
+        s4.assign("Short Message Service(SMS)");
+        for (size_t i = 0; i < 10; ++i)
+        {
+            size_t ret = s2.rfind(s4);
+            size_t ret2 = ret;
+        }
+
+        for (size_t i = len; i != -1; --i)
+        {
+            s5 = s2.substr(0, i);
+            int ret = s2.compare(s5);
+            int ret2 = s2.compare(0, i, s5);
+            int ret3 = s2.compare(0, i, s5, 0, i);
+            int ret4 = s2.compare(0, i, s5.c_str());
+            int ret5 = s2.compare(0, i, s5.c_str(), i);
+        }        
+    }
+
+    // std::string
+    {
+        time_printer tp(msg2);
+
+        std::basic_string<char> s1, s2, s3, s4, s5;
+        size_t len = s0.size();
+
+        for (size_t i = 0; i < len; ++i)
+            s1.push_back(s0[i]);
+
+        while (s1.size() > 0)
+            s1.erase(s1.begin());
+
+        for (size_t i = 0; i < len; ++i)
+            s1.insert(s1.begin(), s0[len - i - 1]);
+
+        s1.erase(s1.begin(), s1.end());
+
+        s1.assign(10, '?');
+        for (size_t i = 0; i < 10; ++i)
+            s1.insert(s1.begin(), s1.begin(), s1.end());
+
+        s2.assign(s0.c_str());
+
+        for (size_t i = len - 1; i != -1; --i)
+            s2.replace(0, i, s2, 0, i);
+
+        for (size_t i = len; i != -1; --i)
+            s2.replace(s2.begin(), s2.begin() + i, s2.begin(), s2.begin() + i);
+
+        s3.assign("United States, Australia and New Zealand");
+        for (size_t i = 0; i < 10; ++i)
+        {
+            size_t ret = s2.find(s3);
+            size_t ret2 = ret;
+        }
+
+        s4.assign("Short Message Service(SMS)");
+        for (size_t i = 0; i < 10; ++i)
+        {
+            size_t ret = s2.rfind(s4);
+            size_t ret2 = ret;
+        }
+
+        for (size_t i = len; i != -1; --i)
+        {
+            s5 = s2.substr(0, i);
+            int ret = s2.compare(s5);
+            int ret2 = s2.compare(0, i, s5);
+            int ret3 = s2.compare(0, i, s5, 0, i);
+            int ret4 = s2.compare(0, i, s5.c_str());
+            int ret5 = s2.compare(0, i, s5.c_str(), i);
+        }
+    }
 }
