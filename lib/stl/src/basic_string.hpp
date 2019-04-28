@@ -753,11 +753,11 @@ namespace stl
     };  // basic_string_const_reverse_iterator
 
 
-    template<typename T, typename Allocator = stl::allocator<T>>
+    template<typename T, typename Allocator = stl::allocator<T> >
     class basic_string
     {
     public:
-        typedef typename basic_string<T, Allocator>         container;
+        typedef          basic_string<T, Allocator>         container;
 
         // types:
         typedef typename Allocator::value_type              value_type;
@@ -771,10 +771,10 @@ namespace stl
         typedef typename Allocator::const_pointer           const_pointer;
 
     public:
-        typedef typename basic_string_iterator<container>           iterator;
-        typedef typename basic_string_const_iterator<container>     const_iterator;
-        typedef typename basic_string_reverse_iterator<container>   reverse_iterator;
-        typedef typename basic_string_const_reverse_iterator<container>  const_reverse_iterator;
+        typedef basic_string_iterator<container>            iterator;
+        typedef basic_string_const_iterator<container>      const_iterator;
+        typedef basic_string_reverse_iterator<container>    reverse_iterator;
+        typedef basic_string_const_reverse_iterator<container>  const_reverse_iterator;
 
     private:
         value_type*             m_data;

@@ -752,10 +752,10 @@ namespace stl
             return (*base2::m_cont)[base2::m_pos - off];
         }
     };  // vector_const_reverse_iterator
-    
+
 
     //    ISO/IEC 14882:2003  $23.2.4 Class template vector
-    template<typename T, typename Allocator = stl::allocator<T>>
+    template<typename T, typename Allocator = stl::allocator<T> >
     class vector
     {
     public:

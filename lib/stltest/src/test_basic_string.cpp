@@ -212,12 +212,12 @@ void test_basic_string::resize()
     s1.assign(c1, c1 + 10);
 
     s1.resize(8);  // resize to smaller size
-    for (int i = 0; i < s1.size(); ++i)
+    for (size_t i = 0; i < s1.size(); ++i)
         CPPUNIT_ASSERT(s1[i] == c1[i]);
     CPPUNIT_ASSERT(s1.size() == 8);
 
     s1.resize(6, c1[0]); // resize to smaller size
-    for (int i = 0; i < s1.size(); ++i)
+    for (size_t i = 0; i < s1.size(); ++i)
         CPPUNIT_ASSERT(s1[i] == c1[i]);
     CPPUNIT_ASSERT(s1.size() == 6);
 
@@ -233,7 +233,7 @@ void test_basic_string::resize()
 
     s1.assign(c1, c1 + 5);
     s1.resize(5, s1[0]); // self assignment
-    for (int i = 0; i < s1.size(); ++i)
+    for (size_t i = 0; i < s1.size(); ++i)
         CPPUNIT_ASSERT(s1[i] == c1[i]);
     CPPUNIT_ASSERT(s1.size() == 5);
 }
@@ -1094,28 +1094,28 @@ void test_basic_string::swap()
 void test_basic_string::find()
 {
     typedef stl::basic_string<char> string;
-    
+
     // size_type find(const container& str, size_type pos = 0) const
     string s1("ABCefgh1234");
     size_t ret = s1.find(string(""), 2);
     CPPUNIT_ASSERT(ret == 2);
 
     ret = s1.find(string("ABC"), 1);
-    CPPUNIT_ASSERT(ret == -1);
+    CPPUNIT_ASSERT(ret == string::npos);
 
     ret = s1.find(string("efgh12"), 3);
     CPPUNIT_ASSERT(ret == 3);
 
     ret = s1.find(string("e"), 10);
-    CPPUNIT_ASSERT(ret == -1);
+    CPPUNIT_ASSERT(ret == (size_t)-1);
 
     string s1a("");
     ret = s1a.find(string(""));
-    CPPUNIT_ASSERT(ret == -1);
+    CPPUNIT_ASSERT(ret == (size_t)-1);
 
     string s1b("");
     ret = s1b.find(string("333"));
-    CPPUNIT_ASSERT(ret == -1);
+    CPPUNIT_ASSERT(ret == (size_t)-1);
 
 
     // size_type find(const value_type* ptr, size_type pos = 0) const
@@ -1124,21 +1124,21 @@ void test_basic_string::find()
     CPPUNIT_ASSERT(ret == 2);
 
     ret = s2.find("ABC", 1);
-    CPPUNIT_ASSERT(ret == -1);
+    CPPUNIT_ASSERT(ret == (size_t)-1);
 
     ret = s2.find("efgh12", 3);
     CPPUNIT_ASSERT(ret == 3);
 
     ret = s2.find("e", 10);
-    CPPUNIT_ASSERT(ret == -1);
+    CPPUNIT_ASSERT(ret == (size_t)-1);
 
     string s2a("");
     ret = s2a.find("");
-    CPPUNIT_ASSERT(ret == -1);
+    CPPUNIT_ASSERT(ret == (size_t)-1);
 
     string s2b("");
     ret = s2b.find("333");
-    CPPUNIT_ASSERT(ret == -1);
+    CPPUNIT_ASSERT(ret == (size_t)-1);
 
 
     // size_type find(const value_type* ptr, size_type pos, size_type n) const
@@ -1147,37 +1147,37 @@ void test_basic_string::find()
     CPPUNIT_ASSERT(ret == 2);
 
     ret = s3.find("ABC", 1, 3);
-    CPPUNIT_ASSERT(ret == -1);
+    CPPUNIT_ASSERT(ret == (size_t)-1);
 
     ret = s3.find("efgh12", 3, 6);
     CPPUNIT_ASSERT(ret == 3);
 
     ret = s3.find("e", 10, 1);
-    CPPUNIT_ASSERT(ret == -1);
+    CPPUNIT_ASSERT(ret == (size_t)-1);
 
     string s3a("");
     ret = s3a.find("", 0, 0);
-    CPPUNIT_ASSERT(ret == -1);
+    CPPUNIT_ASSERT(ret == (size_t)-1);
 
     string s3b("");
     ret = s3b.find("333", 0, 3);
-    CPPUNIT_ASSERT(ret == -1);
+    CPPUNIT_ASSERT(ret == (size_t)-1);
 
 
     // size_type find(value_type ch, size_type pos = 0) const
-    string s4("ABCefgh1234"); 
+    string s4("ABCefgh1234");
     ret = s4.find('A', 1);
-    CPPUNIT_ASSERT(ret == -1);
+    CPPUNIT_ASSERT(ret == (size_t)-1);
 
     ret = s4.find('e', 3);
     CPPUNIT_ASSERT(ret == 3);
 
     ret = s4.find('e', 10);
-    CPPUNIT_ASSERT(ret == -1);
+    CPPUNIT_ASSERT(ret == (size_t)-1);
 
     string s4a("");
     ret = s4a.find((char)0);
-    CPPUNIT_ASSERT(ret == -1);
+    CPPUNIT_ASSERT(ret == (size_t)-1);
 }
 
 void test_basic_string::rfind()
@@ -1196,15 +1196,15 @@ void test_basic_string::rfind()
     string s2("1234....1234....");
     ret = s2.rfind(string("...."), 8);
     CPPUNIT_ASSERT(ret == 4);
-    
+
     ret = s2.rfind(string("...."), 14);
     CPPUNIT_ASSERT(ret == 12);
 
     ret = s2.rfind(string("...."), 3);
-    CPPUNIT_ASSERT(ret == -1);
+    CPPUNIT_ASSERT(ret == (size_t)-1);
 
     ret = s2.rfind(string("e"));
-    CPPUNIT_ASSERT(ret == -1);
+    CPPUNIT_ASSERT(ret == (size_t)-1);
 
     //size_type rfind(const value_type* ptr, size_type pos = npos) const
     string s3("");
@@ -1222,10 +1222,10 @@ void test_basic_string::rfind()
     CPPUNIT_ASSERT(ret == 12);
 
     ret = s4.rfind("....", 3);
-    CPPUNIT_ASSERT(ret == -1);
+    CPPUNIT_ASSERT(ret == (size_t)-1);
 
     ret = s4.rfind("e");
-    CPPUNIT_ASSERT(ret == -1);
+    CPPUNIT_ASSERT(ret == (size_t)-1);
 
     //size_type rfind(const value_type* ptr, size_type pos, size_type n) const
     char c5[] = "rap\0" "rap";
@@ -1235,7 +1235,7 @@ void test_basic_string::rfind()
 
     ret = s5.rfind(c5, -1, 7);  // ignore '\0' at [3] and [11]
     CPPUNIT_ASSERT(ret == 8);
-    
+
     string s6("");
     ret = s6.rfind("", -1, 0);
     CPPUNIT_ASSERT(ret == 0);
@@ -1251,15 +1251,15 @@ void test_basic_string::rfind()
     CPPUNIT_ASSERT(ret == 12);
 
     ret = s7.rfind("....", 3, 4);
-    CPPUNIT_ASSERT(ret == -1);
+    CPPUNIT_ASSERT(ret == (size_t)-1);
 
     ret = s7.rfind("e", -1, 1);
-    CPPUNIT_ASSERT(ret == -1);
+    CPPUNIT_ASSERT(ret == (size_t)-1);
 
     // size_type rfind(value_type c, size_type pos = npos) const
     string s8("");
     ret = s8.rfind((char)0, -1);
-    CPPUNIT_ASSERT(ret == -1);
+    CPPUNIT_ASSERT(ret == (size_t)-1);
 
     string s9("1234....1234....");
     ret = s9.rfind('.', 8);
@@ -1269,10 +1269,10 @@ void test_basic_string::rfind()
     CPPUNIT_ASSERT(ret == 14);
 
     ret = s9.rfind('.', 3);
-    CPPUNIT_ASSERT(ret == -1);
+    CPPUNIT_ASSERT(ret == (size_t)-1);
 
     ret = s9.rfind('e', -1);
-    CPPUNIT_ASSERT(ret == -1);
+    CPPUNIT_ASSERT(ret == (size_t)-1);
 }
 
 void test_basic_string::find_first_of()
@@ -1282,54 +1282,54 @@ void test_basic_string::find_first_of()
 
     // size_type find_first_of(const container& str, size_type pos = 0) const
     string s1("remove all vowels");
-    while ((ret = s1.find_first_of(string("aeiou"), ret)) != -1)
+    while ((ret = s1.find_first_of(string("aeiou"), ret)) != (size_t)-1)
         s1[ret] = '*';
     CPPUNIT_ASSERT(::strcmp(s1.c_str(), "r*m*v* *ll v*w*ls") == 0);
 
     string s2("");
     ret = s2.find_first_of(string(""));
-    CPPUNIT_ASSERT(ret == -1);
+    CPPUNIT_ASSERT(ret == (size_t)-1);
 
     string s2a("");
     ret = s2a.find_first_of(string("aeiou"));
-    CPPUNIT_ASSERT(ret == -1);
+    CPPUNIT_ASSERT(ret == (size_t)-1);
 
     // size_type find_first_of(const value_type* ptr, size_type pos = 0) const
     string s3("remove all vowels");
     ret = 0;
-    while ((ret = s3.find_first_of("aeiou", ret)) != -1)
+    while ((ret = s3.find_first_of("aeiou", ret)) != (size_t)-1)
         s3[ret] = '*';
     CPPUNIT_ASSERT(::strcmp(s3.c_str(), "r*m*v* *ll v*w*ls") == 0);
 
     string s4("");
     ret = s4.find_first_of("");
-    CPPUNIT_ASSERT(ret == -1);
+    CPPUNIT_ASSERT(ret == (size_t)-1);
 
     ret = s4.find_first_of("aeiou");
-    CPPUNIT_ASSERT(ret == -1);
+    CPPUNIT_ASSERT(ret == (size_t)-1);
 
     // size_type find_first_of(const value_type* ptr, size_type pos, size_type n) const
     string s5("remove all vowels");
     ret = 0;
-    while ((ret = s5.find_first_of("aeiou", ret, 5)) != -1)
+    while ((ret = s5.find_first_of("aeiou", ret, 5)) != (size_t)-1)
         s5[ret] = '*';
     CPPUNIT_ASSERT(::strcmp(s5.c_str(), "r*m*v* *ll v*w*ls") == 0);
 
     string s6("");
     ret = s6.find_first_of("", 0, 0);
-    CPPUNIT_ASSERT(ret == -1);
+    CPPUNIT_ASSERT(ret == (size_t)-1);
 
     ret = s6.find_first_of("aeiou", 0, 5);
-    CPPUNIT_ASSERT(ret == -1);
+    CPPUNIT_ASSERT(ret == (size_t)-1);
 
 
     // size_type find_first_of(value_type c, size_type pos = 0) const
     string s7("");
     ret = s7.find_first_of((char)0);
-    CPPUNIT_ASSERT(ret == -1);
+    CPPUNIT_ASSERT(ret == (size_t)-1);
 
     ret = s7.find_first_of('c');
-    CPPUNIT_ASSERT(ret == -1);
+    CPPUNIT_ASSERT(ret == (size_t)-1);
 
     string s8("remove all vowels");
     ret = s8.find_first_of('s');
@@ -1339,58 +1339,58 @@ void test_basic_string::find_first_of()
 void test_basic_string::find_last_of()
 {
     typedef stl::basic_string<char> string;
-    size_t ret = -1;
+    size_t ret = (size_t)-1;
 
     // size_type find_last_of(const container& str, size_type pos = 0) const
     string s1("remove all vowels");
-    while ((ret = s1.find_last_of(string("aeiou"), ret)) != -1)
+    while ((ret = s1.find_last_of(string("aeiou"), ret)) != (size_t)-1)
         s1[ret] = '*';
     CPPUNIT_ASSERT(::strcmp(s1.c_str(), "r*m*v* *ll v*w*ls") == 0);
 
     string s2("");
     ret = s2.find_last_of(string(""));
-    CPPUNIT_ASSERT(ret == -1);
+    CPPUNIT_ASSERT(ret == (size_t)-1);
 
     string s2a("");
     ret = s2a.find_last_of(string("aeiou"));
-    CPPUNIT_ASSERT(ret == -1);
+    CPPUNIT_ASSERT(ret == (size_t)-1);
 
     // size_type find_last_of(const value_type* ptr, size_type pos = 0) const
     string s3("remove all vowels");
-    ret = -1;
-    while ((ret = s3.find_last_of("aeiou", ret)) != -1)
+    ret = (size_t)-1;
+    while ((ret = s3.find_last_of("aeiou", ret)) != (size_t)-1)
         s3[ret] = '*';
     CPPUNIT_ASSERT(::strcmp(s3.c_str(), "r*m*v* *ll v*w*ls") == 0);
 
     string s4("");
     ret = s4.find_last_of("");
-    CPPUNIT_ASSERT(ret == -1);
+    CPPUNIT_ASSERT(ret == (size_t)-1);
 
     ret = s4.find_last_of("aeiou");
-    CPPUNIT_ASSERT(ret == -1);
+    CPPUNIT_ASSERT(ret == (size_t)-1);
 
     // size_type find_last_of(const value_type* ptr, size_type pos, size_type n) const
     string s5("remove all vowels");
-    ret = -1;
-    while ((ret = s5.find_last_of("aeiou", ret, 5)) != -1)
+    ret = (size_t)-1;
+    while ((ret = s5.find_last_of("aeiou", ret, 5)) != (size_t)-1)
         s5[ret] = '*';
     CPPUNIT_ASSERT(::strcmp(s5.c_str(), "r*m*v* *ll v*w*ls") == 0);
 
     string s6("");
     ret = s6.find_last_of("", -1, 0);
-    CPPUNIT_ASSERT(ret == -1);
+    CPPUNIT_ASSERT(ret == (size_t)-1);
 
     ret = s6.find_last_of("aeiou", -1, 5);
-    CPPUNIT_ASSERT(ret == -1);
+    CPPUNIT_ASSERT(ret == (size_t)-1);
 
 
     // size_type find_last_of(value_type c, size_type pos = 0) const
     string s7("");
     ret = s7.find_last_of((char)0);
-    CPPUNIT_ASSERT(ret == -1);
+    CPPUNIT_ASSERT(ret == (size_t)-1);
 
     ret = s7.find_last_of('c');
-    CPPUNIT_ASSERT(ret == -1);
+    CPPUNIT_ASSERT(ret == (size_t)-1);
 
     string s8("remove all vowels");
     ret = s8.find_last_of('s');
@@ -1405,54 +1405,54 @@ void test_basic_string::find_first_not_of()
 
     // size_type find_first_not_of(const container& str, size_type pos = 0) const
     string s1("remove all vowels");
-    while ((ret = s1.find_first_not_of(string("aeiou "), ret)) != -1)
+    while ((ret = s1.find_first_not_of(string("aeiou "), ret)) != (size_t)-1)
         s1[ret++] = '*';
     CPPUNIT_ASSERT(::strcmp(s1.c_str(), "*e*o*e a** *o*e**") == 0);
 
     string s2("");
     ret = s2.find_first_not_of(string(""));
-    CPPUNIT_ASSERT(ret == -1);
+    CPPUNIT_ASSERT(ret == (size_t)-1);
 
     string s2a("");
     ret = s2a.find_first_not_of(string("aeiou "));
-    CPPUNIT_ASSERT(ret == -1);
+    CPPUNIT_ASSERT(ret == (size_t)-1);
 
     // size_type find_first_not_of(const value_type* ptr, size_type pos = 0) const
     string s3("remove all vowels");
     ret = 0;
-    while ((ret = s3.find_first_not_of("aeiou ", ret)) != -1)
+    while ((ret = s3.find_first_not_of("aeiou ", ret)) != (size_t)-1)
         s3[ret++] = '*';
     CPPUNIT_ASSERT(::strcmp(s3.c_str(), "*e*o*e a** *o*e**") == 0);
 
     string s4("");
     ret = s4.find_first_not_of("");
-    CPPUNIT_ASSERT(ret == -1);
+    CPPUNIT_ASSERT(ret == (size_t)-1);
 
     ret = s4.find_first_not_of("aeiou");
-    CPPUNIT_ASSERT(ret == -1);
+    CPPUNIT_ASSERT(ret == (size_t)-1);
 
     // size_type find_first_not_of(const value_type* ptr, size_type pos, size_type n) const
     string s5("remove all vowels");
     ret = 0;
-    while ((ret = s5.find_first_not_of("aeiou ", ret, 6)) != -1)
+    while ((ret = s5.find_first_not_of("aeiou ", ret, 6)) != (size_t)-1)
         s5[ret++] = '*';
     CPPUNIT_ASSERT(::strcmp(s5.c_str(), "*e*o*e a** *o*e**") == 0);
 
     string s6("");
     ret = s6.find_first_not_of("", 0, 0);
-    CPPUNIT_ASSERT(ret == -1);
+    CPPUNIT_ASSERT(ret == (size_t)-1);
 
     ret = s6.find_first_not_of("aeiou ", 0, 6);
-    CPPUNIT_ASSERT(ret == -1);
+    CPPUNIT_ASSERT(ret == (size_t)-1);
 
 
     // size_type find_first_not_of(value_type c, size_type pos = 0) const
     string s7("");
     ret = s7.find_first_not_of((char)0);
-    CPPUNIT_ASSERT(ret == -1);
+    CPPUNIT_ASSERT(ret == (size_t)-1);
 
     ret = s7.find_first_not_of('c');
-    CPPUNIT_ASSERT(ret == -1);
+    CPPUNIT_ASSERT(ret == (size_t)-1);
 
     string s8("remove all vowels");
     ret = s8.find_first_not_of('s');
@@ -1462,58 +1462,58 @@ void test_basic_string::find_first_not_of()
 void test_basic_string::find_last_not_of()
 {
     typedef stl::basic_string<char> string;
-    size_t ret = -1;
+    size_t ret = (size_t)-1;
 
     // size_type find_last_not_of(const container& str, size_type pos = 0) const
     string s1("remove all vowels");
-    while ((ret = s1.find_last_not_of(string("aeiou *"), ret)) != -1)
+    while ((ret = s1.find_last_not_of(string("aeiou *"), ret)) != (size_t)-1)
         s1[ret] = '*';
     CPPUNIT_ASSERT(::strcmp(s1.c_str(), "*e*o*e a** *o*e**") == 0);
 
     string s2("");
     ret = s2.find_last_not_of(string(""));
-    CPPUNIT_ASSERT(ret == -1);
+    CPPUNIT_ASSERT(ret == (size_t)-1);
 
     string s2a("");
     ret = s2a.find_last_not_of(string("aeiou *"));
-    CPPUNIT_ASSERT(ret == -1);
+    CPPUNIT_ASSERT(ret == (size_t)-1);
 
     // size_type find_last_not_of(const value_type* ptr, size_type pos = 0) const
     string s3("remove all vowels");
-    ret = -1;
-    while ((ret = s3.find_last_not_of("aeiou *", ret)) != -1)
+    ret = (size_t)-1;
+    while ((ret = s3.find_last_not_of("aeiou *", ret)) != (size_t)-1)
         s3[ret] = '*';
     CPPUNIT_ASSERT(::strcmp(s3.c_str(), "*e*o*e a** *o*e**") == 0);
 
     string s4("");
     ret = s4.find_last_not_of("");
-    CPPUNIT_ASSERT(ret == -1);
+    CPPUNIT_ASSERT(ret == (size_t)-1);
 
     ret = s4.find_last_not_of("aeiou *");
-    CPPUNIT_ASSERT(ret == -1);
+    CPPUNIT_ASSERT(ret == (size_t)-1);
 
     // size_type find_last_not_of(const value_type* ptr, size_type pos, size_type n) const
     string s5("remove all vowels");
-    ret = -1;
-    while ((ret = s5.find_last_not_of("aeiou *", ret, 7)) != -1)
+    ret = (size_t)-1;
+    while ((ret = s5.find_last_not_of("aeiou *", ret, 7)) != (size_t)-1)
         s5[ret] = '*';
     CPPUNIT_ASSERT(::strcmp(s5.c_str(), "*e*o*e a** *o*e**") == 0);
 
     string s6("");
     ret = s6.find_last_not_of("", -1, 0);
-    CPPUNIT_ASSERT(ret == -1);
+    CPPUNIT_ASSERT(ret == (size_t)-1);
 
     ret = s6.find_last_not_of("aeiou *", -1, 7);
-    CPPUNIT_ASSERT(ret == -1);
+    CPPUNIT_ASSERT(ret == (size_t)-1);
 
 
     // size_type find_last_not_of(value_type c, size_type pos = 0) const
     string s7("");
     ret = s7.find_last_not_of((char)0);
-    CPPUNIT_ASSERT(ret == -1);
+    CPPUNIT_ASSERT(ret == (size_t)-1);
 
     ret = s7.find_last_not_of('c');
-    CPPUNIT_ASSERT(ret == -1);
+    CPPUNIT_ASSERT(ret == (size_t)-1);
 
     string s8("remove all vowels");
     ret = s8.find_last_not_of('s');
@@ -1555,7 +1555,7 @@ void test_basic_string::compare()
     string s3("some");
     CPPUNIT_ASSERT(s2.compare(s3) == -1);
     CPPUNIT_ASSERT(s3.compare(s2) == 1);
-    
+
     const char c4[] = "str\0";
     string s4(c4, c4 + 4);      // with extra '\0'
     string s5("str");           // w/o extra  '\0'
@@ -1566,7 +1566,7 @@ void test_basic_string::compare()
     string s7("ppl");
     ret = s6.compare(s7);
     CPPUNIT_ASSERT(ret == -1);
-    
+
 
     // int compare(size_type pos, size_type len, const container& str) const
     string s8;
@@ -1709,7 +1709,7 @@ void test_basic_string::perf1()
 
         stl::basic_string<char> s1, s2, s3, s4, s5;
         size_t len = s0.size();
-        
+
         for (size_t i = 0; i < len; ++i)
             s1.push_back(s0[i]);
 
@@ -1727,10 +1727,10 @@ void test_basic_string::perf1()
 
         s2.assign(s0.c_str());
 
-        for (size_t i = len - 1; i != -1; --i)
+        for (size_t i = len - 1; i != (size_t)-1; --i)
             s2.replace(0, i, s2, 0, i);
 
-        for (size_t i = len; i != -1; --i)
+        for (size_t i = len; i != (size_t)-1; --i)
             s2.replace(s2.begin(), s2.begin() + (long)i, s2.begin(), s2.begin() + (long)i);
 
         s3.assign("United States, Australia and New Zealand");
@@ -1738,6 +1738,7 @@ void test_basic_string::perf1()
         {
             size_t ret = s2.find(s3);
             size_t ret2 = ret;
+            ret2++;
         }
 
         s4.assign("Short Message Service(SMS)");
@@ -1745,16 +1746,17 @@ void test_basic_string::perf1()
         {
             size_t ret = s2.rfind(s4);
             size_t ret2 = ret;
+            ret2++;
         }
 
-        for (size_t i = len; i != -1; --i)
+        for (size_t i = len; i != (size_t)-1; --i)
         {
             s5 = s2.substr(0, i);
-            int ret = s2.compare(s5);
-            int ret2 = s2.compare(0, i, s5);
-            int ret3 = s2.compare(0, i, s5, 0, i);
-            int ret4 = s2.compare(0, i, s5.c_str());
-            int ret5 = s2.compare(0, i, s5.c_str(), i);
+            int ret = s2.compare(s5); ret += 0;
+            int ret2 = s2.compare(0, i, s5); ret2 += 0;
+            int ret3 = s2.compare(0, i, s5, 0, i); ret3 += 0;
+            int ret4 = s2.compare(0, i, s5.c_str()); ret4 += 0;
+            int ret5 = s2.compare(0, i, s5.c_str(), i); ret5 += 0;
         }
     }
 
@@ -1782,10 +1784,10 @@ void test_basic_string::perf1()
 
         s2.assign(s0.c_str());
 
-        for (size_t i = len - 1; i != -1; --i)
+        for (size_t i = len - 1; i != (size_t)-1; --i)
             s2.replace(0, i, s2, 0, i);
 
-        for (size_t i = len; i != -1; --i)
+        for (size_t i = len; i != (size_t)-1; --i)
             s2.replace(s2.begin(), s2.begin() + i, s2.begin(), s2.begin() + i);
 
         s3.assign("United States, Australia and New Zealand");
@@ -1793,6 +1795,7 @@ void test_basic_string::perf1()
         {
             size_t ret = s2.find(s3);
             size_t ret2 = ret;
+            ret2++;
         }
 
         s4.assign("Short Message Service(SMS)");
@@ -1800,16 +1803,17 @@ void test_basic_string::perf1()
         {
             size_t ret = s2.rfind(s4);
             size_t ret2 = ret;
+            ret2++;
         }
 
-        for (size_t i = len; i != -1; --i)
+        for (size_t i = len; i != (size_t)-1; --i)
         {
             s5 = s2.substr(0, i);
-            int ret = s2.compare(s5);
-            int ret2 = s2.compare(0, i, s5);
-            int ret3 = s2.compare(0, i, s5, 0, i);
-            int ret4 = s2.compare(0, i, s5.c_str());
-            int ret5 = s2.compare(0, i, s5.c_str(), i);
+            int ret = s2.compare(s5); ret += 0;
+            int ret2 = s2.compare(0, i, s5); ret2 += 0;
+            int ret3 = s2.compare(0, i, s5, 0, i); ret3 += 0;
+            int ret4 = s2.compare(0, i, s5.c_str()); ret4 += 0;
+            int ret5 = s2.compare(0, i, s5.c_str(), i); ret5 += 0;
         }
     }
 }
