@@ -1755,7 +1755,7 @@ void test_basic_string::perf1()
             int ret3 = s2.compare(0, i, s5, 0, i);
             int ret4 = s2.compare(0, i, s5.c_str());
             int ret5 = s2.compare(0, i, s5.c_str(), i);
-        }        
+        }
     }
 
     // std::string
