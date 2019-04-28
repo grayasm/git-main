@@ -806,7 +806,8 @@ namespace stl
 
         inline void grow(size_type cap)
         {
-            if (m_capacity >= cap) return;
+            if (m_capacity >= cap)
+                return;
 
             pointer mem = 0;
             if (!m_data)
@@ -897,7 +898,6 @@ namespace stl
             m_capacity = 0;
         }
 
-        /* $21.3.1 (assignment operators) */
         container& operator=(const container& str)
         {
             return assign(str);
@@ -920,8 +920,6 @@ namespace stl
             return *this;
         }
 
-
-        //$21.3.2 iterators
         iterator begin()
         {
             return iterator(this, 0);
@@ -966,7 +964,6 @@ namespace stl
             return const_reverse_iterator(mutable_cont, static_cast<size_type>(-1));
         }
 
-        //$21.3.3 capacity
         size_type size() const
         {
             return m_size;
@@ -1015,18 +1012,13 @@ namespace stl
             return m_size == 0;
         }
 
-        //$21.3.4 element access:
         const_reference operator[] ( size_type n ) const
         {
-            //  if (n >= m_size)
-            //      throw stl::exception("out of valid range");
             return m_data[n];
         }
 
         reference operator[] ( size_type n )
         {
-            //  if (n >= m_size)
-            //      throw stl::exception("out of valid range");
             return m_data[n];
         }
 
@@ -1075,11 +1067,10 @@ namespace stl
             {
                 size_type size = m_size + n;
 
-//TODO: actually test this relocation!!!
                 // even if m_data is relocated, str remains valid
                 grow(size + 1);
 
-                stl::mem_copy(&m_data[m_size], m_size, &str[0], n, m_allocator);
+                stl::mem_copy(&m_data[m_size], 0, str.m_data, n, m_allocator);
 
                 endof(size);
             }
@@ -1114,7 +1105,7 @@ namespace stl
                 grow(size + 1);
 
                 // no need for memmove when appending from self
-                stl::mem_copy(&m_data[m_size], m_size, &str.m_data[subpos], sublen, m_allocator);
+                stl::mem_copy(&m_data[m_size], 0, &str.m_data[subpos], sublen, m_allocator);
 
                 endof(size);
             }
@@ -1139,18 +1130,18 @@ namespace stl
                 // Is the range inside this container ?
                 if (m_data <= ptr && (m_data + m_size) > ptr)
                 {
-                    container temp(ptr, ptr + n);
+                    size_type off = ptr - m_data;
 
                     // can relocate m_data and free the old block
                     grow(size + 1);
 
-                    stl::mem_copy(&m_data[m_size], 0, temp.m_data, n, m_allocator);
+                    stl::mem_copy(&m_data[m_size], 0, m_data + off, n, m_allocator);
                 }
                 else// range is outside this container
                 {
                     grow(size + 1);
 
-                    stl::mem_copy(&m_data[m_size], m_size, ptr, n, m_allocator);
+                    stl::mem_copy(&m_data[m_size], 0, ptr, n, m_allocator);
                 }
 
                 endof(size);
@@ -1170,18 +1161,18 @@ namespace stl
                 // Is the range inside this container ?
                 if (m_data <= ptr && (m_data + m_size) > ptr)
                 {
-                    container temp(ptr, ptr + n);
+                    size_type off = ptr - m_data;
 
                     // can relocate m_data and free the old block
                     grow(size + 1);
 
-                    stl::mem_copy(&m_data[m_size], m_size, temp.m_data, n, m_allocator);
+                    stl::mem_copy(&m_data[m_size], 0, m_data + off, n, m_allocator);
                 }
                 else// range is outside this container
                 {
                     grow(size + 1);
 
-                    stl::mem_copy(&m_data[m_size], m_size, ptr, n, m_allocator);
+                    stl::mem_copy(&m_data[m_size], 0, ptr, n, m_allocator);
                 }
 
                 endof(size);
@@ -1226,10 +1217,10 @@ namespace stl
             {
                 size_type size = m_size + dist;
 
-                // even if m_data is reallocated, first and last remain valid
+                // even if m_data is relocated, first and last remain valid
                 grow(size + 1);
 
-                stl::mem_copy(&m_data[m_size], m_size, &((*first.m_cont)[first.m_pos]), dist, m_allocator);
+                stl::mem_copy(&m_data[m_size], 0, &((*first.m_cont)[first.m_pos]), dist, m_allocator);
 
                 endof(size);
             }
@@ -1250,10 +1241,10 @@ namespace stl
             {
                 size_type size = m_size + dist;
 
-                // even if m_data is reallocated, first and last remain valid
+                // even if m_data is relocated, first and last remain valid
                 grow(size + 1);
 
-                stl::mem_copy(&m_data[m_size], m_size, &((*first.m_cont)[first.m_pos]), dist, m_allocator);
+                stl::mem_copy(&m_data[m_size], 0, &((*first.m_cont)[first.m_pos]), dist, m_allocator);
 
                 endof(size);
             }
@@ -1270,23 +1261,21 @@ namespace stl
             {
                 size_type size = m_size + dist;
 
-                const T& check = *first;
-
                 // Is the range inside this container ?
-                if (m_data <= &check && (m_data + m_size) > &check)
+                if (m_data <= first && (m_data + m_size) > first)
                 {
-                    container temp(first, last);
+                    size_type off = first - m_data;
 
                     // can relocate m_data and free the old block
                     grow(size + 1);
 
-                    stl::mem_copy(&m_data[m_size], m_size, &temp[0], dist, m_allocator);
+                    stl::mem_copy(&m_data[m_size], 0, m_data + off, dist, m_allocator);
                 }
                 else// range is outside this container
                 {
                     grow(size + 1);
 
-                    stl::mem_copy(&m_data[m_size], m_size, first, dist, m_allocator);
+                    stl::mem_copy(&m_data[m_size], 0, first, dist, m_allocator);
                 }
 
                 endof(size);
@@ -1309,7 +1298,7 @@ namespace stl
         template<typename InputIterator>
         inline container& append_(InputIterator& first, InputIterator& last, stl::forward_iterator_tag)
         {
-            // first type can be stl::reverse_iterator, char* or some other iterator
+            // first can be string::reverse_iterator, list::iterator or something else
             // cannot check with: if(fist.m_cont != last.m_cont)
 
             // if last < first then let it blow up.
@@ -1326,9 +1315,9 @@ namespace stl
                     container temp(first, last);
 
                     // for safety, although could not invalidate the input for this case
-                    grow(size + 1); // extra '\0'
+                    grow(size + 1);
 
-                    stl::mem_copy(&m_data[m_size], m_size, &temp[0], dist, m_allocator);
+                    stl::mem_copy(&m_data[m_size], 0, temp.m_data, dist, m_allocator);
                 }
                 else// range is outside this container
                 {
@@ -1337,7 +1326,6 @@ namespace stl
                     for (size_type i = 0; first != last; ++first, ++i)
                     {
                         m_data[m_size + i] = *first;
-                        // m_allocator.construct(&m_data[m_size + i], *first);
                     }
                 }
 
@@ -1365,27 +1353,13 @@ namespace stl
         }
 
     public:
-        /* $21.3.5 modifiers ( push_back ) */
         void push_back(const value_type& x)
         {
-            // Is x address inside this container ?
-            if (m_data <= &x && (m_data + m_size) > &x)
+            m_data[m_size] = x;
+
+            if (m_size + 1 == m_capacity)
             {
-                T temp(x);
-
-                if (m_size + 1 == m_capacity)
-                    grow(m_capacity * 2);
-
-//TODO: remove construct, assign directly
-//TODO: make sure nothing but char,unsigned char, wchar_t is allowed
-                m_allocator.construct(&m_data[m_size], temp);
-            }
-            else// x address is outside this container.
-            {
-                if (m_size + 1 == m_capacity)
-                    grow(m_capacity * 2);
-
-                m_allocator.construct(&m_data[m_size], x);
+                grow(m_capacity * 2);
             }
 
             endof(m_size + 1);
@@ -1402,13 +1376,13 @@ namespace stl
             //self assignment
             if (this != &str)
             {
-                size_type size = str.size(); // without '\0'
+                size_type size = str.length(); // without '\0'
 
                 grow(size + 1); // extra '\0'  (critical when size is 0)
 
                 if (size)
                 {
-                    stl::mem_copy(m_data, m_size, str.m_data, size, m_allocator);
+                    stl::mem_copy(m_data, 0, str.m_data, size, m_allocator);
                 }
 
                 endof(size);
@@ -1438,7 +1412,7 @@ namespace stl
             if (subpos > str.m_size)
                 throw stl::exception("out of valid range");
 
-//TODO: actually check how this happens with subpos = m_size;
+            // if subpos is m_size then sublen is 0 and internal string discarded
             if (sublen > str.m_size - subpos)
                 sublen = str.m_size - subpos;
 
@@ -1447,7 +1421,8 @@ namespace stl
             {
                 if (sublen)
                 {
-                    stl::mem_move(m_data, m_size, &m_data[subpos], sublen, m_allocator);
+                    // Should work w/o extra buffer/memmove (copy to left side)
+                    stl::mem_copy(m_data, m_size, &m_data[subpos], sublen, m_allocator);
                 }
             }
             else
@@ -1465,33 +1440,31 @@ namespace stl
             return *this;
         }
 
+        /*  Assigns a new value to the string, replacing its current contents.
+            Copies the first n characters from the array of characters pointed
+            by ptr.
+
+            ptr: Pointer to an array of characters (such as a c-string).
+              n: Number of characters to copy.
+        */
         container& assign(const value_type* ptr, size_type n)
         {
-
             // Is the address inside this container ?
             if (m_data <= ptr && (m_data + m_size) > ptr)
             {
-//TODO: (1)test by assigning the entire string, + (2)try assigning + 1 extra '\0'!!
-                //if (m_data + m_size < ptr + n)
-                //    throw stl::exception("out of valid range");
-
                 if (n)
                 {
-                    stl::mem_move(m_data, m_size, ptr, n, m_allocator);
+                    // Should work w/o extra buffer/memmove (copy to left side)
+                    stl::mem_copy(m_data, 0, ptr, n, m_allocator);
                 }
             }
             else
             {
-                //size_type len = length(ptr);   // without '\0'
-
-                //if (n > len)
-                //    throw stl::exception("out of valid range");
-
                 grow(n + 1);    // extra '\0'
 
                 if (n)
                 {
-                    stl::mem_copy(m_data, m_size, ptr, n, m_allocator);
+                    stl::mem_copy(m_data, 0, ptr, n, m_allocator);
                 }
             }
 
@@ -1511,7 +1484,8 @@ namespace stl
 
                 if (n)
                 {
-                    stl::mem_move(m_data, m_size, ptr, n, m_allocator);
+                    // Should work w/o an extra buffer/memmove (copy to left side)
+                    stl::mem_copy(m_data, 0, ptr, n, m_allocator);
                 }
             }
             else
@@ -1522,7 +1496,7 @@ namespace stl
 
                 if (n)
                 {
-                    stl::mem_copy(m_data, m_size, ptr, n, m_allocator);
+                    stl::mem_copy(m_data, 0, ptr, n, m_allocator);
                 }                
             }
 
@@ -1533,31 +1507,15 @@ namespace stl
 
         container& assign(size_type n, const value_type& c)
         {
-//TODO: test if indeed on grow(n + 1) &c becomes invalid
+            T temp(c);      // cheaper than the full comparison
 
-            // Is the address inside the container ?
-            if (m_data <= &c && (m_data + m_size) > &c)
+            grow(n + 1);    // critical when n is 0
+
+            if (n)
             {
-                T temp(c);
-
-                // can relocate m_data and invalidate &c
-                grow(n + 1);    // critical when n is 0
-
-                if (n)
-                {
-                    stl::mem_set(m_data, temp, n * sizeof(value_type), m_allocator);
-                }
+                stl::mem_set(m_data, temp, n * sizeof(value_type), m_allocator);
             }
-            else// Address is outside this container
-            {
-                grow(n + 1);    // critical when n is 0
 
-                if (n)
-                {
-                    stl::mem_set(m_data, c, n * sizeof(value_type), m_allocator);
-                }
-            }
-            
             endof(n);
 
             return *this;
@@ -1589,7 +1547,7 @@ namespace stl
                 }
                 else
                 {
-                    stl::mem_copy(m_data, m_size, &((*first.m_cont)[first.m_pos]), n, m_allocator);
+                    stl::mem_copy(m_data, 0, &((*first.m_cont)[first.m_pos]), n, m_allocator);
                 }
             }
 
@@ -1638,11 +1596,11 @@ namespace stl
                 // Is range inside this container ?
                 if (m_data <= first && (m_data + m_size) > first)
                 {
-                    stl::mem_move(m_data, m_size, first, n, m_allocator);
+                    stl::mem_move(m_data, 0, first, n, m_allocator);
                 }
                 else
                 {
-                    stl::mem_copy(m_data, m_size, first, n, m_allocator);
+                    stl::mem_copy(m_data, 0, first, n, m_allocator);
                 }
             }
 
@@ -1684,17 +1642,14 @@ namespace stl
                     
                     if (n)
                     {
-                        stl::mem_move(m_data, m_size, temp.m_data, n, m_allocator);
+                        stl::mem_move(m_data, 0, temp.m_data, n, m_allocator);
                     }
                 }
                 else// range is outside this container
                 {
                     for (size_type i = 0; first != last; ++first, ++i)
                     {
-                        //  T* d1 = m_data + i;
-                        //  const T& s1 = *first;
-                        //  *d1 = s1;
-                        *(m_data + i) = *first;
+                        m_data[i] = *first;
                     }
                 }
             }            
