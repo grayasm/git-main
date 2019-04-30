@@ -1682,6 +1682,14 @@ namespace stl
         }
 
     public:
+        /*  Inserts a copy of str into the basic_string right before
+            the character indicated by pos.
+
+            pos: Insertion point. The new contents are inserted before
+                 the character at position pos. If this is greater than
+                 the object's length, it throws out_of_range.
+            Note: The first character is denoted by a value of 0 (not 1).
+        */
         container& insert(size_type pos, const container& str)
         {
             // allow to insert in position = end(), aka pos == m_size;
@@ -1697,22 +1705,20 @@ namespace stl
                 /*  Insert self content:
                     A buffer is not required. When making room for the new
                     content, a portion of m_data is moved beyond
-                    m_data+m_size which means the source m_data remains
-                    valid.
+                    m_data + m_size which means the source m_data remains
+                    intact.
                 */
                 grow(size + 1);
 
                 // move content unless insert position is end()
                 if (pos < m_size)
                 {
-                    // size_type dst_valid_sz = (pos + len < m_size ? (m_size - pos - len) : 0);
-                    stl::mem_move(&m_data[pos + len], 0, &m_data[pos], (m_size - pos), m_allocator);
+                    // copying to uninitialized area - non overlapping
+                    stl::mem_copy(&m_data[pos + len], 0, &m_data[pos], (m_size - pos), m_allocator);
                 }
 
                 if (this == &str) // insert self content
                 {
-//TODO: add dst_valid_sz where required!
-                    // size_type dst_valid_sz = m_size - pos;
                     stl::mem_move(&m_data[pos], 0, m_data, len, m_allocator);
                 }
                 else // insert other's content
@@ -1726,47 +1732,63 @@ namespace stl
             return *this;
         }
 
-        container& insert(size_type pos, const container& str, size_type off, size_type n)
+        /*  Inserts a copy of a substring of str. The substring is
+            the portion of str that begins at the character position subpos
+            and spans sublen characters (or until the end of str, if either
+            str is too short or if sublen is npos).
+
+            pos: Insertion point. The new contents are inserted before
+                 the character at position pos. If this is greater than
+                 the object's length, it throws out_of_range.
+                 
+         subpos: Position of the first character in str that is inserted
+                 into the object as a substring. If this is greater than
+                 str's length, it throws out_of_range.
+
+         sublen: Length of the substring to be copied (if the string is
+                 shorter, as many characters as possible are copied).
+                 A value of npos indicates all characters until the end of str.
+        */
+        container& insert(size_type pos, const container& str, size_type subpos, size_type sublen)
         {
             // allow to insert in position = end(), aka pos == m_size;
             if (pos > m_size)
                 throw stl::exception("out of valid range");
 
-            if (n)
+            size_type strlen = str.length();
+
+            if (subpos > strlen)
+                throw stl::exception("out of valid range");
+
+            if (sublen > strlen - subpos)
+                sublen = strlen - subpos;   // sublen can become 0
+
+            if (sublen)
             {
-                size_type len = str.length();
+                size_type size = m_size + sublen;
 
-                if (off >= len)
-                    throw stl::exception("out of valid range");
-
-                if (n == npos)
-                    n = len - off;
-
-                size_type size = m_size + n;
+                // relocation does not invalidate str
+                grow(size + 1);
 
                 if (this == &str)
                 {
-                    container temp(m_data + off, m_data + off + n);
-
-                    grow(size + 1);
+                    container temp(&m_data[subpos], &m_data[subpos + sublen]);
 
                     // move content unless insert position is end()
                     if (pos < m_size)
                     {
-                        stl::mem_move(&m_data[pos + n], 0, &m_data[pos], (m_size - pos), m_allocator);
+                        stl::mem_move(&m_data[pos + sublen], 0, &m_data[pos], (m_size - pos), m_allocator);
                     }
-                    stl::mem_copy(&m_data[pos], 0, temp.m_data, n, m_allocator);
+                    stl::mem_copy(&m_data[pos], 0, temp.m_data, sublen, m_allocator);
                 }
                 else
                 {
-                    grow(size + 1);
-
                     // move content unless insert position is end()
                     if (pos < m_size)
                     {
-                        stl::mem_move(&m_data[pos + n], 0, &m_data[pos], (m_size - pos), m_allocator);
+                        stl::mem_move(&m_data[pos + sublen], 0, &m_data[pos], (m_size - pos), m_allocator);
                     }
-                    stl::mem_copy(&m_data[pos], 0, &str.m_data[off], n, m_allocator);
+                    stl::mem_copy(&m_data[pos], 0, &str.m_data[subpos], sublen, m_allocator);
                 }
 
                 endof(size);
@@ -1775,6 +1797,11 @@ namespace stl
             return *this;
         }
 
+        /*  Inserts a copy of the string formed by the null-terminated
+            character sequence (C-string) pointed by ptr.
+            The length of this character sequence is determined by calling
+            traits_type::length(ptr).
+        */
         container& insert(size_type pos, const value_type* ptr)
         {
             // allow to insert in position = end(), aka pos == m_size;
@@ -1818,6 +1845,9 @@ namespace stl
             return *this;
         }
 
+        /*  Inserts a copy of the first n characters in the array of characters
+            pointed by ptr.
+        */
         container& insert(size_type pos, const value_type* ptr, size_type n)
         {
             // allow to insert in position = end(), aka pos == m_size;
@@ -1826,11 +1856,6 @@ namespace stl
 
             if (n)
             {
-                size_type len = length(ptr);
-
-                if (n > len)
-                    throw stl::exception("out of valid range");
-
                 size_type size = m_size + n;
 
                 if (m_data <= ptr && (m_data + m_size) > ptr)
@@ -2049,10 +2074,8 @@ namespace stl
                 size_type p = position.m_pos;
                 size_type size = m_size + dist;
 
-                const T& check = *first;
-
                 // Is the range inside this container ?
-                if (m_data <= &check && (m_data + m_size) > &check)
+                if (m_data <= first && (m_data + m_size) > first)
                 {
                     container temp(first, last);
 

@@ -555,12 +555,12 @@ void test_basic_string::insert()
     CPPUNIT_ASSERT(::strcmp(s2.c_str(), "ABABCabcCabc") == 0);
     CPPUNIT_ASSERT(::strcmp(s3.c_str(), "ABCabcABCabc") == 0);
 
-    stl::basic_string<char> s4(s1), s5(s1);
-    s4.insert(2, s4);
+    stl::basic_string<char> s4("0123456789"), s5("0123456789");
+    s4.insert(5, s4);
     s5.insert(s5.size(), s5);
 
-    CPPUNIT_ASSERT(::strcmp(s2.c_str(), "ABABCabcCabc") == 0);
-    CPPUNIT_ASSERT(::strcmp(s3.c_str(), "ABCabcABCabc") == 0);
+    CPPUNIT_ASSERT(::strcmp(s4.c_str(), "01234012345678956789") == 0);
+    CPPUNIT_ASSERT(::strcmp(s5.c_str(), "01234567890123456789") == 0);
 
 
     //  container& insert(size_type pos, const container& str, size_type off, size_type n)
@@ -1694,7 +1694,7 @@ void test_basic_string::perf1()
         "per day, making it their most frequent form of communication.[21] In China, SMS is very popular"
         "and has brought service providers significant profit(18 billion short messages were sent"
         "in 2001).[22] It is a very influential and powerful tool in the Philippines, where the average"
-        "user sends 10–12 text messages a day.The Philippines alone sends on average over 1 billion"
+        "user sends 10 - 12 text messages a day.The Philippines alone sends on average over 1 billion"
         "text messages a day, [23] more than the annual average SMS volume of the countries in Europe,"
         "and even China and India.SMS is hugely popular in India, where youngsters often exchange"
         "lots of text messages, and companies provide alerts, infotainment, news, cricket scores"
@@ -1705,26 +1705,27 @@ void test_basic_string::perf1()
 
     // stl::string
     {
-        time_printer tp(msg1);
-
         stl::basic_string<char> s1, s2, s3, s4, s5;
         size_t len = s0.size();
 
-        for (size_t i = 0; i < len; ++i)
-            s1.push_back(s0[i]);
+        //for (size_t i = 0; i < len; ++i)
+        //    s1.push_back(s0[i]);
 
-        while (s1.size() > 0)
-            s1.erase(s1.begin());
+        //while (s1.size() > 0)
+        //    s1.erase(s1.begin());
 
-        for (size_t i = 0; i < len; ++i)
-            s1.insert(s1.begin(), s0[len - i - 1]);
+        //for (size_t i = 0; i < len; ++i)
+        //    s1.insert(s1.begin(), s0[len - i - 1]);
 
-        s1.erase(s1.begin(), s1.end());
+        //s1.erase(s1.begin(), s1.end());
 
-        s1.assign(10, '?');
-        for (size_t i = 0; i < 10; ++i)
+time_printer tp(msg1);
+
+        s1.assign(s0.c_str(), 20);
+        for (size_t i = 0; i < 20; ++i)
             s1.insert(s1.begin(), s1.begin(), s1.end());
 
+#if 0
         s2.assign(s0.c_str());
 
         for (size_t i = len - 1; i != (size_t)-1; --i)
@@ -1758,30 +1759,32 @@ void test_basic_string::perf1()
             int ret4 = s2.compare(0, i, s5.c_str()); ret4 += 0;
             int ret5 = s2.compare(0, i, s5.c_str(), i); ret5 += 0;
         }
+#endif
     }
 
     // std::string
     {
-        time_printer tp(msg2);
-
         std::basic_string<char> s1, s2, s3, s4, s5;
         size_t len = s0.size();
 
-        for (size_t i = 0; i < len; ++i)
-            s1.push_back(s0[i]);
+        //for (size_t i = 0; i < len; ++i)
+        //    s1.push_back(s0[i]);
+      
+        //while (s1.size() > 0)
+        //    s1.erase(s1.begin());
 
-        while (s1.size() > 0)
-            s1.erase(s1.begin());
+        //for (size_t i = 0; i < len; ++i)
+        //    s1.insert(s1.begin(), s0[len - i - 1]);
 
-        for (size_t i = 0; i < len; ++i)
-            s1.insert(s1.begin(), s0[len - i - 1]);
+        //s1.erase(s1.begin(), s1.end());
 
-        s1.erase(s1.begin(), s1.end());
+time_printer tp(msg2);
 
-        s1.assign(10, '?');
-        for (size_t i = 0; i < 10; ++i)
+        s1.assign(s0.c_str(), 20);
+        for (size_t i = 0; i < 20; ++i)
             s1.insert(s1.begin(), s1.begin(), s1.end());
 
+#if 0
         s2.assign(s0.c_str());
 
         for (size_t i = len - 1; i != (size_t)-1; --i)
@@ -1815,5 +1818,6 @@ void test_basic_string::perf1()
             int ret4 = s2.compare(0, i, s5.c_str()); ret4 += 0;
             int ret5 = s2.compare(0, i, s5.c_str(), i); ret5 += 0;
         }
+#endif
     }
 }
