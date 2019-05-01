@@ -1986,32 +1986,41 @@ namespace stl
                 size_type p = position.m_pos;
                 size_type size = m_size + dist;
 
-                grow(size + 1);
+                //grow(size + 1);
 
                 // Is the range inside this container ?
                 if (first.m_cont == this)
                 {
 //TODO: can be optimized by passing pointers (e.g. first.m_cont + first.m_pos,..)
-                    container temp(first, last);
-
+//                    value_type* p1 = first.m_cont->m_data + first.m_pos;
+//                    value_type* p2 = last.m_cont->m_data + last.m_pos;
+                    
+                    replace_(p, 0, *first.m_cont, first.m_pos, dist);
+                    
+#if 0
+                    container temp(p1, p2);
                     // move content unless insert position is end()
                     if (p < m_size)
                     {
                         stl::mem_move(&m_data[p + dist], 0, &m_data[p], (m_size - p), m_allocator);
                     }
                     stl::mem_copy(&m_data[p], 0, temp.m_data, dist, m_allocator);
+#endif // 0
                 }
                 else// range is outside this container
                 {
+                    grow(size + 1);
+
                     // move content unless insert positions is end()
                     if (p < m_size)
                     {
                         stl::mem_move(&m_data[p + dist], 0, &m_data[p], (m_size - p), m_allocator);
                     }
                     stl::mem_copy(&m_data[p], 0, &((*first.m_cont)[first.m_pos]), dist, m_allocator);
+                    endof(size);
                 }
 
-                endof(size);
+                //endof(size);
             }
         }
 
@@ -2197,6 +2206,71 @@ namespace stl
             }
         }
 
+
+        inline container& replace_(size_type p1, size_type n1, const container& str, size_type p2, size_type n2)
+        {
+            if (p1 > m_size)
+                throw stl::exception("out of valid range");
+
+            if (n1 > m_size - p1)
+                n1 = m_size - p1;
+
+            if (p2 > str.m_size)
+                throw stl::exception("out of valid range");
+
+            if (n2 > str.m_size - p2)
+                n2 = str.m_size - p2;
+
+            size_type size = m_size - n1 + n2;
+
+            if (this == &str)   // self
+            {
+                // make room more than really needed, to move without truncation
+                grow(m_size + n2 + 1);
+
+                /*  === Action 1 ===
+                    Split at p1 and make room for n2 to fit at p1.
+                */
+                stl::mem_move(&m_data[p1 + n2], 0, &m_data[p1], m_size - p1, m_allocator);
+
+                /*  === Action 2 ===
+                    Assemble back the puzzle.
+                    There is one general condition:
+                    1)  if p2 starts before p1: the source is split in 2 (before and after p1)
+                    2)  if p2 starts at/after p1: the source is one piece (after p1)
+                */
+                if (p2 < p1)
+                {
+                    // before p1
+                    size_type count = p1 - p2;
+                    if (count > n2)
+                        count = n2;
+                    stl::mem_move(&m_data[p1], 0, &m_data[p2], count, m_allocator);
+                    // after p1
+                    stl::mem_copy(&m_data[p1 + count], 0, &m_data[p1 + n2], n2 - count, m_allocator);
+                    // remaining of the original
+                    stl::mem_move(&m_data[p1 + n2], 0, &m_data[p1 + n2 + n1], m_size - p1 - n1, m_allocator);
+                }
+                else
+                {
+                    // one piece
+                    stl::mem_move(&m_data[p1], 0, &m_data[p2 + n2], n2, m_allocator);
+                    // remaining of the original
+                    stl::mem_move(&m_data[p1 + n2], 0, &m_data[p1 + n2 + n1], m_size - p1 - n1, m_allocator);
+                }
+            }
+            else
+            {
+                grow(size + 1);
+                stl::mem_move(&m_data[p1 + n2], 0, &m_data[p1 + n1], m_size - p1 - n1, m_allocator);
+                stl::mem_copy(&m_data[p1], 0, &str[p2], n2, m_allocator);
+            }
+
+            endof(size);
+
+            return *this;
+
+        }
 
     public:
         /*  pos: Position of the first character to be erased.
