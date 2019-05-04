@@ -175,22 +175,29 @@ namespace stl
         }
     }
 
+    /*  It is faster to check dst!=src && count here than in the caller,
+        where you have to do pointer arithmetic and store the addresses
+        before doing comparison (tested).
+    */
     template<typename Allocator>
     inline void mem_copy(char* dst, size_t, const char* src, size_t count, Allocator&)
     {
-        ::memcpy(dst, src, count * sizeof(char));
+        if (dst != src && count)
+            ::memcpy(dst, src, count * sizeof(char));
     }
 
     template<typename Allocator>
     inline void mem_copy(signed char* dst, size_t, const signed char* src, size_t count, Allocator&)
     {
-        ::memcpy(dst, src, count * sizeof(signed char));
+        if (dst != src && count)
+            ::memcpy(dst, src, count * sizeof(signed char));
     }
 
     template<typename Allocator>
     inline void mem_copy(unsigned char* dst, size_t, const unsigned char* src, size_t count, Allocator&)
     {
-        ::memcpy(dst, src, count * sizeof(unsigned char));
+        if (dst != src && count)
+            ::memcpy(dst, src, count * sizeof(unsigned char));
     }
 
     template<typename Allocator>
@@ -200,67 +207,78 @@ namespace stl
           wchar_t *wmemcpy(wchar_t *dest,const wchar_t *src,size_t count);
           wmemcpy copies 'count' wide characters of 2 or 4 bytes.
         */
-        ::wmemcpy(dst, src, count);
+        if (dst != src && count)
+            ::wmemcpy(dst, src, count);
     }
 
     template<typename Allocator>
     inline void mem_copy(short* dst, size_t, const short* src, size_t count, Allocator&)
     {
-        ::memcpy(dst, src, count * sizeof(short));
+        if (dst != src && count)
+            ::memcpy(dst, src, count * sizeof(short));
     }
 
     template<typename Allocator>
     inline void mem_copy(unsigned short* dst, size_t, const unsigned short* src, size_t count, Allocator&)
     {
-        ::memcpy(dst, src, count * sizeof(unsigned short));
+        if (dst != src && count)
+            ::memcpy(dst, src, count * sizeof(unsigned short));
     }
 
     template<typename Allocator>
     inline void mem_copy(int* dst, size_t, const int* src, size_t count, Allocator&)
     {
-        ::memcpy(dst, src, count * sizeof(int));
+        if (dst != src && count)
+            ::memcpy(dst, src, count * sizeof(int));
     }
 
     template<typename Allocator>
     inline void mem_copy(unsigned int* dst, size_t, const unsigned int* src, size_t count, Allocator&)
     {
-        ::memcpy(dst, src, count * sizeof(unsigned int));
+        if (dst != src && count)
+            ::memcpy(dst, src, count * sizeof(unsigned int));
     }
 
     template<typename Allocator>
     inline void mem_copy(long* dst, size_t, const long* src, size_t count, Allocator&)
     {
-        ::memcpy(dst, src, count * sizeof(long));
+        if (dst != src && count)
+            ::memcpy(dst, src, count * sizeof(long));
     }
 
     template<typename Allocator>
     inline void mem_copy(unsigned long* dst, size_t, const unsigned long* src, size_t count, Allocator&)
     {
-        ::memcpy(dst, src, count * sizeof(unsigned long));
+        if (dst != src && count)
+            ::memcpy(dst, src, count * sizeof(unsigned long));
     }
 
     template<typename Allocator>
     inline void mem_copy(double* dst, size_t, const double* src, size_t count, Allocator&)
     {
-        ::memcpy(dst, src, count * sizeof(double));
+        if (dst != src && count)
+            ::memcpy(dst, src, count * sizeof(double));
     }
 
     template<typename Allocator>
     inline void mem_copy(float* dst, size_t, const float* src, size_t count, Allocator&)
     {
-        ::memcpy(dst, src, count * sizeof(float));
+        if (dst != src && count)
+            ::memcpy(dst, src, count * sizeof(float));
     }
 
     template<typename Allocator>
     inline void mem_copy(long long* dst, size_t, const long long* src, size_t count, Allocator&)
     {
-        ::memcpy(dst, src, count * sizeof(long long));
+        if (dst != src && count)
+            ::memcpy(dst, src, count * sizeof(long long));
     }
 
     template<typename Allocator>
     inline void mem_copy(unsigned long long* dst, size_t, const unsigned long long* src, size_t count, Allocator&)
     {
-        ::memcpy(dst, src, count * sizeof(unsigned long long));
+        if (dst != src && count)
+            ::memcpy(dst, src, count * sizeof(unsigned long long));
     }
 
     //////////////////////////////////////////////////////////////////////////
@@ -348,22 +366,29 @@ namespace stl
         }
     }
 
+    /*  It is faster to check dst!=src && count here than in the caller,
+        where you have to do pointer arithmetic and store the addresses
+        before doing comparison (tested).
+    */
     template<typename Allocator>
     inline void mem_move(char* dst, size_t, const char* src, size_t count, Allocator&)
     {
-        ::memmove(dst, src, count * sizeof(char));
+        if (dst != src && count)
+            ::memmove(dst, src, count * sizeof(char));
     }
 
     template<typename Allocator>
     inline void mem_move(signed char* dst, size_t, const signed char* src, size_t count, Allocator&)
     {
-        ::memmove(dst, src, count * sizeof(signed char));
+        if (dst != src && count)
+            ::memmove(dst, src, count * sizeof(signed char));
     }
 
     template<typename Allocator>
     inline void mem_move(unsigned char* dst, size_t, const unsigned char* src, size_t count, Allocator&)
     {
-        ::memmove(dst, src, count * sizeof(unsigned char));
+        if (dst != src && count)
+            ::memmove(dst, src, count * sizeof(unsigned char));
     }
 
     template<typename Allocator>
@@ -373,67 +398,78 @@ namespace stl
           wchar_t *wmemmove(wchar_t *dest, const wchar_t *src, size_t count);
           wmemcpy copies 'count' wide characters of 2 or 4 bytes.
         */
-        ::wmemmove(dst, src, count);
+        if (dst != src && count)
+            ::wmemmove(dst, src, count);
     }
 
     template<typename Allocator>
     inline void mem_move(short* dst, size_t, const short* src, size_t count, Allocator&)
     {
-        ::memmove(dst, src, count * sizeof(short));
+        if (dst != src && count)
+            ::memmove(dst, src, count * sizeof(short));
     }
 
     template<typename Allocator>
     inline void mem_move(unsigned short* dst, size_t, const unsigned short* src, size_t count, Allocator&)
     {
-        ::memmove(dst, src, count * sizeof(unsigned short));
+        if (dst != src && count)
+            ::memmove(dst, src, count * sizeof(unsigned short));
     }
 
     template<typename Allocator>
     inline void mem_move(int* dst, size_t, const int* src, size_t count, Allocator&)
     {
-        ::memmove(dst, src, count * sizeof(int));
+        if (dst != src && count)
+            ::memmove(dst, src, count * sizeof(int));
     }
 
     template<typename Allocator>
     inline void mem_move(unsigned int* dst, size_t, const unsigned int* src, size_t count, Allocator&)
     {
-        ::memmove(dst, src, count * sizeof(unsigned int));
+        if (dst != src && count)
+            ::memmove(dst, src, count * sizeof(unsigned int));
     }
 
     template<typename Allocator>
     inline void mem_move(long* dst, size_t, const long* src, size_t count, Allocator&)
     {
-        ::memmove(dst, src, count * sizeof(long));
+        if (dst != src && count)
+            ::memmove(dst, src, count * sizeof(long));
     }
 
     template<typename Allocator>
     inline void mem_move(unsigned long* dst, size_t, const unsigned long* src, size_t count, Allocator&)
     {
-        ::memmove(dst, src, count * sizeof(unsigned long));
+        if (dst != src && count)
+            ::memmove(dst, src, count * sizeof(unsigned long));
     }
 
     template<typename Allocator>
     inline void mem_move(double* dst, size_t, const double* src, size_t count, Allocator&)
     {
-        ::memmove(dst, src, count * sizeof(double));
+        if (dst != src && count)
+            ::memmove(dst, src, count * sizeof(double));
     }
 
     template<typename Allocator>
     inline void mem_move(float* dst, size_t, const float* src, size_t count, Allocator&)
     {
-        ::memmove(dst, src, count * sizeof(float));
+        if (dst != src && count)
+            ::memmove(dst, src, count * sizeof(float));
     }
 
     template<typename Allocator>
     inline void mem_move(long long* dst, size_t, const long long* src, size_t count, Allocator&)
     {
-        ::memmove(dst, src, count * sizeof(long long));
+        if (dst != src && count)
+            ::memmove(dst, src, count * sizeof(long long));
     }
 
     template<typename Allocator>
     inline void mem_move(unsigned long long* dst, size_t, const unsigned long long* src, size_t count, Allocator&)
     {
-        ::memmove(dst, src, count * sizeof(unsigned long long));
+        if (dst != src && count)
+            ::memmove(dst, src, count * sizeof(unsigned long long));
     }
 
     //////////////////////////////////////////////////////////////////////////
