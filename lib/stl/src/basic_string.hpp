@@ -1057,7 +1057,7 @@ namespace stl
                 grow(n + 1);    // extra '\0'
 
                 // Not a self assignment as c is a temporary copy.
-                stl::mem_set(&m_data[m_size], c, (n - m_size) * sizeof(value_type), m_allocator);
+                stl::mem_set(m_data + m_size, c, (n - m_size) * sizeof(value_type), m_allocator);
             }
 
             endof(n);
@@ -1141,7 +1141,7 @@ namespace stl
                 // even if m_data is relocated, str remains valid
                 grow(size + 1);
 
-                stl::mem_copy(&m_data[m_size], 0, str.m_data, n, m_allocator);
+                stl::mem_copy(m_data + m_size, 0, str.m_data, n, m_allocator);
 
                 endof(size);
             }
@@ -1176,7 +1176,7 @@ namespace stl
                 grow(size + 1);
 
                 // no need for memmove when appending from self
-                stl::mem_copy(&m_data[m_size], 0, &str.m_data[subpos], sublen, m_allocator);
+                stl::mem_copy(m_data + m_size, 0, str.m_data + subpos, sublen, m_allocator);
 
                 endof(size);
             }
@@ -1206,13 +1206,13 @@ namespace stl
                     // can relocate m_data and free the old block
                     grow(size + 1);
 
-                    stl::mem_copy(&m_data[m_size], 0, m_data + off, n, m_allocator);
+                    stl::mem_copy(m_data + m_size, 0, m_data + off, n, m_allocator);
                 }
                 else// range is outside this container
                 {
                     grow(size + 1);
 
-                    stl::mem_copy(&m_data[m_size], 0, ptr, n, m_allocator);
+                    stl::mem_copy(m_data + m_size, 0, ptr, n, m_allocator);
                 }
 
                 endof(size);
@@ -1237,13 +1237,13 @@ namespace stl
                     // can relocate m_data and free the old block
                     grow(size + 1);
 
-                    stl::mem_copy(&m_data[m_size], 0, m_data + off, n, m_allocator);
+                    stl::mem_copy(m_data + m_size, 0, m_data + off, n, m_allocator);
                 }
                 else// range is outside this container
                 {
                     grow(size + 1);
 
-                    stl::mem_copy(&m_data[m_size], 0, ptr, n, m_allocator);
+                    stl::mem_copy(m_data + m_size, 0, ptr, n, m_allocator);
                 }
 
                 endof(size);
@@ -1260,7 +1260,7 @@ namespace stl
 
                 grow(size + 1);
 
-                stl::mem_set(&m_data[m_size], value, n * sizeof(value_type), m_allocator);
+                stl::mem_set(m_data + m_size, value, n * sizeof(value_type), m_allocator);
 
                 endof(size);
             }
@@ -1291,7 +1291,7 @@ namespace stl
                 // even if m_data is relocated, first and last remain valid
                 grow(size + 1);
 
-                stl::mem_copy(&m_data[m_size], 0, &((*first.m_cont)[first.m_pos]), dist, m_allocator);
+                stl::mem_copy(m_data + m_size, 0, first.m_cont->m_data + first.m_pos, dist, m_allocator);
 
                 endof(size);
             }
@@ -1315,7 +1315,7 @@ namespace stl
                 // even if m_data is relocated, first and last remain valid
                 grow(size + 1);
 
-                stl::mem_copy(&m_data[m_size], 0, &((*first.m_cont)[first.m_pos]), dist, m_allocator);
+                stl::mem_copy(m_data + m_size, 0, first.m_cont->m_data + first.m_pos, dist, m_allocator);
 
                 endof(size);
             }
@@ -1340,13 +1340,13 @@ namespace stl
                     // can relocate m_data and free the old block
                     grow(size + 1);
 
-                    stl::mem_copy(&m_data[m_size], 0, m_data + off, dist, m_allocator);
+                    stl::mem_copy(m_data + m_size, 0, m_data + off, dist, m_allocator);
                 }
                 else// range is outside this container
                 {
                     grow(size + 1);
 
-                    stl::mem_copy(&m_data[m_size], 0, first, dist, m_allocator);
+                    stl::mem_copy(m_data + m_size, 0, first, dist, m_allocator);
                 }
 
                 endof(size);
@@ -1388,7 +1388,7 @@ namespace stl
                     // for safety, although could not invalidate the input for this case
                     grow(size + 1);
 
-                    stl::mem_copy(&m_data[m_size], 0, temp.m_data, dist, m_allocator);
+                    stl::mem_copy(m_data + m_size, 0, temp.m_data, dist, m_allocator);
                 }
                 else// range is outside this container
                 {
@@ -1415,7 +1415,7 @@ namespace stl
 
                 grow(size + 1);
 
-                stl::mem_set(&m_data[m_size], value, n * sizeof(value_type), m_allocator);
+                stl::mem_set(m_data + m_size, value, n * sizeof(value_type), m_allocator);
 
                 endof(size);
             }
@@ -1488,13 +1488,13 @@ namespace stl
             if (this == &str)
             {
                 // Should work w/o extra buffer/memmove (copy to left side)
-                stl::mem_copy(m_data, m_size, &m_data[subpos], sublen, m_allocator);
+                stl::mem_copy(m_data, 0, m_data + subpos, sublen, m_allocator);
             }
             else
             {
                 grow(sublen + 1);    // extra '\0'
 
-                stl::mem_copy(m_data, m_size, &str.m_data[subpos], sublen, m_allocator);
+                stl::mem_copy(m_data, 0, str.m_data + subpos, sublen, m_allocator);
             }
             
             endof(sublen);
@@ -1593,11 +1593,11 @@ namespace stl
                 //self assignment
                 if (first.m_cont == this)
                 {
-                    stl::mem_move(m_data, m_size, &((*first.m_cont)[first.m_pos]), n, m_allocator);
+                    stl::mem_move(m_data, 0, first.m_cont->m_data + first.m_pos, n, m_allocator);
                 }
                 else
                 {
-                    stl::mem_copy(m_data, 0, &((*first.m_cont)[first.m_pos]), n, m_allocator);
+                    stl::mem_copy(m_data, 0, first.m_cont->m_data + first.m_pos, n, m_allocator);
                 }
             }
 
@@ -1621,11 +1621,11 @@ namespace stl
                 //self assignment
                 if (this == first.m_cont)
                 {
-                    stl::mem_move(m_data, m_size, &((*first.m_cont)[first.m_pos]), n, m_allocator);
+                    stl::mem_move(m_data, 0, first.m_cont->m_data + first.m_pos, n, m_allocator);
                 }
                 else
                 {
-                    stl::mem_copy(m_data, m_size, &((*first.m_cont)[first.m_pos]), n, m_allocator);
+                    stl::mem_copy(m_data, 0, first.m_cont->m_data + first.m_pos, n, m_allocator);
                 }
             }
 
@@ -1761,16 +1761,16 @@ namespace stl
                 if (pos < m_size)
                 {
                     // copying to uninitialized area - non overlapping
-                    stl::mem_copy(&m_data[pos + len], 0, &m_data[pos], (m_size - pos), m_allocator);
+                    stl::mem_copy(m_data + pos + len, 0, m_data + pos, (m_size - pos), m_allocator);
                 }
 
                 if (this == &str) // insert self content
                 {
-                    stl::mem_move(&m_data[pos], 0, m_data, len, m_allocator);
+                    stl::mem_move(m_data + pos, 0, m_data, len, m_allocator);
                 }
                 else // insert other's content
                 {
-                    stl::mem_copy(&m_data[pos], 0, str.m_data, len, m_allocator);
+                    stl::mem_copy(m_data + pos, 0, str.m_data, len, m_allocator);
                 }
 
                 endof(size);
@@ -1821,15 +1821,15 @@ namespace stl
                 {
                     container temp(&m_data[subpos], &m_data[subpos + sublen]);
 
-                    stl::mem_move(&m_data[pos + sublen], 0, &m_data[pos], (m_size - pos), m_allocator);
+                    stl::mem_move(m_data + pos + sublen, 0, m_data + pos, (m_size - pos), m_allocator);
 
-                    stl::mem_copy(&m_data[pos], 0, temp.m_data, sublen, m_allocator);
+                    stl::mem_copy(m_data + pos, 0, temp.m_data, sublen, m_allocator);
                 }
                 else
                 {
-                    stl::mem_move(&m_data[pos + sublen], 0, &m_data[pos], (m_size - pos), m_allocator);
+                    stl::mem_move(m_data + pos + sublen, 0, m_data + pos, (m_size - pos), m_allocator);
 
-                    stl::mem_copy(&m_data[pos], 0, &str.m_data[subpos], sublen, m_allocator);
+                    stl::mem_copy(m_data + pos, 0, str.m_data + subpos, sublen, m_allocator);
                 }
 
                 endof(size);
@@ -1861,17 +1861,17 @@ namespace stl
 
                     grow(size + 1);
 
-                    stl::mem_move(&m_data[pos + len], 0, &m_data[pos], (m_size - pos), m_allocator);
+                    stl::mem_move(m_data + pos + len, 0, m_data + pos, (m_size - pos), m_allocator);
 
-                    stl::mem_copy(&m_data[pos], 0, temp.m_data, len, m_allocator);
+                    stl::mem_copy(m_data + pos, 0, temp.m_data, len, m_allocator);
                 }
                 else
                 {
                     grow(size + 1);
 
-                    stl::mem_move(&m_data[pos + len], 0, &m_data[pos], (m_size - pos), m_allocator);
+                    stl::mem_move(m_data + pos + len, 0, m_data + pos, (m_size - pos), m_allocator);
 
-                    stl::mem_copy(&m_data[pos], 0, ptr, len, m_allocator);
+                    stl::mem_copy(m_data + pos, 0, ptr, len, m_allocator);
                 }
 
                 endof(size);
@@ -1899,17 +1899,17 @@ namespace stl
 
                     grow(size + 1);
 
-                    stl::mem_move(&m_data[pos + n], 0, &m_data[pos], (m_size - pos), m_allocator);
+                    stl::mem_move(m_data + pos + n, 0, m_data + pos, (m_size - pos), m_allocator);
 
-                    stl::mem_move(&m_data[pos], 0, temp.m_data, n, m_allocator);
+                    stl::mem_move(m_data + pos, 0, temp.m_data, n, m_allocator);
                 }
                 else
                 {
                     grow(size + 1);
 
-                    stl::mem_move(&m_data[pos + n], 0, &m_data[pos], (m_size - pos), m_allocator);
+                    stl::mem_move(m_data + pos + n, 0, m_data + pos, (m_size - pos), m_allocator);
 
-                    stl::mem_copy(&m_data[pos], 0, ptr, n, m_allocator);
+                    stl::mem_copy(m_data + pos, 0, ptr, n, m_allocator);
                 }
 
                 endof(size);
@@ -1930,9 +1930,9 @@ namespace stl
 
                 grow(size + 1);
 
-                stl::mem_move(&m_data[pos + n], 0, &m_data[pos], (m_size - pos), m_allocator);
+                stl::mem_move(m_data + pos + n, 0, m_data + pos, (m_size - pos), m_allocator);
 
-                stl::mem_set(&m_data[pos], c, n * sizeof(value_type), m_allocator);
+                stl::mem_set(m_data + pos, c, n * sizeof(value_type), m_allocator);
 
                 endof(size);
             }
@@ -1952,9 +1952,9 @@ namespace stl
 
                 grow(size + 1);
 
-                stl::mem_move(&m_data[pos + n], 0, &m_data[pos], (m_size - pos), m_allocator);
+                stl::mem_move(m_data + pos + n, 0, m_data + pos, (m_size - pos), m_allocator);
 
-                stl::mem_set(&m_data[pos], c, n * sizeof(value_type), m_allocator);
+                stl::mem_set(m_data + pos, c, n * sizeof(value_type), m_allocator);
 
                 endof(size);
             }
@@ -1970,9 +1970,9 @@ namespace stl
 
             grow(size + 1);
 
-            stl::mem_move(&m_data[pos + 1], 0, &m_data[pos], (m_size - pos), m_allocator);
+            stl::mem_move(m_data + pos + 1, 0, m_data + pos, (m_size - pos), m_allocator);
 
-            stl::mem_set(&m_data[pos], c, 1 * sizeof(value_type), m_allocator);
+            stl::mem_set(m_data + pos, c, 1 * sizeof(value_type), m_allocator);
 
             endof(size);
 
@@ -2045,17 +2045,17 @@ namespace stl
                     // can relocate m_data and invalidate first,last pointers
                     grow(size + 1);
 
-                    stl::mem_move(&m_data[p + dist], 0, &m_data[p], (m_size - p), m_allocator);
+                    stl::mem_move(m_data + p + dist, 0, m_data + p, (m_size - p), m_allocator);
 
-                    stl::mem_copy(&m_data[p], 0, temp.m_data, dist, m_allocator);
+                    stl::mem_copy(m_data + p, 0, temp.m_data, dist, m_allocator);
                 }
                 else// range is outside this container
                 {
                     grow(size + 1);
 
-                    stl::mem_move(&m_data[p + dist], 0, &m_data[p], (m_size - p), m_allocator);
+                    stl::mem_move(m_data + p + dist, 0, m_data + p, (m_size - p), m_allocator);
 
-                    stl::mem_copy(&m_data[p], 0, first, dist, m_allocator);
+                    stl::mem_copy(m_data + p, 0, first, dist, m_allocator);
                 }
 
                 endof(size);
@@ -2100,19 +2100,18 @@ namespace stl
                     // for safety, although could not invalidate the input for this case
                     grow(size + 1);
 
-                    stl::mem_move(&m_data[p + dist], 0, &m_data[p], (m_size - p), m_allocator);
+                    stl::mem_move(m_data + p + dist, 0, m_data + p, (m_size - p), m_allocator);
 
-                    stl::mem_copy(&m_data[p], 0, temp.m_data, dist, m_allocator);
+                    stl::mem_copy(m_data + p, 0, temp.m_data, dist, m_allocator);
                 }
                 else// range is outside this container
                 {
                     grow(size + 1);
 
-                    stl::mem_move(&m_data[p + dist], 0, &m_data[p], (m_size - p), m_allocator);
+                    stl::mem_move(m_data + p + dist, 0, m_data + p, (m_size - p), m_allocator);
 
                     for (size_type i = 0; first != last; ++first, ++i)
                     {
-                        // m_allocator.construct(&m_data[p + i], *first);
                         m_data[p + i] = *first;
                     }
                 }
@@ -2134,9 +2133,9 @@ namespace stl
 
                 grow(size + 1);
 
-                stl::mem_move(&m_data[pos + n], 0, &m_data[pos], (m_size - pos), m_allocator);
+                stl::mem_move(m_data + pos + n, 0, m_data + pos, (m_size - pos), m_allocator);
 
-                stl::mem_set(&m_data[pos], value, n * sizeof(value_type), m_allocator);
+                stl::mem_set(m_data + pos, value, n * sizeof(value_type), m_allocator);
 
                 endof(size);
             }
@@ -2231,7 +2230,7 @@ namespace stl
             if (len > m_size - pos)
                 len = m_size - pos;
 
-            stl::mem_move(&m_data[pos], 0, &m_data[pos + len], (m_size - pos - len), m_allocator);
+            stl::mem_move(m_data + pos, 0, m_data + pos + len, (m_size - pos - len), m_allocator);
 
             endof(m_size - len);
 
@@ -2247,7 +2246,7 @@ namespace stl
 
             size_type pos = position.m_pos;
 
-            stl::mem_move(&m_data[pos], 0, &m_data[pos + 1], (m_size - pos - 1), m_allocator);
+            stl::mem_move(m_data + pos, 0, m_data + pos + 1, (m_size - pos - 1), m_allocator);
 
             endof(m_size - 1);
 
@@ -2267,7 +2266,7 @@ namespace stl
 
             size_type dist = last.m_pos - first.m_pos;
 
-            stl::mem_copy(&m_data[first.m_pos], 0, &m_data[last.m_pos], (m_size - last.m_pos), m_allocator);
+            stl::mem_copy(m_data + first.m_pos, 0, m_data + last.m_pos, (m_size - last.m_pos), m_allocator);
 
             endof(m_size - dist);
 
@@ -2301,15 +2300,15 @@ namespace stl
             {
                 container temp(m_data, m_data + m_size); // from str
 
-                stl::mem_move(&m_data[pos + slen], 0, &m_data[pos + len], (m_size - pos - len), m_allocator);
+                stl::mem_move(m_data + pos + slen, 0, m_data + pos + len, (m_size - pos - len), m_allocator);
 
-                stl::mem_copy(&m_data[pos], 0, temp.m_data, slen, m_allocator);
+                stl::mem_copy(m_data + pos, 0, temp.m_data, slen, m_allocator);
             }
             else // insert from another container
             {
-                stl::mem_move(&m_data[pos + slen], 0, &m_data[pos + len], (m_size - pos - len), m_allocator);
+                stl::mem_move(m_data + pos + slen, 0, m_data + pos + len, (m_size - pos - len), m_allocator);
 
-                stl::mem_copy(&m_data[pos], 0, str.m_data, slen, m_allocator);
+                stl::mem_copy(m_data + pos, 0, str.m_data, slen, m_allocator);
             }
 
             endof(size);
@@ -2340,15 +2339,15 @@ namespace stl
             {
                 container temp(m_data, m_data + m_size);
 
-                stl::mem_move(&m_data[pos + slen], 0, &m_data[pos + len], (m_size - pos - len), m_allocator);
+                stl::mem_move(m_data + pos + slen, 0, m_data + pos + len, (m_size - pos - len), m_allocator);
 
-                stl::mem_copy(&m_data[pos], 0, temp.m_data, slen, m_allocator);
+                stl::mem_copy(m_data + pos, 0, temp.m_data, slen, m_allocator);
             }
             else // insert from another container
             {
-                stl::mem_move(&m_data[pos + slen], 0, &m_data[pos + len], (m_size - pos - len), m_allocator);
+                stl::mem_move(m_data + pos + slen, 0, m_data + pos + len, (m_size - pos - len), m_allocator);
 
-                stl::mem_copy(&m_data[pos], 0, str.m_data, slen, m_allocator);
+                stl::mem_copy(m_data + pos, 0, str.m_data, slen, m_allocator);
             }
 
             endof(size);
@@ -2402,15 +2401,15 @@ namespace stl
             {
                 container temp(ptr, ptr + slen);
 
-                stl::mem_move(&m_data[pos + slen], 0, &m_data[pos + len], (m_size - pos - len), m_allocator);
+                stl::mem_move(m_data + pos + slen, 0, m_data + pos + len, (m_size - pos - len), m_allocator);
 
-                stl::mem_copy(&m_data[pos], 0, temp.m_data, slen, m_allocator);
+                stl::mem_copy(m_data + pos, 0, temp.m_data, slen, m_allocator);
             }
             else // insert from another container
             {
-                stl::mem_move(&m_data[pos + slen], 0, &m_data[pos + len], (m_size - pos - len), m_allocator);
+                stl::mem_move(m_data + pos + slen, 0, m_data + pos + len, (m_size - pos - len), m_allocator);
 
-                stl::mem_copy(&m_data[pos], 0, ptr, slen, m_allocator);
+                stl::mem_copy(m_data + pos, 0, ptr, slen, m_allocator);
             }
 
             endof(size);
@@ -2442,15 +2441,15 @@ namespace stl
             {
                 container temp(ptr, ptr + slen);
 
-                stl::mem_move(&m_data[pos + slen], 0, &m_data[pos + len], (m_size - pos - len), m_allocator);
+                stl::mem_move(m_data + pos + slen, 0, m_data + pos + len, (m_size - pos - len), m_allocator);
 
-                stl::mem_copy(&m_data[pos], 0, temp.m_data, slen, m_allocator);
+                stl::mem_copy(m_data + pos, 0, temp.m_data, slen, m_allocator);
             }
             else // insert from another container
             {
-                stl::mem_move(&m_data[pos + slen], 0, &m_data[pos + len], (m_size - pos - len), m_allocator);
+                stl::mem_move(m_data + pos + slen, 0, m_data + pos + len, (m_size - pos - len), m_allocator);
 
-                stl::mem_copy(&m_data[pos], 0, ptr, slen, m_allocator);
+                stl::mem_copy(m_data + pos, 0, ptr, slen, m_allocator);
             }
 
             endof(size);
@@ -2491,15 +2490,15 @@ namespace stl
             {
                 container temp(ptr, ptr + slen);
 
-                stl::mem_move(&m_data[pos + sublen], 0, &m_data[pos + len], (m_size - pos - len), m_allocator);
+                stl::mem_move(m_data + pos + sublen, 0, m_data + pos + len, (m_size - pos - len), m_allocator);
 
-                stl::mem_copy(&m_data[pos], 0, temp.m_data, sublen, m_allocator);
+                stl::mem_copy(m_data + pos, 0, temp.m_data, sublen, m_allocator);
             }
             else // insert from another container
             {
-                stl::mem_move(&m_data[pos + sublen], 0, &m_data[pos + len], (m_size - pos - len), m_allocator);
+                stl::mem_move(m_data + pos + sublen, 0, m_data + pos + len, (m_size - pos - len), m_allocator);
 
-                stl::mem_copy(&m_data[pos], 0, ptr, sublen, m_allocator);
+                stl::mem_copy(m_data + pos, 0, ptr, sublen, m_allocator);
             }
 
             endof(size);
@@ -2538,16 +2537,16 @@ namespace stl
             {
                 container temp(ptr, ptr + slen);
 
-                stl::mem_move(&m_data[pos + sublen], 0, &m_data[pos + len], (m_size - pos - len), m_allocator);
+                stl::mem_move(m_data + pos + sublen, 0, m_data + pos + len, (m_size - pos - len), m_allocator);
 
 //TODO: test with sublen == 0 and if tested ok, then add if (sublen) here...
-                stl::mem_copy(&m_data[pos], 0, temp.m_data, sublen, m_allocator);
+                stl::mem_copy(m_data + pos, 0, temp.m_data, sublen, m_allocator);
             }
             else // insert from another container
             {
-                stl::mem_move(&m_data[pos + sublen], 0, &m_data[pos + len], (m_size - pos - len), m_allocator);
+                stl::mem_move(m_data + pos + sublen, 0, m_data + pos + len, (m_size - pos - len), m_allocator);
 
-                stl::mem_copy(&m_data[pos], 0, ptr, sublen, m_allocator);
+                stl::mem_copy(m_data + pos, 0, ptr, sublen, m_allocator);
             }
 
             endof(size);
@@ -2576,11 +2575,11 @@ namespace stl
 
             grow(size + 1);
 
-            stl::mem_move(&m_data[pos + n], 0, &m_data[pos + len], (m_size - pos - len), m_allocator);
+            stl::mem_move(m_data + pos + n, 0, m_data + pos + len, (m_size - pos - len), m_allocator);
 
             if (n)
             {
-                stl::mem_set(&m_data[pos], c, n * sizeof(value_type), m_allocator);
+                stl::mem_set(m_data + pos, c, n * sizeof(value_type), m_allocator);
             }
 
             endof(size);
@@ -2608,11 +2607,11 @@ namespace stl
 
             grow(size + 1);
 
-            stl::mem_move(&m_data[pos + n], 0, &m_data[pos + len], (m_size - pos - len), m_allocator);
+            stl::mem_move(m_data + pos + n, 0, m_data + pos + len, (m_size - pos - len), m_allocator);
 
             if (n)
             {
-                stl::mem_set(&m_data[pos], c, n * sizeof(value_type), m_allocator);
+                stl::mem_set(m_data + pos, c, n * sizeof(value_type), m_allocator);
             }
 
             endof(size);
@@ -2665,15 +2664,15 @@ namespace stl
             {
                 container temp(first2, last2);
 
-                stl::mem_move(&m_data[pos + slen], 0, &m_data[pos + len], (m_size - pos - len), m_allocator);
+                stl::mem_move(m_data + pos + slen, 0, m_data + pos + len, (m_size - pos - len), m_allocator);
 
-                stl::mem_copy(&m_data[pos], 0, temp.m_data, slen, m_allocator);
+                stl::mem_copy(m_data + pos, 0, temp.m_data, slen, m_allocator);
             }
             else // insert from another container
             {
-                stl::mem_move(&m_data[pos + slen], 0, &m_data[pos + len], (m_size - pos - len), m_allocator);
+                stl::mem_move(m_data + pos + slen, 0, m_data + pos + len, (m_size - pos - len), m_allocator);
                 
-                stl::mem_copy(&m_data[pos], 0, &*first2, slen, m_allocator);
+                stl::mem_copy(m_data + pos, 0, first2.m_cont->m_data + first2.m_pos, slen, m_allocator);
             }
 
             endof(size);
@@ -2703,15 +2702,15 @@ namespace stl
             {
                 container temp(first2, last2);
 
-                stl::mem_move(&m_data[pos + slen], 0, &m_data[pos + len], (m_size - pos - len), m_allocator);
+                stl::mem_move(m_data + pos + slen, 0, m_data + pos + len, (m_size - pos - len), m_allocator);
                 
-                stl::mem_copy(&m_data[pos], 0, temp.m_data, slen, m_allocator);
+                stl::mem_copy(m_data + pos, 0, temp.m_data, slen, m_allocator);
             }
             else // insert from another container
             {
-                stl::mem_move(&m_data[pos + slen], 0, &m_data[pos + len], (m_size - pos - len), m_allocator);
+                stl::mem_move(m_data + pos + slen, 0, m_data + pos + len, (m_size - pos - len), m_allocator);
 
-                stl::mem_copy(&m_data[pos], 0, &*first2, slen, m_allocator);
+                stl::mem_copy(m_data + pos, 0, first2.m_cont->m_data + first2.m_pos, slen, m_allocator);
             }
 
             endof(size);
@@ -2738,15 +2737,15 @@ namespace stl
             {
                 container temp(first2, last2);
 
-                stl::mem_move(&m_data[pos + slen], 0, &m_data[pos + len], (m_size - pos - len), m_allocator);
+                stl::mem_move(m_data + pos + slen, 0, m_data + pos + len, (m_size - pos - len), m_allocator);
 
-                stl::mem_copy(&m_data[pos], 0, temp.m_data, slen, m_allocator);
+                stl::mem_copy(m_data + pos, 0, temp.m_data, slen, m_allocator);
             }
             else // insert from another container
             {
-                stl::mem_move(&m_data[pos + slen], 0, &m_data[pos + len], (m_size - pos - len), m_allocator);
+                stl::mem_move(m_data + pos + slen, 0, m_data + pos + len, (m_size - pos - len), m_allocator);
                 
-                stl::mem_copy(&m_data[pos], 0, first2, slen, m_allocator);
+                stl::mem_copy(m_data + pos, 0, first2, slen, m_allocator);
             }
 
             endof(size);
@@ -2789,13 +2788,13 @@ namespace stl
             {
                 container temp(first2, last2);
 
-                stl::mem_move(&m_data[pos + slen], 0, &m_data[pos + len], (m_size - pos - len), m_allocator);
+                stl::mem_move(m_data + pos + slen, 0, m_data + pos + len, (m_size - pos - len), m_allocator);
                 
-                stl::mem_copy(&m_data[pos], 0, temp.m_data, slen, m_allocator);
+                stl::mem_copy(m_data + pos, 0, temp.m_data, slen, m_allocator);
             }
             else // insert from another container
             {
-                stl::mem_move(&m_data[pos + slen], 0, &m_data[pos + len], (m_size - pos - len), m_allocator);
+                stl::mem_move(m_data + pos + slen, 0, m_data + pos + len, (m_size - pos - len), m_allocator);
 
                 // string.reverse_iterator, list.iterator, etc.
                 for (size_t i = 0; first2 != last2; ++first2, ++i)
@@ -2824,11 +2823,11 @@ namespace stl
 
             grow(size + 1);
 
-            stl::mem_move(&m_data[pos + n], 0, &m_data[pos + len], (m_size - pos - len), m_allocator);
+            stl::mem_move(m_data + pos + n, 0, m_data + pos + len, (m_size - pos - len), m_allocator);
 
             if (n)
             {
-                stl::mem_set(&m_data[pos], value, n * sizeof(value_type), m_allocator);
+                stl::mem_set(m_data + pos, value, n * sizeof(value_type), m_allocator);
             }
 
             endof(size);
@@ -2859,11 +2858,11 @@ namespace stl
 
             if (m_data <= ptr && (m_data + m_size) > ptr)   // copy to self
             {
-                stl::mem_move(ptr, 0, &m_data[pos], len, m_allocator);
+                stl::mem_move(ptr, 0, m_data + pos, len, m_allocator);
             }
             else // destination is outside the range of this string
             {
-                stl::mem_copy(ptr, 0, &m_data[pos], len, m_allocator);
+                stl::mem_copy(ptr, 0, m_data + pos, len, m_allocator);
             }
             return len;
         }
@@ -3542,7 +3541,7 @@ namespace stl
             if (len > m_size - pos)
                 len = m_size - pos;
 
-            return container(&m_data[pos], &m_data[pos + len]);
+            return container(m_data + pos, m_data + pos + len);
         }
 
         
