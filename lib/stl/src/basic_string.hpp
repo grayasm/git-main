@@ -56,7 +56,6 @@ namespace stl
         typedef typename base::pointer              pointer;
         typedef typename base::reference            reference;
         typedef typename container::size_type       size_type;
-        typedef typename stl::basic_string_iterator_base<container> base2;
         friend class stl::basic_string<typename container::value_type, typename container::allocator_type>;
         friend class stl::basic_string_const_iterator<container>;
 
@@ -64,20 +63,21 @@ namespace stl
     private:
         basic_string_iterator(container* cont, size_type pos)
         {
-            base2::m_cont = cont;
-            base2::m_pos = pos;
+            m_cont = cont;
+            m_pos = pos;
         }
 
     public:
         basic_string_iterator()
         {
-            base2::m_cont = 0;
-            base2::m_pos = 0;
+            m_cont = 0;
+            m_pos = 0;
         }
 
         basic_string_iterator(const basic_string_iterator& it)
         {
-            *this = it;
+            m_cont = it.m_cont;
+            m_pos = it.m_pos;
         }
 
         ~basic_string_iterator()
@@ -88,128 +88,144 @@ namespace stl
         {
             if (this != &it)
             {
-                base2::m_cont = it.m_cont;
-                base2::m_pos = it.m_pos;
+                m_cont = it.m_cont;
+                m_pos = it.m_pos;
             }
+
             return *this;
         }
 
         reference operator*() const
         {
-            if (!base2::m_cont) throw stl::exception("invalid iterator");
+            if (!m_cont)
+                throw stl::exception("invalid iterator");
 
-            return (*base2::m_cont)[base2::m_pos];
+            return *(m_cont->m_data + m_pos);
         }
 
         pointer operator->() const
         {
-            if (!base2::m_cont) throw stl::exception("invalid iterator");
+            if (!m_cont)
+                throw stl::exception("invalid iterator");
 
-            return &(*base2::m_cont)[base2::m_pos];
+            return (m_cont->m_data + m_pos);
         }
 
         basic_string_iterator& operator++()
         {
-            if (!base2::m_cont) throw stl::exception("invalid iterator");
-
-            ++base2::m_pos;
+            ++m_pos;
             return *this;
         }
 
         basic_string_iterator operator++(int)
         {
-            if (!base2::m_cont) throw stl::exception("invalid iterator");
-
             basic_string_iterator<container> tmp = *this;
-            ++base2::m_pos;
+            ++m_pos;
             return tmp;
         }
 
         basic_string_iterator& operator--()
         {
-            if (!base2::m_cont) throw stl::exception("invalid iterator");
-
-            --base2::m_pos;
+            --m_pos;
             return *this;
         }
 
         basic_string_iterator operator--(int)
         {
-            if (!base2::m_cont) throw stl::exception("invalid iterator");
-
             basic_string_iterator<container> tmp = *this;
-            --base2::m_pos;
+            --m_pos;
             return tmp;
         }
 
         basic_string_iterator& operator+=(difference_type off)
         {
-            if (!base2::m_cont) throw stl::exception("invalid iterator");
-
-            base2::m_pos += off;
+            m_pos += off;
             return *this;
         }
 
         basic_string_iterator operator+(difference_type off) const
         {
             basic_string_iterator<container> tmp = *this;
-            return tmp += off;
+            return (tmp += off);
         }
 
         basic_string_iterator& operator-=(difference_type off)
         {
-            if (!base2::m_cont) throw stl::exception("invalid iterator");
-
-            base2::m_pos -= off;
+            m_pos -= off;
             return *this;
         }
 
         basic_string_iterator operator-(difference_type off) const
         {
             basic_string_iterator<container> tmp = *this;
-            return tmp -= off;
+            return (tmp -= off);
         }
 
         difference_type operator-(const basic_string_iterator& it) const
         {
-            return static_cast<difference_type>(base2::m_pos - it.m_pos);
+            return static_cast<difference_type>(m_pos - it.m_pos);
         }
 
         bool operator==(const basic_string_iterator& it) const
         {
-            return (base2::m_cont == it.m_cont && base2::m_pos == it.m_pos);
+#ifdef DEBUG
+            if (m_cont != it.m_cont)
+                throw stl::exception("invalid iterator");
+#endif
+            return (m_pos == it.m_pos);
         }
 
         bool operator!=(const basic_string_iterator& it) const
         {
-            return !(*this == it);
+#ifdef DEBUG
+            if (m_cont != it.m_cont)
+                throw stl::exception("invalid iterator");
+#endif
+            return (m_pos != it.m_pos);
         }
 
         bool operator<(const basic_string_iterator& it) const
         {
-            return (base2::m_cont == it.m_cont && base2::m_pos < it.m_pos);
+#ifdef DEBUG
+            if (m_cont != it.m_cont)
+                throw stl::exception("invalid iterator");
+#endif
+            return (m_pos < it.m_pos);
         }
 
         bool operator>(const basic_string_iterator& it) const
         {
-            return (base2::m_cont == it.m_cont && base2::m_pos > it.m_pos);
+#ifdef DEBUG
+            if (m_cont != it.m_cont)
+                throw stl::exception("invalid iterator");
+#endif
+            return (m_pos > it.m_pos);
         }
 
         bool operator<=(const basic_string_iterator& it) const
         {
-            return (base2::m_cont == it.m_cont && base2::m_pos <= it.m_pos);
+#ifdef DEBUG
+            if (m_cont != it.m_cont)
+                throw stl::exception("invalid iterator");
+#endif
+            return (m_pos <= it.m_pos);
         }
 
         bool operator>=(const basic_string_iterator& it) const
         {
-            return (base2::m_cont == it.m_cont && base2::m_pos >= it.m_pos);
+#ifdef DEBUG
+            if (m_cont != it.m_cont)
+                throw stl::exception("invalid iterator");
+#endif
+            return (m_pos >= it.m_pos);
         }
 
         reference operator[](difference_type off) const
         {
-            if (!base2::m_cont) throw stl::exception("invalid iterator");
+            if (!m_cont)
+                throw stl::exception("invalid iterator");
 
-            return (*base2::m_cont)[base2::m_pos + off];
+            return *(m_cont->m_data + m_pos + off);
         }
     };  // basic_string_iterator
 
@@ -228,122 +244,114 @@ namespace stl
         typedef typename base::const_pointer       pointer;
         typedef typename base::const_reference     reference;
         typedef typename container::size_type      size_type;
-        typedef typename stl::basic_string_iterator_base<container> base2;
         friend class basic_string<typename container::value_type, typename container::allocator_type>;
 
     private:
         basic_string_const_iterator(container* cont, size_type pos)
         {
-            base2::m_cont = cont;
-            base2::m_pos = pos;
+            m_cont = cont;
+            m_pos = pos;
         }
 
     public:
         basic_string_const_iterator()
         {
-            base2::m_cont = 0;
-            base2::m_pos = 0;
+            m_cont = 0;
+            m_pos = 0;
         }
 
-        basic_string_const_iterator(const basic_string_const_iterator& tc)
+        basic_string_const_iterator(const basic_string_const_iterator& it)
         {
-            *this = tc;
+            m_cont = it.m_cont;
+            m_pos = it.m_pos;
         }
 
-        basic_string_const_iterator(const basic_string_iterator<container>& tc)
+        basic_string_const_iterator(const basic_string_iterator<container>& it)
         {
-            *this = tc;
+            m_cont = it.m_cont;
+            m_pos = it.m_pos;
         }
 
         ~basic_string_const_iterator()
         {
         }
 
-        basic_string_const_iterator& operator=(const basic_string_const_iterator& tc)
+        basic_string_const_iterator& operator=(const basic_string_const_iterator& it)
         {
-            if (this != &tc)
+            if (this != &it)
             {
-                base2::m_cont = tc.m_cont;
-                base2::m_pos = tc.m_pos;
+                m_cont = it.m_cont;
+                m_pos = it.m_pos;
             }
+
             return *this;
         }
 
-        basic_string_const_iterator& operator=(const basic_string_iterator<container>& tc)
+        basic_string_const_iterator& operator=(const basic_string_iterator<container>& it)
         {
-            base2::m_cont = tc.m_cont;
-            base2::m_pos = tc.m_pos;
+            m_cont = it.m_cont;
+            m_pos = it.m_pos;
 
             return *this;
         }
 
         reference operator*() const
         {
-            if (!base2::m_cont) throw stl::exception("invalid iterator");
+            if (!m_cont)
+                throw stl::exception("invalid iterator");
 
-            return (*base2::m_cont)[base2::m_pos];
+            return *(m_cont->m_data + m_pos);
         }
 
         pointer operator->() const
         {
-            if (!base2::m_cont) throw stl::exception("invalid iterator");
+            if (!m_cont)
+                throw stl::exception("invalid iterator");
 
-            return &(*base2::m_cont)[base2::m_pos];
+            return (m_cont->m_data + m_pos);
         }
 
         basic_string_const_iterator& operator++()
         {
-            if (!base2::m_cont) throw stl::exception("invalid iterator");
-
-            ++base2::m_pos;
+            ++m_pos;
             return *this;
         }
 
         basic_string_const_iterator operator++(int)
         {
-            if (!base2::m_cont) throw stl::exception("invalid iterator");
-
             basic_string_const_iterator<container> tmp = *this;
-            ++base2::m_pos;
+            ++m_pos;
             return tmp;
         }
 
         basic_string_const_iterator& operator--()
         {
-            if (!base2::m_cont) throw stl::exception("invalid iterator");
-
-            --base2::m_pos;
+            --m_pos;
             return *this;
         }
 
         basic_string_const_iterator operator--(int)
         {
-            if (!base2::m_cont) throw stl::exception("invalid iterator");
-
             basic_string_const_iterator<container> tmp = *this;
-            --base2::m_pos;
+            --m_pos;
             return tmp;
         }
 
         basic_string_const_iterator& operator+=(difference_type off)
         {
-            if (!base2::m_cont) throw stl::exception("invalid iterator");
-
-            base2::m_pos += off;
+            m_pos += off;
             return *this;
         }
 
         basic_string_const_iterator operator+(difference_type off) const
         {
             basic_string_const_iterator<container> tmp = *this;
-            return tmp += off;
+            return (tmp += off);
         }
 
         basic_string_const_iterator& operator-=(difference_type off)
         {
-            if (!base2::m_cont) throw stl::exception("invalid iterator");
-
-            base2::m_pos -= off;
+            m_pos -= off;
             return *this;
         }
 
@@ -355,44 +363,69 @@ namespace stl
 
         difference_type operator-(const basic_string_const_iterator& it) const
         {
-            return static_cast<difference_type>(base2::m_pos - it.m_pos);
+            return static_cast<difference_type>(m_pos - it.m_pos);
         }
 
         bool operator==(const basic_string_const_iterator& it) const
         {
-            return (base2::m_cont == it.m_cont && base2::m_pos == it.m_pos);
+#ifdef DEBUG
+            if (m_cont != it.m_cont)
+                throw stl::exception("invalid iterator");
+#endif
+            return (m_pos == it.m_pos);
         }
 
         bool operator!=(const basic_string_const_iterator& it) const
         {
-            return !(*this == it);
+#ifdef DEBUG
+            if (m_cont != it.m_cont)
+                throw stl::exception("invalid iterator");
+#endif
+            return (m_pos != it.m_pos);
         }
 
         bool operator<(const basic_string_const_iterator& it) const
         {
-            return (base2::m_cont == it.m_cont && base2::m_pos < it.m_pos);
+#ifdef DEBUG
+            if (m_cont != it.m_cont)
+                throw stl::exception("invalid iterator");
+#endif
+            return (m_pos < it.m_pos);
         }
 
         bool operator>(const basic_string_const_iterator& it) const
         {
-            return (base2::m_cont == it.m_cont && base2::m_pos > it.m_pos);
+#ifdef DEBUG
+            if (m_cont != it.m_cont)
+                throw stl::exception("invalid iterator");
+#endif
+            return (m_pos > it.m_pos);
         }
 
         bool operator<=(const basic_string_const_iterator& it) const
         {
-            return (base2::m_cont == it.m_cont && base2::m_pos <= it.m_pos);
+#ifdef DEBUG
+            if (m_cont != it.m_cont)
+                throw stl::exception("invalid iterator");
+#endif
+            return (m_pos <= it.m_pos);
         }
 
         bool operator>=(const basic_string_const_iterator& it) const
         {
-            return (base2::m_cont == it.m_cont && base2::m_pos >= it.m_pos);
+#ifdef DEBUG
+            if (m_cont != it.m_cont)
+                throw stl::exception("invalid iterator");
+#endif
+            return (m_pos >= it.m_pos);
         }
 
         reference operator[](difference_type off) const
         {
-            if (!base2::m_cont) throw stl::exception("invalid iterator");
+            if (!m_cont)
+                throw stl::exception("invalid iterator");
 
-            return (*base2::m_cont)[base2::m_pos + off];
+            return (m_cont->m_data + m_pos + off);
         }
     };  // basic_string_const_iterator
 
@@ -411,7 +444,6 @@ namespace stl
         typedef typename base::pointer             pointer;
         typedef typename base::reference           reference;
         typedef typename container::size_type      size_type;
-        typedef typename stl::basic_string_iterator_base<container> base2;
         friend class basic_string<typename container::value_type, typename container::allocator_type>;
         friend class basic_string_const_reverse_iterator<container>;
 
@@ -419,152 +451,169 @@ namespace stl
     private:
         basic_string_reverse_iterator(container* cont, size_type pos)
         {
-            base2::m_cont = cont;
-            base2::m_pos = pos;
+            m_cont = cont;
+            m_pos = pos;
         }
 
     public:
         basic_string_reverse_iterator()
         {
-            base2::m_cont = 0;
-            base2::m_pos = 0;
+            m_cont = 0;
+            m_pos = 0;
         }
 
-        basic_string_reverse_iterator(const basic_string_reverse_iterator& tc)
+        basic_string_reverse_iterator(const basic_string_reverse_iterator& it)
         {
-            *this = tc;
+            m_cont = it.m_cont;
+            m_pos = it.m_pos;
         }
 
         ~basic_string_reverse_iterator()
         {
         }
 
-        basic_string_reverse_iterator& operator=(const basic_string_reverse_iterator& tc)
+        basic_string_reverse_iterator& operator=(const basic_string_reverse_iterator& it)
         {
-            if (this != &tc)
+            if (this != &it)
             {
-                base2::m_cont = tc.m_cont;
-                base2::m_pos = tc.m_pos;
+                m_cont = it.m_cont;
+                m_pos = it.m_pos;
             }
+
             return *this;
         }
 
         reference operator*() const
         {
-            if (!base2::m_cont) throw stl::exception("invalid iterator");
+            if (!m_cont)
+                throw stl::exception("invalid iterator");
 
-            return (*base2::m_cont)[base2::m_pos];
+            return *(m_cont->m_data + m_pos);
         }
 
         pointer operator->() const
         {
-            if (!base2::m_cont) throw stl::exception("invalid iterator");
+            if (!m_cont)
+                throw stl::exception("invalid iterator");
 
-            return &(*base2::m_cont)[base2::m_pos];
+            return (m_cont->m_data + m_pos);
         }
 
         basic_string_reverse_iterator& operator++()
         {
-            if (!base2::m_cont) throw stl::exception("invalid iterator");
-
-            --base2::m_pos;
+            --m_pos;
             return *this;
         }
 
         basic_string_reverse_iterator operator++(int)
         {
-            if (!base2::m_cont) throw stl::exception("invalid iterator");
-
             basic_string_reverse_iterator<container> tmp = *this;
-            --base2::m_pos;
+            --m_pos;
             return tmp;
         }
 
         basic_string_reverse_iterator& operator--()
         {
-            if (!base2::m_cont) throw stl::exception("invalid iterator");
-
-            ++base2::m_pos;
+            ++m_pos;
             return *this;
         }
 
         basic_string_reverse_iterator operator--(int)
         {
-            if (!base2::m_cont) throw stl::exception("invalid iterator");
-
             basic_string_reverse_iterator<container> tmp = *this;
-            ++base2::m_pos;
+            ++m_pos;
             return tmp;
         }
 
         basic_string_reverse_iterator& operator+=(difference_type off)
         {
-            if (!base2::m_cont) throw stl::exception("invalid iterator");
-
-            base2::m_pos -= off;
+            m_pos -= off;
             return *this;
         }
 
         basic_string_reverse_iterator operator+(difference_type off) const
         {
             basic_string_reverse_iterator<container> tmp = *this;
-            return tmp += off;
+            return (tmp += off);
         }
 
         basic_string_reverse_iterator& operator-=(difference_type off)
         {
-            if (!base2::m_cont) throw stl::exception("invalid iterator");
-
-            base2::m_pos += off;
+            m_pos += off;
             return *this;
         }
 
         basic_string_reverse_iterator operator-(difference_type off) const
         {
             basic_string_reverse_iterator<container> tmp = *this;
-            return tmp -= off;
+            return (tmp -= off);
         }
 
         difference_type operator-(const basic_string_reverse_iterator& it) const
         {
-            return static_cast<difference_type>(it.m_pos - base2::m_pos);
+            return static_cast<difference_type>(it.m_pos - m_pos);
         }
 
         bool operator==(const basic_string_reverse_iterator& it) const
         {
-            return (base2::m_cont == it.m_cont && it.m_pos == base2::m_pos);
+#ifdef DEBUG
+            if (m_cont != it.m_cont)
+                throw stl::exception("invalid iterator");
+#endif
+            return (it.m_pos == m_pos);
         }
 
         bool operator!=(const basic_string_reverse_iterator& it) const
         {
-            return !(*this == it);
+#ifdef DEBUG
+            if (m_cont != it.m_cont)
+                throw stl::exception("invalid iterator");
+#endif
+            return (it.m_pos != m_pos);
         }
 
         bool operator<(const basic_string_reverse_iterator& it) const
         {
-            return (base2::m_cont == it.m_cont && base2::m_pos > it.m_pos);
+#ifdef DEBUG
+            if (m_cont != it.m_cont)
+                throw stl::exception("invalid iterator");
+#endif
+            return (m_pos > it.m_pos);
         }
 
         bool operator>(const basic_string_reverse_iterator& it) const
         {
-            return (base2::m_cont == it.m_cont && base2::m_pos < it.m_pos);
+#ifdef DEBUG
+            if (m_cont != it.m_cont)
+                throw stl::exception("invalid iterator");
+#endif
+            return (m_pos < it.m_pos);
         }
 
         bool operator<=(const basic_string_reverse_iterator& it) const
         {
-            return (base2::m_cont == it.m_cont && base2::m_pos >= it.m_pos);
+#ifdef DEBUG
+            if (m_cont != it.m_cont)
+                throw stl::exception("invalid iterator");
+#endif
+            return (m_pos >= it.m_pos);
         }
 
         bool operator>=(const basic_string_reverse_iterator& it) const
         {
-            return (base2::m_cont == it.m_cont && base2::m_pos <= it.m_pos);
+#ifdef DEBUG
+            if (m_cont != it.m_cont)
+                throw stl::exception("invalid iterator");
+#endif
+            return (m_pos <= it.m_pos);
         }
 
         reference operator[](difference_type off) const
         {
-            if (!base2::m_cont) throw stl::exception("invalid iterator");
+            if (!m_cont)
+                throw stl::exception("invalid iterator");
 
-            return (*base2::m_cont)[base2::m_pos - off];
+            return *(m_cont->m_data + m_pos - off)
         }
     };  // basic_string_reverse_iterator
 
@@ -583,172 +632,188 @@ namespace stl
         typedef typename base::const_pointer       pointer;
         typedef typename base::const_reference     reference;
         typedef typename container::size_type      size_type;
-        typedef typename stl::basic_string_iterator_base<container> base2;
         friend class basic_string<typename container::value_type, typename container::allocator_type>;
 
 
     private:
         basic_string_const_reverse_iterator(container* cont, size_type pos)
         {
-            base2::m_cont = cont;
-            base2::m_pos = pos;
+            m_cont = cont;
+            m_pos = pos;
         }
 
     public:
         basic_string_const_reverse_iterator()
         {
-            base2::m_cont = 0;
-            base2::m_pos = 0;
+            m_cont = 0;
+            m_pos = 0;
         }
 
-        basic_string_const_reverse_iterator(const basic_string_const_reverse_iterator& tc)
+        basic_string_const_reverse_iterator(const basic_string_const_reverse_iterator& it)
         {
-            *this = tc;
+            m_cont = it.m_cont;
+            m_pos = it.m_pos;
         }
 
         ~basic_string_const_reverse_iterator()
         {
         }
 
-        basic_string_const_reverse_iterator& operator=(const basic_string_const_reverse_iterator& tc)
+        basic_string_const_reverse_iterator& operator=(const basic_string_const_reverse_iterator& it)
         {
-            if (this != &tc)
+            if (this != &it)
             {
-                base2::m_cont = tc.m_cont;
-                base2::m_pos = tc.m_pos;
+                m_cont = it.m_cont;
+                m_pos = it.m_pos;
             }
             return *this;
         }
 
-        basic_string_const_reverse_iterator& operator=(const basic_string_reverse_iterator<container>& tc)
+        basic_string_const_reverse_iterator& operator=(const basic_string_reverse_iterator<container>& it)
         {
-            base2::m_cont = tc.m_cont;
-            base2::m_pos = tc.m_pos;
+            m_cont = it.m_cont;
+            m_pos = it.m_pos;
 
             return *this;
         }
 
-        basic_string_const_reverse_iterator(const basic_string_reverse_iterator<container>& tc)
+        basic_string_const_reverse_iterator(const basic_string_reverse_iterator<container>& it)
         {
-            *this = tc;
+            m_cont = it.m_cont;
+            m_pos = it.m_pos;
         }
 
         reference operator*() const
         {
-            if (!base2::m_cont) throw stl::exception("invalid iterator");
+            if (!m_cont)
+                throw stl::exception("invalid iterator");
 
-            return (*base2::m_cont)[base2::m_pos];
+            return *(m_cont->m_data + m_pos);
         }
 
         pointer operator->() const
         {
-            if (!base2::m_cont) throw stl::exception("invalid iterator");
+            if (!m_cont)
+                throw stl::exception("invalid iterator");
 
-            return &(*base2::m_cont)[base2::m_pos];
+            return (m_cont->m_data + m_pos);
         }
 
         basic_string_const_reverse_iterator& operator++()
         {
-            if (!base2::m_cont) throw stl::exception("invalid iterator");
-
-            --base2::m_pos;
+            --m_pos;
             return *this;
         }
 
         basic_string_const_reverse_iterator operator++(int)
         {
-            if (!base2::m_cont) throw stl::exception("invalid iterator");
-
             basic_string_const_reverse_iterator<container> tmp = *this;
-            --base2::m_pos;
+            --m_pos;
             return tmp;
         }
 
         basic_string_const_reverse_iterator& operator--()
         {
-            if (!base2::m_cont) throw stl::exception("invalid iterator");
-
-            ++base2::m_pos;
+            ++m_pos;
             return *this;
         }
 
         basic_string_const_reverse_iterator operator--(int)
         {
-            if (!base2::m_cont) throw stl::exception("invalid iterator");
-
             basic_string_const_reverse_iterator<container> tmp = *this;
-            ++base2::m_pos;
+            ++m_pos;
             return tmp;
         }
 
         basic_string_const_reverse_iterator& operator+=(difference_type off)
         {
-            if (!base2::m_cont) throw stl::exception("invalid iterator");
-
-            base2::m_pos -= off;
+            m_pos -= off;
             return *this;
         }
 
         basic_string_const_reverse_iterator operator+(difference_type off) const
         {
             basic_string_const_reverse_iterator<container> tmp = *this;
-            return tmp += off;
+            return (tmp += off);
         }
 
         basic_string_const_reverse_iterator& operator-=(difference_type off)
         {
-            if (!base2::m_cont) throw stl::exception("invalid iterator");
-
-            base2::m_pos += off;
+            m_pos += off;
             return *this;
         }
 
         basic_string_const_reverse_iterator operator-(difference_type off) const
         {
             basic_string_const_reverse_iterator<container> tmp = *this;
-            return tmp -= off;
+            return (tmp -= off);
         }
 
         difference_type operator-(const basic_string_const_reverse_iterator& it) const
         {
-            return static_cast<difference_type>(it.m_pos - base2::m_pos);
+            return static_cast<difference_type>(it.m_pos - m_pos);
         }
 
         bool operator==(const basic_string_const_reverse_iterator& it) const
         {
-            return (base2::m_cont == it.m_cont && base2::m_pos == it.m_pos);
+#ifdef DEBUG
+            if (m_cont != it.m_cont)
+                throw stl::exception("invalid iterator");
+#endif
+            return (m_pos == it.m_pos);
         }
 
         bool operator!=(const basic_string_const_reverse_iterator& it) const
         {
-            return !(*this == it);
+#ifdef DEBUG
+            if (m_cont != it.m_cont)
+                throw stl::exception("invalid iterator");
+#endif
+            return (m_pos != it.m_pos);
         }
 
         bool operator<(const basic_string_const_reverse_iterator& it) const
         {
-            return (base2::m_cont == it.m_cont && base2::m_pos > it.m_pos);
+#ifdef DEBUG
+            if (m_cont != it.m_cont)
+                throw stl::exception("invalid iterator");
+#endif
+            return (m_pos > it.m_pos);
         }
 
         bool operator>(const basic_string_const_reverse_iterator& it) const
         {
-            return (base2::m_cont == it.m_cont && base2::m_pos < it.m_pos);
+#ifdef DEBUG
+            if (m_cont != it.m_cont)
+                throw stl::exception("invalid iterator");
+#endif
+            return (m_pos < it.m_pos);
         }
 
         bool operator<=(const basic_string_const_reverse_iterator& it) const
         {
-            return (base2::m_cont == it.m_cont && base2::m_pos >= it.m_pos);
+#ifdef DEBUG
+            if (m_cont != it.m_cont)
+                throw stl::exception("invalid iterator");
+#endif
+            return (m_pos >= it.m_pos);
         }
 
         bool operator>=(const basic_string_const_reverse_iterator& it) const
         {
-            return (base2::m_cont == it.m_cont && base2::m_pos <= it.m_pos);
+#ifdef DEBUG
+            if (m_cont != it.m_cont)
+                throw stl::exception("invalid iterator");
+#endif
+            return (m_pos <= it.m_pos);
         }
 
         reference operator[](difference_type off) const
         {
-            if (!base2::m_cont) throw stl::exception("invalid iterator");
+            if (!m_cont)
+                throw stl::exception("invalid iterator");
 
-            return (*base2::m_cont)[base2::m_pos - off];
+            return (m_cont->m_data + m_pos - off);
         }
     };  // basic_string_const_reverse_iterator
 
@@ -770,11 +835,15 @@ namespace stl
         typedef typename Allocator::pointer                 pointer;
         typedef typename Allocator::const_pointer           const_pointer;
 
-    public:
         typedef basic_string_iterator<container>            iterator;
         typedef basic_string_const_iterator<container>      const_iterator;
         typedef basic_string_reverse_iterator<container>    reverse_iterator;
         typedef basic_string_const_reverse_iterator<container>  const_reverse_iterator;
+
+        friend class iterator;
+        friend class const_iterator;
+        friend class reverse_iterator;
+        friend class const_reverse_iterator;
 
     private:
         value_type*             m_data;
@@ -824,9 +893,11 @@ namespace stl
 
         inline void endof(size_type size)
         {
+#ifdef DEBUG
             // safety guard: if this throws the issue needs fixing.
             if (size >= m_capacity)
                 throw stl::exception("out of valid range");
+#endif
 
             m_size = size;
             m_data[m_size] = 0;
@@ -1380,10 +1451,7 @@ namespace stl
 
                 grow(size + 1); // extra '\0'  (critical when size is 0)
 
-                if (size)
-                {
-                    stl::mem_copy(m_data, 0, str.m_data, size, m_allocator);
-                }
+                stl::mem_copy(m_data, 0, str.m_data, size, m_allocator);
 
                 endof(size);
             }
@@ -1419,20 +1487,14 @@ namespace stl
             // self assignment
             if (this == &str)
             {
-                if (sublen)
-                {
-                    // Should work w/o extra buffer/memmove (copy to left side)
-                    stl::mem_copy(m_data, m_size, &m_data[subpos], sublen, m_allocator);
-                }
+                // Should work w/o extra buffer/memmove (copy to left side)
+                stl::mem_copy(m_data, m_size, &m_data[subpos], sublen, m_allocator);
             }
             else
             {
                 grow(sublen + 1);    // extra '\0'
 
-                if (sublen)
-                {
-                    stl::mem_copy(m_data, m_size, &str.m_data[subpos], sublen, m_allocator);
-                }
+                stl::mem_copy(m_data, m_size, &str.m_data[subpos], sublen, m_allocator);
             }
             
             endof(sublen);
@@ -1452,20 +1514,14 @@ namespace stl
             // Is the address inside this container ?
             if (m_data <= ptr && (m_data + m_size) > ptr)
             {
-                if (n)
-                {
-                    // Should work w/o extra buffer/memmove (copy to left side)
-                    stl::mem_copy(m_data, 0, ptr, n, m_allocator);
-                }
+                // Should work w/o extra buffer/memmove (copy to left side)
+                stl::mem_copy(m_data, 0, ptr, n, m_allocator);
             }
             else
             {
                 grow(n + 1);    // extra '\0'
 
-                if (n)
-                {
-                    stl::mem_copy(m_data, 0, ptr, n, m_allocator);
-                }
+                stl::mem_copy(m_data, 0, ptr, n, m_allocator);
             }
 
             endof(n);
@@ -1482,11 +1538,8 @@ namespace stl
             {
                 n = m_size - (ptr - m_data);
 
-                if (n)
-                {
-                    // Should work w/o an extra buffer/memmove (copy to left side)
-                    stl::mem_copy(m_data, 0, ptr, n, m_allocator);
-                }
+                // Should work w/o an extra buffer/memmove (copy to left side)
+                stl::mem_copy(m_data, 0, ptr, n, m_allocator);
             }
             else
             {
@@ -1494,10 +1547,7 @@ namespace stl
 
                 grow(n + 1);    // extra '\0'  (critical when n is 0)
 
-                if (n)
-                {
-                    stl::mem_copy(m_data, 0, ptr, n, m_allocator);
-                }                
+                stl::mem_copy(m_data, 0, ptr, n, m_allocator);
             }
 
             endof(n);
@@ -1640,10 +1690,7 @@ namespace stl
                 {
                     container temp(first, last);
                     
-                    if (n)
-                    {
-                        stl::mem_move(m_data, 0, temp.m_data, n, m_allocator);
-                    }
+                    stl::mem_move(m_data, 0, temp.m_data, n, m_allocator);
                 }
                 else// range is outside this container
                 {
@@ -1774,20 +1821,14 @@ namespace stl
                 {
                     container temp(&m_data[subpos], &m_data[subpos + sublen]);
 
-                    // move content unless insert position is end()
-                    if (pos < m_size)
-                    {
-                        stl::mem_move(&m_data[pos + sublen], 0, &m_data[pos], (m_size - pos), m_allocator);
-                    }
+                    stl::mem_move(&m_data[pos + sublen], 0, &m_data[pos], (m_size - pos), m_allocator);
+
                     stl::mem_copy(&m_data[pos], 0, temp.m_data, sublen, m_allocator);
                 }
                 else
                 {
-                    // move content unless insert position is end()
-                    if (pos < m_size)
-                    {
-                        stl::mem_move(&m_data[pos + sublen], 0, &m_data[pos], (m_size - pos), m_allocator);
-                    }
+                    stl::mem_move(&m_data[pos + sublen], 0, &m_data[pos], (m_size - pos), m_allocator);
+
                     stl::mem_copy(&m_data[pos], 0, &str.m_data[subpos], sublen, m_allocator);
                 }
 
@@ -1820,22 +1861,16 @@ namespace stl
 
                     grow(size + 1);
 
-                    // move content unless insert position is end()
-                    if (pos < m_size)
-                    {
-                        stl::mem_move(&m_data[pos + len], 0, &m_data[pos], (m_size - pos), m_allocator);
-                    }
+                    stl::mem_move(&m_data[pos + len], 0, &m_data[pos], (m_size - pos), m_allocator);
+
                     stl::mem_copy(&m_data[pos], 0, temp.m_data, len, m_allocator);
                 }
                 else
                 {
                     grow(size + 1);
 
-                    // move content unless insert position is end()
-                    if (pos < m_size)
-                    {
-                        stl::mem_move(&m_data[pos + len], 0, &m_data[pos], (m_size - pos), m_allocator);
-                    }
+                    stl::mem_move(&m_data[pos + len], 0, &m_data[pos], (m_size - pos), m_allocator);
+
                     stl::mem_copy(&m_data[pos], 0, ptr, len, m_allocator);
                 }
 
@@ -1864,22 +1899,16 @@ namespace stl
 
                     grow(size + 1);
 
-                    // move content unless insert position is end()
-                    if (pos < m_size)
-                    {
-                        stl::mem_move(&m_data[pos + n], 0, &m_data[pos], (m_size - pos), m_allocator);
-                    }
+                    stl::mem_move(&m_data[pos + n], 0, &m_data[pos], (m_size - pos), m_allocator);
+
                     stl::mem_move(&m_data[pos], 0, temp.m_data, n, m_allocator);
                 }
                 else
                 {
                     grow(size + 1);
 
-                    // move content unless insert position is end()
-                    if (pos < m_size)
-                    {
-                        stl::mem_move(&m_data[pos + n], 0, &m_data[pos], (m_size - pos), m_allocator);
-                    }
+                    stl::mem_move(&m_data[pos + n], 0, &m_data[pos], (m_size - pos), m_allocator);
+
                     stl::mem_copy(&m_data[pos], 0, ptr, n, m_allocator);
                 }
 
@@ -1901,11 +1930,7 @@ namespace stl
 
                 grow(size + 1);
 
-                // move content unless insert position is end()
-                if (pos < m_size)
-                {
-                    stl::mem_move(&m_data[pos + n], 0, &m_data[pos], (m_size - pos), m_allocator);
-                }
+                stl::mem_move(&m_data[pos + n], 0, &m_data[pos], (m_size - pos), m_allocator);
 
                 stl::mem_set(&m_data[pos], c, n * sizeof(value_type), m_allocator);
 
@@ -1927,11 +1952,7 @@ namespace stl
 
                 grow(size + 1);
 
-                // move content unless insert position is end()
-                if (pos < m_size)
-                {
-                    stl::mem_move(&m_data[pos + n], 0, &m_data[pos], (m_size - pos), m_allocator);
-                }
+                stl::mem_move(&m_data[pos + n], 0, &m_data[pos], (m_size - pos), m_allocator);
 
                 stl::mem_set(&m_data[pos], c, n * sizeof(value_type), m_allocator);
 
@@ -1949,11 +1970,7 @@ namespace stl
 
             grow(size + 1);
 
-            // move content unless insert position is end()
-            if (pos < m_size)
-            {
-                stl::mem_move(&m_data[pos + 1], 0, &m_data[pos], (m_size - pos), m_allocator);
-            }
+            stl::mem_move(&m_data[pos + 1], 0, &m_data[pos], (m_size - pos), m_allocator);
 
             stl::mem_set(&m_data[pos], c, 1 * sizeof(value_type), m_allocator);
 
@@ -1983,44 +2000,8 @@ namespace stl
             size_type dist = static_cast<size_type>(last - first);
             if (dist)
             {
-                size_type p = position.m_pos;
-                size_type size = m_size + dist;
-
-                //grow(size + 1);
-
-                // Is the range inside this container ?
-                if (first.m_cont == this)
-                {
-//TODO: can be optimized by passing pointers (e.g. first.m_cont + first.m_pos,..)
-//                    value_type* p1 = first.m_cont->m_data + first.m_pos;
-//                    value_type* p2 = last.m_cont->m_data + last.m_pos;
-                    
-                    replace_(p, 0, *first.m_cont, first.m_pos, dist);
-                    
-#if 0
-                    container temp(p1, p2);
-                    // move content unless insert position is end()
-                    if (p < m_size)
-                    {
-                        stl::mem_move(&m_data[p + dist], 0, &m_data[p], (m_size - p), m_allocator);
-                    }
-                    stl::mem_copy(&m_data[p], 0, temp.m_data, dist, m_allocator);
-#endif // 0
-                }
-                else// range is outside this container
-                {
-                    grow(size + 1);
-
-                    // move content unless insert positions is end()
-                    if (p < m_size)
-                    {
-                        stl::mem_move(&m_data[p + dist], 0, &m_data[p], (m_size - p), m_allocator);
-                    }
-                    stl::mem_copy(&m_data[p], 0, &((*first.m_cont)[first.m_pos]), dist, m_allocator);
-                    endof(size);
-                }
-
-                //endof(size);
+                // take advantage of the fast replace
+                replace_nb_(position.m_pos, 0, *first.m_cont, first.m_pos, dist);
             }
         }
 
@@ -2037,35 +2018,8 @@ namespace stl
             size_type dist = static_cast<size_type>(last - first);
             if (dist > 0)
             {
-                size_type p = position.m_pos;
-                size_type size = m_size + dist;
-
-                grow(size + 1);
-
-                // Is the range inside this container ?
-                if (first.m_cont == this)
-                {
-                    container temp(first, last);
-
-                    // move content unless insert position is end()
-                    if (p < m_size)
-                    {
-                        stl::mem_move(&m_data[p + dist], 0, &m_data[p], (m_size - p), m_allocator);
-                    }
-                    stl::mem_copy(&m_data[p], 0, temp.m_data, dist, m_allocator);
-                }
-                else// range is outside this container
-                {
-                    // move content unless insert positions is end()
-                    if (p < m_size)
-                    {
-                        stl::mem_move(&m_data[p + dist], 0, &m_data[p], (m_size - p), m_allocator);
-                    }
-
-                    stl::mem_copy(&m_data[p], 0, &((*first.m_cont)[first.m_pos]), dist, m_allocator);
-                }
-
-                endof(size);
+                // take advantage of the fast replace
+                replace_nb_(position.m_pos, 0, *first.m_cont, first.m_pos, dist);
             }
         }
 
@@ -2091,22 +2045,15 @@ namespace stl
                     // can relocate m_data and invalidate first,last pointers
                     grow(size + 1);
 
-                    // move content unless insert position is end()
-                    if (p < m_size)
-                    {
-                        stl::mem_move(&m_data[p + dist], 0, &m_data[p], (m_size - p), m_allocator);
-                    }
+                    stl::mem_move(&m_data[p + dist], 0, &m_data[p], (m_size - p), m_allocator);
+
                     stl::mem_copy(&m_data[p], 0, temp.m_data, dist, m_allocator);
                 }
                 else// range is outside this container
                 {
                     grow(size + 1);
 
-                    // move content unless insert position is end()
-                    if (p < m_size)
-                    {
-                        stl::mem_move(&m_data[p + dist], 0, &m_data[p], (m_size - p), m_allocator);
-                    }
+                    stl::mem_move(&m_data[p + dist], 0, &m_data[p], (m_size - p), m_allocator);
 
                     stl::mem_copy(&m_data[p], 0, first, dist, m_allocator);
                 }
@@ -2153,22 +2100,15 @@ namespace stl
                     // for safety, although could not invalidate the input for this case
                     grow(size + 1);
 
-                    // move content unless insert position is end()
-                    if (p < m_size)
-                    {
-                        stl::mem_move(&m_data[p + dist], 0, &m_data[p], (m_size - p), m_allocator);
-                    }
+                    stl::mem_move(&m_data[p + dist], 0, &m_data[p], (m_size - p), m_allocator);
+
                     stl::mem_copy(&m_data[p], 0, temp.m_data, dist, m_allocator);
                 }
                 else// range is outside this container
                 {
                     grow(size + 1);
 
-                    // move content unless insert position is end()
-                    if (p < m_size)
-                    {
-                        stl::mem_move(&m_data[p + dist], 0, &m_data[p], (m_size - p), m_allocator);
-                    }
+                    stl::mem_move(&m_data[p + dist], 0, &m_data[p], (m_size - p), m_allocator);
 
                     for (size_type i = 0; first != last; ++first, ++i)
                     {
@@ -2194,11 +2134,7 @@ namespace stl
 
                 grow(size + 1);
 
-                // move content unless insert position is end()
-                if (pos < m_size)
-                {
-                    stl::mem_move(&m_data[pos + n], 0, &m_data[pos], (m_size - pos), m_allocator);
-                }
+                stl::mem_move(&m_data[pos + n], 0, &m_data[pos], (m_size - pos), m_allocator);
 
                 stl::mem_set(&m_data[pos], value, n * sizeof(value_type), m_allocator);
 
@@ -2206,64 +2142,68 @@ namespace stl
             }
         }
 
-
-        inline container& replace_(size_type p1, size_type n1, const container& str, size_type p2, size_type n2)
+        /*  Usually doing insert from self with a buffer performs 2x slower
+            compared with std::string, if not slower.
+            My initial version still performed worse, so I adapted this code
+            from VC/include/xstring
+        */
+        inline container& replace_nb_(size_type p1, size_type n1, const container& str, size_type p2, size_type n2)
         {
-            if (p1 > m_size)
+            if (p1 > m_size || p2 > str.m_size)
                 throw stl::exception("out of valid range");
 
             if (n1 > m_size - p1)
                 n1 = m_size - p1;
-
-            if (p2 > str.m_size)
-                throw stl::exception("out of valid range");
 
             if (n2 > str.m_size - p2)
                 n2 = str.m_size - p2;
 
             size_type size = m_size - n1 + n2;
 
-            if (this == &str)   // self
-            {
-                // make room more than really needed, to move without truncation
-                grow(m_size + n2 + 1);
+            size_t Nm = m_size - p1 - n1;    // length of kept tail
+            
 
-                /*  === Action 1 ===
-                    Split at p1 and make room for n2 to fit at p1.
-                */
-                stl::mem_move(&m_data[p1 + n2], 0, &m_data[p1], m_size - p1, m_allocator);
+            grow(size + 1);
 
-                /*  === Action 2 ===
-                    Assemble back the puzzle.
-                    There is one general condition:
-                    1)  if p2 starts before p1: the source is split in 2 (before and after p1)
-                    2)  if p2 starts at/after p1: the source is one piece (after p1)
-                */
-                if (p2 < p1)
-                {
-                    // before p1
-                    size_type count = p1 - p2;
-                    if (count > n2)
-                        count = n2;
-                    stl::mem_move(&m_data[p1], 0, &m_data[p2], count, m_allocator);
-                    // after p1
-                    stl::mem_copy(&m_data[p1 + count], 0, &m_data[p1 + n2], n2 - count, m_allocator);
-                    // remaining of the original
-                    stl::mem_move(&m_data[p1 + n2], 0, &m_data[p1 + n2 + n1], m_size - p1 - n1, m_allocator);
-                }
-                else
-                {
-                    // one piece
-                    stl::mem_move(&m_data[p1], 0, &m_data[p2 + n2], n2, m_allocator);
-                    // remaining of the original
-                    stl::mem_move(&m_data[p1 + n2], 0, &m_data[p1 + n2 + n1], m_size - p1 - n1, m_allocator);
-                }
+
+            if (this != &str)
+            {   // no overlap, just move down and copy in new stuff
+                stl::mem_move(m_data + p1 + n2, 0,
+                              m_data + p1 + n1, Nm, m_allocator);   // empty hole
+                stl::mem_copy(m_data + p1, 0,
+                              str.m_data + p2, n2, m_allocator);    // fill hole
+            }
+            else if (n2 <= n1)
+            {   // hole doesn't get larger, just copy in substring
+                stl::mem_move(m_data + p1, 0,
+                              m_data + p2, n2, m_allocator);        // fill hole
+                stl::mem_move(m_data + p1 + n2, 0,
+                              m_data + p1 + n1, Nm, m_allocator);   // move tail down
+            }
+            else if (p2 <= p1)
+            {   // hole gets larger, substring begins before hole
+                stl::mem_move(m_data + p1 + n2, 0,
+                              m_data + p1 + n1, Nm, m_allocator);   // move tail down
+                stl::mem_move(m_data + p1, 0,
+                              m_data + p2, n2, m_allocator);        // fill hole
+            }
+            else if (p1 + n1 <= p2)
+            {   // hole gets larger, substring begins after hole
+                stl::mem_move(m_data + p1 + n2, 0,
+                              m_data + p1 + n1, Nm, m_allocator);   // move tail down
+                stl::mem_move(m_data + p1, 0,
+                              m_data + (p2 + n2 - n1),
+                              n2, m_allocator);                     // fill hole
             }
             else
-            {
-                grow(size + 1);
-                stl::mem_move(&m_data[p1 + n2], 0, &m_data[p1 + n1], m_size - p1 - n1, m_allocator);
-                stl::mem_copy(&m_data[p1], 0, &str[p2], n2, m_allocator);
+            {   // hole gets larger, substring begins in hole
+                stl::mem_move(m_data + p1, 0,
+                              m_data + p2, n1, m_allocator);        // fill old hole
+                stl::mem_move(m_data + p1 + n2, 0,
+                              m_data + p1 + n1, Nm, m_allocator);   // move tail down
+                stl::mem_move(m_data + p1 + n1, 0,
+                              m_data + p2 + n2,
+                              n2 - n1, m_allocator);                // fill rest of new hole
             }
 
             endof(size);
@@ -2285,19 +2225,13 @@ namespace stl
         */
         container& erase(size_type pos = 0, size_type len = npos)
         {
-            // cannot remove end() position
-            if (pos >= m_size)
+            if (pos > m_size)
                 throw stl::exception("invalid iterator");
 
             if (len > m_size - pos)
                 len = m_size - pos;
 
-            size_type pend = pos + len;
-
-            if (pend < m_size)
-            {
-                stl::mem_move(&m_data[pos], 0, &m_data[pend], (m_size - pend), m_allocator);
-            }
+            stl::mem_move(&m_data[pos], 0, &m_data[pos + len], (m_size - pos - len), m_allocator);
 
             endof(m_size - len);
 
@@ -2331,18 +2265,11 @@ namespace stl
             if (first.m_cont != last.m_cont || first.m_cont != this)
                 throw stl::exception("invalid iterator");
 
-            // if last < first then let it blow up.
-            size_type dist = static_cast<size_type>(last - first);
-            if (dist > 0)
-            {
-                size_type count = m_size - last.m_pos;
-                if (count)
-                {
-                    stl::mem_move(&m_data[first.m_pos], 0, &m_data[last.m_pos], count, m_allocator);
-                }
+            size_type dist = last.m_pos - first.m_pos;
 
-                endof(m_size - dist);
-            }
+            stl::mem_copy(&m_data[first.m_pos], 0, &m_data[last.m_pos], (m_size - last.m_pos), m_allocator);
+
+            endof(m_size - dist);
 
             return first;
         }
@@ -2374,20 +2301,14 @@ namespace stl
             {
                 container temp(m_data, m_data + m_size); // from str
 
-                size_type tail = m_size - pos - len;
-                if (tail)
-                {
-                    stl::mem_move(&m_data[pos + slen], 0, &m_data[pos + len], tail, m_allocator);
-                }
+                stl::mem_move(&m_data[pos + slen], 0, &m_data[pos + len], (m_size - pos - len), m_allocator);
+
                 stl::mem_copy(&m_data[pos], 0, temp.m_data, slen, m_allocator);
             }
             else // insert from another container
             {
-                size_type tail = m_size - pos - len;
-                if (tail)
-                {
-                    stl::mem_move(&m_data[pos + slen], 0, &m_data[pos + len], tail, m_allocator);
-                }
+                stl::mem_move(&m_data[pos + slen], 0, &m_data[pos + len], (m_size - pos - len), m_allocator);
+
                 stl::mem_copy(&m_data[pos], 0, str.m_data, slen, m_allocator);
             }
 
@@ -2419,20 +2340,14 @@ namespace stl
             {
                 container temp(m_data, m_data + m_size);
 
-                size_type tail = m_size - pos - len;
-                if (tail)
-                {
-                    stl::mem_move(&m_data[pos + slen], 0, &m_data[pos + len], tail, m_allocator);
-                }
+                stl::mem_move(&m_data[pos + slen], 0, &m_data[pos + len], (m_size - pos - len), m_allocator);
+
                 stl::mem_copy(&m_data[pos], 0, temp.m_data, slen, m_allocator);
             }
             else // insert from another container
             {
-                size_type tail = m_size - pos - len;
-                if (tail)
-                {
-                    stl::mem_move(&m_data[pos + slen], 0, &m_data[pos + len], tail, m_allocator);
-                }
+                stl::mem_move(&m_data[pos + slen], 0, &m_data[pos + len], (m_size - pos - len), m_allocator);
+
                 stl::mem_copy(&m_data[pos], 0, str.m_data, slen, m_allocator);
             }
 
@@ -2459,48 +2374,7 @@ namespace stl
         */
         container& replace(size_type pos, size_type len, const container& str, size_type subpos, size_type sublen)
         {
-            if (pos >= m_size)
-                throw stl::exception("out of valid range");
-
-            if (len > m_size - pos)
-                len = m_size - pos;
-
-            size_type slen = str.length();
-
-            if (subpos >= slen)
-                throw stl::exception("out of valid range");
-
-            if (sublen > slen - subpos)
-                sublen = slen - subpos;
-
-            size_type size = m_size - len + sublen;
-
-            grow(size + 1);
-
-            if (this == &str) // insert self content
-            {
-                container temp(str, subpos, sublen);
-
-                size_type tail = m_size - pos - len;
-                if (tail)
-                {
-                    stl::mem_move(&m_data[pos + sublen], 0, &m_data[pos + len], tail, m_allocator);
-                }
-                stl::mem_copy(&m_data[pos], 0, temp.m_data, sublen, m_allocator);
-            }
-            else // insert from another container
-            {
-                size_type tail = m_size - pos - len;
-                if (tail)
-                {
-                    stl::mem_move(&m_data[pos + sublen], 0, &m_data[pos + len], tail, m_allocator);
-                }
-                stl::mem_copy(&m_data[pos], 0, str.m_data, slen, m_allocator);
-            }
-
-            endof(size);
-
-            return *this;
+            return replace_nb_(pos, len, str, subpos, sublen);
         }
 
         /*  pos: Position of the first character to be replaced. If this is
@@ -2528,20 +2402,14 @@ namespace stl
             {
                 container temp(ptr, ptr + slen);
 
-                size_type tail = m_size - pos - len;
-                if (tail)
-                {
-                    stl::mem_move(&m_data[pos + slen], 0, &m_data[pos + len], tail, m_allocator);
-                }
+                stl::mem_move(&m_data[pos + slen], 0, &m_data[pos + len], (m_size - pos - len), m_allocator);
+
                 stl::mem_copy(&m_data[pos], 0, temp.m_data, slen, m_allocator);
             }
             else // insert from another container
             {
-                size_type tail = m_size - pos - len;
-                if (tail)
-                {
-                    stl::mem_move(&m_data[pos + slen], 0, &m_data[pos + len], tail, m_allocator);
-                }
+                stl::mem_move(&m_data[pos + slen], 0, &m_data[pos + len], (m_size - pos - len), m_allocator);
+
                 stl::mem_copy(&m_data[pos], 0, ptr, slen, m_allocator);
             }
 
@@ -2574,20 +2442,14 @@ namespace stl
             {
                 container temp(ptr, ptr + slen);
 
-                size_type tail = m_size - pos - len;
-                if (tail)
-                {
-                    stl::mem_move(&m_data[pos + slen], 0, &m_data[pos + len], tail, m_allocator);
-                }
+                stl::mem_move(&m_data[pos + slen], 0, &m_data[pos + len], (m_size - pos - len), m_allocator);
+
                 stl::mem_copy(&m_data[pos], 0, temp.m_data, slen, m_allocator);
             }
             else // insert from another container
             {
-                size_type tail = m_size - pos - len;
-                if (tail)
-                {
-                    stl::mem_move(&m_data[pos + slen], 0, &m_data[pos + len], tail, m_allocator);
-                }
+                stl::mem_move(&m_data[pos + slen], 0, &m_data[pos + len], (m_size - pos - len), m_allocator);
+
                 stl::mem_copy(&m_data[pos], 0, ptr, slen, m_allocator);
             }
 
@@ -2629,20 +2491,14 @@ namespace stl
             {
                 container temp(ptr, ptr + slen);
 
-                size_type tail = m_size - pos - len;
-                if (tail)
-                {
-                    stl::mem_move(&m_data[pos + sublen], 0, &m_data[pos + len], tail, m_allocator);
-                }
+                stl::mem_move(&m_data[pos + sublen], 0, &m_data[pos + len], (m_size - pos - len), m_allocator);
+
                 stl::mem_copy(&m_data[pos], 0, temp.m_data, sublen, m_allocator);
             }
             else // insert from another container
             {
-                size_type tail = m_size - pos - len;
-                if (tail)
-                {
-                    stl::mem_move(&m_data[pos + sublen], 0, &m_data[pos + len], tail, m_allocator);
-                }
+                stl::mem_move(&m_data[pos + sublen], 0, &m_data[pos + len], (m_size - pos - len), m_allocator);
+
                 stl::mem_copy(&m_data[pos], 0, ptr, sublen, m_allocator);
             }
 
@@ -2682,21 +2538,15 @@ namespace stl
             {
                 container temp(ptr, ptr + slen);
 
-                size_type tail = m_size - pos - len;
-                if (tail)
-                {
-                    stl::mem_move(&m_data[pos + sublen], 0, &m_data[pos + len], tail, m_allocator);
-                }
+                stl::mem_move(&m_data[pos + sublen], 0, &m_data[pos + len], (m_size - pos - len), m_allocator);
+
 //TODO: test with sublen == 0 and if tested ok, then add if (sublen) here...
                 stl::mem_copy(&m_data[pos], 0, temp.m_data, sublen, m_allocator);
             }
             else // insert from another container
             {
-                size_type tail = m_size - pos - len;
-                if (tail)
-                {
-                    stl::mem_move(&m_data[pos + sublen], 0, &m_data[pos + len], tail, m_allocator);
-                }
+                stl::mem_move(&m_data[pos + sublen], 0, &m_data[pos + len], (m_size - pos - len), m_allocator);
+
                 stl::mem_copy(&m_data[pos], 0, ptr, sublen, m_allocator);
             }
 
@@ -2726,11 +2576,7 @@ namespace stl
 
             grow(size + 1);
 
-            size_type tail = m_size - pos - len;
-            if (tail)
-            {
-                stl::mem_move(&m_data[pos + n], 0, &m_data[pos + len], tail, m_allocator);
-            }
+            stl::mem_move(&m_data[pos + n], 0, &m_data[pos + len], (m_size - pos - len), m_allocator);
 
             if (n)
             {
@@ -2761,12 +2607,8 @@ namespace stl
             size_type size = m_size - len + n;
 
             grow(size + 1);
-            
-            size_type tail = m_size - pos - len;
-            if (tail)
-            {
-                stl::mem_move(&m_data[pos + n], 0, &m_data[pos + len], tail, m_allocator);
-            }
+
+            stl::mem_move(&m_data[pos + n], 0, &m_data[pos + len], (m_size - pos - len), m_allocator);
 
             if (n)
             {
@@ -2823,27 +2665,15 @@ namespace stl
             {
                 container temp(first2, last2);
 
-                size_type tail = m_size - pos - len;
-                if (tail)
-                {
-                    stl::mem_move(&m_data[pos + slen], 0, &m_data[pos + len], tail, m_allocator);
-                }
-                if (slen)
-                {
-                    stl::mem_copy(&m_data[pos], 0, temp.m_data, slen, m_allocator);
-                }
+                stl::mem_move(&m_data[pos + slen], 0, &m_data[pos + len], (m_size - pos - len), m_allocator);
+
+                stl::mem_copy(&m_data[pos], 0, temp.m_data, slen, m_allocator);
             }
             else // insert from another container
             {
-                size_type tail = m_size - pos - len;
-                if (tail)
-                {
-                    stl::mem_move(&m_data[pos + slen], 0, &m_data[pos + len], tail, m_allocator);
-                }
-                if (slen)
-                {
-                    stl::mem_copy(&m_data[pos], 0, &*first2, slen, m_allocator);
-                }
+                stl::mem_move(&m_data[pos + slen], 0, &m_data[pos + len], (m_size - pos - len), m_allocator);
+                
+                stl::mem_copy(&m_data[pos], 0, &*first2, slen, m_allocator);
             }
 
             endof(size);
@@ -2873,27 +2703,15 @@ namespace stl
             {
                 container temp(first2, last2);
 
-                size_type tail = m_size - pos - len;
-                if (tail)
-                {
-                    stl::mem_move(&m_data[pos + slen], 0, &m_data[pos + len], tail, m_allocator);
-                }
-                if (slen)
-                {
-                    stl::mem_copy(&m_data[pos], 0, temp.m_data, slen, m_allocator);
-                }
+                stl::mem_move(&m_data[pos + slen], 0, &m_data[pos + len], (m_size - pos - len), m_allocator);
+                
+                stl::mem_copy(&m_data[pos], 0, temp.m_data, slen, m_allocator);
             }
             else // insert from another container
             {
-                size_type tail = m_size - pos - len;
-                if (tail)
-                {
-                    stl::mem_move(&m_data[pos + slen], 0, &m_data[pos + len], tail, m_allocator);
-                }
-                if (slen)
-                {
-                    stl::mem_copy(&m_data[pos], 0, &*first2, slen, m_allocator);
-                }
+                stl::mem_move(&m_data[pos + slen], 0, &m_data[pos + len], (m_size - pos - len), m_allocator);
+
+                stl::mem_copy(&m_data[pos], 0, &*first2, slen, m_allocator);
             }
 
             endof(size);
@@ -2920,27 +2738,15 @@ namespace stl
             {
                 container temp(first2, last2);
 
-                size_type tail = m_size - pos - len;
-                if (tail)
-                {
-                    stl::mem_move(&m_data[pos + slen], 0, &m_data[pos + len], tail, m_allocator);
-                }
-                if (slen)
-                {
-                    stl::mem_copy(&m_data[pos], 0, temp.m_data, slen, m_allocator);
-                }
+                stl::mem_move(&m_data[pos + slen], 0, &m_data[pos + len], (m_size - pos - len), m_allocator);
+
+                stl::mem_copy(&m_data[pos], 0, temp.m_data, slen, m_allocator);
             }
             else // insert from another container
             {
-                size_type tail = m_size - pos - len;
-                if (tail)
-                {
-                    stl::mem_move(&m_data[pos + slen], 0, &m_data[pos + len], tail, m_allocator);
-                }
-                if (slen)
-                {
-                    stl::mem_copy(&m_data[pos], 0, first2, slen, m_allocator);
-                }
+                stl::mem_move(&m_data[pos + slen], 0, &m_data[pos + len], (m_size - pos - len), m_allocator);
+                
+                stl::mem_copy(&m_data[pos], 0, first2, slen, m_allocator);
             }
 
             endof(size);
@@ -2983,23 +2789,14 @@ namespace stl
             {
                 container temp(first2, last2);
 
-                size_type tail = m_size - pos - len;
-                if (tail)
-                {
-                    stl::mem_move(&m_data[pos + slen], 0, &m_data[pos + len], tail, m_allocator);
-                }
-                if (slen)
-                {
-                    stl::mem_copy(&m_data[pos], 0, temp.m_data, slen, m_allocator);
-                }
+                stl::mem_move(&m_data[pos + slen], 0, &m_data[pos + len], (m_size - pos - len), m_allocator);
+                
+                stl::mem_copy(&m_data[pos], 0, temp.m_data, slen, m_allocator);
             }
             else // insert from another container
             {
-                size_type tail = m_size - pos - len;
-                if (tail)
-                {
-                    stl::mem_move(&m_data[pos + slen], 0, &m_data[pos + len], tail, m_allocator);
-                }
+                stl::mem_move(&m_data[pos + slen], 0, &m_data[pos + len], (m_size - pos - len), m_allocator);
+
                 // string.reverse_iterator, list.iterator, etc.
                 for (size_t i = 0; first2 != last2; ++first2, ++i)
                 {
@@ -3027,11 +2824,7 @@ namespace stl
 
             grow(size + 1);
 
-            size_type tail = m_size - pos - len;
-            if (tail)
-            {
-                stl::mem_move(&m_data[pos + n], 0, &m_data[pos + len], tail, m_allocator);
-            }
+            stl::mem_move(&m_data[pos + n], 0, &m_data[pos + len], (m_size - pos - len), m_allocator);
 
             if (n)
             {
