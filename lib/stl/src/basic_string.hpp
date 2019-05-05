@@ -1798,41 +1798,31 @@ namespace stl
         */
         container& insert(size_type pos, const container& str, size_type subpos, size_type sublen)
         {
-            // allow to insert in position = end(), aka pos == m_size;
-            if (pos > m_size)
-                throw stl::exception("out of valid range");
-
-            size_type strlen = str.length();
-
-            if (subpos > strlen)
-                throw stl::exception("out of valid range");
-
-            if (sublen > strlen - subpos)
-                sublen = strlen - subpos;   // sublen can become 0
-
-            if (sublen)
+            if (this == &str)
+            {   // overlapping
+                replace_nb_(pos, 0, str, subpos, sublen);
+            }
+            else
             {
-                size_type size = m_size + sublen;
+                // allow to insert in position = end(), aka pos == m_size;
+                if (pos > m_size || subpos > str.m_size)
+                    throw stl::exception("out of valid range");
 
-                // relocation does not invalidate str
-                grow(size + 1);
+                if (sublen > str.m_size - subpos)
+                    sublen = str.m_size - subpos;   // sublen can become 0
 
-                if (this == &str)
+                if (sublen)
                 {
-                    container temp(&m_data[subpos], &m_data[subpos + sublen]);
+                    size_type size = m_size + sublen;
 
-                    stl::mem_move(m_data + pos + sublen, 0, m_data + pos, (m_size - pos), m_allocator);
+                    grow(size + 1);
 
-                    stl::mem_copy(m_data + pos, 0, temp.m_data, sublen, m_allocator);
-                }
-                else
-                {
                     stl::mem_move(m_data + pos + sublen, 0, m_data + pos, (m_size - pos), m_allocator);
 
                     stl::mem_copy(m_data + pos, 0, str.m_data + subpos, sublen, m_allocator);
-                }
 
-                endof(size);
+                    endof(size);
+                }
             }
             
             return *this;
@@ -1845,36 +1835,30 @@ namespace stl
         */
         container& insert(size_type pos, const value_type* ptr)
         {
-            // allow to insert in position = end(), aka pos == m_size;
-            if (pos > m_size)
-                throw stl::exception("out of valid range");
-
-            size_type len = length(ptr);
-
-            if (len)
+            if (m_data <= ptr && (m_data + m_size) > ptr)
+            {   // overlapping
+                replace_nb_(pos, 0, *this, ptr - m_data, npos);
+            }
+            else
             {
-                size_type size = m_size + len;
+                // allow to insert in position = end(), aka pos == m_size;
+                if (pos > m_size)
+                    throw stl::exception("out of valid range");
 
-                if (m_data <= ptr && (m_data + m_size) > ptr)
+                size_type len = length(ptr);
+
+                if (len)
                 {
-                    container temp(ptr, static_cast<const value_type*>(m_data + m_size));
+                    size_type size = m_size + len;
 
-                    grow(size + 1);
-
-                    stl::mem_move(m_data + pos + len, 0, m_data + pos, (m_size - pos), m_allocator);
-
-                    stl::mem_copy(m_data + pos, 0, temp.m_data, len, m_allocator);
-                }
-                else
-                {
                     grow(size + 1);
 
                     stl::mem_move(m_data + pos + len, 0, m_data + pos, (m_size - pos), m_allocator);
 
                     stl::mem_copy(m_data + pos, 0, ptr, len, m_allocator);
-                }
 
-                endof(size);
+                    endof(size);
+                }
             }
 
             return *this;
@@ -1885,34 +1869,28 @@ namespace stl
         */
         container& insert(size_type pos, const value_type* ptr, size_type n)
         {
-            // allow to insert in position = end(), aka pos == m_size;
-            if (pos > m_size)
-                throw stl::exception("out of valid range");
-
-            if (n)
+            if (m_data <= ptr && (m_data + m_size) > ptr)
+            {   // overlapping
+                replace_nb_(pos, 0, *this, ptr - m_data, n);
+            }
+            else
             {
-                size_type size = m_size + n;
+                // allow to insert in position = end(), aka pos == m_size;
+                if (pos > m_size)
+                    throw stl::exception("out of valid range");
 
-                if (m_data <= ptr && (m_data + m_size) > ptr)
+                if (n)
                 {
-                    container temp(ptr, ptr + n);
-
+                    size_type size = m_size + n;
+                    
                     grow(size + 1);
-
+                    
                     stl::mem_move(m_data + pos + n, 0, m_data + pos, (m_size - pos), m_allocator);
-
-                    stl::mem_move(m_data + pos, 0, temp.m_data, n, m_allocator);
-                }
-                else
-                {
-                    grow(size + 1);
-
-                    stl::mem_move(m_data + pos + n, 0, m_data + pos, (m_size - pos), m_allocator);
-
+                    
                     stl::mem_copy(m_data + pos, 0, ptr, n, m_allocator);
+                    
+                    endof(size);
                 }
-
-                endof(size);
             }            
 
             return *this;
@@ -1999,8 +1977,7 @@ namespace stl
             // if last < first then let it blow up.
             size_type dist = static_cast<size_type>(last - first);
             if (dist)
-            {
-                // take advantage of the fast replace
+            {   // use fastest replace possible
                 replace_nb_(position.m_pos, 0, *first.m_cont, first.m_pos, dist);
             }
         }
@@ -2018,7 +1995,7 @@ namespace stl
             size_type dist = static_cast<size_type>(last - first);
             if (dist > 0)
             {
-                // take advantage of the fast replace
+                // use fastest replace possible
                 replace_nb_(position.m_pos, 0, *first.m_cont, first.m_pos, dist);
             }
         }
@@ -2031,34 +2008,25 @@ namespace stl
 
             // if last < first then let it blow up.
             size_type dist = static_cast<size_type>(last - first);
-
             if (dist > 0)
             {
-                size_type p = position.m_pos;
-                size_type size = m_size + dist;
-
-                // Is the range inside this container ?
                 if (m_data <= first && (m_data + m_size) > first)
+                {   // overlapping, use the fastest replace possible
+                    replace_nb_(position.m_pos, 0, *this, first - m_data, dist);
+                }
+                else
                 {
-                    container temp(first, last);
+                    size_type pos = position.m_pos;
+                    size_type size = m_size + dist;
 
-                    // can relocate m_data and invalidate first,last pointers
                     grow(size + 1);
 
-                    stl::mem_move(m_data + p + dist, 0, m_data + p, (m_size - p), m_allocator);
+                    stl::mem_move(m_data + pos + dist, 0, m_data + pos, (m_size - pos), m_allocator);
 
-                    stl::mem_copy(m_data + p, 0, temp.m_data, dist, m_allocator);
+                    stl::mem_copy(m_data + pos, 0, first, dist, m_allocator);
+
+                    endof(size);
                 }
-                else// range is outside this container
-                {
-                    grow(size + 1);
-
-                    stl::mem_move(m_data + p + dist, 0, m_data + p, (m_size - p), m_allocator);
-
-                    stl::mem_copy(m_data + p, 0, first, dist, m_allocator);
-                }
-
-                endof(size);
             }
         }
 
@@ -2144,7 +2112,7 @@ namespace stl
         /*  Usually doing insert from self with a buffer performs 2x slower
             compared with std::string, if not slower.
             My initial version still performed worse, so I adapted this code
-            from VC/include/xstring
+            from Visual Studio 12.0/VC/include/xstring
         */
         inline container& replace_nb_(size_type p1, size_type n1, const container& str, size_type p2, size_type n2)
         {
@@ -2191,8 +2159,8 @@ namespace stl
                 stl::mem_move(m_data + p1 + n2, 0,
                               m_data + p1 + n1, Nm, m_allocator);   // move tail down
                 stl::mem_move(m_data + p1, 0,
-                              m_data + (p2 + n2 - n1),
-                              n2, m_allocator);                     // fill hole
+                              m_data + (p2 + n2 - n1), n2,
+                              m_allocator);                         // fill hole
             }
             else
             {   // hole gets larger, substring begins in hole
@@ -2201,8 +2169,8 @@ namespace stl
                 stl::mem_move(m_data + p1 + n2, 0,
                               m_data + p1 + n1, Nm, m_allocator);   // move tail down
                 stl::mem_move(m_data + p1 + n1, 0,
-                              m_data + p2 + n2,
-                              n2 - n1, m_allocator);                // fill rest of new hole
+                              m_data + p2 + n2, n2 - n1,
+                              m_allocator);                         // fill rest of new hole
             }
 
             endof(size);
