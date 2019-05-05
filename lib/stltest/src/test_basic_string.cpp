@@ -41,13 +41,20 @@ void test_basic_string::tearDown()
 
 void test_basic_string::correctness()
 {
-    typedef stl::basic_string<char> string;
+    try
+    {
+        //typedef stl::basic_string<char> string;
+        //string s1("0123"), s2("0123");
+        //string::iterator beg1 = s1.begin();
+        //string::iterator beg2 = s2.begin();
 
-    string s1("abc");
-    string s2 = s1;
-   
-    
-
+        //bool iseq = (beg1 == beg2);
+        //bool eq2 = iseq;
+    }
+    catch (...)
+    {
+        printf("\n\texception");
+    }
 }
 
 // Don't shoot for performance yet. Get everything correct first!
@@ -893,6 +900,61 @@ void test_basic_string::replace()
 
     CPPUNIT_ASSERT(::strcmp(s3.c_str(), "EFGHabcd1234") == 0);
 
+        // try to test as many as possible combinations
+    s3.assign("ABCDefgh1234");          //ABCDefgh1234
+    s3.replace(1, 2, s3, 8, 4);         //A1234Defgh1234
+    CPPUNIT_ASSERT(::strcmp(s3.c_str(), "A1234Defgh1234") == 0);
+
+    s3.assign("ABCDefgh1234");          //ABCDefgh1234
+    s3.replace(1, 4, s3, 8, 2);         //A12fgh1234
+    CPPUNIT_ASSERT(::strcmp(s3.c_str(), "A12fgh1234") == 0);
+
+    s3.assign("ABCDefgh1234");          //ABCDefgh1234
+    s3.replace(2, 4, s3, 4, 6);         //ABefgh12gh1234
+    CPPUNIT_ASSERT(::strcmp(s3.c_str(), "ABefgh12gh1234") == 0);
+
+    s3.assign("ABCDefgh1234");          //ABCDefgh1234
+    s3.replace(2, 4, s3, 4, 2);         //ABefgh1234
+    CPPUNIT_ASSERT(::strcmp(s3.c_str(), "ABefgh1234") == 0);
+
+    s3.assign("ABCDefgh1234");          //ABCDefgh1234
+    s3.replace(4, 4, s3, 4, 2);         //ABCDef1234
+    CPPUNIT_ASSERT(::strcmp(s3.c_str(), "ABCDef1234") == 0);
+
+    s3.assign("ABCDefgh1234");          //ABCDefgh1234
+    s3.replace(4, 4, s3, 4, 4);         //ABCDefgh1234
+    CPPUNIT_ASSERT(::strcmp(s3.c_str(), "ABCDefgh1234") == 0);
+
+    s3.assign("ABCDefgh1234");          //ABCDefgh1234
+    s3.replace(4, 4, s3, 4, 6);         //ABCDefgh121234
+    CPPUNIT_ASSERT(::strcmp(s3.c_str(), "ABCDefgh121234") == 0);
+
+    s3.assign("ABCDefgh1234");          //ABCDefgh1234
+    s3.replace(4, 4, s3, 2, 8);         //ABCDCDefgh121234
+    CPPUNIT_ASSERT(::strcmp(s3.c_str(), "ABCDCDefgh121234") == 0);
+
+    s3.assign("ABCDefgh1234");          //ABCDefgh1234
+    s3.replace(4, 4, s3, 2, 6);         //ABCDCDefgh1234
+    CPPUNIT_ASSERT(::strcmp(s3.c_str(), "ABCDCDefgh1234") == 0);
+
+    s3.assign("ABCDefgh1234");          //ABCDefgh1234
+    s3.replace(4, 4, s3, 2, 4);         //ABCDCDef1234
+    CPPUNIT_ASSERT(::strcmp(s3.c_str(), "ABCDCDef1234") == 0);
+
+    s3.assign("ABCDefgh1234");          //ABCDefgh1234
+    s3.replace(4, 4, s3, 2, 2);         //ABCDCD1234
+    CPPUNIT_ASSERT(::strcmp(s3.c_str(), "ABCDCD1234") == 0);
+
+    s3.assign("ABCDefgh1234");          //ABCDefgh1234
+    s3.replace(4, 4, s3, 1, 2);         //ABCDBC1234
+    CPPUNIT_ASSERT(::strcmp(s3.c_str(), "ABCDBC1234") == 0);
+    
+    s3.assign("ABCDefgh1234");          //ABCDefgh1234
+    s3.replace(0, 12, s3, 0, 0);        //ABCDBC1234
+    CPPUNIT_ASSERT(::strcmp(s3.c_str(), "") == 0);
+
+
+
     //  container& replace(size_type pos, size_type len, const char* ptr)
     string s4("ABCDefgh1234");                          //ABCDefgh1234
     s4.replace(8, 100, "1234x");                        //ABCDefgh1234x
@@ -1705,32 +1767,47 @@ void test_basic_string::perf1()
 
     // stl::string
     {
-        stl::basic_string<char> s1, s2, s3, s4, s5;
+        typedef stl::basic_string<char> string;
         size_t len = s0.size();
 
         //for (size_t i = 0; i < len; ++i)
-        //    s1.push_back(s0[i]);
+        //    s1.push_back(s0[i]);                // stl is better
 
         //while (s1.size() > 0)
-        //    s1.erase(s1.begin());
+        //    s1.erase(s1.begin());               // stl is worse
 
-        //for (size_t i = 0; i < len; ++i)
-        //    s1.insert(s1.begin(), s0[len - i - 1]);
+        //for (size_t j = 0; j < 10; ++j)
+        //{
+        //    string s1;
+        //    for (size_t i = 0; i < len; ++i)
+        //        s1.insert(s1.begin(), s0[len - i - 1]);   // stl is worse
+        //}
 
-        //s1.erase(s1.begin(), s1.end());
+        //for (size_t i = 0; i < 10; ++i)
+        //{
+        //    string s1(s0.c_str());
+        //    s1.erase(s1.begin(), s1.end());         // stl is worse
+        //}
 
-time_printer tp(msg1);
+        //for (size_t j = 0; j < 10; ++j)
+        //{
+        //    string s1;
+        //    s1.assign(s0.c_str(), 20);
+        //    for (size_t i = 0; i < 20; ++i)
+        //        s1.insert(s1.begin(), s1.begin(), s1.end()); // stl is marginally better
+        //}
+        
+        time_printer tp(msg1);
 
-        s1.assign(s0.c_str(), 20);
-        for (size_t i = 0; i < 20; ++i)
-            s1.insert(s1.begin(), s1.begin(), s1.end());
+        for (size_t j = 0; j < 10; ++j)
+        {
+            string s2;
+            s2.assign(s0.c_str());
+            for (size_t i = len - 1; i != (size_t)-1; --i)
+                s2.replace(0, i, s2, 0, i);
+        }
 
 #if 0
-        s2.assign(s0.c_str());
-
-        for (size_t i = len - 1; i != (size_t)-1; --i)
-            s2.replace(0, i, s2, 0, i);
-
         for (size_t i = len; i != (size_t)-1; --i)
             s2.replace(s2.begin(), s2.begin() + (long)i, s2.begin(), s2.begin() + (long)i);
 
@@ -1764,60 +1841,17 @@ time_printer tp(msg1);
 
     // std::string
     {
-        std::basic_string<char> s1, s2, s3, s4, s5;
+        typedef std::basic_string<char> string;
         size_t len = s0.size();
 
-        //for (size_t i = 0; i < len; ++i)
-        //    s1.push_back(s0[i]);
-      
-        //while (s1.size() > 0)
-        //    s1.erase(s1.begin());
+        time_printer tp(msg2);
 
-        //for (size_t i = 0; i < len; ++i)
-        //    s1.insert(s1.begin(), s0[len - i - 1]);
-
-        //s1.erase(s1.begin(), s1.end());
-
-time_printer tp(msg2);
-
-        s1.assign(s0.c_str(), 20);
-        for (size_t i = 0; i < 20; ++i)
-            s1.insert(s1.begin(), s1.begin(), s1.end());
-
-#if 0
-        s2.assign(s0.c_str());
-
-        for (size_t i = len - 1; i != (size_t)-1; --i)
-            s2.replace(0, i, s2, 0, i);
-
-        for (size_t i = len; i != (size_t)-1; --i)
-            s2.replace(s2.begin(), s2.begin() + i, s2.begin(), s2.begin() + i);
-
-        s3.assign("United States, Australia and New Zealand");
-        for (size_t i = 0; i < 10; ++i)
+        for (size_t j = 0; j < 10; ++j)
         {
-            size_t ret = s2.find(s3);
-            size_t ret2 = ret;
-            ret2++;
+            string s2;
+            s2.assign(s0.c_str());
+            for (size_t i = len - 1; i != (size_t)-1; --i)
+                s2.replace(0, i, s2, 0, i);
         }
-
-        s4.assign("Short Message Service(SMS)");
-        for (size_t i = 0; i < 10; ++i)
-        {
-            size_t ret = s2.rfind(s4);
-            size_t ret2 = ret;
-            ret2++;
-        }
-
-        for (size_t i = len; i != (size_t)-1; --i)
-        {
-            s5 = s2.substr(0, i);
-            int ret = s2.compare(s5); ret += 0;
-            int ret2 = s2.compare(0, i, s5); ret2 += 0;
-            int ret3 = s2.compare(0, i, s5, 0, i); ret3 += 0;
-            int ret4 = s2.compare(0, i, s5.c_str()); ret4 += 0;
-            int ret5 = s2.compare(0, i, s5.c_str(), i); ret5 += 0;
-        }
-#endif
     }
 }
