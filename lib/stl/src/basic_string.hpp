@@ -1800,6 +1800,7 @@ namespace stl
         {
             if (this == &str)
             {   // overlapping
+                // uses the fast no_buffer method
                 replace_nb_(pos, 0, str, subpos, sublen);
             }
             else
@@ -1837,6 +1838,7 @@ namespace stl
         {
             if (m_data <= ptr && (m_data + m_size) > ptr)
             {   // overlapping
+                // uses the fast no_buffer method
                 replace_nb_(pos, 0, *this, ptr - m_data, npos);
             }
             else
@@ -1871,6 +1873,7 @@ namespace stl
         {
             if (m_data <= ptr && (m_data + m_size) > ptr)
             {   // overlapping
+                // uses the fast no_buffer method
                 replace_nb_(pos, 0, *this, ptr - m_data, n);
             }
             else
@@ -1977,7 +1980,8 @@ namespace stl
             // if last < first then let it blow up.
             size_type dist = static_cast<size_type>(last - first);
             if (dist)
-            {   // use fastest replace possible
+            {
+                // uses the fast no_buffer method
                 replace_nb_(position.m_pos, 0, *first.m_cont, first.m_pos, dist);
             }
         }
@@ -1995,7 +1999,7 @@ namespace stl
             size_type dist = static_cast<size_type>(last - first);
             if (dist > 0)
             {
-                // use fastest replace possible
+                // uses the fast no_buffer method
                 replace_nb_(position.m_pos, 0, *first.m_cont, first.m_pos, dist);
             }
         }
@@ -2011,7 +2015,8 @@ namespace stl
             if (dist > 0)
             {
                 if (m_data <= first && (m_data + m_size) > first)
-                {   // overlapping, use the fastest replace possible
+                {   // overlapping
+                    // uses the fast no_buffer method
                     replace_nb_(position.m_pos, 0, *this, first - m_data, dist);
                 }
                 else
@@ -2253,34 +2258,31 @@ namespace stl
         */
         container& replace(size_type pos, size_type len, const container& str)
         {
-            if (pos >= m_size)
-                throw stl::exception("out of valid range");
-
-            if (len > m_size - pos)
-                len = m_size - pos;
-
-            size_type slen = str.length();
-            size_type size = m_size - len + slen;
-            
-            grow(size + 1);
-
-            if (this == &str) // insert self content
+            if (this == &str)
             {
-                container temp(m_data, m_data + m_size); // from str
-
-                stl::mem_move(m_data + pos + slen, 0, m_data + pos + len, (m_size - pos - len), m_allocator);
-
-                stl::mem_copy(m_data + pos, 0, temp.m_data, slen, m_allocator);
+                // overlapping
+                // uses the fast no_buffer method
+                replace_nb_(pos, len, str, 0, str.m_size);
             }
-            else // insert from another container
+            else
             {
+                if (pos >= m_size)
+                    throw stl::exception("out of valid range");
+
+                if (len > m_size - pos)
+                    len = m_size - pos;
+
+                size_type slen = str.length();
+                size_type size = m_size - len + slen;
+
+                grow(size + 1);
+
                 stl::mem_move(m_data + pos + slen, 0, m_data + pos + len, (m_size - pos - len), m_allocator);
 
                 stl::mem_copy(m_data + pos, 0, str.m_data, slen, m_allocator);
+
+                endof(size);
             }
-
-            endof(size);
-
             return *this;
         }
 
@@ -2299,27 +2301,25 @@ namespace stl
             size_type pos = first.m_pos;
             size_type len = static_cast<size_type>(last.m_pos - first.m_pos);
             size_type slen = str.length();
-            size_type size = m_size - len + slen;
 
-            grow(size + 1);
-
-            if (this == &str) // insert self content
+            if (this == &str)
             {
-                container temp(m_data, m_data + m_size);
-
-                stl::mem_move(m_data + pos + slen, 0, m_data + pos + len, (m_size - pos - len), m_allocator);
-
-                stl::mem_copy(m_data + pos, 0, temp.m_data, slen, m_allocator);
+                // overlapping
+                // uses the fast no_buffer method
+                replace_nb_(pos, len, str, 0, slen);
             }
-            else // insert from another container
+            else
             {
+                size_type size = m_size - len + slen;
+
+                grow(size + 1);
+                
                 stl::mem_move(m_data + pos + slen, 0, m_data + pos + len, (m_size - pos - len), m_allocator);
 
                 stl::mem_copy(m_data + pos, 0, str.m_data, slen, m_allocator);
+                
+                endof(size);
             }
-
-            endof(size);
-
             return *this;
         }
 
@@ -2354,34 +2354,32 @@ namespace stl
         */
         container& replace(size_type pos, size_type len, const value_type* ptr)
         {
-            if (pos >= m_size)
-                throw stl::exception("out of valid range");
-
-            if (len > m_size - pos)
-                len = m_size - pos;
-
-            size_type slen = length(ptr);
-            size_type size = m_size - len + slen;
-
-            grow(size + 1);
-
-            if (m_data <= ptr && (m_data + m_size > ptr)) // insert self content
+            if (m_data <= ptr && (m_data + m_size > ptr))
             {
-                container temp(ptr, ptr + slen);
-
-                stl::mem_move(m_data + pos + slen, 0, m_data + pos + len, (m_size - pos - len), m_allocator);
-
-                stl::mem_copy(m_data + pos, 0, temp.m_data, slen, m_allocator);
+                // overlapping
+                // uses the fast no_buffer method
+                replace_nb_(pos, len, *this, ptr - m_data, m_data + m_size - ptr);
             }
             else // insert from another container
             {
+                if (pos >= m_size)
+                    throw stl::exception("out of valid range");
+
+                if (len > m_size - pos)
+                    len = m_size - pos;
+
+                size_type slen = length(ptr);
+
+                size_type size = m_size - len + slen;
+
+                grow(size + 1);
+
                 stl::mem_move(m_data + pos + slen, 0, m_data + pos + len, (m_size - pos - len), m_allocator);
 
                 stl::mem_copy(m_data + pos, 0, ptr, slen, m_allocator);
+
+                endof(size);
             }
-
-            endof(size);
-
             return *this;
         }
 
@@ -2398,30 +2396,29 @@ namespace stl
             if (first.m_pos > last.m_pos || last.m_pos > m_size)
                 throw stl::exception("out of valid range");
 
+
             size_type pos = first.m_pos;
             size_type len = static_cast<size_type>(last.m_pos - first.m_pos);
-            size_type slen = length(ptr);
-            size_type size = m_size - len + slen;
 
-            grow(size + 1);
-
-            if (m_data <= ptr && (m_data + m_size) > ptr) // insert self content
+            if (m_data <= ptr && (m_data + m_size) > ptr)
             {
-                container temp(ptr, ptr + slen);
-
-                stl::mem_move(m_data + pos + slen, 0, m_data + pos + len, (m_size - pos - len), m_allocator);
-
-                stl::mem_copy(m_data + pos, 0, temp.m_data, slen, m_allocator);
+                // overlapping
+                // uses the fast no_buffer method
+                replace_nb_(pos, len, *this, ptr - m_data, m_data + m_size - ptr);
             }
-            else // insert from another container
+            else
             {
+                size_type slen = length(ptr);
+                size_type size = m_size - len + slen;
+            
+                grow(size + 1);
+
                 stl::mem_move(m_data + pos + slen, 0, m_data + pos + len, (m_size - pos - len), m_allocator);
 
                 stl::mem_copy(m_data + pos, 0, ptr, slen, m_allocator);
+
+                endof(size);
             }
-
-            endof(size);
-
             return *this;
         }
 
@@ -2437,40 +2434,36 @@ namespace stl
         */
         container& replace(size_type pos, size_type len, const value_type* ptr, size_type n)
         {
-            if (pos >= m_size)
-                throw stl::exception("out of valid range");
-
-            if (len > m_size - pos)
-                len = m_size - pos;
-
-            size_type slen = length(ptr);
-
-            //  treat n as sublen from one of the previous methods
-            size_type sublen = n;
-            if (sublen > slen)
-                sublen = slen;
-
-            size_type size = m_size - len + sublen;
-
-            grow(size + 1);
-
-            if (m_data <= ptr && (m_data + m_size > ptr)) // insert self content
+            if (m_data <= ptr && (m_data + m_size) > ptr)
             {
-                container temp(ptr, ptr + slen);
-
-                stl::mem_move(m_data + pos + sublen, 0, m_data + pos + len, (m_size - pos - len), m_allocator);
-
-                stl::mem_copy(m_data + pos, 0, temp.m_data, sublen, m_allocator);
+                // overlapping
+                // uses the fast no_buffer method
+                replace_nb_(pos, len, *this, ptr - m_data, n);
             }
-            else // insert from another container
+            else
             {
+                if (pos >= m_size)
+                    throw stl::exception("out of valid range");
+
+                if (len > m_size - pos)
+                    len = m_size - pos;
+
+                size_type slen = length(ptr);
+                //  treat n as sublen from one of the previous methods
+                size_type sublen = n;
+                if (sublen > slen)
+                    sublen = slen;
+
+                size_type size = m_size - len + sublen;
+
+                grow(size + 1);
+
                 stl::mem_move(m_data + pos + sublen, 0, m_data + pos + len, (m_size - pos - len), m_allocator);
 
                 stl::mem_copy(m_data + pos, 0, ptr, sublen, m_allocator);
+
+                endof(size);
             }
-
-            endof(size);
-
             return *this;
         }
 
@@ -2488,37 +2481,34 @@ namespace stl
             if (first.m_pos > last.m_pos || last.m_pos > m_size)
                 throw stl::exception("out of valid range");
             
-            size_type slen = length(ptr);
-
-            //  treat n as sublen from one of the previous methods
-            size_type sublen = n;
-            if (sublen > slen)
-                sublen = slen;
-
             size_type pos = first.m_pos;
             size_type len = static_cast<size_type>(last.m_pos - first.m_pos);
-            size_type size = m_size - len + sublen;
 
-            grow(size + 1);
-
-            if (m_data <= ptr && (m_data + m_size) > ptr) // insert self content
+            if (m_data <= ptr && (m_data + m_size) > ptr)
             {
-                container temp(ptr, ptr + slen);
-
-                stl::mem_move(m_data + pos + sublen, 0, m_data + pos + len, (m_size - pos - len), m_allocator);
-
-//TODO: test with sublen == 0 and if tested ok, then add if (sublen) here...
-                stl::mem_copy(m_data + pos, 0, temp.m_data, sublen, m_allocator);
+                // overlapping
+                // use the fast no_buffer method
+                replace_nb_(pos, len, *this, ptr - m_data, n);
             }
-            else // insert from another container
+            else
             {
+                size_type slen = length(ptr);
+
+                //  treat n as sublen from one of the previous methods
+                size_type sublen = n;
+                if (sublen > slen)
+                    sublen = slen;
+
+                size_type size = m_size - len + sublen;
+
+                grow(size + 1);
+
                 stl::mem_move(m_data + pos + sublen, 0, m_data + pos + len, (m_size - pos - len), m_allocator);
 
                 stl::mem_copy(m_data + pos, 0, ptr, sublen, m_allocator);
+
+                endof(size);
             }
-
-            endof(size);
-
             return *this;
         }
 
@@ -2624,27 +2614,25 @@ namespace stl
             size_type pos = first.m_pos;
             size_type len = static_cast<size_type>(last.m_pos - first.m_pos);
             size_type slen = static_cast<size_type>(last2.m_pos - first2.m_pos);
-            size_type size = m_size - len + slen;
 
-            grow(size + 1);
-
-            if (first.m_cont == first2.m_cont) // insert self content
+            if (this == first2.m_cont)
             {
-                container temp(first2, last2);
-
-                stl::mem_move(m_data + pos + slen, 0, m_data + pos + len, (m_size - pos - len), m_allocator);
-
-                stl::mem_copy(m_data + pos, 0, temp.m_data, slen, m_allocator);
+                // overlapping
+                // use the fast no_buffer method
+                replace_nb_(pos, len, *this, first2.m_pos, slen);
             }
-            else // insert from another container
+            else
             {
+                size_type size = m_size - len + slen;
+
+                grow(size + 1);
+
                 stl::mem_move(m_data + pos + slen, 0, m_data + pos + len, (m_size - pos - len), m_allocator);
-                
+
                 stl::mem_copy(m_data + pos, 0, first2.m_cont->m_data + first2.m_pos, slen, m_allocator);
+
+                endof(size);
             }
-
-            endof(size);
-
             return *this;
         }
 
@@ -2662,27 +2650,25 @@ namespace stl
             size_type pos = first.m_pos;
             size_type len = static_cast<size_type>(last.m_pos - first.m_pos);
             size_type slen = static_cast<size_type>(last2.m_pos - first2.m_pos);
-            size_type size = m_size - len + slen;
 
-            grow(size + 1);
-
-            if (first.m_cont == first2.m_cont) // insert self content
+            if (this == first2.m_cont)
             {
-                container temp(first2, last2);
-
-                stl::mem_move(m_data + pos + slen, 0, m_data + pos + len, (m_size - pos - len), m_allocator);
-                
-                stl::mem_copy(m_data + pos, 0, temp.m_data, slen, m_allocator);
+                // overlapping
+                // use the fast no_buffer method
+                replace_nb_(pos, len, *this, first2.m_pos, slen);
             }
-            else // insert from another container
+            else
             {
+                size_type size = m_size - len + slen;
+
+                grow(size + 1);
+
                 stl::mem_move(m_data + pos + slen, 0, m_data + pos + len, (m_size - pos - len), m_allocator);
 
                 stl::mem_copy(m_data + pos, 0, first2.m_cont->m_data + first2.m_pos, slen, m_allocator);
+
+                endof(size);
             }
-
-            endof(size);
-
             return *this;
         }
 
@@ -2697,27 +2683,25 @@ namespace stl
             size_type pos = first.m_pos;
             size_type len = static_cast<size_type>(last.m_pos - first.m_pos);
             size_type slen = static_cast<size_type>(last2 - first2);
-            size_type size = m_size - len + slen;
-
-            grow(size + 1);
-
-            if (m_data <= first2 && (m_data + m_size) > first2) // insert self content
+            
+            if (m_data <= first2 && (m_data + m_size) > first2)
             {
-                container temp(first2, last2);
-
-                stl::mem_move(m_data + pos + slen, 0, m_data + pos + len, (m_size - pos - len), m_allocator);
-
-                stl::mem_copy(m_data + pos, 0, temp.m_data, slen, m_allocator);
+                // overlapping
+                // use the fast no_buffer method
+                replace_nb_(pos, len, *this, first2 - m_data, slen);
             }
-            else // insert from another container
+            else
             {
+                size_type size = m_size - len + slen;
+
+                grow(size + 1);
+
                 stl::mem_move(m_data + pos + slen, 0, m_data + pos + len, (m_size - pos - len), m_allocator);
-                
+
                 stl::mem_copy(m_data + pos, 0, first2, slen, m_allocator);
+
+                endof(size);
             }
-
-            endof(size);
-
             return *this;
         }
 
