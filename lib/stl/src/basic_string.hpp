@@ -1073,40 +1073,40 @@ namespace stl
             grow(n + 1);    // extra '\0'
         }
 
-        void clear( )
+        void clear()
         {
             endof(0);
         }
 
-        bool empty () const
+        bool empty() const
         {
             return m_size == 0;
         }
 
-        const_reference operator[] ( size_type n ) const
+        const_reference operator[](size_type n) const
         {
-            return m_data[n];
+            return *(m_data + n);
         }
 
-        reference operator[] ( size_type n )
+        reference operator[](size_type n)
         {
-            return m_data[n];
+            return *(m_data + n);
         }
 
-        const_reference at ( size_type n ) const
+        const_reference at(size_type n) const
         {
             if (n >= m_size)
                 throw stl::exception("out of valid range");
 
-            return m_data[n];
+            return *(m_data + n);
         }
 
-        reference at ( size_type n )
+        reference at(size_type n)
         {
             if (n >= m_size)
                 throw stl::exception("out of valid range");
 
-            return m_data[n];
+            return *(m_data + n);
         }
 
         container& operator+=(const container& str)
@@ -2290,7 +2290,7 @@ namespace stl
                 Replaces the part of the string in the range
                 between [first,last) by new contents.
         */
-        inline container& replace(iterator first, iterator last, const container& str)
+        container& replace(iterator first, iterator last, const container& str)
         {
             if (first.m_cont != last.m_cont || first.m_cont != this)
                 throw stl::exception("invalid iterator");
