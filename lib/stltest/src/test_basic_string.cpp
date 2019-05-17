@@ -2154,19 +2154,128 @@ void test_basic_string::perf1()
         }
 
         // container& insert(size_type pos, const container& str)
+        for (size_t i = 0; i < ONEMIL; ++i)
+        {
+            string s1(s0.c_str(), i % s0.size());
+            string s2(s1), s3(s1), s4(s1);
+            s2.insert(0, s2);
+            s3.insert(s3.size() / 2, s3);
+            if (s4.size())
+                s4.insert(s4.size() - 1, s4);                        
+        }
+
         // container& insert(size_type pos, const container& str, size_type subpos, size_type sublen)
+        for (size_t i = 0; i < ONEMIL; ++i)
+        {
+            string s1(s0.c_str(), i % s0.size());
+            string s2(s1), s3(s1), s4(s1);
+            s2.insert(0, s2);
+            s3.insert(s3.size() / 2, s3);
+            if (s4.size())
+                s4.insert(s4.size() - 1, s4);
+        }
+
         // container& insert(size_type pos, const value_type* ptr)
+        for (size_t i = 0; i < ONEMIL; ++i)
+        {
+            string s1(s0.c_str(), i % s0.size());
+            string s2(s1), s3(s1), s4(s1);
+            s2.insert(0, s2.c_str());
+            s3.insert(s3.size() / 2, s3.c_str());
+            if (s4.size())
+                s4.insert(s4.size(), s4.c_str());
+        }
+
         // container& insert(size_type pos, const value_type* ptr, size_type n)
+        for (size_t i = 0; i < ONEMIL; ++i)
+        {
+            string s1(s0.c_str(), i % s0.size());
+            string s2(s1), s3(s1), s4(s1);
+            s2.insert(0, s2.c_str(), s2.size());
+            s3.insert(s3.size() / 2, s3.c_str(), s3.size());
+            if (s4.size())
+                s4.insert(s4.size(), s4.c_str(), s4.size());
+        }
+
         // container& insert(size_type pos, size_type n, value_type c)
+        for (size_t i = 0; i < ONEMIL; ++i)
+        {
+            string s1(s0.c_str(), i % s0.size());
+            string s2(s1), s3(s1), s4(s1);
+
+            s2.insert(0, i % s0.size(), 'c');
+            s3.insert(s3.size() / 2, i % s0.size(), 'c');
+            if (s4.size())
+                s4.insert(s4.size(), i % s0.size(), 'c');
+        }
+
         // void insert(iterator position, size_type n, value_type c)
+        for (size_t i = 0; i < ONEMIL; ++i)
+        {
+            string s1(s0.c_str(), i % s0.size());
+            string s2(s1), s3(s1), s4(s1);
+
+            s2.insert(s2.begin(), i % s0.size(), 'c');
+            s3.insert(s3.begin() + (long)s3.size() / 2, i % s0.size(), 'c');
+            if (s4.size())
+                s4.insert(s4.end(), i % s0.size(), 'c');
+        }
+
         // iterator insert(iterator position, value_type c)
+        for (size_t i = 0; i < ONEMIL; ++i)
+        {
+            string s1(s0.c_str(), i % s0.size());
+            string s2(s1), s3(s1), s4(s1);
+
+            s2.insert(s2.begin(), 'c');
+            s3.insert(s3.begin() + (long)s3.size() / 2, 'c');
+            if (s4.size())
+                s4.insert(s4.end(), 'c');
+        }
+
         // inline void insert_(iterator& position, iterator& first, iterator& last)
+        for (size_t i = 0; i < ONEMIL; ++i)
+        {
+            string s1(s0.c_str(), s0.size());
+            string s2(s1), s3(s1), s4(s1), s5(s1);
+            s2.insert(s2.begin() + (long)i % s2.size(), s2.begin(), s2.end());
+            s3.insert(s3.begin() + (long)i % s3.size(), s3.begin() + (long)i % s0.size(), s3.end());
+            s4.insert(s4.begin() + (long)i % s4.size(), s4.begin(), s4.end() - (long)i % s0.size());
+            s5.insert(s4.end(), s5.end(), s5.end());
+        }
+
         // inline void insert_(iterator& position, const_iterator& first, const_iterator& last)
+        for (size_t i = 0; i < ONEMIL; ++i)
+        {
+            string s1(s0.c_str(), s0.size());
+            string s2(s1), s3(s1), s4(s1), s5(s1);
+            const string& cs2 = s2;
+            const string& cs3 = s3;
+            const string& cs4 = s4;
+            const string& cs5 = s5;
+
+            s2.insert(s2.begin() + (long)i % s0.size(), cs2.begin(), cs2.end());
+            s3.insert(s3.begin() + (long)i % s0.size(), cs3.begin() + (long)i % s0.size(), cs3.end());
+            s4.insert(s4.begin(), cs4.begin(), cs4.end() - (long)i % s0.size());
+            s5.insert(s5.end(), cs5.end(), cs5.end());
+        }
+
         // inline void insert_(iterator& position, value_type* first, value_type* last)
+        for (size_t i = 0; i < ONEMIL; ++i)
+        {
+            string s1(s0.c_str(), s0.size());
+            string s2(s1), s3(s1), s4(s1), s5(s1);
+            s2.insert(s2.begin() + (long)i % s2.size(), &*s2.begin(), &*s2.begin() + s2.size());
+            s3.insert(s3.begin() + (long)i % s3.size(), &*s3.begin() + (long)i % s0.size(), &*s3.begin() + s3.size());
+            s4.insert(s4.begin() + (long)i % s4.size(), &*s4.begin(), &*s4.begin() + s4.size() - (long)i % s0.size());
+            s5.insert(s4.end(), &*s5.begin() + s5.size(), &*s5.begin() + s5.size());
+        }
+
         // inline void insert_(iterator& position, const value_type* first, const value_type* last)
         // inline void insert_(iterator& position, InputIterator& first, InputIterator& last)
         // inline void insert_(iterator& position, InputIterator& first, InputIterator& last, stl::forward_iterator_tag)
         // inline void insert_(iterator& position, InputIterator n, InputIterator value, stl::input_iterator_tag)
+
         // container& erase(size_type pos = 0, size_type len = npos)
         // iterator erase(iterator position)
         // iterator erase(iterator first, iterator last)
