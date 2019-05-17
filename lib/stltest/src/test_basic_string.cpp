@@ -1942,7 +1942,7 @@ void test_basic_string::perf1()
         {
             string s1(s0.c_str(), s0.size());
             string s2, s3, s4, s5;
-            s2.append(s1.c_str(), 0);
+            s2.append(s1.c_str(), (size_t)0);
             s3.append(s1.c_str(), s1.size());
             s4.append(s1.c_str(), i % s1.size());
         }
@@ -2049,10 +2049,10 @@ void test_basic_string::perf1()
         {
             string s1(s0.c_str(), s0.size());
             string s2, s3, s4, s5;
-            s2.assign(s1, 0, -1);
-            s3.assign(s1, 0, i % s1.size());
-            s4.assign(s1, i % s1.size(), -1);
-            s5.assign(s1, i % s1.size(), i % s1.size());
+            s2.assign(s1, (size_t)0, (size_t)-1);
+            s3.assign(s1, (size_t)0, (size_t)i % s1.size());
+            s4.assign(s1, (size_t)i % s1.size(), (size_t)-1);
+            s5.assign(s1, (size_t)i % s1.size(), (size_t)i % s1.size());
         }
 
         // container& assign(const value_type* ptr, size_type n)
@@ -2060,9 +2060,9 @@ void test_basic_string::perf1()
         {
             string s1(s0.c_str(), s0.size());
             string s2, s3, s4, s5;
-            s2.assign(s1.c_str(), 0);
+            s2.assign(s1.c_str(), (size_t)0);
             s3.assign(s1.c_str(), s1.size());
-            s4.assign(s1.c_str(), i % s1.size());
+            s4.assign(s1.c_str(), (size_t)i % s1.size());
         }
 
         // container& assign(const value_type* ptr)
@@ -2275,7 +2275,6 @@ void test_basic_string::perf1()
         // inline void insert_(iterator& position, InputIterator& first, InputIterator& last)
         // inline void insert_(iterator& position, InputIterator& first, InputIterator& last, stl::forward_iterator_tag)
         // inline void insert_(iterator& position, InputIterator n, InputIterator value, stl::input_iterator_tag)
-
         // container& erase(size_type pos = 0, size_type len = npos)
         // iterator erase(iterator position)
         // iterator erase(iterator first, iterator last)
