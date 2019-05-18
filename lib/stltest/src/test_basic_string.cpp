@@ -1771,6 +1771,7 @@ void test_basic_string::perf1()
         typedef stl::basic_string<char> string;
         time_printer tp(msg1);
         
+#if 0
         // basic_string()
         // -- stl worse 0.455482 vs 0.000000 sec
         for (size_t i = 0; i < ONEMIL; ++i)
@@ -1798,27 +1799,34 @@ void test_basic_string::perf1()
         }
 
         // basic_string(const value_type* ptr)
+        // ++ stl is better 1.76 vs 2.78
         for (size_t i = 0; i < ONEMIL; ++i)
         {
             string s1(s0.c_str());
         }
 
         // basic_string(const value_type* ptr, size_type n)
-        for (size_t i = 0; i < s0.size(); ++i)
+        // -- stl is worse 0.88 vs 0.44
+        for (size_t i = 0; i < ONEMIL; ++i)
         {
-            string s1(s0.c_str(), i);
+            string s1(s0.c_str(), i % s0.size());
+            string s2(s0.c_str(), s0.size());
         }
 
         // basic_string(size_type n, value_type c)
-        for (size_t i = 0; i < s0.size(); ++i)
+        // -- stl is worse 0.88 vs 0.44
+        for (size_t i = 0; i < ONEMIL; ++i)
         {
-            string s1(i, 'c');
+            string s1(s0.size(), 'c');
+            string s2(i % s0.size(), 'c');
+            string s3(127, 'c');
         }
 
         // basic_string(InputIterator first, InputIterator last)
-        for (size_t i = 0; i < s0.size(); ++i)
+        // ++ stl is better 2.72 vs 6.53
+        for (size_t i = 0; i < ONEMIL / 4; ++i)
         {
-            string s1(s0.c_str(), i);
+            string s1(s0.c_str(), i % s0.size());
             string s2(s1.begin(), s1.end());
             string s3(s1.rbegin(), s1.rend());
 
@@ -1834,6 +1842,7 @@ void test_basic_string::perf1()
         }
 
         // container& operator=(value_type c)
+        // -- stl is worse 0.116314 vs 0.000281
         for (size_t i = 0; i < ONEMIL; ++i)
         {
             string s1;
@@ -1846,6 +1855,8 @@ void test_basic_string::perf1()
             const_iterator end() const
             reverse_iterator rbegin()
             const_reverse_iterator rbegin() const
+
+            -- stl is worse 0.41 vs 0.21
         */
         for (size_t i = 0; i < ONEMIL; ++i)
         {
@@ -1862,22 +1873,25 @@ void test_basic_string::perf1()
         }
 
         // void resize(size_type n, value_type c = value_type())
-        for (size_t i = 0; i < s0.size(); ++i)
+        // -- stl is worse 0.58 vs 0.30
+        for (size_t i = 0; i < ONEMIL; ++i)
         {
             string s1, s2;
-            s1.resize(i, '?');
-            s2.resize(s0.size() - i, '?');
+            s1.resize(i % s0.size(), '?');
+            s2.resize(s0.size() - i % s0.size(), '?');
         }
 
         // void reserve(size_type n)
-        for (size_t i = 0; i < s0.size(); ++i)
+        // -- stl is worse 1.28 vs 0.51
+        for (size_t i = 0; i < ONEMIL * 5; ++i)
         {
             string s1, s2;
-            s1.reserve(i);
-            s2.reserve(s0.size() - i);
+            s1.reserve(i % s0.size());
+            s2.reserve(s0.size() - i % s0.size());
         }
 
         // void clear( )
+        // -- stl is worse 0.38 vs 0.21
         for (size_t i = 0; i < ONEMIL; ++i)
         {
             string s1(s0.c_str(), s0.size());
@@ -1886,21 +1900,25 @@ void test_basic_string::perf1()
             s1.clear();
             s1.clear();
         }
+#endif
 
         // const_reference operator[] ( size_type n ) const
         // reference operator[] (size_type n)
         // const_reference at ( size_type n ) const
         // reference at ( size_type n )
-        for (size_t i = 0; i < s0.size(); ++i)
+        // -- stl is worse 0.38 vs 0.22
+        for (size_t i = 0; i < ONEMIL; ++i)
         {
             string s1(s0.c_str(), s0.size());
             const string& cs1 = s1;
+            size_t ii = i % (s1.size() - 1);
 
-            if (s1[i] == cs1[i] &&
-                s1.at(i) == cs1.at(i))
+            if (s1[ii] == cs1[ii] &&
+                s1.at(ii) == cs1.at(ii))
                 continue;
         }
 
+#if 0
         // container& operator+=(const container& str)
         // container& operator+=(const value_type* ptr)
         // container& operator+=(value_type ch)
@@ -2185,7 +2203,6 @@ void test_basic_string::perf1()
                 s4.insert(s4.size(), s4.c_str());
         }
 
-#error resume testing from here
         // container& insert(size_type pos, const value_type* ptr, size_type n)
         for (size_t i = 0; i < ONEMIL; ++i)
         {
@@ -2538,10 +2555,10 @@ void test_basic_string::perf1()
             string s1(s0.c_str(), s0.size());
             string s2(s1), s3(s1), s4(s1), s5(s1);
 
-            s2.replace(s2.begin(), s2.begin() + (long)i % s2.size(), s2.rbegin() + (long)i % s2.size(), s2.rend());
-            s3.replace(s3.begin() + (long)i % s3.size(), s3.end(), s3.rbegin(), s3.rend());
-            s4.replace(s4.begin(), s4.begin() + (long)i % s4.size(), s4.rbegin() + (long)i % s4.size(), s4.rend());
-            s5.replace(s5.begin() + (long)i % s2.size(), s5.end(), s5.rbegin(), s5.rend() - (long)i % s5.size());
+            s2.replace(s2.begin(), s2.begin() + (long)i % s2.size(), (char)127, (char)'c');
+            s3.replace(s3.begin() + (long)i % s3.size(), s3.end(), (char)127, (char)'c');
+            s4.replace(s4.begin(), s4.begin() + (long)i % s4.size(), (char)127, (char)'c');
+            s5.replace(s5.begin() + (long)i % s2.size(), s5.end(), (char)127, (char)'c');
         }
 
         // size_type copy(value_type* ptr, size_type len, size_type pos = 0) const
@@ -2553,46 +2570,369 @@ void test_basic_string::perf1()
             char s4[1000];
 
             s1.copy(s2, i % s1.size(), 0);
-            s1.copy(s3, i % s1.size(), s1.size() - i % s1.size());
-            s1.copy(s4, s1.size() - i % s1.size(), i % s1.size());
+            s1.copy(s3, i % s1.size(), (s1.size() - 1) - i % (s1.size() - 1));
+            s1.copy(s4, s1.size() - i % s1.size(), i % (s1.size() - 1));
         }
 
         // void swap(container& str)
+        for (size_t i = 0; i < ONEMIL; ++i)
+        {
+            string s1(s0.c_str(), s0.size());
+
+            string s2, s3, s4, s5;
+            s2.swap(s1);
+            s3.swap(s2);
+            s4.swap(s3);
+            s5.swap(s4);
+        }
+
         // size_type find(const container& str, size_type pos = 0) const
+        for (size_t i = 0; i < ONEMIL; ++i)
+        {
+            string s1(s0.c_str(), s0.size());
+            string s2(s0.c_str() + i % s0.size());
+
+            size_t pos = s1.find(s2);
+            bool found = (pos != -1);
+            bool _break = found;
+        }
+
         // size_type find(const value_type* ptr, size_type pos = 0) const
+        for (size_t i = 0; i < ONEMIL; ++i)
+        {
+            string s1(s0.c_str(), s0.size());
+            string s2(s0.c_str() + i % s0.size());
+
+            size_t pos = s1.find(s2);
+            bool found = (pos != -1);
+            bool _break = found;
+        }
+
         // size_type find(const value_type* ptr, size_type pos, size_type n) const
+        for (size_t i = 0; i < ONEMIL; ++i)
+        {
+            string s1(s0.c_str(), s0.size());
+            string s2(s0.c_str() + i % s0.size());
+
+            size_t pos = s1.find(s2.c_str(), 0, s2.size());
+            bool found = (pos != -1);
+            bool _break = found;
+        }
+
         // size_type find(value_type ch, size_type pos = 0) const
+        for (size_t i = 0; i < ONEMIL; ++i)
+        {
+            string s1(s0.c_str(), s0.size());
+
+            size_t pos = s1.find('^', 0);
+            bool found = (pos != -1);
+            bool _break = found;
+        }
+
         // size_type rfind(const container& str, size_type pos = npos) const
+        for (size_t i = 0; i < ONEMIL; ++i)
+        {
+            string s1(s0.c_str(), s0.size());
+            string s2(s0.c_str() + i % s0.size());
+
+            size_t pos = s1.rfind(s2, s2.size() - i % s2.size());
+            bool found = (pos != -1);
+            bool _break = found;
+        }
+
         // size_type rfind(const value_type* ptr, size_type pos = npos) const
+        for (size_t i = 0; i < ONEMIL; ++i)
+        {
+            string s1(s0.c_str(), s0.size());
+            string s2(s0.c_str() + i % s0.size());
+
+            size_t pos = s1.rfind(s2.c_str(), s2.size() - i % s2.size());
+            bool found = (pos != -1);
+            bool _break = found;
+        }
+
         // size_type rfind(const value_type* ptr, size_type pos, size_type n) const
+        for (size_t i = 0; i < ONEMIL; ++i)
+        {
+            string s1(s0.c_str(), s0.size());
+            string s2(s0.c_str() + i % s0.size());
+
+            size_t pos = s1.rfind(s2.c_str(), s2.size() - i % s2.size(), s2.size());
+            bool found = (pos != -1);
+            bool _break = found;
+        }
+
         // size_type rfind(value_type ch, size_type pos = npos) const
+        for (size_t i = 0; i < ONEMIL; ++i)
+        {
+            string s1(s0.c_str(), s0.size());
+
+            size_t pos = s1.rfind('^', 0);
+            bool found = (pos != -1);
+            bool _break = found;
+        }
+
         // size_type find_first_of(const container& str, size_type pos = 0) const
+        for (size_t i = 0; i < ONEMIL; ++i)
+        {
+            string s1(s0.c_str(), s0.size());
+            string s2("%^(){}[]!~@#$%?:;<>");
+
+            size_t pos = s1.find_first_of(s2);
+            bool found = (pos != -1);
+            bool _break = found;
+        }
+
         // size_type find_first_of(const value_type* ptr, size_type pos = 0) const
+        for (size_t i = 0; i < ONEMIL; ++i)
+        {
+            string s1(s0.c_str(), s0.size());
+            string s2("%^(){}[]!~@#$%?:;<>");
+
+            size_t pos = s1.find_first_of(s2.c_str());
+            bool found = (pos != -1);
+            bool _break = found;
+        }
+
         // size_type find_first_of(const value_type* ptr, size_type pos, size_type n) const
+        for (size_t i = 0; i < ONEMIL; ++i)
+        {
+            string s1(s0.c_str(), s0.size());
+            string s2("%^(){}[]!~@#$%?:;<>");
+
+            size_t pos = s1.find_first_of(s2.c_str(), 0, s2.size());
+            bool found = (pos != -1);
+            bool _break = found;
+        }
+
         // size_type find_first_of(value_type c, size_type pos = 0) const
+        for (size_t i = 0; i < ONEMIL; ++i)
+        {
+            string s1(s0.c_str(), s0.size());
+
+            size_t pos = s1.find_first_of('^');
+            bool found = (pos != -1);
+            bool _break = found;
+        }
+
         // size_type find_last_of(const container& str, size_type pos = npos) const
+        for (size_t i = 0; i < ONEMIL; ++i)
+        {
+            string s1(s0.c_str(), s0.size());
+            string s2("%^(){}[]!~@#$%?:;<>");
+
+            size_t pos = s1.find_last_of(s2);
+            bool found = (pos != -1);
+            bool _break = found;
+        }
+
         // size_type find_last_of(const value_type* ptr, size_type pos = npos) const
+        for (size_t i = 0; i < ONEMIL; ++i)
+        {
+            string s1(s0.c_str(), s0.size());
+            string s2("%^(){}[]!~@#$%?:;<>");
+
+            size_t pos = s1.find_last_of(s2.c_str());
+            bool found = (pos != -1);
+            bool _break = found;
+        }
+
         // size_type find_last_of(const value_type* ptr, size_type pos, size_type n) const
+        for (size_t i = 0; i < ONEMIL; ++i)
+        {
+            string s1(s0.c_str(), s0.size());
+            string s2("%^(){}[]!~@#$%?:;<>");
+
+            size_t pos = s1.find_last_of(s2.c_str(), 0, s2.size());
+            bool found = (pos != -1);
+            bool _break = found;
+        }
+
         // size_type find_last_of(value_type c, size_type pos = npos) const
+        for (size_t i = 0; i < ONEMIL; ++i)
+        {
+            string s1(s0.c_str(), s0.size());
+
+            size_t pos = s1.find_last_of('^');
+            bool found = (pos != -1);
+            bool _break = found;
+        }
+
         // size_type find_first_not_of(const container& str, size_type pos = 0) const
+        for (size_t i = 0; i < ONEMIL; ++i)
+        {
+            string s1(s0.c_str(), s0.size());
+            string s2("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890");
+
+            size_t pos = s1.find_first_not_of(s2);
+            bool found = (pos != -1);
+            bool _break = found;
+        }
+
         // size_type find_first_not_of(const value_type* ptr, size_type pos = 0) const
+        for (size_t i = 0; i < ONEMIL; ++i)
+        {
+            string s1(s0.c_str(), s0.size());
+            string s2("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890");
+
+            size_t pos = s1.find_first_not_of(s2.c_str());
+            bool found = (pos != -1);
+            bool _break = found;
+        }
+
         // size_type find_first_not_of(const value_type* ptr, size_type pos, size_type n) const
+        for (size_t i = 0; i < ONEMIL; ++i)
+        {
+            string s1(s0.c_str(), s0.size());
+            string s2("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890");
+
+            size_t pos = s1.find_first_not_of(s2.c_str(), 0, s2.size());
+            bool found = (pos != -1);
+            bool _break = found;
+        }
+
         // size_type find_first_not_of(value_type c, size_type pos = 0) const
+        for (size_t i = 0; i < ONEMIL; ++i)
+        {
+            string s1(s0.c_str(), s0.size());
+
+            size_t pos = s1.find_first_not_of('^');
+            bool found = (pos != -1);
+            bool _break = found;
+        }
+
         // size_type find_last_not_of(const container& str, size_type pos = npos) const
+        for (size_t i = 0; i < ONEMIL; ++i)
+        {
+            string s1(s0.c_str(), s0.size());
+            string s2("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890");
+
+            size_t pos = s1.find_last_not_of(s2);
+            bool found = (pos != -1);
+            bool _break = found;
+        }
+
         // size_type find_last_not_of(const value_type* ptr, size_type pos = npos) const
+        for (size_t i = 0; i < ONEMIL; ++i)
+        {
+            string s1(s0.c_str(), s0.size());
+            string s2("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890");
+
+            size_t pos = s1.find_last_not_of(s2.c_str());
+            bool found = (pos != -1);
+            bool _break = found;
+        }
+
         // size_type find_last_not_of(const value_type* ptr, size_type pos, size_type n) const
+        for (size_t i = 0; i < ONEMIL; ++i)
+        {
+            string s1(s0.c_str(), s0.size());
+            string s2("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890");
+
+            size_t pos = s1.find_last_not_of(s2.c_str(), 0, s2.size());
+            bool found = (pos != -1);
+            bool _break = found;
+        }
+
         // size_type find_last_not_of(value_type c, size_type pos = npos) const
+        for (size_t i = 0; i < ONEMIL; ++i)
+        {
+            string s1(s0.c_str(), s0.size());
+
+            size_t pos = s1.find_last_not_of('^');
+            bool found = (pos != -1);
+            bool _break = found;
+        }
+
         // container substr(size_type pos = 0, size_type len = npos) const
+        for (size_t i = 0; i < ONEMIL; ++i)
+        {
+            string s1(s0.c_str(), s0.size());
+            string s2 = s1.substr(i % s1.size(), i % s1.size());
+            string s3 = s2.substr(i % s2.size(), i % s2.size());
+            
+            size_t s3sz = s3.size();
+            size_t _break = s3sz;
+        }
+
         // int compare(const container& str) const
+        for (size_t i = 0; i < ONEMIL; ++i)
+        {
+            string s1(s0.c_str(), i % s0.size());
+            string s2(s0.c_str(), i % s0.size());
+
+            if (s1.size()) s1[s1.size() - 1] = 'a';
+            if (s2.size()) s2[s2.size() - 1] = 'b';
+
+            int ret = s1.compare(s2);
+            int _break = ret;
+        }
+        
         // int compare(size_type pos, size_type len, const container& str) const
+        for (size_t i = 0; i < ONEMIL; ++i)
+        {
+            string s1(s0.c_str(), i % s0.size());
+            string s2(s0.c_str(), i % s0.size());
+
+            if (s1.size()) s1[s1.size() - 1] = 'a';
+            if (s2.size()) s2[s2.size() - 1] = 'b';
+
+            int ret = s1.compare(0, s1.size(), s2);
+            int _break = ret;
+        }
+
         // int compare(size_type pos, size_type len, const container& str, size_type subpos, size_type sublen) const
+        for (size_t i = 0; i < ONEMIL; ++i)
+        {
+            string s1(s0.c_str(), i % s0.size());
+            string s2(s0.c_str(), i % s0.size());
+
+            if (s1.size()) s1[s1.size() - 1] = 'a';
+            if (s2.size()) s2[s2.size() - 1] = 'b';
+
+            int ret = s1.compare(0, s1.size(), s2, 0, s2.size());
+            int _break = ret;
+        }
+
         // int compare(const value_type* ptr) const
+        for (size_t i = 0; i < ONEMIL; ++i)
+        {
+            string s1(s0.c_str(), i % s0.size());
+            string s2(s0.c_str(), i % s0.size());
+
+            if (s1.size()) s1[s1.size() - 1] = 'a';
+            if (s2.size()) s2[s2.size() - 1] = 'b';
+
+            int ret = s1.compare(s2.c_str());
+            int _break = ret;
+        }
+
         // int compare(size_type pos, size_type len, const value_type* ptr) const
+        for (size_t i = 0; i < ONEMIL; ++i)
+        {
+            string s1(s0.c_str(), i % s0.size());
+            string s2(s0.c_str(), i % s0.size());
+
+            if (s1.size()) s1[s1.size() - 1] = 'a';
+            if (s2.size()) s2[s2.size() - 1] = 'b';
+
+            int ret = s1.compare(0, s1.size(), s2.c_str());
+            int _break = ret;
+        }
+
         // int compare(size_type pos, size_type len, const value_type* ptr, size_type n) const
+        for (size_t i = 0; i < ONEMIL; ++i)
+        {
+            string s1(s0.c_str(), i % s0.size());
+            string s2(s0.c_str(), i % s0.size());
 
+            if (s1.size()) s1[s1.size() - 1] = 'a';
+            if (s2.size()) s2[s2.size() - 1] = 'b';
 
-
-
+            int ret = s1.compare(0, s1.size(), s2.c_str(), s2.size());
+            int _break = ret;
+        }
+#endif
     }
 
     // std::string
@@ -2600,5 +2940,15 @@ void test_basic_string::perf1()
         typedef std::basic_string<char> string;
         time_printer tp(msg2);
 
+        for (size_t i = 0; i < ONEMIL; ++i)
+        {
+            string s1(s0.c_str(), s0.size());
+            const string& cs1 = s1;
+            size_t ii = i % (s1.size() - 1);
+
+            if (s1[ii] == cs1[ii] &&
+                s1.at(ii) == cs1.at(ii))
+                continue;
+        }
     }
 }
