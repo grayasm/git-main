@@ -2038,17 +2038,16 @@ void test_basic_string::perf1()
             s4.append(s1.begin(), s1.end() - (long)i % s0.size());
             s5.append(s1.end(), s1.end());
         }
-#endif
 
         // inline container& append_(value_type* first, value_type* last)
-        // -- stl is worse 3.47 vs 2.44
-        for (size_t i = 0; i < ONEMIL; ++i)
+        // -- stl is worse 0.92 vs 0.67
+        for (size_t i = 0; i < ONEMIL / 4; ++i)
         {
-            string s1(s0.c_str(), s0.size());
-            string s2(s1);
-            string s3(s2);
-            string s4(s3);
-            string s5(s4);
+            string s1(s0.c_str(), s0.c_str() + s0.size());
+            string s2(s0.c_str(), s0.c_str() + s0.size());
+            string s3(s0.c_str(), s0.c_str() + s0.size());
+            string s4(s0.c_str(), s0.c_str() + s0.size());
+            string s5(s0.c_str(), s0.c_str() + s0.size());
 
             s2.append(&s1[0], &s1[s1.size() - 1] + 1);
             s3.append(&s1[0] + i % s0.size(), &s1[s1.size() - 1] + 1);
@@ -2056,12 +2055,16 @@ void test_basic_string::perf1()
             s5.append(&s1[s1.size() - 1] + 1, &s1[s1.size() - 1] + 1);
         }
 
-#if 0
         // inline container& append_(InputIterator& first, InputIterator& last, stl::forward_iterator_tag)
-        for (size_t i = 0; i < ONEMIL; ++i)
+        // ++ stl is better 1.04 vs 1.44
+        for (size_t i = 0; i < ONEMIL / 20; ++i)
         {
             const string s1(s0.c_str(), s0.size());
-            string s2, s3, s4, s5;
+            string s2(s0.c_str(), s0.c_str() + s0.size());
+            string s3(s0.c_str(), s0.c_str() + s0.size());
+            string s4(s0.c_str(), s0.c_str() + s0.size());
+            string s5(s0.c_str(), s0.c_str() + s0.size());
+
             s2.append(s1.rbegin(), s1.rend());
             s3.append(s1.rbegin() + (long)i % s0.size(), s1.rend());
             s4.append(s1.rbegin(), s1.rend() - (long)i % s0.size());
@@ -2069,27 +2072,40 @@ void test_basic_string::perf1()
         }
 
         // inline container& append_(InputIterator n, InputIterator value, stl::input_iterator_tag)
+        // ++ stl is better 1.09 vs 1.39
         for (size_t i = 0; i < ONEMIL; ++i)
         {
-            string s1, s2, s3, s4, s5;
+            string s1(s0.c_str(), s0.c_str() + 30);
+            string s2(s0.c_str(), s0.c_str() + 30);
+            string s3(s0.c_str(), s0.c_str() + 30);
+            string s4(s0.c_str(), s0.c_str() + 30);
+            string s5(s0.c_str(), s0.c_str() + 30);
+
             s1.append((char)0, (char)'c');
             s2.append((char)i % 127, (char)'c');
             s3.append((char)127, (char)'c');
             s4.append((char)i % 127, (char)'c');
             s5.append((char)i % 127, (char)'c');
         }
+#endif
 
         // void push_back(const value_type& x)
-        for (size_t i = 0; i < s0.size(); ++i)
+        for (size_t i = 0; i < ONEMIL; ++i)
         {
-            string s1, s2, s3, s4, s5;
-            s1.push_back(s0[i]);
-            s2.push_back(s0[i]);
-            s3.push_back(s0[i]);
-            s4.push_back(s0[i]);
-            s5.push_back(s0[i]);
+            string s1(s0.c_str(), s0.c_str() + 30);
+            string s2(s0.c_str(), s0.c_str() + 30);
+            string s3(s0.c_str(), s0.c_str() + 30);
+            string s4(s0.c_str(), s0.c_str() + 30);
+            string s5(s0.c_str(), s0.c_str() + 30);
+
+            s1.push_back(s0[i % s0.size()]);
+            s2.push_back(s0[i % s0.size()]);
+            s3.push_back(s0[i % s0.size()]);
+            s4.push_back(s0[i % s0.size()]);
+            s5.push_back(s0[i % s0.size()]);
         }
 
+#if 0
         // container& assign(const container& str)
         for (size_t i = 0; i < ONEMIL; ++i)
         {
@@ -2981,16 +2997,17 @@ void test_basic_string::perf1()
 
         for (size_t i = 0; i < ONEMIL; ++i)
         {
-            string s1(s0.c_str(), s0.size());
-            string s2(s1);
-            string s3(s2);
-            string s4(s3);
-            string s5(s4);
+            string s1(s0.c_str(), s0.c_str() + 30);
+            string s2(s0.c_str(), s0.c_str() + 30);
+            string s3(s0.c_str(), s0.c_str() + 30);
+            string s4(s0.c_str(), s0.c_str() + 30);
+            string s5(s0.c_str(), s0.c_str() + 30);
 
-            s2.append(&s1[0], &s1[s1.size() - 1] + 1);
-            s3.append(&s1[0] + i % s0.size(), &s1[s1.size() - 1] + 1);
-            s4.append(&s1[0], &s1[s1.size() - 1] + 1 - i % s0.size());
-            s5.append(&s1[s1.size() - 1] + 1, &s1[s1.size() - 1] + 1);
+            s1.push_back(s0[i % s0.size()]);
+            s2.push_back(s0[i % s0.size()]);
+            s3.push_back(s0[i % s0.size()]);
+            s4.push_back(s0[i % s0.size()]);
+            s5.push_back(s0[i % s0.size()]);
         }
     }
 }
