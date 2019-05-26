@@ -2072,41 +2072,31 @@ void test_basic_string::perf1()
         }
 
         // inline container& append_(InputIterator n, InputIterator value, stl::input_iterator_tag)
-        // ++ stl is better 1.09 vs 1.39
-        for (size_t i = 0; i < ONEMIL; ++i)
+        // -- stl is worse 1.74 vs 0.42
+        for (size_t i = 0; i < ONEMIL / 10; ++i)
         {
-            string s1(s0.c_str(), s0.c_str() + 30);
-            string s2(s0.c_str(), s0.c_str() + 30);
-            string s3(s0.c_str(), s0.c_str() + 30);
-            string s4(s0.c_str(), s0.c_str() + 30);
-            string s5(s0.c_str(), s0.c_str() + 30);
-
-            s1.append((char)0, (char)'c');
-            s2.append((char)i % 127, (char)'c');
-            s3.append((char)127, (char)'c');
-            s4.append((char)i % 127, (char)'c');
-            s5.append((char)i % 127, (char)'c');
+            string s1;
+            for (size_t j = 0; j < 50; ++j)
+            {
+                s1.append((char)0, (char)'c');
+                s1.append((char)j % 127, (char)'c');
+                s1.append((char)127, (char)'c'); // 127
+                s1.append((char)j % 127, (char)'c');
+                s1.append((char)j % 127, (char)'c');
+            }
         }
-#endif
 
         // void push_back(const value_type& x)
-        for (size_t i = 0; i < ONEMIL; ++i)
+        // ++ stl is better 0.99 vs 4.36
+        for (size_t i = 0; i < ONEMIL / 5; ++i)
         {
-            string s1(s0.c_str(), s0.c_str() + 30);
-            string s2(s0.c_str(), s0.c_str() + 30);
-            string s3(s0.c_str(), s0.c_str() + 30);
-            string s4(s0.c_str(), s0.c_str() + 30);
-            string s5(s0.c_str(), s0.c_str() + 30);
-
-            s1.push_back(s0[i % s0.size()]);
-            s2.push_back(s0[i % s0.size()]);
-            s3.push_back(s0[i % s0.size()]);
-            s4.push_back(s0[i % s0.size()]);
-            s5.push_back(s0[i % s0.size()]);
+            string s1;
+            for (size_t j = 0; j < s0.size(); ++j)
+                s1.push_back(s0[j]);
         }
 
-#if 0
         // container& assign(const container& str)
+        // -- stl is worse 1.61 vs 1.25
         for (size_t i = 0; i < ONEMIL; ++i)
         {
             string s1(s0.c_str(), s0.size());
@@ -2118,6 +2108,7 @@ void test_basic_string::perf1()
         }
 
         // container& assign(const container& str, size_type subpos, size_type sublen)
+        // -- stl is worse 1.58 vs 0.96
         for (size_t i = 0; i < ONEMIL; ++i)
         {
             string s1(s0.c_str(), s0.size());
@@ -2129,6 +2120,7 @@ void test_basic_string::perf1()
         }
 
         // container& assign(const value_type* ptr, size_type n)
+        // -- stl is worse 1.13 vs 0.62
         for (size_t i = 0; i < ONEMIL; ++i)
         {
             string s1(s0.c_str(), s0.size());
@@ -2139,16 +2131,19 @@ void test_basic_string::perf1()
         }
 
         // container& assign(const value_type* ptr)
-        for (size_t i = 0; i < ONEMIL; ++i)
+        // -- stl is worse 1.70 vs 1.69
+        for (size_t i = 0; i < ONEMIL / 5; ++i)
         {
             string s1(s0.c_str(), s0.size());
-            string s2, s3, s4, s5;
+            string s2, s3, s4;
             s2.assign(s1.c_str());
             s3.assign(s1.c_str());
             s4.assign(s1.c_str());
         }
 
+
         // container& assign(size_type n, const value_type& c)
+        // -- stl is worse 0.80 vs 0.43
         for (size_t i = 0; i < ONEMIL; ++i)
         {
             string s1, s2, s3, s4, s5;
@@ -2158,6 +2153,7 @@ void test_basic_string::perf1()
         }
 
         // inline container& assign_(iterator& first, iterator& last)
+        // -- stl is worse 1.39 vs 0.85
         for (size_t i = 0; i < ONEMIL; ++i)
         {
             string s1(s0.c_str(), s0.size());
@@ -2169,6 +2165,7 @@ void test_basic_string::perf1()
         }
 
         // inline container& assign_(const_iterator& first, const_iterator& last)
+        // -- stl is worse 1.34 vs 0.79
         for (size_t i = 0; i < ONEMIL; ++i)
         {
             const string s1(s0.c_str(), s0.size());
@@ -2180,6 +2177,7 @@ void test_basic_string::perf1()
         }
 
         // inline container& assign_(value_type* first, value_type* last)
+        // -- stl is worse 1.38 vs 0.80
         for (size_t i = 0; i < ONEMIL; ++i)
         {
             string s1(s0.c_str(), s0.size());
@@ -2191,7 +2189,9 @@ void test_basic_string::perf1()
             s5.assign(&s1[s1.size() - 1] + 1, &s1[s1.size() - 1] + 1);
         }
 
+
         // inline container& assign_(const value_type* first, const value_type* last)
+        // -- stl is worse 1.41 vs 0.80
         for (size_t i = 0; i < ONEMIL; ++i)
         {
             string s1(s0.c_str(), s0.size());
@@ -2203,9 +2203,9 @@ void test_basic_string::perf1()
             s5.assign((const char*)(&s1[s1.size() - 1] + 1), (const char*)(&s1[s1.size() - 1] + 1));
         }
 
-
         // inline container& assign_(InputIterator& first, InputIterator& last, stl::forward_iterator_tag)
-        for (size_t i = 0; i < ONEMIL; ++i)
+        // ++ stl is better 0.94 vs 1.46
+        for (size_t i = 0; i < ONEMIL / 20; ++i)
         {
             const string s1(s0.c_str(), s0.size());
             string s2, s3, s4, s5;
@@ -2216,17 +2216,20 @@ void test_basic_string::perf1()
         }
 
         // inline container& assign_(InputIterator count, InputIterator value, stl::input_iterator_tag)
+        // -- stl is worse 0.60 vs 0.18
         for (size_t i = 0; i < ONEMIL; ++i)
         {
-            string s1, s2, s3, s4, s5;
-            s1.assign((char)0, (char)'c');
-            s2.assign((char)127, (char)'c');
-            s3.assign((char)i % 127, (char)'c');
-            s4.assign((char)127, (char)'c');
-            s5.assign((char)0, (char)'c');
+            string s1, s2, s3;
+            for (size_t j = 0; j < 5; ++j)
+            {
+                s1.assign((char)0, (char)'c');
+                s2.assign((char)127, (char)'c');
+                s3.assign((char)j % 127, (char)'c');
+            }
         }
 
         // container& insert(size_type pos, const container& str)
+        // -- stl is worse 2.17 vs 1.62
         for (size_t i = 0; i < ONEMIL; ++i)
         {
             string s1(s0.c_str(), i % s0.size());
@@ -2238,16 +2241,18 @@ void test_basic_string::perf1()
         }
 
         // container& insert(size_type pos, const container& str, size_type subpos, size_type sublen)
-        for (size_t i = 1; i < ONEMIL; ++i)
+        // -- stl is worse 0.72 vs 0.54
+        for (size_t i = 0; i < ONEMIL / 5; ++i)
         {
-            string s1(s0.c_str(), i % s0.size());
+            string s1(s0.c_str(), s0.size());
             string s2(s1), s3(s1), s4(s1);
             s2.insert(0, s2, i % s2.size(), -1);
             s3.insert(s3.size() / 2, s3, i % s3.size(), s3.size());
-            s4.insert(s4.size() - 1, s4, 0, -1);
+            s4.insert(s4.size() - 1, s4, 0, -1);            
         }
 
         // container& insert(size_type pos, const value_type* ptr)
+        // ++ stl is better 2.24 vs 5.38
         for (size_t i = 0; i < ONEMIL; ++i)
         {
             string s1(s0.c_str(), i % s0.size());
@@ -2259,6 +2264,7 @@ void test_basic_string::perf1()
         }
 
         // container& insert(size_type pos, const value_type* ptr, size_type n)
+        // -- stl is worse 2.21 vs 1.74
         for (size_t i = 0; i < ONEMIL; ++i)
         {
             string s1(s0.c_str(), i % s0.size());
@@ -2270,6 +2276,7 @@ void test_basic_string::perf1()
         }
 
         // container& insert(size_type pos, size_type n, value_type c)
+        // -- stl is worse 2.20 vs 1.62
         for (size_t i = 0; i < ONEMIL; ++i)
         {
             string s1(s0.c_str(), i % s0.size());
@@ -2282,6 +2289,7 @@ void test_basic_string::perf1()
         }
 
         // void insert(iterator position, size_type n, value_type c)
+        // -- stl is worse 2.18 vs 1.62
         for (size_t i = 0; i < ONEMIL; ++i)
         {
             string s1(s0.c_str(), i % s0.size());
@@ -2294,6 +2302,7 @@ void test_basic_string::perf1()
         }
 
         // iterator insert(iterator position, value_type c)
+        // -- stl is worse 1.74 vs 0.81
         for (size_t i = 0; i < ONEMIL; ++i)
         {
             string s1(s0.c_str(), i % s0.size());
@@ -2306,7 +2315,8 @@ void test_basic_string::perf1()
         }
 
         // inline void insert_(iterator& position, iterator& first, iterator& last)
-        for (size_t i = 0; i < ONEMIL; ++i)
+        // -- stl is worse 0.82 vs 0.62
+        for (size_t i = 0; i < ONEMIL / 5; ++i)
         {
             string s1(s0.c_str(), s0.size());
             string s2(s1), s3(s1), s4(s1), s5(s1);
@@ -2318,7 +2328,8 @@ void test_basic_string::perf1()
         }
 
         // inline void insert_(iterator& position, const_iterator& first, const_iterator& last)
-        for (size_t i = 0; i < ONEMIL; ++i)
+        // -- stl is worse 0.81 vs 0.60
+        for (size_t i = 0; i < ONEMIL / 5; ++i)
         {
             string s1(s0.c_str(), s0.size());
             string s2(s1), s3(s1), s4(s1), s5(s1);
@@ -2334,7 +2345,8 @@ void test_basic_string::perf1()
         }
 
         // inline void insert_(iterator& position, value_type* first, value_type* last)
-        for (size_t i = 0; i < ONEMIL; ++i)
+        // -- stl is worse 0.79 vs 0.58
+        for (size_t i = 0; i < ONEMIL / 5; ++i)
         {
             string s1(s0.c_str(), s0.size());
             string s2(s1), s3(s1), s4(s1), s5(s1);
@@ -2344,6 +2356,7 @@ void test_basic_string::perf1()
             s4.insert(s4.begin() + (long)i % s4.size(), &*s4.begin(), &*s4.begin() + s4.size() - (long)i % s0.size());
             s5.insert(s5.end(), &*s5.begin() + s5.size(), &*s5.begin() + s5.size());
         }
+#endif
 
         // inline void insert_(iterator& position, const value_type* first, const value_type* last)
         for (size_t i = 0; i < ONEMIL; ++i)
@@ -2357,6 +2370,7 @@ void test_basic_string::perf1()
             s5.insert(s5.end(), (const char*)(&*s5.begin() + s5.size()), (const char*)(&*s5.begin() + s5.size()));
         }
 
+#if 0
         // inline void insert_(iterator& position, InputIterator& first, InputIterator& last, stl::forward_iterator_tag)
         for (size_t i = 0; i < ONEMIL; ++i)
         {
@@ -2997,17 +3011,13 @@ void test_basic_string::perf1()
 
         for (size_t i = 0; i < ONEMIL; ++i)
         {
-            string s1(s0.c_str(), s0.c_str() + 30);
-            string s2(s0.c_str(), s0.c_str() + 30);
-            string s3(s0.c_str(), s0.c_str() + 30);
-            string s4(s0.c_str(), s0.c_str() + 30);
-            string s5(s0.c_str(), s0.c_str() + 30);
+            string s1(s0.c_str(), s0.size());
+            string s2(s1), s3(s1), s4(s1), s5(s1);
 
-            s1.push_back(s0[i % s0.size()]);
-            s2.push_back(s0[i % s0.size()]);
-            s3.push_back(s0[i % s0.size()]);
-            s4.push_back(s0[i % s0.size()]);
-            s5.push_back(s0[i % s0.size()]);
+            s2.insert(s2.begin() + (long)i % s2.size(), (const char*)&*s2.begin(), (const char*)(&*s2.begin() + s2.size()));
+            s3.insert(s3.begin() + (long)i % s3.size(), (const char*)(&*s3.begin() + (long)i % s0.size()), (const char*)(&*s3.begin() + s3.size()));
+            s4.insert(s4.begin() + (long)i % s4.size(), (const char*)&*s4.begin(), (const char*)(&*s4.begin() + s4.size() - (long)i % s0.size()));
+            s5.insert(s5.end(), (const char*)(&*s5.begin() + s5.size()), (const char*)(&*s5.begin() + s5.size()));
         }
     }
 }
