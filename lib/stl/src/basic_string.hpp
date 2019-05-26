@@ -59,25 +59,25 @@ namespace stl
         friend class stl::basic_string<typename container::value_type, typename container::allocator_type>;
         friend class stl::basic_string_const_iterator<container>;
 
-
     private:
         basic_string_iterator(container* cont, size_type pos)
         {
-            m_cont = cont;
-            m_pos = pos;
+            // g++: m_cont was not declared in this scope
+            this->m_cont = cont;
+            this->m_pos = pos;
         }
 
     public:
         basic_string_iterator()
         {
-            m_cont = 0;
-            m_pos = 0;
+            this->m_cont = 0;
+            this->m_pos = 0;
         }
 
         basic_string_iterator(const basic_string_iterator& it)
         {
-            m_cont = it.m_cont;
-            m_pos = it.m_pos;
+            this->m_cont = it.m_cont;
+            this->m_pos = it.m_pos;
         }
 
         ~basic_string_iterator()
@@ -88,8 +88,8 @@ namespace stl
         {
             if (this != &it)
             {
-                m_cont = it.m_cont;
-                m_pos = it.m_pos;
+                this->m_cont = it.m_cont;
+                this->m_pos = it.m_pos;
             }
 
             return *this;
@@ -97,49 +97,49 @@ namespace stl
 
         reference operator*() const
         {
-            if (!m_cont)
+            if (!this->m_cont)
                 throw stl::exception("invalid iterator");
 
-            return *(m_cont->m_data + m_pos);
+            return *(this->m_cont->m_data + this->m_pos);
         }
 
         pointer operator->() const
         {
-            if (!m_cont)
+            if (!this->m_cont)
                 throw stl::exception("invalid iterator");
 
-            return (m_cont->m_data + m_pos);
+            return (this->m_cont->m_data + this->m_pos);
         }
 
         basic_string_iterator& operator++()
         {
-            ++m_pos;
+            ++this->m_pos;
             return *this;
         }
 
         basic_string_iterator operator++(int)
         {
             basic_string_iterator<container> tmp = *this;
-            ++m_pos;
+            ++this->m_pos;
             return tmp;
         }
 
         basic_string_iterator& operator--()
         {
-            --m_pos;
+            --this->m_pos;
             return *this;
         }
 
         basic_string_iterator operator--(int)
         {
             basic_string_iterator<container> tmp = *this;
-            --m_pos;
+            --this->m_pos;
             return tmp;
         }
 
         basic_string_iterator& operator+=(difference_type off)
         {
-            m_pos += off;
+            this->m_pos += off;
             return *this;
         }
 
@@ -151,7 +151,7 @@ namespace stl
 
         basic_string_iterator& operator-=(difference_type off)
         {
-            m_pos -= off;
+            this->m_pos -= off;
             return *this;
         }
 
@@ -163,69 +163,69 @@ namespace stl
 
         difference_type operator-(const basic_string_iterator& it) const
         {
-            return static_cast<difference_type>(m_pos - it.m_pos);
+            return static_cast<difference_type>(this->m_pos - it.m_pos);
         }
 
         bool operator==(const basic_string_iterator& it) const
         {
 #ifdef DEBUG
-            if (m_cont != it.m_cont)
+            if (this->m_cont != it.m_cont)
                 throw stl::exception("invalid iterator");
 #endif
-            return (m_pos == it.m_pos);
+            return (this->m_pos == it.m_pos);
         }
 
         bool operator!=(const basic_string_iterator& it) const
         {
 #ifdef DEBUG
-            if (m_cont != it.m_cont)
+            if (this->m_cont != it.m_cont)
                 throw stl::exception("invalid iterator");
 #endif
-            return (m_pos != it.m_pos);
+            return (this->m_pos != it.m_pos);
         }
 
         bool operator<(const basic_string_iterator& it) const
         {
 #ifdef DEBUG
-            if (m_cont != it.m_cont)
+            if (this->m_cont != it.m_cont)
                 throw stl::exception("invalid iterator");
 #endif
-            return (m_pos < it.m_pos);
+            return (this->m_pos < it.m_pos);
         }
 
         bool operator>(const basic_string_iterator& it) const
         {
 #ifdef DEBUG
-            if (m_cont != it.m_cont)
+            if (this->m_cont != it.m_cont)
                 throw stl::exception("invalid iterator");
 #endif
-            return (m_pos > it.m_pos);
+            return (this->m_pos > it.m_pos);
         }
 
         bool operator<=(const basic_string_iterator& it) const
         {
 #ifdef DEBUG
-            if (m_cont != it.m_cont)
+            if (this->m_cont != it.m_cont)
                 throw stl::exception("invalid iterator");
 #endif
-            return (m_pos <= it.m_pos);
+            return (this->m_pos <= it.m_pos);
         }
 
         bool operator>=(const basic_string_iterator& it) const
         {
 #ifdef DEBUG
-            if (m_cont != it.m_cont)
+            if (this->m_cont != it.m_cont)
                 throw stl::exception("invalid iterator");
 #endif
-            return (m_pos >= it.m_pos);
+            return (this->m_pos >= it.m_pos);
         }
 
         reference operator[](difference_type off) const
         {
-            if (!m_cont)
+            if (!this->m_cont)
                 throw stl::exception("invalid iterator");
 
-            return *(m_cont->m_data + m_pos + off);
+            return *(this->m_cont->m_data + this->m_pos + off);
         }
     };  // basic_string_iterator
 
@@ -249,27 +249,28 @@ namespace stl
     private:
         basic_string_const_iterator(container* cont, size_type pos)
         {
-            m_cont = cont;
-            m_pos = pos;
+            // g++: m_cont was not declared in this scope
+            this->m_cont = cont;
+            this->m_pos = pos;
         }
 
     public:
         basic_string_const_iterator()
         {
-            m_cont = 0;
-            m_pos = 0;
+            this->m_cont = 0;
+            this->m_pos = 0;
         }
 
         basic_string_const_iterator(const basic_string_const_iterator& it)
         {
-            m_cont = it.m_cont;
-            m_pos = it.m_pos;
+            this->m_cont = it.m_cont;
+            this->m_pos = it.m_pos;
         }
 
         basic_string_const_iterator(const basic_string_iterator<container>& it)
         {
-            m_cont = it.m_cont;
-            m_pos = it.m_pos;
+            this->m_cont = it.m_cont;
+            this->m_pos = it.m_pos;
         }
 
         ~basic_string_const_iterator()
@@ -280,8 +281,8 @@ namespace stl
         {
             if (this != &it)
             {
-                m_cont = it.m_cont;
-                m_pos = it.m_pos;
+                this->m_cont = it.m_cont;
+                this->m_pos = it.m_pos;
             }
 
             return *this;
@@ -289,57 +290,57 @@ namespace stl
 
         basic_string_const_iterator& operator=(const basic_string_iterator<container>& it)
         {
-            m_cont = it.m_cont;
-            m_pos = it.m_pos;
+            this->m_cont = it.m_cont;
+            this->m_pos = it.m_pos;
 
             return *this;
         }
 
         reference operator*() const
         {
-            if (!m_cont)
+            if (!this->m_cont)
                 throw stl::exception("invalid iterator");
 
-            return *(m_cont->m_data + m_pos);
+            return *(this->m_cont->m_data + this->m_pos);
         }
 
         pointer operator->() const
         {
-            if (!m_cont)
+            if (!this->m_cont)
                 throw stl::exception("invalid iterator");
 
-            return (m_cont->m_data + m_pos);
+            return (this->m_cont->m_data + this->m_pos);
         }
 
         basic_string_const_iterator& operator++()
         {
-            ++m_pos;
+            ++this->m_pos;
             return *this;
         }
 
         basic_string_const_iterator operator++(int)
         {
             basic_string_const_iterator<container> tmp = *this;
-            ++m_pos;
+            ++this->m_pos;
             return tmp;
         }
 
         basic_string_const_iterator& operator--()
         {
-            --m_pos;
+            --this->m_pos;
             return *this;
         }
 
         basic_string_const_iterator operator--(int)
         {
             basic_string_const_iterator<container> tmp = *this;
-            --m_pos;
+            --this->m_pos;
             return tmp;
         }
 
         basic_string_const_iterator& operator+=(difference_type off)
         {
-            m_pos += off;
+            this->m_pos += off;
             return *this;
         }
 
@@ -351,7 +352,7 @@ namespace stl
 
         basic_string_const_iterator& operator-=(difference_type off)
         {
-            m_pos -= off;
+            this->m_pos -= off;
             return *this;
         }
 
@@ -363,69 +364,69 @@ namespace stl
 
         difference_type operator-(const basic_string_const_iterator& it) const
         {
-            return static_cast<difference_type>(m_pos - it.m_pos);
+            return static_cast<difference_type>(this->m_pos - it.m_pos);
         }
 
         bool operator==(const basic_string_const_iterator& it) const
         {
 #ifdef DEBUG
-            if (m_cont != it.m_cont)
+            if (this->m_cont != it.m_cont)
                 throw stl::exception("invalid iterator");
 #endif
-            return (m_pos == it.m_pos);
+            return (this->m_pos == it.m_pos);
         }
 
         bool operator!=(const basic_string_const_iterator& it) const
         {
 #ifdef DEBUG
-            if (m_cont != it.m_cont)
+            if (this->m_cont != it.m_cont)
                 throw stl::exception("invalid iterator");
 #endif
-            return (m_pos != it.m_pos);
+            return (this->m_pos != it.m_pos);
         }
 
         bool operator<(const basic_string_const_iterator& it) const
         {
 #ifdef DEBUG
-            if (m_cont != it.m_cont)
+            if (this->m_cont != it.m_cont)
                 throw stl::exception("invalid iterator");
 #endif
-            return (m_pos < it.m_pos);
+            return (this->m_pos < it.m_pos);
         }
 
         bool operator>(const basic_string_const_iterator& it) const
         {
 #ifdef DEBUG
-            if (m_cont != it.m_cont)
+            if (this->m_cont != it.m_cont)
                 throw stl::exception("invalid iterator");
 #endif
-            return (m_pos > it.m_pos);
+            return (this->m_pos > it.m_pos);
         }
 
         bool operator<=(const basic_string_const_iterator& it) const
         {
 #ifdef DEBUG
-            if (m_cont != it.m_cont)
+            if (this->m_cont != it.m_cont)
                 throw stl::exception("invalid iterator");
 #endif
-            return (m_pos <= it.m_pos);
+            return (this->m_pos <= it.m_pos);
         }
 
         bool operator>=(const basic_string_const_iterator& it) const
         {
 #ifdef DEBUG
-            if (m_cont != it.m_cont)
+            if (this->m_cont != it.m_cont)
                 throw stl::exception("invalid iterator");
 #endif
-            return (m_pos >= it.m_pos);
+            return (this->m_pos >= it.m_pos);
         }
 
         reference operator[](difference_type off) const
         {
-            if (!m_cont)
+            if (!this->m_cont)
                 throw stl::exception("invalid iterator");
 
-            return (m_cont->m_data + m_pos + off);
+            return (this->m_cont->m_data + this->m_pos + off);
         }
     };  // basic_string_const_iterator
 
@@ -451,21 +452,22 @@ namespace stl
     private:
         basic_string_reverse_iterator(container* cont, size_type pos)
         {
-            m_cont = cont;
-            m_pos = pos;
+            // g++: m_cont was not declared in this scope
+            this->m_cont = cont;
+            this->m_pos = pos;
         }
 
     public:
         basic_string_reverse_iterator()
         {
-            m_cont = 0;
-            m_pos = 0;
+            this->m_cont = 0;
+            this->m_pos = 0;
         }
 
         basic_string_reverse_iterator(const basic_string_reverse_iterator& it)
         {
-            m_cont = it.m_cont;
-            m_pos = it.m_pos;
+            this->m_cont = it.m_cont;
+            this->m_pos = it.m_pos;
         }
 
         ~basic_string_reverse_iterator()
@@ -476,8 +478,8 @@ namespace stl
         {
             if (this != &it)
             {
-                m_cont = it.m_cont;
-                m_pos = it.m_pos;
+                this->m_cont = it.m_cont;
+                this->m_pos = it.m_pos;
             }
 
             return *this;
@@ -485,49 +487,49 @@ namespace stl
 
         reference operator*() const
         {
-            if (!m_cont)
+            if (!this->m_cont)
                 throw stl::exception("invalid iterator");
 
-            return *(m_cont->m_data + m_pos);
+            return *(this->m_cont->m_data + this->m_pos);
         }
 
         pointer operator->() const
         {
-            if (!m_cont)
+            if (!this->m_cont)
                 throw stl::exception("invalid iterator");
 
-            return (m_cont->m_data + m_pos);
+            return (this->m_cont->m_data + this->m_pos);
         }
 
         basic_string_reverse_iterator& operator++()
         {
-            --m_pos;
+            --this->m_pos;
             return *this;
         }
 
         basic_string_reverse_iterator operator++(int)
         {
             basic_string_reverse_iterator<container> tmp = *this;
-            --m_pos;
+            --this->m_pos;
             return tmp;
         }
 
         basic_string_reverse_iterator& operator--()
         {
-            ++m_pos;
+            ++this->m_pos;
             return *this;
         }
 
         basic_string_reverse_iterator operator--(int)
         {
             basic_string_reverse_iterator<container> tmp = *this;
-            ++m_pos;
+            ++this->m_pos;
             return tmp;
         }
 
         basic_string_reverse_iterator& operator+=(difference_type off)
         {
-            m_pos -= off;
+            this->m_pos -= off;
             return *this;
         }
 
@@ -539,7 +541,7 @@ namespace stl
 
         basic_string_reverse_iterator& operator-=(difference_type off)
         {
-            m_pos += off;
+            this->m_pos += off;
             return *this;
         }
 
@@ -551,69 +553,69 @@ namespace stl
 
         difference_type operator-(const basic_string_reverse_iterator& it) const
         {
-            return static_cast<difference_type>(it.m_pos - m_pos);
+            return static_cast<difference_type>(it.m_pos - this->m_pos);
         }
 
         bool operator==(const basic_string_reverse_iterator& it) const
         {
 #ifdef DEBUG
-            if (m_cont != it.m_cont)
+            if (this->m_cont != it.m_cont)
                 throw stl::exception("invalid iterator");
 #endif
-            return (it.m_pos == m_pos);
+            return (it.m_pos == this->m_pos);
         }
 
         bool operator!=(const basic_string_reverse_iterator& it) const
         {
 #ifdef DEBUG
-            if (m_cont != it.m_cont)
+            if (this->m_cont != it.m_cont)
                 throw stl::exception("invalid iterator");
 #endif
-            return (it.m_pos != m_pos);
+            return (it.m_pos != this->m_pos);
         }
 
         bool operator<(const basic_string_reverse_iterator& it) const
         {
 #ifdef DEBUG
-            if (m_cont != it.m_cont)
+            if (this->m_cont != it.m_cont)
                 throw stl::exception("invalid iterator");
 #endif
-            return (m_pos > it.m_pos);
+            return (this->m_pos > it.m_pos);
         }
 
         bool operator>(const basic_string_reverse_iterator& it) const
         {
 #ifdef DEBUG
-            if (m_cont != it.m_cont)
+            if (this->m_cont != it.m_cont)
                 throw stl::exception("invalid iterator");
 #endif
-            return (m_pos < it.m_pos);
+            return (this->m_pos < it.m_pos);
         }
 
         bool operator<=(const basic_string_reverse_iterator& it) const
         {
 #ifdef DEBUG
-            if (m_cont != it.m_cont)
+            if (this->m_cont != it.m_cont)
                 throw stl::exception("invalid iterator");
 #endif
-            return (m_pos >= it.m_pos);
+            return (this->m_pos >= it.m_pos);
         }
 
         bool operator>=(const basic_string_reverse_iterator& it) const
         {
 #ifdef DEBUG
-            if (m_cont != it.m_cont)
+            if (this->m_cont != it.m_cont)
                 throw stl::exception("invalid iterator");
 #endif
-            return (m_pos <= it.m_pos);
+            return (this->m_pos <= it.m_pos);
         }
 
         reference operator[](difference_type off) const
         {
-            if (!m_cont)
+            if (!this->m_cont)
                 throw stl::exception("invalid iterator");
 
-            return *(m_cont->m_data + m_pos - off)
+            return *(this->m_cont->m_data + this->m_pos - off);
         }
     };  // basic_string_reverse_iterator
 
@@ -638,21 +640,22 @@ namespace stl
     private:
         basic_string_const_reverse_iterator(container* cont, size_type pos)
         {
-            m_cont = cont;
-            m_pos = pos;
+            // g++: m_cont was not declared in this scope
+            this->m_cont = cont;
+            this->m_pos = pos;
         }
 
     public:
         basic_string_const_reverse_iterator()
         {
-            m_cont = 0;
-            m_pos = 0;
+            this->m_cont = 0;
+            this->m_pos = 0;
         }
 
         basic_string_const_reverse_iterator(const basic_string_const_reverse_iterator& it)
         {
-            m_cont = it.m_cont;
-            m_pos = it.m_pos;
+            this->m_cont = it.m_cont;
+            this->m_pos = it.m_pos;
         }
 
         ~basic_string_const_reverse_iterator()
@@ -663,71 +666,71 @@ namespace stl
         {
             if (this != &it)
             {
-                m_cont = it.m_cont;
-                m_pos = it.m_pos;
+                this->m_cont = it.m_cont;
+                this->m_pos = it.m_pos;
             }
             return *this;
         }
 
         basic_string_const_reverse_iterator& operator=(const basic_string_reverse_iterator<container>& it)
         {
-            m_cont = it.m_cont;
-            m_pos = it.m_pos;
+            this->m_cont = it.m_cont;
+            this->m_pos = it.m_pos;
 
             return *this;
         }
 
         basic_string_const_reverse_iterator(const basic_string_reverse_iterator<container>& it)
         {
-            m_cont = it.m_cont;
-            m_pos = it.m_pos;
+            this->m_cont = it.m_cont;
+            this->m_pos = it.m_pos;
         }
 
         reference operator*() const
         {
-            if (!m_cont)
+            if (!this->m_cont)
                 throw stl::exception("invalid iterator");
 
-            return *(m_cont->m_data + m_pos);
+            return *(this->m_cont->m_data + this->m_pos);
         }
 
         pointer operator->() const
         {
-            if (!m_cont)
+            if (!this->m_cont)
                 throw stl::exception("invalid iterator");
 
-            return (m_cont->m_data + m_pos);
+            return (this->m_cont->m_data + this->m_pos);
         }
 
         basic_string_const_reverse_iterator& operator++()
         {
-            --m_pos;
+            --this->m_pos;
             return *this;
         }
 
         basic_string_const_reverse_iterator operator++(int)
         {
             basic_string_const_reverse_iterator<container> tmp = *this;
-            --m_pos;
+            --this->m_pos;
             return tmp;
         }
 
         basic_string_const_reverse_iterator& operator--()
         {
-            ++m_pos;
+            ++this->m_pos;
             return *this;
         }
 
         basic_string_const_reverse_iterator operator--(int)
         {
             basic_string_const_reverse_iterator<container> tmp = *this;
-            ++m_pos;
+            ++this->m_pos;
             return tmp;
         }
 
         basic_string_const_reverse_iterator& operator+=(difference_type off)
         {
-            m_pos -= off;
+            this->m_pos -= off;
             return *this;
         }
 
@@ -739,7 +742,7 @@ namespace stl
 
         basic_string_const_reverse_iterator& operator-=(difference_type off)
         {
-            m_pos += off;
+            this->m_pos += off;
             return *this;
         }
 
@@ -751,69 +754,69 @@ namespace stl
 
         difference_type operator-(const basic_string_const_reverse_iterator& it) const
         {
-            return static_cast<difference_type>(it.m_pos - m_pos);
+            return static_cast<difference_type>(it.m_pos - this->m_pos);
         }
 
         bool operator==(const basic_string_const_reverse_iterator& it) const
         {
 #ifdef DEBUG
-            if (m_cont != it.m_cont)
+            if (this->m_cont != it.m_cont)
                 throw stl::exception("invalid iterator");
 #endif
-            return (m_pos == it.m_pos);
+            return (this->m_pos == it.m_pos);
         }
 
         bool operator!=(const basic_string_const_reverse_iterator& it) const
         {
 #ifdef DEBUG
-            if (m_cont != it.m_cont)
+            if (this->m_cont != it.m_cont)
                 throw stl::exception("invalid iterator");
 #endif
-            return (m_pos != it.m_pos);
+            return (this->m_pos != it.m_pos);
         }
 
         bool operator<(const basic_string_const_reverse_iterator& it) const
         {
 #ifdef DEBUG
-            if (m_cont != it.m_cont)
+            if (this->m_cont != it.m_cont)
                 throw stl::exception("invalid iterator");
 #endif
-            return (m_pos > it.m_pos);
+            return (this->m_pos > it.m_pos);
         }
 
         bool operator>(const basic_string_const_reverse_iterator& it) const
         {
 #ifdef DEBUG
-            if (m_cont != it.m_cont)
+            if (this->m_cont != it.m_cont)
                 throw stl::exception("invalid iterator");
 #endif
-            return (m_pos < it.m_pos);
+            return (this->m_pos < it.m_pos);
         }
 
         bool operator<=(const basic_string_const_reverse_iterator& it) const
         {
 #ifdef DEBUG
-            if (m_cont != it.m_cont)
+            if (this->m_cont != it.m_cont)
                 throw stl::exception("invalid iterator");
 #endif
-            return (m_pos >= it.m_pos);
+            return (this->m_pos >= it.m_pos);
         }
 
         bool operator>=(const basic_string_const_reverse_iterator& it) const
         {
 #ifdef DEBUG
-            if (m_cont != it.m_cont)
+            if (this->m_cont != it.m_cont)
                 throw stl::exception("invalid iterator");
 #endif
-            return (m_pos <= it.m_pos);
+            return (this->m_pos <= it.m_pos);
         }
 
         reference operator[](difference_type off) const
         {
-            if (!m_cont)
+            if (!this->m_cont)
                 throw stl::exception("invalid iterator");
 
-            return (m_cont->m_data + m_pos - off);
+            return (this->m_cont->m_data + this->m_pos - off);
         }
     };  // basic_string_const_reverse_iterator
 
@@ -840,10 +843,10 @@ namespace stl
         typedef basic_string_reverse_iterator<container>    reverse_iterator;
         typedef basic_string_const_reverse_iterator<container>  const_reverse_iterator;
 
-        friend class iterator;
-        friend class const_iterator;
-        friend class reverse_iterator;
-        friend class const_reverse_iterator;
+        friend class basic_string_iterator<container>;
+        friend class basic_string_const_iterator<container>;
+        friend class basic_string_reverse_iterator<container>;
+        friend class basic_string_const_reverse_iterator<container>;
 
     private:
         value_type*             m_data;

@@ -2356,9 +2356,9 @@ void test_basic_string::perf1()
             s4.insert(s4.begin() + (long)i % s4.size(), &*s4.begin(), &*s4.begin() + s4.size() - (long)i % s0.size());
             s5.insert(s5.end(), &*s5.begin() + s5.size(), &*s5.begin() + s5.size());
         }
-#endif
 
         // inline void insert_(iterator& position, const value_type* first, const value_type* last)
+        // -- stl is worse 2.44 vs 2.23
         for (size_t i = 0; i < ONEMIL; ++i)
         {
             string s1(s0.c_str(), s0.size());
@@ -2370,9 +2370,9 @@ void test_basic_string::perf1()
             s5.insert(s5.end(), (const char*)(&*s5.begin() + s5.size()), (const char*)(&*s5.begin() + s5.size()));
         }
 
-#if 0
         // inline void insert_(iterator& position, InputIterator& first, InputIterator& last, stl::forward_iterator_tag)
-        for (size_t i = 0; i < ONEMIL; ++i)
+        // -- stl is worse 2.00 vs 0.75
+        for (size_t i = 0; i < ONEMIL / 10; ++i)
         {
             string s1(s0.c_str(), s0.size());
             string s2(s1), s3(s1), s4(s1), s5(s1);
@@ -2384,77 +2384,84 @@ void test_basic_string::perf1()
         }
 
         // inline void insert_(iterator& position, InputIterator n, InputIterator value, stl::input_iterator_tag)
+        // -- stl is worse 2.10 vs 1.49
         for (size_t i = 0; i < ONEMIL; ++i)
         {
             string s1(s0.c_str(), s0.size());
             string s2(s1), s3(s1), s4(s1), s5(s1);
-            
+
             s2.insert(s2.begin() + (long)i % s2.size(), (char)127, (char)'c');
-            s3.insert(s3.begin() + (long)i % s3.size(), (char)i % 127, (char)'c');
+            s3.insert(s3.begin() + (long)i % s3.size(), (char)(i % 127), (char)'c');
             s4.insert(s4.begin() + (long)i % s4.size(), (char)127, (char)'c');
             s5.insert(s5.end(), (char)0, (char)'c');
         }
 
         // container& erase(size_type pos = 0, size_type len = npos)
+        // -- stl is worse 1.00 vs 0.58
         for (size_t i = 0; i < ONEMIL; ++i)
         {
             string s1(s0.c_str(), s0.size());
-            string s2(s1), s3(s1), s4(s1), s5(s1);
+            string s2(s1), s3(s1), s4(s1);
 
             s2.erase((long)i % s2.size());
             s3.erase((long)i % s3.size(), s3.size() - i % s3.size());
-            s4.erase((long)i % s4.size(), s4.size() - i % s4.size());
-            s5.erase(s4.size() - 1);
+            s4.erase(s4.size() - 1);
         }
 
         // iterator erase(iterator position)
+        // -- stl is worse 1.54 vs 1.23
         for (size_t i = 0; i < ONEMIL; ++i)
         {
             string s1(s0.c_str(), s0.size());
             string s2(s1), s3(s1), s4(s1), s5(s1);
 
-            s2.erase(s2.begin() + (long)i % s2.size());
-            s3.erase(s3.begin() + (long)i % s3.size());
+            s2.erase(s2.begin());
+            s3.erase(s3.begin() + (long)s3.size() / 2);
             s4.erase(s4.begin() + (long)i % s4.size());
-            s5.erase(s5.end());
+            s5.erase(s5.end()-1);
         }
 
         // iterator erase(iterator first, iterator last)
+        // -- stl is worse 1.42 vs 1.09
         for (size_t i = 0; i < ONEMIL; ++i)
         {
             string s1(s0.c_str(), s0.size());
             string s2(s1), s3(s1), s4(s1), s5(s1);
 
-            s2.erase(s2.begin() + (long)i % s2.size(), s2.end());
+            s2.erase(s2.begin(), s2.end());
             s3.erase(s3.begin() + (long)i % s3.size(), s3.end());
-            s4.erase(s4.begin() + (long)i % s4.size(), s4.end() - (long)i % s0.size());
-            s5.erase(s5.end(), s5.end());
+            s4.erase(s4.begin(), s4.end() - (long) i % s0.size());
+            s5.erase(s5.end()-1, s5.end());
         }
 
         // container& replace(size_type pos, size_type len, const container& str)
+        // -- stl is worse 1.96 vs 1.02
         for (size_t i = 0; i < ONEMIL; ++i)
         {
             string s1(s0.c_str(), s0.size());
-            string s2(s1), s3(s1), s4(s1), s5(s1);
+            string s2(s1), s3(s1), s4(s1);
 
             s2.replace(i % s2.size(), s2.size() - i % s2.size(), s2);
             s3.replace(i % s3.size(), s3.size() - i % s3.size(), s3);
             s4.replace(i % s4.size(), s4.size() - i % s4.size(), s4);
         }
 
+#endif
+
         // container& replace(iterator first, iterator last, const container& str)
-        for (size_t i = 0; i < ONEMIL; ++i)
+        // -- stl is worse 1.43 vs 1.25
+        for (size_t i = 0; i < ONEMIL / 2; ++i)
         {
             string s1(s0.c_str(), s0.size());
             string s2(s1), s3(s1), s4(s1), s5(s1);
 
-            s2.replace(s2.begin() + (long)i % s2.size(), s2.end(), s2);
-            s3.replace(s3.begin() + (long)i % s3.size(), s3.end(), s3);
-            s4.replace(s4.begin(), s4.begin() + (long)i % s4.size(), s4);
-            s5.replace(s5.end(), s5.end(), s5);
+            s2.replace(s2.begin(), s2.begin(), s2);
+            s3.replace(s3.begin(), s3.begin() + (long)i % s3.size(),  s3);
+            s4.replace(s4.begin() + (long)i % s4.size(), s4.end(), s4);
+            s5.replace(s5.end()-1, s5.end(), s5);
         }
 
-
+#if 0
         // container& replace(size_type pos, size_type len, const container& str, size_type subpos, size_type sublen)
         for (size_t i = 0; i < ONEMIL; ++i)
         {
@@ -3009,15 +3016,15 @@ void test_basic_string::perf1()
         typedef std::basic_string<char> string;
         time_printer tp(msg2);
 
-        for (size_t i = 0; i < ONEMIL; ++i)
+        for (size_t i = 0; i < ONEMIL / 2; ++i)
         {
             string s1(s0.c_str(), s0.size());
             string s2(s1), s3(s1), s4(s1), s5(s1);
 
-            s2.insert(s2.begin() + (long)i % s2.size(), (const char*)&*s2.begin(), (const char*)(&*s2.begin() + s2.size()));
-            s3.insert(s3.begin() + (long)i % s3.size(), (const char*)(&*s3.begin() + (long)i % s0.size()), (const char*)(&*s3.begin() + s3.size()));
-            s4.insert(s4.begin() + (long)i % s4.size(), (const char*)&*s4.begin(), (const char*)(&*s4.begin() + s4.size() - (long)i % s0.size()));
-            s5.insert(s5.end(), (const char*)(&*s5.begin() + s5.size()), (const char*)(&*s5.begin() + s5.size()));
+            s2.replace(s2.begin(), s2.begin(), s2);
+            s3.replace(s3.begin(), s3.begin() + (long)i % s3.size(),  s3);
+            s4.replace(s4.begin() + (long)i % s4.size(), s4.end(), s4);
+            s5.replace(s5.end()-1, s5.end(), s5);
         }
     }
 }
