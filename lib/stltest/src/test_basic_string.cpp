@@ -2446,8 +2446,6 @@ void test_basic_string::perf1()
             s4.replace(i % s4.size(), s4.size() - i % s4.size(), s4);
         }
 
-#endif
-
         // container& replace(iterator first, iterator last, const container& str)
         // -- stl is worse 1.43 vs 1.25
         for (size_t i = 0; i < ONEMIL / 2; ++i)
@@ -2461,9 +2459,9 @@ void test_basic_string::perf1()
             s5.replace(s5.end()-1, s5.end(), s5);
         }
 
-#if 0
         // container& replace(size_type pos, size_type len, const container& str, size_type subpos, size_type sublen)
-        for (size_t i = 0; i < ONEMIL; ++i)
+        // -- stl is worse 0.83 vs 0.60
+        for (size_t i = 0; i < ONEMIL / 5; ++i)
         {
             string s1(s0.c_str(), s0.size());
             string s2(s1), s3(s1), s4(s1), s5(s1);
@@ -2475,7 +2473,8 @@ void test_basic_string::perf1()
         }
 
         // container& replace(size_type pos, size_type len, const value_type* ptr)
-        for (size_t i = 0; i < ONEMIL; ++i)
+        // ++ stl is better 0.87 vs 2.68
+        for (size_t i = 0; i < ONEMIL / 5; ++i)
         {
             string s1(s0.c_str(), s0.size());
             string s2(s1), s3(s1), s4(s1), s5(s1);
@@ -2487,7 +2486,8 @@ void test_basic_string::perf1()
         }
 
         // container& replace(iterator first, iterator last, const value_type* ptr)
-        for (size_t i = 0; i < ONEMIL; ++i)
+        // ++ stl is better 0.98 vs 2.65
+        for (size_t i = 0; i < ONEMIL / 5; ++i)
         {
             string s1(s0.c_str(), s0.size());
             string s2(s1), s3(s1), s4(s1), s5(s1);
@@ -2499,7 +2499,8 @@ void test_basic_string::perf1()
         }
 
         // container& replace(size_type pos, size_type len, const value_type* ptr, size_type n)
-        for (size_t i = 0; i < ONEMIL; ++i)
+        // -- stl is worse 0.75 vs 0.58
+        for (size_t i = 0; i < ONEMIL / 5; ++i)
         {
             string s1(s0.c_str(), s0.size());
             string s2(s1), s3(s1), s4(s1), s5(s1);
@@ -2511,7 +2512,8 @@ void test_basic_string::perf1()
         }
 
         // container& replace(iterator first, iterator last, const value_type* ptr, size_type n)
-        for (size_t i = 0; i < ONEMIL; ++i)
+        // -- stl is worse 0.57 vs 0.48
+        for (size_t i = 0; i < ONEMIL / 5; ++i)
         {
             string s1(s0.c_str(), s0.size());
             string s2(s1), s3(s1), s4(s1), s5(s1);
@@ -2523,7 +2525,8 @@ void test_basic_string::perf1()
         }
 
         // container& replace(size_type pos, size_type len, size_type n, value_type c)
-        for (size_t i = 0; i < ONEMIL; ++i)
+        // -- stl is worse 0.92 vs 0.68
+        for (size_t i = 0; i < ONEMIL / 5; ++i)
         {
             string s1(s0.c_str(), s0.size());
             string s2(s1), s3(s1), s4(s1), s5(s1);
@@ -2535,7 +2538,8 @@ void test_basic_string::perf1()
         }
 
         // container& replace(iterator first, iterator last, size_type n, value_type c)
-        for (size_t i = 0; i < ONEMIL; ++i)
+        // -- stl is worse 0.74 vs 0.55
+        for (size_t i = 0; i < ONEMIL / 5; ++i)
         {
             string s1(s0.c_str(), s0.size());
             string s2(s1), s3(s1), s4(s1), s5(s1);
@@ -2547,7 +2551,8 @@ void test_basic_string::perf1()
         }
 
         // inline container& replace_(iterator& first, iterator& last, iterator& first2, iterator& last2)
-        for (size_t i = 0; i < ONEMIL; ++i)
+        // -- stl is worse 0.77 vs 0.54
+        for (size_t i = 0; i < ONEMIL / 5; ++i)
         {
             string s1(s0.c_str(), s0.size());
             string s2(s1), s3(s1), s4(s1), s5(s1);
@@ -2555,11 +2560,12 @@ void test_basic_string::perf1()
             s2.replace(s2.begin(), s2.begin() + (long)i % s2.size(), s2.begin() + (long)i % s2.size(), s2.end());
             s3.replace(s3.begin() + (long)i % s3.size(), s3.end(), s3.begin(), s3.end());
             s4.replace(s4.begin(), s4.begin() + (long)i % s4.size(), s4.begin() + (long)i % s4.size(), s4.end());
-            s5.replace(s5.begin() + (long)i % s2.size(), s5.end(), s5.begin(), s5.end() - (long)i % s5.size());
+            s5.replace(s5.begin() + (long)i % s5.size(), s5.end(), s5.begin(), s5.end() - (long)i % s5.size());
         }
 
         // inline container& replace_(iterator& first, iterator& last, const_iterator& first2, const_iterator& last2)
-        for (size_t i = 0; i < ONEMIL; ++i)
+        // -- stl is worse 0.94 vs 0.68
+        for (size_t i = 0; i < ONEMIL / 4; ++i)
         {
             string s1(s0.c_str(), s0.size());
             string s2(s1), s3(s1), s4(s1), s5(s1);
@@ -2571,11 +2577,12 @@ void test_basic_string::perf1()
             s2.replace(s2.begin(), s2.begin() + (long)i % s2.size(), cs2.begin() + (long)i % s2.size(), cs2.end());
             s3.replace(s3.begin() + (long)i % s3.size(), s3.end(), cs3.begin(), cs3.end());
             s4.replace(s4.begin(), s4.begin() + (long)i % s4.size(), cs4.begin() + (long)i % s4.size(), cs4.end());
-            s5.replace(s5.begin() + (long)i % s2.size(), s5.end(), cs5.begin(), cs5.end() - (long)i % s5.size());
+            s5.replace(s5.begin() + (long)i % s5.size(), s5.end(), cs5.begin(), cs5.end() - (long)i % s5.size());
         }
 
         // inline container& replace_(iterator& first, iterator& last, value_type* first2, value_type* last2)
-        for (size_t i = 0; i < ONEMIL; ++i)
+        // -- stl is worse 0.92 vs 0.66
+        for (size_t i = 0; i < ONEMIL / 4; ++i)
         {
             string s1(s0.c_str(), s0.size());
             string s2(s1), s3(s1), s4(s1), s5(s1);
@@ -2583,11 +2590,12 @@ void test_basic_string::perf1()
             s2.replace(s2.begin(), s2.begin() + (long)i % s2.size(), &*s2.begin() + i % s2.size(), &*s2.begin() + s2.size());
             s3.replace(s3.begin() + (long)i % s3.size(), s3.end(), &*s3.begin(), &*s3.begin() + s3.size());
             s4.replace(s4.begin(), s4.begin() + (long)i % s4.size(), &*s4.begin() + i % s4.size(), &*s4.begin() + s4.size());
-            s5.replace(s5.begin() + (long)i % s2.size(), s5.end(), &*s5.begin(), &*s5.begin() + s5.size() - i % s5.size());
+            s5.replace(s5.begin() + (long)i % s5.size(), s5.end(), &*s5.begin(), &*s5.begin() + s5.size() - i % s5.size());
         }
 
         // inline container& replace_(iterator& first, iterator& last, const value_type* first2, const value_type* last2)
-        for (size_t i = 0; i < ONEMIL; ++i)
+        // -- stl is worse 0.95 vs 0.71
+        for (size_t i = 0; i < ONEMIL / 4; ++i)
         {
             string s1(s0.c_str(), s0.size());
             string s2(s1), s3(s1), s4(s1), s5(s1);
@@ -2595,11 +2603,12 @@ void test_basic_string::perf1()
             s2.replace(s2.begin(), s2.begin() + (long)i % s2.size(), (const char*)(&*s2.begin() + i % s2.size()), (const char*)(&*s2.begin() + s2.size()));
             s3.replace(s3.begin() + (long)i % s3.size(), s3.end(), (const char*)&*s3.begin(), (const char*)(&*s3.begin() + s3.size()));
             s4.replace(s4.begin(), s4.begin() + (long)i % s4.size(), (const char*)(&*s4.begin() + i % s4.size()), (const char*)(&*s4.begin() + s4.size()));
-            s5.replace(s5.begin() + (long)i % s2.size(), s5.end(), (const char*)&*s5.begin(), (const char*)(&*s5.begin() + s5.size() - i % s5.size()));
+            s5.replace(s5.begin() + (long)i % s5.size(), s5.end(), (const char*)&*s5.begin(), (const char*)(&*s5.begin() + s5.size() - i % s5.size()));
         }
 
         // inline container& replace_(iterator& first, iterator& last, InputIterator& first2, InputIterator& last2, stl::forward_iterator_tag)
-        for (size_t i = 0; i < ONEMIL; ++i)
+        // ++ stl is better 1.32 vs 1.67
+        for (size_t i = 0; i < ONEMIL / 20; ++i)
         {
             string s1(s0.c_str(), s0.size());
             string s2(s1), s3(s1), s4(s1), s5(s1);
@@ -2607,10 +2616,11 @@ void test_basic_string::perf1()
             s2.replace(s2.begin(), s2.begin() + (long)i % s2.size(), s2.rbegin() + (long)i % s2.size(), s2.rend());
             s3.replace(s3.begin() + (long)i % s3.size(), s3.end(), s3.rbegin(), s3.rend());
             s4.replace(s4.begin(), s4.begin() + (long)i % s4.size(), s4.rbegin() + (long)i % s4.size(), s4.rend());
-            s5.replace(s5.begin() + (long)i % s2.size(), s5.end(), s5.rbegin(), s5.rend() - (long)i % s5.size());
+            s5.replace(s5.begin() + (long)i % s5.size(), s5.end(), s5.rbegin(), s5.rend() - (long)i % s5.size());
         }
 
-        for (size_t i = 0; i < ONEMIL; ++i)
+        // ++ stl is better 1.37 vs 1.77
+        for (size_t i = 0; i < ONEMIL / 20; ++i)
         {
             string s1(s0.c_str(), s0.size());
             string s2(s1), s3(s1), s4(s1), s5(s1);
@@ -2622,11 +2632,12 @@ void test_basic_string::perf1()
             s2.replace(s2.begin(), s2.begin() + (long)i % s2.size(), cs2.rbegin() + (long)i % s2.size(), cs2.rend());
             s3.replace(s3.begin() + (long)i % s3.size(), s3.end(), cs3.rbegin(), cs3.rend());
             s4.replace(s4.begin(), s4.begin() + (long)i % s4.size(), cs4.rbegin() + (long)i % s4.size(), cs4.rend());
-            s5.replace(s5.begin() + (long)i % s2.size(), s5.end(), cs5.rbegin(), cs5.rend() - (long)i % s5.size());
+            s5.replace(s5.begin() + (long)i % s5.size(), s5.end(), cs5.rbegin(), cs5.rend() - (long)i % s5.size());
         }
 
         // inline container& replace_(iterator& first, iterator& last, InputIterator n, InputIterator value, stl::input_iterator_tag)
-        for (size_t i = 0; i < ONEMIL; ++i)
+        // -- stl is worse 0.48 vs 0.31
+        for (size_t i = 0; i < ONEMIL / 5; ++i)
         {
             string s1(s0.c_str(), s0.size());
             string s2(s1), s3(s1), s4(s1), s5(s1);
@@ -2634,16 +2645,17 @@ void test_basic_string::perf1()
             s2.replace(s2.begin(), s2.begin() + (long)i % s2.size(), (char)127, (char)'c');
             s3.replace(s3.begin() + (long)i % s3.size(), s3.end(), (char)127, (char)'c');
             s4.replace(s4.begin(), s4.begin() + (long)i % s4.size(), (char)127, (char)'c');
-            s5.replace(s5.begin() + (long)i % s2.size(), s5.end(), (char)127, (char)'c');
+            s5.replace(s5.begin() + (long)i % s5.size(), s5.end(), (char)127, (char)'c');
         }
 
         // size_type copy(value_type* ptr, size_type len, size_type pos = 0) const
+        // -- stl is worse 0.68 vs 0.22
         for (size_t i = 0; i < ONEMIL; ++i)
         {
             string s1(s0.c_str(), s0.size());
-            char s2[1000];
-            char s3[1000];
-            char s4[1000];
+            char s2[4420]; // s1 length = 4416 + 1
+            char s3[4420];
+            char s4[4420];
 
             s1.copy(s2, i % s1.size(), 0);
             s1.copy(s3, i % s1.size(), (s1.size() - 1) - i % (s1.size() - 1));
@@ -2651,6 +2663,7 @@ void test_basic_string::perf1()
         }
 
         // void swap(container& str)
+        // -- stl is worse 0.67 vs 0.24
         for (size_t i = 0; i < ONEMIL; ++i)
         {
             string s1(s0.c_str(), s0.size());
@@ -2663,7 +2676,8 @@ void test_basic_string::perf1()
         }
 
         // size_type find(const container& str, size_type pos = 0) const
-        for (size_t i = 0; i < ONEMIL; ++i)
+        // -- stl is worse 0.79 vs 0.50
+        for (size_t i = 0; i < ONEMIL / 10; ++i)
         {
             string s1(s0.c_str(), s0.size());
             string s2(s0.c_str() + i % s0.size());
@@ -2674,7 +2688,8 @@ void test_basic_string::perf1()
         }
 
         // size_type find(const value_type* ptr, size_type pos = 0) const
-        for (size_t i = 0; i < ONEMIL; ++i)
+        // -- stl is worse 0.82 vs 0.50
+        for (size_t i = 0; i < ONEMIL / 10; ++i)
         {
             string s1(s0.c_str(), s0.size());
             string s2(s0.c_str() + i % s0.size());
@@ -2685,7 +2700,8 @@ void test_basic_string::perf1()
         }
 
         // size_type find(const value_type* ptr, size_type pos, size_type n) const
-        for (size_t i = 0; i < ONEMIL; ++i)
+        // -- stl is worse 0.77 vs 0.50
+        for (size_t i = 0; i < ONEMIL / 10; ++i)
         {
             string s1(s0.c_str(), s0.size());
             string s2(s0.c_str() + i % s0.size());
@@ -2694,9 +2710,11 @@ void test_basic_string::perf1()
             bool found = (pos != -1);
             bool _break = found;
         }
+#endif
+
 
         // size_type find(value_type ch, size_type pos = 0) const
-        for (size_t i = 0; i < ONEMIL; ++i)
+        for (size_t i = 0; i < ONEMIL / 2; ++i)
         {
             string s1(s0.c_str(), s0.size());
 
@@ -2705,6 +2723,7 @@ void test_basic_string::perf1()
             bool _break = found;
         }
 
+#if 0
         // size_type rfind(const container& str, size_type pos = npos) const
         for (size_t i = 0; i < ONEMIL; ++i)
         {
@@ -3019,12 +3038,10 @@ void test_basic_string::perf1()
         for (size_t i = 0; i < ONEMIL / 2; ++i)
         {
             string s1(s0.c_str(), s0.size());
-            string s2(s1), s3(s1), s4(s1), s5(s1);
 
-            s2.replace(s2.begin(), s2.begin(), s2);
-            s3.replace(s3.begin(), s3.begin() + (long)i % s3.size(),  s3);
-            s4.replace(s4.begin() + (long)i % s4.size(), s4.end(), s4);
-            s5.replace(s5.end()-1, s5.end(), s5);
+            size_t pos = s1.find('^', 0);
+            bool found = (pos != -1);
+            bool _break = found;
         }
     }
 }
