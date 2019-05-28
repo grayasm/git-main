@@ -1706,6 +1706,8 @@ void test_basic_string::compare()
 
 void test_basic_string::perf1()
 {
+    printf("\n%s:(%d) disabled\n", __FUNCTION__, __LINE__);
+#if 0
     typedef stl::basic_string<char> string;
 
     string s0(""
@@ -4339,4 +4341,6 @@ void test_basic_string::perf1()
             int _break = ret;
         }
     }
+
+#endif
 }

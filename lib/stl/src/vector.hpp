@@ -56,160 +56,177 @@ namespace stl
         typedef typename base::pointer              pointer;
         typedef typename base::reference            reference;
         typedef typename container::size_type       size_type;
-        typedef typename stl::vector_iterator_base<container>   base2;
         friend class stl::vector<typename container::value_type, typename container::allocator_type>;
         friend class stl::vector_const_iterator<container>;
 
     private:
         vector_iterator(container* cont, size_type pos)
         {
-            base2::m_cont = cont;
-            base2::m_pos = pos;
+            // g++: m_cont was not declared in this scope
+            this->m_cont = cont;
+            this->m_pos = pos;
         }
 
     public:
         vector_iterator()
         {
-            base2::m_cont = 0;
-            base2::m_pos = 0;
+            this->m_cont = 0;
+            this->m_pos = 0;
         }
 
 
-        vector_iterator(const vector_iterator& tc)
+        vector_iterator(const vector_iterator& it)
         {
-            *this = tc;
+            this->m_cont = it.m_cont;
+            this->m_pos = it.m_pos;
         }
 
         ~vector_iterator()
         {
         }
 
-        vector_iterator& operator=(const vector_iterator& tc)
+        vector_iterator& operator=(const vector_iterator& it)
         {
-            if (this != &tc)
+            if (this != &it)
             {
-                base2::m_cont = tc.m_cont;
-                base2::m_pos = tc.m_pos;
+                this->m_cont = it.m_cont;
+                this->m_pos = it.m_pos;
             }
+
             return *this;
         }
 
         reference operator*() const
         {
-            if (!base2::m_cont) throw stl::exception("invalid iterator");
+            if (!this->m_cont)
+                throw stl::exception("invalid iterator");
 
-            return (*base2::m_cont)[base2::m_pos];
+            return *(this->m_cont->m_data + this->m_pos);
         }
 
         pointer operator->() const
         {
-            if (!base2::m_cont) throw stl::exception("invalid iterator");
+            if (!this->m_cont)
+                throw stl::exception("invalid iterator");
 
-            return &(*base2::m_cont)[base2::m_pos];
+            return (this->m_cont + this->m_pos);
         }
 
         vector_iterator& operator++()
         {
-            if (!base2::m_cont) throw stl::exception("invalid iterator");
-
-            ++base2::m_pos;
+            ++this->m_pos;
             return *this;
         }
 
         vector_iterator operator++(int)
         {
-            if (!base2::m_cont) throw stl::exception("invalid iterator");
-
             vector_iterator<container> tmp = *this;
-            ++base2::m_pos;
+            ++this->m_pos;
             return tmp;
         }
 
         vector_iterator& operator--()
         {
-            if (!base2::m_cont) throw stl::exception("invalid iterator");
-
-            --base2::m_pos;
+            --this->m_pos;
             return *this;
         }
 
         vector_iterator operator--(int)
         {
-            if (!base2::m_cont) throw stl::exception("invalid iterator");
-
             vector_iterator<container> tmp = *this;
-            --base2::m_pos;
+            --this->m_pos;
             return tmp;
         }
 
         vector_iterator& operator+=(difference_type off)
         {
-            if (!base2::m_cont) throw stl::exception("invalid iterator");
-
-            base2::m_pos += off;
+            this->m_pos += off;
             return *this;
         }
 
         vector_iterator operator+(difference_type off) const
         {
             vector_iterator<container> tmp = *this;
-            return tmp += off;
+            return (tmp += off);
         }
 
         vector_iterator& operator-=(difference_type off)
         {
-            if (!base2::m_cont) throw stl::exception("invalid iterator");
-
-            base2::m_pos -= off;
+            this->m_pos -= off;
             return *this;
         }
 
         vector_iterator operator-(difference_type off) const
         {
             vector_iterator<container> tmp = *this;
-            return tmp -= off;
+            return (tmp -= off);
         }
 
         difference_type operator-(const vector_iterator& it) const
         {
-            return static_cast<difference_type>(base2::m_pos - it.m_pos);
+            return static_cast<difference_type>(this->m_pos - it.m_pos);
         }
 
         bool operator==(const vector_iterator& it) const
         {
-            return (base2::m_cont == it.m_cont && base2::m_pos == it.m_pos);
+#ifdef DEBUG
+            if (this->m_cont != it.m_cont)
+                throw stl::exception("invalid iterator");
+#endif
+            return (this->m_pos == it.m_pos);
         }
 
         bool operator!=(const vector_iterator& it) const
         {
-            return !(*this == it);
+#ifdef DEBUG
+            if (this->m_cont != it.m_cont)
+                throw stl::exception("invalid iterator");
+#endif
+            return (this->m_pos != it.m_pos);
         }
 
         bool operator<(const vector_iterator& it) const
         {
-            return (base2::m_cont == it.m_cont && base2::m_pos < it.m_pos);
+#ifdef DEBUG
+            if (this->m_cont != it.m_cont)
+                throw stl::exception("invalid iterator");
+#endif
+            return (this->m_pos < it.m_pos);
         }
 
         bool operator>(const vector_iterator& it) const
         {
-            return (base2::m_cont == it.m_cont && base2::m_pos > it.m_pos);
+#ifdef DEBUG
+            if (this->m_cont != it.m_cont)
+                throw stl::exception("invalid iterator");
+#endif
+            return (this->m_pos > it.m_pos);
         }
 
         bool operator<=(const vector_iterator& it) const
         {
-            return (base2::m_cont == it.m_cont && base2::m_pos <= it.m_pos);
+#ifdef DEBUG
+            if (this->m_cont != it.m_cont)
+                throw stl::exception("invalid iterator");
+#endif
+            return (this->m_pos <= it.m_pos);
         }
 
         bool operator>=(const vector_iterator& it) const
         {
-            return (base2::m_cont == it.m_cont && base2::m_pos >= it.m_pos);
+#ifdef DEBUG
+            if (this->m_cont != it.m_cont)
+                throw stl::exception("invalid iterator");
+#endif
+            return (this->m_pos >= it.m_pos);
         }
 
         reference operator[](difference_type off) const
         {
-            if (!base2::m_cont) throw stl::exception("invalid iterator");
+            if (!this->m_cont)
+                throw stl::exception("invalid iterator");
 
-            return (*base2::m_cont)[base2::m_pos + off];
+            return *(this->m_cont->m_data + this->m_pos + off);
         }
     };  // vector_iterator
 
@@ -228,123 +245,115 @@ namespace stl
         typedef typename base::const_pointer       pointer;
         typedef typename base::const_reference     reference;
         typedef typename container::size_type      size_type;
-        typedef typename stl::vector_iterator_base<container> base2;
         friend class vector<typename container::value_type, typename container::allocator_type>;
 
 
     private:
         vector_const_iterator(container* cont, size_type pos)
         {
-            base2::m_cont = cont;
-            base2::m_pos = pos;
+            // g++: m_cont was not declared in this scope
+            this->m_cont = cont;
+            this->m_pos = pos;
         }
 
     public:
         vector_const_iterator()
         {
-            base2::m_cont = 0;
-            base2::m_pos = 0;
+            this->m_cont = 0;
+            this->m_pos = 0;
         }
 
-        vector_const_iterator(const vector_const_iterator& tc)
+        vector_const_iterator(const vector_const_iterator& it)
         {
-            *this = tc;
+            this->m_cont = it.m_cont;
+            this->m_pos = it.m_pos;
         }
 
-        vector_const_iterator(const vector_iterator<container>& tc)
+        vector_const_iterator(const vector_iterator<container>& it)
         {
-            *this = tc;
+            this->m_cont = it.m_cont;
+            this->m_pos = it.m_pos;
         }
 
         ~vector_const_iterator()
         {
         }
 
-        vector_const_iterator& operator=(const vector_const_iterator& tc)
+        vector_const_iterator& operator=(const vector_const_iterator& it)
         {
-            if (this != &tc)
+            if (this != &it)
             {
-                base2::m_cont = tc.m_cont;
-                base2::m_pos = tc.m_pos;
+                this->m_cont = it.m_cont;
+                this->m_pos = it.m_pos;
             }
             return *this;
         }
 
-        vector_const_iterator& operator=(const vector_iterator<container>& tc)
+        vector_const_iterator& operator=(const vector_iterator<container>& it)
         {
-            base2::m_cont = tc.m_cont;
-            base2::m_pos = tc.m_pos;
+            this->m_cont = it.m_cont;
+            this->m_pos = it.m_pos;
 
             return *this;
         }
 
         reference operator*() const
         {
-            if (!base2::m_cont) throw stl::exception("invalid iterator");
+            if (!this->m_cont)
+                throw stl::exception("invalid iterator");
 
-            return (*base2::m_cont)[base2::m_pos];
+            return *(this->m_cont + this->m_pos);
         }
 
         pointer operator->() const
         {
-            if (!base2::m_cont) throw stl::exception("invalid iterator");
+            if (!this->m_cont)
+                throw stl::exception("invalid iterator");
 
-            return &(*base2::m_cont)[base2::m_pos];
+            return (this->m_cont + this->m_pos);
         }
 
         vector_const_iterator& operator++()
         {
-            if (!base2::m_cont) throw stl::exception("invalid iterator");
-
-            ++base2::m_pos;
+            ++this->m_pos;
             return *this;
         }
 
         vector_const_iterator operator++(int)
         {
-            if (!base2::m_cont) throw stl::exception("invalid iterator");
-
             vector_const_iterator<container> tmp = *this;
-            ++base2::m_pos;
+            ++this->m_pos;
             return tmp;
         }
 
         vector_const_iterator& operator--()
         {
-            if (!base2::m_cont) throw stl::exception("invalid iterator");
-
-            --base2::m_pos;
+            --this->m_pos;
             return *this;
         }
 
         vector_const_iterator operator--(int)
         {
-            if (!base2::m_cont) throw stl::exception("invalid iterator");
-
             vector_const_iterator<container> tmp = *this;
-            --base2::m_pos;
+            --this->m_pos;
             return tmp;
         }
 
         vector_const_iterator& operator+=(difference_type off)
         {
-            if (!base2::m_cont) throw stl::exception("invalid iterator");
-
-            base2::m_pos += off;
+            this->m_pos += off;
             return *this;
         }
 
         vector_const_iterator operator+(difference_type off) const
         {
             vector_const_iterator<container> tmp = *this;
-            return tmp += off;
+            return (tmp += off);
         }
 
         vector_const_iterator& operator-=(difference_type off)
         {
-            if (!base2::m_cont) throw stl::exception("invalid iterator");
-
-            base2::m_pos -= off;
+            this->m_pos -= off;
             return *this;
         }
 
@@ -356,44 +365,69 @@ namespace stl
 
         difference_type operator-(const vector_const_iterator& it) const
         {
-            return static_cast<difference_type>(base2::m_pos - it.m_pos);
+            return static_cast<difference_type>(this->m_pos - it.m_pos);
         }
 
         bool operator==(const vector_const_iterator& it) const
         {
-            return (base2::m_cont == it.m_cont && base2::m_pos == it.m_pos);
+#ifdef DEBUG
+            if (this->m_cont != it.m_cont)
+                throw stl::exception("invalid iterator");
+#endif
+            return (this->m_pos == it.m_pos);
         }
 
         bool operator!=(const vector_const_iterator& it) const
         {
-            return !(*this == it);
+#ifdef DEBUG
+            if (this->m_cont != it.m_cont)
+                throw stl::exception("invalid iterator");
+#endif
+            return (this->m_pos != it.m_pos);
         }
 
         bool operator<(const vector_const_iterator& it) const
         {
-            return (base2::m_cont == it.m_cont && base2::m_pos < it.m_pos);
+#ifdef DEBUG
+            if (this->m_cont != it.m_cont)
+                throw stl::exception("invalid iterator");
+#endif
+            return (this->m_pos < it.m_pos);
         }
 
         bool operator>(const vector_const_iterator& it) const
         {
-            return (base2::m_cont == it.m_cont && base2::m_pos > it.m_pos);
+#ifdef DEBUG
+            if (this->m_cont != it.m_cont)
+                throw stl::exception("invalid iterator");
+#endif
+            return (this->m_pos > it.m_pos);
         }
 
         bool operator<=(const vector_const_iterator& it) const
         {
-            return (base2::m_cont == it.m_cont && base2::m_pos <= it.m_pos);
+#ifdef DEBUG
+            if (this->m_cont != it.m_cont)
+                throw stl::exception("invalid iterator");
+#endif
+            return (this->m_pos <= it.m_pos);
         }
 
         bool operator>=(const vector_const_iterator& it) const
         {
-            return (base2::m_cont == it.m_cont && base2::m_pos >= it.m_pos);
+#ifdef DEBUG
+            if (this->m_cont != it.m_cont)
+                throw stl::exception("invalid iterator");
+#endif
+            return (this->m_pos >= it.m_pos);
         }
 
         reference operator[](difference_type off) const
         {
-            if (!base2::m_cont) throw stl::exception("invalid iterator");
+            if (!this->m_cont)
+                throw stl::exception("invalid iterator");
 
-            return (*base2::m_cont)[base2::m_pos + off];
+            return (this->m_cont + this->m_pos + off);
         }
     };  // vector_const_iterator
 
@@ -412,7 +446,6 @@ namespace stl
         typedef typename base::pointer             pointer;
         typedef typename base::reference           reference;
         typedef typename container::size_type      size_type;
-        typedef typename stl::vector_iterator_base<container> base2;
         friend class vector<typename container::value_type, typename container::allocator_type>;
         friend class vector_const_reverse_iterator<container>;
 
@@ -420,152 +453,169 @@ namespace stl
     private:
         vector_reverse_iterator(container* cont, size_type pos)
         {
-            base2::m_cont = cont;
-            base2::m_pos = pos;
+            // g++: m_cont was not declared in this scope
+            this->m_cont = cont;
+            this->m_pos = pos;
         }
 
     public:
         vector_reverse_iterator()
         {
-            base2::m_cont = 0;
-            base2::m_pos = 0;
+            this->m_cont = 0;
+            this->m_pos = 0;
         }
 
-        vector_reverse_iterator(const vector_reverse_iterator& tc)
+        vector_reverse_iterator(const vector_reverse_iterator& it)
         {
-            *this = tc;
+            this->m_cont = it.m_cont;
+            this->m_pos = it.m_pos;
         }
 
         ~vector_reverse_iterator()
         {
         }
 
-        vector_reverse_iterator& operator=(const vector_reverse_iterator& tc)
+        vector_reverse_iterator& operator=(const vector_reverse_iterator& it)
         {
-            if (this != &tc)
+            if (this != &it)
             {
-                base2::m_cont = tc.m_cont;
-                base2::m_pos = tc.m_pos;
+                this->m_cont = it.m_cont;
+                this->m_pos = it.m_pos;
             }
             return *this;
         }
 
         reference operator*() const
         {
-            if (!base2::m_cont) throw stl::exception("invalid iterator");
+            if (!this->m_cont)
+                throw stl::exception("invalid iterator");
 
-            return (*base2::m_cont)[base2::m_pos];
+            return *(this->m_cont + this->m_pos);
         }
 
         pointer operator->() const
         {
-            if (!base2::m_cont) throw stl::exception("invalid iterator");
+            if (!this->m_cont)
+                throw stl::exception("invalid iterator");
 
-            return &(*base2::m_cont)[base2::m_pos];
+            return (this->m_cont->m_data + this->m_pos);
         }
 
         vector_reverse_iterator& operator++()
         {
-            if (!base2::m_cont) throw stl::exception("invalid iterator");
-
-            --base2::m_pos;
+            --this->m_pos;
             return *this;
         }
 
         vector_reverse_iterator operator++(int)
         {
-            if (!base2::m_cont) throw stl::exception("invalid iterator");
-
             vector_reverse_iterator<container> tmp = *this;
-            --base2::m_pos;
+            --this->m_pos;
             return tmp;
         }
 
         vector_reverse_iterator& operator--()
         {
-            if (!base2::m_cont) throw stl::exception("invalid iterator");
-
-            ++base2::m_pos;
+            ++this->m_pos;
             return *this;
         }
 
         vector_reverse_iterator operator--(int)
         {
-            if (!base2::m_cont) throw stl::exception("invalid iterator");
-
             vector_reverse_iterator<container> tmp = *this;
-            ++base2::m_pos;
+            ++this->m_pos;
             return tmp;
         }
 
         vector_reverse_iterator& operator+=(difference_type off)
         {
-            if (!base2::m_cont) throw stl::exception("invalid iterator");
-
-            base2::m_pos -= off;
+            this->m_pos -= off;
             return *this;
         }
 
         vector_reverse_iterator operator+(difference_type off) const
         {
             vector_reverse_iterator<container> tmp = *this;
-            return tmp += off;
+            return (tmp += off);
         }
 
         vector_reverse_iterator& operator-=(difference_type off)
         {
-            if (!base2::m_cont) throw stl::exception("invalid iterator");
-
-            base2::m_pos += off;
+            this->m_pos += off;
             return *this;
         }
 
         vector_reverse_iterator operator-(difference_type off) const
         {
             vector_reverse_iterator<container> tmp = *this;
-            return tmp -= off;
+            return (tmp -= off);
         }
 
         difference_type operator-(const vector_reverse_iterator& it) const
         {
-            return static_cast<difference_type>(it.m_pos - base2::m_pos);
+            return static_cast<difference_type>(it.m_pos - this->m_pos);
         }
 
         bool operator==(const vector_reverse_iterator& it) const
         {
-            return (base2::m_cont == it.m_cont && it.m_pos == base2::m_pos);
+#ifdef DEBUG
+            if (this->m_cont != it.m_cont)
+                throw stl::exception("invalid iterator");
+#endif
+            return (it.m_pos == this->m_pos);
         }
 
         bool operator!=(const vector_reverse_iterator& it) const
         {
-            return !(*this == it);
+#ifdef DEBUG
+            if (this->m_cont != it.m_cont)
+                throw stl::exception("invalid iterator");
+#endif
+            return (it.m_pos != this->m_pos);
         }
 
         bool operator<(const vector_reverse_iterator& it) const
         {
-            return (base2::m_cont == it.m_cont && base2::m_pos > it.m_pos);
+#ifdef DEBUG
+            if (this->m_cont != it.m_cont)
+                throw stl::exception("invalid iterator");
+#endif
+            return (this->m_pos > it.m_pos);
         }
 
         bool operator>(const vector_reverse_iterator& it) const
         {
-            return (base2::m_cont == it.m_cont && base2::m_pos < it.m_pos);
+#ifdef DEBUG
+            if (this->m_cont != it.m_cont)
+                throw stl::exception("invalid iterator");
+#endif
+            return (this->m_pos < it.m_pos);
         }
 
         bool operator<=(const vector_reverse_iterator& it) const
         {
-            return (base2::m_cont == it.m_cont && base2::m_pos >= it.m_pos);
+#ifdef DEBUG
+            if (this->m_cont != it.m_cont)
+                throw stl::exception("invalid iterator");
+#endif
+            return (this->m_pos >= it.m_pos);
         }
 
         bool operator>=(const vector_reverse_iterator& it) const
         {
-            return (base2::m_cont == it.m_cont && base2::m_pos <= it.m_pos);
+#ifdef DEBUG
+            if (this->m_cont != it.m_cont)
+                throw stl::exception("invalid iterator");
+#endif
+            return (this->m_pos <= it.m_pos);
         }
 
         reference operator[](difference_type off) const
         {
-            if (!base2::m_cont) throw stl::exception("invalid iterator");
+            if (!this->m_cont)
+                throw stl::exception("invalid iterator");
 
-            return (*base2::m_cont)[base2::m_pos - off];
+            return *(this->m_cont + this->m_pos - off);
         }
     };  // vector_reverse_iterator
 
@@ -584,177 +634,193 @@ namespace stl
         typedef typename base::const_pointer       pointer;
         typedef typename base::const_reference     reference;
         typedef typename container::size_type      size_type;
-        typedef typename stl::vector_iterator_base<container> base2;
         friend class vector<typename container::value_type, typename container::allocator_type>;
 
 
     private:
         vector_const_reverse_iterator(container* cont, size_type pos)
         {
-            base2::m_cont = cont;
-            base2::m_pos = pos;
+            // g++: m_cont was not declared in this scope
+            this->m_cont = cont;
+            this->m_pos = pos;
         }
 
     public:
         vector_const_reverse_iterator()
         {
-            base2::m_cont = 0;
-            base2::m_pos = 0;
+            this->m_cont = 0;
+            this->m_pos = 0;
         }
 
-        vector_const_reverse_iterator(const vector_const_reverse_iterator& tc)
+        vector_const_reverse_iterator(const vector_const_reverse_iterator& it)
         {
-            *this = tc;
+            this->m_cont = it.m_cont;
+            this->m_pos = it.m_pos;
         }
 
         ~vector_const_reverse_iterator()
         {
         }
 
-        vector_const_reverse_iterator& operator=(const vector_const_reverse_iterator& tc)
+        vector_const_reverse_iterator& operator=(const vector_const_reverse_iterator& it)
         {
             if (this != &tc)
             {
-                base2::m_cont = tc.m_cont;
-                base2::m_pos = tc.m_pos;
+                this->m_cont = it.m_cont;
+                this->m_pos = it.m_pos;
             }
             return *this;
         }
 
-        vector_const_reverse_iterator& operator=(const vector_reverse_iterator<container>& tc)
+        vector_const_reverse_iterator& operator=(const vector_reverse_iterator<container>& it)
         {
-            base2::m_cont = tc.m_cont;
-            base2::m_pos = tc.m_pos;
+            this->m_cont = it.m_cont;
+            this->m_pos = it.m_pos;
 
             return *this;
         }
 
-        vector_const_reverse_iterator(const vector_reverse_iterator<container>& tc)
+        vector_const_reverse_iterator(const vector_reverse_iterator<container>& it)
         {
-            *this = tc;
+            this->m_cont = it.m_cont;
+            this->m_pos = it.m_pos;
         }
 
         reference operator*() const
         {
-            if (!base2::m_cont) throw stl::exception("invalid iterator");
+            if (!this->m_cont)
+                throw stl::exception("invalid iterator");
 
-            return (*base2::m_cont)[base2::m_pos];
+            return *(this->m_cont->m_data + this->m_pos);
         }
 
         pointer operator->() const
         {
-            if (!base2::m_cont) throw stl::exception("invalid iterator");
+            if (!this->m_cont)
+                throw stl::exception("invalid iterator");
 
-            return &(*base2::m_cont)[base2::m_pos];
+            return (this->m_cont->m_data + this->m_pos);
         }
 
         vector_const_reverse_iterator& operator++()
         {
-            if (!base2::m_cont) throw stl::exception("invalid iterator");
-
-            --base2::m_pos;
+            --this->m_pos;
             return *this;
         }
 
         vector_const_reverse_iterator operator++(int)
         {
-            if (!base2::m_cont) throw stl::exception("invalid iterator");
-
             vector_const_reverse_iterator<container> tmp = *this;
-            --base2::m_pos;
+            --this->m_pos;
             return tmp;
         }
 
         vector_const_reverse_iterator& operator--()
         {
-            if (!base2::m_cont) throw stl::exception("invalid iterator");
-
-            ++base2::m_pos;
+            ++this->m_pos;
             return *this;
         }
 
         vector_const_reverse_iterator operator--(int)
         {
-            if (!base2::m_cont) throw stl::exception("invalid iterator");
-
             vector_const_reverse_iterator<container> tmp = *this;
-            ++base2::m_pos;
+            ++this->m_pos;
             return tmp;
         }
 
         vector_const_reverse_iterator& operator+=(difference_type off)
         {
-            if (!base2::m_cont) throw stl::exception("invalid iterator");
-
-            base2::m_pos -= off;
+            this->m_pos -= off;
             return *this;
         }
 
         vector_const_reverse_iterator operator+(difference_type off) const
         {
             vector_const_reverse_iterator<container> tmp = *this;
-            return tmp += off;
+            return (tmp += off);
         }
 
         vector_const_reverse_iterator& operator-=(difference_type off)
         {
-            if (!base2::m_cont) throw stl::exception("invalid iterator");
-
-            base2::m_pos += off;
+            this->m_pos += off;
             return *this;
         }
 
         vector_const_reverse_iterator operator-(difference_type off) const
         {
             vector_const_reverse_iterator<container> tmp = *this;
-            return tmp -= off;
+            return (tmp -= off);
         }
 
         difference_type operator-(const vector_const_reverse_iterator& it) const
         {
-            return static_cast<difference_type>(it.m_pos - base2::m_pos);
+            return static_cast<difference_type>(it.m_pos - this->m_pos);
         }
 
         bool operator==(const vector_const_reverse_iterator& it) const
         {
-            return (base2::m_cont == it.m_cont && base2::m_pos == it.m_pos);
+#ifdef DEBUG
+            if (this->m_cont != it.m_cont)
+                throw stl::exception("invalid iterator");
+#endif
+            return (this->m_pos == it.m_pos);
         }
 
         bool operator!=(const vector_const_reverse_iterator& it) const
         {
-            return !(*this == it);
+#ifdef DEBUG
+            if (this->m_cont != it.m_cont)
+                throw stl::exception("invalid iterator");
+#endif
+            return (this->m_pos != it.m_pos);
         }
 
         bool operator<(const vector_const_reverse_iterator& it) const
         {
-            return (base2::m_cont == it.m_cont && base2::m_pos > it.m_pos);
+#ifdef DEBUG
+            if (this->m_cont != it.m_cont)
+                throw stl::exception("invalid iterator");
+#endif
+            return (this->m_pos > it.m_pos);
         }
 
         bool operator>(const vector_const_reverse_iterator& it) const
         {
-            return (base2::m_cont == it.m_cont && base2::m_pos < it.m_pos);
+#ifdef DEBUG
+            if (this->m_cont != it.m_cont)
+                throw stl::exception("invalid iterator");
+#endif
+            return (this->m_pos < it.m_pos);
         }
 
         bool operator<=(const vector_const_reverse_iterator& it) const
         {
-            return (base2::m_cont == it.m_cont && base2::m_pos >= it.m_pos);
+#ifdef DEBUG
+            if (this->m_cont != it.m_cont)
+                throw stl::exception("invalid iterator");
+#endif
+            return (this->m_pos >= it.m_pos);
         }
 
         bool operator>=(const vector_const_reverse_iterator& it) const
         {
-            return (base2::m_cont == it.m_cont && base2::m_pos <= it.m_pos);
+#ifdef DEBUG
+            if (this->m_cont != it.m_cont)
+                throw stl::exception("invalid iterator");
+#endif
+            return (this->m_pos <= it.m_pos);
         }
 
         reference operator[](difference_type off) const
         {
-            if (!base2::m_cont) throw stl::exception("invalid iterator");
+            if (!this->m_cont)
+                throw stl::exception("invalid iterator");
 
-            return (*base2::m_cont)[base2::m_pos - off];
+            return (this->m_cont->m_data + this->m_pos - off);
         }
     };  // vector_const_reverse_iterator
 
 
-    //    ISO/IEC 14882:2003  $23.2.4 Class template vector
     template<typename T, typename Allocator = stl::allocator<T> >
     class vector
     {
