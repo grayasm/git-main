@@ -490,7 +490,7 @@ namespace stl
             if (!this->m_cont)
                 throw stl::exception("invalid iterator");
 
-            return *(this->m_cont + this->m_pos);
+            return *(this->m_cont->m_data + this->m_pos);
         }
 
         pointer operator->() const
@@ -825,7 +825,7 @@ namespace stl
     class vector
     {
     public:
-        typedef vector<T, Allocator>                    container;
+        typedef          vector<T, Allocator>           container;
 
         // types:
         typedef typename Allocator::value_type          value_type;
@@ -838,11 +838,15 @@ namespace stl
         typedef typename Allocator::pointer             pointer;
         typedef typename Allocator::const_pointer       const_pointer;
 
-    public:
         typedef vector_iterator<container>              iterator;
         typedef vector_const_iterator<container>        const_iterator;
         typedef vector_reverse_iterator<container>      reverse_iterator;
         typedef vector_const_reverse_iterator<container> const_reverse_iterator;
+
+        friend class vector_iterator<container>;
+        friend class vector_const_iterator<container>;
+        friend class vector_reverse_iterator<container>;
+        friend class vector_const_reverse_iterator<container>;
 
     private:
         value_type*             m_data;
