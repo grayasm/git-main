@@ -885,7 +885,7 @@ namespace stl
         {
 #ifdef DEBUG
             // safety guard: if this throws the issue needs fixing.
-            if (size >= m_capacity)
+            if (size > m_capacity)
                 throw stl::exception("out of valid range");
 #endif
 
