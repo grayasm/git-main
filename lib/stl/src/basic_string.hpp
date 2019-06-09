@@ -865,7 +865,7 @@ namespace stl
         inline void check_type(char*) { }
         inline void check_type(unsigned char*) { }
         inline void check_type(wchar_t*) { }
-        
+
         inline void init()
         {
             check_type(m_data);

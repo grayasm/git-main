@@ -664,7 +664,7 @@ namespace stl
 
         vector_const_reverse_iterator& operator=(const vector_const_reverse_iterator& it)
         {
-            if (this != &tc)
+            if (this != &it)
             {
                 this->m_cont = it.m_cont;
                 this->m_pos = it.m_pos;
@@ -865,7 +865,8 @@ namespace stl
 
         inline void grow(size_type cap)
         {
-            if (m_capacity >= cap) return;
+            if (m_capacity >= cap)
+                return;
 
             pointer mem = 0;
             if (!m_data)
@@ -882,6 +883,12 @@ namespace stl
 
         inline void endof(size_type size)
         {
+#ifdef DEBUG
+            // safety guard: if this throws the issue needs fixing.
+            if (size >= m_capacity)
+                throw stl::exception("out of valid range");
+#endif
+
             if (size < m_size)
             {
                 value_type* unused = m_data + size;
@@ -891,8 +898,7 @@ namespace stl
             m_size = size;
         }
 
-    public:       
-        // $23.2.4.1 construct/copy/destroy:
+    public:
         vector()
         {
             init();
