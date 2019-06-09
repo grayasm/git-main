@@ -1535,7 +1535,7 @@ namespace stl
         container& assign(const value_type* ptr)
         {
             size_type n = 0;
-            
+
             // Is the address inside this container ?
             if (m_data <= ptr && (m_data + m_size) > ptr)
             {
@@ -1636,7 +1636,7 @@ namespace stl
 
             return *this;
         }
-        
+
         inline container& assign_(value_type* first, value_type* last)
         {
             // if last < first then let it blow up.
