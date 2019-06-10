@@ -6,20 +6,20 @@
 class A
 {
 public:
-    A() 
+    A()
     {
         printf("A()     \n");
-        m_i = new int; *m_i = -1; 
+        m_i = new int; *m_i = -1;
     }
     ~A()
     {
         printf("~A()    \n");
-        delete m_i; m_i = 0; 
+        delete m_i; m_i = 0;
     }
-    A(int i) 
+    A(int i)
     {
         printf("A(int i)\n");
-        m_i = new int; *m_i = i; 
+        m_i = new int; *m_i = i;
     }
 
     A(const A& tc)
@@ -60,15 +60,20 @@ private:
 };
 
 
-A f(int i)
-{
-    A a(i);
-    return a;
-}
-
 int main()
 {
-    A a = f(10);
+    
+    stl::vector<A> avec;
+    for (int i = 0; i < 3; ++i)
+        avec.push_back(A(i));
+
+    avec.assign(1, avec.back());
+
+    stl::vector<char> chvec;
+    for (char c = 'a'; c < 'd'; ++c)
+        chvec.push_back(c);
+
+    chvec.assign(1, chvec.back());
 
     return 0;
 }

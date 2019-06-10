@@ -973,14 +973,13 @@ namespace stl
                     // can relocate m_data and invalidate &val
                     grow(count);
 
-//TODO: test with char,char*,const char* see if it goes where it should!!!!
-                    stl::mem_set<value_type>(m_data, temp, count * sizeof(value_type), m_allocator);
+                    stl::mem_set(m_data, temp, count * sizeof(value_type), m_allocator);
                 }
                 else// Address is outside this container.
                 {
                     grow(count);
 
-                    stl::mem_set<value_type>(m_data, val, count * sizeof(value_type), m_allocator);
+                    stl::mem_set(m_data, val, count * sizeof(value_type), m_allocator);
                 }
             }
 
@@ -1144,7 +1143,7 @@ namespace stl
                 grow(size);
 
                 // Not a self assignment as value is a temporary copy.
-                stl::mem_set<value_type>(m_data, value, size * sizeof(value_type), m_allocator);
+                stl::mem_set(m_data, value, size * sizeof(value_type), m_allocator);
             }
 
             endof(size);
@@ -1214,7 +1213,8 @@ namespace stl
                 grow(sz);
 
                 // Not a self assignment as c is a temporary copy.
-                stl::mem_set<value_type>(&m_data[m_size], c, (sz - m_size) * sizeof(value_type), m_allocator);
+                //stl::mem_set(&m_data[m_size], c, (sz - m_size) * sizeof(value_type), m_allocator);
+                stl::mem_set(m_data + m_size, c, (sz - m_size) * sizeof(value_type), m_allocator);
             }
 
             endof(sz);
@@ -1421,7 +1421,8 @@ namespace stl
                         stl::mem_move(m_data + p + n, dst_valid_sz, m_data + p, (m_size - p), m_allocator);
                     }
 
-                    stl::mem_set<value_type>(&m_data[p], temp, n * sizeof(value_type), m_allocator);
+                    //stl::mem_set(&m_data[p], temp, n * sizeof(value_type), m_allocator);
+                    stl::mem_set(m_data + p, temp, n * sizeof(value_type), m_allocator);
                 }
                 else// x address is outside this container
                 {
@@ -1441,7 +1442,8 @@ namespace stl
                         stl::mem_move(m_data + p + n, dst_valid_sz, m_data + p, (m_size - p), m_allocator);
                     }
 
-                    stl::mem_set<value_type>(&m_data[p], x, n * sizeof(value_type), m_allocator);
+                    //stl::mem_set(&m_data[p], x, n * sizeof(value_type), m_allocator);
+                    stl::mem_set(m_data + p, x, n * sizeof(value_type), m_allocator);
                 }
 
                 endof(size);
@@ -1775,7 +1777,8 @@ namespace stl
                         stl::mem_move(m_data + p + n, dst_valid_sz, m_data + p, (m_size - p), m_allocator);
                     }
 
-                    stl::mem_set<value_type>(&m_data[p], temp, n * sizeof(value_type), m_allocator);
+                    //stl::mem_set(&m_data[p], temp, n * sizeof(value_type), m_allocator);
+                    stl::mem_set(m_data + p, temp, n * sizeof(value_type), m_allocator);
                 }
                 else// value address is outside this container
                 {
@@ -1793,7 +1796,8 @@ namespace stl
                         stl::mem_move(m_data + p + n, dst_valid_sz, m_data + p, (m_size - p), m_allocator);
                     }
 
-                    stl::mem_set<value_type>(&m_data[p], value, n * sizeof(value_type), m_allocator);
+                    //stl::mem_set(&m_data[p], value, n * sizeof(value_type), m_allocator);
+                    stl::mem_set(m_data + p, value, n * sizeof(value_type), m_allocator);
                 }
 
                 endof(size);

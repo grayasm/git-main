@@ -483,6 +483,11 @@ void test_vector::insert()
     for (size_t i = 0; i < v4.size(); ++i)
         CPPUNIT_ASSERT(v3[i] == v4[i] && v4[i] == c3[i]);
     CPPUNIT_ASSERT(v4.size() == 5);
+    v4.insert(v4.begin(), v3.begin(), v3.end());
+    for (size_t i = 5; i < v4.size(); ++i)
+        CPPUNIT_ASSERT(v3[i-5] == v4[i] && v4[i] == c3[i-5]);
+    CPPUNIT_ASSERT(v4.size() == 10);
+
 
     v3.insert(v3.begin(), v3.begin(), v3.end()); // from self
     for (size_t i = 0; i < v3.size(); ++i)
@@ -495,16 +500,24 @@ void test_vector::insert()
     stl::vector<Cx> v5, v6;
     v5.assign(c5, c5 + 5);
     const stl::vector<Cx>& cv5 = v5;
+    const stl::vector<Cx>& cv6 = v6;
     v6.insert(v6.end(), cv5.begin() + 2, cv5.end()); // from other
-
+    
     for (size_t i = 0; i < v6.size(); ++i)
         CPPUNIT_ASSERT(v6[i] == v5[i + 2] && v6[i] == c5[i + 2]);
     CPPUNIT_ASSERT(v6.size() == 3);
+    v6.insert(v6.begin(), cv5.begin(), cv5.end());
+    for (size_t i = 0; i < 5; ++i)
+        CPPUNIT_ASSERT(v6[i] == v5[i] && v6[i] == c5[i]);
+    CPPUNIT_ASSERT(v6.size() == 8);
 
-    v6.insert(v6.begin(), v6.begin(), v6.end()); // from self
+    v6.assign(v5);
+    v6.insert(v6.end(), cv6.begin(), cv6.end()); // from self
+    v6.insert(v6.begin(), cv6.begin(), cv6.end());
+    for (size_t i = 0; i < v6.size(); ++i)
+        CPPUNIT_ASSERT(v6[i % 5] == v5[i % 5] && v6[i % 5] == c5[i % 5]);
+    CPPUNIT_ASSERT(v6.size() == 20);
 
-    CPPUNIT_ASSERT(v6[0] == c5[2] && v6[1] == c5[3] && v6[2] == c5[4]);
-    CPPUNIT_ASSERT(v6[3] == c5[2] && v6[4] == c5[3] && v6[5] == c5[4]);
 
 
     // void insert_(iterator& position, InputIterator& first, InputIterator& last, stl::forward_iterator_tag)
