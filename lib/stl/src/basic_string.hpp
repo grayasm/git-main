@@ -1614,7 +1614,7 @@ namespace stl
             if (first.m_cont != last.m_cont || first.m_cont == 0)
                 throw stl::exception("invalid iterator");
 
-            // if n < 0 then let it blow up.
+            // if last < first then let it blow up.
             size_type n = static_cast<size_type>(last - first);
 
             grow(n + 1);    // extra '\0'   (critical when n is 0)

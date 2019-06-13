@@ -109,7 +109,7 @@ namespace stl
             if (!this->m_cont)
                 throw stl::exception("invalid iterator");
 
-            return (this->m_cont + this->m_pos);
+            return (this->m_cont->m_data + this->m_pos);
         }
 
         vector_iterator& operator++()
@@ -302,7 +302,7 @@ namespace stl
             if (!this->m_cont)
                 throw stl::exception("invalid iterator");
 
-            return *(this->m_cont + this->m_pos);
+            return *(this->m_cont->m_data + this->m_pos);
         }
 
         pointer operator->() const
@@ -310,7 +310,7 @@ namespace stl
             if (!this->m_cont)
                 throw stl::exception("invalid iterator");
 
-            return (this->m_cont + this->m_pos);
+            return (this->m_cont->m_data + this->m_pos);
         }
 
         vector_const_iterator& operator++()
@@ -427,7 +427,7 @@ namespace stl
             if (!this->m_cont)
                 throw stl::exception("invalid iterator");
 
-            return (this->m_cont + this->m_pos + off);
+            return (this->m_cont->m_data + this->m_pos + off);
         }
     };  // vector_const_iterator
 
@@ -615,7 +615,7 @@ namespace stl
             if (!this->m_cont)
                 throw stl::exception("invalid iterator");
 
-            return *(this->m_cont + this->m_pos - off);
+            return *(this->m_cont->m_data + this->m_pos - off);
         }
     };  // vector_reverse_iterator
 
@@ -884,7 +884,7 @@ namespace stl
         inline void endof(size_type size)
         {
 #ifdef DEBUG
-            // safety: only string needs a +1 element for '\0';
+            // safety: only basic_string needs a +1 element for '\0';
             if (size > m_capacity)
                 throw stl::exception("out of valid range");
 #endif
@@ -904,23 +904,23 @@ namespace stl
             init();
         }
 
-        explicit vector(size_type n, const T& c = T())
+        explicit vector(size_type n, const T& val = T())
         {
             init();
-            assign(n, c);
+            assign(n, val);
         }
 
         template <typename InputIterator>
         vector(InputIterator first, InputIterator last)
         {
             init();
-            assign(first, last);
+            assign_(first, last);   // take a shortcut
         }
 
-        vector(const container& tc)
+        vector(const container& x)
         {
             init();
-            assign(tc);
+            assign(x);
         }
 
         ~vector()
@@ -941,18 +941,18 @@ namespace stl
             return assign(x);
         }
 
-        container& assign(const container& tc)
+        container& assign(const container& x)
         {
             //self assignment
-            if (this != &tc)
+            if (this != &x)
             {
-                size_type size = tc.size();
+                size_type size = x.size();
 
-                if (size > 0)
+                if (size)
                 {
                     grow(size);
 
-                    stl::mem_copy(m_data, m_size, tc.m_data, size, m_allocator);
+                    stl::mem_copy(m_data, m_size, x.m_data, size, m_allocator);
                 }
                 
                 endof(size);
@@ -961,9 +961,9 @@ namespace stl
             return *this;
         }
 
-        void assign(size_type count, const value_type& val)
+        void assign(size_type n, const value_type& val)
         {
-            if (count > 0)
+            if (n)
             {
                 // Is the address inside this container ?
                 if (m_data <= &val && (m_data + m_size) > &val)
@@ -971,19 +971,19 @@ namespace stl
                     T temp(val);
 
                     // can relocate m_data and invalidate &val
-                    grow(count);
+                    grow(n);
 
-                    stl::mem_set(m_data, temp, count * sizeof(value_type), m_allocator);
+                    stl::mem_set(m_data, temp, n * sizeof(value_type), m_allocator);
                 }
                 else// Address is outside this container.
                 {
-                    grow(count);
+                    grow(n);
 
-                    stl::mem_set(m_data, val, count * sizeof(value_type), m_allocator);
+                    stl::mem_set(m_data, val, n * sizeof(value_type), m_allocator);
                 }
             }
 
-            endof(count);
+            endof(n);
         }
 
         template <typename InputIterator>
@@ -999,24 +999,24 @@ namespace stl
                 throw stl::exception("invalid iterator");
 
             // if last < first then let it blow up.
-            size_type dist = static_cast<size_type>(last - first);
+            size_type n = static_cast<size_type>(last - first);
 
-            if (dist > 0)
+            if (n)
             {
-                grow(dist);
+                grow(n);
 
                 //self assignment
                 if (first.m_cont == this)
                 {
-                    stl::mem_move(m_data, m_size, first.m_cont->m_data + first.m_pos, dist, m_allocator);
+                    stl::mem_move(m_data, m_size, first.m_cont->m_data + first.m_pos, n, m_allocator);
                 }
                 else
                 {
-                    stl::mem_copy(m_data, m_size, first.m_cont->m_data + first.m_pos, dist, m_allocator);
+                    stl::mem_copy(m_data, m_size, first.m_cont->m_data + first.m_pos, n, m_allocator);
                 }
             }
 
-            endof(dist);
+            endof(n);
         }
 
         inline void assign_(const_iterator& first, const_iterator& last)
@@ -1024,48 +1024,48 @@ namespace stl
             if (first.m_cont != last.m_cont || first.m_cont == 0)
                 throw stl::exception("invalid iterator");
 
-            // if n < 0 then let it blow up.
-            size_type dist = static_cast<size_type>(last - first);
+            // if last < first then let it blow up.
+            size_type n = static_cast<size_type>(last - first);
 
-            if (dist > 0)
+            if (n)
             {
-                grow(dist);
+                grow(n);
 
                 //self assignment
                 if (this == first.m_cont)
                 {
-                    stl::mem_move(m_data, m_size, first.m_cont->m_data + first.m_pos, dist, m_allocator);
+                    stl::mem_move(m_data, m_size, first.m_cont->m_data + first.m_pos, n, m_allocator);
                 }
                 else
                 {
-                    stl::mem_copy(m_data, m_size, first.m_cont->m_data + first.m_pos, dist, m_allocator);
+                    stl::mem_copy(m_data, m_size, first.m_cont->m_data + first.m_pos, n, m_allocator);
                 }
             }
 
-            endof(dist);
+            endof(n);
         }
 
         inline void assign_(value_type* first, value_type* last)
         {
             // if last < first then let it blow up.
-            size_type dist = static_cast<size_type>(last - first);
+            size_type n = static_cast<size_type>(last - first);
 
-            if (dist > 0)
+            if (n)
             {
-                grow(dist);
+                grow(n);
 
                 // Is range inside this container ?
                 if (m_data <= first && (m_data + m_size) > first)
                 {
-                    stl::mem_move(m_data, m_size, first, dist, m_allocator);
+                    stl::mem_move(m_data, m_size, first, n, m_allocator);
                 }
                 else
                 {
-                    stl::mem_copy(m_data, m_size, first, dist, m_allocator);
+                    stl::mem_copy(m_data, m_size, first, n, m_allocator);
                 }
             }
 
-            endof(dist);
+            endof(n);
         }
 
         inline void assign_(const value_type* first, const value_type* last)
@@ -1085,26 +1085,25 @@ namespace stl
             /*  Test with a.assign(b.rbegin(), b.rend());
                 if last < first then let it blow up.
             */
-            size_type dist = static_cast<size_type>(stl::distance(first, last));
+            size_type n = static_cast<size_type>(stl::distance(first, last));
 
-            if (dist > 0)
+            if (n)
             {
                 const T& check = *first;
 
                 // Is the range inside this container ?
                 if (m_data <= &check && (m_data + m_size) > &check)
                 {
-                    container temp;
-                    temp.assign(first, last);
+                    container temp(first, last);
 
                     // for safety, although could not invalidate the input for this case
-                    grow(dist);
+                    grow(n);
 
-                    stl::mem_move(m_data, m_size, &temp.front(), dist, m_allocator);
+                    stl::mem_move(m_data, m_size, temp.m_data, n, m_allocator);
                 }
                 else// range is outside this container
                 {
-                    grow(dist);
+                    grow(n);
 
                     for (size_type i = 0; first != last; ++first, ++i)
                     {
@@ -1124,29 +1123,28 @@ namespace stl
                 }
             }
 
-            endof(dist);
+            endof(n);
         }
 
         template<typename InputIterator>
-        inline void assign_(InputIterator n, InputIterator value, stl::input_iterator_tag)
+        inline void assign_(InputIterator count, InputIterator value, stl::input_iterator_tag)
         {
-            /*  Ex: a.assign(5, 0.5f);
+            /*  Ex: a.assign(5, 5);
                 if n < 0 then let it blow up.
              */             
-            size_type size = static_cast<size_type>(n);
-            if (size > 0)
+            size_type n = static_cast<size_type>(count);
+            if (n)
             {
-                grow(size);
+                grow(n);
 
                 // Not a self assignment as value is a temporary copy.
-                stl::mem_set(m_data, value, size * sizeof(value_type), m_allocator);
+                stl::mem_set(m_data, value, n * sizeof(value_type), m_allocator);
             }
 
-            endof(size);
+            endof(n);
         }
 
     public:
-        //$21.3.2 iterators
         iterator begin()
         {
             return iterator(this, 0);
@@ -1202,17 +1200,17 @@ namespace stl
             return static_cast<size_type>(-1) / sizeof(value_type);
         }
 
-        void resize(size_type sz, value_type c = value_type())
+        void resize(size_type n, value_type val = value_type())
         {
-            if (sz > m_size)
+            if (n > m_size)
             {
-                grow(sz);
+                grow(n);
 
-                // Not a self assignment as c is a temporary copy.
-                stl::mem_set(m_data + m_size, c, (sz - m_size) * sizeof(value_type), m_allocator);
+                // Not a self assignment as val is a temporary copy.
+                stl::mem_set(m_data + m_size, val, (n - m_size) * sizeof(value_type), m_allocator);
             }
 
-            endof(sz);
+            endof(n);
         }
 
         size_type capacity() const
@@ -1230,68 +1228,74 @@ namespace stl
             grow(n);
         }
 
-        // element access:
         reference operator[](size_type n)
         {
-            if (n >= m_size) throw stl::exception("out of valid range");
-            return m_data[n];
+            return *(m_data + n);
         }
 
         const_reference operator[](size_type n) const
         {
-            if (n >= m_size) throw stl::exception("out of valid range");
-            return m_data[n];
+            return *(m_data + n);
         }
 
         const_reference at(size_type n) const
         {
-            if (n >= m_size) throw stl::exception("out of valid range");
-            return m_data[n];
+            if (n >= m_size)
+                throw stl::exception("out of valid range");
+
+            return *(m_data + n);
         }
 
         reference at(size_type n)
         {
-            if (n >= m_size) throw stl::exception("out of valid range");
-            return m_data[n];
+            if (n >= m_size)
+                throw stl::exception("out of valid range");
+
+            return *(m_data + n);
         }
 
-        /* ISO/IEC 14882:2003  23.2.4 Class template vector */
-        // 23.2.4.2 element access:
         reference front()
         {
-            if (!m_size) throw stl::exception("out of valid range");
-            return m_data[0];
+            if (!m_size)
+                throw stl::exception("out of valid range");
+
+            return *m_data;
         }
 
         const_reference front() const
         {
-            if (!m_size) throw stl::exception("out of valid range");
-            return m_data[0];
+            if (!m_size)
+                throw stl::exception("out of valid range");
+
+            return *m_data;
         }
 
         reference back()
         {
-            if (!m_size) throw stl::exception("out of valid range");
-            return m_data[m_size - 1];
+            if (!m_size)
+                throw stl::exception("out of valid range");
+
+            return *(m_data + m_size - 1);
         }
 
         const_reference back() const
         {
-            if (!m_size) throw stl::exception("out of valid range");
-            return m_data[m_size - 1];
+            if (!m_size)
+                throw stl::exception("out of valid range");
+
+            return *(m_data + m_size - 1);
         }
 
-        /* $21.3.5 modifiers ( push_back ) */
-        void push_back(const value_type& x)
+        void push_back(const value_type& val)
         {
-            // Is x address inside this container ?
-            if (m_data <= &x && (m_data + m_size) > &x)
+            // Is val address inside this container ?
+            if (m_data <= &val && (m_data + m_size) > &val)
             {
-                T temp(x);
+                T temp(val);
 
                 if (m_size == m_capacity)
                 {
-                    // can relocate m_data and invalidate &x
+                    // can relocate m_data and invalidate &val
                     if (!m_capacity)
                         grow(2);
                     else
@@ -1300,7 +1304,7 @@ namespace stl
 
                 m_allocator.construct(&m_data[m_size], temp);
             }
-            else// x address is outside this container.
+            else// val address is outside this container.
             {
                 if (m_size == m_capacity)
                 {
@@ -1310,35 +1314,36 @@ namespace stl
                         grow(m_capacity * 2);
                 }
 
-                m_allocator.construct(&m_data[m_size], x);
+                m_allocator.construct(&m_data[m_size], val);
             }
 
             endof(m_size + 1);
         }
 
-        // 23.2.4.3 modifiers (vector):
         void pop_back()
         {
-            if (m_size == 0) throw stl::exception("vector is empty");
+            if (m_size == 0)
+                throw stl::exception("vector is empty");
             
             endof(m_size - 1);
         }
         
-        iterator insert(iterator position, const T& x)
+        iterator insert(iterator position, const value_type& val)
         {
             // allow to insert in position = end(), aka m_pos == m_size;
-            if (position.m_cont != this || position.m_pos > m_size)
+            if (this != position.m_cont || position.m_pos > m_size)
                 throw stl::exception("invalid iterator");
 
+            size_type pos = position.m_pos;
             size_type size = m_size + 1;
-            size_type p = position.m_pos;
+            
 
-            // Is x address inside this container ? 
-            if (m_data <= &x && (m_data + m_size) > &x)
+            // Is val address inside this container ? 
+            if (m_data <= &val && (m_data + m_size) > &val)
             {
-                T temp(x);
+                T temp(val);
 
-                // can relocate m_data and invalidate &x
+                // can relocate m_data and invalidate &val
                 grow(size);
 
                 // move content unless insert position is end()
@@ -1346,17 +1351,18 @@ namespace stl
                 {
                     // mem_move cannot destroy invalid objects in the destination
                     size_type dst_valid_sz = 0;
-                    if (p + 1 < m_size)
+                    if (pos + 1 < m_size)
                     {
-                        dst_valid_sz = m_size - p - 1;
+                        dst_valid_sz = m_size - pos - 1;
                     }
 
-                    stl::mem_move(m_data + p + 1, dst_valid_sz, m_data + p, (m_size - p), m_allocator);
+                    stl::mem_move(m_data + pos + 1, dst_valid_sz, m_data + pos, (m_size - pos), m_allocator);
                 }
 
-                m_allocator.construct(&m_data[p], temp);
+// can use pointer arithmetic                
+                m_allocator.construct(&m_data[pos], temp);
             }
-            else// x address is outside this container
+            else// val address is outside this container
             {
                 grow(size);
 
@@ -1365,15 +1371,15 @@ namespace stl
                 {
                     // mem_move cannot destroy invalid objects in the destination
                     size_type dst_valid_sz = 0;
-                    if (p + 1 < m_size)
+                    if (pos + 1 < m_size)
                     {
-                        dst_valid_sz = m_size - p - 1;
+                        dst_valid_sz = m_size - pos - 1;
                     }
 
-                    stl::mem_move(m_data + p + 1, dst_valid_sz, m_data + p, (m_size - p), m_allocator);
+                    stl::mem_move(m_data + pos + 1, dst_valid_sz, m_data + pos, (m_size - pos), m_allocator);
                 }
 
-                m_allocator.construct(&m_data[p], x);
+                m_allocator.construct(&m_data[pos], val);
             }
             
             endof(size);
@@ -1381,23 +1387,24 @@ namespace stl
             return position;
         }
 
-        void insert(iterator position, size_type n, const T& x)
+        void insert(iterator position, size_type n, const value_type& val)
         {
             // allow to insert in position = end(), aka m_pos == m_size;
-            if (position.m_cont != this || position.m_pos > m_size)
+            if (this != position.m_cont || position.m_pos > m_size)
                 throw stl::exception("invalid iterator");
 
             if (n)
             {
+                size_type pos = position.m_pos;
                 size_type size = m_size + n;
-                size_type p = position.m_pos;
+                
 
-                // Is x address inside this container ?
-                if (m_data <= &x && (m_data + m_size) > &x)
+                // Is val address inside this container ?
+                if (m_data <= &val && (m_data + m_size) > &val)
                 {
-                    T temp(x);
+                    T temp(val);
 
-                    // can relocate m_data and invalidate &x
+                    // can relocate m_data and invalidate &val
                     grow(size);
 
                     // move content unless insert position is end()
@@ -1405,17 +1412,17 @@ namespace stl
                     {
                         // mem_move cannot destroy invalid objects in the destination
                         size_type dst_valid_sz = 0;
-                        if (p + n < m_size)
+                        if (pos + n < m_size)
                         {
-                            dst_valid_sz = m_size - p - n;
+                            dst_valid_sz = m_size - pos - n;
                         }
 
-                        stl::mem_move(m_data + p + n, dst_valid_sz, m_data + p, (m_size - p), m_allocator);
+                        stl::mem_move(m_data + pos + n, dst_valid_sz, m_data + pos, (m_size - pos), m_allocator);
                     }
 
-                    stl::mem_set(m_data + p, temp, n * sizeof(value_type), m_allocator);
+                    stl::mem_set(m_data + pos, temp, n * sizeof(value_type), m_allocator);
                 }
-                else// x address is outside this container
+                else// val address is outside this container
                 {
                     grow(size);
 
@@ -1424,15 +1431,15 @@ namespace stl
                     {
                         // mem_move cannot destroy invalid objects in the destination
                         size_type dst_valid_sz = 0;
-                        if (p + n < m_size)
+                        if (pos + n < m_size)
                         {
-                            dst_valid_sz = m_size - p - n;
+                            dst_valid_sz = m_size - pos - n;
                         }
 
-                        stl::mem_move(m_data + p + n, dst_valid_sz, m_data + p, (m_size - p), m_allocator);
+                        stl::mem_move(m_data + pos + n, dst_valid_sz, m_data + pos, (m_size - pos), m_allocator);
                     }
 
-                    stl::mem_set(m_data + p, x, n * sizeof(value_type), m_allocator);
+                    stl::mem_set(m_data + pos, val, n * sizeof(value_type), m_allocator);
                 }
 
                 endof(size);
@@ -1457,7 +1464,7 @@ namespace stl
 
             // if last < first then let it blow up.
             size_type dist = static_cast<size_type>(last - first);
-            if (dist > 0)
+            if (dist)
             {
                 size_type p = position.m_pos;
                 size_type size = m_size + dist;
@@ -1588,7 +1595,7 @@ namespace stl
             // if last < first then let it blow up.
             size_type dist = static_cast<size_type>(last - first);
 
-            if (dist > 0)
+            if (dist)
             {
                 size_type p = position.m_pos;
                 size_type size = m_size + dist;
@@ -1667,7 +1674,7 @@ namespace stl
 
             // if last < first then let it blow up.
             size_type dist = static_cast<size_type>(stl::distance(first, last));
-            if (dist > 0)
+            if (dist)
             {
                 size_type p = position.m_pos;
                 size_type size = m_size + dist;
@@ -1904,7 +1911,7 @@ namespace stl
 
             // if last < first then let it blow up.
             size_type dist = static_cast<size_type>(last - first);
-            if (dist > 0)
+            if (dist)
             {
                 stl::mem_move(m_data + first.m_pos, m_size - first.m_pos, m_data + last.m_pos, (m_size - last.m_pos), m_allocator);
 
@@ -2005,4 +2012,4 @@ namespace stl
 
 }  // namespace
 
-#endif//__vector_hpp__
+#endif // __vector_hpp__
