@@ -525,36 +525,38 @@ void test_vector::insert()
     stl::vector<Cx> v7, v8;
     v7.assign(c7, c7 + 5);
     v8.insert(v8.end(), v7.rbegin(), v7.rend()); // from other
+    v8.insert(v8.begin(), v7.rbegin(), v7.rend()); // from other (moving content)
 
     for (size_t i = 0; i < v8.size(); ++i)
-        CPPUNIT_ASSERT(v8[i] == c7[4 - i]);
-    CPPUNIT_ASSERT(v8.size() == 5);
+        CPPUNIT_ASSERT(v8[i] == c7[4 - i % 5]);
+    CPPUNIT_ASSERT(v8.size() == 10);
 
     v8.insert(v8.begin(), v8.rbegin(), v8.rend()); // from self
 
-    for (int i = 0; i < 5; ++i)
-        CPPUNIT_ASSERT(v8[i] == c7[i]);
+    for (size_t i = 0; i < 10; ++i) // the first 10 are ascending :(
+        CPPUNIT_ASSERT(v8[i] == c7[i % 5]);
 
-    for (int i = 5; i < 10; ++i)
-        CPPUNIT_ASSERT(v8[i] == c7[4 + 5 - i]);
-
+    for (size_t i = 10; i < 20; ++i) // the following 10 are descending :(
+        CPPUNIT_ASSERT(v8[i] == c7[4 - i % 5]);
+    CPPUNIT_ASSERT(v8.size() == 20); // size = 20!
 
     // void insert_(iterator& position, value_type* first, value_type* last)
     int i9[5] = { -1, -2, -3, -4, -5 };
     stl::vector<int> v9;
     v9.insert(v9.begin(), i9, i9 + 5); // from other
+    v9.insert(v9.begin(), i9, i9 + 5); // from other (move content)
 
     for (size_t i = 0; i < v9.size(); ++i)
-        CPPUNIT_ASSERT(v9[i] == i9[i]);
-    CPPUNIT_ASSERT(v9.size() == 5);
+        CPPUNIT_ASSERT(v9[i] == i9[i % 5]);
+    CPPUNIT_ASSERT(v9.size() == 10);
 
     v9.insert(v9.begin(), &v9.front(), &v9.back()); // from self
 
-    for (int i = 0; i < 4; ++i)
-        CPPUNIT_ASSERT(v9[i] == i9[i]);
-    for (int i = 4; i < 9; ++i)
-        CPPUNIT_ASSERT(v9[i] == i9[i - 4]);
-    CPPUNIT_ASSERT(v9.size() == 9);
+    for (int i = 0; i < 9; ++i)
+        CPPUNIT_ASSERT(v9[i] == i9[i % 5]);
+    for (int i = 9; i < v9.size(); ++i)
+        CPPUNIT_ASSERT(v9[i] == i9[(i - 9) % 5]);
+    CPPUNIT_ASSERT(v9.size() == 19);
 
     Cx c10[5] = { -1, -2, -3, -4, -5 };
     stl::vector<Cx> v10, v11;
@@ -586,7 +588,8 @@ void test_vector::insert()
     // void insert_(iterator& position, InputIterator n, InputIterator value, stl::input_iterator_tag)
     stl::vector<int> v13;
     v13.insert(v13.end(), 1, -1);
-    v13.insert(v13.begin(), 1, v13.front());
+    int& i13val = v13.front();
+    v13.insert(v13.begin(), 1, i13val);
 
     CPPUNIT_ASSERT(v13[0] == -1 && v13[1] == -1);
     CPPUNIT_ASSERT(v13.size() == 2);
@@ -626,47 +629,55 @@ void test_vector::perf1()
 
     //stl::vector
     {
+        typedef stl::vector<Cx> vector;
         time_printer tp(msg1);
 
-        stl::vector<Cx> v1;
+        vector v0;
         for (int i = 0; i < 5000; ++i)
-            v1.push_back(Cx(i));
+            v0.push_back(Cx(i));
 
-        while (v1.size() > 0)
-            v1.erase(v1.begin());
+        // inline void insert_(iterator& position, const_iterator& first, const_iterator& last)
+        // -- stl is worse 0.81 vs 0.60 :)
+        for (size_t i = 0; i < 1000; ++i)
+        {
+            vector v1(v0);
+            vector v2(v1), v3(v1), v4(v1), v5(v1);
+            const vector& cv2 = v2;
+            const vector& cv3 = v3;
+            const vector& cv4 = v4;
+            const vector& cv5 = v5;
 
-        for (int i = 0; i < 5000; ++i)
-            v1.insert(v1.begin(), Cx(i));
-
-        v1.erase(v1.begin(), v1.end());
-
-        v1.assign(10, Cx(-1));
-        for (int i = 0; i < 10; ++i)
-            v1.insert(v1.begin(), v1.begin(), v1.end());
-
-        v1.clear();
+            v2.insert(v2.begin() + (long)i % v0.size(), cv2.begin(), cv2.end());
+            v3.insert(v3.begin() + (long)i % v0.size(), cv3.begin() + (long)i % v0.size(), cv3.end());
+            v4.insert(v4.begin(), cv4.begin(), cv4.end() - (long)i % v0.size());
+            v5.insert(v5.end(), cv5.end(), cv5.end());
+        }        
     }
 
     // std::vector
     {
+        typedef std::vector<Cx> vector;
         time_printer tp(msg2);
 
-        std::vector<Cx> v1;
+        vector v0;
         for (int i = 0; i < 5000; ++i)
-            v1.push_back(Cx(i));
+            v0.push_back(Cx(i));
 
-        while (v1.size() > 0)
-            v1.erase(v1.begin());
+        // inline void insert_(iterator& position, const_iterator& first, const_iterator& last)
+        // -- stl is worse 0.81 vs 0.60 :)
+        for (size_t i = 0; i < 1000; ++i)
+        {
+            vector v1(v0);
+            vector v2(v1), v3(v1), v4(v1), v5(v1);
+            const vector& cv2 = v2;
+            const vector& cv3 = v3;
+            const vector& cv4 = v4;
+            const vector& cv5 = v5;
 
-        for (int i = 0; i < 5000; ++i)
-            v1.insert(v1.begin(), Cx(i));
-
-        v1.erase(v1.begin(), v1.end());
-
-        v1.assign(10, Cx(-1));
-        for (int i = 0; i < 10; ++i)
-            v1.insert(v1.begin(), v1.begin(), v1.end());
-
-        v1.clear();
+            v2.insert(v2.begin() + (long)i % v0.size(), cv2.begin(), cv2.end());
+            v3.insert(v3.begin() + (long)i % v0.size(), cv3.begin() + (long)i % v0.size(), cv3.end());
+            v4.insert(v4.begin(), cv4.begin(), cv4.end() - (long)i % v0.size());
+            v5.insert(v5.end(), cv5.end(), cv5.end());
+        }
     }
 }

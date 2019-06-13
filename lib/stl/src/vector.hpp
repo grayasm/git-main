@@ -1008,12 +1008,10 @@ namespace stl
                 //self assignment
                 if (first.m_cont == this)
                 {
-                    //stl::mem_move(m_data, m_size, &((*first.m_cont)[first.m_pos]), dist, m_allocator);
                     stl::mem_move(m_data, m_size, first.m_cont->m_data + first.m_pos, dist, m_allocator);
                 }
                 else
                 {
-                    //stl::mem_copy(m_data, m_size, &((*first.m_cont)[first.m_pos]), dist, m_allocator);
                     stl::mem_copy(m_data, m_size, first.m_cont->m_data + first.m_pos, dist, m_allocator);
                 }
             }
@@ -1036,12 +1034,10 @@ namespace stl
                 //self assignment
                 if (this == first.m_cont)
                 {
-                    //stl::mem_move(m_data, m_size, &((*first.m_cont)[first.m_pos]), dist, m_allocator);
                     stl::mem_move(m_data, m_size, first.m_cont->m_data + first.m_pos, dist, m_allocator);
                 }
                 else
                 {
-                    //stl::mem_copy(m_data, m_size, &((*first.m_cont)[first.m_pos]), dist, m_allocator);
                     stl::mem_copy(m_data, m_size, first.m_cont->m_data + first.m_pos, dist, m_allocator);
                 }
             }
@@ -1213,7 +1209,6 @@ namespace stl
                 grow(sz);
 
                 // Not a self assignment as c is a temporary copy.
-                //stl::mem_set(&m_data[m_size], c, (sz - m_size) * sizeof(value_type), m_allocator);
                 stl::mem_set(m_data + m_size, c, (sz - m_size) * sizeof(value_type), m_allocator);
             }
 
@@ -1356,7 +1351,6 @@ namespace stl
                         dst_valid_sz = m_size - p - 1;
                     }
 
-                    //stl::mem_move(&m_data[p + 1], dst_valid_sz, &m_data[p], (m_size - p), m_allocator);
                     stl::mem_move(m_data + p + 1, dst_valid_sz, m_data + p, (m_size - p), m_allocator);
                 }
 
@@ -1376,7 +1370,6 @@ namespace stl
                         dst_valid_sz = m_size - p - 1;
                     }
 
-                    //stl::mem_move(&m_data[p + 1], dst_valid_sz, &m_data[p], (m_size - p), m_allocator);
                     stl::mem_move(m_data + p + 1, dst_valid_sz, m_data + p, (m_size - p), m_allocator);
                 }
 
@@ -1417,11 +1410,9 @@ namespace stl
                             dst_valid_sz = m_size - p - n;
                         }
 
-                        //stl::mem_move(&m_data[p + n], dst_valid_sz, &m_data[p], (m_size - p), m_allocator);
                         stl::mem_move(m_data + p + n, dst_valid_sz, m_data + p, (m_size - p), m_allocator);
                     }
 
-                    //stl::mem_set(&m_data[p], temp, n * sizeof(value_type), m_allocator);
                     stl::mem_set(m_data + p, temp, n * sizeof(value_type), m_allocator);
                 }
                 else// x address is outside this container
@@ -1438,11 +1429,9 @@ namespace stl
                             dst_valid_sz = m_size - p - n;
                         }
 
-                        //stl::mem_move(&m_data[p + n], dst_valid_sz, &m_data[p], (m_size - p), m_allocator);
                         stl::mem_move(m_data + p + n, dst_valid_sz, m_data + p, (m_size - p), m_allocator);
                     }
 
-                    //stl::mem_set(&m_data[p], x, n * sizeof(value_type), m_allocator);
                     stl::mem_set(m_data + p, x, n * sizeof(value_type), m_allocator);
                 }
 
@@ -1491,12 +1480,9 @@ namespace stl
                             dst_valid_sz = m_size - p - dist;
                         }
 
-                        //stl::mem_move(&m_data[p + dist], dst_valid_sz, &m_data[p], (m_size - p), m_allocator);
                         stl::mem_move(m_data + p + dist, dst_valid_sz, m_data + p, (m_size - p), m_allocator);
                     }
 
-                    //TODO: can this be moved?
-                    //stl::mem_copy(&m_data[p], m_size - p, &temp.front(), dist, m_allocator);
                     stl::mem_copy(m_data + p, m_size - p, &temp.front(), dist, m_allocator);
                 }
                 else// range is outside this container
@@ -1511,11 +1497,9 @@ namespace stl
                             dst_valid_sz = m_size - p - dist;
                         }
 
-                        //stl::mem_move(&m_data[p + dist], dst_valid_sz, &m_data[p], (m_size - p), m_allocator);
                         stl::mem_move(m_data + p + dist, dst_valid_sz, m_data + p, (m_size - p), m_allocator);
                     }
 
-                    //stl::mem_copy(&m_data[p], m_size - p, &((*first.m_cont)[first.m_pos]), dist, m_allocator);
                     stl::mem_copy(m_data + p, m_size - p, first.m_cont->m_data + first.m_pos, dist, m_allocator);
                 }
 
@@ -1532,6 +1516,8 @@ namespace stl
             if (first.m_cont != last.m_cont || first.m_cont == 0)
                 throw stl::exception("invalid iterator");
 
+//#define VEC_USE_BUFFER
+#ifdef VEC_USE_BUFFER
             // if last < first then let it blow up.
             size_type dist = static_cast<size_type>(last - first);
             if (dist > 0)
@@ -1557,12 +1543,9 @@ namespace stl
                             dst_valid_sz = m_size - p - dist;
                         }
 
-                        //stl::mem_move(&m_data[p + dist], dst_valid_sz, &m_data[p], (m_size - p), m_allocator);
                         stl::mem_move(m_data + p + dist, dst_valid_sz, m_data + p, (m_size - p), m_allocator);
                     }
 
-                    //TODO: can this be moved?
-                    //stl::mem_copy(&m_data[p], m_size - p, &temp.front(), dist, m_allocator);
                     stl::mem_copy(m_data + p, m_size - p, &temp.front(), dist, m_allocator);
                 }
                 else// range is outside this container
@@ -1577,16 +1560,23 @@ namespace stl
                             dst_valid_sz = m_size - p - dist;
                         }
 
-                        //stl::mem_move(&m_data[p + dist], dst_valid_sz, &m_data[p], (m_size - p), m_allocator);
                         stl::mem_move(m_data + p + dist, dst_valid_sz, m_data + p, (m_size - p), m_allocator);
                     }
 
-                    //stl::mem_copy(&m_data[p], m_size - p, &((*first.m_cont)[first.m_pos]), dist, m_allocator);
                     stl::mem_copy(m_data + p, m_size - p, first.m_cont->m_data + first.m_pos, dist, m_allocator);
                 }
 
                 endof(size);
             }
+#else
+            // if last < first then let it blow up
+            size_type dist = static_cast<size_type>(last - first);
+            if (dist > 0)
+            {
+                // uses the fast no_buffer method
+                replace_nb_(position.m_pos, 0, *first.m_cont, first.m_pos, dist);
+            }
+#endif
         }
 
         inline void insert_(iterator& position, value_type* first, value_type* last)
@@ -1625,12 +1615,9 @@ namespace stl
                             dst_valid_sz = m_size - p - dist;
                         }
 
-                        //stl::mem_move(&m_data[p + dist], dst_valid_sz, &m_data[p], (m_size - p), m_allocator);
                         stl::mem_move(m_data + p + dist, dst_valid_sz, m_data + p, (m_size - p), m_allocator);
                     }
 
-                    //TODO: can this be moved?
-                    //stl::mem_copy(&m_data[p], m_size - p, &temp.front(), dist, m_allocator);
                     stl::mem_copy(m_data + p, m_size - p, &temp.front(), dist, m_allocator);
                 }
                 else// range is outside this container
@@ -1647,11 +1634,9 @@ namespace stl
                             dst_valid_sz = m_size - p - dist;
                         }
 
-                        //stl::mem_move(&m_data[p + dist], dst_valid_sz, &m_data[p], (m_size - p), m_allocator);
                         stl::mem_move(m_data + p + dist, dst_valid_sz, m_data + p, (m_size - p), m_allocator);
                     }
 
-                    //stl::mem_copy(&m_data[p], m_size - p, first, dist, m_allocator);
                     stl::mem_copy(m_data + p, m_size - p, first, dist, m_allocator);
                 }
 
@@ -1708,12 +1693,9 @@ namespace stl
                             dst_valid_sz = m_size - p - dist;
                         }
 
-                        //stl::mem_move(&m_data[p + dist], dst_valid_sz, &m_data[p], (m_size - p), m_allocator);
                         stl::mem_move(m_data + p + dist, dst_valid_sz, m_data + p, (m_size - p), m_allocator);
                     }
 
-                    //TODO: can this be moved?
-                    //stl::mem_copy(&m_data[p], m_size - p, &temp.front(), dist, m_allocator);
                     stl::mem_copy(m_data + p, m_size - p, &temp.front(), dist, m_allocator);
                 }
                 else// range is outside this container
@@ -1730,7 +1712,6 @@ namespace stl
                             dst_valid_sz = m_size - p - dist;
                         }
 
-                        //stl::mem_move(&m_data[p + dist], dst_valid_sz, &m_data[p], (m_size - p), m_allocator);
                         stl::mem_move(m_data + p + dist, dst_valid_sz, m_data + p, (m_size - p), m_allocator);
                     }
 
@@ -1758,52 +1739,147 @@ namespace stl
 
                 grow(size);
 
-                // Is value address inside this container ?
-                if (m_data <= &value && (m_data + m_size) > &value)
+                // value is always passed by copy, cannot be a reference inside this container;
+
+                // move content unless insert position is end()
+                if (p < m_size)
                 {
-                    InputIterator temp(value);
-
-                    // move content unless insert position is end()
-                    if (p < m_size)
+                    // mem_move cannot destroy invalid objects in the destination
+                    size_type dst_valid_sz = 0;
+                    if (p + n < m_size)
                     {
-                        // mem_move cannot destroy invalid objects in the destination
-                        size_type dst_valid_sz = 0;
-                        if (p + n < m_size)
-                        {
-                            dst_valid_sz = m_size - p - n;
-                        }
-
-                        //stl::mem_move(&m_data[p + n], dst_valid_sz, &m_data[p], (m_size - p), m_allocator);
-                        stl::mem_move(m_data + p + n, dst_valid_sz, m_data + p, (m_size - p), m_allocator);
+                        dst_valid_sz = m_size - p - n;
                     }
 
-                    //stl::mem_set(&m_data[p], temp, n * sizeof(value_type), m_allocator);
-                    stl::mem_set(m_data + p, temp, n * sizeof(value_type), m_allocator);
-                }
-                else// value address is outside this container
-                {
-                    // move content unless insert position is end()
-                    if (p < m_size)
-                    {
-                        // mem_move cannot destroy invalid objects in the destination
-                        size_type dst_valid_sz = 0;
-                        if (p + n < m_size)
-                        {
-                            dst_valid_sz = m_size - p - n;
-                        }
-
-                        //stl::mem_move(&m_data[p + n], dst_valid_sz, &m_data[p], (m_size - p), m_allocator);
-                        stl::mem_move(m_data + p + n, dst_valid_sz, m_data + p, (m_size - p), m_allocator);
-                    }
-
-                    //stl::mem_set(&m_data[p], value, n * sizeof(value_type), m_allocator);
-                    stl::mem_set(m_data + p, value, n * sizeof(value_type), m_allocator);
+                    stl::mem_move(m_data + p + n, dst_valid_sz, m_data + p, (m_size - p), m_allocator);
                 }
 
+                stl::mem_set(m_data + p, value, n * sizeof(value_type), m_allocator);
+                
                 endof(size);
             }
         }
 
+
+        /*  Usually doing insert from self with a buffer performs 2x slower
+            compared with std::string, if not slower.
+            My initial version still performed worse, so I adapted this code
+            from Visual Studio 12.0/VC/include/xstring
+        */
+        inline container& replace_nb_(size_type p1, size_type n1, const container& str, size_type p2, size_type n2)
+        {
+            if (p1 > m_size || p2 > str.m_size)
+                throw stl::exception("out of valid range");
+
+            if (n1 > m_size - p1)
+                n1 = m_size - p1;
+
+            if (n2 > str.m_size - p2)
+                n2 = str.m_size - p2;
+
+            size_type size = m_size - n1 + n2;
+
+            size_t Nm = m_size - p1 - n1;    // length of kept tail
+
+            grow(size + 1);
+
+
+            if (this != &str)
+            {   // no overlap, just move down and copy in new stuff
+                size_type dst_valid_sz1(0), dst_valid_sz2(0);
+                if (p1 + n2 < m_size)
+                {
+                    dst_valid_sz1 = m_size - p1 - n2;
+                    dst_valid_sz2 = m_size - p1;
+                }
+                else if (p1 < m_size)
+                {
+                    dst_valid_sz2 = m_size - p1;
+                }
+
+                stl::mem_move(m_data + p1 + n2, dst_valid_sz1,
+                              m_data + p1 + n1, Nm, m_allocator);   // empty hole
+                stl::mem_copy(m_data + p1, dst_valid_sz2,
+                              str.m_data + p2, n2, m_allocator);    // fill hole
+            }
+            else if (n2 <= n1)
+            {   // hole doesn't get larger, just copy in substring
+                size_type dst_valid_sz1(0), dst_valid_sz2(0);
+                if (p1 + n2 < m_size)
+                {
+                    dst_valid_sz2 = m_size - p1 - n2;
+                    dst_valid_sz1 = m_size - p1;
+                }
+                else if (p1 < m_size)
+                {
+                    dst_valid_sz1 = m_size - p1;
+                }
+
+                stl::mem_move(m_data + p1, dst_valid_sz1,
+                              m_data + p2, n2, m_allocator);        // fill hole
+                stl::mem_move(m_data + p1 + n2, dst_valid_sz2,
+                              m_data + p1 + n1, Nm, m_allocator);   // move tail down
+            }
+            else if (p2 <= p1)
+            {   // hole gets larger, substring begins before hole
+                size_type dst_valid_sz1(0), dst_valid_sz2(0);
+                if (p1 + n2 < m_size)
+                {
+                    dst_valid_sz1 = m_size - p1 - n2;
+                    dst_valid_sz2 = m_size - p1;
+                }
+                else if (p1 < m_size)
+                {
+                    dst_valid_sz2 = m_size - p1;
+                }
+
+                stl::mem_move(m_data + p1 + n2, dst_valid_sz1,
+                              m_data + p1 + n1, Nm, m_allocator);   // move tail down
+                stl::mem_move(m_data + p1, dst_valid_sz2,
+                              m_data + p2, n2, m_allocator);        // fill hole
+            }
+            else if (p1 + n1 <= p2)
+            {   // hole gets larger, substring begins after hole
+                size_type dst_valid_sz1(0), dst_valid_sz2(0);
+                if (p1 + n2 < m_size)
+                {
+                    dst_valid_sz1 = m_size - p1 - n2;
+                    dst_valid_sz2 = m_size - p1;
+                }
+                else if (p1 < m_size)
+                {
+                    dst_valid_sz2 = m_size - p1;
+                }
+
+                stl::mem_move(m_data + p1 + n2, dst_valid_sz1,
+                              m_data + p1 + n1, Nm, m_allocator);   // move tail down
+                stl::mem_move(m_data + p1, dst_valid_sz2,
+                              m_data + (p2 + n2 - n1), n2,
+                              m_allocator);                         // fill hole
+            }
+            else
+            {   // hole gets larger, substring begins in hole
+                size_type dst_valid_sz1(0), dst_valid_sz2(0), dst_valid_sz3(0);
+                if (p1 < m_size)
+                    dst_valid_sz1 = m_size - p1;
+                if (p1 + n2 < m_size)
+                    dst_valid_sz2 = m_size - p1 - n2;
+                if (p1 + n1 < m_size)
+                    dst_valid_sz3 = m_size - p1 - n1;
+
+                stl::mem_move(m_data + p1, dst_valid_sz1,
+                              m_data + p2, n1, m_allocator);        // fill old hole
+                stl::mem_move(m_data + p1 + n2, dst_valid_sz2,
+                              m_data + p1 + n1, Nm, m_allocator);   // move tail down
+                stl::mem_move(m_data + p1 + n1, dst_valid_sz3,
+                              m_data + p2 + n2, n2 - n1,
+                              m_allocator);                         // fill rest of new hole
+            }
+
+            endof(size);
+
+            return *this;
+        }
 
     public:
         iterator erase(iterator position)
@@ -1814,7 +1890,6 @@ namespace stl
 
             size_type p = position.m_pos;
 
-            //stl::mem_move(&m_data[p], m_size - p, &m_data[p + 1], (m_size - p - 1), m_allocator);
             stl::mem_move(m_data + p, m_size - p, m_data + p + 1, (m_size - p - 1), m_allocator);
 
             endof(m_size - 1);
@@ -1831,7 +1906,6 @@ namespace stl
             size_type dist = static_cast<size_type>(last - first);
             if (dist > 0)
             {
-                //stl::mem_move(&m_data[first.m_pos], m_size - first.m_pos, &m_data[last.m_pos], (m_size - last.m_pos), m_allocator);
                 stl::mem_move(m_data + first.m_pos, m_size - first.m_pos, m_data + last.m_pos, (m_size - last.m_pos), m_allocator);
 
                 endof(m_size - dist);
