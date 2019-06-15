@@ -2201,7 +2201,7 @@ namespace stl
         container& erase(size_type pos = 0, size_type len = npos)
         {
             if (pos > m_size)
-                throw stl::exception("invalid iterator");
+                throw stl::exception("out of valid range");
 
             if (len > m_size - pos)
                 len = m_size - pos;
@@ -2829,11 +2829,6 @@ namespace stl
             stl::swap(m_capacity, str.m_capacity);
             stl::swap(m_allocator, str.m_allocator);
         }
-
-//TODO: use template specialization to disable anything but char,unsigned char,wchar_t
-//      actually all that implements ::memcpy, ::memmove
-//      because it is clear that c_str() would not work with anything that does
-//      not end in '\0', right?
 
         const value_type* c_str() const
         {
@@ -3710,165 +3705,201 @@ namespace stl
         }
     };  // class
 
+//TODO: write and test the global operators; see a reference first!
+
+    // The C++98 std::operator+ (all 5)
+    template<typename T, typename Allocator>
+    stl::basic_string<T, Allocator> operator+(
+        const stl::basic_string<T, Allocator>& Left,
+        const stl::basic_string<T, Allocator>& Right)
+    {
+        stl::basic_string<T> res(Left);
+        res += Right;
+        return res;
+    }
+
+    template<typename T, typename Allocator>
+    stl::basic_string<T, Allocator> operator+(
+        const stl::basic_string<T, Allocator>& Left,
+        const T* Right)
+    {
+        stl::basic_string<T> res(Left);
+        res += Right;
+        return res;
+    }
+
+    template<typename T, typename Allocator>
+    stl::basic_string<T, Allocator> operator+(
+        const T* Left,
+        const stl::basic_string<T, Allocator>& Right)
+    {
+        stl::basic_string<T> res(Left);
+        res += Right;
+        return res;
+    }
+
+    template<typename T, typename Allocator>
+    stl::basic_string<T, Allocator> operator+(
+        const stl::basic_string<T, Allocator>& Left,
+        const T Right)
+    {
+        stl::basic_string<T> res(Left);
+        res += Right;
+        return res;
+    }
+
+    template<typename T, typename Allocator>
+    stl::basic_string<T, Allocator> operator+(
+        const T Left,
+        const stl::basic_string<T, Allocator>& Right)
+    {
+        stl::basic_string<T> res(1, Left);
+        res += Right;
+        return res;
+    }
+
+//TODO: use stl:: streams
+    // The C++98 std::operator (input,output)
     /*
-    string operator+ (const string& lhs, const string& rhs);
-    string operator+ (const string& lhs, const char*   rhs);
-    string operator+ (const char*   lhs, const string& rhs);
-    string operator+ (const string& lhs, char          rhs);
-    string operator+ (char          lhs, const string& rhs);
+    template <class charT, class traits, class Alloc>
+    basic_ostream<charT, traits>& operator<< (basic_ostream<charT, traits>& os,
+        const basic_string<charT, traits, Alloc>& str);
+    template <class charT, class traits, class Alloc>
+    basic_istream<charT, traits>& operator>> (basic_istream<charT, traits>& is,
+        basic_string<charT, traits, Alloc>& str);
     */
 
+    // The C++98 std::operator (relational operators)
+    template<typename T, typename Allocator>
+    bool operator==(
+        const stl::basic_string<T, Allocator>& Left, 
+        const stl::basic_string<T, Allocator>& Right)
+    {
+        return Left.compare(Right) == 0;
+    }
+    
+    template<typename T, typename Allocator>
+    bool operator==(const stl::basic_string<T, Allocator>& Left, const T* Right)
+    {
+        return Left.compare(Right) == 0;
+    }
+    
+    template<typename T, typename Allocator>
+    bool operator==(const T* Left, const stl::basic_string<T, Allocator>& Right)
+    {
+        return Right.compare(Left) == 0;
+    }
 
+    template<typename T, typename Allocator>
+    bool operator!=(
+        const stl::basic_string<T, Allocator>& Left, 
+        const stl::basic_string<T, Allocator>& Right)
+    {
+        return Left.compare(Right) != 0;
+    }
+    
+    template<typename T, typename Allocator>
+    bool operator!=(const stl::basic_string<T, Allocator>& Left, const T* Right)
+    {
+        return Left.compare(Right) != 0;
+    }
+
+    template<typename T, typename Allocator>
+    bool operator!=(const T* Left, const stl::basic_string<T, Allocator>& Right)
+    {
+        return Right.compare(Left) != 0;
+    }
+
+    template<typename T, typename Allocator>
+    bool operator<(
+        const stl::basic_string<T, Allocator>& Left, 
+        const stl::basic_string<T, Allocator>& Right)
+    {
+        return Left.compare(Right) < 0;
+    }
+    
+    template<typename T, typename Allocator>
+    bool operator<(const stl::basic_string<T, Allocator>& Left, const T* Right)
+    {
+        return Left.compare(Right) < 0;
+    }
+    
+    template<typename T, typename Allocator>
+    bool operator<(const T* Left, const stl::basic_string<T, Allocator>& Right)
+    {
+        return Right.compare(Left) > 0;
+    }
+    
+    template<typename T, typename Allocator>
+    bool operator<=(
+        const stl::basic_string<T, Allocator>& Left, 
+        const stl::basic_string<T, Allocator>& Right)
+    {
+        return Left.compare(Right) <= 0;
+    }
+    
+    template<typename T, typename Allocator>
+    bool operator<=(const stl::basic_string<T, Allocator>& Left, const T* Right)
+    {
+        return Left.compare(Right) <= 0;
+    }
+    
+    template<typename T, typename Allocator>
+    bool operator<=(const T* Left, const stl::basic_string<T, Allocator>& Right)
+    {
+        return Right.compare(Left) >= 0;
+    }
+
+    template<typename T, typename Allocator>
+    bool operator>(
+        const stl::basic_string<T, Allocator>& Left, 
+        const stl::basic_string<T, Allocator>& Right)
+    {
+        return Left.compare(Right) > 0;
+    }
+    
+    template<typename T, typename Allocator>
+    bool operator>(const stl::basic_string<T, Allocator>& Left, const T* Right)
+    {
+        return Left.compare(Right) > 0;
+    }
+    
+    template<typename T, typename Allocator>
+    bool operator>(const T* Left, const stl::basic_string<T, Allocator>& Right)
+    {
+        return Right.compare(Left) < 0;
+    }
+    
+    template<typename T, typename Allocator>
+    bool operator>=(
+        const stl::basic_string<T, Allocator>& Left, 
+        const stl::basic_string<T, Allocator>& Right)
+    {
+        return Left.compare(Right) >= 0;
+    }
+    
+    template<typename T, typename Allocator>
+    bool operator>=(const stl::basic_string<T, Allocator>& Left, const T* Right)
+    {
+        return Left.compare(Right) >= 0;
+    }
+
+    template<typename T, typename Allocator>
+    bool operator>=(const T* Left, const stl::basic_string<T, Allocator>& Right)
+    {
+        return Right.compare(Left) <= 0;
+    }
+    
+    template<typename T, typename Allocator>
+    void swap(
+        stl::basic_string<T, Allocator>& Left, 
+        stl::basic_string<T, Allocator>& Right)
+    {
+        Left.swap(Right);
+    }
 }  // namespace
 
 
-
-
-//########################################################################
-// Operators
-//
-////Concatenates two string objects.
-//template<typename T, typename Allocator>
-//stl::basic_string<T, Allocator> operator+(
-//    const stl::basic_string<T, Allocator>& Left,
-//    const stl::basic_string<T, Allocator>& Right)
-//{
-//    stl::basic_string<T> res(Left);
-//    res += Right;
-//    return res;
-//}
-//
-//
-//template<typename T, typename Allocator>
-//stl::basic_string<T, Allocator> operator+(
-//    const stl::basic_string<T, Allocator>& Left,
-//    const T* Right)
-//{
-//    stl::basic_string<T> res(Left);
-//    res += Right;
-//    return res;
-//}
-//
-//template<typename T, typename Allocator>
-//stl::basic_string<T, Allocator> operator+(
-//    const stl::basic_string<T, Allocator>& Left,
-//    const T Right)
-//{
-//    stl::basic_string<T> res(Left);
-//    res += Right;
-//    return res;
-//}
-//
-//template<typename T, typename Allocator>
-//stl::basic_string<T, Allocator> operator+(
-//    const T* Left, const stl::basic_string<T, Allocator>& Right)
-//{
-//    stl::basic_string<T> res(Left);
-//    res += Right;
-//    return res;
-//}
-//
-//template<typename T, typename Allocator>
-//stl::basic_string<T, Allocator> operator+(
-//    const T Left, const stl::basic_string<T, Allocator>& Right)
-//{
-//    stl::basic_string<T> res(1, Left);
-//    res += Right;
-//    return res;
-//}
-//
-//
-////Tests if the string object on the left side of the operator is not equal
-////to the string object on the right side.
-//template<typename T, typename Allocator>
-//bool operator!=(
-//                const stl::basic_string<T, Allocator>& Left, 
-//                const stl::basic_string<T, Allocator>& Right)
-//{
-//    return Left.compare(Right) != 0;
-//}
-//
-//template<typename T, typename Allocator>
-//bool operator!=(const stl::basic_string<T, Allocator>& Left, const T* Right)
-//{
-//    return Left.compare(Right) != 0;
-//}
-//
-//
-//template<typename T, typename Allocator>
-//bool operator!=(const T* Left, const stl::basic_string<T, Allocator>& Right)
-//{
-//    return Right.compare(Left) != 0;
-//}
-//
-////Tests if the string object on the left side of the operator is equal to the string object on the right side.
-//template<typename T, typename Allocator>
-//bool operator==(
-//                const stl::basic_string<T, Allocator>& Left, 
-//                const stl::basic_string<T, Allocator>& Right)
-//{
-//    return Left.compare(Right) == 0;
-//}
-//
-//template<typename T, typename Allocator>
-//bool operator==(const stl::basic_string<T, Allocator>& Left, const T* Right)
-//{
-//    return Left.compare(Right) == 0;
-//}
-//
-//template<typename T, typename Allocator>
-//bool operator==(const T* Left, const stl::basic_string<T, Allocator>& Right)
-//{
-//    return Right.compare(Left) == 0;
-//}
-//
-////Tests if the string object on the left side of the operator is less than to the string object on the right side.
-//template<typename T, typename Allocator>
-//bool operator<(
-//                const stl::basic_string<T, Allocator>& Left, 
-//                const stl::basic_string<T, Allocator>& Right)
-//{
-//    return Left.compare(Right) < 0;
-//}
-//
-//template<typename T, typename Allocator>
-//bool operator<(const stl::basic_string<T, Allocator>& Left, const T* Right)
-//{
-//    return Left.compare(Right) < 0;
-//}
-//
-//
-//template<typename T, typename Allocator>
-//bool operator<(const T* Left, const stl::basic_string<T, Allocator>& Right)
-//{
-//    return Right.compare(Left) > 0;
-//}
-//
-//
-//
-////Tests if the string object on the left side of the operator is less than or equal to the string object on the right side.
-//template<typename T, typename Allocator>
-//bool operator<=(
-//                const stl::basic_string<T, Allocator>& Left, 
-//                const stl::basic_string<T, Allocator>& Right)
-//{
-//    return Left.compare(Right) <= 0;
-//}
-//
-//template<typename T, typename Allocator>
-//bool operator<=(const stl::basic_string<T, Allocator>& Left, const T* Right)
-//{
-//    return Left.compare(Right) <= 0;
-//}
-//
-//
-//
-//
-//template<typename T, typename Allocator>
-//bool operator<=(const T* Left, const stl::basic_string<T, Allocator>& Right)
-//{
-//    return Right.compare(Left) >= 0;
-//}
 //
 ////A template function that writes a string into the output stream.
 //template<typename T, typename Allocator>
@@ -3879,53 +3910,6 @@ namespace stl
 //    return Ostr;
 //}
 //
-//
-////Tests if the string object on the left side of the operator is greater
-////than to the string object on the right side.
-//template<typename T, typename Allocator>
-//bool operator>(
-//               const stl::basic_string<T, Allocator>& Left, 
-//               const stl::basic_string<T, Allocator>& Right)
-//{
-//    return Left.compare(Right) > 0;
-//}
-//
-//template<typename T, typename Allocator>
-//bool operator>(const stl::basic_string<T, Allocator>& Left, const T* Right)
-//{
-//    return Left.compare(Right) > 0;
-//}
-//
-//
-//template<typename T, typename Allocator>
-//bool operator>(const T* Left, const stl::basic_string<T, Allocator>& Right)
-//{
-//    return Right.compare(Left) < 0;
-//}
-//
-//
-////Tests if the string object on the left side of the operator is greater
-////than or equal to the string object on the right side.
-//template<typename T, typename Allocator>
-//bool operator>=(
-//                const stl::basic_string<T, Allocator>& Left, 
-//                const stl::basic_string<T, Allocator>& Right)
-//{
-//    return Left.compare(Right) >= 0;
-//}
-//
-//template<typename T, typename Allocator>
-//bool operator>=(const stl::basic_string<T, Allocator>& Left, const T* Right)
-//{
-//    return Left.compare(Right) >= 0;
-//}
-//
-//
-//template<typename T, typename Allocator>
-//bool operator>=(const T* Left, const stl::basic_string<T, Allocator>& Right)
-//{
-//    return Right.compare(Left) <= 0;
-//}
 //
 ////A template function that reads a string from an input stream.
 //template<typename T, typename Allocator>
@@ -3938,14 +3922,5 @@ namespace stl
 //    return Istr;
 //}
 //
-////Specialized template function
-////Exchanges the arrays of characters of two strings.
-//template<typename T, typename Allocator>
-//void swap(
-//          stl::basic_string<T, Allocator>& Left, 
-//          stl::basic_string<T, Allocator>& Right)
-//{
-//    Left.swap(Right);
-//}
 
 #endif // __basic_string_hpp__

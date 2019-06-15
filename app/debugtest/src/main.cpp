@@ -1,7 +1,11 @@
 #include <stdio.h>
+#include <iostream>
 #include <list>
+#include <vector>
 #include <limits>
 #include <vector.hpp>
+#include <basic_string.hpp>
+
 
 class A
 {
@@ -62,18 +66,15 @@ private:
 
 int main()
 {
-    
-    stl::vector<A> avec;
-    for (int i = 0; i < 3; ++i)
-        avec.push_back(A(i));
+    std::vector<int> foo(3, 100);   // three ints with a value of 100
+    std::vector<int> bar(2, 200);   // two ints with a value of 200
 
-    avec.assign(1, avec.back());
-
-    stl::vector<char> chvec;
-    for (char c = 'a'; c < 'd'; ++c)
-        chvec.push_back(c);
-
-    chvec.assign(1, chvec.back());
+    if (foo == bar) std::cout << "foo and bar are equal\n";
+    if (foo != bar) std::cout << "foo and bar are not equal\n";
+    if (foo< bar) std::cout << "foo is less than bar\n";
+    if (foo> bar) std::cout << "foo is greater than bar\n";
+    if (foo <= bar) std::cout << "foo is less than or equal to bar\n";
+    if (foo >= bar) std::cout << "foo is greater than or equal to bar\n";
 
     return 0;
 }

@@ -1152,6 +1152,7 @@ namespace stl
 
         const_iterator begin() const
         {
+//TODO: performance: remove the pointer, cast directly to constructor
             container* mutable_cont = const_cast<container*>(this);
             return const_iterator(mutable_cont, 0);
         }
@@ -1189,7 +1190,6 @@ namespace stl
             return const_reverse_iterator(mutable_cont, static_cast<size_type>(-1));
         }
 
-        // 23.2.4.2 capacity:
         size_type size() const
         {
             return m_size;
@@ -1254,6 +1254,7 @@ namespace stl
             return *(m_data + n);
         }
 
+//TODO: create tests for front,back
         reference front()
         {
             if (!m_size)
@@ -1359,8 +1360,8 @@ namespace stl
                     stl::mem_move(m_data + pos + 1, dst_valid_sz, m_data + pos, (m_size - pos), m_allocator);
                 }
 
-// can use pointer arithmetic                
-                m_allocator.construct(&m_data[pos], temp);
+//TODO:use pointer arithmetic                
+                m_allocator.construct(m_data + pos, temp);
             }
             else// val address is outside this container
             {
@@ -1379,7 +1380,7 @@ namespace stl
                     stl::mem_move(m_data + pos + 1, dst_valid_sz, m_data + pos, (m_size - pos), m_allocator);
                 }
 
-                m_allocator.construct(&m_data[pos], val);
+                m_allocator.construct(m_data + pos, val);
             }
             
             endof(size);
@@ -1466,6 +1467,8 @@ namespace stl
             size_type dist = static_cast<size_type>(last - first);
             if (dist)
             {
+//TODO: to use the fast no_buffer method I need the test numbers first!!
+//      write the performance suite, and then adapt this
                 size_type p = position.m_pos;
                 size_type size = m_size + dist;
 
@@ -1523,6 +1526,8 @@ namespace stl
             if (first.m_cont != last.m_cont || first.m_cont == 0)
                 throw stl::exception("invalid iterator");
 
+//TODO: to use the fast no_buffer method I need the test numbers first!!
+//      write the performance suite, and then adapt this
 //#define VEC_USE_BUFFER
 #ifdef VEC_USE_BUFFER
             // if last < first then let it blow up.
@@ -1605,6 +1610,8 @@ namespace stl
                 // Is the range inside this container ?
                 if (m_data <= &check && (m_data + m_size) > &check)
                 {
+//TODO: to use the fast no_buffer method I need the test numbers first!!
+//      write the performance suite, and then adapt this
                     container temp;
 //TODO: can be optimized by passing pointers (e.g. first.m_cont + first.m_pos, ..)
                     temp.assign(first, last);
@@ -1684,8 +1691,7 @@ namespace stl
                 // Is the range inside this container ?
                 if (m_data <= &check && (m_data + m_size) > &check)
                 {
-                    container temp;
-                    temp.assign(first, last);
+                    container temp(first, last);
 
                     // for safety, although could not invalidate the input for this case
                     grow(size);
@@ -1724,7 +1730,8 @@ namespace stl
 
                     for (size_type i = 0; first != last; ++first, ++i)
                     {
-                        m_allocator.construct(&m_data[p + i], *first);
+//TODO: search for m_data[ and replace with pointer arithmetic :)
+                        m_allocator.construct(m_data + p + i, *first);
                     }
                 }
 
@@ -1744,9 +1751,8 @@ namespace stl
                 size_type p = position.m_pos;
                 size_type size = m_size + n;
 
+                // cannot relocate value
                 grow(size);
-
-                // value is always passed by copy, cannot be a reference inside this container;
 
                 // move content unless insert position is end()
                 if (p < m_size)
@@ -1768,10 +1774,8 @@ namespace stl
         }
 
 
-        /*  Usually doing insert from self with a buffer performs 2x slower
-            compared with std::string, if not slower.
-            My initial version still performed worse, so I adapted this code
-            from Visual Studio 12.0/VC/include/xstring
+        /*  Insert from self usually performs slower when using a temporary copy.
+            This code is adapted from Visual Studio 12.0/VC/include/xstring
         */
         inline container& replace_nb_(size_type p1, size_type n1, const container& str, size_type p2, size_type n2)
         {
@@ -1791,6 +1795,7 @@ namespace stl
             grow(size + 1);
 
 
+//TODO: test these possibilities
             if (this != &str)
             {   // no overlap, just move down and copy in new stuff
                 size_type dst_valid_sz1(0), dst_valid_sz2(0);
@@ -1940,25 +1945,22 @@ namespace stl
         }
     };  // class
 
-    
+    // The C++98 std::operator (relational operators)
     template<typename T, typename Allocator>
     inline bool operator== (
         const stl::vector<T, Allocator>& Left,
         const stl::vector<T, Allocator>& Right)
     {
-        
-        typedef stl::vector<T, Allocator> Cont;
-        
-        typename Cont::size_type sz = Left.size();
-        if(sz != Right.size())
-            return false;
+        return (Left.size() == Right.size() &&
+                stl::equal(Left.begin(), Left.end(), Right.begin()));
+    }
 
-        typename Cont::size_type j = 0;
-        while(j < sz && Left[j] == Right[j])
-            ++j;
-
-        return j == sz;
-        
+    template<typename T, typename Allocator>
+    inline bool operator!= (
+        const stl::vector<T, Allocator>& Left,
+        const stl::vector<T, Allocator>& Right)
+    {
+        return !(Left == Right);
     }
 
     template<typename T, typename Allocator>
@@ -1971,19 +1973,11 @@ namespace stl
     }
 
     template<typename T, typename Allocator>
-    inline bool operator!= (
-        const stl::vector<T, Allocator>& Left,
-        const stl::vector<T, Allocator>& Right)
-    {
-        return !(Left == Right);
-    }
-
-    template<typename T, typename Allocator>
     inline bool operator> (
         const stl::vector<T, Allocator>& Left,
         const stl::vector<T, Allocator>& Right)
     {
-        return (Left != Right) && !(Left < Right);
+        return (Right < Left);
     }
 
     template<typename T, typename Allocator>
@@ -1999,7 +1993,7 @@ namespace stl
         const stl::vector<T, Allocator>& Left,
         const stl::vector<T, Allocator>& Right)
     {
-        return (Left < Right) || (Left == Right);
+        return !(Right < Left);
     }
 
     template<typename T, typename Allocator>
