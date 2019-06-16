@@ -315,8 +315,8 @@ void test_vector::assign()
     CPPUNIT_ASSERT(v8.size() == 4);
 
     // --- other situations worth testing ---
-
-//TODO: I have the feeling that mem_move leaks memory
+    // I had the impression that mem_move leaks memory.
+    // I already tested it and it doesn't leak.
     Cx c9[5] = { -1, -2, -3, -4, -5 };
     stl::vector<Cx> v9;
     v9.assign(c9, c9 + 5);
@@ -694,9 +694,6 @@ void test_vector::pop_back()
 
 void test_vector::insert()
 {
-    //TODO: test replace_nb_ cases
-
-
     // iterator insert(iterator position, const T& x)
     Cx c1[5] = { -1, -2, -3, -4, -5 };
     stl::vector<Cx> v1;
@@ -709,8 +706,7 @@ void test_vector::insert()
     v1.insert(v1.begin(), v1.front()); // from self
     CPPUNIT_ASSERT(v1.size() == 2);
     CPPUNIT_ASSERT(v1[0] == c1[0] && v1[1] == c1[0]);
-
-
+    
     // void insert(iterator position, size_type n, const T& x)
     stl::vector<Cx> v2;
     v2.assign(c1, c1 + 2); // capacity=2
@@ -945,60 +941,527 @@ void test_vector::relational_op()
 
 void test_vector::perf1()
 {
+    Cx cx0[] = /* size = 10x10 = 100 */
+    {
+        0, -1, -2, -3, -4, -5, -6, -7, -8, -9,
+        -10, -11, -12, -13, -14, -15, -16, -17, -18, -19,
+        -20, -21, -22, -23, -24, -25, -26, -27, -28, -29,
+        -30, -31, -32, -33, -34, -35, -36, -37, -38, -39,
+        -40, -41, -42, -43, -44, -45, -46, -47, -48, -49,
+        -50, -51, -52, -53, -54, -55, -56, -57, -58, -59,
+        -60, -61, -62, -63, -64, -65, -66, -67, -68, -69,
+        -70, -71, -72, -73, -74, -75, -76, -77, -78, -79,
+        -80, -81, -82, -83, -84, -85, -86, -87, -88, -89,
+        -90, -91, -92, -93, -94, -95, -96, -97, -98, -99
+    };
+
     const char* msg1 = "\nstl::vector time=";
     const char* msg2 = "\nstd::vector time=";
+    const size_t ONEMIL = 1000000;
 
-    //stl::vector
+    // stl::vector
     {
         typedef stl::vector<Cx> vector;
         time_printer tp(msg1);
 
-        vector v0;
-        for (int i = 0; i < 5000; ++i)
-            v0.push_back(Cx(i));
-
-        // inline void insert_(iterator& position, const_iterator& first, const_iterator& last)
-        // -- stl is worse 0.81 vs 0.60 :)
-        for (size_t i = 0; i < 1000; ++i)
+#if 0
+        // vector()
+        for (size_t i = 0; i < ONEMIL; ++i)
         {
-            vector v1(v0);
-            vector v2(v1), v3(v1), v4(v1), v5(v1);
-            const vector& cv2 = v2;
-            const vector& cv3 = v3;
-            const vector& cv4 = v4;
-            const vector& cv5 = v5;
-
-            v2.insert(v2.begin() + (long)i % v0.size(), cv2.begin(), cv2.end());
-            v3.insert(v3.begin() + (long)i % v0.size(), cv3.begin() + (long)i % v0.size(), cv3.end());
-            v4.insert(v4.begin(), cv4.begin(), cv4.end() - (long)i % v0.size());
-            v5.insert(v5.end(), cv5.end(), cv5.end());
-        }        
-    }
-
-    // std::vector
-    {
-        typedef std::vector<Cx> vector;
-        time_printer tp(msg2);
-
-        vector v0;
-        for (int i = 0; i < 5000; ++i)
-            v0.push_back(Cx(i));
-
-        // inline void insert_(iterator& position, const_iterator& first, const_iterator& last)
-        // -- stl is worse 0.81 vs 0.60 :)
-        for (size_t i = 0; i < 1000; ++i)
-        {
-            vector v1(v0);
-            vector v2(v1), v3(v1), v4(v1), v5(v1);
-            const vector& cv2 = v2;
-            const vector& cv3 = v3;
-            const vector& cv4 = v4;
-            const vector& cv5 = v5;
-
-            v2.insert(v2.begin() + (long)i % v0.size(), cv2.begin(), cv2.end());
-            v3.insert(v3.begin() + (long)i % v0.size(), cv3.begin() + (long)i % v0.size(), cv3.end());
-            v4.insert(v4.begin(), cv4.begin(), cv4.end() - (long)i % v0.size());
-            v5.insert(v5.end(), cv5.end(), cv5.end());
+            vector v1, v2, v3, v4, v5;
         }
+
+        // explicit vector(size_type n, const T& val = T())
+        for (size_t i = 0; i < ONEMIL / 100; ++i)
+        {
+            vector v1(i % 99, cx0[i % 99]);
+        }
+
+        // vector(InputIterator first, InputIterator last)
+        for (size_t i = 0; i < ONEMIL / 1000; ++i)
+        {
+            vector v1(cx0, cx0 + 100);
+            vector v2(v1.begin(), v1.end());    // vector(iterator, ..)
+            const vector& cv1 = v1;
+            vector v3(cv1.begin(), cv1.end());  // vector(const_iterator, ..)
+            vector v4(v1.rbegin(), v1.rend());  // vector(reverse_iterator,..)
+            vector v5(cv1.rbegin(), cv1.rend());// vector(const_reverse_iterator,..)
+            vector v6(cx0, cx0 + 100);          // vector(value_type*, ..)
+            const Cx* ccx0 = cx0;
+            vector v7(ccx0, ccx0 + 100);        // vector(const value_type*, ..)
+            stl::vector<int> v8(i % 100, i % 100);  // vector(Iterator,Iterator)
+        }
+
+        // vector(const container& x)
+        for (size_t i = 0; i < ONEMIL / 1000; ++i)
+        {
+            vector v1(cx0, cx0 + 100);
+            vector v2(v1);
+            vector v3(v1);
+            vector v4(v1);
+        }
+
+        // container& operator=(const container& x)
+        for (size_t i = 0; i < ONEMIL / 1000; ++i)
+        {
+            vector v1(cx0, cx0 + 100);
+            vector v2, v3, v4;
+            v2 = v1;
+            v3 = v1;
+            v4 = v1;
+        }
+
+        // container& assign(const container& x)
+        for (size_t i = 0; i < ONEMIL / 1000; ++i)
+        {
+            vector v1(cx0, cx0 + 100);
+            vector v2, v3, v4;
+            v2.assign(v1);
+            v3.assign(v1);
+            v4.assign(v1);
+        }
+
+        // void assign(size_type n, const value_type& val)
+        for (size_t i = 0; i < ONEMIL / 1000; ++i)
+        {
+            vector v1, v2, v3;
+            v1.assign(i % 99, cx0[i % 99]);
+            v2.assign(i % 99, cx0[i % 99]);
+            v3.assign(i % 99, cx0[i % 99]);
+        }
+        
+        // void assign(InputIterator first, InputIterator last)
+        // inline void assign_(iterator& first, iterator& last)
+        for (size_t i = 0; i < ONEMIL / 1000; ++i)
+        {
+            vector v1(cx0, cx0 + 100);
+            vector v2, v3, v4, v5;
+
+            v2.assign(v1.begin() + i % 99, v1.end());       // from other
+            v2.assign(v2.begin() + (long)v2.size()/3, v2.end());  // from self
+
+            v3.assign(v1.begin(), v1.end() - i % 99);       // from other
+            v3.assign(v3.begin(), v3.end() - (long)v3.size() / 3);// from self
+
+            v4.assign(v1.begin() + i % 50, v1.end() - i % 50);  // from other
+            v4.assign(v4.begin()+(long)v4.size()/3, v4.end()-(long)v4.size()/3);// from self
+        }
+
+        // inline void assign_(const_iterator& first, const_iterator& last)
+        for (size_t i = 0; i < ONEMIL / 1000; ++i)
+        {
+            vector v1(cx0, cx0 + 100);
+            vector v2, v3, v4, v5;
+            const vector& cv1 = v1, cv2 = v2, cv3 = v3, cv4 = v4, cv5 = v5;
+
+            v2.assign(cv1.begin() + i % 99, cv1.end());                 // from other            
+            v2.assign(cv2.begin() + (long)cv2.size() / 3, cv2.end());    // from self
+
+            v3.assign(cv1.begin(), cv1.end() - i % 99);                 // from other
+            v3.assign(cv3.begin(), cv3.end() - (long)cv3.size() / 3);   // from self
+
+            v4.assign(cv1.begin() + i % 50, cv1.end() - i % 50);    // from other
+            v4.assign(cv4.begin() + (long)cv4.size() / 3, cv4.end() - (long)cv4.size() / 3);// from self
+        }
+
+        // inline void assign_(value_type* first, value_type* last)
+        for (size_t i = 0; i < ONEMIL / 1000; ++i)
+        {
+            vector v1(cx0, cx0 + 100);
+            vector v2, v3, v4, v5;
+
+            Cx* b1 = &*(v1.begin() + i % 99);
+            Cx* e1 = &*(v1.end() - 1) + 1;
+            v2.assign(b1, e1);      // from other
+
+            Cx* b2 = &*(v2.begin() + (long)v2.size()/3);
+            Cx* e2 = &*(v2.end() - 1) + 1;
+            v2.assign(b2, e2);      // from self
+
+            Cx* b3 = &*(v1.begin());
+            Cx* e3 = &*(v1.end() - 1 - i % 99) + 1;
+            v3.assign(b3, e3);      // from other
+            
+            Cx* b4 = &*(v3.begin());
+            Cx* e4 = &*(v3.end() - 1 - (long)v3.size() / 3) + 1;
+            v3.assign(b4, e4);      // from self
+
+            Cx* b5 = &*(v1.begin() + i % 50);
+            Cx* e5 = &*(v1.end() - 1 - i % 50) + 1;
+            v4.assign(b5, e5);  // from other
+
+            Cx* b6 = &*(v4.begin() + (long)v4.size() / 3);
+            Cx* e6 = &*(v4.end() - 1 - (long)v4.size() / 3) + 1;
+            v4.assign(b6, e6);// from self
+        }
+
+        // inline void assign_(const value_type* first, const value_type* last)
+        for (size_t i = 0; i < ONEMIL / 1000; ++i)
+        {
+            vector v1(cx0, cx0 + 100);
+            vector v2, v3, v4, v5;
+
+            const Cx* b1 = &*(v1.begin() + i % 99);
+            const Cx* e1 = &*(v1.end() - 1) + 1;
+            v2.assign(b1, e1);      // from other
+
+            const Cx* b2 = &*(v2.begin() + (long)v2.size() / 3);
+            const Cx* e2 = &*(v2.end() - 1) + 1;
+            v2.assign(b2, e2);      // from self
+
+            const Cx* b3 = &*(v1.begin());
+            const Cx* e3 = &*(v1.end() - 1 - i % 99) + 1;
+            v3.assign(b3, e3);      // from other
+
+            const Cx* b4 = &*(v3.begin());
+            const Cx* e4 = &*(v3.end() - 1 - (long)v3.size() / 3) + 1;
+            v3.assign(b4, e4);      // from self
+
+            const Cx* b5 = &*(v1.begin() + i % 50);
+            const Cx* e5 = &*(v1.end() - 1 - i % 50) + 1;
+            v4.assign(b5, e5);  // from other
+
+            const Cx* b6 = &*(v4.begin() + (long)v4.size() / 3);
+            const Cx* e6 = &*(v4.end() - 1 - (long)v4.size() / 3) + 1;
+            v4.assign(b6, e6);// from self
+        }
+
+        // inline void assign_(InputIterator& first, InputIterator& last, stl::forward_iterator_tag)
+        for (size_t i = 0; i < ONEMIL / 1000; ++i)
+        {
+            vector v1(cx0, cx0 + 100);
+            vector v2, v3, v4, v5;
+
+            v2.assign(v1.rbegin() + i % 99, v1.rend());       // from other
+            v2.assign(v2.rbegin() + (long)v2.size() / 3, v2.rend());  // from self
+
+            v3.assign(v1.rbegin(), v1.rend() - i % 99);       // from other
+            v3.assign(v3.rbegin(), v3.rend() - (long)v3.size() / 3);// from self
+
+            v4.assign(v1.rbegin() + i % 50, v1.rend() - i % 50);  // from other
+            v4.assign(v4.rbegin() + (long)v4.size() / 3, v4.rend() - (long)v4.size() / 3);// from self
+        }
+
+
+        // inline void assign_(InputIterator count, InputIterator value, stl::input_iterator_tag)
+        for (size_t i = 0; i < ONEMIL / 100; ++i)
+        {
+            stl::vector<int> v1(i % 99, i % 99);
+        }
+
+        // begin() + end()
+        for (size_t i = 0; i < ONEMIL / 1000; ++i)
+        {
+            vector v1;
+            v1.assign(cx0, cx0 + 100);
+
+            vector::iterator beg = v1.begin();
+            vector::iterator beg2 = beg;
+            vector::iterator beg3;
+            beg3 = beg;
+            const Cx& cx = *beg3;
+            const int* pint = beg3->get();
+
+            stl::vector<Cx>::iterator& beg4 = ++beg3;   //operator++()
+            stl::vector<Cx>::iterator beg5 = beg4++;    //operator++(int)
+            stl::vector<Cx>::iterator& beg6 = --beg4;   //operator--()
+            stl::vector<Cx>::iterator beg7 = beg6--;    //operator--(int)
+            stl::vector<Cx>::iterator& beg8 = (beg6 += 2);  //operator+=(offset)
+            stl::vector<Cx>::iterator beg9 = (beg8 + 2);    //operator+()
+            stl::vector<Cx>::iterator beg10 = (beg9 -= 2);  //operator-=(offset)
+            stl::vector<Cx>::iterator beg11 = (beg10 - 2);  //operator-(offset);
+            size_t diff11 = beg10 - beg11;
+            bool eq = (beg == beg2);
+            bool neq = (beg11 != beg10);
+            bool lt = (beg11 < beg10);
+            bool gt = (beg10 > beg11);
+            bool lte = (beg11 <= beg10);
+            bool gte = (beg >= beg2);
+            const Cx& cx11 = beg11[2];
+        }
+
+        // rbegin() + rend()
+        for (size_t i = 0; i < ONEMIL / 100; ++i)
+        {
+            vector v1;
+            v1.assign(cx0, cx0 + 100);
+
+            vector::reverse_iterator beg = v1.rbegin();
+            vector::reverse_iterator beg2 = beg;
+            vector::reverse_iterator beg3;
+            beg3 = beg;
+            const Cx& cx = *beg3;
+            const int* pint = beg3->get();
+
+            stl::vector<Cx>::reverse_iterator& beg4 = ++beg3;   //operator++()
+            stl::vector<Cx>::reverse_iterator beg5 = beg4++;    //operator++(int)
+            stl::vector<Cx>::reverse_iterator& beg6 = --beg4;   //operator--()
+            stl::vector<Cx>::reverse_iterator beg7 = beg6--;    //operator--(int)
+            stl::vector<Cx>::reverse_iterator& beg8 = (beg6 += 2);  //operator+=(offset)
+            stl::vector<Cx>::reverse_iterator beg9 = (beg8 + 2);    //operator+()
+            stl::vector<Cx>::reverse_iterator beg10 = (beg9 -= 2);  //operator-=(offset)
+            stl::vector<Cx>::reverse_iterator beg11 = (beg10 - 2);  //operator-(offset);
+            size_t diff11 = beg10 - beg11;
+            bool eq = (beg == beg2);
+            bool neq = (beg11 != beg10);
+            bool lt = (beg11 < beg10);
+            bool gt = (beg10 > beg11);
+            bool lte = (beg11 <= beg10);
+            bool gte = (beg >= beg2);
+            const Cx& cx11 = beg11[2];
+        }
+
+        // void resize(size_type n, value_type val = value_type())
+        for (size_t i = 0; i < ONEMIL / 1000; ++i)
+        {
+            vector v1, v2, v3, v4, v5;
+
+            v1.resize(i % 99, cx0[i % 99]);
+            v2.resize(i % 99, cx0[i % 99]);
+            v3.resize(i % 99, cx0[i % 99]);
+            v4.resize(i % 99, cx0[i % 99]);
+            v5.resize(i % 99, cx0[i % 99]);
+        }
+
+        // void reserve(size_type n)
+        for (size_t i = 0; i < ONEMIL / 1000; ++i)
+        {
+            vector v1, v2, v3, v4, v5;
+
+            v1.reserve(i % 99);
+            v2.reserve(i % 99);
+            v3.reserve(i % 99);
+            v4.reserve(i % 99);
+            v5.reserve(i % 99);
+        }
+
+        // reference operator[](size_type n) const
+        for (size_t i = 0; i < ONEMIL / 1000; ++i)
+        {
+            vector v1(cx0, cx0 + 100);
+
+            const Cx& c1 = v1[i % 99];
+            const Cx& c2 = v1[i % 99];
+            const Cx& c3 = v1[i % 99];
+            const Cx& c4 = v1[i % 99];
+            const Cx& c5 = v1[i % 99];
+        }
+
+        // const_reference at(size_type n) const
+        for (size_t i = 0; i < ONEMIL / 1000; ++i)
+        {
+            vector v1(cx0, cx0 + 100);
+
+            const Cx& c1 = v1.at(i % 99);
+            const Cx& c2 = v1.at(i % 99);
+            const Cx& c3 = v1.at(i % 99);
+            const Cx& c4 = v1.at(i % 99);
+            const Cx& c5 = v1.at(i % 99);
+        }
+
+        // front() + back()
+        for (size_t i = 0; i < ONEMIL / 1000; ++i)
+        {
+            vector v1(cx0, cx0 + 100);
+            const Cx& f = v1.front();
+            const Cx& b = v1.back();
+        }
+
+        // void push_back(const value_type& val)
+        for (size_t i = 0; i < ONEMIL / 1000; ++i)
+        {
+            vector v1, v2, v3, v4;
+            for (size_t j = 0; j < i % 99; ++j)
+            {
+                v1.push_back(cx0[j]);
+                v2.push_back(cx0[j]);
+                v3.push_back(cx0[j]);
+                v4.push_back(cx0[j]);
+            }
+        }
+
+        // void pop_back()
+        for (size_t i = 0; i < ONEMIL / 1000; ++i)
+        {
+            vector v1(cx0, cx0 + 100);
+            while (!v1.empty())
+                v1.pop_back();
+        }
+
+        // iterator insert(iterator position, const value_type& val)
+        for (size_t i = 0; i < ONEMIL / 1000; ++i)
+        {
+            vector v1;
+            for (size_t j = 0; j < i % 99; ++j)
+            {
+                v1.insert(v1.begin(), cx0[j]);
+                v1.insert(v1.end(), v1.back());
+            }
+        }
+
+        // void insert(iterator position, size_type n, const value_type& val)
+        for (size_t i = 0; i < ONEMIL / 1000; ++i)
+        {
+            vector v1;
+            for (size_t j = 0; j < i % 99; ++j)
+            {
+                v1.insert(v1.begin(), 1, cx0[j]);
+                v1.insert(v1.end(), 1, v1.back());
+            }
+        }
+
+        // void insert(iterator position, InputIterator first, InputIterator last)
+        // inline void insert_(iterator& position, iterator& first, iterator& last)
+        for (size_t i = 0; i < ONEMIL / 1000; ++i)
+        {
+            vector v1(cx0, cx0 + 100);
+            vector v2, v3, v4, v5;
+            vector::iterator it;
+
+            v2.insert(v2.end(), v1.begin() + i % 99, v1.end());       // from other
+            it = v2.begin() + (long)v2.size() / 2;
+            v2.insert(it, v2.begin() + (long)v2.size() / 3, v2.end());  // from self
+
+            v3.insert(v3.end(), v1.begin(), v1.end() - i % 99);       // from other
+            it = v3.begin() + (long)v3.size() / 2;
+            v3.insert(it, v3.begin(), v3.end() - (long)v3.size() / 3);// from self
+
+            v4.insert(v4.end(), v1.begin() + i % 50, v1.end() - i % 50);  // from other
+            it = v4.begin() + (long)v4.size() / 2;
+            v4.insert(it, v4.begin() + (long)v4.size() / 3, v4.end() - (long)v4.size() / 3);// from self
+        }
+
+        // inline void insert_(iterator& position, const_iterator& first, const_iterator& last)
+        for (size_t i = 0; i < ONEMIL / 1000; ++i)
+        {
+            vector v1(cx0, cx0 + 100);
+            const vector& cv1 = v1;
+            vector v2, v3, v4, v5;
+            vector::iterator it;
+            const vector& cv2 = v2, cv3 = v3, cv4 = v4, cv5 = v5;
+
+            v2.insert(v2.end(), cv1.begin() + i % 99, cv1.end());       // from other
+            it = v2.begin() + (long)v2.size() / 2;
+            v2.insert(it, cv2.begin() + (long)cv2.size() / 3, cv2.end());  // from self
+
+            v3.insert(v3.end(), cv1.begin(), cv1.end() - i % 99);       // from other
+            it = v3.begin() + (long)v3.size() / 2;
+            v3.insert(it, cv3.begin(), cv3.end() - (long)cv3.size() / 3);// from self
+
+            v4.insert(v4.end(), cv1.begin() + i % 50, cv1.end() - i % 50);  // from other
+            it = v4.begin() + (long)v4.size() / 2;
+            v4.insert(it, cv4.begin() + (long)cv4.size() / 3, cv4.end() - (long)cv4.size() / 3);// from self
+        }
+
+        // inline void insert_(iterator& position, value_type* first, value_type* last)
+        for (size_t i = 0; i < ONEMIL / 1000; ++i)
+        {
+            vector v1(cx0, cx0 + 100);
+            vector v2, v3, v4, v5;
+
+            Cx* b1 = &*(v1.begin() + i % 99);
+            Cx* e1 = &*(v1.end() - 1) + 1;
+            v2.insert(v2.end(), b1, e1);      // from other
+
+            Cx* b2 = &*(v2.begin() + (long)v2.size() / 3);
+            Cx* e2 = &*(v2.end() - 1) + 1;
+            v2.insert(v2.begin() + (long)v2.size()/2, b2, e2);      // from self
+
+            Cx* b3 = &*(v1.begin());
+            Cx* e3 = &*(v1.end() - 1 - i % 99) + 1;
+            v3.insert(v3.end(), b3, e3);      // from other
+
+            Cx* b4 = &*(v3.begin());
+            Cx* e4 = &*(v3.end() - 1 - (long)v3.size() / 3) + 1;
+            v3.insert(v3.begin() + (long)v3.size()/2, b4, e4);      // from self
+
+            Cx* b5 = &*(v1.begin() + i % 50);
+            Cx* e5 = &*(v1.end() - 1 - i % 50) + 1;
+            v4.insert(v4.end(), b5, e5);  // from other
+
+            Cx* b6 = &*(v4.begin() + (long)v4.size() / 3);
+            Cx* e6 = &*(v4.end() - 1 - (long)v4.size() / 3) + 1;
+            v4.insert(v4.begin() + (long)v4.size()/2, b6, e6);// from self
+        }
+
+        // inline void insert_(iterator& position, const value_type* first, const value_type* last)
+        for (size_t i = 0; i < ONEMIL / 1000; ++i)
+        {
+            vector v1(cx0, cx0 + 100);
+            vector v2, v3, v4, v5;
+
+            const Cx* b1 = &*(v1.begin() + i % 99);
+            const Cx* e1 = &*(v1.end() - 1) + 1;
+            v2.insert(v2.end(), b1, e1);      // from other
+
+            const Cx* b2 = &*(v2.begin() + (long)v2.size() / 3);
+            const Cx* e2 = &*(v2.end() - 1) + 1;
+            v2.insert(v2.begin() + (long)v2.size() / 2, b2, e2);      // from self
+
+            const Cx* b3 = &*(v1.begin());
+            const Cx* e3 = &*(v1.end() - 1 - i % 99) + 1;
+            v3.insert(v3.end(), b3, e3);      // from other
+
+            const Cx* b4 = &*(v3.begin());
+            const Cx* e4 = &*(v3.end() - 1 - (long)v3.size() / 3) + 1;
+            v3.insert(v3.begin() + (long)v3.size() / 2, b4, e4);      // from self
+
+            const Cx* b5 = &*(v1.begin() + i % 50);
+            const Cx* e5 = &*(v1.end() - 1 - i % 50) + 1;
+            v4.insert(v4.end(), b5, e5);  // from other
+
+            const Cx* b6 = &*(v4.begin() + (long)v4.size() / 3);
+            const Cx* e6 = &*(v4.end() - 1 - (long)v4.size() / 3) + 1;
+            v4.insert(v4.begin() + (long)v4.size() / 2, b6, e6);// from self
+        }
+
+        // inline void insert_(iterator& position, InputIterator& first, InputIterator& last, stl::forward_iterator_tag)
+        for (size_t i = 0; i < ONEMIL / 1000; ++i)
+        {
+            vector v1(cx0, cx0 + 100);
+            vector v2, v3, v4, v5;
+            vector::iterator it;
+
+            v2.insert(v2.end(), v1.rbegin() + i % 99, v1.rend());       // from other
+            it = v2.begin() + (long)v2.size() / 2;
+            v2.insert(it, v2.rbegin() + (long)v2.size() / 3, v2.rend());  // from self
+
+            v3.insert(v3.end(), v1.rbegin(), v1.rend() - i % 99);       // from other
+            it = v3.begin() + (long)v3.size() / 2;
+            v3.insert(it, v3.rbegin(), v3.rend() - (long)v3.size() / 3);// from self
+
+            v4.insert(v4.end(), v1.rbegin() + i % 50, v1.rend() - i % 50);  // from other
+            it = v4.begin() + (long)v4.size() / 2;
+            v4.insert(it, v4.rbegin() + (long)v4.size() / 3, v4.rend() - (long)v4.size() / 3);// from self
+        }
+
+        // inline void insert_(iterator& position, InputIterator n, InputIterator value, stl::input_iterator_tag)
+        for (size_t i = 0; i < ONEMIL / 1000; ++i)
+        {
+            stl::vector<int> v1, v2, v3, v4, v5;
+            v1.insert(v1.end(), i % 99, i % 99);
+            v1.insert(v1.begin() + (long)v1.size(), i % 99, i % 99);
+            v1.insert(v1.begin(), i % 99, i % 99);
+        }
+
+#endif
+        // iterator erase(iterator position)
+        for (size_t i = 0; i < ONEMIL / 1000; ++i)
+        {
+            vector v1(cx0, cx0 + 100);
+            while (!v1.empty())
+                v1.erase(v1.begin());
+        }
+
+        // iterator erase(iterator first, iterator last)
+        for (size_t i = 0; i < ONEMIL / 100; ++i)
+        {
+            vector v1(cx0, cx0 + 100);
+            while (!v1.empty())
+            {
+                v1.erase(v1.begin() + (long)v1.size() / 2, v1.end());
+            }
+        }
+
     }
 }

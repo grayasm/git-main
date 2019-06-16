@@ -1138,7 +1138,7 @@ namespace stl
                 grow(n);
 
                 // Not a self assignment as value is a temporary copy.
-                stl::mem_set(m_data, value, n * sizeof(value_type), m_allocator);
+                stl::mem_set(m_data, (value_type)value, (size_type)n * sizeof(value_type), m_allocator);
             }
 
             endof(n);
@@ -1152,9 +1152,7 @@ namespace stl
 
         const_iterator begin() const
         {
-//TODO: performance: remove the pointer, cast directly to constructor
-            container* mutable_cont = const_cast<container*>(this);
-            return const_iterator(mutable_cont, 0);
+            return const_iterator(const_cast<container*>(this), 0);
         }
 
         iterator end()
@@ -1164,8 +1162,7 @@ namespace stl
 
         const_iterator end() const
         {
-            container* mutable_cont = const_cast<container*>(this);
-            return const_iterator(mutable_cont, m_size);
+            return const_iterator(const_cast<container*>(this), m_size);
         }
 
         reverse_iterator rbegin()
@@ -1175,8 +1172,9 @@ namespace stl
 
         const_reverse_iterator rbegin() const
         {
-            container* mutable_cont = const_cast<container*>(this);
-            return const_reverse_iterator(mutable_cont, static_cast<size_type>(m_size - 1));
+            return const_reverse_iterator(
+                const_cast<container*>(this),
+                static_cast<size_type>(m_size - 1));
         }
 
         reverse_iterator rend()
@@ -1186,8 +1184,9 @@ namespace stl
 
         const_reverse_iterator rend() const
         {
-            container* mutable_cont = const_cast<container*>(this);
-            return const_reverse_iterator(mutable_cont, static_cast<size_type>(-1));
+            return const_reverse_iterator(
+                const_cast<container*>(this),
+                static_cast<size_type>(-1));
         }
 
         size_type size() const
@@ -1254,7 +1253,6 @@ namespace stl
             return *(m_data + n);
         }
 
-//TODO: create tests for front,back
         reference front()
         {
             if (!m_size)
@@ -1303,7 +1301,7 @@ namespace stl
                         grow(m_capacity * 2);
                 }
 
-                m_allocator.construct(&m_data[m_size], temp);
+                m_allocator.construct(m_data + m_size, temp);
             }
             else// val address is outside this container.
             {
@@ -1315,7 +1313,7 @@ namespace stl
                         grow(m_capacity * 2);
                 }
 
-                m_allocator.construct(&m_data[m_size], val);
+                m_allocator.construct(m_data + m_size, val);
             }
 
             endof(m_size + 1);
@@ -1360,7 +1358,6 @@ namespace stl
                     stl::mem_move(m_data + pos + 1, dst_valid_sz, m_data + pos, (m_size - pos), m_allocator);
                 }
 
-//TODO:use pointer arithmetic                
                 m_allocator.construct(m_data + pos, temp);
             }
             else// val address is outside this container
@@ -1767,7 +1764,7 @@ namespace stl
                     stl::mem_move(m_data + p + n, dst_valid_sz, m_data + p, (m_size - p), m_allocator);
                 }
 
-                stl::mem_set(m_data + p, value, n * sizeof(value_type), m_allocator);
+                stl::mem_set(m_data + p, (value_type)value, (size_type)n * sizeof(value_type), m_allocator);
                 
                 endof(size);
             }
