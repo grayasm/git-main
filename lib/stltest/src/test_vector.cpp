@@ -966,17 +966,21 @@ void test_vector::perf1()
 
 #if 0
         // vector()
+        // both equal 0.00000
         for (size_t i = 0; i < ONEMIL; ++i)
         {
             vector v1, v2, v3, v4, v5;
         }
+#endif
 
         // explicit vector(size_type n, const T& val = T())
-        for (size_t i = 0; i < ONEMIL / 100; ++i)
+        // ++ stl is better: 1.7 vs 1.9
+        for (size_t i = 0; i < ONEMIL / 2; ++i)
         {
             vector v1(i % 99, cx0[i % 99]);
         }
 
+#if 0
         // vector(InputIterator first, InputIterator last)
         for (size_t i = 0; i < ONEMIL / 1000; ++i)
         {
@@ -1310,10 +1314,9 @@ void test_vector::perf1()
             }
         }
 
-#endif
         // void insert(iterator position, InputIterator first, InputIterator last)
         // inline void insert_(iterator& position, iterator& first, iterator& last)
-        for (size_t i = 0; i < ONEMIL / 10; ++i)
+        for (size_t i = 0; i < ONEMIL / 30; ++i)
         {
             vector v1(cx0, cx0 + 100);
             vector v2, v3, v4, v5;
@@ -1333,7 +1336,7 @@ void test_vector::perf1()
         }
 
         // inline void insert_(iterator& position, const_iterator& first, const_iterator& last)
-        for (size_t i = 0; i < ONEMIL / 10; ++i)
+        for (size_t i = 0; i < ONEMIL / 30; ++i)
         {
             vector v1(cx0, cx0 + 100);
             const vector& cv1 = v1;
@@ -1354,7 +1357,7 @@ void test_vector::perf1()
             v4.insert(it, cv4.begin() + (long)cv4.size() / 3, cv4.end() - (long)cv4.size() / 3);// from self
         }
 
-#if 0
+
         // inline void insert_(iterator& position, value_type* first, value_type* last)
         for (size_t i = 0; i < ONEMIL / 1000; ++i)
         {
@@ -1473,47 +1476,9 @@ void test_vector::perf1()
         typedef std::vector<Cx> vector;
         time_printer tp(msg2);
 
-        // void insert(iterator position, InputIterator first, InputIterator last)
-        // inline void insert_(iterator& position, iterator& first, iterator& last)
-        for (size_t i = 0; i < ONEMIL / 10; ++i)
+        for (size_t i = 0; i < ONEMIL / 2; ++i)
         {
-            vector v1(cx0, cx0 + 100);
-            vector v2, v3, v4, v5;
-            vector::iterator it;
-
-            v2.insert(v2.end(), v1.begin() + i % 99, v1.end());       // from other
-            it = v2.begin() + (long)v2.size() / 2;
-            v2.insert(it, v2.begin() + (long)v2.size() / 3, v2.end());  // from self
-
-            v3.insert(v3.end(), v1.begin(), v1.end() - i % 99);       // from other
-            it = v3.begin() + (long)v3.size() / 2;
-            v3.insert(it, v3.begin(), v3.end() - (long)v3.size() / 3);// from self
-
-            v4.insert(v4.end(), v1.begin() + i % 50, v1.end() - i % 50);  // from other
-            it = v4.begin() + (long)v4.size() / 2;
-            v4.insert(it, v4.begin() + (long)v4.size() / 3, v4.end() - (long)v4.size() / 3);// from self
-        }
-
-        // inline void insert_(iterator& position, const_iterator& first, const_iterator& last)
-        for (size_t i = 0; i < ONEMIL / 10; ++i)
-        {
-            vector v1(cx0, cx0 + 100);
-            const vector& cv1 = v1;
-            vector v2, v3, v4, v5;
-            vector::iterator it;
-            const vector& cv2 = v2, cv3 = v3, cv4 = v4, cv5 = v5;
-
-            v2.insert(v2.end(), cv1.begin() + i % 99, cv1.end());       // from other
-            it = v2.begin() + (long)v2.size() / 2;
-            v2.insert(it, cv2.begin() + (long)cv2.size() / 3, cv2.end());  // from self
-
-            v3.insert(v3.end(), cv1.begin(), cv1.end() - i % 99);       // from other
-            it = v3.begin() + (long)v3.size() / 2;
-            v3.insert(it, cv3.begin(), cv3.end() - (long)cv3.size() / 3);// from self
-
-            v4.insert(v4.end(), cv1.begin() + i % 50, cv1.end() - i % 50);  // from other
-            it = v4.begin() + (long)v4.size() / 2;
-            v4.insert(it, cv4.begin() + (long)cv4.size() / 3, cv4.end() - (long)cv4.size() / 3);// from self
+            vector v1(i % 99, cx0[i % 99]);
         }
     }
 }

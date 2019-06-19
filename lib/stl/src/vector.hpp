@@ -1451,8 +1451,6 @@ namespace stl
         }
 
     private:
-#define USE_REPLACE_NB
-#ifdef USE_REPLACE_NB
         inline void insert_(iterator& position, iterator& first, iterator& last)
         {
             // allow to insert in position = end(), aka m_pos == m_size;
@@ -1470,70 +1468,7 @@ namespace stl
                 replace_nb_(position.m_pos, 0, *first.m_cont, first.m_pos, dist);
             }
         }
-#else
-        inline void insert_(iterator& position, iterator& first, iterator& last)
-        {
-            // allow to insert in position = end(), aka m_pos == m_size;
-            if (position.m_cont != this || position.m_pos > m_size)
-                throw stl::exception("invalid iterator");
-            
-            if (first.m_cont != last.m_cont || first.m_cont == 0)
-                throw stl::exception("invalid iterator");
 
-            // if last < first then let it blow up.
-            size_type dist = static_cast<size_type>(last - first);
-            if (dist)
-            {
-
-                size_type p = position.m_pos;
-                size_type size = m_size + dist;
-
-                grow(size);
-
-                // Is the range inside this container ?
-                if (first.m_cont == this)
-                {
-                    container temp(first, last);
-
-                    // move content unless insert position is end()
-                    if (p < m_size)
-                    {
-                        // mem_move cannot destroy invalid objects in the destination
-                        size_type dst_valid_sz = 0;
-                        if (p + dist < m_size)
-                        {
-                            dst_valid_sz = m_size - p - dist;
-                        }
-
-                        stl::mem_move(m_data + p + dist, dst_valid_sz, m_data + p, (m_size - p), m_allocator);
-                    }
-
-                    stl::mem_copy(m_data + p, m_size - p, &temp.front(), dist, m_allocator);
-                }
-                else// range is outside this container
-                {
-                    // move content unless insert positions is end()
-                    if (p < m_size)
-                    {
-                        // mem_move cannot destroy invalid objects in the destination
-                        size_type dst_valid_sz = 0;
-                        if (p + dist < m_size)
-                        {
-                            dst_valid_sz = m_size - p - dist;
-                        }
-
-                        stl::mem_move(m_data + p + dist, dst_valid_sz, m_data + p, (m_size - p), m_allocator);
-                    }
-
-                    stl::mem_copy(m_data + p, m_size - p, first.m_cont->m_data + first.m_pos, dist, m_allocator);
-                }
-
-                endof(size);
-            }
-        }
-#endif
-
-#ifdef USE_REPLACE_NB
         inline void insert_(iterator& position, const_iterator& first, const_iterator& last)
         {
             // allow to insert in position = end(), aka m_pos == m_size;
@@ -1551,67 +1486,6 @@ namespace stl
                 replace_nb_(position.m_pos, 0, *first.m_cont, first.m_pos, dist);
             }
         }
-#else
-        inline void insert_(iterator& position, const_iterator& first, const_iterator& last)
-        {
-            // allow to insert in position = end(), aka m_pos == m_size;
-            if (position.m_cont != this || position.m_pos > m_size)
-                throw stl::exception("invalid iterator");
-
-            if (first.m_cont != last.m_cont || first.m_cont == 0)
-                throw stl::exception("invalid iterator");
-
-            // if last < first then let it blow up.
-            size_type dist = static_cast<size_type>(last - first);
-            if (dist > 0)
-            {
-                size_type p = position.m_pos;
-                size_type size = m_size + dist;
-
-                grow(size);
-
-                // Is the range inside this container ?
-                if (first.m_cont == this)
-                {
-                    container temp(first, last);
-
-                    // move content unless insert position is end()
-                    if (p < m_size)
-                    {
-                        // mem_move cannot destroy invalid objects in the destination
-                        size_type dst_valid_sz = 0;
-                        if (p + dist < m_size)
-                        {
-                            dst_valid_sz = m_size - p - dist;
-                        }
-
-                        stl::mem_move(m_data + p + dist, dst_valid_sz, m_data + p, (m_size - p), m_allocator);
-                    }
-
-                    stl::mem_copy(m_data + p, m_size - p, &temp.front(), dist, m_allocator);
-                }
-                else// range is outside this container
-                {
-                    // move content unless insert positions is end()
-                    if (p < m_size)
-                    {
-                        // mem_move cannot destroy invalid objects in the destination
-                        size_type dst_valid_sz = 0;
-                        if (p + dist < m_size)
-                        {
-                            dst_valid_sz = m_size - p - dist;
-                        }
-
-                        stl::mem_move(m_data + p + dist, dst_valid_sz, m_data + p, (m_size - p), m_allocator);
-                    }
-
-                    stl::mem_copy(m_data + p, m_size - p, first.m_cont->m_data + first.m_pos, dist, m_allocator);
-                }
-
-                endof(size);
-            }
-        }
-#endif
 
         inline void insert_(iterator& position, value_type* first, value_type* last)
         {
@@ -1732,7 +1606,6 @@ namespace stl
 
                     for (size_type i = 0; first != last; ++first, ++i)
                     {
-//TODO: search for m_data[ and replace with pointer arithmetic :)
                         m_allocator.construct(m_data + pos + i, *first);
                     }
                 }
@@ -1796,8 +1669,6 @@ namespace stl
 
             grow(size + 1);
 
-
-//TODO: test these possibilities
             if (this != &str)
             {   // no overlap, just move down and copy in new stuff
                 size_type dst_valid_sz1(0), dst_valid_sz2(0);
@@ -1829,6 +1700,7 @@ namespace stl
                     dst_valid_sz1 = m_size - p1;
                 }
 
+                //checked and it's correct
                 stl::mem_move(m_data + p1, dst_valid_sz1,
                               m_data + p2, n2, m_allocator);        // fill hole
                 stl::mem_move(m_data + p1 + n2, dst_valid_sz2,
@@ -1847,6 +1719,7 @@ namespace stl
                     dst_valid_sz2 = m_size - p1;
                 }
 
+                //checked and it's correct
                 stl::mem_move(m_data + p1 + n2, dst_valid_sz1,
                               m_data + p1 + n1, Nm, m_allocator);   // move tail down
                 stl::mem_move(m_data + p1, dst_valid_sz2,
@@ -1865,6 +1738,7 @@ namespace stl
                     dst_valid_sz2 = m_size - p1;
                 }
 
+                //checked and it's correct
                 stl::mem_move(m_data + p1 + n2, dst_valid_sz1,
                               m_data + p1 + n1, Nm, m_allocator);   // move tail down
                 stl::mem_move(m_data + p1, dst_valid_sz2,
@@ -1881,6 +1755,7 @@ namespace stl
                 if (p1 + n1 < m_size)
                     dst_valid_sz3 = m_size - p1 - n1;
 
+                //checked and it's correct
                 stl::mem_move(m_data + p1, dst_valid_sz1,
                               m_data + p2, n1, m_allocator);        // fill old hole
                 stl::mem_move(m_data + p1 + n2, dst_valid_sz2,
