@@ -1310,9 +1310,10 @@ void test_vector::perf1()
             }
         }
 
+#endif
         // void insert(iterator position, InputIterator first, InputIterator last)
         // inline void insert_(iterator& position, iterator& first, iterator& last)
-        for (size_t i = 0; i < ONEMIL / 1000; ++i)
+        for (size_t i = 0; i < ONEMIL / 10; ++i)
         {
             vector v1(cx0, cx0 + 100);
             vector v2, v3, v4, v5;
@@ -1332,7 +1333,7 @@ void test_vector::perf1()
         }
 
         // inline void insert_(iterator& position, const_iterator& first, const_iterator& last)
-        for (size_t i = 0; i < ONEMIL / 1000; ++i)
+        for (size_t i = 0; i < ONEMIL / 10; ++i)
         {
             vector v1(cx0, cx0 + 100);
             const vector& cv1 = v1;
@@ -1353,6 +1354,7 @@ void test_vector::perf1()
             v4.insert(it, cv4.begin() + (long)cv4.size() / 3, cv4.end() - (long)cv4.size() / 3);// from self
         }
 
+#if 0
         // inline void insert_(iterator& position, value_type* first, value_type* last)
         for (size_t i = 0; i < ONEMIL / 1000; ++i)
         {
@@ -1373,7 +1375,7 @@ void test_vector::perf1()
 
             Cx* b4 = &*(v3.begin());
             Cx* e4 = &*(v3.end() - 1 - (long)v3.size() / 3) + 1;
-            v3.insert(v3.begin() + (long)v3.size()/2, b4, e4);      // from self
+            v3.insert(v3.begin() + (long)v3.size() / 2, b4, e4);      // from self
 
             Cx* b5 = &*(v1.begin() + i % 50);
             Cx* e5 = &*(v1.end() - 1 - i % 50) + 1;
@@ -1381,7 +1383,7 @@ void test_vector::perf1()
 
             Cx* b6 = &*(v4.begin() + (long)v4.size() / 3);
             Cx* e6 = &*(v4.end() - 1 - (long)v4.size() / 3) + 1;
-            v4.insert(v4.begin() + (long)v4.size()/2, b6, e6);// from self
+            v4.insert(v4.begin() + (long)v4.size() / 2, b6, e6);    // from self
         }
 
         // inline void insert_(iterator& position, const value_type* first, const value_type* last)
@@ -1444,7 +1446,6 @@ void test_vector::perf1()
             v1.insert(v1.begin(), i % 99, i % 99);
         }
 
-#endif
         // iterator erase(iterator position)
         for (size_t i = 0; i < ONEMIL / 1000; ++i)
         {
@@ -1462,6 +1463,57 @@ void test_vector::perf1()
                 v1.erase(v1.begin() + (long)v1.size() / 2, v1.end());
             }
         }
+#endif
 
+    }
+
+
+    // std::vector
+    {
+        typedef std::vector<Cx> vector;
+        time_printer tp(msg2);
+
+        // void insert(iterator position, InputIterator first, InputIterator last)
+        // inline void insert_(iterator& position, iterator& first, iterator& last)
+        for (size_t i = 0; i < ONEMIL / 10; ++i)
+        {
+            vector v1(cx0, cx0 + 100);
+            vector v2, v3, v4, v5;
+            vector::iterator it;
+
+            v2.insert(v2.end(), v1.begin() + i % 99, v1.end());       // from other
+            it = v2.begin() + (long)v2.size() / 2;
+            v2.insert(it, v2.begin() + (long)v2.size() / 3, v2.end());  // from self
+
+            v3.insert(v3.end(), v1.begin(), v1.end() - i % 99);       // from other
+            it = v3.begin() + (long)v3.size() / 2;
+            v3.insert(it, v3.begin(), v3.end() - (long)v3.size() / 3);// from self
+
+            v4.insert(v4.end(), v1.begin() + i % 50, v1.end() - i % 50);  // from other
+            it = v4.begin() + (long)v4.size() / 2;
+            v4.insert(it, v4.begin() + (long)v4.size() / 3, v4.end() - (long)v4.size() / 3);// from self
+        }
+
+        // inline void insert_(iterator& position, const_iterator& first, const_iterator& last)
+        for (size_t i = 0; i < ONEMIL / 10; ++i)
+        {
+            vector v1(cx0, cx0 + 100);
+            const vector& cv1 = v1;
+            vector v2, v3, v4, v5;
+            vector::iterator it;
+            const vector& cv2 = v2, cv3 = v3, cv4 = v4, cv5 = v5;
+
+            v2.insert(v2.end(), cv1.begin() + i % 99, cv1.end());       // from other
+            it = v2.begin() + (long)v2.size() / 2;
+            v2.insert(it, cv2.begin() + (long)cv2.size() / 3, cv2.end());  // from self
+
+            v3.insert(v3.end(), cv1.begin(), cv1.end() - i % 99);       // from other
+            it = v3.begin() + (long)v3.size() / 2;
+            v3.insert(it, cv3.begin(), cv3.end() - (long)cv3.size() / 3);// from self
+
+            v4.insert(v4.end(), cv1.begin() + i % 50, cv1.end() - i % 50);  // from other
+            it = v4.begin() + (long)v4.size() / 2;
+            v4.insert(it, cv4.begin() + (long)cv4.size() / 3, cv4.end() - (long)cv4.size() / 3);// from self
+        }
     }
 }

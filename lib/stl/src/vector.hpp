@@ -1451,6 +1451,26 @@ namespace stl
         }
 
     private:
+#define USE_REPLACE_NB
+#ifdef USE_REPLACE_NB
+        inline void insert_(iterator& position, iterator& first, iterator& last)
+        {
+            // allow to insert in position = end(), aka m_pos == m_size;
+            if (position.m_cont != this || position.m_pos > m_size)
+                throw stl::exception("invalid iterator");
+
+            if (first.m_cont != last.m_cont || first.m_cont == 0)
+                throw stl::exception("invalid iterator");
+
+            // if last < first then let it blow up.
+            size_type dist = static_cast<size_type>(last - first);
+            if (dist)
+            {
+                // uses the fast no_buffer method
+                replace_nb_(position.m_pos, 0, *first.m_cont, first.m_pos, dist);
+            }
+        }
+#else
         inline void insert_(iterator& position, iterator& first, iterator& last)
         {
             // allow to insert in position = end(), aka m_pos == m_size;
@@ -1464,8 +1484,7 @@ namespace stl
             size_type dist = static_cast<size_type>(last - first);
             if (dist)
             {
-//TODO: to use the fast no_buffer method I need the test numbers first!!
-//      write the performance suite, and then adapt this
+
                 size_type p = position.m_pos;
                 size_type size = m_size + dist;
 
@@ -1474,8 +1493,7 @@ namespace stl
                 // Is the range inside this container ?
                 if (first.m_cont == this)
                 {
-                    container temp;
-                    temp.assign(first, last);
+                    container temp(first, last);
 
                     // move content unless insert position is end()
                     if (p < m_size)
@@ -1513,7 +1531,9 @@ namespace stl
                 endof(size);
             }
         }
+#endif
 
+#ifdef USE_REPLACE_NB
         inline void insert_(iterator& position, const_iterator& first, const_iterator& last)
         {
             // allow to insert in position = end(), aka m_pos == m_size;
@@ -1523,10 +1543,24 @@ namespace stl
             if (first.m_cont != last.m_cont || first.m_cont == 0)
                 throw stl::exception("invalid iterator");
 
-//TODO: to use the fast no_buffer method I need the test numbers first!!
-//      write the performance suite, and then adapt this
-//#define VEC_USE_BUFFER
-#ifdef VEC_USE_BUFFER
+            // if last < first then let it blow up.
+            size_type dist = static_cast<size_type>(last - first);
+            if (dist > 0)
+            {
+                // uses the fast no_buffer method
+                replace_nb_(position.m_pos, 0, *first.m_cont, first.m_pos, dist);
+            }
+        }
+#else
+        inline void insert_(iterator& position, const_iterator& first, const_iterator& last)
+        {
+            // allow to insert in position = end(), aka m_pos == m_size;
+            if (position.m_cont != this || position.m_pos > m_size)
+                throw stl::exception("invalid iterator");
+
+            if (first.m_cont != last.m_cont || first.m_cont == 0)
+                throw stl::exception("invalid iterator");
+
             // if last < first then let it blow up.
             size_type dist = static_cast<size_type>(last - first);
             if (dist > 0)
@@ -1539,8 +1573,7 @@ namespace stl
                 // Is the range inside this container ?
                 if (first.m_cont == this)
                 {
-                    container temp;
-                    temp.assign(first, last);
+                    container temp(first, last);
 
                     // move content unless insert position is end()
                     if (p < m_size)
@@ -1577,16 +1610,8 @@ namespace stl
 
                 endof(size);
             }
-#else
-            // if last < first then let it blow up
-            size_type dist = static_cast<size_type>(last - first);
-            if (dist > 0)
-            {
-                // uses the fast no_buffer method
-                replace_nb_(position.m_pos, 0, *first.m_cont, first.m_pos, dist);
-            }
-#endif
         }
+#endif
 
         inline void insert_(iterator& position, value_type* first, value_type* last)
         {
@@ -1599,59 +1624,39 @@ namespace stl
 
             if (dist)
             {
-                size_type p = position.m_pos;
-                size_type size = m_size + dist;
-
                 const T& check = *first;
 
                 // Is the range inside this container ?
                 if (m_data <= &check && (m_data + m_size) > &check)
                 {
-//TODO: to use the fast no_buffer method I need the test numbers first!!
-//      write the performance suite, and then adapt this
-                    container temp;
-//TODO: can be optimized by passing pointers (e.g. first.m_cont + first.m_pos, ..)
-                    temp.assign(first, last);
-
-                    // can relocate m_data and invalidate first,last pointers
-                    grow(size);
-
-                    // move content unless insert position is end()
-                    if (p < m_size)
-                    {
-                        // mem_move cannot destroy invalid objects in the destination
-                        size_type dst_valid_sz = 0;
-                        if (p + dist < m_size)
-                        {
-                            dst_valid_sz = m_size - p - dist;
-                        }
-
-                        stl::mem_move(m_data + p + dist, dst_valid_sz, m_data + p, (m_size - p), m_allocator);
-                    }
-
-                    stl::mem_copy(m_data + p, m_size - p, &temp.front(), dist, m_allocator);
+                    // overlapping
+                    // uses the fast no_buffer method
+                    replace_nb_(position.m_pos, 0, *this, first - m_data, dist);
                 }
                 else// range is outside this container
                 {
+                    size_type pos = position.m_pos;
+                    size_type size = m_size + dist;
+
                     grow(size);
 
                     // move content unless insert position is end()
-                    if (p < m_size)
+                    if (pos < m_size)
                     {
                         // mem_move cannot destroy invalid objects in the destination
                         size_type dst_valid_sz = 0;
-                        if (p + dist < m_size)
+                        if (pos + dist < m_size)
                         {
-                            dst_valid_sz = m_size - p - dist;
+                            dst_valid_sz = m_size - pos - dist;
                         }
 
-                        stl::mem_move(m_data + p + dist, dst_valid_sz, m_data + p, (m_size - p), m_allocator);
+                        stl::mem_move(m_data + pos + dist, dst_valid_sz, m_data + pos, (m_size - pos), m_allocator);
                     }
 
-                    stl::mem_copy(m_data + p, m_size - p, first, dist, m_allocator);
-                }
+                    stl::mem_copy(m_data + pos, m_size - pos, first, dist, m_allocator);
 
-                endof(size);
+                    endof(size);
+                }
             }
         }
 
@@ -1680,7 +1685,7 @@ namespace stl
             size_type dist = static_cast<size_type>(stl::distance(first, last));
             if (dist)
             {
-                size_type p = position.m_pos;
+                size_type pos = position.m_pos;
                 size_type size = m_size + dist;
 
                 const T& check = *first;
@@ -1694,41 +1699,41 @@ namespace stl
                     grow(size);
 
                     // move content unless insert position is end()
-                    if (p < m_size)
+                    if (pos < m_size)
                     {
                         // mem_move cannot destroy invalid objects in the destination
                         size_type dst_valid_sz = 0;
-                        if (p + dist < m_size)
+                        if (pos + dist < m_size)
                         {
-                            dst_valid_sz = m_size - p - dist;
+                            dst_valid_sz = m_size - pos - dist;
                         }
 
-                        stl::mem_move(m_data + p + dist, dst_valid_sz, m_data + p, (m_size - p), m_allocator);
+                        stl::mem_move(m_data + pos + dist, dst_valid_sz, m_data + pos, (m_size - pos), m_allocator);
                     }
 
-                    stl::mem_copy(m_data + p, m_size - p, &temp.front(), dist, m_allocator);
+                    stl::mem_copy(m_data + pos, m_size - pos, &temp.front(), dist, m_allocator);
                 }
                 else// range is outside this container
                 {
                     grow(size);
 
                     // move content unless insert position is end()
-                    if (p < m_size)
+                    if (pos < m_size)
                     {
                         // mem_move cannot destroy invalid objects in the destination
                         size_type dst_valid_sz = 0;
-                        if (p + dist < m_size)
+                        if (pos + dist < m_size)
                         {
-                            dst_valid_sz = m_size - p - dist;
+                            dst_valid_sz = m_size - pos - dist;
                         }
 
-                        stl::mem_move(m_data + p + dist, dst_valid_sz, m_data + p, (m_size - p), m_allocator);
+                        stl::mem_move(m_data + pos + dist, dst_valid_sz, m_data + pos, (m_size - pos), m_allocator);
                     }
 
                     for (size_type i = 0; first != last; ++first, ++i)
                     {
 //TODO: search for m_data[ and replace with pointer arithmetic :)
-                        m_allocator.construct(m_data + p + i, *first);
+                        m_allocator.construct(m_data + pos + i, *first);
                     }
                 }
 
@@ -1745,26 +1750,26 @@ namespace stl
 
             if (n)
             {
-                size_type p = position.m_pos;
+                size_type pos = position.m_pos;
                 size_type size = m_size + n;
 
                 // cannot relocate value
                 grow(size);
 
                 // move content unless insert position is end()
-                if (p < m_size)
+                if (pos < m_size)
                 {
                     // mem_move cannot destroy invalid objects in the destination
                     size_type dst_valid_sz = 0;
-                    if (p + n < m_size)
+                    if (pos + n < m_size)
                     {
-                        dst_valid_sz = m_size - p - n;
+                        dst_valid_sz = m_size - pos - n;
                     }
 
-                    stl::mem_move(m_data + p + n, dst_valid_sz, m_data + p, (m_size - p), m_allocator);
+                    stl::mem_move(m_data + pos + n, dst_valid_sz, m_data + pos, (m_size - pos), m_allocator);
                 }
 
-                stl::mem_set(m_data + p, (value_type)value, (size_type)n * sizeof(value_type), m_allocator);
+                stl::mem_set(m_data + pos, (value_type)value, (size_type)n * sizeof(value_type), m_allocator);
                 
                 endof(size);
             }

@@ -1137,7 +1137,7 @@ namespace stl
         {
             size_type n = str.length();    // without '\0'
 
-            if (n > 0)
+            if (n)
             {
                 size_type size = m_size + n;
 
@@ -2000,7 +2000,7 @@ namespace stl
 
             // if last < first then let it blow up.
             size_type dist = static_cast<size_type>(last - first);
-            if (dist > 0)
+            if (dist)
             {
                 // uses the fast no_buffer method
                 replace_nb_(position.m_pos, 0, *first.m_cont, first.m_pos, dist);
@@ -2015,7 +2015,7 @@ namespace stl
 
             // if last < first then let it blow up.
             size_type dist = static_cast<size_type>(last - first);
-            if (dist > 0)
+            if (dist)
             {
                 if (m_data <= first && (m_data + m_size) > first)
                 {   // overlapping
@@ -2061,9 +2061,9 @@ namespace stl
 
             // if last < first then let it blow up.
             size_type dist = static_cast<size_type>(stl::distance(first, last));
-            if (dist > 0)
+            if (dist)
             {
-                size_type p = position.m_pos;
+                size_type pos = position.m_pos;
                 size_type size = m_size + dist;
 
                 const T& check = *first;
@@ -2076,19 +2076,19 @@ namespace stl
                     // for safety, although could not invalidate the input for this case
                     grow(size + 1);
 
-                    stl::mem_move(m_data + p + dist, 0, m_data + p, (m_size - p), m_allocator);
+                    stl::mem_move(m_data + pos + dist, 0, m_data + pos, (m_size - pos), m_allocator);
 
-                    stl::mem_copy(m_data + p, 0, temp.m_data, dist, m_allocator);
+                    stl::mem_copy(m_data + pos, 0, temp.m_data, dist, m_allocator);
                 }
                 else// range is outside this container
                 {
                     grow(size + 1);
 
-                    stl::mem_move(m_data + p + dist, 0, m_data + p, (m_size - p), m_allocator);
+                    stl::mem_move(m_data + pos + dist, 0, m_data + pos, (m_size - pos), m_allocator);
 
                     for (size_type i = 0; first != last; ++first, ++i)
                     {
-                        m_data[p + i] = *first;
+                        m_data[pos + i] = *first;
                     }
                 }
 
