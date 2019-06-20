@@ -962,27 +962,26 @@ void test_vector::perf1()
     // stl::vector
     {
         typedef stl::vector<Cx> vector;
+        typedef stl::vector<int> ivector;
         time_printer tp(msg1);
 
-#if 0
         // vector()
         // both equal 0.00000
         for (size_t i = 0; i < ONEMIL; ++i)
         {
             vector v1, v2, v3, v4, v5;
         }
-#endif
 
         // explicit vector(size_type n, const T& val = T())
-        // ++ stl is better: 1.7 vs 1.9
+        // ++ stl is better: 1.36 vs 1.48
         for (size_t i = 0; i < ONEMIL / 2; ++i)
         {
             vector v1(i % 99, cx0[i % 99]);
         }
 
-#if 0
         // vector(InputIterator first, InputIterator last)
-        for (size_t i = 0; i < ONEMIL / 1000; ++i)
+        // -- stl is worse 1.28 vs 1.24
+        for (size_t i = 0; i < ONEMIL / 30; ++i)
         {
             vector v1(cx0, cx0 + 100);
             vector v2(v1.begin(), v1.end());    // vector(iterator, ..)
@@ -997,7 +996,8 @@ void test_vector::perf1()
         }
 
         // vector(const container& x)
-        for (size_t i = 0; i < ONEMIL / 1000; ++i)
+        // --stl is worse 1.06 vs 1.03
+        for (size_t i = 0; i < ONEMIL / 20; ++i)
         {
             vector v1(cx0, cx0 + 100);
             vector v2(v1);
@@ -1006,7 +1006,8 @@ void test_vector::perf1()
         }
 
         // container& operator=(const container& x)
-        for (size_t i = 0; i < ONEMIL / 1000; ++i)
+        // == stl is same 1.06 vs 1.06 (on average)
+        for (size_t i = 0; i < ONEMIL / 20; ++i)
         {
             vector v1(cx0, cx0 + 100);
             vector v2, v3, v4;
@@ -1016,27 +1017,30 @@ void test_vector::perf1()
         }
 
         // container& assign(const container& x)
-        for (size_t i = 0; i < ONEMIL / 1000; ++i)
-        {
-            vector v1(cx0, cx0 + 100);
-            vector v2, v3, v4;
-            v2.assign(v1);
-            v3.assign(v1);
-            v4.assign(v1);
-        }
+        // Removed from std: do no run to get overall correct results!
+        //for (size_t i = 0; i < ONEMIL / 1000; ++i)
+        //{
+        //    vector v1(cx0, cx0 + 100);
+        //    vector v2, v3, v4;
+        //    v2.assign(v1);
+        //    v3.assign(v1);
+        //    v4.assign(v1);
+        //}
 
         // void assign(size_type n, const value_type& val)
-        for (size_t i = 0; i < ONEMIL / 1000; ++i)
+        // ++ stl is better 1.62 vs 1.63
+        for (size_t i = 0; i < ONEMIL / 5; ++i)
         {
             vector v1, v2, v3;
             v1.assign(i % 99, cx0[i % 99]);
             v2.assign(i % 99, cx0[i % 99]);
             v3.assign(i % 99, cx0[i % 99]);
         }
-        
+
         // void assign(InputIterator first, InputIterator last)
         // inline void assign_(iterator& first, iterator& last)
-        for (size_t i = 0; i < ONEMIL / 1000; ++i)
+        // -- stl is worse 1.02 vs 1.03
+        for (size_t i = 0; i < ONEMIL / 20; ++i)
         {
             vector v1(cx0, cx0 + 100);
             vector v2, v3, v4, v5;
@@ -1052,7 +1056,8 @@ void test_vector::perf1()
         }
 
         // inline void assign_(const_iterator& first, const_iterator& last)
-        for (size_t i = 0; i < ONEMIL / 1000; ++i)
+        // ++stl is better 0.71 vs 0.86
+        for (size_t i = 0; i < ONEMIL / 20; ++i)
         {
             vector v1(cx0, cx0 + 100);
             vector v2, v3, v4, v5;
@@ -1069,7 +1074,8 @@ void test_vector::perf1()
         }
 
         // inline void assign_(value_type* first, value_type* last)
-        for (size_t i = 0; i < ONEMIL / 1000; ++i)
+        // ++ stl is better 1.01 vs 1.03
+        for (size_t i = 0; i < ONEMIL / 20; ++i)
         {
             vector v1(cx0, cx0 + 100);
             vector v2, v3, v4, v5;
@@ -1100,7 +1106,8 @@ void test_vector::perf1()
         }
 
         // inline void assign_(const value_type* first, const value_type* last)
-        for (size_t i = 0; i < ONEMIL / 1000; ++i)
+        // ++ stl is better 1.05 vs 1.07
+        for (size_t i = 0; i < ONEMIL / 20; ++i)
         {
             vector v1(cx0, cx0 + 100);
             vector v2, v3, v4, v5;
@@ -1131,7 +1138,8 @@ void test_vector::perf1()
         }
 
         // inline void assign_(InputIterator& first, InputIterator& last, stl::forward_iterator_tag)
-        for (size_t i = 0; i < ONEMIL / 1000; ++i)
+        // -- stl is worse 1.33 vs 1.13
+        for (size_t i = 0; i < ONEMIL / 20; ++i)
         {
             vector v1(cx0, cx0 + 100);
             vector v2, v3, v4, v5;
@@ -1146,15 +1154,17 @@ void test_vector::perf1()
             v4.assign(v4.rbegin() + (long)v4.size() / 3, v4.rend() - (long)v4.size() / 3);// from self
         }
 
-
         // inline void assign_(InputIterator count, InputIterator value, stl::input_iterator_tag)
-        for (size_t i = 0; i < ONEMIL / 100; ++i)
+        // -- stl is worse 0.11 vs 0.07
+        for (size_t i = 0; i < ONEMIL * 2; ++i)
         {
-            stl::vector<int> v1(i % 99, i % 99);
+            ivector v1;
+            v1.assign(i % 99, i % 99);
         }
 
         // begin() + end()
-        for (size_t i = 0; i < ONEMIL / 1000; ++i)
+        // ++ stl is better 1.07 vs 1.09
+        for (size_t i = 0; i < ONEMIL / 5; ++i)
         {
             vector v1;
             v1.assign(cx0, cx0 + 100);
@@ -1166,14 +1176,14 @@ void test_vector::perf1()
             const Cx& cx = *beg3;
             const int* pint = beg3->get();
 
-            stl::vector<Cx>::iterator& beg4 = ++beg3;   //operator++()
-            stl::vector<Cx>::iterator beg5 = beg4++;    //operator++(int)
-            stl::vector<Cx>::iterator& beg6 = --beg4;   //operator--()
-            stl::vector<Cx>::iterator beg7 = beg6--;    //operator--(int)
-            stl::vector<Cx>::iterator& beg8 = (beg6 += 2);  //operator+=(offset)
-            stl::vector<Cx>::iterator beg9 = (beg8 + 2);    //operator+()
-            stl::vector<Cx>::iterator beg10 = (beg9 -= 2);  //operator-=(offset)
-            stl::vector<Cx>::iterator beg11 = (beg10 - 2);  //operator-(offset);
+            vector::iterator& beg4 = ++beg3;        //operator++()
+            vector::iterator beg5 = beg4++;         //operator++(int)
+            vector::iterator& beg6 = --beg4;        //operator--()
+            vector::iterator beg7 = beg6--;         //operator--(int)
+            vector::iterator& beg8 = (beg6 += 2);   //operator+=(offset)
+            vector::iterator beg9 = (beg8 + 2);     //operator+()
+            vector::iterator beg10 = (beg9 -= 2);   //operator-=(offset)
+            vector::iterator beg11 = (beg10 - 2);   //operator-(offset);
             size_t diff11 = beg10 - beg11;
             bool eq = (beg == beg2);
             bool neq = (beg11 != beg10);
@@ -1185,7 +1195,8 @@ void test_vector::perf1()
         }
 
         // rbegin() + rend()
-        for (size_t i = 0; i < ONEMIL / 100; ++i)
+        // ++ stl is better 1.04 vs 1.10
+        for (size_t i = 0; i < ONEMIL / 5; ++i)
         {
             vector v1;
             v1.assign(cx0, cx0 + 100);
@@ -1197,14 +1208,14 @@ void test_vector::perf1()
             const Cx& cx = *beg3;
             const int* pint = beg3->get();
 
-            stl::vector<Cx>::reverse_iterator& beg4 = ++beg3;   //operator++()
-            stl::vector<Cx>::reverse_iterator beg5 = beg4++;    //operator++(int)
-            stl::vector<Cx>::reverse_iterator& beg6 = --beg4;   //operator--()
-            stl::vector<Cx>::reverse_iterator beg7 = beg6--;    //operator--(int)
-            stl::vector<Cx>::reverse_iterator& beg8 = (beg6 += 2);  //operator+=(offset)
-            stl::vector<Cx>::reverse_iterator beg9 = (beg8 + 2);    //operator+()
-            stl::vector<Cx>::reverse_iterator beg10 = (beg9 -= 2);  //operator-=(offset)
-            stl::vector<Cx>::reverse_iterator beg11 = (beg10 - 2);  //operator-(offset);
+            vector::reverse_iterator& beg4 = ++beg3;   //operator++()
+            vector::reverse_iterator beg5 = beg4++;    //operator++(int)
+            vector::reverse_iterator& beg6 = --beg4;   //operator--()
+            vector::reverse_iterator beg7 = beg6--;    //operator--(int)
+            vector::reverse_iterator& beg8 = (beg6 += 2);  //operator+=(offset)
+            vector::reverse_iterator beg9 = (beg8 + 2);    //operator+()
+            vector::reverse_iterator beg10 = (beg9 -= 2);  //operator-=(offset)
+            vector::reverse_iterator beg11 = (beg10 - 2);  //operator-(offset);
             size_t diff11 = beg10 - beg11;
             bool eq = (beg == beg2);
             bool neq = (beg11 != beg10);
@@ -1216,7 +1227,8 @@ void test_vector::perf1()
         }
 
         // void resize(size_type n, value_type val = value_type())
-        for (size_t i = 0; i < ONEMIL / 1000; ++i)
+        // -- stl is worse 1.39 vs 1.36
+        for (size_t i = 0; i < ONEMIL / 10; ++i)
         {
             vector v1, v2, v3, v4, v5;
 
@@ -1228,7 +1240,8 @@ void test_vector::perf1()
         }
 
         // void reserve(size_type n)
-        for (size_t i = 0; i < ONEMIL / 1000; ++i)
+        // -- stl is worse 0.50 vs 0.32
+        for (size_t i = 0; i < ONEMIL; ++i)
         {
             vector v1, v2, v3, v4, v5;
 
@@ -1240,7 +1253,8 @@ void test_vector::perf1()
         }
 
         // reference operator[](size_type n) const
-        for (size_t i = 0; i < ONEMIL / 1000; ++i)
+        // ++ stl is better 1.05 vs 1.06
+        for (size_t i = 0; i < ONEMIL / 5; ++i)
         {
             vector v1(cx0, cx0 + 100);
 
@@ -1252,7 +1266,8 @@ void test_vector::perf1()
         }
 
         // const_reference at(size_type n) const
-        for (size_t i = 0; i < ONEMIL / 1000; ++i)
+        // ++ stl is better 1.050 vs 1.051
+        for (size_t i = 0; i < ONEMIL / 5; ++i)
         {
             vector v1(cx0, cx0 + 100);
 
@@ -1264,7 +1279,8 @@ void test_vector::perf1()
         }
 
         // front() + back()
-        for (size_t i = 0; i < ONEMIL / 1000; ++i)
+        // ++ stl is better 1.06 vs 1.08
+        for (size_t i = 0; i < ONEMIL / 5; ++i)
         {
             vector v1(cx0, cx0 + 100);
             const Cx& f = v1.front();
@@ -1272,7 +1288,8 @@ void test_vector::perf1()
         }
 
         // void push_back(const value_type& val)
-        for (size_t i = 0; i < ONEMIL / 1000; ++i)
+        // ++ stl is better 2.4 vs 3.5
+        for (size_t i = 0; i < ONEMIL / 10; ++i)
         {
             vector v1, v2, v3, v4;
             for (size_t j = 0; j < i % 99; ++j)
@@ -1285,7 +1302,8 @@ void test_vector::perf1()
         }
 
         // void pop_back()
-        for (size_t i = 0; i < ONEMIL / 1000; ++i)
+        // -- stl is worse 1.05 vs 1.05
+        for (size_t i = 0; i < ONEMIL / 5; ++i)
         {
             vector v1(cx0, cx0 + 100);
             while (!v1.empty())
@@ -1293,9 +1311,10 @@ void test_vector::perf1()
         }
 
         // iterator insert(iterator position, const value_type& val)
-        for (size_t i = 0; i < ONEMIL / 1000; ++i)
+        // ---- stl is MUCH WORSE: 4.33 vs 1.33
+        for (size_t i = 0; i < ONEMIL / 100; ++i)
         {
-            vector v1;
+            vector v1(1, cx0[0]);
             for (size_t j = 0; j < i % 99; ++j)
             {
                 v1.insert(v1.begin(), cx0[j]);
@@ -1304,7 +1323,8 @@ void test_vector::perf1()
         }
 
         // void insert(iterator position, size_type n, const value_type& val)
-        for (size_t i = 0; i < ONEMIL / 1000; ++i)
+        // --- stl is WORSE 4.02 vs 1.33
+        for (size_t i = 0; i < ONEMIL / 100; ++i)
         {
             vector v1;
             for (size_t j = 0; j < i % 99; ++j)
@@ -1316,6 +1336,7 @@ void test_vector::perf1()
 
         // void insert(iterator position, InputIterator first, InputIterator last)
         // inline void insert_(iterator& position, iterator& first, iterator& last)
+        // -- stl is worse 1.05 vs 1.04
         for (size_t i = 0; i < ONEMIL / 30; ++i)
         {
             vector v1(cx0, cx0 + 100);
@@ -1336,6 +1357,7 @@ void test_vector::perf1()
         }
 
         // inline void insert_(iterator& position, const_iterator& first, const_iterator& last)
+        // -- stl is worse 0.70 vs .063
         for (size_t i = 0; i < ONEMIL / 30; ++i)
         {
             vector v1(cx0, cx0 + 100);
@@ -1357,9 +1379,9 @@ void test_vector::perf1()
             v4.insert(it, cv4.begin() + (long)cv4.size() / 3, cv4.end() - (long)cv4.size() / 3);// from self
         }
 
-
         // inline void insert_(iterator& position, value_type* first, value_type* last)
-        for (size_t i = 0; i < ONEMIL / 1000; ++i)
+        // -- stl is worse 3.16 vs 2.97
+        for (size_t i = 0; i < ONEMIL / 30; ++i)
         {
             vector v1(cx0, cx0 + 100);
             vector v2, v3, v4, v5;
@@ -1390,7 +1412,8 @@ void test_vector::perf1()
         }
 
         // inline void insert_(iterator& position, const value_type* first, const value_type* last)
-        for (size_t i = 0; i < ONEMIL / 1000; ++i)
+        // -- stl is worse 3.18 vs 3.08
+        for (size_t i = 0; i < ONEMIL / 30; ++i)
         {
             vector v1(cx0, cx0 + 100);
             vector v2, v3, v4, v5;
@@ -1421,7 +1444,8 @@ void test_vector::perf1()
         }
 
         // inline void insert_(iterator& position, InputIterator& first, InputIterator& last, stl::forward_iterator_tag)
-        for (size_t i = 0; i < ONEMIL / 1000; ++i)
+        // -- stl is worse 1.13 vs 0.96
+        for (size_t i = 0; i < ONEMIL / 30; ++i)
         {
             vector v1(cx0, cx0 + 100);
             vector v2, v3, v4, v5;
@@ -1441,7 +1465,8 @@ void test_vector::perf1()
         }
 
         // inline void insert_(iterator& position, InputIterator n, InputIterator value, stl::input_iterator_tag)
-        for (size_t i = 0; i < ONEMIL / 1000; ++i)
+        // -- stl is better 2.79 vs 2.83
+        for (size_t i = 0; i < ONEMIL * 5; ++i)
         {
             stl::vector<int> v1, v2, v3, v4, v5;
             v1.insert(v1.end(), i % 99, i % 99);
@@ -1450,7 +1475,8 @@ void test_vector::perf1()
         }
 
         // iterator erase(iterator position)
-        for (size_t i = 0; i < ONEMIL / 1000; ++i)
+        // -- stl is worse 1.94 vs 1.92
+        for (size_t i = 0; i < ONEMIL / 100; ++i)
         {
             vector v1(cx0, cx0 + 100);
             while (!v1.empty())
@@ -1458,7 +1484,8 @@ void test_vector::perf1()
         }
 
         // iterator erase(iterator first, iterator last)
-        for (size_t i = 0; i < ONEMIL / 100; ++i)
+        // -- stl is worse 1.06 vs 1.05
+        for (size_t i = 0; i < ONEMIL / 5; ++i)
         {
             vector v1(cx0, cx0 + 100);
             while (!v1.empty())
@@ -1466,19 +1493,543 @@ void test_vector::perf1()
                 v1.erase(v1.begin() + (long)v1.size() / 2, v1.end());
             }
         }
-#endif
-
     }
 
 
     // std::vector
     {
         typedef std::vector<Cx> vector;
+        typedef std::vector<int> ivector;
         time_printer tp(msg2);
 
+        // vector()
+        // both equal 0.00000
+        for (size_t i = 0; i < ONEMIL; ++i)
+        {
+            vector v1, v2, v3, v4, v5;
+        }
+
+        // explicit vector(size_type n, const T& val = T())
+        // ++ stl is better: 1.36 vs 1.48
         for (size_t i = 0; i < ONEMIL / 2; ++i)
         {
             vector v1(i % 99, cx0[i % 99]);
         }
+
+        // vector(InputIterator first, InputIterator last)
+        // -- stl is worse 1.28 vs 1.24
+        for (size_t i = 0; i < ONEMIL / 30; ++i)
+        {
+            vector v1(cx0, cx0 + 100);
+            vector v2(v1.begin(), v1.end());    // vector(iterator, ..)
+            const vector& cv1 = v1;
+            vector v3(cv1.begin(), cv1.end());  // vector(const_iterator, ..)
+            vector v4(v1.rbegin(), v1.rend());  // vector(reverse_iterator,..)
+            vector v5(cv1.rbegin(), cv1.rend());// vector(const_reverse_iterator,..)
+            vector v6(cx0, cx0 + 100);          // vector(value_type*, ..)
+            const Cx* ccx0 = cx0;
+            vector v7(ccx0, ccx0 + 100);        // vector(const value_type*, ..)
+            stl::vector<int> v8(i % 100, i % 100);  // vector(Iterator,Iterator)
+        }
+
+        // vector(const container& x)
+        // --stl is worse 1.06 vs 1.03
+        for (size_t i = 0; i < ONEMIL / 20; ++i)
+        {
+            vector v1(cx0, cx0 + 100);
+            vector v2(v1);
+            vector v3(v1);
+            vector v4(v1);
+        }
+
+        // container& operator=(const container& x)
+        // == stl is same 1.06 vs 1.06 (on average)
+        for (size_t i = 0; i < ONEMIL / 20; ++i)
+        {
+            vector v1(cx0, cx0 + 100);
+            vector v2, v3, v4;
+            v2 = v1;
+            v3 = v1;
+            v4 = v1;
+        }
+
+        // container& assign(const container& x)
+        // Removed from std: do no run to get overall correct results!
+        //for (size_t i = 0; i < ONEMIL / 1000; ++i)
+        //{
+        //    vector v1(cx0, cx0 + 100);
+        //    vector v2, v3, v4;
+        //    v2.assign(v1);
+        //    v3.assign(v1);
+        //    v4.assign(v1);
+        //}
+
+        // void assign(size_type n, const value_type& val)
+        // ++ stl is better 1.62 vs 1.63
+        for (size_t i = 0; i < ONEMIL / 5; ++i)
+        {
+            vector v1, v2, v3;
+            v1.assign(i % 99, cx0[i % 99]);
+            v2.assign(i % 99, cx0[i % 99]);
+            v3.assign(i % 99, cx0[i % 99]);
+        }
+
+        // void assign(InputIterator first, InputIterator last)
+        // inline void assign_(iterator& first, iterator& last)
+        // -- stl is worse 1.02 vs 1.03
+        for (size_t i = 0; i < ONEMIL / 20; ++i)
+        {
+            vector v1(cx0, cx0 + 100);
+            vector v2, v3, v4, v5;
+
+            v2.assign(v1.begin() + i % 99, v1.end());       // from other
+            v2.assign(v2.begin() + (long)v2.size() / 3, v2.end());  // from self
+
+            v3.assign(v1.begin(), v1.end() - i % 99);       // from other
+            v3.assign(v3.begin(), v3.end() - (long)v3.size() / 3);// from self
+
+            v4.assign(v1.begin() + i % 50, v1.end() - i % 50);  // from other
+            v4.assign(v4.begin() + (long)v4.size() / 3, v4.end() - (long)v4.size() / 3);// from self
+        }
+
+        // inline void assign_(const_iterator& first, const_iterator& last)
+        // ++stl is better 0.71 vs 0.86
+        for (size_t i = 0; i < ONEMIL / 20; ++i)
+        {
+            vector v1(cx0, cx0 + 100);
+            vector v2, v3, v4, v5;
+            const vector& cv1 = v1, cv2 = v2, cv3 = v3, cv4 = v4, cv5 = v5;
+
+            v2.assign(cv1.begin() + i % 99, cv1.end());                 // from other            
+            v2.assign(cv2.begin() + (long)cv2.size() / 3, cv2.end());    // from self
+
+            v3.assign(cv1.begin(), cv1.end() - i % 99);                 // from other
+            v3.assign(cv3.begin(), cv3.end() - (long)cv3.size() / 3);   // from self
+
+            v4.assign(cv1.begin() + i % 50, cv1.end() - i % 50);    // from other
+            v4.assign(cv4.begin() + (long)cv4.size() / 3, cv4.end() - (long)cv4.size() / 3);// from self
+        }
+
+        // inline void assign_(value_type* first, value_type* last)
+        // ++ stl is better 1.01 vs 1.03
+        for (size_t i = 0; i < ONEMIL / 20; ++i)
+        {
+            vector v1(cx0, cx0 + 100);
+            vector v2, v3, v4, v5;
+
+            Cx* b1 = &*(v1.begin() + i % 99);
+            Cx* e1 = &*(v1.end() - 1) + 1;
+            v2.assign(b1, e1);      // from other
+
+            Cx* b2 = &*(v2.begin() + (long)v2.size() / 3);
+            Cx* e2 = &*(v2.end() - 1) + 1;
+            v2.assign(b2, e2);      // from self
+
+            Cx* b3 = &*(v1.begin());
+            Cx* e3 = &*(v1.end() - 1 - i % 99) + 1;
+            v3.assign(b3, e3);      // from other
+
+            Cx* b4 = &*(v3.begin());
+            Cx* e4 = &*(v3.end() - 1 - (long)v3.size() / 3) + 1;
+            v3.assign(b4, e4);      // from self
+
+            Cx* b5 = &*(v1.begin() + i % 50);
+            Cx* e5 = &*(v1.end() - 1 - i % 50) + 1;
+            v4.assign(b5, e5);  // from other
+
+            Cx* b6 = &*(v4.begin() + (long)v4.size() / 3);
+            Cx* e6 = &*(v4.end() - 1 - (long)v4.size() / 3) + 1;
+            v4.assign(b6, e6);// from self
+        }
+
+        // inline void assign_(const value_type* first, const value_type* last)
+        // ++ stl is better 1.05 vs 1.07
+        for (size_t i = 0; i < ONEMIL / 20; ++i)
+        {
+            vector v1(cx0, cx0 + 100);
+            vector v2, v3, v4, v5;
+
+            const Cx* b1 = &*(v1.begin() + i % 99);
+            const Cx* e1 = &*(v1.end() - 1) + 1;
+            v2.assign(b1, e1);      // from other
+
+            const Cx* b2 = &*(v2.begin() + (long)v2.size() / 3);
+            const Cx* e2 = &*(v2.end() - 1) + 1;
+            v2.assign(b2, e2);      // from self
+
+            const Cx* b3 = &*(v1.begin());
+            const Cx* e3 = &*(v1.end() - 1 - i % 99) + 1;
+            v3.assign(b3, e3);      // from other
+
+            const Cx* b4 = &*(v3.begin());
+            const Cx* e4 = &*(v3.end() - 1 - (long)v3.size() / 3) + 1;
+            v3.assign(b4, e4);      // from self
+
+            const Cx* b5 = &*(v1.begin() + i % 50);
+            const Cx* e5 = &*(v1.end() - 1 - i % 50) + 1;
+            v4.assign(b5, e5);  // from other
+
+            const Cx* b6 = &*(v4.begin() + (long)v4.size() / 3);
+            const Cx* e6 = &*(v4.end() - 1 - (long)v4.size() / 3) + 1;
+            v4.assign(b6, e6);// from self
+        }
+
+        // inline void assign_(InputIterator& first, InputIterator& last, stl::forward_iterator_tag)
+        // -- stl is worse 1.33 vs 1.13
+        for (size_t i = 0; i < ONEMIL / 20; ++i)
+        {
+            vector v1(cx0, cx0 + 100);
+            vector v2, v3, v4, v5;
+
+            v2.assign(v1.rbegin() + i % 99, v1.rend());       // from other
+            v2.assign(v2.rbegin() + (long)v2.size() / 3, v2.rend());  // from self
+
+            v3.assign(v1.rbegin(), v1.rend() - i % 99);       // from other
+            v3.assign(v3.rbegin(), v3.rend() - (long)v3.size() / 3);// from self
+
+            v4.assign(v1.rbegin() + i % 50, v1.rend() - i % 50);  // from other
+            v4.assign(v4.rbegin() + (long)v4.size() / 3, v4.rend() - (long)v4.size() / 3);// from self
+        }
+
+        // inline void assign_(InputIterator count, InputIterator value, stl::input_iterator_tag)
+        // -- stl is worse 0.11 vs 0.07
+        for (size_t i = 0; i < ONEMIL * 2; ++i)
+        {
+            ivector v1;
+            v1.assign(i % 99, i % 99);
+        }
+
+        // begin() + end()
+        // ++ stl is better 1.07 vs 1.09
+        for (size_t i = 0; i < ONEMIL / 5; ++i)
+        {
+            vector v1;
+            v1.assign(cx0, cx0 + 100);
+
+            vector::iterator beg = v1.begin();
+            vector::iterator beg2 = beg;
+            vector::iterator beg3;
+            beg3 = beg;
+            const Cx& cx = *beg3;
+            const int* pint = beg3->get();
+
+            vector::iterator& beg4 = ++beg3;        //operator++()
+            vector::iterator beg5 = beg4++;         //operator++(int)
+            vector::iterator& beg6 = --beg4;        //operator--()
+            vector::iterator beg7 = beg6--;         //operator--(int)
+            vector::iterator& beg8 = (beg6 += 2);   //operator+=(offset)
+            vector::iterator beg9 = (beg8 + 2);     //operator+()
+            vector::iterator beg10 = (beg9 -= 2);   //operator-=(offset)
+            vector::iterator beg11 = (beg10 - 2);   //operator-(offset);
+            size_t diff11 = beg10 - beg11;
+            bool eq = (beg == beg2);
+            bool neq = (beg11 != beg10);
+            bool lt = (beg11 < beg10);
+            bool gt = (beg10 > beg11);
+            bool lte = (beg11 <= beg10);
+            bool gte = (beg >= beg2);
+            const Cx& cx11 = beg11[2];
+        }
+
+        // rbegin() + rend()
+        // ++ stl is better 1.04 vs 1.10
+        for (size_t i = 0; i < ONEMIL / 5; ++i)
+        {
+            vector v1;
+            v1.assign(cx0, cx0 + 100);
+
+            vector::reverse_iterator beg = v1.rbegin();
+            vector::reverse_iterator beg2 = beg;
+            vector::reverse_iterator beg3;
+            beg3 = beg;
+            const Cx& cx = *beg3;
+            const int* pint = beg3->get();
+
+            vector::reverse_iterator& beg4 = ++beg3;   //operator++()
+            vector::reverse_iterator beg5 = beg4++;    //operator++(int)
+            vector::reverse_iterator& beg6 = --beg4;   //operator--()
+            vector::reverse_iterator beg7 = beg6--;    //operator--(int)
+            vector::reverse_iterator& beg8 = (beg6 += 2);  //operator+=(offset)
+            vector::reverse_iterator beg9 = (beg8 + 2);    //operator+()
+            vector::reverse_iterator beg10 = (beg9 -= 2);  //operator-=(offset)
+            vector::reverse_iterator beg11 = (beg10 - 2);  //operator-(offset);
+            size_t diff11 = beg10 - beg11;
+            bool eq = (beg == beg2);
+            bool neq = (beg11 != beg10);
+            bool lt = (beg11 < beg10);
+            bool gt = (beg10 > beg11);
+            bool lte = (beg11 <= beg10);
+            bool gte = (beg >= beg2);
+            const Cx& cx11 = beg11[2];
+        }
+
+        // void resize(size_type n, value_type val = value_type())
+        // -- stl is worse 1.39 vs 1.36
+        for (size_t i = 0; i < ONEMIL / 10; ++i)
+        {
+            vector v1, v2, v3, v4, v5;
+
+            v1.resize(i % 99, cx0[i % 99]);
+            v2.resize(i % 99, cx0[i % 99]);
+            v3.resize(i % 99, cx0[i % 99]);
+            v4.resize(i % 99, cx0[i % 99]);
+            v5.resize(i % 99, cx0[i % 99]);
+        }
+
+        // void reserve(size_type n)
+        // -- stl is worse 0.50 vs 0.32
+        for (size_t i = 0; i < ONEMIL; ++i)
+        {
+            vector v1, v2, v3, v4, v5;
+
+            v1.reserve(i % 99);
+            v2.reserve(i % 99);
+            v3.reserve(i % 99);
+            v4.reserve(i % 99);
+            v5.reserve(i % 99);
+        }
+
+        // reference operator[](size_type n) const
+        // ++ stl is better 1.05 vs 1.06
+        for (size_t i = 0; i < ONEMIL / 5; ++i)
+        {
+            vector v1(cx0, cx0 + 100);
+
+            const Cx& c1 = v1[i % 99];
+            const Cx& c2 = v1[i % 99];
+            const Cx& c3 = v1[i % 99];
+            const Cx& c4 = v1[i % 99];
+            const Cx& c5 = v1[i % 99];
+        }
+
+        // const_reference at(size_type n) const
+        // ++ stl is better 1.050 vs 1.051
+        for (size_t i = 0; i < ONEMIL / 5; ++i)
+        {
+            vector v1(cx0, cx0 + 100);
+
+            const Cx& c1 = v1.at(i % 99);
+            const Cx& c2 = v1.at(i % 99);
+            const Cx& c3 = v1.at(i % 99);
+            const Cx& c4 = v1.at(i % 99);
+            const Cx& c5 = v1.at(i % 99);
+        }
+
+        // front() + back()
+        // ++ stl is better 1.06 vs 1.08
+        for (size_t i = 0; i < ONEMIL / 5; ++i)
+        {
+            vector v1(cx0, cx0 + 100);
+            const Cx& f = v1.front();
+            const Cx& b = v1.back();
+        }
+
+        // void push_back(const value_type& val)
+        // ++ stl is better 2.4 vs 3.5
+        for (size_t i = 0; i < ONEMIL / 10; ++i)
+        {
+            vector v1, v2, v3, v4;
+            for (size_t j = 0; j < i % 99; ++j)
+            {
+                v1.push_back(cx0[j]);
+                v2.push_back(cx0[j]);
+                v3.push_back(cx0[j]);
+                v4.push_back(cx0[j]);
+            }
+        }
+
+        // void pop_back()
+        // -- stl is worse 1.05 vs 1.05
+        for (size_t i = 0; i < ONEMIL / 5; ++i)
+        {
+            vector v1(cx0, cx0 + 100);
+            while (!v1.empty())
+                v1.pop_back();
+        }
+
+        // iterator insert(iterator position, const value_type& val)
+        // ---- stl is MUCH WORSE: 4.33 vs 1.33
+        for (size_t i = 0; i < ONEMIL / 100; ++i)
+        {
+            vector v1(1, cx0[0]);
+            for (size_t j = 0; j < i % 99; ++j)
+            {
+                v1.insert(v1.begin(), cx0[j]);
+                v1.insert(v1.end(), v1.back());
+            }
+        }
+
+        // void insert(iterator position, size_type n, const value_type& val)
+        // --- stl is WORSE 4.02 vs 1.33
+        for (size_t i = 0; i < ONEMIL / 100; ++i)
+        {
+            vector v1;
+            for (size_t j = 0; j < i % 99; ++j)
+            {
+                v1.insert(v1.begin(), 1, cx0[j]);
+                v1.insert(v1.end(), 1, v1.back());
+            }
+        }
+
+        // void insert(iterator position, InputIterator first, InputIterator last)
+        // inline void insert_(iterator& position, iterator& first, iterator& last)
+        // -- stl is worse 1.05 vs 1.04
+        for (size_t i = 0; i < ONEMIL / 30; ++i)
+        {
+            vector v1(cx0, cx0 + 100);
+            vector v2, v3, v4, v5;
+            vector::iterator it;
+
+            v2.insert(v2.end(), v1.begin() + i % 99, v1.end());       // from other
+            it = v2.begin() + (long)v2.size() / 2;
+            v2.insert(it, v2.begin() + (long)v2.size() / 3, v2.end());  // from self
+
+            v3.insert(v3.end(), v1.begin(), v1.end() - i % 99);       // from other
+            it = v3.begin() + (long)v3.size() / 2;
+            v3.insert(it, v3.begin(), v3.end() - (long)v3.size() / 3);// from self
+
+            v4.insert(v4.end(), v1.begin() + i % 50, v1.end() - i % 50);  // from other
+            it = v4.begin() + (long)v4.size() / 2;
+            v4.insert(it, v4.begin() + (long)v4.size() / 3, v4.end() - (long)v4.size() / 3);// from self
+        }
+
+        // inline void insert_(iterator& position, const_iterator& first, const_iterator& last)
+        // -- stl is worse 0.70 vs .063
+        for (size_t i = 0; i < ONEMIL / 30; ++i)
+        {
+            vector v1(cx0, cx0 + 100);
+            const vector& cv1 = v1;
+            vector v2, v3, v4, v5;
+            vector::iterator it;
+            const vector& cv2 = v2, cv3 = v3, cv4 = v4, cv5 = v5;
+
+            v2.insert(v2.end(), cv1.begin() + i % 99, cv1.end());       // from other
+            it = v2.begin() + (long)v2.size() / 2;
+            v2.insert(it, cv2.begin() + (long)cv2.size() / 3, cv2.end());  // from self
+
+            v3.insert(v3.end(), cv1.begin(), cv1.end() - i % 99);       // from other
+            it = v3.begin() + (long)v3.size() / 2;
+            v3.insert(it, cv3.begin(), cv3.end() - (long)cv3.size() / 3);// from self
+
+            v4.insert(v4.end(), cv1.begin() + i % 50, cv1.end() - i % 50);  // from other
+            it = v4.begin() + (long)v4.size() / 2;
+            v4.insert(it, cv4.begin() + (long)cv4.size() / 3, cv4.end() - (long)cv4.size() / 3);// from self
+        }
+
+        // inline void insert_(iterator& position, value_type* first, value_type* last)
+        // -- stl is worse 3.16 vs 2.97
+        for (size_t i = 0; i < ONEMIL / 30; ++i)
+        {
+            vector v1(cx0, cx0 + 100);
+            vector v2, v3, v4, v5;
+
+            Cx* b1 = &*(v1.begin() + i % 99);
+            Cx* e1 = &*(v1.end() - 1) + 1;
+            v2.insert(v2.end(), b1, e1);      // from other
+
+            Cx* b2 = &*(v2.begin() + (long)v2.size() / 3);
+            Cx* e2 = &*(v2.end() - 1) + 1;
+            v2.insert(v2.begin() + (long)v2.size() / 2, b2, e2);      // from self
+
+            Cx* b3 = &*(v1.begin());
+            Cx* e3 = &*(v1.end() - 1 - i % 99) + 1;
+            v3.insert(v3.end(), b3, e3);      // from other
+
+            Cx* b4 = &*(v3.begin());
+            Cx* e4 = &*(v3.end() - 1 - (long)v3.size() / 3) + 1;
+            v3.insert(v3.begin() + (long)v3.size() / 2, b4, e4);      // from self
+
+            Cx* b5 = &*(v1.begin() + i % 50);
+            Cx* e5 = &*(v1.end() - 1 - i % 50) + 1;
+            v4.insert(v4.end(), b5, e5);  // from other
+
+            Cx* b6 = &*(v4.begin() + (long)v4.size() / 3);
+            Cx* e6 = &*(v4.end() - 1 - (long)v4.size() / 3) + 1;
+            v4.insert(v4.begin() + (long)v4.size() / 2, b6, e6);    // from self
+        }
+
+        // inline void insert_(iterator& position, const value_type* first, const value_type* last)
+        // -- stl is worse 3.18 vs 3.08
+        for (size_t i = 0; i < ONEMIL / 30; ++i)
+        {
+            vector v1(cx0, cx0 + 100);
+            vector v2, v3, v4, v5;
+
+            const Cx* b1 = &*(v1.begin() + i % 99);
+            const Cx* e1 = &*(v1.end() - 1) + 1;
+            v2.insert(v2.end(), b1, e1);      // from other
+
+            const Cx* b2 = &*(v2.begin() + (long)v2.size() / 3);
+            const Cx* e2 = &*(v2.end() - 1) + 1;
+            v2.insert(v2.begin() + (long)v2.size() / 2, b2, e2);      // from self
+
+            const Cx* b3 = &*(v1.begin());
+            const Cx* e3 = &*(v1.end() - 1 - i % 99) + 1;
+            v3.insert(v3.end(), b3, e3);      // from other
+
+            const Cx* b4 = &*(v3.begin());
+            const Cx* e4 = &*(v3.end() - 1 - (long)v3.size() / 3) + 1;
+            v3.insert(v3.begin() + (long)v3.size() / 2, b4, e4);      // from self
+
+            const Cx* b5 = &*(v1.begin() + i % 50);
+            const Cx* e5 = &*(v1.end() - 1 - i % 50) + 1;
+            v4.insert(v4.end(), b5, e5);  // from other
+
+            const Cx* b6 = &*(v4.begin() + (long)v4.size() / 3);
+            const Cx* e6 = &*(v4.end() - 1 - (long)v4.size() / 3) + 1;
+            v4.insert(v4.begin() + (long)v4.size() / 2, b6, e6);// from self
+        }
+
+        // inline void insert_(iterator& position, InputIterator& first, InputIterator& last, stl::forward_iterator_tag)
+        // -- stl is worse 1.13 vs 0.96
+        for (size_t i = 0; i < ONEMIL / 30; ++i)
+        {
+            vector v1(cx0, cx0 + 100);
+            vector v2, v3, v4, v5;
+            vector::iterator it;
+
+            v2.insert(v2.end(), v1.rbegin() + i % 99, v1.rend());       // from other
+            it = v2.begin() + (long)v2.size() / 2;
+            v2.insert(it, v2.rbegin() + (long)v2.size() / 3, v2.rend());  // from self
+
+            v3.insert(v3.end(), v1.rbegin(), v1.rend() - i % 99);       // from other
+            it = v3.begin() + (long)v3.size() / 2;
+            v3.insert(it, v3.rbegin(), v3.rend() - (long)v3.size() / 3);// from self
+
+            v4.insert(v4.end(), v1.rbegin() + i % 50, v1.rend() - i % 50);  // from other
+            it = v4.begin() + (long)v4.size() / 2;
+            v4.insert(it, v4.rbegin() + (long)v4.size() / 3, v4.rend() - (long)v4.size() / 3);// from self
+        }
+
+        // inline void insert_(iterator& position, InputIterator n, InputIterator value, stl::input_iterator_tag)
+        // -- stl is better 2.79 vs 2.83
+        for (size_t i = 0; i < ONEMIL * 5; ++i)
+        {
+            stl::vector<int> v1, v2, v3, v4, v5;
+            v1.insert(v1.end(), i % 99, i % 99);
+            v1.insert(v1.begin() + (long)v1.size(), i % 99, i % 99);
+            v1.insert(v1.begin(), i % 99, i % 99);
+        }
+
+        // iterator erase(iterator position)
+        // -- stl is worse 1.94 vs 1.92
+        for (size_t i = 0; i < ONEMIL / 100; ++i)
+        {
+            vector v1(cx0, cx0 + 100);
+            while (!v1.empty())
+                v1.erase(v1.begin());
+        }
+
+        // iterator erase(iterator first, iterator last)
+        // -- stl is worse 1.06 vs 1.05
+        for (size_t i = 0; i < ONEMIL / 5; ++i)
+        {
+            vector v1(cx0, cx0 + 100);
+            while (!v1.empty())
+            {
+                v1.erase(v1.begin() + (long)v1.size() / 2, v1.end());
+            }
+        }
+
     }
 }
