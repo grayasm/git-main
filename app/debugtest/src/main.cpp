@@ -5,6 +5,7 @@
 #include <limits>
 #include <vector.hpp>
 #include <basic_string.hpp>
+#include "list.hpp"
 
 
 class A
@@ -61,6 +62,7 @@ public:
         printf("operator=(A&&): %d %x\n", *m_i, m_i);
         return *this;
     }
+    int* get() const { return m_i; }
 
 private:
     int* m_i;
@@ -70,11 +72,12 @@ private:
 int main()
 {
     {
-        A a1[] = { -1, -2, -3, -4, -5 };
-        stl::vector<A> v1;
-        v1.assign(a1, a1 + 5);
-        v1.assign(v1.begin() + 2, v1.end());
-        printf("----\n");
+        stl::list<A> lst;
+        for (int i = -10; i <= 0; ++i)
+            lst.push_back(A(i));
+
+        for (stl::list<A>::iterator beg = lst.begin(); beg != lst.end(); ++beg)
+            printf("A(%d)=%d\n", *(beg->get()));
     }
     
     return 0;
