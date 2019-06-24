@@ -71,18 +71,19 @@ private:
 
 int main()
 {
-    {
-        stl::list<A> lst;
-        for (int i = -10; i <= 0; ++i)
-            lst.push_back(A(i));
+    //{
+    //    stl::list<A> lst;
+    //    for (int i = -10; i <= 0; ++i)
+    //        lst.push_back(A(i));
 
-        for (stl::list<A>::iterator beg = lst.begin(); beg != lst.end(); ++beg)
-            printf("A(%d)=%d\n", *(beg->get()));
-    }
+    //    for (stl::list<A>::iterator beg = lst.begin(); beg != lst.end(); ++beg)
+    //        printf("A(%d)=%d\n", *(beg->get()));
+    //}
 
-    //stl::list<int> ilist;
-    //ilist.push_back(10);
-
-
+    std::list<int> ilist;
+    // ilist.push_back(10);
+    std::list<int>::iterator beg = ilist.begin();
+    printf("int [0] = %d\n", *beg);
+    
     return 0;
 }

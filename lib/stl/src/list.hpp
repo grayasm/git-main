@@ -42,30 +42,30 @@ namespace stl
     {
     public:
         list_node(typename container::const_reference val)
-            : m_T(val)
-        {          
-        }
-
-        ~list_node()
         {
+            //  called from: m_allocator.construct(nod, value);
+#ifdef DEBUG
+            m_prev = 0;
+            m_next = 0;
+#endif
+            m_T = val;
         }
 
     public:
         list_node*                      m_prev;
         list_node*                      m_next;
         typename container::value_type  m_T;
-    };  // list_node
-
+    };
 
 
     template<typename container, typename node> class list_const_iterator;
     template<typename container, typename node> class list_const_reverse_iterator;
-	template<typename T, typename Allocator> class list;
+    template<typename T, typename Allocator> class list;
 
     template<typename container, typename node>
     class list_iterator :
-        public stl::iterator<stl::bidirectional_iterator_tag, typename container::value_type>,
-        public stl::list_iterator_base<container, node>
+        public  stl::iterator<stl::bidirectional_iterator_tag, typename container::value_type>,
+        private stl::list_iterator_base<container, node>
     {
     public:
         typedef stl::iterator<stl::bidirectional_iterator_tag, typename container::value_type> base;
@@ -205,8 +205,7 @@ namespace stl
 
     template<typename container, typename node>
     class list_const_iterator :
-        public stl::const_iterator<stl::bidirectional_iterator_tag, typename container::value_type>,
-//TODO: private or public
+        public  stl::const_iterator<stl::bidirectional_iterator_tag, typename container::value_type>,
         private stl::list_iterator_base<container, node>
     {
     public:
@@ -381,7 +380,7 @@ namespace stl
             this->m_node = 0;
             this->m_cont = 0;
         }
-		
+        
         list_reverse_iterator(node* n, container* cont)
         {
             this->m_node = n;
@@ -743,53 +742,26 @@ namespace stl
         list_node<container>*      m_begin;
         list_node<container>*      m_end;
         size_type                  m_size;
-        typename Allocator::template rebind<list_node<container> >::other  m_NodAlloc;
+        typename Allocator::template rebind<list_node<container> >::other  m_node_alloc;
     
     private:
         inline void init(const Allocator& alloc)
         {
-            m_NodAlloc = alloc;
-            m_end = m_NodAlloc.allocate(1);
-			//TODO: c++0x has changed construct parameters (adapt if needed)
-			
-			/*	Define a place holder for end position. No construction allowed
-				to avoid potential circular reference
-				struct Node { list<Node> n; }
-			*/
-			// m_NodAlloc.construct(m_end, 0);
-            // m_end->m_T; Default ctor is not allowed.
-
+            m_node_alloc = alloc;
+            m_end = m_node_alloc.allocate(1);
             m_end->m_prev = 0;
             m_end->m_next = 0;
-//			m_end->m_itarray = 0;
             m_begin = m_end;
             m_size = 0;
         }
 
-		inline void deinit()
-		{
-			if(m_size > 0 || m_begin != m_end)
-				throw stl::exception("container is not empty");
-
-			// m_NodAlloc.destroy(m_end);  - not constructed
-
-			// Release the array allocated for end node's iterators.
-			//if(m_end->m_itarray != 0)
-			//{
-			//	delete m_end->m_itarray;
-			//	m_end->m_itarray = 0;
-			//}
-
-			m_NodAlloc.deallocate(m_end, 1);
-		}
-
     public:
-        explicit list(const Allocator& alloc= Allocator())
+        explicit list(const allocator_type& alloc= allocator_type())
         {
             init(alloc);
         }
 
-        explicit list(size_type n, const value_type& value = value_type(), const Allocator& alloc= Allocator())
+        explicit list(size_type n, const value_type& value = value_type(), const allocator_type& alloc = allocator_type())
         {
             init(alloc);
             assign(n, value);
@@ -797,7 +769,7 @@ namespace stl
 
 
         template<typename InputIterator>
-        explicit list(InputIterator first, InputIterator last, const Allocator& alloc = Allocator())
+        explicit list(InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type())
         {
             init(alloc);
             assign(first, last);
@@ -812,7 +784,10 @@ namespace stl
         ~list()
         {
             clear();
-            deinit();
+
+            m_node_alloc.deallocate(m_end, 1);
+            m_begin = 0;
+            m_end = 0;
         }
 
         container& operator=(const container& tc)
@@ -901,9 +876,9 @@ namespace stl
               list<int> l(sz, 0);
               list<int> m(5, 10);
             */
-			size_type sz = static_cast<size_type>(n);
-			value_type val = static_cast<value_type>(u);
-            assign(sz , val);			
+            size_type sz = static_cast<size_type>(n);
+            value_type val = static_cast<value_type>(u);
+            assign(sz , val);            
         }
 
 
@@ -948,7 +923,7 @@ namespace stl
 
         allocator_type get_allocator() const
         {
-            return m_NodAlloc;
+            return m_node_alloc;
         }
 
 
@@ -982,7 +957,7 @@ namespace stl
             else
             {
                 return reverse_iterator(m_end, this);
-            }			
+            }            
         }
 
         const_reverse_iterator rbegin() const
@@ -1077,8 +1052,8 @@ namespace stl
 
         void push_front(const value_type& x)
         {
-            list_node<container>* nod = m_NodAlloc.allocate(1);
-            m_NodAlloc.construct(nod, x);
+            list_node<container>* nod = m_node_alloc.allocate(1);
+            m_node_alloc.construct(nod, x);
 
             if(m_size == 0)
             {
@@ -1105,8 +1080,8 @@ namespace stl
 
             list_node<container>* next = m_begin->m_next;
 
-            m_NodAlloc.destroy(m_begin);
-            m_NodAlloc.deallocate(m_begin, 1);
+            m_node_alloc.destroy(m_begin);
+            m_node_alloc.deallocate(m_begin, 1);
 
             next->m_prev = 0;
             m_begin = next;
@@ -1116,8 +1091,8 @@ namespace stl
 
         void push_back(const value_type& x)
         {
-            list_node<container>* nod = m_NodAlloc.allocate(1);
-            m_NodAlloc.construct(nod, x);
+            list_node<container>* nod = m_node_alloc.allocate(1);
+            m_node_alloc.construct(nod, x);
 
             if(m_size == 0)
             {
@@ -1155,8 +1130,8 @@ namespace stl
                 list_node<container>* nod = m_end->m_prev;
                 list_node<container>* prev = nod->m_prev;
 
-                m_NodAlloc.destroy(nod);
-                m_NodAlloc.deallocate(nod, 1);
+                m_node_alloc.destroy(nod);
+                m_node_alloc.deallocate(nod, 1);
 
                 m_end->m_prev = prev;
                 prev->m_next = m_end;
@@ -1164,8 +1139,8 @@ namespace stl
             // == 1
             else
             {
-                m_NodAlloc.destroy(m_begin);
-                m_NodAlloc.deallocate(m_begin, 1);
+                m_node_alloc.destroy(m_begin);
+                m_node_alloc.deallocate(m_begin, 1);
 
                 m_end->m_prev = 0;
                 m_begin = m_end;
@@ -1179,8 +1154,8 @@ namespace stl
             if(position.m_cont != this)
                 throw stl::exception("Invalid iterator.");
 
-            list_node<container>* nod = m_NodAlloc.allocate(1);
-            m_NodAlloc.construct(nod, x);
+            list_node<container>* nod = m_node_alloc.allocate(1);
+            m_node_alloc.construct(nod, x);
 
             list_node<container>* pos = position.m_node;
             if(pos == m_begin)
@@ -1257,8 +1232,8 @@ namespace stl
                 next->m_prev = prev;
             }
 
-            m_NodAlloc.destroy(nod);
-            m_NodAlloc.deallocate(nod, 1);
+            m_node_alloc.destroy(nod);
+            m_node_alloc.deallocate(nod, 1);
 
             // size
             --m_size;
@@ -1289,8 +1264,8 @@ namespace stl
             {
                 next = m_begin->m_next;
 
-                m_NodAlloc.destroy(m_begin);
-                m_NodAlloc.deallocate(m_begin, 1);
+                m_node_alloc.destroy(m_begin);
+                m_node_alloc.deallocate(m_begin, 1);
             }
 
             m_end->m_prev = 0;
