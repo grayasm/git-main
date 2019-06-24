@@ -37,6 +37,27 @@ namespace stl
         container*      m_cont;
     };
 
+    template<typename container>
+    class list_node
+    {
+    public:
+        list_node(typename container::const_reference val)
+            : m_T(val)
+        {          
+        }
+
+        ~list_node()
+        {
+        }
+
+    public:
+        list_node*                      m_prev;
+        list_node*                      m_next;
+        typename container::value_type  m_T;
+    };  // list_node
+
+
+
     template<typename container, typename node> class list_const_iterator;
     template<typename container, typename node> class list_const_reverse_iterator;
 	template<typename T, typename Allocator> class list;
@@ -44,7 +65,7 @@ namespace stl
     template<typename container, typename node>
     class list_iterator :
         public stl::iterator<stl::bidirectional_iterator_tag, typename container::value_type>,
-        public list_iterator_base<container, node>
+        public stl::list_iterator_base<container, node>
     {
     public:
         typedef stl::iterator<stl::bidirectional_iterator_tag, typename container::value_type> base;
@@ -56,7 +77,7 @@ namespace stl
         typedef typename base::reference           reference;
 
         friend class stl::list<typename container::value_type, typename container::allocator_type>;
-        friend class list_const_iterator<container, node>;
+        friend class stl::list_const_iterator<container, node>;
 
     private:
         inline void init()
@@ -68,8 +89,6 @@ namespace stl
 
         list_iterator(node* n, container* cont)
         {
-            init();
-
             this->m_node = n;
             this->m_cont = cont;
         }
@@ -89,128 +108,106 @@ namespace stl
 
         ~list_iterator()
         {
-            if(base2::m_cont)
-            {
-                base2::m_cont->remove_iterator(base2::m_node, this);
-            }
         }
 
         list_iterator& operator=(const list_iterator& it)
         {
             if(this != &it)
             {
-                if(base2::m_cont)
-                {
-                    base2::m_cont->remove_iterator(base2::m_node, this);
-                }
-
-                base2::m_node = it.base2::m_node;
-                base2::m_cont = it.base2::m_cont;
-
-                if(base2::m_cont)
-                {
-                    base2::m_cont->add_iterator(base2::m_node, this);
-                }
+                this->m_node = it.m_node;
+                this->m_cont = it.m_cont;
             }
             return *this;
         }
 
         reference operator*()const
         {
-            if(base2::m_cont == 0 || base2::m_node == base2::m_cont->m_end)
+            if(this->m_cont == 0 || this->m_node == this->m_cont->m_end)
                 throw stl::exception("invalid iterator");
 
-            return base2::m_node->m_T;
+            return this->m_node->m_T;
         }
 
         pointer operator->()const
         {
-            if(base2::m_cont == 0 || base2::m_node == base2::m_cont->m_end)
+            if(this->m_cont == 0 || this->m_node == this->m_cont->m_end)
                 throw stl::exception("invalid iterator");
 
-            return &(base2::m_node->m_T);
+            return &(this->m_node->m_T);
         }
 
         list_iterator& operator++()
         {
-            if(base2::m_cont == 0 || base2::m_node == base2::m_cont->m_end)
+            if(this->m_cont == 0 || this->m_node == this->m_cont->m_end)
                 throw stl::exception("invalid iterator");
 
-            base2::m_cont->remove_iterator(base2::m_node, this);
-
-            base2::m_node = base2::m_node->m_next;
-
-            base2::m_cont->add_iterator(base2::m_node, this);
+            this->m_node = this->m_node->m_next;
 
             return *this;
         }
 
         list_iterator operator++(int)
         {
-            if(base2::m_cont == 0 || base2::m_node == base2::m_cont->m_end)
+            if(this->m_cont == 0 || this->m_node == this->m_cont->m_end)
                 throw stl::exception("invalid iterator");
 
             list_iterator tmp = *this;
 
-            base2::m_cont->remove_iterator(base2::m_node, this);
-
-            base2::m_node = base2::m_node->m_next;
-
-            base2::m_cont->add_iterator(base2::m_node, this);
+            this->m_node = this->m_node->m_next;
 
             return tmp;
         }
 
         list_iterator& operator--()
         {
-            if(base2::m_cont == 0 || base2::m_node == base2::m_cont->m_begin)
+            if(this->m_cont == 0 || this->m_node == this->m_cont->m_begin)
                 throw stl::exception("invalid iterator");
 
-            base2::m_cont->remove_iterator(base2::m_node, this);
-
-            base2::m_node = base2::m_node->m_prev;
-
-            base2::m_cont->add_iterator(base2::m_node, this);
+            this->m_node = this->m_node->m_prev;
 
             return *this;
         }
 
         list_iterator operator--(int)
         {
-            if(base2::m_cont == 0 || base2::m_node == base2::m_cont->m_begin)
+            if(this->m_cont == 0 || this->m_node == this->m_cont->m_begin)
                 throw stl::exception("invalid iterator");
 
             list_iterator tmp = *this;
 
-            base2::m_cont->remove_iterator(base2::m_node, this);
-
-            base2::m_node = base2::m_node->m_prev;
-
-            base2::m_cont->add_iterator(base2::m_node, this);
+            this->m_node = this->m_node->m_prev;
 
             return tmp;
         }
 
         bool operator==(const list_iterator& it)const
         {
-            if(base2::m_cont == 0 || it.base2::m_cont == 0)
+#ifdef DEBUG
+            if(this->m_cont == 0 || it.m_cont == 0)
                 throw stl::exception("invalid iterator");
+#endif
 
-            return (base2::m_node == it.base2::m_node);
+            return (this->m_node == it.m_node);
         }
 
         bool operator!=(const list_iterator& it)const
         {
-            return !(*this == it);
+#ifdef DEBUG
+            if (this->m_cont == 0 || it.m_cont == 0)
+                throw stl::exception("invalid iterator");
+#endif
+
+            return (this->m_node != it.m_node);
         }
-    };  // iterator
+    };  // list_iterator
 
 
 
     template<typename container, typename node>
     class list_const_iterator :
         public stl::const_iterator<stl::bidirectional_iterator_tag, typename container::value_type>,
-        private list_iterator_base<container, node>
+//TODO: private or public
+        private stl::list_iterator_base<container, node>
     {
     public:
         typedef stl::const_iterator<stl::bidirectional_iterator_tag, typename container::value_type> base;
@@ -220,28 +217,21 @@ namespace stl
         typedef typename base::distance_type       distance_type;
         typedef typename base::const_pointer       pointer;
         typedef typename base::const_reference     reference;
-        typedef typename stl::list_iterator_base<container, node> base2;
 
-        friend class stl::list<typename container::value_type, typename container::allocator_type, container::nattributes>;
+        friend class stl::list<typename container::value_type, typename container::allocator_type>;
 
     private:
         inline void init()
         {
-            base2::m_node = 0;
-            base2::m_cont = 0;
+            // g++: m_cont was not declared in this scope
+            this->m_node = 0;
+            this->m_cont = 0;
         }
 
         list_const_iterator(node* n, container* cont)
         {
-            init();
-
-            base2::m_node = n;
-            base2::m_cont = cont;
-
-            if(base2::m_cont)
-            {
-                base2::m_cont->add_iterator(base2::m_node, this);
-            }
+            this->m_node = n;
+            this->m_cont = cont;
         }
 
     public:
@@ -258,47 +248,15 @@ namespace stl
 
         ~list_const_iterator()
         {
-            if(base2::m_cont)
-            {
-                base2::m_cont->remove_iterator(base2::m_node, this);
-            }
         }
 
         list_const_iterator& operator=(const list_const_iterator& it)
         {
             if(this != &it)
             {
-                if(base2::m_cont)
-                {
-                    base2::m_cont->remove_iterator(base2::m_node, this);
-                }
-
-                base2::m_node = it.base2::m_node;
-                base2::m_cont = it.base2::m_cont;
-
-                if(base2::m_cont)
-                {
-                    base2::m_cont->add_iterator(base2::m_node, this);
-                }
+                this->m_node = it.m_node;
+                this->m_cont = it.m_cont;
             }
-            return *this;
-        }
-
-        list_const_iterator& operator=(const list_iterator<container, node>& it)
-        {
-            if(base2::m_cont)
-            {
-                base2::m_cont->remove_iterator(base2::m_node, this);
-            }
-
-            base2::m_node = it.base2::m_node;
-            base2::m_cont = it.base2::m_cont;
-
-            if(base2::m_cont)
-            {
-                base2::m_cont->add_iterator(base2::m_node, this);
-            }
-
             return *this;
         }
 
@@ -308,101 +266,101 @@ namespace stl
             *this = it;
         }
 
+        list_const_iterator& operator=(const list_iterator<container, node>& it)
+        {
+            this->m_node = it.m_node;
+            this->m_cont = it.m_cont;
+
+            return *this;
+        }
+
+
         reference operator*()const
         {
-            if(base2::m_cont == 0 || base2::m_node == base2::m_cont->m_end)
+            if(this->m_cont == 0 || this->m_node == this->m_cont->m_end)
                 throw stl::exception("invalid iterator");
 
-            return base2::m_node->m_T;
+            return this->m_node->m_T;
         }
 
         pointer operator->()const
         {
-            if(base2::m_cont == 0 || base2::m_node == base2::m_cont->m_end)
+            if(this->m_cont == 0 || this->m_node == this->m_cont->m_end)
                 throw stl::exception("invalid iterator");
 
-            return &(base2::m_node->m_T);
+            return &(this->m_node->m_T);
         }
 
         list_const_iterator& operator++()
         {
-            if(base2::m_cont == 0 || base2::m_node == base2::m_cont->m_end)
+            if(this->m_cont == 0 || this->m_node == this->m_cont->m_end)
                 throw stl::exception("invalid iterator");
 
-            base2::m_cont->remove_iterator(base2::m_node, this);
-
-            base2::m_node = base2::m_node->m_next;
-
-            base2::m_cont->add_iterator(base2::m_node, this);
+            this->m_node = this->m_node->m_next;
 
             return *this;
         }
 
         list_const_iterator operator++(int)
         {
-            if(base2::m_cont == 0 || base2::m_node == base2::m_cont->m_end)
+            if(this->m_cont == 0 || this->m_node == this->m_cont->m_end)
                 throw stl::exception("invalid iterator");
 
             list_const_iterator tmp = *this;
 
-            base2::m_cont->remove_iterator(base2::m_node, this);
-
-            base2::m_node = base2::m_node->m_next;
-
-            base2::m_cont->add_iterator(base2::m_node, this);
+            this->m_node = this->m_node->m_next;
 
             return tmp;
         }
 
         list_const_iterator& operator--()
         {
-            if(base2::m_cont == 0 || base2::m_node == base2::m_cont->m_begin)
+            if(this->m_cont == 0 || this->m_node == this->m_cont->m_begin)
                 throw stl::exception("invalid iterator");
 
-            base2::m_cont->remove_iterator(base2::m_node, this);
-
-            base2::m_node = base2::m_node->m_prev;
-
-            base2::m_cont->add_iterator(base2::m_node, this);
+            this->m_node = this->m_node->m_prev;
 
             return *this;
         }
 
         list_const_iterator operator--(int)
         {
-            if(base2::m_cont == 0 || base2::m_node == base2::m_cont->m_begin)
+            if(this->m_cont == 0 || this->m_node == this->m_cont->m_begin)
                 throw stl::exception("invalid iterator");
 
             list_const_iterator tmp = *this;
 
-            base2::m_cont->remove_iterator(base2::m_node, this);
-
-            base2::m_node = base2::m_node->m_prev;
-
-            base2::m_cont->add_iterator(base2::m_node, this);
+            this->m_node = this->m_node->m_prev;
 
             return tmp;
         }
 
         bool operator==(const list_const_iterator& it)const
         {
-            if(base2::m_cont == 0 || it.base2::m_cont == 0)
+#ifdef DEBUG
+            if(this->m_cont == 0 || it.m_cont == 0)
                 throw stl::exception("invalid iterator");
+#endif
 
-            return (base2::m_node == it.base2::m_node);
+            return (this->m_node == it.m_node);
         }
 
         bool operator!=(const list_const_iterator& it)const
         {
-            return !(*this == it);
+#ifdef DEBUG
+            if (this->m_cont == 0 || it.m_cont == 0)
+                throw stl::exception("invalid iterator");
+#endif
+
+            return (this->m_node != it.m_node);
         }
-    };  // const_iterator
+    };  // list_const_iterator
 
 
     template<typename container, typename node>
     class list_reverse_iterator :
         public stl::iterator<stl::bidirectional_iterator_tag, typename container::value_type>,
-        private list_iterator_base<container, node>
+        private stl::list_iterator_base<container, node>
     {
     public:
         typedef stl::iterator<stl::bidirectional_iterator_tag, typename container::value_type> base;
@@ -412,30 +370,22 @@ namespace stl
         typedef typename base::distance_type       distance_type;
         typedef typename base::pointer             pointer;
         typedef typename base::reference           reference;
-        typedef typename stl::list_iterator_base<container, node> base2;
 
-
-        friend class stl::list<typename container::value_type, typename container::allocator_type, container::nattributes>;
-        friend class list_const_reverse_iterator<container, node>;
+        friend class stl::list<typename container::value_type, typename container::allocator_type>;
+        friend class stl::list_const_reverse_iterator<container, node>;
 
     private:
         inline void init()
         {
-            base2::m_node = 0;
-            base2::m_cont = 0;
+            // g++: m_cont was not declared in this scope
+            this->m_node = 0;
+            this->m_cont = 0;
         }
 		
         list_reverse_iterator(node* n, container* cont)
         {
-            init();
-
-            base2::m_node = n;
-            base2::m_cont = cont;
-
-            if(base2::m_cont)
-            {
-                base2::m_cont->add_iterator(base2::m_node, this);
-            }
+            this->m_node = n;
+            this->m_cont = cont;
         }
 
 
@@ -453,157 +403,132 @@ namespace stl
 
         ~list_reverse_iterator()
         {
-            if(base2::m_cont != 0)
-            {
-                base2::m_cont->remove_iterator(base2::m_node, this);
-            }
         }
 
         list_reverse_iterator& operator=(const list_reverse_iterator& it)
         {
             if(this != &it)
             {
-                if(base2::m_cont)
-                {
-                    base2::m_cont->remove_iterator(base2::m_node, this);
-                }
-
-                base2::m_node = it.base2::m_node;
-                base2::m_cont = it.base2::m_cont;
-
-                if(base2::m_cont)
-                {
-                    base2::m_cont->add_iterator(base2::m_node, this);
-                }
+                this->m_node = it.m_node;
+                this->m_cont = it.m_cont;
             }
             return *this;
         }
 
         reference operator*()const
         {
-            if(base2::m_cont == 0 || base2::m_node == base2::m_cont->m_end)
+            if(this->m_cont == 0 || this->m_node == this->m_cont->m_end)
                 throw stl::exception("invalid iterator");
 
-            return base2::m_node->m_T;
+            return this->m_node->m_T;
         }
 
         pointer operator->()const
         {
-            if(base2::m_cont == 0 || base2::m_node == base2::m_cont->m_end)
+            if(this->m_cont == 0 || this->m_node == this->m_cont->m_end)
                 throw stl::exception("invalid iterator");
 
-            return &(base2::m_node->m_T);
+            return &(this->m_node->m_T);
         }
 
         list_reverse_iterator& operator++()
         {
-            if(base2::m_cont == 0 || base2::m_node == base2::m_cont->m_end)
+            if(this->m_cont == 0 || this->m_node == this->m_cont->m_end)
                 throw stl::exception("invalid iterator");
 
-            base2::m_cont->remove_iterator(base2::m_node, this);
-
             // end of list is not m_begin, but m_end
-            if(base2::m_node == base2::m_cont->m_begin)
+            if(this->m_node == this->m_cont->m_begin)
             {
-                base2::m_node = base2::m_cont->m_end;
+                this->m_node = this->m_cont->m_end;
             }
             else
             {
-                base2::m_node = base2::m_node->m_prev;
+                this->m_node = this->m_node->m_prev;
             }
-
-            base2::m_cont->add_iterator(base2::m_node, this);
 
             return *this;
         }
 
         list_reverse_iterator operator++(int)
         {
-            if(base2::m_cont == 0 || base2::m_node == base2::m_cont->m_end)
+            if(this->m_cont == 0 || this->m_node == this->m_cont->m_end)
                 throw stl::exception("invalid iterator");
 
             list_reverse_iterator tmp = *this;
 
-            base2::m_cont->remove_iterator(base2::m_node, this);
-
             // end of list is not m_begin, but m_end
-            if(base2::m_node == base2::m_cont->m_begin)
+            if(this->m_node == this->m_cont->m_begin)
             {
-                base2::m_node = base2::m_cont->m_end;
+                this->m_node = this->m_cont->m_end;
             }
             else
             {
-                base2::m_node = base2::m_node->m_prev;
+                this->m_node = this->m_node->m_prev;
             }
-
-            base2::m_cont->add_iterator(base2::m_node, this);
 
             return tmp;
         }
 
         list_reverse_iterator& operator--()
         {
-            if(base2::m_cont == 0 || base2::m_cont->empty() || base2::m_node == base2::m_cont->m_end->m_prev)
+            if(this->m_cont == 0 || this->m_cont->empty() || this->m_node == this->m_cont->m_end->m_prev)
                 throw stl::exception("invalid iterator");
 
-            base2::m_cont->remove_iterator(base2::m_node, this);
-
-            if(base2::m_node == base2::m_cont->m_end)
+            if(this->m_node == this->m_cont->m_end)
             {
-                base2::m_node = base2::m_cont->m_begin;
+                this->m_node = this->m_cont->m_begin;
             }
             else
             {
-                base2::m_node = base2::m_node->m_next;
+                this->m_node = this->m_node->m_next;
             }
-
-            base2::m_cont->add_iterator(base2::m_node, this);
 
             return *this;
         }
 
         list_reverse_iterator operator--(int)
         {
-            if(base2::m_cont == 0 || base2::m_cont->empty() || base2::m_node == base2::m_cont->m_end->m_prev)
+            if(this->m_cont == 0 || this->m_cont->empty() || this->m_node == this->m_cont->m_end->m_prev)
                 throw stl::exception("invalid iterator");
 
             list_reverse_iterator tmp = *this;
 
-            base2::m_cont->remove_iterator(base2::m_node, this);
-
-            if(base2::m_node == base2::m_cont->m_end)
+            if(this->m_node == this->m_cont->m_end)
             {
-                base2::m_node = base2::m_cont->m_begin;
+                this->m_node = this->m_cont->m_begin;
             }
             else
             {
-                base2::m_node = base2::m_node->m_next;
+                this->m_node = this->m_node->m_next;
             }
-
-            base2::m_cont->add_iterator(base2::m_node, this);
 
             return tmp;
         }
 
         bool operator==(const list_reverse_iterator& it)const
         {
-            if(base2::m_cont == 0 || it.base2::m_cont == 0)
+#ifdef DEBUG
+            if(this->m_cont == 0 || it.m_cont == 0)
                 throw stl::exception("invalid iterator");
-
-            return (base2::m_node == it.base2::m_node);
+#endif
+            return (this->m_node == it.m_node);
         }
 
         bool operator!=(const list_reverse_iterator& it)const
         {
-            return !(*this == it);
+#ifdef DEBUG
+            if (this->m_cont == 0 || it.m_cont == 0)
+                throw stl::exception("invalid iterator");
+#endif
+            return (this->m_node != it.m_node);
         }
-    };  // reverse_iterator
+    };  // list_reverse_iterator
 
 
     template<typename container, typename node>
     class list_const_reverse_iterator :
         public stl::const_iterator<stl::bidirectional_iterator_tag, typename container::value_type>,
-        private list_iterator_base<container, node>
+        private stl::list_iterator_base<container, node>
     {
     public:
         typedef stl::const_iterator<stl::bidirectional_iterator_tag, typename container::value_type> base;
@@ -613,29 +538,22 @@ namespace stl
         typedef typename base::distance_type       distance_type;
         typedef typename base::const_pointer       pointer;
         typedef typename base::const_reference     reference;
-        typedef typename stl::list_iterator_base<container, node> base2;
 
-        friend class stl::list<typename container::value_type, typename container::allocator_type, container::nattributes>;
+        friend class stl::list<typename container::value_type, typename container::allocator_type>;
 
 
     private:
         inline void init()
         {
-            base2::m_node = 0;
-            base2::m_cont = 0;
+            // g++: m_cont was not declared in this scope
+            this->m_node = 0;
+            this->m_cont = 0;
         }
 
         list_const_reverse_iterator(node* n, container* cont)
         {
-            init();
-
-            base2::m_node = n;
-            base2::m_cont = cont;
-
-            if(base2::m_cont)
-            {
-                base2::m_cont->add_iterator(base2::m_node, this);
-            }
+            this->m_node = n;
+            this->m_cont = cont;
         }
 
 
@@ -653,46 +571,22 @@ namespace stl
 
         ~list_const_reverse_iterator()
         {
-            if(base2::m_cont != 0)
-            {
-                base2::m_cont->remove_iterator(base2::m_node, this);
-            }
         }
 
         list_const_reverse_iterator& operator=(const list_const_reverse_iterator& it)
         {
             if(this != &it)
             {
-                if(base2::m_cont)
-                {
-                    base2::m_cont->remove_iterator(base2::m_node, this);
-                }
-
-                base2::m_cont = it.base2::m_cont;
-                base2::m_node = it.base2::m_node;
-
-                if(base2::m_cont)
-                {
-                    base2::m_cont->add_iterator(base2::m_node, this);
-                }
+                this->m_cont = it.m_cont;
+                this->m_node = it.m_node;
             }
             return *this;
         }
 
         list_const_reverse_iterator& operator=(const list_reverse_iterator<container, node>& it)
         {
-            if(base2::m_cont)
-            {
-                base2::m_cont->remove_iterator(base2::m_node, this);
-            }
-
-            base2::m_cont = it.base2::m_cont;
-            base2::m_node = it.base2::m_node;
-
-            if(base2::m_cont)
-            {
-                base2::m_cont->add_iterator(base2::m_node, this);
-            }
+            this->m_cont = it.m_cont;
+            this->m_node = it.m_node;
 
             return *this;
         }
@@ -705,164 +599,144 @@ namespace stl
 
         reference operator*()const
         {
-            if(base2::m_cont == 0 || base2::m_node == base2::m_cont->m_end)
+            if(this->m_cont == 0 || this->m_node == this->m_cont->m_end)
                 throw stl::exception("invalid iterator");
 
-            return base2::m_node->m_T;
+            return this->m_node->m_T;
         }
 
         pointer operator->()const
         {
-            if(base2::m_cont == 0 || base2::m_node == base2::m_cont->m_end)
+            if(this->m_cont == 0 || this->m_node == this->m_cont->m_end)
                 throw stl::exception("invalid iterator");
 
-            return &(base2::m_node->m_T);
+            return &(this->m_node->m_T);
         }
 
         list_const_reverse_iterator& operator++()
         {
-            if(base2::m_cont == 0 || base2::m_node == base2::m_cont->m_end)
+            if(this->m_cont == 0 || this->m_node == this->m_cont->m_end)
                 throw stl::exception("invalid iterator");
 
-            base2::m_cont->remove_iterator(base2::m_node, this);
-
             // end of list is not m_begin, but m_end
-            if(base2::m_node == base2::m_cont->m_begin)
+            if(this->m_node == this->m_cont->m_begin)
             {
-                base2::m_node = base2::m_cont->m_end;
+                this->m_node = this->m_cont->m_end;
             }
             else
             {
-                base2::m_node = base2::m_node->m_prev;
+                this->m_node = this->m_node->m_prev;
             }
-
-            base2::m_cont->add_iterator(base2::m_node, this);
 
             return *this;
         }
 
         list_const_reverse_iterator operator++(int)
         {
-            if(base2::m_cont == 0 || base2::m_node == base2::m_cont->m_end)
+            if(this->m_cont == 0 || this->m_node == this->m_cont->m_end)
                 throw stl::exception("invalid iterator");
 
             list_const_reverse_iterator tmp = *this;
 
-            base2::m_cont->remove_iterator(base2::m_node, this);
-
             // end of list is not m_begin, but m_end
-            if(base2::m_node == base2::m_cont->m_begin)
+            if(this->m_node == this->m_cont->m_begin)
             {
-                base2::m_node = base2::m_cont->m_end;
+                this->m_node = this->m_cont->m_end;
             }
             else
             {
-                base2::m_node = base2::m_node->m_prev;
+                this->m_node = this->m_node->m_prev;
             }
-
-            base2::m_cont->add_iterator(base2::m_node, this);
 
             return tmp;
         }
 
         list_const_reverse_iterator& operator--()
         {
-            if(base2::m_cont == 0 || base2::m_cont->empty() || base2::m_node == base2::m_cont->m_end->m_prev)
+            if(this->m_cont == 0 || this->m_cont->empty() || this->m_node == this->m_cont->m_end->m_prev)
                 throw stl::exception("invalid iterator");
 
-            base2::m_cont->remove_iterator(base2::m_node, this);
-
-            if(base2::m_node == base2::m_cont->m_end)
+            if(this->m_node == this->m_cont->m_end)
             {
-                base2::m_node = base2::m_cont->m_begin;
+                this->m_node = this->m_cont->m_begin;
             }
             else
             {
-                base2::m_node = base2::m_node->m_next;
+                this->m_node = this->m_node->m_next;
             }
-
-            base2::m_cont->add_iterator(base2::m_node, this);
 
             return *this;
         }
 
         list_const_reverse_iterator operator--(int)
         {
-            if(base2::m_cont == 0 || base2::m_cont->empty() || base2::m_node == base2::m_cont->m_end->m_prev)
+            if(this->m_cont == 0 || this->m_cont->empty() || this->m_node == this->m_cont->m_end->m_prev)
                 throw stl::exception("invalid iterator");
 
             list_const_reverse_iterator tmp = *this;
 
-            base2::m_cont->remove_iterator(base2::m_node, this);
-
-
-            if(base2::m_node == base2::m_cont->m_end)
+            if(this->m_node == this->m_cont->m_end)
             {
-                base2::m_node = base2::m_cont->m_begin;
+                this->m_node = this->m_cont->m_begin;
             }
             else
             {
-                base2::m_node = base2::m_node->m_next;
+                this->m_node = this->m_node->m_next;
             }
-
-            base2::m_cont->add_iterator(base2::m_node, this);
 
             return tmp;
         }
 
         bool operator==(const list_const_reverse_iterator& it)const
         {
-            if(base2::m_cont == 0 || it.base2::m_cont == 0)
+#ifdef DEBUG
+            if(this->m_cont == 0 || it.m_cont == 0)
                 throw stl::exception("invalid iterator");
-
-            return (base2::m_node == it.base2::m_node);
+#endif
+            return (this->m_node == it.m_node);
         }
 
         bool operator!=(const list_const_reverse_iterator& it)const
         {
-            return !(*this == it);
+#ifdef DEBUG
+            if (this->m_cont == 0 || it.m_cont == 0)
+                throw stl::exception("invalid iterator");
+#endif
+            return (this->m_node != it.m_node);
         }
-    };  // class
+    };  // list_const_reverse_iterator
 
 
-
-    /* ISO/IEC 14882:2003(E)   $23.2.2 Class template list
-
-       One exception from ISO is the extended attribute(s),
-       to indicate additional properties of this container
-       e.g. debug_iterator, multi threading, etc.
-    */
-    template<typename T, typename Allocator = stl::allocator<T>, int attributes = 0>
+    template<typename T, typename Allocator = stl::allocator<T> >
     class list
     {
     public:
-        // types:
-        typedef list<T, Allocator, attributes>           container;
-        typedef typename Allocator::reference            reference;
-        typedef typename Allocator::const_reference      const_reference;
-        typedef typename Allocator::pointer              pointer;
-        typedef typename Allocator::const_pointer        const_pointer;
+        typedef          list<T, Allocator>              container;
 
+        // types:
         typedef typename Allocator::value_type           value_type;
         typedef typename Allocator::size_type            size_type;
         typedef typename Allocator::difference_type      difference_type;
         typedef Allocator                                allocator_type;
 
+        typedef typename Allocator::reference            reference;
+        typedef typename Allocator::const_reference      const_reference;
+        typedef typename Allocator::pointer              pointer;
+        typedef typename Allocator::const_pointer        const_pointer;      
 
-    public:
         typedef list_iterator<container, list_node<container> >          iterator;
         typedef list_const_iterator<container, list_node<container> >    const_iterator;
         typedef list_reverse_iterator<container, list_node<container> >  reverse_iterator;
         typedef list_const_reverse_iterator<container, list_node<container> > const_reverse_iterator;
 
-
-    private:
         friend class list_iterator<container, list_node<container> >;
         friend class list_const_iterator<container, list_node<container> >;
         friend class list_reverse_iterator<container, list_node<container> >;
         friend class list_const_reverse_iterator<container, list_node<container> >;
-        friend struct list_iterator_base<container, list_node<container> >;
-        typedef list_iterator_base<container, list_node<container> > iterator_base;
+
+//TODO: check if these are not-needed
+        //friend struct stl::list_iterator_base<container, list_node<container> >;
+        //typedef stl::list_iterator_base<container, list_node<container> > iterator_base;
 
 
     private:
@@ -870,9 +744,6 @@ namespace stl
         list_node<container>*      m_end;
         size_type                  m_size;
         typename Allocator::template rebind<list_node<container> >::other  m_NodAlloc;
-	
-	public:
-		static const int nattributes = attributes;
     
     private:
         inline void init(const Allocator& alloc)
@@ -890,7 +761,7 @@ namespace stl
 
             m_end->m_prev = 0;
             m_end->m_next = 0;
-			m_end->m_itarray = 0;
+//			m_end->m_itarray = 0;
             m_begin = m_end;
             m_size = 0;
         }
@@ -903,61 +774,22 @@ namespace stl
 			// m_NodAlloc.destroy(m_end);  - not constructed
 
 			// Release the array allocated for end node's iterators.
-			if(m_end->m_itarray != 0)
-			{
-				delete m_end->m_itarray;
-				m_end->m_itarray = 0;
-			}
+			//if(m_end->m_itarray != 0)
+			//{
+			//	delete m_end->m_itarray;
+			//	m_end->m_itarray = 0;
+			//}
 
 			m_NodAlloc.deallocate(m_end, 1);
 		}
 
-        /* iterator debugging
-           since container carries this attribute it may allow or not
-           iterators to register with the nodes they hold.
-        */
-        void add_iterator(list_node<container>* nod, iterator_base* it)
-        {
-            if( attributes & GENERIC_LIST_HAS_ITERATOR_DEBUGGING )
-            {
-                nod->add_iterator(it);
-            }
-        }
-
-        inline void remove_iterator(list_node<container>* nod, iterator_base* it)
-        {
-            if( attributes & GENERIC_LIST_HAS_ITERATOR_DEBUGGING )
-            {
-                nod->remove_iterator(it);
-            }
-        }
-
-        inline void invalidate_iterators(list_node<container>* nod)
-        {
-            if( attributes & GENERIC_LIST_HAS_ITERATOR_DEBUGGING )
-            {
-                nod->invalidate_iterators();
-            }
-        }
-
-        inline void update_container(list_node<container>* nod, container* cont)
-        {
-            if( attributes & GENERIC_LIST_HAS_ITERATOR_DEBUGGING )
-            {
-                nod->update_container(cont);
-            }
-        }
-
     public:
-
-        // $23.2.2.1 construct/copy/destroy:
         explicit list(const Allocator& alloc= Allocator())
         {
             init(alloc);
         }
 
-        explicit list(size_type n, const value_type& value = value_type(),
-                      const Allocator& alloc= Allocator())
+        explicit list(size_type n, const value_type& value = value_type(), const Allocator& alloc= Allocator())
         {
             init(alloc);
             assign(n, value);
@@ -965,8 +797,7 @@ namespace stl
 
 
         template<typename InputIterator>
-        explicit list(InputIterator first, InputIterator last,
-                      const Allocator& alloc = Allocator())
+        explicit list(InputIterator first, InputIterator last, const Allocator& alloc = Allocator())
         {
             init(alloc);
             assign(first, last);
@@ -981,9 +812,6 @@ namespace stl
         ~list()
         {
             clear();
-
-            invalidate_iterators(m_end);
-
             deinit();
         }
 
@@ -1179,7 +1007,6 @@ namespace stl
             return const_reverse_iterator(m_end, this);
         }
 
-        // $23.2.2.2 capacity:
         bool empty() const
         {
             return m_size == 0;
@@ -1216,7 +1043,6 @@ namespace stl
         }
 
 
-        // $23.2.2.2  element access:
         reference front()
         {
             if(m_size == 0)
@@ -1249,8 +1075,6 @@ namespace stl
             return m_end->m_prev->m_T;
         }
 
-
-        // $23.2.2.3 modifiers:
         void push_front(const value_type& x)
         {
             list_node<container>* nod = m_NodAlloc.allocate(1);
@@ -1280,8 +1104,6 @@ namespace stl
                 throw stl::exception("container is empty");
 
             list_node<container>* next = m_begin->m_next;
-
-            invalidate_iterators(m_begin);
 
             m_NodAlloc.destroy(m_begin);
             m_NodAlloc.deallocate(m_begin, 1);
@@ -1333,8 +1155,6 @@ namespace stl
                 list_node<container>* nod = m_end->m_prev;
                 list_node<container>* prev = nod->m_prev;
 
-                invalidate_iterators(nod);
-
                 m_NodAlloc.destroy(nod);
                 m_NodAlloc.deallocate(nod, 1);
 
@@ -1344,8 +1164,6 @@ namespace stl
             // == 1
             else
             {
-                invalidate_iterators(m_begin);
-
                 m_NodAlloc.destroy(m_begin);
                 m_NodAlloc.deallocate(m_begin, 1);
 
@@ -1439,8 +1257,6 @@ namespace stl
                 next->m_prev = prev;
             }
 
-            invalidate_iterators(nod);
-
             m_NodAlloc.destroy(nod);
             m_NodAlloc.deallocate(nod, 1);
 
@@ -1464,18 +1280,6 @@ namespace stl
             stl::swap<list_node<container>*>(m_begin, lst.m_begin);
             stl::swap<list_node<container>*>(m_end, lst.m_end);
             stl::swap<size_type>(m_size, lst.m_size);
-
-            for(list_node<container>* nod = m_begin; nod != m_end; nod = nod->m_next)
-            {
-                // already swapped, contains lst nodes
-                update_container(nod, this);
-            }
-
-            for(list_node<container>* nod = lst.m_begin; nod != lst.m_end; nod = nod->m_next)
-            {
-                // already swapped, contains this nodes
-                update_container(nod, &lst);
-            }
         }
 
         void clear()
@@ -1484,8 +1288,6 @@ namespace stl
             for(; m_begin != m_end; m_begin = next)
             {
                 next = m_begin->m_next;
-
-                invalidate_iterators(m_begin);
 
                 m_NodAlloc.destroy(m_begin);
                 m_NodAlloc.deallocate(m_begin, 1);
@@ -1496,11 +1298,6 @@ namespace stl
             m_size = 0;
         }
 
-
-//TODO: "check n3485 for all functions that should/should not invalidate iterators"		
-        /* current implementation uses 14882 / 2003 where iterators get invalidated */
-
-        // $23.2.2.4 list operations:
         void splice(iterator position, container& x)
         {
             /*
@@ -1545,14 +1342,7 @@ namespace stl
             // clear source list
             x.m_end->m_prev = 0;
             x.m_begin = x.m_end;
-            x.m_size = 0;
-
-
-            // Invalidates all iterators and references to the list x.
-            for(list_node<container>* nod = first;  nod != last->m_next; nod=nod->m_next)
-            {
-                invalidate_iterators(nod);
-            }
+            x.m_size = 0;            
         }
 
 
@@ -1605,17 +1395,6 @@ namespace stl
 
                 next->m_prev = inode;
                 inode->m_next = next;
-            }
-
-
-            // update size
-            if(&x != this)
-            {
-                --x.m_size;
-                ++m_size;
-
-                // Invalidates only the iterators and references to the spliced element.
-                invalidate_iterators(i.m_node);
             }
         }
 
@@ -1699,28 +1478,6 @@ namespace stl
 
                 send->m_next = dend;
                 dend->m_prev = send;
-            }
-
-
-            // count the incoming elements
-            size_type size = 0;
-            list_node<container>* nod = sbeg;
-            for(; nod != dend; nod = nod->m_next)
-            {
-                ++size;
-
-                // Invalidates only the iterators and references to the spliced elements.
-                // obs: splice during iteration through container may switch compared iterators
-                //      positions within container. For safety reason, iterators to spliced elements
-                //      should become invalid.
-                invalidate_iterators(nod);
-            }
-
-            // update size
-            if(&x != this)
-            {
-                x.m_size -= size;
-                m_size += size;
             }
         }
 
@@ -1957,8 +1714,6 @@ namespace stl
             m_begin->m_prev = 0;
             m_end->m_prev->m_next = m_end;
         }
-
-
     };  // list
 }  // namespace stl
 

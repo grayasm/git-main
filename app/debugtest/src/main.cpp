@@ -79,6 +79,10 @@ int main()
         for (stl::list<A>::iterator beg = lst.begin(); beg != lst.end(); ++beg)
             printf("A(%d)=%d\n", *(beg->get()));
     }
-    
+
+    //stl::list<int> ilist;
+    //ilist.push_back(10);
+
+
     return 0;
 }
