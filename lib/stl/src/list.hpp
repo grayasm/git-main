@@ -44,10 +44,10 @@ namespace stl
         list_node(typename container::const_reference val)
         {
             //  called from: m_allocator.construct(nod, value);
-#ifdef DEBUG
+            //  get correct first, then fast
             m_prev = 0;
             m_next = 0;
-#endif
+
             m_T = val;
         }
 
@@ -64,7 +64,7 @@ namespace stl
 
     template<typename container, typename node>
     class list_iterator :
-        public  stl::iterator<stl::bidirectional_iterator_tag, typename container::value_type>,
+        public stl::iterator<stl::bidirectional_iterator_tag, typename container::value_type>,
         private stl::list_iterator_base<container, node>
     {
     public:
@@ -205,7 +205,7 @@ namespace stl
 
     template<typename container, typename node>
     class list_const_iterator :
-        public  stl::const_iterator<stl::bidirectional_iterator_tag, typename container::value_type>,
+        public stl::const_iterator<stl::bidirectional_iterator_tag, typename container::value_type>,
         private stl::list_iterator_base<container, node>
     {
     public:
