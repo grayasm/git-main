@@ -122,25 +122,28 @@ namespace stl
 
         reference operator*()const
         {
+#ifdef DEBUG
             if(this->m_cont == 0 || this->m_node == this->m_cont->m_end)
                 throw stl::exception("invalid iterator");
-
+#endif
             return this->m_node->m_T;
         }
 
         pointer operator->()const
         {
+#ifdef DEBUG
             if(this->m_cont == 0 || this->m_node == this->m_cont->m_end)
                 throw stl::exception("invalid iterator");
-
+#endif
             return &(this->m_node->m_T);
         }
 
         list_iterator& operator++()
         {
+#ifdef DEBUG
             if(this->m_cont == 0 || this->m_node == this->m_cont->m_end)
                 throw stl::exception("invalid iterator");
-
+#endif
             this->m_node = this->m_node->m_next;
 
             return *this;
@@ -148,9 +151,10 @@ namespace stl
 
         list_iterator operator++(int)
         {
+#ifdef DEBUG
             if(this->m_cont == 0 || this->m_node == this->m_cont->m_end)
                 throw stl::exception("invalid iterator");
-
+#endif
             list_iterator tmp = *this;
 
             this->m_node = this->m_node->m_next;
@@ -160,9 +164,10 @@ namespace stl
 
         list_iterator& operator--()
         {
+#ifdef DEBUG
             if(this->m_cont == 0 || this->m_node == this->m_cont->m_begin)
                 throw stl::exception("invalid iterator");
-
+#endif
             this->m_node = this->m_node->m_prev;
 
             return *this;
@@ -170,9 +175,10 @@ namespace stl
 
         list_iterator operator--(int)
         {
+#ifdef DEBUG
             if(this->m_cont == 0 || this->m_node == this->m_cont->m_begin)
                 throw stl::exception("invalid iterator");
-
+#endif
             list_iterator tmp = *this;
 
             this->m_node = this->m_node->m_prev;
@@ -183,20 +189,18 @@ namespace stl
         bool operator==(const list_iterator& it)const
         {
 #ifdef DEBUG
-            if(this->m_cont == 0 || it.m_cont == 0)
+            if(this->m_cont == 0 || this->m_cont != it.m_cont)
                 throw stl::exception("invalid iterator");
 #endif
-
             return (this->m_node == it.m_node);
         }
 
         bool operator!=(const list_iterator& it)const
         {
 #ifdef DEBUG
-            if (this->m_cont == 0 || it.m_cont == 0)
+            if(this->m_cont == 0 || this->m_cont != it.m_cont)
                 throw stl::exception("invalid iterator");
 #endif
-
             return (this->m_node != it.m_node);
         }
     };  // list_iterator
@@ -276,25 +280,28 @@ namespace stl
 
         reference operator*()const
         {
+#ifdef DEBUG
             if(this->m_cont == 0 || this->m_node == this->m_cont->m_end)
                 throw stl::exception("invalid iterator");
-
+#endif
             return this->m_node->m_T;
         }
 
         pointer operator->()const
         {
+#ifdef DEBUG
             if(this->m_cont == 0 || this->m_node == this->m_cont->m_end)
                 throw stl::exception("invalid iterator");
-
+#endif
             return &(this->m_node->m_T);
         }
 
         list_const_iterator& operator++()
         {
+#ifdef DEBUG
             if(this->m_cont == 0 || this->m_node == this->m_cont->m_end)
                 throw stl::exception("invalid iterator");
-
+#endif
             this->m_node = this->m_node->m_next;
 
             return *this;
@@ -302,9 +309,10 @@ namespace stl
 
         list_const_iterator operator++(int)
         {
+#ifdef DEBUG
             if(this->m_cont == 0 || this->m_node == this->m_cont->m_end)
                 throw stl::exception("invalid iterator");
-
+#endif
             list_const_iterator tmp = *this;
 
             this->m_node = this->m_node->m_next;
@@ -314,9 +322,10 @@ namespace stl
 
         list_const_iterator& operator--()
         {
+#ifdef DEBUG
             if(this->m_cont == 0 || this->m_node == this->m_cont->m_begin)
                 throw stl::exception("invalid iterator");
-
+#endif
             this->m_node = this->m_node->m_prev;
 
             return *this;
@@ -324,9 +333,10 @@ namespace stl
 
         list_const_iterator operator--(int)
         {
+#ifdef DEBUG
             if(this->m_cont == 0 || this->m_node == this->m_cont->m_begin)
                 throw stl::exception("invalid iterator");
-
+#endif
             list_const_iterator tmp = *this;
 
             this->m_node = this->m_node->m_prev;
@@ -337,20 +347,18 @@ namespace stl
         bool operator==(const list_const_iterator& it)const
         {
 #ifdef DEBUG
-            if(this->m_cont == 0 || it.m_cont == 0)
+            if(this->m_cont == 0 || this->m_cont != it.m_cont)
                 throw stl::exception("invalid iterator");
 #endif
-
             return (this->m_node == it.m_node);
         }
 
         bool operator!=(const list_const_iterator& it)const
         {
 #ifdef DEBUG
-            if (this->m_cont == 0 || it.m_cont == 0)
+            if(this->m_cont == 0 || this->m_cont != it.m_cont)
                 throw stl::exception("invalid iterator");
 #endif
-
             return (this->m_node != it.m_node);
         }
     };  // list_const_iterator
@@ -416,25 +424,28 @@ namespace stl
 
         reference operator*()const
         {
+#ifdef DEBUG
             if(this->m_cont == 0 || this->m_node == this->m_cont->m_end)
                 throw stl::exception("invalid iterator");
-
+#endif
             return this->m_node->m_T;
         }
 
         pointer operator->()const
         {
+#ifdef DEBUG
             if(this->m_cont == 0 || this->m_node == this->m_cont->m_end)
                 throw stl::exception("invalid iterator");
-
+#endif
             return &(this->m_node->m_T);
         }
 
         list_reverse_iterator& operator++()
         {
+#ifdef DEBUG
             if(this->m_cont == 0 || this->m_node == this->m_cont->m_end)
                 throw stl::exception("invalid iterator");
-
+#endif
             // end of list is not m_begin, but m_end
             if(this->m_node == this->m_cont->m_begin)
             {
@@ -450,9 +461,10 @@ namespace stl
 
         list_reverse_iterator operator++(int)
         {
+#ifdef DEBUG
             if(this->m_cont == 0 || this->m_node == this->m_cont->m_end)
                 throw stl::exception("invalid iterator");
-
+#endif
             list_reverse_iterator tmp = *this;
 
             // end of list is not m_begin, but m_end
@@ -470,9 +482,12 @@ namespace stl
 
         list_reverse_iterator& operator--()
         {
-            if(this->m_cont == 0 || this->m_cont->empty() || this->m_node == this->m_cont->m_end->m_prev)
+#ifdef DEBUG
+            //  Cannot decrement beyond rbegin() node
+            if( this->m_cont == 0 || this->m_cont->empty() || this->m_node == this->m_cont->m_end->m_prev)
                 throw stl::exception("invalid iterator");
-
+#endif
+            // end of list is not m_begin, but m_end
             if(this->m_node == this->m_cont->m_end)
             {
                 this->m_node = this->m_cont->m_begin;
@@ -487,11 +502,14 @@ namespace stl
 
         list_reverse_iterator operator--(int)
         {
+#ifdef DEBUG
+            //  Cannot decrement beyond rbegin() node
             if(this->m_cont == 0 || this->m_cont->empty() || this->m_node == this->m_cont->m_end->m_prev)
                 throw stl::exception("invalid iterator");
-
+#endif
             list_reverse_iterator tmp = *this;
 
+            // end of list is not m_begin, but m_end
             if(this->m_node == this->m_cont->m_end)
             {
                 this->m_node = this->m_cont->m_begin;
@@ -507,7 +525,7 @@ namespace stl
         bool operator==(const list_reverse_iterator& it)const
         {
 #ifdef DEBUG
-            if(this->m_cont == 0 || it.m_cont == 0)
+            if(this->m_cont == 0 || this->m_cont != it.m_cont)
                 throw stl::exception("invalid iterator");
 #endif
             return (this->m_node == it.m_node);
@@ -516,7 +534,7 @@ namespace stl
         bool operator!=(const list_reverse_iterator& it)const
         {
 #ifdef DEBUG
-            if (this->m_cont == 0 || it.m_cont == 0)
+            if(this->m_cont == 0 || this->m_cont != it.m_cont)
                 throw stl::exception("invalid iterator");
 #endif
             return (this->m_node != it.m_node);
@@ -598,25 +616,28 @@ namespace stl
 
         reference operator*()const
         {
+#ifdef DEBUG
             if(this->m_cont == 0 || this->m_node == this->m_cont->m_end)
                 throw stl::exception("invalid iterator");
-
+#endif
             return this->m_node->m_T;
         }
 
         pointer operator->()const
         {
+#ifdef DEBUG
             if(this->m_cont == 0 || this->m_node == this->m_cont->m_end)
                 throw stl::exception("invalid iterator");
-
+#endif
             return &(this->m_node->m_T);
         }
 
         list_const_reverse_iterator& operator++()
         {
+#ifdef DEBUG
             if(this->m_cont == 0 || this->m_node == this->m_cont->m_end)
                 throw stl::exception("invalid iterator");
-
+#endif
             // end of list is not m_begin, but m_end
             if(this->m_node == this->m_cont->m_begin)
             {
@@ -632,9 +653,10 @@ namespace stl
 
         list_const_reverse_iterator operator++(int)
         {
+#ifdef DEBUG
             if(this->m_cont == 0 || this->m_node == this->m_cont->m_end)
                 throw stl::exception("invalid iterator");
-
+#endif
             list_const_reverse_iterator tmp = *this;
 
             // end of list is not m_begin, but m_end
@@ -652,9 +674,12 @@ namespace stl
 
         list_const_reverse_iterator& operator--()
         {
+#ifdef DEBUG
+            //  Cannot decrement beyond rbegin() node
             if(this->m_cont == 0 || this->m_cont->empty() || this->m_node == this->m_cont->m_end->m_prev)
                 throw stl::exception("invalid iterator");
-
+#endif
+            // end of list is not m_begin, but m_end
             if(this->m_node == this->m_cont->m_end)
             {
                 this->m_node = this->m_cont->m_begin;
@@ -669,11 +694,14 @@ namespace stl
 
         list_const_reverse_iterator operator--(int)
         {
+#ifdef DEBUG
+            //  Cannot decrement beyond rbegin() node
             if(this->m_cont == 0 || this->m_cont->empty() || this->m_node == this->m_cont->m_end->m_prev)
                 throw stl::exception("invalid iterator");
-
+#endif
             list_const_reverse_iterator tmp = *this;
 
+            // end of list is not m_begin, but m_end
             if(this->m_node == this->m_cont->m_end)
             {
                 this->m_node = this->m_cont->m_begin;
@@ -689,7 +717,7 @@ namespace stl
         bool operator==(const list_const_reverse_iterator& it)const
         {
 #ifdef DEBUG
-            if(this->m_cont == 0 || it.m_cont == 0)
+            if(this->m_cont == 0 || this->m_cont != it.m_cont)
                 throw stl::exception("invalid iterator");
 #endif
             return (this->m_node == it.m_node);
@@ -698,7 +726,7 @@ namespace stl
         bool operator!=(const list_const_reverse_iterator& it)const
         {
 #ifdef DEBUG
-            if (this->m_cont == 0 || it.m_cont == 0)
+            if(this->m_cont == 0 || this->m_cont != it.m_cont)
                 throw stl::exception("invalid iterator");
 #endif
             return (this->m_node != it.m_node);
@@ -723,32 +751,26 @@ namespace stl
         typedef typename Allocator::pointer              pointer;
         typedef typename Allocator::const_pointer        const_pointer;      
 
-        typedef list_iterator<container, list_node<container> >          iterator;
-        typedef list_const_iterator<container, list_node<container> >    const_iterator;
-        typedef list_reverse_iterator<container, list_node<container> >  reverse_iterator;
-        typedef list_const_reverse_iterator<container, list_node<container> > const_reverse_iterator;
+        typedef list_iterator<container, list_node<container> >                 iterator;
+        typedef list_const_iterator<container, list_node<container> >           const_iterator;
+        typedef list_reverse_iterator<container, list_node<container> >         reverse_iterator;
+        typedef list_const_reverse_iterator<container, list_node<container> >   const_reverse_iterator;
 
         friend class list_iterator<container, list_node<container> >;
         friend class list_const_iterator<container, list_node<container> >;
         friend class list_reverse_iterator<container, list_node<container> >;
         friend class list_const_reverse_iterator<container, list_node<container> >;
 
-//TODO: check if these are not-needed
-        //friend struct stl::list_iterator_base<container, list_node<container> >;
-        //typedef stl::list_iterator_base<container, list_node<container> > iterator_base;
-
-
     private:
         list_node<container>*      m_begin;
         list_node<container>*      m_end;
         size_type                  m_size;
-        typename Allocator::template rebind<list_node<container> >::other  m_node_alloc;
-    
-    private:
+        typename Allocator::template rebind<list_node<container> >::other  m_nallocator;
+
         inline void init(const Allocator& alloc)
         {
-            m_node_alloc = alloc;
-            m_end = m_node_alloc.allocate(1);
+            m_nallocator = alloc;
+            m_end = m_nallocator.allocate(1);
             m_end->m_prev = 0;
             m_end->m_next = 0;
             m_begin = m_end;
@@ -756,12 +778,12 @@ namespace stl
         }
 
     public:
-        explicit list(const allocator_type& alloc= allocator_type())
+        explicit list(const Allocator& alloc= Allocator())
         {
             init(alloc);
         }
 
-        explicit list(size_type n, const value_type& value = value_type(), const allocator_type& alloc = allocator_type())
+        explicit list(size_type n, const T& value = T(), const Allocator& alloc = Allocator())
         {
             init(alloc);
             assign(n, value);
@@ -769,10 +791,10 @@ namespace stl
 
 
         template<typename InputIterator>
-        explicit list(InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type())
+        explicit list(InputIterator first, InputIterator last, const Allocator& alloc = Allocator())
         {
             init(alloc);
-            assign(first, last);
+            assign_(first, last);
         }
 
         list(const container& tc)
@@ -785,70 +807,67 @@ namespace stl
         {
             clear();
 
-            m_node_alloc.deallocate(m_end, 1);
+            m_nallocator.deallocate(m_end, 1);
             m_begin = 0;
             m_end = 0;
         }
 
         container& operator=(const container& tc)
         {
-            if(this == &tc)
-                return *this;
-
-            size_type n1 = 0;
-            list_node<container>* nod1 = m_begin;
-            list_node<container>* nod2 = tc.m_begin;
-
-            while( n1 < tc.m_size )
+            if (this != &tc)
             {
-                if(n1 < m_size)
-                {
-                    nod1->m_T = nod2->m_T;
+                size_type n1 = 0;
+                list_node<container>* nod1 = m_begin;
+                list_node<container>* nod2 = tc.m_begin;
 
-                    nod1 = nod1->m_next;
-                    nod2 = nod2->m_next;
-                }
-                else
+                // copy container
+                while (n1 < tc.m_size)
                 {
-                    // grow
-                    push_back( nod2->m_T );
-                    nod2 = nod2->m_next;
+                    if (n1 < m_size)
+                    {
+                        nod1->m_T = nod2->m_T;
+                        nod1 = nod1->m_next;
+                        nod2 = nod2->m_next;
+                    }
+                    else
+                    {
+                        // grow
+                        push_back(nod2->m_T);
+                        nod2 = nod2->m_next;
+                    }
+                    ++n1;
                 }
-                ++n1;
-            }
 
-            // remove tail
-            while(n1 < m_size)
-            {
-                pop_back();
-            }
+                // remove tail
+                while (n1 < m_size)
+                {
+                    pop_back();
+                }
+            }            
 
             return *this;
         }
 
+        template<class InputIterator>
+        void assign(InputIterator first, InputIterator last)
+        {
+            assign_(first, last, typename stl::iterator_traits<InputIterator>::iterator_category());
+        }
 
     private:
         template<typename InputIterator>
-        inline void assign_impl(InputIterator first, InputIterator last, stl::bidirectional_iterator_tag)
+        inline void assign_(InputIterator& first, InputIterator& last, stl::bidirectional_iterator_tag)
         {
-            /*
-              we get both:
+            size_type n = 0;
+            list_node<container>* node = m_begin;
 
-              double d[]={0.1,0.2,0.3};
-              list l(d, d+3); -> random_access_iterator_tag
-
-              list m(l.begin(), l.end()); -> bidirectional_iterator_tag
-            */
-
-            size_type n1 = 0;
-            list_node<container>* nod1 = m_begin;
+            // copy range
             while(first != last)
             {
-                if(n1 < m_size)
+                if(n < m_size)
                 {
-                    nod1->m_T = *first;
-
-                    nod1 = nod1->m_next;
+                    node->m_T = *first;
+                    node = node->m_next;
                 }
                 else
                 {
@@ -857,65 +876,50 @@ namespace stl
                 }
 
                 ++first;
-                ++n1;
+                ++n;
             }
 
             // remove tail
-            while(n1 < m_size)
+            while(n < m_size)
             {
                 pop_back();
             }
         }
 
-
         template<typename InputIterator>
-        inline void assign_impl(InputIterator n, InputIterator u, stl::input_iterator_tag)
+        inline void assign_(InputIterator& n, InputIterator& value, stl::input_iterator_tag)
         {
-            /*
-              int sz = 10;
-              list<int> l(sz, 0);
-              list<int> m(5, 10);
-            */
-            size_type sz = static_cast<size_type>(n);
-            value_type val = static_cast<value_type>(u);
-            assign(sz , val);            
+            assign(static_cast<size_type>(n), static_cast<T>(value) , val);   
         }
-
-
 
     public:
-        template<class InputIterator>
-        void assign(InputIterator first, InputIterator last)
+        void assign(size_type count, const value_type& value)
         {
-            assign_impl(first, last, typename stl::iterator_traits<InputIterator>::iterator_category());
-        }
-
-        void assign(size_type n, const value_type& u)
-        {
-            if(n > max_size())
+            if(count > max_size())
                 throw stl::exception("size is too big");
 
-            size_type n1 = 0;
-            list_node<container>* nod1 = m_begin;
-            while( n1 < n )
-            {
-                if(n1 < m_size)
-                {
-                    nod1->m_T = u;
+            size_type n = 0;
+            list_node<container>* node = m_begin;
 
-                    nod1 = nod1->m_next;
+            // fill n positions
+            while(n < count)
+            {
+                if(n < m_size)
+                {
+                    node->m_T = value;
+                    node = node->m_next;
                 }
                 else
                 {
                     // grow
-                    push_back(u);
+                    push_back(value);
                 }
 
-                ++n1;
+                ++n;
             }
 
             // remove tail
-            while(n1 < m_size)
+            while(n < m_size)
             {
                 pop_back();
             }
@@ -923,11 +927,9 @@ namespace stl
 
         allocator_type get_allocator() const
         {
-            return m_node_alloc;
+            return m_nallocator;
         }
 
-
-        // $23.2.2. iterators:
         iterator begin ()
         {
             return iterator(m_begin, this);
@@ -984,7 +986,7 @@ namespace stl
 
         bool empty() const
         {
-            return m_size == 0;
+            return (m_size == 0);
         }
 
         size_type size() const
@@ -997,19 +999,19 @@ namespace stl
             return static_cast<size_type>(-1) / sizeof(value_type);
         }
 
-        void resize(size_type sz, value_type c = value_type())
+        void resize(size_type n, value_type value = value_type())
         {
-            if(sz > m_size)
+            if(n > m_size)
             {
-                while(m_size < sz)
+                while(m_size < n)
                 {
                     // grow
-                    push_back(c);
+                    push_back(value);
                 }
             }
             else
             {
-                while(m_size > sz)
+                while(m_size > n)
                 {
                     // remove tail
                     pop_back();
@@ -1017,57 +1019,60 @@ namespace stl
             }
         }
 
-
         reference front()
         {
+#ifdef DEBUG
             if(m_size == 0)
                 throw stl::exception("empty container");
-
+#endif
             return m_begin->m_T;
         }
 
         const_reference front() const
         {
+#ifdef DEBUG
             if(m_size == 0)
                 throw stl::exception("empty container");
-
+#endif
             return m_begin->m_T;
         }
 
         reference back()
         {
+#ifdef DEBUG
             if(m_size == 0)
                 throw stl::exception("empty container");
-
+#endif
             return m_end->m_prev->m_T;
         }
 
         const_reference back() const
         {
+#ifdef DEBUG
             if(m_size == 0)
                 throw stl::exception("empty container");
-
+#endif
             return m_end->m_prev->m_T;
         }
 
-        void push_front(const value_type& x)
+        void push_front(const value_type& value)
         {
-            list_node<container>* nod = m_node_alloc.allocate(1);
-            m_node_alloc.construct(nod, x);
+            list_node<container>* node = m_nallocator.allocate(1);
+            m_nallocator.construct(node, value);
 
             if(m_size == 0)
             {
-                m_end->m_prev = nod;
-                nod->m_next = m_end;
-                nod->m_prev = 0;
-                m_begin = nod;
+                node->m_prev = 0;
+                node->m_next = m_end;
+                m_end->m_prev = node;
+                m_begin = node;
             }
             else
             {
-                m_begin->m_prev = nod;
-                nod->m_next = m_begin;
-                nod->m_prev = 0;
-                m_begin = nod;
+                node->m_prev = 0;
+                node->m_next = m_begin;
+                m_begin->m_prev = node;
+                m_begin = node;
             }
 
             ++m_size;
@@ -1075,13 +1080,14 @@ namespace stl
 
         void pop_front()
         {
+#ifdef DEBUG
             if(m_size == 0)
                 throw stl::exception("container is empty");
-
+#endif
             list_node<container>* next = m_begin->m_next;
 
-            m_node_alloc.destroy(m_begin);
-            m_node_alloc.deallocate(m_begin, 1);
+            m_nallocator.destroy(m_begin);
+            m_nallocator.deallocate(m_begin, 1);
 
             next->m_prev = 0;
             m_begin = next;
@@ -1089,31 +1095,24 @@ namespace stl
             --m_size;
         }
 
-        void push_back(const value_type& x)
+        void push_back(const value_type& value)
         {
-            list_node<container>* nod = m_node_alloc.allocate(1);
-            m_node_alloc.construct(nod, x);
+            list_node<container>* node = m_nallocator.allocate(1);
+            m_nallocator.construct(node, value);
 
             if(m_size == 0)
             {
-                // assign m_begin
-                m_end->m_prev = nod;
-
-                nod->m_next = m_end;
-                nod->m_prev = 0;
-
-                m_begin = nod;
+                node->m_prev = 0;
+                node->m_next = m_end;
+                m_end->m_prev = node;
+                m_begin = node;
             }
             else
             {
-                // insert
-                list_node<container>* prev = m_end->m_prev;
-                m_end->m_prev = nod;
-
-                nod->m_next = m_end;
-                nod->m_prev = prev;
-
-                prev->m_next = nod;
+                node->m_prev = m_end->m_prev;
+                node->m_next = m_end;
+                node->m_prev->m_next = node;
+                m_end->m_prev = node;
             }
 
             ++m_size;
@@ -1121,26 +1120,27 @@ namespace stl
 
         void pop_back()
         {
+#ifdef DEBUG
             if(m_size == 0)
                 throw stl::exception("container is empty");
-
+#endif
             // > 1
             if(m_size > 1)
             {
                 list_node<container>* nod = m_end->m_prev;
                 list_node<container>* prev = nod->m_prev;
 
-                m_node_alloc.destroy(nod);
-                m_node_alloc.deallocate(nod, 1);
+                m_nallocator.destroy(nod);
+                m_nallocator.deallocate(nod, 1);
 
-                m_end->m_prev = prev;
                 prev->m_next = m_end;
+                m_end->m_prev = prev;                
             }
             // == 1
             else
             {
-                m_node_alloc.destroy(m_begin);
-                m_node_alloc.deallocate(m_begin, 1);
+                m_nallocator.destroy(m_begin);
+                m_nallocator.deallocate(m_begin, 1);
 
                 m_end->m_prev = 0;
                 m_begin = m_end;
@@ -1149,50 +1149,46 @@ namespace stl
             --m_size;
         }
 
-        iterator insert(iterator position, const value_type& x)
+        iterator insert(iterator position, const value_type& value)
         {
+#ifdef DEBUG
             if(position.m_cont != this)
                 throw stl::exception("Invalid iterator.");
+#endif
+            list_node<container>* node = m_nallocator.allocate(1);
+            m_nallocator.construct(node, value);
 
-            list_node<container>* nod = m_node_alloc.allocate(1);
-            m_node_alloc.construct(nod, x);
-
-            list_node<container>* pos = position.m_node;
-            if(pos == m_begin)
+            list_node<container>* pos = position.m_node;            
+            // front
+            if (pos == m_begin)
             {
-                // assign m_begin
-                m_begin->m_prev = nod;
-
-                nod->m_next = m_begin;
-                nod->m_prev = 0;
-
-                m_begin = nod;
+                node->m_prev = 0;
+                node->m_next = m_begin;
+                m_begin->m_prev = node;
+                m_begin = node;
             }
-            // similar with (pos == m_end)
+            // middle or end
             else
             {
-                // insert
-                list_node<container>* prev = pos->m_prev;
-                pos->m_prev = nod;
-
-                nod->m_next = pos;
-                nod->m_prev = prev;
-
-                prev->m_next = nod;
+                node->m_prev = pos->m_prev;
+                node->m_next = pos;
+                pos->m_prev->m_next = node;
+                pos->m_prev = node;
             }
 
             ++m_size;
-            return iterator(nod, this);
+
+            return iterator(node, this);
         }
 
-        void insert(iterator position, size_type n, const value_type& x)
+        void insert(iterator position, size_type n, const value_type& value)
         {
             if(n > max_size())
                 throw stl::exception("size is too big");
 
             for(size_type i=0; i < n; ++i)
             {
-                insert(position, x);
+                insert(position, value);
             }
         }
 
@@ -1232,8 +1228,8 @@ namespace stl
                 next->m_prev = prev;
             }
 
-            m_node_alloc.destroy(nod);
-            m_node_alloc.deallocate(nod, 1);
+            m_nallocator.destroy(nod);
+            m_nallocator.deallocate(nod, 1);
 
             // size
             --m_size;
@@ -1259,13 +1255,15 @@ namespace stl
 
         void clear()
         {
-            list_node<container>* next;
-            for(; m_begin != m_end; m_begin = next)
+            list_node<container>* next = 0;
+            while(m_begin != m_end)
             {
                 next = m_begin->m_next;
 
-                m_node_alloc.destroy(m_begin);
-                m_node_alloc.deallocate(m_begin, 1);
+                m_nallocator.destroy(m_begin);
+                m_nallocator.deallocate(m_begin, 1);
+
+                m_begin = next;
             }
 
             m_end->m_prev = 0;
