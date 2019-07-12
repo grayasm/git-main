@@ -71,24 +71,34 @@ private:
 
 int main()
 {
-    typedef stl::list<int> IList;
-    IList il;
-    
+    typedef stl::list<int> ilist;
+    ilist il1, il2;
+    for (int i = 1; i <= 10; ++i)
+        il1.push_back(i);
 
-    il.insert(il.begin(), 10);
-    il.insert(il.begin(), 5);
+    ilist::iterator it = il1.begin();
+    stl::advance(it, 4);
+    il1.splice(it, il1, it);
 
-    IList::iterator it = il.begin();
-    ++it;
-    
-    il.insert(it, 3);
-    
-    // size_t size = il.size();
 
-    IList::iterator rit = il.begin();
-    int i1 = *rit;
-    int i2 = *(++rit);
-    int i3 = *(++rit);
-    
+    //for (int i = 4; i <= 7; ++i)
+    //    il1.push_back(-1 * i);
+
+    //for (int i = 8; i <= 10; ++i)
+    //    il1.push_back(i);
+
+
+    //std::list<int>::iterator it4 = il1.begin();
+    //std::advance(it4, 3);
+    //std::list<int>::iterator it4(it2);
+    //std::advance(it4, 2);
+
+    //il1.splice(it2, il1, it4, il1.end());
+
+    //std::list<int>::iterator 
+        it = il1.begin();
+    for (; it != il1.end(); ++it)
+        printf("value: %d\n", *it);
+        
     return 0;
 }

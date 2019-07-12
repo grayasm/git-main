@@ -1151,14 +1151,21 @@ namespace stl
 
         iterator insert(iterator position, const value_type& value)
         {
+            insert_(position, value);
+            return --position;
+        }
+
+    private:
+        inline void insert_(iterator& position, const value_type& value)
+        {
 #ifdef DEBUG
-            if(position.m_cont != this)
+            if (position.m_cont != this)
                 throw stl::exception("Invalid iterator.");
 #endif
             list_node<container>* node = m_nallocator.allocate(1);
             m_nallocator.construct(node, value);
 
-            list_node<container>* pos = position.m_node;            
+            list_node<container>* pos = position.m_node;
             // front
             if (pos == m_begin)
             {
@@ -1177,283 +1184,332 @@ namespace stl
             }
 
             ++m_size;
-
-            return iterator(node, this);
         }
 
+    public:
         void insert(iterator position, size_type n, const value_type& value)
         {
-            if(n > max_size())
-                throw stl::exception("size is too big");
-
-            for(size_type i=0; i < n; ++i)
+            for(size_type i = 0; i < n; ++i)
             {
-                insert(position, value);
+                insert_(position, value);
             }
         }
 
         template<class InputIterator>
         void insert(iterator position, InputIterator first, InputIterator last)
         {
-            while(first != last)
+            for (; first != last; ++first)
             {
-                // always before (unchanged) position
-                insert(position, *first);
-                ++first;
+                insert_(position, *first);
             }
         }
 
-
         iterator erase(iterator position)
         {
-            if(position.m_cont != this || position.m_node == m_end)
+            iterator next(position);
+            ++next;
+
+            erase_(position);
+
+            return next;
+        }
+
+
+    private:
+        inline void erase_(iterator& position)
+        {
+#ifdef DEBUG
+            if (position.m_cont != this || position.m_node == m_end)
                 throw stl::exception("Invalid iterator.");
+#endif
+            list_node<container>* node = position.m_node;
 
-
-            list_node<container>* nod = position.m_node;
-            list_node<container>* next = nod->m_next;
-
-            if(nod == m_begin)
+            if (node == m_begin)
             {
-                // move m_begin
-                m_begin = m_begin->m_next;
+                m_begin = node->m_next;
                 m_begin->m_prev = 0;
             }
             else
             {
-                // untie position node
-                list_node<container>* prev = nod->m_prev;
-
-                prev->m_next = next;
-                next->m_prev = prev;
+                node->m_prev->m_next = node->m_next;
+                node->m_next->m_prev = node->m_prev;
             }
 
-            m_nallocator.destroy(nod);
-            m_nallocator.deallocate(nod, 1);
+            m_nallocator.destroy(node);
+            m_nallocator.deallocate(node, 1);
 
-            // size
             --m_size;
-
-            return iterator(next, this);
         }
 
+
+    public:
         iterator erase(iterator first, iterator last)
         {
-            while(first != last)
+            iterator next(first);
+            while (next != last)
             {
-                first = erase(first);
+                ++next;
+                erase_(first);
+                first = next;
             }
-            return first;
+            return next;
         }
 
-        void swap(container& lst)
+        void swap(container& x)
         {
-            stl::swap<list_node<container>*>(m_begin, lst.m_begin);
-            stl::swap<list_node<container>*>(m_end, lst.m_end);
-            stl::swap<size_type>(m_size, lst.m_size);
+            stl::swap(m_begin, x.m_begin);
+            stl::swap(m_end, x.m_end);
+            stl::swap(m_size, x.m_size);
+            stl::swap(m_nallocator, t.m_nallocator);
         }
 
         void clear()
         {
-            list_node<container>* next = 0;
-            while(m_begin != m_end)
+            list_node<container>* node = 0;
+            while (m_begin != m_end)
             {
-                next = m_begin->m_next;
-
-                m_nallocator.destroy(m_begin);
-                m_nallocator.deallocate(m_begin, 1);
-
-                m_begin = next;
+                node = m_begin;
+                m_begin = m_begin->m_next;
+                
+                m_nallocator.destroy(node);
+                m_nallocator.deallocate(node, 1);
             }
 
             m_end->m_prev = 0;
-            m_begin = m_end;
             m_size = 0;
         }
 
+        /*  Transfers elements from x into the container, inserting them
+            at (before) position. This effectively inserts those elements
+            into the container and removes them from x, altering the sizes
+            of both containers. The operation does not involve the
+            construction or destruction of any element. They are transferred,
+            no matter whether x is an l-value or an r-value, or whether
+            the value_type supports move-construction or not.
+        */
         void splice(iterator position, container& x)
         {
-            /*
-              Inserts the contents of x before position and x becomes empty.
-              Invalidates all iterators and references to the list x.
-            */
-            if(position.m_cont != this)
+#ifdef DEBUG
+            if (position.m_cont != this)
                 throw stl::exception("Invalid iterator.");
+#endif
 
-            if(&x == this || x.empty())
-                return;
-
-            list_node<container>* first = x.m_begin;
-            list_node<container>* last = x.m_end->m_prev;
-
-            if(position.m_node == m_begin)
+            if (this != &x && !x.empty())
             {
-                // tie last node
-                m_begin->m_prev = last;
-                last->m_next = m_begin;
+                list_node<container>* first = x.m_begin;
+                list_node<container>* last = x.m_end->m_prev;
 
-                // new list begin
-                m_begin = first;
+                if (position.m_node == m_begin)
+                {
+                    // tie last node
+                    m_begin->m_prev = last;
+                    last->m_next = m_begin;
+
+                    // new list begin
+                    m_begin = first;
+                }
+                else
+                {
+                    list_node<container>* prev = position.m_node->m_prev;
+                    list_node<container>* next = position.m_node;
+
+                    // tie first
+                    prev->m_next = first;
+                    first->m_prev = prev;
+
+                    // tie last
+                    next->m_prev = last;
+                    last->m_next = next;
+                }
+
+                // grow
+                m_size += x.m_size;
+
+                // clear source list
+                x.m_end->m_prev = 0;
+                x.m_begin = x.m_end;
+                x.m_size = 0;
             }
-            else
-            {
-                list_node<container>* prev = position.m_node->m_prev;
-                list_node<container>* next = position.m_node;
-
-                // tie first
-                prev->m_next = first;
-                first->m_prev = prev;
-
-                // tie last
-                next->m_prev = last;
-                last->m_next = next;
-            }
-
-            // grow
-            m_size += x.m_size;
-
-            // clear source list
-            x.m_end->m_prev = 0;
-            x.m_begin = x.m_end;
-            x.m_size = 0;            
         }
 
 
-
-        void splice(iterator position, container& x, iterator i)
+        /*  This version transfers only the element pointed by it
+            from x into the container.
+        */
+        void splice(iterator position, container& x, iterator it)
         {
-            /*
-              Inserts an element pointed to by i from list x before position and removes the element from x.
-              The result is unchanged if position == i or position == ++i.
-              Invalidates only the iterators and references to the spliced element.
-            */
-            if(position.m_cont != this || i.m_cont != &x || i.m_node == x.m_end)
+#ifdef DEBUG
+            if (position.m_cont != this)
                 throw stl::exception("Invalid iterator.");
-
-            list_node<container>* inode = i.m_node;
-            if(&x == this && (position.m_node == inode || position.m_node == inode->m_next))
-                return;
-
-            if(inode == x.m_begin)
+#endif
+            if (this != &x && it.m_node != x.m_end)
             {
-                // disconnect iterator
-                inode->m_next->m_prev = 0;
-                x.m_begin = inode->m_next;
-            }
-            else
-            {
-                // disconnect iterator
-                inode->m_prev->m_next = inode->m_next;
-                inode->m_next->m_prev = inode->m_prev;
-            }
+                // untie it from x
+                list_node<container>* node = it.m_node;
+                if (node == x.m_begin)
+                {
+                    x.m_begin = node->m_next;
+                    x.m_begin->m_prev = 0;
+                }
+                else
+                {
+                    node->m_prev->m_next = node->m_next;
+                    node->m_next->m_prev = node->m_prev;
+                }
+                --x.m_size;
 
 
-            if(position.m_node == m_begin)
-            {
-                // assign m_begin
-                m_begin->m_prev = inode;
-                inode->m_next = m_begin;
-                inode->m_prev = 0;
+                // add node to container
+                list_node<container>* pos = position.m_node;
+                if (pos == m_begin)
+                {
+                    m_begin->m_prev = node;
+                    node->m_next = m_begin;
+                    node->m_prev = 0;
+                    m_begin = node;
+                }
+                else
+                {
+                    list_node<container>* prev = pos->m_prev;
+                    list_node<container>* next = pos;
 
-                m_begin = inode;
-            }
-            else
-            {
-                // connect
-                list_node<container>* prev = position.m_node->m_prev;
-                list_node<container>* next = position.m_node;
+                    prev->m_next = node;
+                    node->m_prev = prev;
 
-                prev->m_next = inode;
-                inode->m_prev = prev;
-
-                next->m_prev = inode;
-                inode->m_next = next;
+                    node->m_next = next;
+                    next->m_prev = node;
+                }
+                ++m_size;
             }
         }
 
-
+        /*  This version transfers the range [first,last) from x
+            into the container.
+        */
         void splice(iterator position, container& x, iterator first, iterator last)
         {
-            /*
-              Inserts elements in the range [first, last) before position and removes the elements from x.
-              Requires that [first, last) to be a valid range in x.
-              The result is undefined if position is an iterator in the range [first, last).
-              Invalidates only the iterators and references to the spliced elements.
-            */
-            if( position.m_cont != this || first.m_cont != &x || last.m_cont != &x)
+#ifdef DEBUG
+            if (position.m_cont != this || first.m_cont != &x || first.m_cont != last.m_cont)
                 throw stl::exception("Invalid iterator.");
-
-            if(x.empty() || first == last)
-                return;
-
-
-            // safety check
-            if(this == &x)
+#endif
+            if (this != &x && first != last)
             {
-                // The result is unchanged if position == first or position == ++first.
-                list_node<container>* inode = first.m_node;
-                if(position.m_node == inode || position.m_node == inode->m_next)
-                    return;
+                size_type dist = stl::distance(first, last);
 
-                // check for invalid condition: position inside [first, last] range
-                list_node<container>* nod = first.m_node;
-                list_node<container>* nod2 = last.m_node;
-                bool bfound = false;
-                for(; nod != nod2; nod = nod->m_next)
+                list_node<container>* node1 = first.m_node;
+                list_node<container>* node2 = last.m_node->m_prev;
+
+                // untie [first,last) range from x
+                if (node1 == x.m_begin)
                 {
-                    if(position.m_node == nod)
-                    {
-                        bfound = true;
-                        break;
-                    }
+                    x.m_begin = last;
+                    x.m_begin->m_prev = 0;
                 }
-                if(bfound || position.m_node == nod)
+                else
                 {
-                    throw stl::exception("Insert position is inside [first, last] range. Result is undefined.");
+                    node1->m_prev->m_next = last;
+                    last->m_prev = node1->m_prev;
                 }
+                x.m_size -= dist;
+
+                // add [first, last) to container
+                list_node<container>* pos = position.m_node;
+                if (pos == m_begin)
+                {
+                    m_begin->m_prev = node2;
+                    node2->m_next = m_begin;
+
+                    m_begin = node1;
+                    m_begin->m_prev = 0;
+                }
+                else
+                {
+                    list_node<container>* prev = pos->m_prev;
+                    list_node<container>* next = pos;
+
+                    prev->m_next = node1;
+                    node1->m_prev = prev;
+
+                    node2->m_next = next;
+                    next->m_prev = node2;
+                }
+                m_size += dist;
             }
+            
+
+            //
+            //if( position.m_cont != this || first.m_cont != &x || last.m_cont != &x)
+            //    throw stl::exception("Invalid iterator.");
+
+            //if(x.empty() || first == last)
+            //    return;
+
+            //// safety check
+            //if(this == &x)
+            //{
+            //    // The result is unchanged if position == first or position == ++first.
+            //    list_node<container>* inode = first.m_node;
+            //    if(position.m_node == inode || position.m_node == inode->m_next)
+            //        return;
+
+            //    // check for invalid condition: position inside [first, last] range
+            //    list_node<container>* nod = first.m_node;
+            //    list_node<container>* nod2 = last.m_node;
+            //    bool bfound = false;
+            //    for(; nod != nod2; nod = nod->m_next)
+            //    {
+            //        if(position.m_node == nod)
+            //        {
+            //            bfound = true;
+            //            break;
+            //        }
+            //    }
+            //    if(bfound || position.m_node == nod)
+            //    {
+            //        throw stl::exception("Insert position is inside [first, last] range. Result is undefined.");
+            //    }
+            //}
 
 
-            // disconnect [first, last) from owner
-            list_node<container>* sbeg = first.m_node;
-            list_node<container>* send = last.m_node->m_prev;
-            if(sbeg == x.m_begin)
-            {
-                last.m_node->m_prev = 0;
-                x.m_begin = last.m_node;
-            }
-            else
-            {
-                sbeg->m_prev->m_next = send->m_next;
-                send->m_next->m_prev = sbeg->m_prev;
-            }
+            //// disconnect [first, last) from owner
+            //list_node<container>* sbeg = first.m_node;
+            //list_node<container>* send = last.m_node->m_prev;
+            //if(sbeg == x.m_begin)
+            //{
+            //    last.m_node->m_prev = 0;
+            //    x.m_begin = last.m_node;
+            //}
+            //else
+            //{
+            //    sbeg->m_prev->m_next = send->m_next;
+            //    send->m_next->m_prev = sbeg->m_prev;
+            //}
 
 
-            // connect range [first, last) into this list
-            list_node<container>* dbeg = position.m_node->m_prev;
-            list_node<container>* dend = position.m_node;
+            //// connect range [first, last) into this list
+            //list_node<container>* dbeg = position.m_node->m_prev;
+            //list_node<container>* dend = position.m_node;
 
-            if(position.m_node == m_begin)
-            {
-                // assign m_begin
-                sbeg->m_prev = 0;
+            //if(position.m_node == m_begin)
+            //{
+            //    // assign m_begin
+            //    sbeg->m_prev = 0;
 
-                send->m_next = m_begin;
-                m_begin->m_prev = send;
+            //    send->m_next = m_begin;
+            //    m_begin->m_prev = send;
 
-                m_begin = sbeg;
-            }
-            else
-            {
-                // insert range
-                dbeg->m_next = sbeg;
-                sbeg->m_prev = dbeg;
+            //    m_begin = sbeg;
+            //}
+            //else
+            //{
+            //    // insert range
+            //    dbeg->m_next = sbeg;
+            //    sbeg->m_prev = dbeg;
 
-                send->m_next = dend;
-                dend->m_prev = send;
-            }
+            //    send->m_next = dend;
+            //    dend->m_prev = send;
+            //}
         }
-
 
         void remove(const value_type& value)
         {
