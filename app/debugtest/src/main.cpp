@@ -68,9 +68,9 @@
 //    int* m_i;
 //};
 
-bool eq(int v)
+bool eq(int lft, int rgt)
 {
-    return v == 5;
+    return lft == rgt;
 }
 
 int main()
@@ -79,15 +79,15 @@ int main()
     ilist il1;
     for (int i = 1; i <= 10; ++i)
     {
-        il1.push_back(i-3);
         il1.push_back(i);
-        il1.push_back(i+3);
+        il1.push_back(i);
+        il1.push_back(i);
     }
 
     for (ilist::iterator it = il1.begin(); it != il1.end(); ++it)
         printf("value: %d\n", *it);
 
-    il1.remove_if(eq);
+    il1.unique(eq);
     
     for (ilist::iterator it = il1.begin(); it != il1.end(); ++it)
         printf("value: %d\n", *it);

@@ -1532,53 +1532,70 @@ namespace stl
             }
         }
 
+        /*  Remove duplicate values.
+            This version removes all but the first element from every
+            consecutive group of equal elements in the container.
+            Notice that an element is only removed from the list container
+            if it compares equal to the element immediately preceding it.
+            Thus, this function is especially useful for sorted lists.
 
+            The elements removed are destroyed.
+        */
         void unique()
         {
-            /*
-              Eliminates all but the first element from every consecutive group of equal elements referred to by
-              the iterator i in the range [first + 1, last) for which *i == *(i-1) or pred(*i, *(i - 1)) holds.
-            */
             if(m_size < 2)
                 return;
 
-            iterator it2(m_begin->m_next, this);
-            for(iterator it = begin(); it2.m_node != m_end;)
+            list_node<container>* nod1 = m_begin;
+            list_node<container>* nod2 = nod1->m_next;
+            while (nod2 != m_end)
             {
-                if( *it == *it2 )
+                if (nod1->m_T == nod2->m_T)
                 {
-                    it2 = erase(it2);
+                    iterator del(nod2, this);
+                    nod2 = nod2->m_next;
+                    erase_(del);
                     continue;
                 }
-                else
-                {
-                    ++it;
-                    ++it2;
-                }
+
+                nod1 = nod1->m_next;
+                nod2 = nod2->m_next;
             }
         }
 
+        /*  Remove duplicate values.
+            Removes all consecutive duplicate elements from the container.
+            Only the first element in each group of equal elements is left.
+            This version takes as argument a specific comparison function
+            that determine the "uniqueness" of an element. In fact, any
+            behavior can be implemented (and not only an equality comparison),
+            but notice that the function will call binary_pred(*i,*(i-1))
+            for all pairs of elements (where i is an iterator to an element,
+            starting from the second) and remove i from the list
+            if the predicate returns true.
 
+            The elements removed are destroyed.
+        */
         template<typename BinaryPredicate>
         void unique(BinaryPredicate binary_pred)
         {
-            // see explanation above.
-            if(m_size < 2)
+            if (m_size < 2)
                 return;
 
-            iterator it2(m_begin->m_next, this);
-            for(iterator it = begin(); it2.m_node != m_end;)
+            list_node<container>* nod1 = m_begin;
+            list_node<container>* nod2 = nod1->m_next;
+            while (nod2 != m_end)
             {
-                if( binary_pred(*it, *it2) )
+                if (binary_pred(nod2->m_T, nod1->m_T))
                 {
-                    it2 = erase(it2);
+                    iterator del(nod2, this);
+                    nod2 = nod2->m_next;
+                    erase_(del);
                     continue;
                 }
-                else
-                {
-                    ++it;
-                    ++it2;
-                }
+
+                nod1 = nod1->m_next;
+                nod2 = nod2->m_next;
             }
         }
 
