@@ -1286,6 +1286,8 @@ namespace stl
             construction or destruction of any element. They are transferred,
             no matter whether x is an l-value or an r-value, or whether
             the value_type supports move-construction or not.
+
+            The behavior is undefined if: get_allocator() != x.get_allocator()
         */
         void splice(iterator position, container& x)
         {
@@ -1293,7 +1295,6 @@ namespace stl
             if (position.m_cont != this)
                 throw stl::exception("Invalid iterator.");
 #endif
-
             if (this != &x && !x.empty())
             {
                 list_node<container>* first = x.m_begin;
@@ -1335,6 +1336,8 @@ namespace stl
 
         /*  This version transfers only the element pointed by it
             from x into the container.
+
+            The behavior is undefined if: get_allocator() != x.get_allocator()
         */
         void splice(iterator position, container& x, iterator it)
         {
@@ -1342,7 +1345,17 @@ namespace stl
             if (position.m_cont != this)
                 throw stl::exception("Invalid iterator.");
 #endif
-            if (this != &x && it.m_node != x.m_end)
+            // inserting from self (safety check)
+            if (this == &x)
+            {
+                // same position: nothing to do.
+                if (position.m_node == it.m_node ||
+                    (it.m_node != m_end && position.m_node == it.m_node->m_next))
+                    return;
+            }
+
+            // allows inserting from self
+            if (it.m_node != x.m_end)
             {
                 // untie it from x
                 list_node<container>* node = it.m_node;
@@ -1385,6 +1398,10 @@ namespace stl
 
         /*  This version transfers the range [first,last) from x
             into the container.
+
+            The behavior is undefined if: get_allocator() != x.get_allocator()
+            The behavior is undefined if position is an iterator
+            in the range [first,last).
         */
         void splice(iterator position, container& x, iterator first, iterator last)
         {
@@ -1392,7 +1409,26 @@ namespace stl
             if (position.m_cont != this || first.m_cont != &x || first.m_cont != last.m_cont)
                 throw stl::exception("Invalid iterator.");
 #endif
-            if (this != &x && first != last)
+            // inserting from self (safety check)
+            if(this == &x)
+            {
+                // same position: nothing to do.
+                if (position.m_node == first.m_node ||
+                    (first != last && position.m_node == first.m_node->m_next))
+                    return;
+
+                // UB if position is inside [first,last)
+                list_node<container>* nod1 = first.m_node;
+                list_node<container>* nod2 = last.m_node;
+                for(; nod1 != nod2; nod1 = nod1->m_next)
+                {
+                    if(nod1 == position.m_node)
+                        throw stl::exception("Invalid iterator.");
+                }
+            }
+
+            // allows inserting from self
+            if (first != last)
             {
                 size_type dist = stl::distance(first, last);
 
@@ -1402,13 +1438,13 @@ namespace stl
                 // untie [first,last) range from x
                 if (node1 == x.m_begin)
                 {
-                    x.m_begin = last;
+                    x.m_begin = last.m_node;
                     x.m_begin->m_prev = 0;
                 }
                 else
                 {
-                    node1->m_prev->m_next = last;
-                    last->m_prev = node1->m_prev;
+                    node1->m_prev->m_next = last.m_node;
+                    last.m_node->m_prev = node1->m_prev;
                 }
                 x.m_size -= dist;
 
@@ -1435,121 +1471,64 @@ namespace stl
                 }
                 m_size += dist;
             }
-            
-
-            //
-            //if( position.m_cont != this || first.m_cont != &x || last.m_cont != &x)
-            //    throw stl::exception("Invalid iterator.");
-
-            //if(x.empty() || first == last)
-            //    return;
-
-            //// safety check
-            //if(this == &x)
-            //{
-            //    // The result is unchanged if position == first or position == ++first.
-            //    list_node<container>* inode = first.m_node;
-            //    if(position.m_node == inode || position.m_node == inode->m_next)
-            //        return;
-
-            //    // check for invalid condition: position inside [first, last] range
-            //    list_node<container>* nod = first.m_node;
-            //    list_node<container>* nod2 = last.m_node;
-            //    bool bfound = false;
-            //    for(; nod != nod2; nod = nod->m_next)
-            //    {
-            //        if(position.m_node == nod)
-            //        {
-            //            bfound = true;
-            //            break;
-            //        }
-            //    }
-            //    if(bfound || position.m_node == nod)
-            //    {
-            //        throw stl::exception("Insert position is inside [first, last] range. Result is undefined.");
-            //    }
-            //}
-
-
-            //// disconnect [first, last) from owner
-            //list_node<container>* sbeg = first.m_node;
-            //list_node<container>* send = last.m_node->m_prev;
-            //if(sbeg == x.m_begin)
-            //{
-            //    last.m_node->m_prev = 0;
-            //    x.m_begin = last.m_node;
-            //}
-            //else
-            //{
-            //    sbeg->m_prev->m_next = send->m_next;
-            //    send->m_next->m_prev = sbeg->m_prev;
-            //}
-
-
-            //// connect range [first, last) into this list
-            //list_node<container>* dbeg = position.m_node->m_prev;
-            //list_node<container>* dend = position.m_node;
-
-            //if(position.m_node == m_begin)
-            //{
-            //    // assign m_begin
-            //    sbeg->m_prev = 0;
-
-            //    send->m_next = m_begin;
-            //    m_begin->m_prev = send;
-
-            //    m_begin = sbeg;
-            //}
-            //else
-            //{
-            //    // insert range
-            //    dbeg->m_next = sbeg;
-            //    sbeg->m_prev = dbeg;
-
-            //    send->m_next = dend;
-            //    dend->m_prev = send;
-            //}
         }
 
+        /*  Remove elements with specific value.
+            Removes from the container all the elements that compare equal
+            to value. This calls the destructor of these objects and reduces
+            the container size by the number of elements removed.
+
+            Unlike member function list::erase, which erases elements
+            by their position (using an iterator), this function (list::remove)
+            removes elements by their value.
+
+            A similar function, list::remove_if, exists, which allows
+            for a condition other than an equality comparison to determine
+            whether an element is removed.
+        */
         void remove(const value_type& value)
         {
-            /*
-              Erases all the elements in the list referred by a list iterator i,
-              for which the following conditions hold: *i == value, pred(*i) != false.
-              Throws nothing unless an exception is thrown by *i == value or pred(*i) != false.
-              Stable as the relative order of the elements that are not removed
-              is the same as their relative order in the original list.
-            */
-            for(iterator it = begin(); it.m_node != m_end;)
+            list_node<container>* node = m_begin;
+            while (node != m_end)
             {
-                if( *it == value )
+                if (node->m_T == value)
                 {
-                    it = erase(it);
+                    iterator del(node, this);
+                    node = node->m_next;
+                    erase_(del);
                     continue;
                 }
-                else
-                {
-                    ++it;
-                }
+
+                node = node->m_next;
             }
         }
 
+        /*  Remove elements fulfilling condition.
+            Removes from the container all the elements for which
+            Predicate pred returns true. This calls the destructor
+            of these objects and reduces the container size by the
+            number of elements removed.
 
+            The function calls pred(*i) for each element
+            (where i is an iterator to that element).
+            Any of the elements in the list for which this returns true,
+            are removed from the container.
+        */
         template<typename Predicate>
         void remove_if(Predicate pred)
         {
-            // see explanation above.
-            for(iterator it = begin(); it.m_node != m_end;)
+            list_node<container>* node = m_begin;
+            while (node != m_end)
             {
-                if( pred(*it) )
+                if (pred(node->m_T))
                 {
-                    it = erase(it);
+                    iterator del(node, this);
+                    node = node->m_next;
+                    erase_(del);
                     continue;
                 }
-                else
-                {
-                    ++it;
-                }
+
+                node = node->m_next;
             }
         }
 
