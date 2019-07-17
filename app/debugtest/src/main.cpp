@@ -3,6 +3,7 @@
 #include <list>
 #include <vector>
 #include <limits>
+#include <time.h>
 #include <vector.hpp>
 #include <basic_string.hpp>
 #include "list.hpp"
@@ -77,20 +78,19 @@ int main()
 {
     typedef stl::list<int> ilist;
     ilist il1;
-    for (int i = 1; i <= 10; ++i)
-    {
-        il1.push_back(i);
-        il1.push_back(i);
-        il1.push_back(i);
-    }
 
-    for (ilist::iterator it = il1.begin(); it != il1.end(); ++it)
-        printf("value: %d\n", *it);
+    for (int i = 10; i > 0; --i)
+        il1.push_back(i);
 
-    il1.unique(eq);
-    
+    printf("----before reverse-----\n");
     for (ilist::iterator it = il1.begin(); it != il1.end(); ++it)
-        printf("value: %d\n", *it);
-        
+        printf("il1: %d\n", *it);
+
+    il1.reverse();
+
+    printf("----after reverse-----\n");
+    for (ilist::iterator it = il1.begin(); it != il1.end(); ++it)
+        printf("il1: %d\n", *it);
+
     return 0;
 }

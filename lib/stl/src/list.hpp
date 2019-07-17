@@ -1260,7 +1260,7 @@ namespace stl
             stl::swap(m_begin, x.m_begin);
             stl::swap(m_end, x.m_end);
             stl::swap(m_size, x.m_size);
-            stl::swap(m_nallocator, t.m_nallocator);
+            stl::swap(m_nallocator, x.m_nallocator);
         }
 
         void clear()
@@ -1599,78 +1599,136 @@ namespace stl
             }
         }
 
+        /*  Merge sorted lists.
+            Merges x into the list by transferring all of its elements
+            at their respective ordered positions into the container
+            (both containers shall already be ordered).
 
+            This effectively removes all the elements in x (which becomes empty),
+            and inserts them into their ordered position within container
+            (which expands in size by the number of elements transferred).
+            The operation is performed without constructing nor destroying
+            any element: they are transferred, no matter whether x is an
+            l-value or an r-value, or whether the value_type supports
+            move-construction or not.
+
+            This function requires that the list containers have their
+            elements already ordered by value before the call.
+            For an alternative on unordered lists, see list::splice.
+        */
+        void merge(container& x)
+        {
+            if (this != &x)
+            {
+                container dest;
+                merge_(*this, x, dest, stl::less<value_type>());
+                swap(dest);
+            }            
+        }
+
+        /*  Merge sorted lists.
+            The template versions have the same behavior as the merge above,
+            but take a specific predicate (comp) to perform the comparison
+            operation between elements.
+            This comparison shall produce a strict weak ordering
+            of the elements (i.e., a consistent transitive comparison,
+            without considering its reflexiveness).
+
+            This function requires that the list containers have their
+            elements already ordered by comp before the call.
+            For an alternative on unordered lists, see list::splice.
+        */
+        template <typename Compare>
+        void merge(container& x, Compare comp)
+        {
+            if (this != &x)
+            {
+                container dest;
+                merge_<Compare>(*this, x, dest, comp);
+                swap(dest);
+            }            
+        }
 
     private:
-//TODO: "merge and sort to be MS comparable as performance"
-
         template<typename Predicate>
-        void merge_impl(container& left, container& right, container& dst, Predicate comp)
+        inline void merge_(container& left, container& right, container& dest, Predicate comp)
         {
-            while(true)
+            while (true)
             {
-                if(left.size() > 0 && right.size() > 0)
+                if (left.size() > 0 && right.size() > 0)
                 {
-                    if( comp(*right.begin(), *left.begin()) )
+                    //if (comp(*right.begin(), *left.begin())) -- slower
+                    if (comp(right.m_begin->m_T, left.m_begin->m_T))
                     {
-                        dst.splice(dst.end(), right, right.begin());
+                        dest.splice(dest.end(), right, right.begin());
                     }
                     else
                     {
-                        dst.splice(dst.end(), left, left.begin());
+                        dest.splice(dest.end(), left, left.begin());
                     }
                 }
-                else if(left.size() > 0)
+                else if (left.size() > 0)
                 {
-                    dst.splice(dst.end(), left);
+                    dest.splice(dest.end(), left);
                 }
-                else if(right.size() > 0)
+                else if (right.size() > 0)
                 {
-                    dst.splice(dst.end(), right);
+                    dest.splice(dest.end(), right);
                 }
                 else
                 {
                     break;
                 }
-            }//while
+            } // while
         }
-
 
     public:
-        void merge(container& x)
+        /*  Sort elements in container.
+            Sorts the elements in the list, altering their position within
+            the container. The sorting is performed by applying an algorithm
+            that uses operator < to compare elements. This comparison shall
+            produce a strict weak ordering of the elements (i.e., a consistent
+            transitive comparison, without considering its reflexiveness).
+
+            The resulting order of equivalent elements is stable:
+            i.e., equivalent elements preserve the relative order they had
+            before the call. The entire operation does not involve
+            the construction, destruction or copy of any element object.
+            Elements are moved within the container.
+        */
+        void sort()
         {
-            /*
-              comp defines a strict weak ordering and the list and the argument list are both sorted according to this ordering.
-              Merges the argument list into the list.
-              For equivalent elements in the two lists, the elements from the list always precede the elements from the argument list.
-              x is empty after the merge.
-            */
-            container dst;
-            merge_impl< stl::less<value_type> >(*this, x, dst, stl::less<value_type>());
-            swap(dst);
+            container dest;
+            merge_sort_(dest, *this, stl::less<value_type>());
+            swap(dest);
         }
 
+        /*  Sort elements in container.
+            The sorting is performed by applying an algorithm that uses
+            comp to compare elements. This comparison shall produce
+            a strict weak ordering of the elements (i.e., a consistent
+            transitive comparison, without considering its reflexiveness).
 
+            The resulting order of equivalent elements is stable:
+            i.e., equivalent elements preserve the relative order they had
+            before the call.
+        */
         template <typename Compare>
-        void merge(container& x, Compare comp)
+        void sort(Compare comp)
         {
-            // see explanation above
-            container dst;
-            merge_impl<Compare>(*this, x, dst, comp);
-            swap(dst);
+            container dest;
+            merge_sort_<Compare>(dest, *this, comp);
+            swap(dest);
         }
-
-
 
     private:
-//TODO: "to be comparable with MS"
-
+        //  http://en.wikipedia.org/wiki/Merge_sort
         template<typename Predicate>
-        void merge_sort(container& dst, container& src, Predicate comp)
+        inline void merge_sort_(container& dest, container& src, Predicate comp)
         {
-            if(src.size() <= 1)
+            if (src.size() <= 1)
             {
-                dst = src;
+                dest = src;
                 return;
             }
 
@@ -1683,59 +1741,31 @@ namespace stl
             left.splice(left.begin(), src, src.begin(), mid);
             right.splice(right.begin(), src);
 
-            // recursively call merge_sort() to further split each sublist
+            // recursively call merge_sort_() to further split each sublist
             // until sublist size is 1
             container subleft;
             container subright;
-            merge_sort<Predicate>(subleft, left, comp);
-            merge_sort<Predicate>(subright, right, comp);
+            merge_sort_<Predicate>(subleft, left, comp);
+            merge_sort_<Predicate>(subright, right, comp);
 
-            // merge the sublists returned from prior calls to merge_sort()
+            // merge the sublists returned from prior calls to merge_sort_()
             // and return the resulting merged sublist
-            merge_impl<Predicate>(subleft, subright, dst, comp);
+            merge_<Predicate>(subleft, subright, dest, comp);
         }
-
 
     public:
-        /*
-          Using merge_sort  http://en.wikipedia.org/wiki/Merge_sort
-          The entire operation does not involve the construction, destruction or copy of any element object.
-          They are moved within the container.
-        */
-        void sort()
-        {
-            container dst;
-            merge_sort< stl::less<value_type> >(dst, *this, stl::less<value_type>());
-            swap(dst);
-        }
-
-
-        /*templated sort*/
-        template <typename Compare>
-        void sort(Compare comp)
-        {
-            container dst;
-            merge_sort<Compare>(dst, *this, comp);
-            swap(dst);
-        }
-
-
         void reverse()
         {
-            if(m_size < 2)
-                return;
-
             // switch neighbors (the order of iteration)
-            list_node<container>* tmp = 0;
-            for(list_node<container>* nod = m_begin; nod != m_end;)
+            for (list_node<container>* node = m_begin; node != m_end;)
             {
-                tmp = nod->m_next;
-                stl::swap<list_node<container>*>(nod->m_next, nod->m_prev);
-                nod = tmp;
+                list_node<container>* next = node->m_next;
+                stl::swap(node->m_next, node->m_prev);
+                node = next;
             }
 
             // re-connect begin & end of the container
-            stl::swap<list_node<container>*>(m_end->m_prev, m_begin);
+            stl::swap(m_end->m_prev, m_begin);
             m_begin->m_prev = 0;
             m_end->m_prev->m_next = m_end;
         }
