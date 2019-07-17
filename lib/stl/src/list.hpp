@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2013 Mihai Vasilian
+  Copyright (C) 2012 Mihai Vasilian
 
   This program is free software; you can redistribute it and/or modify it
   under the terms of the GNU General Public License as published by the
@@ -794,7 +794,7 @@ namespace stl
         explicit list(InputIterator first, InputIterator last, const Allocator& alloc = Allocator())
         {
             init(alloc);
-            assign_(first, last);
+            assign_(first, last, typename stl::iterator_traits<InputIterator>::iterator_category());
         }
 
         list(const container& tc)
@@ -889,7 +889,7 @@ namespace stl
         template<typename InputIterator>
         inline void assign_(InputIterator& n, InputIterator& value, stl::input_iterator_tag)
         {
-            assign(static_cast<size_type>(n), static_cast<T>(value) , val);   
+            assign(static_cast<size_type>(n), static_cast<T>(value));   
         }
 
     public:
@@ -937,7 +937,7 @@ namespace stl
 
         const_iterator begin () const
         {
-            return const_iterator(m_begin, this);
+            return const_iterator(m_begin, const_cast<container*>(this));
         }
 
         iterator end ()
@@ -947,7 +947,7 @@ namespace stl
 
         const_iterator end () const
         {
-            return const_iterator(m_end, this);
+            return const_iterator(m_end, const_cast<container*>(this));
         }
 
         reverse_iterator rbegin()
@@ -966,11 +966,11 @@ namespace stl
         {
             if(m_size)
             {
-                return const_reverse_iterator(m_end->m_prev, this);
+                return const_reverse_iterator(m_end->m_prev, const_cast<container*>(this));
             }
             else
             {
-                return const_reverse_iterator(m_end, this);
+                return const_reverse_iterator(m_end, const_cast<container*>(this));
             }
         }
 
@@ -981,7 +981,7 @@ namespace stl
 
         const_reverse_iterator rend() const
         {
-            return const_reverse_iterator(m_end, this);
+            return const_reverse_iterator(m_end, const_cast<container*>(this));
         }
 
         bool empty() const

@@ -52,6 +52,8 @@
 */
 #include "test_basic_string.hpp"
 #include "test_vector.hpp"
+#include "test_list.hpp"
+
 /*
 #include "test_time.hpp"
 */
@@ -103,7 +105,8 @@ int main(int argc, char** argv)
 
 
     // CPPUNIT_TEST_SUITE_REGISTRATION(test_basic_string);
-    CPPUNIT_TEST_SUITE_REGISTRATION(test_vector);
+    // CPPUNIT_TEST_SUITE_REGISTRATION(test_vector);
+    CPPUNIT_TEST_SUITE_REGISTRATION(test_list);
 
 
     //////////////////////////////////////////////////////////////////////////
