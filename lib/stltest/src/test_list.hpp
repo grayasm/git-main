@@ -58,7 +58,7 @@ class test_list : public CppUnit::TestFixture
     CPPUNIT_TEST(unique);
     CPPUNIT_TEST(merge);
     CPPUNIT_TEST(sort);
-    CPPUNIT_TEST(reverse);    
+    CPPUNIT_TEST(reverse);
     CPPUNIT_TEST(perf1);
     CPPUNIT_TEST_SUITE_END();
 
