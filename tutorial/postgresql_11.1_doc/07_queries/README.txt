@@ -3,7 +3,7 @@
   Overview          :   SELECT 3*4;
                         SELECT random();
                         SELECT a,b+c FROM t1;
-  The FROM clause   :   SELECT * FROM t1,t2;  -->Cartesian product of t1,t2 rows                
+  The FROM clause   :   SELECT * FROM t1,t2;  -->Cartesian product of t1,t2 rows
   Joining tables    :   SELECT * FROM t1 LEFT JOIN t2 ON t1.id = t2.id WHERE t2.v = 'x';
   Table aliases     :   SELECT * FROM t1 AS a JOIN t2 AS b ON a.id = b.id;
   Subqueries        :   SELECT a.* FROM (SELECT * FROM t1) AS a;
