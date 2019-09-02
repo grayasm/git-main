@@ -58,81 +58,116 @@ SELECT B'00000111' << 3; -- 00111000
 SELECT B'11110000' >> 3; -- 00011110
 
 
-/*      Mathematical functions
-        In the table 'dp' indicates 'double precision'.
-        The functions working with dp data are mostly implemented on top of
-        host system's C library.
+/*     Mathematical functions work with double precision or numeric arguments.
 
-        Function            Description
-        -----------------+---------------------------------------
-        abs(dp)             absolute value, abs(-17.4) = 17.4
-        cbrt(dp)            cube root     , cbrt(27.0) = 3
+       Function      Description
+       -----------+-----------------
+       abs(x)        Absolute value
+       cbrt(x)       Cube root
+       ceil(x)       Nearest integer greater than or equal to argument
+       ceiling(x)    (same as ceil)
+       degrees(x)    Radians to degrees
+       div(y,x)      Integer quotient of y/x
+       exp(x)        Exponential (e at power x)
+       floor(x)      Nearest integer less than or equal to argument
+       ln(x)         Natural logarithm
+       log(x)        Base 10 logarithm
+       log(b,x)      Logarithm to base b
+       mod(y,x)      Remainder of y/x
+       pi()          pi constant
+       power(a,b)    a raised to the power of b
+       radians(x)    Degrees to radians
+       round(x)      Round to nearest integer
+       round(v,s)    Round to s decimal places
+       scale(x)      The number of the decimal digits in the fractional part
+       sign(x)       Sign of the argument
+       sqrt(x)       Square root
+       trunc(x)      Truncate toward zero
+       trunc(v,s)    Truncate to s decimal places
+       width_bucket(x,b1,b2,count): Return the bucket number to which x would be
+                     assigned in a histogram having count equal-width buckets
+                     spanning the range b1 to b2; returns 0 or count+1 for an
+                     input outside the range
+       width_bucket(anyelem, anyarray): Return teh bucket number to which
+                     anyelem would be assigned given an array listing the lower
+                     bounds of the buckets; returns 0 for an input less than
+                     the first lower bound; the thresholds array must be sorted,
+                     smallest first, or unexpected results will be obtained.
+       -------------------------------
+*/
+SELECT abs(-17.4); -- 17.4
+SELECT cbrt(27.0); -- 3
+SELECT ceil(-42.8); -- -42
+SELECT ceiling(-95.3); -- -95
+SELECT degrees(0.5); -- 28.6478897565412
+SELECT div(9,4); -- 2
+SELECT exp(1.0); -- 2.7182818284590452
+SELECT floor(-42.8); -- -43
+SELECT ln(2.0); -- 0.6931471805599453
+SELECT log(100.0); -- 2
+SELECT log(2.0, 64.0); -- 6
+SELECT mod(9,4); -- 1
+SELECT pi(); -- 3.14159265358979
+SELECT power(9.0, 3.0); -- 729
+SELECT radians(45.0); -- 0.785398163397448
+SELECT round(42.4); -- 42
+SELECT round(42.4382, 2); -- 42.44
+SELECT scale(8.41); -- 2
+SELECT sign(-8.4); -- -1
+SELECT sqrt(2.0); -- 1.414213562373095
+SELECT trunc(42.8); -- 42
+SELECT trunc(42.4382, 2); -- 42.43
+SELECT width_bucket(5.35, 0.024, 10.06, 5); -- 3
+SELECT width_bucket(now(), array['yesterday', 'today', 'tomorrow']::timestamptz[]); -- 2
 
-        ceil(dp)            nearest integer greater than or equal to argument
-        ceil(num)           ceil(-42.8) = -42
 
-        ceiling(dp)         nearest integer greater than or equal to argument
-        ceiling(num)        (same as ceil) ceiling(-95.3) = -95
+/*     Random functions.
 
-        degrees(dp)         radians to degrees, degrees(0.5) = 28.6478897565412
-        div(num, num)       integer quotient of y/x, div(9/4)= 2
-
-        exp(dp)             exponential, exp(1.0) = 2.71828182845905
-        exp(num)
-
-        floor(dp or numeric)     nearest integer less then or equal to argument
-                                 floor(-42.8) = -43
-
-        ln(dp or numeric)        natural logarithm, ln(2.0) = 0.693147180559945
-        log(dp or numeric)       base 10 logarithm, ln(100) = 2
-
-        log(b numeric, x numeric)    logarithm to base, ln(2, 64) = 6.000000
-        mod(y, x)                    remainder of y/x,  mod(9/4) = 1
-        pi()                         pi constant, 3.14159265358979
-        power(a dp, b dp)            a raised to the power of b, power(9,3)= 729
-        power(a numeric, b numeric)
-
-        radians(dp)              degrees to radians, radians(45.0) = 0.785398163397448
-        round(dp or numeric)     round to nearest integer, round(42.4) = 42
-
-        scale(numeric)           scale of the argument (the number of decimal
-                                 digits in the fractional part)
-                                 scale(8.41) = 2
-
-        sign(dp or numeric)      sign of the argument (-1,0,+1), sign(-8.4)= -1
-        sqrt(dp)                 square root, sqrt(2) = 1.4142135623731
-        trunc(dp)                truncate toward zero, trunc(42.8) = 42
-        trunc(v numeric, s int)  truncate to s decimal places, trunc(42.43822) = 42.43
-
-        width_bucket(dp, dp, dp, int)   return the bucket number to which
-                                        operand would be assigned in a histogram
-                                        having count equal-width buckets spanning
-                                        the range b1 to b2; returns 0 or count+1
-                                        for an input outside the range.
-                                        width_bucket(5.35, 0.024, 10.06, 5)=3
-
-        width_bucket(num, num, num, int)  return the bucket number to which
-                                          operand would be assigned in a histogram
-                                          having count equal-width buckets
-                                          spanning the range b1 to b2; returns 0
-                                          or count+1 for an input outside the
-                                          range
-                                          width_bucket(5.35, 0.024, 10.06, 5)=3
-
-        width_bucket(any, anyarray)n   return the bucket number to which operand
-                                       would be assigned given an array listing
-                                       the lower bounds of the buckets;
-                                       returns 0 for an input less than the first
-                                       lower bound; the thresholds array must be
-                                       shorted, smallest first, or unexpected
-                                       result will be obtained.
+       Function      Description
+       -----------+-----------------
+       random()      Random value in the range [0.0, 1.0)
+       setseed(x)    Set seed for subsequent random() calls, x in [-1.0,+1.0]
+       -----------------------------
 */
 
-SELECT abs(-17.4);  -- =17.4
-SELECT cbrt(27.0);  -- =3
-SELECT ceil(-42.8); -- =-42
-SELECT ceiling(-95.3); -- =-95
-SELECT degrees(0.5);   -- =28.6478897565412
-SELECT div(9, 4);   -- =2
-SELECT exp(1.0); -- =2.7182818284590452
-SELECT floor(-42.8); -- =-43
+SELECT setseed(0.5);
+SELECT random(); -- 0.798512778244913
+SELECT random(); -- 0.518533017486334
+SELECT random(); -- 0.0734698106534779
+
+
+/*     Trigonometric functions.
+
+       Function(radians) Function(degrees)  Description
+       -----------------+-----------------+-------------------
+       acos(x)           acosd(x)           Inverse cosine
+       asin(x)           asind(x)           Inverse sine
+       atan(x)           atand(x)           Inverse tangent
+       atan2(y,x)        atan2d(y,x)        Inverse tangent of y/x
+       cos(x)            cosd(x)            Cosine
+       cot(x)            cotd(x)            Cotangent
+       sin(x)            sind(x)            Sine
+       tan(x)            tand(x)            Tangent
+       -------------------------------------------------------
+*/
+
+SELECT cos(pi()); -- (-1)
+SELECT acos(-1);  -- 3.14159265358979
+SELECT cosd(180); -- (-1)
+SELECT acosd(-1); -- 180
+SELECT sin(pi()/2); -- 1
+SELECT asin(1); -- 1.5707963267949  (~pi/2)
+SELECT sind(90); -- 1
+SELECT asind(1); -- 90
+SELECT tan(pi()/2); -- 1.63312393531954e+16
+SELECT atan(1.63312393531954e+16); -- 1.5707963267949 (~pi/2)
+SELECT tand(90); -- Infinity
+SELECT atand(9999999); -- 89.9999942704215
+
+/*     Note:
+       Another way to work with angles measured in degrees is to use the unit
+       transformation functions radians() and degrees() shown earlier.
+*/
+
+SELECT cos(radians(45)); -- 0.707106781186548
+SELECT degrees(acos(0.707106781186548)); -- 45
