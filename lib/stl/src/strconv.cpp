@@ -33,7 +33,7 @@
 
 
 
-namespace misc
+namespace stl
 {
 
     stl::string from_ascii(const char* src)

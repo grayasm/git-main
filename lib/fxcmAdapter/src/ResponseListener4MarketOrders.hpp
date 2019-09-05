@@ -69,7 +69,7 @@ namespace fxcm
 		sys::event				m_ResponseEvent;
 		IO2GResponse*			m_Response;
 		OrderMonitor*			m_OrderMonitor;
-		misc::critical_section	m_CriticalSection;
+		sys::critical_section	m_CriticalSection;
 		stl::vector<IO2GTradeRow*>	m_trades;
 		stl::vector<IO2GClosedTradeRow*>	m_closedTrades;
 

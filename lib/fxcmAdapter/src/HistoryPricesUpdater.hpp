@@ -54,7 +54,7 @@ namespace fxcm
 
 	private:
 		IO2GSession*					m_session;
-		misc::critical_section			m_criticalSection;
+		sys::critical_section			m_criticalSection;
 		stl::string					m_instrument;
 		stl::string					m_timeframe;
 		HistoryPricesVec				m_historyPricesVec;

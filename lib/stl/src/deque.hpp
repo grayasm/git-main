@@ -732,7 +732,7 @@ namespace stl
 
 	private:
 		typedef typename stl::vector<T,allocator_type,attributes>	int_container;
-		typedef typename misc::pair<bool, int_container>			Pair;
+		typedef typename stl::pair<bool, int_container>			Pair;
 		typedef misc::list<Pair>									List;
 	
 		List*		m_data;

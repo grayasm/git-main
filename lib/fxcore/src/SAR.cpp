@@ -184,8 +184,8 @@ namespace fx
                         stl::min(prevohlc.GetBidLow(), ohlc.GetBidLow()));
                 else
                     LP = fx::Price(
-                        misc::max(prevohlc.GetAskHigh(), ohlc.GetAskHigh()),
-                        misc::max(prevohlc.GetBidHigh(), ohlc.GetBidHigh()));
+                        stl::max(prevohlc.GetAskHigh(), ohlc.GetAskHigh()),
+                        stl::max(prevohlc.GetBidHigh(), ohlc.GetBidHigh()));
 
 
                 if ((m_isBuy && sell > LP.GetSell()) ||

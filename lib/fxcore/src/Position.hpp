@@ -145,7 +145,7 @@ namespace fx
 
 
 	//##########################################################################
-	struct openprice_greater : misc::binary_function <Position,Position,bool>
+	struct openprice_greater : stl::binary_function <Position,Position,bool>
 	{
 		bool operator()(const Position& x, const Position& y) const;
 	};

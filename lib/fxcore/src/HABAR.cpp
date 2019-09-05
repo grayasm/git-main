@@ -135,11 +135,11 @@ namespace fx
 
 				// HA-High
 				m_lastHA.SetAskHigh(
-					misc::max(ohlc.GetAskHigh(),
+					stl::max(ohlc.GetAskHigh(),
 					m_lastHA.GetAskOpen(),
 					m_lastHA.GetAskClose()));
 				m_lastHA.SetBidHigh(
-					misc::max(ohlc.GetBidHigh(),
+					stl::max(ohlc.GetBidHigh(),
 					m_lastHA.GetBidOpen(),
 					m_lastHA.GetBidClose()));
 
@@ -182,11 +182,11 @@ namespace fx
 
 			// HA-High
 			m_lastHA.SetAskHigh(
-				misc::max(ohlc.GetAskHigh(),
+				stl::max(ohlc.GetAskHigh(),
 				m_lastHA.GetAskOpen(),
 				m_lastHA.GetAskClose()));
 			m_lastHA.SetBidHigh(
-				misc::max(ohlc.GetBidHigh(),
+				stl::max(ohlc.GetBidHigh(),
 				m_lastHA.GetBidOpen(),
 				m_lastHA.GetBidClose()));
 

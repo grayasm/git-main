@@ -45,7 +45,7 @@ namespace fxcm
 	void OffersUpdater::UpdateOffers(IO2GResponse* response)
 	{
 		// synchronize access to internal resource
-		misc::autocritical_section autoCS(m_criticalSection);
+		sys::autocritical_section autoCS(m_criticalSection);
 		
 		O2G2Ptr<IO2GResponseReaderFactory> readerFactory =
 			m_session->getResponseReaderFactory();
@@ -139,7 +139,7 @@ namespace fxcm
 	int OffersUpdater::GetLastOffer(fx::Offer& offer, const char* sInstrument)
 	{
 		// synchronize access to internal resource
-		misc::autocritical_section autoCS(m_criticalSection);
+		sys::autocritical_section autoCS(m_criticalSection);
 
 		stl::string instrument(sInstrument);
 		OffersMap::iterator it = m_offersMap.find(instrument);
@@ -158,7 +158,7 @@ namespace fxcm
     int OffersUpdater::GetAllOffers(OffersMap& offers)
     {
         // synchronize access to internal resource
-        misc::autocritical_section autoCS(m_criticalSection);
+        sys::autocritical_section autoCS(m_criticalSection);
 
         offers = m_offersMap;
 

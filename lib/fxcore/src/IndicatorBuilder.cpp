@@ -54,7 +54,7 @@ namespace fx
 				stimeFrame = "m1";
 
 			double indSec = (double)ind->GetPeriod() * tfval;
-			maxSec = misc::max(maxSec, indSec);
+			maxSec = stl::max(maxSec, indSec);
 		} // for(indicators)
 
 		//	EMA always needs:

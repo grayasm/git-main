@@ -44,7 +44,7 @@ namespace fxcm
 
 	long ResponseListener4MarketOrders::addRef()
 	{
-		misc::autocritical_section autocs(m_CriticalSection);
+		sys::autocritical_section autocs(m_CriticalSection);
 		m_RefCount++;
 		return m_RefCount;
 	}
@@ -53,7 +53,7 @@ namespace fxcm
 	{
 		// protect m_CriticalSection against 'delete this'
 		{
-			misc::autocritical_section autocs(m_CriticalSection);
+			sys::autocritical_section autocs(m_CriticalSection);
 			m_RefCount--;
 			if (m_RefCount)
 				return m_RefCount;
@@ -301,7 +301,7 @@ namespace fxcm
 			// set the result
 			OrderMonitor::ExecutionResult result = m_OrderMonitor->GetResult();
 			O2G2Ptr<IO2GOrderRow> order = m_OrderMonitor->GetOrder();
-			stl::string orderID = order->getOrderID();
+			std::string orderID = order->getOrderID();
 			
 
 			switch (result)
@@ -327,7 +327,7 @@ namespace fxcm
 			{
 				stl::cout << "The order has been rejected. OrderID = " << orderID << std::endl;
 				stl::cout << "The rejected amount = " << m_OrderMonitor->GetRejectAmount() << std::endl;
-				stl::cout << "Rejection cause: " << m_OrderMonitor->GetRejectMessage() << std::endl;
+				stl::cout << "Rejection cause: " << m_OrderMonitor->GetRejectMessage().c_str() << std::endl;
 			}
 			break;
 			case OrderMonitor::PartialRejected:
@@ -337,7 +337,7 @@ namespace fxcm
 
 				stl::cout << "A part of the order has been rejected. "
 					<< "Amount = " << m_OrderMonitor->GetRejectAmount() << std::endl;
-				stl::cout << "Rejection cause: " << m_OrderMonitor->GetRejectMessage() << std::endl;
+				stl::cout << "Rejection cause: " << m_OrderMonitor->GetRejectMessage().c_str() << std::endl;
 			}
 			break;
 			case OrderMonitor::Executed:

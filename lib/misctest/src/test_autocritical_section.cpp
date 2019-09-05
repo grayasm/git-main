@@ -59,23 +59,23 @@ void test_autocritical_section::ctor()
 
 	stl::cout << "\n\n\tctor---------------------------------------------------";
 	{
-		misc::critical_section cs;
-		misc::autocritical_section acs(cs);
+		sys::critical_section cs;
+		sys::autocritical_section acs(cs);
 		CPPUNIT_ASSERT( true );
 	}
 	{
-		misc::critical_section cs;
-		misc::autocritical_section* acs;
-		acs = new misc::autocritical_section(cs);
+		sys::critical_section cs;
+		sys::autocritical_section* acs;
+		acs = new sys::autocritical_section(cs);
 		CPPUNIT_ASSERT( acs != 0 );
 		delete acs;
 	}
 	{
 		const int CSNO=6;
-		misc::critical_section cs[CSNO];
-		misc::autocritical_section* acs[CSNO];
+		sys::critical_section cs[CSNO];
+		sys::autocritical_section* acs[CSNO];
 		for(int i=0; i < CSNO; ++i)
-			acs[i] = new misc::autocritical_section(cs[i]);
+			acs[i] = new sys::autocritical_section(cs[i]);
 		for(int i=0; i < CSNO; ++i)
 			CPPUNIT_ASSERT( acs[i] != 0 );
 		for(int i=0; i < CSNO; ++i)

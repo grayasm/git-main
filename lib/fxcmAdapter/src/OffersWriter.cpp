@@ -55,7 +55,7 @@ namespace fxcm
 	void OffersWriter::UpdateOffers(IO2GResponse* response)
 	{
 		// synchronize access to internal resource
-		misc::autocritical_section autoCS(m_criticalSection);
+		sys::autocritical_section autoCS(m_criticalSection);
 
 		if (!m_isEnabled)
 			return;

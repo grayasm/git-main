@@ -96,7 +96,7 @@ namespace fx
 		{
 			const Position& pos = *bit;
 			const stl::string& symbol = pos.GetCurrency().GetSymbol();
-			if(misc::find(symbols.begin(), symbols.end(), symbol) == symbols.end())
+			if(stl::find(symbols.begin(), symbols.end(), symbol) == symbols.end())
 			{
 				symbols.push_back(symbol);
 			}

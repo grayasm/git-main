@@ -510,7 +510,7 @@ namespace fxcm
 					int orderAmount = order->getAmount();
 					stl::string orderBuySell = order->getBuySell();
 					double orderRate = order->getRate();
-					stl::string orderTimeInForce = order->getTimeInForce();
+					std::string orderTimeInForce = order->getTimeInForce();
 					
 					static bool bDebug = true;
 					if (bDebug)

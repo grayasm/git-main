@@ -47,14 +47,14 @@ namespace fxcm
 
 	long SessionStatusListener::addRef()
 	{
-		misc::autocritical_section autoCS(m_CriticalSection);
+		sys::autocritical_section autoCS(m_CriticalSection);
 		m_RefCount++;
 		return m_RefCount;
 	}
 
 	long SessionStatusListener::release()
 	{
-		misc::autocritical_section autoCS(m_CriticalSection);
+		sys::autocritical_section autoCS(m_CriticalSection);
 		m_RefCount--;
 		return m_RefCount;
 	}

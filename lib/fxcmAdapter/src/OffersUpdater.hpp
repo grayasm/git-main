@@ -51,7 +51,7 @@ namespace fxcm
 
 	private:
 		IO2GSession*					m_session;
-		misc::critical_section			m_criticalSection;
+		sys::critical_section			m_criticalSection;
 		OffersMap						m_offersMap;
 	};
 } // namespace

@@ -75,7 +75,7 @@ void OMPEngine()
 	sys::time reftime;
 	stl::vector<fx::IND*> smaVec;
 	stl::vector<fx::StrategySMACross*> strategyVec;
-	typedef misc::pair<stl::string, fx::StrategySMACross*> CrossPair;
+	typedef stl::pair<stl::string, fx::StrategySMACross*> CrossPair;
 	stl::vector<CrossPair> crossVec;
 	
     
@@ -97,7 +97,7 @@ void OMPEngine()
 		return; // cannot get the offer?
 
 	reftime = offer.GetTime();
-	stl::cout << reftime.tostring() << std::endl;
+	stl::cout << reftime.tostring().c_str() << std::endl;
 
 	
 	fx::IndicatorBuilder::Build(&plugin, offer, smaVec);
@@ -139,7 +139,7 @@ void OMPEngine()
 		{
 			reftime = offer.GetTime();
 			// show some progress, otherwise confusing and very slow
-			stl::cout << reftime.tostring() << std::endl;
+			stl::cout << reftime.tostring().c_str() << std::endl;
 		}
 
 		// check for outside trading hours
@@ -174,7 +174,7 @@ void OMPEngine()
 		return (cp1.second->GetClosedGPL() > cp2.second->GetClosedGPL());
 	};
 
-	misc::sort(crossVec.begin(), crossVec.end(), lmdbpred);
+	stl::sort(crossVec.begin(), crossVec.end(), lmdbpred);
 
 	// use logging only summary data
 	FILE* fp = fopen(iniParams->GetLoggingFile().c_str(), "w+");
@@ -184,7 +184,7 @@ void OMPEngine()
 		 it != crossVec.end() && fp != NULL; ++it)
 	{
 		std::stringstream ss;
-		ss << it->first;
+		ss << it->first.c_str();
 		ss << " PL=" << it->second->GetClosedPL();
 		ss << " GPL=" << it->second->GetClosedGPL() << std::endl;
 		std::string str(ss.str());

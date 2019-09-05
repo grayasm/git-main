@@ -57,7 +57,7 @@ namespace fxcm
 		stl::string			m_RequestID;
 		sys::event				m_ResponseEvent;
 		IO2GResponse*			m_Response;
-		misc::critical_section	m_CriticalSection;
+		sys::critical_section	m_CriticalSection;
 	};
 } // namespace
 

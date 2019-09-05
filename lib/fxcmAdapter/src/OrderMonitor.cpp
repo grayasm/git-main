@@ -157,7 +157,7 @@ namespace fxcm
 	{
 		trades.clear();
 		trades.resize(m_trades.size());
-		misc::copy(m_trades.begin(), m_trades.end(), trades.begin());
+		stl::copy(m_trades.begin(), m_trades.end(), trades.begin());
 		for (size_t i = 0; i < m_trades.size(); ++i)
 			m_trades[i]->addRef();
 	}
@@ -166,7 +166,7 @@ namespace fxcm
 	{
 		closedTrades.clear();
 		closedTrades.resize(m_closedTrades.size());
-		misc::copy(m_closedTrades.begin(), m_closedTrades.end(), closedTrades.begin());
+		stl::copy(m_closedTrades.begin(), m_closedTrades.end(), closedTrades.begin());
 		for (size_t i = 0; i < m_closedTrades.size(); ++i)
 			m_closedTrades[i]->addRef();
 	}

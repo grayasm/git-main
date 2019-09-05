@@ -67,7 +67,7 @@ private:
     stl::vector<fxcm::TradingSettings>     m_tsVec;
     fxcm::PipCost                           m_pipCost;
     std::map<stl::string, double>          m_pipCostMap;
-	misc::critical_section			        m_criticalSection;
+	sys::critical_section			        m_criticalSection;
 	int								        m_orderID;
 	int								        m_tradeID;
 	stl::vector<fx::Position>		        m_posvec;

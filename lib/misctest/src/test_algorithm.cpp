@@ -940,14 +940,14 @@ void test_algorithm::find(const char* msg)
 
 		// MISC
 		// pointer to array element:
-		p = misc::find(mytable, mytable + m_container_size, m_container_size - 2);
+		p = stl::find(mytable, mytable + m_container_size, m_container_size - 2);
 		++p;
 		CPPUNIT_ASSERT(*p == (m_container_size - 1));
 
 
 		It it;
 		// iterator to vector element:
-		it = misc::find(myvector.begin(), myvector.end(), Cval(m_container_size - 2));
+		it = stl::find(myvector.begin(), myvector.end(), Cval(m_container_size - 2));
 		it++;
 
 		CPPUNIT_ASSERT(*it == (m_container_size - 1));
@@ -1433,8 +1433,8 @@ void test_algorithm::mismatch(const char* msg)
 
 	Cval myints[] = {10,20,80,320,1024};                //   myints: 10 20 80 320 1024
 
-	misc::pair<typename Container::iterator, Cval*>		pair1;
-	misc::pair<typename Container::iterator, typename Container::iterator> pair2;
+	stl::pair<typename Container::iterator, Cval*>		pair1;
+	stl::pair<typename Container::iterator, typename Container::iterator> pair2;
 	std::pair<typename Container::iterator, Cval*>		pair3;
 	std::pair<typename Container::iterator, typename Container::iterator> pair4;
 
@@ -1781,7 +1781,7 @@ void test_algorithm::copy(const char* msg)
 			destination range, iterating through the source sequence of 
 			elements and assigning them new positions in a forward direction.
 		*/
-		misc::copy ( myints, myints+7, v1.begin() );
+		stl::copy ( myints, myints+7, v1.begin() );
 
 		//cout << "v1 contains:";
 		for (it=v1.begin(); it!=v1.end(); ++it)
@@ -1791,7 +1791,7 @@ void test_algorithm::copy(const char* msg)
 		}
 		//myvector contains: 10 20 30 40 50 60 70
 
-		misc::copy (v2.begin(), v2.end(), v3.begin());
+		stl::copy (v2.begin(), v2.end(), v3.begin());
 		CPPUNIT_ASSERT(v3.size() == v2.size());
 		for(size_t i = 0; i < v3.size(); ++i)
 		{
@@ -2734,7 +2734,7 @@ void test_algorithm::remove(const char* msg)
 /*		error C2668: 'std::find' : ambiguous call to overloaded function
 		Cannot decide which function to call:
 		_InIt std::find<_FwdIt,_Ty>(_InIt,_InIt,const _Ty &)  or:
-		InputIterator misc::find<_FwdIt,_Ty>(InputIterator,InputIterator,const T &)	
+		InputIterator stl::find<_FwdIt,_Ty>(InputIterator,InputIterator,const T &)	
 		
 		when using std::remove with iterators belonging to misc::generic_array;
 */
@@ -3037,7 +3037,7 @@ void test_algorithm::unique_copy(const char* msg)
 		it = misc::unique_copy (myints, myints + 9, v1.begin());
 				
 		// v1: 10 10 20 20 30 0  0  0  0
-		misc::sort (v1.begin(),it);
+		stl::sort (v1.begin(),it);
 
 		// using predicate comparison:
 		it = misc::unique_copy (v1.begin(), it, v1.begin(), myfunction_unique_copy);
@@ -3692,15 +3692,15 @@ void test_algorithm::sort(const char* msg)
 
 		//	MISC
 		// using default comparison (operator <):
-		misc::sort(v1.begin(), v1.begin() + 4);
+		stl::sort(v1.begin(), v1.begin() + 4);
 		//v1: (12 32 45 71)26 80 53 33
 
 		// using function as comp
-		misc::sort(v1.begin() + 4, v1.end(), myfunction_sort);
+		stl::sort(v1.begin() + 4, v1.end(), myfunction_sort);
 		//v1: 12 32 45 71(26 33 53 80)
 
 		// using object as comp
-		misc::sort(v1.begin(), v1.end(), myobject_sort);
+		stl::sort(v1.begin(), v1.end(), myobject_sort);
 		//v1: (12 26 32 33 45 53 71 80)
 
 		//v1: 12 26 32 33 45 53 71 80
@@ -3710,8 +3710,8 @@ void test_algorithm::sort(const char* msg)
 			CPPUNIT_ASSERT(mycheck[it-v1.begin()] == *it);
 		}
 
-		misc::sort(v2.begin() + m_container_size/2, v2.end(), myfunction_sort);
-		misc::sort(v2.begin(), v2.end());
+		stl::sort(v2.begin() + m_container_size/2, v2.end(), myfunction_sort);
+		stl::sort(v2.begin(), v2.end());
 		for(it = v2.begin() + 1; it != v2.end(); ++it)
 			CPPUNIT_ASSERT(*it >= *(it - 1)); // used ::rand() so equal may exist.
 
@@ -4091,7 +4091,7 @@ void test_algorithm::lower_bound(const char* msg)
 		time_printer tp(msg, m_print_time);
 
 		//	MISC
-		misc::sort(v1.begin(), v1.end()); // 10 10 10 20 20 20 30 30
+		stl::sort(v1.begin(), v1.end()); // 10 10 10 20 20 20 30 30
 
 		low = misc::lower_bound<It, Cval> (v1.begin(), v1.end(), Cval(20)); //4th element
 		up  = misc::upper_bound<It, Cval> (v1.begin(), v1.end(), Cval(20)); //7th element
@@ -4139,7 +4139,7 @@ void test_algorithm::lower_bound2(const char* msg)
 		time_printer tp(msg, m_print_time);
 
 		//	MISC
-		misc::sort(v1.begin(), v1.end()); // 10 10 10 20 20 20 30 30
+		stl::sort(v1.begin(), v1.end()); // 10 10 10 20 20 20 30 30
 
 		low = std::lower_bound<It, Cval> (v1.begin(), v1.end(), Cval(20)); //4th element
 		up  = std::upper_bound<It, Cval> (v1.begin(), v1.end(), Cval(20)); //7th element
@@ -4172,7 +4172,7 @@ void test_algorithm::equal_range(const char* msg)
 {
 	typedef typename Container::value_type Cval;
 	typedef typename Container::iterator It;
-	typedef typename misc::pair<It, It> MPair;
+	typedef typename stl::pair<It, It> MPair;
 	
 
 	Cval myints[] = {10,20,30,30,20,10,10,20};
@@ -4193,7 +4193,7 @@ void test_algorithm::equal_range(const char* msg)
 		time_printer tp(msg, m_print_time);
 		//	MISC
 		//	using default comparison:
-		misc::sort(v1.begin(), v1.end()); // 10 10 10 20 20 20 30 30
+		stl::sort(v1.begin(), v1.end()); // 10 10 10 20 20 20 30 30
 
 		/*	Finds a pair of positions in an ordered range, the first less
 			than or equivalent to the position of a specified element and 
@@ -4204,7 +4204,7 @@ void test_algorithm::equal_range(const char* msg)
 		bounds = misc::equal_range<It, Cval>(v1.begin(), v1.end(), 20);
 
 		// using "mygreater_equal_range" as comp:
-		misc::sort (v1.begin(), v1.end(), mygreater_equal_range);                                 // 30 30 20 20 20 10 10 10
+		stl::sort (v1.begin(), v1.end(), mygreater_equal_range);                                 // 30 30 20 20 20 10 10 10
 		bounds = misc::equal_range<It, Cval>(v1.begin(), v1.end(), 20, mygreater_equal_range);    //       ^        ^
 
 		CPPUNIT_ASSERT((int)(bounds.first - v1.begin()) == 2);
@@ -4255,7 +4255,7 @@ void test_algorithm::equal_range2(const char* msg)
 		bounds = std::equal_range<It, Cval>(v1.begin(), v1.end(), 20);
 
 		// using "mygreater_equal_range" as comp:
-		misc::sort (v1.begin(), v1.end(), mygreater_equal_range);                                 // 30 30 20 20 20 10 10 10
+		stl::sort (v1.begin(), v1.end(), mygreater_equal_range);                                 // 30 30 20 20 20 10 10 10
 		bounds = std::equal_range<It, Cval>(v1.begin(), v1.end(), 20, mygreater_equal_range);    //       ^        ^
 
 		CPPUNIT_ASSERT((int)(bounds.first - v1.begin()) == 2);
@@ -4341,14 +4341,14 @@ void test_algorithm::binary_search2(const char* msg)
 		
 		//	MISC (the entire method)
 		// using default comparison:
-		misc::sort(v1.begin(), v1.end());
+		stl::sort(v1.begin(), v1.end());
 
 		//cout << "looking for a 3... ";
 		bool res = misc::binary_search<It, Cval>(v1.begin(), v1.end(), 3);
 		CPPUNIT_ASSERT(res);
 
 		// using myfunction as comp:
-		misc::sort(v1.begin(), v1.end(), myfunction_binary_search);
+		stl::sort(v1.begin(), v1.end(), myfunction_binary_search);
 
 		//cout << "looking for a 6... ";
 		res = misc::binary_search<It, Cval>(v1.begin(), v1.end(), 6, myfunction_binary_search);
@@ -4448,8 +4448,8 @@ void test_algorithm::merge2(const char* msg)
 		
 		
 		//	MISC
-		misc::sort(first, first + 5);
-		misc::sort(second, second + 5);
+		stl::sort(first, first + 5);
+		stl::sort(second, second + 5);
 
 		/*	Combines all the elements from two sorted source ranges 
 			into a single, sorted destination range, where the ordering 
@@ -4466,8 +4466,8 @@ void test_algorithm::merge2(const char* msg)
 		}
 		//The resulting vector contains: 5 10 10 15 20 20 25 30 40 50
 
-		misc::sort(v2.begin(), v2.end());
-		misc::sort(v3.begin(), v3.end());
+		stl::sort(v2.begin(), v2.end());
+		stl::sort(v3.begin(), v3.end());
 		misc::merge(v2.begin(), v2.end(), v3.begin(), v3.end(), v4.begin());
 	}
 }
@@ -4559,11 +4559,11 @@ void test_algorithm::inplace_merge2(const char* msg)
 		time_printer tp(msg, m_print_time);
 
 		//	MISC (the entire method)
-		misc::sort(first, first + 5);
-		misc::sort(second, second + 5);
+		stl::sort(first, first + 5);
+		stl::sort(second, second + 5);
 
-		misc::copy(first, first + 5, v1.begin());
-		misc::copy(second, second + 5, v1.begin() + 5);
+		stl::copy(first, first + 5, v1.begin());
+		stl::copy(second, second + 5, v1.begin() + 5);
 
 		/*	Combines the elements from two consecutive sorted ranges 
 			into a single sorted range, where the ordering criterion 
@@ -4581,8 +4581,8 @@ void test_algorithm::inplace_merge2(const char* msg)
 		//The resulting vector contains: 5 10 10 15 20 20 25 30 40 50
 
 
-		misc::copy(v2.begin(), v2.end(), v4.begin());
-		misc::copy(v3.begin(), v3.end(), v4.begin() + v2.size());
+		stl::copy(v2.begin(), v2.end(), v4.begin());
+		stl::copy(v3.begin(), v3.end(), v4.begin() + v2.size());
 		misc::inplace_merge(v4.begin(), v4.begin() + m_container_size/2, v4.end());
 		for(it = v4.begin(), i0 = 0; it != v4.end(); ++it, ++i0)
 			CPPUNIT_ASSERT(*it == Cval(i0));
@@ -4670,8 +4670,8 @@ void test_algorithm::includes2(const char* msg)
 		time_printer tp(msg, m_print_time);
 		
 		//	MISC (the entire method)
-		misc::sort(c1, c1 + 10);       //5,10,15,20,25,30,35,40,45,50,
-		misc::sort(c2, c2 + 4);        //  10,   20,   30,   40
+		stl::sort(c1, c1 + 10);       //5,10,15,20,25,30,35,40,45,50,
+		stl::sort(c2, c2 + 4);        //  10,   20,   30,   40
 
 		/*	Tests whether one sorted range contains all the elements contained
 			in a second sorted range, where the ordering or equivalence 
@@ -4784,8 +4784,8 @@ void test_algorithm::set_union2(const char* msg)
 		
 		
 		//	MISC (the entire method)
-		misc::sort(first, first + 5);                //  5 10 15 20 25
-		misc::sort(second, second + 5);              // 10 20 30 40 50
+		stl::sort(first, first + 5);                //  5 10 15 20 25
+		stl::sort(second, second + 5);              // 10 20 30 40 50
 
 		/*	Unites all of the elements that belong to at least one of two 
 			sorted source ranges into a single, sorted destination range, 
@@ -4895,8 +4895,8 @@ void test_algorithm::set_intersection2(const char* msg)
 		
 		
 		//	MISC (the entire method)
-		misc::sort(first, first + 5);                //  5 10 15 20 25
-		misc::sort(second, second + 5);              // 10 20 30 40 50
+		stl::sort(first, first + 5);                //  5 10 15 20 25
+		stl::sort(second, second + 5);              // 10 20 30 40 50
 
 		/*	Unites all of the elements that belong to both sorted source ranges
 			into a single, sorted destination range, where the ordering 
@@ -4954,8 +4954,8 @@ void test_algorithm::set_difference(const char* msg)
 		time_printer tp(msg, m_print_time);
 		
 		//	MISC
-		misc::sort (first,first+5);                //  5 10 15 20 25
-		misc::sort (second,second+5);              // 10 20 30 40 50
+		stl::sort (first,first+5);                //  5 10 15 20 25
+		stl::sort (second,second+5);              // 10 20 30 40 50
 
 		/*	Unites all of the elements that belong to one sorted source range,
 			but not to a second sorted source range, into a single, sorted 
@@ -5077,8 +5077,8 @@ void test_algorithm::set_symmetric_difference2(const char* msg)
 		time_printer tp(msg, m_print_time);
 
 		//	MISC (the entire method)
-		misc::sort (first, first + 5);    //  5 10 15 20 25
-		misc::sort (second, second + 5);  // 10 20 30 40 50
+		stl::sort (first, first + 5);    //  5 10 15 20 25
+		stl::sort (second, second + 5);  // 10 20 30 40 50
 
 
 		/*	Unites all of the elements that belong to one, but not both, 
@@ -5416,11 +5416,11 @@ void test_algorithm::max2(const char* msg)
 	{
 		time_printer tp(msg, m_print_time);
 		//	MISC
-		CPPUNIT_ASSERT( misc::max<Cval>(1,2) == 2 );
-		CPPUNIT_ASSERT( misc::max<int>(1,2) == 2 );
-		CPPUNIT_ASSERT( misc::max<long>(2,1) == 2 );
-		CPPUNIT_ASSERT( misc::max<char>('a','z') == 'z' );
-		CPPUNIT_ASSERT( misc::max<double>(3.14,2.72) == 3.14 );
+		CPPUNIT_ASSERT( stl::max<Cval>(1,2) == 2 );
+		CPPUNIT_ASSERT( stl::max<int>(1,2) == 2 );
+		CPPUNIT_ASSERT( stl::max<long>(2,1) == 2 );
+		CPPUNIT_ASSERT( stl::max<char>('a','z') == 'z' );
+		CPPUNIT_ASSERT( stl::max<double>(3.14,2.72) == 3.14 );
 
 		//	STD
 		CPPUNIT_ASSERT( std::max<Cval>(1,2) == 2 );
@@ -5646,7 +5646,7 @@ void test_algorithm::next_permutation2(const char* msg)
 		
 			
 		//cout << "The 3! possible permutations with 3 elements:\n";
-		misc::sort(myints, myints + 3);
+		stl::sort(myints, myints + 3);
 
 		/*	next_permutation:
 			Reorders the elements in a range so that the original ordering 
@@ -5776,7 +5776,7 @@ void test_algorithm::prev_permutation2(const char* msg)
 		time_printer tp(msg, m_print_time);
 		
 		//cout << "The 3! possible permutations with 3 elements:\n";
-		misc::sort(myints, myints + 3);
+		stl::sort(myints, myints + 3);
 		misc::reverse(myints, myints + 3);
 
 		/*	prev_permutation:

@@ -81,7 +81,7 @@ int test2()
 		
 		stl::cout << "\n";
 		for (int i = 0; i < result.size(); ++i)
-			stl::cout << result[i].ToString() << std::endl;
+			stl::cout << result[i].ToString().c_str() << std::endl;
 	}	
 
 	session.Logout();	
@@ -239,7 +239,7 @@ int test4()
 				continue;
 
 			std::stringstream ss;
-			ss << reftime.tostring() << " ";
+			ss << reftime.tostring().c_str() << " ";
 			fx::Price pr;
 			ema.GetValue(pr);
 			ss << "Bid=" << pr.GetSell() << " Ask=" << pr.GetBuy() <<
@@ -257,7 +257,7 @@ int test4()
 				continue;
 
 			std::stringstream ss;
-			ss << reftime.tostring() << " ";
+			ss << reftime.tostring().c_str() << " ";
 			fx::Price pr;
 			sma.GetValue(pr);
 			ss << "Bid=" << pr.GetSell() << " Ask=" << pr.GetBuy() <<
@@ -316,7 +316,7 @@ int test5()
 			continue;
 
 		std::stringstream ss;
-		ss << reftime.tostring() << " ";
+		ss << reftime.tostring().c_str() << " ";
 		double mid = 0;
 		atr.GetValue(mid);
 		mid *= 1 / (0.0001);
@@ -381,7 +381,7 @@ int test6()
 			continue;
 
 		std::stringstream ss;
-		ss << reftime.tostring() << " ";
+		ss << reftime.tostring().c_str() << " ";
 		ss << (sar.GetIsBuy() == true ? "L " : "S ");
 		ss << " SAR=";
 		sar.GetValue(sarp);
@@ -454,7 +454,7 @@ int test7()
 				continue;
 
 			std::stringstream ss;
-			ss << bartime.tostring() << " ";
+			ss << bartime.tostring().c_str() << " ";
 			ss << " BAR";
 			ss << " AO:" << ohlc.GetAskOpen();
 			ss << " AH:" << ohlc.GetAskHigh();
@@ -515,7 +515,7 @@ int test8()
 				continue;
 
 			std::stringstream ss;
-			ss << hatime.tostring() << " ";
+			ss << hatime.tostring().c_str() << " ";
 			ss << " BAR";
 			ss << " AO:" << ohlc.GetAskOpen();
 			ss << " AH:" << ohlc.GetAskHigh();
@@ -579,7 +579,7 @@ int test9()
                 continue;
 
             std::stringstream ss;
-            ss << matime.tostring() << " ";
+            ss << matime.tostring().c_str() << " ";
             ss << " BAR";
             ss << " A:" << average.GetBuy();
             ss << " B:" << average.GetSell();
@@ -652,7 +652,7 @@ int test10()
             // write bar data -------------
             fx::OHLCPrice ohlc = bar.GetOHLC();
             std::stringstream ss;
-            ss << bar.GetRefTime().tostring() << " ";
+            ss << bar.GetRefTime().tostring().c_str() << " ";
             ss << " BAR";
             ss << " AO:" << ohlc.GetAskOpen();
             ss << " AH:" << ohlc.GetAskHigh();
@@ -667,7 +667,7 @@ int test10()
             ohlc = habar.GetOHLC();
             // std::stringstream ss;
             ss = std::stringstream();
-            ss << habar.GetRefTime().tostring() << " ";
+            ss << habar.GetRefTime().tostring().c_str() << " ";
             ss << " HA-BAR";
             ss << " AO:" << ohlc.GetAskOpen();
             ss << " AH:" << ohlc.GetAskHigh();
@@ -683,7 +683,7 @@ int test10()
             lwma.GetValue(average);
             // std::stringstream ss;
             ss = std::stringstream();
-            ss << lwma.GetRefTime().tostring() << " ";
+            ss << lwma.GetRefTime().tostring().c_str() << " ";
             ss << " LWMA";
             ss << " A:" << average.GetBuy();
             ss << " B:" << average.GetSell();

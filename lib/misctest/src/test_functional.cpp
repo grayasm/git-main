@@ -544,7 +544,7 @@ void test_functional::unary_function2(const char* msg)
 
 //GNU(-std=c++98): take the definitions outside test_functional::binary_function
 template<typename T>
-struct Compare_0 : public misc::binary_function<T,T,bool>
+struct Compare_0 : public stl::binary_function<T,T,bool>
 {
 	bool operator() (T a, T b) {return (a==b);}
 };
@@ -1751,7 +1751,7 @@ void test_functional::binary_negate2(const char* msg)
 		//  MISC
 		misc::equal_to<Cval> equal_m;
 		misc::binary_negate<misc::equal_to<Cval> > nonequal_m(equal_m);
-		misc::pair<It,It> firstmatch_m, firstmismatch_m;
+		stl::pair<It,It> firstmatch_m, firstmismatch_m;
 		firstmatch_m = misc::mismatch(v1.begin(), v1.end(), v2.begin(), nonequal_m);
 		firstmismatch_m = misc::mismatch(v1.begin(), v1.end(), v2.begin(), equal_m);
 		CPPUNIT_ASSERT(firstmatch_m.first == v1.end());
@@ -1761,7 +1761,7 @@ void test_functional::binary_negate2(const char* msg)
 		//  MISC
 		std::equal_to<Cval> equal_s;
 		std::binary_negate<std::equal_to<Cval> > nonequal_s(equal_s);
-		misc::pair<It,It> firstmatch_s, firstmismatch_s;
+		stl::pair<It,It> firstmatch_s, firstmismatch_s;
 		firstmatch_s = misc::mismatch(v1.begin(), v1.end(), v2.begin(), nonequal_s);
 		firstmismatch_s = misc::mismatch(v1.begin(), v1.end(), v2.begin(), equal_s);
 		CPPUNIT_ASSERT(firstmatch_s.first== v1.end());
@@ -2369,12 +2369,12 @@ void test_functional::not2_2(const char* msg)
 		time_printer tp(msg, m_print_time);
 
 		//  MISC
-		misc::pair<It,It> firstmatch =
+		stl::pair<It,It> firstmatch =
 			misc::mismatch(v1.begin(), v1.end(), v2.begin(), std::not2(misc::equal_to<int>()));
 		CPPUNIT_ASSERT(firstmatch.first == v1.begin() && firstmatch.second == v2.begin());
 
 		//  MISC
-		misc::pair<It,It> firstmatch2 =
+		stl::pair<It,It> firstmatch2 =
 			misc::mismatch(v1.begin(), v1.end(), v2.begin(), misc::not2(std::equal_to<int>()));
 		CPPUNIT_ASSERT(firstmatch2.first == v1.begin() && firstmatch2.second == v2.begin());
 	}

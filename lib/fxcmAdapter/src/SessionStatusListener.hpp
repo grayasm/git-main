@@ -66,7 +66,7 @@ namespace fxcm
 		bool				m_PrintSubsessions;
 		IO2GSession*		m_Session;
 		sys::event			m_SessionEvent;
-		misc::critical_section	m_CriticalSection;
+		sys::critical_section	m_CriticalSection;
 	};
 } // namespace
 

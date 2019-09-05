@@ -331,7 +331,7 @@ void test_autoptr::test_sort()
 		}//for
 
 		lblist m_list_sort=m_list ;
-		misc::sort(m_list_sort.begin(), m_list_sort.end(), std_sort_pred);
+		stl::sort(m_list_sort.begin(), m_list_sort.end(), std_sort_pred);
 		long min = (*m_list_sort.begin())->getdata();
 		long max = (*(--(m_list_sort.end())))->getdata();
 

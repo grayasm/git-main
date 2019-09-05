@@ -59,39 +59,39 @@ void test_utility::pair_ctor()
 
 	
 	
-    typedef misc::pair<int,int> Pair;
+    typedef stl::pair<int,int> Pair;
     typedef stl::vector<Pair> Vec;
     typedef misc::list<Pair> Lst;
 
     
     stl::cout << "\n\n\tmisc::pair ctor----------------------------------------";
 
-    pair_ctor<Vec,Pair>("\n\tpair_ctor<stl::vector<misc::pair> >   ");
-    pair_ctor<Lst,Pair>("\n\tpair_ctor<misc::list<misc::pair> >     ");
+    pair_ctor<Vec,Pair>("\n\tpair_ctor<stl::vector<stl::pair> >   ");
+    pair_ctor<Lst,Pair>("\n\tpair_ctor<misc::list<stl::pair> >     ");
 }
 
 void test_utility::make_pair()
 {
-    typedef misc::pair<int,int> Pair;
+    typedef stl::pair<int,int> Pair;
     typedef stl::vector<Pair> Vec;
     typedef misc::list<Pair> Lst;
 
     stl::cout << "\n\n\tmisc::make_pair----------------------------------------";
 
-    make_pair<Vec,Pair>("\n\tmake_pair<stl::vector<misc::pair> >   ");
-    make_pair<Lst,Pair>("\n\tmake_pair<misc::list<misc::pair> >     ");
+    make_pair<Vec,Pair>("\n\tmake_pair<stl::vector<stl::pair> >   ");
+    make_pair<Lst,Pair>("\n\tmake_pair<misc::list<stl::pair> >     ");
 }
 
 void test_utility::rel_ops()
 {
-    typedef misc::pair<int,int> Pair;
+    typedef stl::pair<int,int> Pair;
     typedef stl::vector<Pair> Vec;
     typedef misc::list<Pair> Lst;
 
     stl::cout << "\n\n\tmisc::rel_ops------------------------------------------";
 
-    rel_ops<Vec,Pair>("\n\tmake_pair<stl::vector<misc::pair> >   ");
-    rel_ops<Lst,Pair>("\n\tmake_pair<misc::list<misc::pair> >     ");
+    rel_ops<Vec,Pair>("\n\tmake_pair<stl::vector<stl::pair> >   ");
+    rel_ops<Lst,Pair>("\n\tmake_pair<misc::list<stl::pair> >     ");
 }
 
 void test_utility::it_traits()

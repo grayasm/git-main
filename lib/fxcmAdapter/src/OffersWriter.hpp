@@ -56,7 +56,7 @@ namespace fxcm
 
 	private:
 		IO2GSession*					m_session;
-		misc::critical_section			m_criticalSection;
+		sys::critical_section			m_criticalSection;
 		IniParams						m_iniParams;
 		OffersVec						m_offersVec;
 		bool							m_isEnabled;

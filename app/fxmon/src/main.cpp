@@ -39,11 +39,11 @@ int main(int /*argc*/, char** /*argv*/)
 	// disable stdout buffer
 	setvbuf(stdout, NULL, _IONBF, 0);
 	
-	// GetHistoryPrices();
-	// LoadHistoryPrices();
+	GetHistoryPrices();
+	LoadHistoryPrices();
 	// RealEngine();
-	TestEngine();
-	// OMPEngine();
+	// TestEngine();
+	OMPEngine();
 	// test10();
 
 	return 0;

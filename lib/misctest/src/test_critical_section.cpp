@@ -59,26 +59,26 @@ void test_critical_section::ctor()
 
 	stl::cout << "\n\n\tctor---------------------------------------------------";
 	{
-		misc::critical_section cs;
+		sys::critical_section cs;
 		CPPUNIT_ASSERT( true );
 	}
 	{
-		misc::critical_section* cs;
-		cs = new misc::critical_section();
+		sys::critical_section* cs;
+		cs = new sys::critical_section();
 		CPPUNIT_ASSERT( cs != 0 );
 		delete cs;
 	}
 	{
 		const int CSNO=6;
-		misc::critical_section cs[CSNO];
+		sys::critical_section cs[CSNO];
 		(cs[0]);
 		CPPUNIT_ASSERT( true );
 	}
 	{
 		const int CSNO=6;
-		misc::critical_section* cs[CSNO];
+		sys::critical_section* cs[CSNO];
 		for(int i=0; i < CSNO; ++i)
-			cs[i] = new misc::critical_section();
+			cs[i] = new sys::critical_section();
 		for(int i=0; i < CSNO; ++i)
 			CPPUNIT_ASSERT( cs[i] != 0 );
 		for(int i=0; i < CSNO; ++i)
@@ -96,7 +96,7 @@ void test_critical_section::dtor()
 class CSLockThread : public sys::thread
 {
 public:
-	CSLockThread(misc::critical_section* cs, int sec)
+	CSLockThread(sys::critical_section* cs, int sec)
 		: m_cs(cs), m_sec(sec) { }
 	~CSLockThread() { }
 	unsigned long run()
@@ -109,7 +109,7 @@ public:
 		return m_sec;
 	}
 private:
-	misc::critical_section*		m_cs;
+	sys::critical_section*		m_cs;
 	int							m_sec;	
 };
 
@@ -117,17 +117,17 @@ void test_critical_section::lock()
 {
 	stl::cout << "\n\n\tlock---------------------------------------------------";
 	{
-		misc::critical_section cs;
+		sys::critical_section cs;
 		CPPUNIT_ASSERT( cs.lock() == 0 );
 		// destroy a locked critical section
 	}
 	{
-		misc::critical_section* cs = new misc::critical_section();
+		sys::critical_section* cs = new sys::critical_section();
 		CPPUNIT_ASSERT (cs->lock() == 0);
 		delete cs;
 	}
 	{
-		misc::critical_section cs[3];
+		sys::critical_section cs[3];
 		for(int i=0; i < 3; ++i)
 		{
 			CPPUNIT_ASSERT( cs[i].lock() == 0 );
@@ -135,9 +135,9 @@ void test_critical_section::lock()
 		// destroy critical_section array while in locked state.
 	}
 	{
-		misc::critical_section* cs[3];
+		sys::critical_section* cs[3];
 		for(int i=0; i < 3; ++i)
-			cs[i] = new misc::critical_section();
+			cs[i] = new sys::critical_section();
 		for(int i=0; i < 3; ++i)
 			CPPUNIT_ASSERT( cs[i]->lock() == 0 );
 		// destroy critical_section array while in locked state
@@ -150,7 +150,7 @@ void test_critical_section::lock()
 		sys::time t1( time(0) );
 		printf("\n\t start time       : %s", t1.tolocaltime().c_str());
 
-		misc::critical_section cs;
+		sys::critical_section cs;
 		const int THNO = 7;
 		CSLockThread* t[THNO];
 		for(int i=0; i < THNO; ++i)

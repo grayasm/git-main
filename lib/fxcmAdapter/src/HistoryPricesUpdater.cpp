@@ -58,7 +58,7 @@ namespace fxcm
 
 	int HistoryPricesUpdater::UpdatePrices(IO2GResponse* response)
 	{
-		misc::autocritical_section autoCS(m_criticalSection);
+		sys::autocritical_section autoCS(m_criticalSection);
 
 		if (!response)
 		{

@@ -51,7 +51,7 @@ int MarketPlugin4backtest::OpenPosition(
 	bool buy,
 	stl::vector<fx::Position>& result)
 {
-	misc::autocritical_section acs(m_criticalSection);
+	sys::autocritical_section acs(m_criticalSection);
 
     stl::string instrument = offer.GetInstrument();
     stl::string acc_symbol = m_iniParams.GetAccountSymbol();
@@ -144,7 +144,7 @@ int MarketPlugin4backtest::ClosePosition(
 	const fx::Position& pos,
 	stl::vector<fx::Position>& result)
 {
-	misc::autocritical_section acs(m_criticalSection);
+	sys::autocritical_section acs(m_criticalSection);
 
 	stl::vector<fx::Position>::iterator it = m_posvec.begin();
 	for (; it != m_posvec.end(); ++it)
@@ -198,7 +198,7 @@ int MarketPlugin4backtest::GetOHLCPrices(
 	const sys::time& to,
 	stl::vector<fx::OHLCPrice>& result)
 {
-	misc::autocritical_section acs(m_criticalSection);
+	sys::autocritical_section acs(m_criticalSection);
 
 	DATE dtFrom = 0, dtTo = 0;
 
@@ -221,7 +221,7 @@ int MarketPlugin4backtest::GetOHLCPrices(
 
 void MarketPlugin4backtest::Log(const stl::string& msg)
 {
-	misc::autocritical_section acs(m_criticalSection);
+	sys::autocritical_section acs(m_criticalSection);
 
 	if (!m_iniParams.GetEnableLogging())
 		return;
