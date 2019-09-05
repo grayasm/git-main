@@ -34,16 +34,16 @@
 //c++
 #include <cstring>
 
-//misc
-#include "generic_string.hpp"
+//stl
+#include "basic_string.hpp"
 
 
-namespace misc
+namespace stl
 {
 #if defined UNICODE
-	typedef misc::generic_string<wchar_t>	string;
+	typedef stl::basic_string<wchar_t>	string;
 #else
-	typedef misc::generic_string<char>		string ;	
+	typedef stl::basic_string<char>		string ;	
 #endif
 
 

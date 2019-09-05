@@ -33,7 +33,7 @@ namespace fx
 		OHLCPrice(
 			const char* instrument,			// 'EUR/USD'
 			const char* timeframe,			// m1 , H1 , ...
-			misc::time time,				// UTC
+			sys::time time,				// UTC
 			double BidOpen, double BidHigh, double BidLow, double BidClose,
 			double AskOpen, double AskHigh, double AskLow, double AskClose,
 			int volume);
@@ -42,14 +42,14 @@ namespace fx
 		OHLCPrice& operator=(const OHLCPrice& tc);
 		~OHLCPrice();
 
-		const misc::string& GetInstrument() const;
+		const stl::string& GetInstrument() const;
 		void SetInstrument(const char* instrument);
 
-		const misc::string& GetTimeframe() const;
+		const stl::string& GetTimeframe() const;
 		void SetTimeframe(const char* timeframe);
 
-		const misc::time& GetTime() const;
-		void SetTime(const misc::time& val);
+		const sys::time& GetTime() const;
+		void SetTime(const sys::time& val);
 
 		double GetBidOpen() const;
 		void SetBidOpen(double val);
@@ -82,9 +82,9 @@ namespace fx
 		void Init();
 
 	private:
-		misc::string m_instrument;
-		misc::string m_timeframe;
-		misc::time m_time;
+		stl::string m_instrument;
+		stl::string m_timeframe;
+		sys::time m_time;
 		double m_bidOpen, m_bidHigh, m_bidLow, m_bidClose;
 		double m_askOpen, m_askHigh, m_askLow, m_askClose;
 		int m_volume;

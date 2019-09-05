@@ -33,7 +33,7 @@
 #include "exception.hpp"
 #include "algorithm.hpp"
 
-namespace misc
+namespace sys
 {
 	thread::thread()
 	{
@@ -58,7 +58,7 @@ namespace misc
 		if(m_handle)
 		{
 			if(!m_terminated)
-				throw misc::exception("cannot destroy running thread");
+				throw stl::exception("cannot destroy running thread");
 
 			/*
 			CloseHandle invalidates the specified object handle, decrements 
@@ -70,7 +70,7 @@ namespace misc
 			then close all handles to the thread.
 			*/
 			if( ::CloseHandle(m_handle) == 0 )
-				throw misc::exception("CloseHandle error");
+				throw stl::exception("CloseHandle error");
 
 			m_handle	= 0;
 			m_threadID	= 0;
@@ -89,12 +89,12 @@ namespace misc
 		if(m_thread)
 		{
 			if(!m_terminated)
-				throw misc::exception("cannot destroy running thread");
+				throw stl::exception("cannot destroy running thread");
 			if(m_joined)
 				return;
 			int ret = pthread_detach(m_thread);
 			if(ret)
-				throw misc::exception("~dtor: pthread_detach error");
+				throw stl::exception("~dtor: pthread_detach error");
 		}
 #endif
 	}
@@ -107,10 +107,10 @@ namespace misc
 			// _this can start a new thread only if the current one has
 			// finished and was joined so the returned value is known.
 			if( !m_joined )
-				throw misc::exception("resume not joined thread error");
+				throw stl::exception("resume not joined thread error");
 	
 			if( ::CloseHandle(m_handle) == 0 )
-				throw misc::exception("CloseHandle error");
+				throw stl::exception("CloseHandle error");
 
 			m_terminated = false;
 			m_joined = false;
@@ -125,7 +125,7 @@ namespace misc
 			&m_threadID);
 
 		if(m_handle == 0)
-			throw misc::exception("_beginthreadex error");
+			throw stl::exception("_beginthreadex error");
 
 		return 0;
 #else
@@ -134,7 +134,7 @@ namespace misc
 			// _this can start a new thread only if the current one has
 			// finished and was joined so the returned value is known.
 			if( !m_joined )
-				throw misc::exception("resume not joined thread error");
+				throw stl::exception("resume not joined thread error");
 	
 			//pthread_detach(m_thread); -> SEGFAULT
 
@@ -155,7 +155,7 @@ namespace misc
 			(void*)this);
 		
 		if(error != 0)
-			throw misc::exception("pthread_create error");
+			throw stl::exception("pthread_create error");
 			
 		pthread_attr_destroy(&attr);
 
@@ -181,14 +181,14 @@ namespace misc
 		}
 #else
 		if(m_joined)
-			throw misc::exception("pthread_join already joined");
+			throw stl::exception("pthread_join already joined");
 		
 		void* retval;
 		if(milliseconds == (unsigned long)-1 || m_terminated)
 		{
 			int error = pthread_join(m_thread, &retval);
 			if(error)
-				throw misc::exception("pthread_join error");
+				throw stl::exception("pthread_join error");
 			m_joined = true;
 			return 0;
 		}
@@ -199,7 +199,7 @@ namespace misc
 			
 			struct timespec req, rem;
 			req.tv_sec = 0;
-			req.tv_nsec = misc::min<unsigned long>(nslice, nanosec);
+			req.tv_nsec = stl::min<unsigned long>(nslice, nanosec);
 			double dtimeout = nanosec;
 			while(dtimeout > 0 && !m_terminated)
 			{
@@ -213,7 +213,7 @@ namespace misc
 			
 			int error = pthread_join(m_thread, &retval);
 			if(error)
-				throw misc::exception("pthread_join error");
+				throw stl::exception("pthread_join error");
 			m_joined = true;
 			return 0;
 		}		

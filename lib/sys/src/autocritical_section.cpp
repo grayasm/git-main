@@ -22,7 +22,7 @@
 #include "autocritical_section.hpp"
 #include "stream.hpp"
 
-namespace misc
+namespace sys
 {
 	autocritical_section::autocritical_section(critical_section& cs)
 		: m_critical_section(cs)

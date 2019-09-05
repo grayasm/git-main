@@ -53,111 +53,111 @@ void test_utility::tearDown()
 //##########################BEGIN TEST SUITE######################################
 void test_utility::pair_ctor()
 {
-	misc::cout << "\n\n\t*******************************************************";
-    misc::cout <<   "\n\t* TESTING HEADER: utility.hpp                         *";
-    misc::cout <<   "\n\t*******************************************************";
+	stl::cout << "\n\n\t*******************************************************";
+    stl::cout <<   "\n\t* TESTING HEADER: utility.hpp                         *";
+    stl::cout <<   "\n\t*******************************************************";
 
 	
 	
     typedef misc::pair<int,int> Pair;
-    typedef misc::vector<Pair> Vec;
+    typedef stl::vector<Pair> Vec;
     typedef misc::list<Pair> Lst;
 
     
-    misc::cout << "\n\n\tmisc::pair ctor----------------------------------------";
+    stl::cout << "\n\n\tmisc::pair ctor----------------------------------------";
 
-    pair_ctor<Vec,Pair>("\n\tpair_ctor<misc::vector<misc::pair> >   ");
+    pair_ctor<Vec,Pair>("\n\tpair_ctor<stl::vector<misc::pair> >   ");
     pair_ctor<Lst,Pair>("\n\tpair_ctor<misc::list<misc::pair> >     ");
 }
 
 void test_utility::make_pair()
 {
     typedef misc::pair<int,int> Pair;
-    typedef misc::vector<Pair> Vec;
+    typedef stl::vector<Pair> Vec;
     typedef misc::list<Pair> Lst;
 
-    misc::cout << "\n\n\tmisc::make_pair----------------------------------------";
+    stl::cout << "\n\n\tmisc::make_pair----------------------------------------";
 
-    make_pair<Vec,Pair>("\n\tmake_pair<misc::vector<misc::pair> >   ");
+    make_pair<Vec,Pair>("\n\tmake_pair<stl::vector<misc::pair> >   ");
     make_pair<Lst,Pair>("\n\tmake_pair<misc::list<misc::pair> >     ");
 }
 
 void test_utility::rel_ops()
 {
     typedef misc::pair<int,int> Pair;
-    typedef misc::vector<Pair> Vec;
+    typedef stl::vector<Pair> Vec;
     typedef misc::list<Pair> Lst;
 
-    misc::cout << "\n\n\tmisc::rel_ops------------------------------------------";
+    stl::cout << "\n\n\tmisc::rel_ops------------------------------------------";
 
-    rel_ops<Vec,Pair>("\n\tmake_pair<misc::vector<misc::pair> >   ");
+    rel_ops<Vec,Pair>("\n\tmake_pair<stl::vector<misc::pair> >   ");
     rel_ops<Lst,Pair>("\n\tmake_pair<misc::list<misc::pair> >     ");
 }
 
 void test_utility::it_traits()
 {
-    misc::cout << "\n\n\tmisc::iterator_traits<Iterator>------------------------";
+    stl::cout << "\n\n\tmisc::iterator_traits<Iterator>------------------------";
 
-    it_traits<misc::vector<bool> >          ("\n\ttraits<misc::vector<bool>>          ");
-    it_traits<misc::vector<char> >          ("\n\ttraits<misc::vector<char>>          ");
-    it_traits<misc::vector<signed char> >   ("\n\ttraits<misc::vector<signed char>>   ");
-    it_traits<misc::vector<unsigned char> > ("\n\ttraits<misc::vector<unsigned char>> ");
-    it_traits<misc::vector<wchar_t> >       ("\n\ttraits<misc::vector<wchar_t>>       ");
-    it_traits<misc::vector<short> >         ("\n\ttraits<misc::vector<short>>         ");
-    it_traits<misc::vector<unsigned short> >("\n\ttraits<misc::vector<unsigned short> ");
-    it_traits<misc::vector<int> >           ("\n\ttraits<misc::vector<int>>           ");
-    it_traits<misc::vector<unsigned int> >  ("\n\ttraits<misc::vector<unsigned int>>  ");
-    it_traits<misc::vector<long> >          ("\n\ttraits<misc::vector<long>>          ");
-    it_traits<misc::vector<unsigned long> > ("\n\ttraits<misc::vector<unsigned long>> ");
-    it_traits<misc::vector<double> >        ("\n\ttraits<misc::vector<double>>        ");
-    it_traits<misc::vector<float> >         ("\n\ttraits<misc::vector<float>>         ");
-    it_traits<misc::vector<long long> >     ("\n\ttraits<misc::vector<long long>L     ");
+    it_traits<stl::vector<bool> >          ("\n\ttraits<stl::vector<bool>>          ");
+    it_traits<stl::vector<char> >          ("\n\ttraits<stl::vector<char>>          ");
+    it_traits<stl::vector<signed char> >   ("\n\ttraits<stl::vector<signed char>>   ");
+    it_traits<stl::vector<unsigned char> > ("\n\ttraits<stl::vector<unsigned char>> ");
+    it_traits<stl::vector<wchar_t> >       ("\n\ttraits<stl::vector<wchar_t>>       ");
+    it_traits<stl::vector<short> >         ("\n\ttraits<stl::vector<short>>         ");
+    it_traits<stl::vector<unsigned short> >("\n\ttraits<stl::vector<unsigned short> ");
+    it_traits<stl::vector<int> >           ("\n\ttraits<stl::vector<int>>           ");
+    it_traits<stl::vector<unsigned int> >  ("\n\ttraits<stl::vector<unsigned int>>  ");
+    it_traits<stl::vector<long> >          ("\n\ttraits<stl::vector<long>>          ");
+    it_traits<stl::vector<unsigned long> > ("\n\ttraits<stl::vector<unsigned long>> ");
+    it_traits<stl::vector<double> >        ("\n\ttraits<stl::vector<double>>        ");
+    it_traits<stl::vector<float> >         ("\n\ttraits<stl::vector<float>>         ");
+    it_traits<stl::vector<long long> >     ("\n\ttraits<stl::vector<long long>L     ");
 }
 
 void test_utility::if_class()
 {
-    misc::cout << "\n\n\tmisc::If<bool,T1,T2>-----------------------------------";
+    stl::cout << "\n\n\tmisc::If<bool,T1,T2>-----------------------------------";
 
     if_class<int, long>("\n\tif_class <int,long>   ");
 }
 
 void test_utility::advance()
 {
-    misc::cout << "\n\n\tmisc::advance------------------------------------------";
+    stl::cout << "\n\n\tmisc::advance------------------------------------------";
 
-    advance<misc::vector<int> >("\n\tadvance<misc::vector<int> >   ");
+    advance<stl::vector<int> >("\n\tadvance<stl::vector<int> >   ");
     advance<misc::list<int> >  ("\n\tadvance<misc::list<int> >     ");
 }
 
 void test_utility::distance()
 {
-    misc::cout << "\n\n\tmisc::distance-----------------------------------------";
+    stl::cout << "\n\n\tmisc::distance-----------------------------------------";
 
-    distance<misc::vector<int> >("\n\tdistance<misc::vector<int> > ");
+    distance<stl::vector<int> >("\n\tdistance<stl::vector<int> > ");
     distance<misc::list<int> >  ("\n\tdistance<misc::list<int> >   ");
 }
 
 void test_utility::back_insert_it()
 {
-    misc::cout << "\n\n\tmisc::back_insert_iterator<Container>------------------";
+    stl::cout << "\n\n\tmisc::back_insert_iterator<Container>------------------";
 
-    back_insert_it<misc::vector<int> >("\n\tback_insert_it<misc::vector<int> > ");
+    back_insert_it<stl::vector<int> >("\n\tback_insert_it<stl::vector<int> > ");
     back_insert_it<misc::list<int> >  ("\n\tback_insert_it<misc::list<int> >   ");
 }
 
 void test_utility::front_insert_it()
 {
-    misc::cout << "\n\n\tmisc::front_insert_iterator<Container>-----------------";
+    stl::cout << "\n\n\tmisc::front_insert_iterator<Container>-----------------";
 
-    front_insert_it<misc::deque<int> > ("\n\tfront_insert_it<misc::vector<int> > ");
+    front_insert_it<misc::deque<int> > ("\n\tfront_insert_it<stl::vector<int> > ");
     front_insert_it<misc::list<int> >  ("\n\tfront_insert_it<misc::list<int> >   ");
 }
 
 void test_utility::insert_it()
 {
-    misc::cout << "\n\n\tmisc::insert_iterator<Container>-----------------------";
+    stl::cout << "\n\n\tmisc::insert_iterator<Container>-----------------------";
 
-    insert_it<misc::vector<int> >("\n\tinsert_it<misc::vector<int> > ");
+    insert_it<stl::vector<int> >("\n\tinsert_it<stl::vector<int> > ");
     insert_it<misc::list<int> >  ("\n\tinsert_it<misc::list<int> >   ");
 }
 

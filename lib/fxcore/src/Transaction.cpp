@@ -95,7 +95,7 @@ namespace fx
 		for(PosCIt bit = m_positions.begin(); bit != m_positions.end(); ++bit)
 		{
 			const Position& pos = *bit;
-			const misc::string& symbol = pos.GetCurrency().GetSymbol();
+			const stl::string& symbol = pos.GetCurrency().GetSymbol();
 			if(misc::find(symbols.begin(), symbols.end(), symbol) == symbols.end())
 			{
 				symbols.push_back(symbol);
@@ -104,7 +104,7 @@ namespace fx
 		return symbols;
 	}
 
-	double Transaction::GetMMR(const misc::string& symbol) const
+	double Transaction::GetMMR(const stl::string& symbol) const
 	{
 		double buyMMR(0);
 		double sellMMR(0);	
@@ -126,7 +126,7 @@ namespace fx
 		return (buyMMR > sellMMR ? buyMMR : sellMMR);
 	}
 
-	void Transaction::Close(const misc::string& symbol, const Price& rate, time_t tclose)
+	void Transaction::Close(const stl::string& symbol, const Price& rate, time_t tclose)
 	{
 		for(PosIt bit = m_positions.begin(); bit != m_positions.end(); ++bit)
 		{
@@ -139,7 +139,7 @@ namespace fx
 		}
 	}
 
-	double Transaction::GetGPL(const misc::string& symbol, const Price& rate) const
+	double Transaction::GetGPL(const stl::string& symbol, const Price& rate) const
 	{
 		double profit(0.f);
 		for(PosCIt bit = m_positions.begin(); bit != m_positions.end(); ++bit)
@@ -158,7 +158,7 @@ namespace fx
 		return profit;
 	}
 
-	double Transaction::GetPL(const misc::string& symbol, const Price& rate) const
+	double Transaction::GetPL(const stl::string& symbol, const Price& rate) const
 	{
 		double pips(0.f);
 		for(PosCIt bit = m_positions.begin(); bit != m_positions.end(); ++bit)
@@ -178,7 +178,7 @@ namespace fx
 		return pips;
 	}
 
-	Price Transaction::EstimateRate(const misc::string& symbol, double pips) const
+	Price Transaction::EstimateRate(const stl::string& symbol, double pips) const
 	{
 		/*
 			-20 means a total Sell: 20K transaction

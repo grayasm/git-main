@@ -24,7 +24,7 @@
 #include "exception.hpp"
 
 
-namespace misc
+namespace sys
 {
 	critical_section::critical_section()
 	{
@@ -51,7 +51,7 @@ namespace misc
 		
 		int error = pthread_mutex_init(&m_mtx, &attr); // initialized and unlocked
 		if(error)
-			throw misc::exception("pthread_mutex_init error");
+			throw stl::exception("pthread_mutex_init error");
 		
 		pthread_mutexattr_destroy(&attr);
 #endif
@@ -68,7 +68,7 @@ namespace misc
 		pthread_mutex_unlock(&m_mtx);
 		int error = pthread_mutex_destroy(&m_mtx);
 		if(error)
-			throw misc::exception("pthread_mutex_destroy error");
+			throw stl::exception("pthread_mutex_destroy error");
 #endif
 	}
 
@@ -80,7 +80,7 @@ namespace misc
 #else
 		int error = pthread_mutex_lock(&m_mtx);
 		if(error)
-			throw misc::exception("pthread_mutex_lock error");
+			throw stl::exception("pthread_mutex_lock error");
 		return 0;
 #endif
 	}
@@ -93,7 +93,7 @@ namespace misc
 #else
 		int error = pthread_mutex_unlock(&m_mtx);
 		if(error)
-			throw misc::exception("pthread_mutex_unlock error");
+			throw stl::exception("pthread_mutex_unlock error");
 		return 0;
 #endif
 	}

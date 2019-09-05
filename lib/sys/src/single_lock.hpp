@@ -24,7 +24,7 @@
 
 
 
-namespace misc
+namespace sys
 {
 	class single_lock
 	{		
@@ -36,13 +36,13 @@ namespace misc
 		~single_lock();
 		
 		//! Locks the object and returns 0 if successful or otherwise throws
-		//!	misc::exception.
+		//!	stl::exception.
 		int lock();
 
 		//! Locks the object and returns 0 if successful or 1 if timeout.
 		int trylock(unsigned long milliseconds);
 
-		//! Unlocks the object and returns 0 or otherwise throws misc::exception.
+		//! Unlocks the object and returns 0 or otherwise throws stl::exception.
 		int unlock();		
 		
 	private:

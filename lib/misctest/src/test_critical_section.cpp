@@ -53,11 +53,11 @@ void test_critical_section::tearDown()
 //##########################BEGIN TEST SUITE######################################
 void test_critical_section::ctor()
 {
-    misc::cout << "\n\n\t*******************************************************";
-    misc::cout <<   "\n\t* TESTING HEADER: critical_section.hpp                *";
-    misc::cout <<   "\n\t*******************************************************";
+    stl::cout << "\n\n\t*******************************************************";
+    stl::cout <<   "\n\t* TESTING HEADER: critical_section.hpp                *";
+    stl::cout <<   "\n\t*******************************************************";
 
-	misc::cout << "\n\n\tctor---------------------------------------------------";
+	stl::cout << "\n\n\tctor---------------------------------------------------";
 	{
 		misc::critical_section cs;
 		CPPUNIT_ASSERT( true );
@@ -88,12 +88,12 @@ void test_critical_section::ctor()
 
 void test_critical_section::dtor()
 {
-	misc::cout << "\n\n\tdtor---------------------------------------------------";
+	stl::cout << "\n\n\tdtor---------------------------------------------------";
 }
 
 
 // testing lock
-class CSLockThread : public misc::thread
+class CSLockThread : public sys::thread
 {
 public:
 	CSLockThread(misc::critical_section* cs, int sec)
@@ -115,7 +115,7 @@ private:
 
 void test_critical_section::lock()
 {
-	misc::cout << "\n\n\tlock---------------------------------------------------";
+	stl::cout << "\n\n\tlock---------------------------------------------------";
 	{
 		misc::critical_section cs;
 		CPPUNIT_ASSERT( cs.lock() == 0 );
@@ -147,7 +147,7 @@ void test_critical_section::lock()
 	{
 		// concurrent threads locking a critical_section and waiting for a no of seconds.
 		// assert total execution time which must be sum of threads time
-		misc::time t1( time(0) );
+		sys::time t1( time(0) );
 		printf("\n\t start time       : %s", t1.tolocaltime().c_str());
 
 		misc::critical_section cs;
@@ -162,9 +162,9 @@ void test_critical_section::lock()
 		for(int i=0; i < THNO; ++i)
 			delete t[i];
 
-		misc::time t2( time(0) );
+		sys::time t2( time(0) );
 		int minsec = (int) ((THNO-1)*THNO/2); // waiting time in total
-		misc::time t3 = t1 + minsec;
+		sys::time t3 = t1 + minsec;
 		bool tcmp = (t2 >= t3);
 
 		printf("\n\t calculated delay : %d", minsec);

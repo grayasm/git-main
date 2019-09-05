@@ -41,13 +41,13 @@ int MarketPlugin4fxcm::OpenPosition(
 	const fx::Offer& offer,
 	int lots,
 	bool buy,
-	misc::vector<fx::Position>& result)
+	stl::vector<fx::Position>& result)
 {
 	int ret = m_session->OpenPosition(offer, lots, buy, result);
 
 	if (ret != fxcm::ErrorCodes::ERR_SUCCESS)
 	{
-		 misc::cout << __FUNCTION__ <<
+		 stl::cout << __FUNCTION__ <<
 			 ": m_session->OpenPosition returned error: " <<
 			 fxcm::ErrorCodes::GetText((fxcm::ErrorCodes::ErrorId)ret).c_str()
 			 << std::endl;
@@ -56,10 +56,10 @@ int MarketPlugin4fxcm::OpenPosition(
 	// Log open position action.
 	if (m_iniParams.GetEnableLogging())
 	{
-		misc::string msg("Open  at: ");
+		stl::string msg("Open  at: ");
 		msg += offer.GetTime().tostring();
 		msg += " count=";
-		msg += misc::from_value(result.size());
+		msg += stl::from_value(result.size());
 		msg += " position(s)\n";
 		for (size_t i = 0; i < result.size(); ++i)
 		{
@@ -75,13 +75,13 @@ int MarketPlugin4fxcm::OpenPosition(
 int MarketPlugin4fxcm::ClosePosition(
 	const fx::Offer& offer,
 	const fx::Position& pos,
-	misc::vector<fx::Position>& result)
+	stl::vector<fx::Position>& result)
 {
 	int ret = m_session->ClosePosition(offer, pos, result);
 
 	if (ret != fxcm::ErrorCodes::ERR_SUCCESS)
 	{
-		misc::cout << __FUNCTION__ <<
+		stl::cout << __FUNCTION__ <<
 			": m_session->ClosePosition returned error: " <<
 			fxcm::ErrorCodes::GetText((fxcm::ErrorCodes::ErrorId)ret).c_str()
 			<< std::endl;
@@ -91,18 +91,18 @@ int MarketPlugin4fxcm::ClosePosition(
 	if (m_iniParams.GetEnableLogging())
 	{
 		double curPL = 0, curGPL = 0;
-		misc::string msg("Close at: ");
+		stl::string msg("Close at: ");
 		msg += offer.GetTime().tostring();
 		msg += " count=";
-		msg += misc::from_value(result.size());
+		msg += stl::from_value(result.size());
 		msg += " position(s)\n";
 		for (size_t i = 0; i < result.size(); ++i)
 		{
 			curPL += result[i].GetPL();
 			curGPL += result[i].GetGPL();
 			msg += result[i].ToString();
-			msg += " curPL="; msg += misc::from_value(curPL, 2);
-			msg += " curGPL="; msg += misc::from_value(curGPL, 2);
+			msg += " curPL="; msg += stl::from_value(curPL, 2);
+			msg += " curGPL="; msg += stl::from_value(curGPL, 2);
 			msg += "\n";
 		}
 		Log(msg);
@@ -112,11 +112,11 @@ int MarketPlugin4fxcm::ClosePosition(
 }
 
 int MarketPlugin4fxcm::GetOHLCPrices(
-	const misc::string& instrument,
-	const misc::string& timeframe,
-	const misc::time& from,
-	const misc::time& to,
-	misc::vector<fx::OHLCPrice>& result)
+	const stl::string& instrument,
+	const stl::string& timeframe,
+	const sys::time& from,
+	const sys::time& to,
+	stl::vector<fx::OHLCPrice>& result)
 {
 	DATE dtFrom = 0, dtTo = 0;
 
@@ -128,7 +128,7 @@ int MarketPlugin4fxcm::GetOHLCPrices(
 
 	if (ret != fxcm::ErrorCodes::ERR_SUCCESS)
 	{
-		misc::cout << __FUNCTION__ <<
+		stl::cout << __FUNCTION__ <<
 			": m_session->GetOHLCPrices returned error: " <<
 			fxcm::ErrorCodes::GetText((fxcm::ErrorCodes::ErrorId)ret).c_str()
 			<< std::endl;
@@ -138,7 +138,7 @@ int MarketPlugin4fxcm::GetOHLCPrices(
 }
 
 
-void MarketPlugin4fxcm::Log(const misc::string& msg)
+void MarketPlugin4fxcm::Log(const stl::string& msg)
 {
 	if (!m_iniParams.GetEnableLogging())
 		return;

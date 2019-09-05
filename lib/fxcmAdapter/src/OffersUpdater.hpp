@@ -36,8 +36,8 @@ namespace fxcm
 	class OffersUpdater
 	{
 	public:
-		typedef misc::autoptr<OffersUpdater>		Ptr;
-		typedef std::map<misc::string, fx::Offer>	OffersMap;
+		typedef stl::autoptr<OffersUpdater>		Ptr;
+		typedef std::map<stl::string, fx::Offer>	OffersMap;
 
 		OffersUpdater(IO2GSession* session);
 		~OffersUpdater();

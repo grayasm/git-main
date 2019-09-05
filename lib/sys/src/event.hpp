@@ -26,7 +26,7 @@
 #include "sync_base.hpp"
 #include "critical_section.hpp"
 
-namespace misc
+namespace sys
 {	
 	/*	Win32: The most flexible type of synchronization object in Win32 is
 	 *	the EVENT OBJECT. The event object is a kernel object whose only purpose
@@ -68,7 +68,7 @@ namespace misc
 		
 		//! --- vtable begin ---
 		/*! Locks the calling thread until event is signaled.
-		 *! If event is signaled it returns 0 or otherwise throws misc::exception.
+		 *! If event is signaled it returns 0 or otherwise throws stl::exception.
 		 */
 		int lock();	
 		
@@ -79,7 +79,7 @@ namespace misc
 		int trylock(unsigned long milliseconds = 0);
 		
 		/*!	Signals the event and if successful return 0 or otherwise throws
-		 *! misc::exception
+		 *! stl::exception
 		 */		
 		int unlock();
 		

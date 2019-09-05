@@ -27,23 +27,23 @@
 #include <errno.h>
 #endif
 
-namespace misc
+namespace sys
 {	
 	semaphore::semaphore(unsigned int maxlocks)
 		: sync_base()
 	{
 		if(maxlocks == 0)
-			throw misc::exception("semaphore maxlocks must be > 0");
+			throw stl::exception("semaphore maxlocks must be > 0");
 		
 #ifdef _WIN32
 		m_handle = ::CreateSemaphore(NULL, maxlocks, maxlocks, "");
 		if(m_handle == NULL)
-			throw misc::exception("CreateSemaphore error");
+			throw stl::exception("CreateSemaphore error");
 #else
 		int pshared = 0; // not shared with other processes atm
 		int error = sem_init(&m_sem, pshared, maxlocks);
 		if(error)
-			throw misc::exception("sem_init error");
+			throw stl::exception("sem_init error");
 #endif
 	}
 
@@ -60,12 +60,12 @@ namespace misc
 		then close all handles to the thread.
 		*/
 		if( ::CloseHandle(m_handle) == 0 )
-			throw misc::exception("CloseHandle error");
+			throw stl::exception("CloseHandle error");
 		m_handle = NULL;
 #else
 		int error = sem_destroy(&m_sem);
 		if(error)
-			throw misc::exception("sem_destroy error");
+			throw stl::exception("sem_destroy error");
 #endif
 	}
 
@@ -74,7 +74,7 @@ namespace misc
 #ifdef _WIN32
 		DWORD dwRet = ::WaitForSingleObject(m_handle, INFINITE);
 		if(dwRet != WAIT_OBJECT_0) // WAIT_TIMEOUT, WAIT_FAILED, WAIT_ABANDONED
-			throw misc::exception("WaitForSingleObject error");
+			throw stl::exception("WaitForSingleObject error");
 		return 0;
 #else
 		int error;
@@ -87,7 +87,7 @@ namespace misc
 		if(error == 0)
 			return 0;
 
-		throw misc::exception("sem_wait error");
+		throw stl::exception("sem_wait error");
 #endif
 	}
 
@@ -111,13 +111,13 @@ namespace misc
 			if(error == 0)
 				return 0;
 			
-			throw misc::exception("sem_wait error");
+			throw stl::exception("sem_wait error");
 		}
 		else
 		{
 			struct timespec ts;
 			if(clock_gettime(CLOCK_REALTIME, &ts) == -1)
-				throw misc::exception("clock_gettime error");
+				throw stl::exception("clock_gettime error");
 			
 			ts.tv_sec += (time_t) (milliseconds / 1000);// seconds
 			ts.tv_nsec += (milliseconds % 1000) * 1e6;	// nanoseconds
@@ -138,7 +138,7 @@ namespace misc
 			if(error == -1 && errno == ETIMEDOUT)
 				return 1;	// timeout
 			
-			throw misc::exception("sem_timedwait error");
+			throw stl::exception("sem_timedwait error");
 		}
 #endif		
 	}
@@ -150,7 +150,7 @@ namespace misc
 			by a specified amount.
 		*/
 		if( ::ReleaseSemaphore(m_handle, 1, NULL) == 0 )
-			throw misc::exception("ReleaseSemaphore error");
+			throw stl::exception("ReleaseSemaphore error");
 		return 0;
 #else
 		/*	http://linux.die.net/man/3/sem_post
@@ -165,7 +165,7 @@ namespace misc
 		 */
 		int error = sem_post(&m_sem);
 		if(error)
-			throw misc::exception("sem_post error");
+			throw stl::exception("sem_post error");
 		return 0;
 #endif
 	}

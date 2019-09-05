@@ -35,14 +35,14 @@ namespace misc
 	{
 	}
 
-	audit::audit(const misc::string& filepath, std::ios::openmode mode)
+	audit::audit(const stl::string& filepath, std::ios::openmode mode)
 	{
 		reset();
 		m_filepath = filepath;
-		misc::ofstream fout(filepath.c_str(), mode);
+		stl::ofstream fout(filepath.c_str(), mode);
 		if(!fout.is_open())
 		{
-			misc::cout << "\naudit cannot open file " << filepath.c_str() << std::endl;
+			stl::cout << "\naudit cannot open file " << filepath.c_str() << std::endl;
 			return;
 		}
 		
@@ -72,9 +72,9 @@ namespace misc
 		char buff[20];		
 		strftime(buff, 20, "%Y-%m-%d %H:%M:%S", localtime(&time));
 
-		misc::ofstream fout(m_filepath.c_str(), std::ios::out | std::ios::app);
+		stl::ofstream fout(m_filepath.c_str(), std::ios::out | std::ios::app);
 		if(!fout.is_open())
-			throw misc::exception("Cannot open audit file for writing.");
+			throw stl::exception("Cannot open audit file for writing.");
 
 		fout << "\nTIME: " << buff;
 		fout << "\n\tFILE: " << file << ":" << lineno << " " << fn ;//<< " " << GetCurrentThreadId();
@@ -87,9 +87,9 @@ namespace misc
 		if(m_filepath.empty())
 			return;
 
-		misc::ofstream fout(m_filepath.c_str(), std::ios::out | std::ios::app);
+		stl::ofstream fout(m_filepath.c_str(), std::ios::out | std::ios::app);
 		if(!fout.is_open())
-			throw misc::exception("Cannot open audit file for writing.");
+			throw stl::exception("Cannot open audit file for writing.");
 
 		fout << "\n\tFILE: " << file << ":" << lineno << " " << fn ;//<< " " << GetCurrentThreadId();
 		fout << "\n\tMSG : " << msg << ";";
@@ -101,9 +101,9 @@ namespace misc
 		if(m_filepath.empty())
 			return;
 
-		misc::ofstream fout(m_filepath.c_str(), std::ios::out | std::ios::app);
+		stl::ofstream fout(m_filepath.c_str(), std::ios::out | std::ios::app);
 		if(!fout.is_open())
-			throw misc::exception("Cannot open audit file for writing.");
+			throw stl::exception("Cannot open audit file for writing.");
 
 		fout << "\n\tMSG : " << msg << ";";
 		fout.close();

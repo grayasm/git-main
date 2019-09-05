@@ -51,13 +51,13 @@ void test_exception::tearDown()
 //test begin
 void test_exception::ctor()
 {
-	misc::cout << "\n\n\t*******************************************************";
-    misc::cout <<   "\n\t* TESTING HEADER: exception.hpp                       *";
-    misc::cout <<   "\n\t*******************************************************";
+	stl::cout << "\n\n\t*******************************************************";
+    stl::cout <<   "\n\t* TESTING HEADER: exception.hpp                       *";
+    stl::cout <<   "\n\t*******************************************************";
 
 	
-	misc::cout << "\n\n\tctor---------------------------------------------------";
-	ctor<misc::exception>("\n\tmisc::exception");
+	stl::cout << "\n\n\tctor---------------------------------------------------";
+	ctor<stl::exception>("\n\tmisc::exception");
 	ctor<std::bad_alloc>("\n\tstd::bad_alloc");
 }
 
@@ -65,8 +65,8 @@ void test_exception::ctor()
 
 void test_exception::dtor()
 {
-	misc::cout << "\n\n\tdtor---------------------------------------------------";
-	dtor<misc::exception>("\n\tmisc::exception");
+	stl::cout << "\n\n\tdtor---------------------------------------------------";
+	dtor<stl::exception>("\n\tmisc::exception");
 	dtor<std::bad_alloc>("\n\tstd::bad_alloc");
 }
 

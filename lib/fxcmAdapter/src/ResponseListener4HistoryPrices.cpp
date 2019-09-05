@@ -36,7 +36,7 @@ namespace fxcm
 		m_RequestID = "";
 		m_Response = NULL;
 		// m_CriticalSection - is unlocked
-		misc::cout.precision(6);
+		stl::cout.precision(6);
 	}
 
 	long ResponseListener4HistoryPrices::addRef()
@@ -75,7 +75,7 @@ namespace fxcm
 	{
 		if (m_RequestID == requestId)
 		{
-			misc::cout << __FUNCTION__
+			stl::cout << __FUNCTION__
 				<< ": The request has been failed. ID: "
 				<< requestId << " : " << error << std::endl;
 			m_ResponseEvent.unlock();
@@ -87,7 +87,7 @@ namespace fxcm
 		// empty in GetHistPrices sample
 	}
 
-	void ResponseListener4HistoryPrices::SetRequestID(const misc::string& requestID)
+	void ResponseListener4HistoryPrices::SetRequestID(const stl::string& requestID)
 	{
 		m_RequestID = requestID;
 		if (m_Response)

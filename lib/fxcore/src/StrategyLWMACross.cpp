@@ -30,15 +30,15 @@ namespace fx
 
     StrategyLWMACross::StrategyLWMACross(
         fx::MarketPlugin* plugin,
-        const misc::string& instrument)
+        const stl::string& instrument)
     {
         m_plugin = plugin;
         m_instrument = instrument;
         // ----------------------
-        m_habar = fx::HABAR(instrument, 14, misc::time::daySEC);
-        m_lwma1 = fx::LWMA(instrument, 5, misc::time::daySEC,
+        m_habar = fx::HABAR(instrument, 14, sys::time::daySEC);
+        m_lwma1 = fx::LWMA(instrument, 5, sys::time::daySEC,
                             fx::SMA::BT_HABAR, fx::SMA::PRICE_CLOSE);
-        m_lwma2 = fx::LWMA(instrument, 12, misc::time::daySEC,
+        m_lwma2 = fx::LWMA(instrument, 12, sys::time::daySEC,
                             fx::SMA::BT_HABAR, fx::SMA::PRICE_CLOSE);
         // m_tr - default
         m_closedPL = 0;
@@ -75,7 +75,7 @@ namespace fx
        
 
         bool canOpen = false, isBuy = false;
-        if (offer.GetTime() >= m_habar.GetRefTime() + misc::time::daySEC)
+        if (offer.GetTime() >= m_habar.GetRefTime() + sys::time::daySEC)
         {
             const fx::OHLCPrice& ohlc = m_habar.GetOHLC();
             const fx::BAR::OHLCPriceList& ohlcList = m_habar.GetOHLCList();
@@ -146,7 +146,7 @@ namespace fx
 
     void StrategyLWMACross::OpenPosition(const fx::Offer& offer, bool buy)
     {
-        misc::vector<fx::Position> result;
+        stl::vector<fx::Position> result;
         int ret = m_plugin->OpenPosition(offer, 1, buy, result);
 
         if (ret != 0)
@@ -161,15 +161,15 @@ namespace fx
 
     void StrategyLWMACross::ClosePosition(const fx::Offer& offer)
     {
-        misc::vector<fx::Position>& npos =
-            const_cast<misc::vector<fx::Position>&>(m_tr.GetPositions());
+        stl::vector<fx::Position>& npos =
+            const_cast<stl::vector<fx::Position>&>(m_tr.GetPositions());
 
-        misc::vector<fx::Position>::iterator it = npos.begin();
+        stl::vector<fx::Position>::iterator it = npos.begin();
         for (; it != npos.end(); /*erase*/)
         {
             const fx::Position& pos = *it;
 
-            misc::vector<fx::Position> result;
+            stl::vector<fx::Position> result;
             int ret = m_plugin->ClosePosition(offer, pos, result);
 
             if (ret != 0)
@@ -178,7 +178,7 @@ namespace fx
                 return;
             }
 
-            misc::vector<fx::Position>::iterator tmp = npos.erase(it);
+            stl::vector<fx::Position>::iterator tmp = npos.erase(it);
             it = tmp;
         }
     }
@@ -190,7 +190,7 @@ namespace fx
             m_habar.IsValid())
             return;
 
-        misc::vector<fx::IND*> indicators;
+        stl::vector<fx::IND*> indicators;
         indicators.push_back(&m_lwma1);
         indicators.push_back(&m_lwma2);
         indicators.push_back(&m_habar);

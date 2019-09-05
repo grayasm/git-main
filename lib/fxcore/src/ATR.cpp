@@ -38,7 +38,7 @@ namespace fx
 		Init();
 	}
 
-	ATR::ATR(const misc::string& instrument, int period, Timeframe sec)
+	ATR::ATR(const stl::string& instrument, int period, Timeframe sec)
 	{
 		Init();
 
@@ -74,7 +74,7 @@ namespace fx
 		return *this;
 	}
 
-	const misc::string& ATR::GetInstrument() const
+	const stl::string& ATR::GetInstrument() const
 	{
 		return m_instrument;
 	}
@@ -100,7 +100,7 @@ namespace fx
 	void ATR::Update(const fx::Offer& offer)
 	{
 		if (m_instrument != offer.GetInstrument())
-			throw misc::exception("ATR offer is invalid");
+			throw stl::exception("ATR offer is invalid");
 
         // offer will paint a new bar?
         bool isNew = m_bar.IsNew(offer);
@@ -130,7 +130,7 @@ namespace fx
                 double n = m_period - 1.0;
                 double ATR = (m_medATR * (n - 1) + TR) / n;
 
-                m_ATR = misc::max(m_ATR, ATR);
+                m_ATR = stl::max(m_ATR, ATR);
             }
         }
         else
@@ -193,7 +193,7 @@ namespace fx
         }
 	}
 
-	const misc::time& ATR::GetRefTime() const
+	const sys::time& ATR::GetRefTime() const
 	{
 		return m_bar.GetRefTime();
 	}
@@ -205,7 +205,7 @@ namespace fx
             m_medATR == -1 ||
             m_ATR == -1)
         {
-            throw misc::exception("ATR is invalid");
+            throw stl::exception("ATR is invalid");
         }
 
 		// return last ATR (true average)

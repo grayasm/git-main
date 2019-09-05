@@ -29,12 +29,12 @@
 //c
 #include <stdlib.h>
 //c++
-//misc
+//stl
 #include "exception.hpp"
 
 
 
-namespace misc
+namespace stl
 {
     template<typename T>
     class autoptr
@@ -180,7 +180,7 @@ namespace misc
         const T& operator*()const
         {
             if(m_data == 0)
-                throw misc::exception("NULL pointer");
+                throw stl::exception("NULL pointer");
 
             return *m_data;
         }
@@ -188,7 +188,7 @@ namespace misc
         T& operator*()
         {            
             if(m_data == 0)
-                throw misc::exception("NULL pointer");
+                throw stl::exception("NULL pointer");
 
             return *m_data;
         }

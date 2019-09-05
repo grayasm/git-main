@@ -35,12 +35,12 @@ namespace fx
 	class Position
 	{
 	public:
-		typedef misc::autoptr<Position>	Ptr;
+		typedef stl::autoptr<Position>	Ptr;
 
 		Position();
 
-		Position(const misc::string& orderID,
-			const misc::string& tradeID,
+		Position(const stl::string& orderID,
+			const stl::string& tradeID,
 			const Currency& currency,
 			bool buy,
 			double amount,
@@ -53,10 +53,10 @@ namespace fx
 		Position& operator=(const Position& tc);
 
 		//! Returns the market order for this position.
-		const misc::string& GetOrderID() const;
+		const stl::string& GetOrderID() const;
 
 		//! Returns the market open trade id. Empty if entry order.
-		const misc::string& GetTradeID() const;
+		const stl::string& GetTradeID() const;
 
 		//! Currency at the time this position entered the market.
 		const Currency& GetCurrency() const;
@@ -124,14 +124,14 @@ namespace fx
 		Price GetQuotes(double pips) const;
 
 		//! Returns a string with internal data for debugging
-		misc::string ToString() const;
+		stl::string ToString() const;
 
 	private:
 		void Init();
 
 	private:
-		misc::string	m_orderID;		// "222140555" order ID
-		misc::string	m_tradeID;		// "105902921" trade ID
+		stl::string	m_orderID;		// "222140555" order ID
+		stl::string	m_tradeID;		// "105902921" trade ID
 		bool			m_isOpen;       // false for closed position
 		Currency		m_currency;		// currency at the open price
 		bool			m_buy;          // false for sell position

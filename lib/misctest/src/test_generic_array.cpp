@@ -109,9 +109,9 @@ void non_pod_f_v0(int, ...){}
 // begin test suite
 void test_generic_array::ctor()
 {
-    misc::cout << "\n\n\t*******************************************************";
-    misc::cout <<   "\n\t* TESTING HEADER: generic_array.hpp                   *";
-    misc::cout <<   "\n\t*******************************************************";
+    stl::cout << "\n\n\t*******************************************************";
+    stl::cout <<   "\n\t* TESTING HEADER: generic_array.hpp                   *";
+    stl::cout <<   "\n\t*******************************************************";
 
 	
 	{/* using template type misc::generic_array<char> */
@@ -168,11 +168,11 @@ void test_generic_array::ctor()
 	}
 
 
-	misc::cout << "\n\n\t*******************************************************";
-	misc::cout <<   "\n\t* TESTING HEADER: generic_array.hpp                   *";
-	misc::cout <<   "\n\t*******************************************************";
+	stl::cout << "\n\n\t*******************************************************";
+	stl::cout <<   "\n\t* TESTING HEADER: generic_array.hpp                   *";
+	stl::cout <<   "\n\t*******************************************************";
 
-	misc::cout << "\n\n\tctor---------------------------------------------------";
+	stl::cout << "\n\n\tctor---------------------------------------------------";
 
 
 	typedef misc::allocator<float>  fgallocator;
@@ -214,7 +214,7 @@ void test_generic_array::ctor()
 
 void test_generic_array::dtor()
 {
-	misc::cout << "\n\n\tdtor---------------------------------------------------";
+	stl::cout << "\n\n\tdtor---------------------------------------------------";
 
 	typedef misc::allocator<float>  fgallocator;
 	typedef misc::allocator<char>   challocator;
@@ -304,7 +304,7 @@ void test_generic_array::assignament_op()
 	}
 
 
-	misc::cout << "\n\n\tassignament_op-----------------------------------------";
+	stl::cout << "\n\n\tassignament_op-----------------------------------------";
 
 	typedef misc::allocator<float>  fgallocator;
 	typedef misc::allocator<char>   challocator;
@@ -399,7 +399,7 @@ void test_generic_array::begin()
 		{
 			*str1_cIter;
 		}
-		catch (const misc::exception& exc)
+		catch (const stl::exception& exc)
 		{
 			exc.what();
 			bexc = true;
@@ -409,7 +409,7 @@ void test_generic_array::begin()
 	}
 
 
-	misc::cout << "\n\n\tbegin--------------------------------------------------";
+	stl::cout << "\n\n\tbegin--------------------------------------------------";
 
 	typedef misc::allocator<long>   lgallocator;
 	typedef misc::allocator<float>  fgallocator;
@@ -527,7 +527,7 @@ void test_generic_array::end()
 		{
 			*str1_cIter;
 		}
-		catch (const misc::exception& exc)
+		catch (const stl::exception& exc)
 		{
 			exc.what();
 			bexc = true;
@@ -537,7 +537,7 @@ void test_generic_array::end()
 	}
 
 
-	misc::cout << "\n\n\tend----------------------------------------------------";
+	stl::cout << "\n\n\tend----------------------------------------------------";
 
 	typedef misc::allocator<long>   lgallocator;
 	typedef misc::allocator<float>  fgallocator;
@@ -652,7 +652,7 @@ void test_generic_array::rbegin()
 	}
 
 
-	misc::cout << "\n\n\trbegin-------------------------------------------------";
+	stl::cout << "\n\n\trbegin-------------------------------------------------";
 
 	typedef misc::allocator<long>   lgallocator;
 	typedef misc::allocator<float>  fgallocator;
@@ -764,7 +764,7 @@ void test_generic_array::rend()
 
 
 
-	misc::cout << "\n\n\trend---------------------------------------------------";
+	stl::cout << "\n\n\trend---------------------------------------------------";
 
 	typedef misc::allocator<long>   lgallocator;
 	typedef misc::allocator<float>  fgallocator;
@@ -867,7 +867,7 @@ void test_generic_array::size()
 		CPPUNIT_ASSERT(max_sizeStr1 == (size_t) - 1 / sizeof (char));
 	}
 
-	misc::cout << "\n\n\tsize---------------------------------------------------";
+	stl::cout << "\n\n\tsize---------------------------------------------------";
 }
 
 
@@ -919,7 +919,7 @@ void test_generic_array::length()
 		CPPUNIT_ASSERT(max_sizeStr1 == (size_t) - 1 / sizeof (char));
 	}
 
-	misc::cout << "\n\n\tlength-------------------------------------------------";
+	stl::cout << "\n\n\tlength-------------------------------------------------";
 }
 
 
@@ -933,7 +933,7 @@ void test_generic_array::max_size()
 
 	CPPUNIT_ASSERT(str.max_size() == maxsz);
 
-	misc::cout << "\n\n\tmax_size-----------------------------------------------";
+	stl::cout << "\n\n\tmax_size-----------------------------------------------";
 }
 
 void test_generic_array::resize()
@@ -1008,7 +1008,7 @@ void test_generic_array::resize()
 	}
 
 
-	misc::cout << "\n\n\tresize-------------------------------------------------";
+	stl::cout << "\n\n\tresize-------------------------------------------------";
 
 	typedef misc::allocator<nonpod_v0> npgallocator;
 	resize<misc::generic_array<nonpod_v0, npgallocator, misc::GENERIC_ARRAY_HAS_POD_TYPE> >("\n\tgeneric_array<nonpod_v0,POD>            ");
@@ -1080,7 +1080,7 @@ void test_generic_array::capacity()
 		CPPUNIT_ASSERT(capStr1 == 33);
 	}
 
-	misc::cout << "\n\n\tcapacity-----------------------------------------------";
+	stl::cout << "\n\n\tcapacity-----------------------------------------------";
 }
 
 
@@ -1142,7 +1142,7 @@ void test_generic_array::reserve()
 	}
 
 
-	misc::cout << "\n\n\treserve------------------------------------------------";
+	stl::cout << "\n\n\treserve------------------------------------------------";
 
 	reserve<misc::generic_array<nonpod_v0, misc::allocator<nonpod_v0>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >("\n\tgeneric_array<nonpod_v0,POD>            ");
 	reserve<misc::generic_array<nonpod_v0, misc::allocator<nonpod_v0> > >                                 ("\n\tgeneric_array<nonpod_v0>                ");
@@ -1176,7 +1176,7 @@ void test_generic_array::clear()
 	}
 
 
-	misc::cout << "\n\n\tclear--------------------------------------------------";
+	stl::cout << "\n\n\tclear--------------------------------------------------";
 
 	clear<misc::generic_array<nonpod_v0, misc::allocator<nonpod_v0>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >("\n\tgeneric_array<nonpod_v0,POD>            ");
 	clear<misc::generic_array<nonpod_v0, misc::allocator<nonpod_v0> > >                                 ("\n\tgeneric_array<nonpod_v0>                ");
@@ -1211,7 +1211,7 @@ void test_generic_array::empty()
 		CPPUNIT_ASSERT(str2.empty());
 	}
 
-	misc::cout << "\n\n\tempty--------------------------------------------------";
+	stl::cout << "\n\n\tempty--------------------------------------------------";
 }
 
 //Element access
@@ -1270,7 +1270,7 @@ void test_generic_array::operator_access_element()
 	}
 
 
-	misc::cout << "\n\n\toperator_access_element--------------------------------";
+	stl::cout << "\n\n\toperator_access_element--------------------------------";
 
 	operator_access_element<misc::generic_array<nonpod_v0, misc::allocator<nonpod_v0>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >("\n\tgeneric_array<nonpod_v0,POD>            ");
 	operator_access_element<misc::generic_array<nonpod_v0, misc::allocator<nonpod_v0> > >                                 ("\n\tgeneric_array<nonpod_v0>                ");
@@ -1323,7 +1323,7 @@ void test_generic_array::at()
 			misc::generic_array<char>::const_reference null_elem = cstr1[ cstr1.length() ];
 			(void)null_elem;
 		}
-		catch(const misc::exception&)
+		catch(const stl::exception&)
 		{
 			null_not_accesible = true;
 		}
@@ -1338,7 +1338,7 @@ void test_generic_array::at()
 		CPPUNIT_ASSERT(crefStr2 == 'n');
 	}
 
-	misc::cout << "\n\n\tat-----------------------------------------------------";
+	stl::cout << "\n\n\tat-----------------------------------------------------";
 
 	at<misc::generic_array<nonpod_v0, misc::allocator<nonpod_v0>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >("\n\tgeneric_array<nonpod_v0,POD>            ");
 	at<misc::generic_array<nonpod_v0, misc::allocator<nonpod_v0> > >                                 ("\n\tgeneric_array<nonpod_v0>                ");
@@ -1402,7 +1402,7 @@ void test_generic_array::operator_plus_equal()
 		CPPUNIT_ASSERT(str1d == "Hello Wide World");
 	}
 
-	misc::cout << "\n\n\toperator_plus_equal------------------------------------";
+	stl::cout << "\n\n\toperator_plus_equal------------------------------------";
 	operator_plus_equal<misc::generic_array<char, misc::allocator<char>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >("\n\tgeneric_array<char,POD>                 ");
 	operator_plus_equal<misc::generic_array<char, misc::allocator<char> > >                                 ("\n\tgeneric_array<char>                     ");
 	operator_plus_equal<std::basic_string<char, std::char_traits<char>, std::allocator<char> > >            ("\n\tstd::basic_string<char>                 ");
@@ -1494,7 +1494,7 @@ void test_generic_array::append()
 	}
 
 
-	misc::cout << "\n\n\tappend-------------------------------------------------";
+	stl::cout << "\n\n\tappend-------------------------------------------------";
 	append<misc::generic_array<char, misc::allocator<char>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >("\n\tgeneric_array<char,POD>                 ");
 	append<misc::generic_array<char, misc::allocator<char> > >                                 ("\n\tgeneric_array<char>                     ");
 	append<std::basic_string<char, std::char_traits<char>, std::allocator<char> > >            ("\n\tstd::basic_string<char>                 ");
@@ -1537,7 +1537,7 @@ void test_generic_array::push_back()
 	}
 
 
-	misc::cout << "\n\n\tpush_back----------------------------------------------";
+	stl::cout << "\n\n\tpush_back----------------------------------------------";
 	push_back<misc::generic_array<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >("\n\tgeneric_array<int,POD>                  ");
 	push_back<misc::generic_array<int, misc::allocator<int> > >                                 ("\n\tgeneric_array<int>                      ");
 	push_back<std::vector<int, std::allocator<int> > >                                          ("\n\tstd::vector<int>                        ");
@@ -1709,7 +1709,7 @@ void test_generic_array::assign()
 		{
 			s1 = s0.assign(s0ie, s0ib);
 		}
-		catch(misc::exception&)
+		catch(stl::exception&)
 		{
 			diff_negative_not_throwing_at_the_moment = true;
 		}
@@ -1719,7 +1719,7 @@ void test_generic_array::assign()
 		try
 		{
 			s1 = s0.assign(s0cie, s0cib);
-		}catch(misc::exception&)
+		}catch(stl::exception&)
 		{
 			diff_negative_not_throwing_at_the_moment = true;
 		}
@@ -1777,7 +1777,7 @@ void test_generic_array::assign()
 
 	}
 
-	misc::cout << "\n\n\tassign-------------------------------------------------";
+	stl::cout << "\n\n\tassign-------------------------------------------------";
 	assign<misc::generic_array<char, misc::allocator<char>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >("\n\tgeneric_array<char,POD>                 ");
 	assign<misc::generic_array<char, misc::allocator<char> > >                                 ("\n\tgeneric_array<char>                     ");
 	assign<std::basic_string<char, std::char_traits<char>, std::allocator<char> > >            ("\n\tstd::vector<char>                       ");
@@ -1878,7 +1878,7 @@ void test_generic_array::insert()
 	}
 
 
-	misc::cout << "\n\n\tinsert-------------------------------------------------";
+	stl::cout << "\n\n\tinsert-------------------------------------------------";
 	insert<std::basic_string<char, std::char_traits<char>, std::allocator<char> > >            ("\n\tstd::vector<char>                       ");
 	insert<std::basic_string<char, std::char_traits<char>, misc::allocator<char> > >           ("\n\tstd::vector<char,A>                     ");
 	insert<misc::generic_array<char, misc::allocator<char> > >                                 ("\n\tgeneric_array<char>                     ");
@@ -1944,7 +1944,7 @@ void test_generic_array::erase()
 		CPPUNIT_ASSERT(str3m == "Hello ");
 	}
 
-	misc::cout << "\n\n\terase-------------------------------------------------";
+	stl::cout << "\n\n\terase-------------------------------------------------";
 	erase<misc::generic_array<non_pod_v0, misc::allocator<non_pod_v0> > >                                 ("\n\tgeneric_array<non_pod_v0>               ");
 	erase<misc::generic_array<non_pod_v0, std::allocator<non_pod_v0> > >                                  ("\n\tgeneric_array<non_pod_v0,std::A>        ");
 	erase<misc::generic_array<non_pod_v0, misc::allocator<non_pod_v0>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >("\n\tgeneric_array<non_pod_v0,POD>           ");
@@ -2146,7 +2146,7 @@ void test_generic_array::replace()
 	}
 
 
-	misc::cout << "\n\n\treplace------------------------------------------------";
+	stl::cout << "\n\n\treplace------------------------------------------------";
 	replace<std::basic_string<char, std::char_traits<char>, std::allocator<char> > >            ("\n\tstd::basic_string<char>                 ");
 	replace<std::basic_string<char, std::char_traits<char>, misc::allocator<char> > >           ("\n\tstd::basic_string<char,A>               ");
 	replace<misc::generic_array<char, misc::allocator<char> > >                                 ("\n\tgeneric_array<char>                     ");
@@ -2185,7 +2185,7 @@ void test_generic_array::swap()
 	}
 
 
-	misc::cout << "\n\n\tswap---------------------------------------------------";
+	stl::cout << "\n\n\tswap---------------------------------------------------";
 	swap<std::vector<non_pod_v0, std::allocator<non_pod_v0> > >                                          ("\n\tstd::vector<non_pod_v0>                 ");
 	swap<std::vector<non_pod_v0, misc::allocator<non_pod_v0> > >                                         ("\n\tstd::vector<non_pod_v0,A>               ");
 	swap<misc::generic_array<non_pod_v0, misc::allocator<non_pod_v0> > >                                 ("\n\tgeneric_array<non_pod_v0>               ");
@@ -2241,7 +2241,7 @@ void test_generic_array::c_str()
 
 		CPPUNIT_ASSERT(strlen(c_str1) == 11);
 	}
-	misc::cout << "\n\n\tc_str--------------------------------------------------";
+	stl::cout << "\n\n\tc_str--------------------------------------------------";
 }
 
 
@@ -2282,14 +2282,14 @@ void test_generic_array::data()
 		CPPUNIT_ASSERT(strcmp(c_str1, "Hello world") == 0);
 	}
 
-	misc::cout << "\n\n\tdata---------------------------------------------------";
+	stl::cout << "\n\n\tdata---------------------------------------------------";
 }
 
 
 void test_generic_array::get_allocator()
 {
 	//not implemented
-	misc::cout << "\n\n\tget_allocator------------------------------------------";
+	stl::cout << "\n\n\tget_allocator------------------------------------------";
 }
 
 
@@ -2306,7 +2306,7 @@ void test_generic_array::copy()
 	CPPUNIT_ASSERT(strcmp(buffer, "string") == 0);
 
 
-	misc::cout << "\n\n\tcopy---------------------------------------------------";
+	stl::cout << "\n\n\tcopy---------------------------------------------------";
 	copy<std::basic_string<char, std::char_traits<char>, std::allocator<char> > >            ("\n\tstd::basic_string<char>                 ");
 	copy<std::basic_string<char, std::char_traits<char>, misc::allocator<char> > >           ("\n\tstd::basic_string<char,A>               ");
 	copy<misc::generic_array<char, misc::allocator<char> > >                                 ("\n\tgeneric_array<char>                     ");
@@ -2363,7 +2363,7 @@ void test_generic_array::find()
 		bool throw1 = false;
 		try{
 			pos0 = s0.find("89", (size_t) - 1);
-		}catch(const misc::exception&){ throw1 = true; };
+		}catch(const stl::exception&){ throw1 = true; };
 		CPPUNIT_ASSERT( throw1 );
 
 		//count not corrected, throws
@@ -2378,7 +2378,7 @@ void test_generic_array::find()
 		CPPUNIT_ASSERT(pos3 == 7);
 	}
 
-	misc::cout << "\n\n\tfind---------------------------------------------------";
+	stl::cout << "\n\n\tfind---------------------------------------------------";
 	find<std::basic_string<unsigned char, std::char_traits<unsigned char>, std::allocator<unsigned char> > >   ("\n\tstd::basic_string<char>                 ");
 	find<std::basic_string<unsigned char, std::char_traits<unsigned char>, misc::allocator<unsigned char> > >  ("\n\tstd::basic_string<char,A>               ");
 	find<misc::generic_array<unsigned char, misc::allocator<unsigned char> > >                                 ("\n\tgeneric_array<char>                     ");
@@ -2443,7 +2443,7 @@ void test_generic_array::rfind()
 		CPPUNIT_ASSERT(pos3 == 7);
 	}
 
-	misc::cout << "\n\n\trfind--------------------------------------------------";
+	stl::cout << "\n\n\trfind--------------------------------------------------";
 	rfind<std::basic_string<unsigned char, std::char_traits<unsigned char>, std::allocator<unsigned char> > >   ("\n\tstd::basic_string<char>                 ");
 	rfind<std::basic_string<unsigned char, std::char_traits<unsigned char>, misc::allocator<unsigned char> > >  ("\n\tstd::basic_string<char,A>               ");
 	rfind<misc::generic_array<unsigned char, misc::allocator<unsigned char> > >                                 ("\n\tgeneric_array<char>                     ");
@@ -2503,7 +2503,7 @@ void test_generic_array::find_first_of()
 		{
 			pos0 = s0.find_first_of("89", (size_t) - 1);
 		}
-		catch(const misc::exception&)
+		catch(const stl::exception&)
 		{
 			throw1 = true;
 		}
@@ -2522,7 +2522,7 @@ void test_generic_array::find_first_of()
 	}
 
 
-	misc::cout << "\n\n\tfind_first_of------------------------------------------";
+	stl::cout << "\n\n\tfind_first_of------------------------------------------";
 	find_first_of<std::basic_string<unsigned char, std::char_traits<unsigned char>, std::allocator<unsigned char> > >   ("\n\tstd::basic_string<char>                 ");
 	find_first_of<std::basic_string<unsigned char, std::char_traits<unsigned char>, misc::allocator<unsigned char> > >  ("\n\tstd::basic_string<char,A>               ");
 	find_first_of<misc::generic_array<unsigned char, misc::allocator<unsigned char> > >                                 ("\n\tgeneric_array<char>                     ");
@@ -2626,7 +2626,7 @@ void test_generic_array::find_last_of()
 	}
 
 
-	misc::cout << "\n\n\tfind_last_of------------------------------------------";
+	stl::cout << "\n\n\tfind_last_of------------------------------------------";
 	find_last_of<std::basic_string<unsigned char, std::char_traits<unsigned char>, std::allocator<unsigned char> > >   ("\n\tstd::basic_string<char>                 ");
 	find_last_of<std::basic_string<unsigned char, std::char_traits<unsigned char>, misc::allocator<unsigned char> > >  ("\n\tstd::basic_string<char,A>               ");
 	find_last_of<misc::generic_array<unsigned char, misc::allocator<unsigned char> > >                                 ("\n\tgeneric_array<char>                     ");
@@ -2674,7 +2674,7 @@ void test_generic_array::find_first_not_of()
 		{
 			pos0 = s0.find_first_not_of('8', (size_t) - 1);
 		}
-		catch(const misc::exception&)
+		catch(const stl::exception&)
 		{
 			throw1 = true;
 		}
@@ -2697,7 +2697,7 @@ void test_generic_array::find_first_not_of()
 		{
 			pos0 = s0.find_first_not_of("098764321", (size_t) - 1);
 		}
-		catch(const misc::exception&)
+		catch(const stl::exception&)
 		{
 			throw1 = true;
 		}
@@ -2730,14 +2730,14 @@ void test_generic_array::find_first_not_of()
 		{
 			pos0 = s0.find_first_not_of(s1, (size_t) - 1);
 		}
-		catch(const misc::exception&)
+		catch(const stl::exception&)
 		{
 			throw1 = true;
 		}
 		CPPUNIT_ASSERT( throw1 );
 	}
 
-	misc::cout << "\n\n\tfind_first_not_of------------------------------------------";
+	stl::cout << "\n\n\tfind_first_not_of------------------------------------------";
 	find_first_not_of<std::basic_string<unsigned char, std::char_traits<unsigned char>, std::allocator<unsigned char> > >   ("\n\tstd::basic_string<char>                 ");
 	find_first_not_of<std::basic_string<unsigned char, std::char_traits<unsigned char>, misc::allocator<unsigned char> > >  ("\n\tstd::basic_string<char,A>               ");
 	find_first_not_of<misc::generic_array<unsigned char, misc::allocator<unsigned char> > >                                 ("\n\tgeneric_array<char>                     ");
@@ -2837,7 +2837,7 @@ void test_generic_array::find_last_not_of()
 		CPPUNIT_ASSERT(pos0 == 7);
 	}
 
-	misc::cout << "\n\n\tfind_last_not_of------------------------------------------";
+	stl::cout << "\n\n\tfind_last_not_of------------------------------------------";
 	find_last_not_of<std::basic_string<unsigned char, std::char_traits<unsigned char>, std::allocator<unsigned char> > >   ("\n\tstd::basic_string<char>                 ");
 	find_last_not_of<std::basic_string<unsigned char, std::char_traits<unsigned char>, misc::allocator<unsigned char> > >  ("\n\tstd::basic_string<char,A>               ");
 	find_last_not_of<misc::generic_array<unsigned char, misc::allocator<unsigned char> > >                                 ("\n\tgeneric_array<char>                     ");
@@ -2864,7 +2864,7 @@ void test_generic_array::substr()
 	CPPUNIT_ASSERT(strcmp(str3.c_str(), "live in details.") == 0);
 
 
-	misc::cout << "\n\n\tsubstr------------------------------------------------";
+	stl::cout << "\n\n\tsubstr------------------------------------------------";
 	substr<std::basic_string<unsigned char, std::char_traits<unsigned char>, std::allocator<unsigned char> > >   ("\n\tstd::basic_string<char>                 ");
 	substr<std::basic_string<unsigned char, std::char_traits<unsigned char>, misc::allocator<unsigned char> > >  ("\n\tstd::basic_string<char,A>               ");
 	substr<misc::generic_array<unsigned char, misc::allocator<unsigned char> > >                                 ("\n\tgeneric_array<char>                     ");
@@ -2891,7 +2891,7 @@ void test_generic_array::compare()
 	CPPUNIT_ASSERT(str1.compare(6, 5, str2, 4, 5) == 0);
 
 
-	misc::cout << "\n\n\tcompare------------------------------------------------";
+	stl::cout << "\n\n\tcompare------------------------------------------------";
 	compare<std::basic_string<unsigned char, std::char_traits<unsigned char>, std::allocator<unsigned char> > >   ("\n\tstd::basic_string<char>                 ");
 	compare<std::basic_string<unsigned char, std::char_traits<unsigned char>, misc::allocator<unsigned char> > >  ("\n\tstd::basic_string<char,A>               ");	
 	compare<misc::generic_array<unsigned char, misc::allocator<unsigned char> > >                                 ("\n\tgeneric_array<char>                     ");
@@ -2919,7 +2919,7 @@ void test_generic_array::ctor(const char* msg)
 	}
 
 	// measure only the time for constructors
-	misc::vector<Container*> store;
+	stl::vector<Container*> store;
 
 	//  TEST
 	{
@@ -3014,7 +3014,7 @@ void test_generic_array::dtor(const char* msg)
 	}
 
 
-	misc::vector<Container*> store;
+	stl::vector<Container*> store;
 
 	//  Create containers, will take the time of ~generic_array()
 	for(size_t i=0; i < m_container_size; ++i)
@@ -3104,7 +3104,7 @@ void test_generic_array::assignament_op(const char* msg)
 		chtab[i] = Cval(i+1);
 	}
 
-	misc::vector<Container*> store;
+	stl::vector<Container*> store;
 	// string(size_type n, value_type c, const Allocator& alloc = Allocator())
 	Container* array0 = new Container(m_container_size, 'A', Calloc());
 	store.push_back(array0);

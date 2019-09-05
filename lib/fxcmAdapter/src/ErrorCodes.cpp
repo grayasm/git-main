@@ -25,7 +25,7 @@ contact: grayasm@gmail.com
 
 namespace fxcm
 {
-	misc::string ErrorCodes::GetText(ErrorId id)
+	stl::string ErrorCodes::GetText(ErrorId id)
 	{
 		switch (id)
 		{
@@ -51,7 +51,7 @@ namespace fxcm
 		case ERR_NO_ACCOUNT: return "No account";
 
 		default:
-			throw misc::exception("Unknown ErrorId");
+			throw stl::exception("Unknown ErrorId");
 		} // switch
 	}
 } // namespace

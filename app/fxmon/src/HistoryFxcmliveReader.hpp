@@ -27,7 +27,7 @@
 class HistoryFxcmliveReader
 {
 public:
-	HistoryFxcmliveReader(const misc::string& instrument);
+	HistoryFxcmliveReader(const stl::string& instrument);
 	~HistoryFxcmliveReader();
 	HistoryFxcmliveReader(const HistoryFxcmliveReader&) = delete;
 	HistoryFxcmliveReader& operator=(const HistoryFxcmliveReader&) = delete;
@@ -37,14 +37,14 @@ public:
 
 
 private:
-	void ParseFile(const misc::string& filePath,
-		misc::vector<fx::Offer>& result);
+	void ParseFile(const stl::string& filePath,
+		stl::vector<fx::Offer>& result);
 
 private:
-	misc::string	m_instrument;
-	misc::vector<misc::string>	m_offerFileVec;
+	stl::string	m_instrument;
+	stl::vector<stl::string>	m_offerFileVec;
 	int	m_ofvPos;
-	misc::vector<fx::Offer>	m_offersVec;
+	stl::vector<fx::Offer>	m_offersVec;
 	int	m_ovPos;
 };
 

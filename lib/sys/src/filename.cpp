@@ -27,7 +27,7 @@
 #endif // _WIN32
 
 
-namespace misc
+namespace sys
 {
     
     //TODO: the path separator should be configurable and not platform dependent.
@@ -35,15 +35,15 @@ namespace misc
 
 #ifdef _WIN32
 #ifdef __MINGW32__
-    const misc::char_t filename::SEP(U('/'));
-    const misc::string filename::SSEP(U("/"));
+    const stl::char_t filename::SEP(U('/'));
+    const stl::string filename::SSEP(U("/"));
 #else
-    const misc::char_t filename::SEP(U('\\'));
-    const misc::string filename::SSEP(U("\\"));
+    const stl::char_t filename::SEP(U('\\'));
+    const stl::string filename::SSEP(U("\\"));
 #endif//__MINGW32__
 #else /*POSIX*/
-    const misc::char_t filename::SEP(U('/'));
-    const misc::string filename::SSEP(U("/"));
+    const stl::char_t filename::SEP(U('/'));
+    const stl::string filename::SSEP(U("/"));
 #endif
 
 
@@ -52,16 +52,16 @@ namespace misc
     filename::filename(){}
     filename::~filename(){}
 
-    filename::filename(const misc::string& file) //e.g. "/home/mihk/vParser.cpp" or "vParser.cpp"
+    filename::filename(const stl::string& file) //e.g. "/home/mihk/vParser.cpp" or "vParser.cpp"
     {
         extract_directory(m_directory, file);
         extract_core_name(m_core_name, file);
         extract_extension(m_extension, file);
     }
 
-    filename::filename(const misc::string& directory, //e.g. "/home/mihk/"
-                       const misc::string& file_core_name, //e.g. "vParser"
-                       const misc::string& file_ext)
+    filename::filename(const stl::string& directory, //e.g. "/home/mihk/"
+                       const stl::string& file_core_name, //e.g. "vParser"
+                       const stl::string& file_ext)
     {
         m_directory=directory ;
         m_core_name=file_core_name;
@@ -72,12 +72,12 @@ namespace misc
         format_extension(m_extension);
     } //e.g. "cpp"
 
-    filename::filename(const misc::filename& file_name)
+    filename::filename(const sys::filename& file_name)
     {
         *this=(file_name);
     }
 
-    filename& filename::operator=(const misc::filename& tocopy)
+    filename& filename::operator=(const sys::filename& tocopy)
     {
         if(this!=&tocopy)
         {
@@ -89,7 +89,7 @@ namespace misc
     }
 
 
-    bool filename::operator==(const misc::filename& tocmp)
+    bool filename::operator==(const sys::filename& tocmp)
     {
 	    if(m_directory.compare(tocmp.m_directory) == 0 &&
 	       m_core_name.compare(tocmp.m_core_name) == 0 &&
@@ -100,33 +100,33 @@ namespace misc
         return false;
     }
 
-    bool filename::operator!=(const misc::filename& tocmp)
+    bool filename::operator!=(const sys::filename& tocmp)
     {
         return !(*this==tocmp);
     }
 
 
-    const misc::string& filename::get_directory() const
+    const stl::string& filename::get_directory() const
     {
         return m_directory ;
     }
 
-    const misc::string& filename::get_core_name() const
+    const stl::string& filename::get_core_name() const
     {
         return m_core_name;
     }
 
-    misc::string filename::get_file_name() const
+    stl::string filename::get_file_name() const
     {
-        misc::string file_name(m_core_name);
+        stl::string file_name(m_core_name);
         file_name+=U('.');
         file_name+=m_extension;
         return file_name;
     }
 
-    misc::string filename::get_path() const
+    stl::string filename::get_path() const
     {
-        misc::string file_path(m_directory);
+        stl::string file_path(m_directory);
         file_path+=m_core_name;
         if( !m_extension.empty() )
         {
@@ -137,36 +137,36 @@ namespace misc
         return file_path;
     }
 
-    const misc::string& filename::get_extension() const
+    const stl::string& filename::get_extension() const
     {
         return m_extension;
     }
 
-    void filename::set_directory(const misc::string& directory)
+    void filename::set_directory(const stl::string& directory)
     {
         m_directory=directory;
         format_directory(m_directory);
     }
 
-    void filename::set_core_name(const misc::string& file_core_name)
+    void filename::set_core_name(const stl::string& file_core_name)
     {
         m_core_name=file_core_name;
         format_file(m_core_name);
     }
 
-    void filename::set_file_name(const misc::string& file_name)
+    void filename::set_file_name(const stl::string& file_name)
     {
         extract_core_name(m_core_name, file_name);
         extract_extension(m_extension, file_name);
     }
 
-    void filename::set_extension(const misc::string& extension)
+    void filename::set_extension(const stl::string& extension)
     {
         m_extension=extension;
         format_extension(m_extension);
     }
 
-    void filename::set_path(const misc::string& complete_path)
+    void filename::set_path(const stl::string& complete_path)
     {
         extract_directory(m_directory, complete_path);
         extract_core_name(m_core_name, complete_path);
@@ -174,31 +174,31 @@ namespace misc
     }
 
 
-    void filename::add_prefix_directory(const misc::string& directory)
+    void filename::add_prefix_directory(const stl::string& directory)
     {
-        misc::string tmpdir(directory);
-        misc::trim_left(tmpdir, U(' '));
-        misc::trim_left(tmpdir, SEP);
+        stl::string tmpdir(directory);
+        stl::trim_left(tmpdir, U(' '));
+        stl::trim_left(tmpdir, SEP);
         //format right side of string
         format_directory(tmpdir);
 
         size_t sep_pos = m_directory.find_first_of(SEP);
-        if(sep_pos!=misc::string::npos)
+        if(sep_pos!=stl::string::npos)
         {
             m_directory.insert(sep_pos+1, tmpdir);
         }
         else
         {
-            misc::string newstr(SEP+tmpdir);
+            stl::string newstr(SEP+tmpdir);
             m_directory.insert(0, newstr);
         }
     }
 
-    void filename::add_postfix_directory(const misc::string& directory)
+    void filename::add_postfix_directory(const stl::string& directory)
     {
-        misc::string tmpdir(directory);
-        misc::trim_left(tmpdir, U(' '));
-        misc::trim_left(tmpdir, SEP);
+        stl::string tmpdir(directory);
+        stl::trim_left(tmpdir, U(' '));
+        stl::trim_left(tmpdir, SEP);
         //format right side
         format_directory(tmpdir);
         m_directory+=tmpdir;
@@ -207,18 +207,18 @@ namespace misc
     filename filename::substract_prefix_directory() const
     {
         size_t sep1=m_directory.find_first_of(SEP);
-        if(sep1!=misc::string::npos)
+        if(sep1!=stl::string::npos)
         {
             size_t sep2=m_directory.find_first_of(SEP, sep1+1);
-            if(sep2!=misc::string::npos)
+            if(sep2!=stl::string::npos)
             {
-                misc::string tmpdir=m_directory.substr(0, sep1);
+                stl::string tmpdir=m_directory.substr(0, sep1);
                 tmpdir+=m_directory.substr(sep2, m_directory.size()-sep2);
                 return filename(tmpdir, m_core_name, m_extension);
             }
             else
             {
-                misc::string tmpdir=m_directory.substr(0, sep1+1);
+                stl::string tmpdir=m_directory.substr(0, sep1+1);
                 return tmpdir ;
             }
         }
@@ -231,17 +231,17 @@ namespace misc
     filename filename::substract_postfix_directory() const
     {
         size_t sep1=m_directory.find_last_of(SEP);
-        if(sep1!=misc::string::npos)
+        if(sep1!=stl::string::npos)
         {
             size_t sep2=m_directory.find_last_of(SEP, sep1-1);
-            if(sep2!=misc::string::npos)
+            if(sep2!=stl::string::npos)
             {
-                misc::string tmpdir=m_directory.substr(0, sep2+1);
+                stl::string tmpdir=m_directory.substr(0, sep2+1);
                 return filename(tmpdir, m_core_name, m_extension);
             }
             else
             {
-                misc::string tmpdir=m_directory.substr(0, sep1+1);
+                stl::string tmpdir=m_directory.substr(0, sep1+1);
                 return tmpdir ;
             }
         }//if
@@ -260,10 +260,10 @@ namespace misc
 #endif
     }
 
-    void filename::extract_directory(misc::string& dest, const misc::string& src)
+    void filename::extract_directory(stl::string& dest, const stl::string& src)
     {
         size_t sep_pos = src.find_last_of(SEP);
-        if(sep_pos == misc::string::npos)
+        if(sep_pos == stl::string::npos)
         {
             dest=U("");
             return ;
@@ -275,7 +275,7 @@ namespace misc
         }//else
     }
 
-    void filename::extract_core_name(misc::string& dest, const misc::string& src)
+    void filename::extract_core_name(stl::string& dest, const stl::string& src)
     {
         if(src.empty())
         {
@@ -284,10 +284,10 @@ namespace misc
         }//if
 
         size_t dir_lpos = src.find_last_of(SEP);
-        if(dir_lpos != misc::string::npos)
+        if(dir_lpos != stl::string::npos)
         {
             size_t dot_pos = src.find_last_of(U('.'));
-            if(dot_pos != misc::string::npos && dot_pos > dir_lpos)
+            if(dot_pos != stl::string::npos && dot_pos > dir_lpos)
             {
                 dest = src.substr(dir_lpos+1, dot_pos-dir_lpos-1);
             }//if '.' exist
@@ -299,7 +299,7 @@ namespace misc
         else
         {
             size_t dot_pos = src.find_last_of(U('.'));
-            if(dot_pos != misc::string::npos)
+            if(dot_pos != stl::string::npos)
             {
                 dest = src.substr(0, dot_pos);
             }//if dot_pos null
@@ -310,13 +310,13 @@ namespace misc
         }//else no SEP (dir)
     }
 
-    void filename::extract_extension(misc::string& dest, const misc::string& src)
+    void filename::extract_extension(stl::string& dest, const stl::string& src)
     {
         size_t dir_lpos = src.find_last_of(SEP);
-        if(dir_lpos != misc::string::npos)
+        if(dir_lpos != stl::string::npos)
         {
             size_t dot_pos = src.find_last_of(U('.'));
-            if(dot_pos != misc::string::npos && dot_pos > dir_lpos)
+            if(dot_pos != stl::string::npos && dot_pos > dir_lpos)
             {
                 dest = src.substr(dot_pos+1, src.size()-dot_pos-1);
             }//if '.' exist
@@ -328,7 +328,7 @@ namespace misc
         else
         {
             size_t dot_pos = src.find_last_of(U('.'));
-            if(dot_pos != misc::string::npos)
+            if(dot_pos != stl::string::npos)
             {
                 dest = src.substr(dot_pos+1, src.size()-dot_pos-1);
             }//if dot_pos null
@@ -339,34 +339,34 @@ namespace misc
         }//else no SEP
     }
 
-    void filename::format_directory(misc::string& directory)
+    void filename::format_directory(stl::string& directory)
     {
         if(!directory.empty())
         {
             if(*(directory.rbegin())!=SEP)
             {
-                misc::trim_right(directory, U(' '));
+                stl::trim_right(directory, U(' '));
                 directory += SEP ;
             }//if
         }//if
     }
 
-    void filename::format_file(misc::string& file)
+    void filename::format_file(stl::string& file)
     {
-        misc::trim_left(file, U(' '));
+        stl::trim_left(file, U(' '));
 
-        misc::trim_left(file, SEP);
-        if(file.find_first_of(SEP)!=misc::string::npos)
+        stl::trim_left(file, SEP);
+        if(file.find_first_of(SEP)!=stl::string::npos)
             throw 0;
     }
 
-    void filename::format_extension(misc::string& ext)
+    void filename::format_extension(stl::string& ext)
     {
-        misc::trim_left(ext, U(' '));
-        misc::trim_right(ext, U(' '));
-        misc::trim_left(ext, U('.'));
-        if(ext.find_first_of(SEP)!=misc::string::npos)
-            throw 0;//misc::exception(0, U("Invalid file extension."));
+        stl::trim_left(ext, U(' '));
+        stl::trim_right(ext, U(' '));
+        stl::trim_left(ext, U('.'));
+        if(ext.find_first_of(SEP)!=stl::string::npos)
+            throw 0;//stl::exception(0, U("Invalid file extension."));
     }
 
 }  // namespace exp

@@ -48,12 +48,12 @@ namespace fxcm
 		void onTablesUpdates(IO2GResponse* tablesUpdates);
 		// vtable end
 
-		void SetRequestID(const misc::string& requestID);
+		void SetRequestID(const stl::string& requestID);
 		bool WaitEvents();
 		IO2GResponse* GetResponse();
 
-		const misc::vector<IO2GTradeRow*>& GetTrades() const;
-		const misc::vector<IO2GClosedTradeRow*> GetClosedTrades() const;
+		const stl::vector<IO2GTradeRow*>& GetTrades() const;
+		const stl::vector<IO2GClosedTradeRow*> GetClosedTrades() const;
 		void ClearResult();
 
 	protected:
@@ -65,13 +65,13 @@ namespace fxcm
 	private:
 		long					m_RefCount;
 		IO2GSession*			m_Session;
-		misc::string			m_RequestID;
-		misc::event				m_ResponseEvent;
+		stl::string			m_RequestID;
+		sys::event				m_ResponseEvent;
 		IO2GResponse*			m_Response;
 		OrderMonitor*			m_OrderMonitor;
 		misc::critical_section	m_CriticalSection;
-		misc::vector<IO2GTradeRow*>	m_trades;
-		misc::vector<IO2GClosedTradeRow*>	m_closedTrades;
+		stl::vector<IO2GTradeRow*>	m_trades;
+		stl::vector<IO2GClosedTradeRow*>	m_closedTrades;
 
 	};
 } // namespace

@@ -28,7 +28,7 @@
 #include <errno.h>
 #endif
 
-namespace misc
+namespace sys
 {
     event::event()
         : sync_base()
@@ -51,7 +51,7 @@ namespace misc
                 "");
 
         if(m_handle == NULL)
-                throw misc::exception("Cannot create the event!");
+                throw stl::exception("Cannot create the event!");
 #else
         int error = 0;
         pthread_mutexattr_t attr;
@@ -67,12 +67,12 @@ namespace misc
         // Initialize the mutex associated to the condition variable.
         error = pthread_mutex_init(&m_mtx, &attr);
         if(error)
-            throw misc::exception("pthread_mutex_init error");
+            throw stl::exception("pthread_mutex_init error");
 
         // Initialize the condition variable.
         error = pthread_cond_init(&m_cond, 0);
         if(error)
-            throw misc::exception("pthread_cond_init error");
+            throw stl::exception("pthread_cond_init error");
 
         pthread_mutexattr_destroy(&attr);
 #endif
@@ -83,7 +83,7 @@ namespace misc
     {
 #ifdef _WIN32
 		if( ::CloseHandle(m_handle) == 0 )
-			throw misc::exception("CloseHandle error");
+			throw stl::exception("CloseHandle error");
 		m_handle = NULL;
 #else
         /*  The implementation has detected an attempt to destroy the object 
@@ -93,7 +93,7 @@ namespace misc
          */
         int error = pthread_cond_destroy(&m_cond);
         if(error)
-            throw misc::exception("pthread_cond_destroy error");
+            throw stl::exception("pthread_cond_destroy error");
 
         /*  The implementation has detected an attempt to destroy the object 
          *  referenced by mutex while it is locked or referenced 
@@ -102,7 +102,7 @@ namespace misc
          */
         error = pthread_mutex_destroy(&m_mtx);
         if(error)
-            throw misc::exception("pthread_mutex_destroy error");
+            throw stl::exception("pthread_mutex_destroy error");
 #endif
     }
 
@@ -114,14 +114,14 @@ namespace misc
 		// cannot get WAIT_TIMEOUT with INIFINITE
 		// cannot get WAIT_ABANDONED (only for Mutexes)		
 		if(dwRet != WAIT_OBJECT_0) //WAIT_FAILED
-			throw misc::exception("WaitForSingleObject error");
+			throw stl::exception("WaitForSingleObject error");
 		return 0;
 #else
         /*  Waiting on a condition variable expects a locked mutex as parameter.
          */
         int error = pthread_mutex_lock(&m_mtx);
         if(error)
-            throw misc::exception("pthread_mutex_lock error");
+            throw stl::exception("pthread_mutex_lock error");
 
 
         /*  pthread_cond_wait is used to block on a condition variable. 
@@ -130,7 +130,7 @@ namespace misc
          */
         error = pthread_cond_wait(&m_cond, &m_mtx);
         if(error)
-            throw misc::exception("pthread_cond_wait error");
+            throw stl::exception("pthread_cond_wait error");
 		
         /*  pthread_cond_wait returns when condition variable is signaled in
          *  another thread (pthread_cond_signal, pthread_cond_braodcast).
@@ -140,7 +140,7 @@ namespace misc
          */
         error = pthread_mutex_unlock(&m_mtx);
         if(error)
-            throw misc::exception("pthread_mutex_unlock error");
+            throw stl::exception("pthread_mutex_unlock error");
         
         return 0;
     #endif
@@ -161,12 +161,12 @@ namespace misc
          */
         int mtx_error = pthread_mutex_lock(&m_mtx);
         if(mtx_error)
-            throw misc::exception("pthread_mutex_lock error");
+            throw stl::exception("pthread_mutex_lock error");
 		
 		
         struct timespec ts;
         if(clock_gettime(CLOCK_REALTIME, &ts) == -1)
-            throw misc::exception("clock_gettime error");
+            throw stl::exception("clock_gettime error");
 
         ts.tv_sec += (time_t) (milliseconds / 1000);// seconds
         ts.tv_nsec += (milliseconds % 1000) * 1e6;	// nanoseconds
@@ -188,7 +188,7 @@ namespace misc
          */
         mtx_error = pthread_mutex_unlock(&m_mtx);
         if(mtx_error)
-            throw misc::exception("pthread_mutex_unlock error");
+            throw stl::exception("pthread_mutex_unlock error");
 
         if(cond_error == 0)
         {
@@ -204,7 +204,7 @@ namespace misc
             return 1;
         }			
 
-        throw misc::exception("pthread_cond_timedwait error");
+        throw stl::exception("pthread_cond_timedwait error");
 #endif
     }
 
@@ -218,18 +218,18 @@ namespace misc
 			wait functions, can be released while the object's state is signaled.
 		*/
         if( ::SetEvent(m_handle) == 0 )
-			throw misc::exception("SetEvent error");
+			throw stl::exception("SetEvent error");
 
 		// Hopefully no idling is needed here.
 		// Tested with 600 threads waiting at the same time.
 		if( ::ResetEvent(m_handle) == 0 )
-			throw misc::exception("ResetEvent error");
+			throw stl::exception("ResetEvent error");
 		return 0;
 #else
 		/*	Lock the associated mutex. */
 		int error = pthread_mutex_lock(&m_mtx);
 		if(error)
-			throw misc::exception("pthread_mutex_lock error");
+			throw stl::exception("pthread_mutex_lock error");
 
 		/*  pthread_cond_broadcast unblocks all threads currently blocked on 
 		 *  the specified condition variable, one at a time, each returning
@@ -238,12 +238,12 @@ namespace misc
 		 */
 		error = pthread_cond_broadcast(&m_cond);
 		if(error)
-			throw misc::exception("pthread_cond_broadcast error");
+			throw stl::exception("pthread_cond_broadcast error");
 
 		/*	To release the signal we need to unlock the associated mutex. */
 		error = pthread_mutex_unlock(&m_mtx);
 		if(error)
-			throw misc::exception("pthread_mutex_unlock error");
+			throw stl::exception("pthread_mutex_unlock error");
 
         return 0;
 #endif

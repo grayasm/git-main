@@ -21,7 +21,7 @@
 #ifndef __strtok_hpp__
 #define __strtok_hpp__
 
-
+#include "autoptr.hpp"
 #include "vector.hpp"
 #include "string.hpp"
 
@@ -32,10 +32,10 @@ namespace misc
 	class strtok
 	{
 	public:
-		typedef misc::autoptr<strtok>		Ptr;
-		typedef misc::vector<misc::string>	Tokens;
+		typedef stl::autoptr<strtok>		Ptr;
+		typedef stl::vector<stl::string>	Tokens;
 
-		strtok(const misc::string& text, const misc::char_t* delim=" ");
+		strtok(const stl::string& text, const stl::char_t* delim=" ");
 		~strtok();
 
 		size_t count() const;

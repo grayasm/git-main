@@ -49,19 +49,19 @@ namespace misc
 		return *this;
 	}
 
-	void ini_section::Set(const misc::string& key, const misc::string& val)
+	void ini_section::Set(const stl::string& key, const stl::string& val)
 	{
 		m_values[key] = val;
 	}
 
-	const misc::string& ini_section::Get(const misc::string& key) const
+	const stl::string& ini_section::Get(const stl::string& key) const
 	{
 		return m_values[key]; // needs mutable:(
 	}
 
-	bool ini_section::Has(const misc::string& key) const
+	bool ini_section::Has(const stl::string& key) const
 	{
-		std::map<misc::string, misc::string>::const_iterator it = m_values.find(key);
+		std::map<stl::string, stl::string>::const_iterator it = m_values.find(key);
 		return (it != m_values.end());
 	}
 
@@ -76,7 +76,7 @@ namespace misc
 	{
 	}
 
-	iniserv::iniserv(const misc::string& ini_file)
+	iniserv::iniserv(const stl::string& ini_file)
 	{
 		m_inifile = ini_file;
 
@@ -85,13 +85,13 @@ namespace misc
 			return;
 
 		char cline[10001];
-		misc::string sline;
-		misc::string secname;
+		stl::string sline;
+		stl::string secname;
 		while(!fin.eof())
 		{
 			fin.getline(cline, 10000);
 			sline = cline;
-			misc::trim(sline);
+			stl::trim(sline);
 			if(sline.empty())
 				continue;
 			
@@ -110,13 +110,13 @@ namespace misc
 				continue;
 
 			// if key's value has another = it must be preserved.
-			misc::string key = tokenizer.tokens().front();
-			misc::trim(key);
+			stl::string key = tokenizer.tokens().front();
+			stl::trim(key);
 
-			misc::string val;
+			stl::string val;
 			for(size_t i = 1; i < tokenizer.tokens().size(); ++i)
 				val += tokenizer.tokens()[i];
-			misc::trim(val);
+			stl::trim(val);
 
 			m_sections[secname].Set(key, val);
 		}
@@ -144,43 +144,43 @@ namespace misc
 	}
 
 	bool iniserv::get(
-		const misc::string& section,
-		const misc::string& parameter,
+		const stl::string& section,
+		const stl::string& parameter,
 		bool defval) const
 	{
-		misc::string svalue = (defval == true ? "1" : "0");
-		const misc::string& ret = get(section, parameter, svalue);
+		stl::string svalue = (defval == true ? "1" : "0");
+		const stl::string& ret = get(section, parameter, svalue);
 		int iret = 0;
-		misc::to_value(ret, iret);
+		stl::to_value(ret, iret);
 		return (iret == 1);
 	}
 
 	int iniserv::get(
-		const misc::string& section,
-		const misc::string& parameter,
+		const stl::string& section,
+		const stl::string& parameter,
 		int defval) const
 	{
-		misc::string svalue = misc::from_value(defval);
-		const misc::string& ret = get(section, parameter, svalue);
-		misc::to_value(ret, defval);
+		stl::string svalue = stl::from_value(defval);
+		const stl::string& ret = get(section, parameter, svalue);
+		stl::to_value(ret, defval);
 		return defval;
 	}
 
 	double iniserv::get(
-		const misc::string& section,
-		const misc::string& parameter,
+		const stl::string& section,
+		const stl::string& parameter,
 		double defval) const
 	{
-		misc::string svalue = misc::from_value(defval, 12);
-		const misc::string& ret = get(section, parameter, svalue);
-		misc::to_value(ret, defval);
+		stl::string svalue = stl::from_value(defval, 12);
+		const stl::string& ret = get(section, parameter, svalue);
+		stl::to_value(ret, defval);
 		return defval;
 	}
 
-	const misc::string& iniserv::get(
-		const misc::string& section,
-		const misc::string& parameter,
-		const misc::string& defval) const
+	const stl::string& iniserv::get(
+		const stl::string& section,
+		const stl::string& parameter,
+		const stl::string& defval) const
 	{
 		Sections::const_iterator it = m_sections.find(section);
 		if(it != m_sections.end())
@@ -202,36 +202,36 @@ namespace misc
 	}
 
 	void iniserv::set(
-		const misc::string& section,
-		const misc::string& parameter,
+		const stl::string& section,
+		const stl::string& parameter,
 		bool value)
 	{
-		misc::string svalue = (value == true ? "1" : "0");
+		stl::string svalue = (value == true ? "1" : "0");
 		set(section, parameter, svalue);
 	}
 
 	void iniserv::set(
-		const misc::string& section,
-		const misc::string& parameter,
+		const stl::string& section,
+		const stl::string& parameter,
 		int value)
 	{
-		misc::string svalue = misc::from_value(value);
+		stl::string svalue = stl::from_value(value);
 		set(section, parameter, svalue);
 	}
 
 	void iniserv::set(
-		const misc::string& section,
-		const misc::string& parameter,
+		const stl::string& section,
+		const stl::string& parameter,
 		double value)
 	{
-		misc::string svalue = misc::from_value(value, 12);
+		stl::string svalue = stl::from_value(value, 12);
 		set(section, parameter, svalue);
 	}
 
 	void iniserv::set(
-		const misc::string& section,
-		const misc::string& parameter,
-		const misc::string& value)
+		const stl::string& section,
+		const stl::string& parameter,
+		const stl::string& value)
 	{
 		Sections::iterator it = m_sections.find(section);
 		if(it != m_sections.end())
@@ -254,7 +254,7 @@ namespace misc
 		for(Sections::iterator it = m_sections.begin(); it != m_sections.end(); ++it)
 		{
 			SecPair& secpair = *it;
-			const misc::string& section = secpair.first;
+			const stl::string& section = secpair.first;
 			ini_section& inisec = secpair.second;
 			const ini_section::Map& inimap = inisec.Get();
 			for(ini_section::Map::const_iterator vb = inimap.begin(); vb != inimap.end(); ++vb)
@@ -275,7 +275,7 @@ namespace misc
 		for(Sections::iterator it = updated.m_sections.begin(); it != updated.m_sections.end(); ++it)
 		{
 			SecPair& secpair = *it;
-			const misc::string& section = secpair.first;
+			const stl::string& section = secpair.first;
 			out << "\n\n[" << section.c_str() << "]";
 
 			ini_section& inisec = secpair.second;
@@ -296,13 +296,13 @@ namespace misc
 		return true;
 	}
 
-	bool iniserv::get_section(const misc::string& line, misc::string& section) const
+	bool iniserv::get_section(const stl::string& line, stl::string& section) const
 	{
-		misc::string sline=line;
+		stl::string sline=line;
 		if(*line.begin() == '[' && *--line.end() == ']')
 		{
-			misc::trim_left(sline, '[');
-			misc::trim_right(sline, ']');
+			stl::trim_left(sline, '[');
+			stl::trim_right(sline, ']');
 			section = sline;
 			return true;
 		}

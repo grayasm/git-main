@@ -25,7 +25,7 @@
 #include "string.hpp"
 
 
-namespace misc
+namespace sys
 {
 	/*	The class operates only with time values in UTC.
 	 *	
@@ -70,7 +70,7 @@ namespace misc
 		time(int year, enum Month mon, int day, int hour, int min, int sec);
 		
 		/*	UTC string format: "m.d.Y H:M:S" */
-		time(const misc::string& str);
+		time(const stl::string& str);
 
 		time(const time& tc);
 		
@@ -90,8 +90,8 @@ namespace misc
 		void operator+=(int sec);
 		void operator-=(int sec);
 		
-		misc::string tostring() const;
-		misc::string tolocaltime() const;
+		stl::string tostring() const;
+		stl::string tolocaltime() const;
 		time_t totime_t() const;
 		
 		int sec_() const;			// _ suffixed to avoid nasty macros

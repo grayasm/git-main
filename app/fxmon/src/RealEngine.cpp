@@ -46,7 +46,7 @@ void RealEngine()
 	int hClose = 16;
 	double renkoMin = 15;
 	fx::Offer offer;
-	misc::string instrument("EUR/USD");
+	stl::string instrument("EUR/USD");
 	fxcm::Session session(*loginParams, *iniParams);
 	MarketPlugin4fxcm plugin(&session, *iniParams);
 	fx::StrategyRenkoAtr strategy(&plugin, instrument, renkoMin, hOpen, hClose);
@@ -55,10 +55,10 @@ void RealEngine()
 	while (true)
 	{
 		// outside trading hours?
-		misc::time tnow(::time(NULL));
-		if ((tnow.wday() == misc::time::SAT) ||
-			(tnow.wday() == misc::time::FRI && tnow.hour_() >= 21) ||
-			(tnow.wday() == misc::time::SUN && tnow.hour_() < 21))
+		sys::time tnow(::time(NULL));
+		if ((tnow.wday() == sys::time::SAT) ||
+			(tnow.wday() == sys::time::FRI && tnow.hour_() >= 21) ||
+			(tnow.wday() == sys::time::SUN && tnow.hour_() < 21))
 		{
 			if (isConnected)
 			{
@@ -67,7 +67,7 @@ void RealEngine()
 			}
 
 			// idle 1m
-			msleep(1000ul * misc::time::minSEC);
+			msleep(1000ul * sys::time::minSEC);
 			continue;
 		}
 
@@ -85,7 +85,7 @@ void RealEngine()
 		if (!isConnected)
 		{
 			// idle 1min
-			msleep(1000ul * misc::time::minSEC);
+			msleep(1000ul * sys::time::minSEC);
 			continue;
 		}
 

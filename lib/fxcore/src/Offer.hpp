@@ -31,11 +31,11 @@ namespace fx
 	public:
 		Offer();
 
-		Offer(	const misc::string& offerID,
-				const misc::string& instrument,
+		Offer(	const stl::string& offerID,
+				const stl::string& instrument,
 				int precision,
 				double pointSize,
-				const misc::time& time,
+				const sys::time& time,
 				double bid,
 				double ask,
 				double vol,
@@ -45,17 +45,17 @@ namespace fx
 		Offer& operator=(const Offer& tc);
 		~Offer();
 
-		const misc::string& GetOfferID() const;
-		void SetOfferID(const misc::string& id);
+		const stl::string& GetOfferID() const;
+		void SetOfferID(const stl::string& id);
 
-		const misc::string& GetInstrument() const;
-		void SetInstrument(const misc::string& instrument);
+		const stl::string& GetInstrument() const;
+		void SetInstrument(const stl::string& instrument);
 
 		double GetPrecision() const;
 		void SetPrecision(double precision);
 
-		const misc::time& GetTime() const;
-		void SetTime(const misc::time& time);
+		const sys::time& GetTime() const;
+		void SetTime(const sys::time& time);
 
 		double GetPointSize() const;
 		void SetPointSize(double pipsize);
@@ -76,10 +76,10 @@ namespace fx
 		void Init();
 
 	private:
-		misc::string		m_offerID;
-		misc::string		m_instrument;
+		stl::string		m_offerID;
+		stl::string		m_instrument;
 		int					m_precision;
-		misc::time			m_time;
+		sys::time			m_time;
 		double				m_pointSize;
 		double				m_bid;		// sell at bid
 		double				m_ask;		// buy at ask

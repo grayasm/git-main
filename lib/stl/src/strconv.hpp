@@ -42,7 +42,7 @@
 
 
 
-namespace misc
+namespace stl
 {
 
 

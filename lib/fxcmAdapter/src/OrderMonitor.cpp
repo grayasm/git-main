@@ -51,8 +51,8 @@ namespace fxcm
 
 	void OrderMonitor::OnTradeAdded(IO2GTradeRow *trade)
 	{
-		misc::string tradeOrderID = trade->getOpenOrderID();
-		misc::string orderID = m_order->getOrderID();
+		stl::string tradeOrderID = trade->getOpenOrderID();
+		stl::string orderID = m_order->getOrderID();
 
 		if (tradeOrderID == orderID)
 		{
@@ -72,8 +72,8 @@ namespace fxcm
 
 	void OrderMonitor::OnOrderDeleted(IO2GOrderRow *order)
 	{
-		misc::string deletedOrderID = order->getOrderID();
-		misc::string orderID = m_order->getOrderID();
+		stl::string deletedOrderID = order->getOrderID();
+		stl::string orderID = m_order->getOrderID();
 
 		if (deletedOrderID == orderID)
 		{
@@ -119,8 +119,8 @@ namespace fxcm
 
 	void OrderMonitor::OnClosedTradeAdded(IO2GClosedTradeRow *closedTrade)
 	{
-		misc::string closedTradeOrderID = closedTrade->getCloseOrderID();
-		misc::string orderID = m_order->getOrderID();
+		stl::string closedTradeOrderID = closedTrade->getCloseOrderID();
+		stl::string orderID = m_order->getOrderID();
 		
 		if (orderID == closedTradeOrderID)
 		{
@@ -176,7 +176,7 @@ namespace fxcm
 		return m_rejectAmount;
 	}
 
-	misc::string OrderMonitor::GetRejectMessage() const
+	stl::string OrderMonitor::GetRejectMessage() const
 	{
 		return m_rejectMessage;
 	}
@@ -211,14 +211,14 @@ namespace fxcm
 
 	bool OrderMonitor::CheckAndStoreMessage(IO2GMessageRow *message)
 	{
-		misc::string feature;
+		stl::string feature;
 		feature = message->getFeature();
 
 		if (feature == O2G2::MessageFeature::MarketCondition)
 		{
-			misc::string text = message->getText();
+			stl::string text = message->getText();
 			size_t findPos = text.find(m_order->getOrderID());
-			if (findPos != misc::string::npos)
+			if (findPos != stl::string::npos)
 			{
 				m_rejectMessage = message->getText();
 				return true;

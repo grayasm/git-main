@@ -82,11 +82,11 @@ namespace fxcm
 		return *this;
 	}
 
-	const misc::string& TradingSettings::GetInstrument() const
+	const stl::string& TradingSettings::GetInstrument() const
 	{
 		return m_instrument;
 	}
-	void TradingSettings::SetInstrument(const misc::string& instrument)
+	void TradingSettings::SetInstrument(const stl::string& instrument)
 	{
 		m_instrument = instrument;
 	}

@@ -18,4 +18,4 @@ if(UNIX)
 		${CMAKE_CURRENT_SOURCE_DIR}/../../world/ForexConnectAPI/linux-x86_64/samples/cpp/sample_tools/include)
 endif(UNIX)
 
-target_link_libraries(fxcmAdapter PUBLIC misc fxcore)
+target_link_libraries(fxcmAdapter PUBLIC stl sys misc fxcore)

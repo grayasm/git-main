@@ -21,12 +21,12 @@
 #include "single_lock.hpp"
 #include "exception.hpp"
 
-namespace misc
+namespace sys
 {
-	single_lock::single_lock(misc::sync_base* object)
+	single_lock::single_lock(sys::sync_base* object)
 	{		
 		if(object == NULL)
-			throw misc::exception("single_lock invalid parameter");
+			throw stl::exception("single_lock invalid parameter");
 		m_object = object;
 	}
 

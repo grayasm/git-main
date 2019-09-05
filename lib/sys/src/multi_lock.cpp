@@ -28,30 +28,30 @@
 #include "unistd.hpp"	// msleep
 
 
-namespace misc
+namespace sys
 {
 	//##########################################################################
 	//! Helper class to get the type of a synchronization object.
-	class type_visitor : public misc::sync_visitor
+	class type_visitor : public sys::sync_visitor
 	{
 	public:
 		type_visitor() { reset(); }
 		~type_visitor() {}
-		void visit(misc::sync_base&)
+		void visit(sys::sync_base&)
 		{
-			throw misc::exception("Cannot visit sync_base type.");
+			throw stl::exception("Cannot visit sync_base type.");
 		}
-		void visit(misc::mutex&) 
+		void visit(sys::mutex&) 
 		{
 			reset();
 			m_is_mutex = true;
 		}
-		void visit(misc::semaphore& visit) 
+		void visit(sys::semaphore& visit) 
 		{
 			reset();
 			m_is_semaphore = true;
 		}
-		void visit(misc::event&)
+		void visit(sys::event&)
 		{
 			reset();
 			m_is_event = true;
@@ -73,7 +73,7 @@ namespace misc
 	};
 	//##########################################################################
 	//! Helper class to get a lock on the specified object.
-	class object_locker : public misc::thread
+	class object_locker : public sys::thread
 	{
 	public:
 		enum lock_state
@@ -84,8 +84,8 @@ namespace misc
 			UNLOCKED
 		};
 		object_locker(
-			misc::sync_base* obj,		// to be locked
-			misc::event* ev,			// signal to release the lock
+			sys::sync_base* obj,		// to be locked
+			sys::event* ev,			// signal to release the lock
 			unsigned long milliseconds)	// timeout
 		{
 			m_obj = obj;
@@ -96,7 +96,7 @@ namespace misc
 		~object_locker() 
 		{
 			if(m_state == LOCKED)
-				throw misc::exception("cannot destroy object_locker while locked");
+				throw stl::exception("cannot destroy object_locker while locked");
 		}
 		unsigned long run()
 		{
@@ -121,7 +121,7 @@ namespace misc
 			// else TIMEOUT
 			return ret; 
 		}
-		misc::event* get_event()
+		sys::event* get_event()
 		{
 			return m_ev;
 		}
@@ -130,8 +130,8 @@ namespace misc
 			return m_state;
 		}
 	private:
-		misc::sync_base*		m_obj;
-		misc::event*			m_ev;
+		sys::sync_base*		m_obj;
+		sys::event*			m_ev;
 		unsigned long			m_msec;
 		lock_state				m_state;
 	};
@@ -139,7 +139,7 @@ namespace misc
 	multi_lock::multi_lock(sync_base** objects, unsigned long count)
 	{
 		if(objects == NULL || count == 0)
-			throw misc::exception("multi_lock: Invalid argument.");
+			throw stl::exception("multi_lock: Invalid argument.");
 		m_objects = objects;
 		m_count = count;
 	}
@@ -147,7 +147,7 @@ namespace misc
 	multi_lock::~multi_lock()
 	{
 		if(m_locks.size())
-			throw misc::exception("~multi_lock: there are objects unlocked");
+			throw stl::exception("~multi_lock: there are objects unlocked");
 		m_objects = NULL;
 		m_count = 0;
 	}
@@ -155,12 +155,12 @@ namespace misc
 	int multi_lock::lock()
 	{
 		if( !m_locks.empty() )
-			throw misc::exception("multi_lock error");
+			throw stl::exception("multi_lock error");
 		
 		// separate the synchronization objects by their type
 		type_visitor synctype;		
-		misc::vector<sync_base**> events;
-		misc::vector<sync_base**> nonevents;
+		stl::vector<sync_base**> events;
+		stl::vector<sync_base**> nonevents;
 		
 		for(unsigned long i=0; i < m_count; ++i)
 		{
@@ -174,7 +174,7 @@ namespace misc
 			else if( synctype.is_event() )
 				events.push_back(p);
 			else
-				throw misc::exception("sync_base type not implemented");
+				throw stl::exception("sync_base type not implemented");
 		}
 		
 		
@@ -182,20 +182,20 @@ namespace misc
 		MSEC += (events.size() + nonevents.size()) * 2;	// for scheduling
 		
 		// put all event objects in waiting state
-		misc::vector<object_locker*> ev_locks;
+		stl::vector<object_locker*> ev_locks;
 		for(size_t i=0; i < events.size(); ++i)
 		{
 			sync_base** p = events[i];
-			ev_locks.push_back(new object_locker(*p, new misc::event(), -1));
+			ev_locks.push_back(new object_locker(*p, new sys::event(), -1));
 			ev_locks[i]->resume();
 		}
 		
 		// put all non-event objects in a single array
-		misc::vector<object_locker*> nonev_locks;
+		stl::vector<object_locker*> nonev_locks;
 		for(size_t i=0; i < nonevents.size(); ++i)
 		{
 			sync_base** p = nonevents[i];
-			nonev_locks.push_back(new object_locker(*p, new misc::event(), MSEC));
+			nonev_locks.push_back(new object_locker(*p, new sys::event(), MSEC));
 		}
 		
 		
@@ -241,7 +241,7 @@ namespace misc
 				for(size_t i=0; i < nonev_locks.size(); ++i)
 				{
 					object_locker* ol = nonev_locks[i];
-					misc::event* ev = ol->get_event();
+					sys::event* ev = ol->get_event();
 
 					// avoid dead lock condition
 					while( ol->join(0) != 0 )
@@ -272,12 +272,12 @@ namespace misc
 			return lock();
 		
 		if( !m_locks.empty() )
-			throw misc::exception("multi_lock error");
+			throw stl::exception("multi_lock error");
 		
 		// separate the synchronization objects by their type
 		type_visitor synctype;		
-		misc::vector<sync_base**> events;
-		misc::vector<sync_base**> nonevents;
+		stl::vector<sync_base**> events;
+		stl::vector<sync_base**> nonevents;
 		
 		for(unsigned long i=0; i < m_count; ++i)
 		{
@@ -291,28 +291,28 @@ namespace misc
 			else if( synctype.is_event() )
 				events.push_back(p);
 			else
-				throw misc::exception("type not implemented");
+				throw stl::exception("type not implemented");
 		}
 		
 		unsigned long MSEC=10;	// 0.01 sec
 		MSEC += (events.size() + nonevents.size()) * 2;
-		MSEC = misc::min<unsigned long>(MSEC, milliseconds);
+		MSEC = stl::min<unsigned long>(MSEC, milliseconds);
 				
 		// put all event objects in waiting state
-		misc::vector<object_locker*> ev_locks;
+		stl::vector<object_locker*> ev_locks;
 		for(size_t i=0; i < events.size(); ++i)
 		{
 			sync_base** p = events[i];
-			ev_locks.push_back(new object_locker(*p, new misc::event(), milliseconds));
+			ev_locks.push_back(new object_locker(*p, new sys::event(), milliseconds));
 			ev_locks[i]->resume();
 		}
 		
 		// put all non-event objects in a single array
-		misc::vector<object_locker*> nonev_locks;
+		stl::vector<object_locker*> nonev_locks;
 		for(size_t i=0; i < nonevents.size(); ++i)
 		{
 			sync_base** p = nonevents[i];
-			nonev_locks.push_back(new object_locker(*p, new misc::event(), MSEC));
+			nonev_locks.push_back(new object_locker(*p, new sys::event(), MSEC));
 		}
 		
 		// repeat locking in a loop until all succeed or time expires.
@@ -359,7 +359,7 @@ namespace misc
 				for(size_t i=0; i < nonev_locks.size(); ++i)
 				{
 					object_locker* ol = nonev_locks[i];
-					misc::event* ev = ol->get_event();
+					sys::event* ev = ol->get_event();
 					
 					// avoid dead lock condition
 					while( ol->join(0) != 0 )
@@ -389,7 +389,7 @@ namespace misc
 			for(size_t i=0; i < ev_locks.size(); ++i)
 			{
 				object_locker* ol = ev_locks[i];
-				misc::event* ev = ol->get_event();
+				sys::event* ev = ol->get_event();
 				// avoid dead lock condition
 				while( ol->join(0) != 0 )
 					ev->setevent();
@@ -401,7 +401,7 @@ namespace misc
 			for(size_t i=0; i < nonev_locks.size(); ++i)
 			{
 				object_locker* ol = nonev_locks[i];
-				misc::event* ev = ol->get_event();
+				sys::event* ev = ol->get_event();
 				// not running so no deadlock possible.
 				delete ev;
 				delete ol;
@@ -413,12 +413,12 @@ namespace misc
 	int multi_lock::unlock()
 	{
 		if(m_locks.empty())
-			throw misc::exception("no object to unlock");
+			throw stl::exception("no object to unlock");
 		
 		for(size_t i=0; i < m_locks.size(); ++i)
 		{
 			object_locker* ol = m_locks[i];
-			misc::event* ev = ol->get_event();
+			sys::event* ev = ol->get_event();
 			// avoid dead lock condition
 			while( ol->join(0) != 0 )
 				ev->setevent();

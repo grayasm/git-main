@@ -53,18 +53,18 @@ void test_semaphore::tearDown()
 //##########################BEGIN TEST SUITE######################################
 void test_semaphore::ctor()
 {
-	misc::cout << "\n\n\t******************************************************";
-	misc::cout <<   "\n\t* TESTING HEADER semaphore.hpp                       *";
-	misc::cout <<   "\n\t******************************************************";	
+	stl::cout << "\n\n\t******************************************************";
+	stl::cout <<   "\n\t* TESTING HEADER semaphore.hpp                       *";
+	stl::cout <<   "\n\t******************************************************";	
 	
-	misc::cout << "\n\n\t ctor ------------------------------------------------";
+	stl::cout << "\n\n\t ctor ------------------------------------------------";
 	
 	{
-		misc::semaphore s(1);
+		sys::semaphore s(1);
 		CPPUNIT_ASSERT( true );
 	}
 	{
-		misc::semaphore* s = new misc::semaphore(1);
+		sys::semaphore* s = new sys::semaphore(1);
 		delete s;
 		CPPUNIT_ASSERT( true );
 	}
@@ -72,25 +72,25 @@ void test_semaphore::ctor()
 
 void test_semaphore::dtor()
 {
-	misc::cout << "\n\n\t dtor ------------------------------------------------";
+	stl::cout << "\n\n\t dtor ------------------------------------------------";
 	
 	{
-		misc::semaphore s(1);
+		sys::semaphore s(1);
 		CPPUNIT_ASSERT( s.lock() == 0 );
 		// destroy a locked semaphore
 	}
 	{
-		misc::semaphore* s = new misc::semaphore(1);
+		sys::semaphore* s = new sys::semaphore(1);
 		CPPUNIT_ASSERT( s->lock() == 0 );
 		delete s;
 		// destroy a locked semaphore
 	}
 }
 
-class Sslthread : public misc::thread
+class Sslthread : public sys::thread
 {
 public:
-	Sslthread(misc::semaphore* sem, int sec)
+	Sslthread(sys::semaphore* sem, int sec)
 		: m_sem(sem), m_sec(sec) {}
 	~Sslthread() {}
 	// --vtable--
@@ -105,21 +105,21 @@ public:
 	}
 	// --end vtable--
 private:
-	misc::semaphore*	m_sem;
+	sys::semaphore*	m_sem;
 	int					m_sec;	
 };
 
 void test_semaphore::lock()
 {
-	misc::cout << "\n\n\t lock ------------------------------------------------";
+	stl::cout << "\n\n\t lock ------------------------------------------------";
 	
 	{
 		// semaphore with 0 maxlocks as error
 		bool cond = false;
 		try
 		{
-			misc::semaphore s(0);
-		} catch( misc::exception& )
+			sys::semaphore s(0);
+		} catch( stl::exception& )
 		{
 			cond = true;
 		}
@@ -129,11 +129,11 @@ void test_semaphore::lock()
 		// concurrent threads locking a semaphore and waiting for a no of seconds.
 		// assert total execution time which must be sum of threads time
 		
-		misc::time t1( time(0) );
+		sys::time t1( time(0) );
 		printf("\n\t semaphore with 1 max locks");
 		printf("\n\t start time       : %s", t1.tolocaltime().c_str());
 
-		misc::semaphore sem(1);
+		sys::semaphore sem(1);
 		const int THNO = 7;
 		Sslthread* t[THNO];
 		for(int i=0; i < THNO; ++i)
@@ -145,9 +145,9 @@ void test_semaphore::lock()
 		for(int i=0; i < THNO; ++i)
 			delete t[i];
 
-		misc::time t2( time(0) );
+		sys::time t2( time(0) );
 		int minsec = (int) ((THNO-1)*THNO/2); // waiting time in total
-		misc::time t3 = t1 + minsec;
+		sys::time t3 = t1 + minsec;
 		bool tcmp = (t2 >= t3);
 
 		printf("\n\t calculated delay : %d", minsec);
@@ -160,12 +160,12 @@ void test_semaphore::lock()
 		// concurrent threads locking a semaphore with large locks number
 		// the maxim wait time should be of the thread with max sec number.
 		
-		misc::time t1( time(0) );
+		sys::time t1( time(0) );
 		printf("\n\n\t semaphore with more max locks");
 		printf("\n\t start time       : %s", t1.tolocaltime().c_str());
 
 		const int THNO = 7;
-		misc::semaphore sem( THNO );		
+		sys::semaphore sem( THNO );		
 		Sslthread* t[THNO];
 		for(int i=0; i < THNO; ++i)
 			t[i] = new Sslthread(&sem, i);
@@ -176,9 +176,9 @@ void test_semaphore::lock()
 		for(int i=0; i < THNO; ++i)
 			delete t[i];
 
-		misc::time t2( time(0) );
+		sys::time t2( time(0) );
 		int minsec = (int) THNO + 1;// allow an extra sec for synchronization
-		misc::time t3 = t1 + minsec;
+		sys::time t3 = t1 + minsec;
 		bool tcmp = (t2 <= t3);
 
 		printf("\n\t calculated delay : %d", minsec);
@@ -189,10 +189,10 @@ void test_semaphore::lock()
 	}
 }
 
-class Sstthread : public misc::thread
+class Sstthread : public sys::thread
 {
 public:
-	Sstthread(misc::semaphore* sem, int sec)
+	Sstthread(sys::semaphore* sem, int sec)
 		: m_sem(sem), m_sec(sec), m_count(0) {}
 	~Sstthread() {}
 	// --vtable--
@@ -210,7 +210,7 @@ public:
 	// --end vtable--
 	int get_count() const { return m_count ; }
 private:
-	misc::semaphore*	m_sem;
+	sys::semaphore*	m_sem;
 	int					m_sec;
 	int					m_count;
 };
@@ -218,25 +218,25 @@ private:
 
 void test_semaphore::trylock()
 {
-	misc::cout << "\n\n\t trylock ---------------------------------------------";
+	stl::cout << "\n\n\t trylock ---------------------------------------------";
 	{
-		misc::semaphore sem(1);
+		sys::semaphore sem(1);
 		CPPUNIT_ASSERT( sem.trylock(2 * 1e3) == 0 );
 		CPPUNIT_ASSERT( sem.trylock(2 * 1e3) == 1 );
 	}
 	{
-		misc::semaphore sem(2);
+		sys::semaphore sem(2);
 		CPPUNIT_ASSERT( sem.trylock(2 * 1e3) == 0 );
 		CPPUNIT_ASSERT( sem.trylock(2 * 1e3) == 0 );
 		CPPUNIT_ASSERT( sem.trylock(2 * 1e3) == 1 );
 	}
 	{
-		misc::time t1( time(0) );
+		sys::time t1( time(0) );
 		printf("\n\n\t semaphore with 1 lock");
 		printf("\n\t start time       : %s", t1.tolocaltime().c_str());
 		
 		const int THNO = 7;
-		misc::semaphore sem(1);
+		sys::semaphore sem(1);
 		Sstthread*  t[THNO];
 		for(int i=0; i < THNO; ++i)
 			t[i] = new Sstthread(&sem, i);
@@ -257,9 +257,9 @@ void test_semaphore::trylock()
 		for(int i=0; i < THNO; ++i)
 			delete t[i];
 		
-		misc::time t2( time(0) );
+		sys::time t2( time(0) );
 		int minsec = (int) ((THNO-1)*THNO/2); // waiting time in total
-		misc::time t3 = t1 + minsec;
+		sys::time t3 = t1 + minsec;
 		bool tcmp = (t2 >= t3);
 
 		printf("\n\t calculated delay : %d", minsec);
@@ -270,12 +270,12 @@ void test_semaphore::trylock()
 	}
 	{
 		// semaphore with more locks will allow multiple threads to run
-		misc::time t1( time(0) );
+		sys::time t1( time(0) );
 		printf("\n\n\t semaphore with more locks");
 		printf("\n\t start time       : %s", t1.tolocaltime().c_str());
 		
 		const int THNO = 7;
-		misc::semaphore sem(THNO);
+		sys::semaphore sem(THNO);
 		Sstthread*  t[THNO];
 		for(int i=0; i < THNO; ++i)
 			t[i] = new Sstthread(&sem, i);// max 6 sec for i=6
@@ -286,10 +286,10 @@ void test_semaphore::trylock()
 		for(int i=0; i < THNO; ++i)
 			delete t[i];
 		
-		misc::time t2( time(0) );
+		sys::time t2( time(0) );
 		int minsec = (int) THNO-1; // waiting time in total
-		misc::time t3 = t1 + minsec;
-		misc::time t4 = t3 + 2; // more with 2 sec maximum
+		sys::time t3 = t1 + minsec;
+		sys::time t4 = t3 + 2; // more with 2 sec maximum
 		
 		bool tcmp = (t2 >= t3) && (t2 <= t4);
 
@@ -304,10 +304,10 @@ void test_semaphore::trylock()
 
 void test_semaphore::unlock()
 {
-	misc::cout << "\n\n\t unlock ----------------------------------------------";
+	stl::cout << "\n\n\t unlock ----------------------------------------------";
 	{
 		// releasing an unlocked semaphore
-		misc::semaphore sem(1);
+		sys::semaphore sem(1);
 		CPPUNIT_ASSERT(sem.trylock() == 0);
 		CPPUNIT_ASSERT(sem.unlock() == 0);
 		CPPUNIT_ASSERT(sem.lock() == 0);

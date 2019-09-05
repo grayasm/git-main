@@ -31,7 +31,7 @@
 
 
 
-namespace misc
+namespace stl
 {
 
 	template<typename T, typename Allocator, int attributes> 
@@ -39,10 +39,10 @@ namespace misc
 
 	template<typename container>
 	class deque_iterator : 
-		public misc::iterator<misc::random_access_iterator_tag, typename container::value_type>
+		public stl::iterator<misc::random_access_iterator_tag, typename container::value_type>
 	{
 	public:
-		typedef misc::iterator<misc::random_access_iterator_tag, typename container::value_type> base;
+		typedef stl::iterator<misc::random_access_iterator_tag, typename container::value_type> base;
 		typedef typename base::iterator_category    iterator_category;
 		typedef typename base::value_type           value_type;
 		typedef typename base::difference_type      difference_type;
@@ -89,13 +89,13 @@ namespace misc
 
 		reference operator*() const
 		{
-			if(m_cont==0) throw misc::exception("invalid iterator");
+			if(m_cont==0) throw stl::exception("invalid iterator");
 			return (*m_cont)[m_pos];
 		}
 
 		pointer operator->() const
 		{
-			if(m_cont==0) throw misc::exception("invalid iterator");
+			if(m_cont==0) throw stl::exception("invalid iterator");
 			return &(*m_cont)[m_pos];
 		}
 
@@ -151,7 +151,7 @@ namespace misc
 
 		difference_type operator-(const deque_iterator& it) const
 		{
-			if(m_cont != it.m_cont) throw misc::exception("containers are different");
+			if(m_cont != it.m_cont) throw stl::exception("containers are different");
 			return m_pos - it.m_pos;
 		}
 
@@ -163,7 +163,7 @@ namespace misc
 
 		bool operator==(const deque_iterator& it) const
 		{
-			//if(m_cont != it.m_cont) throw misc::exception("containers are different");
+			//if(m_cont != it.m_cont) throw stl::exception("containers are different");
 			return (m_cont == it.m_cont && m_pos == it.m_pos);
 		}
 
@@ -175,25 +175,25 @@ namespace misc
 
 		bool operator<(const deque_iterator& it) const
 		{
-			if(m_cont!=it.m_cont) throw misc::exception("containers are different");
+			if(m_cont!=it.m_cont) throw stl::exception("containers are different");
 			return m_pos < it.m_pos;
 		}
 
 		bool operator>(const deque_iterator& it) const
 		{
-			if(m_cont!=it.m_cont) throw misc::exception("containers are different");
+			if(m_cont!=it.m_cont) throw stl::exception("containers are different");
 			return m_pos > it.m_pos;
 		}
 
 		bool operator<=(const deque_iterator& it) const
 		{
-			if(m_cont!=it.m_cont) throw misc::exception("containers are different");
+			if(m_cont!=it.m_cont) throw stl::exception("containers are different");
 			return m_pos <= it.m_pos;
 		}
 
 		bool operator>=(const deque_iterator& it) const
 		{
-			if(m_cont!=it.m_cont) throw misc::exception("containers are different");
+			if(m_cont!=it.m_cont) throw stl::exception("containers are different");
 			return m_pos >= it.m_pos;
 		}
 
@@ -255,13 +255,13 @@ namespace misc
 
 		reference operator*() const
 		{
-			if(m_cont==0) throw misc::exception("invalid iterator");
+			if(m_cont==0) throw stl::exception("invalid iterator");
 			return (*m_cont)[m_pos];
 		}
 
 		pointer operator->() const
 		{
-			if(m_cont==0) throw misc::exception("invalid iterator");
+			if(m_cont==0) throw stl::exception("invalid iterator");
 			return &(*m_cont)[m_pos];
 		}
 
@@ -318,7 +318,7 @@ namespace misc
 
 		difference_type operator-(const deque_const_iterator& it) const
 		{
-			if(m_cont != it.m_cont) throw misc::exception("containers are different");
+			if(m_cont != it.m_cont) throw stl::exception("containers are different");
 			return m_pos - it.m_pos;
 		}
 
@@ -329,7 +329,7 @@ namespace misc
 
 		bool operator==(const deque_const_iterator& it) const
 		{
-			//if(m_cont != it.m_cont) throw misc::exception("containers are different");
+			//if(m_cont != it.m_cont) throw stl::exception("containers are different");
 			return (m_cont == it.m_cont && m_pos == it.m_pos);
 		}
 
@@ -340,25 +340,25 @@ namespace misc
 
 		bool operator<(const deque_const_iterator& it) const
 		{
-			if(m_cont!=it.m_cont) throw misc::exception("containers are different");
+			if(m_cont!=it.m_cont) throw stl::exception("containers are different");
 			return m_pos < it.m_pos;
 		}
 
 		bool operator>(const deque_const_iterator& it) const
 		{
-			if(m_cont!=it.m_cont) throw misc::exception("containers are different");
+			if(m_cont!=it.m_cont) throw stl::exception("containers are different");
 			return m_pos > it.m_pos;
 		}
 
 		bool operator<=(const deque_const_iterator& it) const
 		{
-			if(m_cont!=it.m_cont) throw misc::exception("containers are different");
+			if(m_cont!=it.m_cont) throw stl::exception("containers are different");
 			return m_pos <= it.m_pos;
 		}
 
 		bool operator>=(const deque_const_iterator& it) const
 		{
-			if(m_cont!=it.m_cont) throw misc::exception("containers are different");
+			if(m_cont!=it.m_cont) throw stl::exception("containers are different");
 			return m_pos >= it.m_pos;
 		}
 
@@ -373,10 +373,10 @@ namespace misc
 
 //########################################################################
 	template<typename container>
-	class deque_reverse_iterator : public misc::iterator<misc::random_access_iterator_tag, typename container::value_type>
+	class deque_reverse_iterator : public stl::iterator<misc::random_access_iterator_tag, typename container::value_type>
 	{
 	public:
-		typedef misc::iterator<misc::random_access_iterator_tag, typename container::value_type> base;
+		typedef stl::iterator<misc::random_access_iterator_tag, typename container::value_type> base;
 		typedef typename base::iterator_category    iterator_category;
 		typedef typename base::value_type           value_type;
 		typedef typename base::difference_type      difference_type;
@@ -422,13 +422,13 @@ namespace misc
 
 		reference operator*() const
 		{
-			if(m_cont==0) throw misc::exception("invalid iterator");
+			if(m_cont==0) throw stl::exception("invalid iterator");
 			return (*m_cont)[m_pos];
 		}
 
 		pointer operator->() const
 		{
-			if(m_cont==0) throw misc::exception("invalid iterator");
+			if(m_cont==0) throw stl::exception("invalid iterator");
 			return &(*m_cont)[m_pos];
 		}
 
@@ -484,7 +484,7 @@ namespace misc
 
 		difference_type operator-(const deque_reverse_iterator& it) const
 		{
-			if(m_cont != it.m_cont) throw misc::exception("containers are different");
+			if(m_cont != it.m_cont) throw stl::exception("containers are different");
 			return it.m_pos - m_pos;
 		}
 
@@ -496,7 +496,7 @@ namespace misc
 
 		bool operator==(const deque_reverse_iterator& it) const
 		{
-			//if(m_cont!=it.m_cont) throw misc::exception("containers are different");
+			//if(m_cont!=it.m_cont) throw stl::exception("containers are different");
 			return (m_cont == it.m_cont && m_pos == it.m_pos);
 		}
 
@@ -507,25 +507,25 @@ namespace misc
 
 		bool operator<(const deque_reverse_iterator& it) const
 		{
-			if(m_cont!=it.m_cont) throw misc::exception("containers are different");
+			if(m_cont!=it.m_cont) throw stl::exception("containers are different");
 			return m_pos > it.m_pos;
 		}
 
 		bool operator>(const deque_reverse_iterator& it) const
 		{
-			if(m_cont!=it.m_cont) throw misc::exception("containers are different");
+			if(m_cont!=it.m_cont) throw stl::exception("containers are different");
 			return m_pos < it.m_pos;
 		}
 
 		bool operator<=(const deque_reverse_iterator& it) const
 		{
-			if(m_cont!=it.m_cont) throw misc::exception("containers are different");
+			if(m_cont!=it.m_cont) throw stl::exception("containers are different");
 			return m_pos >= it.m_pos;
 		}
 
 		bool operator>=(const deque_reverse_iterator& it) const
 		{
-			if(m_cont!=it.m_cont) throw misc::exception("containers are different");
+			if(m_cont!=it.m_cont) throw stl::exception("containers are different");
 			return m_pos <= it.m_pos;
 		}
 
@@ -587,13 +587,13 @@ namespace misc
 
 		reference operator*() const
 		{
-			if(m_cont==0) throw misc::exception("invalid iterator");
+			if(m_cont==0) throw stl::exception("invalid iterator");
 			return (*m_cont)[m_pos];
 		}
 
 		pointer operator->() const
 		{
-			if(m_cont==0) throw misc::exception("invalid iterator");
+			if(m_cont==0) throw stl::exception("invalid iterator");
 			return &(*m_cont)[m_pos];
 		}
 
@@ -649,7 +649,7 @@ namespace misc
 
 		difference_type operator-(const deque_const_reverse_iterator& it) const
 		{
-			if(m_cont != it.m_cont) throw misc::exception("containers are different");
+			if(m_cont != it.m_cont) throw stl::exception("containers are different");
 			return it.m_pos - m_pos;
 		}
 
@@ -661,7 +661,7 @@ namespace misc
 
 		bool operator==(const deque_const_reverse_iterator& it) const
 		{
-			//if(m_cont!=it.m_cont) throw misc::exception("containers are different");
+			//if(m_cont!=it.m_cont) throw stl::exception("containers are different");
 			return (m_cont == it.m_cont && m_pos == it.m_pos);
 		}
 
@@ -672,25 +672,25 @@ namespace misc
 
 		bool operator<(const deque_const_reverse_iterator& it) const
 		{
-			if(m_cont!=it.m_cont) throw misc::exception("containers are different");
+			if(m_cont!=it.m_cont) throw stl::exception("containers are different");
 			return m_pos > it.m_pos;
 		}
 
 		bool operator>(const deque_const_reverse_iterator& it) const
 		{
-			if(m_cont!=it.m_cont) throw misc::exception("containers are different");
+			if(m_cont!=it.m_cont) throw stl::exception("containers are different");
 			return m_pos < it.m_pos;
 		}
 
 		bool operator<=(const deque_const_reverse_iterator& it) const
 		{
-			if(m_cont!=it.m_cont) throw misc::exception("containers are different");
+			if(m_cont!=it.m_cont) throw stl::exception("containers are different");
 			return m_pos >= it.m_pos;
 		}
 
 		bool operator>=(const deque_const_reverse_iterator& it) const
 		{
-			if(m_cont!=it.m_cont) throw misc::exception("containers are different");
+			if(m_cont!=it.m_cont) throw stl::exception("containers are different");
 			return m_pos <= it.m_pos;
 		}
 
@@ -731,7 +731,7 @@ namespace misc
 
 
 	private:
-		typedef typename misc::vector<T,allocator_type,attributes>	int_container;
+		typedef typename stl::vector<T,allocator_type,attributes>	int_container;
 		typedef typename misc::pair<bool, int_container>			Pair;
 		typedef misc::list<Pair>									List;
 	
@@ -786,7 +786,7 @@ namespace misc
 		~deque()
 		{
 			if(m_data == NULL)
-				throw misc::exception("invalid container");
+				throw stl::exception("invalid container");
 
 			delete m_data;
 			m_data = NULL;
@@ -922,7 +922,7 @@ namespace misc
 		reference operator[] ( size_type n )
 		{
 			if( n>= m_size )
-				throw misc::exception("outside valid range");
+				throw stl::exception("outside valid range");
 
 
 			//identify the container that contains element
@@ -966,7 +966,7 @@ namespace misc
 		reference front()
 		{
 			if(m_size == 0)
-				throw misc::exception("outside valid range");
+				throw stl::exception("outside valid range");
 
 			typename List::iterator it = m_data->begin();
 			int_container& cont = it->second;
@@ -988,7 +988,7 @@ namespace misc
 		reference back()
 		{
 			if(m_size == 0)
-				throw misc::exception("outside valid range");
+				throw stl::exception("outside valid range");
 
 			typename List::reverse_iterator it = m_data->rbegin();
 			int_container& cont = it->second;
@@ -1078,7 +1078,7 @@ namespace misc
 		void pop_back()
 		{
 			if(m_size == 0)
-				throw misc::exception("cannot pop element");
+				throw stl::exception("cannot pop element");
 
 			typename List::reverse_iterator it = m_data->rbegin();
 			int_container& cont = it->second;
@@ -1102,7 +1102,7 @@ namespace misc
 		void pop_front()
 		{
 			if(m_size == 0)
-				throw misc::exception("cannot pop element");
+				throw stl::exception("cannot pop element");
 
 			typename List::iterator it = m_data->begin();
 			int_container& cont = it->second;
@@ -1129,13 +1129,13 @@ namespace misc
 			//changes should be done also in insert(iterator, size_t, T)
 #if defined DEBUG
 			if(position.m_cont != this)
-				throw misc::exception("Invalid iterator.");
+				throw stl::exception("Invalid iterator.");
 #endif
 			if(m_size == 0)
 			{
 				//container empty
 				if(position.m_pos != 0)
-					throw misc::exception("out of valid range");
+					throw stl::exception("out of valid range");
 
 				Pair p(true, int_container());
 				m_data->push_back(p);
@@ -1177,13 +1177,13 @@ namespace misc
 			//changes should be done also in insert(iterator, T)
 #if defined DEBUG
 			if(position.m_cont != this)
-				throw misc::exception("Invalid iterator.");
+				throw stl::exception("Invalid iterator.");
 #endif
 			if(m_size == 0)
 			{
 				//container empty
 				if(position.m_pos != 0)
-					throw misc::exception("out of valid range");
+					throw stl::exception("out of valid range");
 
 				Pair p(true, int_container());
 				m_data->push_back(p);
@@ -1222,16 +1222,16 @@ namespace misc
 		{
 #if defined DEBUG
 			if(position.m_cont != this)
-				throw misc::exception("Invalid iterator.");
+				throw stl::exception("Invalid iterator.");
 			//      if(first.m_cont != last.m_cont)
-			//         throw misc::exception("Iterators's container mismatch.");
+			//         throw stl::exception("Iterators's container mismatch.");
 #endif
 
 			if(m_size == 0)
 			{
 				//container empty
 				if(position.m_pos != 0)
-					throw misc::exception("out of valid range");
+					throw stl::exception("out of valid range");
 
 				Pair p(true, int_container());
 				m_data->push_back(p);
@@ -1276,12 +1276,12 @@ namespace misc
 			//changes should be done also in erase(iterator,iterator)
 #if defined DEBUG
 			if(position.m_cont != this)
-				throw misc::exception("Invalid iterator.");
+				throw stl::exception("Invalid iterator.");
 #endif
 			size_t pos = position.m_pos;
 
 			if(m_size <= pos)
-				throw misc::exception("out of valid range");
+				throw stl::exception("out of valid range");
 
 			typename List::iterator it = m_data->begin();
 			size_t count = it->second.size();
@@ -1313,7 +1313,7 @@ namespace misc
 			//changes should be done also in erase(iterator)
 #if defined DEBUG
 			if(first.m_cont != this || last.m_cont != this)
-				throw misc::exception("Invalid iterator.");
+				throw stl::exception("Invalid iterator.");
 #endif
 			size_t start = first.m_pos;
 			size_t end = last.m_pos;
@@ -1322,7 +1322,7 @@ namespace misc
             
 
 			if(m_size <= start || end > m_size)
-				throw misc::exception("out of valid range");
+				throw stl::exception("out of valid range");
 
 			//search start iterator
 			typename List::iterator it = m_data->begin();

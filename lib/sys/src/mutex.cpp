@@ -28,7 +28,7 @@
 
 #include <stdio.h> // for printf
 
-namespace misc
+namespace sys
 {
 	mutex::mutex()
 		: sync_base()
@@ -38,7 +38,7 @@ namespace misc
 		// other processes).
 		m_handle = ::CreateMutex(NULL, false, "");
 		if(m_handle == NULL)
-			throw misc::exception("Cannot create the mutex!");					
+			throw stl::exception("Cannot create the mutex!");					
 #else
 		pthread_mutexattr_t attr;
 		pthread_mutexattr_init(&attr);
@@ -62,7 +62,7 @@ namespace misc
 		
 		int error = pthread_mutex_init(&m_mtx, &attr); // initialized and unlocked
 		if(error)
-			throw misc::exception("pthread_mutex_init error");
+			throw stl::exception("pthread_mutex_init error");
 		
 		pthread_mutexattr_destroy(&attr);
 #endif
@@ -81,7 +81,7 @@ namespace misc
 		then close all handles to the thread.
 		*/			
 		if( ::CloseHandle(m_handle) == 0 )
-			throw misc::exception("CloseHandle error");
+			throw stl::exception("CloseHandle error");
 		m_handle = NULL;
 	
 #else
@@ -91,7 +91,7 @@ namespace misc
 		pthread_mutex_unlock(&m_mtx);
 		int error = pthread_mutex_destroy(&m_mtx);
 		if(error)
-			throw misc::exception("pthread_mutex_destroy error");
+			throw stl::exception("pthread_mutex_destroy error");
 #endif		
 	}
 
@@ -100,12 +100,12 @@ namespace misc
 #ifdef _WIN32		
 		DWORD dwRet = ::WaitForSingleObject(m_handle, INFINITE);
 		if(dwRet != WAIT_OBJECT_0) // WAIT_TIMEOUT, WAIT_FAILED, WAIT_ABANDONED
-			throw misc::exception("WaitForSingleObject error");
+			throw stl::exception("WaitForSingleObject error");
 		return 0;
 #else
 		int error = pthread_mutex_lock(&m_mtx);
 		if(error)
-			throw misc::exception("pthread_mutex_lock error");
+			throw stl::exception("pthread_mutex_lock error");
 		return 0;
 #endif		
 	}
@@ -128,7 +128,7 @@ namespace misc
 			int error = pthread_mutex_lock(&m_mtx);
 			if(error)
 			{
-				throw misc::exception("pthread_mutex_lock error");
+				throw stl::exception("pthread_mutex_lock error");
 			}
 			return 0;
 		}
@@ -145,7 +145,7 @@ namespace misc
 			
 			struct timespec req, rem;
 			req.tv_sec = 0;
-			req.tv_nsec = misc::min<unsigned long>(nslice, nanosec);
+			req.tv_nsec = stl::min<unsigned long>(nslice, nanosec);
 			
 			double dtimeout = nanosec;
 			while(dtimeout > 0 && error == EBUSY)
@@ -165,7 +165,7 @@ namespace misc
 				return 1; // WAIT_TIMEOUT
 			}
 			
-			throw misc::exception("pthread_mutex_trylock error");
+			throw stl::exception("pthread_mutex_trylock error");
 		}
 #endif	
 	}
@@ -174,12 +174,12 @@ namespace misc
 	{
 #ifdef _WIN32		
 		if( ::ReleaseMutex(m_handle) == 0 )
-			throw misc::exception("ReleaseMutex error");
+			throw stl::exception("ReleaseMutex error");
 		return 0;
 #else
 		int error = pthread_mutex_unlock(&m_mtx);
 		if(error)
-			throw misc::exception("pthread_mutex_unlock error");
+			throw stl::exception("pthread_mutex_unlock error");
 		return 0;
 #endif		
 	}

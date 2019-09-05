@@ -23,7 +23,7 @@
 #include "stream.hpp"
 
 
-HistoryFxcmliveReader::HistoryFxcmliveReader(const misc::string& instrument)
+HistoryFxcmliveReader::HistoryFxcmliveReader(const stl::string& instrument)
 {
 	m_instrument = instrument;
 
@@ -143,10 +143,10 @@ bool HistoryFxcmliveReader::GetOffer(fx::Offer& offer)
 }
 
 
-void HistoryFxcmliveReader::ParseFile(const misc::string& filePath,
-							 misc::vector<fx::Offer>& result)
+void HistoryFxcmliveReader::ParseFile(const stl::string& filePath,
+							 stl::vector<fx::Offer>& result)
 {	
-	misc::filename offerFile(filePath);
+	sys::filename offerFile(filePath);
 	if (!offerFile.access(F_OK))
 		return; // error
 
@@ -160,7 +160,7 @@ void HistoryFxcmliveReader::ParseFile(const misc::string& filePath,
 	int bufpos = 0;
 	
 	fx::Offer offer;
-	misc::string fline;
+	stl::string fline;
 	char c;
 
 	while (true) //(c = fgetc(pf)) != EOF)
@@ -184,7 +184,7 @@ void HistoryFxcmliveReader::ParseFile(const misc::string& filePath,
 			char* pch;
 			char str[1000];
 			strcpy(str, fline.c_str());
-			misc::string s1;
+			stl::string s1;
 			int i = 0;
 
 			pch = strtok(str, ",=");
@@ -193,8 +193,8 @@ void HistoryFxcmliveReader::ParseFile(const misc::string& filePath,
 				i++;
 
 				if (i % 2 != 0) { // One of: {Id I Pr T PS B A Vol}
-					s1 = misc::string(pch);
-					misc::trim(s1);
+					s1 = stl::string(pch);
+					stl::trim(s1);
 				}
 				else if (s1 == "Id") {
 					offer.SetOfferID(pch);
@@ -208,7 +208,7 @@ void HistoryFxcmliveReader::ParseFile(const misc::string& filePath,
 				}
 				else if (s1 == "Pr") {
 					double val;
-					misc::to_value(pch, val);
+					stl::to_value(pch, val);
 					offer.SetPrecision(val);
 				}
 				else if (s1 == "T")
@@ -219,43 +219,43 @@ void HistoryFxcmliveReader::ParseFile(const misc::string& filePath,
 					sscanf(pch, "%d-%3s-%d %d:%d:%d",
 						&year, mon, &day, &hour, &min, &sec);
 
-					misc::time::Month tmon;
-					if (strcmp(mon, "JAN") == 0) tmon = misc::time::JAN;
-					else if (strcmp(mon, "FEB") == 0) tmon = misc::time::FEB;
-					else if (strcmp(mon, "MAR") == 0) tmon = misc::time::MAR;
-					else if (strcmp(mon, "APR") == 0) tmon = misc::time::APR;
-					else if (strcmp(mon, "MAY") == 0) tmon = misc::time::MAY;
-					else if (strcmp(mon, "JUN") == 0) tmon = misc::time::JUN;
-					else if (strcmp(mon, "JUL") == 0) tmon = misc::time::JUL;
-					else if (strcmp(mon, "AUG") == 0) tmon = misc::time::AUG;
-					else if (strcmp(mon, "SEP") == 0) tmon = misc::time::SEP;
-					else if (strcmp(mon, "OCT") == 0) tmon = misc::time::OCT;
-					else if (strcmp(mon, "NOV") == 0) tmon = misc::time::NOV;
-					else if (strcmp(mon, "DEC") == 0) tmon = misc::time::DEC;
+					sys::time::Month tmon;
+					if (strcmp(mon, "JAN") == 0) tmon = sys::time::JAN;
+					else if (strcmp(mon, "FEB") == 0) tmon = sys::time::FEB;
+					else if (strcmp(mon, "MAR") == 0) tmon = sys::time::MAR;
+					else if (strcmp(mon, "APR") == 0) tmon = sys::time::APR;
+					else if (strcmp(mon, "MAY") == 0) tmon = sys::time::MAY;
+					else if (strcmp(mon, "JUN") == 0) tmon = sys::time::JUN;
+					else if (strcmp(mon, "JUL") == 0) tmon = sys::time::JUL;
+					else if (strcmp(mon, "AUG") == 0) tmon = sys::time::AUG;
+					else if (strcmp(mon, "SEP") == 0) tmon = sys::time::SEP;
+					else if (strcmp(mon, "OCT") == 0) tmon = sys::time::OCT;
+					else if (strcmp(mon, "NOV") == 0) tmon = sys::time::NOV;
+					else if (strcmp(mon, "DEC") == 0) tmon = sys::time::DEC;
 					else
-						throw misc::exception("Cannot convert the month from history file");
+						throw stl::exception("Cannot convert the month from history file");
 
-					misc::time timeval(year, tmon, day, hour, min, sec);
+					sys::time timeval(year, tmon, day, hour, min, sec);
 					offer.SetTime(timeval);
 				}
 				else if (s1 == "PS") {
 					double val;
-					misc::to_value(pch, val);
+					stl::to_value(pch, val);
 					offer.SetPointSize(val);
 				}
 				else if (s1 == "B") {
 					double val;
-					misc::to_value(pch, val);
+					stl::to_value(pch, val);
 					offer.SetBid(val);
 				}
 				else if (s1 == "A") {
 					double val;
-					misc::to_value(pch, val);
+					stl::to_value(pch, val);
 					offer.SetAsk(val);
 				}
 				else if (s1 == "Vol") {
 					double val;
-					misc::to_value(pch, val);
+					stl::to_value(pch, val);
 					offer.SetVolume(val);
 				}
 
@@ -268,7 +268,7 @@ void HistoryFxcmliveReader::ParseFile(const misc::string& filePath,
 
 #ifdef DEBUG
 				if (result.size() % 1000 == 0)
-					misc::cout << "fetched " << result.size() << std::endl;
+					stl::cout << "fetched " << result.size() << std::endl;
 #endif
 			}
 

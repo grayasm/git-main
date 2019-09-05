@@ -33,7 +33,7 @@ namespace fx
 		~TimeUtils() = delete;
 
 		// adjust both 'to' and 'interval' to valid market hours
-		static void SetValidMarketTime(misc::time& to, time_t& interval);
+		static void SetValidMarketTime(sys::time& to, time_t& interval);
 
 	};
 } // namespace

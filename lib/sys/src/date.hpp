@@ -21,7 +21,7 @@
 #ifndef __date_hpp__
 #define __date_hpp__
 
-namespace misc
+namespace sys
 {
 	typedef double DATE;
 } // namespace

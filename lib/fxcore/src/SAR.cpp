@@ -52,7 +52,7 @@ namespace fx
 		Init();
 	}
 
-	SAR::SAR(const misc::string& instrument, int period, Timeframe sec)
+	SAR::SAR(const stl::string& instrument, int period, Timeframe sec)
 	{
 		Init();
 
@@ -90,7 +90,7 @@ namespace fx
 		return *this;
 	}
 
-	const misc::string& SAR::GetInstrument() const
+	const stl::string& SAR::GetInstrument() const
 	{
 		return m_instrument;
 	}
@@ -117,7 +117,7 @@ namespace fx
 	void SAR::Update(const fx::Offer& offer)
 	{
 		if (m_instrument != offer.GetInstrument())
-			throw misc::exception("SAR offer is invalid");
+			throw stl::exception("SAR offer is invalid");
 
 
         // offer will paint a new bar?
@@ -180,8 +180,8 @@ namespace fx
                 const fx::OHLCPrice& prevohlc = ohlcList.back();
                 if (m_isBuy)
                     LP = fx::Price(
-                        misc::min(prevohlc.GetAskLow(), ohlc.GetAskLow()),
-                        misc::min(prevohlc.GetBidLow(), ohlc.GetBidLow()));
+                        stl::min(prevohlc.GetAskLow(), ohlc.GetAskLow()),
+                        stl::min(prevohlc.GetBidLow(), ohlc.GetBidLow()));
                 else
                     LP = fx::Price(
                         misc::max(prevohlc.GetAskHigh(), ohlc.GetAskHigh()),
@@ -229,7 +229,7 @@ namespace fx
 		}
 	}
 
-	const misc::time& SAR::GetRefTime() const
+	const sys::time& SAR::GetRefTime() const
 	{
 		return m_bar.GetRefTime();
 	}
@@ -246,7 +246,7 @@ namespace fx
             m_SAR.GetBuy() == 0 ||
             m_SAR.GetSell() == 0)
         {
-            throw misc::exception("SAR is invalid");
+            throw stl::exception("SAR is invalid");
         }
 
 		sar = m_SAR;
@@ -255,7 +255,7 @@ namespace fx
 	void SAR::GetOHLC(fx::OHLCPrice& ohlc) const
 	{
 		if (m_period < 2 || m_bar.GetOHLCList().size() != m_period)
-			throw misc::exception("SAR is invalid");
+			throw stl::exception("SAR is invalid");
 
 		ohlc = m_bar.GetOHLC();
 	}

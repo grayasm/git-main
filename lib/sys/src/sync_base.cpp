@@ -23,7 +23,7 @@
 
 
 
-namespace misc
+namespace sys
 {    
 	sync_visitor::sync_visitor()
 	{

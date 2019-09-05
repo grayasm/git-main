@@ -27,7 +27,7 @@
 
 
 
-namespace misc
+namespace sys
 {
 	class object_locker;
 
@@ -40,7 +40,7 @@ namespace misc
 		
 		~multi_lock();
 
-		//! Locks all objects and returns 0 or otherwise throws misc::exception.
+		//! Locks all objects and returns 0 or otherwise throws stl::exception.
 		int lock();
 
 		/*! Locks all objects and returns 0 or 1 if timeout.
@@ -58,7 +58,7 @@ namespace misc
 	protected:
 		sync_base**						m_objects;
 		unsigned long					m_count;
-		misc::vector<object_locker*>	m_locks;
+		stl::vector<object_locker*>	m_locks;
 	};
 }  // namespace
 

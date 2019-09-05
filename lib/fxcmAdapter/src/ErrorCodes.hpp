@@ -52,7 +52,7 @@ namespace fxcm
 			ERR_NO_ACCOUNT = -118
 		};
 
-		static misc::string GetText(ErrorId id);
+		static stl::string GetText(ErrorId id);
 	
 	private:
 		// abstract class

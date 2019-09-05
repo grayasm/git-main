@@ -31,7 +31,7 @@
 
 
 
-namespace misc
+namespace sys
 {
 	/*
 	 *	Locking a semaphore sem(1) 2 times from the same thread will result in

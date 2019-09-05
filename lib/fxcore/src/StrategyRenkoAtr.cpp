@@ -28,7 +28,7 @@ namespace fx
 {
 	StrategyRenkoAtr::StrategyRenkoAtr(
 		fx::MarketPlugin* plugin,
-		const misc::string& instrument,
+		const stl::string& instrument,
 		double renkoMin,
 		int openHour,
 		int closeHour)
@@ -36,8 +36,8 @@ namespace fx
 		m_plugin = plugin;
 		m_instrument = instrument;
 		m_renkoMin = renkoMin;
-		m_atr14 = fx::ATR(m_instrument, 14, misc::time::hourSEC);
-        m_sma7 = fx::SMA(m_instrument, 7, misc::time::hourSEC, fx::SMA::BT_BAR, fx::SMA::PRICE_CLOSE);
+		m_atr14 = fx::ATR(m_instrument, 14, sys::time::hourSEC);
+        m_sma7 = fx::SMA(m_instrument, 7, sys::time::hourSEC, fx::SMA::BT_BAR, fx::SMA::PRICE_CLOSE);
 		/// ---------------------
 		// m_tr - clean;
 		// m_initialOffer - clean;
@@ -90,7 +90,7 @@ namespace fx
 
 
 		// Time of the offer
-		misc::time tnow = offer.GetTime();
+		sys::time tnow = offer.GetTime();
 		bool canOpen = (tnow.hour_() >= m_openHour && tnow.hour_() < m_closeHour);
 
 		
@@ -180,7 +180,7 @@ namespace fx
 
 			m_closedPL += curPL;
 			m_closedGPL += curGPL;
-			misc::cout << "curPL=" << curPL << " closedGPL=" << m_closedGPL
+			stl::cout << "curPL=" << curPL << " closedGPL=" << m_closedGPL
 				<< std::endl;
 
 
@@ -271,7 +271,7 @@ namespace fx
 
 	void StrategyRenkoAtr::OpenPosition(const fx::Offer& offer, bool buy)
 	{
-		misc::vector<fx::Position> result;
+		stl::vector<fx::Position> result;
 		int ret = m_plugin->OpenPosition(offer, 1, buy, result);
 
 		if (ret != 0)
@@ -286,15 +286,15 @@ namespace fx
 
 	void StrategyRenkoAtr::ClosePosition(const fx::Offer& offer)
 	{
-		misc::vector<fx::Position>& npos =
-			const_cast<misc::vector<fx::Position>&>(m_tr.GetPositions());
+		stl::vector<fx::Position>& npos =
+			const_cast<stl::vector<fx::Position>&>(m_tr.GetPositions());
 
-		misc::vector<fx::Position>::iterator it = npos.begin();
+		stl::vector<fx::Position>::iterator it = npos.begin();
 		for (; it != npos.end(); /*erase*/)
 		{
 			const fx::Position& pos = *it;
 
-			misc::vector<fx::Position> result;
+			stl::vector<fx::Position> result;
 			int ret = m_plugin->ClosePosition(offer, pos, result);
 
 			if (ret != 0)
@@ -303,7 +303,7 @@ namespace fx
 				return;
 			}
 
-			misc::vector<fx::Position>::iterator tmp = npos.erase(it);
+			stl::vector<fx::Position>::iterator tmp = npos.erase(it);
 			it = tmp;
 		}
 	}
@@ -314,7 +314,7 @@ namespace fx
 		if (m_atr14.IsValid() && m_sma7.IsValid())
 			return;
 
-		misc::vector<fx::IND*> indicators;
+		stl::vector<fx::IND*> indicators;
 		indicators.push_back(&m_atr14);
 		indicators.push_back(&m_sma7);
 		IndicatorBuilder::Build(m_plugin, offer, indicators);

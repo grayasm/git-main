@@ -55,53 +55,53 @@ void test_priority_queue::tearDown()
 //##########################BEGIN TEST SUITE######################################
 void test_priority_queue::ctor()
 {
-    misc::cout << "\n\n\t*******************************************************";
-    misc::cout <<   "\n\t* TESTING HEADER: priority_queue.hpp                  *";
-    misc::cout <<   "\n\t*******************************************************";
+    stl::cout << "\n\n\t*******************************************************";
+    stl::cout <<   "\n\t* TESTING HEADER: priority_queue.hpp                  *";
+    stl::cout <<   "\n\t*******************************************************";
 
-    misc::cout << "\n\n\tctor---------------------------------------------------";
+    stl::cout << "\n\n\tctor---------------------------------------------------";
     ctor<std::priority_queue<int>, std::less<int> >   ("\n\tctor<std::priority_queue<int>,less<int> >  ");
     ctor<misc::priority_queue<int>, misc::less<int> > ("\n\tctor<misc::priority_queue<int>,less<int> > ");
 }
 
 void test_priority_queue::dtor()
 {
-    misc::cout << "\n\n\tdtor---------------------------------------------------";
+    stl::cout << "\n\n\tdtor---------------------------------------------------";
     dtor<std::priority_queue<int>, std::less<int> >  ("\n\tdtor<std::priority_queue<int>,less<int> >  ");
     dtor<misc::priority_queue<int>, misc::less<int> >("\n\tdtor<misc::priority_queue<int> >,less<int> ");
 }
 
 void test_priority_queue::empty()
 {
-    misc::cout << "\n\n\tempty--------------------------------------------------";
+    stl::cout << "\n\n\tempty--------------------------------------------------";
     empty<std::priority_queue<int>, std::less<int> >  ("\n\tempty<std::priority_queue<int>,less<int> >  ");
     empty<misc::priority_queue<int>, misc::less<int> >("\n\tempty<misc::priority_queue<int>,less<int> > ");
 }
 
 void test_priority_queue::size()
 {
-    misc::cout << "\n\n\tsize---------------------------------------------------";
+    stl::cout << "\n\n\tsize---------------------------------------------------";
     size<std::priority_queue<int>, std::less<int> >  ("\n\tsize<std::priority_queue<int>,less<int> >  ");
     size<misc::priority_queue<int>, misc::less<int> >("\n\tsize<misc::priority_queue<int>,less<int> > ");
 }
 
 void test_priority_queue::top()
 {
-    misc::cout << "\n\n\ttop----------------------------------------------------";
+    stl::cout << "\n\n\ttop----------------------------------------------------";
     top<std::priority_queue<int>, std::less<int> >  ("\n\ttop<std::priority_queue<int>,less<int> >  ");
     top<misc::priority_queue<int>, misc::less<int> >("\n\ttop<misc::priority_queue<int>,less<int> > ");
 }
 
 void test_priority_queue::push()
 {
-    misc::cout << "\n\n\tpush---------------------------------------------------";
+    stl::cout << "\n\n\tpush---------------------------------------------------";
     push<std::priority_queue<int>, std::less<int> >  ("\n\tpush<std::priority_queue<int>,less<int> >  ");
     push<misc::priority_queue<int>, misc::less<int> >("\n\tpush<misc::priority_queue<int>,less<int> > ");
 }
 
 void test_priority_queue::pop()
 {
-    misc::cout << "\n\n\tpop----------------------------------------------------";
+    stl::cout << "\n\n\tpop----------------------------------------------------";
     pop<std::priority_queue<int>, std::less<int> >  ("\n\tpop<std::priority_queue<int>,less<int> >  ");
     pop<misc::priority_queue<int>, misc::less<int> >("\n\tpop<misc::priority_queue<int>,less<int> > ");
 }
@@ -125,7 +125,7 @@ void test_priority_queue::ctor(const char* msg)
 	}
 
     // measure only the time for constructors
-    misc::vector<Container*> store;
+    stl::vector<Container*> store;
 
     //  TEST
     {
@@ -167,7 +167,7 @@ void test_priority_queue::dtor(const char* msg)
 		chtab[i] = Cval(i+1); // we iterate also with float,double,etc			
 	}
 
-    misc::vector<Container*> store;
+    stl::vector<Container*> store;
 
     //  Create containers, will take the time of ~dtor()
     for(size_t i=0; i < m_container_size; ++i)

@@ -50,102 +50,102 @@ void test_queue::tearDown()
 //##########################BEGIN TEST SUITE######################################
 void test_queue::ctor()
 {
-    misc::cout << "\n\n\t*******************************************************";
-    misc::cout <<   "\n\t* TESTING HEADER: queue.hpp                           *";
-    misc::cout <<   "\n\t*******************************************************";
+    stl::cout << "\n\n\t*******************************************************";
+    stl::cout <<   "\n\t* TESTING HEADER: queue.hpp                           *";
+    stl::cout <<   "\n\t*******************************************************";
 
-    misc::cout << "\n\n\tctor---------------------------------------------------";
+    stl::cout << "\n\n\tctor---------------------------------------------------";
     ctor<std::queue<int> > ("\n\tctor<std::queue<int> >  ");
     ctor<misc::queue<int> >("\n\tctor<misc::queue<int> > ");
 }
 
 void test_queue::dtor()
 {
-    misc::cout << "\n\n\tdtor---------------------------------------------------";
+    stl::cout << "\n\n\tdtor---------------------------------------------------";
     dtor<std::queue<int> > ("\n\tdtor<std::queue<int> >  ");
     dtor<misc::queue<int> >("\n\tdtor<misc::queue<int> > ");
 }
 
 void test_queue::empty()
 {
-    misc::cout << "\n\n\tempty--------------------------------------------------";
+    stl::cout << "\n\n\tempty--------------------------------------------------";
     empty<std::queue<int> > ("\n\tempty<std::queue<int> >  ");
     empty<misc::queue<int> >("\n\tempty<misc::queue<int> > ");
 }
 
 void test_queue::size()
 {
-    misc::cout << "\n\n\tsize---------------------------------------------------";
+    stl::cout << "\n\n\tsize---------------------------------------------------";
     size<std::queue<int> > ("\n\tsize<std::queue<int> >  ");
     size<misc::queue<int> >("\n\tsize<misc::queue<int> > ");
 }
 
 void test_queue::front()
 {
-    misc::cout << "\n\n\tfront--------------------------------------------------";
+    stl::cout << "\n\n\tfront--------------------------------------------------";
     front<std::queue<int> > ("\n\tfront<std::queue<int> >  ");
     front<misc::queue<int> >("\n\tfront<misc::queue<int> > ");
 }
 
 void test_queue::back()
 {
-    misc::cout << "\n\n\tback---------------------------------------------------";
+    stl::cout << "\n\n\tback---------------------------------------------------";
     back<std::queue<int> > ("\n\tback<std::queue<int> >  ");
     back<misc::queue<int> >("\n\tback<misc::queue<int> > ");
 }
 
 void test_queue::push()
 {
-    misc::cout << "\n\n\tpush---------------------------------------------------";
+    stl::cout << "\n\n\tpush---------------------------------------------------";
     push<std::queue<int> > ("\n\tpush<std::queue<int> >  ");
     push<misc::queue<int> >("\n\tpush<misc::queue<int> > ");
 }
 
 void test_queue::pop()
 {
-    misc::cout << "\n\n\tpop----------------------------------------------------";
+    stl::cout << "\n\n\tpop----------------------------------------------------";
     pop<std::queue<int> > ("\n\tpop<std::queue<int> >  ");
     pop<misc::queue<int> >("\n\tpop<misc::queue<int> > ");
 }
 
 void test_queue::eq_op()
 {
-    misc::cout << "\n\n\teq_op--------------------------------------------------";
+    stl::cout << "\n\n\teq_op--------------------------------------------------";
     eq_op<std::queue<int> > ("\n\teq_op<std::queue<int> >  ");
     eq_op<misc::queue<int> >("\n\teq_op<misc::queue<int> > ");
 }
 
 void test_queue::neq_op()
 {
-    misc::cout << "\n\n\tneq_op-------------------------------------------------";
+    stl::cout << "\n\n\tneq_op-------------------------------------------------";
     neq_op<std::queue<int> > ("\n\tneq_op<std::queue<int> >  ");
     neq_op<misc::queue<int> >("\n\tneq_op<misc::queue<int> > ");
 }
 
 void test_queue::lt_op()
 {
-    misc::cout << "\n\n\tlt_op--------------------------------------------------";
+    stl::cout << "\n\n\tlt_op--------------------------------------------------";
     lt_op<std::queue<int> > ("\n\tlt_op<std::queue<int> >  ");
     lt_op<misc::queue<int> >("\n\tlt_op<misc::queue<int> > ");
 }
 
 void test_queue::gt_op()
 {
-    misc::cout << "\n\n\tgt_op--------------------------------------------------";
+    stl::cout << "\n\n\tgt_op--------------------------------------------------";
     gt_op<std::queue<int> > ("\n\tgt_op<std::queue<int> >  ");
     gt_op<misc::queue<int> >("\n\tgt_op<misc::queue<int> > ");
 }
 
 void test_queue::lte_op()
 {
-    misc::cout << "\n\n\tlte_op-------------------------------------------------";
+    stl::cout << "\n\n\tlte_op-------------------------------------------------";
     lte_op<std::queue<int> > ("\n\tlte_op<std::queue<int> >  ");
     lte_op<misc::queue<int> >("\n\tlte_op<misc::queue<int> > ");
 }
 
 void test_queue::gte_op()
 {
-    misc::cout << "\n\n\tgte_op-------------------------------------------------";
+    stl::cout << "\n\n\tgte_op-------------------------------------------------";
     gte_op<std::queue<int> > ("\n\tgte_op<std::queue<int> >  ");
     gte_op<misc::queue<int> >("\n\tgte_op<misc::queue<int> > ");
 }
@@ -167,7 +167,7 @@ void test_queue::ctor(const char* msg)
 	}
 
     // measure only the time for constructors
-    misc::vector<Container*> store;
+    stl::vector<Container*> store;
 
     //  TEST
     {
@@ -208,7 +208,7 @@ void test_queue::dtor(const char* msg)
 		chtab[i] = Cval(i+1); // we iterate also with float,double,etc			
 	}
 
-    misc::vector<Container*> store;
+    stl::vector<Container*> store;
 
     //  Create containers, will take the time of ~dtor()
     for(size_t i=0; i < m_container_size; ++i)

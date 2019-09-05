@@ -36,8 +36,8 @@ namespace fxcm
 		SessionStatusListener(
 			IO2GSession* session,
 			bool printSubSessions,
-			const misc::string& sessionID,
-			const misc::string& pin);
+			const stl::string& sessionID,
+			const stl::string& pin);
 
 		// vtable begin
 		long addRef();
@@ -58,14 +58,14 @@ namespace fxcm
 
 	private:
 		long				m_RefCount;
-		misc::string		m_SessionID;
-		misc::string		m_Pin;
+		stl::string		m_SessionID;
+		stl::string		m_Pin;
 		bool				m_Error;
 		bool				m_Connected;
 		bool				m_Disconnected;
 		bool				m_PrintSubsessions;
 		IO2GSession*		m_Session;
-		misc::event			m_SessionEvent;
+		sys::event			m_SessionEvent;
 		misc::critical_section	m_CriticalSection;
 	};
 } // namespace

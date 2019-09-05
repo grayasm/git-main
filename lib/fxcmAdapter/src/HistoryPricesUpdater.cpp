@@ -62,7 +62,7 @@ namespace fxcm
 
 		if (!response)
 		{
-			misc::cout << __FUNCTION__
+			stl::cout << __FUNCTION__
 				<< ": No history prices response" << std::endl;
 			return ErrorCodes::ERR_NO_MARKET_DATA_RESPONSE;
 		}
@@ -72,7 +72,7 @@ namespace fxcm
 
 		if (!readerFactory)
 		{
-			misc::cout << __FUNCTION__
+			stl::cout << __FUNCTION__
 				<< ": Cannot create response reader factory" << std::endl;
 			return ErrorCodes::ERR_NO_RESPONSE_READER_FACTORY;
 		}
@@ -81,13 +81,13 @@ namespace fxcm
 			readerFactory->createMarketDataSnapshotReader(response);
 		if (!reader)
 		{
-			misc::cout << __FUNCTION__
+			stl::cout << __FUNCTION__
 				<< ": Cannot create market data table reader" << std::endl;
 			return ErrorCodes::ERR_NO_MARKET_DATA_READER;
 		}
 
 		char sTime[20];
-		misc::time mTime;
+		sys::time mTime;
 		/*	The customer sample reads the prices backward.
 			
 		for (int ii = reader->size() - 1; ii >= 0; ii--)
@@ -123,7 +123,7 @@ namespace fxcm
 				static bool debugOutput = true;
 				if (debugOutput)
 				{
-					misc::cout << "DateTime=" << sTime
+					stl::cout << "DateTime=" << sTime
 						<< " BidOpen=" << bidOpen
 						<< " BidHigh=" << bidHigh
 						<< " BidLow=" << bidLow
@@ -137,7 +137,7 @@ namespace fxcm
 			}
 			else
 			{
-				misc::cout << "DateTime=" << sTime
+				stl::cout << "DateTime=" << sTime
 					<< " Bid=" << reader->getBid(ii)
 					<< " Ask=" << reader->getAsk(ii) << std::endl;
 			}

@@ -55,11 +55,11 @@ void test_numeric::tearDown()
 void test_numeric::accumulate()
 {
 
-    misc::cout << "\n\n\t*******************************************************";
-    misc::cout <<   "\n\t* TESTING HEADER: numeric.hpp                         *";
-    misc::cout <<   "\n\t*******************************************************";
+    stl::cout << "\n\n\t*******************************************************";
+    stl::cout <<   "\n\t* TESTING HEADER: numeric.hpp                         *";
+    stl::cout <<   "\n\t*******************************************************";
 
-    misc::cout << "\n\n\taccumulate---------------------------------------------";
+    stl::cout << "\n\n\taccumulate---------------------------------------------";
 
     accumulate<misc::list<int> >                      ("\n\tmisc::list<int> ");
     accumulate<std::list<int> >                       ("\n\tmisc::list<int> ");
@@ -68,7 +68,7 @@ void test_numeric::accumulate()
 
 void test_numeric::adjacent_difference()
 {
-    misc::cout << "\n\n\tadjacent_difference------------------------------------";
+    stl::cout << "\n\n\tadjacent_difference------------------------------------";
 
     adjacent_difference<misc::list<int> >                      ("\n\tmisc::list<int> ");
     adjacent_difference<std::list<int> >                       ("\n\tmisc::list<int> ");
@@ -78,7 +78,7 @@ void test_numeric::adjacent_difference()
 
 void test_numeric::inner_product()
 {
-    misc::cout << "\n\n\tinner_product------------------------------------------";
+    stl::cout << "\n\n\tinner_product------------------------------------------";
 
     inner_product<misc::list<int> >                      ("\n\tmisc::list<int> ");
     inner_product<std::list<int> >                       ("\n\tmisc::list<int> ");
@@ -87,7 +87,7 @@ void test_numeric::inner_product()
 
 void test_numeric::partial_sum()
 {
-    misc::cout << "\n\n\tpartial_sum--------------------------------------------";
+    stl::cout << "\n\n\tpartial_sum--------------------------------------------";
 
     partial_sum<misc::list<int> >                      ("\n\tmisc::list<int> ");
     partial_sum<std::list<int> >                       ("\n\tmisc::list<int> ");

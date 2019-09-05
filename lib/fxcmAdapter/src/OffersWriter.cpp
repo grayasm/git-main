@@ -39,7 +39,7 @@ namespace fxcm
 		// m_criticalSection - unlocked;
 		m_iniParams = iniParams;
 		// m_offersVec - empty;
-		misc::filename offersfile(m_iniParams.GetOffersFile());
+		sys::filename offersfile(m_iniParams.GetOffersFile());
 		m_isEnabled = offersfile.access(F_OK); // true/false
 		// m_writeFile - empty;
 	}
@@ -65,7 +65,7 @@ namespace fxcm
 
 		if (!readerFactory)
 		{
-			misc::cout << __FUNCTION__
+			stl::cout << __FUNCTION__
 				<< ": Cannot create response reader factory" << std::endl;
 			return;
 		}
@@ -75,7 +75,7 @@ namespace fxcm
 
 		if (!offersResponseReader)
 		{
-			misc::cout << __FUNCTION__
+			stl::cout << __FUNCTION__
 				<< ": Cannot create offers table reader" << std::endl;
 			return;
 		}
@@ -91,7 +91,7 @@ namespace fxcm
 				!offerRow->isAskValid())
 				continue;
 
-			misc::time oftime;
+			sys::time oftime;
 			Utils::FormatDate(offerRow->getTime(), oftime);
 
 			if (oftime.year_() == 1970)
@@ -99,7 +99,7 @@ namespace fxcm
 			if (offerRow->getPointSize() == 0)
 				continue;
 
-			misc::string tradingStatus(offerRow->getTradingStatus());
+			stl::string tradingStatus(offerRow->getTradingStatus());
 			bool isTradingOpen = (tradingStatus == "O"); // "O" or "C"
 
 			fx::Offer newOffer(
@@ -129,15 +129,15 @@ namespace fxcm
 		if (!m_isEnabled)
 			return;
 
-		misc::filename offersfile(m_writeFile);
+		sys::filename offersfile(m_writeFile);
 		
 		// initialize the file to save the live quotes
 		static int counter = 0;
 		if (counter == 0)
 		{
-			offersfile = misc::filename(m_iniParams.GetOffersFile());
+			offersfile = sys::filename(m_iniParams.GetOffersFile());
 
-			misc::time tnow(::time(NULL));
+			sys::time tnow(::time(NULL));
 			char stamp[32];
 			sprintf(stamp, "_%02d_%02d_%02d_%02d_%02d_%02d",
 				tnow.year_(),
@@ -146,7 +146,7 @@ namespace fxcm
 				tnow.hour_(),
 				tnow.min_(),
 				tnow.sec_());
-			misc::string corename(offersfile.get_core_name());
+			stl::string corename(offersfile.get_core_name());
 			corename += stamp;
 			offersfile.set_core_name(corename);
 

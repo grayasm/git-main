@@ -30,7 +30,7 @@
 #endif
 
 
-namespace misc
+namespace sys
 {
 	/*	Win32: A mutex is used to do many of the same things as a critical section
 	 *	but it sacrifices speed for increased flexibility. As you may have guessed
@@ -77,7 +77,7 @@ namespace misc
 		~mutex();
 
 		//! --- vtable begin ---
-		//! Locks the mutex and returns 0 or otherwise throws misc::exception.
+		//! Locks the mutex and returns 0 or otherwise throws stl::exception.
 		int lock();
 
 		/*! Locks the mutex and returns 0 or 1 if timeout.
@@ -85,7 +85,7 @@ namespace misc
 		 */
 		int trylock(unsigned long milliseconds = 0);
 
-		//! Unlocks the mutex and returns 0 or otherwise throws misc::exception.
+		//! Unlocks the mutex and returns 0 or otherwise throws stl::exception.
 		int unlock();
 		
 		//! Accepts a visitor

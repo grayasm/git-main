@@ -53,11 +53,11 @@ void test_autocritical_section::tearDown()
 //##########################BEGIN TEST SUITE######################################
 void test_autocritical_section::ctor()
 {
-    misc::cout << "\n\n\t*******************************************************";
-    misc::cout <<   "\n\t* TESTING HEADER: autocritical_section.hpp            *";
-    misc::cout <<   "\n\t*******************************************************";
+    stl::cout << "\n\n\t*******************************************************";
+    stl::cout <<   "\n\t* TESTING HEADER: autocritical_section.hpp            *";
+    stl::cout <<   "\n\t*******************************************************";
 
-	misc::cout << "\n\n\tctor---------------------------------------------------";
+	stl::cout << "\n\n\tctor---------------------------------------------------";
 	{
 		misc::critical_section cs;
 		misc::autocritical_section acs(cs);
@@ -85,7 +85,7 @@ void test_autocritical_section::ctor()
 
 void test_autocritical_section::dtor()
 {
-	misc::cout << "\n\n\tdtor---------------------------------------------------";
+	stl::cout << "\n\n\tdtor---------------------------------------------------";
 }
 
 

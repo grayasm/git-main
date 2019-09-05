@@ -36,49 +36,49 @@ namespace fxcm
 	class IniParams
 	{
 	public:
-		typedef misc::autoptr<IniParams> Ptr;
+		typedef stl::autoptr<IniParams> Ptr;
 
 		IniParams();
-		IniParams(const misc::string& inifile);
+		IniParams(const stl::string& inifile);
 		~IniParams();
 		IniParams(const IniParams& tc);
 		IniParams& operator=(const IniParams& tc);
 
-		const misc::string& GetInstrument() const;
-		void SetInstrument(const misc::string& val);
+		const stl::string& GetInstrument() const;
+		void SetInstrument(const stl::string& val);
 
-		const misc::string& GetBuySell() const;
-		void SetBuySell(const misc::string& val);
+		const stl::string& GetBuySell() const;
+		void SetBuySell(const stl::string& val);
 
-		const misc::string& GetContingencyID() const;
-		void SetContingencyID(const misc::string& val);
+		const stl::string& GetContingencyID() const;
+		void SetContingencyID(const stl::string& val);
 
-		const misc::string& GetOrderID() const;
-		void SetOrderID(const misc::string& val);
+		const stl::string& GetOrderID() const;
+		void SetOrderID(const stl::string& val);
 
-		const misc::string& GetPrimaryID() const;
-		void SetPrimaryID(const misc::string& val);
+		const stl::string& GetPrimaryID() const;
+		void SetPrimaryID(const stl::string& val);
 
-		const misc::string& GetSecondaryID() const;
-		void SetSecondaryID(const misc::string& val);
+		const stl::string& GetSecondaryID() const;
+		void SetSecondaryID(const stl::string& val);
 
-		const misc::string& GetTimeframe() const;
-		void SetTimeframe(const misc::string& val);
+		const stl::string& GetTimeframe() const;
+		void SetTimeframe(const stl::string& val);
 
-		const misc::string& GetAccount() const;
-		void SetAccount(const misc::string& val);
+		const stl::string& GetAccount() const;
+		void SetAccount(const stl::string& val);
 
-		const misc::string& GetAccountSymbol() const;
-		void SetAccountSymbol(const misc::string& val);
+		const stl::string& GetAccountSymbol() const;
+		void SetAccountSymbol(const stl::string& val);
 
-		const misc::string& GetOrderType() const;
-		void SetOrderType(const misc::string& val);
+		const stl::string& GetOrderType() const;
+		void SetOrderType(const stl::string& val);
 
-		const misc::string& GetStatus() const;
-		void SetStatus(const misc::string& val);
+		const stl::string& GetStatus() const;
+		void SetStatus(const stl::string& val);
 
-		const misc::string& GetExpDate() const;
-		void SetExpDate(const misc::string& val);
+		const stl::string& GetExpDate() const;
+		void SetExpDate(const stl::string& val);
 
 		int GetLots() const;
 		void SetLots(int val);
@@ -87,17 +87,17 @@ namespace fxcm
 		void SetTrailStep(int val);
 
 		// "m.d.Y H:M:S"
-		const misc::string& GetDateFrom() const;
-		void SetDateFrom(const misc::string& val);
+		const stl::string& GetDateFrom() const;
+		void SetDateFrom(const stl::string& val);
 
-		const misc::string& GetDateTo() const;
-		void SetDateTo(const misc::string& val);
+		const stl::string& GetDateTo() const;
+		void SetDateTo(const stl::string& val);
 
-		const misc::string& GetHistoryFile() const;
-		void SetHistoryFile(const misc::string& val);
+		const stl::string& GetHistoryFile() const;
+		void SetHistoryFile(const stl::string& val);
 
-		const misc::string& GetOffersFile() const;
-		void SetOffersFile(const misc::string& val);
+		const stl::string& GetOffersFile() const;
+		void SetOffersFile(const stl::string& val);
 
 		bool GetEnableOfferUpdater() const;
 		void SetEnableOfferUpdater(bool enable);
@@ -105,8 +105,8 @@ namespace fxcm
 		bool GetEnableOfferWriter() const;
 		void SetEnableOfferWriter(bool enable);
 
-		const misc::string& GetLoggingFile() const;
-		void SetLoggingFile(const misc::string& val);
+		const stl::string& GetLoggingFile() const;
+		void SetLoggingFile(const stl::string& val);
 
 		bool GetEnableLogging() const;
 		void SetEnableLogging(bool enable);
@@ -127,29 +127,29 @@ namespace fxcm
 		void Init();
 
 	private:
-		misc::string		m_iniFile;
-		misc::string		m_section;
-		misc::string		m_instrument;
-		misc::string		m_buysell;
-		misc::string		m_contingencyID;
-		misc::string		m_orderID;
-		misc::string		m_primaryID;
-		misc::string		m_secondaryID;
-		misc::string		m_timeframe;
-		misc::string		m_account;
-		misc::string		m_accountSymbol;
-		misc::string		m_orderType;
-		misc::string		m_status;
-		misc::string		m_expDate;
+		stl::string		m_iniFile;
+		stl::string		m_section;
+		stl::string		m_instrument;
+		stl::string		m_buysell;
+		stl::string		m_contingencyID;
+		stl::string		m_orderID;
+		stl::string		m_primaryID;
+		stl::string		m_secondaryID;
+		stl::string		m_timeframe;
+		stl::string		m_account;
+		stl::string		m_accountSymbol;
+		stl::string		m_orderType;
+		stl::string		m_status;
+		stl::string		m_expDate;
 		int					m_lots;
 		int					m_trailStep;
-		misc::string		m_dateFrom;
-		misc::string		m_dateTo;
-		misc::string		m_historyfile;
-		misc::string		m_offersfile;
+		stl::string		m_dateFrom;
+		stl::string		m_dateTo;
+		stl::string		m_historyfile;
+		stl::string		m_offersfile;
 		bool				m_enableOfferUpdater;
 		bool				m_enableOfferWriter;
-		misc::string		m_loggingfile;
+		stl::string		m_loggingfile;
 		bool				m_enableLogging;
 		double				m_rangeInPips;
 		double				m_rate;

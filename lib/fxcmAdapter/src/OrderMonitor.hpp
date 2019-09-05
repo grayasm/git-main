@@ -33,9 +33,9 @@ namespace fxcm
 	class OrderMonitor
 	{
 	public:
-		typedef misc::autoptr<OrderMonitor> Ptr;
-		typedef misc::vector<IO2GTradeRow*>	IO2GTradeRowVec;
-		typedef misc::vector<IO2GClosedTradeRow*>	IO2GClosedTradeRowVec;
+		typedef stl::autoptr<OrderMonitor> Ptr;
+		typedef stl::vector<IO2GTradeRow*>	IO2GTradeRowVec;
+		typedef stl::vector<IO2GClosedTradeRow*>	IO2GClosedTradeRowVec;
 
 		enum ExecutionResult
 		{
@@ -64,7 +64,7 @@ namespace fxcm
 		void GetTrades(IO2GTradeRowVec& trades) const;
 		void GetClosedTrades(IO2GClosedTradeRowVec& closedTrades) const;
 		int GetRejectAmount() const;
-		misc::string GetRejectMessage() const;
+		stl::string GetRejectMessage() const;
 
 	private:
 		enum OrderState
@@ -81,7 +81,7 @@ namespace fxcm
 
 	private:
 		OrderState				m_orderState;
-		misc::string			m_rejectMessage;
+		stl::string			m_rejectMessage;
 		IO2GTradeRowVec			m_trades;
 		IO2GClosedTradeRowVec	m_closedTrades;
 		int						m_totalAmount;

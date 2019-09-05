@@ -27,7 +27,7 @@
 
 
 
-namespace misc
+namespace stl
 {
 
     template <typename InputIterator, typename T>
@@ -59,8 +59,8 @@ namespace misc
     inline OutputIterator adjacent_difference ( InputIterator first, InputIterator last,
                                                 OutputIterator result )
     {
-        typename misc::iterator_traits<InputIterator>::value_type val;
-        typename misc::iterator_traits<InputIterator>::value_type prev;
+        typename stl::iterator_traits<InputIterator>::value_type val;
+        typename stl::iterator_traits<InputIterator>::value_type prev;
 
         prev = *first++;
         *result++ = prev;
@@ -80,8 +80,8 @@ namespace misc
     inline OutputIterator adjacent_difference ( InputIterator first, InputIterator last,
                                                 OutputIterator result, BinaryOperation binary_op )
     {
-        typename misc::iterator_traits<InputIterator>::value_type val;
-        typename misc::iterator_traits<InputIterator>::value_type prev;
+        typename stl::iterator_traits<InputIterator>::value_type val;
+        typename stl::iterator_traits<InputIterator>::value_type prev;
 
         prev = *first++;
         *result++ = prev;
@@ -132,7 +132,7 @@ namespace misc
     inline OutputIterator partial_sum ( InputIterator first, InputIterator last,
                                         OutputIterator result )
     {
-        typename misc::iterator_traits<InputIterator>::value_type val;
+        typename stl::iterator_traits<InputIterator>::value_type val;
 
         val = *first++;
         *result++ = val;
@@ -152,7 +152,7 @@ namespace misc
     inline OutputIterator partial_sum ( InputIterator first, InputIterator last,
                                         OutputIterator result, BinaryOperation binary_op )
     {
-        typename misc::iterator_traits<InputIterator>::value_type val;
+        typename stl::iterator_traits<InputIterator>::value_type val;
 
         val = *first++;
         *result++ = val;

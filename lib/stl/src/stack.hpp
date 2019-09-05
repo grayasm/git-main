@@ -24,10 +24,10 @@
 
 #include "deque.hpp"
 
-namespace misc
+namespace stl
 {
 	// LIFO queue implemented with a container
-	template<typename T, typename container = misc::deque<T> >
+	template<typename T, typename container = stl::deque<T> >
 	class stack
 	{
 	public:

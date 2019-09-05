@@ -30,7 +30,7 @@
 
 
 
-namespace misc
+namespace sys
 {
     class filename
     {
@@ -39,32 +39,32 @@ namespace misc
         ~filename();
 
         //the "/" will be replaced with SEP according to OS
-        filename(const misc::string& file); //e.g. "/home/mihk/vParser.cpp" or "vParser.cpp"
-        filename(const misc::string& directory, //e.g. "/home/mihk/"
-                 const misc::string& file_core_name, //e.g. "vParser"
-                 const misc::string& file_ext); //e.g. "cpp"
+        filename(const stl::string& file); //e.g. "/home/mihk/vParser.cpp" or "vParser.cpp"
+        filename(const stl::string& directory, //e.g. "/home/mihk/"
+                 const stl::string& file_core_name, //e.g. "vParser"
+                 const stl::string& file_ext); //e.g. "cpp"
 
-        filename(const misc::filename& file_name);
-        filename& operator=(const misc::filename& tocopy);
-        bool operator==(const misc::filename& tocmp);
-        bool operator!=(const misc::filename& tocmp);
-
-
-        const misc::string& get_directory() const ; // "/home/mihk/repository/project/src/"
-        const misc::string& get_core_name() const ;//  "Parser"
-        misc::string get_file_name() const ; // "Parser.cpp" (file+ext)
-        misc::string get_path() const ;// "/home/mihk/repository/project/src/Parser.cpp"
-        const misc::string& get_extension() const ;// "cpp"
-
-        void set_directory(const misc::string& directory) ;
-        void set_core_name(const misc::string& file_core_name);
-        void set_file_name(const misc::string& file_name);
-        void set_extension(const misc::string& extension);
-        void set_path(const misc::string& complete_path);
+        filename(const sys::filename& file_name);
+        filename& operator=(const sys::filename& tocopy);
+        bool operator==(const sys::filename& tocmp);
+        bool operator!=(const sys::filename& tocmp);
 
 
-        void add_prefix_directory(const misc::string& directory);
-        void add_postfix_directory(const misc::string& directory);
+        const stl::string& get_directory() const ; // "/home/mihk/repository/project/src/"
+        const stl::string& get_core_name() const ;//  "Parser"
+        stl::string get_file_name() const ; // "Parser.cpp" (file+ext)
+        stl::string get_path() const ;// "/home/mihk/repository/project/src/Parser.cpp"
+        const stl::string& get_extension() const ;// "cpp"
+
+        void set_directory(const stl::string& directory) ;
+        void set_core_name(const stl::string& file_core_name);
+        void set_file_name(const stl::string& file_name);
+        void set_extension(const stl::string& extension);
+        void set_path(const stl::string& complete_path);
+
+
+        void add_prefix_directory(const stl::string& directory);
+        void add_postfix_directory(const stl::string& directory);
 
         filename substract_prefix_directory() const ;
         filename substract_postfix_directory() const ;
@@ -78,28 +78,28 @@ namespace misc
 
     public:
         //members
-        static const misc::char_t SEP;// separator char_t
-        static const misc::string SSEP;// separator string
+        static const stl::char_t SEP;// separator char_t
+        static const stl::string SSEP;// separator string
 
     protected:
-        static void extract_directory(misc::string& dest, const misc::string& src);
-        static void extract_core_name(misc::string& dest, const misc::string& src);
-        static void extract_extension(misc::string& dest, const misc::string& src) ;
+        static void extract_directory(stl::string& dest, const stl::string& src);
+        static void extract_core_name(stl::string& dest, const stl::string& src);
+        static void extract_extension(stl::string& dest, const stl::string& src) ;
 
-        static void merge_directories(misc::string& dest,
-                                      const misc::string& dir1,
-                                      const misc::string& dir2);
+        static void merge_directories(stl::string& dest,
+                                      const stl::string& dir1,
+                                      const stl::string& dir2);
 
-        static void format_directory(misc::string& directory);
-        static void format_file(misc::string& file);
-        static void format_extension(misc::string& ext);
+        static void format_directory(stl::string& directory);
+        static void format_file(stl::string& file);
+        static void format_extension(stl::string& ext);
 
 
     private:
 //TODO: "change to internal string"
-	    misc::string m_directory;
-	    misc::string m_core_name;
-        misc::string m_extension;
+	    stl::string m_directory;
+	    stl::string m_core_name;
+        stl::string m_extension;
 
     };  // filename
 }  // namespace exp

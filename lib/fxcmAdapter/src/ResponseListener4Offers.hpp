@@ -46,7 +46,7 @@ namespace fxcm
 		void onTablesUpdates(IO2GResponse* tablesUpdates);
 		// vtable end
 
-		void SetRequestID(const misc::string& requestID);
+		void SetRequestID(const stl::string& requestID);
 		bool WaitEvents();
 		IO2GResponse* GetResponse();
 		void SetOffersUpdater(OffersUpdater* ou);
@@ -59,8 +59,8 @@ namespace fxcm
 	private:
 		long					m_RefCount;
 		IO2GSession*			m_Session;
-		misc::string			m_RequestID;
-		misc::event				m_ResponseEvent;
+		stl::string			m_RequestID;
+		sys::event				m_ResponseEvent;
 		IO2GResponse*			m_Response;
 		misc::critical_section	m_CriticalSection;
 		OffersUpdater*			m_offersUpdater;

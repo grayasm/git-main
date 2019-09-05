@@ -74,7 +74,7 @@ namespace fxcm
 	{
 		if (m_RequestID == requestId)
 		{
-			misc::cout << __FUNCTION__ 
+			stl::cout << __FUNCTION__ 
 				<< ": The request has been failed. ID: "
 				<< requestId << " : " << error << std::endl;
 			m_ResponseEvent.unlock();
@@ -85,7 +85,7 @@ namespace fxcm
 	{
 	}
 
-	void ResponseListener4EntryOrders::SetRequestID(const misc::string& requestID)
+	void ResponseListener4EntryOrders::SetRequestID(const stl::string& requestID)
 	{
 		m_RequestID = requestID;
 		if (m_Response)

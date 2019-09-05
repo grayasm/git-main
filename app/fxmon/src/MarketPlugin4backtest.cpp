@@ -49,12 +49,12 @@ int MarketPlugin4backtest::OpenPosition(
 	const fx::Offer& offer,
 	int lots,
 	bool buy,
-	misc::vector<fx::Position>& result)
+	stl::vector<fx::Position>& result)
 {
 	misc::autocritical_section acs(m_criticalSection);
 
-    misc::string instrument = offer.GetInstrument();
-    misc::string acc_symbol = m_iniParams.GetAccountSymbol();
+    stl::string instrument = offer.GetInstrument();
+    stl::string acc_symbol = m_iniParams.GetAccountSymbol();
     double MMR = 0, pipCost = 0;
     int iBaseUnitSize = 0, ret = 0;
 
@@ -76,7 +76,7 @@ int MarketPlugin4backtest::OpenPosition(
             MMR = ts.GetMMR();
             iBaseUnitSize = ts.GetBaseUnitSize();
 
-            std::map<misc::string, double>::iterator it = 
+            std::map<stl::string, double>::iterator it = 
                 m_pipCostMap.find(offer.GetInstrument());
             if (it == m_pipCostMap.end())
             {
@@ -106,8 +106,8 @@ int MarketPlugin4backtest::OpenPosition(
 		1.0 / offer.GetPointSize());// rate2pip
 
 	fx::Position pos(
-		misc::from_value(m_orderID++),
-		misc::from_value(m_tradeID++),
+		stl::from_value(m_orderID++),
+		stl::from_value(m_tradeID++),
 		curr,
 		buy,
 		lots,	// K lots
@@ -122,15 +122,15 @@ int MarketPlugin4backtest::OpenPosition(
 	// Log open position action.
 	if (m_iniParams.GetEnableLogging())
 	{
-		misc::string msg("Open  ");
+		stl::string msg("Open  ");
 		msg += offer.GetTime().tostring();
 		for (size_t i = 0; i < result.size(); ++i)
 		{
 			const fx::Position& ipos = result[i];
 			msg += ipos.IsBuy() == true ? " B=" : " S=";
 			msg += ipos.IsBuy() == true ?
-				misc::from_value(offer.GetAsk(), 5) :
-				misc::from_value(offer.GetBid(), 5);
+				stl::from_value(offer.GetAsk(), 5) :
+				stl::from_value(offer.GetBid(), 5);
 			msg += "\n";
 		}
 		Log(msg);
@@ -142,11 +142,11 @@ int MarketPlugin4backtest::OpenPosition(
 int MarketPlugin4backtest::ClosePosition(
 	const fx::Offer& offer,
 	const fx::Position& pos,
-	misc::vector<fx::Position>& result)
+	stl::vector<fx::Position>& result)
 {
 	misc::autocritical_section acs(m_criticalSection);
 
-	misc::vector<fx::Position>::iterator it = m_posvec.begin();
+	stl::vector<fx::Position>::iterator it = m_posvec.begin();
 	for (; it != m_posvec.end(); ++it)
 	{
 		if (pos.GetTradeID() == it->GetTradeID())
@@ -167,7 +167,7 @@ int MarketPlugin4backtest::ClosePosition(
 	if (m_iniParams.GetEnableLogging())
 	{
 		double curPL = 0, curGPL = 0;
-		misc::string msg("Close ");
+		stl::string msg("Close ");
 		msg += offer.GetTime().tostring();
 		for (size_t i = 0; i < result.size(); ++i)
 		{
@@ -178,11 +178,11 @@ int MarketPlugin4backtest::ClosePosition(
 			
 			msg += ipos.IsBuy() == true ? " S=" : " B=";
 			msg += ipos.IsBuy() == true ?
-				misc::from_value(offer.GetBid(), 5) :
-				misc::from_value(offer.GetAsk(), 5);
+				stl::from_value(offer.GetBid(), 5) :
+				stl::from_value(offer.GetAsk(), 5);
 
-			msg += " PL="; msg += misc::from_value(curPL, 2);
-			msg += " GPL="; msg += misc::from_value(curGPL, 2);
+			msg += " PL="; msg += stl::from_value(curPL, 2);
+			msg += " GPL="; msg += stl::from_value(curGPL, 2);
 			msg += "\n";
 		}
 		Log(msg);
@@ -192,11 +192,11 @@ int MarketPlugin4backtest::ClosePosition(
 }
 
 int MarketPlugin4backtest::GetOHLCPrices(
-	const misc::string& instrument,
-	const misc::string& timeframe,
-	const misc::time& from,
-	const misc::time& to,
-	misc::vector<fx::OHLCPrice>& result)
+	const stl::string& instrument,
+	const stl::string& timeframe,
+	const sys::time& from,
+	const sys::time& to,
+	stl::vector<fx::OHLCPrice>& result)
 {
 	misc::autocritical_section acs(m_criticalSection);
 
@@ -210,7 +210,7 @@ int MarketPlugin4backtest::GetOHLCPrices(
 
 	if (ret != fxcm::ErrorCodes::ERR_SUCCESS)
 	{
-		misc::cout << __FUNCTION__ <<
+		stl::cout << __FUNCTION__ <<
 			": m_session->GetOHLCPrices returned error: " <<
 			fxcm::ErrorCodes::GetText((fxcm::ErrorCodes::ErrorId)ret).c_str()
 			<< std::endl;
@@ -219,7 +219,7 @@ int MarketPlugin4backtest::GetOHLCPrices(
 	return ret;
 }
 
-void MarketPlugin4backtest::Log(const misc::string& msg)
+void MarketPlugin4backtest::Log(const stl::string& msg)
 {
 	misc::autocritical_section acs(m_criticalSection);
 

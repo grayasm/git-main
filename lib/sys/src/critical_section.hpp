@@ -32,7 +32,7 @@
 
 
 
-namespace misc
+namespace sys
 {
 	/*
 	A critical section is that portion of the code that accesses a shared 

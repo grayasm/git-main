@@ -45,32 +45,32 @@ public:
 	int OpenPosition(	const fx::Offer& offer,
 						int lots,
 						bool buy,
-						misc::vector<fx::Position>& result);
+						stl::vector<fx::Position>& result);
 
 	int ClosePosition(	const fx::Offer& offer,
 						const fx::Position& pos,
-						misc::vector<fx::Position>& result);
+						stl::vector<fx::Position>& result);
 
-	int GetOHLCPrices(	const misc::string& instrument,
-						const misc::string& timeframe,
-						const misc::time& from,
-						const misc::time& to,
-						misc::vector<fx::OHLCPrice>& result);
+	int GetOHLCPrices(	const stl::string& instrument,
+						const stl::string& timeframe,
+						const sys::time& from,
+						const sys::time& to,
+						stl::vector<fx::OHLCPrice>& result);
 	// --- end of virtual table ---
 
 private:
-	void Log(const misc::string& msg);
+	void Log(const stl::string& msg);
 
 private:
 	fxcm::Session*					        m_session;
 	fxcm::IniParams					        m_iniParams;
-    misc::vector<fxcm::TradingSettings>     m_tsVec;
+    stl::vector<fxcm::TradingSettings>     m_tsVec;
     fxcm::PipCost                           m_pipCost;
-    std::map<misc::string, double>          m_pipCostMap;
+    std::map<stl::string, double>          m_pipCostMap;
 	misc::critical_section			        m_criticalSection;
 	int								        m_orderID;
 	int								        m_tradeID;
-	misc::vector<fx::Position>		        m_posvec;
+	stl::vector<fx::Position>		        m_posvec;
 };
 
 #endif // __MarketPlugin4backtest_hpp__

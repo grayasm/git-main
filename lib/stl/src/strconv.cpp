@@ -466,8 +466,8 @@ namespace misc
 
     void trim(stl::string& totrim, stl::char_t token/*=U(' ')*/)
     {
-        misc::trim_left(totrim, token);
-		misc::trim_right(totrim, token);
+        stl::trim_left(totrim, token);
+		stl::trim_right(totrim, token);
     }//trim
 
 

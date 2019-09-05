@@ -25,12 +25,12 @@
 #include "autoptr.hpp"
 #include "critical_section.hpp"
 
-namespace misc
+namespace sys
 {
 	class autocritical_section
 	{
 	public:
-		typedef misc::autoptr<autocritical_section> Ptr;
+		typedef stl::autoptr<autocritical_section> Ptr;
 
 	public:
 		autocritical_section(critical_section& cs);

@@ -34,7 +34,7 @@
 
 
 
-namespace misc
+namespace sys
 {
 	/*	Abstract base class for a thread.
 	 *	Derive own class from this and instantiate it with preferred constructor.
@@ -65,14 +65,14 @@ namespace misc
 		//! Thread is not running.
 		thread();
 		
-		//! Destroys a thread that is not running, otherwise throws misc::exception.
+		//! Destroys a thread that is not running, otherwise throws stl::exception.
 		virtual ~thread();
 
 		//! Called from the new thread.
 		virtual unsigned long run() = 0;
 
 		//! Starts a new thread and returns 0 if successful or otherwise throws
-		//! misc::exception. A joined thread can be resumed again.
+		//! stl::exception. A joined thread can be resumed again.
 		int resume();
 		
 		/*! Joins a finished thread and returns 0 or 1 if timeout.

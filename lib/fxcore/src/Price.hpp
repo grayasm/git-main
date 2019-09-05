@@ -38,7 +38,7 @@ namespace fx
 	class Price
 	{
 	public:
-		typedef misc::autoptr<Price> Ptr;
+		typedef stl::autoptr<Price> Ptr;
 
 		Price();
 		Price(double buy, double sell);

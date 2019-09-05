@@ -37,18 +37,18 @@ namespace fx
 		// Timeframe is time_t
 
 		ATR();
-		ATR(const misc::string& instrument, int period, Timeframe sec);
+		ATR(const stl::string& instrument, int period, Timeframe sec);
 		~ATR();
 		ATR(const ATR& tc);
 		ATR& operator=(const ATR& tc);
 
 		// --- virtual table ---
-		const misc::string& GetInstrument() const override;
+		const stl::string& GetInstrument() const override;
 		int GetPeriod() const override;
 		Timeframe GetTimeframe() const override;
 		bool IsValid() const override;
 		void Update(const fx::Offer& offer) override;
-		const misc::time& GetRefTime() const override;
+		const sys::time& GetRefTime() const override;
 		// --- end of virtual table ---
 
 		void GetValue(double& average) const;
@@ -57,7 +57,7 @@ namespace fx
 		void Init();
 
 	private:
-		misc::string		m_instrument;
+		stl::string		m_instrument;
 		int					m_period;
 		Timeframe			m_timeframe;
 		// ----------------------------

@@ -33,7 +33,7 @@ namespace fx
 	(
 		const char* instrument,			// 'EUR/USD'
 		const char* timeframe,			// m1 , H1 , ...
-		misc::time time,				// UTC
+		sys::time time,				// UTC
 		double BidOpen, double BidHigh, double BidLow, double BidClose,
 		double AskOpen, double AskHigh, double AskLow, double AskClose,
 		int volume
@@ -82,7 +82,7 @@ namespace fx
 	{
 	}
 
-	const misc::string& OHLCPrice::GetInstrument() const
+	const stl::string& OHLCPrice::GetInstrument() const
 	{
 		return m_instrument;
 	}
@@ -92,7 +92,7 @@ namespace fx
 		m_instrument = instrument;
 	}
 
-	const misc::string& OHLCPrice::GetTimeframe() const
+	const stl::string& OHLCPrice::GetTimeframe() const
 	{
 		return m_timeframe;
 	}
@@ -102,12 +102,12 @@ namespace fx
 		m_timeframe = timeframe;
 	}
 
-	const misc::time& OHLCPrice::GetTime() const
+	const sys::time& OHLCPrice::GetTime() const
 	{
 		return m_time;
 	}
 
-	void OHLCPrice::SetTime(const misc::time& val)
+	void OHLCPrice::SetTime(const sys::time& val)
 	{
 		m_time = val;
 	}

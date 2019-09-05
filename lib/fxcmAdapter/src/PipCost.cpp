@@ -63,25 +63,25 @@ namespace fxcm
 	}
 
 	double PipCost::CalcPipCost(
-		const misc::string& instrument,
-		const misc::string& acc_symbol,
+		const stl::string& instrument,
+		const stl::string& acc_symbol,
 		int iBaseUnitSize,
         const OffersMap& offers) const
 	{
 		// TODO: have to figure out how to calculate pip-cost for these ones
-		std::map<misc::string, double>::const_iterator ncIt =
+		std::map<stl::string, double>::const_iterator ncIt =
 			m_nonCalculable.find(instrument);
 
 		if(ncIt != m_nonCalculable.end())
 		{
 			double pipCost = (*ncIt).second;
-			misc::cout << "\npipCost[ " << instrument.c_str() << " ]= " << pipCost;
+			stl::cout << "\npipCost[ " << instrument.c_str() << " ]= " << pipCost;
 			return pipCost;
 		}
 
         OffersMap::const_iterator oit = offers.find(instrument);
         if (oit == offers.end())
-            throw misc::exception("PipCost cannot find the offer");
+            throw stl::exception("PipCost cannot find the offer");
         const fx::Offer& offer = oit->second;
 
 
@@ -89,7 +89,7 @@ namespace fxcm
 
 		misc::strtok tokenizer(instrument, "/");
 		if(tokenizer.count() != 2)
-			throw misc::exception("Cannot calculate pipCost.");
+			throw stl::exception("Cannot calculate pipCost.");
 		
 		// SITUATION 1
 		//bool acccur_sameas_quote = false;		// acc USD, EUR/USD
@@ -102,7 +102,7 @@ namespace fxcm
 		if(acc_symbol == tokenizer.tokens().back())
 		{
 			double pipCost = iBaseUnitSize * pointSize;
-			misc::cout << "\npipCost[ " << instrument.c_str() << " ]= " << pipCost;
+			stl::cout << "\npipCost[ " << instrument.c_str() << " ]= " << pipCost;
 			return pipCost;
 		}
 
@@ -120,7 +120,7 @@ namespace fxcm
 		{
 			double ask = offer.GetAsk();
 			double pipCost = iBaseUnitSize * pointSize / ask;
-			misc::cout << "\npipCost[ " << instrument.c_str() << " ]= " << pipCost;
+			stl::cout << "\npipCost[ " << instrument.c_str() << " ]= " << pipCost;
 			return pipCost;
 		}
 
@@ -145,11 +145,11 @@ namespace fxcm
 		//}
 
 		
-		misc::string acc_quote= tokenizer.tokens().back();
+		stl::string acc_quote= tokenizer.tokens().back();
 		acc_quote += "/";
 		acc_quote += acc_symbol;
 
-		misc::string acc_base = acc_symbol;
+		stl::string acc_base = acc_symbol;
 		acc_base += "/";
 		acc_base += tokenizer.tokens().back();
 
@@ -158,7 +158,7 @@ namespace fxcm
 		{
             double bid = oit->second.GetBid(); // bid
 			double pipCost = (double)iBaseUnitSize * pointSize * bid;
-			misc::cout << "\npipCost[ " << instrument.c_str() << " ]= " << pipCost;
+			stl::cout << "\npipCost[ " << instrument.c_str() << " ]= " << pipCost;
 			return pipCost;
 		}
 
@@ -167,11 +167,11 @@ namespace fxcm
 		{
             double ask = oit->second.GetAsk(); // ask
 			double pipCost = (double)iBaseUnitSize * pointSize / ask;
-			misc::cout << "\npipCost[ " << instrument.c_str() << " ]= " << pipCost;
+			stl::cout << "\npipCost[ " << instrument.c_str() << " ]= " << pipCost;
 			return pipCost;
 		}
 
-		throw misc::exception("Cannot calculate PipCost.");
+		throw stl::exception("Cannot calculate PipCost.");
 	}
 
 } // namespace

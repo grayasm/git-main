@@ -39,8 +39,8 @@ namespace fxcm
 	class OffersWriter
 	{
 	public:
-		typedef misc::autoptr<OffersWriter>		Ptr;
-		typedef misc::vector<fx::Offer>			OffersVec;
+		typedef stl::autoptr<OffersWriter>		Ptr;
+		typedef stl::vector<fx::Offer>			OffersVec;
 
 		// no copy
 		OffersWriter() = delete;
@@ -60,7 +60,7 @@ namespace fxcm
 		IniParams						m_iniParams;
 		OffersVec						m_offersVec;
 		bool							m_isEnabled;
-		misc::filename					m_writeFile;
+		sys::filename					m_writeFile;
 	};
 } // namespace
 

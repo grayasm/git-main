@@ -28,7 +28,7 @@ namespace fx
 		Init();
 	}
 
-	BAR::BAR(const misc::string& instrument, int period, Timeframe sec)
+	BAR::BAR(const stl::string& instrument, int period, Timeframe sec)
 	{
 		Init();
 
@@ -66,7 +66,7 @@ namespace fx
 		return *this;
 	}
 
-	const misc::string& BAR::GetInstrument() const
+	const stl::string& BAR::GetInstrument() const
 	{
 		return m_instrument;
 	}
@@ -90,32 +90,32 @@ namespace fx
 	void BAR::Update(const fx::Offer& offer)
 	{
 		if (m_instrument != offer.GetInstrument())
-			throw misc::exception("BAR offer is invalid");
+			throw stl::exception("BAR offer is invalid");
 
 		// begin at next timeframe normalized up to daily candle
 		if (m_reftime.totime_t() == 0)
 		{
 			m_reftime = offer.GetTime();
 
-			if (m_timeframe >= misc::time::minSEC)
+			if (m_timeframe >= sys::time::minSEC)
 				m_reftime -= m_reftime.sec_();
-			if (m_timeframe >= misc::time::hourSEC)
-				m_reftime -= (m_reftime.min_() * misc::time::minSEC);
-			if (m_timeframe >= misc::time::daySEC)
-				m_reftime -= (m_reftime.hour_() * misc::time::hourSEC);
+			if (m_timeframe >= sys::time::hourSEC)
+				m_reftime -= (m_reftime.min_() * sys::time::minSEC);
+			if (m_timeframe >= sys::time::daySEC)
+				m_reftime -= (m_reftime.hour_() * sys::time::hourSEC);
 
 			// if offer is inside the bar, then move to next timeframe
 			if (m_reftime != offer.GetTime())
 				m_reftime += m_timeframe;
 		}
 
-		const misc::time& currtime = offer.GetTime();
+		const sys::time& currtime = offer.GetTime();
 
 		// wait for the reference time to begin with
 		if (currtime < m_reftime)
 			return;
 
-		misc::time nextt = m_reftime + m_timeframe;
+		sys::time nextt = m_reftime + m_timeframe;
 		if (currtime < nextt)
 		{
 			double bid = offer.GetBid();
@@ -179,7 +179,7 @@ namespace fx
 		}
 	}
 
-	const misc::time& BAR::GetRefTime() const
+	const sys::time& BAR::GetRefTime() const
 	{
 		return m_reftime;
 	}
@@ -189,8 +189,8 @@ namespace fx
         if (m_reftime.totime_t() == 0)  // not initialized
             return false;
 
-		const misc::time& currtime = offer.GetTime();    
-		misc::time nextt = m_reftime + m_timeframe;
+		const sys::time& currtime = offer.GetTime();    
+		sys::time nextt = m_reftime + m_timeframe;
 		return (currtime >= nextt);
 	}
 
@@ -210,7 +210,7 @@ namespace fx
 		m_period = -1;
 		m_timeframe = 0;
 		// m_reftime - default
-		m_lastOHLC = fx::OHLCPrice("", "", misc::time(),
+		m_lastOHLC = fx::OHLCPrice("", "", sys::time(),
 									0, 0, 0, 0,
 									0, 0, 0, 0,
 									0);

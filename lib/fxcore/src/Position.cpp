@@ -39,8 +39,8 @@ namespace fx
 	}
 
 	Position::Position(
-		const misc::string& orderID,
-		const misc::string& tradeID,
+		const stl::string& orderID,
+		const stl::string& tradeID,
 		const Currency& currency,
 		bool buy,
 		double amount,
@@ -88,12 +88,12 @@ namespace fx
 		return *this;
 	}
 
-	const misc::string& Position::GetOrderID() const
+	const stl::string& Position::GetOrderID() const
 	{
 		return m_orderID;
 	}
 
-	const misc::string& Position::GetTradeID() const
+	const stl::string& Position::GetTradeID() const
 	{
 		return m_tradeID;
 	}
@@ -121,7 +121,7 @@ namespace fx
 	void Position::Close(const Price& close, time_t tclose)
 	{
 		if(!m_isOpen)
-			throw misc::exception("Position is already closed.");
+			throw stl::exception("Position is already closed.");
 
 		m_close = close;
 		m_isOpen = false;
@@ -143,7 +143,7 @@ namespace fx
 	double Position::GetPL(const Price& rate) const
 	{
 		if(!m_isOpen)
-			throw misc::exception("Position is already closed.");
+			throw stl::exception("Position is already closed.");
 		
 		const Price& p_Open  = m_currency.GetPrice();
 		const Price& p_Close = rate;
@@ -160,7 +160,7 @@ namespace fx
 	double Position::GetGPL(const Price& rate) const
 	{
 		if(!m_isOpen)
-			throw misc::exception("Position is already closed.");
+			throw stl::exception("Position is already closed.");
 
 		double pips = GetPL(rate);
 		double profit = m_amount * pips * m_currency.GetPipCost();
@@ -170,7 +170,7 @@ namespace fx
 	double Position::GetPL() const
 	{
 		if(m_isOpen)
-			throw misc::exception("Position must be closed.");
+			throw stl::exception("Position must be closed.");
 
 		const Price& p_Open  = m_currency.GetPrice();	
 
@@ -186,7 +186,7 @@ namespace fx
 	double Position::GetGPL() const
 	{
 		if(m_isOpen)
-			throw misc::exception("Position must be closed.");
+			throw stl::exception("Position must be closed.");
 
 		double pips = GetPL();
 		double profit = m_amount * pips * m_currency.GetPipCost();
@@ -196,7 +196,7 @@ namespace fx
 	const Price& Position::GetClose() const
 	{
 		if(m_isOpen)
-			throw misc::exception("Position must be closed.");
+			throw stl::exception("Position must be closed.");
 
 		return m_close;
 	}
@@ -234,7 +234,7 @@ namespace fx
 	Price Position::GetQuotes(double pips) const
 	{
 		if(!m_isOpen)
-			throw misc::exception("Position is already closed.");
+			throw stl::exception("Position is already closed.");
 
 		double s = (m_buy == true ? 1.0f : -1.0f);
 		double rate2pip = m_currency.GetRate2Pip();
@@ -249,24 +249,24 @@ namespace fx
 		return Price(q1, q2);
 	}
 
-	misc::string Position::ToString() const
+	stl::string Position::ToString() const
 	{
-		misc::string msg;
+		stl::string msg;
 		msg += "O: "; msg += m_orderID; msg += "; ";
 		msg += "T: "; msg += m_tradeID; msg += "; ";
 		msg += m_isOpen == true ? "Open  ; " : "Closed; ";
 		msg += m_currency.GetSymbol(); msg += "; ";
 		msg += m_buy == true ? "B; " : "S; ";
-		msg += "L: "; msg += misc::from_value(m_amount, 0); msg += "k; ";
+		msg += "L: "; msg += stl::from_value(m_amount, 0); msg += "k; ";
 		msg += "MO: ";
 		short digits = (short)math::digits(m_currency.GetRate2Pip());
 		const fx::Price& openPrice = m_currency.GetPrice();
-		msg += (openPrice.GetBuy()  == FLT_MAX ? "0" : misc::from_value(openPrice.GetBuy() , digits)); msg += "-";
-		msg += (openPrice.GetSell() == FLT_MAX ? "0" : misc::from_value(openPrice.GetSell(), digits)); msg += "; ";
+		msg += (openPrice.GetBuy()  == FLT_MAX ? "0" : stl::from_value(openPrice.GetBuy() , digits)); msg += "-";
+		msg += (openPrice.GetSell() == FLT_MAX ? "0" : stl::from_value(openPrice.GetSell(), digits)); msg += "; ";
 		
 		msg += "MC: ";
-		msg += (m_close.GetBuy()  == FLT_MAX ? "0" : misc::from_value(m_close.GetBuy(),  digits)); msg += "-";
-		msg += (m_close.GetSell() == FLT_MAX ? "0" : misc::from_value(m_close.GetSell(), digits)); msg += "; ";
+		msg += (m_close.GetBuy()  == FLT_MAX ? "0" : stl::from_value(m_close.GetBuy(),  digits)); msg += "-";
+		msg += (m_close.GetSell() == FLT_MAX ? "0" : stl::from_value(m_close.GetSell(), digits)); msg += "; ";
 
 		return msg;
 	}

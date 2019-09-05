@@ -52,13 +52,13 @@ void GetHistoryPrices()
 	int toff = 0;
 
 	if (iniParams->GetTimeframe() == "m1")
-		toff = misc::time::hourSEC; // 60mins
+		toff = sys::time::hourSEC; // 60mins
 	else if (iniParams->GetTimeframe() == "H1")
-		toff = misc::time::hourSEC * 60; // 60hours
+		toff = sys::time::hourSEC * 60; // 60hours
 	else
 		return; // error
 	
-	misc::filename historyfile(iniParams->GetHistoryFile());
+	sys::filename historyfile(iniParams->GetHistoryFile());
 	if (!historyfile.access(F_OK))
 		return; // error
 	FILE* pf = fopen(historyfile.get_path().c_str(), "a");
@@ -67,9 +67,9 @@ void GetHistoryPrices()
 	
 	
 	// m.d.Y H:M:S
-	misc::time tFrom(iniParams->GetDateFrom());
-	misc::time tTo(iniParams->GetDateTo());	
-	misc::time tEnd = tFrom;
+	sys::time tFrom(iniParams->GetDateFrom());
+	sys::time tTo(iniParams->GetDateTo());	
+	sys::time tEnd = tFrom;
 	tEnd += toff;
 
 
@@ -77,7 +77,7 @@ void GetHistoryPrices()
 	if (!session.Login())
 		return; // error
 
-	misc::vector<fx::OHLCPrice> historyPricesVec;
+	stl::vector<fx::OHLCPrice> historyPricesVec;
 	for (; tFrom < tTo; tFrom += toff, tEnd += toff)
 	{
 		if (tEnd > tTo)
@@ -85,11 +85,11 @@ void GetHistoryPrices()
 
 		/*	Trading hours are: 5:15 pm EST SUN -> 5:00 pm EST FRI
 		*/
-		if (tFrom.wday() == misc::time::SAT)
+		if (tFrom.wday() == sys::time::SAT)
 			continue;
-		else if (tFrom.wday() == misc::time::FRI && tFrom.hour_() >= 22)
+		else if (tFrom.wday() == sys::time::FRI && tFrom.hour_() >= 22)
 			continue;
-		else if (tFrom.wday() == misc::time::SUN && tFrom.hour_() <  22)
+		else if (tFrom.wday() == sys::time::SUN && tFrom.hour_() <  22)
 			continue;
 
 
@@ -146,7 +146,7 @@ void LoadHistoryPrices()
 	if (iniParams->GetHistoryFile().empty())
 		return;
 
-	misc::filename historyfile(iniParams->GetHistoryFile());
+	sys::filename historyfile(iniParams->GetHistoryFile());
 	if (!historyfile.access(F_OK))
 		return; // error
 
@@ -154,16 +154,16 @@ void LoadHistoryPrices()
 	if (pf == NULL)
 		return; // error
 	
-	misc::vector<fx::OHLCPrice> historyPricesVec;
+	stl::vector<fx::OHLCPrice> historyPricesVec;
 	fx::OHLCPrice* hp = new fx::OHLCPrice(
 		"", 
 		"",
-		misc::time(),
+		sys::time(),
 		0, 0, 0, 0,
 		0, 0, 0, 0,
 		0);
 
-	misc::string fline;
+	stl::string fline;
 	int c;
 	while ((c = fgetc(pf)) != EOF)
 	{
@@ -172,7 +172,7 @@ void LoadHistoryPrices()
 			char* pch;
 			char str[1000];
 			strcpy(str, fline.c_str());
-			misc::string s1;
+			stl::string s1;
 			int i = 0;
 
 			pch = strtok(str, ",=");
@@ -181,8 +181,8 @@ void LoadHistoryPrices()
 				i++;
 
 				if (i % 2 != 0) { // One of: {I T BO BH BL BC AO AH AL AC V}
-					s1 = misc::string(pch);
-					misc::trim(s1);
+					s1 = stl::string(pch);
+					stl::trim(s1);
 				}
 				else if (s1 == "I") {
 					hp->SetInstrument(pch);
@@ -195,28 +195,28 @@ void LoadHistoryPrices()
 					sscanf(pch, "%d-%3s-%d %d:%d:%d",
 						&year, mon, &day, &hour, &min, &sec);
 
-					misc::time::Month tmon;
-					if (strcmp(mon, "JAN") == 0) tmon = misc::time::JAN;
-					else if (strcmp(mon, "FEB") == 0) tmon = misc::time::FEB;
-					else if (strcmp(mon, "MAR") == 0) tmon = misc::time::MAR;
-					else if (strcmp(mon, "APR") == 0) tmon = misc::time::APR;
-					else if (strcmp(mon, "MAY") == 0) tmon = misc::time::MAY;
-					else if (strcmp(mon, "JUN") == 0) tmon = misc::time::JUN;
-					else if (strcmp(mon, "JUL") == 0) tmon = misc::time::JUL;
-					else if (strcmp(mon, "AUG") == 0) tmon = misc::time::AUG;
-					else if (strcmp(mon, "SEP") == 0) tmon = misc::time::SEP;
-					else if (strcmp(mon, "OCT") == 0) tmon = misc::time::OCT;
-					else if (strcmp(mon, "NOV") == 0) tmon = misc::time::NOV;
-					else if (strcmp(mon, "DEC") == 0) tmon = misc::time::DEC;
+					sys::time::Month tmon;
+					if (strcmp(mon, "JAN") == 0) tmon = sys::time::JAN;
+					else if (strcmp(mon, "FEB") == 0) tmon = sys::time::FEB;
+					else if (strcmp(mon, "MAR") == 0) tmon = sys::time::MAR;
+					else if (strcmp(mon, "APR") == 0) tmon = sys::time::APR;
+					else if (strcmp(mon, "MAY") == 0) tmon = sys::time::MAY;
+					else if (strcmp(mon, "JUN") == 0) tmon = sys::time::JUN;
+					else if (strcmp(mon, "JUL") == 0) tmon = sys::time::JUL;
+					else if (strcmp(mon, "AUG") == 0) tmon = sys::time::AUG;
+					else if (strcmp(mon, "SEP") == 0) tmon = sys::time::SEP;
+					else if (strcmp(mon, "OCT") == 0) tmon = sys::time::OCT;
+					else if (strcmp(mon, "NOV") == 0) tmon = sys::time::NOV;
+					else if (strcmp(mon, "DEC") == 0) tmon = sys::time::DEC;
 					else
-						throw misc::exception("Cannot convert the month from history file");
+						throw stl::exception("Cannot convert the month from history file");
 
-					misc::time hptime(year, tmon, day, hour, min, sec);
+					sys::time hptime(year, tmon, day, hour, min, sec);
 					hp->SetTime(hptime);
 				}
 				else {
 					double val;
-					misc::to_value(pch, val);
+					stl::to_value(pch, val);
 
 					if (s1 == "BO") hp->SetBidOpen(val);
 					else if (s1 == "BH") hp->SetBidHigh(val);
@@ -228,7 +228,7 @@ void LoadHistoryPrices()
 					else if (s1 == "AC") hp->SetAskClose(val);
 					else if (s1 == "V") hp->SetVolume((int)val);
 					else
-						throw misc::exception("Cannot convert ID from history file");
+						throw stl::exception("Cannot convert ID from history file");
 				}
 
 				printf("%s\n", pch);

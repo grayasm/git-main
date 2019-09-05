@@ -28,7 +28,7 @@
 
 
 
-namespace misc
+namespace stl
 {
 
 #ifdef UNICODE
@@ -118,15 +118,15 @@ namespace misc
 
 
 #ifdef UNICODE
-    static misc::istream& cin  = std::wcin ;
-    static misc::ostream& cout = std::wcout ;
-    static misc::ostream& cerr = std::wcerr ;
-    static misc::ostream& clog = std::wclog ;
+    static stl::istream& cin  = std::wcin ;
+    static stl::ostream& cout = std::wcout ;
+    static stl::ostream& cerr = std::wcerr ;
+    static stl::ostream& clog = std::wclog ;
 #else
-    static misc::istream& cin  = std::cin ;
-    static misc::ostream& cout = std::cout ;
-    static misc::ostream& cerr = std::cerr ;
-    static misc::ostream& clog = std::clog ;
+    static stl::istream& cin  = std::cin ;
+    static stl::ostream& cout = std::cout ;
+    static stl::ostream& cerr = std::cerr ;
+    static stl::ostream& clog = std::clog ;
 #endif
 
 

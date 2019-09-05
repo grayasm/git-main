@@ -44,7 +44,7 @@ public:
         if(m_print_time)
         {
             double t0 = m_clck.end_clock();
-            misc::cout << m_msg << " time: " << std::fixed << t0 << " sec";
+            stl::cout << m_msg << " time: " << std::fixed << t0 << " sec";
         }
     }
 private:

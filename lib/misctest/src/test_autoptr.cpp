@@ -114,7 +114,7 @@ public:
 //child assignament
 class MyClass {
 public:
-    typedef misc::autoptr<MyClass> Ptr;
+    typedef stl::autoptr<MyClass> Ptr;
     MyClass(int val)
     {
         m_child=NULL;
@@ -181,17 +181,17 @@ void test_autoptr::tearDown()
 //##########################BEGIN TEST SUITE######################################
 void test_autoptr::test_assignment_with_different_type()
 {
-	misc::cout << "\n\n\t*******************************************************";
-	misc::cout <<   "\n\t* TESTING HEADER: autoptr.hpp                         *";
-	misc::cout <<   "\n\t*******************************************************";	
+	stl::cout << "\n\n\t*******************************************************";
+	stl::cout <<   "\n\t* TESTING HEADER: autoptr.hpp                         *";
+	stl::cout <<   "\n\t*******************************************************";	
 	
 	{
 		const char* msg = "\n\n\tautoptr<C2>=new C1()";
 		time_printer tp(msg, m_print_time);
 
 
-		misc::autoptr<C2> pc2 = new C1();
-		misc::autoptr<C1> pc1 = pc2;
+		stl::autoptr<C2> pc2 = new C1();
+		stl::autoptr<C1> pc1 = pc2;
 		int _91a = pc1->f();
 		int _91b = pc2->f();
 
@@ -207,8 +207,8 @@ void test_autoptr::test_assignment_with_different_type1()
 		time_printer tp(msg, m_print_time);
 
 
-		misc::autoptr<base<long> > ap = NULL ;
-		misc::autoptr<deriv> dv=NULL ;
+		stl::autoptr<base<long> > ap = NULL ;
+		stl::autoptr<deriv> dv=NULL ;
 		long data=10;
 
 		Tderiv<long>* tderiv = new Tderiv<long>(data);
@@ -230,7 +230,7 @@ void test_autoptr::test_assignment_with_different_type3()
 
 
 		//deriv goes -: -100 -> -4
-		typedef std::vector<misc::autoptr<base<long> > > lblist ;
+		typedef std::vector<stl::autoptr<base<long> > > lblist ;
 		lblist m_list ;
 		for(long i=100L; i>0; i-=8)
 		{
@@ -242,7 +242,7 @@ void test_autoptr::test_assignment_with_different_type3()
 
 		for(long i=100L; cbeg != cend; i-=8, ++cbeg)
 		{
-			const misc::autoptr<base<long> >& obj = *cbeg;
+			const stl::autoptr<base<long> >& obj = *cbeg;
 			const long& lval = obj->getdata();
 			CPPUNIT_ASSERT(lval == -i);
 		}//for
@@ -250,8 +250,8 @@ void test_autoptr::test_assignment_with_different_type3()
 }
 
 
-bool std_min_element_pred(const misc::autoptr<base<long> >& left,
-                          const misc::autoptr<base<long> >& right)
+bool std_min_element_pred(const stl::autoptr<base<long> >& left,
+                          const stl::autoptr<base<long> >& right)
 {
     return (*left) < (*right);
 }
@@ -266,7 +266,7 @@ void test_autoptr::test_operator_less()
 
 
 		//deriv goes negative: -100 -> -4
-		typedef std::vector<misc::autoptr<base<long> > > lblist ;
+		typedef std::vector<stl::autoptr<base<long> > > lblist ;
 		lblist m_list ;
 		for(long i=100L; i>0; i-=8)
 		{
@@ -291,7 +291,7 @@ void test_autoptr::test_operator_great()
 
 
 		//deriv goes -: -100 -> -4
-		typedef std::vector<misc::autoptr<base<long> > > lblist ;
+		typedef std::vector<stl::autoptr<base<long> > > lblist ;
 		lblist m_list ;
 		for(long i=100L; i>0; i-=8)
 		{
@@ -306,8 +306,8 @@ void test_autoptr::test_operator_great()
 }
 
 
-bool std_sort_pred(const misc::autoptr<base<long> >& left,
-                   const misc::autoptr<base<long> >& right)
+bool std_sort_pred(const stl::autoptr<base<long> >& left,
+                   const stl::autoptr<base<long> >& right)
 {
     return (*left) < (*right);
 }
@@ -323,7 +323,7 @@ void test_autoptr::test_sort()
 
 
 		//deriv goes -: -100 -> -4
-		typedef std::vector<misc::autoptr<base<long> > > lblist ;
+		typedef std::vector<stl::autoptr<base<long> > > lblist ;
 		lblist m_list ;
 		for(long i=100L; i>0; i-=8)
 		{
@@ -347,7 +347,7 @@ void test_autoptr::test_derived_operator_less()
 		time_printer tp(msg, m_print_time);
 
 
-		typedef std::vector<misc::autoptr<base<long> > > lblist ;
+		typedef std::vector<stl::autoptr<base<long> > > lblist ;
 		lblist m_tdlist;
 		for(long i=20; i>=0; --i)
 		{
@@ -367,7 +367,7 @@ void test_autoptr::test_derived_operator_great()
 		time_printer tp(msg, m_print_time);
 
 
-		typedef std::vector<misc::autoptr<base<long> > > lblist ;
+		typedef std::vector<stl::autoptr<base<long> > > lblist ;
 		lblist m_tdlist;
 		for(long i=20; i>=0; --i)
 		{

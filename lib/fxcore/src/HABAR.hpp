@@ -29,21 +29,21 @@ namespace fx
 	class HABAR : public BARB
 	{
 	public:
-		typedef misc::autoptr<HABAR>	Ptr;
+		typedef stl::autoptr<HABAR>	Ptr;
 
 		HABAR();
-		HABAR(const misc::string& instrument, int period, Timeframe sec);
+		HABAR(const stl::string& instrument, int period, Timeframe sec);
 		~HABAR();
 		HABAR(const HABAR& tc);
 		HABAR& operator=(const HABAR& tc);
 
 		// --- IND virtual table ---
-		const misc::string& GetInstrument() const override;
+		const stl::string& GetInstrument() const override;
 		int GetPeriod() const override;
 		Timeframe GetTimeframe() const override;
 		bool IsValid() const override;
 		void Update(const fx::Offer& offer) override;
-		const misc::time& GetRefTime() const override;
+		const sys::time& GetRefTime() const override;
 		// --- end of IND virtual table ---
 
 		// --- BARB virtual table ---

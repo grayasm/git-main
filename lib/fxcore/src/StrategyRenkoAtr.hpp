@@ -36,11 +36,11 @@ namespace fx
 	class StrategyRenkoAtr
 	{
 	public:
-		typedef misc::autoptr<StrategyRenkoAtr> Ptr;
+		typedef stl::autoptr<StrategyRenkoAtr> Ptr;
 
 		StrategyRenkoAtr(
 			fx::MarketPlugin* plugin,
-			const misc::string& instrument,
+			const stl::string& instrument,
 			double renkoMin,
 			int openHour,
 			int closeHour);
@@ -61,7 +61,7 @@ namespace fx
 
 	private:
 		fx::MarketPlugin*		m_plugin;
-		misc::string			m_instrument;
+		stl::string			m_instrument;
 		double					m_renkoMin;	// ex: PL=15 
 		fx::ATR					m_atr14;
 		fx::SMA					m_sma7;

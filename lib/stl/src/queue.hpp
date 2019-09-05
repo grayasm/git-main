@@ -25,10 +25,10 @@
 #include "deque.hpp"
 
 
-namespace misc
+namespace stl
 {
 	// FIFO queue implemented with a container
-	template<typename T, typename container = misc::deque<T> >
+	template<typename T, typename container = stl::deque<T> >
     class queue
     {
     public:
@@ -141,8 +141,8 @@ namespace misc
 	//########################################################################
 	template<
 		typename T, 
-		typename container = misc::vector<T>,
-		typename compare = misc::less<typename container::value_type> 
+		typename container = stl::vector<T>,
+		typename compare = stl::less<typename container::value_type> 
 	>
 	class priority_queue
 	{
@@ -166,7 +166,7 @@ namespace misc
 			: m_cont(cont)
 			, m_comp(cmp)
 		{
-			misc::make_heap(m_cont.begin(), m_cont.end(), m_comp);
+			stl::make_heap(m_cont.begin(), m_cont.end(), m_comp);
 		}
 
 		template<class InputIterator>
@@ -179,7 +179,7 @@ namespace misc
 			, m_comp(cmp)
 		{
 			m_cont.insert(m_cont.end(), first, last);
-			misc::make_heap(m_cont.begin(), m_cont.end(), m_comp);
+			stl::make_heap(m_cont.begin(), m_cont.end(), m_comp);
 		}
 
 		bool empty() const
@@ -200,12 +200,12 @@ namespace misc
 		void push(const value_type& val)
 		{
 			m_cont.push_back(val);
-			misc::push_heap(m_cont.begin(), m_cont.end(), m_comp);
+			stl::push_heap(m_cont.begin(), m_cont.end(), m_comp);
 		}
 
 		void pop() 
 		{
-			misc::pop_heap(m_cont.begin(), m_cont.end(), m_comp);
+			stl::pop_heap(m_cont.begin(), m_cont.end(), m_comp);
 			m_cont.pop_back();
 		}
 	};  // priority_queue

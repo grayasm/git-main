@@ -24,7 +24,7 @@
 #include <limits.h>
 
 
-namespace misc
+namespace sys
 {
 	time::time()
 	{
@@ -57,7 +57,7 @@ namespace misc
 	{
 		if( year < 1970 || mon < JAN || mon > DEC ||
 			day < 1 || hour < 0 || min < 0 || sec < 0 )
-			throw misc::exception("time is invalid");
+			throw stl::exception("time is invalid");
 
 		struct tm initm;		
 		initm.tm_year = year - 1900;
@@ -81,7 +81,7 @@ namespace misc
 	{
 		if(year < 1900 || mon < 0 || mon> 11 ||
 			day < 1 || hour < 0 || min < 0 || sec < 0)
-			throw misc::exception("time is invalid");
+			throw stl::exception("time is invalid");
 
 		struct tm initm;
 		initm.tm_year = year - 1900;
@@ -95,7 +95,7 @@ namespace misc
 	}
 
 	/*	UTC string format: "m.d.Y H:M:S" */
-	time::time(const misc::string& str)
+	time::time(const stl::string& str)
 	{
 		int mon, day, year, hour, min, sec;
 		mon = day = year = hour = min = sec = -1;
@@ -105,7 +105,7 @@ namespace misc
 
 		if (year < 1900 || mon < 1 || mon > 12 ||
 			day < 1 || hour < 0 || min < 0 || sec < 0)
-			throw misc::exception("time is invalid");
+			throw stl::exception("time is invalid");
 
 		struct tm initm;
 		initm.tm_year = year - 1900;
@@ -142,7 +142,7 @@ namespace misc
 		double diff = difftime(m_t, beg.m_t);
 
 		if (diff < 0)
-			throw misc::exception("time is invalid");
+			throw stl::exception("time is invalid");
 
 		time ret((time_t)diff);
 		return ret;
@@ -154,7 +154,7 @@ namespace misc
 		double diff = difftime(off.m_t, orig.m_t);
 
 		if (diff < 0)
-			throw misc::exception("time is invalid");
+			throw stl::exception("time is invalid");
 
 		time ret(m_t + (time_t)diff);
 		return ret;
@@ -208,44 +208,44 @@ namespace misc
 		init( newt );
 	}
 
-	misc::string time::tostring() const
+	stl::string time::tostring() const
 	{
 		char  smon[12][4]={ "JAN","FEB","MAR","APR","MAY","JUN",
 							"JUL","AUG","SEP","OCT","NOV","DEC"};
-		misc::string stime;
-		stime += misc::from_value( m_tm.tm_year + 1900 );
+		stl::string stime;
+		stime += stl::from_value( m_tm.tm_year + 1900 );
 		stime += U("-");
 		stime += smon[m_tm.tm_mon];
 		stime += U("-");
-		stime += misc::from_value( m_tm.tm_mday );
+		stime += stl::from_value( m_tm.tm_mday );
 		stime += U(" ");
-		stime += misc::from_value( m_tm.tm_hour );
+		stime += stl::from_value( m_tm.tm_hour );
 		stime += U(":");
-		stime += misc::from_value( m_tm.tm_min );
+		stime += stl::from_value( m_tm.tm_min );
 		stime += U(":");
-		stime += misc::from_value( m_tm.tm_sec );
+		stime += stl::from_value( m_tm.tm_sec );
 		return stime;
 	}
 	
-	misc::string time::tolocaltime() const
+	stl::string time::tolocaltime() const
 	{
 		char  smon[12][4]={ "JAN","FEB","MAR","APR","MAY","JUN",
 							"JUL","AUG","SEP","OCT","NOV","DEC"};
 		
 		struct tm loctm = *localtime(&m_t);
 		
-		misc::string stime;
-		stime += misc::from_value( loctm.tm_year + 1900 );
+		stl::string stime;
+		stime += stl::from_value( loctm.tm_year + 1900 );
 		stime += U("-");
 		stime += smon[loctm.tm_mon];
 		stime += U("-");
-		stime += misc::from_value( loctm.tm_mday );
+		stime += stl::from_value( loctm.tm_mday );
 		stime += U(" ");
-		stime += misc::from_value( loctm.tm_hour );
+		stime += stl::from_value( loctm.tm_hour );
 		stime += U(":");
-		stime += misc::from_value( loctm.tm_min );
+		stime += stl::from_value( loctm.tm_min );
 		stime += U(":");
-		stime += misc::from_value( loctm.tm_sec );
+		stime += stl::from_value( loctm.tm_sec );
 		return stime;		
 	}
 
@@ -343,14 +343,14 @@ namespace misc
 	int time::get_yday(int day, enum Month mon, int year) const
 	{
 		if(day < 1 || mon < JAN || mon > DEC || year < 1900)
-			throw misc::exception("time is invalid");
+			throw stl::exception("time is invalid");
 		
 		int leap = yisleap(year);
 		int month = (mon - JAN);
 		
 		int dcheck[12] = {31,28 + leap,31,30,31,30,31,31,30,31,30,31};
 		if(day > dcheck[month])
-			throw misc::exception("time is invalid");
+			throw stl::exception("time is invalid");
 		
 		static const int days[2][12] = {
 			{0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334},

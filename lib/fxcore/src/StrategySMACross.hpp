@@ -31,11 +31,11 @@ namespace fx
 	class StrategySMACross
 	{
 	public:
-		typedef misc::autoptr<StrategySMACross> Ptr;
+		typedef stl::autoptr<StrategySMACross> Ptr;
 
 		StrategySMACross(
 			fx::MarketPlugin* plugin,
-			const misc::string& instrument,
+			const stl::string& instrument,
 			const fx::SMA& sma1,
 			const fx::SMA& sma2);
 
@@ -55,7 +55,7 @@ namespace fx
 
 	private:
 		fx::MarketPlugin*			m_plugin;
-		misc::string				m_instrument;
+		stl::string				m_instrument;
 		fx::SMA						m_sma1;
 		fx::SMA						m_sma2;
 		/// -------------------------
