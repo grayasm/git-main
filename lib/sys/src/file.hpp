@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2009 Mihai Vasilian
+  Copyright (C) 2019 Mihai Vasilian
 
   This program is free software; you can redistribute it and/or modify it
   under the terms of the GNU General Public License as published by the
@@ -17,10 +17,17 @@
   contact: grayasm@gmail.com
 */
 
-#ifndef __findfile_hpp__
-#define __filename_hpp__
+#ifndef __file_hpp__
+#define __file_hpp__
+
+namespace sys
+{
+    class file
+    {
+    public:
+        
+    }; // class
+}
 
 
-
-
-#endif//__filename_hpp__
+#endif//__file_hpp__

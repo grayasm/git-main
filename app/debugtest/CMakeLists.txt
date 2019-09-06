@@ -7,4 +7,4 @@ add_executable(debugtest ${debugtest_SRC})
 target_include_directories(debugtest PRIVATE "src")
 
 # Linking
-target_link_libraries(debugtest PRIVATE stl)
+target_link_libraries(debugtest PRIVATE stl sys misc)

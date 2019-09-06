@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2009 Mihai Vasilian
+  Copyright (C) 2019 Mihai Vasilian
 
   This program is free software; you can redistribute it and/or modify it
   under the terms of the GNU General Public License as published by the
@@ -17,3 +17,7 @@
   contact: grayasm@gmail.com
 */
 
+namespace sys
+{
+    
+} // namespace

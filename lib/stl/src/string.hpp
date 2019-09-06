@@ -70,7 +70,7 @@ namespace stl
 #endif
 
 
-#ifdef _WIN32
+#if defined(_WIN32) && _MSC_VER < 1910
 #   ifdef _UNICODE
 #      define snwprintf _snwprintf
 #   else
