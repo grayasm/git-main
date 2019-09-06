@@ -23,6 +23,7 @@ contact: grayasm@gmail.com
 
 
 #include <vector>
+#include <string>
 #include <ForexConnect.h>
 #include "critical_section.hpp"
 #include "autoptr.hpp"

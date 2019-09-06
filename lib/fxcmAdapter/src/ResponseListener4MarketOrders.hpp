@@ -23,6 +23,7 @@
 #define __ResponseListener4MarketOrders_hpp__
 
 #include <stddef.h>
+#include <string>
 #include <ForexConnect.h>
 #include "string.hpp"
 #include "event.hpp"

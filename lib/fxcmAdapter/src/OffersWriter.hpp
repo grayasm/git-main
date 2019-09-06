@@ -24,6 +24,7 @@
 
 #include <stddef.h>
 #include <map>
+#include <string>
 #include <ForexConnect.h>
 #include "critical_section.hpp"
 #include "autoptr.hpp"

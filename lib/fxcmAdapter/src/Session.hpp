@@ -23,6 +23,7 @@
 #define __Session_hpp__
 
 #include <stddef.h>
+#include <string>
 #include <ForexConnect.h>
 #include <vector.hpp>
 

@@ -22,6 +22,7 @@ contact: grayasm@gmail.com
 #define __Utils_hpp__
 
 #include <stddef.h>
+#include <string>
 #include <ForexConnect.h>
 #include "time.hpp"
 

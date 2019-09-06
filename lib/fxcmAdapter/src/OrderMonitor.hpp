@@ -22,6 +22,7 @@
 #define __OrderMonitor_hpp__
 
 #include <stddef.h>
+#include <string>
 #include <ForexConnect.h>
 #include "autoptr.hpp"
 #include "vector.hpp"

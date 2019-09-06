@@ -21,17 +21,20 @@
 #include "unistd.hpp"
 #include "stream.hpp"
 #include "math.hpp"
+#include "time.hpp"
 
 #include "LoginParams.hpp"
 #include "IniParams.hpp"
 #include "Session.hpp"
 #include "Offer.hpp"
+#include "Price.hpp"
+#include "Position.hpp"
+#include "Transaction.hpp"
 #include "ErrorCodes.hpp"
-#include "time.hpp"
+#include "StrategySMACross.hpp"
+#include "MarketPlugin4backtest.hpp"
 #include "HistoryPricesReader.hpp"
 #include "HistdatacomReader.hpp"
-#include <list>
-#include "Price.hpp"
 #include "SMA.hpp"
 #include "EMA.hpp"
 #include "ATR.hpp"
@@ -39,8 +42,7 @@
 #include "BAR.hpp"
 #include "HABAR.hpp"
 #include "LWMA.hpp"
-#include "Position.hpp"
-#include "Transaction.hpp"
+#include <list>
 
 
 static void OpenPosition(const fx::Offer& offer, int lots, bool buy, fx::Position& result);
@@ -598,13 +600,13 @@ int test9()
 
 int test10()
 {
-    fx::Offer offer("0", "USD/JPY", 3, 0.01, sys::time(), 0, 0, 0, true);
+    fx::Offer offer("0", "EUR/USD", 3, 0.01, sys::time(), 0, 0, 0, true);
     HistdatacomReader oreader(offer, 2017);
     
     time_t timeframe = sys::time::daySEC;
-    fx::BAR  bar("USD/JPY", 14, timeframe);
-    fx::HABAR habar("USD/JPY", 14, timeframe);
-    fx::LWMA lwma("USD/JPY", 14, timeframe, fx::SMA::BT_HABAR, fx::SMA::PRICE_CLOSE);
+    fx::BAR  bar("EUR/USD", 14, timeframe);
+    fx::HABAR habar("EUR/USD", 14, timeframe);
+    fx::LWMA lwma("EUR/USD", 14, timeframe, fx::SMA::BT_HABAR, fx::SMA::PRICE_CLOSE);
     
     
 
@@ -699,6 +701,92 @@ int test10()
         lwma.Update(offer);
     }
 
+    return 0;
+}
+
+int test11()
+{
+    stl::cout << "\n\n\n"
+        "Testing a crossover strategy with 2 simple moving averages\n"
+        "SMA(15D) and SMA(60D), using EUR/USD 2017 real tick data.\n"
+        "To calculate the data for the instrument (PipCost,Margin,PointBase,...)\n"
+        "this program will connect to a demo account.\n"
+        "\n";
+
+
+    fxcm::LoginParams::Ptr loginParams = new fxcm::LoginParams("monitor.ini");
+    fxcm::IniParams::Ptr iniParams = new fxcm::IniParams("monitor.ini");
+    fxcm::Session session(*loginParams, *iniParams);
+    session.Login();
+
+    MarketPlugin4backtest plugin(&session, *iniParams);
+
+    fx::Offer offer("0", "EUR/USD", 3, 0.01, sys::time(), 0, 0, 0, true);
+    HistdatacomReader oreader(offer, 2017);
+
+    time_t timeframe = sys::time::daySEC;
+    stl::string instrument("EUR/USD");
+    fx::SMA sma1(instrument, 15, timeframe, fx::SMA::BT_BAR, fx::SMA::PRICE_CLOSE);  // fast moving average
+    fx::SMA sma2(instrument, 60, timeframe, fx::SMA::BT_BAR, fx::SMA::PRICE_CLOSE);// slow moving average
+
+    if (!oreader.GetOffer(offer))
+        return -1; // cannot get the offer?
+
+    sys::time reftime = offer.GetTime();
+    stl::cout << reftime.tostring().c_str() << std::endl;
+
+    stl::cout << "Initialize SMA indicators\n";
+    // Feed the 2 SMA indicators with quotes until they become valid.
+    while (oreader.GetOffer(offer))
+    {
+        if (reftime.mon_() != offer.GetTime().mon_())
+        {
+            reftime = offer.GetTime();
+            // show some progress, otherwise confusing and very slow
+            stl::cout << reftime.tostring().c_str() << std::endl;
+        }
+
+        if (sma1.IsValid() && sma2.IsValid())
+            break;
+
+        sma1.Update(offer);
+        sma2.Update(offer);
+    }
+
+    stl::cout << "Running the strategy\n";
+
+    // initialize the strategy
+    fx::StrategySMACross strategy(
+        &plugin,
+        instrument,
+        sma1,
+        sma2);
+
+    while (oreader.GetOffer(offer))
+    {
+        if (reftime.mon_() != offer.GetTime().mon_())
+        {
+            reftime = offer.GetTime();
+            // show some progress, otherwise confusing and very slow
+            stl::cout << reftime.tostring().c_str() << std::endl;
+        }
+
+        // check for outside trading hours
+        sys::time tnow = offer.GetTime();
+        if ((tnow.wday() == sys::time::SAT) ||
+            (tnow.wday() == sys::time::FRI && tnow.hour_() >= 22) ||
+            (tnow.wday() == sys::time::SUN && tnow.hour_() < 22))
+        {
+            continue;
+        }
+        
+        strategy.Update(offer);
+    }
+
+    session.Logout();
+
+    stl::cout << "PL=" << strategy.GetClosedGPL() << std::endl <<
+                 "GPL=" << strategy.GetClosedGPL() << std::endl;
     return 0;
 }
 

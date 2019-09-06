@@ -23,6 +23,7 @@ contact: grayasm@gmail.com
 #define __ResponseListener4Offers_hpp__
 
 #include <stddef.h>
+#include <string>
 #include <ForexConnect.h>
 #include "string.hpp"
 #include "event.hpp"

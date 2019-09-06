@@ -75,7 +75,7 @@ namespace fxcm
 		if(ncIt != m_nonCalculable.end())
 		{
 			double pipCost = (*ncIt).second;
-			stl::cout << "\npipCost[ " << instrument.c_str() << " ]= " << pipCost;
+            stl::cout << "\npipCost[ " << instrument.c_str() << " ]= " << pipCost << "\n";
 			return pipCost;
 		}
 
@@ -102,7 +102,7 @@ namespace fxcm
 		if(acc_symbol == tokenizer.tokens().back())
 		{
 			double pipCost = iBaseUnitSize * pointSize;
-			stl::cout << "\npipCost[ " << instrument.c_str() << " ]= " << pipCost;
+            stl::cout << "\npipCost[ " << instrument.c_str() << " ]= " << pipCost << "\n";
 			return pipCost;
 		}
 
@@ -120,7 +120,7 @@ namespace fxcm
 		{
 			double ask = offer.GetAsk();
 			double pipCost = iBaseUnitSize * pointSize / ask;
-			stl::cout << "\npipCost[ " << instrument.c_str() << " ]= " << pipCost;
+            stl::cout << "\npipCost[ " << instrument.c_str() << " ]= " << pipCost << "\n";
 			return pipCost;
 		}
 
@@ -158,7 +158,7 @@ namespace fxcm
 		{
             double bid = oit->second.GetBid(); // bid
 			double pipCost = (double)iBaseUnitSize * pointSize * bid;
-			stl::cout << "\npipCost[ " << instrument.c_str() << " ]= " << pipCost;
+            stl::cout << "\npipCost[ " << instrument.c_str() << " ]= " << pipCost << "\n";
 			return pipCost;
 		}
 
@@ -167,7 +167,7 @@ namespace fxcm
 		{
             double ask = oit->second.GetAsk(); // ask
 			double pipCost = (double)iBaseUnitSize * pointSize / ask;
-			stl::cout << "\npipCost[ " << instrument.c_str() << " ]= " << pipCost;
+            stl::cout << "\npipCost[ " << instrument.c_str() << " ]= " << pipCost << "\n";
 			return pipCost;
 		}
 
