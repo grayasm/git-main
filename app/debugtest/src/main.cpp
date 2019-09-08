@@ -14,7 +14,7 @@ int main(int argc, char *argv[])
 {
     sys::file f;
     f.scandir(
-        "/home/mihai/Code/git-main/",
+        "..\\",
 		sys::file::S_TRAVERSE |
 		sys::file::S_DOT_DIRS |
 		sys::file::S_HIDDEN_DIR,

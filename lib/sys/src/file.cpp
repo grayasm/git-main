@@ -207,13 +207,8 @@ namespace sys
             {
                 if (m_depth < max_depth)
                 {
-//TODO: same as filepath?!?
-                    sys::filename subdirfn(dirfn.get_directory());
-                    subdirfn.add_postfix_directory(ffd.cFileName);
-                    stl::string subdir(subdirfn.get_path());
-
                     m_depth++;
-                    scandir_(subdir.c_str(), flags, max_depth, cb, aborting);
+                    scandir_(filepath.c_str(), flags, max_depth, cb, aborting);
                     m_depth--;
                 }
             }
