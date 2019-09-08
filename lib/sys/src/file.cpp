@@ -343,6 +343,7 @@ namespace sys
                     stl::cout << "The file type could not be determined.";
                     break;
                 }
+                stl::cout << std::endl;
             }
 
             // Should traverse a directory?
