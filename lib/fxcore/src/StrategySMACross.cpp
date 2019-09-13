@@ -29,7 +29,7 @@ namespace fx
 {
 	StrategySMACross::StrategySMACross(
 		fx::MarketPlugin* plugin,
-		const misc::string& instrument,
+		const stl::string& instrument,
 		const fx::SMA& sma1,
 		const fx::SMA& sma2)
 	{
@@ -137,7 +137,7 @@ namespace fx
 
 	void StrategySMACross::OpenPosition(const fx::Offer& offer, bool buy)
 	{
-		misc::vector<fx::Position> result;
+		stl::vector<fx::Position> result;
 		int ret = m_plugin->OpenPosition(offer, 1, buy, result);
 
 		if (ret != 0)
@@ -152,15 +152,15 @@ namespace fx
 
 	void StrategySMACross::ClosePosition(const fx::Offer& offer)
 	{
-		misc::vector<fx::Position>& npos =
-			const_cast<misc::vector<fx::Position>&>(m_tr.GetPositions());
+		stl::vector<fx::Position>& npos =
+			const_cast<stl::vector<fx::Position>&>(m_tr.GetPositions());
 
-		misc::vector<fx::Position>::iterator it = npos.begin();
+		stl::vector<fx::Position>::iterator it = npos.begin();
 		for (; it != npos.end(); /*erase*/)
 		{
 			const fx::Position& pos = *it;
 
-			misc::vector<fx::Position> result;
+			stl::vector<fx::Position> result;
 			int ret = m_plugin->ClosePosition(offer, pos, result);
 
 			if (ret != 0)
@@ -169,7 +169,7 @@ namespace fx
 				return;
 			}
 
-			misc::vector<fx::Position>::iterator tmp = npos.erase(it);
+			stl::vector<fx::Position>::iterator tmp = npos.erase(it);
 			it = tmp;
 		}
 	}
@@ -180,7 +180,7 @@ namespace fx
 		if (m_sma1.IsValid() && m_sma2.IsValid())
 			return;
 
-		misc::vector<fx::IND*> indicators;
+		stl::vector<fx::IND*> indicators;
 		indicators.push_back(&m_sma1);
 		indicators.push_back(&m_sma2);
 		IndicatorBuilder::Build(m_plugin, offer, indicators);

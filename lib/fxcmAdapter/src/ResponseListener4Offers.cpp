@@ -38,12 +38,12 @@ namespace fxcm
 		// m_CriticalSection - is unlocked
 		m_offersUpdater = NULL;
 		m_offersWriter = NULL;
-		misc::cout.precision(6);
+		stl::cout.precision(6);
 	}
 
 	long ResponseListener4Offers::addRef()
 	{
-		misc::autocritical_section autocs(m_CriticalSection);
+		sys::autocritical_section autocs(m_CriticalSection);
 		m_RefCount++;
 		return m_RefCount;
 	}
@@ -52,7 +52,7 @@ namespace fxcm
 	{
 		// protect m_CriticalSection against 'delete this'
 		{
-			misc::autocritical_section autocs(m_CriticalSection);
+			sys::autocritical_section autocs(m_CriticalSection);
 			m_RefCount--;
 			if (m_RefCount)
 				return m_RefCount;
@@ -77,7 +77,7 @@ namespace fxcm
 	{
 		if (m_RequestID == requestId)
 		{
-			misc::cout << __FUNCTION__ 
+			stl::cout << __FUNCTION__ 
 				<< ": The request has been failed. ID: "
 				<< requestId << " : " << error << std::endl;
 			m_ResponseEvent.unlock();
@@ -94,7 +94,7 @@ namespace fxcm
 		switch (responseType)
 		{
 		case ResponseUnknown:
-			misc::cout << __FUNCTION__ << " response::ResponseUnknown" << std::endl;
+			stl::cout << __FUNCTION__ << " response::ResponseUnknown" << std::endl;
 			break;
 
 		case TablesUpdates:
@@ -105,7 +105,7 @@ namespace fxcm
 					loginRules->getTableRefreshResponse(Offers)
 			*/
 
-			// misc::cout << __FUNCTION__ << " response::TablesUpdates" << std::endl;
+			// stl::cout << __FUNCTION__ << " response::TablesUpdates" << std::endl;
 			if (m_offersUpdater)
 				m_offersUpdater->UpdateOffers(tablesUpdates);
 			if (m_offersWriter)
@@ -113,69 +113,69 @@ namespace fxcm
 			break;
 
 		case MarketDataSnapshot:
-			misc::cout << __FUNCTION__ << " response::MarketDataSnapshot" << std::endl;
+			stl::cout << __FUNCTION__ << " response::MarketDataSnapshot" << std::endl;
 			break;
 
 		case GetAccounts:
-			misc::cout << __FUNCTION__ << " response::GetAccounts" << std::endl;
+			stl::cout << __FUNCTION__ << " response::GetAccounts" << std::endl;
 			break;
 
 		case GetOffers:
-			misc::cout << __FUNCTION__ << " response::GetOffers" << std::endl;
+			stl::cout << __FUNCTION__ << " response::GetOffers" << std::endl;
 			break;
 
 		case GetOrders:
-			misc::cout << __FUNCTION__ << " response::GetOrders" << std::endl;
+			stl::cout << __FUNCTION__ << " response::GetOrders" << std::endl;
 			break;
 
 		case GetTrades:
-			misc::cout << __FUNCTION__ << " response::GetTrades" << std::endl;
+			stl::cout << __FUNCTION__ << " response::GetTrades" << std::endl;
 			break;
 
 		case GetClosedTrades:
-			misc::cout << __FUNCTION__ << " response::GetClosedTrades" << std::endl;
+			stl::cout << __FUNCTION__ << " response::GetClosedTrades" << std::endl;
 			break;
 
 		case GetMessages:
-			misc::cout << __FUNCTION__ << " response::GetMessages" << std::endl;
+			stl::cout << __FUNCTION__ << " response::GetMessages" << std::endl;
 			break;
 
 		case CreateOrderResponse:
-			misc::cout << __FUNCTION__ << " response::CreateOrderResponse" << std::endl;
+			stl::cout << __FUNCTION__ << " response::CreateOrderResponse" << std::endl;
 			break;
 
 		case GetSystemProperties:
-			misc::cout << __FUNCTION__ << " response::GetSystemProperties" << std::endl;
+			stl::cout << __FUNCTION__ << " response::GetSystemProperties" << std::endl;
 			break;
 
 		case CommandResponse:
-			misc::cout << __FUNCTION__ << " response::CommandResponse" << std::endl;
+			stl::cout << __FUNCTION__ << " response::CommandResponse" << std::endl;
 			break;
 
 		case MarginRequirementsResponse:
-			misc::cout << __FUNCTION__ << " response::MarginRequirementsResponse" << std::endl;
+			stl::cout << __FUNCTION__ << " response::MarginRequirementsResponse" << std::endl;
 			break;
 
 		case GetLastOrderUpdate:
-			misc::cout << __FUNCTION__ << " response::GetLastOrderUpdate" << std::endl;
+			stl::cout << __FUNCTION__ << " response::GetLastOrderUpdate" << std::endl;
 			break;
 
 		case MarketData:
-			misc::cout << __FUNCTION__ << " response::MarketData" << std::endl;
+			stl::cout << __FUNCTION__ << " response::MarketData" << std::endl;
 			break;
 
 		case Level2MarketData:
-			misc::cout << __FUNCTION__ << " response::Level2MarketData" << std::endl;
+			stl::cout << __FUNCTION__ << " response::Level2MarketData" << std::endl;
 			break;
 
 		default:
-			misc::cout << __FUNCTION__ << " O2GResponseType id does not exist"
+			stl::cout << __FUNCTION__ << " O2GResponseType id does not exist"
 				", is this a new API?" << std::endl;
 			break;
 		}
 	}
 
-	void ResponseListener4Offers::SetRequestID(const misc::string& requestID)
+	void ResponseListener4Offers::SetRequestID(const stl::string& requestID)
 	{
 		m_RequestID = requestID;
 		if (m_Response)

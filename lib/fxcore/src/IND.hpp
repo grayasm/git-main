@@ -45,12 +45,12 @@ namespace fx
 		virtual ~IND();
 		
 		// --- virtual table ---		
-		virtual const misc::string& GetInstrument() const = 0;
+		virtual const stl::string& GetInstrument() const = 0;
 		virtual int GetPeriod() const = 0;
 		virtual Timeframe GetTimeframe() const = 0;			
 		virtual bool IsValid() const = 0;
 		virtual void Update(const fx::Offer& offer) = 0;
-		virtual const misc::time& GetRefTime() const = 0; // begin of current candle
+		virtual const sys::time& GetRefTime() const = 0; // begin of current candle
 		// --- end of virtual table ---
 	};
 } // namespace

@@ -40,15 +40,15 @@ namespace fx
 		static void Build(
 			fx::MarketPlugin* plugin,
 			const fx::Offer& offer,
-			misc::vector<fx::IND*>& indicators);
+			stl::vector<fx::IND*>& indicators);
 
 	private:
 		static void Update(
 			const fx::Offer& offer,
 			const fx::OHLCPrice& ohlc,
-			misc::vector<fx::IND*>& indicators);
+			stl::vector<fx::IND*>& indicators);
 
-		static void Check(misc::vector<fx::IND*>& indicators);
+		static void Check(stl::vector<fx::IND*>& indicators);
 	};
 } // namespace
 

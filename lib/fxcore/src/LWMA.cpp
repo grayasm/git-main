@@ -44,7 +44,7 @@ namespace fx
     }
 
     LWMA::LWMA(
-        const misc::string& instrument,
+        const stl::string& instrument,
         int period,
         Timeframe sec,
         BarType barType,
@@ -70,7 +70,7 @@ namespace fx
                 break;
             }
             default:
-                throw misc::exception("SMA unknown BAR type");
+                throw stl::exception("SMA unknown BAR type");
         }
     }
 
@@ -117,7 +117,7 @@ namespace fx
                         break;                                          
                     }
                     default:
-                        throw misc::exception("LWMA unknown BAR type");
+                        throw stl::exception("LWMA unknown BAR type");
                 } // switch
             }
             else
@@ -131,7 +131,7 @@ namespace fx
         return *this;
     }
 
-    const misc::string& LWMA::GetInstrument() const
+    const stl::string& LWMA::GetInstrument() const
     {
         return m_instrument;
     }
@@ -157,7 +157,7 @@ namespace fx
     void LWMA::Update(const fx::Offer& offer)
     {
         if (m_instrument != offer.GetInstrument())
-            throw misc::exception("LWMA offer is invalid");
+            throw stl::exception("LWMA offer is invalid");
 
         // offer will paint a new bar?
         bool isNew = m_bar->IsNew(offer);
@@ -185,13 +185,13 @@ namespace fx
                     sell += (it->GetBidClose() * i);
                 }
                 else
-                    throw misc::exception("LWMA unknown price origin");                
+                    throw stl::exception("LWMA unknown price origin");                
             }
             m_sumMinus1P = fx::Price(buy, sell);
         }
     }
 
-    const misc::time&  LWMA::GetRefTime() const
+    const sys::time&  LWMA::GetRefTime() const
     {
         return m_bar->GetRefTime();
     }
@@ -203,7 +203,7 @@ namespace fx
             m_sumMinus1P.GetBuy() == 0 ||
             m_sumMinus1P.GetSell() == 0)
         {
-            throw misc::exception("LWMA is invalid");
+            throw stl::exception("LWMA is invalid");
         }
 
         const fx::OHLCPrice& ohlc = m_bar->GetOHLC();
@@ -220,7 +220,7 @@ namespace fx
             sell = m_sumMinus1P.GetSell() + ohlc.GetBidClose() * m_period;
         }
         else
-            throw misc::exception("LWMA unknown price origin");
+            throw stl::exception("LWMA unknown price origin");
 
         double sumiN = m_period * (m_period + 1) / 2;
         buy /= sumiN;

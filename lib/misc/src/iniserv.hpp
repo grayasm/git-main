@@ -38,65 +38,65 @@ namespace misc
 	class iniserv
 	{
 	public:
-		typedef misc::autoptr<iniserv> Ptr;
+		typedef stl::autoptr<iniserv> Ptr;
 
 		iniserv();
-		iniserv(const misc::string& inifile);
+		iniserv(const stl::string& inifile);
 		~iniserv();
 		iniserv(const iniserv& tc);
 		iniserv& operator=(const iniserv& tc);
 		
 		bool get(
-			const misc::string& section,
-			const misc::string& parameter,
+			const stl::string& section,
+			const stl::string& parameter,
 			bool defval) const;
 
 		int get(
-			const misc::string& section,
-			const misc::string& parameter,
+			const stl::string& section,
+			const stl::string& parameter,
 			int defval) const;
 
 		double get(
-			const misc::string& section,
-			const misc::string& parameter,
+			const stl::string& section,
+			const stl::string& parameter,
 			double defval) const;
 
-		const misc::string& get(
-			const misc::string& section,
-			const misc::string& parameter,
-			const misc::string& defval) const;
+		const stl::string& get(
+			const stl::string& section,
+			const stl::string& parameter,
+			const stl::string& defval) const;
 
 		void set(
-			const misc::string& section,
-			const misc::string& parameter,
+			const stl::string& section,
+			const stl::string& parameter,
 			bool value);
 
 		void set(
-			const misc::string& section,
-			const misc::string& parameter,
+			const stl::string& section,
+			const stl::string& parameter,
 			int value);
 
 		void set(
-			const misc::string& section,
-			const misc::string& parameter,
+			const stl::string& section,
+			const stl::string& parameter,
 			double value);
 
 		void set(
-			const misc::string& section,
-			const misc::string& parameter,
-			const misc::string& value);
+			const stl::string& section,
+			const stl::string& parameter,
+			const stl::string& value);
 
 		bool write();
 
 	private:
-		bool get_section(const misc::string& line, misc::string& section) const;
+		bool get_section(const stl::string& line, stl::string& section) const;
 
 		
-		typedef std::map<misc::string, ini_section>	Sections;
+		typedef std::map<stl::string, ini_section>	Sections;
 		typedef Sections::value_type				SecPair;
 
 
-		misc::string		m_inifile;
+		stl::string		m_inifile;
 		mutable Sections	m_sections;
 	};
 
@@ -106,8 +106,8 @@ namespace misc
 	class ini_section
 	{
 	public:
-		typedef misc::string Key;
-		typedef misc::string Val;
+		typedef stl::string Key;
+		typedef stl::string Val;
 		typedef std::pair<Key, Val> Entry;
 		typedef std::map<Key, Val>	Map;
 
@@ -117,12 +117,12 @@ namespace misc
 		ini_section(const ini_section& tc);
 		ini_section& operator=(const ini_section& tc);
 
-		void Set(const misc::string& key, const misc::string& val);
+		void Set(const stl::string& key, const stl::string& val);
 
 		// cannot return non existing key's value
-		const misc::string& Get(const misc::string& key) const;
+		const stl::string& Get(const stl::string& key) const;
 
-		bool Has(const misc::string& key) const;
+		bool Has(const stl::string& key) const;
 
 		// retrieves the entire map
 		const Map& Get() const;

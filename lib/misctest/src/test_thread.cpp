@@ -51,7 +51,7 @@ void test_thread::tearDown()
 }
 
 //##########################BEGIN TEST SUITE######################################
-class Ttthread : public misc::thread
+class Ttthread : public sys::thread
 {
 public:
 	Ttthread()
@@ -98,11 +98,11 @@ private:
 
 void test_thread::ctor()
 {
-	misc::cout << "\n\n\t******************************************************";
-	misc::cout <<   "\n\t* TESTING HEADER thread.hpp                          *";
-	misc::cout <<   "\n\t******************************************************";	
+	stl::cout << "\n\n\t******************************************************";
+	stl::cout <<   "\n\t* TESTING HEADER thread.hpp                          *";
+	stl::cout <<   "\n\t******************************************************";	
 
-	misc::cout << "\n\n\t ctor ------------------------------------------------";
+	stl::cout << "\n\n\t ctor ------------------------------------------------";
 	
 	
 	{
@@ -151,7 +151,7 @@ void test_thread::ctor()
 
 void test_thread::dtor()
 {
-	misc::cout << "\n\n\t dtor ------------------------------------------------";
+	stl::cout << "\n\n\t dtor ------------------------------------------------";
 
 	{
 		// on the stack
@@ -191,7 +191,7 @@ void test_thread::dtor()
 
 void test_thread::run()
 {
-	misc::cout << "\n\n\t run -------------------------------------------------";
+	stl::cout << "\n\n\t run -------------------------------------------------";
 	
 	{
 		Ttthread t0, t1, t2;
@@ -252,7 +252,7 @@ void test_thread::run()
 
 void test_thread::resume()
 {
-	misc::cout << "\n\n\t resume ----------------------------------------------";
+	stl::cout << "\n\n\t resume ----------------------------------------------";
 	{
 		Ttthread t0(0), t1(1), t2(2);
 		CPPUNIT_ASSERT( t0.resume() == 0 );
@@ -312,7 +312,7 @@ void test_thread::resume()
 	printf("\n\t\t test: join thread and resume again");
 	{
 		const int THNO = 600;
-		misc::vector<Ttthread*> thvec;
+		stl::vector<Ttthread*> thvec;
 		for(int i=0; i < THNO; ++i)
 			thvec.push_back(new Ttthread(i%5));
 		for(int i=0; i < THNO; ++i)
@@ -343,7 +343,7 @@ void test_thread::resume()
 	printf("\n\t\t test: resume thread and resume again while running");
 	{
 		const int THNO = 600;
-		misc::vector<Ttthread*> thvec;
+		stl::vector<Ttthread*> thvec;
 		for(int i=0; i < THNO; ++i)
 			thvec.push_back(new Ttthread(i%3+5));
 		for(int i=0; i < THNO; ++i)
@@ -355,7 +355,7 @@ void test_thread::resume()
 			{
 				thvec[i]->resume();
 			}
-			catch(misc::exception&)
+			catch(stl::exception&)
 			{
 				_2ndresume_fail = true;
 			}
@@ -372,7 +372,7 @@ void test_thread::resume()
 
 void test_thread::join()
 {
-	misc::cout << "\n\n\t join ------------------------------------------------";
+	stl::cout << "\n\n\t join ------------------------------------------------";
 	
 	{
 		// sleep 10 sec and join TIMEOUT
@@ -383,7 +383,7 @@ void test_thread::join()
 		CPPUNIT_ASSERT( t.geta() == 5 );
 		CPPUNIT_ASSERT( t.getstarted() == true );		
 	}
-	misc::cout << "\n\t\t join TIMEOUT (ok)";
+	stl::cout << "\n\t\t join TIMEOUT (ok)";
 	{
 		// sleep 5 sec and join @20 sec ok
 		Ttthread t(5);
@@ -393,7 +393,7 @@ void test_thread::join()
 		CPPUNIT_ASSERT( t.geta() == 5 );
 		CPPUNIT_ASSERT( t.getstarted() == true );
 	}
-	misc::cout << "\n\t\t join @20sec (ok)";
+	stl::cout << "\n\t\t join @20sec (ok)";
 	{
 		// sleep 5 sec and join INFINITE ok
 		Ttthread t(5);
@@ -402,7 +402,7 @@ void test_thread::join()
 		CPPUNIT_ASSERT( t.geta() == 5 );
 		CPPUNIT_ASSERT( t.getstarted() == true );
 	}
-	misc::cout << "\n\t\t join @INFINITE (ok)";
+	stl::cout << "\n\t\t join @INFINITE (ok)";
 	
 	{
 		// dynamic allocated
@@ -426,7 +426,7 @@ void test_thread::join()
 			{
 				msleep(500);
 				CPPUNIT_ASSERT( t[i]->join(0) != 0 );
-				misc::cout << "\n\t\t th: " << i << " join timeout";
+				stl::cout << "\n\t\t th: " << i << " join timeout";
 			}
 		}
 		
@@ -434,7 +434,7 @@ void test_thread::join()
 		for(int i=0; i < THMAX; ++i)
 		{
 			CPPUNIT_ASSERT( t[i]->join( (THMAX+10) * 1e3 ) == 0 );
-			misc::cout << "\n\t\t th: " << i << " joined";
+			stl::cout << "\n\t\t th: " << i << " joined";
 		}
 		
 		// call destructor
@@ -445,7 +445,7 @@ void test_thread::join()
 
 void test_thread::get_exit_code()
 {
-	misc::cout << "\n\n\t get_exit_code ---------------------------------------";
+	stl::cout << "\n\n\t get_exit_code ---------------------------------------";
 	
 	{
 		// sleep 10 sec and join TIMEOUT
@@ -458,7 +458,7 @@ void test_thread::get_exit_code()
 		CPPUNIT_ASSERT( t.getstarted() == true );
 		CPPUNIT_ASSERT( t.join() == 0 );
 	}
-	misc::cout << "\n\t\t exitcode @TIMEOUT (ok)";
+	stl::cout << "\n\t\t exitcode @TIMEOUT (ok)";
 	{
 		// sleep 5 sec and join @20 sec ok
 		Ttthread t(5);
@@ -470,7 +470,7 @@ void test_thread::get_exit_code()
 		CPPUNIT_ASSERT( t.geta() == 5 );
 		CPPUNIT_ASSERT( t.getstarted() == true );
 	}
-	misc::cout << "\n\t\t exitcode @20sec (ok)";
+	stl::cout << "\n\t\t exitcode @20sec (ok)";
 	{
 		// sleep 5 sec and join INFINITE ok
 		Ttthread t(5);
@@ -482,7 +482,7 @@ void test_thread::get_exit_code()
 		CPPUNIT_ASSERT( t.geta() == 5 );
 		CPPUNIT_ASSERT( t.getstarted() == true );
 	}
-	misc::cout << "\n\t\t exitcode @INFINITE (ok)";
+	stl::cout << "\n\t\t exitcode @INFINITE (ok)";
 	
 	{
 		// dynamic allocated
@@ -507,7 +507,7 @@ void test_thread::get_exit_code()
 			{
 				CPPUNIT_ASSERT( t[i]->join(0) != 0 );
 				CPPUNIT_ASSERT( t[i]->get_exit_code(&retval) != 0 );
-				misc::cout << "\n\t\t th: " << i << " no exit code";
+				stl::cout << "\n\t\t th: " << i << " no exit code";
 			}
 		}
 		
@@ -518,7 +518,7 @@ void test_thread::get_exit_code()
 			CPPUNIT_ASSERT( t[i]->join((THMAX+20)*1e3) == 0 );
 			CPPUNIT_ASSERT( t[i]->get_exit_code(&retval) == 0 );
 			CPPUNIT_ASSERT( retval == (unsigned long) i );
-			misc::cout << "\n\t\t th: " << i << " exit code: " << retval;
+			stl::cout << "\n\t\t th: " << i << " exit code: " << retval;
 		}
 		
 		// call destructor

@@ -53,7 +53,7 @@ void OMPEngine()
     // like the pip cost, MMR, iBaseUnitSize, etc.
     // Depending on the traded instrument, the pipCost calculator may need
     // access to other offers to convert the quote into account currency.
-	misc::string instrument("EUR/USD");
+	stl::string instrument("EUR/USD");
     int ret = 0;
     fx::Offer offer;
 
@@ -72,24 +72,24 @@ void OMPEngine()
 
 	MarketPlugin4backtest plugin(&session, *iniParams);
 	HistdatacomReader oreader(offer, 2017);
-	misc::time reftime;
-	misc::vector<fx::IND*> smaVec;
-	misc::vector<fx::StrategySMACross*> strategyVec;
-	typedef misc::pair<misc::string, fx::StrategySMACross*> CrossPair;
-	misc::vector<CrossPair> crossVec;
+	sys::time reftime;
+	stl::vector<fx::IND*> smaVec;
+	stl::vector<fx::StrategySMACross*> strategyVec;
+	typedef stl::pair<stl::string, fx::StrategySMACross*> CrossPair;
+	stl::vector<CrossPair> crossVec;
 	
     
 	// SMA(2, 1H) -> SMA(48, 1H)
 	// SMA(2, 1D) -> SMA(60, 1D)
 	for (int i = 2; i <= 48; ++i)	// 48hours
 	{
-		fx::SMA* sma = new fx::SMA(instrument, i, misc::time::hourSEC, fx::SMA::BT_BAR, fx::SMA::PRICE_CLOSE);
+		fx::SMA* sma = new fx::SMA(instrument, i, sys::time::hourSEC, fx::SMA::BT_BAR, fx::SMA::PRICE_CLOSE);
 		smaVec.push_back(sma);
 	}
 
 	for (int i = 2; i <= 20; ++i)	// 60days
 	{
-		fx::SMA* sma = new fx::SMA(instrument, i, misc::time::daySEC, fx::SMA::BT_BAR, fx::SMA::PRICE_CLOSE);
+		fx::SMA* sma = new fx::SMA(instrument, i, sys::time::daySEC, fx::SMA::BT_BAR, fx::SMA::PRICE_CLOSE);
 		smaVec.push_back(sma);
 	}
 	
@@ -97,7 +97,7 @@ void OMPEngine()
 		return; // cannot get the offer?
 
 	reftime = offer.GetTime();
-	misc::cout << reftime.tostring() << std::endl;
+	stl::cout << reftime.tostring().c_str() << std::endl;
 
 	
 	fx::IndicatorBuilder::Build(&plugin, offer, smaVec);
@@ -120,10 +120,10 @@ void OMPEngine()
 
 			std::stringstream ss;
 			ss << "SMA1(" << sma1->GetPeriod() << ",";
-			ss << (sma1->GetTimeframe() == misc::time::hourSEC ? "H) " : "D) ");
+			ss << (sma1->GetTimeframe() == sys::time::hourSEC ? "H) " : "D) ");
 			ss << "SMA2(" << sma2->GetPeriod() << ",";
-			ss << (sma2->GetTimeframe() == misc::time::hourSEC ? "H) " : "D) ");
-			misc::string str(ss.str().c_str());
+			ss << (sma2->GetTimeframe() == sys::time::hourSEC ? "H) " : "D) ");
+			stl::string str(ss.str().c_str());
 			CrossPair cpair(str, strategy);
 			crossVec.push_back(cpair);
 		}
@@ -139,14 +139,14 @@ void OMPEngine()
 		{
 			reftime = offer.GetTime();
 			// show some progress, otherwise confusing and very slow
-			misc::cout << reftime.tostring() << std::endl;
+			stl::cout << reftime.tostring().c_str() << std::endl;
 		}
 
 		// check for outside trading hours
-		misc::time tnow = offer.GetTime();
-		if ((tnow.wday() == misc::time::SAT) ||
-			(tnow.wday() == misc::time::FRI && tnow.hour_() >= 22) ||
-			(tnow.wday() == misc::time::SUN && tnow.hour_() < 22))
+		sys::time tnow = offer.GetTime();
+		if ((tnow.wday() == sys::time::SAT) ||
+			(tnow.wday() == sys::time::FRI && tnow.hour_() >= 22) ||
+			(tnow.wday() == sys::time::SUN && tnow.hour_() < 22))
 		{
 			continue;
 		}
@@ -174,17 +174,17 @@ void OMPEngine()
 		return (cp1.second->GetClosedGPL() > cp2.second->GetClosedGPL());
 	};
 
-	misc::sort(crossVec.begin(), crossVec.end(), lmdbpred);
+	stl::sort(crossVec.begin(), crossVec.end(), lmdbpred);
 
 	// use logging only summary data
 	FILE* fp = fopen(iniParams->GetLoggingFile().c_str(), "w+");
 
 	
-	for (misc::vector<CrossPair>::iterator it = crossVec.begin();
+	for (stl::vector<CrossPair>::iterator it = crossVec.begin();
 		 it != crossVec.end() && fp != NULL; ++it)
 	{
 		std::stringstream ss;
-		ss << it->first;
+		ss << it->first.c_str();
 		ss << " PL=" << it->second->GetClosedPL();
 		ss << " GPL=" << it->second->GetClosedGPL() << std::endl;
 		std::string str(ss.str());
@@ -193,7 +193,7 @@ void OMPEngine()
 
 	if (fp) fclose(fp);
 
-	misc::cout << "Log file update.\nDestroying...\n";
+	stl::cout << "Log file update.\nDestroying...\n";
 
 	for (int i = 0; i < strategyVec.size(); ++i)
 		delete strategyVec[i];

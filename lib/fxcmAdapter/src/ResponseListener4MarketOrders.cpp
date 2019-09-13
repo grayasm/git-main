@@ -44,7 +44,7 @@ namespace fxcm
 
 	long ResponseListener4MarketOrders::addRef()
 	{
-		misc::autocritical_section autocs(m_CriticalSection);
+		sys::autocritical_section autocs(m_CriticalSection);
 		m_RefCount++;
 		return m_RefCount;
 	}
@@ -53,7 +53,7 @@ namespace fxcm
 	{
 		// protect m_CriticalSection against 'delete this'
 		{
-			misc::autocritical_section autocs(m_CriticalSection);
+			sys::autocritical_section autocs(m_CriticalSection);
 			m_RefCount--;
 			if (m_RefCount)
 				return m_RefCount;
@@ -78,7 +78,7 @@ namespace fxcm
 	{
 		if (m_RequestID == requestId)
 		{
-			misc::cout << __FUNCTION__ 
+			stl::cout << __FUNCTION__ 
 				<< ": The request has been failed. ID: "
 				<< requestId << " : " << error << std::endl;
 			m_ResponseEvent.unlock();
@@ -89,7 +89,7 @@ namespace fxcm
 	{
 		if (!tablesUpdates)
 		{
-			misc::cout << __FUNCTION__
+			stl::cout << __FUNCTION__
 				<< ": IO2GResponse is NULL" << std::endl;
 			return;
 		}
@@ -98,7 +98,7 @@ namespace fxcm
 			m_Session->getResponseReaderFactory();
 		if (!readerFactory)
 		{
-			misc::cout << __FUNCTION__
+			stl::cout << __FUNCTION__
 				<< ": Cannot create response reader factory" << std::endl;
 			return; // ErrorCodes::ERR_NO_RESPONSE_READER_FACTORY;
 		}
@@ -107,7 +107,7 @@ namespace fxcm
 			readerFactory->createTablesUpdatesReader(tablesUpdates);
 		if (!reader)
 		{
-			misc::cout << __FUNCTION__
+			stl::cout << __FUNCTION__
 				<< ": Cannot create tables response reader" << std::endl;
 			return; // ErrorCodes::ERR_NO_RESPONSE_READER;
 		}
@@ -128,7 +128,7 @@ namespace fxcm
 					if ((Utils::IsClosingOrder(order) || Utils::IsOpeningOrder(order)) &&
 						m_OrderMonitor == NULL)
 					{
-						misc::cout << "The order has been added. OrderID='" << order->getOrderID() << "', "
+						stl::cout << "The order has been added. OrderID='" << order->getOrderID() << "', "
 							<< "Rate='" << order->getRate() << "', "
 							<< "TimeInForce='" << order->getTimeInForce() << "'"
 							<< std::endl;
@@ -140,7 +140,7 @@ namespace fxcm
 				{
 					if (m_OrderMonitor)
 					{
-						misc::cout << "The order has been deleted. OrderID='" << order->getOrderID() << "'"
+						stl::cout << "The order has been deleted. OrderID='" << order->getOrderID() << "'"
 							<< std::endl;
 						m_OrderMonitor->OnOrderDeleted(order);
 
@@ -229,7 +229,7 @@ namespace fxcm
 				{
 					O2G2Ptr<IO2GAccountRow> account = reader->getAccountRow(i);
 
-					misc::cout << "The balance has been changed. AccountID=" << account->getAccountID() << ", "
+					stl::cout << "The balance has been changed. AccountID=" << account->getAccountID() << ", "
 						<< "Balance=" << std::fixed << account->getBalance() << std::endl;
 				}
 			}
@@ -238,7 +238,7 @@ namespace fxcm
 		} // for (int i,.)
 	}
 
-	void ResponseListener4MarketOrders::SetRequestID(const misc::string& requestID)
+	void ResponseListener4MarketOrders::SetRequestID(const stl::string& requestID)
 	{
 		m_RequestID = requestID;
 		if (m_Response)
@@ -269,12 +269,12 @@ namespace fxcm
 		// m_ResponseEvent will CloseHandle itself on ~dtor
 	}
 
-	const misc::vector<IO2GTradeRow*>& ResponseListener4MarketOrders::GetTrades() const
+	const stl::vector<IO2GTradeRow*>& ResponseListener4MarketOrders::GetTrades() const
 	{
 		return m_trades;
 	}
 
-	const misc::vector<IO2GClosedTradeRow*> ResponseListener4MarketOrders::GetClosedTrades() const
+	const stl::vector<IO2GClosedTradeRow*> ResponseListener4MarketOrders::GetClosedTrades() const
 	{
 		return m_closedTrades;
 	}
@@ -301,7 +301,7 @@ namespace fxcm
 			// set the result
 			OrderMonitor::ExecutionResult result = m_OrderMonitor->GetResult();
 			O2G2Ptr<IO2GOrderRow> order = m_OrderMonitor->GetOrder();
-			misc::string orderID = order->getOrderID();
+			std::string orderID = order->getOrderID();
 			
 
 			switch (result)
@@ -313,21 +313,21 @@ namespace fxcm
 					m_OrderMonitor->GetTrades(m_trades);
 					m_OrderMonitor->GetClosedTrades(m_closedTrades);
 
-					misc::cout << "A part of the order has been canceled. "
+					stl::cout << "A part of the order has been canceled. "
 						<< "Amount = " << m_OrderMonitor->GetRejectAmount() << std::endl;
 				}
 				else
 				{
-					misc::cout << "The order: OrderID = " << orderID << " has been canceled" << std::endl;
-					misc::cout << "The cancel amount = " << m_OrderMonitor->GetRejectAmount() << std::endl;
+					stl::cout << "The order: OrderID = " << orderID << " has been canceled" << std::endl;
+					stl::cout << "The cancel amount = " << m_OrderMonitor->GetRejectAmount() << std::endl;
 				}
 			}
 			break;
 			case OrderMonitor::FullyRejected:
 			{
-				misc::cout << "The order has been rejected. OrderID = " << orderID << std::endl;
-				misc::cout << "The rejected amount = " << m_OrderMonitor->GetRejectAmount() << std::endl;
-				misc::cout << "Rejection cause: " << m_OrderMonitor->GetRejectMessage() << std::endl;
+				stl::cout << "The order has been rejected. OrderID = " << orderID << std::endl;
+				stl::cout << "The rejected amount = " << m_OrderMonitor->GetRejectAmount() << std::endl;
+				stl::cout << "Rejection cause: " << m_OrderMonitor->GetRejectMessage().c_str() << std::endl;
 			}
 			break;
 			case OrderMonitor::PartialRejected:
@@ -335,9 +335,9 @@ namespace fxcm
 				m_OrderMonitor->GetTrades(m_trades);
 				m_OrderMonitor->GetClosedTrades(m_closedTrades);
 
-				misc::cout << "A part of the order has been rejected. "
+				stl::cout << "A part of the order has been rejected. "
 					<< "Amount = " << m_OrderMonitor->GetRejectAmount() << std::endl;
-				misc::cout << "Rejection cause: " << m_OrderMonitor->GetRejectMessage() << std::endl;
+				stl::cout << "Rejection cause: " << m_OrderMonitor->GetRejectMessage().c_str() << std::endl;
 			}
 			break;
 			case OrderMonitor::Executed:

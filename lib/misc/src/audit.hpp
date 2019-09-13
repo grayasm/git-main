@@ -22,7 +22,9 @@
 #define __audit_hpp__
 
 
+#include <ios>
 #include <time.h>
+#include "autoptr.hpp"
 #include "string.hpp"
 
 
@@ -31,13 +33,13 @@ namespace misc
 	class audit
 	{
 	public:
-		typedef misc::autoptr<audit> Ptr;
+		typedef stl::autoptr<audit> Ptr;
 
 	public:
 		audit();
 		~audit();
 		audit(
-			const misc::string& filepath, 
+			const stl::string& filepath, 
 			std::ios::openmode mode = std::ios::out | std::ios::trunc);
 		audit(const audit& tc);
 		audit& operator=(const audit& tc);
@@ -50,7 +52,7 @@ namespace misc
 		void reset();
 
 	private:
-		misc::string	m_filepath;
+		stl::string	m_filepath;
 	};
 }
 

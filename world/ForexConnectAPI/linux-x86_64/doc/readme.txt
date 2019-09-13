@@ -13,6 +13,7 @@ Package contents:
        samples/             -- Samples
            cpp/
            java/
+           cs/    
 
 
 You can build samples using the cmake build system (available at http://cmake.org/cmake/resources/software.html).

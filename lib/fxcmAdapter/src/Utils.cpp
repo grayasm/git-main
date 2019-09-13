@@ -41,14 +41,14 @@ namespace fxcm
 		strcpy(buf, sstream.str().c_str());
 	}
 
-	void Utils::FormatDate(DATE date, misc::time& mtime)
+	void Utils::FormatDate(DATE date, sys::time& mtime)
 	{
 		struct tm tmBuf = { 0 };
 		CO2GDateUtils::OleTimeToCTime(date, &tmBuf);
 
-		enum misc::time::Month month = (enum misc::time::Month)tmBuf.tm_mon;
+		enum sys::time::Month month = (enum sys::time::Month)tmBuf.tm_mon;
 
-		mtime = misc::time(
+		mtime = sys::time(
 			tmBuf.tm_year + 1900,
 			month,
 			tmBuf.tm_mday,
@@ -59,12 +59,12 @@ namespace fxcm
 
 	void Utils::FormatDate(DATE date, time_t& timet)
 	{
-		misc::time mtime;
+		sys::time mtime;
 		FormatDate(date, mtime);
 		timet = mtime.totime_t();
 	}
 
-	void Utils::TimeToDate(const misc::time& time, DATE& date)
+	void Utils::TimeToDate(const sys::time& time, DATE& date)
 	{
 		time_t tt = time.totime_t();
 		struct tm *tmt = gmtime(&tt);

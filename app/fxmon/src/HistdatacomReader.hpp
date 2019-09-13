@@ -38,8 +38,8 @@ public:
 
 private:
 	void ParseFile(
-        const misc::string& filePath,
-		misc::vector<fx::Offer>& result);
+        const stl::string& filePath,
+		stl::vector<fx::Offer>& result);
 
     void LoadEURUSD2008();
     void LoadEURUSD2017();
@@ -51,9 +51,9 @@ private:
 private:
     fx::Offer                   m_offer;
     int                         m_year;    
-	misc::vector<misc::string>	m_offerFileVec;
+	stl::vector<stl::string>	m_offerFileVec;
 	int							m_ofvPos;
-	misc::vector<fx::Offer>		m_offersVec;
+	stl::vector<fx::Offer>		m_offersVec;
 	int							m_ovPos;
 };
 

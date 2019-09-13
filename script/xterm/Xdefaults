@@ -1,0 +1,13 @@
+xterm*faceName: Consolas:size=14
+#xterm*faceName: Monospace:size=13
+XTerm*background: #232221
+XTerm*foreground: #eeefde
+XTerm*pointerColor: red
+XTerm*pointerColorBackground: yellow
+XTerm*cursorColor: green
+XTerm*internalBorder: 3
+XTerm*loginShell: true
+XTerm*scrollBar: false
+XTerm*scrollKey: true
+XTerm*saveLines: 1000
+XTerm*multiClickTime: 250

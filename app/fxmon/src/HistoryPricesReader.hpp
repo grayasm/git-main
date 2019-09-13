@@ -27,7 +27,7 @@ contact: grayasm@gmail.com
 class HistoryPricesReader
 {
 public:
-	HistoryPricesReader(const misc::string& instrument);
+	HistoryPricesReader(const stl::string& instrument);
 	~HistoryPricesReader();
 	HistoryPricesReader(const HistoryPricesReader&) = delete;
 	HistoryPricesReader& operator=(const HistoryPricesReader&) = delete;
@@ -37,16 +37,16 @@ public:
 
 
 private:
-	void ParseFile(const misc::string& filePath,
-		misc::vector<fx::Offer>& result);
+	void ParseFile(const stl::string& filePath,
+		stl::vector<fx::Offer>& result);
 	void Interpolate(const fx::Offer& beg, const fx::Offer& end,
-		misc::vector<fx::Offer>& result);
+		stl::vector<fx::Offer>& result);
 
 private:
-	misc::string	m_instrument;
-	misc::vector<misc::string>	m_offerFileVec;
+	stl::string	m_instrument;
+	stl::vector<stl::string>	m_offerFileVec;
 	int	m_ofvPos;
-	misc::vector<fx::Offer>	m_offersVec;
+	stl::vector<fx::Offer>	m_offersVec;
 	int	m_ovPos;
 };
 

@@ -29,7 +29,7 @@ namespace fx
 	}
 
 	SMA::SMA(
-		const misc::string& instrument,
+		const stl::string& instrument,
 		int period,
 		Timeframe sec,
 		BarType barType,
@@ -56,7 +56,7 @@ namespace fx
 				break;
 			}
 			default:
-				throw misc::exception("SMA unknown BAR type");
+				throw stl::exception("SMA unknown BAR type");
 		}
 	}
 
@@ -103,7 +103,7 @@ namespace fx
 						break;
 					}
 					default:
-						throw misc::exception("SMA unknown BAR type");
+						throw stl::exception("SMA unknown BAR type");
 				}
 			}
 			else
@@ -118,7 +118,7 @@ namespace fx
 		return *this;
 	}
 
-	const misc::string& SMA::GetInstrument() const
+	const stl::string& SMA::GetInstrument() const
 	{
 		return m_instrument;
 	}
@@ -147,7 +147,7 @@ namespace fx
 	void SMA::Update(const fx::Offer& offer)
 	{
 		if (m_instrument != offer.GetInstrument())
-			throw misc::exception("SMA offer is invalid");
+			throw stl::exception("SMA offer is invalid");
 
 		// offer will paint a new bar?
 		bool isNew = m_bar->IsNew(offer);
@@ -179,7 +179,7 @@ namespace fx
 	}
 
 
-	const misc::time& SMA::GetRefTime() const
+	const sys::time& SMA::GetRefTime() const
 	{
 		return m_bar->GetRefTime();
 	}
@@ -196,7 +196,7 @@ namespace fx
             m_sumMinus1P.GetBuy() == 0 ||
             m_sumMinus1P.GetSell() == 0)
         {
-		    throw misc::exception("SMA is invalid");
+		    throw stl::exception("SMA is invalid");
         }
 
         const fx::OHLCPrice& ohlc = m_bar->GetOHLC();

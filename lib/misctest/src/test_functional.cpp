@@ -60,212 +60,212 @@ void test_functional::tearDown()
 //test begin
 void test_functional::unary_function()
 {
-	misc::cout << "\n\n\t*******************************************************";
-	misc::cout <<   "\n\t* TESTING HEADER:  functional.hpp                     *";
-	misc::cout <<   "\n\t*******************************************************";
+	stl::cout << "\n\n\t*******************************************************";
+	stl::cout <<   "\n\t* TESTING HEADER:  functional.hpp                     *";
+	stl::cout <<   "\n\t*******************************************************";
 	
 	
-	misc::cout << "\n\n\tunary_function-----------------------------------------";
+	stl::cout << "\n\n\tunary_function-----------------------------------------";
 	unary_function<std::vector<int> > ("\n\tstd::vector       ");
-	unary_function2<misc::vector<int> >("\n\tmisc::vector      ");
+	unary_function2<stl::vector<int> >("\n\tmisc::vector      ");
 	unary_function<std::list<int> >   ("\n\tstd::list         ");
 	unary_function2<misc::list<int> >  ("\n\tmisc::list        ");
 }
 
 void test_functional::binary_function()
 {
-	misc::cout << "\n\n\tbinary_function----------------------------------------";
+	stl::cout << "\n\n\tbinary_function----------------------------------------";
 	binary_function<std::vector<int> > ("\n\tstd::vector       ");
-	binary_function2<misc::vector<int> >("\n\tmisc::vector      ");
+	binary_function2<stl::vector<int> >("\n\tmisc::vector      ");
 	binary_function<std::list<int> >   ("\n\tstd::list         ");
 	binary_function2<misc::list<int> >  ("\n\tmisc::list        ");
 }
 
 void test_functional::plus()
 {
-	misc::cout << "\n\n\tplus---------------------------------------------------";
+	stl::cout << "\n\n\tplus---------------------------------------------------";
 	plus<std::vector<int> > ("\n\tstd::vector       ");
-	plus2<misc::vector<int> >("\n\tmisc::vector      ");
+	plus2<stl::vector<int> >("\n\tmisc::vector      ");
 	plus<std::list<int> >   ("\n\tstd::list         ");
 	plus2<misc::list<int> >  ("\n\tmisc::list        ");
 }
 
 void test_functional::minus()
 {
-	misc::cout << "\n\n\tminus--------------------------------------------------";
+	stl::cout << "\n\n\tminus--------------------------------------------------";
 	minus<std::vector<int> > ("\n\tstd::vector       ");
-	minus2<misc::vector<int> >("\n\tmisc::vector      ");
+	minus2<stl::vector<int> >("\n\tmisc::vector      ");
 	minus<std::list<int> >   ("\n\tstd::list         ");
 	minus2<misc::list<int> >  ("\n\tmisc::list        ");
 }
 
 void test_functional::multiplies()
 {
-	misc::cout << "\n\n\tmultiplies---------------------------------------------";
+	stl::cout << "\n\n\tmultiplies---------------------------------------------";
 	multiplies<std::vector<int> > ("\n\tstd::vector       ");
-	multiplies2<misc::vector<int> >("\n\tmisc::vector      ");
+	multiplies2<stl::vector<int> >("\n\tmisc::vector      ");
 	multiplies<std::list<int> >   ("\n\tstd::list         ");
 	multiplies2<misc::list<int> >  ("\n\tmisc::list        ");
 }
 
 void test_functional::devides()
 {
-	misc::cout << "\n\n\tdevides------------------------------------------------";
+	stl::cout << "\n\n\tdevides------------------------------------------------";
 	devides<std::vector<int> > ("\n\tstd::vector       ");
-	devides2<misc::vector<int> >("\n\tmisc::vector      ");
+	devides2<stl::vector<int> >("\n\tmisc::vector      ");
 	devides<std::list<int> >   ("\n\tstd::list         ");
 	devides2<misc::list<int> >  ("\n\tmisc::list        ");
 }
 
 void test_functional::modulus()
 {
-	misc::cout << "\n\n\tmodulus------------------------------------------------";
+	stl::cout << "\n\n\tmodulus------------------------------------------------";
 	modulus<std::vector<int> > ("\n\tstd::vector       ");
-	modulus2<misc::vector<int> >("\n\tmisc::vector      ");
+	modulus2<stl::vector<int> >("\n\tmisc::vector      ");
 	modulus<std::list<int> >   ("\n\tstd::list         ");
 	modulus2<misc::list<int> >  ("\n\tmisc::list        ");
 }
 
 void test_functional::negate()
 {
-	misc::cout << "\n\n\tnegate-------------------------------------------------";
+	stl::cout << "\n\n\tnegate-------------------------------------------------";
 	negate<std::vector<int> > ("\n\tstd::vector       ");
-	negate2<misc::vector<int> >("\n\tmisc::vector      ");
+	negate2<stl::vector<int> >("\n\tmisc::vector      ");
 	negate<std::list<int> >   ("\n\tstd::list         ");
 	negate2<misc::list<int> >  ("\n\tmisc::list        ");
 }
 
 void test_functional::equal_to()
 {
-	misc::cout << "\n\n\tequal_to-----------------------------------------------";
+	stl::cout << "\n\n\tequal_to-----------------------------------------------";
 	equal_to<std::vector<int> > ("\n\tstd::vector       ");
-	equal_to2<misc::vector<int> >("\n\tmisc::vector      ");
+	equal_to2<stl::vector<int> >("\n\tmisc::vector      ");
 	equal_to<std::list<int> >   ("\n\tstd::list         ");
 	equal_to2<misc::list<int> >  ("\n\tmisc::list        ");
 }
 
 void test_functional::not_equal_to()
 {
-	misc::cout << "\n\n\tnot_equal_to-------------------------------------------";
+	stl::cout << "\n\n\tnot_equal_to-------------------------------------------";
 	not_equal_to<std::vector<int> > ("\n\tstd::vector       ");
-	not_equal_to2<misc::vector<int> >("\n\tmisc::vector      ");
+	not_equal_to2<stl::vector<int> >("\n\tmisc::vector      ");
 	not_equal_to<std::list<int> >   ("\n\tstd::list         ");
 	not_equal_to2<misc::list<int> >  ("\n\tmisc::list        ");
 }
 
 void test_functional::greater()
 {
-	misc::cout << "\n\n\tgreater------------------------------------------------";
+	stl::cout << "\n\n\tgreater------------------------------------------------";
 	greater<std::vector<int> > ("\n\tstd::vector       ");
-	greater2<misc::vector<int> >("\n\tmisc::vector      ");
+	greater2<stl::vector<int> >("\n\tmisc::vector      ");
 	greater<std::list<int> >   ("\n\tstd::list         ");
 	greater2<misc::list<int> >  ("\n\tmisc::list        ");
 }
 
 void test_functional::less()
 {
-	misc::cout << "\n\n\tless---------------------------------------------------";
+	stl::cout << "\n\n\tless---------------------------------------------------";
 	less<std::vector<int> > ("\n\tstd::vector       ");
-	less2<misc::vector<int> >("\n\tmisc::vector      ");
+	less2<stl::vector<int> >("\n\tmisc::vector      ");
 	less<std::list<int> >   ("\n\tstd::list         ");
 	less2<misc::list<int> >  ("\n\tmisc::list        ");
 }
 
 void test_functional::greater_equal()
 {
-	misc::cout << "\n\n\tgreater_equal------------------------------------------";
+	stl::cout << "\n\n\tgreater_equal------------------------------------------";
 	greater_equal<std::vector<int> > ("\n\tstd::vector       ");
-	greater_equal2<misc::vector<int> >("\n\tmisc::vector      ");
+	greater_equal2<stl::vector<int> >("\n\tmisc::vector      ");
 	greater_equal<std::list<int> >   ("\n\tstd::list         ");
 	greater_equal2<misc::list<int> >  ("\n\tmisc::list        ");
 }
 
 void test_functional::less_equal()
 {
-	misc::cout << "\n\n\tless_equal---------------------------------------------";
+	stl::cout << "\n\n\tless_equal---------------------------------------------";
 	less_equal<std::vector<int> > ("\n\tstd::vector       ");
-	less_equal2<misc::vector<int> >("\n\tmisc::vector      ");
+	less_equal2<stl::vector<int> >("\n\tmisc::vector      ");
 	less_equal<std::list<int> >   ("\n\tstd::list         ");
 	less_equal2<misc::list<int> >  ("\n\tmisc::list        ");
 }
 
 void test_functional::logical_and()
 {
-	misc::cout << "\n\n\tlogical_and--------------------------------------------";
+	stl::cout << "\n\n\tlogical_and--------------------------------------------";
 	logical_and<std::vector<int> > ("\n\tstd::vector       ");
-	logical_and2<misc::vector<int> >("\n\tmisc::vector      ");
+	logical_and2<stl::vector<int> >("\n\tmisc::vector      ");
 	logical_and<std::list<int> >   ("\n\tstd::list         ");
 	logical_and2<misc::list<int> >  ("\n\tmisc::list        ");
 }
 
 void test_functional::logical_or()
 {
-	misc::cout << "\n\n\tlogical_or---------------------------------------------";
+	stl::cout << "\n\n\tlogical_or---------------------------------------------";
 	logical_or<std::vector<int> > ("\n\tstd::vector       ");
-	logical_or2<misc::vector<int> >("\n\tmisc::vector      ");
+	logical_or2<stl::vector<int> >("\n\tmisc::vector      ");
 	logical_or<std::list<int> >   ("\n\tstd::list         ");
 	logical_or2<misc::list<int> >  ("\n\tmisc::list        ");
 }
 
 void test_functional::logical_not()
 {
-	misc::cout << "\n\n\tlogical_not--------------------------------------------";
+	stl::cout << "\n\n\tlogical_not--------------------------------------------";
 	logical_not<std::vector<int> > ("\n\tstd::vector       ");
-	logical_not2<misc::vector<int> >("\n\tmisc::vector      ");
+	logical_not2<stl::vector<int> >("\n\tmisc::vector      ");
 	logical_not<std::list<int> >   ("\n\tstd::list         ");
 	logical_not2<misc::list<int> >  ("\n\tmisc::list        ");
 }
 
 void test_functional::unary_negate()
 {
-	misc::cout << "\n\n\tunary_negate-------------------------------------------";
+	stl::cout << "\n\n\tunary_negate-------------------------------------------";
 	unary_negate<std::vector<int> > ("\n\tstd::vector       ");
-	unary_negate2<misc::vector<int> >("\n\tmisc::vector      ");
+	unary_negate2<stl::vector<int> >("\n\tmisc::vector      ");
 	unary_negate<std::list<int> >   ("\n\tstd::list         ");
 	unary_negate2<misc::list<int> >  ("\n\tmisc::list        ");
 }
 
 void test_functional::binary_negate()
 {
-	misc::cout << "\n\n\tunary_function-----------------------------------------";
+	stl::cout << "\n\n\tunary_function-----------------------------------------";
 	binary_negate<std::vector<int> > ("\n\tstd::vector       ");
-	binary_negate2<misc::vector<int> >("\n\tmisc::vector      ");
+	binary_negate2<stl::vector<int> >("\n\tmisc::vector      ");
 	binary_negate<std::list<int> >   ("\n\tstd::list         ");
 	binary_negate2<misc::list<int> >  ("\n\tmisc::list        ");
 }
 
 void test_functional::binder1st()
 {
-	misc::cout << "\n\n\tbinder1st----------------------------------------------";
+	stl::cout << "\n\n\tbinder1st----------------------------------------------";
 	binder1st<std::vector<int> > ("\n\tstd::vector       ");
-	binder1st<misc::vector<int> >("\n\tmisc::vector      ");
+	binder1st<stl::vector<int> >("\n\tmisc::vector      ");
 	binder1st<std::list<int> >   ("\n\tstd::list         ");
 	binder1st<misc::list<int> >  ("\n\tmisc::list        ");
 }
 
 void test_functional::binder2nd()
 {
-	misc::cout << "\n\n\tbinder2nd----------------------------------------------";
+	stl::cout << "\n\n\tbinder2nd----------------------------------------------";
 	binder2nd<std::vector<int> > ("\n\tstd::vector       ");
-	binder2nd_2<misc::vector<int> >("\n\tmisc::vector      ");
+	binder2nd_2<stl::vector<int> >("\n\tmisc::vector      ");
 	binder2nd<std::list<int> >   ("\n\tstd::list         ");
 	binder2nd_2<misc::list<int> >  ("\n\tmisc::list        ");
 }
 
 void test_functional::pointer_to_unary_function()
 {
-	misc::cout << "\n\n\tpointer_to_unary_function------------------------------";
+	stl::cout << "\n\n\tpointer_to_unary_function------------------------------";
 	pointer_to_unary_function<std::vector<double> > ("\n\tstd::vector       ");
-	pointer_to_unary_function2<misc::vector<double> >("\n\tmisc::vector      ");
+	pointer_to_unary_function2<stl::vector<double> >("\n\tmisc::vector      ");
 	pointer_to_unary_function<std::list<double> >   ("\n\tstd::list         ");
 	pointer_to_unary_function2<misc::list<double> >  ("\n\tmisc::list        ");
 }
 
 void test_functional::pointer_to_binary_function()
 {
-	misc::cout << "\n\n\tpointer_to_binary_function-----------------------------";
+	stl::cout << "\n\n\tpointer_to_binary_function-----------------------------";
 	pointer_to_binary_function<std::vector<double> > ("\n\tstd::vector       ");
-	pointer_to_binary_function2<misc::vector<double> >("\n\tmisc::vector      ");
+	pointer_to_binary_function2<stl::vector<double> >("\n\tmisc::vector      ");
 	pointer_to_binary_function<std::list<double> >   ("\n\tstd::list         ");
 	pointer_to_binary_function2<misc::list<double> >  ("\n\tmisc::list        ");
 }
@@ -280,9 +280,9 @@ struct MemFunT
 
 void test_functional::mem_fun_t()
 {
-	misc::cout << "\n\n\tmem_fun_t----------------------------------------------";
+	stl::cout << "\n\n\tmem_fun_t----------------------------------------------";
 	mem_fun_t<std::vector<MemFunT> > ("\n\tstd::vector       ");
-	mem_fun_t<misc::vector<MemFunT> >("\n\tmisc::vector      ");
+	mem_fun_t<stl::vector<MemFunT> >("\n\tmisc::vector      ");
 	mem_fun_t<std::list<MemFunT> >   ("\n\tstd::list         ");
 	mem_fun_t<misc::list<MemFunT> >  ("\n\tmisc::list        ");
 }
@@ -297,9 +297,9 @@ struct MemFun1T
 
 void test_functional::mem_fun1_t()
 {
-	misc::cout << "\n\n\tmem_fun1_t---------------------------------------------";
+	stl::cout << "\n\n\tmem_fun1_t---------------------------------------------";
 	mem_fun1_t<std::vector<MemFun1T> > ("\n\tstd::vector       ");
-	mem_fun1_t<misc::vector<MemFun1T> >("\n\tmisc::vector      ");
+	mem_fun1_t<stl::vector<MemFun1T> >("\n\tmisc::vector      ");
 	mem_fun1_t<std::list<MemFun1T> >   ("\n\tstd::list         ");
 	mem_fun1_t<misc::list<MemFun1T> >  ("\n\tmisc::list        ");
 }
@@ -314,9 +314,9 @@ struct ConstMemFunT
 
 void test_functional::const_mem_fun_t()
 {
-	misc::cout << "\n\n\tconst_mem_fun_t----------------------------------------";
+	stl::cout << "\n\n\tconst_mem_fun_t----------------------------------------";
 	const_mem_fun_t<std::vector<ConstMemFunT> > ("\n\tstd::vector       ");
-	const_mem_fun_t<misc::vector<ConstMemFunT> >("\n\tmisc::vector      ");
+	const_mem_fun_t<stl::vector<ConstMemFunT> >("\n\tmisc::vector      ");
 	const_mem_fun_t<std::list<ConstMemFunT> >   ("\n\tstd::list         ");
 	const_mem_fun_t<misc::list<ConstMemFunT> >  ("\n\tmisc::list        ");
 }
@@ -332,9 +332,9 @@ struct ConstMemFun1T
 
 void test_functional::const_mem_fun1_t()
 {
-	misc::cout << "\n\n\tconst_mem_fun1_t---------------------------------------";
+	stl::cout << "\n\n\tconst_mem_fun1_t---------------------------------------";
 	const_mem_fun1_t<std::vector<ConstMemFun1T> > ("\n\tstd::vector       ");
-	const_mem_fun1_t<misc::vector<ConstMemFun1T> >("\n\tmisc::vector      ");
+	const_mem_fun1_t<stl::vector<ConstMemFun1T> >("\n\tmisc::vector      ");
 	const_mem_fun1_t<std::list<ConstMemFun1T> >   ("\n\tstd::list         ");
 	const_mem_fun1_t<misc::list<ConstMemFun1T> >  ("\n\tmisc::list        ");
 }
@@ -350,9 +350,9 @@ struct MemFunRefT
 
 void test_functional::mem_fun_ref_t()
 {
-	misc::cout << "\n\n\tmem_fun_ref_t------------------------------------------";
+	stl::cout << "\n\n\tmem_fun_ref_t------------------------------------------";
 	mem_fun_ref_t<std::vector<MemFunRefT> > ("\n\tstd::vector       ");
-	mem_fun_ref_t<misc::vector<MemFunRefT> >("\n\tmisc::vector      ");
+	mem_fun_ref_t<stl::vector<MemFunRefT> >("\n\tmisc::vector      ");
 	mem_fun_ref_t<std::list<MemFunRefT> >   ("\n\tstd::list         ");
 	mem_fun_ref_t<misc::list<MemFunRefT> >  ("\n\tmisc::list        ");
 }
@@ -367,9 +367,9 @@ struct MemFun1RefT
 
 void test_functional::mem_fun1_ref_t()
 {
-	misc::cout << "\n\n\tmem_fun1_ref_t-----------------------------------------";
+	stl::cout << "\n\n\tmem_fun1_ref_t-----------------------------------------";
 	mem_fun1_ref_t<std::vector<MemFun1RefT> > ("\n\tstd::vector       ");
-	mem_fun1_ref_t<misc::vector<MemFun1RefT> >("\n\tmisc::vector      ");
+	mem_fun1_ref_t<stl::vector<MemFun1RefT> >("\n\tmisc::vector      ");
 	mem_fun1_ref_t<std::list<MemFun1RefT> >   ("\n\tstd::list         ");
 	mem_fun1_ref_t<misc::list<MemFun1RefT> >  ("\n\tmisc::list        ");
 }
@@ -385,9 +385,9 @@ struct ConstMemRefFunT
 
 void test_functional::const_mem_fun_ref_t()
 {
-	misc::cout << "\n\n\tconst_mem_fun_ref_t------------------------------------";
+	stl::cout << "\n\n\tconst_mem_fun_ref_t------------------------------------";
 	const_mem_fun_ref_t<std::vector<ConstMemRefFunT> > ("\n\tstd::vector       ");
-	const_mem_fun_ref_t<misc::vector<ConstMemRefFunT> >("\n\tmisc::vector      ");
+	const_mem_fun_ref_t<stl::vector<ConstMemRefFunT> >("\n\tmisc::vector      ");
 	const_mem_fun_ref_t<std::list<ConstMemRefFunT> >   ("\n\tstd::list         ");
 	const_mem_fun_ref_t<misc::list<ConstMemRefFunT> >  ("\n\tmisc::list        ");
 }
@@ -402,54 +402,54 @@ struct ConstMemFun1RefT
 
 void test_functional::const_mem_fun1_ref_t()
 {
-	misc::cout << "\n\n\tconst_mem_fun1_ref_t-----------------------------------";
+	stl::cout << "\n\n\tconst_mem_fun1_ref_t-----------------------------------";
 	const_mem_fun1_ref_t<std::vector<ConstMemFun1RefT> > ("\n\tstd::vector       ");
-	const_mem_fun1_ref_t<misc::vector<ConstMemFun1RefT> >("\n\tmisc::vector      ");
+	const_mem_fun1_ref_t<stl::vector<ConstMemFun1RefT> >("\n\tmisc::vector      ");
 	const_mem_fun1_ref_t<std::list<ConstMemFun1RefT> >   ("\n\tstd::list         ");
 	const_mem_fun1_ref_t<misc::list<ConstMemFun1RefT> >  ("\n\tmisc::list        ");
 }
 
 void test_functional::not1()
 {
-	misc::cout << "\n\n\tnot1---------------------------------------------------";
+	stl::cout << "\n\n\tnot1---------------------------------------------------";
 	not1<std::vector<int> > ("\n\tstd::vector       ");
-	not1_2<misc::vector<int> >("\n\tmisc::vector      ");
+	not1_2<stl::vector<int> >("\n\tmisc::vector      ");
 	not1<std::list<int> >   ("\n\tstd::list         ");
 	not1_2<misc::list<int> >  ("\n\tmisc::list        ");
 }
 
 void test_functional::not2()
 {
-	misc::cout << "\n\n\tnot2---------------------------------------------------";
+	stl::cout << "\n\n\tnot2---------------------------------------------------";
 	not2<std::vector<int> > ("\n\tstd::vector       ");
-	not2_2<misc::vector<int> >("\n\tmisc::vector      ");
+	not2_2<stl::vector<int> >("\n\tmisc::vector      ");
 	not2<std::list<int> >   ("\n\tstd::list         ");
 	not2_2<misc::list<int> >  ("\n\tmisc::list        ");
 }
 
 void test_functional::bind1st()
 {
-	misc::cout << "\n\n\tbind1st------------------------------------------------";
+	stl::cout << "\n\n\tbind1st------------------------------------------------";
 	bind1st<std::vector<int> > ("\n\tstd::vector       ");
-	bind1st_2<misc::vector<int> >("\n\tmisc::vector      ");
+	bind1st_2<stl::vector<int> >("\n\tmisc::vector      ");
 	bind1st<std::list<int> >   ("\n\tstd::list         ");
 	bind1st_2<misc::list<int> >  ("\n\tmisc::list        ");
 }
 
 void test_functional::bind2nd()
 {
-	misc::cout << "\n\n\tbind2nd------------------------------------------------";
+	stl::cout << "\n\n\tbind2nd------------------------------------------------";
 	bind2nd<std::vector<int> > ("\n\tstd::vector       ");
-	bind2nd_2<misc::vector<int> >("\n\tmisc::vector      ");
+	bind2nd_2<stl::vector<int> >("\n\tmisc::vector      ");
 	bind2nd<std::list<int> >   ("\n\tstd::list         ");
 	bind2nd_2<misc::list<int> >  ("\n\tmisc::list        ");
 }
 
 void test_functional::ptr_fun()
 {
-	misc::cout << "\n\n\tptr_fun------------------------------------------------";
+	stl::cout << "\n\n\tptr_fun------------------------------------------------";
 	ptr_fun<std::vector<double> > ("\n\tstd::vector       ");
-	ptr_fun_2<misc::vector<double> >("\n\tmisc::vector      ");
+	ptr_fun_2<stl::vector<double> >("\n\tmisc::vector      ");
 	ptr_fun<std::list<double> >   ("\n\tstd::list         ");
 	ptr_fun_2<misc::list<double> >  ("\n\tmisc::list        ");
 }
@@ -463,18 +463,18 @@ struct MemFunS1{
 
 void test_functional::mem_fun()
 {
-	misc::cout << "\n\n\tmem_fun------------------------------------------------";
+	stl::cout << "\n\n\tmem_fun------------------------------------------------";
 	mem_fun<std::vector<MemFunS1*> >   ("\n\tstd::vector       ");
-	mem_fun_2<misc::vector<MemFunS1*> >("\n\tmisc::vector      ");
+	mem_fun_2<stl::vector<MemFunS1*> >("\n\tmisc::vector      ");
 	mem_fun<std::list<MemFunS1*> >     ("\n\tstd::list         ");
 	mem_fun_2<misc::list<MemFunS1*> >  ("\n\tmisc::list        ");
 }
 
 void test_functional::mem_fun_ref()
 {
-	misc::cout << "\n\n\tmem_fun_ref--------------------------------------------";
+	stl::cout << "\n\n\tmem_fun_ref--------------------------------------------";
 	mem_fun_ref<std::vector<MemFunS1> > ("\n\tstd::vector       ");
-	mem_fun_ref_2<misc::vector<MemFunS1> >("\n\tmisc::vector      ");
+	mem_fun_ref_2<stl::vector<MemFunS1> >("\n\tmisc::vector      ");
 	mem_fun_ref<std::list<MemFunS1> >   ("\n\tstd::list         ");
 	mem_fun_ref_2<misc::list<MemFunS1> >  ("\n\tmisc::list        ");
 }
@@ -544,7 +544,7 @@ void test_functional::unary_function2(const char* msg)
 
 //GNU(-std=c++98): take the definitions outside test_functional::binary_function
 template<typename T>
-struct Compare_0 : public misc::binary_function<T,T,bool>
+struct Compare_0 : public stl::binary_function<T,T,bool>
 {
 	bool operator() (T a, T b) {return (a==b);}
 };
@@ -1242,7 +1242,7 @@ void test_functional::less(const char* msg)
 	for( it = v2.begin(), i0 = 1; it != v2.end(); ++it, ++i0) *it = Cval(i0);
 
 #if !defined(DEBUG)
-	misc::vector<bool> v3(m_container_size, false);
+	stl::vector<bool> v3(m_container_size, false);
 #else
 	std::vector<bool> v3(m_container_size);
 #endif
@@ -1277,7 +1277,7 @@ void test_functional::less2(const char* msg)
 	Container v1(m_container_size), v2(m_container_size);
 	for( it = v1.begin(), i0 = 0; it != v1.end(); ++it, ++i0) *it = Cval(i0);
 	for( it = v2.begin(), i0 = 1; it != v2.end(); ++it, ++i0) *it = Cval(i0);
-	misc::vector<bool> v3(m_container_size, false);
+	stl::vector<bool> v3(m_container_size, false);
 
 
 
@@ -1751,7 +1751,7 @@ void test_functional::binary_negate2(const char* msg)
 		//  MISC
 		misc::equal_to<Cval> equal_m;
 		misc::binary_negate<misc::equal_to<Cval> > nonequal_m(equal_m);
-		misc::pair<It,It> firstmatch_m, firstmismatch_m;
+		stl::pair<It,It> firstmatch_m, firstmismatch_m;
 		firstmatch_m = misc::mismatch(v1.begin(), v1.end(), v2.begin(), nonequal_m);
 		firstmismatch_m = misc::mismatch(v1.begin(), v1.end(), v2.begin(), equal_m);
 		CPPUNIT_ASSERT(firstmatch_m.first == v1.end());
@@ -1761,7 +1761,7 @@ void test_functional::binary_negate2(const char* msg)
 		//  MISC
 		std::equal_to<Cval> equal_s;
 		std::binary_negate<std::equal_to<Cval> > nonequal_s(equal_s);
-		misc::pair<It,It> firstmatch_s, firstmismatch_s;
+		stl::pair<It,It> firstmatch_s, firstmismatch_s;
 		firstmatch_s = misc::mismatch(v1.begin(), v1.end(), v2.begin(), nonequal_s);
 		firstmismatch_s = misc::mismatch(v1.begin(), v1.end(), v2.begin(), equal_s);
 		CPPUNIT_ASSERT(firstmatch_s.first== v1.end());
@@ -2369,12 +2369,12 @@ void test_functional::not2_2(const char* msg)
 		time_printer tp(msg, m_print_time);
 
 		//  MISC
-		misc::pair<It,It> firstmatch =
+		stl::pair<It,It> firstmatch =
 			misc::mismatch(v1.begin(), v1.end(), v2.begin(), std::not2(misc::equal_to<int>()));
 		CPPUNIT_ASSERT(firstmatch.first == v1.begin() && firstmatch.second == v2.begin());
 
 		//  MISC
-		misc::pair<It,It> firstmatch2 =
+		stl::pair<It,It> firstmatch2 =
 			misc::mismatch(v1.begin(), v1.end(), v2.begin(), misc::not2(std::equal_to<int>()));
 		CPPUNIT_ASSERT(firstmatch2.first == v1.begin() && firstmatch2.second == v2.begin());
 	}
@@ -2559,7 +2559,7 @@ void test_functional::mem_fun(const char* msg)
 		*it = new MemFunS1(i0);
 
 #if !defined(DEBUG)
-	misc::vector<double> v2(m_container_size); // result
+	stl::vector<double> v2(m_container_size); // result
 #else
 	std::vector<double> v2(m_container_size);
 #endif
@@ -2599,7 +2599,7 @@ void test_functional::mem_fun_2(const char* msg)
 
 	Container v1(m_container_size);
 	for( it = v1.begin(), i0 = 1; it != v1.end(); ++it, ++i0) *it = new MemFunS1(i0);
-	misc::vector<double> v2(m_container_size); // result
+	stl::vector<double> v2(m_container_size); // result
 
 
 	//  TEST
@@ -2640,7 +2640,7 @@ void test_functional::mem_fun_ref(const char* msg)
 		*it = Cval(i0);
 
 #if !defined(DEBUG)
-	misc::vector<double> v2(m_container_size);// store the results of Cval::Sqrt(double)
+	stl::vector<double> v2(m_container_size);// store the results of Cval::Sqrt(double)
 #else
 	std::vector<double> v2(m_container_size);
 #endif
@@ -2680,7 +2680,7 @@ void test_functional::mem_fun_ref_2(const char* msg)
 
 	Container v1(m_container_size);
 	for( it = v1.begin(), i0 = 0; it != v1.end(); ++it, ++i0) *it = Cval(i0);
-	misc::vector<double> v2(m_container_size);// store the results of Cval::Sqrt(double)
+	stl::vector<double> v2(m_container_size);// store the results of Cval::Sqrt(double)
 
 
 	//  TEST

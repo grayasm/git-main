@@ -260,7 +260,8 @@ void findOrdersByTypeAndDirection(IO2GTableManager *tableManager, const char *sO
     IO2GOrderTableRow *orderRow = NULL;
     const char *names[] = {"Type", "BuySell"};
     const void *values[] = {(void *)sOrderType, (void *)sBuySell};
-    while (ordersTable->getNextRowByMultiColumnValues(2, names, values, ordersIterator, orderRow))
+	O2GRelationalOperators ops[] = { EqualTo };
+    while (ordersTable->getNextRowByMultiColumnValues(2, names, ops, values, OperatorOR, ordersIterator, orderRow))
     {
         std::cout << "Order: " << orderRow->getOrderID() << std::endl;
         std::cout << "RequestID='" << orderRow->getRequestID() << "', "
@@ -287,7 +288,7 @@ void findConditionalOrders(IO2GTableManager *tableManager)
     const void *values[] = {(void *)O2G2::Orders::LimitEntry, (void *)O2G2::Orders::StopEntry,
             (void *)O2G2::Orders::Stop, (void *)O2G2::Orders::Limit,
             (void *)O2G2::Orders::StopTrailingEntry, (void *)O2G2::Orders::LimitTrailingEntry};
-    while (ordersTable->getNextRowByColumnValues("Type", 6, values, ordersIterator, orderRow))
+    while (ordersTable->getNextRowByColumnValues("Type", EqualTo, 6, values, ordersIterator, orderRow))
     {
         std::cout << "Order: " << orderRow->getOrderID() << std::endl;
         std::cout << "RequestID='" << orderRow->getRequestID() << "', "

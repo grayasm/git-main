@@ -36,8 +36,8 @@ namespace fxcm
 		TradingSettings(const TradingSettings& tc);
 		TradingSettings& operator=(const TradingSettings& tc);
 
-		const misc::string& GetInstrument() const;
-		void SetInstrument(const misc::string& instrument);
+		const stl::string& GetInstrument() const;
+		void SetInstrument(const stl::string& instrument);
 
 		int GetCondDistStopForTrade() const;
 		void SetCondDistStopForTrade(int val);		
@@ -82,7 +82,7 @@ namespace fxcm
 		void SetLMR(double val);
 
 	private:
-		misc::string	m_instrument;
+		stl::string	m_instrument;
 		int				m_condDistStopForTrade;
 		int				m_condDistLimitForTrade;
 		int				m_condDistEntryStop;

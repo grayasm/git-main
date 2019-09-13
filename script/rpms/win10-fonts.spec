@@ -1,12 +1,16 @@
 #
 # Spec file for win10-fonts
 #
-# ftp://138.68.68.112/Linux/office/win10-fonts.tar.gz
+# The current archive contains fonts from Win7, Win8 and Win10.
+# The .fon fonts could not be converted with fontforge+autotrace, so they got
+# removed from the package.
+#
+# ftp://vasilian.net/Misc/win10-fonts.tar.gz
 
 
 %define    _topdir       /home/mihai/rpmbuild
 %define    name          win10-fonts
-%define    version       1.0
+%define    version       1.1
 %define    release       1.el7
 %define    buildroot     %{_topdir}/%{name}-%{version}-root
 
@@ -57,14 +61,60 @@ fi
 
 %files
 %defattr(-,root,root)
+/usr/share/fonts/win10-fonts/AdobeArabic-Bold.otf
+/usr/share/fonts/win10-fonts/AdobeArabic-BoldItalic.otf
+/usr/share/fonts/win10-fonts/AdobeArabic-Italic.otf
+/usr/share/fonts/win10-fonts/AdobeArabic-Regular.otf
+/usr/share/fonts/win10-fonts/AdobeHebrew-Bold.otf
+/usr/share/fonts/win10-fonts/AdobeHebrew-BoldItalic.otf
+/usr/share/fonts/win10-fonts/AdobeHebrew-Italic.otf
+/usr/share/fonts/win10-fonts/AdobeHebrew-Regular.otf
+/usr/share/fonts/win10-fonts/CAMBRIA_0.TTC
+/usr/share/fonts/win10-fonts/Caladea-Bold.ttf
+/usr/share/fonts/win10-fonts/Caladea-BoldItalic.ttf
+/usr/share/fonts/win10-fonts/Caladea-Italic.ttf
+/usr/share/fonts/win10-fonts/Caladea-Regular.ttf
 /usr/share/fonts/win10-fonts/Candara.ttf
 /usr/share/fonts/win10-fonts/Candarab.ttf
 /usr/share/fonts/win10-fonts/Candarai.ttf
 /usr/share/fonts/win10-fonts/Candaraz.ttf
-/usr/share/fonts/win10-fonts/Deng.ttf
-/usr/share/fonts/win10-fonts/Dengb.ttf
-/usr/share/fonts/win10-fonts/Dengl.ttf
+/usr/share/fonts/win10-fonts/Carlito-Bold.ttf
+/usr/share/fonts/win10-fonts/Carlito-BoldItalic.ttf
+/usr/share/fonts/win10-fonts/Carlito-Italic.ttf
+/usr/share/fonts/win10-fonts/Carlito-Regular.ttf
+/usr/share/fonts/win10-fonts/DejaVuMathTeXGyre.ttf
+/usr/share/fonts/win10-fonts/DejaVuSans-Bold.ttf
+/usr/share/fonts/win10-fonts/DejaVuSans-BoldOblique.ttf
+/usr/share/fonts/win10-fonts/DejaVuSans-ExtraLight.ttf
+/usr/share/fonts/win10-fonts/DejaVuSans-Oblique.ttf
+/usr/share/fonts/win10-fonts/DejaVuSans.ttf
+/usr/share/fonts/win10-fonts/DejaVuSansCondensed-Bold.ttf
+/usr/share/fonts/win10-fonts/DejaVuSansCondensed-BoldOblique.ttf
+/usr/share/fonts/win10-fonts/DejaVuSansCondensed-Oblique.ttf
+/usr/share/fonts/win10-fonts/DejaVuSansCondensed.ttf
+/usr/share/fonts/win10-fonts/DejaVuSansMono-Bold.ttf
+/usr/share/fonts/win10-fonts/DejaVuSansMono-BoldOblique.ttf
+/usr/share/fonts/win10-fonts/DejaVuSansMono-Oblique.ttf
+/usr/share/fonts/win10-fonts/DejaVuSansMono.ttf
+/usr/share/fonts/win10-fonts/DejaVuSerif-Bold.ttf
+/usr/share/fonts/win10-fonts/DejaVuSerif-BoldItalic.ttf
+/usr/share/fonts/win10-fonts/DejaVuSerif-Italic.ttf
+/usr/share/fonts/win10-fonts/DejaVuSerif.ttf
+/usr/share/fonts/win10-fonts/DejaVuSerifCondensed-Bold.ttf
+/usr/share/fonts/win10-fonts/DejaVuSerifCondensed-BoldItalic.ttf
+/usr/share/fonts/win10-fonts/DejaVuSerifCondensed-Italic.ttf
+/usr/share/fonts/win10-fonts/DejaVuSerifCondensed.ttf
+/usr/share/fonts/win10-fonts/EmojiOneColor-SVGinOT.ttf
 /usr/share/fonts/win10-fonts/Gabriola.ttf
+/usr/share/fonts/win10-fonts/GenBasB.ttf
+/usr/share/fonts/win10-fonts/GenBasBI.ttf
+/usr/share/fonts/win10-fonts/GenBasI.ttf
+/usr/share/fonts/win10-fonts/GenBasR.ttf
+/usr/share/fonts/win10-fonts/GenBkBasB.ttf
+/usr/share/fonts/win10-fonts/GenBkBasBI.ttf
+/usr/share/fonts/win10-fonts/GenBkBasI.ttf
+/usr/share/fonts/win10-fonts/GenBkBasR.ttf
+/usr/share/fonts/win10-fonts/Inkfree.ttf
 /usr/share/fonts/win10-fonts/KhmerUI.ttf
 /usr/share/fonts/win10-fonts/KhmerUIb.ttf
 /usr/share/fonts/win10-fonts/LaoUI.ttf
@@ -72,20 +122,83 @@ fi
 /usr/share/fonts/win10-fonts/LeelUIsl.ttf
 /usr/share/fonts/win10-fonts/LeelaUIb.ttf
 /usr/share/fonts/win10-fonts/LeelawUI.ttf
+/usr/share/fonts/win10-fonts/LiberationMono-Bold.ttf
+/usr/share/fonts/win10-fonts/LiberationMono-BoldItalic.ttf
+/usr/share/fonts/win10-fonts/LiberationMono-Italic.ttf
+/usr/share/fonts/win10-fonts/LiberationMono-Regular.ttf
+/usr/share/fonts/win10-fonts/LiberationSans-Bold.ttf
+/usr/share/fonts/win10-fonts/LiberationSans-BoldItalic.ttf
+/usr/share/fonts/win10-fonts/LiberationSans-Italic.ttf
+/usr/share/fonts/win10-fonts/LiberationSans-Regular.ttf
+/usr/share/fonts/win10-fonts/LiberationSansNarrow-Bold.ttf
+/usr/share/fonts/win10-fonts/LiberationSansNarrow-BoldItalic.ttf
+/usr/share/fonts/win10-fonts/LiberationSansNarrow-Italic.ttf
+/usr/share/fonts/win10-fonts/LiberationSansNarrow-Regular.ttf
+/usr/share/fonts/win10-fonts/LiberationSerif-Bold.ttf
+/usr/share/fonts/win10-fonts/LiberationSerif-BoldItalic.ttf
+/usr/share/fonts/win10-fonts/LiberationSerif-Italic.ttf
+/usr/share/fonts/win10-fonts/LiberationSerif-Regular.ttf
+/usr/share/fonts/win10-fonts/LinBiolinum_RB_G.ttf
+/usr/share/fonts/win10-fonts/LinBiolinum_RI_G.ttf
+/usr/share/fonts/win10-fonts/LinBiolinum_R_G.ttf
+/usr/share/fonts/win10-fonts/LinLibertine_DR_G.ttf
+/usr/share/fonts/win10-fonts/LinLibertine_RBI_G.ttf
+/usr/share/fonts/win10-fonts/LinLibertine_RB_G.ttf
+/usr/share/fonts/win10-fonts/LinLibertine_RI_G.ttf
+/usr/share/fonts/win10-fonts/LinLibertine_RZI_G.ttf
+/usr/share/fonts/win10-fonts/LinLibertine_RZ_G.ttf
+/usr/share/fonts/win10-fonts/LinLibertine_R_G.ttf
 /usr/share/fonts/win10-fonts/Nirmala.ttf
 /usr/share/fonts/win10-fonts/NirmalaB.ttf
 /usr/share/fonts/win10-fonts/NirmalaS.ttf
-/usr/share/fonts/win10-fonts/Sanskr.ttf
+/usr/share/fonts/win10-fonts/OpenSans-Bold.ttf
+/usr/share/fonts/win10-fonts/OpenSans-BoldItalic.ttf
+/usr/share/fonts/win10-fonts/OpenSans-Italic.ttf
+/usr/share/fonts/win10-fonts/OpenSans-Regular.ttf
+/usr/share/fonts/win10-fonts/PT_Serif-Web-Bold.ttf
+/usr/share/fonts/win10-fonts/PT_Serif-Web-BoldItalic.ttf
+/usr/share/fonts/win10-fonts/PT_Serif-Web-Italic.ttf
+/usr/share/fonts/win10-fonts/PT_Serif-Web-Regular.ttf
 /usr/share/fonts/win10-fonts/Shonar.ttf
 /usr/share/fonts/win10-fonts/Shonarb.ttf
 /usr/share/fonts/win10-fonts/Sitka.ttc
 /usr/share/fonts/win10-fonts/SitkaB.ttc
 /usr/share/fonts/win10-fonts/SitkaI.ttc
 /usr/share/fonts/win10-fonts/SitkaZ.ttc
+/usr/share/fonts/win10-fonts/SourceCodePro-Black.ttf
+/usr/share/fonts/win10-fonts/SourceCodePro-BlackIt.ttf
+/usr/share/fonts/win10-fonts/SourceCodePro-Bold.ttf
+/usr/share/fonts/win10-fonts/SourceCodePro-BoldIt.ttf
+/usr/share/fonts/win10-fonts/SourceCodePro-ExtraLight.ttf
+/usr/share/fonts/win10-fonts/SourceCodePro-ExtraLightIt.ttf
+/usr/share/fonts/win10-fonts/SourceCodePro-It.ttf
+/usr/share/fonts/win10-fonts/SourceCodePro-Light.ttf
+/usr/share/fonts/win10-fonts/SourceCodePro-LightIt.ttf
+/usr/share/fonts/win10-fonts/SourceCodePro-Medium.ttf
+/usr/share/fonts/win10-fonts/SourceCodePro-MediumIt.ttf
+/usr/share/fonts/win10-fonts/SourceCodePro-Regular.ttf
+/usr/share/fonts/win10-fonts/SourceCodePro-Semibold.ttf
+/usr/share/fonts/win10-fonts/SourceCodePro-SemiboldIt.ttf
+/usr/share/fonts/win10-fonts/SourceSansPro-Black.ttf
+/usr/share/fonts/win10-fonts/SourceSansPro-BlackIt.ttf
+/usr/share/fonts/win10-fonts/SourceSansPro-Bold.ttf
+/usr/share/fonts/win10-fonts/SourceSansPro-BoldIt.ttf
+/usr/share/fonts/win10-fonts/SourceSansPro-ExtraLight.ttf
+/usr/share/fonts/win10-fonts/SourceSansPro-ExtraLightIt.ttf
+/usr/share/fonts/win10-fonts/SourceSansPro-It.ttf
+/usr/share/fonts/win10-fonts/SourceSansPro-Light.ttf
+/usr/share/fonts/win10-fonts/SourceSansPro-LightIt.ttf
+/usr/share/fonts/win10-fonts/SourceSansPro-Regular.ttf
+/usr/share/fonts/win10-fonts/SourceSansPro-Semibold.ttf
+/usr/share/fonts/win10-fonts/SourceSansPro-SemiboldIt.ttf
 /usr/share/fonts/win10-fonts/UrdType.ttf
 /usr/share/fonts/win10-fonts/UrdTypeb.ttf
 /usr/share/fonts/win10-fonts/Vani.ttf
 /usr/share/fonts/win10-fonts/Vanib.ttf
+/usr/share/fonts/win10-fonts/WinSoftPro-BItal.otf
+/usr/share/fonts/win10-fonts/WinSoftPro-Bold.otf
+/usr/share/fonts/win10-fonts/WinSoftPro-MItal.otf
+/usr/share/fonts/win10-fonts/WinSoftPro-Med.otf
 /usr/share/fonts/win10-fonts/YuGothB.ttc
 /usr/share/fonts/win10-fonts/YuGothL.ttc
 /usr/share/fonts/win10-fonts/YuGothM.ttc
@@ -96,10 +209,8 @@ fi
 /usr/share/fonts/win10-fonts/angsa.ttf
 /usr/share/fonts/win10-fonts/angsab.ttf
 /usr/share/fonts/win10-fonts/angsai.ttf
-/usr/share/fonts/win10-fonts/angsana.ttc
 /usr/share/fonts/win10-fonts/angsau.ttf
 /usr/share/fonts/win10-fonts/angsaub.ttf
-/usr/share/fonts/win10-fonts/angsaui.ttf
 /usr/share/fonts/win10-fonts/angsauz.ttf
 /usr/share/fonts/win10-fonts/angsaz.ttf
 /usr/share/fonts/win10-fonts/aparaj.ttf
@@ -112,11 +223,11 @@ fi
 /usr/share/fonts/win10-fonts/arialbi.ttf
 /usr/share/fonts/win10-fonts/ariali.ttf
 /usr/share/fonts/win10-fonts/ariblk.ttf
+/usr/share/fonts/win10-fonts/bahnschrift.ttf
 /usr/share/fonts/win10-fonts/batang.ttc
 /usr/share/fonts/win10-fonts/browa.ttf
 /usr/share/fonts/win10-fonts/browab.ttf
 /usr/share/fonts/win10-fonts/browai.ttf
-/usr/share/fonts/win10-fonts/browalia.ttc
 /usr/share/fonts/win10-fonts/browau.ttf
 /usr/share/fonts/win10-fonts/browaub.ttf
 /usr/share/fonts/win10-fonts/browaui.ttf
@@ -148,7 +259,6 @@ fi
 /usr/share/fonts/win10-fonts/corbelb.ttf
 /usr/share/fonts/win10-fonts/corbeli.ttf
 /usr/share/fonts/win10-fonts/corbelz.ttf
-/usr/share/fonts/win10-fonts/cordia.ttc
 /usr/share/fonts/win10-fonts/cordia.ttf
 /usr/share/fonts/win10-fonts/cordiab.ttf
 /usr/share/fonts/win10-fonts/cordiai.ttf
@@ -184,6 +294,7 @@ fi
 /usr/share/fonts/win10-fonts/gishabd.ttf
 /usr/share/fonts/win10-fonts/gulim.ttc
 /usr/share/fonts/win10-fonts/himalaya.ttf
+/usr/share/fonts/win10-fonts/holomdl2.ttf
 /usr/share/fonts/win10-fonts/impact.ttf
 /usr/share/fonts/win10-fonts/iskpota.ttf
 /usr/share/fonts/win10-fonts/iskpotab.ttf
@@ -243,6 +354,7 @@ fi
 /usr/share/fonts/win10-fonts/ntailu.ttf
 /usr/share/fonts/win10-fonts/ntailub.ttf
 /usr/share/fonts/win10-fonts/nyala.ttf
+/usr/share/fonts/win10-fonts/opens___.ttf
 /usr/share/fonts/win10-fonts/pala.ttf
 /usr/share/fonts/win10-fonts/palab.ttf
 /usr/share/fonts/win10-fonts/palabi.ttf
@@ -264,8 +376,6 @@ fi
 /usr/share/fonts/win10-fonts/segoeuil.ttf
 /usr/share/fonts/win10-fonts/segoeuisl.ttf
 /usr/share/fonts/win10-fonts/segoeuiz.ttf
-/usr/share/fonts/win10-fonts/seguibd.ttf
-/usr/share/fonts/win10-fonts/seguibk.ttf
 /usr/share/fonts/win10-fonts/seguibl.ttf
 /usr/share/fonts/win10-fonts/seguibli.ttf
 /usr/share/fonts/win10-fonts/seguiemj.ttf
@@ -343,14 +453,16 @@ fi
 /usr/share/fonts/win10-fonts/vijayab.ttf
 /usr/share/fonts/win10-fonts/vrinda.ttf
 /usr/share/fonts/win10-fonts/vrindab.ttf
-/usr/share/fonts/win10-fonts/webdings.ttf
-/usr/share/fonts/win10-fonts/wingding.ttf
+/usr/share/fonts/win10-fonts/yugothib.ttf
+/usr/share/fonts/win10-fonts/yugothic.ttf
+/usr/share/fonts/win10-fonts/yugothil.ttf
 /usr/share/fonts/win10-fonts/yumin.ttf
 /usr/share/fonts/win10-fonts/yumindb.ttf
 /usr/share/fonts/win10-fonts/yuminl.ttf
 
 
-
 %changelog
+* Sun Feb 3 2019 Mihai Vasilian <grayasm@gmail.com> 1.1-1.el7
+- Collected the fonts from Win7, Win8 and Win10. Total 402 files.
 * Sun Oct 2 2016 Mihai Vasilian <grayasm@gmail.com> 1.0-1.el7
 - Initial package.

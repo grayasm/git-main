@@ -72,9 +72,9 @@ const size_t iSize = 120000;
 //test begin
 void test_list::ctor()
 {
-	misc::cout << "\n\n\t*******************************************************";
-    misc::cout <<   "\n\t* TESTING HEADER: list.hpp                            *";
-    misc::cout <<   "\n\t*******************************************************";
+	stl::cout << "\n\n\t*******************************************************";
+    stl::cout <<   "\n\t* TESTING HEADER: list.hpp                            *";
+    stl::cout <<   "\n\t*******************************************************";
 
 	
 	
@@ -157,7 +157,7 @@ void test_list::ctor()
         misc::list<float, misc::allocator<float>,
                    misc::GENERIC_LIST_HAS_ITERATOR_DEBUGGING> misc_11(it11b, it11e);
     }
-    catch(const misc::exception&)
+    catch(const stl::exception&)
     {
         bmisc_11 = true;
     }
@@ -173,7 +173,7 @@ void test_list::ctor()
         misc::list<float, misc::allocator<float>,
                    misc::GENERIC_LIST_HAS_ITERATOR_DEBUGGING> misc_12a(it12b, it13e);
     }
-    catch(const misc::exception&)
+    catch(const stl::exception&)
     {
         bmisc_13 = true;
     }
@@ -201,7 +201,7 @@ void test_list::ctor()
         // here it14b, it14e inherit from debug container and have parent = 0;
         misc::list<int> misc_14b(it14b, it14e);
     }
-    catch(const misc::exception&)
+    catch(const stl::exception&)
     {
         bmisc_14 = true;
     }
@@ -228,7 +228,7 @@ void test_list::ctor()
         int val16b = *it16ab;
         (void)val16b;
     }
-    catch(const misc::exception&)
+    catch(const stl::exception&)
     {
         bmisc_16 = true;
     }
@@ -236,7 +236,7 @@ void test_list::ctor()
 
 
 	
-    misc::cout << "\n\n\tctor---------------------------------------------------";
+    stl::cout << "\n\n\tctor---------------------------------------------------";
     ctor<misc::list<double, misc::allocator<double> > >("\n\tmisc::list   ");
     ctor<std::list<double> >                           ("\n\tstd::list    ");
     ctor<std::list<double, misc::allocator<double> > > ("\n\tstd::list<A> ");
@@ -244,7 +244,7 @@ void test_list::ctor()
 
 void test_list::dtor()
 {
-    misc::cout << "\n\n\tdtor---------------------------------------------------";
+    stl::cout << "\n\n\tdtor---------------------------------------------------";
     dtor<misc::list<double, misc::allocator<double> > >("\n\tmisc::list   ");
     dtor<std::list<double> >                           ("\n\tstd::list    ");
     dtor<std::list<double, misc::allocator<double> > > ("\n\tstd::list<A> ");
@@ -278,7 +278,7 @@ void test_list::cpy_op()
         int val01 = *it_1;
         (void)val01;
     }
-    catch(const misc::exception&)
+    catch(const stl::exception&)
     {
         b_01 = true;
     }
@@ -295,13 +295,13 @@ void test_list::cpy_op()
         int val03 = *(--it_03e);
         (void)val03;
     }
-    catch(const misc::exception&)
+    catch(const stl::exception&)
     {
         b_03 = false;
     }
     CPPUNIT_ASSERT(b_03 == true);
 
-    misc::cout << "\n\n\tcpy_op-------------------------------------------------";
+    stl::cout << "\n\n\tcpy_op-------------------------------------------------";
     cpy_op<misc::list<double, misc::allocator<double> > >("\n\tmisc::list   ");
     cpy_op<std::list<double> >                           ("\n\tstd::list    ");
     cpy_op<std::list<double, misc::allocator<double> > > ("\n\tstd::list<A> ");
@@ -345,7 +345,7 @@ void test_list::begin()
             int val = *it02;
             (void)val;
         }
-        catch(const misc::exception&)
+        catch(const stl::exception&)
         {
             b_01 = true;
         }
@@ -363,7 +363,7 @@ void test_list::begin()
         {
             ++cit01;
         }
-        catch(const misc::exception&)
+        catch(const stl::exception&)
         {
             b_02 = true;
         }
@@ -375,7 +375,7 @@ void test_list::begin()
             int val = *cit01;
             (void)val;
         }
-        catch(const misc::exception&)
+        catch(const stl::exception&)
         {
             b_02 = true;
         }
@@ -397,7 +397,7 @@ void test_list::begin()
             int val = *it01;
             (void)val;
         }
-        catch(const misc::exception&)
+        catch(const stl::exception&)
         {
             b_b = true;
         }
@@ -407,7 +407,7 @@ void test_list::begin()
             int val = *cit01;
             (void)val;
         }
-        catch(misc::exception&)
+        catch(stl::exception&)
         {
             b_b1 = true;
         }
@@ -415,7 +415,7 @@ void test_list::begin()
     }
 
 
-    misc::cout << "\n\n\tbegin--------------------------------------------------";
+    stl::cout << "\n\n\tbegin--------------------------------------------------";
     begin<misc::list<double, misc::allocator<double> > >("\n\tmisc::list   ");
     begin<std::list<double> >                           ("\n\tstd::list    ");
     begin<std::list<double, misc::allocator<double> > > ("\n\tstd::list<A> ");
@@ -453,7 +453,7 @@ void test_list::end()
             int val = *ie0;
             (void)val;
         }
-        catch(const misc::exception&)
+        catch(const stl::exception&)
         {
             b_1 = true;
         }
@@ -469,7 +469,7 @@ void test_list::end()
         {
             --ie2;// would work with a valid list
         }
-        catch(const misc::exception&)
+        catch(const stl::exception&)
         {
             b_2 = true;
         }
@@ -481,7 +481,7 @@ void test_list::end()
             list list_3(10, -10);
             list_3.erase(list_3.end());
         }
-        catch(const misc::exception&)
+        catch(const stl::exception&)
         {
             b_3 = true;
         }
@@ -494,7 +494,7 @@ void test_list::end()
         {
             list_4.erase(list_4.begin());
         }
-        catch(const misc::exception&)
+        catch(const stl::exception&)
         {
             b_4 = true;
             (void)b_4;
@@ -506,7 +506,7 @@ void test_list::end()
         CPPUNIT_ASSERT(i5e == list_5.end());
     }
 
-    misc::cout << "\n\n\tend----------------------------------------------------";
+    stl::cout << "\n\n\tend----------------------------------------------------";
     end<misc::list<double, misc::allocator<double> > >("\n\tmisc::list   ");
     end<std::list<double> >                           ("\n\tstd::list    ");
     end<std::list<double, misc::allocator<double> > > ("\n\tstd::list<A> ");
@@ -543,7 +543,7 @@ void test_list::rbegin()
             int val = *r0i;
             (void)val;
         }
-        catch(const misc::exception&)
+        catch(const stl::exception&)
         {
             b_1 = true;
         }
@@ -559,7 +559,7 @@ void test_list::rbegin()
         {
             ++r2i;
         }
-        catch(const misc::exception&)
+        catch(const stl::exception&)
         {
             b_2 = true;
         }
@@ -575,7 +575,7 @@ void test_list::rbegin()
             int val = *cr3i;
             (void)val;
         }
-        catch(const misc::exception&)
+        catch(const stl::exception&)
         {
             b_3 = true;
         }
@@ -593,14 +593,14 @@ void test_list::rbegin()
             int val = *cr4i;
             (void)val;
         }
-        catch(const misc::exception&)
+        catch(const stl::exception&)
         {
             b_4 = true;
         }
         CPPUNIT_ASSERT(b_4 == true);
     }
 
-    misc::cout << "\n\n\trbegin-------------------------------------------------";
+    stl::cout << "\n\n\trbegin-------------------------------------------------";
     rbegin<misc::list<double, misc::allocator<double> > >("\n\tmisc::list   ");
     rbegin<std::list<double> >                           ("\n\tstd::list    ");
     rbegin<std::list<double, misc::allocator<double> > > ("\n\tstd::list<A> ");
@@ -636,7 +636,7 @@ void test_list::rend()
             int val = *ie0;
             (void)val;
         }
-        catch(const misc::exception&)
+        catch(const stl::exception&)
         {
             b_1 = true;
         }
@@ -652,7 +652,7 @@ void test_list::rend()
         {
             --ie2;// would work with a valid list
         }
-        catch(const misc::exception&)
+        catch(const stl::exception&)
         {
             b_2 = true;
         }
@@ -668,7 +668,7 @@ void test_list::rend()
         CPPUNIT_ASSERT(i4e == list_4.rend());
     }
 
-    misc::cout << "\n\n\trend---------------------------------------------------";
+    stl::cout << "\n\n\trend---------------------------------------------------";
     rend<misc::list<double, misc::allocator<double> > >("\n\tmisc::list   ");
     rend<std::list<double> >                           ("\n\tstd::list    ");
     rend<std::list<double, misc::allocator<double> > > ("\n\tstd::list<A> ");
@@ -712,7 +712,7 @@ void test_list::empty()
             bool b_x = (it0 == list_1.end()); // access invalid iterator
             (void)b_x;
         }
-        catch(const misc::exception&)
+        catch(const stl::exception&)
         {
             bit0 = true;
         }
@@ -722,7 +722,7 @@ void test_list::empty()
             bool b_x = (cit0 == list_1.end()); // access invalid iterator
             (void)b_x;
         }
-        catch(const misc::exception&)
+        catch(const stl::exception&)
         {
             bcit0 = true;
         }
@@ -732,7 +732,7 @@ void test_list::empty()
             bool bx = (rit0 == list_1.rbegin()); // access invalid iterator
             (void)bx;
         }
-        catch(const misc::exception&)
+        catch(const stl::exception&)
         {
             brit0 = true;
         }
@@ -742,14 +742,14 @@ void test_list::empty()
             bool bx= (crit0 == list_1.rbegin()); // access invalid iterator
             (void)bx;
         }
-        catch(const misc::exception&)
+        catch(const stl::exception&)
         {
             bcrit0 = true;
         }
         CPPUNIT_ASSERT(bcrit0 == true);
     }
 
-    misc::cout << "\n\n\tempty--------------------------------------------------";
+    stl::cout << "\n\n\tempty--------------------------------------------------";
 }
 
 void test_list::size()
@@ -768,7 +768,7 @@ void test_list::size()
     myints.pop_back();
     CPPUNIT_ASSERT( myints.size() == (2*iSize - 1) );
 
-    misc::cout << "\n\n\tsize---------------------------------------------------";
+    stl::cout << "\n\n\tsize---------------------------------------------------";
 }
 
 void test_list::max_size()
@@ -781,7 +781,7 @@ void test_list::max_size()
 
     CPPUNIT_ASSERT( mylist.size() == iSize );
 
-    misc::cout << "\n\n\tmax_size-----------------------------------------------";
+    stl::cout << "\n\n\tmax_size-----------------------------------------------";
 }
 
 void test_list::resize()
@@ -828,7 +828,7 @@ void test_list::resize()
             int val = *cri0;
             (void)val;
         }
-        catch(const misc::exception&)
+        catch(const stl::exception&)
         {
             b_1 = true;
         }
@@ -850,14 +850,14 @@ void test_list::resize()
             int val = *ri4;
             (void)val;
         }
-        catch(const misc::exception&)
+        catch(const stl::exception&)
         {
             b_2 = true;
         }
         CPPUNIT_ASSERT(b_2 == true);
     }
 
-    misc::cout << "\n\n\tresize-------------------------------------------------";
+    stl::cout << "\n\n\tresize-------------------------------------------------";
 
     resize<misc::list<double> >                         ("\n\tmisc::list   ");
     resize<std::list<double> >                          ("\n\tstd::list    ");
@@ -892,14 +892,14 @@ void test_list::front()
             int val = list_3.front();
             (void)val;
         }
-        catch(const misc::exception&)
+        catch(const stl::exception&)
         {
             b_3 = true;
         }
         CPPUNIT_ASSERT(b_3 == true);
     }
 
-    misc::cout << "\n\n\tfront--------------------------------------------------";
+    stl::cout << "\n\n\tfront--------------------------------------------------";
 }
 
 void test_list::back()
@@ -935,14 +935,14 @@ void test_list::back()
             int val = list_1.back();
             (void)val;
         }
-        catch(const misc::exception&)
+        catch(const stl::exception&)
         {
             b_1 = true;
         }
         CPPUNIT_ASSERT(b_1 == true);
     }
 
-    misc::cout << "\n\n\tback---------------------------------------------------";
+    stl::cout << "\n\n\tback---------------------------------------------------";
 }
 
 void test_list::assign()
@@ -993,7 +993,7 @@ void test_list::assign()
             int val = *i3a; // debug_iterator :)
             (void)val;
         }
-        catch(const misc::exception&)
+        catch(const stl::exception&)
         {
             b_3 = true;
         }
@@ -1014,7 +1014,7 @@ void test_list::assign()
             int val = *cri0; // debug_iterator
             (void)val;
         }
-        catch(const misc::exception&)
+        catch(const stl::exception&)
         {
             b_1 = true;
         }
@@ -1030,7 +1030,7 @@ void test_list::assign()
             // iterators belonging to different containers
             list_3.assign(list_1.begin(), list_2.end());
         }
-        catch(const misc::exception& exc)
+        catch(const stl::exception& exc)
         {
             exc.what();
             b_1 = true;
@@ -1045,7 +1045,7 @@ void test_list::assign()
         {
             list list_1(-1, 10);
         }
-        catch(const misc::exception& exc)
+        catch(const stl::exception& exc)
         {
             exc.what();
             b_1 = true;
@@ -1059,7 +1059,7 @@ void test_list::assign()
             list list_3;
             list_3.assign(-1, 10);
         }
-        catch(const misc::exception& exc)
+        catch(const stl::exception& exc)
         {
             exc.what();
             b_2 = true;
@@ -1081,7 +1081,7 @@ void test_list::assign()
             // assign from invalid iterators
             list list_2(i0, i1); // uses debug_iterators
         }
-        catch(const misc::exception& exc)
+        catch(const stl::exception& exc)
         {
             exc.what();
             b_1 = true;
@@ -1089,7 +1089,7 @@ void test_list::assign()
         CPPUNIT_ASSERT(b_1 == true);
     }
 
-    misc::cout << "\n\n\tassign-------------------------------------------------";
+    stl::cout << "\n\n\tassign-------------------------------------------------";
     assign<misc::list<double> >                         ("\n\tmisc::list   ");
     assign<std::list<double> >                          ("\n\tstd::list    ");
     assign<std::list<double, misc::allocator<double> > >("\n\tstd::list<A> ");
@@ -1141,7 +1141,7 @@ void test_list::push_front()
         CPPUNIT_ASSERT(list_a.front().eval() == -10);
     }
 
-    misc::cout << "\n\n\tpush_front---------------------------------------------";
+    stl::cout << "\n\n\tpush_front---------------------------------------------";
     push_front<misc::list<double> >                         ("\n\tmisc::list   ");
     push_front<std::list<double> >                          ("\n\tstd::list    ");
     push_front<std::list<double, misc::allocator<double> > >("\n\tstd::list<A> ");
@@ -1182,7 +1182,7 @@ void test_list::pop_front()
             int val = *ri0; // debug_iterator
             (void)val;
         }
-        catch(const misc::exception&)
+        catch(const stl::exception&)
         {
             b_1 = true;
         }
@@ -1190,7 +1190,7 @@ void test_list::pop_front()
     }
 
 
-    misc::cout << "\n\n\tpop_front----------------------------------------------";
+    stl::cout << "\n\n\tpop_front----------------------------------------------";
     pop_front<misc::list<double> >                         ("\n\tmisc::list   ");
     pop_front<std::list<double> >                          ("\n\tstd::list    ");
     pop_front<std::list<double, misc::allocator<double> > >("\n\tstd::list<A> ");
@@ -1232,14 +1232,14 @@ void test_list::push_back()
         {
             --cri0; // illegal on zero size container
         }
-        catch(const misc::exception&)
+        catch(const stl::exception&)
         {
             b_1 =true;
         }
         CPPUNIT_ASSERT(b_1 == true);
     }
 
-    misc::cout << "\n\n\tpush_back----------------------------------------------";
+    stl::cout << "\n\n\tpush_back----------------------------------------------";
     push_back<misc::list<double> >                         ("\n\tmisc::list   ");
     push_back<std::list<double> >                          ("\n\tstd::list    ");
     push_back<std::list<double, misc::allocator<double> > >("\n\tstd::list<A> ");
@@ -1274,7 +1274,7 @@ void test_list::pop_back()
         {
             list_1.pop_back();
         }
-        catch(const misc::exception&)
+        catch(const stl::exception&)
         {
             b_1 = true;
         }
@@ -1282,7 +1282,7 @@ void test_list::pop_back()
     }
 
 
-    misc::cout << "\n\n\tpop_back-----------------------------------------------";
+    stl::cout << "\n\n\tpop_back-----------------------------------------------";
     pop_back<misc::list<double> >                         ("\n\tmisc::list   ");
     pop_back<std::list<double> >                          ("\n\tstd::list    ");
     pop_back<std::list<double, misc::allocator<double> > >("\n\tstd::list<A> ");
@@ -1364,7 +1364,7 @@ void test_list::insert()
         {
             list_2.insert(i0, -10); // iterator of different container
         }
-        catch(const misc::exception&)
+        catch(const stl::exception&)
         {
             b_1 = true;
         }
@@ -1378,7 +1378,7 @@ void test_list::insert()
         {
             list_2.insert(i2, -10); // iterator of erased node
         }
-        catch(const misc::exception&)
+        catch(const stl::exception&)
         {
             b_2 = true;
         }
@@ -1392,7 +1392,7 @@ void test_list::insert()
         {
             list_1.insert(list_1.end(), (size_t)-1, -1);
         }
-        catch(const misc::exception&)
+        catch(const stl::exception&)
         {
             b_1 = true;
         }
@@ -1404,7 +1404,7 @@ void test_list::insert()
         {
             list_1.insert(list_2.begin(), (size_t)1, 1);
         }
-        catch(const misc::exception&)
+        catch(const stl::exception&)
         {
             b_2 = true;
         }
@@ -1420,7 +1420,7 @@ void test_list::insert()
         {
             list_1.insert(i3, (size_t)1, 1);
         }
-        catch(const misc::exception&)
+        catch(const stl::exception&)
         {
             b_3 = true;
         }
@@ -1435,7 +1435,7 @@ void test_list::insert()
             //position from different container
             list_1.insert(list_2.end(), list_2.begin(), list_2.end());
         }
-        catch(const misc::exception&)
+        catch(const stl::exception&)
         {
             b_1 = true;
         }
@@ -1447,7 +1447,7 @@ void test_list::insert()
             //last iterator from different container
             list_1.insert(list_1.end(), list_2.begin(), list_1.end());
         }
-        catch(const misc::exception&)
+        catch(const stl::exception&)
         {
             b_2 = true;
         }
@@ -1467,14 +1467,14 @@ void test_list::insert()
         {
             list_1.insert(list_1.end(), i0, i2);
         }
-        catch(const misc::exception&)
+        catch(const stl::exception&)
         {
             b_1 = true;
         }
         CPPUNIT_ASSERT(b_1 == true);
     }
 
-    misc::cout << "\n\n\tinsert-------------------------------------------------";
+    stl::cout << "\n\n\tinsert-------------------------------------------------";
     insert<misc::list<double> >                         ("\n\tmisc::list   ");
     insert<std::list<double> >                          ("\n\tstd::list    ");
     insert<std::list<double, misc::allocator<double> > >("\n\tstd::list<A> ");
@@ -1536,7 +1536,7 @@ void test_list::erase()
             // attempt to erase begin==end invalid iterator
             list_1.erase(list_1.begin());
         }
-        catch(const misc::exception&)
+        catch(const stl::exception&)
         {
             b_1 = true;
         }
@@ -1549,7 +1549,7 @@ void test_list::erase()
         {
             list_1.erase(list_2.begin());
         }
-        catch(const misc::exception&)
+        catch(const stl::exception&)
         {
             b_2 = true;
         }
@@ -1564,7 +1564,7 @@ void test_list::erase()
             int val = *i3;
             (void)val;
         }
-        catch(const misc::exception&)
+        catch(const stl::exception&)
         {
             b_3 = true;
         }
@@ -1579,7 +1579,7 @@ void test_list::erase()
         {
             list_1.erase(list_1.begin(), list_2.end());
         }
-        catch(const misc::exception&)
+        catch(const stl::exception&)
         {
             b_1 = true;
         }
@@ -1595,7 +1595,7 @@ void test_list::erase()
         {
             list_1.erase(i0, i2);
         }
-        catch(const misc::exception&)
+        catch(const stl::exception&)
         {
             b_2 = true;
         }
@@ -1613,7 +1613,7 @@ void test_list::erase()
             int val = *cri0;
             (void)val;
         }
-        catch(const misc::exception&)
+        catch(const stl::exception&)
         {
             b_1 = true;
         }
@@ -1628,14 +1628,14 @@ void test_list::erase()
             int val = *ci20;
             (void)val;
         }
-        catch(const misc::exception&)
+        catch(const stl::exception&)
         {
             b_2 = true;
         }
         CPPUNIT_ASSERT(b_2 == true);
     }
 
-    misc::cout << "\n\n\terase--------------------------------------------------";
+    stl::cout << "\n\n\terase--------------------------------------------------";
     erase<misc::list<double> >                         ("\n\tmisc::list   ");
     erase<std::list<double> >                          ("\n\tstd::list    ");
     erase<std::list<double, misc::allocator<double> > >("\n\tstd::list<A> ");
@@ -1698,7 +1698,7 @@ void test_list::swap()
 
 //TODO: "more tests can be performed here, valid/invalid iterators, etc"
 
-    misc::cout << "\n\n\tswap---------------------------------------------------";
+    stl::cout << "\n\n\tswap---------------------------------------------------";
     swap<misc::list<double> >                         ("\n\tmisc::list   ");
     swap<std::list<double> >                          ("\n\tstd::list    ");
     swap<std::list<double, misc::allocator<double> > >("\n\tstd::list<A> ");
@@ -1751,14 +1751,14 @@ void test_list::clear()
             int val = *ri0;
             (void)val;
         }
-        catch(const misc::exception&)
+        catch(const stl::exception&)
         {
             b_1 = true;
         }
         CPPUNIT_ASSERT(b_1 == true);
     }
 
-    misc::cout << "\n\n\tclear--------------------------------------------------";
+    stl::cout << "\n\n\tclear--------------------------------------------------";
     clear<misc::list<double> >                         ("\n\tmisc::list   ");
     clear<std::list<double> >                          ("\n\tstd::list    ");
     clear<std::list<double, misc::allocator<double> > >("\n\tstd::list<A> ");
@@ -1839,7 +1839,7 @@ void test_list::splice()
         {
             list_1.splice(list_2.end(), list_2);
         }
-        catch(const misc::exception&)
+        catch(const stl::exception&)
         {
             b_1 = true;
         }
@@ -1859,7 +1859,7 @@ void test_list::splice()
             int val = *crit3;
             (void)val;
         }
-        catch(const misc::exception&)
+        catch(const stl::exception&)
         {
             b_3 = true;
         }
@@ -1875,7 +1875,7 @@ void test_list::splice()
             //1st iterator of different container
             list_1.splice(list_2.end(), list_2, list_2.begin());
         }
-        catch(const misc::exception&)
+        catch(const stl::exception&)
         {
             b_1 = true;
         }
@@ -1887,7 +1887,7 @@ void test_list::splice()
         {
             list_1.splice(i2, list_2, --list_2.end()); // 1st iterator erased
         }
-        catch(const misc::exception&)
+        catch(const stl::exception&)
         {
             b_2 = true;
         }
@@ -1902,7 +1902,7 @@ void test_list::splice()
             //it3 erased iterator
             list_1.splice(list_1.begin(), list_3, it3);
         }
-        catch(const misc::exception&)
+        catch(const stl::exception&)
         {
             b_3 = true;
         }
@@ -1913,7 +1913,7 @@ void test_list::splice()
             //2nd iterator from different container
             list_1.splice(list_1.begin(), list_3, list_1.begin());
         }
-        catch(const misc::exception&)
+        catch(const stl::exception&)
         {
             b_4 = true;
         }
@@ -1926,7 +1926,7 @@ void test_list::splice()
             //x container is empty
             list_1.splice(list_1.begin(), list_5, list_5.begin());
         }
-        catch(const misc::exception&)
+        catch(const stl::exception&)
         {
             b_5 = true;
         }
@@ -1939,7 +1939,7 @@ void test_list::splice()
             //2dn iterator as end position
             list_1.splice(list_1.begin(), list_6, list_6.end());
         }
-        catch(const misc::exception&)
+        catch(const stl::exception&)
         {
             b_6 = true;
         }
@@ -1972,7 +1972,7 @@ void test_list::splice()
         {
             i8++;
         }
-        catch(const misc::exception&)
+        catch(const stl::exception&)
         {
             b_8 = true;
         }
@@ -1988,7 +1988,7 @@ void test_list::splice()
             //1st iterator from different container
             list_1.splice(list_2.begin(), list_2, list_2.begin(), list_2.end());
         }
-        catch(const misc::exception&)
+        catch(const stl::exception&)
         {
             b_1 = true;
         }
@@ -2001,7 +2001,7 @@ void test_list::splice()
             //first , last from different container
             list_1.splice(list_1.begin(), list_2, list_1.begin(), list_2.end());
         }
-        catch(const misc::exception&)
+        catch(const stl::exception&)
         {
             b_2 = true;
         }
@@ -2020,7 +2020,7 @@ void test_list::splice()
             //first, last invalid and also not of list_2 iterators
             list_1.splice(list_1.begin(), list_2, i3b, i3e);
         }
-        catch(const misc::exception&)
+        catch(const stl::exception&)
         {
             b_3 = true;
         }
@@ -2038,7 +2038,7 @@ void test_list::splice()
             //first, last already erased from their container
             list_4.splice(list_4.begin(), list_4, i4f, i4l);
         }
-        catch(const misc::exception&)
+        catch(const stl::exception&)
         {
             b_4 = true;
         }
@@ -2067,7 +2067,7 @@ void test_list::splice()
         {
             list_5v2.splice(i5v2pos, list_5v2, i5v2first, i5v2last);
         }
-        catch(const misc::exception& exc)
+        catch(const stl::exception& exc)
         {
             exc.what();
             b_5v2 = true;
@@ -2111,7 +2111,7 @@ void test_list::splice()
         {
             list_8.splice(i8pos, list_8, i8first, i8last);
         }
-        catch(const misc::exception&)
+        catch(const stl::exception&)
         {
             b_8 = true;
         }
@@ -2129,14 +2129,14 @@ void test_list::splice()
             int val = *i9first;
             (void)val;
         }
-        catch(const misc::exception&)
+        catch(const stl::exception&)
         {
             b_9 = true;
         }
         CPPUNIT_ASSERT(b_9 == true);
     }
 
-    misc::cout << "\n\n\tsplice-------------------------------------------------";
+    stl::cout << "\n\n\tsplice-------------------------------------------------";
     splice<misc::list<double> >                         ("\n\tmisc::list   ");
     splice<std::list<double> >                          ("\n\tstd::list    ");
     splice<std::list<double, misc::allocator<double> > >("\n\tstd::list<A> ");
@@ -2183,7 +2183,7 @@ void test_list::remove()
             int val = *cri0;
             (void)val;
         }
-        catch(const misc::exception&)
+        catch(const stl::exception&)
         {
             b_1 = true;
         }
@@ -2194,14 +2194,14 @@ void test_list::remove()
             int val = *cri2;
             (void)val;
         }
-        catch(const misc::exception&)
+        catch(const stl::exception&)
         {
             b_2 = true;
         }
         CPPUNIT_ASSERT(b_2 == true);
     }
 
-    misc::cout << "\n\n\tremove-------------------------------------------------";
+    stl::cout << "\n\n\tremove-------------------------------------------------";
     remove<misc::list<double> >                         ("\n\tmisc::list   ");
     remove<std::list<double> >                          ("\n\tstd::list    ");
     remove<std::list<double, misc::allocator<double> > >("\n\tstd::list<A> ");
@@ -2266,7 +2266,7 @@ void test_list::remove_if()
             int val = *cri0;
             (void)val;
         }
-        catch(const misc::exception&)
+        catch(const stl::exception&)
         {
             b_1 = true;
         }
@@ -2277,14 +2277,14 @@ void test_list::remove_if()
             int val = *cri2;
             (void)val;
         }
-        catch(const misc::exception&)
+        catch(const stl::exception&)
         {
             b_2 = true;
         }
         CPPUNIT_ASSERT(b_2 == true);
     }
 
-    misc::cout << "\n\n\tremove_if----------------------------------------------";
+    stl::cout << "\n\n\tremove_if----------------------------------------------";
     remove_if<misc::list<int> >                      ("\n\tmisc::list   ");
     remove_if<std::list<int> >                       ("\n\tstd::list    ");
     remove_if<std::list<int, misc::allocator<int> > >("\n\tstd::list<A> ");
@@ -2363,14 +2363,14 @@ void test_list::unique()
             int val = (int)*ri0;
             (void)val;
         }
-        catch(const misc::exception&)
+        catch(const stl::exception&)
         {
             b_1 = true;
         }
         CPPUNIT_ASSERT(b_1 == true);
     }
 
-    misc::cout << "\n\n\tunique-------------------------------------------------";
+    stl::cout << "\n\n\tunique-------------------------------------------------";
     unique<misc::list<double> >                         ("\n\tmisc::list   ");
     unique<std::list<double> >                          ("\n\tstd::list    ");
     unique<std::list<double, misc::allocator<double> > >("\n\tstd::list<A> ");
@@ -2450,7 +2450,7 @@ void test_list::merge()
             int val = (int)*ci0;
             (void)val;
         }
-        catch(const misc::exception&)
+        catch(const stl::exception&)
         {
             b_1 = true;
         }
@@ -2462,7 +2462,7 @@ void test_list::merge()
             int val = (int)*ri2;
             (void)val;
         }
-        catch(const misc::exception&)
+        catch(const stl::exception&)
         {
             b_2 = true;
         }
@@ -2487,7 +2487,7 @@ void test_list::merge()
             int val = (int)*ci0;
             (void)val;
         }
-        catch(const misc::exception&)
+        catch(const stl::exception&)
         {
             b_1 = true;
         }
@@ -2499,14 +2499,14 @@ void test_list::merge()
             int val = (int)*ri2;
             (void)val;
         }
-        catch(const misc::exception&)
+        catch(const stl::exception&)
         {
             b_2 = true;
         }
         CPPUNIT_ASSERT(b_2 == true);
     }
 
-    misc::cout << "\n\n\tmerge--------------------------------------------------";
+    stl::cout << "\n\n\tmerge--------------------------------------------------";
     merge<misc::list<double> >                         ("\n\tmisc::list   ");
     merge<std::list<double> >                          ("\n\tstd::list    ");
     merge<std::list<double, misc::allocator<double> > >("\n\tstd::list<A> ");
@@ -2518,7 +2518,7 @@ void test_list::merge()
 
 //TODO: "check this upon debugging if alright"
 
-bool compare_nocase (misc::string first, misc::string second)
+bool compare_nocase (stl::string first, stl::string second)
 {
     unsigned int i=0;
     while ( (i<first.length()) && (i<second.length()) )
@@ -2536,7 +2536,7 @@ void test_list::sort()
 {
 //TODO: "poate merge si wchar_t sau altceva"
 
-    typedef misc::list<misc::string> list;
+    typedef misc::list<stl::string> list;
 
 
     srand(700);
@@ -2545,7 +2545,7 @@ void test_list::sort()
     list perflist1;
     for(int i=0; i<(int)iSize; ++i)
     {
-        perflist1.push_back( misc::from_value((int)(rand() % iSize)).c_str() );
+        perflist1.push_back( stl::from_value((int)(rand() % iSize)).c_str() );
     }
     perflist1.sort();
     //////////////////////////////////////////////////////////////////////////
@@ -2596,7 +2596,7 @@ void test_list::sort()
             int val = *ci0;
             (void)val;
         }
-        catch(const misc::exception&)
+        catch(const stl::exception&)
         {
             b_1 = true;
         }
@@ -2623,14 +2623,14 @@ void test_list::sort()
             int val = *ci0;
             (void)val;
         }
-        catch(const misc::exception&)
+        catch(const stl::exception&)
         {
             b_1 = true;
         }
         CPPUNIT_ASSERT(b_1 == true);
     }
 
-    misc::cout << "\n\n\tsort---------------------------------------------------";
+    stl::cout << "\n\n\tsort---------------------------------------------------";
     sort<misc::list<double> >                         ("\n\tmisc::list   ");
     sort<std::list<double> >                          ("\n\tstd::list    ");
     sort<std::list<double, misc::allocator<double> > >("\n\tstd::list<A> ");
@@ -2679,7 +2679,7 @@ void test_list::reverse()
         CPPUNIT_ASSERT( *ri0 == -5 );
     }
 
-    misc::cout << "\n\n\treverse------------------------------------------------";
+    stl::cout << "\n\n\treverse------------------------------------------------";
     reverse<misc::list<double> >                         ("\n\tmisc::list   ");
     reverse<std::list<double> >                          ("\n\tstd::list    ");
     reverse<std::list<double, misc::allocator<double> > >("\n\tstd::list<A> ");

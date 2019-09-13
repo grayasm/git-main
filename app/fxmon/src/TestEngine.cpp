@@ -46,7 +46,7 @@ void TestEngine()
 
 	if (iniParams->GetEnableLogging())
 	{
-		const misc::string& lfile = iniParams->GetLoggingFile();
+		const stl::string& lfile = iniParams->GetLoggingFile();
 		FILE* fp = fopen(lfile.c_str(), "w+");
 		if (fp)
 			fclose(fp);
@@ -57,7 +57,7 @@ void TestEngine()
     // like the pip cost, MMR, iBaseUnitSize, etc.
     // Depending on the traded instrument, the pipCost calculator may need
     // access to other offers to convert the quote into account currency.
-    misc::string instrument("GBP/JPY");
+    stl::string instrument("GBP/JPY");
     int ret = 0;
     fx::Offer offer;
 
@@ -77,8 +77,8 @@ void TestEngine()
 	HistdatacomReader oreader(offer, 2017);
 
 	// HistoryFxcmliveReader oreader(instrument);
-	// fx::SMA sma1(instrument, 4, misc::time::hourSEC, fx::SMA::PRICE_CLOSE);
-	// fx::SMA sma2(instrument, 60, misc::time::daySEC, fx::SMA::PRICE_CLOSE);
+	// fx::SMA sma1(instrument, 4, sys::time::hourSEC, fx::SMA::PRICE_CLOSE);
+	// fx::SMA sma2(instrument, 60, sys::time::daySEC, fx::SMA::PRICE_CLOSE);
 	// fx::StrategySMACross strategy(&plugin, instrument, sma1, sma2);
 	// fx::StrategyRenkoAtr strategy(&plugin, instrument, 15, 7, 16);
     fx::StrategyLWMACross strategy(&plugin, instrument);
@@ -90,10 +90,10 @@ void TestEngine()
 			break;
 
 		// check for outside trading hours
-		misc::time tnow = offer.GetTime();
-		if ((tnow.wday() == misc::time::SAT) ||
-			(tnow.wday() == misc::time::FRI && tnow.hour_() >= 21) ||
-			(tnow.wday() == misc::time::SUN && tnow.hour_() < 21))
+		sys::time tnow = offer.GetTime();
+		if ((tnow.wday() == sys::time::SAT) ||
+			(tnow.wday() == sys::time::FRI && tnow.hour_() >= 21) ||
+			(tnow.wday() == sys::time::SUN && tnow.hour_() < 21))
 		{
 			continue;
 		}
@@ -110,7 +110,7 @@ void TestEngine()
 	// log total GPL
 	if (iniParams->GetEnableLogging())
 	{
-		const misc::string& lfile = iniParams->GetLoggingFile();
+		const stl::string& lfile = iniParams->GetLoggingFile();
 		FILE* fp = fopen(lfile.c_str(), "a");
 		if (fp)
 		{

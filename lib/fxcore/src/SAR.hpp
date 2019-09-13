@@ -40,19 +40,19 @@ namespace fx
 		// Timeframe is time_t
 
 		SAR();
-		SAR(const misc::string& instrument, int period, Timeframe sec);
+		SAR(const stl::string& instrument, int period, Timeframe sec);
 
 		~SAR();
 		SAR(const SAR& tc);
 		SAR& operator=(const SAR& tc);
 
 		// --- virtual table ---
-		const misc::string& GetInstrument() const override;
+		const stl::string& GetInstrument() const override;
 		int GetPeriod() const override;
 		Timeframe GetTimeframe() const override;
 		bool IsValid() const override;
 		void Update(const fx::Offer& offer) override;
-		const misc::time& GetRefTime() const override;
+		const sys::time& GetRefTime() const override;
 		// --- end of virtual table ---
 
 		bool GetIsBuy() const;
@@ -65,7 +65,7 @@ namespace fx
 		void Init();
 
 	private:
-		misc::string		m_instrument;
+		stl::string		m_instrument;
 		int					m_period;
 		Timeframe			m_timeframe;
 		// --------------------------

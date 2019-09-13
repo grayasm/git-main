@@ -22,6 +22,7 @@ contact: grayasm@gmail.com
 #define __Utils_hpp__
 
 #include <stddef.h>
+#include <string>
 #include <ForexConnect.h>
 #include "time.hpp"
 
@@ -37,10 +38,10 @@ namespace fxcm
 
 		// mm.dd.YYYY HH:MM:SS
 		static void FormatDate(DATE date, char* buff);
-		static void FormatDate(DATE date, misc::time& time);
+		static void FormatDate(DATE date, sys::time& time);
 		static void FormatDate(DATE date, time_t& timet);
 
-		static void TimeToDate(const misc::time& time, DATE& date);
+		static void TimeToDate(const sys::time& time, DATE& date);
 
 		static bool IsOpeningOrder(IO2GOrderRow* order);
 		static bool IsClosingOrder(IO2GOrderRow* order);

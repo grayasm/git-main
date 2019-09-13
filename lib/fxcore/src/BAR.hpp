@@ -35,21 +35,21 @@ namespace fx
 	class BAR : public BARB
 	{
 	public:
-		typedef misc::autoptr<BAR>			Ptr;
+		typedef stl::autoptr<BAR>			Ptr;
 
 		BAR();
-		BAR(const misc::string& instrument, int period, Timeframe sec);
+		BAR(const stl::string& instrument, int period, Timeframe sec);
 		~BAR();
 		BAR(const BAR& tc);
 		BAR& operator=(const BAR& tc);
 		
 		// --- IND virtual table ---
-		const misc::string& GetInstrument() const override;
+		const stl::string& GetInstrument() const override;
 		int GetPeriod() const override;
 		Timeframe GetTimeframe() const override;
 		bool IsValid() const override;
 		void Update(const fx::Offer& offer) override;
-		const misc::time& GetRefTime() const override;
+		const sys::time& GetRefTime() const override;
 		// --- end of IND virtual table ---
 
 		// --- BARB virtual table ---
@@ -63,11 +63,11 @@ namespace fx
 		void Init();
 
 	private:
-		misc::string		m_instrument;
+		stl::string		m_instrument;
 		int					m_period;
 		time_t				m_timeframe;
 		// ----------------------------
-		misc::time			m_reftime;
+		sys::time			m_reftime;
 		fx::OHLCPrice		m_lastOHLC;
 		OHLCPriceList		m_priceList;
 	};

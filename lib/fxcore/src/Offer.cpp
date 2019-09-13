@@ -30,11 +30,11 @@ namespace fx
 	}
 
 	Offer::Offer(
-		const misc::string& id,
-		const misc::string& instrument,
+		const stl::string& id,
+		const stl::string& instrument,
 		int precision,
 		double pointSize,
-		const misc::time& time,
+		const sys::time& time,
 		double bid,
 		double ask,
 		double vol,
@@ -77,22 +77,22 @@ namespace fx
 	{
 	}
 
-	const misc::string& Offer::GetOfferID() const
+	const stl::string& Offer::GetOfferID() const
 	{
 		return m_offerID;
 	}
 
-	void Offer::SetOfferID(const misc::string& id)
+	void Offer::SetOfferID(const stl::string& id)
 	{
 		m_offerID = id;
 	}
 
-	const misc::string& Offer::GetInstrument() const
+	const stl::string& Offer::GetInstrument() const
 	{
 		return m_instrument;
 	}
 
-	void Offer::SetInstrument(const misc::string& instrument)
+	void Offer::SetInstrument(const stl::string& instrument)
 	{
 		m_instrument = instrument;
 	}
@@ -107,12 +107,12 @@ namespace fx
 		m_precision = precision;
 	}
 
-	const misc::time& Offer::GetTime() const
+	const sys::time& Offer::GetTime() const
 	{
 		return m_time;
 	}
 
-	void Offer::SetTime(const misc::time& time)
+	void Offer::SetTime(const sys::time& time)
 	{
 		m_time = time;
 	}

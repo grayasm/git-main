@@ -24,6 +24,6 @@ IF /i "%2" == "x64" (
     set platf=Win32
 )
 
-call "%VS80COMNTOOLS%vsvars32.bat"
+call "%VS140COMNTOOLS%vsvars32.bat"
 
-vcbuild sample_tools.vcproj "%config%|%platf%"
+msbuild sample_tools.vcxproj /p:Configuration=%config% /p:Platform=%platf%

@@ -24,33 +24,33 @@ contact: grayasm@gmail.com
 
 namespace fxcm
 {
-	misc::string		g_Section("session");
-	misc::string		g_Instrument("instrument");
-	misc::string		g_BuySell("buysell");
-	misc::string		g_ContingencyID("contingencyid");
-	misc::string		g_OrderID("orderid");
-	misc::string		g_PrimaryID("primaryid");
-	misc::string		g_SecondaryID("secondaryid");
-	misc::string		g_Timeframe("timeframe");
-	misc::string		g_Account("account");
-	misc::string		g_AccountSymbol("accountSymbol");
-	misc::string		g_OrderType("ordertype");
-	misc::string		g_Status("status");
-	misc::string		g_ExpDate("expdate");
-	misc::string		g_Lots("lots");
-	misc::string		g_TrailStep("trailstep");
-	misc::string		g_DateFrom("datefrom");
-	misc::string		g_DateTo("dateto");
-	misc::string		g_HistoryFile("historyfile");
-	misc::string		g_OffersFile("offersfile");
-	misc::string		g_EnableOfferUpdater("enableOfferUpdater");
-	misc::string		g_EnableOfferWriter("enableOfferWriter");
-	misc::string		g_LoggingFile("loggingfile");
-	misc::string		g_EnableLogging("enableLogging");
-	misc::string		g_RangeInPips("rangeinpips");
-	misc::string		g_Rate("rate");
-	misc::string		g_RateStop("ratestop");
-	misc::string		g_RateLimit("ratelimit");
+	stl::string		g_Section("session");
+	stl::string		g_Instrument("instrument");
+	stl::string		g_BuySell("buysell");
+	stl::string		g_ContingencyID("contingencyid");
+	stl::string		g_OrderID("orderid");
+	stl::string		g_PrimaryID("primaryid");
+	stl::string		g_SecondaryID("secondaryid");
+	stl::string		g_Timeframe("timeframe");
+	stl::string		g_Account("account");
+	stl::string		g_AccountSymbol("accountSymbol");
+	stl::string		g_OrderType("ordertype");
+	stl::string		g_Status("status");
+	stl::string		g_ExpDate("expdate");
+	stl::string		g_Lots("lots");
+	stl::string		g_TrailStep("trailstep");
+	stl::string		g_DateFrom("datefrom");
+	stl::string		g_DateTo("dateto");
+	stl::string		g_HistoryFile("historyfile");
+	stl::string		g_OffersFile("offersfile");
+	stl::string		g_EnableOfferUpdater("enableOfferUpdater");
+	stl::string		g_EnableOfferWriter("enableOfferWriter");
+	stl::string		g_LoggingFile("loggingfile");
+	stl::string		g_EnableLogging("enableLogging");
+	stl::string		g_RangeInPips("rangeinpips");
+	stl::string		g_Rate("rate");
+	stl::string		g_RateStop("ratestop");
+	stl::string		g_RateLimit("ratelimit");
 
 
 	IniParams::IniParams()
@@ -58,12 +58,12 @@ namespace fxcm
 		Init();
 	}
 
-	IniParams::IniParams(const misc::string& inifile)
+	IniParams::IniParams(const stl::string& inifile)
 	{
 		Init();
 
 		misc::iniserv iniReader(inifile);
-		misc::string emptys("");
+		stl::string emptys("");
 		
 		m_iniFile = inifile;
 		m_section = g_Section;
@@ -86,19 +86,19 @@ namespace fxcm
 		m_dateTo = iniReader.get(m_section, g_DateTo, emptys);
 		
 		m_historyfile = iniReader.get(m_section, g_HistoryFile, emptys);
-		misc::trim(m_historyfile, '"'); // remove double quote at both ends
-		misc::trim(m_historyfile, ' '); // remove empty spaces at both ends
+		stl::trim(m_historyfile, '"'); // remove double quote at both ends
+		stl::trim(m_historyfile, ' '); // remove empty spaces at both ends
 
 		m_offersfile = iniReader.get(m_section, g_OffersFile, emptys);
-		misc::trim(m_offersfile, '"'); // remove double quote at both ends
-		misc::trim(m_offersfile, ' '); // remove empty spaces at both ends
+		stl::trim(m_offersfile, '"'); // remove double quote at both ends
+		stl::trim(m_offersfile, ' '); // remove empty spaces at both ends
 
 		m_enableOfferUpdater = iniReader.get(m_section, g_EnableOfferUpdater, bool(true));
 		m_enableOfferWriter = iniReader.get(m_section, g_EnableOfferWriter, bool(true));
 
 		m_loggingfile = iniReader.get(m_section, g_LoggingFile, emptys);
-		misc::trim(m_loggingfile, '"'); // remove double quote at both ends
-		misc::trim(m_loggingfile, ' '); // remove empty spaces at both ends
+		stl::trim(m_loggingfile, '"'); // remove double quote at both ends
+		stl::trim(m_loggingfile, ' '); // remove empty spaces at both ends
 
 		m_enableLogging = iniReader.get(m_section, g_EnableLogging, bool(false));
 		
@@ -156,122 +156,122 @@ namespace fxcm
 		return *this;
 	}
 
-	const misc::string& IniParams::GetInstrument() const
+	const stl::string& IniParams::GetInstrument() const
 	{
 		return m_instrument;
 	}
 
-	void IniParams::SetInstrument(const misc::string& val)
+	void IniParams::SetInstrument(const stl::string& val)
 	{
 		m_instrument = val;
 	}
 
-	const misc::string& IniParams::GetBuySell() const
+	const stl::string& IniParams::GetBuySell() const
 	{
 		return m_buysell;
 	}
 
-	void IniParams::SetBuySell(const misc::string& val)
+	void IniParams::SetBuySell(const stl::string& val)
 	{
 		m_buysell = val;
 	}
 
-	const misc::string& IniParams::GetContingencyID() const
+	const stl::string& IniParams::GetContingencyID() const
 	{
 		return m_contingencyID;
 	}
 
-	void IniParams::SetContingencyID(const misc::string& val)
+	void IniParams::SetContingencyID(const stl::string& val)
 	{
 		m_contingencyID = val;
 	}
 
-	const misc::string& IniParams::GetOrderID() const
+	const stl::string& IniParams::GetOrderID() const
 	{
 		return m_orderID;
 	}
 
-	void IniParams::SetOrderID(const misc::string& val)
+	void IniParams::SetOrderID(const stl::string& val)
 	{
 		m_orderID = val;
 	}
 
-	const misc::string& IniParams::GetPrimaryID() const
+	const stl::string& IniParams::GetPrimaryID() const
 	{
 		return m_primaryID;
 	}
 
-	void IniParams::SetPrimaryID(const misc::string& val)
+	void IniParams::SetPrimaryID(const stl::string& val)
 	{
 		m_primaryID = val;
 	}
 
-	const misc::string& IniParams::GetSecondaryID() const
+	const stl::string& IniParams::GetSecondaryID() const
 	{
 		return m_secondaryID;
 	}
 
-	void IniParams::SetSecondaryID(const misc::string& val)
+	void IniParams::SetSecondaryID(const stl::string& val)
 	{
 		m_secondaryID = val;
 	}
 
-	const misc::string& IniParams::GetTimeframe() const
+	const stl::string& IniParams::GetTimeframe() const
 	{
 		return m_timeframe;
 	}
 
-	void IniParams::SetTimeframe(const misc::string& val)
+	void IniParams::SetTimeframe(const stl::string& val)
 	{
 		m_timeframe = val;
 	}
 
-	const misc::string& IniParams::GetAccount() const
+	const stl::string& IniParams::GetAccount() const
 	{
 		return m_account;
 	}
 
-	void IniParams::SetAccount(const misc::string& val)
+	void IniParams::SetAccount(const stl::string& val)
 	{
 		m_account = val;
 	}
 
-	const misc::string& IniParams::GetAccountSymbol() const
+	const stl::string& IniParams::GetAccountSymbol() const
 	{
 		return m_accountSymbol;
 	}
 
-	void IniParams::SetAccountSymbol(const misc::string& val)
+	void IniParams::SetAccountSymbol(const stl::string& val)
 	{
 		m_accountSymbol = val;
 	}
 
-	const misc::string& IniParams::GetOrderType() const
+	const stl::string& IniParams::GetOrderType() const
 	{
 		return m_orderType;
 	}
 
-	void IniParams::SetOrderType(const misc::string& val)
+	void IniParams::SetOrderType(const stl::string& val)
 	{
 		m_orderType = val;
 	}
 
-	const misc::string& IniParams::GetStatus() const
+	const stl::string& IniParams::GetStatus() const
 	{
 		return m_status;
 	}
 
-	void IniParams::SetStatus(const misc::string& val)
+	void IniParams::SetStatus(const stl::string& val)
 	{
 		m_status = val;
 	}
 
-	const misc::string& IniParams::GetExpDate() const
+	const stl::string& IniParams::GetExpDate() const
 	{
 		return m_expDate;
 	}
 
-	void IniParams::SetExpDate(const misc::string& val)
+	void IniParams::SetExpDate(const stl::string& val)
 	{
 		m_expDate = val;
 	}
@@ -296,42 +296,42 @@ namespace fxcm
 		m_trailStep = val;
 	}
 
-	const misc::string& IniParams::GetDateFrom() const
+	const stl::string& IniParams::GetDateFrom() const
 	{
 		return m_dateFrom;
 	}
 
-	void IniParams::SetDateFrom(const misc::string& val)
+	void IniParams::SetDateFrom(const stl::string& val)
 	{
 		m_dateFrom = val;
 	}
 
-	const misc::string& IniParams::GetDateTo() const
+	const stl::string& IniParams::GetDateTo() const
 	{
 		return m_dateTo;
 	}
 
-	void IniParams::SetDateTo(const misc::string& val)
+	void IniParams::SetDateTo(const stl::string& val)
 	{
 		m_dateTo = val;
 	}
 
-	const misc::string& IniParams::GetHistoryFile() const
+	const stl::string& IniParams::GetHistoryFile() const
 	{
 		return m_historyfile;
 	}
 
-	void IniParams::SetHistoryFile(const misc::string& val)
+	void IniParams::SetHistoryFile(const stl::string& val)
 	{
 		m_historyfile = val;
 	}
 	
-	const misc::string& IniParams::GetOffersFile() const
+	const stl::string& IniParams::GetOffersFile() const
 	{
 		return m_offersfile;
 	}
 
-	void IniParams::SetOffersFile(const misc::string& val)
+	void IniParams::SetOffersFile(const stl::string& val)
 	{
 		m_offersfile = val;
 	}
@@ -356,12 +356,12 @@ namespace fxcm
 		m_enableOfferWriter = enable;
 	}
 
-	const misc::string& IniParams::GetLoggingFile() const
+	const stl::string& IniParams::GetLoggingFile() const
 	{
 		return m_loggingfile;
 	}
 
-	void IniParams::SetLoggingFile(const misc::string& val)
+	void IniParams::SetLoggingFile(const stl::string& val)
 	{
 		m_loggingfile = val;
 	}

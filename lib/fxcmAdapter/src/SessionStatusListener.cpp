@@ -30,8 +30,8 @@ namespace fxcm
 	SessionStatusListener::SessionStatusListener(
 		IO2GSession* session,
 		bool printSubSessions,
-		const misc::string& sessionID,
-		const misc::string& pin)
+		const stl::string& sessionID,
+		const stl::string& pin)
 	{
 		m_Session = session;
 		m_PrintSubsessions = printSubSessions;
@@ -47,14 +47,14 @@ namespace fxcm
 
 	long SessionStatusListener::addRef()
 	{
-		misc::autocritical_section autoCS(m_CriticalSection);
+		sys::autocritical_section autoCS(m_CriticalSection);
 		m_RefCount++;
 		return m_RefCount;
 	}
 
 	long SessionStatusListener::release()
 	{
-		misc::autocritical_section autoCS(m_CriticalSection);
+		sys::autocritical_section autoCS(m_CriticalSection);
 		m_RefCount--;
 		return m_RefCount;
 	}
@@ -65,19 +65,19 @@ namespace fxcm
 		switch (status)
 		{
 		case Disconnected:
-			misc::cout << "status::disconnected" << std::endl;
+			stl::cout << "status::disconnected" << std::endl;
 			m_Connected = false;
 			m_Disconnected = true;
 			m_SessionEvent.unlock();
 			break;
 
 		case Connecting:
-			misc::cout << "status::connecting" << std::endl;
+			stl::cout << "status::connecting" << std::endl;
 			break;
 
 		case TradingSessionRequested:
 		{
-			misc::cout << "status:trading session requested" << std::endl;
+			stl::cout << "status:trading session requested" << std::endl;
 			O2G2Ptr<IO2GSessionDescriptorCollection> descriptors =
 				m_Session->getTradingSessionDescriptors();
 			bool found = false;
@@ -90,7 +90,7 @@ namespace fxcm
 					O2G2Ptr<IO2GSessionDescriptor> descriptor =
 						descriptors->get(i);
 					if (m_PrintSubsessions)
-						misc::cout 
+						stl::cout 
 						<< "  id:='" << descriptor->getID()
 						<< "' name='" << descriptor->getName()
 						<< "' description='" << descriptor->getDescription()
@@ -116,39 +116,39 @@ namespace fxcm
 			break;
 
 		case Connected:
-			misc::cout << "status::connected" << std::endl;
+			stl::cout << "status::connected" << std::endl;
 			m_Connected = true;
 			m_Disconnected = false;
 			m_SessionEvent.unlock();
 			break;
 
 		case Reconnecting:
-			misc::cout << "status::reconnecting" << std::endl;
+			stl::cout << "status::reconnecting" << std::endl;
 			break;
 
 		case Disconnecting:
-			misc::cout << "status::disconnecting" << std::endl;
+			stl::cout << "status::disconnecting" << std::endl;
 			break;
 
 		case SessionLost:
-			misc::cout << "status::session lost" << std::endl;
+			stl::cout << "status::session lost" << std::endl;
 			break;
 
 		case PriceSessionReconnecting:
-			misc::cout << "status::price session reconnecting" << std::endl;
+			stl::cout << "status::price session reconnecting" << std::endl;
 			break;
 
 		case ConnectedWithNeedToChangePassword:
-			misc::cout << "status::connected with need to change password"
+			stl::cout << "status::connected with need to change password"
 				<< std::endl;
 			break;
 
 		case ChartSessionReconnecting:
-			misc::cout << "status::chart session reconnecting" << std::endl;
+			stl::cout << "status::chart session reconnecting" << std::endl;
 			break;
 
 		default:
-			misc::cout << __FUNCTION__ << " O2GSessionStatus id does not exist"
+			stl::cout << __FUNCTION__ << " O2GSessionStatus id does not exist"
 				", is this new API?" << std::endl;
 			break;
 		}
@@ -156,7 +156,7 @@ namespace fxcm
 
 	void SessionStatusListener::onLoginFailed(const char *error)
 	{
-		misc::cout << "Login error: " << error << std::endl;
+		stl::cout << "Login error: " << error << std::endl;
 		m_Error = true;
 	}
 

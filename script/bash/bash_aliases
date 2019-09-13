@@ -15,7 +15,7 @@ if [ $(id -u) -eq 0 ]; then # you are root, set red colour prompt
    # root on the server
    # PS1="\\[$(tput setaf 1)\\u$(tput bold)$(tput setaf 3)@\\h$(tput sgr0)$(tput setaf 1):\\w #$(tput sgr0)\\] "
    # root on binary
-   PS1="\\[$(tput setaf 1)\\u@\\h:\\w #$(tput sgr0)\\] "
+   PS1="\\[$(tput bold)$(tput setaf 1)\\u@\\h:\\w #$(tput sgr0)\\] "
    alias mv='mv -iv'
    alias cp='cp -aRiv'
    alias rm='rm -iv'
@@ -129,3 +129,7 @@ export PATH=/usr/lib64/qt5/bin:$PATH
 # ----- using NO-distcc -----
 # export CC='gcc'
 # export CXX='g++'
+
+
+# PostgreSQL-11
+export PATH=/usr/pgsql-11/bin:$PATH

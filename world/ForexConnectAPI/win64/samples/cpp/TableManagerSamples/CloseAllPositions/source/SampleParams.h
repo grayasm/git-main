@@ -36,6 +36,7 @@ public:
     const char *getAccount();
     const char *getOrderType();
     const char *getStatus();
+    const char *getTableType();
     int getLots();
     int getTrailStep();
     DATE getDateFrom();
@@ -47,6 +48,7 @@ public:
 
     void setAccount(const char *);
     void setOrderType(const char *);
+    void setTableType(const char *);
     void setDateFrom(DATE);
     void setDateTo(DATE);
 
@@ -64,6 +66,7 @@ private:
     std::string mOrderType;
     std::string mStatus;
     std::string mExpDate;
+    std::string mTableType;
     int mLots;
     int mTrailStep;
     DATE mDateFrom;

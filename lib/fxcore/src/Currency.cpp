@@ -39,7 +39,7 @@ namespace fx
 	}
 
 	Currency::Currency(
-		const misc::string& symbol,
+		const stl::string& symbol,
 		const Price& price,
 		double margin,
 		double pipCost,
@@ -78,7 +78,7 @@ namespace fx
 		return *this;
 	}
 
-	const misc::string& Currency::GetSymbol() const
+	const stl::string& Currency::GetSymbol() const
 	{
 		return m_symbol;
 	}

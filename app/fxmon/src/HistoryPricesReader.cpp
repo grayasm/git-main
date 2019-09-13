@@ -25,7 +25,7 @@
 #include "stream.hpp"
 
 
-HistoryPricesReader::HistoryPricesReader(const misc::string& instrument)
+HistoryPricesReader::HistoryPricesReader(const stl::string& instrument)
 {
 	m_instrument = instrument;
 
@@ -72,10 +72,10 @@ bool HistoryPricesReader::GetOffer(fx::Offer& offer)
 }
 
 
-void HistoryPricesReader::ParseFile(const misc::string& filePath,
-	misc::vector<fx::Offer>& result)
+void HistoryPricesReader::ParseFile(const stl::string& filePath,
+	stl::vector<fx::Offer>& result)
 {
-	misc::filename historyFile(filePath);
+	sys::filename historyFile(filePath);
 	if (!historyFile.access(F_OK))
 		return; // error
 
@@ -91,7 +91,7 @@ void HistoryPricesReader::ParseFile(const misc::string& filePath,
 	fx::OHLCPrice* hp = new fx::OHLCPrice(
 		"",
 		"",
-		misc::time(),
+		sys::time(),
 		0, 0, 0, 0,
 		0, 0, 0, 0,
 		0);
@@ -108,14 +108,14 @@ void HistoryPricesReader::ParseFile(const misc::string& filePath,
 		"EUR/USD",
 		5,		// precision
 		0.0001, // pointSize
-		misc::time(),
+		sys::time(),
 		0,		// bid
 		0,		// ask
 		0,		// vol
 		true);	// trading is open
 	fx::Offer offerOHLC[4] = { offer, offer, offer, offer };
 
-	misc::string fline;
+	stl::string fline;
 	char c;
 
 	while (true) //(c = fgetc(pf)) != EOF)
@@ -139,7 +139,7 @@ void HistoryPricesReader::ParseFile(const misc::string& filePath,
 			char* pch;
 			char str[1000];
 			strcpy(str, fline.c_str());
-			misc::string s1;
+			stl::string s1;
 			int i = 0;
 
 			pch = strtok(str, ",=");
@@ -148,8 +148,8 @@ void HistoryPricesReader::ParseFile(const misc::string& filePath,
 				i++;
 
 				if (i % 2 != 0) { // One of: {I T BO BH BL BC AO AH AL AC V}
-					s1 = misc::string(pch);
-					misc::trim(s1);
+					s1 = stl::string(pch);
+					stl::trim(s1);
 				}
 				else if (s1 == "I") {
 					hp->SetInstrument(pch);
@@ -162,28 +162,28 @@ void HistoryPricesReader::ParseFile(const misc::string& filePath,
 					sscanf(pch, "%d-%3s-%d %d:%d:%d",
 						&year, mon, &day, &hour, &min, &sec);
 
-					misc::time::Month tmon;
-					if (strcmp(mon, "JAN") == 0) tmon = misc::time::JAN;
-					else if (strcmp(mon, "FEB") == 0) tmon = misc::time::FEB;
-					else if (strcmp(mon, "MAR") == 0) tmon = misc::time::MAR;
-					else if (strcmp(mon, "APR") == 0) tmon = misc::time::APR;
-					else if (strcmp(mon, "MAY") == 0) tmon = misc::time::MAY;
-					else if (strcmp(mon, "JUN") == 0) tmon = misc::time::JUN;
-					else if (strcmp(mon, "JUL") == 0) tmon = misc::time::JUL;
-					else if (strcmp(mon, "AUG") == 0) tmon = misc::time::AUG;
-					else if (strcmp(mon, "SEP") == 0) tmon = misc::time::SEP;
-					else if (strcmp(mon, "OCT") == 0) tmon = misc::time::OCT;
-					else if (strcmp(mon, "NOV") == 0) tmon = misc::time::NOV;
-					else if (strcmp(mon, "DEC") == 0) tmon = misc::time::DEC;
+					sys::time::Month tmon;
+					if (strcmp(mon, "JAN") == 0) tmon = sys::time::JAN;
+					else if (strcmp(mon, "FEB") == 0) tmon = sys::time::FEB;
+					else if (strcmp(mon, "MAR") == 0) tmon = sys::time::MAR;
+					else if (strcmp(mon, "APR") == 0) tmon = sys::time::APR;
+					else if (strcmp(mon, "MAY") == 0) tmon = sys::time::MAY;
+					else if (strcmp(mon, "JUN") == 0) tmon = sys::time::JUN;
+					else if (strcmp(mon, "JUL") == 0) tmon = sys::time::JUL;
+					else if (strcmp(mon, "AUG") == 0) tmon = sys::time::AUG;
+					else if (strcmp(mon, "SEP") == 0) tmon = sys::time::SEP;
+					else if (strcmp(mon, "OCT") == 0) tmon = sys::time::OCT;
+					else if (strcmp(mon, "NOV") == 0) tmon = sys::time::NOV;
+					else if (strcmp(mon, "DEC") == 0) tmon = sys::time::DEC;
 					else
-						throw misc::exception("Cannot convert the month from history file");
+						throw stl::exception("Cannot convert the month from history file");
 
-					misc::time hptime(year, tmon, day, hour, min, sec);
+					sys::time hptime(year, tmon, day, hour, min, sec);
 					hp->SetTime(hptime);
 				}
 				else {
 					double val;
-					misc::to_value(pch, val);
+					stl::to_value(pch, val);
 
 					if (s1 == "BO") hp->SetBidOpen(val);
 					else if (s1 == "BH") hp->SetBidHigh(val);
@@ -195,7 +195,7 @@ void HistoryPricesReader::ParseFile(const misc::string& filePath,
 					else if (s1 == "AC") hp->SetAskClose(val);
 					else if (s1 == "V") hp->SetVolume((int)val);
 					else
-						throw misc::exception("Cannot convert ID from history file");
+						throw stl::exception("Cannot convert ID from history file");
 				}
 
 				pch = strtok(NULL, ",=");
@@ -205,7 +205,7 @@ void HistoryPricesReader::ParseFile(const misc::string& filePath,
 			{
 				static int offerID = 0;
 				offerID++;
-				offer.SetOfferID(misc::from_value(offerID));
+				offer.SetOfferID(stl::from_value(offerID));
 				offer.SetTime(hp->GetTime());
 				offer.SetBid(hp->GetBidOpen());
 				offer.SetAsk(hp->GetAskOpen());
@@ -215,7 +215,7 @@ void HistoryPricesReader::ParseFile(const misc::string& filePath,
 				
 
 				offerID++;
-				offer.SetOfferID(misc::from_value(offerID));
+				offer.SetOfferID(stl::from_value(offerID));
 				offer.SetTime(hp->GetTime() + 15);
 				bool highFirst = (hp->GetAskOpen() > hp->GetAskClose());
 				offer.SetBid(highFirst == true ? hp->GetBidHigh() : hp->GetBidLow());
@@ -225,7 +225,7 @@ void HistoryPricesReader::ParseFile(const misc::string& filePath,
 
 
 				offerID++;
-				offer.SetOfferID(misc::from_value(offerID));
+				offer.SetOfferID(stl::from_value(offerID));
 				offer.SetTime(hp->GetTime() + 30);
 				offer.SetBid(highFirst == true ? hp->GetBidLow() : hp->GetBidHigh());
 				offer.SetAsk(highFirst == true ? hp->GetAskLow() : hp->GetAskHigh());
@@ -234,7 +234,7 @@ void HistoryPricesReader::ParseFile(const misc::string& filePath,
 				
 
 				offerID++;
-				offer.SetOfferID(misc::from_value(offerID));
+				offer.SetOfferID(stl::from_value(offerID));
 				offer.SetTime(hp->GetTime() + 45);
 				offer.SetBid(hp->GetBidClose());
 				offer.SetAsk(hp->GetAskClose());
@@ -248,7 +248,7 @@ void HistoryPricesReader::ParseFile(const misc::string& filePath,
 
 #ifdef DEBUG
 				if (result.size() % 1000 == 0)
-					misc::cout << "fetched " << result.size() << std::endl;
+					stl::cout << "fetched " << result.size() << std::endl;
 #endif
 			}
 
@@ -264,7 +264,7 @@ void HistoryPricesReader::ParseFile(const misc::string& filePath,
 
 
 void HistoryPricesReader::Interpolate(const fx::Offer& beg, const fx::Offer& end,
-	misc::vector<fx::Offer>& result)
+	stl::vector<fx::Offer>& result)
 {
 	// clear result outside if needed!!
 
@@ -283,18 +283,18 @@ void HistoryPricesReader::Interpolate(const fx::Offer& beg, const fx::Offer& end
 	int div = (count > 0 ? count : 1);
 
 	double vol = (beg.GetVolume() + end.GetVolume()) / (count + 1);
-	misc::time tdiff = end.GetTime() - beg.GetTime();
+	sys::time tdiff = end.GetTime() - beg.GetTime();
 	double secdiff =
-		((double)(tdiff.hour_() * misc::time::hourSEC +
-		tdiff.min_() * misc::time::minSEC +
+		((double)(tdiff.hour_() * sys::time::hourSEC +
+		tdiff.min_() * sys::time::minSEC +
 		tdiff.sec_())) / div;
 
 	fx::Offer offer(beg);
 	for (int i = 0; i <= count; ++i)
 	{
-		misc::string offerID(beg.GetOfferID());
+		stl::string offerID(beg.GetOfferID());
 		offerID += "-INT-";
-		offerID += misc::from_value(i);
+		offerID += stl::from_value(i);
 		offer.SetOfferID(offerID);
 		offer.SetTime(beg.GetTime() + i * secdiff);
 		offer.SetBid(beg.GetBid() + (i * bidpips / div) * pip2rate);

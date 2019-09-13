@@ -56,16 +56,16 @@ void test_multi_lock::tearDown()
 //##########################BEGIN TEST SUITE######################################
 void test_multi_lock::ctor()
 {
-    misc::cout << "\n\n\t*******************************************************";
-    misc::cout <<   "\n\t* TESTING HEADER: multi_lock.hpp                      *";
-    misc::cout <<   "\n\t*******************************************************";
+    stl::cout << "\n\n\t*******************************************************";
+    stl::cout <<   "\n\t* TESTING HEADER: multi_lock.hpp                      *";
+    stl::cout <<   "\n\t*******************************************************";
 	
-    misc::cout << "\n\n\tctor---------------------------------------------------";
+    stl::cout << "\n\n\tctor---------------------------------------------------";
 	{
-		misc::mutex m1,m2;
-		misc::semaphore s1(1), s2(2);
-		misc::event e1, e2;
-		misc::sync_base* so[6];
+		sys::mutex m1,m2;
+		sys::semaphore s1(1), s2(2);
+		sys::event e1, e2;
+		sys::sync_base* so[6];
 		so[0] = &m1;
 		so[1] = &m2;
 		so[2] = &s1;
@@ -75,10 +75,10 @@ void test_multi_lock::ctor()
 		misc::multi_lock ml(so, 6);
 	}
 	{
-		misc::mutex m1,m2;
-		misc::semaphore s1(1), s2(2);
-		misc::event e1, e2;
-		misc::sync_base* so[6];
+		sys::mutex m1,m2;
+		sys::semaphore s1(1), s2(2);
+		sys::event e1, e2;
+		sys::sync_base* so[6];
 		so[0] = &m1;
 		so[1] = &m2;
 		so[2] = &s1;
@@ -89,10 +89,10 @@ void test_multi_lock::ctor()
 		delete ml;
 	}
 	{
-		misc::mutex m1,m2;
-		misc::semaphore s1(1), s2(2);
-		misc::event e1, e2;
-		misc::sync_base* so[6];
+		sys::mutex m1,m2;
+		sys::semaphore s1(1), s2(2);
+		sys::event e1, e2;
+		sys::sync_base* so[6];
 		so[0] = &m1;
 		so[1] = &m2;
 		so[2] = &s1;
@@ -102,10 +102,10 @@ void test_multi_lock::ctor()
 		misc::multi_lock ml6(so, 6), ml5(so, 5), ml4(so, 4);
 	}
 	{
-		misc::mutex m1,m2;
-		misc::semaphore s1(1), s2(2);
-		misc::event e1, e2;
-		misc::sync_base* so[6];
+		sys::mutex m1,m2;
+		sys::semaphore s1(1), s2(2);
+		sys::event e1, e2;
+		sys::sync_base* so[6];
 		so[0] = &m1;
 		so[1] = &m2;
 		so[2] = &s1;
@@ -122,13 +122,13 @@ void test_multi_lock::ctor()
 
 void test_multi_lock::dtor()
 {
-	misc::cout << "\n\n\tdtor---------------------------------------------------";
+	stl::cout << "\n\n\tdtor---------------------------------------------------";
 	
 	{
-		misc::mutex m1,m2;
-		misc::semaphore s1(1), s2(2);
-		misc::event e1, e2;
-		misc::sync_base* so[6];
+		sys::mutex m1,m2;
+		sys::semaphore s1(1), s2(2);
+		sys::event e1, e2;
+		sys::sync_base* so[6];
 		so[0] = &m1;
 		so[1] = &m2;
 		so[2] = &s1;
@@ -138,10 +138,10 @@ void test_multi_lock::dtor()
 		misc::multi_lock ml(so, 6);
 	}
 	{
-		misc::mutex m1,m2;
-		misc::semaphore s1(1), s2(2);
-		misc::event e1, e2;
-		misc::sync_base* so[6];
+		sys::mutex m1,m2;
+		sys::semaphore s1(1), s2(2);
+		sys::event e1, e2;
+		sys::sync_base* so[6];
 		so[0] = &m1;
 		so[1] = &m2;
 		so[2] = &s1;
@@ -152,10 +152,10 @@ void test_multi_lock::dtor()
 		delete ml;
 	}
 	{
-		misc::mutex m1,m2;
-		misc::semaphore s1(1), s2(2);
-		misc::event e1, e2;
-		misc::sync_base* so[6];
+		sys::mutex m1,m2;
+		sys::semaphore s1(1), s2(2);
+		sys::event e1, e2;
+		sys::sync_base* so[6];
 		so[0] = &m1;
 		so[1] = &m2;
 		so[2] = &s1;
@@ -165,10 +165,10 @@ void test_multi_lock::dtor()
 		misc::multi_lock ml6(so, 6), ml5(so, 5), ml4(so, 4);
 	}
 	{
-		misc::mutex m1,m2;
-		misc::semaphore s1(1), s2(2);
-		misc::event e1, e2;
-		misc::sync_base* so[6];
+		sys::mutex m1,m2;
+		sys::semaphore s1(1), s2(2);
+		sys::event e1, e2;
+		sys::sync_base* so[6];
 		so[0] = &m1;
 		so[1] = &m2;
 		so[2] = &s1;
@@ -183,7 +183,7 @@ void test_multi_lock::dtor()
 	}
 }
 
-class MLLockThread : public misc::thread
+class MLLockThread : public sys::thread
 {
 public:
 	MLLockThread(misc::multi_lock* ml, int sec, int thID)
@@ -206,13 +206,13 @@ private:
 
 void test_multi_lock::lock()
 {
-	misc::cout << "\n\n\tlock --------------------------------------------------";
+	stl::cout << "\n\n\tlock --------------------------------------------------";
 	{
-		misc::cout << "\n\n\t main:2 locked mutex";
-		misc::mutex m1, m2;
+		stl::cout << "\n\n\t main:2 locked mutex";
+		sys::mutex m1, m2;
 		CPPUNIT_ASSERT( m1.lock() == 0 );
 		CPPUNIT_ASSERT( m2.lock() == 0 );
-		misc::sync_base* so[2];
+		sys::sync_base* so[2];
 		so[0] = &m1;
 		so[1] = &m2;
 		misc::multi_lock ml(so, 2);
@@ -228,12 +228,12 @@ void test_multi_lock::lock()
 		printf("\n\t main: thread joined");
 	}
 	{
-		misc::cout << "\n\n\t main:1 mutex, 1 event";
-		misc::mutex m1;
-		misc::event e1;
+		stl::cout << "\n\n\t main:1 mutex, 1 event";
+		sys::mutex m1;
+		sys::event e1;
 		CPPUNIT_ASSERT( m1.lock() == 0 );
 		
-		misc::sync_base* so[2];
+		sys::sync_base* so[2];
 		so[0] = &m1;
 		so[1] = &e1;
 		misc::multi_lock ml(so, 2);
@@ -249,10 +249,10 @@ void test_multi_lock::lock()
 		printf("\n\t main: thread joined");
 	}
 	{
-		misc::cout << "\n\n\t main: 15 objects";
-		misc::mutex m1, m2, m3, m4, m5;
-		misc::event e1, e2, e3, e4, e5;
-		misc::semaphore s1(1), s2(2), s3(3), s4(4), s5(5);
+		stl::cout << "\n\n\t main: 15 objects";
+		sys::mutex m1, m2, m3, m4, m5;
+		sys::event e1, e2, e3, e4, e5;
+		sys::semaphore s1(1), s2(2), s3(3), s4(4), s5(5);
 				
 		CPPUNIT_ASSERT( m1.lock() == 0 );
 		CPPUNIT_ASSERT( m2.lock() == 0 );
@@ -262,7 +262,7 @@ void test_multi_lock::lock()
 		
 		CPPUNIT_ASSERT( s1.lock() == 0 );
 		
-		misc::sync_base* so[15];
+		sys::sync_base* so[15];
 		so[0] = &m1;
 		so[1] = &m2;
 		so[2] = &m3;
@@ -307,9 +307,9 @@ void test_multi_lock::lock()
 	}
 	{
 		// start 2 concurent multi_lock objects
-		misc::cout << "\n\n\t main: 2 concurent multi_lock with same 2 objects";
-		misc::mutex m1, m2;
-		misc::sync_base* sb[2];
+		stl::cout << "\n\n\t main: 2 concurent multi_lock with same 2 objects";
+		sys::mutex m1, m2;
+		sys::sync_base* sb[2];
 		sb[0] = &m1;
 		sb[1] = &m2;
 		misc::multi_lock ml1(sb, 2);
@@ -322,9 +322,9 @@ void test_multi_lock::lock()
 		CPPUNIT_ASSERT( t2.join() == 0 );
 	}
 	{
-		misc::cout << "\n\n\t main: 3 concurent multilocks on 6,2,2, non-overlapping objects";
-		misc::mutex m1, m2, m3, m4, m5, m6;
-		misc::sync_base* so[6];
+		stl::cout << "\n\n\t main: 3 concurent multilocks on 6,2,2, non-overlapping objects";
+		sys::mutex m1, m2, m3, m4, m5, m6;
+		sys::sync_base* so[6];
 		so[0] = &m1;
 		so[1] = &m2;
 		so[2] = &m3;
@@ -350,9 +350,9 @@ void test_multi_lock::lock()
 		CPPUNIT_ASSERT( t3.join() == 0 );
 	}
  	{
-		misc::cout << "\n\n\t main: 4 concurent multi_lock on 3 objects with 2 overlapped";
-		misc::mutex m1, m2, m3, m4, m5, m6;
-		misc::sync_base* so[6];
+		stl::cout << "\n\n\t main: 4 concurent multi_lock on 3 objects with 2 overlapped";
+		sys::mutex m1, m2, m3, m4, m5, m6;
+		sys::sync_base* so[6];
 		so[0] = &m1;
 		so[1] = &m2;
 		so[2] = &m3;
@@ -383,20 +383,20 @@ void test_multi_lock::lock()
 		CPPUNIT_ASSERT( t4.join() == 0 );
 	}
 	{
-		misc::cout << "\n\n\t main: concurent multi_lock with 4 overlapped objects";
-		misc::sync_base* so[50];
-		misc::mutex m1, m2, m3, m4, m5;
+		stl::cout << "\n\n\t main: concurent multi_lock with 4 overlapped objects";
+		sys::sync_base* so[50];
+		sys::mutex m1, m2, m3, m4, m5;
 		so[0] = &m1;
 		so[1] = &m2;
 		so[2] = &m3;
 		so[3] = &m4;
 		so[4] = &m5;
 		
-		misc::event ev[40];
+		sys::event ev[40];
 		for(int i=5; i < 40 + 5; ++i)
 			so[i] = &ev[i-5];
 		
-		misc::semaphore s1(1), s2(1), s3(1), s4(1), s5(1);
+		sys::semaphore s1(1), s2(1), s3(1), s4(1), s5(1);
 		so[45] = &s1;
 		so[46] = &s2;
 		so[47] = &s3;
@@ -421,7 +421,7 @@ void test_multi_lock::lock()
 		CPPUNIT_ASSERT( t3.resume() == 0 );
 		CPPUNIT_ASSERT( t4.resume() == 0 );
 		
-		misc::cout << "\n\n\t main: wait 3 seconds for multi_lock cocktail";
+		stl::cout << "\n\n\t main: wait 3 seconds for multi_lock cocktail";
 		sleep(3);
 		
 		for(int i=0; i < 40; ++i)
@@ -433,12 +433,12 @@ void test_multi_lock::lock()
 		CPPUNIT_ASSERT( t4.join() == 0 );
 	}
 	{
-		misc::cout << "\n\n\t main: concurent multi_lock on 10 objects";
+		stl::cout << "\n\n\t main: concurent multi_lock on 10 objects";
 		// use 1 event to create the cocktail
-		misc::sync_base* so[11];
-		misc::mutex m1, m2, m3, m4, m5;
-		misc::semaphore s1(1), s2(2), s3(1), s4(2), s5(1);
-		misc::event ev;
+		sys::sync_base* so[11];
+		sys::mutex m1, m2, m3, m4, m5;
+		sys::semaphore s1(1), s2(2), s3(1), s4(2), s5(1);
+		sys::event ev;
 		so[0] = &m1;
 		so[1] = &m2;
 		so[2] = &m3;
@@ -468,7 +468,7 @@ void test_multi_lock::lock()
 		CPPUNIT_ASSERT( t3.resume() == 0 );
 		CPPUNIT_ASSERT( t4.resume() == 0 );
 		
-		misc::cout << "\n\t main: resummed 4 threads, in 2 sec comes the event";
+		stl::cout << "\n\t main: resummed 4 threads, in 2 sec comes the event";
 		sleep(2);
 		CPPUNIT_ASSERT( ev.setevent() == 0 );		
 		
@@ -479,7 +479,7 @@ void test_multi_lock::lock()
 	}
 }
 
-class MLTimedLockThread : public misc::thread
+class MLTimedLockThread : public sys::thread
 {
 public:
 	MLTimedLockThread(misc::multi_lock* ml, int sec, int thID)
@@ -509,18 +509,18 @@ private:
 
 void test_multi_lock::trylock()
 {
-	misc::cout << "\n\n\ttrylock -----------------------------------------------";
+	stl::cout << "\n\n\ttrylock -----------------------------------------------";
 	
 	// warming up with some simple tests
 	{
 		// 10 mutexes successful
-		misc::cout << "\n\n\t main(1): 3 timewait multi_lock all on 10 mutex objects.";
+		stl::cout << "\n\n\t main(1): 3 timewait multi_lock all on 10 mutex objects.";
 		const int MUTNO=10;
-		misc::mutex m[ MUTNO ];
+		sys::mutex m[ MUTNO ];
 		for(int i=0; i < MUTNO; ++i)
 			CPPUNIT_ASSERT( m[i].lock() == 0 );
 		
-		misc::sync_base* sb[MUTNO];
+		sys::sync_base* sb[MUTNO];
 		for(int i=0; i < MUTNO; ++i)
 			sb[i] = &m[i];
 		
@@ -537,7 +537,7 @@ void test_multi_lock::trylock()
 		CPPUNIT_ASSERT( t2.resume() == 0 );
 		CPPUNIT_ASSERT( t3.resume() == 0 );
 		
-		misc::cout << "\n\t main: all threads running, good luck!";
+		stl::cout << "\n\t main: all threads running, good luck!";
 		sleep(2);
 		
 		for(int i=0; i < MUTNO; ++i)
@@ -554,12 +554,12 @@ void test_multi_lock::trylock()
 	}
 	{
 		// 5 mutexes, 5 semaphores, 1 not-signaled event => multi_lock timeout
-		misc::cout << "\n\n\t main(2): concurent multi_lock running until timeout";
-		misc::mutex mt1, mt2, mt3, mt4, mt5;
-		misc::event ev1;
-		misc::semaphore sm1(1), sm2(1), sm3(1), sm4(1), sm5(1);
+		stl::cout << "\n\n\t main(2): concurent multi_lock running until timeout";
+		sys::mutex mt1, mt2, mt3, mt4, mt5;
+		sys::event ev1;
+		sys::semaphore sm1(1), sm2(1), sm3(1), sm4(1), sm5(1);
 		
-		misc::sync_base* so[11];
+		sys::sync_base* so[11];
 		so[0] = &mt1;
 		so[1] = &mt2;
 		so[2] = &mt3;
@@ -605,11 +605,11 @@ void test_multi_lock::trylock()
 	///////////////////////////////////////////////////////////////////////////
 	// we repeat test_multi_lock::lock tests with result 0; successful locks.
 	{
-		misc::cout << "\n\n\t main(3):2 locked mutex";
-		misc::mutex m1, m2;
+		stl::cout << "\n\n\t main(3):2 locked mutex";
+		sys::mutex m1, m2;
 		CPPUNIT_ASSERT( m1.lock() == 0 );
 		CPPUNIT_ASSERT( m2.lock() == 0 );
-		misc::sync_base* so[2];
+		sys::sync_base* so[2];
 		so[0] = &m1;
 		so[1] = &m2;
 		misc::multi_lock ml(so, 2);
@@ -628,12 +628,12 @@ void test_multi_lock::trylock()
 		printf("\n\t main: thread joined");
 	}
 	{
-		misc::cout << "\n\n\t main(4):1 mutex, 1 event";
-		misc::mutex m1;
-		misc::event e1;
+		stl::cout << "\n\n\t main(4):1 mutex, 1 event";
+		sys::mutex m1;
+		sys::event e1;
 		CPPUNIT_ASSERT( m1.lock() == 0 );
 		
-		misc::sync_base* so[2];
+		sys::sync_base* so[2];
 		so[0] = &m1;
 		so[1] = &e1;
 		misc::multi_lock ml(so, 2);
@@ -653,10 +653,10 @@ void test_multi_lock::trylock()
 		CPPUNIT_ASSERT( retval == 0 );						// trylock succeeded
 	}
 	{
-		misc::cout << "\n\n\t main(5): 15 objects";
-		misc::mutex m1, m2, m3, m4, m5;
-		misc::event e1, e2, e3, e4, e5;
-		misc::semaphore s1(1), s2(2), s3(3), s4(4), s5(5);
+		stl::cout << "\n\n\t main(5): 15 objects";
+		sys::mutex m1, m2, m3, m4, m5;
+		sys::event e1, e2, e3, e4, e5;
+		sys::semaphore s1(1), s2(2), s3(3), s4(4), s5(5);
 				
 		CPPUNIT_ASSERT( m1.lock() == 0 );
 		CPPUNIT_ASSERT( m2.lock() == 0 );
@@ -666,7 +666,7 @@ void test_multi_lock::trylock()
 		
 		CPPUNIT_ASSERT( s1.lock() == 0 );
 		
-		misc::sync_base* so[15];
+		sys::sync_base* so[15];
 		so[0] = &m1;
 		so[1] = &m2;
 		so[2] = &m3;
@@ -716,9 +716,9 @@ void test_multi_lock::trylock()
 	}
 	{
 		// start 2 concurent multi_lock objects
-		misc::cout << "\n\n\t main(6): 2 concurent multi_lock with same 2 objects";
-		misc::mutex m1, m2;
-		misc::sync_base* sb[2];
+		stl::cout << "\n\n\t main(6): 2 concurent multi_lock with same 2 objects";
+		sys::mutex m1, m2;
+		sys::sync_base* sb[2];
 		sb[0] = &m1;
 		sb[1] = &m2;
 		misc::multi_lock ml1(sb, 2);
@@ -738,9 +738,9 @@ void test_multi_lock::trylock()
 		
 	}
 	{
-		misc::cout << "\n\n\t main(7): 3 concurent multilocks on 6,2,2, non-overlapping objects";
-		misc::mutex m1, m2, m3, m4, m5, m6;
-		misc::sync_base* so[6];
+		stl::cout << "\n\n\t main(7): 3 concurent multilocks on 6,2,2, non-overlapping objects";
+		sys::mutex m1, m2, m3, m4, m5, m6;
+		sys::sync_base* so[6];
 		so[0] = &m1;
 		so[1] = &m2;
 		so[2] = &m3;
@@ -774,9 +774,9 @@ void test_multi_lock::trylock()
 		CPPUNIT_ASSERT( retval == 0 );						//trylock succeeded
 	}
  	{
-		misc::cout << "\n\n\t main(8): 4 concurent multi_lock on 3 objects with 2 overlapped";
-		misc::mutex m1, m2, m3, m4, m5, m6;
-		misc::sync_base* so[6];
+		stl::cout << "\n\n\t main(8): 4 concurent multi_lock on 3 objects with 2 overlapped";
+		sys::mutex m1, m2, m3, m4, m5, m6;
+		sys::sync_base* so[6];
 		so[0] = &m1;
 		so[1] = &m2;
 		so[2] = &m3;
@@ -818,20 +818,20 @@ void test_multi_lock::trylock()
 		
 	}
 	{
-		misc::cout << "\n\n\t main(9): concurent multi_lock with 4 overlapped objects";
-		misc::sync_base* so[50];
-		misc::mutex m1, m2, m3, m4, m5;
+		stl::cout << "\n\n\t main(9): concurent multi_lock with 4 overlapped objects";
+		sys::sync_base* so[50];
+		sys::mutex m1, m2, m3, m4, m5;
 		so[0] = &m1;
 		so[1] = &m2;
 		so[2] = &m3;
 		so[3] = &m4;
 		so[4] = &m5;
 		
-		misc::event ev[40];
+		sys::event ev[40];
 		for(int i=5; i < 40 + 5; ++i)
 			so[i] = &ev[i-5];
 		
-		misc::semaphore s1(1), s2(1), s3(1), s4(1), s5(1);
+		sys::semaphore s1(1), s2(1), s3(1), s4(1), s5(1);
 		so[45] = &s1;
 		so[46] = &s2;
 		so[47] = &s3;
@@ -856,7 +856,7 @@ void test_multi_lock::trylock()
 		CPPUNIT_ASSERT( t3.resume() == 0 );
 		CPPUNIT_ASSERT( t4.resume() == 0 );
 		
-		misc::cout << "\n\n\t main: wait 3 seconds for multi_lock cocktail";
+		stl::cout << "\n\n\t main: wait 3 seconds for multi_lock cocktail";
 		sleep(3);
 		
 		for(int i=0; i < 40; ++i)
@@ -878,12 +878,12 @@ void test_multi_lock::trylock()
 		CPPUNIT_ASSERT( retval == 0 );						//trylock succeeded
 	}
 	{
-		misc::cout << "\n\n\t main(10): concurent multi_lock on 10 objects";
+		stl::cout << "\n\n\t main(10): concurent multi_lock on 10 objects";
 		// use 1 event to create the cocktail
-		misc::sync_base* so[11];
-		misc::mutex m1, m2, m3, m4, m5;
-		misc::semaphore s1(1), s2(2), s3(1), s4(2), s5(1);
-		misc::event ev;
+		sys::sync_base* so[11];
+		sys::mutex m1, m2, m3, m4, m5;
+		sys::semaphore s1(1), s2(2), s3(1), s4(2), s5(1);
+		sys::event ev;
 		so[0] = &m1;
 		so[1] = &m2;
 		so[2] = &m3;
@@ -913,7 +913,7 @@ void test_multi_lock::trylock()
 		CPPUNIT_ASSERT( t3.resume() == 0 );
 		CPPUNIT_ASSERT( t4.resume() == 0 );
 		
-		misc::cout << "\n\t main: resumed 4 threads, in 2 sec comes the event";
+		stl::cout << "\n\t main: resumed 4 threads, in 2 sec comes the event";
 		sleep(2);
 		CPPUNIT_ASSERT( ev.setevent() == 0 );		
 		
@@ -938,11 +938,11 @@ void test_multi_lock::trylock()
 	///////////////////////////////////////////////////////////////////////////
 	// we repeat test_multi_lock::lock tests with result 1; failed with timeout.
 	{
-		misc::cout << "\n\n\t main(11):2 locked mutex";
-		misc::mutex m1, m2;
+		stl::cout << "\n\n\t main(11):2 locked mutex";
+		sys::mutex m1, m2;
 		CPPUNIT_ASSERT( m1.lock() == 0 );
 		CPPUNIT_ASSERT( m2.lock() == 0 );
-		misc::sync_base* so[2];
+		sys::sync_base* so[2];
 		so[0] = &m1;
 		so[1] = &m2;
 		misc::multi_lock ml(so, 2);
@@ -961,11 +961,11 @@ void test_multi_lock::trylock()
 		printf("\n\t main: thread joined");
 	}
 	{
-		misc::cout << "\n\n\t main(12):1 mutex, 1 event";
-		misc::mutex m1;
-		misc::event e1;
+		stl::cout << "\n\n\t main(12):1 mutex, 1 event";
+		sys::mutex m1;
+		sys::event e1;
 				
-		misc::sync_base* so[2];
+		sys::sync_base* so[2];
 		so[0] = &m1;
 		so[1] = &e1;
 		misc::multi_lock ml(so, 2);
@@ -982,10 +982,10 @@ void test_multi_lock::trylock()
 		CPPUNIT_ASSERT( retval == 1 );						// trylock succeeded
 	}
 	{
-		misc::cout << "\n\n\t main(13): 15 objects";
-		misc::mutex m1, m2, m3, m4, m5;
-		misc::event e1, e2, e3, e4, e5;
-		misc::semaphore s1(1), s2(2), s3(3), s4(4), s5(5);
+		stl::cout << "\n\n\t main(13): 15 objects";
+		sys::mutex m1, m2, m3, m4, m5;
+		sys::event e1, e2, e3, e4, e5;
+		sys::semaphore s1(1), s2(2), s3(3), s4(4), s5(5);
 				
 		CPPUNIT_ASSERT( m1.lock() == 0 );
 		CPPUNIT_ASSERT( m2.lock() == 0 );
@@ -995,7 +995,7 @@ void test_multi_lock::trylock()
 		
 		CPPUNIT_ASSERT( s1.lock() == 0 );
 		
-		misc::sync_base* so[15];
+		sys::sync_base* so[15];
 		so[0] = &m1;
 		so[1] = &m2;
 		so[2] = &m3;
@@ -1041,9 +1041,9 @@ void test_multi_lock::trylock()
 	}
 	{
 		// start 2 concurent multi_lock objects
-		misc::cout << "\n\n\t main(14): 2 concurent multi_lock with same 2 objects";
-		misc::mutex m1, m2;
-		misc::sync_base* sb[2];
+		stl::cout << "\n\n\t main(14): 2 concurent multi_lock with same 2 objects";
+		sys::mutex m1, m2;
+		sys::sync_base* sb[2];
 		sb[0] = &m1;
 		sb[1] = &m2;
 		misc::multi_lock ml1(sb, 2);
@@ -1068,9 +1068,9 @@ void test_multi_lock::trylock()
 		
 	}
 	{
-		misc::cout << "\n\n\t main(15): 3 concurent multilocks on 6,2,2, non-overlapping objects";
-		misc::mutex m1, m2, m3, m4, m5, m6;
-		misc::sync_base* so[6];
+		stl::cout << "\n\n\t main(15): 3 concurent multilocks on 6,2,2, non-overlapping objects";
+		sys::mutex m1, m2, m3, m4, m5, m6;
+		sys::sync_base* so[6];
 		so[0] = &m1;
 		so[1] = &m2;
 		so[2] = &m3;
@@ -1113,9 +1113,9 @@ void test_multi_lock::trylock()
 		CPPUNIT_ASSERT( retval == 1 );						//trylock succeeded
 	}
  	{
-		misc::cout << "\n\n\t main(16): 4 concurent multi_lock on 3 objects with 2 overlapped";
-		misc::mutex m1, m2, m3, m4, m5, m6;
-		misc::sync_base* so[6];
+		stl::cout << "\n\n\t main(16): 4 concurent multi_lock on 3 objects with 2 overlapped";
+		sys::mutex m1, m2, m3, m4, m5, m6;
+		sys::sync_base* so[6];
 		so[0] = &m1;
 		so[1] = &m2;
 		so[2] = &m3;
@@ -1165,20 +1165,20 @@ void test_multi_lock::trylock()
 		
 	}
 	{
-		misc::cout << "\n\n\t main(17): concurent multi_lock with 4 overlapped objects";
-		misc::sync_base* so[50];
-		misc::mutex m1, m2, m3, m4, m5;
+		stl::cout << "\n\n\t main(17): concurent multi_lock with 4 overlapped objects";
+		sys::sync_base* so[50];
+		sys::mutex m1, m2, m3, m4, m5;
 		so[0] = &m1;
 		so[1] = &m2;
 		so[2] = &m3;
 		so[3] = &m4;
 		so[4] = &m5;
 		
-		misc::event ev[40];
+		sys::event ev[40];
 		for(int i=5; i < 40 + 5; ++i)
 			so[i] = &ev[i-5];
 		
-		misc::semaphore s1(1), s2(1), s3(1), s4(1), s5(1);
+		sys::semaphore s1(1), s2(1), s3(1), s4(1), s5(1);
 		so[45] = &s1;
 		so[46] = &s2;
 		so[47] = &s3;
@@ -1222,12 +1222,12 @@ void test_multi_lock::trylock()
 		CPPUNIT_ASSERT( retval == 1 );						// failed, timeout
 	}
 	{
-		misc::cout << "\n\n\t main(18): concurent multi_lock on 10 objects";
+		stl::cout << "\n\n\t main(18): concurent multi_lock on 10 objects";
 		// use 1 event to create the cocktail
-		misc::sync_base* so[11];
-		misc::mutex m1, m2, m3, m4, m5;
-		misc::semaphore s1(1), s2(2), s3(1), s4(2), s5(1);
-		misc::event ev;
+		sys::sync_base* so[11];
+		sys::mutex m1, m2, m3, m4, m5;
+		sys::semaphore s1(1), s2(2), s3(1), s4(2), s5(1);
+		sys::event ev;
 		so[0] = &m1;
 		so[1] = &m2;
 		so[2] = &m3;
@@ -1278,7 +1278,7 @@ void test_multi_lock::trylock()
 
 void test_multi_lock::unlock()
 {
-	misc::cout << "\n\n\tunlock ------------------------------------------------";
+	stl::cout << "\n\n\tunlock ------------------------------------------------";
 }
 //##########################END  TEST  SUITE######################################
 

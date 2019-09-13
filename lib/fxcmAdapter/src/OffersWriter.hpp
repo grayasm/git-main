@@ -24,6 +24,7 @@
 
 #include <stddef.h>
 #include <map>
+#include <string>
 #include <ForexConnect.h>
 #include "critical_section.hpp"
 #include "autoptr.hpp"
@@ -39,8 +40,8 @@ namespace fxcm
 	class OffersWriter
 	{
 	public:
-		typedef misc::autoptr<OffersWriter>		Ptr;
-		typedef misc::vector<fx::Offer>			OffersVec;
+		typedef stl::autoptr<OffersWriter>		Ptr;
+		typedef stl::vector<fx::Offer>			OffersVec;
 
 		// no copy
 		OffersWriter() = delete;
@@ -56,11 +57,11 @@ namespace fxcm
 
 	private:
 		IO2GSession*					m_session;
-		misc::critical_section			m_criticalSection;
+		sys::critical_section			m_criticalSection;
 		IniParams						m_iniParams;
 		OffersVec						m_offersVec;
 		bool							m_isEnabled;
-		misc::filename					m_writeFile;
+		sys::filename					m_writeFile;
 	};
 } // namespace
 

@@ -99,258 +99,258 @@ struct s_data_v2
 // begin test suite
 void test_vector::ctor()
 {
-	misc::cout << "\n\n\t*******************************************************";
-	misc::cout <<   "\n\t* TESTING HEADER: vector.hpp                          *";
-	misc::cout <<   "\n\t*******************************************************";
+	stl::cout << "\n\n\t*******************************************************";
+	stl::cout <<   "\n\t* TESTING HEADER: vector.hpp                          *";
+	stl::cout <<   "\n\t*******************************************************";
 
-	misc::cout << "\n\n\tctor---------------------------------------------------";
-	ctor<misc::vector<double> >                                                                                                        ("\n\tmisc::vector<double>            ");
-	ctor<misc::vector<double, misc::allocator<double>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >                                             ("\n\tmisc::vector<double,POD>        ");
-	ctor<misc::vector<double, misc::allocator<double>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >("\n\tmisc::vector<double,POD|DBG_IT> ");
+	stl::cout << "\n\n\tctor---------------------------------------------------";
+	ctor<stl::vector<double> >                                                                                                        ("\n\tmisc::vector<double>            ");
+	ctor<stl::vector<double, misc::allocator<double>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >                                             ("\n\tmisc::vector<double,POD>        ");
+	ctor<stl::vector<double, misc::allocator<double>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >("\n\tmisc::vector<double,POD|DBG_IT> ");
 	ctor<std::vector<double> >                                                                                                         ("\n\tstd::vector<double>             ");
 }
 
 void test_vector::copy_op()
 {
-	misc::cout << "\n\n\tcopy_op------------------------------------------------";
-	copy_op<misc::vector<double> >                                                                                                        ("\n\tmisc::vector<double>            ");
-	copy_op<misc::vector<double, misc::allocator<double>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >                                             ("\n\tmisc::vector<double,POD>        ");
-	copy_op<misc::vector<double, misc::allocator<double>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >("\n\tmisc::vector<double,POD|DBG_IT> ");
+	stl::cout << "\n\n\tcopy_op------------------------------------------------";
+	copy_op<stl::vector<double> >                                                                                                        ("\n\tmisc::vector<double>            ");
+	copy_op<stl::vector<double, misc::allocator<double>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >                                             ("\n\tmisc::vector<double,POD>        ");
+	copy_op<stl::vector<double, misc::allocator<double>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >("\n\tmisc::vector<double,POD|DBG_IT> ");
 	copy_op<std::vector<double> >                                                                                                         ("\n\tstd::vector<double>             ");
 }
 
 void test_vector::assign()
 {
-	misc::cout << "\n\n\tassign-------------------------------------------------";
-	assign<misc::vector<double> >                                                                                                        ("\n\tmisc::vector<double>            ");
-	assign<misc::vector<double, misc::allocator<double>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >                                             ("\n\tmisc::vector<double,POD>        ");
-	assign<misc::vector<double, misc::allocator<double>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >("\n\tmisc::vector<double,POD|DBG_IT> ");
+	stl::cout << "\n\n\tassign-------------------------------------------------";
+	assign<stl::vector<double> >                                                                                                        ("\n\tmisc::vector<double>            ");
+	assign<stl::vector<double, misc::allocator<double>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >                                             ("\n\tmisc::vector<double,POD>        ");
+	assign<stl::vector<double, misc::allocator<double>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >("\n\tmisc::vector<double,POD|DBG_IT> ");
 	assign<std::vector<double> >                                                                                                         ("\n\tstd::vector<double>             ");
 }
 
 void test_vector::begin()
 {
-	misc::cout << "\n\n\tbegin--------------------------------------------------";
-	begin<misc::vector<double> >                                                                                                        ("\n\tmisc::vector<double>            ");
-	begin<misc::vector<double, misc::allocator<double>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >                                             ("\n\tmisc::vector<double,POD>        ");
-	begin<misc::vector<double, misc::allocator<double>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >("\n\tmisc::vector<double,POD|DBG_IT> ");
+	stl::cout << "\n\n\tbegin--------------------------------------------------";
+	begin<stl::vector<double> >                                                                                                        ("\n\tmisc::vector<double>            ");
+	begin<stl::vector<double, misc::allocator<double>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >                                             ("\n\tmisc::vector<double,POD>        ");
+	begin<stl::vector<double, misc::allocator<double>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >("\n\tmisc::vector<double,POD|DBG_IT> ");
 	begin<std::vector<double> >                                                                                                         ("\n\tstd::vector<double>             ");
 }
 
 void test_vector::end()
 {
-	misc::cout << "\n\n\tend----------------------------------------------------";
-	end<misc::vector<double> >                                                                                                        ("\n\tmisc::vector<double>            ");
-	end<misc::vector<double, misc::allocator<double>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >                                             ("\n\tmisc::vector<double,POD>        ");
-	end<misc::vector<double, misc::allocator<double>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >("\n\tmisc::vector<double,POD|DBG_IT> ");
+	stl::cout << "\n\n\tend----------------------------------------------------";
+	end<stl::vector<double> >                                                                                                        ("\n\tmisc::vector<double>            ");
+	end<stl::vector<double, misc::allocator<double>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >                                             ("\n\tmisc::vector<double,POD>        ");
+	end<stl::vector<double, misc::allocator<double>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >("\n\tmisc::vector<double,POD|DBG_IT> ");
 	end<std::vector<double> >                                                                                                         ("\n\tstd::vector<double>             ");
 }
 
 void test_vector::rbegin()
 {
-	misc::cout << "\n\n\trbegin-------------------------------------------------";
-	rbegin<misc::vector<double> >                                                                                                        ("\n\tmisc::vector<double>            ");
-	rbegin<misc::vector<double, misc::allocator<double>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >                                             ("\n\tmisc::vector<double,POD>        ");
-	rbegin<misc::vector<double, misc::allocator<double>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >("\n\tmisc::vector<double,POD|DBG_IT> ");
+	stl::cout << "\n\n\trbegin-------------------------------------------------";
+	rbegin<stl::vector<double> >                                                                                                        ("\n\tmisc::vector<double>            ");
+	rbegin<stl::vector<double, misc::allocator<double>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >                                             ("\n\tmisc::vector<double,POD>        ");
+	rbegin<stl::vector<double, misc::allocator<double>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >("\n\tmisc::vector<double,POD|DBG_IT> ");
 	rbegin<std::vector<double> >                                                                                                         ("\n\tstd::vector<double>             ");
 }
 
 void test_vector::rend()
 {
-	misc::cout << "\n\n\trend---------------------------------------------------";
-	rend<misc::vector<double> >                                                                                                        ("\n\tmisc::vector<double>            ");
-	rend<misc::vector<double, misc::allocator<double>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >                                             ("\n\tmisc::vector<double,POD>        ");
-	rend<misc::vector<double, misc::allocator<double>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >("\n\tmisc::vector<double,POD|DBG_IT> ");
+	stl::cout << "\n\n\trend---------------------------------------------------";
+	rend<stl::vector<double> >                                                                                                        ("\n\tmisc::vector<double>            ");
+	rend<stl::vector<double, misc::allocator<double>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >                                             ("\n\tmisc::vector<double,POD>        ");
+	rend<stl::vector<double, misc::allocator<double>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >("\n\tmisc::vector<double,POD|DBG_IT> ");
 	rend<std::vector<double> >                                                                                                         ("\n\tstd::vector<double>             ");
 }
 
 void test_vector::size()
 {
-	misc::cout << "\n\n\tsize---------------------------------------------------";
-	size<misc::vector<double> >                                                                                                        ("\n\tmisc::vector<double>            ");
-	size<misc::vector<double, misc::allocator<double>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >                                             ("\n\tmisc::vector<double,POD>        ");
-	size<misc::vector<double, misc::allocator<double>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >("\n\tmisc::vector<double,POD|DBG_IT> ");
+	stl::cout << "\n\n\tsize---------------------------------------------------";
+	size<stl::vector<double> >                                                                                                        ("\n\tmisc::vector<double>            ");
+	size<stl::vector<double, misc::allocator<double>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >                                             ("\n\tmisc::vector<double,POD>        ");
+	size<stl::vector<double, misc::allocator<double>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >("\n\tmisc::vector<double,POD|DBG_IT> ");
 	size<std::vector<double> >                                                                                                         ("\n\tstd::vector<double>             ");
 }
 
 void test_vector::resize()
 {
-	misc::cout << "\n\n\tresize-------------------------------------------------";
-	resize<misc::vector<double> >                                                                                                        ("\n\tmisc::vector<double>            ");
-	resize<misc::vector<double, misc::allocator<double>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >                                             ("\n\tmisc::vector<double,POD>        ");
-	resize<misc::vector<double, misc::allocator<double>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >("\n\tmisc::vector<double,POD|DBG_IT> ");
+	stl::cout << "\n\n\tresize-------------------------------------------------";
+	resize<stl::vector<double> >                                                                                                        ("\n\tmisc::vector<double>            ");
+	resize<stl::vector<double, misc::allocator<double>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >                                             ("\n\tmisc::vector<double,POD>        ");
+	resize<stl::vector<double, misc::allocator<double>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >("\n\tmisc::vector<double,POD|DBG_IT> ");
 	resize<std::vector<double> >                                                                                                         ("\n\tstd::vector<double>             ");
 }
 
 void test_vector::empty()
 {
-	misc::cout << "\n\n\tempty--------------------------------------------------";
-	empty<misc::vector<double> >                                                                                                        ("\n\tmisc::vector<double>            ");
-	empty<misc::vector<double, misc::allocator<double>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >                                             ("\n\tmisc::vector<double,POD>        ");
-	empty<misc::vector<double, misc::allocator<double>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >("\n\tmisc::vector<double,POD|DBG_IT> ");
+	stl::cout << "\n\n\tempty--------------------------------------------------";
+	empty<stl::vector<double> >                                                                                                        ("\n\tmisc::vector<double>            ");
+	empty<stl::vector<double, misc::allocator<double>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >                                             ("\n\tmisc::vector<double,POD>        ");
+	empty<stl::vector<double, misc::allocator<double>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >("\n\tmisc::vector<double,POD|DBG_IT> ");
 	empty<std::vector<double> >                                                                                                         ("\n\tstd::vector<double>             ");
 }
 
 void test_vector::reserve()
 {
-	misc::cout << "\n\n\treserve------------------------------------------------";
-	reserve<misc::vector<double> >                                                                                                        ("\n\tmisc::vector<double>            ");
-	reserve<misc::vector<double, misc::allocator<double>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >                                             ("\n\tmisc::vector<double,POD>        ");
-	reserve<misc::vector<double, misc::allocator<double>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >("\n\tmisc::vector<double,POD|DBG_IT> ");
+	stl::cout << "\n\n\treserve------------------------------------------------";
+	reserve<stl::vector<double> >                                                                                                        ("\n\tmisc::vector<double>            ");
+	reserve<stl::vector<double, misc::allocator<double>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >                                             ("\n\tmisc::vector<double,POD>        ");
+	reserve<stl::vector<double, misc::allocator<double>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >("\n\tmisc::vector<double,POD|DBG_IT> ");
 	reserve<std::vector<double> >                                                                                                         ("\n\tstd::vector<double>             ");
 }
 
 void test_vector::access_element()
 {
-	misc::cout << "\n\n\toperator[](size_type)----------------------------------";
-	access_element<misc::vector<double> >                                                                                                        ("\n\tmisc::vector<double>            ");
-	access_element<misc::vector<double, misc::allocator<double>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >                                             ("\n\tmisc::vector<double,POD>        ");
-	access_element<misc::vector<double, misc::allocator<double>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >("\n\tmisc::vector<double,POD|DBG_IT> ");
+	stl::cout << "\n\n\toperator[](size_type)----------------------------------";
+	access_element<stl::vector<double> >                                                                                                        ("\n\tmisc::vector<double>            ");
+	access_element<stl::vector<double, misc::allocator<double>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >                                             ("\n\tmisc::vector<double,POD>        ");
+	access_element<stl::vector<double, misc::allocator<double>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >("\n\tmisc::vector<double,POD|DBG_IT> ");
 	access_element<std::vector<double> >                                                                                                         ("\n\tstd::vector<double>             ");
 }
 
 void test_vector::at()
 {
-	misc::cout << "\n\n\tat-----------------------------------------------------";
-	at<misc::vector<nonpod_v2> >                                                                                                           ("\n\tmisc::vector<nonpod_v2>            ");
-	at<misc::vector<nonpod_v2, misc::allocator<nonpod_v2>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >                                             ("\n\tmisc::vector<nonpod_v2,POD>        ");
-	at<misc::vector<nonpod_v2, misc::allocator<nonpod_v2>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >("\n\tmisc::vector<nonpod_v2,POD|DBG_IT> ");
+	stl::cout << "\n\n\tat-----------------------------------------------------";
+	at<stl::vector<nonpod_v2> >                                                                                                           ("\n\tmisc::vector<nonpod_v2>            ");
+	at<stl::vector<nonpod_v2, misc::allocator<nonpod_v2>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >                                             ("\n\tmisc::vector<nonpod_v2,POD>        ");
+	at<stl::vector<nonpod_v2, misc::allocator<nonpod_v2>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >("\n\tmisc::vector<nonpod_v2,POD|DBG_IT> ");
 	at<std::vector<nonpod_v2> >                                                                                                            ("\n\tstd::vector<nonpod_v2>             ");
 }
 
 void test_vector::front()
 {
-	misc::cout << "\n\n\tfront--------------------------------------------------";
-	front<misc::vector<nonpod_v2> >                                                                                                           ("\n\tmisc::vector<nonpod_v2>            ");
-	front<misc::vector<nonpod_v2, misc::allocator<nonpod_v2>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >                                             ("\n\tmisc::vector<nonpod_v2,POD>        ");
-	front<misc::vector<nonpod_v2, misc::allocator<nonpod_v2>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >("\n\tmisc::vector<nonpod_v2,POD|DBG_IT> ");
+	stl::cout << "\n\n\tfront--------------------------------------------------";
+	front<stl::vector<nonpod_v2> >                                                                                                           ("\n\tmisc::vector<nonpod_v2>            ");
+	front<stl::vector<nonpod_v2, misc::allocator<nonpod_v2>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >                                             ("\n\tmisc::vector<nonpod_v2,POD>        ");
+	front<stl::vector<nonpod_v2, misc::allocator<nonpod_v2>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >("\n\tmisc::vector<nonpod_v2,POD|DBG_IT> ");
 	front<std::vector<nonpod_v2> >                                                                                                            ("\n\tstd::vector<nonpod_v2>             ");
 }
 
 void test_vector::back()
 {
-	misc::cout << "\n\n\tback---------------------------------------------------";
-	back<misc::vector<nonpod_v2> >                                                                                                           ("\n\tmisc::vector<nonpod_v2>            ");
-	back<misc::vector<nonpod_v2, misc::allocator<nonpod_v2>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >                                             ("\n\tmisc::vector<nonpod_v2,POD>        ");
-	back<misc::vector<nonpod_v2, misc::allocator<nonpod_v2>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >("\n\tmisc::vector<nonpod_v2,POD|DBG_IT> ");
+	stl::cout << "\n\n\tback---------------------------------------------------";
+	back<stl::vector<nonpod_v2> >                                                                                                           ("\n\tmisc::vector<nonpod_v2>            ");
+	back<stl::vector<nonpod_v2, misc::allocator<nonpod_v2>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >                                             ("\n\tmisc::vector<nonpod_v2,POD>        ");
+	back<stl::vector<nonpod_v2, misc::allocator<nonpod_v2>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >("\n\tmisc::vector<nonpod_v2,POD|DBG_IT> ");
 	back<std::vector<nonpod_v2> >                                                                                                            ("\n\tstd::vector<nonpod_v2>             ");
 }
 
 void test_vector::push_back()
 {
-	misc::cout << "\n\n\tpush_back----------------------------------------------";
-	push_back<misc::vector<double> >                                                                                                        ("\n\tmisc::vector<double>            ");
-	push_back<misc::vector<double, misc::allocator<double>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >                                             ("\n\tmisc::vector<double,POD>        ");
-	push_back<misc::vector<double, misc::allocator<double>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >("\n\tmisc::vector<double,POD|DBG_IT> ");
+	stl::cout << "\n\n\tpush_back----------------------------------------------";
+	push_back<stl::vector<double> >                                                                                                        ("\n\tmisc::vector<double>            ");
+	push_back<stl::vector<double, misc::allocator<double>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >                                             ("\n\tmisc::vector<double,POD>        ");
+	push_back<stl::vector<double, misc::allocator<double>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >("\n\tmisc::vector<double,POD|DBG_IT> ");
 	push_back<std::vector<double> >                                                                                                         ("\n\tstd::vector<double>             ");
 }
 
 void test_vector::pop_back()
 {
-	misc::cout << "\n\n\tpop_back-----------------------------------------------";
-	pop_back<misc::vector<double> >                                                                                                        ("\n\tmisc::vector<double>            ");
-	pop_back<misc::vector<double, misc::allocator<double>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >                                             ("\n\tmisc::vector<double,POD>        ");
-	pop_back<misc::vector<double, misc::allocator<double>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >("\n\tmisc::vector<double,POD|DBG_IT> ");
+	stl::cout << "\n\n\tpop_back-----------------------------------------------";
+	pop_back<stl::vector<double> >                                                                                                        ("\n\tmisc::vector<double>            ");
+	pop_back<stl::vector<double, misc::allocator<double>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >                                             ("\n\tmisc::vector<double,POD>        ");
+	pop_back<stl::vector<double, misc::allocator<double>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >("\n\tmisc::vector<double,POD|DBG_IT> ");
 	pop_back<std::vector<double> >                                                                                                         ("\n\tstd::vector<double>             ");
 }
 
 void test_vector::insert()
 {
-	misc::cout << "\n\n\tinsert-------------------------------------------------";
-	insert<misc::vector<s_data_v2> >                                                                                                           ("\n\tmisc::vector<s_data_v2>            ");
-	insert<misc::vector<s_data_v2, misc::allocator<s_data_v2>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >                                             ("\n\tmisc::vector<s_data_v2,POD>        ");
-	insert<misc::vector<s_data_v2, misc::allocator<s_data_v2>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >("\n\tmisc::vector<s_data_v2,POD|DBG_IT> ");
+	stl::cout << "\n\n\tinsert-------------------------------------------------";
+	insert<stl::vector<s_data_v2> >                                                                                                           ("\n\tmisc::vector<s_data_v2>            ");
+	insert<stl::vector<s_data_v2, misc::allocator<s_data_v2>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >                                             ("\n\tmisc::vector<s_data_v2,POD>        ");
+	insert<stl::vector<s_data_v2, misc::allocator<s_data_v2>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >("\n\tmisc::vector<s_data_v2,POD|DBG_IT> ");
 	insert<std::vector<s_data_v2> >                                                                                                            ("\n\tstd::vector<s_data_v2>             ");
 }
 
 void test_vector::erase()
 {
-	misc::cout << "\n\n\terase--------------------------------------------------";
-	erase<misc::vector<non_pod_v2> >                                                                                                            ("\n\tmisc::vector<non_pod_v2>            ");
-	erase<misc::vector<non_pod_v2, misc::allocator<non_pod_v2>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >                                             ("\n\tmisc::vector<non_pod_v2,POD>        ");
-	erase<misc::vector<non_pod_v2, misc::allocator<non_pod_v2>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >("\n\tmisc::vector<non_pod_v2,POD|DBG_IT> ");
+	stl::cout << "\n\n\terase--------------------------------------------------";
+	erase<stl::vector<non_pod_v2> >                                                                                                            ("\n\tmisc::vector<non_pod_v2>            ");
+	erase<stl::vector<non_pod_v2, misc::allocator<non_pod_v2>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >                                             ("\n\tmisc::vector<non_pod_v2,POD>        ");
+	erase<stl::vector<non_pod_v2, misc::allocator<non_pod_v2>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >("\n\tmisc::vector<non_pod_v2,POD|DBG_IT> ");
 	erase<std::vector<non_pod_v2> >                                                                                                             ("\n\tstd::vector<non_pod_v2>             ");
 }
 
 void test_vector::swap()
 {
-	misc::cout << "\n\n\tswap---------------------------------------------------";
-	swap<misc::vector<non_pod_v2> >                                                                                                            ("\n\tmisc::vector<non_pod_v2>            ");
-	swap<misc::vector<non_pod_v2, misc::allocator<non_pod_v2>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >                                             ("\n\tmisc::vector<non_pod_v2,POD>        ");
-	swap<misc::vector<non_pod_v2, misc::allocator<non_pod_v2>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >("\n\tmisc::vector<non_pod_v2,POD|DBG_IT> ");
+	stl::cout << "\n\n\tswap---------------------------------------------------";
+	swap<stl::vector<non_pod_v2> >                                                                                                            ("\n\tmisc::vector<non_pod_v2>            ");
+	swap<stl::vector<non_pod_v2, misc::allocator<non_pod_v2>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >                                             ("\n\tmisc::vector<non_pod_v2,POD>        ");
+	swap<stl::vector<non_pod_v2, misc::allocator<non_pod_v2>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >("\n\tmisc::vector<non_pod_v2,POD|DBG_IT> ");
 	swap<std::vector<non_pod_v2> >                                                                                                             ("\n\tstd::vector<non_pod_v2>             ");
 }
 
 void test_vector::clear()
 {
-	misc::cout << "\n\n\tclear--------------------------------------------------";
-	clear<misc::vector<double> >                                                                                                        ("\n\tmisc::vector<double>            ");
-	clear<misc::vector<double, misc::allocator<double>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >                                             ("\n\tmisc::vector<double,POD>        ");
-	clear<misc::vector<double, misc::allocator<double>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >("\n\tmisc::vector<double,POD|DBG_IT> ");
+	stl::cout << "\n\n\tclear--------------------------------------------------";
+	clear<stl::vector<double> >                                                                                                        ("\n\tmisc::vector<double>            ");
+	clear<stl::vector<double, misc::allocator<double>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >                                             ("\n\tmisc::vector<double,POD>        ");
+	clear<stl::vector<double, misc::allocator<double>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >("\n\tmisc::vector<double,POD|DBG_IT> ");
 	clear<std::vector<double> >                                                                                                         ("\n\tstd::vector<double>             ");
 }
 
 void test_vector::eq_op()
 {
-	misc::cout << "\n\n\teq_op--------------------------------------------------";
+	stl::cout << "\n\n\teq_op--------------------------------------------------";
 	eq_op<std::vector<double> >																											("\n\tstd::vector<double>             ");
-	eq_op<misc::vector<double> >																										("\n\tmisc::vector<double>            ");
-	eq_op<misc::vector<double, misc::allocator<double>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >												("\n\tmisc::vector<double,POD>        ");
-	eq_op<misc::vector<double, misc::allocator<double>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >("\n\tmisc::vector<double,POD|DBG_IT> ");
+	eq_op<stl::vector<double> >																										("\n\tmisc::vector<double>            ");
+	eq_op<stl::vector<double, misc::allocator<double>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >												("\n\tmisc::vector<double,POD>        ");
+	eq_op<stl::vector<double, misc::allocator<double>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >("\n\tmisc::vector<double,POD|DBG_IT> ");
 	eq_op<std::vector<double> >																											("\n\tstd::vector<double>             ");
 }
 
 void test_vector::less_op()
 {
-	misc::cout << "\n\n\tless_op------------------------------------------------";
-	less_op<misc::vector<double> >                                                                                                        ("\n\tmisc::vector<double>            ");
-	less_op<misc::vector<double, misc::allocator<double>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >                                             ("\n\tmisc::vector<double,POD>        ");
-	less_op<misc::vector<double, misc::allocator<double>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >("\n\tmisc::vector<double,POD|DBG_IT> ");
+	stl::cout << "\n\n\tless_op------------------------------------------------";
+	less_op<stl::vector<double> >                                                                                                        ("\n\tmisc::vector<double>            ");
+	less_op<stl::vector<double, misc::allocator<double>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >                                             ("\n\tmisc::vector<double,POD>        ");
+	less_op<stl::vector<double, misc::allocator<double>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >("\n\tmisc::vector<double,POD|DBG_IT> ");
 	less_op<std::vector<double> >                                                                                                         ("\n\tstd::vector<double>             ");
 }
 
 void test_vector::noteq_op()
 {
-	misc::cout << "\n\n\tnoteq_op-----------------------------------------------";
-	noteq_op<misc::vector<double> >                                                                                                        ("\n\tmisc::vector<double>            ");
-	noteq_op<misc::vector<double, misc::allocator<double>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >                                             ("\n\tmisc::vector<double,POD>        ");
-	noteq_op<misc::vector<double, misc::allocator<double>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >("\n\tmisc::vector<double,POD|DBG_IT> ");
+	stl::cout << "\n\n\tnoteq_op-----------------------------------------------";
+	noteq_op<stl::vector<double> >                                                                                                        ("\n\tmisc::vector<double>            ");
+	noteq_op<stl::vector<double, misc::allocator<double>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >                                             ("\n\tmisc::vector<double,POD>        ");
+	noteq_op<stl::vector<double, misc::allocator<double>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >("\n\tmisc::vector<double,POD|DBG_IT> ");
 	noteq_op<std::vector<double> >                                                                                                         ("\n\tstd::vector<double>             ");
 }
 
 void test_vector::gt_op()
 {
-	misc::cout << "\n\n\tgt_op--------------------------------------------------";
-	gt_op<misc::vector<double> >                                                                                                        ("\n\tmisc::vector<double>            ");
-	gt_op<misc::vector<double, misc::allocator<double>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >                                             ("\n\tmisc::vector<double,POD>        ");
-	gt_op<misc::vector<double, misc::allocator<double>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >("\n\tmisc::vector<double,POD|DBG_IT> ");
+	stl::cout << "\n\n\tgt_op--------------------------------------------------";
+	gt_op<stl::vector<double> >                                                                                                        ("\n\tmisc::vector<double>            ");
+	gt_op<stl::vector<double, misc::allocator<double>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >                                             ("\n\tmisc::vector<double,POD>        ");
+	gt_op<stl::vector<double, misc::allocator<double>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >("\n\tmisc::vector<double,POD|DBG_IT> ");
 	gt_op<std::vector<double> >                                                                                                         ("\n\tstd::vector<double>             ");
 }
 
 void test_vector::qteq_op()
 {
-	misc::cout << "\n\n\tgteq_op------------------------------------------------";
-	gteq_op<misc::vector<double> >                                                                                                        ("\n\tmisc::vector<double>            ");
-	gteq_op<misc::vector<double, misc::allocator<double>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >                                             ("\n\tmisc::vector<double,POD>        ");
-	gteq_op<misc::vector<double, misc::allocator<double>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >("\n\tmisc::vector<double,POD|DBG_IT> ");
+	stl::cout << "\n\n\tgteq_op------------------------------------------------";
+	gteq_op<stl::vector<double> >                                                                                                        ("\n\tmisc::vector<double>            ");
+	gteq_op<stl::vector<double, misc::allocator<double>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >                                             ("\n\tmisc::vector<double,POD>        ");
+	gteq_op<stl::vector<double, misc::allocator<double>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >("\n\tmisc::vector<double,POD|DBG_IT> ");
 	gteq_op<std::vector<double> >                                                                                                         ("\n\tstd::vector<double>             ");
 }
 
 void test_vector::lteq_op()
 {
-	misc::cout << "\n\n\tlteq_op------------------------------------------------";
-	lteq_op<misc::vector<double> >                                                                                                        ("\n\tmisc::vector<double>            ");
-	lteq_op<misc::vector<double, misc::allocator<double>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >                                             ("\n\tmisc::vector<double,POD>        ");
-	lteq_op<misc::vector<double, misc::allocator<double>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >("\n\tmisc::vector<double,POD|DBG_IT> ");
+	stl::cout << "\n\n\tlteq_op------------------------------------------------";
+	lteq_op<stl::vector<double> >                                                                                                        ("\n\tmisc::vector<double>            ");
+	lteq_op<stl::vector<double, misc::allocator<double>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >                                             ("\n\tmisc::vector<double,POD>        ");
+	lteq_op<stl::vector<double, misc::allocator<double>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >("\n\tmisc::vector<double,POD|DBG_IT> ");
 	lteq_op<std::vector<double> >                                                                                                         ("\n\tstd::vector<double>             ");
 }
 
 void test_vector::swap_op()
 {
-	misc::cout << "\n\n\tswap_op------------------------------------------------";
-	swap_op<misc::vector<double> >                                                                                                        ("\n\tmisc::vector<double>            ");
-	swap_op<misc::vector<double, misc::allocator<double>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >                                             ("\n\tmisc::vector<double,POD>        ");
-	swap_op<misc::vector<double, misc::allocator<double>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >("\n\tmisc::vector<double,POD|DBG_IT> ");
+	stl::cout << "\n\n\tswap_op------------------------------------------------";
+	swap_op<stl::vector<double> >                                                                                                        ("\n\tmisc::vector<double>            ");
+	swap_op<stl::vector<double, misc::allocator<double>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >                                             ("\n\tmisc::vector<double,POD>        ");
+	swap_op<stl::vector<double, misc::allocator<double>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >("\n\tmisc::vector<double,POD|DBG_IT> ");
 	swap_op<std::vector<double> >                                                                                                         ("\n\tstd::vector<double>             ");
 }
 

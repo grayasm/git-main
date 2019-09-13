@@ -161,6 +161,8 @@ std::string parseO2GPermissionStatus(O2GPermissionStatus status)
         return std::string("Permission Enabled");
     case PermissionHidden:
         return std::string("Permission Hidden");
+	case PermissionUnknown:
+		return std::string("Permission Unknown");
     default:
         return std::string("Unknown Permission Status");
     }

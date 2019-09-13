@@ -25,26 +25,26 @@ contact: grayasm@gmail.com
 
 namespace fxcm
 {
-	misc::string	g_section("session");
-	misc::string	g_login("login");
-	misc::string	g_pass("password");
-	misc::string	g_url("url");
-	misc::string	g_connection("connection");
-	misc::string	g_account("account");
-	misc::string	g_sessionID("sessionID");
-	misc::string	g_pin("pin");
-	misc::string	g_currency("accountSymbol");
+	stl::string	g_section("session");
+	stl::string	g_login("login");
+	stl::string	g_pass("password");
+	stl::string	g_url("url");
+	stl::string	g_connection("connection");
+	stl::string	g_account("account");
+	stl::string	g_sessionID("sessionID");
+	stl::string	g_pin("pin");
+	stl::string	g_currency("accountSymbol");
 
 
 	LoginParams::LoginParams()
 	{
 	}
 
-	LoginParams::LoginParams(const misc::string& inifile)
+	LoginParams::LoginParams(const stl::string& inifile)
 	{
 		misc::iniserv iniReader(inifile);
 
-		misc::string emptys("");
+		stl::string emptys("");
 
 		m_iniFile = inifile;
 		m_section = g_section;
@@ -85,82 +85,82 @@ namespace fxcm
 		return *this;
 	}
 
-	void LoginParams::SetLogin(const misc::string& login)
+	void LoginParams::SetLogin(const stl::string& login)
 	{
 		m_login = login;
 	}
 
-	const misc::string& LoginParams::GetLogin() const
+	const stl::string& LoginParams::GetLogin() const
 	{
 		return m_login;
 	}
 
-	void LoginParams::SetPassword(const misc::string& pass)
+	void LoginParams::SetPassword(const stl::string& pass)
 	{
 		m_pass = pass;
 	}
 
-	const misc::string& LoginParams::GetPassword() const
+	const stl::string& LoginParams::GetPassword() const
 	{
 		return m_pass;
 	}
 
-	void LoginParams::SetUrl(const misc::string& url)
+	void LoginParams::SetUrl(const stl::string& url)
 	{
 		m_url = url;
 	}
 
-	const misc::string& LoginParams::GetUrl() const
+	const stl::string& LoginParams::GetUrl() const
 	{
 		return m_url;
 	}
 
-	void LoginParams::SetConnection(const misc::string& connection)
+	void LoginParams::SetConnection(const stl::string& connection)
 	{
 		m_connection = connection;
 	}
 
-	const misc::string& LoginParams::GetConnection() const
+	const stl::string& LoginParams::GetConnection() const
 	{
 		return m_connection;
 	}
 
-	void LoginParams::SetAccount(const misc::string& account)
+	void LoginParams::SetAccount(const stl::string& account)
 	{
 		m_account = account;
 	}
 
-	const misc::string& LoginParams::GetAccount() const
+	const stl::string& LoginParams::GetAccount() const
 	{
 		return m_account;
 	}
 
-	void LoginParams::SetSessionID(const misc::string& sessionID)
+	void LoginParams::SetSessionID(const stl::string& sessionID)
 	{
 		m_sessionID = sessionID;
 	}
 
-	const misc::string& LoginParams::GetSessionID() const
+	const stl::string& LoginParams::GetSessionID() const
 	{
 		return m_sessionID;
 	}
 
-	void LoginParams::SetPin(const misc::string& pin)
+	void LoginParams::SetPin(const stl::string& pin)
 	{
 		m_pin = pin;
 	}
 
-	const misc::string& LoginParams::GetPin() const
+	const stl::string& LoginParams::GetPin() const
 	{
 		return m_pin;
 	}
 
-	void LoginParams::SetAccountSymbol(const misc::string& symbol)
+	void LoginParams::SetAccountSymbol(const stl::string& symbol)
 	{
 		m_accountSymbol = symbol;
 	}
 
-	const misc::string& LoginParams::GetAccountSymbol() const
+	const stl::string& LoginParams::GetAccountSymbol() const
 	{
 		return m_accountSymbol;
 	}

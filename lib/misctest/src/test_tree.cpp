@@ -55,21 +55,21 @@ void test_tree::tearDown()
 
 void test_tree::test_00()
 {
-	misc::cout << "\n\n\t*******************************************************";
-    misc::cout <<   "\n\t* TESTING HEADER: tree.hpp                            *";
-    misc::cout <<   "\n\t*******************************************************";
+	stl::cout << "\n\n\t*******************************************************";
+    stl::cout <<   "\n\t* TESTING HEADER: tree.hpp                            *";
+    stl::cout <<   "\n\t*******************************************************";
 
 	
 	
-	typedef misc::tree<misc::string> Tree;
+	typedef misc::tree<stl::string> Tree;
 	typedef Tree::iterator It;
 	Tree mtree1;
-	typedef misc::tree<misc::string>::preorder_iterator preIt;
-	typedef misc::tree<misc::string>::preorder_const_iterator preCIt;
+	typedef misc::tree<stl::string>::preorder_iterator preIt;
+	typedef misc::tree<stl::string>::preorder_const_iterator preCIt;
 
 
 
-	misc::string tree_data[]={
+	stl::string tree_data[]={
 		U("1"),U("4"),U("5"),U("6"),U("7"),U("8"),U("2"),U("9"),
 		U("10"),U("11"),U("3"),U("12"),U("13"),U("14")
 	};
@@ -204,7 +204,7 @@ void test_tree::test_00()
 	*/
 
 
-	misc::string recursive_data2[]={U("3"), U("12"), U("13"), U("14")};
+	stl::string recursive_data2[]={U("3"), U("12"), U("13"), U("14")};
 	beg = mtree1.preorder_begin(i3);
 	beg2 = mtree1.preorder_begin(i3);
 	end = mtree1.preorder_end(i3);
@@ -240,7 +240,7 @@ void test_tree::test_00()
 
 	//////////////////////////////////////////////////////////////////////////
 	//checking first_branch_iterator
-	misc::string first_branch_data[]={U("1"), U("4"), U("5")};
+	stl::string first_branch_data[]={U("1"), U("4"), U("5")};
 	Tree::first_branch_iterator fbbeg = mtree3.first_branch_begin();
 	Tree::first_branch_iterator fbbeg2 = mtree3.first_branch_begin();
 	Tree::first_branch_iterator fbend = mtree3.first_branch_end();
@@ -267,7 +267,7 @@ void test_tree::test_00()
 	}//for
 
 
-	misc::string first_branch_data2[]={ U("7"), U("8") };
+	stl::string first_branch_data2[]={ U("7"), U("8") };
 	fbbeg = mtree1.first_branch_begin(i7);
 	fbbeg2 = mtree1.first_branch_begin(i7);
 	fbend = mtree1.first_branch_end(i7);
@@ -292,7 +292,7 @@ void test_tree::test_00()
 	}//for
 
 
-	misc::string first_branch_data3[]={ U("2"), U("9"), U("10"), U("11") };
+	stl::string first_branch_data3[]={ U("2"), U("9"), U("10"), U("11") };
 	fbbeg = mtree1.first_branch_begin(i2);
 	fbbeg2 = mtree1.first_branch_begin(i2);
 	fbend = mtree1.first_branch_end(i2);
@@ -316,7 +316,7 @@ void test_tree::test_00()
 	}//for
 
 
-	misc::string first_branch_data4[]={U("3"), U("12"), U("13") };
+	stl::string first_branch_data4[]={U("3"), U("12"), U("13") };
 	fbbeg = mtree1.first_branch_begin(i3);
 	fbbeg2 = mtree1.first_branch_begin(i3);
 	fbend = mtree1.first_branch_end(i3);
@@ -341,7 +341,7 @@ void test_tree::test_00()
 	}//for
 
 
-	misc::string first_branch_data5[]={U("14")};
+	stl::string first_branch_data5[]={U("14")};
 	fbbeg = mtree1.first_branch_begin(i14);
 	fbbeg2 = mtree1.first_branch_begin(i14);
 	fbend = mtree1.first_branch_end(i14);
@@ -366,7 +366,7 @@ void test_tree::test_00()
 	}//for
 
 
-	misc::string rev_rec_data1[]={U("5"),U("6"),U("4"),U("8"),U("7"),U("1"),U("11"),U("10"),U("9"),U("2"),U("13"),U("14"),U("12"),U("3")};
+	stl::string rev_rec_data1[]={U("5"),U("6"),U("4"),U("8"),U("7"),U("1"),U("11"),U("10"),U("9"),U("2"),U("13"),U("14"),U("12"),U("3")};
 	Tree::postorder_iterator rribeg = mtree1.postorder_begin();
 	Tree::postorder_iterator rriend = mtree1.postorder_end();
 	for(i=0; rribeg != rriend; ++rribeg, ++i)
@@ -379,70 +379,70 @@ void test_tree::test_00()
 // -- iterators --
 void test_tree::preorder_it()
 {
-	misc::cout << "\n\n\t*******************************************************";
-	misc::cout <<   "\n\t* TESTING HEADER: tree.hpp                            *";
-	misc::cout <<   "\n\t*******************************************************";
+	stl::cout << "\n\n\t*******************************************************";
+	stl::cout <<   "\n\t* TESTING HEADER: tree.hpp                            *";
+	stl::cout <<   "\n\t*******************************************************";
 	
-	misc::cout << "\n\n\tpreorder_it--------------------------------------------";
+	stl::cout << "\n\n\tpreorder_it--------------------------------------------";
 
-	preorder_it<misc::tree<misc::string> >("\n\tpreorder_it<misc::string>          ");
+	preorder_it<misc::tree<stl::string> >("\n\tpreorder_it<stl::string>          ");
 	preorder_it<misc::tree<std::string> > ("\n\tpreorder_it<std::string>           ");
 }
 
 void test_tree::preorder_const_it()
 {
 
-	misc::cout << "\n\n\tpreorder_const_it--------------------------------------";
+	stl::cout << "\n\n\tpreorder_const_it--------------------------------------";
 
-	preorder_const_it<misc::tree<misc::string> >("\n\tpreorder_const_it<misc::string>    ");
+	preorder_const_it<misc::tree<stl::string> >("\n\tpreorder_const_it<stl::string>    ");
 	preorder_const_it<misc::tree<std::string> > ("\n\tpreorder_const_it<std::string>     ");
 }
 
 void test_tree::postorder_it()
 {
-	misc::cout << "\n\n\tpostorder_it-------------------------------------------";
+	stl::cout << "\n\n\tpostorder_it-------------------------------------------";
 
-	postorder_it<misc::tree<misc::string> >("\n\tpostorder_it<misc::string>         ");
+	postorder_it<misc::tree<stl::string> >("\n\tpostorder_it<stl::string>         ");
 	postorder_it<misc::tree<std::string> > ("\n\tpostorder_it<std::string>          ");
 }
 
 void test_tree::postorder_const_it()
 {
-	misc::cout << "\n\n\tpostorder_const_it-------------------------------------";
+	stl::cout << "\n\n\tpostorder_const_it-------------------------------------";
 
-	postorder_const_it<misc::tree<misc::string> >("\n\tpostorder_const_it<misc::string>   ");
+	postorder_const_it<misc::tree<stl::string> >("\n\tpostorder_const_it<stl::string>   ");
 	postorder_const_it<misc::tree<std::string> > ("\n\tpostorder_const_it<std::string>    ");
 }
 
 void test_tree::first_branch_it()
 {
-	misc::cout << "\n\n\tfirst_branch_it----------------------------------------";
+	stl::cout << "\n\n\tfirst_branch_it----------------------------------------";
 
-	first_branch_it<misc::tree<misc::string> >("\n\tfirst_branch_it<misc::string>      ");
+	first_branch_it<misc::tree<stl::string> >("\n\tfirst_branch_it<stl::string>      ");
 	first_branch_it<misc::tree<std::string> > ("\n\tfirst_branch_it<std::string>       ");
 }
 
 void test_tree::first_branch_const_it()
 {
-	misc::cout << "\n\n\tfirst_branch_const_it----------------------------------";
+	stl::cout << "\n\n\tfirst_branch_const_it----------------------------------";
 
-	first_branch_const_it<misc::tree<misc::string> >("\n\tfirst_branch_const_it<misc::string>");
+	first_branch_const_it<misc::tree<stl::string> >("\n\tfirst_branch_const_it<stl::string>");
 	first_branch_const_it<misc::tree<std::string> > ("\n\tfirst_branch_const_it<std::string> ");
 }
 
 void test_tree::child_it()
 {
-	misc::cout << "\n\n\tchild_it-----------------------------------------------";
+	stl::cout << "\n\n\tchild_it-----------------------------------------------";
 
-	child_it<misc::tree<misc::string> >("\n\tchild_it<misc::string>             ");
+	child_it<misc::tree<stl::string> >("\n\tchild_it<stl::string>             ");
 	child_it<misc::tree<std::string> > ("\n\tchild_it<std::string>              ");
 }
 
 void test_tree::child_const_it()
 {
-	misc::cout << "\n\n\tchild_const_it-----------------------------------------";
+	stl::cout << "\n\n\tchild_const_it-----------------------------------------";
 
-	child_const_it<misc::tree<misc::string> >("\n\tchild_const_it<misc::string>       ");
+	child_const_it<misc::tree<stl::string> >("\n\tchild_const_it<stl::string>       ");
 	child_const_it<misc::tree<std::string> > ("\n\tchild_const_it<std::string>        ");
 }
 
@@ -451,329 +451,329 @@ void test_tree::child_const_it()
 // -- main class --
 void test_tree::ctor()
 {
-	misc::cout << "\n\n\tctor---------------------------------------------------";
+	stl::cout << "\n\n\tctor---------------------------------------------------";
 
-	ctor<misc::tree<misc::string> >("\n\tctor<misc::string>                 ");
+	ctor<misc::tree<stl::string> >("\n\tctor<stl::string>                 ");
 	ctor<misc::tree<std::string> > ("\n\tctor<std::string>                  ");
 }
 
 void test_tree::dtor()
 {
-	misc::cout << "\n\n\tdtor---------------------------------------------------";
+	stl::cout << "\n\n\tdtor---------------------------------------------------";
 
-	dtor<misc::tree<misc::string> >("\n\tdtor<misc::string>                 ");
+	dtor<misc::tree<stl::string> >("\n\tdtor<stl::string>                 ");
 	dtor<misc::tree<std::string> > ("\n\tdtor<std::string>                  ");
 }
 
 void test_tree::copy_ctor()
 {
-	misc::cout << "\n\n\tcopy_ctor----------------------------------------------";
+	stl::cout << "\n\n\tcopy_ctor----------------------------------------------";
 
-	copy_ctor<misc::tree<misc::string> >("\n\tcopy_ctor<misc::string>            ");
+	copy_ctor<misc::tree<stl::string> >("\n\tcopy_ctor<stl::string>            ");
 	copy_ctor<misc::tree<std::string> > ("\n\tcopy_ctor<std::string>             ");
 }
 
 void test_tree::copy_op()
 {
-	misc::cout << "\n\n\tcopy_op------------------------------------------------";
+	stl::cout << "\n\n\tcopy_op------------------------------------------------";
 
-	copy_op<misc::tree<misc::string> >("\n\tcopy_op<misc::string>              ");
+	copy_op<misc::tree<stl::string> >("\n\tcopy_op<stl::string>              ");
 	copy_op<misc::tree<std::string> > ("\n\tcopy_op<std::string>               ");
 }
 
 void test_tree::get_it()
 {
-	misc::cout << "\n\n\tget_it-------------------------------------------------";
+	stl::cout << "\n\n\tget_it-------------------------------------------------";
 
-	get_it<misc::tree<misc::string> >("\n\tget_it<misc::string>               ");
+	get_it<misc::tree<stl::string> >("\n\tget_it<stl::string>               ");
 	get_it<misc::tree<std::string> > ("\n\tget_it<std::string>                ");
 }
 
 void test_tree::push_back_val()
 {
-	misc::cout << "\n\n\tpush_back_val------------------------------------------";
+	stl::cout << "\n\n\tpush_back_val------------------------------------------";
 
-	push_back_val<misc::tree<misc::string> >("\n\tpush_back_val<misc::string>        ");
+	push_back_val<misc::tree<stl::string> >("\n\tpush_back_val<stl::string>        ");
 	push_back_val<misc::tree<std::string> > ("\n\tpush_back_val<std::string>         ");
 }
 
 void test_tree::push_front_val()
 {
-	misc::cout << "\n\n\tpush_front_val-----------------------------------------";
+	stl::cout << "\n\n\tpush_front_val-----------------------------------------";
 
-	push_front_val<misc::tree<misc::string> >("\n\tpush_front_val<misc::string>       ");
+	push_front_val<misc::tree<stl::string> >("\n\tpush_front_val<stl::string>       ");
 	push_front_val<misc::tree<std::string> > ("\n\tpush_front_val<std::string>        ");
 }
 
 void test_tree::insert_sibling_before_val()
 {
-	misc::cout << "\n\n\tinsert_sibling_before_val------------------------------";
+	stl::cout << "\n\n\tinsert_sibling_before_val------------------------------";
 
-	insert_sibling_before_val<misc::tree<misc::string> >("\n\tinsert_sibling_before_val<misc>    ");
+	insert_sibling_before_val<misc::tree<stl::string> >("\n\tinsert_sibling_before_val<misc>    ");
 	insert_sibling_before_val<misc::tree<std::string> > ("\n\tinsert_sibling_before_val<std>     ");
 }
 
 void test_tree::insert_sibling_after_val()
 {
-	misc::cout << "\n\n\tinsert_sibling_after_val-------------------------------";
+	stl::cout << "\n\n\tinsert_sibling_after_val-------------------------------";
 
-	insert_sibling_after_val<misc::tree<misc::string> >("\n\tinsert_sibling_after_val<misc>     ");
+	insert_sibling_after_val<misc::tree<stl::string> >("\n\tinsert_sibling_after_val<misc>     ");
 	insert_sibling_after_val<misc::tree<std::string> > ("\n\tinsert_sibling_after_val<std>      ");
 }
 
 void test_tree::push_back_child_val()
 {
-	misc::cout << "\n\n\tpush_back_child_val------------------------------------";
+	stl::cout << "\n\n\tpush_back_child_val------------------------------------";
 
-	push_back_child_val<misc::tree<misc::string> >("\n\tpush_back_child_val<misc::string>  ");
+	push_back_child_val<misc::tree<stl::string> >("\n\tpush_back_child_val<stl::string>  ");
 	push_back_child_val<misc::tree<std::string> > ("\n\tpush_back_child_val<std::string>   ");
 }
 
 void test_tree::push_front_child_val()
 {
-	misc::cout << "\n\n\tpush_front_child_val-----------------------------------";
+	stl::cout << "\n\n\tpush_front_child_val-----------------------------------";
 
-	push_front_child_val<misc::tree<misc::string> >("\n\tpush_front_child_val<misc::string> ");
+	push_front_child_val<misc::tree<stl::string> >("\n\tpush_front_child_val<stl::string> ");
 	push_front_child_val<misc::tree<std::string> > ("\n\tpush_front_child_val<std::string>  ");
 }
 
 void test_tree::push_back_tree()
 {
-	misc::cout << "\n\n\tpush_back_tree-----------------------------------------";
+	stl::cout << "\n\n\tpush_back_tree-----------------------------------------";
 
-	push_back_tree<misc::tree<misc::string> >("\n\tpush_back_tree<misc::string>       ");
+	push_back_tree<misc::tree<stl::string> >("\n\tpush_back_tree<stl::string>       ");
 	push_back_tree<misc::tree<std::string> > ("\n\tpush_back_tree<std::string>        ");
 }
 
 void test_tree::push_front_tree()
 {
-	misc::cout << "\n\n\tpush_front_tree----------------------------------------";
+	stl::cout << "\n\n\tpush_front_tree----------------------------------------";
 
-	push_front_tree<misc::tree<misc::string> >("\n\tpush_front_tree<misc::string>      ");
+	push_front_tree<misc::tree<stl::string> >("\n\tpush_front_tree<stl::string>      ");
 	push_front_tree<misc::tree<std::string> > ("\n\tpush_front_tree<std::string>       ");
 }
 
 void test_tree::insert_sibling_before_tree()
 {
-	misc::cout << "\n\n\tinsert_sibling_before_tree-----------------------------";
+	stl::cout << "\n\n\tinsert_sibling_before_tree-----------------------------";
 
-	insert_sibling_before_tree<misc::tree<misc::string> >("\n\tinsert_sibling_before_tree<misc>   ");
+	insert_sibling_before_tree<misc::tree<stl::string> >("\n\tinsert_sibling_before_tree<misc>   ");
 	insert_sibling_before_tree<misc::tree<std::string> > ("\n\tinsert_sibling_before_tree<std>    ");
 }
 
 void test_tree::insert_sibling_after_tree()
 {
-	misc::cout << "\n\n\tinsert_sibling_after_tree------------------------------";
+	stl::cout << "\n\n\tinsert_sibling_after_tree------------------------------";
 
-	insert_sibling_after_tree<misc::tree<misc::string> >("\n\tinsert_sibling_after_tree<misc>    ");
+	insert_sibling_after_tree<misc::tree<stl::string> >("\n\tinsert_sibling_after_tree<misc>    ");
 	insert_sibling_after_tree<misc::tree<std::string> > ("\n\tinsert_sibling_after_tree<std>     ");
 }
 
 void test_tree::push_back_child_tree()
 {
-	misc::cout << "\n\n\tpush_back_child_tree-----------------------------------";
+	stl::cout << "\n\n\tpush_back_child_tree-----------------------------------";
 
-	push_back_child_tree<misc::tree<misc::string> >("\n\tpush_back_child_tree<misc::string> ");
+	push_back_child_tree<misc::tree<stl::string> >("\n\tpush_back_child_tree<stl::string> ");
 	push_back_child_tree<misc::tree<std::string> > ("\n\tpush_back_child_tree<std::string>  ");
 }
 
 void test_tree::push_front_child_tree()
 {
-	misc::cout << "\n\n\tpush_front_child_tree----------------------------------";
+	stl::cout << "\n\n\tpush_front_child_tree----------------------------------";
 
-	push_front_child_tree<misc::tree<misc::string> >("\n\tpush_front_child_tree<misc::string>");
+	push_front_child_tree<misc::tree<stl::string> >("\n\tpush_front_child_tree<stl::string>");
 	push_front_child_tree<misc::tree<std::string> > ("\n\tpush_front_child_tree<std::string> ");
 }
 
 void test_tree::preorder_begin()
 {
-	misc::cout << "\n\n\tpreorder_begin-----------------------------------------";
+	stl::cout << "\n\n\tpreorder_begin-----------------------------------------";
 
-	preorder_begin<misc::tree<misc::string> >("\n\tpreorder_begin<misc::string>       ");
+	preorder_begin<misc::tree<stl::string> >("\n\tpreorder_begin<stl::string>       ");
 	preorder_begin<misc::tree<std::string> > ("\n\tpreorder_begin<std::string>        ");
 }
 
 void test_tree::preorder_end()
 {
-	misc::cout << "\n\n\tpreorder_end-------------------------------------------";
+	stl::cout << "\n\n\tpreorder_end-------------------------------------------";
 
-	preorder_end<misc::tree<misc::string> >("\n\tpreorder_end<misc::string>         ");
+	preorder_end<misc::tree<stl::string> >("\n\tpreorder_end<stl::string>         ");
 	preorder_end<misc::tree<std::string> > ("\n\tpreorder_end<std::string>          ");
 }
 
 void test_tree::preorder_begin_it()
 {
-	misc::cout << "\n\n\tpreorder_begin_it--------------------------------------";
+	stl::cout << "\n\n\tpreorder_begin_it--------------------------------------";
 
-	preorder_begin_it<misc::tree<misc::string> >("\n\tpreorder_begin_it<misc::string>    ");
+	preorder_begin_it<misc::tree<stl::string> >("\n\tpreorder_begin_it<stl::string>    ");
 	preorder_begin_it<misc::tree<std::string> > ("\n\tpreorder_begin_it<std::string>     ");
 }
 
 void test_tree::preorder_end_it()
 {
-	misc::cout << "\n\n\tpreorder_end_it----------------------------------------";
+	stl::cout << "\n\n\tpreorder_end_it----------------------------------------";
 
-	preorder_end_it<misc::tree<misc::string> >("\n\tpreorder_end_it<misc::string>      ");
+	preorder_end_it<misc::tree<stl::string> >("\n\tpreorder_end_it<stl::string>      ");
 	preorder_end_it<misc::tree<std::string> > ("\n\tpreorder_end_it<std::string>       ");
 }
 
 void test_tree::postorder_begin()
 {
-	misc::cout << "\n\n\tpostorder_begin----------------------------------------";
+	stl::cout << "\n\n\tpostorder_begin----------------------------------------";
 
-	postorder_begin<misc::tree<misc::string> >("\n\tpostorder_begin<misc::string>      ");
+	postorder_begin<misc::tree<stl::string> >("\n\tpostorder_begin<stl::string>      ");
 	postorder_begin<misc::tree<std::string> > ("\n\tpostorder_begin<std::string>       ");
 }
 
 void test_tree::postorder_end()
 {
-	misc::cout << "\n\n\tpostorder_end------------------------------------------";
+	stl::cout << "\n\n\tpostorder_end------------------------------------------";
 
-	postorder_end<misc::tree<misc::string> >("\n\tpostorder_end<misc::string>        ");
+	postorder_end<misc::tree<stl::string> >("\n\tpostorder_end<stl::string>        ");
 	postorder_end<misc::tree<std::string> > ("\n\tpostorder_end<std::string>         ");
 }
 
 void test_tree::postorder_begin_it()
 {
-	misc::cout << "\n\n\tpostorder_begin_it-------------------------------------";
+	stl::cout << "\n\n\tpostorder_begin_it-------------------------------------";
 
-	postorder_begin_it<misc::tree<misc::string> >("\n\tpostorder_begin_it<misc::string>   ");
+	postorder_begin_it<misc::tree<stl::string> >("\n\tpostorder_begin_it<stl::string>   ");
 	postorder_begin_it<misc::tree<std::string> > ("\n\tpostorder_begin_it<std::string>    ");
 }
 
 void test_tree::postorder_end_it()
 {
-	misc::cout << "\n\n\tpostorder_end_it---------------------------------------";
+	stl::cout << "\n\n\tpostorder_end_it---------------------------------------";
 
-	postorder_end_it<misc::tree<misc::string> >("\n\tpostorder_end_it<misc::string>     ");
+	postorder_end_it<misc::tree<stl::string> >("\n\tpostorder_end_it<stl::string>     ");
 	postorder_end_it<misc::tree<std::string> > ("\n\tpostorder_end_it<std::string>      ");
 }
 
 void test_tree::first_branch_begin()
 {
-	misc::cout << "\n\n\tfirst_branch_begin-------------------------------------";
+	stl::cout << "\n\n\tfirst_branch_begin-------------------------------------";
 
-	first_branch_begin<misc::tree<misc::string> >("\n\tfirst_branch_begin<misc::string>   ");
+	first_branch_begin<misc::tree<stl::string> >("\n\tfirst_branch_begin<stl::string>   ");
 	first_branch_begin<misc::tree<std::string> > ("\n\tfirst_branch_begin<std::string>    ");
 }
 
 void test_tree::first_branch_end()
 {
-	misc::cout << "\n\n\tfirst_branch_end---------------------------------------";
+	stl::cout << "\n\n\tfirst_branch_end---------------------------------------";
 
-	first_branch_end<misc::tree<misc::string> >("\n\tfirst_branch_end<misc::string>     ");
+	first_branch_end<misc::tree<stl::string> >("\n\tfirst_branch_end<stl::string>     ");
 	first_branch_end<misc::tree<std::string> > ("\n\tfirst_branch_end<std::string>      ");
 }
 
 void test_tree::first_branch_begin_it()
 {
-	misc::cout << "\n\n\tfirst_branch_begin_it----------------------------------";
+	stl::cout << "\n\n\tfirst_branch_begin_it----------------------------------";
 
-	first_branch_begin_it<misc::tree<misc::string> >("\n\tfirst_branch_begin_it<misc::string>");
+	first_branch_begin_it<misc::tree<stl::string> >("\n\tfirst_branch_begin_it<stl::string>");
 	first_branch_begin_it<misc::tree<std::string> > ("\n\tfirst_branch_begin_it<std::string> ");
 }
 
 void test_tree::first_branch_end_it()
 {
-	misc::cout << "\n\n\tfirst_branch_end_it------------------------------------";
+	stl::cout << "\n\n\tfirst_branch_end_it------------------------------------";
 
-	first_branch_end_it<misc::tree<misc::string> >("\n\tfirst_branch_end_it<misc::string>  ");
+	first_branch_end_it<misc::tree<stl::string> >("\n\tfirst_branch_end_it<stl::string>  ");
 	first_branch_end_it<misc::tree<std::string> > ("\n\tfirst_branch_end_it<std::string>   ");
 }
 
 void test_tree::child_begin()
 {
-	misc::cout << "\n\n\tchild_begin--------------------------------------------";
+	stl::cout << "\n\n\tchild_begin--------------------------------------------";
 
-	child_begin<misc::tree<misc::string> >("\n\tchild_begin<misc::string>          ");
+	child_begin<misc::tree<stl::string> >("\n\tchild_begin<stl::string>          ");
 	child_begin<misc::tree<std::string> > ("\n\tchild_begin<std::string>           ");
 }
 
 void test_tree::child_end()
 {
-	misc::cout << "\n\n\tchild_end----------------------------------------------";
+	stl::cout << "\n\n\tchild_end----------------------------------------------";
 
-	child_end<misc::tree<misc::string> >("\n\tchild_end<misc::string>            ");
+	child_end<misc::tree<stl::string> >("\n\tchild_end<stl::string>            ");
 	child_end<misc::tree<std::string> > ("\n\tchild_end<std::string>             ");
 }
 
 void test_tree::child_begin_it()
 {
-	misc::cout << "\n\n\tchild_begin_it-----------------------------------------";
+	stl::cout << "\n\n\tchild_begin_it-----------------------------------------";
 
-	child_begin_it<misc::tree<misc::string> >("\n\tchild_begin_it<misc::string>       ");
+	child_begin_it<misc::tree<stl::string> >("\n\tchild_begin_it<stl::string>       ");
 	child_begin_it<misc::tree<std::string> > ("\n\tchild_begin_it<std::string>        ");
 }
 
 void test_tree::child_end_it()
 {
-	misc::cout << "\n\n\tchild_end_it-------------------------------------------";
+	stl::cout << "\n\n\tchild_end_it-------------------------------------------";
 
-	child_end_it<misc::tree<misc::string> >("\n\tchild_end_it<misc::string>         ");
+	child_end_it<misc::tree<stl::string> >("\n\tchild_end_it<stl::string>         ");
 	child_end_it<misc::tree<std::string> > ("\n\tchild_end_it<std::string>          ");
 }
 
 void test_tree::siblings_begin()
 {
-	misc::cout << "\n\n\tsiblings_begin-----------------------------------------";
+	stl::cout << "\n\n\tsiblings_begin-----------------------------------------";
 
-	siblings_begin<misc::tree<misc::string> >("\n\tsiblings_begin<misc::string>       ");
+	siblings_begin<misc::tree<stl::string> >("\n\tsiblings_begin<stl::string>       ");
 	siblings_begin<misc::tree<std::string> > ("\n\tsiblings_begin<std::string>        ");
 }
 
 void test_tree::siblings_end()
 {
-	misc::cout << "\n\n\tsiblings_end-------------------------------------------";
+	stl::cout << "\n\n\tsiblings_end-------------------------------------------";
 
-	siblings_end<misc::tree<misc::string> >("\n\tsiblings_end<misc::string>         ");
+	siblings_end<misc::tree<stl::string> >("\n\tsiblings_end<stl::string>         ");
 	siblings_end<misc::tree<std::string> > ("\n\tsiblings_end<std::string>          ");
 }
 
 void test_tree::siblings_begin_it()
 {
-	misc::cout << "\n\n\tsiblings_begin_it--------------------------------------";
+	stl::cout << "\n\n\tsiblings_begin_it--------------------------------------";
 
-	siblings_begin_it<misc::tree<misc::string> >("\n\tsiblings_begin_it<misc::string>    ");
+	siblings_begin_it<misc::tree<stl::string> >("\n\tsiblings_begin_it<stl::string>    ");
 	siblings_begin_it<misc::tree<std::string> > ("\n\tsiblings_begin_it<std::string>     ");
 }
 
 void test_tree::siblings_end_it()
 {
-	misc::cout << "\n\n\tsiblings_end_it----------------------------------------";
+	stl::cout << "\n\n\tsiblings_end_it----------------------------------------";
 
-	siblings_end_it<misc::tree<misc::string> >("\n\tsiblings_end_it<misc::string>      ");
+	siblings_end_it<misc::tree<stl::string> >("\n\tsiblings_end_it<stl::string>      ");
 	siblings_end_it<misc::tree<std::string> > ("\n\tsiblings_end_it<std::string>       ");
 }
 
 void test_tree::empty()
 {
-	misc::cout << "\n\n\tempty--------------------------------------------------";
+	stl::cout << "\n\n\tempty--------------------------------------------------";
 
-	empty<misc::tree<misc::string> >("\n\tempty<misc::string>                ");
+	empty<misc::tree<stl::string> >("\n\tempty<stl::string>                ");
 	empty<misc::tree<std::string> > ("\n\tempty<std::string>                 ");
 }
 
 void test_tree::size()
 {
-	misc::cout << "\n\n\tsize---------------------------------------------------";
+	stl::cout << "\n\n\tsize---------------------------------------------------";
 
-	size<misc::tree<misc::string> >("\n\tsize<misc::string>                 ");
+	size<misc::tree<stl::string> >("\n\tsize<stl::string>                 ");
 	size<misc::tree<std::string> > ("\n\tsize<std::string>                  ");
 }
 
 void test_tree::clear()
 {
-	misc::cout << "\n\n\tclear--------------------------------------------------";
+	stl::cout << "\n\n\tclear--------------------------------------------------";
 
-	clear<misc::tree<misc::string> >("\n\tclear<misc::string>                ");
+	clear<misc::tree<stl::string> >("\n\tclear<stl::string>                ");
 	clear<misc::tree<std::string> > ("\n\tclear<std::string>                 ");
 }
 
 void test_tree::erase()
 {
-	misc::cout << "\n\n\terase--------------------------------------------------";
+	stl::cout << "\n\n\terase--------------------------------------------------";
 
-	erase<misc::tree<misc::string> >("\n\terase<misc::string>                ");
+	erase<misc::tree<stl::string> >("\n\terase<stl::string>                ");
 	erase<misc::tree<std::string> > ("\n\terase<std::string>                 ");
 }
 

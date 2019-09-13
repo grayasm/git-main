@@ -22,6 +22,7 @@ contact: grayasm@gmail.com
 #define __SessionStatusListener_hpp__
 
 #include <stddef.h>
+#include <string>
 #include <ForexConnect.h>
 #include "string.hpp"
 #include "event.hpp"
@@ -36,8 +37,8 @@ namespace fxcm
 		SessionStatusListener(
 			IO2GSession* session,
 			bool printSubSessions,
-			const misc::string& sessionID,
-			const misc::string& pin);
+			const stl::string& sessionID,
+			const stl::string& pin);
 
 		// vtable begin
 		long addRef();
@@ -58,15 +59,15 @@ namespace fxcm
 
 	private:
 		long				m_RefCount;
-		misc::string		m_SessionID;
-		misc::string		m_Pin;
+		stl::string		m_SessionID;
+		stl::string		m_Pin;
 		bool				m_Error;
 		bool				m_Connected;
 		bool				m_Disconnected;
 		bool				m_PrintSubsessions;
 		IO2GSession*		m_Session;
-		misc::event			m_SessionEvent;
-		misc::critical_section	m_CriticalSection;
+		sys::event			m_SessionEvent;
+		sys::critical_section	m_CriticalSection;
 	};
 } // namespace
 

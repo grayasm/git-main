@@ -1,8 +1,5 @@
-#ifdef WIN32
-#define Order2Go2 __declspec(dllimport)
-#else
-#define Order2Go2
-#endif
+#pragma once
 
-#include "interfaces_all.h"
-
+#include "forexconnect/ForexConnect.h"
+#include "pricehistorymgr/pricehistorymgr.h"
+#include "quotesmgr/quotesmgr2.h"

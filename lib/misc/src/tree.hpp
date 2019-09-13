@@ -440,7 +440,7 @@ namespace misc
 		typedef Allocator								allocator_type;		
 
 	public:
-		typedef misc::autoptr<container>					Ptr;
+		typedef stl::autoptr<container>					Ptr;
 
 		//Iterators
 		typedef typename misc::tree_node<T>::List			List;
@@ -1982,7 +1982,7 @@ namespace misc
 	template<typename T, typename Allocator, int attributes>
 	void tree<T, Allocator, attributes>::push_front(const tree& t)
 	{
-		throw misc::exception("not debugged");
+		throw stl::exception("not debugged");
 
 		typename List::reverse_iterator rbeg = t.m_root.m_list.rbegin(), rend = t.m_root.m_list.rend();
 		for(; rbeg != rend; ++rbeg)
@@ -1997,7 +1997,7 @@ namespace misc
 	template<typename T, typename Allocator, int attributes>
 	void tree<T, Allocator, attributes>::insert_sibling_before(iterator i, const tree& t)
 	{
-		throw misc::exception("not debugged");
+		throw stl::exception("not debugged");
 
 		typename List::reverse_iterator rbeg = t.m_root.m_list.rbegin(), rend = t.m_root.m_list.rend();
 		iterator ipos = i;
@@ -2014,7 +2014,7 @@ namespace misc
 	template<typename T, typename Allocator, int attributes>
 	void tree<T, Allocator, attributes>::insert_sibling_after(iterator i, const tree& t)
 	{
-		throw misc::exception("not debugged");
+		throw stl::exception("not debugged");
 
 		typename List::reverse_iterator rbeg = t.m_root.m_list.rbegin(), rend = t.m_root.m_list.rend();
 		iterator ipos = ++i;
@@ -2031,7 +2031,7 @@ namespace misc
 	template<typename T, typename Allocator, int attributes>
 	void tree<T, Allocator, attributes>::push_back_child(iterator i, const tree& t)
 	{
-		throw misc::exception("not debugged");
+		throw stl::exception("not debugged");
 
 		iterator beg = t.m_root.m_list.begin(), end = t.m_root.m_list.end();
 		for(; beg != end; ++beg)
@@ -2046,7 +2046,7 @@ namespace misc
 	template<typename T, typename Allocator, int attributes>
 	void tree<T, Allocator, attributes>::push_front_child(iterator i, const tree& t)
 	{
-		throw misc::exception("not debugged");
+		throw stl::exception("not debugged");
 
 		typename List::reverse_iterator rbeg = t.m_root.m_list.rbegin(), rend = t.m_root.m_list.rend();
 		for(; rbeg != rend; ++rbeg)

@@ -40,7 +40,7 @@ namespace fxcm
 
 	long ResponseListener4EntryOrders::addRef()
 	{
-		misc::autocritical_section autocs(m_CriticalSection);
+		sys::autocritical_section autocs(m_CriticalSection);
 		m_RefCount++;
 		return m_RefCount;
 	}
@@ -49,7 +49,7 @@ namespace fxcm
 	{
 		// protect m_CriticalSection against 'delete this'
 		{
-			misc::autocritical_section autocs(m_CriticalSection);
+			sys::autocritical_section autocs(m_CriticalSection);
 			m_RefCount--;
 			if (m_RefCount)
 				return m_RefCount;
@@ -74,7 +74,7 @@ namespace fxcm
 	{
 		if (m_RequestID == requestId)
 		{
-			misc::cout << __FUNCTION__ 
+			stl::cout << __FUNCTION__ 
 				<< ": The request has been failed. ID: "
 				<< requestId << " : " << error << std::endl;
 			m_ResponseEvent.unlock();
@@ -85,7 +85,7 @@ namespace fxcm
 	{
 	}
 
-	void ResponseListener4EntryOrders::SetRequestID(const misc::string& requestID)
+	void ResponseListener4EntryOrders::SetRequestID(const stl::string& requestID)
 	{
 		m_RequestID = requestID;
 		if (m_Response)

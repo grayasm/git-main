@@ -29,7 +29,7 @@ namespace fx
 	}
 
 	EMA::EMA(
-        const misc::string& instrument,
+        const stl::string& instrument,
 		int period,
 		Timeframe sec,
 		BarType barType,
@@ -56,7 +56,7 @@ namespace fx
 				break;
 			}
 			default:
-				throw misc::exception("SMA unknown BAR type");
+				throw stl::exception("SMA unknown BAR type");
 		}		
 		m_firstSMA = fx::SMA(instrument, period, sec, barType, po);
 	}
@@ -105,7 +105,7 @@ namespace fx
                         break;
                     }
                     default:
-                        throw misc::exception("SMA unknown BAR type");
+                        throw stl::exception("SMA unknown BAR type");
                 }
             }
             else
@@ -122,7 +122,7 @@ namespace fx
 		return *this;
 	}
 
-	const misc::string& EMA::GetInstrument() const
+	const stl::string& EMA::GetInstrument() const
 	{
 		return m_instrument;
 	}
@@ -148,7 +148,7 @@ namespace fx
 	void EMA::Update(const fx::Offer& offer)
 	{
 		if (m_instrument != offer.GetInstrument())
-			throw misc::exception("EMA offer is invalid");
+			throw stl::exception("EMA offer is invalid");
 
 		/*	http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:moving_averages
 			Example for 10 period EMA:
@@ -217,7 +217,7 @@ namespace fx
         }
 	}
 
-	const misc::time& EMA::GetRefTime() const
+	const sys::time& EMA::GetRefTime() const
 	{
 		return m_bar->GetRefTime();
 	}
@@ -234,7 +234,7 @@ namespace fx
             m_currEMA.GetBuy() == 0 ||
             m_currEMA.GetSell() == 0)
         {
-            throw misc::exception("EMA is invalid");
+            throw stl::exception("EMA is invalid");
         }
 
 		average = m_currEMA;

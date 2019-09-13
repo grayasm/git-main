@@ -1,0 +1,4 @@
+#define QUOTESMGR_VER_MAJOR     2
+#define QUOTESMGR_VER_MINOR     8
+#define QUOTESMGR_FILE_VER_3    0
+#define QUOTESMGR_VER_BUILD     0

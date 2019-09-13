@@ -6,22 +6,22 @@ This sample shows how to get a table and print it.
 The sample performs the following actions:
 1. Login.
 2. Print the accounts table by using the getNextRow method.
-3. Print the orders table by using the IO2GEachRowListener.
+3. Print the trades or orders table by using the IO2GEachRowListener.
 4. Logout.
 
 Building the application
 ===============================================================================
 Windows:
-    To build this application, you will need MS Visual Studio 2005 or later.
+    To build this application, you will need MS Visual Studio 2015.
 
     You can run fxbuild.bat (fxbuild64.bat for 64-bit version) or select
     "build" in MS Visual Studio.
 
 Linux/MacOS:
     To build this application, you will need:
-        gcc-4.1 or later
-        g++-4.1 or later
-        CMake 2.6 or later (use 2.6 for MacOS)
+        gcc-4.3 or later
+        g++-4.3 or later
+        CMake 2.6 or later
         
 Run fxbuild.sh to build application.
 
@@ -55,3 +55,5 @@ The database name. Required only for users who have accounts in more than one da
 /pin | --pin 
 Your pin code. Required only for users who have a pin. Optional parameter.
 
+/table | --table | /t | -t
+The print table. Possible values are: orders - orders table, trades - trades table. Default value is trades. Optional parameter.

@@ -22,7 +22,7 @@
 
 namespace fx
 {
-	void TimeUtils::SetValidMarketTime(misc::time& to, time_t& interval)
+	void TimeUtils::SetValidMarketTime(sys::time& to, time_t& interval)
 	{
 		/*	Sanitize to time.
 			Broker may return error for intervals 19:12:04 -> 19:13:00
@@ -32,8 +32,8 @@ namespace fx
 		/*	For each full week add 2 extra days to compensate for
 			FRI 22:00 -> SUN 22:00 outside trading hours.
 		*/
-		int weeks = interval / (7 * misc::time::daySEC);
-		interval += weeks * (2 * misc::time::daySEC);
+		int weeks = interval / (7 * sys::time::daySEC);
+		interval += weeks * (2 * sys::time::daySEC);
 
 
 		/*	Shift back to time, outside weekend hours.
@@ -44,13 +44,13 @@ namespace fx
 			And also avoid legal holidays (at least for FXCM).
 			25-DEC and 01-JAN
 		*/
-		while ((to.wday() == misc::time::SAT) ||
-			(to.wday() == misc::time::FRI && to.hour_() >= 22) ||
-			(to.wday() == misc::time::SUN && to.hour_() < 22) ||
-			(to.mon_() == misc::time::Month::DEC && to.mday_() == 25) ||
-			(to.mon_() == misc::time::Month::JAN && to.mday_() == 1))
+		while ((to.wday() == sys::time::SAT) ||
+			(to.wday() == sys::time::FRI && to.hour_() >= 22) ||
+			(to.wday() == sys::time::SUN && to.hour_() < 22) ||
+			(to.mon_() == sys::time::Month::DEC && to.mday_() == 25) ||
+			(to.mon_() == sys::time::Month::JAN && to.mday_() == 1))
 		{
-			to -= misc::time::hourSEC;
+			to -= sys::time::hourSEC;
 		}
 
 
@@ -58,14 +58,14 @@ namespace fx
 			by increasing the interval.			
 		*/
 		time_t adjustedinterval = interval;
-		misc::time from = to - adjustedinterval;
-		while ((from.wday() == misc::time::SAT) ||
-			(from.wday() == misc::time::FRI && from.hour_() >= 22) ||
-			(from.wday() == misc::time::SUN && from.hour_() < 22) ||
-			(from.mon_() == misc::time::Month::DEC && from.mday_() == 25) ||
-			(from.mon_() == misc::time::Month::JAN && from.mday_() == 1))
+		sys::time from = to - adjustedinterval;
+		while ((from.wday() == sys::time::SAT) ||
+			(from.wday() == sys::time::FRI && from.hour_() >= 22) ||
+			(from.wday() == sys::time::SUN && from.hour_() < 22) ||
+			(from.mon_() == sys::time::Month::DEC && from.mday_() == 25) ||
+			(from.mon_() == sys::time::Month::JAN && from.mday_() == 1))
 		{
-			adjustedinterval += misc::time::hourSEC;
+			adjustedinterval += sys::time::hourSEC;
 			from = to - adjustedinterval;
 		}
 

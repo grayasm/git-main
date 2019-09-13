@@ -36,11 +36,11 @@ namespace fx
 	{
 		void Init();
 	public:
-		typedef misc::autoptr<Currency> Ptr;
+		typedef stl::autoptr<Currency> Ptr;
 
 		Currency();
 		Currency(
-			const misc::string& symbol,
+			const stl::string& symbol,
 			const Price& price,
 			double margin,
 			double pipCost,
@@ -49,14 +49,14 @@ namespace fx
 		Currency(const Currency& tc);
 		Currency& operator=(const Currency& tc);
 
-		const misc::string& GetSymbol() const;
+		const stl::string& GetSymbol() const;
 		const Price& GetPrice() const;		
 		double GetMargin() const;
 		double GetPipCost() const;
 		double GetRate2Pip() const;
 
 	private:
-		misc::string	m_symbol;			// "EUR/USD"
+		stl::string	m_symbol;			// "EUR/USD"
 		Price			m_price;			// 1.36 / 1.35975 (spread 2.5)
 		double			m_margin;			// 5
 		double			m_pipCost;			// 0.07

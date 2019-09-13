@@ -41,7 +41,7 @@ namespace fx
         // Timeframe is time_t
 
         LWMA();
-        LWMA(const misc::string& instrument,
+        LWMA(const stl::string& instrument,
             int period,
             Timeframe sec,
             BarType barType,
@@ -52,12 +52,12 @@ namespace fx
         LWMA& operator=(const LWMA& tc);
 
         // --- virtual table ---
-        const misc::string& GetInstrument() const override;
+        const stl::string& GetInstrument() const override;
         int GetPeriod() const override;
         Timeframe GetTimeframe() const override;
         bool IsValid() const override;
         void Update(const fx::Offer& offer) override;
-        const misc::time& GetRefTime() const override;
+        const sys::time& GetRefTime() const override;
         // --- end of virtual table ---
 
         void GetValue(fx::Price& average) const;
@@ -66,7 +66,7 @@ namespace fx
         void Init();
 
     private:
-        misc::string        m_instrument;
+        stl::string        m_instrument;
         int                 m_period;
         Timeframe           m_timeframe;
         BarType             m_barType;

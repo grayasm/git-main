@@ -168,7 +168,7 @@ namespace fxcm
 	{
 		if (m_sessionListener->IsDisconnected())
 		{
-			misc::cout << __FUNCTION__
+			stl::cout << __FUNCTION__
 				<< ": Session disconnected" << std::endl;
 			return ErrorCodes::ERR_DISCONNECTED;
 		}
@@ -209,7 +209,7 @@ namespace fxcm
 				{
 					O2G2Ptr<IO2GRequest> offersRequest =
 						requestFactory->createRefreshTableRequest(Offers);
-					misc::string requestID(offersRequest->getRequestID());
+					stl::string requestID(offersRequest->getRequestID());
 					m_responseListener4Offers->SetRequestID(requestID);
 
 					m_session->sendRequest(offersRequest); // send REQUEST
@@ -227,7 +227,7 @@ namespace fxcm
 					}
 					else
 					{
-						misc::cout << __FUNCTION__
+						stl::cout << __FUNCTION__
 							<< ": Response waiting timeout expired" << std::endl;
 						return ErrorCodes::ERR_TIMEOUT;
 					}
@@ -236,7 +236,7 @@ namespace fxcm
 		}
 		else
 		{
-			misc::cout << __FUNCTION__ 
+			stl::cout << __FUNCTION__ 
 				<< ": Cannot get login rules" << std::endl;
 			return ErrorCodes::ERR_NO_LOGIN_RULES;
 		}
@@ -256,7 +256,7 @@ namespace fxcm
 		O2G2Ptr<IO2GLoginRules> loginRules = m_session->getLoginRules();
 		if (!loginRules)
 		{
-			misc::cout << __FUNCTION__
+			stl::cout << __FUNCTION__
 				<< ": Cannot get login rules" << std::endl;
 			return ErrorCodes::ERR_NO_LOGIN_RULES;
 		}
@@ -265,7 +265,7 @@ namespace fxcm
 			loginRules->getTableRefreshResponse(Accounts);
 		if (!accountsResponse)
 		{
-			misc::cout << __FUNCTION__
+			stl::cout << __FUNCTION__
 				<< ": Cannot get Accounts response" << std::endl;
 			return ErrorCodes::ERR_NO_ACOUNTS_RESPONSE;
 		}
@@ -274,7 +274,7 @@ namespace fxcm
 			loginRules->getTableRefreshResponse(Offers);
 		if (!offersResponse)
 		{
-			misc::cout << __FUNCTION__
+			stl::cout << __FUNCTION__
 				<< ": Cannot get Offers response" << std::endl;
 			return ErrorCodes::ERR_NO_OFFERS_RESPONSE;
 		}
@@ -285,7 +285,7 @@ namespace fxcm
 			m_session->getResponseReaderFactory();
 		if (!factory)
 		{
-			misc::cout << __FUNCTION__
+			stl::cout << __FUNCTION__
 				<< ": Cannot create response reader factory" << std::endl;
 			return ErrorCodes::ERR_NO_RESPONSE_READER_FACTORY;
 		}
@@ -360,30 +360,30 @@ namespace fxcm
 					sMarketStatus = "Market Close";
 					break;
 				}
-				misc::cout << "Instrument: " << sInstrument << std::endl;
-				misc::cout << "Status : " << sMarketStatus << std::endl;
-				misc::cout << "Cond.Dist: ST=" << condDistStopForTrade
+				stl::cout << "Instrument: " << sInstrument << std::endl;
+				stl::cout << "Status : " << sMarketStatus << std::endl;
+				stl::cout << "Cond.Dist: ST=" << condDistStopForTrade
 					<< "; LT=" << condDistLimitForTrade
 					<< std::endl;
-				misc::cout << "Cond.Dist entry stop=" << condDistEntryStop
+				stl::cout << "Cond.Dist entry stop=" << condDistEntryStop
 					<< "; entry limit=" << condDistEntryLimit
 					<< std::endl;
-				misc::cout << "Quantity: Min=" << minQuantity
+				stl::cout << "Quantity: Min=" << minQuantity
 					<< "; Max=" << maxQuantity << std::endl;
-				misc::cout << "Base unit size=" << baseUnitSize
+				stl::cout << "Base unit size=" << baseUnitSize
 					<< "; MMR=" << mmr << std::endl;
 
 				if (b3LevelMargin)
 				{
-					misc::cout << "Three level maring: MMR=" << mmr2
+					stl::cout << "Three level maring: MMR=" << mmr2
 						<< "; EMR=" << emr << "; LMR=" << lmr << std::endl;
 				}
 				else
 				{
-					misc::cout << "Single level margin: MMR=" << mmr2
+					stl::cout << "Single level margin: MMR=" << mmr2
 						<< "; EMR=" << emr << "; LMR=" << lmr << std::endl;
 				}
-				misc::cout << "Trailing step: " << minTrailingStep
+				stl::cout << "Trailing step: " << minTrailingStep
 					<< "-" << maxTrailingStep << std::endl;
 			}
 		}
@@ -401,7 +401,7 @@ namespace fxcm
 		O2G2Ptr<IO2GLoginRules> loginRules = m_session->getLoginRules();
 		if (!loginRules)
 		{
-			misc::cout << __FUNCTION__
+			stl::cout << __FUNCTION__
 				<< ": Cannot get login rules" << std::endl;
 			return ErrorCodes::ERR_NO_LOGIN_RULES;
 		}
@@ -410,7 +410,7 @@ namespace fxcm
 			loginRules->getPermissionChecker();
 		if (!permissionChecker)
 		{
-			misc::cout << __FUNCTION__
+			stl::cout << __FUNCTION__
 				<< ": Cannot get permission checker" << std::endl;
 			return ErrorCodes::ERR_NO_PERMISSION_CHECKER;
 		}
@@ -463,7 +463,7 @@ namespace fxcm
 		O2G2Ptr<IO2GRequestFactory> requestFactory = m_session->getRequestFactory();
 		if (!requestFactory)
 		{
-			misc::cout << __FUNCTION__
+			stl::cout << __FUNCTION__
 				<< ": Cannot create request factory" << std::endl;
 			return ErrorCodes::ERR_NO_REQUEST_FACTORY;
 		}
@@ -473,7 +473,7 @@ namespace fxcm
 			requestFactory->createRefreshTableRequestByAccount(Orders, sAccountID);
 		if (!request)
 		{
-			misc::cout << __FUNCTION__
+			stl::cout << __FUNCTION__
 				<< ": Last error=" << requestFactory->getLastError() << std::endl;
 			return ErrorCodes::ERR_NO_ORDERS_REQUEST;
 		}
@@ -483,7 +483,7 @@ namespace fxcm
 		// asynchronous request sent to server, waiting
 		if (!m_responseListener4EntryOrders->WaitEvents())
 		{
-			misc::cout << __FUNCTION__
+			stl::cout << __FUNCTION__
 				<< ": Response waiting timeout expired" << std::endl;
 			return ErrorCodes::ERR_TIMEOUT;
 		}
@@ -502,20 +502,20 @@ namespace fxcm
 				{
 					O2G2Ptr<IO2GOrderRow> order = responseReader->getRow(i);
 
-					misc::string orderId = order->getOrderID();
-					misc::string accountId = order->getAccountID();
-					misc::string orderType = order->getType();
-					misc::string orderStatus = order->getStatus();
-					misc::string orderOfferId = order->getOfferID();
+					stl::string orderId = order->getOrderID();
+					stl::string accountId = order->getAccountID();
+					stl::string orderType = order->getType();
+					stl::string orderStatus = order->getStatus();
+					stl::string orderOfferId = order->getOfferID();
 					int orderAmount = order->getAmount();
-					misc::string orderBuySell = order->getBuySell();
+					stl::string orderBuySell = order->getBuySell();
 					double orderRate = order->getRate();
-					misc::string orderTimeInForce = order->getTimeInForce();
+					std::string orderTimeInForce = order->getTimeInForce();
 					
 					static bool bDebug = true;
 					if (bDebug)
 					{
-						misc::cout << "OrderId=" << orderId.c_str()
+						stl::cout << "OrderId=" << orderId.c_str()
 							<< "AccountId=" << accountId.c_str() << ", "
 							<< "Type=" << orderType.c_str() << ", "
 							<< "Status=" << orderStatus.c_str() << ", "
@@ -537,7 +537,7 @@ namespace fxcm
 		if (m_offersUpdater)
 			return m_offersUpdater->GetLastOffer(offer, sInstrument);
 
-		misc::cout << __FUNCTION__
+		stl::cout << __FUNCTION__
 			<< ": OffersUpdater instance is not available" << std::endl;
 		return ErrorCodes::ERR_NO_OFFER_AVAILABLE;
 	} // GetLastOffer
@@ -547,7 +547,7 @@ namespace fxcm
         if (m_offersUpdater)
             return m_offersUpdater->GetAllOffers(offers);
 
-        misc::cout << __FUNCTION__
+        stl::cout << __FUNCTION__
             << ": OffersUpdater instance is not available" << std::endl;
         return ErrorCodes::ERR_NO_OFFER_AVAILABLE;
     } // GetAllOffers
@@ -560,14 +560,14 @@ namespace fxcm
 		if (strlen(sTimeframe) == 0 ||
 			(strcmp(sTimeframe, "m1") != 0 && strcmp(sTimeframe, "H1") != 0))
 		{
-			misc::cout << __FUNCTION__
+			stl::cout << __FUNCTION__
 				<< ": Error timeframe incorrect, use m1 or H1" << std::endl;
 			return ErrorCodes::ERR_TIMEFRAME_INCORRECT;
 		}
 
 		if (dtFrom <= 0 || dtTo <= 0 || dtFrom >= dtTo)
 		{
-			misc::cout << __FUNCTION__
+			stl::cout << __FUNCTION__
 				<< ": DateFrom/DateTo data is incorrect" << std::endl;
 			return ErrorCodes::ERR_DATE_INTERVAL_INCORRECT;
 		}
@@ -575,14 +575,14 @@ namespace fxcm
 		double _1H = 0.04167; // approximately 1h !!
 		if (strcmp(sTimeframe, "m1") == 0 && dtTo - dtFrom > _1H)
 		{
-			misc::cout << __FUNCTION__
+			stl::cout << __FUNCTION__
 				<< ": Date interval must be <= 1h" << std::endl;
 			return ErrorCodes::ERR_DATE_INTERVAL_INCORRECT;
 		}
 		
 		if (strcmp(sTimeframe, "H1") == 0 && dtTo - dtFrom > _1H * 60)
 		{
-			misc::cout << __FUNCTION__
+			stl::cout << __FUNCTION__
 				<< ": Date interval must be <= 60h" << std::endl;
 			return ErrorCodes::ERR_DATE_INTERVAL_INCORRECT;
 		}
@@ -603,7 +603,7 @@ namespace fxcm
 		O2G2Ptr<IO2GRequestFactory> requestFactory = m_session->getRequestFactory();
 		if (!requestFactory)
 		{
-			misc::cout << __FUNCTION__
+			stl::cout << __FUNCTION__
 				<< ": Cannot create request factory" << std::endl;
 			return ErrorCodes::ERR_NO_REQUEST_FACTORY;
 		}
@@ -614,7 +614,7 @@ namespace fxcm
 		O2G2Ptr<IO2GTimeframe> timeframe = timeframeCollection->get(sTimeframe);
 		if (!timeframe)
 		{
-			misc::cout << __FUNCTION__
+			stl::cout << __FUNCTION__
 				<< ": Timeframe '" << sTimeframe << "' is incorrect!" << std::endl;
 			return ErrorCodes::ERR_TIMEFRAME_INCORRECT;
 		}
@@ -632,7 +632,7 @@ namespace fxcm
 			// asynchronous request sent to server, waiting
 			if (!m_responseListener4HistoryPrices->WaitEvents())
 			{
-				misc::cout << __FUNCTION__
+				stl::cout << __FUNCTION__
 					<< ": Response waiting timeout expired" << std::endl;
 				return ErrorCodes::ERR_TIMEOUT;
 			}
@@ -640,7 +640,7 @@ namespace fxcm
 			O2G2Ptr<IO2GResponse> response = m_responseListener4HistoryPrices->GetResponse();
 			if (!response || response->getType() != MarketDataSnapshot)
 			{
-				misc::cout << __FUNCTION__
+				stl::cout << __FUNCTION__
 					<< ": No market data snapshot response" << std::endl;
 				return ErrorCodes::ERR_NO_MARKET_DATA_RESPONSE;
 			}
@@ -649,7 +649,7 @@ namespace fxcm
 				m_session->getResponseReaderFactory();
 			if (!readerFactory)
 			{
-				misc::cout << __FUNCTION__
+				stl::cout << __FUNCTION__
 					<< ": Cannot create response reader factory" << std::endl;
 				return ErrorCodes::ERR_NO_RESPONSE_READER_FACTORY;
 			}
@@ -665,7 +665,7 @@ namespace fxcm
 			}
 			else
 			{
-				misc::cout << "0 rows received" << std::endl;
+				stl::cout << "0 rows received" << std::endl;
 				break;
 			}
 
@@ -686,11 +686,11 @@ namespace fxcm
 	} // GetHistoryPrices
 
 	int Session::OpenPosition(const fx::Offer& offer, int lots, bool buy,
-							  misc::vector<fx::Position>& result)
+							  stl::vector<fx::Position>& result)
 	{
 		if (m_sessionListener->IsDisconnected())
 		{
-			misc::cout << __FUNCTION__
+			stl::cout << __FUNCTION__
 				<< ": Session disconnected" << std::endl;
 			return ErrorCodes::ERR_DISCONNECTED;
 		}
@@ -698,7 +698,7 @@ namespace fxcm
 		O2G2Ptr<IO2GAccountRow> account = GetAccount();
 		if (!account)
 		{
-			misc::cout << __FUNCTION__
+			stl::cout << __FUNCTION__
 				<< ": Error invalid account" << std::endl;
 			return ErrorCodes::ERR_NO_ACCOUNT;
 		}
@@ -706,7 +706,7 @@ namespace fxcm
 		// must be 'netting account' -> maintenance type != 0
 		if (strcmp(account->getMaintenanceType(), "0") == 0)
 		{
-			misc::cout << __FUNCTION__
+			stl::cout << __FUNCTION__
 				<< ": Error invalid account" << std::endl;
 			return ErrorCodes::ERR_NO_ACCOUNT;
 		}
@@ -714,7 +714,7 @@ namespace fxcm
 		O2G2Ptr<IO2GLoginRules> loginRules = m_session->getLoginRules();
 		if (!loginRules)
 		{
-			misc::cout << __FUNCTION__
+			stl::cout << __FUNCTION__
 				<< ": Cannot get login rules" << std::endl;
 			return ErrorCodes::ERR_NO_LOGIN_RULES;
 		}
@@ -728,7 +728,7 @@ namespace fxcm
 		O2G2Ptr<IO2GRequestFactory> requestFactory = m_session->getRequestFactory();
 		if (!requestFactory)
 		{
-			misc::cout << __FUNCTION__
+			stl::cout << __FUNCTION__
 				<< ": Cannot create request factory" << std::endl;
 			return ErrorCodes::ERR_NO_REQUEST_FACTORY;
 		}
@@ -745,7 +745,7 @@ namespace fxcm
 		O2G2Ptr<IO2GRequest> request = requestFactory->createOrderRequest(valuemap);
 		if (!request)
 		{
-			misc::cout << __FUNCTION__
+			stl::cout << __FUNCTION__
 				<< ": createOrderRequest failed with error: "
 				<< requestFactory->getLastError() << std::endl;
 			return ErrorCodes::ERR_NO_ORDERS_REQUEST;
@@ -757,7 +757,7 @@ namespace fxcm
 		// asynchronous request sent to server, waiting
 		if (!m_responseListener4MarketOrders->WaitEvents())
 		{
-			misc::cout << __FUNCTION__
+			stl::cout << __FUNCTION__
 				<< ": Response waiting timeout expired" << std::endl;
 			return ErrorCodes::ERR_TIMEOUT;
 		}
@@ -765,7 +765,7 @@ namespace fxcm
 
 
 		// collect open trades
-		const misc::vector<IO2GTradeRow*>& trades =
+		const stl::vector<IO2GTradeRow*>& trades =
 			m_responseListener4MarketOrders->GetTrades();
 
         PipCost::OffersMap pipcostOffers;
@@ -776,9 +776,9 @@ namespace fxcm
 		{
 			IO2GTradeRow* trade = trades[i];
 
-			misc::string openOrderID = trade->getOpenOrderID();
-			misc::string tradeID = trade->getTradeID();
-			misc::string symbol = offer.GetInstrument();
+			stl::string openOrderID = trade->getOpenOrderID();
+			stl::string tradeID = trade->getTradeID();
+			stl::string symbol = offer.GetInstrument();
 			bool isBuy = strcmp(trade->getBuySell(), O2G2::Buy) == 0;
 			double openRate = trade->getOpenRate();
 			double buyRate = (isBuy == true ? openRate : FLT_MAX); // @ask
@@ -806,11 +806,11 @@ namespace fxcm
 
 
 	int Session::ClosePosition(const fx::Offer& offer, const fx::Position& position,
-							   misc::vector<fx::Position>& result)
+							   stl::vector<fx::Position>& result)
 	{
 		if (m_sessionListener->IsDisconnected())
 		{
-			misc::cout << __FUNCTION__
+			stl::cout << __FUNCTION__
 				<< ": Session disconnected" << std::endl;
 			return ErrorCodes::ERR_DISCONNECTED;
 		}
@@ -818,7 +818,7 @@ namespace fxcm
 		O2G2Ptr<IO2GAccountRow> account = GetAccount();
 		if (!account)
 		{
-			misc::cout << __FUNCTION__
+			stl::cout << __FUNCTION__
 				<< ": Error invalid account" << std::endl;
 			return ErrorCodes::ERR_NO_ACCOUNT;
 		}
@@ -826,7 +826,7 @@ namespace fxcm
 		// must be 'netting account' -> maintenance type != 0
 		if (strcmp(account->getMaintenanceType(), "0") == 0)
 		{
-			misc::cout << __FUNCTION__
+			stl::cout << __FUNCTION__
 				<< ": Error invalid account" << std::endl;
 			return ErrorCodes::ERR_NO_ACCOUNT;
 		}
@@ -834,7 +834,7 @@ namespace fxcm
 		O2G2Ptr<IO2GRequestFactory> requestFactory = m_session->getRequestFactory();
 		if (!requestFactory)
 		{
-			misc::cout << __FUNCTION__
+			stl::cout << __FUNCTION__
 				<< ": Cannot create request factory" << std::endl;
 			return ErrorCodes::ERR_NO_REQUEST_FACTORY;
 		}
@@ -842,7 +842,7 @@ namespace fxcm
 		O2G2Ptr<IO2GLoginRules> loginRules = m_session->getLoginRules();
 		if (!loginRules)
 		{
-			misc::cout << __FUNCTION__
+			stl::cout << __FUNCTION__
 				<< ": Cannot get login rules" << std::endl;
 			return ErrorCodes::ERR_NO_LOGIN_RULES;
 		}
@@ -877,7 +877,7 @@ namespace fxcm
 		O2G2Ptr<IO2GRequest> request = requestFactory->createOrderRequest(valuemap);
 		if (!request)
 		{
-			misc::cout << __FUNCTION__
+			stl::cout << __FUNCTION__
 				<< ": createOrderRequest failed with error: "
 				<< requestFactory->getLastError() << std::endl;
 			return ErrorCodes::ERR_NO_ORDERS_REQUEST;
@@ -889,7 +889,7 @@ namespace fxcm
 		// asynchronous request sent to server, waiting
 		if (!m_responseListener4MarketOrders->WaitEvents())
 		{
-			misc::cout << __FUNCTION__
+			stl::cout << __FUNCTION__
 				<< ": Response waiting timeout expired" << std::endl;
 			return ErrorCodes::ERR_TIMEOUT;
 		}
@@ -897,7 +897,7 @@ namespace fxcm
 
 
 		// collect closed trades
-		const misc::vector<IO2GClosedTradeRow*>& closedTrades =
+		const stl::vector<IO2GClosedTradeRow*>& closedTrades =
 			m_responseListener4MarketOrders->GetClosedTrades();
 
 		result.clear();
@@ -905,9 +905,9 @@ namespace fxcm
 		{
 			IO2GClosedTradeRow* closedTrade = closedTrades[i];
 
-			misc::string closeOrderID = closedTrade->getCloseOrderID();
-			misc::string tradeID = closedTrade->getTradeID();
-			misc::string symbol = offer.GetInstrument();
+			stl::string closeOrderID = closedTrade->getCloseOrderID();
+			stl::string tradeID = closedTrade->getTradeID();
+			stl::string symbol = offer.GetInstrument();
 			bool isBuy = strcmp(closedTrade->getBuySell(), O2G2::Buy) == 0;
 			double openRate = closedTrade->getOpenRate();
 			double buyOpen = (isBuy == true ? openRate : FLT_MAX); // @ask
@@ -942,11 +942,11 @@ namespace fxcm
 	} // ClosePosition
 
 	int Session::GetOpenPositions(const fx::Offer& offer,
-								  misc::vector<fx::Position>& result)
+								  stl::vector<fx::Position>& result)
 	{
 		if (m_sessionListener->IsDisconnected())
 		{
-			misc::cout << __FUNCTION__
+			stl::cout << __FUNCTION__
 				<< ": Session disconnected" << std::endl;
 			return ErrorCodes::ERR_DISCONNECTED;
 		}
@@ -954,7 +954,7 @@ namespace fxcm
 		O2G2Ptr<IO2GAccountRow> account = GetAccount();
 		if (!account)
 		{
-			misc::cout << __FUNCTION__
+			stl::cout << __FUNCTION__
 				<< ": Error invalid account" << std::endl;
 			return ErrorCodes::ERR_NO_ACCOUNT;
 		}
@@ -962,7 +962,7 @@ namespace fxcm
 		// must be 'netting account' -> maintenance type != 0
 		if (strcmp(account->getMaintenanceType(), "0") == 0)
 		{
-			misc::cout << __FUNCTION__
+			stl::cout << __FUNCTION__
 				<< ": Error invalid account" << std::endl;
 			return ErrorCodes::ERR_NO_ACCOUNT;
 		}
@@ -970,7 +970,7 @@ namespace fxcm
 		O2G2Ptr<IO2GLoginRules> loginRules = m_session->getLoginRules();
 		if (!loginRules)
 		{
-			misc::cout << __FUNCTION__
+			stl::cout << __FUNCTION__
 				<< ": Cannot get login rules" << std::endl;
 			return ErrorCodes::ERR_NO_LOGIN_RULES;
 		}
@@ -982,7 +982,7 @@ namespace fxcm
 		O2G2Ptr<IO2GRequestFactory> requestFactory = m_session->getRequestFactory();
 		if (!requestFactory)
 		{
-			misc::cout << __FUNCTION__
+			stl::cout << __FUNCTION__
 				<< ": Cannot create request factory" << std::endl;
 			return ErrorCodes::ERR_NO_REQUEST_FACTORY;
 		}
@@ -991,7 +991,7 @@ namespace fxcm
 			requestFactory->createRefreshTableRequestByAccount(Trades, account->getAccountID());
 		if (!request)
 		{
-			misc::cout << __FUNCTION__
+			stl::cout << __FUNCTION__
 				<< ": createRefreshTableRequestByAccount failed with error: "
 				<< requestFactory->getLastError() << std::endl;
 			return ErrorCodes::ERR_NO_TRADES_REQUEST;
@@ -1002,7 +1002,7 @@ namespace fxcm
 		// asynchronous request sent to server, waiting
 		if (!m_responseListener4MarketOrders->WaitEvents())
 		{
-			misc::cout << __FUNCTION__
+			stl::cout << __FUNCTION__
 				<< ": Response waiting timeout expired" << std::endl;
 			return ErrorCodes::ERR_TIMEOUT;
 		}
@@ -1011,7 +1011,7 @@ namespace fxcm
 			m_responseListener4MarketOrders->GetResponse();
 		if (!response)
 		{
-			misc::cout << __FUNCTION__
+			stl::cout << __FUNCTION__
 				<< ": Failed to get the response" << std::endl;
 			return ErrorCodes::ERR_NO_TRADES_RESPONSE;
 		}
@@ -1019,7 +1019,7 @@ namespace fxcm
 			m_session->getResponseReaderFactory();
 		if (!readerFactory)
 		{
-			misc::cout << __FUNCTION__
+			stl::cout << __FUNCTION__
 				<< ": Cannot create response reader factory" << std::endl;
 			return ErrorCodes::ERR_NO_RESPONSE_READER_FACTORY;
 		}
@@ -1027,7 +1027,7 @@ namespace fxcm
 			readerFactory->createTradesTableReader(response);
 		if (!tradesResponseReader)
 		{
-			misc::cout << __FUNCTION__
+			stl::cout << __FUNCTION__
 				<< ": Cannot create trades table reader" << std::endl;
 			return ErrorCodes::ERR_NO_RESPONSE_READER;
 		}
@@ -1042,9 +1042,9 @@ namespace fxcm
 
 			if (offer.GetOfferID() == trade->getOfferID())
 			{
-				misc::string openOrderID = trade->getOpenOrderID();
-				misc::string tradeID = trade->getTradeID();
-				misc::string symbol = offer.GetInstrument();
+				stl::string openOrderID = trade->getOpenOrderID();
+				stl::string tradeID = trade->getTradeID();
+				stl::string symbol = offer.GetInstrument();
 				bool isBuy = strcmp(trade->getBuySell(), O2G2::Buy) == 0;
 				double openRate = trade->getOpenRate();
 				double buyRate = (isBuy == true ? openRate : FLT_MAX); // @ask

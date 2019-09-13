@@ -42,7 +42,7 @@ namespace fx
 		Init();
 	}
 
-	HABAR::HABAR(const misc::string& instrument, int period, Timeframe sec)
+	HABAR::HABAR(const stl::string& instrument, int period, Timeframe sec)
 	{
 		Init();
 
@@ -72,7 +72,7 @@ namespace fx
 		return *this;
 	}
 
-	const misc::string& HABAR::GetInstrument() const
+	const stl::string& HABAR::GetInstrument() const
 	{
 		return m_bar.GetInstrument();
 	}
@@ -95,7 +95,7 @@ namespace fx
 	void HABAR::Update(const fx::Offer& offer)
 	{
 		if (m_bar.GetInstrument() != offer.GetInstrument())
-			throw misc::exception("HABAR offer is invalid");
+			throw stl::exception("HABAR offer is invalid");
 
 
         if (m_bar.GetOHLC().GetBidOpen() == 0)  // uninitialized
@@ -135,21 +135,21 @@ namespace fx
 
 				// HA-High
 				m_lastHA.SetAskHigh(
-					misc::max(ohlc.GetAskHigh(),
+					stl::max(ohlc.GetAskHigh(),
 					m_lastHA.GetAskOpen(),
 					m_lastHA.GetAskClose()));
 				m_lastHA.SetBidHigh(
-					misc::max(ohlc.GetBidHigh(),
+					stl::max(ohlc.GetBidHigh(),
 					m_lastHA.GetBidOpen(),
 					m_lastHA.GetBidClose()));
 
 				// HA-Low
 				m_lastHA.SetAskLow(
-					misc::min(ohlc.GetAskLow(),
+					stl::min(ohlc.GetAskLow(),
 					m_lastHA.GetAskOpen(),
 					m_lastHA.GetAskClose()));
 				m_lastHA.SetBidLow(
-					misc::min(ohlc.GetBidLow(),
+					stl::min(ohlc.GetBidLow(),
 					m_lastHA.GetBidOpen(),
 					m_lastHA.GetBidClose()));
 			}
@@ -182,27 +182,27 @@ namespace fx
 
 			// HA-High
 			m_lastHA.SetAskHigh(
-				misc::max(ohlc.GetAskHigh(),
+				stl::max(ohlc.GetAskHigh(),
 				m_lastHA.GetAskOpen(),
 				m_lastHA.GetAskClose()));
 			m_lastHA.SetBidHigh(
-				misc::max(ohlc.GetBidHigh(),
+				stl::max(ohlc.GetBidHigh(),
 				m_lastHA.GetBidOpen(),
 				m_lastHA.GetBidClose()));
 
 			// HA-Low
 			m_lastHA.SetAskLow(
-				misc::min(ohlc.GetAskLow(),
+				stl::min(ohlc.GetAskLow(),
 				m_lastHA.GetAskOpen(),
 				m_lastHA.GetAskClose()));
 			m_lastHA.SetBidLow(
-				misc::min(ohlc.GetBidLow(),
+				stl::min(ohlc.GetBidLow(),
 				m_lastHA.GetBidOpen(),
 				m_lastHA.GetBidClose()));
 		}
 	}
 
-	const misc::time& HABAR::GetRefTime() const
+	const sys::time& HABAR::GetRefTime() const
 	{
 		return m_bar.GetRefTime();
 	}
@@ -225,7 +225,7 @@ namespace fx
 	void HABAR::Init()
 	{
 		// m_bar - default;
-		m_lastHA = fx::OHLCPrice("", "", misc::time(),
+		m_lastHA = fx::OHLCPrice("", "", sys::time(),
 								0, 0, 0, 0,
 								0, 0, 0, 0,
 								0);

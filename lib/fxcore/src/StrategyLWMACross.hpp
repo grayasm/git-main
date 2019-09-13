@@ -32,11 +32,11 @@ namespace fx
     class StrategyLWMACross
     {
     public:
-        typedef misc::autoptr<StrategyLWMACross> Ptr;
+        typedef stl::autoptr<StrategyLWMACross> Ptr;
 
         StrategyLWMACross(
             fx::MarketPlugin* plugin,
-            const misc::string& instrument);
+            const stl::string& instrument);
         
         ~StrategyLWMACross();
         StrategyLWMACross(const StrategyLWMACross&) = delete;
@@ -55,7 +55,7 @@ namespace fx
 
     private:
         fx::MarketPlugin*       m_plugin;
-        misc::string            m_instrument;
+        stl::string            m_instrument;
         // -----------------------------
         fx::HABAR               m_habar;
         fx::LWMA                m_lwma1;

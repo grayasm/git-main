@@ -4,6 +4,8 @@ set (PROJECT sample_tools)
   
 project (${PROJECT})
 
+SET (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+
 if(DEFINED Mac32)
   set(ARCHFLAGS "-arch i386 -DMac32")
 elseif(${CMAKE_SYSTEM} MATCHES "Linux")

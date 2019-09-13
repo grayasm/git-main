@@ -40,10 +40,10 @@ namespace fx
 	{			    
 	public:
 		//  types
-		typedef misc::vector<Position>		Positions;
+		typedef stl::vector<Position>		Positions;
 		typedef Positions::iterator         PosIt;
 		typedef Positions::const_iterator   PosCIt;
-		typedef misc::vector<misc::string>	Symbols;
+		typedef stl::vector<stl::string>	Symbols;
 		typedef Symbols::iterator			SyIt;
 		typedef Symbols::const_iterator		SyCIt;
 
@@ -82,24 +82,24 @@ namespace fx
 
 		//! Returns the total margin allocated by all opened positions of symbol.
 		//! Closed positions will not be considered.
-		double GetMMR(const misc::string& symbol) const;
+		double GetMMR(const stl::string& symbol) const;
 
 		//! Close all opened positions of symbol at give quote.
-		void Close(const misc::string& symbol, const Price& rate, time_t tclose);
+		void Close(const stl::string& symbol, const Price& rate, time_t tclose);
 
 		//! Return the total profit for all positions of symbol at the give quote.
 		//! Closed positions of symbol will be calculated at their closing price.
 		//! Commission and interest for each order is included.
-		double GetGPL(const misc::string& symbol, const Price& rate) const;
+		double GetGPL(const stl::string& symbol, const Price& rate) const;
 
 		//! Return the total pips of all positions of symbol at the give quote.
 		//! Closed positions of symbol will be calculated at their closing price.
 		//! The pips are not for 1 unit, but for total amount of each position.
-		double GetPL(const misc::string& symbol, const Price& rate) const;
+		double GetPL(const stl::string& symbol, const Price& rate) const;
 	    
 		//! Calculate the price where all positions of symbol will score the
 		//! given number of pips.
-		Price EstimateRate(const misc::string& symbol, double pips) const;
+		Price EstimateRate(const stl::string& symbol, double pips) const;
 	};
 
 }  // namespace fx

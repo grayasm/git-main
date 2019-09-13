@@ -52,33 +52,33 @@ void test_event::tearDown()
 //##########################BEGIN TEST SUITE######################################
 void test_event::ctor()
 {
-	misc::cout << "\n\n\t*******************************************************";
-    misc::cout <<   "\n\t* TESTING HEADER: event.hpp                           *";
-    misc::cout <<   "\n\t*******************************************************";
+	stl::cout << "\n\n\t*******************************************************";
+    stl::cout <<   "\n\t* TESTING HEADER: event.hpp                           *";
+    stl::cout <<   "\n\t*******************************************************";
 
-	misc::cout << "\n\n\tctor---------------------------------------------------";
+	stl::cout << "\n\n\tctor---------------------------------------------------";
 	// simple test for calling class constructor
 	{
-		misc::event ev;
+		sys::event ev;
 		CPPUNIT_ASSERT( true );
 	}
 	{
-		misc::event* ev = new misc::event();
+		sys::event* ev = new sys::event();
 		delete ev;
 		CPPUNIT_ASSERT( true );
 	}
 	{
 		const int EVNO=10;
-		misc::event ev[EVNO];
+		sys::event ev[EVNO];
 		for(int i=0; i < EVNO; ++i)
 			(ev[i]);
 		CPPUNIT_ASSERT( true );
 	}
 	{
 		const int EVNO=10;
-		misc::event* ev[EVNO];
+		sys::event* ev[EVNO];
 		for(int i=0; i < EVNO; ++i)
-			ev[i] = new misc::event();
+			ev[i] = new sys::event();
 		for(int i=0; i < EVNO; ++i)
 			delete ev[i];
 	}
@@ -86,39 +86,39 @@ void test_event::ctor()
 
 void test_event::dtor()
 {
-	misc::cout << "\n\n\tdtor---------------------------------------------------";
+	stl::cout << "\n\n\tdtor---------------------------------------------------";
 	// copy of ::ctor() test function
 	{
-		misc::event ev;
+		sys::event ev;
 		CPPUNIT_ASSERT( true );
 	}
 	{
-		misc::event* ev = new misc::event();
+		sys::event* ev = new sys::event();
 		delete ev;
 		CPPUNIT_ASSERT( true );
 	}
 	{
 		const int EVNO=10;
-		misc::event ev[EVNO];
+		sys::event ev[EVNO];
 		for(int i=0; i < EVNO; ++i)
 			(ev[i]);
 		CPPUNIT_ASSERT( true );
 	}
 	{
 		const int EVNO=10;
-		misc::event* ev[EVNO];
+		sys::event* ev[EVNO];
 		for(int i=0; i < EVNO; ++i)
-			ev[i] = new misc::event();
+			ev[i] = new sys::event();
 		for(int i=0; i < EVNO; ++i)
 			delete ev[i];
 	}
 }
 
 //! Class: A thread waiting for the event to be signaled
-class EWaitForEventThread : public misc::thread
+class EWaitForEventThread : public sys::thread
 {
 public:
-	EWaitForEventThread(misc::event* ev, int sec)
+	EWaitForEventThread(sys::event* ev, int sec)
 	: m_ev(ev), m_sec(sec){}
 	~EWaitForEventThread() {}
 	unsigned long run()
@@ -130,15 +130,15 @@ public:
 		return m_sec;
 	}
 private:
-	misc::event*	m_ev;
+	sys::event*	m_ev;
 	int				m_sec;
 };
 
 //! Class: A thread signaling an event.
-class ESignalEventThread : public misc::thread
+class ESignalEventThread : public sys::thread
 {
 public:
-	ESignalEventThread(misc::event* ev, int sec)
+	ESignalEventThread(sys::event* ev, int sec)
 	: m_ev(ev), m_sec(sec){}
 	~ESignalEventThread(){}
 	unsigned long run()
@@ -150,16 +150,16 @@ public:
 		return m_sec;		
 	}
 private:
-	misc::event*	m_ev;
+	sys::event*	m_ev;
 	int				m_sec;
 };
 void test_event::lock()
 {
-	misc::cout << "\n\n\tlock---------------------------------------------------";
-	misc::cout << "\n\n";
+	stl::cout << "\n\n\tlock---------------------------------------------------";
+	stl::cout << "\n\n";
 	{
 		// 1 thread wait for signal
-		misc::event ev;
+		sys::event ev;
 		EWaitForEventThread t(&ev, 1);
 		CPPUNIT_ASSERT( t.resume() == 0 );
 		printf("\n\tmain: wait for thread to resume");
@@ -169,12 +169,12 @@ void test_event::lock()
 		CPPUNIT_ASSERT( t.join() == 0 );
 		printf("\n\tmain: joined thread");
 	}
-	misc::cout << "\n\n";
+	stl::cout << "\n\n";
 	{
 		// more threads waiting for signal
-		misc::event ev;
+		sys::event ev;
 		const int THNO = 400;				// ulimits enforced proc limit
-		misc::vector<EWaitForEventThread*> t;
+		stl::vector<EWaitForEventThread*> t;
 		for(size_t i=0; i < THNO; ++i)
 			t.push_back(new EWaitForEventThread(&ev, i%6));
 		
@@ -196,9 +196,9 @@ void test_event::lock()
 		for(size_t i=0; i < THNO; ++i)
 			delete t[i];
 	}
-	misc::cout << "\n\n";
+	stl::cout << "\n\n";
 	{
-		misc::event ev;
+		sys::event ev;
 		ESignalEventThread t(&ev, 5);
 		printf("\n\tmain: wait for signal");
 		CPPUNIT_ASSERT( t.resume() == 0 );
@@ -207,9 +207,9 @@ void test_event::lock()
 		CPPUNIT_ASSERT( t.join() == 0 );
 		printf("\n\tmain: joined thread");
 	}
-	misc::cout << "\n\n";
+	stl::cout << "\n\n";
 	{
-		misc::event ev;
+		sys::event ev;
 		const int THNO=6;
 		ESignalEventThread* t[THNO];
 		for(int i=0; i < THNO; ++i)
@@ -234,10 +234,10 @@ void test_event::lock()
 }
 
 //! Class: A thread waiting with timeout for an event;
-class ETimedWaitForEventThread : public misc::thread
+class ETimedWaitForEventThread : public sys::thread
 {
 public:
-	ETimedWaitForEventThread(misc::event* ev, int sec)
+	ETimedWaitForEventThread(sys::event* ev, int sec)
 	: m_ev(ev), m_sec(sec), m_signaled(false) {}
 	~ETimedWaitForEventThread() {}
 	unsigned long run()
@@ -256,28 +256,28 @@ public:
 	}
 	bool get_signaled() const { return m_signaled; }	
 private:
-	misc::event*	m_ev;
+	sys::event*	m_ev;
 	int				m_sec;
 	bool			m_signaled;
 };
 
 void test_event::trylock()
 {
-	misc::cout << "\n\n\ttrylock------------------------------------------------";	
-	misc::cout << "\n\n";
+	stl::cout << "\n\n\ttrylock------------------------------------------------";	
+	stl::cout << "\n\n";
 	{
 		/*	Thread will wait for an event that is not signaled from main thread
 			ever. */
-		misc::event ev;
+		sys::event ev;
 		ETimedWaitForEventThread t(&ev, 0);
 		CPPUNIT_ASSERT( t.resume() == 0 );
 		CPPUNIT_ASSERT( t.join() == 0 );
 		CPPUNIT_ASSERT( t.get_signaled() == false );
 	}
-	misc::cout << "\n\n";
+	stl::cout << "\n\n";
 	{
 		/*	Thread will wait for an event that is signaled from main thread. */
-		misc::event ev;
+		sys::event ev;
 		ETimedWaitForEventThread t(&ev, 10);
 		CPPUNIT_ASSERT( t.resume() == 0 );
 		sleep(2);
@@ -287,10 +287,10 @@ void test_event::trylock()
 		CPPUNIT_ASSERT( t.get_signaled() == true );
 		printf("\n\tmain: joined thread");
 	}
-	misc::cout << "\n\n";
+	stl::cout << "\n\n";
 	{
 		/* Few threads will wait for an event that will not get signaled. */
-		misc::event ev;
+		sys::event ev;
 		const int THNO=400;				// ulimits enforced proc limit
 		ETimedWaitForEventThread* t[THNO];
 		for(int i=0; i < THNO; ++i)
@@ -307,10 +307,10 @@ void test_event::trylock()
 		for(int i=0; i < THNO; ++i)
 			delete t[i];
 	}
-	misc::cout << "\n\n";
+	stl::cout << "\n\n";
 	{
 		/* Few threads will wait for an event that will get signaled from main. */
-		misc::event ev;
+		sys::event ev;
 		const int THNO=400;						// ulimits enforced proc limit
 		ETimedWaitForEventThread* t[THNO];
 		for(int i=0; i < THNO; ++i)
@@ -330,9 +330,9 @@ void test_event::trylock()
 		for(int i=0; i < THNO; ++i)
 			delete t[i];
 	}
-	misc::cout << "\n\n";
+	stl::cout << "\n\n";
 	{
-		misc::event ev;
+		sys::event ev;
 		ESignalEventThread t(&ev, 2);
 		printf("\n\tmain: wait for event");
 		CPPUNIT_ASSERT( t.resume() == 0 );
@@ -341,10 +341,10 @@ void test_event::trylock()
 		CPPUNIT_ASSERT( t.join() == 0 );
 		printf("\n\tmain: joined thread");
 	}
-	misc::cout << "\n\n";
+	stl::cout << "\n\n";
 	{
 		/*	Starting THNO threads and will get in main a signal from each of them. */
-		misc::event ev;
+		sys::event ev;
 		const int THNO=6;
 		ESignalEventThread* t[THNO];
 		for(int i=0; i < THNO; ++i)
@@ -368,13 +368,13 @@ void test_event::trylock()
 	}
 }
 
-class EWaitForEventThread2 : public misc::thread
+class EWaitForEventThread2 : public sys::thread
 {
 public:
-	EWaitForEventThread2(misc::event* ev, int sec)
+	EWaitForEventThread2(sys::event* ev, int sec)
 	: m_ev(ev), m_sec(sec) {}
 	~EWaitForEventThread2() {}
-	misc::event* get_event() const { return m_ev; }
+	sys::event* get_event() const { return m_ev; }
 	unsigned long run()
 	{
 		printf("\n\t\tthread %d: waiting", m_sec);
@@ -384,17 +384,17 @@ public:
 		return m_sec;
 	}
 private:
-	misc::event*	m_ev;
+	sys::event*	m_ev;
 	int				m_sec;
 };
 
 void test_event::unlock()
 {
-	misc::cout << "\n\n\tunlock-------------------------------------------------";
-	misc::cout << "\n\n";
+	stl::cout << "\n\n\tunlock-------------------------------------------------";
+	stl::cout << "\n\n";
 	{
 		/* No thread locked on the event. */
-		misc::event ev;
+		sys::event ev;
 		ETimedWaitForEventThread t(&ev, 0);
 		printf("\n\tmain: thread resume");
 		CPPUNIT_ASSERT( t.resume() == 0 );
@@ -404,10 +404,10 @@ void test_event::unlock()
 		printf("\n\tmain: joined thread");
 		CPPUNIT_ASSERT( t.get_signaled() == false );		
 	}
-	misc::cout << "\n\n";
+	stl::cout << "\n\n";
 	{
 		/* 1 thread locked on the event. */
-		misc::event ev;
+		sys::event ev;
 		ETimedWaitForEventThread t(&ev, 10);
 		printf("\n\tmain: thread resume");
 		CPPUNIT_ASSERT( t.resume() == 0 );
@@ -417,12 +417,12 @@ void test_event::unlock()
 		printf("\n\tmain: joined thread");
 		CPPUNIT_ASSERT( t.get_signaled() == true );	
 	}
-	misc::cout << "\n\n";
+	stl::cout << "\n\n";
 	{
 		const int THNO=400;						// ulimits enforced proc limit
 		EWaitForEventThread2* t[THNO];
 		for(int i=0; i < THNO; ++i)
-			t[i] = new EWaitForEventThread2(new misc::event(), 2);
+			t[i] = new EWaitForEventThread2(new sys::event(), 2);
 		printf("\n\tmain: starting %d threads", THNO);
 		for(int i=0; i < THNO; ++i)
 			CPPUNIT_ASSERT( t[i]->resume() == 0 );
@@ -430,7 +430,7 @@ void test_event::unlock()
 		printf("\n\tmain: signaling");
 		for(int i=0; i < THNO; ++i)
 		{
-			misc::event* ev = t[i]->get_event();
+			sys::event* ev = t[i]->get_event();
 			CPPUNIT_ASSERT( ev->unlock() == 0 ); // is the thread listening ? if not, bad luck.
 		}
 		for(int i=0; i < THNO; ++i)
@@ -440,7 +440,7 @@ void test_event::unlock()
 		}
 		for(int i=0; i < THNO; ++i)
 		{
-			misc::event* ev = t[i]->get_event();
+			sys::event* ev = t[i]->get_event();
 			delete ev;
 			delete t[i];
 		}
@@ -449,7 +449,7 @@ void test_event::unlock()
 // maybe one of the 2 needed only
 void test_event::setevent()
 {
-	misc::cout << "\n\n\tsetevent-----------------------------------------------";
+	stl::cout << "\n\n\tsetevent-----------------------------------------------";
 	CPPUNIT_ASSERT( true ); // all similar with unlock
 }
 

@@ -59,804 +59,804 @@ void test_algorithm::tearDown()
 //Non-modifying sequence operations:
 void test_algorithm::for_each()
 {	
-    misc::cout << "\n\n\t*******************************************************";
-    misc::cout <<   "\n\t* TESTING HEADER: algorithm.hpp                       *";
-    misc::cout <<   "\n\t*******************************************************";
+    stl::cout << "\n\n\t*******************************************************";
+    stl::cout <<   "\n\t* TESTING HEADER: algorithm.hpp                       *";
+    stl::cout <<   "\n\t*******************************************************";
 
 	
-	misc::cout << "\n\n\tfor_each-----------------------------------------------";
+	stl::cout << "\n\n\tfor_each-----------------------------------------------";
 	for_each<std::vector<int> >																		("\n\tstd::vector       ");
 	for_each<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	for_each<misc::vector<int> >																	("\n\tmisc::vector      ");
-	for_each<misc::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	for_each<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
-	for_each<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	for_each<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	for_each<stl::vector<int> >																	("\n\tmisc::vector      ");
+	for_each<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
+	for_each<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
+	for_each<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
+	for_each<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
 }
 
 void test_algorithm::find()
 {
-	misc::cout << "\n\n\tfind---------------------------------------------------";
+	stl::cout << "\n\n\tfind---------------------------------------------------";
 	find2<std::vector<int> >																	("\n\tstd::vector       ");
 	find2<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	find<misc::vector<int> >																	("\n\tmisc::vector      ");
-	find<misc::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	find<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
-	find<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	find<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	find<stl::vector<int> >																	("\n\tmisc::vector      ");
+	find<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
+	find<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
+	find<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
+	find<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
 }
 
 void test_algorithm::find_if()
 {
-	misc::cout << "\n\n\tfind_if------------------------------------------------";
+	stl::cout << "\n\n\tfind_if------------------------------------------------";
 	find_if2<std::vector<int> >																		("\n\tstd::vector       ");
 	find_if2<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	find_if<misc::vector<int> >																		("\n\tmisc::vector      ");
-	find_if<misc::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	find_if<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >				("\n\tmisc::vector<POD> ");
-	find_if<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	find_if<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	find_if<stl::vector<int> >																		("\n\tmisc::vector      ");
+	find_if<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
+	find_if<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >				("\n\tmisc::vector<POD> ");
+	find_if<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
+	find_if<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
 }
 
 void test_algorithm::find_end()
 {
-	misc::cout << "\n\n\tfind_end-----------------------------------------------";
+	stl::cout << "\n\n\tfind_end-----------------------------------------------";
 	find_end2<std::vector<int> >																	("\n\tstd::vector      ");
 	find_end2<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>   ");
-	find_end<misc::vector<int> >																	("\n\tmisc::vector      ");
-	find_end<misc::vector<int, std::allocator<int> > >												("\n\tmisc::vector<A>   ");
-	find_end<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
-	find_end<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	find_end<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");		
+	find_end<stl::vector<int> >																	("\n\tmisc::vector      ");
+	find_end<stl::vector<int, std::allocator<int> > >												("\n\tmisc::vector<A>   ");
+	find_end<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
+	find_end<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
+	find_end<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");		
 }
 
 void test_algorithm::find_first_of()
 {
-	misc::cout << "\n\n\tfind_first_of------------------------------------------";
+	stl::cout << "\n\n\tfind_first_of------------------------------------------";
 	find_first_of<std::vector<char> >																		("\n\tstd::vector       ");
 	find_first_of<std::vector<char, misc::allocator<char> > >												("\n\tstd::vector<A>    ");
-	find_first_of<misc::vector<char> >																		("\n\tmisc::vector      ");
-	find_first_of<misc::vector<char, std::allocator<char> > >												("\n\tstd::vector       ");
-	find_first_of<misc::vector<char, misc::allocator<char>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >				("\n\tmisc::vector<POD> ");
-	find_first_of<misc::vector<char, misc::allocator<char>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	find_first_of<misc::vector<char, misc::allocator<char>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");	
+	find_first_of<stl::vector<char> >																		("\n\tmisc::vector      ");
+	find_first_of<stl::vector<char, std::allocator<char> > >												("\n\tstd::vector       ");
+	find_first_of<stl::vector<char, misc::allocator<char>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >				("\n\tmisc::vector<POD> ");
+	find_first_of<stl::vector<char, misc::allocator<char>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
+	find_first_of<stl::vector<char, misc::allocator<char>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");	
 }
 
 void test_algorithm::adjacent_find()
 {
-	misc::cout << "\n\n\tadjacent_find------------------------------------------";
+	stl::cout << "\n\n\tadjacent_find------------------------------------------";
 	adjacent_find<std::vector<int> >																	("\n\tstd::vector       ");
 	adjacent_find<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	adjacent_find<misc::vector<int> >																	("\n\tmisc::vector      ");
-	adjacent_find<misc::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	adjacent_find<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
-	adjacent_find<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	adjacent_find<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");	
+	adjacent_find<stl::vector<int> >																	("\n\tmisc::vector      ");
+	adjacent_find<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
+	adjacent_find<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
+	adjacent_find<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
+	adjacent_find<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");	
 
 }
 
 void test_algorithm::count()
 {
-	misc::cout << "\n\n\tcount--------------------------------------------------";
+	stl::cout << "\n\n\tcount--------------------------------------------------";
 	count<std::vector<int> >																	("\n\tstd::vector       ");
 	count<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	count<misc::vector<int> >																	("\n\tmisc::vector      ");
-	count<misc::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	count<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
-	count<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	count<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	count<stl::vector<int> >																	("\n\tmisc::vector      ");
+	count<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
+	count<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
+	count<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
+	count<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
 }
 
 void test_algorithm::count_if()
 {
-	misc::cout << "\n\n\tcount_if-----------------------------------------------";
+	stl::cout << "\n\n\tcount_if-----------------------------------------------";
 	count_if<std::vector<int> >																		("\n\tstd::vector       ");
 	count_if<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	count_if<misc::vector<int> >																	("\n\tmisc::vector      ");
-	count_if<misc::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	count_if<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
-	count_if<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	count_if<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	count_if<stl::vector<int> >																	("\n\tmisc::vector      ");
+	count_if<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
+	count_if<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
+	count_if<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
+	count_if<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
 }
 
 void test_algorithm::mismatch()
 {
-	misc::cout << "\n\n\tmismatch-----------------------------------------------";
+	stl::cout << "\n\n\tmismatch-----------------------------------------------";
 	mismatch<std::vector<int> >																		("\n\tstd::vector       ");
 	mismatch<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	mismatch<misc::vector<int> >																	("\n\tmisc::vector      ");
-	mismatch<misc::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	mismatch<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
-	mismatch<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	mismatch<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	mismatch<stl::vector<int> >																	("\n\tmisc::vector      ");
+	mismatch<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
+	mismatch<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
+	mismatch<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
+	mismatch<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
 }
 
 void test_algorithm::equal()
 {
-	misc::cout << "\n\n\tequal--------------------------------------------------";
+	stl::cout << "\n\n\tequal--------------------------------------------------";
 	equal<std::vector<int> >																	("\n\tstd::vector       ");
 	equal<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	equal<misc::vector<int> >																	("\n\tmisc::vector      ");
-	equal<misc::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	equal<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
-	equal<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	equal<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	equal<stl::vector<int> >																	("\n\tmisc::vector      ");
+	equal<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
+	equal<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
+	equal<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
+	equal<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
 }
 
 void test_algorithm::search()
 {
-	misc::cout << "\n\n\tsearch-------------------------------------------------";
+	stl::cout << "\n\n\tsearch-------------------------------------------------";
 	search<std::vector<int> >																		("\n\tstd::vector       ");
 	search<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	search2<misc::vector<int> >																		("\n\tmisc::vector      ");
-	search2<misc::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	search2<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >				("\n\tmisc::vector<POD> ");
-	search2<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	search2<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	search2<stl::vector<int> >																		("\n\tmisc::vector      ");
+	search2<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
+	search2<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >				("\n\tmisc::vector<POD> ");
+	search2<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
+	search2<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
 }
 
 void test_algorithm::search_n()
 {
-	misc::cout << "\n\n\tsearch_n-----------------------------------------------";
+	stl::cout << "\n\n\tsearch_n-----------------------------------------------";
 	search_n<std::vector<int> >																	    ("\n\tstd::vector       ");
 	search_n<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	search_n2<misc::vector<int> >																	("\n\tmisc::vector      ");
-	search_n2<misc::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	search_n2<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
-	search_n2<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	search_n2<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	search_n2<stl::vector<int> >																	("\n\tmisc::vector      ");
+	search_n2<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
+	search_n2<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
+	search_n2<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
+	search_n2<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
 }
 
 //Modifying sequence operations:
 void test_algorithm::copy()
 {
-	misc::cout << "\n\n\tcopy---------------------------------------------------";
+	stl::cout << "\n\n\tcopy---------------------------------------------------";
 	copy<std::vector<int> >																		("\n\tstd::vector       ");
 	copy<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	copy<misc::vector<int> >																	("\n\tmisc::vector      ");
-	copy<misc::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	copy<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
-	copy<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	copy<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	copy<stl::vector<int> >																	("\n\tmisc::vector      ");
+	copy<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
+	copy<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
+	copy<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
+	copy<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
 }
 
 void test_algorithm::copy_backward()
 {
-	misc::cout << "\n\n\tcopy_backward------------------------------------------";
+	stl::cout << "\n\n\tcopy_backward------------------------------------------";
 	copy_backward<std::vector<int> >																	("\n\tstd::vector       ");
 	copy_backward<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	copy_backward<misc::vector<int> >																	("\n\tmisc::vector      ");
-	copy_backward<misc::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	copy_backward<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
-	copy_backward<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	copy_backward<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	copy_backward<stl::vector<int> >																	("\n\tmisc::vector      ");
+	copy_backward<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
+	copy_backward<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
+	copy_backward<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
+	copy_backward<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
 }
 
 void test_algorithm::swap()
 {
-	misc::cout << "\n\n\tswap---------------------------------------------------";
+	stl::cout << "\n\n\tswap---------------------------------------------------";
 	swap<std::vector<int> >																		("\n\tstd::vector       ");
 	swap<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	swap<misc::vector<int> >																	("\n\tmisc::vector      ");
-	swap<misc::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	swap<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
-	swap<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	swap<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	swap<stl::vector<int> >																	("\n\tmisc::vector      ");
+	swap<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
+	swap<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
+	swap<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
+	swap<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
 }
 
 void test_algorithm::swap_ranges()
 {
-	misc::cout << "\n\n\tswap_ranges--------------------------------------------";
+	stl::cout << "\n\n\tswap_ranges--------------------------------------------";
 	swap_ranges<std::vector<int> >																		("\n\tstd::vector       ");
 	swap_ranges<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	swap_ranges<misc::vector<int> >																		("\n\tmisc::vector      ");
-	swap_ranges<misc::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	swap_ranges<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >				("\n\tmisc::vector<POD> ");
-	swap_ranges<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	swap_ranges<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	swap_ranges<stl::vector<int> >																		("\n\tmisc::vector      ");
+	swap_ranges<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
+	swap_ranges<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >				("\n\tmisc::vector<POD> ");
+	swap_ranges<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
+	swap_ranges<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
 }
 
 void test_algorithm::iter_swap()
 {
-	misc::cout << "\n\n\titer_swap----------------------------------------------";
+	stl::cout << "\n\n\titer_swap----------------------------------------------";
 	iter_swap<std::vector<int> >																	("\n\tstd::vector       ");
 	iter_swap<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	iter_swap<misc::vector<int> >																	("\n\tmisc::vector      ");
-	iter_swap<misc::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	iter_swap<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
-	iter_swap<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	iter_swap<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	iter_swap<stl::vector<int> >																	("\n\tmisc::vector      ");
+	iter_swap<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
+	iter_swap<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
+	iter_swap<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
+	iter_swap<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
 }
 
 void test_algorithm::transform()
 {
-	misc::cout << "\n\n\ttransform----------------------------------------------";
+	stl::cout << "\n\n\ttransform----------------------------------------------";
 	transform<std::vector<int> >																	("\n\tstd::vector       ");
 	transform<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	transform<misc::vector<int> >																	("\n\tmisc::vector      ");
-	transform<misc::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	transform<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
-	transform<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	transform<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	transform<stl::vector<int> >																	("\n\tmisc::vector      ");
+	transform<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
+	transform<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
+	transform<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
+	transform<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
 }
 
 void test_algorithm::replace()
 {
-	misc::cout << "\n\n\treplace------------------------------------------------";
+	stl::cout << "\n\n\treplace------------------------------------------------";
 	replace<std::vector<int> >																		("\n\tstd::vector       ");
 	replace<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	replace<misc::vector<int> >																		("\n\tmisc::vector      ");
-	replace<misc::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	replace<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >				("\n\tmisc::vector<POD> ");
-	replace<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	replace<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	replace<stl::vector<int> >																		("\n\tmisc::vector      ");
+	replace<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
+	replace<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >				("\n\tmisc::vector<POD> ");
+	replace<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
+	replace<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
 }
 
 void test_algorithm::replace_if()
 {
-	misc::cout << "\n\n\treplace_if---------------------------------------------";
+	stl::cout << "\n\n\treplace_if---------------------------------------------";
 	replace_if<std::vector<int> >																		("\n\tstd::vector       ");
 	replace_if<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	replace_if<misc::vector<int> >																		("\n\tmisc::vector      ");
-	replace_if<misc::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	replace_if<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >				("\n\tmisc::vector<POD> ");
-	replace_if<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	replace_if<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	replace_if<stl::vector<int> >																		("\n\tmisc::vector      ");
+	replace_if<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
+	replace_if<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >				("\n\tmisc::vector<POD> ");
+	replace_if<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
+	replace_if<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
 }
 
 void test_algorithm::replace_copy()
 {
-	misc::cout << "\n\n\treplace_copy-------------------------------------------";
+	stl::cout << "\n\n\treplace_copy-------------------------------------------";
 	replace_copy<std::vector<int> >																		("\n\tstd::vector       ");
 	replace_copy<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	replace_copy<misc::vector<int> >																	("\n\tmisc::vector      ");
-	replace_copy<misc::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	replace_copy<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
-	replace_copy<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	replace_copy<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	replace_copy<stl::vector<int> >																	("\n\tmisc::vector      ");
+	replace_copy<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
+	replace_copy<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
+	replace_copy<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
+	replace_copy<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
 }
 
 void test_algorithm::replace_copy_if()
 {
-	misc::cout << "\n\n\treplace_copy_if----------------------------------------";
+	stl::cout << "\n\n\treplace_copy_if----------------------------------------";
 	replace_copy_if<std::vector<int> >																		("\n\tstd::vector       ");
 	replace_copy_if<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	replace_copy_if<misc::vector<int> >																		("\n\tmisc::vector      ");
-	replace_copy_if<misc::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	replace_copy_if<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >				("\n\tmisc::vector<POD> ");
-	replace_copy_if<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	replace_copy_if<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	replace_copy_if<stl::vector<int> >																		("\n\tmisc::vector      ");
+	replace_copy_if<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
+	replace_copy_if<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >				("\n\tmisc::vector<POD> ");
+	replace_copy_if<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
+	replace_copy_if<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
 }
 
 void test_algorithm::fill()
 {
-	misc::cout << "\n\n\tfill---------------------------------------------------";
+	stl::cout << "\n\n\tfill---------------------------------------------------";
 	fill<std::vector<int> >																		("\n\tstd::vector       ");
 	fill<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	fill<misc::vector<int> >																	("\n\tmisc::vector      ");
-	fill<misc::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	fill<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
-	fill<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	fill<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	fill<stl::vector<int> >																	("\n\tmisc::vector      ");
+	fill<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
+	fill<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
+	fill<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
+	fill<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
 }
 
 void test_algorithm::fill_n()
 {
-	misc::cout << "\n\n\tfill_n-------------------------------------------------";
+	stl::cout << "\n\n\tfill_n-------------------------------------------------";
 	fill_n<std::vector<int> >																		("\n\tstd::vector       ");
 	fill_n<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	fill_n<misc::vector<int> >																		("\n\tmisc::vector      ");
-	fill_n<misc::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	fill_n<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >				("\n\tmisc::vector<POD> ");
-	fill_n<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	fill_n<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	fill_n<stl::vector<int> >																		("\n\tmisc::vector      ");
+	fill_n<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
+	fill_n<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >				("\n\tmisc::vector<POD> ");
+	fill_n<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
+	fill_n<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
 }
 
 void test_algorithm::generate()
 {
-	misc::cout << "\n\n\tgenerate-----------------------------------------------";
+	stl::cout << "\n\n\tgenerate-----------------------------------------------";
 	generate<std::vector<int> >																		("\n\tstd::vector       ");
 	generate<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	generate<misc::vector<int> >																	("\n\tmisc::vector      ");
-	generate<misc::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	generate<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
-	generate<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	generate<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	generate<stl::vector<int> >																	("\n\tmisc::vector      ");
+	generate<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
+	generate<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
+	generate<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
+	generate<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
 }
 
 void test_algorithm::generate_n()
 {
-	misc::cout << "\n\n\tgenerate_n---------------------------------------------";
+	stl::cout << "\n\n\tgenerate_n---------------------------------------------";
 	generate_n<std::vector<int> >																		("\n\tstd::vector       ");
 	generate_n<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	generate_n<misc::vector<int> >																		("\n\tmisc::vector      ");
-	generate_n<misc::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	generate_n<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >				("\n\tmisc::vector<POD> ");
-	generate_n<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	generate_n<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	generate_n<stl::vector<int> >																		("\n\tmisc::vector      ");
+	generate_n<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
+	generate_n<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >				("\n\tmisc::vector<POD> ");
+	generate_n<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
+	generate_n<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
 }
 
 void test_algorithm::remove()
 {
-	misc::cout << "\n\n\tremove-------------------------------------------------";
+	stl::cout << "\n\n\tremove-------------------------------------------------";
 	remove<std::vector<int> >																		("\n\tstd::vector       ");
 	remove<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	remove<misc::vector<int> >																		("\n\tmisc::vector      ");
-	remove<misc::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	remove<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >				("\n\tmisc::vector<POD> ");
-	remove<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	remove<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	remove<stl::vector<int> >																		("\n\tmisc::vector      ");
+	remove<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
+	remove<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >				("\n\tmisc::vector<POD> ");
+	remove<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
+	remove<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
 }
 
 void test_algorithm::remove_if()
 {
-	misc::cout << "\n\n\tremove_if----------------------------------------------";
+	stl::cout << "\n\n\tremove_if----------------------------------------------";
 	remove_if2<std::vector<int> >																	("\n\tstd::vector       ");
 	remove_if2<std::vector<int, misc::allocator<int> > >											("\n\tstd::vector<A>    ");
-	remove_if<misc::vector<int> >																	("\n\tmisc::vector      ");
-	remove_if<misc::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	remove_if<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
-	remove_if<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	remove_if<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	remove_if<stl::vector<int> >																	("\n\tmisc::vector      ");
+	remove_if<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
+	remove_if<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
+	remove_if<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
+	remove_if<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
 }
 
 void test_algorithm::remove_copy()
 {
-	misc::cout << "\n\n\tremove_copy--------------------------------------------";
+	stl::cout << "\n\n\tremove_copy--------------------------------------------";
 	remove_copy<std::vector<int> >																		("\n\tstd::vector       ");
 	remove_copy<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	remove_copy<misc::vector<int> >																		("\n\tmisc::vector      ");
-	remove_copy<misc::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	remove_copy<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >				("\n\tmisc::vector<POD> ");
-	remove_copy<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	remove_copy<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	remove_copy<stl::vector<int> >																		("\n\tmisc::vector      ");
+	remove_copy<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
+	remove_copy<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >				("\n\tmisc::vector<POD> ");
+	remove_copy<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
+	remove_copy<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
 }
 
 void test_algorithm::remove_copy_if()
 {
-	misc::cout << "\n\n\tremove_copy_if-----------------------------------------";
+	stl::cout << "\n\n\tremove_copy_if-----------------------------------------";
 	remove_copy_if<std::vector<int> >																		("\n\tstd::vector       ");
 	remove_copy_if<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	remove_copy_if<misc::vector<int> >																		("\n\tmisc::vector      ");
-	remove_copy_if<misc::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	remove_copy_if<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >				("\n\tmisc::vector<POD> ");
-	remove_copy_if<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	remove_copy_if<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	remove_copy_if<stl::vector<int> >																		("\n\tmisc::vector      ");
+	remove_copy_if<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
+	remove_copy_if<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >				("\n\tmisc::vector<POD> ");
+	remove_copy_if<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
+	remove_copy_if<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
 }
 
 void test_algorithm::unique()
 {
-	misc::cout << "\n\n\tunique-------------------------------------------------";
+	stl::cout << "\n\n\tunique-------------------------------------------------";
 	unique<std::vector<int> >																		("\n\tstd::vector       ");
 	unique<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	unique<misc::vector<int> >																		("\n\tmisc::vector      ");
-	unique<misc::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	unique<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >				("\n\tmisc::vector<POD> ");
-	unique<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	unique<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	unique<stl::vector<int> >																		("\n\tmisc::vector      ");
+	unique<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
+	unique<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >				("\n\tmisc::vector<POD> ");
+	unique<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
+	unique<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
 }
 
 void test_algorithm::unique_copy()
 {
-	misc::cout << "\n\n\tunique_copy--------------------------------------------";
+	stl::cout << "\n\n\tunique_copy--------------------------------------------";
 	unique_copy<std::vector<int> >																		("\n\tstd::vector       ");
 	unique_copy<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	unique_copy<misc::vector<int> >																		("\n\tmisc::vector      ");
-	unique_copy<misc::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	unique_copy<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >				("\n\tmisc::vector<POD> ");
-	unique_copy<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	unique_copy<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	unique_copy<stl::vector<int> >																		("\n\tmisc::vector      ");
+	unique_copy<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
+	unique_copy<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >				("\n\tmisc::vector<POD> ");
+	unique_copy<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
+	unique_copy<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
 }
 
 void test_algorithm::reverse()
 {
-	misc::cout << "\n\n\treverse------------------------------------------------";
+	stl::cout << "\n\n\treverse------------------------------------------------";
 	reverse<std::vector<int> >																		("\n\tstd::vector       ");
 	reverse<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	reverse<misc::vector<int> >																		("\n\tmisc::vector      ");
-	reverse<misc::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	reverse<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >				("\n\tmisc::vector<POD> ");
-	reverse<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	reverse<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	reverse<stl::vector<int> >																		("\n\tmisc::vector      ");
+	reverse<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
+	reverse<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >				("\n\tmisc::vector<POD> ");
+	reverse<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
+	reverse<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
 }
 
 void test_algorithm::reverse_copy()
 {
-	misc::cout << "\n\n\treverse_copy-------------------------------------------";
+	stl::cout << "\n\n\treverse_copy-------------------------------------------";
 	reverse_copy<std::vector<int> >																		("\n\tstd::vector       ");
 	reverse_copy<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	reverse_copy<misc::vector<int> >																	("\n\tmisc::vector      ");
-	reverse_copy<misc::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	reverse_copy<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
-	reverse_copy<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	reverse_copy<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	reverse_copy<stl::vector<int> >																	("\n\tmisc::vector      ");
+	reverse_copy<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
+	reverse_copy<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
+	reverse_copy<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
+	reverse_copy<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
 }
 
 void test_algorithm::rotate()
 {
-	misc::cout << "\n\n\trotate-------------------------------------------------";
+	stl::cout << "\n\n\trotate-------------------------------------------------";
 	rotate<std::vector<int> >																		("\n\tstd::vector       ");
 	rotate<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	rotate<misc::vector<int> >																		("\n\tmisc::vector      ");
-	rotate<misc::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	rotate<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >				("\n\tmisc::vector<POD> ");
-	rotate<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	rotate<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	rotate<stl::vector<int> >																		("\n\tmisc::vector      ");
+	rotate<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
+	rotate<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >				("\n\tmisc::vector<POD> ");
+	rotate<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
+	rotate<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
 }
 
 void test_algorithm::rotate_copy()
 {
-	misc::cout << "\n\n\trotate_copy--------------------------------------------";
+	stl::cout << "\n\n\trotate_copy--------------------------------------------";
 	rotate_copy<std::vector<int> >																		("\n\tstd::vector       ");
 	rotate_copy<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	rotate_copy<misc::vector<int> >																		("\n\tmisc::vector      ");
-	rotate_copy<misc::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	rotate_copy<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >				("\n\tmisc::vector<POD> ");
-	rotate_copy<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	rotate_copy<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	rotate_copy<stl::vector<int> >																		("\n\tmisc::vector      ");
+	rotate_copy<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
+	rotate_copy<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >				("\n\tmisc::vector<POD> ");
+	rotate_copy<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
+	rotate_copy<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
 }
 
 void test_algorithm::random_shuffle()
 {
-	misc::cout << "\n\n\trandom_shuffle-----------------------------------------";
+	stl::cout << "\n\n\trandom_shuffle-----------------------------------------";
 	random_shuffle<std::vector<int> >																		("\n\tstd::vector       ");
 	random_shuffle<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	random_shuffle<misc::vector<int> >																		("\n\tmisc::vector      ");
-	random_shuffle<misc::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	random_shuffle<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >				("\n\tmisc::vector<POD> ");
-	random_shuffle<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	random_shuffle<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	random_shuffle<stl::vector<int> >																		("\n\tmisc::vector      ");
+	random_shuffle<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
+	random_shuffle<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >				("\n\tmisc::vector<POD> ");
+	random_shuffle<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
+	random_shuffle<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
 }
 
 void test_algorithm::partition()
 {
-	misc::cout << "\n\n\tpartition----------------------------------------------";
+	stl::cout << "\n\n\tpartition----------------------------------------------";
 	partition2<std::vector<int> >																	("\n\tstd::vector       ");
 	partition2<std::vector<int, misc::allocator<int> > >											("\n\tstd::vector<A>    ");
-	partition<misc::vector<int> >																	("\n\tmisc::vector      ");
-	partition<misc::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	partition<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
-	partition<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	partition<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	partition<stl::vector<int> >																	("\n\tmisc::vector      ");
+	partition<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
+	partition<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
+	partition<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
+	partition<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
 }
 
 void test_algorithm::stable_partition()
 {
-	misc::cout << "\n\n\tstable_partition---------------------------------------";	
+	stl::cout << "\n\n\tstable_partition---------------------------------------";	
 	stable_partition<std::vector<int> >																		("\n\tstd::vector       ");
 	stable_partition<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	stable_partition2<misc::vector<int> >																	("\n\tmisc::vector      ");
-	stable_partition2<misc::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	stable_partition2<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
-	stable_partition2<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	stable_partition2<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	stable_partition2<stl::vector<int> >																	("\n\tmisc::vector      ");
+	stable_partition2<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
+	stable_partition2<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
+	stable_partition2<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
+	stable_partition2<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
 }
 
 //Sorting:
 void test_algorithm::sort()
 {
-	misc::cout << "\n\n\tsort---------------------------------------------------";
+	stl::cout << "\n\n\tsort---------------------------------------------------";
 	sort<std::vector<int> >																		("\n\tstd::vector       ");
 	sort<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	sort<misc::vector<int> >																	("\n\tmisc::vector      ");
-	sort<misc::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	sort<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
-	sort<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	sort<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	sort<stl::vector<int> >																	("\n\tmisc::vector      ");
+	sort<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
+	sort<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
+	sort<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
+	sort<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
 }
 
 void test_algorithm::stable_sort()
 {
-	misc::cout << "\n\n\tstable_sort--------------------------------------------";	
+	stl::cout << "\n\n\tstable_sort--------------------------------------------";	
 	stable_sort<std::vector<double> >																		("\n\tstd::vector       ");
-	stable_sort2<misc::vector<double> >																		("\n\tmisc::vector      ");
-	stable_sort2<misc::vector<double, std::allocator<double> > >												("\n\tstd::vector       ");
-	stable_sort2<misc::vector<double, misc::allocator<double>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
-	stable_sort2<misc::vector<double, misc::allocator<double>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	stable_sort2<misc::vector<double, misc::allocator<double>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	stable_sort2<stl::vector<double> >																		("\n\tmisc::vector      ");
+	stable_sort2<stl::vector<double, std::allocator<double> > >												("\n\tstd::vector       ");
+	stable_sort2<stl::vector<double, misc::allocator<double>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
+	stable_sort2<stl::vector<double, misc::allocator<double>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
+	stable_sort2<stl::vector<double, misc::allocator<double>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
 }
 
 void test_algorithm::partial_sort()
 {
-	misc::cout << "\n\n\tpartial_sort-------------------------------------------";
+	stl::cout << "\n\n\tpartial_sort-------------------------------------------";
 	partial_sort<std::vector<int> >																		("\n\tstd::vector       ");
 	partial_sort<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	partial_sort<misc::vector<int> >																	("\n\tmisc::vector      ");
-	partial_sort<misc::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	partial_sort<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
-	partial_sort<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	partial_sort<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	partial_sort<stl::vector<int> >																	("\n\tmisc::vector      ");
+	partial_sort<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
+	partial_sort<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
+	partial_sort<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
+	partial_sort<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
 }
 
 void test_algorithm::partial_sort_copy()
 {
-	misc::cout << "\n\n\tpartial_sort_copy--------------------------------------";
+	stl::cout << "\n\n\tpartial_sort_copy--------------------------------------";
 	partial_sort_copy<std::vector<int> >																	("\n\tstd::vector       ");
 	partial_sort_copy<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	partial_sort_copy<misc::vector<int> >																	("\n\tmisc::vector      ");
-	partial_sort_copy<misc::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	partial_sort_copy<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
-	partial_sort_copy<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	partial_sort_copy<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	partial_sort_copy<stl::vector<int> >																	("\n\tmisc::vector      ");
+	partial_sort_copy<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
+	partial_sort_copy<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
+	partial_sort_copy<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
+	partial_sort_copy<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
 }
 
 void test_algorithm::nth_element()
 {
-	misc::cout << "\n\n\tnth_element--------------------------------------------";
+	stl::cout << "\n\n\tnth_element--------------------------------------------";
 	nth_element<std::vector<int> >																		("\n\tstd::vector       ");
 	nth_element<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	nth_element<misc::vector<int> >																		("\n\tmisc::vector      ");
-	nth_element<misc::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	nth_element<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >				("\n\tmisc::vector<POD> ");
-	nth_element<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	nth_element<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	nth_element<stl::vector<int> >																		("\n\tmisc::vector      ");
+	nth_element<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
+	nth_element<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >				("\n\tmisc::vector<POD> ");
+	nth_element<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
+	nth_element<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
 }
 
 //Binary search (operating on sorted ranges):
 void test_algorithm::lower_bound()
 {
-	misc::cout << "\n\n\tlower_bound--------------------------------------------";
+	stl::cout << "\n\n\tlower_bound--------------------------------------------";
 	lower_bound2<std::vector<int> >																		("\n\tstd::vector       ");
 	lower_bound2<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	lower_bound<misc::vector<int> >																		("\n\tmisc::vector      ");
-	lower_bound<misc::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	lower_bound<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >				("\n\tmisc::vector<POD> ");
-	lower_bound<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	lower_bound<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	lower_bound<stl::vector<int> >																		("\n\tmisc::vector      ");
+	lower_bound<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
+	lower_bound<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >				("\n\tmisc::vector<POD> ");
+	lower_bound<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
+	lower_bound<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
 }
 
 void test_algorithm::upper_bound()
 {
-	misc::cout << "\n\n\tupper_bound--------------------------------------------";
+	stl::cout << "\n\n\tupper_bound--------------------------------------------";
 	upper_bound<std::vector<int> >																		("\n\tstd::vector       ");
 	upper_bound<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	upper_bound<misc::vector<int> >																		("\n\tmisc::vector      ");
-	upper_bound<misc::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	upper_bound<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >				("\n\tmisc::vector<POD> ");
-	upper_bound<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	upper_bound<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	upper_bound<stl::vector<int> >																		("\n\tmisc::vector      ");
+	upper_bound<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
+	upper_bound<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >				("\n\tmisc::vector<POD> ");
+	upper_bound<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
+	upper_bound<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
 }
 
 void test_algorithm::equal_range()
 {
-	misc::cout << "\n\n\tequal_range--------------------------------------------";	
+	stl::cout << "\n\n\tequal_range--------------------------------------------";	
 	equal_range2<std::vector<int> >																		("\n\tstd::vector       ");
-	equal_range<misc::vector<int> >																		("\n\tmisc::vector      ");
-	equal_range<misc::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	equal_range<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >				("\n\tmisc::vector<POD> ");
-	equal_range<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	equal_range<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	equal_range<stl::vector<int> >																		("\n\tmisc::vector      ");
+	equal_range<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
+	equal_range<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >				("\n\tmisc::vector<POD> ");
+	equal_range<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
+	equal_range<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
 }
 
 void test_algorithm::binary_search()
 {
-	misc::cout << "\n\n\tbinary_search------------------------------------------";
+	stl::cout << "\n\n\tbinary_search------------------------------------------";
 	binary_search<std::vector<int> >																	("\n\tstd::vector       ");
 	binary_search<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	binary_search2<misc::vector<int> >																	("\n\tmisc::vector      ");
-	binary_search2<misc::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	binary_search2<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
-	binary_search2<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	binary_search2<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	binary_search2<stl::vector<int> >																	("\n\tmisc::vector      ");
+	binary_search2<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
+	binary_search2<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
+	binary_search2<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
+	binary_search2<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
 }
 
 //Merge (operating on sorted ranges):
 void test_algorithm::merge()
 {
-	misc::cout << "\n\n\tmerge--------------------------------------------------";
+	stl::cout << "\n\n\tmerge--------------------------------------------------";
 	merge<std::vector<int> >																	("\n\tstd::vector       ");
 	merge<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	merge2<misc::vector<int> >																	("\n\tmisc::vector      ");
-	merge2<misc::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	merge2<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
-	merge2<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	merge2<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	merge2<stl::vector<int> >																	("\n\tmisc::vector      ");
+	merge2<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
+	merge2<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
+	merge2<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
+	merge2<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
 }
 
 void test_algorithm::inplace_merge()
 {
-	misc::cout << "\n\n\tinplace_merge------------------------------------------";
+	stl::cout << "\n\n\tinplace_merge------------------------------------------";
 	inplace_merge<std::vector<int> >																	("\n\tstd::vector       ");
 	inplace_merge<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	inplace_merge2<misc::vector<int> >																	("\n\tmisc::vector      ");
-	inplace_merge2<misc::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	inplace_merge2<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
-	inplace_merge2<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	inplace_merge2<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	inplace_merge2<stl::vector<int> >																	("\n\tmisc::vector      ");
+	inplace_merge2<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
+	inplace_merge2<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
+	inplace_merge2<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
+	inplace_merge2<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
 }
 
 void test_algorithm::includes()
 {
-	misc::cout << "\n\n\tincludes-----------------------------------------------";
+	stl::cout << "\n\n\tincludes-----------------------------------------------";
 	includes<std::vector<int> >																		("\n\tstd::vector       ");
 	includes<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	includes2<misc::vector<int> >																	("\n\tmisc::vector      ");
-	includes2<misc::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	includes2<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
-	includes2<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	includes2<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	includes2<stl::vector<int> >																	("\n\tmisc::vector      ");
+	includes2<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
+	includes2<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
+	includes2<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
+	includes2<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
 }
 
 void test_algorithm::set_union()
 {
-	misc::cout << "\n\n\tset_union----------------------------------------------";
+	stl::cout << "\n\n\tset_union----------------------------------------------";
 	set_union<std::vector<int> >																	("\n\tstd::vector       ");
 	set_union<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	set_union2<misc::vector<int> >																	("\n\tmisc::vector      ");
-	set_union2<misc::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	set_union2<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
-	set_union2<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	set_union2<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	set_union2<stl::vector<int> >																	("\n\tmisc::vector      ");
+	set_union2<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
+	set_union2<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
+	set_union2<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
+	set_union2<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
 }
 
 void test_algorithm::set_intersection()
 {
-	misc::cout << "\n\n\tset_intersection---------------------------------------";
+	stl::cout << "\n\n\tset_intersection---------------------------------------";
 	set_intersection<std::vector<int> >																		("\n\tstd::vector       ");
 	set_intersection<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	set_intersection2<misc::vector<int> >																	("\n\tmisc::vector      ");
-	set_intersection2<misc::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	set_intersection2<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
-	set_intersection2<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	set_intersection2<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	set_intersection2<stl::vector<int> >																	("\n\tmisc::vector      ");
+	set_intersection2<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
+	set_intersection2<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
+	set_intersection2<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
+	set_intersection2<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
 }
 
 void test_algorithm::set_difference()
 {
-	misc::cout << "\n\n\tset_difference-----------------------------------------";
+	stl::cout << "\n\n\tset_difference-----------------------------------------";
 	set_difference<std::vector<int> >																		("\n\tstd::vector       ");
 	set_difference<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	set_difference<misc::vector<int> >																		("\n\tmisc::vector      ");
-	set_difference<misc::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	set_difference<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >				("\n\tmisc::vector<POD> ");
-	set_difference<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	set_difference<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	set_difference<stl::vector<int> >																		("\n\tmisc::vector      ");
+	set_difference<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
+	set_difference<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >				("\n\tmisc::vector<POD> ");
+	set_difference<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
+	set_difference<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
 }
 
 void test_algorithm::set_symmetric_difference()
 {
-	misc::cout << "\n\n\tset_symmetric_difference-------------------------------";
+	stl::cout << "\n\n\tset_symmetric_difference-------------------------------";
 	set_symmetric_difference<std::vector<int> >																		("\n\tstd::vector       ");
 	set_symmetric_difference<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	set_symmetric_difference2<misc::vector<int> >																	("\n\tmisc::vector      ");
-	set_symmetric_difference2<misc::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	set_symmetric_difference2<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
-	set_symmetric_difference2<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	set_symmetric_difference2<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	set_symmetric_difference2<stl::vector<int> >																	("\n\tmisc::vector      ");
+	set_symmetric_difference2<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
+	set_symmetric_difference2<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
+	set_symmetric_difference2<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
+	set_symmetric_difference2<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
 }
 
 //Heap:
 void test_algorithm::push_heap()
 {
-	misc::cout << "\n\n\tpush_heap----------------------------------------------";
+	stl::cout << "\n\n\tpush_heap----------------------------------------------";
 	push_heap<std::vector<int> >																	("\n\tstd::vector       ");
 	push_heap<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	push_heap2<misc::vector<int> >																	("\n\tmisc::vector      ");
-	push_heap2<misc::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	push_heap2<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
-	push_heap2<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	push_heap2<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	push_heap2<stl::vector<int> >																	("\n\tmisc::vector      ");
+	push_heap2<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
+	push_heap2<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
+	push_heap2<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
+	push_heap2<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
 }
 
 void test_algorithm::pop_heap()
 {
-	misc::cout << "\n\n\tpop_heap-----------------------------------------------";
+	stl::cout << "\n\n\tpop_heap-----------------------------------------------";
 	pop_heap<std::vector<int> >																		("\n\tstd::vector       ");
 	pop_heap<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	pop_heap<misc::vector<int> >																	("\n\tmisc::vector      ");
-	pop_heap<misc::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	pop_heap<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
-	pop_heap<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	pop_heap<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	pop_heap<stl::vector<int> >																	("\n\tmisc::vector      ");
+	pop_heap<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
+	pop_heap<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
+	pop_heap<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
+	pop_heap<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
 }
 
 void test_algorithm::make_heap()
 {
-	misc::cout << "\n\n\tmake_heap----------------------------------------------";
+	stl::cout << "\n\n\tmake_heap----------------------------------------------";
 	make_heap<std::vector<int> >																	("\n\tstd::vector       ");
 	make_heap<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	make_heap<misc::vector<int> >																	("\n\tmisc::vector      ");
-	make_heap<misc::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	make_heap<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
-	make_heap<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	make_heap<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	make_heap<stl::vector<int> >																	("\n\tmisc::vector      ");
+	make_heap<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
+	make_heap<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
+	make_heap<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
+	make_heap<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
 }
 
 void test_algorithm::sort_heap()
 {
-	misc::cout << "\n\n\tsort_heap----------------------------------------------";
+	stl::cout << "\n\n\tsort_heap----------------------------------------------";
 	sort_heap<std::vector<int> >																	("\n\tstd::vector       ");
 	sort_heap<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	sort_heap<misc::vector<int> >																	("\n\tmisc::vector      ");
-	sort_heap<misc::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	sort_heap<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
-	sort_heap<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	sort_heap<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	sort_heap<stl::vector<int> >																	("\n\tmisc::vector      ");
+	sort_heap<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
+	sort_heap<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
+	sort_heap<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
+	sort_heap<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
 }
 
 //Min/max:
 void test_algorithm::min2()
 {
-	misc::cout << "\n\n\tmin----------------------------------------------------";
+	stl::cout << "\n\n\tmin----------------------------------------------------";
 	min2<std::vector<int> >																		("\n\tstd::vector       ");
 	min2<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	min2<misc::vector<int> >																	("\n\tmisc::vector      ");
-	min2<misc::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	min2<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
-	min2<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	min2<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	min2<stl::vector<int> >																	("\n\tmisc::vector      ");
+	min2<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
+	min2<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
+	min2<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
+	min2<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
 }
 
 void test_algorithm::max2()
 {
-	misc::cout << "\n\n\tmax----------------------------------------------------";
+	stl::cout << "\n\n\tmax----------------------------------------------------";
 	max2<std::vector<int> >																		("\n\tstd::vector       ");
 	max2<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	max2<misc::vector<int> >																	("\n\tmisc::vector      ");
-	max2<misc::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	max2<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
-	max2<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	max2<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	max2<stl::vector<int> >																	("\n\tmisc::vector      ");
+	max2<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
+	max2<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
+	max2<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
+	max2<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
 }
 
 void test_algorithm::min_element()
 {
-	misc::cout << "\n\n\tmin_element--------------------------------------------";
+	stl::cout << "\n\n\tmin_element--------------------------------------------";
 	min_element<std::vector<int> >																		("\n\tstd::vector       ");
 	min_element<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	min_element<misc::vector<int> >																		("\n\tmisc::vector      ");
-	min_element<misc::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	min_element<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >				("\n\tmisc::vector<POD> ");
-	min_element<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	min_element<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	min_element<stl::vector<int> >																		("\n\tmisc::vector      ");
+	min_element<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
+	min_element<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >				("\n\tmisc::vector<POD> ");
+	min_element<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
+	min_element<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
 }
 
 void test_algorithm::max_element()
 {
-	misc::cout << "\n\n\tmax_element--------------------------------------------";
+	stl::cout << "\n\n\tmax_element--------------------------------------------";
 	max_element<std::vector<int> >																		("\n\tstd::vector       ");
 	max_element<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	max_element<misc::vector<int> >																		("\n\tmisc::vector      ");
-	max_element<misc::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	max_element<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >				("\n\tmisc::vector<POD> ");
-	max_element<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	max_element<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	max_element<stl::vector<int> >																		("\n\tmisc::vector      ");
+	max_element<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
+	max_element<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >				("\n\tmisc::vector<POD> ");
+	max_element<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
+	max_element<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
 }
 
 void test_algorithm::lexicographical_compare()
 {
-	misc::cout << "\n\n\tlexicographical_compare--------------------------------";
+	stl::cout << "\n\n\tlexicographical_compare--------------------------------";
 	lexicographical_compare<std::vector<char> >																		("\n\tstd::vector       ");
 	lexicographical_compare<std::vector<char, misc::allocator<char> > >												("\n\tstd::vector<A>    ");
-	lexicographical_compare<misc::vector<char> >																	("\n\tmisc::vector      ");
-	lexicographical_compare<misc::vector<char, std::allocator<char> > >												("\n\tstd::vector       ");
-	lexicographical_compare<misc::vector<char, misc::allocator<char>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
-	lexicographical_compare<misc::vector<char, misc::allocator<char>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	lexicographical_compare<misc::vector<char, misc::allocator<char>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	lexicographical_compare<stl::vector<char> >																	("\n\tmisc::vector      ");
+	lexicographical_compare<stl::vector<char, std::allocator<char> > >												("\n\tstd::vector       ");
+	lexicographical_compare<stl::vector<char, misc::allocator<char>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
+	lexicographical_compare<stl::vector<char, misc::allocator<char>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
+	lexicographical_compare<stl::vector<char, misc::allocator<char>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
 }
 
 void test_algorithm::next_permutation()
 {
-	misc::cout << "\n\n\tnext_permutation---------------------------------------";
+	stl::cout << "\n\n\tnext_permutation---------------------------------------";
 	next_permutation<std::vector<int> >																		("\n\tstd::vector       ");
 	next_permutation<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	next_permutation2<misc::vector<int> >																	("\n\tmisc::vector      ");
-	next_permutation2<misc::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	next_permutation2<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
-	next_permutation2<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	next_permutation2<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	next_permutation2<stl::vector<int> >																	("\n\tmisc::vector      ");
+	next_permutation2<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
+	next_permutation2<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
+	next_permutation2<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
+	next_permutation2<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
 }
 
 void test_algorithm::prev_permutation()
 {
-	misc::cout << "\n\n\tprev_permutation---------------------------------------";
+	stl::cout << "\n\n\tprev_permutation---------------------------------------";
 	prev_permutation<std::vector<int> >																		("\n\tstd::vector       ");
 	prev_permutation<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	prev_permutation2<misc::vector<int> >																	("\n\tmisc::vector      ");
-	prev_permutation2<misc::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	prev_permutation2<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
-	prev_permutation2<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	prev_permutation2<misc::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	prev_permutation2<stl::vector<int> >																	("\n\tmisc::vector      ");
+	prev_permutation2<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
+	prev_permutation2<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
+	prev_permutation2<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
+	prev_permutation2<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
 }
 
 //test end
@@ -940,14 +940,14 @@ void test_algorithm::find(const char* msg)
 
 		// MISC
 		// pointer to array element:
-		p = misc::find(mytable, mytable + m_container_size, m_container_size - 2);
+		p = stl::find(mytable, mytable + m_container_size, m_container_size - 2);
 		++p;
 		CPPUNIT_ASSERT(*p == (m_container_size - 1));
 
 
 		It it;
 		// iterator to vector element:
-		it = misc::find(myvector.begin(), myvector.end(), Cval(m_container_size - 2));
+		it = stl::find(myvector.begin(), myvector.end(), Cval(m_container_size - 2));
 		it++;
 
 		CPPUNIT_ASSERT(*it == (m_container_size - 1));
@@ -1433,8 +1433,8 @@ void test_algorithm::mismatch(const char* msg)
 
 	Cval myints[] = {10,20,80,320,1024};                //   myints: 10 20 80 320 1024
 
-	misc::pair<typename Container::iterator, Cval*>		pair1;
-	misc::pair<typename Container::iterator, typename Container::iterator> pair2;
+	stl::pair<typename Container::iterator, Cval*>		pair1;
+	stl::pair<typename Container::iterator, typename Container::iterator> pair2;
 	std::pair<typename Container::iterator, Cval*>		pair3;
 	std::pair<typename Container::iterator, typename Container::iterator> pair4;
 
@@ -1781,7 +1781,7 @@ void test_algorithm::copy(const char* msg)
 			destination range, iterating through the source sequence of 
 			elements and assigning them new positions in a forward direction.
 		*/
-		misc::copy ( myints, myints+7, v1.begin() );
+		stl::copy ( myints, myints+7, v1.begin() );
 
 		//cout << "v1 contains:";
 		for (it=v1.begin(); it!=v1.end(); ++it)
@@ -1791,7 +1791,7 @@ void test_algorithm::copy(const char* msg)
 		}
 		//myvector contains: 10 20 30 40 50 60 70
 
-		misc::copy (v2.begin(), v2.end(), v3.begin());
+		stl::copy (v2.begin(), v2.end(), v3.begin());
 		CPPUNIT_ASSERT(v3.size() == v2.size());
 		for(size_t i = 0; i < v3.size(); ++i)
 		{
@@ -2734,7 +2734,7 @@ void test_algorithm::remove(const char* msg)
 /*		error C2668: 'std::find' : ambiguous call to overloaded function
 		Cannot decide which function to call:
 		_InIt std::find<_FwdIt,_Ty>(_InIt,_InIt,const _Ty &)  or:
-		InputIterator misc::find<_FwdIt,_Ty>(InputIterator,InputIterator,const T &)	
+		InputIterator stl::find<_FwdIt,_Ty>(InputIterator,InputIterator,const T &)	
 		
 		when using std::remove with iterators belonging to misc::generic_array;
 */
@@ -3037,7 +3037,7 @@ void test_algorithm::unique_copy(const char* msg)
 		it = misc::unique_copy (myints, myints + 9, v1.begin());
 				
 		// v1: 10 10 20 20 30 0  0  0  0
-		misc::sort (v1.begin(),it);
+		stl::sort (v1.begin(),it);
 
 		// using predicate comparison:
 		it = misc::unique_copy (v1.begin(), it, v1.begin(), myfunction_unique_copy);
@@ -3692,15 +3692,15 @@ void test_algorithm::sort(const char* msg)
 
 		//	MISC
 		// using default comparison (operator <):
-		misc::sort(v1.begin(), v1.begin() + 4);
+		stl::sort(v1.begin(), v1.begin() + 4);
 		//v1: (12 32 45 71)26 80 53 33
 
 		// using function as comp
-		misc::sort(v1.begin() + 4, v1.end(), myfunction_sort);
+		stl::sort(v1.begin() + 4, v1.end(), myfunction_sort);
 		//v1: 12 32 45 71(26 33 53 80)
 
 		// using object as comp
-		misc::sort(v1.begin(), v1.end(), myobject_sort);
+		stl::sort(v1.begin(), v1.end(), myobject_sort);
 		//v1: (12 26 32 33 45 53 71 80)
 
 		//v1: 12 26 32 33 45 53 71 80
@@ -3710,8 +3710,8 @@ void test_algorithm::sort(const char* msg)
 			CPPUNIT_ASSERT(mycheck[it-v1.begin()] == *it);
 		}
 
-		misc::sort(v2.begin() + m_container_size/2, v2.end(), myfunction_sort);
-		misc::sort(v2.begin(), v2.end());
+		stl::sort(v2.begin() + m_container_size/2, v2.end(), myfunction_sort);
+		stl::sort(v2.begin(), v2.end());
 		for(it = v2.begin() + 1; it != v2.end(); ++it)
 			CPPUNIT_ASSERT(*it >= *(it - 1)); // used ::rand() so equal may exist.
 
@@ -4091,7 +4091,7 @@ void test_algorithm::lower_bound(const char* msg)
 		time_printer tp(msg, m_print_time);
 
 		//	MISC
-		misc::sort(v1.begin(), v1.end()); // 10 10 10 20 20 20 30 30
+		stl::sort(v1.begin(), v1.end()); // 10 10 10 20 20 20 30 30
 
 		low = misc::lower_bound<It, Cval> (v1.begin(), v1.end(), Cval(20)); //4th element
 		up  = misc::upper_bound<It, Cval> (v1.begin(), v1.end(), Cval(20)); //7th element
@@ -4139,7 +4139,7 @@ void test_algorithm::lower_bound2(const char* msg)
 		time_printer tp(msg, m_print_time);
 
 		//	MISC
-		misc::sort(v1.begin(), v1.end()); // 10 10 10 20 20 20 30 30
+		stl::sort(v1.begin(), v1.end()); // 10 10 10 20 20 20 30 30
 
 		low = std::lower_bound<It, Cval> (v1.begin(), v1.end(), Cval(20)); //4th element
 		up  = std::upper_bound<It, Cval> (v1.begin(), v1.end(), Cval(20)); //7th element
@@ -4172,7 +4172,7 @@ void test_algorithm::equal_range(const char* msg)
 {
 	typedef typename Container::value_type Cval;
 	typedef typename Container::iterator It;
-	typedef typename misc::pair<It, It> MPair;
+	typedef typename stl::pair<It, It> MPair;
 	
 
 	Cval myints[] = {10,20,30,30,20,10,10,20};
@@ -4193,7 +4193,7 @@ void test_algorithm::equal_range(const char* msg)
 		time_printer tp(msg, m_print_time);
 		//	MISC
 		//	using default comparison:
-		misc::sort(v1.begin(), v1.end()); // 10 10 10 20 20 20 30 30
+		stl::sort(v1.begin(), v1.end()); // 10 10 10 20 20 20 30 30
 
 		/*	Finds a pair of positions in an ordered range, the first less
 			than or equivalent to the position of a specified element and 
@@ -4204,7 +4204,7 @@ void test_algorithm::equal_range(const char* msg)
 		bounds = misc::equal_range<It, Cval>(v1.begin(), v1.end(), 20);
 
 		// using "mygreater_equal_range" as comp:
-		misc::sort (v1.begin(), v1.end(), mygreater_equal_range);                                 // 30 30 20 20 20 10 10 10
+		stl::sort (v1.begin(), v1.end(), mygreater_equal_range);                                 // 30 30 20 20 20 10 10 10
 		bounds = misc::equal_range<It, Cval>(v1.begin(), v1.end(), 20, mygreater_equal_range);    //       ^        ^
 
 		CPPUNIT_ASSERT((int)(bounds.first - v1.begin()) == 2);
@@ -4255,7 +4255,7 @@ void test_algorithm::equal_range2(const char* msg)
 		bounds = std::equal_range<It, Cval>(v1.begin(), v1.end(), 20);
 
 		// using "mygreater_equal_range" as comp:
-		misc::sort (v1.begin(), v1.end(), mygreater_equal_range);                                 // 30 30 20 20 20 10 10 10
+		stl::sort (v1.begin(), v1.end(), mygreater_equal_range);                                 // 30 30 20 20 20 10 10 10
 		bounds = std::equal_range<It, Cval>(v1.begin(), v1.end(), 20, mygreater_equal_range);    //       ^        ^
 
 		CPPUNIT_ASSERT((int)(bounds.first - v1.begin()) == 2);
@@ -4341,14 +4341,14 @@ void test_algorithm::binary_search2(const char* msg)
 		
 		//	MISC (the entire method)
 		// using default comparison:
-		misc::sort(v1.begin(), v1.end());
+		stl::sort(v1.begin(), v1.end());
 
 		//cout << "looking for a 3... ";
 		bool res = misc::binary_search<It, Cval>(v1.begin(), v1.end(), 3);
 		CPPUNIT_ASSERT(res);
 
 		// using myfunction as comp:
-		misc::sort(v1.begin(), v1.end(), myfunction_binary_search);
+		stl::sort(v1.begin(), v1.end(), myfunction_binary_search);
 
 		//cout << "looking for a 6... ";
 		res = misc::binary_search<It, Cval>(v1.begin(), v1.end(), 6, myfunction_binary_search);
@@ -4448,8 +4448,8 @@ void test_algorithm::merge2(const char* msg)
 		
 		
 		//	MISC
-		misc::sort(first, first + 5);
-		misc::sort(second, second + 5);
+		stl::sort(first, first + 5);
+		stl::sort(second, second + 5);
 
 		/*	Combines all the elements from two sorted source ranges 
 			into a single, sorted destination range, where the ordering 
@@ -4466,8 +4466,8 @@ void test_algorithm::merge2(const char* msg)
 		}
 		//The resulting vector contains: 5 10 10 15 20 20 25 30 40 50
 
-		misc::sort(v2.begin(), v2.end());
-		misc::sort(v3.begin(), v3.end());
+		stl::sort(v2.begin(), v2.end());
+		stl::sort(v3.begin(), v3.end());
 		misc::merge(v2.begin(), v2.end(), v3.begin(), v3.end(), v4.begin());
 	}
 }
@@ -4559,11 +4559,11 @@ void test_algorithm::inplace_merge2(const char* msg)
 		time_printer tp(msg, m_print_time);
 
 		//	MISC (the entire method)
-		misc::sort(first, first + 5);
-		misc::sort(second, second + 5);
+		stl::sort(first, first + 5);
+		stl::sort(second, second + 5);
 
-		misc::copy(first, first + 5, v1.begin());
-		misc::copy(second, second + 5, v1.begin() + 5);
+		stl::copy(first, first + 5, v1.begin());
+		stl::copy(second, second + 5, v1.begin() + 5);
 
 		/*	Combines the elements from two consecutive sorted ranges 
 			into a single sorted range, where the ordering criterion 
@@ -4581,8 +4581,8 @@ void test_algorithm::inplace_merge2(const char* msg)
 		//The resulting vector contains: 5 10 10 15 20 20 25 30 40 50
 
 
-		misc::copy(v2.begin(), v2.end(), v4.begin());
-		misc::copy(v3.begin(), v3.end(), v4.begin() + v2.size());
+		stl::copy(v2.begin(), v2.end(), v4.begin());
+		stl::copy(v3.begin(), v3.end(), v4.begin() + v2.size());
 		misc::inplace_merge(v4.begin(), v4.begin() + m_container_size/2, v4.end());
 		for(it = v4.begin(), i0 = 0; it != v4.end(); ++it, ++i0)
 			CPPUNIT_ASSERT(*it == Cval(i0));
@@ -4670,8 +4670,8 @@ void test_algorithm::includes2(const char* msg)
 		time_printer tp(msg, m_print_time);
 		
 		//	MISC (the entire method)
-		misc::sort(c1, c1 + 10);       //5,10,15,20,25,30,35,40,45,50,
-		misc::sort(c2, c2 + 4);        //  10,   20,   30,   40
+		stl::sort(c1, c1 + 10);       //5,10,15,20,25,30,35,40,45,50,
+		stl::sort(c2, c2 + 4);        //  10,   20,   30,   40
 
 		/*	Tests whether one sorted range contains all the elements contained
 			in a second sorted range, where the ordering or equivalence 
@@ -4784,8 +4784,8 @@ void test_algorithm::set_union2(const char* msg)
 		
 		
 		//	MISC (the entire method)
-		misc::sort(first, first + 5);                //  5 10 15 20 25
-		misc::sort(second, second + 5);              // 10 20 30 40 50
+		stl::sort(first, first + 5);                //  5 10 15 20 25
+		stl::sort(second, second + 5);              // 10 20 30 40 50
 
 		/*	Unites all of the elements that belong to at least one of two 
 			sorted source ranges into a single, sorted destination range, 
@@ -4895,8 +4895,8 @@ void test_algorithm::set_intersection2(const char* msg)
 		
 		
 		//	MISC (the entire method)
-		misc::sort(first, first + 5);                //  5 10 15 20 25
-		misc::sort(second, second + 5);              // 10 20 30 40 50
+		stl::sort(first, first + 5);                //  5 10 15 20 25
+		stl::sort(second, second + 5);              // 10 20 30 40 50
 
 		/*	Unites all of the elements that belong to both sorted source ranges
 			into a single, sorted destination range, where the ordering 
@@ -4954,8 +4954,8 @@ void test_algorithm::set_difference(const char* msg)
 		time_printer tp(msg, m_print_time);
 		
 		//	MISC
-		misc::sort (first,first+5);                //  5 10 15 20 25
-		misc::sort (second,second+5);              // 10 20 30 40 50
+		stl::sort (first,first+5);                //  5 10 15 20 25
+		stl::sort (second,second+5);              // 10 20 30 40 50
 
 		/*	Unites all of the elements that belong to one sorted source range,
 			but not to a second sorted source range, into a single, sorted 
@@ -5077,8 +5077,8 @@ void test_algorithm::set_symmetric_difference2(const char* msg)
 		time_printer tp(msg, m_print_time);
 
 		//	MISC (the entire method)
-		misc::sort (first, first + 5);    //  5 10 15 20 25
-		misc::sort (second, second + 5);  // 10 20 30 40 50
+		stl::sort (first, first + 5);    //  5 10 15 20 25
+		stl::sort (second, second + 5);  // 10 20 30 40 50
 
 
 		/*	Unites all of the elements that belong to one, but not both, 
@@ -5378,10 +5378,10 @@ void test_algorithm::min2(const char* msg)
 	typedef typename Container::value_type Cval;
 
 	/*	Obs:
-		misc::min( will not prevent MS compiler from expanding min to its macro.
-		misc::min(2, 1) : error.
-		misc::min< will however DO prevent macro expanding due to template arg.
-		misc::min<int>(2, 1) : OK.
+		stl::min( will not prevent MS compiler from expanding min to its macro.
+		stl::min(2, 1) : error.
+		stl::min< will however DO prevent macro expanding due to template arg.
+		stl::min<int>(2, 1) : OK.
 	*/
 
 
@@ -5390,11 +5390,11 @@ void test_algorithm::min2(const char* msg)
 		time_printer tp(msg, m_print_time);
 		
 		//	MISC
-		CPPUNIT_ASSERT( misc::min<Cval>(1,2) == 1 );
-		CPPUNIT_ASSERT( misc::min<int>(1,2) == 1 );
-		CPPUNIT_ASSERT( misc::min<int>(2,1) == 1 );
-		CPPUNIT_ASSERT( misc::min<char>('a','z') == 'a' );
-		CPPUNIT_ASSERT( misc::min<double>(3.14,2.72) == 2.72 );   
+		CPPUNIT_ASSERT( stl::min<Cval>(1,2) == 1 );
+		CPPUNIT_ASSERT( stl::min<int>(1,2) == 1 );
+		CPPUNIT_ASSERT( stl::min<int>(2,1) == 1 );
+		CPPUNIT_ASSERT( stl::min<char>('a','z') == 'a' );
+		CPPUNIT_ASSERT( stl::min<double>(3.14,2.72) == 2.72 );   
 
 
 		//	STD
@@ -5416,11 +5416,11 @@ void test_algorithm::max2(const char* msg)
 	{
 		time_printer tp(msg, m_print_time);
 		//	MISC
-		CPPUNIT_ASSERT( misc::max<Cval>(1,2) == 2 );
-		CPPUNIT_ASSERT( misc::max<int>(1,2) == 2 );
-		CPPUNIT_ASSERT( misc::max<long>(2,1) == 2 );
-		CPPUNIT_ASSERT( misc::max<char>('a','z') == 'z' );
-		CPPUNIT_ASSERT( misc::max<double>(3.14,2.72) == 3.14 );
+		CPPUNIT_ASSERT( stl::max<Cval>(1,2) == 2 );
+		CPPUNIT_ASSERT( stl::max<int>(1,2) == 2 );
+		CPPUNIT_ASSERT( stl::max<long>(2,1) == 2 );
+		CPPUNIT_ASSERT( stl::max<char>('a','z') == 'z' );
+		CPPUNIT_ASSERT( stl::max<double>(3.14,2.72) == 3.14 );
 
 		//	STD
 		CPPUNIT_ASSERT( std::max<Cval>(1,2) == 2 );
@@ -5646,7 +5646,7 @@ void test_algorithm::next_permutation2(const char* msg)
 		
 			
 		//cout << "The 3! possible permutations with 3 elements:\n";
-		misc::sort(myints, myints + 3);
+		stl::sort(myints, myints + 3);
 
 		/*	next_permutation:
 			Reorders the elements in a range so that the original ordering 
@@ -5776,7 +5776,7 @@ void test_algorithm::prev_permutation2(const char* msg)
 		time_printer tp(msg, m_print_time);
 		
 		//cout << "The 3! possible permutations with 3 elements:\n";
-		misc::sort(myints, myints + 3);
+		stl::sort(myints, myints + 3);
 		misc::reverse(myints, myints + 3);
 
 		/*	prev_permutation:

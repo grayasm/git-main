@@ -22,6 +22,7 @@ SampleParams::SampleParams(int argc, char **argv)
     /* Load parameters with short keys. */
     mInstrument = getArgument(argc, argv, "i");
     mBuySell = getArgument(argc, argv, "d");
+    mTableType = getArgument(argc, argv, "t");
 
     std::string sRate = getArgument(argc, argv, "r");
 
@@ -32,6 +33,8 @@ SampleParams::SampleParams(int argc, char **argv)
         mBuySell = getArgument(argc, argv, "buysell");
     if (sRate.empty())
         sRate = getArgument(argc, argv, "rate");
+    if (mTableType.empty())
+        mTableType = getArgument(argc, argv, "table");
 
     /* Load parameters with long keys. */
     mContingencyID = getArgument(argc, argv, "contingencyid");
@@ -230,8 +233,12 @@ double SampleParams::getRateLimit()
     return mRateLimit;
 }
 
-/** Setters. */
+const char *SampleParams::getTableType()
+{
+    return mTableType.c_str();
+}
 
+/** Setters. */
 void SampleParams::setAccount(const char *value)
 {
     if (!value)
@@ -256,4 +263,12 @@ void SampleParams::setDateFrom(DATE value)
 void SampleParams::setDateTo(DATE value)
 {
     mDateTo = value;
+}
+
+void SampleParams::setTableType(const char *value)
+{
+    if (!value)
+        mTableType = "";
+    else
+        mTableType = value;
 }

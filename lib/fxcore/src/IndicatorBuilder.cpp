@@ -28,33 +28,33 @@ namespace fx
 	void IndicatorBuilder::Build(
 		fx::MarketPlugin* plugin,
 		const fx::Offer& offer,
-		misc::vector<fx::IND*>& indicators)
+		stl::vector<fx::IND*>& indicators)
 	{
 		if (plugin == NULL)
-			throw misc::exception("IndicatorBuilder: invalid plugin");
+			throw stl::exception("IndicatorBuilder: invalid plugin");
 
 		if (offer.GetInstrument().empty() || offer.GetTime().totime_t() == 0)
-			throw misc::exception("IndicatorBuilder: invalid offer");
+			throw stl::exception("IndicatorBuilder: invalid offer");
 
-		misc::time tnow = offer.GetTime();
+		sys::time tnow = offer.GetTime();
 		double maxSec = 0;
-		misc::string stimeFrame("H1");  // fxcm error for D1: use m1 or H1
-        time_t min_tfval = misc::time::hourSEC;
+		stl::string stimeFrame("H1");  // fxcm error for D1: use m1 or H1
+        time_t min_tfval = sys::time::hourSEC;
 
 		for (size_t i = 0; i < indicators.size(); ++i)
 		{
 			fx::IND* ind = indicators[i];
 
 			if (ind == NULL || ind->IsValid())
-				throw misc::exception("IndicatorBuilder: indicator is NULL or valid");
+				throw stl::exception("IndicatorBuilder: indicator is NULL or valid");
 
 			time_t tfval = ind->GetTimeframe();
-            min_tfval = misc::min(min_tfval, tfval);
-			if (min_tfval < misc::time::hourSEC)
+            min_tfval = stl::min(min_tfval, tfval);
+			if (min_tfval < sys::time::hourSEC)
 				stimeFrame = "m1";
 
 			double indSec = (double)ind->GetPeriod() * tfval;
-			maxSec = misc::max(maxSec, indSec);
+			maxSec = stl::max(maxSec, indSec);
 		} // for(indicators)
 
 		//	EMA always needs:
@@ -65,11 +65,11 @@ namespace fx
 		time_t totaltime = (time_t) ::ceil(maxSec);
 		int timeFrame = min_tfval;
 		int tinc = (stimeFrame == "H1" ?
-			24 * misc::time::hourSEC :
-			60 * misc::time::minSEC);
+			24 * sys::time::hourSEC :
+			60 * sys::time::minSEC);
 
-		if (totaltime < misc::time::minSEC)
-			throw misc::exception("IndicatorBuilder: timeframe is invalid");
+		if (totaltime < sys::time::minSEC)
+			throw stl::exception("IndicatorBuilder: timeframe is invalid");
 
 		fx::TimeUtils::SetValidMarketTime(tnow, totaltime);
 
@@ -83,41 +83,41 @@ namespace fx
 			if (tinc <= timeFrame)
 				break;
 
-			misc::time from = tnow - (totaltime - ti);
-			misc::time to = tnow - (totaltime - ti - tinc);
+			sys::time from = tnow - (totaltime - ti);
+			sys::time to = tnow - (totaltime - ti - tinc);
 
 			// don't ask for history prices from outside trading hours
-			misc::time::WDay wday = from.wday();
-			if ((wday == misc::time::SAT) ||
-				(wday == misc::time::FRI && from.hour_() >= 22) ||
-				(wday == misc::time::SUN && from.hour_() < 22))
+			sys::time::WDay wday = from.wday();
+			if ((wday == sys::time::SAT) ||
+				(wday == sys::time::FRI && from.hour_() >= 22) ||
+				(wday == sys::time::SUN && from.hour_() < 22))
 			{
 				// adjust minutes to full hour (doesn't matter in weekend)
-				int subMin = from.min_() * misc::time::minSEC;
+				int subMin = from.min_() * sys::time::minSEC;
 
-				if (wday == misc::time::SUN)
+				if (wday == sys::time::SUN)
 				{
-					int addHours = (22 - from.hour_()) * misc::time::hourSEC;
+					int addHours = (22 - from.hour_()) * sys::time::hourSEC;
 					ti += (addHours - subMin);
 				}
 				else
 				{
-					int addDays = (7 - (int)wday) * misc::time::daySEC;
-					int addHours = (22 - from.hour_()) * misc::time::hourSEC;
+					int addDays = (7 - (int)wday) * sys::time::daySEC;
+					int addHours = (22 - from.hour_()) * sys::time::hourSEC;
 					ti += (addDays + addHours - subMin);
 				}
 
 				continue;
 			}
 
-			misc::vector<fx::OHLCPrice> result;		
+			stl::vector<fx::OHLCPrice> result;		
 			int ret = plugin->GetOHLCPrices(offer.GetInstrument(), stimeFrame.c_str(), from, to, result);
 
 			if (ret != 0)
 			{ // may get some weekend data, don't react for now.
 			}
 
-			misc::vector<fx::OHLCPrice>::iterator it = result.begin();
+			stl::vector<fx::OHLCPrice>::iterator it = result.begin();
 			for (; it != result.end(); ++it)
 			{
 				const fx::OHLCPrice& ohlc = *it;
@@ -138,7 +138,7 @@ namespace fx
 	void IndicatorBuilder::Update(
 		const fx::Offer& offer,
 		const fx::OHLCPrice& ohlc,
-		misc::vector<fx::IND*>& indicators)
+		stl::vector<fx::IND*>& indicators)
 	{
 		for (size_t i = 0; i < indicators.size(); ++i)
 		{
@@ -195,14 +195,14 @@ namespace fx
 	} // Update(..)
 
 
-	void IndicatorBuilder::Check(misc::vector<fx::IND*>& indicators)
+	void IndicatorBuilder::Check(stl::vector<fx::IND*>& indicators)
 	{
 		for (size_t i = 0; i < indicators.size(); ++i)
 		{
 			fx::IND* ind = indicators[i];
 
 			if (!ind->IsValid())
-				throw misc::exception("IndicatorBuilder: Check failed");
+				throw stl::exception("IndicatorBuilder: Check failed");
 		}
 	}
 

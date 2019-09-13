@@ -45,14 +45,14 @@ namespace fxcm
 	void OffersUpdater::UpdateOffers(IO2GResponse* response)
 	{
 		// synchronize access to internal resource
-		misc::autocritical_section autoCS(m_criticalSection);
+		sys::autocritical_section autoCS(m_criticalSection);
 		
 		O2G2Ptr<IO2GResponseReaderFactory> readerFactory =
 			m_session->getResponseReaderFactory();
 
 		if (!readerFactory)
 		{
-			misc::cout << __FUNCTION__
+			stl::cout << __FUNCTION__
 				<< ": Cannot create response reader factory" << std::endl;
 			return;
 		}
@@ -62,7 +62,7 @@ namespace fxcm
 
 		if (!offersResponseReader)
 		{
-			misc::cout << __FUNCTION__
+			stl::cout << __FUNCTION__
 				<< ": Cannot create offers table reader" << std::endl;
 			return;
 		}
@@ -71,8 +71,8 @@ namespace fxcm
 		{
 			O2G2Ptr<IO2GOfferRow> offerRow = offersResponseReader->getRow(i);
 
-			misc::string instrument(offerRow->getInstrument());
-			misc::string tradingStatus(offerRow->getTradingStatus());
+			stl::string instrument(offerRow->getInstrument());
+			stl::string tradingStatus(offerRow->getTradingStatus());
 			bool isTradingOpen = (tradingStatus == "O"); // "O" or "C"
 
 			// prevent to retain an invalid offer like:
@@ -82,7 +82,7 @@ namespace fxcm
 				!offerRow->isAskValid())
 				continue;
 
-			misc::time oftime;
+			sys::time oftime;
 			Utils::FormatDate(offerRow->getTime(), oftime);
 
 			if (oftime.year_() == 1970)
@@ -123,7 +123,7 @@ namespace fxcm
 				char dateBuf[32] = { 0 };
 				Utils::FormatDate(offerRow->getTime(), dateBuf);
 
-				misc::cout
+				stl::cout
 					<< "Id=" << offerRow->getOfferID() << ", "
 					<< "I=" << offerRow->getInstrument() << ", "
 					<< "T=" << dateBuf << ", "
@@ -139,13 +139,13 @@ namespace fxcm
 	int OffersUpdater::GetLastOffer(fx::Offer& offer, const char* sInstrument)
 	{
 		// synchronize access to internal resource
-		misc::autocritical_section autoCS(m_criticalSection);
+		sys::autocritical_section autoCS(m_criticalSection);
 
-		misc::string instrument(sInstrument);
+		stl::string instrument(sInstrument);
 		OffersMap::iterator it = m_offersMap.find(instrument);
 		if (it == m_offersMap.end())
 		{
-			misc::cout << __FUNCTION__
+			stl::cout << __FUNCTION__
 				<< ": Cannot find Offer for '" << sInstrument << "'" << std::endl;
 			return ErrorCodes::ERR_NO_OFFER_AVAILABLE;
 		}
@@ -158,7 +158,7 @@ namespace fxcm
     int OffersUpdater::GetAllOffers(OffersMap& offers)
     {
         // synchronize access to internal resource
-        misc::autocritical_section autoCS(m_criticalSection);
+        sys::autocritical_section autoCS(m_criticalSection);
 
         offers = m_offersMap;
 

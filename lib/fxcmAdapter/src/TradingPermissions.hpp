@@ -145,7 +145,7 @@ namespace fxcm
 		void SetCanUseFluctuateTrailingForEntryLimit(O2GPermissionStatus ps);
 
 	private:
-		misc::string		m_instrument;
+		stl::string		m_instrument;
 		O2GPermissionStatus m_canCreateMarketOpenOrder;
 		O2GPermissionStatus m_canChangeMarketOpenOrder;
 		O2GPermissionStatus m_canDeleteMarketOpenOrder;

@@ -1,3 +1,4 @@
+
 @echo off
 
 set build_config=Release
@@ -26,33 +27,28 @@ rem ----------------------------------------------------------------------------
 )
 
 
-:VS80
-@if /i "%VS80COMNTOOLS%" == "" (
-        @echo Variable VS80COMNTOOLS is not set or contains wrong path. Checking VS100COMNTOOLS...
-        goto VS100
+rem set VS140COMNTOOLS=C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\Tools
+rem set VS140ENV_SETUP=C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat
+
+rem ---------------------------------------------------------------------------
+rem Set VS140ENV_SETUP variable
+rem ---------------------------------------------------------------------------
+
+@if /i "%VS140ENV_SETUP%" == "" (
+    @if /i "%VS140COMNTOOLS%" == "" (
+        @goto :ENV_ERR
     )
-call :unquoteStr ENV_SETUP "%VS80COMNTOOLS%vsvars32.bat"
-goto BUILD
+    call "%VS140COMNTOOLS%\VsDevCmd.bat"
+)
 
-:VS100
-@if /i "%VS100COMNTOOLS%" == "" (
-        @echo Variable VS100COMNTOOLS is not set or contains wrong path.
-        goto ENV_ERR
-    )
-call :unquoteStr ENV_SETUP "%VS100COMNTOOLS%vsvars32.bat"
-goto BUILD
+call "%VS140ENV_SETUP%"
 
-:BUILD
-@echo Using "%ENV_SETUP%" environment configuration script.
-
-call "%ENV_SETUP%"
-call vcbuild CreateAndFindEntry.vcproj "%build_config%|%local_tgt_platform%"
+call msbuild CreateAndFindEntry.vcxproj /p:Configuration=%build_config% /p:platform=%tgt_platform%
 
 @goto :eof
 
-
 :ENV_ERR
-    echo Can not setup visual studio environment. 
+    echo "Environment configuration failed. Variables VS140ENV_SETUP and VS140COMNTOOLS is not defined"
     set null
 @goto :eof
 
@@ -67,12 +63,11 @@ call vcbuild CreateAndFindEntry.vcproj "%build_config%|%local_tgt_platform%"
     @rem --------------------------------------------------------------------------------------------
     echo Usage: "%~nx0 [debug|release] [x86|x64] [/?]"
     echo.
-    echo                 debug    - Debug build configuration 
+    echo                 debug    - Debug build configuration
     echo                 release  - Release build configuration
     echo                 x86      - Create 32-bit x86 applications
     echo                 x64      - Create 64-bit x64 applications
     echo.                /?       - Show usage
     echo.
 @goto :eof
-
 

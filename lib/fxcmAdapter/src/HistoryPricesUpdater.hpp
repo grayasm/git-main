@@ -23,6 +23,7 @@ contact: grayasm@gmail.com
 
 
 #include <vector>
+#include <string>
 #include <ForexConnect.h>
 #include "critical_section.hpp"
 #include "autoptr.hpp"
@@ -35,7 +36,7 @@ namespace fxcm
 	class HistoryPricesUpdater
 	{
 	public:
-		typedef misc::vector<fx::OHLCPrice> HistoryPricesVec;
+		typedef stl::vector<fx::OHLCPrice> HistoryPricesVec;
 
 		HistoryPricesUpdater(IO2GSession* session);
 		~HistoryPricesUpdater();
@@ -54,9 +55,9 @@ namespace fxcm
 
 	private:
 		IO2GSession*					m_session;
-		misc::critical_section			m_criticalSection;
-		misc::string					m_instrument;
-		misc::string					m_timeframe;
+		sys::critical_section			m_criticalSection;
+		stl::string					m_instrument;
+		stl::string					m_timeframe;
 		HistoryPricesVec				m_historyPricesVec;
 	};
 } // namespace

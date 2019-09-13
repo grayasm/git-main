@@ -48,7 +48,7 @@
 
 
 /*
-  TODO: implement test for misc::generic_string<class type, or struct type>
+  TODO: implement test for slt::basic_string<class type, or struct type>
   TODO: self assignment, different version (overlapping regions, etc) 
   TODO: const_iterator(iterator), const_reverse_iterator(reverse_iterator)
   TODO: test all exceptions conditions
@@ -75,12 +75,12 @@ void test_generic_string::tearDown()
 
 void test_generic_string::ctor() 
 {
-	misc::cout << "\n\n\t*******************************************************";
-	misc::cout <<   "\n\t* TESTING HEADER: generic_string.hpp                  *";
-	misc::cout <<   "\n\t*******************************************************";
+	stl::cout << "\n\n\t*******************************************************";
+	stl::cout <<   "\n\t* TESTING HEADER: generic_string.hpp                  *";
+	stl::cout <<   "\n\t*******************************************************";
 
-	misc::cout << "\n\n\tctor---------------------------------------------------";
-	ctor<misc::generic_string<char> >                                             ("\n\tgeneric_string            ");
+	stl::cout << "\n\n\tctor---------------------------------------------------";
+	ctor<slt::basic_string<char> >                                             ("\n\tgeneric_string            ");
 	ctor<std::basic_string<char> >                                                ("\n\tstd::basic_string         ");
 //	compile error for _alloc1 == _alloc2
 //  ctor<std::basic_string<char, std::char_traits<char>, misc::allocator<char> > >("\n\tstd::basic_string<char,A> ");
@@ -90,8 +90,8 @@ void test_generic_string::ctor()
 
 void test_generic_string::assignament_op() 
 {
-	misc::cout << "\n\n\tassignament_op-----------------------------------------";
-	assignament_op<misc::generic_string<char> >                                             ("\n\tgeneric_string            ");
+	stl::cout << "\n\n\tassignament_op-----------------------------------------";
+	assignament_op<slt::basic_string<char> >                                             ("\n\tgeneric_string            ");
 	assignament_op<std::basic_string<char> >                                                ("\n\tstd::basic_string         ");
 	assignament_op<std::basic_string<char, std::char_traits<char>, misc::allocator<char> > >("\n\tstd::basic_string<char,A> ");
 }
@@ -100,32 +100,32 @@ void test_generic_string::assignament_op()
 
 void test_generic_string::begin() 
 {
-	misc::cout << "\n\n\tbegin--------------------------------------------------";
-	begin<misc::generic_string<char> >                                             ("\n\tgeneric_string            ");
+	stl::cout << "\n\n\tbegin--------------------------------------------------";
+	begin<slt::basic_string<char> >                                             ("\n\tgeneric_string            ");
 	begin<std::basic_string<char> >                                                ("\n\tstd::basic_string         ");
 	begin<std::basic_string<char, std::char_traits<char>, misc::allocator<char> > >("\n\tstd::basic_string<char,A> ");
 }
 
 void test_generic_string::end() 
 {
-	misc::cout << "\n\n\tend----------------------------------------------------";
-	end<misc::generic_string<char> >                                             ("\n\tgeneric_string            ");
+	stl::cout << "\n\n\tend----------------------------------------------------";
+	end<slt::basic_string<char> >                                             ("\n\tgeneric_string            ");
 	end<std::basic_string<char> >                                                ("\n\tstd::basic_string         ");
 	end<std::basic_string<char, std::char_traits<char>, misc::allocator<char> > >("\n\tstd::basic_string<char,A> ");
 }
 
 void test_generic_string::rbegin() 
 {
-	misc::cout << "\n\n\trbegin-------------------------------------------------";
-	rbegin<misc::generic_string<char> >                                             ("\n\tgeneric_string            ");
+	stl::cout << "\n\n\trbegin-------------------------------------------------";
+	rbegin<slt::basic_string<char> >                                             ("\n\tgeneric_string            ");
 	rbegin<std::basic_string<char> >                                                ("\n\tstd::basic_string         ");
 	rbegin<std::basic_string<char, std::char_traits<char>, misc::allocator<char> > >("\n\tstd::basic_string<char,A> ");
 }
 
 void test_generic_string::rend() 
 {
-	misc::cout << "\n\n\trend---------------------------------------------------";
-	rend<misc::generic_string<char> >                                             ("\n\tgeneric_string            ");
+	stl::cout << "\n\n\trend---------------------------------------------------";
+	rend<slt::basic_string<char> >                                             ("\n\tgeneric_string            ");
 	rend<std::basic_string<char> >                                                ("\n\tstd::basic_string         ");
 	rend<std::basic_string<char, std::char_traits<char>, misc::allocator<char> > >("\n\tstd::basic_string<char,A> ");
 }
@@ -134,24 +134,24 @@ void test_generic_string::rend()
 
 void test_generic_string::size() 
 {
-	misc::cout << "\n\n\tsize---------------------------------------------------";
-	size<misc::generic_string<char> >                                             ("\n\tgeneric_string            ");
+	stl::cout << "\n\n\tsize---------------------------------------------------";
+	size<slt::basic_string<char> >                                             ("\n\tgeneric_string            ");
 	size<std::basic_string<char> >                                                ("\n\tstd::basic_string         ");
 	size<std::basic_string<char, std::char_traits<char>, misc::allocator<char> > >("\n\tstd::basic_string<char,A> ");
 }
 
 void test_generic_string::length() 
 {
-	misc::cout << "\n\n\tlength-------------------------------------------------";
-	length<misc::generic_string<char> >                                             ("\n\tgeneric_string            ");
+	stl::cout << "\n\n\tlength-------------------------------------------------";
+	length<slt::basic_string<char> >                                             ("\n\tgeneric_string            ");
 	length<std::basic_string<char> >                                                ("\n\tstd::basic_string         ");
 	length<std::basic_string<char, std::char_traits<char>, misc::allocator<char> > >("\n\tstd::basic_string<char,A> ");
 }
 
 void test_generic_string::max_size() 
 {
-	misc::cout << "\n\n\tmax_size-----------------------------------------------";
-	max_size<misc::generic_string<char> >("\n\tgeneric_string");
+	stl::cout << "\n\n\tmax_size-----------------------------------------------";
+	max_size<slt::basic_string<char> >("\n\tgeneric_string");
 	// std::basic_string returns a different maximum size;
 //	max_size<std::basic_string<char> >("\n\tstd::basic_string");
 //	max_size<std::basic_string<char, std::char_traits<char>, misc::allocator<char> > >("\n\tstd::basic_string<char,A>");
@@ -159,16 +159,16 @@ void test_generic_string::max_size()
 
 void test_generic_string::resize() 
 {
-	misc::cout << "\n\n\tresize-------------------------------------------------";
-	resize<misc::generic_string<char> >                                             ("\n\tgeneric_string            ");
+	stl::cout << "\n\n\tresize-------------------------------------------------";
+	resize<slt::basic_string<char> >                                             ("\n\tgeneric_string            ");
 	resize<std::basic_string<char> >                                                ("\n\tstd::basic_string         ");
 	resize<std::basic_string<char, std::char_traits<char>, misc::allocator<char> > >("\n\tstd::basic_string<char,A> ");
 }
 
 void test_generic_string::capacity() 
 {
-	misc::cout << "\n\n\tcapacity-----------------------------------------------";
-	capacity<misc::generic_string<char> >("\n\tgeneric_string");
+	stl::cout << "\n\n\tcapacity-----------------------------------------------";
+	capacity<slt::basic_string<char> >("\n\tgeneric_string");
 	// std::basic_string resizes with a different factor
 //	capacity<std::basic_string<char> >("\n\tstd::basic_string");
 //	capacity<std::basic_string<char, std::char_traits<char>, misc::allocator<char> > >("\n\tstd::basic_string<char,A>");
@@ -176,8 +176,8 @@ void test_generic_string::capacity()
 
 void test_generic_string::reserve() 
 {
-	misc::cout << "\n\n\treserve------------------------------------------------";
-	reserve<misc::generic_string<char> >("\n\tgeneric_string");
+	stl::cout << "\n\n\treserve------------------------------------------------";
+	reserve<slt::basic_string<char> >("\n\tgeneric_string");
 	// see above: wrong capacity
 //	reserve<std::basic_string<char> >("\n\tstd::basic_string");
 //	reserve<std::basic_string<char, std::char_traits<char>, misc::allocator<char> > >("\n\tstd::basic_string<char,A>");
@@ -185,16 +185,16 @@ void test_generic_string::reserve()
 
 void test_generic_string::clear() 
 {
-	misc::cout << "\n\n\tclear--------------------------------------------------";
-	clear<misc::generic_string<char> >                                             ("\n\tgeneric_string            ");
+	stl::cout << "\n\n\tclear--------------------------------------------------";
+	clear<slt::basic_string<char> >                                             ("\n\tgeneric_string            ");
 	clear<std::basic_string<char> >                                                ("\n\tstd::basic_string         ");
 	clear<std::basic_string<char, std::char_traits<char>, misc::allocator<char> > >("\n\tstd::basic_string<char,A> ");
 }
 
 void test_generic_string::empty() 
 {
-	misc::cout << "\n\n\tempty--------------------------------------------------";
-	empty<misc::generic_string<char> >                                             ("\n\tgeneric_string            ");
+	stl::cout << "\n\n\tempty--------------------------------------------------";
+	empty<slt::basic_string<char> >                                             ("\n\tgeneric_string            ");
 	empty<std::basic_string<char> >                                                ("\n\tstd::basic_string         ");
 	empty<std::basic_string<char, std::char_traits<char>, misc::allocator<char> > >("\n\tstd::basic_string<char,A> ");
 }
@@ -203,16 +203,16 @@ void test_generic_string::empty()
 
 void test_generic_string::operator_access_element() 
 {
-	misc::cout << "\n\n\toperator_access_element--------------------------------";
-	operator_access_element<misc::generic_string<char> >                                             ("\n\tgeneric_string            ");
+	stl::cout << "\n\n\toperator_access_element--------------------------------";
+	operator_access_element<slt::basic_string<char> >                                             ("\n\tgeneric_string            ");
 	operator_access_element<std::basic_string<char> >                                                ("\n\tstd::basic_string         ");
 	operator_access_element<std::basic_string<char, std::char_traits<char>, misc::allocator<char> > >("\n\tstd::basic_string<char,A> ");
 }
 
 void test_generic_string::at() 
 {
-	misc::cout << "\n\n\tat-----------------------------------------------------";
-	at<misc::generic_string<char> >                                             ("\n\tgeneric_string            ");
+	stl::cout << "\n\n\tat-----------------------------------------------------";
+	at<slt::basic_string<char> >                                             ("\n\tgeneric_string            ");
 	at<std::basic_string<char> >                                                ("\n\tstd::basic_string         ");
 	at<std::basic_string<char, std::char_traits<char>, misc::allocator<char> > >("\n\tstd::basic_string<char,A> ");
 }
@@ -221,67 +221,67 @@ void test_generic_string::at()
 
 void test_generic_string::operator_plus_equal() 
 {
-	misc::cout << "\n\n\toperator_plus_equal------------------------------------";
-	operator_plus_equal<misc::generic_string<char> >                                             ("\n\tgeneric_string            ");
+	stl::cout << "\n\n\toperator_plus_equal------------------------------------";
+	operator_plus_equal<slt::basic_string<char> >                                             ("\n\tgeneric_string            ");
 	operator_plus_equal<std::basic_string<char> >                                                ("\n\tstd::basic_string         ");
 	operator_plus_equal<std::basic_string<char, std::char_traits<char>, misc::allocator<char> > >("\n\tstd::basic_string<char,A> ");
 }
 
 void test_generic_string::append() 
 {
-	misc::cout << "\n\n\tappend-------------------------------------------------";
-	append<misc::generic_string<char> >                                             ("\n\tgeneric_string            ");
+	stl::cout << "\n\n\tappend-------------------------------------------------";
+	append<slt::basic_string<char> >                                             ("\n\tgeneric_string            ");
 	append<std::basic_string<char> >                                                ("\n\tstd::basic_string         ");
 	append<std::basic_string<char, std::char_traits<char>, misc::allocator<char> > >("\n\tstd::basic_string<char,A> ");
 }
 
 void test_generic_string::push_back() 
 {
-	misc::cout << "\n\n\tpush_back----------------------------------------------";
-	push_back<misc::generic_string<char> >                                             ("\n\tgeneric_string            ");
+	stl::cout << "\n\n\tpush_back----------------------------------------------";
+	push_back<slt::basic_string<char> >                                             ("\n\tgeneric_string            ");
 	push_back<std::basic_string<char> >                                                ("\n\tstd::basic_string         ");
 	push_back<std::basic_string<char, std::char_traits<char>, misc::allocator<char> > >("\n\tstd::basic_string<char,A> ");
 }
 
 void test_generic_string::assign() 
 {
-	misc::cout << "\n\n\tassign-------------------------------------------------";
+	stl::cout << "\n\n\tassign-------------------------------------------------";
 	
-	assign<misc::generic_string<char> >                                             ("\n\tgeneric_string            ");
+	assign<slt::basic_string<char> >                                             ("\n\tgeneric_string            ");
 
-	/* some methods are safe with misc::generic_string and trigger undefined behaviour with std::string */
+	/* some methods are safe with slt::basic_string and trigger undefined behaviour with std::string */
 //	assign<std::basic_string<char> >                                                ("\n\tstd::basic_string         ");
 //	assign<std::basic_string<char, std::char_traits<char>, misc::allocator<char> > >("\n\tstd::basic_string<char,A> ");
 }
 
 void test_generic_string::insert() 
 {
-	misc::cout << "\n\n\tinsert-------------------------------------------------";
-	insert<misc::generic_string<char> >                                             ("\n\tgeneric_string            ");
+	stl::cout << "\n\n\tinsert-------------------------------------------------";
+	insert<slt::basic_string<char> >                                             ("\n\tgeneric_string            ");
 	insert<std::basic_string<char> >                                                ("\n\tstd::basic_string         ");
 	insert<std::basic_string<char, std::char_traits<char>, misc::allocator<char> > >("\n\tstd::basic_string<char,A> ");
 }
 
 void test_generic_string::erase() 
 {
-	misc::cout << "\n\n\terase--------------------------------------------------";
-	erase<misc::generic_string<char> >                                             ("\n\tgeneric_string            ");
+	stl::cout << "\n\n\terase--------------------------------------------------";
+	erase<slt::basic_string<char> >                                             ("\n\tgeneric_string            ");
 	erase<std::basic_string<char> >                                                ("\n\tstd::basic_string         ");
 	erase<std::basic_string<char, std::char_traits<char>, misc::allocator<char> > >("\n\tstd::basic_string<char,A> ");
 }
 
 void test_generic_string::replace() 
 {
-	misc::cout << "\n\n\treplace------------------------------------------------";
-	replace<misc::generic_string<char> >                                             ("\n\tgeneric_string            ");
+	stl::cout << "\n\n\treplace------------------------------------------------";
+	replace<slt::basic_string<char> >                                             ("\n\tgeneric_string            ");
 	replace<std::basic_string<char> >                                                ("\n\tstd::basic_string         ");
 	replace<std::basic_string<char, std::char_traits<char>, misc::allocator<char> > >("\n\tstd::basic_string<char,A> ");
 }
 
 void test_generic_string::swap()
 {
-	misc::cout << "\n\n\tswap---------------------------------------------------";
-	swap<misc::generic_string<char> >                                             ("\n\tgeneric_string            ");
+	stl::cout << "\n\n\tswap---------------------------------------------------";
+	swap<slt::basic_string<char> >                                             ("\n\tgeneric_string            ");
 	swap<std::basic_string<char> >                                                ("\n\tstd::basic_string         ");
 	swap<std::basic_string<char, std::char_traits<char>, misc::allocator<char> > >("\n\tstd::basic_string<char,A> ");
 }
@@ -290,49 +290,49 @@ void test_generic_string::swap()
 
 void test_generic_string::c_str()
 {
-	misc::cout << "\n\n\tc_str--------------------------------------------------";
-	c_str<misc::generic_string<char> >                                             ("\n\tgeneric_string            ");
+	stl::cout << "\n\n\tc_str--------------------------------------------------";
+	c_str<slt::basic_string<char> >                                             ("\n\tgeneric_string            ");
 	c_str<std::basic_string<char> >                                                ("\n\tstd::basic_string         ");
 	c_str<std::basic_string<char, std::char_traits<char>, misc::allocator<char> > >("\n\tstd::basic_string<char,A> ");
 }
 
 void test_generic_string::data()
 {
-	misc::cout << "\n\n\tdata---------------------------------------------------";
-	data<misc::generic_string<char> >                                             ("\n\tgeneric_string            ");
+	stl::cout << "\n\n\tdata---------------------------------------------------";
+	data<slt::basic_string<char> >                                             ("\n\tgeneric_string            ");
 	data<std::basic_string<char> >                                                ("\n\tstd::basic_string         ");
 	data<std::basic_string<char, std::char_traits<char>, misc::allocator<char> > >("\n\tstd::basic_string<char,A> ");
 }
 
 void test_generic_string::get_allocator() 
 {
-	misc::cout << "\n\n\tget_allocator------------------------------------------";
-	get_allocator<misc::generic_string<char> >                                             ("\n\tgeneric_string            ");
+	stl::cout << "\n\n\tget_allocator------------------------------------------";
+	get_allocator<slt::basic_string<char> >                                             ("\n\tgeneric_string            ");
 	get_allocator<std::basic_string<char> >                                                ("\n\tstd::basic_string         ");
 	get_allocator<std::basic_string<char, std::char_traits<char>, misc::allocator<char> > >("\n\tstd::basic_string<char,A> ");
 }
 
 void test_generic_string::copy()
 {
-	misc::cout << "\n\n\tcopy---------------------------------------------------";
-	copy<misc::generic_string<char> >                                             ("\n\tgeneric_string            ");
+	stl::cout << "\n\n\tcopy---------------------------------------------------";
+	copy<slt::basic_string<char> >                                             ("\n\tgeneric_string            ");
 	copy<std::basic_string<char> >                                                ("\n\tstd::basic_string         ");
 	copy<std::basic_string<char, std::char_traits<char>, misc::allocator<char> > >("\n\tstd::basic_string<char,A> ");
 }
 
 void test_generic_string::find()
 {
-	misc::cout << "\n\n\tfind---------------------------------------------------";
-	find<misc::generic_string<char> >                                             ("\n\tgeneric_string            ");
-	// basic_string.find(*ptr, -1) returns -1 versus misc::exception.
+	stl::cout << "\n\n\tfind---------------------------------------------------";
+	find<slt::basic_string<char> >                                             ("\n\tgeneric_string            ");
+	// basic_string.find(*ptr, -1) returns -1 versus stl::exception.
 //	find<std::basic_string<char> >                                                ("\n\tstd::basic_string         ");
 //	find<std::basic_string<char, std::char_traits<char>, misc::allocator<char> > >("\n\tstd::basic_string<char,A> ");
 }
 
 void test_generic_string::rfind()
 {
-	misc::cout << "\n\n\trfind--------------------------------------------------";
-	rfind<misc::generic_string<char> >                                             ("\n\tgeneric_string            ");
+	stl::cout << "\n\n\trfind--------------------------------------------------";
+	rfind<slt::basic_string<char> >                                             ("\n\tgeneric_string            ");
 	// pos0 = s0.rfind("89", (size_t) - 1, 0);
 	// basic_string returns 10 versus npos
 //	rfind<std::basic_string<char> >                                                ("\n\tstd::basic_string         ");
@@ -341,9 +341,9 @@ void test_generic_string::rfind()
 
 void test_generic_string::find_first_of()
 {
-	misc::cout << "\n\n\tfind_first_of------------------------------------------";
+	stl::cout << "\n\n\tfind_first_of------------------------------------------";
 
-	find_first_of<misc::generic_string<char> >                                             ("\n\tgeneric_string            ");
+	find_first_of<slt::basic_string<char> >                                             ("\n\tgeneric_string            ");
 	// pos0 = s0.find_first_of("89", (size_t) - 1);
 	// basic_string returns -1 versus exception
 //	find_first_of<std::basic_string<char> >                                                ("\n\tstd::basic_string         ");
@@ -352,8 +352,8 @@ void test_generic_string::find_first_of()
 
 void test_generic_string::find_last_of()
 {
-	misc::cout << "\n\n\tfind_last_of-------------------------------------------";
-	find_last_of<misc::generic_string<char> >                                             ("\n\tgeneric_string            ");
+	stl::cout << "\n\n\tfind_last_of-------------------------------------------";
+	find_last_of<slt::basic_string<char> >                                             ("\n\tgeneric_string            ");
 	// s0 = string("1234567890");
 	// pos0 = s0.find_last_of("89", 9, (size_t) - 1);
 	// std::basic_string returns 9 versus npos. Position 9 would be end() but its a low number still.
@@ -364,8 +364,8 @@ void test_generic_string::find_last_of()
 
 void test_generic_string::find_first_not_of()
 {
-	misc::cout << "\n\n\tfind_first_not_of--------------------------------------";
-	find_first_not_of<misc::generic_string<char> >                                             ("\n\tgeneric_string            ");
+	stl::cout << "\n\n\tfind_first_not_of--------------------------------------";
+	find_first_not_of<slt::basic_string<char> >                                             ("\n\tgeneric_string            ");
 	// std::basic_string doesn't throw exception
 //	find_first_not_of<std::basic_string<char> >                                                ("\n\tstd::basic_string         ");
 //	find_first_not_of<std::basic_string<char, std::char_traits<char>, misc::allocator<char> > >("\n\tstd::basic_string<char,A> ");
@@ -373,8 +373,8 @@ void test_generic_string::find_first_not_of()
 
 void test_generic_string::find_last_not_of()
 {
-	misc::cout << "\n\n\tfind_last_not_of---------------------------------------";
-	find_last_not_of<misc::generic_string<char> >                                             ("\n\tgeneric_string            ");
+	stl::cout << "\n\n\tfind_last_not_of---------------------------------------";
+	find_last_not_of<slt::basic_string<char> >                                             ("\n\tgeneric_string            ");
 	// see find_last_of
 	// the same thing here, std::basic_string returns 9 , the offset of end() iterator
 	// but that's a low number. I prefer npos (-1).
@@ -384,16 +384,16 @@ void test_generic_string::find_last_not_of()
 
 void test_generic_string::substr()
 {
-	misc::cout << "\n\n\tsubstr-------------------------------------------------";
-	substr<misc::generic_string<char> >                                             ("\n\tgeneric_string            ");
+	stl::cout << "\n\n\tsubstr-------------------------------------------------";
+	substr<slt::basic_string<char> >                                             ("\n\tgeneric_string            ");
 	substr<std::basic_string<char> >                                                ("\n\tstd::basic_string         ");
 	substr<std::basic_string<char, std::char_traits<char>, misc::allocator<char> > >("\n\tstd::basic_string<char,A> ");
 }
 
 void test_generic_string::compare()
 {
-	misc::cout << "\n\n\tcompare------------------------------------------------";
-	compare<misc::generic_string<char> >                                             ("\n\tgeneric_string            ");
+	stl::cout << "\n\n\tcompare------------------------------------------------";
+	compare<slt::basic_string<char> >                                             ("\n\tgeneric_string            ");
 	compare<std::basic_string<char> >                                                ("\n\tstd::basic_string         ");
 	compare<std::basic_string<char, std::char_traits<char>, misc::allocator<char> > >("\n\tstd::basic_string<char,A> ");
 }
@@ -492,13 +492,13 @@ void test_generic_string::assignament_op(const char* msg)
 
 		// The first member function assigning a
 		// character of a certain value to a string
-		misc::generic_string<char> str1a("Hello ");
+		slt::basic_string<char> str1a("Hello ");
 		str1a = '0';
 		CPPUNIT_ASSERT(strcmp(str1a.c_str(), "0") == 0);
 
 		// The second member function assigning the
 		// characters of a C-string to a string
-		misc::generic_string<char> str1b;
+		slt::basic_string<char> str1b;
 		const char *cstr1b = "Out There";
 		str1b = cstr1b;
 		CPPUNIT_ASSERT(strcmp(str1b.c_str(), "Out There") == 0);
@@ -506,7 +506,7 @@ void test_generic_string::assignament_op(const char* msg)
 		// The third member function assigning the characters
 		// from one string to another string in two equivalent
 		// ways, comparing the assign and operator =
-		misc::generic_string<char> str1c("Hello"), str2c("Wide"), str3c("World");
+		slt::basic_string<char> str1c("Hello"), str2c("Wide"), str3c("World");
 
 		CPPUNIT_ASSERT(strcmp(str1c.c_str(), "Hello") == 0);
 		CPPUNIT_ASSERT(strcmp(str2c.c_str(), "Wide") == 0);
@@ -549,9 +549,9 @@ void test_generic_string::begin(const char* msg)
 
 	{
 		/* using MSDN sample */
-		misc::generic_string<char> str1("No way out."), str2;
-		misc::generic_string<char>::iterator strp_Iter, str1_Iter, str2_Iter;
-		misc::generic_string<char>::const_iterator str1_cIter;
+		slt::basic_string<char> str1("No way out."), str2;
+		slt::basic_string<char>::iterator strp_Iter, str1_Iter, str2_Iter;
+		slt::basic_string<char>::const_iterator str1_cIter;
 
 		str1_Iter = str1.begin();
 
@@ -579,7 +579,7 @@ void test_generic_string::begin(const char* msg)
 		{
 			*str1_cIter;
 		}
-		catch (const misc::exception& exc)
+		catch (const stl::exception& exc)
 		{
 			exc.what();			
 			bexc = true;
@@ -617,9 +617,9 @@ void test_generic_string::end(const char* msg)
 
 	{
 		/* using MSDN sample */
-		misc::generic_string<char> str1("No way out."), str2;
-		misc::generic_string<char>::iterator str_Iter, str1_Iter, str2_Iter;
-		misc::generic_string<char>::const_iterator str1_cIter;
+		slt::basic_string<char> str1("No way out."), str2;
+		slt::basic_string<char>::iterator str_Iter, str1_Iter, str2_Iter;
+		slt::basic_string<char>::const_iterator str1_cIter;
 
 		str1_Iter = str1.end();
 		str1_Iter--;
@@ -656,7 +656,7 @@ void test_generic_string::end(const char* msg)
 		{
 			*str1_cIter;
 		}
-		catch (const misc::exception& exc)
+		catch (const stl::exception& exc)
 		{
 			exc.what();
 			bexc = true;
@@ -691,9 +691,9 @@ void test_generic_string::rbegin(const char* msg)
 
 	{
 		/* using MSDN sample */
-		misc::generic_string<char> str1("Able was I ere I saw Elba"), str2;
-		misc::generic_string<char>::reverse_iterator str_rIter, str1_rIter, str2_rIter;
-		misc::generic_string<char>::const_reverse_iterator str1_rcIter;
+		slt::basic_string<char> str1("Able was I ere I saw Elba"), str2;
+		slt::basic_string<char>::reverse_iterator str_rIter, str1_rIter, str2_rIter;
+		slt::basic_string<char>::const_reverse_iterator str1_rcIter;
 
 		str1_rIter = str1.rbegin();
 
@@ -749,9 +749,9 @@ void test_generic_string::rend(const char* msg)
 
 	{
 		/* using MSDN sample */
-		misc::generic_string<char> str1("Able was I ere I saw Elba"), str2;
-		misc::generic_string<char>::reverse_iterator str_rIter, str1_rIter, str2_rIter;
-		misc::generic_string<char>::const_reverse_iterator str1_rcIter;
+		slt::basic_string<char> str1("Able was I ere I saw Elba"), str2;
+		slt::basic_string<char>::reverse_iterator str_rIter, str1_rIter, str2_rIter;
+		slt::basic_string<char>::const_reverse_iterator str1_rcIter;
 
 		str1_rIter = str1.rbegin();
 
@@ -800,14 +800,14 @@ void test_generic_string::size(const char* msg)
 
 	{
 		/* using MSDN sample */
-		misc::generic_string<char> str1("Hello world");
+		slt::basic_string<char> str1("Hello world");
 
 		// The size and length member functions differ in name only
-		misc::generic_string<char>::size_type sizeStr1, lenStr1;
+		slt::basic_string<char>::size_type sizeStr1, lenStr1;
 		sizeStr1 = str1.size();
 		lenStr1 = str1.length();
 
-		misc::generic_string<char>::size_type capStr1, max_sizeStr1;
+		slt::basic_string<char>::size_type capStr1, max_sizeStr1;
 		capStr1 = str1.capacity();
 		max_sizeStr1 = str1.max_size();
 
@@ -852,14 +852,14 @@ void test_generic_string::length(const char* msg)
 
 	{
 		/* using MSDN sample */
-		misc::generic_string<char> str1("Hello world");
+		slt::basic_string<char> str1("Hello world");
 
 		// The size and length member functions differ in name only
-		misc::generic_string<char>::size_type sizeStr1, lenStr1;
+		slt::basic_string<char>::size_type sizeStr1, lenStr1;
 		sizeStr1 = str1.size();
 		lenStr1 = str1.length();
 
-		misc::generic_string<char>::size_type capStr1, max_sizeStr1;
+		slt::basic_string<char>::size_type capStr1, max_sizeStr1;
 		capStr1 = str1.capacity();
 		max_sizeStr1 = str1.max_size();
 
@@ -934,10 +934,10 @@ void test_generic_string::resize(const char* msg)
 
 	{
 		/* using MSDN sample */
-		misc::generic_string<char> str1("Hello world");
-		misc::generic_string<char>::size_type sizeStr1;
+		slt::basic_string<char> str1("Hello world");
+		slt::basic_string<char>::size_type sizeStr1;
 		sizeStr1 = str1.size();
-		misc::generic_string<char>::size_type capStr1;
+		slt::basic_string<char>::size_type capStr1;
 		capStr1 = str1.capacity();
 
 		CPPUNIT_ASSERT(sizeStr1 == 11);
@@ -1000,10 +1000,10 @@ void test_generic_string::capacity(const char* msg)
 
 	{
 		/* using MSDN sample */
-		misc::generic_string<char> str1("Hello world");
-		misc::generic_string<char>::size_type sizeStr1;
+		slt::basic_string<char> str1("Hello world");
+		slt::basic_string<char>::size_type sizeStr1;
 		sizeStr1 = str1.size();
-		misc::generic_string<char>::size_type capStr1;
+		slt::basic_string<char>::size_type capStr1;
 		capStr1 = str1.capacity();
 
 		CPPUNIT_ASSERT(sizeStr1 == 11);
@@ -1061,10 +1061,10 @@ void test_generic_string::reserve(const char* msg)
 
 	{
 		/* using MSDN sample */
-		misc::generic_string<char> str1("Hello world");
-		misc::generic_string<char>::size_type sizeStr1;
+		slt::basic_string<char> str1("Hello world");
+		slt::basic_string<char>::size_type sizeStr1;
 		sizeStr1 = str1.size();
-		misc::generic_string<char>::size_type capStr1;
+		slt::basic_string<char>::size_type capStr1;
 		capStr1 = str1.capacity();
 
 		CPPUNIT_ASSERT(sizeStr1 == 11);
@@ -1125,8 +1125,8 @@ void test_generic_string::clear(const char* msg)
 	}
 
 	{
-		misc::generic_string<char> str1("Hello world"), str2;
-		misc::generic_string<char>::iterator str_Iter;
+		slt::basic_string<char> str1("Hello world"), str2;
+		slt::basic_string<char>::iterator str_Iter;
 		CPPUNIT_ASSERT(str1.begin() != str1.end());
 		str1.clear();
 		CPPUNIT_ASSERT(str1.begin() == str1.end());
@@ -1153,11 +1153,11 @@ void test_generic_string::empty(const char* msg)
 
 	{
 		/* MSDN sample */
-		misc::generic_string<char> str1("Hello world");
+		slt::basic_string<char> str1("Hello world");
 
 		CPPUNIT_ASSERT(!str1.empty());
 
-		misc::generic_string<char> str2;
+		slt::basic_string<char> str2;
 
 		CPPUNIT_ASSERT(str2.empty());
 	}
@@ -1191,14 +1191,14 @@ void test_generic_string::operator_access_element(const char* msg)
 		/* MSDN sample */
 		// The first member function assigning a
 		// character of a certain value to a string
-		misc::generic_string<char> str1a("Hello ");
+		slt::basic_string<char> str1a("Hello ");
 		str1a = '0';
 
 		CPPUNIT_ASSERT(str1a == "0");
 
 		// The second member function assigning the
 		// characters of a C-string to a string
-		misc::generic_string<char> str1b;
+		slt::basic_string<char> str1b;
 		const char *cstr1b = "Out There";
 		str1b = cstr1b;
 
@@ -1207,7 +1207,7 @@ void test_generic_string::operator_access_element(const char* msg)
 		// The third member function assigning the characters
 		// from one string to another string in two equivalent
 		// ways, comparing the assign and operator =
-		misc::generic_string<char> str1c("Hello"), str2c("Wide"), str3c("World");
+		slt::basic_string<char> str1c("Hello"), str2c("Wide"), str3c("World");
 
 		str1c.assign(str2c);
 
@@ -1242,15 +1242,15 @@ void test_generic_string::at(const char* msg)
 
 	{
 		/* MSDN sample */
-		misc::generic_string<char> str1("Hello world"), str2("Goodbye world");
-		const misc::generic_string<char> cstr1("Hello there"), cstr2("Goodbye now");
+		slt::basic_string<char> str1("Hello world"), str2("Goodbye world");
+		const slt::basic_string<char> cstr1("Hello there"), cstr2("Goodbye now");
 
 		CPPUNIT_ASSERT(str1 == "Hello world");
 		CPPUNIT_ASSERT(str2 == "Goodbye world");
 
 		// Element access to the non-const strings
-		misc::generic_string<char>::reference refStr1 = str1 [6];
-		misc::generic_string<char>::reference refStr2 = str2.at(3);
+		slt::basic_string<char>::reference refStr1 = str1 [6];
+		slt::basic_string<char>::reference refStr2 = str2.at(3);
 
 		CPPUNIT_ASSERT(refStr1 == 'w');
 		CPPUNIT_ASSERT(refStr2 == 'd');
@@ -1259,10 +1259,10 @@ void test_generic_string::at(const char* msg)
 		bool null_not_accesible = false;
 		try 
 		{
-			misc::generic_string<char>::const_reference null_elem = cstr1[ cstr1.length() ];
+			slt::basic_string<char>::const_reference null_elem = cstr1[ cstr1.length() ];
 			(void)null_elem;
 		}
-		catch (const misc::exception&)
+		catch (const stl::exception&)
 		{
 			null_not_accesible = true;
 		}
@@ -1270,8 +1270,8 @@ void test_generic_string::at(const char* msg)
 		CPPUNIT_ASSERT(null_not_accesible);
 
 		/* access null termination via .c_str() */
-		misc::generic_string<char>::const_reference crefStr1 = cstr1.c_str()[ cstr1.length() ];
-		misc::generic_string<char>::const_reference crefStr2 = cstr2.at(8);
+		slt::basic_string<char>::const_reference crefStr1 = cstr1.c_str()[ cstr1.length() ];
+		slt::basic_string<char>::const_reference crefStr2 = cstr2.at(8);
 
 		CPPUNIT_ASSERT(crefStr1 == '\0');
 		CPPUNIT_ASSERT(crefStr2 == 'n');
@@ -1302,7 +1302,7 @@ void test_generic_string::operator_plus_equal(const char* msg)
 		/* MSDN sample */
 		// The first member function
 		// appending a single character to a string
-		misc::generic_string<char> str1a("Hello");
+		slt::basic_string<char> str1a("Hello");
 		CPPUNIT_ASSERT(str1a == "Hello");
 
 		str1a += '!';
@@ -1311,7 +1311,7 @@ void test_generic_string::operator_plus_equal(const char* msg)
 
 		// The second member function
 		// appending a C-string to a string
-		misc::generic_string<char> str1b("Hello ");
+		slt::basic_string<char> str1b("Hello ");
 		const char *cstr1b = "Out There";
 
 		str1b += cstr1b;
@@ -1321,7 +1321,7 @@ void test_generic_string::operator_plus_equal(const char* msg)
 		// The third member function
 		// appending one string to another in two ways,
 		// comparing append and operator [ ]
-		misc::generic_string<char> str1d("Hello "), str2d("Wide "), str3d("World");
+		slt::basic_string<char> str1d("Hello "), str2d("Wide "), str3d("World");
 
 		CPPUNIT_ASSERT(str2d == "Wide ");
 
@@ -1366,7 +1366,7 @@ void test_generic_string::append(const char* msg)
 		/* MSDN sample */
 		// The first member function
 		// appending a C-string to a string
-		misc::generic_string<char> str1a("Hello ");
+		slt::basic_string<char> str1a("Hello ");
 		const char *cstr1a = "Out There ";
 
 		CPPUNIT_ASSERT(str1a == "Hello ");
@@ -1377,7 +1377,7 @@ void test_generic_string::append(const char* msg)
 
 		// The second member function
 		// appending part of a C-string to a string
-		misc::generic_string<char> str1b("Hello ");
+		slt::basic_string<char> str1b("Hello ");
 		const char *cstr1b = "Out There ";
 
 		str1b.append(cstr1b, 3);
@@ -1386,7 +1386,7 @@ void test_generic_string::append(const char* msg)
 
 		// The third member function
 		// appending part of one string to another
-		misc::generic_string<char> str1c("Hello "), str2c("Wide World ");
+		slt::basic_string<char> str1c("Hello "), str2c("Wide World ");
 		str1c.append(str2c, 5, 5);
 
 		CPPUNIT_ASSERT(str1c == "Hello World");
@@ -1394,7 +1394,7 @@ void test_generic_string::append(const char* msg)
 		// The fourth member function
 		// appending one string to another in two ways,
 		// comparing append and operator [ ]
-		misc::generic_string<char> str1d("Hello "), str2d("Wide "), str3d("World ");
+		slt::basic_string<char> str1d("Hello "), str2d("Wide "), str3d("World ");
 
 		str1d.append(str2d);
 
@@ -1406,14 +1406,14 @@ void test_generic_string::append(const char* msg)
 
 		// The fifth member function
 		// appending characters to a string
-		misc::generic_string<char> str1e("Hello ");
+		slt::basic_string<char> str1e("Hello ");
 		str1e.append(4, '!');
 
 		CPPUNIT_ASSERT(str1e == "Hello !!!!");
 
 		// The sixth member function
 		// appending a range of one string to another
-		misc::generic_string<char> str1f("Hello "), str2f("Wide World ");
+		slt::basic_string<char> str1f("Hello "), str2f("Wide World ");
 		str1f.append(str2f.begin() + 5, str2f.end() - 1);
 
 		CPPUNIT_ASSERT(str1f == "Hello World");
@@ -1440,8 +1440,8 @@ void test_generic_string::push_back(const char* msg)
 
 	{
 		/* MSDN sample */
-		misc::generic_string<char> str1("abc");
-		misc::generic_string<char>::iterator str_Iter, str1_Iter;
+		slt::basic_string<char> str1("abc");
+		slt::basic_string<char>::iterator str_Iter, str1_Iter;
 
 		str1.push_back('d');
 		str1_Iter = str1.end();
@@ -1619,7 +1619,7 @@ void test_generic_string::assign(const char* msg)
 		{
 			s1 = s0.assign(s0ie, s0ib);
 		}
-		catch(misc::exception&)
+		catch(stl::exception&)
 		{
 			diff_negative_not_throwing_at_the_moment = true; 
 		}
@@ -1629,7 +1629,7 @@ void test_generic_string::assign(const char* msg)
 		try
 		{
 			s1 = s0.assign(s0cie, s0cib);
-		}catch(misc::exception&)
+		}catch(stl::exception&)
 		{ 
 			diff_negative_not_throwing_at_the_moment = true; 
 		}
@@ -1719,7 +1719,7 @@ void test_generic_string::insert(const char* msg)
 		/* MSDN sample */
 		// The first member function inserting a C-string
 		// at a given position
-		misc::generic_string<char> str1a("way");
+		slt::basic_string<char> str1a("way");
 		const char *cstr1a = "a";
 		str1a.insert(0, cstr1a);
 
@@ -1727,7 +1727,7 @@ void test_generic_string::insert(const char* msg)
 
 		// The second member function inserting a C-string
 		// at a given position for a specified number of elements
-		misc::generic_string<char> str2a("Good");
+		slt::basic_string<char> str2a("Good");
 		const char *cstr2a = "Bye Bye Baby";
 		str2a.insert(4, cstr2a, 3);
 
@@ -1735,48 +1735,48 @@ void test_generic_string::insert(const char* msg)
 
 		// The third member function inserting a string
 		// at a given position
-		misc::generic_string<char> str3a("Bye");
-		misc::generic_string<char> str3b("Good");
+		slt::basic_string<char> str3a("Bye");
+		slt::basic_string<char> str3b("Good");
 		str3a.insert(0, str3b);
 
 		CPPUNIT_ASSERT(str3a == "GoodBye");
 
 		// The fourth member function inserting part of
 		// a string at a given position
-		misc::generic_string<char> str4a("Good ");
-		misc::generic_string<char> str4b("Bye Bye Baby");
+		slt::basic_string<char> str4a("Good ");
+		slt::basic_string<char> str4b("Bye Bye Baby");
 		str4a.insert(5, str4b, 8, 4);
 
 		CPPUNIT_ASSERT(str4a == "Good Baby");
 
 		// The fifth member function inserts a number of characters
 		// at a specified position in the string
-		misc::generic_string<char> str5("The number is: .");
+		slt::basic_string<char> str5("The number is: .");
 		str5.insert(15, 3, '3');
 
 		CPPUNIT_ASSERT(str5 == "The number is: 333.");
 
 		// The sixth member function inserts a character
 		// at a specified position in the string
-		misc::generic_string<char> str6("ABCDFG");
-		misc::generic_string<char>::iterator str6_Iter = (str6.begin() + 4);
+		slt::basic_string<char> str6("ABCDFG");
+		slt::basic_string<char>::iterator str6_Iter = (str6.begin() + 4);
 		str6.insert(str6_Iter, 'e');
 
 		CPPUNIT_ASSERT(str6 == "ABCDeFG");
 
 		// The seventh member function inserts a range
 		// at a specified position in the string
-		misc::generic_string<char> str7a("ABCDHIJ");
-		misc::generic_string<char> str7b("abcdefgh");
-		misc::generic_string<char>::iterator str7a_Iter = (str7a.begin() + 4);
+		slt::basic_string<char> str7a("ABCDHIJ");
+		slt::basic_string<char> str7b("abcdefgh");
+		slt::basic_string<char>::iterator str7a_Iter = (str7a.begin() + 4);
 		str7a.insert(str7a_Iter, str7b.begin() + 4, str7b.end() - 1);
 
 		CPPUNIT_ASSERT(str7a == "ABCDefgHIJ");
 
 		// The eigth member function inserts a number of
 		// characters at a specified position in the string
-		misc::generic_string<char> str8("ABCDHIJ");
-		misc::generic_string<char>::iterator str8_Iter = (str8.begin() + 4);
+		slt::basic_string<char> str8("ABCDHIJ");
+		slt::basic_string<char>::iterator str8_Iter = (str8.begin() + 4);
 		str8.insert(str8_Iter, 3, 'e');
 
 		CPPUNIT_ASSERT(str8 == "ABCDeeeHIJ");
@@ -1811,8 +1811,8 @@ void test_generic_string::erase(const char* msg)
 		/* MSDN sample */
 		// The 1st member function using a range demarcated
 		// by iterators
-		misc::generic_string<char> str1("Hello world");
-		misc::generic_string<char>::iterator str1_Iter;
+		slt::basic_string<char> str1("Hello world");
+		slt::basic_string<char>::iterator str1_Iter;
 
 		str1_Iter = str1.erase(str1.begin() + 3, str1.end() - 1);
 
@@ -1821,8 +1821,8 @@ void test_generic_string::erase(const char* msg)
 
 		// The 2nd member function erasing a char pointed to
 		// by an iterator
-		misc::generic_string<char> str2("Hello World");
-		misc::generic_string<char>::iterator str2_Iter;
+		slt::basic_string<char> str2("Hello World");
+		slt::basic_string<char>::iterator str2_Iter;
 
 		str2_Iter = str2.erase(str2.begin() + 5);
 		CPPUNIT_ASSERT(*str2_Iter == 'W');
@@ -1830,8 +1830,8 @@ void test_generic_string::erase(const char* msg)
 
 		// The 3rd member function erasing a number of chars
 		// after a char
-		misc::generic_string<char> str3("Hello computer"), str3m;
-		misc::generic_string<char>::iterator str3_Iter;
+		slt::basic_string<char> str3("Hello computer"), str3m;
+		slt::basic_string<char>::iterator str3_Iter;
 
 		str3m = str3.erase(6, 8);
 
@@ -1900,9 +1900,9 @@ void test_generic_string::replace(const char* msg)
 		// The first two member functions replace
 		// part of the operand string with
 		// characters from a parameter string or C-string
-		misc::generic_string<char> result1a, result1b;
-		misc::generic_string<char> s1o("AAAAAAAA");
-		misc::generic_string<char> s1p("BBB");
+		slt::basic_string<char> result1a, result1b;
+		slt::basic_string<char> s1o("AAAAAAAA");
+		slt::basic_string<char> s1p("BBB");
 		const char* cs1p = "CCC";
 
 		CPPUNIT_ASSERT(strcmp(s1o.c_str(), "AAAAAAAA") == 0);
@@ -1922,9 +1922,9 @@ void test_generic_string::replace(const char* msg)
 		// The third & fourth member function replace
 		// part of the operand string with characters
 		// form part of a parameter string or C-string
-		misc::generic_string<char> result2a, result2b;
-		misc::generic_string<char> s2o("AAAAAAAA");
-		misc::generic_string<char> s2p("BBB");
+		slt::basic_string<char> result2a, result2b;
+		slt::basic_string<char> s2o("AAAAAAAA");
+		slt::basic_string<char> s2p("BBB");
 		const char* cs2p = "CCC";
 		CPPUNIT_ASSERT(strcmp(s2o.c_str(), "AAAAAAAA") == 0);
 
@@ -1942,8 +1942,8 @@ void test_generic_string::replace(const char* msg)
 
 		// The fifth member function replaces
 		// part of the operand string with characters
-		misc::generic_string<char> result3a;
-		misc::generic_string<char> s3o("AAAAAAAA");
+		slt::basic_string<char> result3a;
+		slt::basic_string<char> s3o("AAAAAAAA");
 		char ch3p = 'C';
 
 		CPPUNIT_ASSERT(strcmp(s3o.c_str(), "AAAAAAAA") == 0);
@@ -1957,18 +1957,18 @@ void test_generic_string::replace(const char* msg)
 		// The sixth & seventh member functions replace
 		// part of the operand string, delineated with iterators,
 		// with a parameter string or C-string
-		misc::generic_string<char> s4o("AAAAAAAA");
-		misc::generic_string<char> s4p("BBB");
+		slt::basic_string<char> s4o("AAAAAAAA");
+		slt::basic_string<char> s4p("BBB");
 		const char* cs4p = "CCC";
 
 		CPPUNIT_ASSERT(strcmp(s4o.c_str(), "AAAAAAAA") == 0);
 		CPPUNIT_ASSERT(strcmp(s4p.c_str(), "BBB") == 0);
 		CPPUNIT_ASSERT(strcmp(cs4p, "CCC") == 0);
 
-		misc::generic_string<char>::iterator IterF0, IterL0;
+		slt::basic_string<char>::iterator IterF0, IterL0;
 		IterF0 = s4o.begin();
 		IterL0 = s4o.begin() + 3;
-		misc::generic_string<char> result4a, result4b;
+		slt::basic_string<char> result4a, result4b;
 		result4a = s4o.replace(IterF0, IterL0, s4p);
 
 		CPPUNIT_ASSERT(strcmp(result4a.c_str(), "BBBAAAAA") == 0);
@@ -1980,17 +1980,17 @@ void test_generic_string::replace(const char* msg)
 		// The 8th member function replaces
 		// part of the operand string delineated with iterators
 		// with a number of characters from a parameter C-string
-		misc::generic_string<char> s5o("AAAAAAAF");
+		slt::basic_string<char> s5o("AAAAAAAF");
 		const char* cs5p = "CCCBB";
 
 		CPPUNIT_ASSERT(strcmp(s5o.c_str(), "AAAAAAAF") == 0);
 		CPPUNIT_ASSERT(s5o == "AAAAAAAF");
 		CPPUNIT_ASSERT(strcmp(cs5p, "CCCBB") == 0);
 
-		misc::generic_string<char>::iterator IterF1, IterL1;
+		slt::basic_string<char>::iterator IterF1, IterL1;
 		IterF1 = s5o.begin();
 		IterL1 = s5o.begin() + 4;
-		misc::generic_string<char> result5a;
+		slt::basic_string<char> result5a;
 		result5a = s5o.replace(IterF1, IterL1, cs5p, 4);
 
 		CPPUNIT_ASSERT(strcmp(result5a.c_str(), "CCCBAAAF") == 0);
@@ -1999,13 +1999,13 @@ void test_generic_string::replace(const char* msg)
 		// The 9th member function replaces
 		// part of the operand string delineated with iterators
 		// with specified characters
-		misc::generic_string<char> s6o("AAAAAAAG");
+		slt::basic_string<char> s6o("AAAAAAAG");
 		char ch6p = 'q';
 
-		misc::generic_string<char>::iterator IterF2, IterL2;
+		slt::basic_string<char>::iterator IterF2, IterL2;
 		IterF2 = s6o.begin();
 		IterL2 = s6o.begin() + 3;
-		misc::generic_string<char> result6a;
+		slt::basic_string<char> result6a;
 		result6a = s6o.replace(IterF2, IterL2, 4, ch6p);
 
 		CPPUNIT_ASSERT(strcmp(result6a.c_str(), "qqqqAAAAG") == 0);
@@ -2013,18 +2013,18 @@ void test_generic_string::replace(const char* msg)
 		// The 10th member function replaces
 		// part of the operand string delineated with iterators
 		// with part of a parameter string delineated with iterators
-		misc::generic_string<char> s7o("OOOOOOO");
-		misc::generic_string<char> s7p("PPPP");
+		slt::basic_string<char> s7o("OOOOOOO");
+		slt::basic_string<char> s7p("PPPP");
 
 		CPPUNIT_ASSERT(strcmp(s7o.c_str(), "OOOOOOO") == 0);
 		CPPUNIT_ASSERT(strcmp(s7p.c_str(), "PPPP") == 0);
 
-		misc::generic_string<char>::iterator IterF3, IterL3, IterF4, IterL4;
+		slt::basic_string<char>::iterator IterF3, IterL3, IterF4, IterL4;
 		IterF3 = s7o.begin() + 1;
 		IterL3 = s7o.begin() + 3;
 		IterF4 = s7p.begin();
 		IterL4 = s7p.begin() + 2;
-		misc::generic_string<char> result7a;
+		slt::basic_string<char> result7a;
 		result7a = s7o.replace(IterF3, IterL3, IterF4, IterL4);
 
 		CPPUNIT_ASSERT(strcmp(result7a.c_str(), "OPPOOOO") == 0);
@@ -2051,10 +2051,10 @@ void test_generic_string::swap(const char* msg)
 	}
 
 	{
-		misc::generic_string<char> s1("");
-		misc::generic_string<char> s2("");
+		slt::basic_string<char> s1("");
+		slt::basic_string<char> s2("");
 		s1.swap(s2);
-		misc::generic_string<char> s3;
+		slt::basic_string<char> s3;
 		s3 = s1;
 		CPPUNIT_ASSERT(s1.empty());
 		CPPUNIT_ASSERT(s2.empty());
@@ -2096,7 +2096,7 @@ void test_generic_string::c_str(const char* msg)
 
 	{
 		/* MSDN sample */
-		misc::generic_string<char> str1("Hello world");
+		slt::basic_string<char> str1("Hello world");
 
 		// Converting a string to an array of characters
 		const char *ptr1 = 0;
@@ -2134,7 +2134,7 @@ void test_generic_string::data(const char* msg)
 
 	{
 		/* MSDN sample */
-		misc::generic_string<char> str1("Hello world");
+		slt::basic_string<char> str1("Hello world");
 
 		// Converting a string to an array of characters
 		const char *ptr1 = 0;
@@ -2224,7 +2224,7 @@ void test_generic_string::find(const char* msg)
 		bool throw1 = false;
 		try{
 		pos0 = s0.find("89", (size_t) - 1);
-		}catch(const misc::exception&){ throw1 = true; };
+		}catch(const stl::exception&){ throw1 = true; };
 		CPPUNIT_ASSERT( throw1 );
 
 		//count not corrected, throws
@@ -2348,7 +2348,7 @@ void test_generic_string::find_first_of(const char* msg)
 		bool throw1 = false;
 		try{
 		pos0 = s0.find_first_of("89", (size_t) - 1);
-		} catch(const misc::exception&){ throw1 = true; }
+		} catch(const stl::exception&){ throw1 = true; }
 		CPPUNIT_ASSERT( throw1 );
 
 		//count throws
@@ -2498,7 +2498,7 @@ void test_generic_string::find_first_not_of(const char* msg)
 		try{
 			pos0 = s0.find_first_not_of('8', (size_t) - 1);
 		}
-		catch(const misc::exception&){ throw1 = true; }
+		catch(const stl::exception&){ throw1 = true; }
 
 		CPPUNIT_ASSERT( throw1 );
 
@@ -2517,7 +2517,7 @@ void test_generic_string::find_first_not_of(const char* msg)
 		try{
 			pos0 = s0.find_first_not_of("098764321", (size_t) - 1);
 		}
-		catch(const misc::exception&){ throw1 = true; }
+		catch(const stl::exception&){ throw1 = true; }
 		CPPUNIT_ASSERT( throw1 );
 
 		pos0 = s0.find_first_not_of("098764321", 0, 0);
@@ -2546,7 +2546,7 @@ void test_generic_string::find_first_not_of(const char* msg)
 		try{
 			pos0 = s0.find_first_not_of(s1, (size_t) - 1);
 		}
-		catch(const misc::exception&){ throw1 = true; }
+		catch(const stl::exception&){ throw1 = true; }
 		CPPUNIT_ASSERT( throw1 );
 	}
 }

@@ -23,6 +23,7 @@
 #define __Session_hpp__
 
 #include <stddef.h>
+#include <string>
 #include <ForexConnect.h>
 #include <vector.hpp>
 
@@ -45,9 +46,9 @@ namespace fxcm
 	class Session
 	{
 	public:
-		typedef misc::vector<TradingSettings> TradingSettingsVec;
-		typedef misc::vector<fx::OHLCPrice> HistoryPricesVec;
-        typedef std::map<misc::string, fx::Offer> OffersMap;
+		typedef stl::vector<TradingSettings> TradingSettingsVec;
+		typedef stl::vector<fx::OHLCPrice> HistoryPricesVec;
+        typedef std::map<stl::string, fx::Offer> OffersMap;
 
 	public:
 		Session(const fxcm::LoginParams& loginParams,
@@ -67,11 +68,11 @@ namespace fxcm
 							 DATE dtFrom, DATE dtTo,
 							 HistoryPricesVec& historyPricesVec);
 		int OpenPosition(const fx::Offer& offer, int lots, bool buy,
-						misc::vector<fx::Position>& result);
+						stl::vector<fx::Position>& result);
 		int ClosePosition(const fx::Offer& offer, const fx::Position& position,
-						misc::vector<fx::Position>& result);
+						stl::vector<fx::Position>& result);
 		int GetOpenPositions(const fx::Offer& offer,
-						misc::vector<fx::Position>& result);
+						stl::vector<fx::Position>& result);
 		
 
 	private:
