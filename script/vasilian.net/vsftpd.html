@@ -91,10 +91,42 @@ iptables -A TCP -p tcp --dport 40000:40099 -j ACCEPT
 </pre>
 
 <p>
-FTP does not implement udp protocol<br><br>  
+FTP does not implement udp protocol<br><br>
 
 <a href="http://ftptest.net/" target="_blank">Check</a> if the server is running and accesible (check DSL router also for port forwarding).
 </p>
+
+<p>
+You can use FTP service to transfer files between 2 computers on the same SECURE network. You simply need to allow existing users in /etc/passwd to connect to FTP service. The authentication requires user+pass and the FTP will redirect the client to own $HOME directory. !!!Do not use this configuration on the servers facing the Internet!!!  
+</p>
+
+<pre>
+cat /etc/vsftpd/vsftpd.conf
+anonymous_enable=NO
+local_enable=YES
+write_enable=YES
+local_umask=022
+dirmessage_enable=YES
+xferlog_enable=YES
+connect_from_port_20=YES
+xferlog_std_format=YES
+listen=NO
+listen_ipv6=YES
+pam_service_name=vsftpd
+userlist_enable=YES
+tcp_wrappers=YES
+
+# passive FTP (PASV command)
+pasv_enable=YES
+port_enable=YES
+ftp_data_port=20
+listen_port=21
+max_clients=100
+max_per_ip=100
+max_login_fails=3
+pasv_min_port=40000
+pasv_max_port=40099
+</pre>
 
 <br>
 <a href="index.html">Back to main index</a>
