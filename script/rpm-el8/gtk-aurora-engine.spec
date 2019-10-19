@@ -27,6 +27,7 @@ Requires:     gtk2-devel
 
 
 
+
 %description
 Gtk+ engine for Aurora.
 
@@ -38,23 +39,26 @@ tar -zxvf $RPM_SOURCE_DIR/gtk-aurora-engine-1.5.1.tar.gz
 
 %build
 cd $RPM_BUILD_DIR/gtk-aurora-engine-1.5.1
-./configure --prefix=/
+# by default installs into /usr/lib instead of /usr/lib64
+./configure --prefix=%{_prefix} --libdir=%{_libdir}
 make -j8
 
 %install
 cd $RPM_BUILD_DIR/gtk-aurora-engine-1.5.1
-make DESTDIR=$RPM_BUILD_ROOT/usr install
+make DESTDIR=$RPM_BUILD_ROOT install
 
 
 %postun
 if [ "$1" == "0" ]; then
-	rm -rfvd /opt/gcc-6.1.0
+    rm -rfv %{_libdir}/gtk-2.0/2.10.0/engines/libaurora.la
+    rm -rfv %{_libdir}/gtk-2.0/2.10.0/engines/libaurora.so
 fi
 
 
 %files
 %defattr(-,root,root)
-
+%{_libdir}/gtk-2.0/2.10.0/engines/libaurora.la
+%{_libdir}/gtk-2.0/2.10.0/engines/libaurora.so
 
 
 %changelog

@@ -38,8 +38,8 @@ rm -rfvd   BUILD RPMS SOURCES SPECS SRPMS
 mkdir -pv  BUILD RPMS SOURCES SPECS SRPMS
 
 cp gtk-aurora-engine-1.5.1.tar.gz  SOURCES/
-cp gtk-aurora-engine-1.5.1.spec    SPECS/
+cp gtk-aurora-engine.spec          SPECS/
 
-rpmbuild -v --sign -bb --clean SPECS/gtk-aurora-engine-1.5.1.spec
+rpmbuild -v --sign -bb --clean SPECS/gtk-aurora-engine.spec
 
 find . -iname '*.rpm'
