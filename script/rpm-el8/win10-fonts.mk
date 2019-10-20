@@ -4,9 +4,7 @@ all:
 clean:
 	echo "Done"
 
-# Do not save win10-fonts.tar.gz on server.
-# Download a copy of the rpm and start from there.
-# Copy this win10-fonts.mk inside win10-fonts.tar.gz
+# Copy this as Makefile inside win10-fonts.tar.gz
 
 # make DESTDIR=/opt/win10-fonts install
 install:
