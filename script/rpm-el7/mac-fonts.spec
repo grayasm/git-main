@@ -3,7 +3,7 @@
 #
 # The current archive contains fonts relased with some versions of MacOS.
 #
-# ftp://vasilian.net/Misc/mac-fonts.tar.gz
+# ftp://vasilian.net/Gtk-Themes/mac-fonts.tar.gz
 
 
 %define    _topdir       /home/mihai/rpmbuild

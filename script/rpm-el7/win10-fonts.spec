@@ -5,7 +5,7 @@
 # The .fon fonts could not be converted with fontforge+autotrace, so they got
 # removed from the package.
 #
-# ftp://vasilian.net/Misc/win10-fonts.tar.gz
+# ftp://vasilian.net/Gtk-Themes/win10-fonts.tar.gz
 
 
 %define    _topdir       /home/mihai/rpmbuild
