@@ -1,10 +1,12 @@
 all:
-    echo "Done"
+	echo "Done"
 
 clean:
-    echo "Done"
+	echo "Done"
 
-# Copy this as Makefile inside win10-fonts.tar.gz
+# Do not save win10-fonts.tar.gz on server.
+# Download a copy of the rpm and start from there.
+# Copy this win10-fonts.mk inside win10-fonts.tar.gz
 
 # make DESTDIR=/opt/win10-fonts install
 install:
@@ -23,7 +25,6 @@ install:
 	install -D -m 0644 angsai.ttf           $(DESTDIR)/angsai.ttf
 	install -D -m 0644 angsa.ttf            $(DESTDIR)/angsa.ttf
 	install -D -m 0644 angsaub.ttf          $(DESTDIR)/angsaub.ttf
-	install -D -m 0644 angsaui.ttf          $(DESTDIR)/angsaub.ttf
 	install -D -m 0644 angsau.ttf           $(DESTDIR)/angsau.ttf
 	install -D -m 0644 angsauz.ttf          $(DESTDIR)/angsauz.ttf
 	install -D -m 0644 angsaz.ttf           $(DESTDIR)/angsaz.ttf

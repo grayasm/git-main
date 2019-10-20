@@ -39,11 +39,11 @@ tar -zxvf $RPM_SOURCE_DIR/win10-fonts.tar.gz
 
 %build
 cd $RPM_BUILD_DIR/win10-fonts
-make all
+make -f win10-fonts.mk all
 
 %install
 cd $RPM_BUILD_DIR/win10-fonts
-make DESTDIR=$RPM_BUILD_ROOT/usr/share/fonts/win10-fonts install
+make -f win10-fonts.mk DESTDIR=$RPM_BUILD_ROOT/usr/share/fonts/win10-fonts install
 
 
 %post
