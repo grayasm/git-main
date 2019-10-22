@@ -100,11 +100,10 @@ chmod 644 /etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-28-primary
 chcon -u system_u -t cert_t -v /etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-28-primary
 </pre>
 
-<p>Create /etc/yum.repos.d/fedora28.repo with the following content:</p>
-
+<p>Create /etc/yum.repos.d/fedora28.repo:</p>
 <pre>
 [fedora28]
-name=Fedora28 beta version for CentOS8
+name=Fedora28 beta version for CentOS-$releasever
 baseurl=http://archives.fedoraproject.org/pub/archive/fedora/linux/releases/28/Everything/$basearch/os/
 #mirrorlist=
 enabled=0
@@ -162,13 +161,12 @@ dnf --enablerepo=fedora28 install f28-backgrounds-xfce
 dnf remove $(dnf list installed | grep 'fedora28' | awk '{ print $1 }')
 </pre>
 
-<p>I maintain my own repo [vasilian] with SPEC files in: 
+<p>I maintain my own repo + spec files at: 
 <a href="https://github.com/grayasm/git-main/tree/master/script/rpm-el8" 
 target="_blank">https://github.com/grayasm/git-main/tree/master/script/rpm-el8</a>
 </p>
 
 <pre>
-cd > /etc/yum.repos.d/vasilian.repo << EOF
 [vasilian]
 name=Vasilian packages for CentOS-$releasever-$basearch
 baseurl=ftp://vasilian.net/CentOS/$releasever/extras/$basearch/
@@ -177,7 +175,6 @@ gpgcheck=1
 gpgkey=ftp://vasilian.net/RPM-GPG-KEY-vasilian
 protect=0
 priority=90
-EOF
 </pre>
 
 A few Gtk+ engines are missing from Fedora-21 and later
@@ -200,12 +197,6 @@ You can add the Xfce beautiful Aurora engine with:
 dnf --enablerepo=vasilian install gtk-aurora-engine
 </pre>
 
-<p>Install <a href="http://elrepo.org/tiki/tiki-index.php" target="_blank">elrepo</a> with priority=30 
-for <a href="http://elrepo.org/tiki/kmod-nvidia" target="_blank">kmod-nvidia</a></p>
-
-<p>Install <a href="https://computingforgeeks.com/install-adobe-flash-player-on-rhel-centos-8/" target="_blank">adobe</a> 
-with priority=30.</p>
-
 <p>Set Thunar automount feature.</p>
 <pre>
 dnf install udisks2 gvfs gvfs-fuse gvfs-gphoto2 gvfs-smb gvfs-archive
@@ -213,6 +204,16 @@ dnf --enablerepo=fedora28 install thunar-volman ntfs-3g
 </pre>
 
 <p>Set Thunar <a href="https://docs.xfce.org/xfce/thunar/custom-actions" target="_blank">custom actions</a> feature.</p>
+
+<p>
+<a href="lightdm.html">LightDM</a> display manager was written for C7. It can be adapted for C8 also.</p>
+</p>
+
+<p>Install <a href="http://elrepo.org/tiki/tiki-index.php" target="_blank">elrepo</a> with priority=30 
+for <a href="http://elrepo.org/tiki/kmod-nvidia" target="_blank">kmod-nvidia</a></p>
+
+<p>Install <a href="https://computingforgeeks.com/install-adobe-flash-player-on-rhel-centos-8/" target="_blank">adobe</a> 
+with priority=30.</p>
 
 <p>Optional the <a href="http://hivelogic.com/articles/top-10-programming-fonts/" target="_blank">top 10 programming fonts</a></p>
 
