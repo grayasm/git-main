@@ -200,14 +200,59 @@ dnf --enablerepo=vasilian install gtk-aurora-engine
 <p>Set Thunar automount feature.</p>
 <pre>
 dnf install udisks2 gvfs gvfs-fuse gvfs-gphoto2 gvfs-smb gvfs-archive
-dnf --enablerepo=fedora28 install thunar-volman ntfs-3g
+dnf --enablerepo=fedora28 install ntfs-3g
 </pre>
 
 <p>Set Thunar <a href="https://docs.xfce.org/xfce/thunar/custom-actions" target="_blank">custom actions</a> feature.</p>
 
-<p>
-<a href="lightdm.html">LightDM</a> display manager was written for C7. It can be adapted for C8 also.</p>
-</p>
+<p>LightDM display manager can replace GDM</p>
+<pre>
+dnf --enablerepo=fedora28 install lightdm
+</pre>
+
+<p>Lithdm gtk greeter uses a gtk3 css style</p>
+<pre>
+gedit /etc/lightdm/lightdm.conf &
+greeter-session=lightdm-gtk-greeter
+
+# save & enable the service
+systemctl disable gdm.service
+systemctl enable lightdm.service
+</pre>
+
+The background image is 2560x1080, so you may need to change it.
+<pre>
+cd /usr/share/pixmaps
+wget ftp://vasilian.net/Gtk-Themes/rhel8-2560x1080.jpg
+
+cd /tmp
+wget ftp://vasilian.net/Gtk-Themes/lightdm-gtk-clearlooks-grey.tar.gz
+tar -zxvf lightdm-gtk-clearlooks-grey.tar.gz
+mv lightdm-gtk-clearlooks-grey  /usr/share/themes
+chown -Rv root:root /usr/share/themes/lightdm-gtk-clearlooks-grey
+chcon -Rv -u system_u -t usr_t /usr/share/themes/lightdm-gtk-clearlooks-grey
+</pre>
+
+Edit the gtk greeter settings.
+<pre>
+gedit  /etc/lightdm/lightdm-gtk-greeter.conf &
+
+[greeter]
+background=/usr/share/pixmaps/rhel8-2560x1080.jpg
+theme-name=lightdm-gtk-clearlooks-grey
+icon-theme-name=Bluecurve
+font-name=DejaVu Sans Condensed:10
+#xft-antialias=
+xft-dpi=96
+#xft-hintstyle=
+#xft-rgba=
+show-indicators=~ally;~language;~session;~power;
+show-clock=true
+clock-format=%H:%M:%S
+keyboard=us
+position=50%,center 50%,center
+#screensaver-timeout=
+</pre>
 
 <p>Install <a href="http://elrepo.org/tiki/tiki-index.php" target="_blank">elrepo</a> with priority=30 
 for <a href="http://elrepo.org/tiki/kmod-nvidia" target="_blank">kmod-nvidia</a></p>
