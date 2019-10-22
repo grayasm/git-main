@@ -223,7 +223,7 @@ systemctl enable lightdm.service
 The background image is 2560x1080, so you may need to change it.
 <pre>
 cd /usr/share/pixmaps
-wget ftp://vasilian.net/Gtk-Themes/rhel8-2560x1080.jpg
+wget ftp://vasilian.net/Gtk-Themes/rhel8_2560x1080.jpg
 
 cd /tmp
 wget ftp://vasilian.net/Gtk-Themes/lightdm-gtk-clearlooks-grey.tar.gz
@@ -238,7 +238,9 @@ Edit the gtk greeter settings.
 gedit  /etc/lightdm/lightdm-gtk-greeter.conf &
 
 [greeter]
-background=/usr/share/pixmaps/rhel8-2560x1080.jpg
+background=/usr/share/background/default.png
+# if monitor resolution is 2560x1080 then use:
+# background=/usr/share/pixmaps/rhel8-2560x1080.jpg
 theme-name=lightdm-gtk-clearlooks-grey
 icon-theme-name=Bluecurve
 font-name=DejaVu Sans Condensed:10
@@ -246,8 +248,7 @@ font-name=DejaVu Sans Condensed:10
 xft-dpi=96
 #xft-hintstyle=
 #xft-rgba=
-show-indicators=~ally;~language;~session;~power;
-show-clock=true
+show-indicators=~ally;~host;~spacer;~clock;~spacer;~language;~session;~power;
 clock-format=%H:%M:%S
 keyboard=us
 position=50%,center 50%,center
@@ -281,7 +282,6 @@ fc-cache /usr/share/fonts/AnonymousPro-1.002.001
 </pre>
 
 <p>Monaco (From OSX)</p>
-
 <pre>
 cd /usr/share/fonts
 mkdir Monaco && cd Monaco
