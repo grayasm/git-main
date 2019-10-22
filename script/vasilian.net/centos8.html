@@ -100,7 +100,7 @@ chmod 644 /etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-28-primary
 chcon -u system_u -t cert_t -v /etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-28-primary
 </pre>
 
-<p>Create /etc/yum.repos.d/fedora28.repo:</p>
+<p>Create /etc/yum.repos.d/fedora28.repo</p>
 <pre>
 [fedora28]
 name=Fedora28 beta version for CentOS-$releasever
@@ -113,7 +113,7 @@ protect=0
 priority=90
 </pre>
 
-<p>Install Xfce desktop with:</p>
+<p>Install Xfce Desktop</p>
 <pre>
 dnf --enablerepo=fedora28 install xfce4-panel Thunar thunar-volman tumbler tumbler-extras  \
                                   xfce4-appfinder xfce4-power-manager xfce4-settings       \
@@ -121,14 +121,14 @@ dnf --enablerepo=fedora28 install xfce4-panel Thunar thunar-volman tumbler tumbl
                                   xfce4-notifyd
 </pre>
 
-<p>Install Xfce Gtk+ Engines with:</p>
+<p>Install Xfce Gtk+ Engines</p>
 <pre>
 dnf --enablerepo=fedora28 install gtk-murrine-engine gtk-nimbus-engine gtk-nodoka-engine   \
                                   gtk-nodoka-engine-extras gtk-unico-engine                \
                                   gtk-xfce-engine gtk2-engines xfce4-session-engines
 </pre>
 
-<p>Install Xfce plugins with:</p>
+<p>Install Xfce Plugins</p>
 <pre>
 dnf --enablerepo=fedora28 install xfce4-pulseaudio-plugin xfce4-calculator-plugin          \
                                   xfce4-statusnotifier-plugin xfce4-about xfce4-xkb-plugin \
@@ -136,7 +136,7 @@ dnf --enablerepo=fedora28 install xfce4-pulseaudio-plugin xfce4-calculator-plugi
                                   xfce4-whiskermenu-plugin xfce4-datetime-plugin
 </pre>
 
-<p>Install Xfce Themes with:</p>
+<p>Install Xfce Themes</p>
 <pre>
 dnf --enablerepo=fedora28 install clearlooks-phenix-gtk2-theme clearlooks-phenix-gtk3-theme \
                                   clearlooks-phenix-xfwm4-theme clearlooks-phenix-common   \
@@ -145,13 +145,14 @@ dnf --enablerepo=fedora28 install clearlooks-phenix-gtk2-theme clearlooks-phenix
                                   xfwm4-themes bluebird-xfwm4-theme albatross-xfwm4-theme
 </pre>
 
-<p>Install Xfce Icons with:</p>
+<p>Install Xfce Icons</p>
 <pre>
 dnf --enablerepo=fedora28 install bluecurve-icon-theme fedora-icon-theme \
-                                  humanity-icon-theme tango-icon-theme
+                                  humanity-icon-theme tango-icon-theme   \
+                                  elementary-xfce-icon-theme
 </pre>
 
-<p>Install Fedora backgrounds with:</p>
+<p>Install Fedora Backgrounds</p>
 <pre>
 dnf --enablerepo=fedora28 install f28-backgrounds-xfce 
 </pre>
@@ -161,7 +162,7 @@ dnf --enablerepo=fedora28 install f28-backgrounds-xfce
 dnf remove $(dnf list installed | grep 'fedora28' | awk '{ print $1 }')
 </pre>
 
-<p>I maintain my own repo + spec files at: 
+<p>I maintain my own C8 repository with SPEC files under 
 <a href="https://github.com/grayasm/git-main/tree/master/script/rpm-el8" 
 target="_blank">https://github.com/grayasm/git-main/tree/master/script/rpm-el8</a>
 </p>
@@ -177,7 +178,8 @@ protect=0
 priority=90
 </pre>
 
-A few Gtk+ engines are missing from Fedora-21 and later
+Fedora team started to remove the Gtk+ engines from the distribution.<br>
+Here are a few packages missing already in F21 and later.
 <pre>
 gtk-aurora-engine-1.5.1-11.fc20 (removed)
 gtk-equinox-engine-1.50-8.fc20  (removed)
@@ -192,25 +194,23 @@ gtk-xfce-engine-3.0.1-3.fc20
 gtk2-engiens-2.20.2-7.fc20
 </pre>
 
-You can add the Xfce beautiful Aurora engine with:
+Beautiful Aurora Engine
 <pre>
 dnf --enablerepo=vasilian install gtk-aurora-engine
 </pre>
 
-<p>Set Thunar automount feature.</p>
+<p>Thunar automount feature</p>
 <pre>
 dnf install udisks2 gvfs gvfs-fuse gvfs-gphoto2 gvfs-smb gvfs-archive
 dnf --enablerepo=fedora28 install ntfs-3g
 </pre>
 
-<p>Set Thunar <a href="https://docs.xfce.org/xfce/thunar/custom-actions" target="_blank">custom actions</a> feature.</p>
-
-<p>LightDM display manager can replace GDM</p>
+<p>Install LightDM as GDM replacement</p>
 <pre>
 dnf --enablerepo=fedora28 install lightdm
 </pre>
 
-<p>Lithdm gtk greeter uses a gtk3 css style</p>
+<p>LithDM Gtk+ greeter uses a gtk3 css style</p>
 <pre>
 gedit /etc/lightdm/lightdm.conf &
 greeter-session=lightdm-gtk-greeter
@@ -220,7 +220,7 @@ systemctl disable gdm.service
 systemctl enable lightdm.service
 </pre>
 
-The background image is 2560x1080, so you may need to change it.
+Set up the login theme
 <pre>
 cd /usr/share/pixmaps
 wget ftp://vasilian.net/Gtk-Themes/rhel8_2560x1080.jpg
@@ -233,14 +233,14 @@ chown -Rv root:root /usr/share/themes/lightdm-gtk-clearlooks-grey
 chcon -Rv -u system_u -t usr_t /usr/share/themes/lightdm-gtk-clearlooks-grey
 </pre>
 
-Edit the gtk greeter settings.
+Set up the greeter settings
 <pre>
 gedit  /etc/lightdm/lightdm-gtk-greeter.conf &
 
 [greeter]
 background=/usr/share/background/default.png
 # if monitor resolution is 2560x1080 then use:
-# background=/usr/share/pixmaps/rhel8-2560x1080.jpg
+# background=/usr/share/pixmaps/rhel8_2560x1080.jpg
 theme-name=lightdm-gtk-clearlooks-grey
 icon-theme-name=Bluecurve
 font-name=DejaVu Sans Condensed:10
@@ -254,6 +254,10 @@ keyboard=us
 position=50%,center 50%,center
 #screensaver-timeout=
 </pre>
+
+<p>Reboot and enjoy the XFCE Desktop.</p>
+
+<p>Set Thunar <a href="https://docs.xfce.org/xfce/thunar/custom-actions" target="_blank">custom actions</a> feature.</p>
 
 <p>Install <a href="http://elrepo.org/tiki/tiki-index.php" target="_blank">elrepo</a> with priority=30 
 for <a href="http://elrepo.org/tiki/kmod-nvidia" target="_blank">kmod-nvidia</a></p>
