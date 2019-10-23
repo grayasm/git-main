@@ -46,11 +46,6 @@ alias ..='cd ..'
 alias ...='cd ..; cd ..'
 alias diff='meld'
 
-# RPM Repos
-alias yumnux='yum --enablerepo=nux-dextop'
-alias yumfed='yum --enablerepo=fedora19'
-alias yumall='yum --enablerepo=nux-dexop --enablerepo=fedora19'
-
 # SVN shortcuts
 alias svnlu='svn status | grep ^\?'   # list unversioned
 alias svnru='svn status | grep ^\? | cut -c9- | xargs -d \\n rm -rv'
@@ -59,7 +54,7 @@ alias svnrevf='svn revert'
 
 # Python
 alias python='/usr/bin/python3'
-alias pip='/usr/bin/python3-pip'
+alias pip='/usr/bin/pip3'
 
 
 # Inside a tiling window manager
@@ -74,11 +69,6 @@ alias pip='/usr/bin/python3-pip'
 # alias term='xterm bash'
 # alias smartgit='/bin/sh /opt/smartgit/bin/smartgit.sh'
 # alias scron='xset -dpms; xset s off'
-
-
-# https://bugzilla.redhat.com/show_bug.cgi?id=1043686
-# Emacs bug with invalid color name: WINDOW_FOREGROUND/BACKGROUND
-# xrdb -load /dev/null
 
 
 # ssh client
