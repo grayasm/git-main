@@ -8,9 +8,9 @@ if [ $GIT_IS_AVAILABLE -ne 0 ]; then
 	exit
 fi
 
-# need bcompare (see: http://www.scootersoftware.com/download.php)
-if [ ! -f /usr/bin/bcompare ]; then
-	echo "install bcompare from http://www.scootersoftware.com"
+# need meld from Epel/Fedora (see: https://meldmerge.org/)
+if [ ! -f /usr/bin/meld ]; then
+	echo "install meld from epel or fedora"
 	exit
 fi
 
