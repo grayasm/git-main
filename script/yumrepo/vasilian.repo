@@ -1,5 +1,5 @@
 [vasilian]
-name=Vasilian packages for CentOS7
+name=Vasilian packages for CentOS-$releasever
 baseurl=ftp://138.68.68.112/CentOS/$releasever/extras/$basearch/
 enabled=1
 gpgcheck=1

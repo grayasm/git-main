@@ -1,3 +1,3 @@
 #!/bin/bash
 
-bcompare "$6" "$7"
+meld "$6" "$7"
