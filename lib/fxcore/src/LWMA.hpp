@@ -35,9 +35,9 @@ namespace fx
     class LWMA : public IND
     {
     public:
-        typedef fx::SMA::BarType			BarType;
-        typedef fx::SMA::PriceOrigin		PriceOrigin;
-        typedef std::list<fx::Price>		LWMAList;
+        typedef fx::SMA::BarType            BarType;
+        typedef fx::SMA::PriceOrigin        PriceOrigin;
+        typedef std::list<fx::Price>        LWMAList;
         // Timeframe is time_t
 
         LWMA();

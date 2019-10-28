@@ -23,67 +23,67 @@
 
 namespace fx
 {
-	EMA::EMA()
-	{
-		Init();
-	}
+    EMA::EMA()
+    {
+        Init();
+    }
 
-	EMA::EMA(
+    EMA::EMA(
         const stl::string& instrument,
-		int period,
-		Timeframe sec,
-		BarType barType,
-		PriceOrigin po)
-	{
-		Init();
+        int period,
+        Timeframe sec,
+        BarType barType,
+        PriceOrigin po)
+    {
+        Init();
 
         m_instrument = instrument;
-		m_period = period;
-		m_timeframe = sec;
-		m_barType = barType;
+        m_period = period;
+        m_timeframe = sec;
+        m_barType = barType;
         m_priceOrigin = po;
-		m_multiplier = 2.0 / (m_period + 1.0);
-		switch (barType)
-		{
-			case fx::SMA::BT_BAR:
-			{
-				m_bar = new fx::BAR(instrument, period, sec);
+        m_multiplier = 2.0 / (m_period + 1.0);
+        switch (barType)
+        {
+            case fx::SMA::BT_BAR:
+            {
+                m_bar = new fx::BAR(instrument, period, sec);
                 break;
-			}
-			case fx::SMA::BT_HABAR:
-			{
-				m_bar = new fx::HABAR(instrument, period, sec);
-				break;
-			}
-			default:
-				throw stl::exception("SMA unknown BAR type");
-		}		
-		m_firstSMA = fx::SMA(instrument, period, sec, barType, po);
-	}
+            }
+            case fx::SMA::BT_HABAR:
+            {
+                m_bar = new fx::HABAR(instrument, period, sec);
+                break;
+            }
+            default:
+                throw stl::exception("SMA unknown BAR type");
+        }        
+        m_firstSMA = fx::SMA(instrument, period, sec, barType, po);
+    }
 
-	EMA::~EMA()
-	{
+    EMA::~EMA()
+    {
         if (m_bar)
             delete m_bar;
-	}
+    }
 
-	EMA::EMA(const EMA& tc)
-	{
-		Init();
+    EMA::EMA(const EMA& tc)
+    {
+        Init();
 
-		*this = tc;
-	}
+        *this = tc;
+    }
 
-	EMA& EMA::operator=(const EMA& tc)
-	{
-		if (this != &tc)
-		{
-			m_instrument = tc.m_instrument;
-			m_period = tc.m_period;
-			m_timeframe = tc.m_timeframe;
+    EMA& EMA::operator=(const EMA& tc)
+    {
+        if (this != &tc)
+        {
+            m_instrument = tc.m_instrument;
+            m_period = tc.m_period;
+            m_timeframe = tc.m_timeframe;
             m_barType = tc.m_barType;
             m_priceOrigin = tc.m_priceOrigin;
-			m_multiplier = tc.m_multiplier;
+            m_multiplier = tc.m_multiplier;
             if (tc.m_bar)
             {
                 switch (tc.m_barType)
@@ -114,65 +114,65 @@ namespace fx
                     delete m_bar;
                 m_bar = NULL;
             }
-			m_firstSMA = tc.m_firstSMA;
-			m_currEMA = tc.m_currEMA;
-			m_emaList = tc.m_emaList;
-		}
+            m_firstSMA = tc.m_firstSMA;
+            m_currEMA = tc.m_currEMA;
+            m_emaList = tc.m_emaList;
+        }
 
-		return *this;
-	}
+        return *this;
+    }
 
-	const stl::string& EMA::GetInstrument() const
-	{
-		return m_instrument;
-	}
+    const stl::string& EMA::GetInstrument() const
+    {
+        return m_instrument;
+    }
 
-	int EMA::GetPeriod() const
-	{
-		return m_period;
-	}
+    int EMA::GetPeriod() const
+    {
+        return m_period;
+    }
 
-	EMA::Timeframe EMA::GetTimeframe() const
-	{
-		return m_timeframe;
-	}
+    EMA::Timeframe EMA::GetTimeframe() const
+    {
+        return m_timeframe;
+    }
     
-	bool EMA::IsValid() const
-	{
-		return (m_period > 1 &&
+    bool EMA::IsValid() const
+    {
+        return (m_period > 1 &&
                 m_period == m_emaList.size() &&
                 m_currEMA.GetBuy() > 0 &&
                 m_currEMA.GetSell() > 0);
-	}
+    }
 
-	void EMA::Update(const fx::Offer& offer)
-	{
-		if (m_instrument != offer.GetInstrument())
-			throw stl::exception("EMA offer is invalid");
+    void EMA::Update(const fx::Offer& offer)
+    {
+        if (m_instrument != offer.GetInstrument())
+            throw stl::exception("EMA offer is invalid");
 
-		/*	http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:moving_averages
-			Example for 10 period EMA:
-			Initial SMA: 10_period_SUM / 10			
-			Multiplier: (2 / (Time periods + 1) ) = (2 / (10 + 1) ) = 0.1818 (18.18%)
-			EMA: {Close - EMA(previous)} x multiplier + EMA(previous).
-		*/
-		
-		//	1st EMA is an SMA.
-		if (!m_firstSMA.IsValid())
-		{
-			m_firstSMA.Update(offer);
-            m_bar->Update(offer);   // time alignment			
+        /*    http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:moving_averages
+            Example for 10 period EMA:
+            Initial SMA: 10_period_SUM / 10            
+            Multiplier: (2 / (Time periods + 1) ) = (2 / (10 + 1) ) = 0.1818 (18.18%)
+            EMA: {Close - EMA(previous)} x multiplier + EMA(previous).
+        */
+        
+        //    1st EMA is an SMA.
+        if (!m_firstSMA.IsValid())
+        {
+            m_firstSMA.Update(offer);
+            m_bar->Update(offer);   // time alignment            
             return;
-		}
+        }
 
 
         // add 1st EMA
-		if (m_emaList.empty())
-		{
-			fx::Price price;
-			m_firstSMA.GetValue(price);
-			m_emaList.push_back(price);
-		}
+        if (m_emaList.empty())
+        {
+            fx::Price price;
+            m_firstSMA.GetValue(price);
+            m_emaList.push_back(price);
+        }
 
 
         bool isNew = m_bar->IsNew(offer);
@@ -215,20 +215,20 @@ namespace fx
             // paint a new bar
             m_bar->Update(offer);
         }
-	}
+    }
 
-	const sys::time& EMA::GetRefTime() const
-	{
-		return m_bar->GetRefTime();
-	}
+    const sys::time& EMA::GetRefTime() const
+    {
+        return m_bar->GetRefTime();
+    }
 
-	EMA::PriceOrigin EMA::GetPriceOrigin() const
-	{
-		return m_firstSMA.GetPriceOrigin();
-	}
+    EMA::PriceOrigin EMA::GetPriceOrigin() const
+    {
+        return m_firstSMA.GetPriceOrigin();
+    }
 
-	void EMA::GetValue(fx::Price& average) const
-	{
+    void EMA::GetValue(fx::Price& average) const
+    {
         if (m_period < 2 ||
             m_emaList.size() != m_period ||
             m_currEMA.GetBuy() == 0 ||
@@ -237,20 +237,20 @@ namespace fx
             throw stl::exception("EMA is invalid");
         }
 
-		average = m_currEMA;
-	}
+        average = m_currEMA;
+    }
 
-	void EMA::Init()
-	{
-		m_instrument = "";
-		m_period = -1;
-		m_timeframe = 0;
+    void EMA::Init()
+    {
+        m_instrument = "";
+        m_period = -1;
+        m_timeframe = 0;
         m_barType = fx::SMA::BT_BAR;
         m_priceOrigin = fx::SMA::PRICE_CLOSE;
-		m_multiplier = 0;
-		m_bar = NULL;
-		// m_firstSMA - default;
-		m_currEMA = fx::Price(0, 0);
-		// m_emaList - clean;
-	}
+        m_multiplier = 0;
+        m_bar = NULL;
+        // m_firstSMA - default;
+        m_currEMA = fx::Price(0, 0);
+        // m_emaList - clean;
+    }
 } // namespace

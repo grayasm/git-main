@@ -37,7 +37,7 @@ namespace fx
         StrategyLWMACross(
             fx::MarketPlugin* plugin,
             const stl::string& instrument);
-        
+
         ~StrategyLWMACross();
         StrategyLWMACross(const StrategyLWMACross&) = delete;
         StrategyLWMACross& operator=(const StrategyLWMACross&) = delete;
@@ -54,16 +54,16 @@ namespace fx
 
 
     private:
-        fx::MarketPlugin*       m_plugin;
-        stl::string            m_instrument;
-        // -----------------------------
-        fx::HABAR               m_habar;
-        fx::LWMA                m_lwma1;
-        fx::LWMA                m_lwma2;
-        fx::Transaction         m_tr;
-        double                  m_closedPL;
-        double                  m_closedGPL;
-        bool                    m_isCancelled;
+        fx::MarketPlugin*   m_plugin;
+        stl::string         m_instrument;
+        // ------------------------------
+        fx::HABAR           m_habar;
+        fx::LWMA            m_lwma1;
+        fx::LWMA            m_lwma2;
+        fx::Transaction     m_tr;
+        double              m_closedPL;
+        double              m_closedGPL;
+        bool                m_isCancelled;
         // ------------------------------
     };
 } // namespace

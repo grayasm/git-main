@@ -92,9 +92,9 @@ namespace fx
         m_lwma2.Update(offer);
 
 
-        //fx::Price lwma1P, lwma2P;
-        //m_lwma1.GetValue(lwma1P);
-        //m_lwma2.GetValue(lwma2P);
+        //  fx::Price lwma1P, lwma2P;
+        //  m_lwma1.GetValue(lwma1P);
+        //  m_lwma2.GetValue(lwma2P);
 
    
         if (canOpen && !isBuy)
@@ -124,8 +124,8 @@ namespace fx
             OpenPosition(offer, true); // buy
         }
 
-        //m_prevBid1 = lwma1P.GetSell();
-        //m_prevBid2 = lwma2P.GetSell();
+        //  m_prevBid1 = lwma1P.GetSell();
+        //  m_prevBid2 = lwma2P.GetSell();
     }
 
 
