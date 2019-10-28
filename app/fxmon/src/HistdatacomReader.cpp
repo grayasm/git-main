@@ -1,20 +1,20 @@
 /*
-	Copyright (C) 2018 Mihai Vasilian
+    Copyright (C) 2018 Mihai Vasilian
 
-	This program is free software; you can redistribute it and/or modify it
-	under the terms of the GNU General Public License as published by the
-	Free Software Foundation; either version 2 of the License, or (at your
-	option) any later version.
+    This program is free software; you can redistribute it and/or modify it
+    under the terms of the GNU General Public License as published by the
+    Free Software Foundation; either version 2 of the License, or (at your
+    option) any later version.
 
-	This program is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-	See the GNU General Public License for more details.
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+    See the GNU General Public License for more details.
 
-	You should have received a copy of the GNU General Public License along
-	with this program. If not, see http://www.gnu.org/licenses/.
+    You should have received a copy of the GNU General Public License along
+    with this program. If not, see http://www.gnu.org/licenses/.
 
-	contact: grayasm@gmail.com
+    contact: grayasm@gmail.com
 */
 
 #include "HistdatacomReader.hpp"
@@ -28,7 +28,7 @@ HistdatacomReader::HistdatacomReader(const fx::Offer& offer, int year)
     m_offer = offer;
     m_year = year;
     // ------------
-	const stl::string& instrument = offer.GetInstrument();
+    const stl::string& instrument = offer.GetInstrument();
     if      (instrument == "EUR/USD" && m_year == 2008) LoadEURUSD2008();
     else if (instrument == "EUR/USD" && m_year == 2017) LoadEURUSD2017();
     else if (instrument == "EUR/JPY" && m_year == 2017) LoadEURJPY2017();
@@ -37,9 +37,9 @@ HistdatacomReader::HistdatacomReader(const fx::Offer& offer, int year)
     else
         throw stl::exception("HistdatacomReader unknown instrument");
 
-	m_ofvPos = 0;
-	// m_offersVec; - empty
-	m_ovPos = 0;
+    m_ofvPos = 0;
+    // m_offersVec; - empty
+    m_ovPos = 0;
 }
 
 HistdatacomReader::~HistdatacomReader()
@@ -48,168 +48,168 @@ HistdatacomReader::~HistdatacomReader()
 
 bool HistdatacomReader::GetOffer(fx::Offer& offer)
 {
-	if (m_ovPos < m_offersVec.size())
-	{
-		offer = m_offersVec[m_ovPos++];
-		if (offer.GetPrecision() == 0 || offer.GetPointSize() == 0 ||
-			offer.GetBid() == 0.0 || offer.GetAsk() == 0.0)
-		{
-			// invalid quote
-			return GetOffer(offer);
-		}
+    if (m_ovPos < m_offersVec.size())
+    {
+        offer = m_offersVec[m_ovPos++];
+        if (offer.GetPrecision() == 0 || offer.GetPointSize() == 0 ||
+            offer.GetBid() == 0.0 || offer.GetAsk() == 0.0)
+        {
+            // invalid quote
+            return GetOffer(offer);
+        }
 
-		return true;
-	}
+        return true;
+    }
 
-	if (m_ofvPos < m_offerFileVec.size())
-	{
-		m_offersVec.resize(0);
-		m_ovPos = 0;
-		ParseFile(m_offerFileVec[m_ofvPos++], m_offersVec);
-		return GetOffer(offer);
-	}
+    if (m_ofvPos < m_offerFileVec.size())
+    {
+        m_offersVec.resize(0);
+        m_ovPos = 0;
+        ParseFile(m_offerFileVec[m_ofvPos++], m_offersVec);
+        return GetOffer(offer);
+    }
 
-	return false;
+    return false;
 }
 
 
 void HistdatacomReader::ParseFile(
     const stl::string& filePath,
-	stl::vector<fx::Offer>& result)
+    stl::vector<fx::Offer>& result)
 {
-	sys::filename offerFile(filePath);
-	if (!offerFile.access(F_OK))
-		return; // error
+    sys::filename offerFile(filePath);
+    if (!offerFile.access(F_OK))
+        return; // error
 
-	FILE* pf = fopen(offerFile.get_path().c_str(), "r");
-	if (pf == NULL)
-		return; // error
+    FILE* pf = fopen(offerFile.get_path().c_str(), "r");
+    if (pf == NULL)
+        return; // error
 
-	const int bufsz = 1000000;
-	char buf[bufsz];
-	int bufmax = 0;
-	int bufpos = 0;
+    const int bufsz = 1000000;
+    char buf[bufsz];
+    int bufmax = 0;
+    int bufpos = 0;
 
-	// assume EUR/USD for now
-	fx::Offer offer(
-		m_offer.GetOfferID(),
+    // assume EUR/USD for now
+    fx::Offer offer(
+        m_offer.GetOfferID(),
         m_offer.GetInstrument(),
-		m_offer.GetPrecision(),    // precision
-		m_offer.GetPointSize(),    // pointSize
-		sys::time(),
-		0,		// bid
-		0,		// ask
-		0,		// vol
-		true);	// trading is open
+        m_offer.GetPrecision(),    // precision
+        m_offer.GetPointSize(),    // pointSize
+        sys::time(),
+        0,        // bid
+        0,        // ask
+        0,        // vol
+        true);    // trading is open
 
-	stl::string fline;
-	char c;
+    stl::string fline;
+    char c;
 
-	int year = 0;
-	int month = 0;
-	int day = 0;
-
-
-	while (true) //(c = fgetc(pf)) != EOF)
-	{
-		if (bufpos < bufmax) {
-			c = buf[bufpos++];
-		}
-		else if (!feof(pf)) {
-			bufmax = fread(buf, sizeof(char), bufsz, pf);
-			bufpos = 0;
-			continue;
-		}
-		else {
-			// end of stream
-			break;
-		}
+    int year = 0;
+    int month = 0;
+    int day = 0;
 
 
-		if (c == '\n')
-		{
-			char* pch;
-			char str[1000];
-			strcpy(str, fline.c_str());
-			stl::string s1;
-			int i = 0;
+    while (true) //(c = fgetc(pf)) != EOF)
+    {
+        if (bufpos < bufmax) {
+            c = buf[bufpos++];
+        }
+        else if (!feof(pf)) {
+            bufmax = fread(buf, sizeof(char), bufsz, pf);
+            bufpos = 0;
+            continue;
+        }
+        else {
+            // end of stream
+            break;
+        }
 
-			pch = strtok(str, " ,");
-			while (pch != NULL)
-			{
-				i++;
-				// 20171201 000000043,1.191100,1.191140,0
-				// 20171201 002359120,1.191100,1.191140,0
-				if (i == 1)
-				{
-					s1 = stl::string(pch);
-					int fulldate = 0;
-					stl::to_value(s1, fulldate);
-					year = fulldate / 10000;
-					month = (fulldate - year * 10000) / 100;
-					day = fulldate - year * 10000 - month * 100;
-				}
-				else if (i == 2)
-				{
-					s1 = stl::string(pch);
-					int fulltime = 0;
-					stl::to_value(s1, fulltime);
-					int hour = fulltime / 10000000;
-					int min = fulltime / 100000;
-					if (min >= 100)
-						min -= hour * 100;
-					int milsec = fulltime - hour * 10000000 - min * 100000;
-					int sec = milsec / 1000;
 
-					sys::time::Month mon = (sys::time::Month)(sys::time::JAN + month - 1);
+        if (c == '\n')
+        {
+            char* pch;
+            char str[1000];
+            strcpy(str, fline.c_str());
+            stl::string s1;
+            int i = 0;
 
-					sys::time otime(year, mon, day, hour, min, sec);
-					// time is EST (Eastern Time without Daylight Saving)
-					// because I calculate with UTC makes sense to covert now
-					otime += 5 * sys::time::hourSEC;
+            pch = strtok(str, " ,");
+            while (pch != NULL)
+            {
+                i++;
+                // 20171201 000000043,1.191100,1.191140,0
+                // 20171201 002359120,1.191100,1.191140,0
+                if (i == 1)
+                {
+                    s1 = stl::string(pch);
+                    int fulldate = 0;
+                    stl::to_value(s1, fulldate);
+                    year = fulldate / 10000;
+                    month = (fulldate - year * 10000) / 100;
+                    day = fulldate - year * 10000 - month * 100;
+                }
+                else if (i == 2)
+                {
+                    s1 = stl::string(pch);
+                    int fulltime = 0;
+                    stl::to_value(s1, fulltime);
+                    int hour = fulltime / 10000000;
+                    int min = fulltime / 100000;
+                    if (min >= 100)
+                        min -= hour * 100;
+                    int milsec = fulltime - hour * 10000000 - min * 100000;
+                    int sec = milsec / 1000;
 
-					offer.SetTime(otime);
-				}
-				else if (i == 3)
-				{
-					s1 = stl::string(pch);
-					double bid = 0;
-					stl::to_value(s1, bid);
-					offer.SetBid(bid);					
-				}
-				else if (i == 4)
-				{
-					s1 = stl::string(pch);
-					double ask = 0;
-					stl::to_value(s1, ask);
-					offer.SetAsk(ask);
-				}
-				else if (i == 5)
-				{
-					s1 = stl::string(pch);
-					double vol = 0;
-					stl::to_value(s1, vol);
-					offer.SetVolume(vol);
-				}
+                    sys::time::Month mon = (sys::time::Month)(sys::time::JAN + month - 1);
 
-				pch = strtok(NULL, ",=");
-			} // while(pch)
+                    sys::time otime(year, mon, day, hour, min, sec);
+                    // time is EST (Eastern Time without Daylight Saving)
+                    // because I calculate with UTC makes sense to covert now
+                    otime += 5 * sys::time::hourSEC;
 
-			
-			result.push_back(offer);
+                    offer.SetTime(otime);
+                }
+                else if (i == 3)
+                {
+                    s1 = stl::string(pch);
+                    double bid = 0;
+                    stl::to_value(s1, bid);
+                    offer.SetBid(bid);                    
+                }
+                else if (i == 4)
+                {
+                    s1 = stl::string(pch);
+                    double ask = 0;
+                    stl::to_value(s1, ask);
+                    offer.SetAsk(ask);
+                }
+                else if (i == 5)
+                {
+                    s1 = stl::string(pch);
+                    double vol = 0;
+                    stl::to_value(s1, vol);
+                    offer.SetVolume(vol);
+                }
+
+                pch = strtok(NULL, ",=");
+            } // while(pch)
+
+            
+            result.push_back(offer);
 #ifdef DEBUG
-			if (result.size() % 1000 == 0)
-				stl::cout << "fetched " << result.size() << std::endl;
+            if (result.size() % 1000 == 0)
+                stl::cout << "fetched " << result.size() << std::endl;
 #endif
 
-			fline.resize(0);
-			continue;
-		} // c == '\n'
+            fline.resize(0);
+            continue;
+        } // c == '\n'
 
-		fline.append(1, c);
-	}
+        fline.append(1, c);
+    }
 
-	fclose(pf);
+    fclose(pf);
 }
 
 

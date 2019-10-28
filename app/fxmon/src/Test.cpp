@@ -53,167 +53,167 @@ static void Time2DATE(time_t tt, DATE& dt);
 
 int test2()
 {
-	fxcm::LoginParams::Ptr loginParams = new fxcm::LoginParams("monitor.ini");
-	fxcm::IniParams::Ptr iniParams = new fxcm::IniParams("monitor.ini");
+    fxcm::LoginParams::Ptr loginParams = new fxcm::LoginParams("monitor.ini");
+    fxcm::IniParams::Ptr iniParams = new fxcm::IniParams("monitor.ini");
 
-	// checkObligatoryParams
-	if (loginParams->GetLogin().empty() ||
-		loginParams->GetPassword().empty() ||
-		loginParams->GetUrl().empty() ||
-		loginParams->GetConnection().empty() ||
-		iniParams->GetInstrument().empty())
-		return -1;
+    // checkObligatoryParams
+    if (loginParams->GetLogin().empty() ||
+        loginParams->GetPassword().empty() ||
+        loginParams->GetUrl().empty() ||
+        loginParams->GetConnection().empty() ||
+        iniParams->GetInstrument().empty())
+        return -1;
 
-	fxcm::Session session(*loginParams, *iniParams);
-	session.Login();
-	session.GetOffers();
-	
-	// session.GetOrders();
-	
-	msleep(2000);
-	
-	int ret = 0;
+    fxcm::Session session(*loginParams, *iniParams);
+    session.Login();
+    session.GetOffers();
+    
+    // session.GetOrders();
+    
+    msleep(2000);
+    
+    int ret = 0;
 
-	fx::Offer offer;
-	ret = session.GetLastOffer(offer, "EUR/USD");
-	if (ret == fxcm::ErrorCodes::ERR_SUCCESS)
-	{
-		stl::vector<fx::Position> result;
-		session.GetOpenPositions(offer, result);
-		
-		stl::cout << "\n";
-		for (int i = 0; i < result.size(); ++i)
-			stl::cout << result[i].ToString().c_str() << std::endl;
-	}	
+    fx::Offer offer;
+    ret = session.GetLastOffer(offer, "EUR/USD");
+    if (ret == fxcm::ErrorCodes::ERR_SUCCESS)
+    {
+        stl::vector<fx::Position> result;
+        session.GetOpenPositions(offer, result);
+        
+        stl::cout << "\n";
+        for (int i = 0; i < result.size(); ++i)
+            stl::cout << result[i].ToString().c_str() << std::endl;
+    }    
 
-	session.Logout();	
-	return 0;
+    session.Logout();    
+    return 0;
 }
 
 
 int test3()
 {
-	// OffersReader oreader("EUR/USD");
-	HistoryPricesReader oreader("EUR/USD");
-	// HistdatacomReader oreader("EUR/USD");
+    // OffersReader oreader("EUR/USD");
+    HistoryPricesReader oreader("EUR/USD");
+    // HistdatacomReader oreader("EUR/USD");
 
-	fx::Offer prev_offer, curr_offer;
-	
-	fx::SMA sma1("EUR/USD", 10, sys::time::hourSEC, fx::SMA::BT_BAR, fx::SMA::PRICE_CLOSE); // (F)ast
-	fx::SMA sma2("EUR/USD", 70, sys::time::hourSEC, fx::SMA::BT_BAR, fx::SMA::PRICE_CLOSE); // (S)low
+    fx::Offer prev_offer, curr_offer;
+    
+    fx::SMA sma1("EUR/USD", 10, sys::time::hourSEC, fx::SMA::BT_BAR, fx::SMA::PRICE_CLOSE); // (F)ast
+    fx::SMA sma2("EUR/USD", 70, sys::time::hourSEC, fx::SMA::BT_BAR, fx::SMA::PRICE_CLOSE); // (S)low
 
-	double prevBuy1 = 0, currBuy1 = 0;
-	double prevBuy2 = 0, currBuy2 = 0;
-	
-	fx::Price av1, av2;
-	fx::Position pos;
-	int lots = 1;
+    double prevBuy1 = 0, currBuy1 = 0;
+    double prevBuy2 = 0, currBuy2 = 0;
+    
+    fx::Price av1, av2;
+    fx::Position pos;
+    int lots = 1;
 
-	double totalPL = 0;
-	double totalGPL = 0;
-
-
-	while (true)
-	{
-		if (!oreader.GetOffer(curr_offer))
-			break;
-		
-		sma1.Update(curr_offer);
-		sma2.Update(curr_offer);
-
-		if (!sma1.IsValid() || !sma2.IsValid())
-			continue;
-		
-		if (prev_offer.GetInstrument().empty())
-		{
-			prev_offer = curr_offer;
-			continue;
-		}
-		
-		sma1.GetValue(av1);
-		sma2.GetValue(av2);
-
-		currBuy1 = av1.GetBuy();
-		currBuy2 = av2.GetBuy();
-
-		if (prevBuy1 == 0)
-		{
-			prevBuy1 = currBuy1;
-			prevBuy2 = currBuy2;
-			continue;
-		}
-
-		bool noPos = pos.GetCurrency().GetSymbol().empty();
-		
-		bool bSell = (prevBuy1 > prevBuy2 && currBuy1 <= currBuy2);
-		bool bBuy = (prevBuy1 < prevBuy2 && currBuy1 >= currBuy2);
-		
-		if (bBuy || bSell)
-		{
-			// must close existing position?
-			if (!noPos)
-			{
-				ClosePosition(curr_offer, pos);
-				double currPL = pos.GetPL();
-				double currGPL = pos.GetGPL();
-
-				totalPL += currPL;
-				totalGPL += currGPL;
-
-				stl::cout << "currPL=" << currPL
-					<< " totalPL=" << totalPL << " totalGPL=" << totalGPL
-					<< std::endl;
-			}
-
-			bool b_buy = (bSell == true ? false : (bBuy == true ? true : false));
-			OpenPosition(curr_offer, lots, b_buy, pos);
-		}
-		
-		// update offer
-		prev_offer = curr_offer;
-		prevBuy1 = currBuy1;
-		prevBuy2 = currBuy2;
-	}
+    double totalPL = 0;
+    double totalGPL = 0;
 
 
-	FILE *pf = fopen("TradeResult.txt", "a+");
-	if (pf == NULL)
-		return 0;
+    while (true)
+    {
+        if (!oreader.GetOffer(curr_offer))
+            break;
+        
+        sma1.Update(curr_offer);
+        sma2.Update(curr_offer);
 
-	stl::string slog;
-	slog += "totalPL=";
-	slog += stl::from_value(totalPL, 2);
-	slog += " totalGPL=";
-	slog += stl::from_value(totalGPL, 2);
-	slog += "\n";
+        if (!sma1.IsValid() || !sma2.IsValid())
+            continue;
+        
+        if (prev_offer.GetInstrument().empty())
+        {
+            prev_offer = curr_offer;
+            continue;
+        }
+        
+        sma1.GetValue(av1);
+        sma2.GetValue(av2);
 
-	fwrite(slog.c_str(), sizeof(char), slog.size(), pf);
-	fclose(pf);
-	return 0;
+        currBuy1 = av1.GetBuy();
+        currBuy2 = av2.GetBuy();
+
+        if (prevBuy1 == 0)
+        {
+            prevBuy1 = currBuy1;
+            prevBuy2 = currBuy2;
+            continue;
+        }
+
+        bool noPos = pos.GetCurrency().GetSymbol().empty();
+        
+        bool bSell = (prevBuy1 > prevBuy2 && currBuy1 <= currBuy2);
+        bool bBuy = (prevBuy1 < prevBuy2 && currBuy1 >= currBuy2);
+        
+        if (bBuy || bSell)
+        {
+            // must close existing position?
+            if (!noPos)
+            {
+                ClosePosition(curr_offer, pos);
+                double currPL = pos.GetPL();
+                double currGPL = pos.GetGPL();
+
+                totalPL += currPL;
+                totalGPL += currGPL;
+
+                stl::cout << "currPL=" << currPL
+                    << " totalPL=" << totalPL << " totalGPL=" << totalGPL
+                    << std::endl;
+            }
+
+            bool b_buy = (bSell == true ? false : (bBuy == true ? true : false));
+            OpenPosition(curr_offer, lots, b_buy, pos);
+        }
+        
+        // update offer
+        prev_offer = curr_offer;
+        prevBuy1 = currBuy1;
+        prevBuy2 = currBuy2;
+    }
+
+
+    FILE *pf = fopen("TradeResult.txt", "a+");
+    if (pf == NULL)
+        return 0;
+
+    stl::string slog;
+    slog += "totalPL=";
+    slog += stl::from_value(totalPL, 2);
+    slog += " totalGPL=";
+    slog += stl::from_value(totalGPL, 2);
+    slog += "\n";
+
+    fwrite(slog.c_str(), sizeof(char), slog.size(), pf);
+    fclose(pf);
+    return 0;
 }
 
 int test4()
 {
-	// OffersReader oreader("EUR/USD");
-	// HistoryPricesReader oreader("EUR/USD");
-	fx::Offer offer("0", "EUR/USD", 5, 0.0001, sys::time(), 0, 0, 0, true);
-    HistdatacomReader oreader(offer, 2017);	
+    // OffersReader oreader("EUR/USD");
+    // HistoryPricesReader oreader("EUR/USD");
+    fx::Offer offer("0", "EUR/USD", 5, 0.0001, sys::time(), 0, 0, 0, true);
+    HistdatacomReader oreader(offer, 2017);    
     fx::EMA ema("EUR/USD", 14, sys::time::hourSEC, fx::SMA::BT_BAR, fx::SMA::PRICE_CLOSE);
-	fx::SMA sma("EUR/USD", 14, sys::time::hourSEC, fx::SMA::BT_BAR, fx::SMA::PRICE_CLOSE);
+    fx::SMA sma("EUR/USD", 14, sys::time::hourSEC, fx::SMA::BT_BAR, fx::SMA::PRICE_CLOSE);
 
     stl::string emalog("EMA_2017.txt");
     stl::string smalog("SMA_2017.txt");
     time_t timeframe = sys::time::hourSEC;
 
 
-	FILE* f1 = fopen(emalog.c_str(), "w+");
-	if (f1) fclose(f1);
-	FILE* f2 = fopen(smalog.c_str(), "w+");
-	if (f2) fclose(f2);
+    FILE* f1 = fopen(emalog.c_str(), "w+");
+    if (f1) fclose(f1);
+    FILE* f2 = fopen(smalog.c_str(), "w+");
+    if (f2) fclose(f2);
 
 
-	while (oreader.GetOffer(offer))
-	{
+    while (oreader.GetOffer(offer))
+    {
         if (!ema.IsValid() || !sma.IsValid())
         {
             ema.Update(offer);
@@ -235,72 +235,72 @@ int test4()
 
 
         // ---- EMA ----
-		{
-			FILE* pf = fopen(emalog.c_str(), "a+");
-			if (pf == NULL)
-				continue;
+        {
+            FILE* pf = fopen(emalog.c_str(), "a+");
+            if (pf == NULL)
+                continue;
 
-			std::stringstream ss;
-			ss << reftime.tostring().c_str() << " ";
-			fx::Price pr;
-			ema.GetValue(pr);
-			ss << "Bid=" << pr.GetSell() << " Ask=" << pr.GetBuy() <<
-				std::endl;
+            std::stringstream ss;
+            ss << reftime.tostring().c_str() << " ";
+            fx::Price pr;
+            ema.GetValue(pr);
+            ss << "Bid=" << pr.GetSell() << " Ask=" << pr.GetBuy() <<
+                std::endl;
 
-			std::string str = ss.str();
-			fwrite(str.c_str(), sizeof(char), str.size(), pf);
-			fclose(pf);
-		}
+            std::string str = ss.str();
+            fwrite(str.c_str(), sizeof(char), str.size(), pf);
+            fclose(pf);
+        }
 
-		// ---- SMA ----
-		{
-			FILE* pf = fopen(smalog.c_str(), "a+");
-			if (pf == NULL)
-				continue;
+        // ---- SMA ----
+        {
+            FILE* pf = fopen(smalog.c_str(), "a+");
+            if (pf == NULL)
+                continue;
 
-			std::stringstream ss;
-			ss << reftime.tostring().c_str() << " ";
-			fx::Price pr;
-			sma.GetValue(pr);
-			ss << "Bid=" << pr.GetSell() << " Ask=" << pr.GetBuy() <<
-				std::endl;
+            std::stringstream ss;
+            ss << reftime.tostring().c_str() << " ";
+            fx::Price pr;
+            sma.GetValue(pr);
+            ss << "Bid=" << pr.GetSell() << " Ask=" << pr.GetBuy() <<
+                std::endl;
 
-			std::string str = ss.str();
-			fwrite(str.c_str(), sizeof(char), str.size(), pf);
-			fclose(pf);
-		}
-		
+            std::string str = ss.str();
+            fwrite(str.c_str(), sizeof(char), str.size(), pf);
+            fclose(pf);
+        }
+        
         ema.Update(offer);
         sma.Update(offer);        
-	}
+    }
 
-	return 0;
+    return 0;
 }
 
 
 int test5()
 {
-	// OffersReader oreader("EUR/USD");
-	// HistoryPricesReader oreader("EUR/USD");
-	fx::Offer offer("0", "EUR/USD", 5, 0.0001, sys::time(), 0, 0, 0, true);
-    HistdatacomReader oreader(offer, 2017);	
-	fx::ATR atr("EUR/USD", 14, sys::time::hourSEC);
+    // OffersReader oreader("EUR/USD");
+    // HistoryPricesReader oreader("EUR/USD");
+    fx::Offer offer("0", "EUR/USD", 5, 0.0001, sys::time(), 0, 0, 0, true);
+    HistdatacomReader oreader(offer, 2017);    
+    fx::ATR atr("EUR/USD", 14, sys::time::hourSEC);
     size_t timeframe = sys::time::hourSEC;
 
 
     stl::string logfile("ATR_2017.txt");
-	FILE* pf = fopen(logfile.c_str(), "w+");
-	if (pf) fclose(pf);
+    FILE* pf = fopen(logfile.c_str(), "w+");
+    if (pf) fclose(pf);
 
 
-	while (oreader.GetOffer(offer))
-	{
+    while (oreader.GetOffer(offer))
+    {
         if (!atr.IsValid())
         {
             atr.Update(offer);
             continue;
         }
-		
+        
         const sys::time& reftime = atr.GetRefTime();
         sys::time nexttime = reftime + timeframe;
         const sys::time& currtime = offer.GetTime();
@@ -313,52 +313,52 @@ int test5()
         }
 
         // ----- ATR -----
-		pf = fopen(logfile.c_str(), "a+");
-		if (pf == NULL)
-			continue;
+        pf = fopen(logfile.c_str(), "a+");
+        if (pf == NULL)
+            continue;
 
-		std::stringstream ss;
-		ss << reftime.tostring().c_str() << " ";
-		double mid = 0;
-		atr.GetValue(mid);
-		mid *= 1 / (0.0001);
+        std::stringstream ss;
+        ss << reftime.tostring().c_str() << " ";
+        double mid = 0;
+        atr.GetValue(mid);
+        mid *= 1 / (0.0001);
 
-		ss << "ATR=" << mid << std::endl;
+        ss << "ATR=" << mid << std::endl;
 
-		std::string str = ss.str();
-		fwrite(str.c_str(), sizeof(char), str.size(), pf);
-		fclose(pf);
-		
+        std::string str = ss.str();
+        fwrite(str.c_str(), sizeof(char), str.size(), pf);
+        fclose(pf);
+        
 
         // new candle
         atr.Update(offer);
-	}
+    }
 
-	return 0;
+    return 0;
 }
 
 
 int test6()
 {
-	// OffersReader oreader("EUR/USD");
-	// HistoryPricesReader oreader("EUR/USD");
-	fx::Offer offer("0", "EUR/USD", 5, 0.0001, sys::time(), 0, 0, 0, true);
-    HistdatacomReader oreader(offer, 2017);	
+    // OffersReader oreader("EUR/USD");
+    // HistoryPricesReader oreader("EUR/USD");
+    fx::Offer offer("0", "EUR/USD", 5, 0.0001, sys::time(), 0, 0, 0, true);
+    HistdatacomReader oreader(offer, 2017);    
     fx::SAR sar("EUR/USD", 14, sys::time::hourSEC);
-	time_t timeframe = sys::time::hourSEC;
-	fx::Price sarp(0, 0), epp(0, 0);
-	fx::OHLCPrice ohlc;
-	bool isBuy = true;
-	double af = 0;
+    time_t timeframe = sys::time::hourSEC;
+    fx::Price sarp(0, 0), epp(0, 0);
+    fx::OHLCPrice ohlc;
+    bool isBuy = true;
+    double af = 0;
 
 
     stl::string logfile("PSAR_2017.txt");
-	FILE* pf = fopen(logfile.c_str(), "w+");
-	if (pf) fclose(pf);
+    FILE* pf = fopen(logfile.c_str(), "w+");
+    if (pf) fclose(pf);
 
 
-	while (oreader.GetOffer(offer))
-	{
+    while (oreader.GetOffer(offer))
+    {
         if (!sar.IsValid())
         {
             sar.Update(offer);
@@ -378,161 +378,161 @@ int test6()
 
 
         // sar changed
-		pf = fopen(logfile.c_str(), "a+");
-		if (pf == NULL)
-			continue;
+        pf = fopen(logfile.c_str(), "a+");
+        if (pf == NULL)
+            continue;
 
-		std::stringstream ss;
-		ss << reftime.tostring().c_str() << " ";
-		ss << (sar.GetIsBuy() == true ? "L " : "S ");
-		ss << " SAR=";
-		sar.GetValue(sarp);
-		ss << sarp.GetBuy() << "," << sarp.GetSell();
-		sar.GetOHLC(ohlc);
-		ss << " AO:" << ohlc.GetAskOpen();
-		ss << " AH:" << ohlc.GetAskHigh();
-		ss << " AL:" << ohlc.GetAskLow();
-		ss << " AC:" << ohlc.GetAskClose();
-			
-		sar.GetEP(epp);
-		ss << " EP=" << epp.GetBuy() << "," << epp.GetSell();
+        std::stringstream ss;
+        ss << reftime.tostring().c_str() << " ";
+        ss << (sar.GetIsBuy() == true ? "L " : "S ");
+        ss << " SAR=";
+        sar.GetValue(sarp);
+        ss << sarp.GetBuy() << "," << sarp.GetSell();
+        sar.GetOHLC(ohlc);
+        ss << " AO:" << ohlc.GetAskOpen();
+        ss << " AH:" << ohlc.GetAskHigh();
+        ss << " AL:" << ohlc.GetAskLow();
+        ss << " AC:" << ohlc.GetAskClose();
+            
+        sar.GetEP(epp);
+        ss << " EP=" << epp.GetBuy() << "," << epp.GetSell();
 
-		sar.GetAF(af);
-		ss << " AF:" << af;
-		ss << std::endl;
+        sar.GetAF(af);
+        ss << " AF:" << af;
+        ss << std::endl;
 
-		std::string str = ss.str();
-		fwrite(str.c_str(), sizeof(char), str.size(), pf);
-		fclose(pf);		
-		isBuy = sar.GetIsBuy();
+        std::string str = ss.str();
+        fwrite(str.c_str(), sizeof(char), str.size(), pf);
+        fclose(pf);        
+        isBuy = sar.GetIsBuy();
 
 
         // paint a new candle (or buy/sell switch)
         sar.Update(offer);
-	}
+    }
 
-	return 0;
+    return 0;
 }
 
 int test7()
 {
-	// OffersReader oreader("EUR/USD");
-	// HistoryPricesReader oreader("EUR/USD");
-	fx::Offer offer("0", "EUR/USD", 5, 0.0001, sys::time(), 0, 0, 0, true);
-    HistdatacomReader oreader(offer, 2017);	
-	fx::BAR bar("EUR/USD", 14, sys::time::hourSEC);
-	time_t timeframe = sys::time::hourSEC;
-	bool isNew = false;
-	fx::OHLCPrice ohlc;
-	sys::time bartime;
-	
+    // OffersReader oreader("EUR/USD");
+    // HistoryPricesReader oreader("EUR/USD");
+    fx::Offer offer("0", "EUR/USD", 5, 0.0001, sys::time(), 0, 0, 0, true);
+    HistdatacomReader oreader(offer, 2017);    
+    fx::BAR bar("EUR/USD", 14, sys::time::hourSEC);
+    time_t timeframe = sys::time::hourSEC;
+    bool isNew = false;
+    fx::OHLCPrice ohlc;
+    sys::time bartime;
+    
 
-	stl::string logfile("BAR_2017.txt");
-	FILE* f1 = fopen(logfile.c_str(), "w+");
-	if (f1) fclose(f1);
+    stl::string logfile("BAR_2017.txt");
+    FILE* f1 = fopen(logfile.c_str(), "w+");
+    if (f1) fclose(f1);
 
 
-	while (oreader.GetOffer(offer))
-	{
-		if (!bar.IsValid())
-		{
-			bar.Update(offer);
-			continue;
-		}
-	
-		isNew = bar.IsNew(offer);
-		if (isNew)
-		{
-			ohlc = bar.GetOHLC();
-			bartime = bar.GetRefTime();
-		}			
+    while (oreader.GetOffer(offer))
+    {
+        if (!bar.IsValid())
+        {
+            bar.Update(offer);
+            continue;
+        }
+    
+        isNew = bar.IsNew(offer);
+        if (isNew)
+        {
+            ohlc = bar.GetOHLC();
+            bartime = bar.GetRefTime();
+        }            
 
-		bar.Update(offer);
+        bar.Update(offer);
 
-		if (isNew)
-		{
-			FILE* pf = fopen(logfile.c_str(), "a+");
-			if (pf == NULL)
-				continue;
+        if (isNew)
+        {
+            FILE* pf = fopen(logfile.c_str(), "a+");
+            if (pf == NULL)
+                continue;
 
-			std::stringstream ss;
-			ss << bartime.tostring().c_str() << " ";
-			ss << " BAR";
-			ss << " AO:" << ohlc.GetAskOpen();
-			ss << " AH:" << ohlc.GetAskHigh();
-			ss << " AL:" << ohlc.GetAskLow();
-			ss << " AC:" << ohlc.GetAskClose();
+            std::stringstream ss;
+            ss << bartime.tostring().c_str() << " ";
+            ss << " BAR";
+            ss << " AO:" << ohlc.GetAskOpen();
+            ss << " AH:" << ohlc.GetAskHigh();
+            ss << " AL:" << ohlc.GetAskLow();
+            ss << " AC:" << ohlc.GetAskClose();
 
-			ss << std::endl;
+            ss << std::endl;
 
-			std::string str = ss.str();
-			fwrite(str.c_str(), sizeof(char), str.size(), pf);
-			fclose(pf);
-		}
-	}
+            std::string str = ss.str();
+            fwrite(str.c_str(), sizeof(char), str.size(), pf);
+            fclose(pf);
+        }
+    }
 
-	return 0;
+    return 0;
 }
 
 
 int test8()
 {
-	// OffersReader oreader("EUR/USD");
-	// HistoryPricesReader oreader("EUR/USD");
-	fx::Offer offer("0", "EUR/USD", 5, 0.0001, sys::time(), 0, 0, 0, true);
-    HistdatacomReader oreader(offer, 2017);	
-	fx::HABAR habar("EUR/USD", 14, sys::time::hourSEC);
-	time_t timeframe = sys::time::hourSEC;
-	bool isNew = false;
-	fx::OHLCPrice ohlc;
-	sys::time hatime;
-	
+    // OffersReader oreader("EUR/USD");
+    // HistoryPricesReader oreader("EUR/USD");
+    fx::Offer offer("0", "EUR/USD", 5, 0.0001, sys::time(), 0, 0, 0, true);
+    HistdatacomReader oreader(offer, 2017);    
+    fx::HABAR habar("EUR/USD", 14, sys::time::hourSEC);
+    time_t timeframe = sys::time::hourSEC;
+    bool isNew = false;
+    fx::OHLCPrice ohlc;
+    sys::time hatime;
+    
 
-	stl::string logfile("HABAR_2017.txt");
-	FILE* f1 = fopen(logfile.c_str(), "w+");
-	if (f1) fclose(f1);
+    stl::string logfile("HABAR_2017.txt");
+    FILE* f1 = fopen(logfile.c_str(), "w+");
+    if (f1) fclose(f1);
 
 
-	while (oreader.GetOffer(offer))
-	{
-		if (!habar.IsValid())
-		{
-			habar.Update(offer);
-			continue;
-		}
+    while (oreader.GetOffer(offer))
+    {
+        if (!habar.IsValid())
+        {
+            habar.Update(offer);
+            continue;
+        }
 
-		isNew = habar.IsNew(offer);
-		if (isNew)
-		{
-			ohlc = habar.GetOHLC();
-			hatime = habar.GetRefTime();
-		}			
+        isNew = habar.IsNew(offer);
+        if (isNew)
+        {
+            ohlc = habar.GetOHLC();
+            hatime = habar.GetRefTime();
+        }            
 
-		habar.Update(offer);
+        habar.Update(offer);
 
-		if (isNew)
-		{
-			FILE* pf = fopen(logfile.c_str(), "a+");
-			if (pf == NULL)
-				continue;
+        if (isNew)
+        {
+            FILE* pf = fopen(logfile.c_str(), "a+");
+            if (pf == NULL)
+                continue;
 
-			std::stringstream ss;
-			ss << hatime.tostring().c_str() << " ";
-			ss << " BAR";
-			ss << " AO:" << ohlc.GetAskOpen();
-			ss << " AH:" << ohlc.GetAskHigh();
-			ss << " AL:" << ohlc.GetAskLow();
-			ss << " AC:" << ohlc.GetAskClose();
+            std::stringstream ss;
+            ss << hatime.tostring().c_str() << " ";
+            ss << " BAR";
+            ss << " AO:" << ohlc.GetAskOpen();
+            ss << " AH:" << ohlc.GetAskHigh();
+            ss << " AL:" << ohlc.GetAskLow();
+            ss << " AC:" << ohlc.GetAskClose();
 
-			ss << std::endl;
+            ss << std::endl;
 
-			std::string str = ss.str();
-			fwrite(str.c_str(), sizeof(char), str.size(), pf);
-			fclose(pf);
-		}
-	}
+            std::string str = ss.str();
+            fwrite(str.c_str(), sizeof(char), str.size(), pf);
+            fclose(pf);
+        }
+    }
 
-	return 0;
+    return 0;
 }
 
 
@@ -540,7 +540,7 @@ int test9()
 {
     // OffersReader oreader("EUR/USD");
     // HistoryPricesReader oreader("EUR/USD");
-	fx::Offer offer("0", "EUR/USD", 5, 0.0001, sys::time(), 0, 0, 0, true);
+    fx::Offer offer("0", "EUR/USD", 5, 0.0001, sys::time(), 0, 0, 0, true);
     HistdatacomReader oreader(offer, 2017);    
     fx::LWMA lwma("EUR/USD", 14, sys::time::hourSEC, fx::SMA::BT_BAR, fx::SMA::PRICE_CLOSE);
     time_t timeframe = sys::time::hourSEC;
@@ -792,77 +792,77 @@ int test11()
 
 static void Time2DATE(time_t tt, DATE& dt)
 {
-	struct tm *tmNow = gmtime(&tt);
-	CO2GDateUtils::CTimeToOleTime(tmNow, &dt);
+    struct tm *tmNow = gmtime(&tt);
+    CO2GDateUtils::CTimeToOleTime(tmNow, &dt);
 }
 
 
 void OpenPosition(const fx::Offer& offer, int lots, bool buy, fx::Position& result)
 {
-	static int orderID = 0;
-	static int tradeID = 0;
+    static int orderID = 0;
+    static int tradeID = 0;
 
-	fx::Price price(offer.GetAsk(), offer.GetBid()); //buy@ask, sell@bid
-	fx::Currency currency(
-		offer.GetInstrument(),
-		price,
-		2.5,		// margin= EUR/USD: 2.5 let's say
-		0.08,		// pipCost,
-		1 / 0.0001);	// rate2pip
+    fx::Price price(offer.GetAsk(), offer.GetBid()); //buy@ask, sell@bid
+    fx::Currency currency(
+        offer.GetInstrument(),
+        price,
+        2.5,        // margin= EUR/USD: 2.5 let's say
+        0.08,        // pipCost,
+        1 / 0.0001);    // rate2pip
 
-	result = fx::Position(
-		stl::from_value(orderID++),
-		stl::from_value(tradeID++),
-		currency,
-		buy,
-		lots,	// K lots
-		0,		// commission
-		0,		// interest
-		offer.GetTime().totime_t());
+    result = fx::Position(
+        stl::from_value(orderID++),
+        stl::from_value(tradeID++),
+        currency,
+        buy,
+        lots,    // K lots
+        0,        // commission
+        0,        // interest
+        offer.GetTime().totime_t());
 
-	FILE *pf = fopen("TradeResult.txt", "a+");
-	if (pf == NULL)
-		return;
+    FILE *pf = fopen("TradeResult.txt", "a+");
+    if (pf == NULL)
+        return;
 
-	stl::string slog;
-	slog += offer.GetTime().tostring();
-	slog += (buy == true ? ", B:" : ", S:");
-	slog += (buy == true ? stl::from_value(offer.GetAsk(), 5) :
-		stl::from_value(offer.GetBid(), 5));
-	slog += ", L(k)=";
-	slog += stl::from_value(lots);
-	slog += "\n";
+    stl::string slog;
+    slog += offer.GetTime().tostring();
+    slog += (buy == true ? ", B:" : ", S:");
+    slog += (buy == true ? stl::from_value(offer.GetAsk(), 5) :
+        stl::from_value(offer.GetBid(), 5));
+    slog += ", L(k)=";
+    slog += stl::from_value(lots);
+    slog += "\n";
 
-	fwrite(slog.c_str(), sizeof(char), slog.size(), pf);
-	fclose(pf);
+    fwrite(slog.c_str(), sizeof(char), slog.size(), pf);
+    fclose(pf);
 }
 
 void ClosePosition(const fx::Offer& offer, fx::Position& curpos)
 {
-	fx::Price price(offer.GetAsk(), offer.GetBid()); //buy@ask, sell@bid
-	curpos.Close(price, offer.GetTime().totime_t());
+    fx::Price price(offer.GetAsk(), offer.GetBid()); //buy@ask, sell@bid
+    curpos.Close(price, offer.GetTime().totime_t());
 
-	FILE *pf = fopen("TradeResult.txt", "a+");
-	if (pf == NULL)
-		return;
+    FILE *pf = fopen("TradeResult.txt", "a+");
+    if (pf == NULL)
+        return;
 
 
-	bool buy = curpos.IsBuy();
+    bool buy = curpos.IsBuy();
 
-	stl::string slog;
-	slog += offer.GetTime().tostring();
-	slog += (buy == true ? ", S:" : ", B:");
-	slog += (buy == true ? stl::from_value(offer.GetBid(), 5) :
-		stl::from_value(offer.GetAsk(), 5));
-	slog += ", L(k)=";
-	slog += stl::from_value(curpos.GetAmount(), 0);
+    stl::string slog;
+    slog += offer.GetTime().tostring();
+    slog += (buy == true ? ", S:" : ", B:");
+    slog += (buy == true ? stl::from_value(offer.GetBid(), 5) :
+        stl::from_value(offer.GetAsk(), 5));
+    slog += ", L(k)=";
+    slog += stl::from_value(curpos.GetAmount(), 0);
 
-	slog += ", PL(1k)=";
-	slog += stl::from_value(curpos.GetPL(), 2);
-	slog += ", GPL=";
-	slog += stl::from_value(curpos.GetGPL(), 0);
-	slog += "\n";
+    slog += ", PL(1k)=";
+    slog += stl::from_value(curpos.GetPL(), 2);
+    slog += ", GPL=";
+    slog += stl::from_value(curpos.GetGPL(), 0);
+    slog += "\n";
 
-	fwrite(slog.c_str(), sizeof(char), slog.size(), pf);
-	fclose(pf);
+    fwrite(slog.c_str(), sizeof(char), slog.size(), pf);
+    fclose(pf);
 }

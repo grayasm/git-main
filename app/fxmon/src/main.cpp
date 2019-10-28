@@ -36,15 +36,15 @@
 
 int main(int /*argc*/, char** /*argv*/)
 {
-	// disable stdout buffer
-	setvbuf(stdout, NULL, _IONBF, 0);
-	
-	// GetHistoryPrices();
-	// LoadHistoryPrices();
-	// RealEngine();
-	// TestEngine();
-	// OMPEngine();
-	test11();
+    // disable stdout buffer
+    setvbuf(stdout, NULL, _IONBF, 0);
 
-	return 0;
+    // GetHistoryPrices();
+    // LoadHistoryPrices();
+    // RealEngine();
+    // TestEngine();
+    // OMPEngine();
+    test11();
+
+    return 0;
 }
