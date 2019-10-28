@@ -15,9 +15,24 @@
     with this program. If not, see http://www.gnu.org/licenses/.
 
     contact: grayasm@gmail.com
+
+
+    This strategy was described here, like this:
+    https://forums.babypips.com/t/strategy/252434/4
+
+    Price above 100 ema.
+    Price above 50 ema.
+    rsi (5) >= 50
+    D1 current candle is bullish (wait for close)
+    Then place entry buy order at last D1 max+2 pips
+    Cancel the entry if not triggered by the D1 candle.
+    Exit at price crossing the 5ema (both TP/SL)
+    Similar logic for going short.
+    Which pairs and date interval did you test?
+    I can at least confirm the 70% success rate.
 */
 
-#include "StrategySMACross.hpp"
+#include "StrategyEMACross.hpp"
 #include <math.h>
 #include "stream.hpp"
 #include "TimeUtils.hpp"
@@ -27,29 +42,31 @@
 
 namespace fx
 {
-    StrategySMACross::StrategySMACross(
+    StrategyEMACross::StrategyEMACross(
         fx::MarketPlugin* plugin,
         const stl::string& instrument,
-        const fx::SMA& sma1,
-        const fx::SMA& sma2)
+        const fx::EMA& ema5,
+        const fx::EMA& ema50,
+        const fx::EMA& ema100)
     {
         m_plugin = plugin;
         m_instrument = instrument;
-        m_sma1 = sma1;
-        m_sma2 = sma2;
+        m_ema5 = ema5;
+        m_ema50 = ema50;
+        m_ema100 = ema100;
         // m_tr - default
-        m_prevBid1 = 0;
-        m_prevBid2 = 0;
         m_closedPL = 0;
         m_closedGPL = 0;
         m_isCancelled = false;
     }
 
-    StrategySMACross::~StrategySMACross()
+    StrategyEMACross::~StrategyEMACross()
     {
     }
 
-    void StrategySMACross::Update(const fx::Offer& offer)
+    // ask = buy
+    // bid = sell
+    void StrategyEMACross::Update(const fx::Offer& offer)
     {
         /*  In case the market plugin (session) encounters an error
             the strategy is disabled until the issue is fixed.
@@ -62,33 +79,44 @@ namespace fx
             return;
 
         // Build all indicators
-        if (!m_sma1.IsValid() || !m_sma2.IsValid())
+        if (!m_ema5.IsValid() || !m_ema50.IsValid() || !m_ema100.IsValid())
         {
             BuildAllIndicators(offer);
             return;
         }
 
         // update indicators
-        m_sma1.Update(offer);
-        m_sma2.Update(offer);
+        m_ema5.Update(offer);
+        m_ema50.Update(offer);
+        m_ema100.Update(offer);
 
-        fx::Price sma1P, sma2P;
-        m_sma1.GetValue(sma1P);
-        m_sma2.GetValue(sma2P);
+        fx::Price ema5P, ema50P, ema100P;
+        m_ema5.GetValue(ema5P);
+        m_ema50.GetValue(ema50P);
+        m_ema100.GetValue(ema100P);
 
-        if (m_prevBid1 == 0)
+        double buy = offer.GetAsk();
+        double sell= offer.GetBid();
+        bool noTrade = m_tr.IsEmpty();
+
+        if (noTrade)
+        {
+                    
+        }
+
+        /*if (m_prevBid1 == 0)
         {
             m_prevBid1 = sma1P.GetSell();
             m_prevBid2 = sma2P.GetSell();
             return;
         }
-
+*/
         double bid1 = sma1P.GetSell();
         double bid2 = sma2P.GetSell();
 
 
         // check crossing SMA curves
-        if (m_prevBid1 > m_prevBid2 && bid1 <= bid2)
+        //if (m_prevBid1 > m_prevBid2 && bid1 <= bid2)
         {
             if (!m_tr.IsEmpty())
             {
@@ -101,7 +129,7 @@ namespace fx
             
             OpenPosition(offer, false); // sell
         }
-        else if (m_prevBid1 < m_prevBid2 && bid1 >= bid2)
+        //else if (m_prevBid1 < m_prevBid2 && bid1 >= bid2)
         {
             if (!m_tr.IsEmpty())
             {
@@ -116,26 +144,26 @@ namespace fx
         }
 
 
-        m_prevBid1 = sma1P.GetSell();
-        m_prevBid2 = sma2P.GetSell();
+        //m_prevBid1 = sma1P.GetSell();
+        //m_prevBid2 = sma2P.GetSell();
     }
 
-    bool StrategySMACross::IsCancelled() const
+    bool StrategyEMACross::IsCancelled() const
     {
         return m_isCancelled;
     }
 
-    double StrategySMACross::GetClosedPL() const
+    double StrategyEMACross::GetClosedPL() const
     {
         return m_closedPL;
     }
 
-    double StrategySMACross::GetClosedGPL() const
+    double StrategyEMACross::GetClosedGPL() const
     {
         return m_closedGPL;
     }
 
-    void StrategySMACross::OpenPosition(const fx::Offer& offer, bool buy)
+    void StrategyEMACross::OpenPosition(const fx::Offer& offer, bool buy)
     {
         stl::vector<fx::Position> result;
         int ret = m_plugin->OpenPosition(offer, 1, buy, result);
@@ -150,7 +178,7 @@ namespace fx
             m_tr.Add(result[i]);
     }
 
-    void StrategySMACross::ClosePosition(const fx::Offer& offer)
+    void StrategyEMACross::ClosePosition(const fx::Offer& offer)
     {
         stl::vector<fx::Position>& npos =
             const_cast<stl::vector<fx::Position>&>(m_tr.GetPositions());
@@ -174,15 +202,16 @@ namespace fx
         }
     }
 
-    void StrategySMACross::BuildAllIndicators(const fx::Offer& offer)
+    void StrategyEMACross::BuildAllIndicators(const fx::Offer& offer)
     {
         // may not need to download history data
-        if (m_sma1.IsValid() && m_sma2.IsValid())
+        if (m_ema5.IsValid() && m_ema50.IsValid() && m_ema100.IsValid())
             return;
 
         stl::vector<fx::IND*> indicators;
-        indicators.push_back(&m_sma1);
-        indicators.push_back(&m_sma2);
+        indicators.push_back(&m_ema5);
+        indicators.push_back(&m_ema50);
+        indicators.push_back(&m_ema100);
         IndicatorBuilder::Build(m_plugin, offer, indicators);
     }
 } // namespace

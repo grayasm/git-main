@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2018 Mihai Vasilian
+    Copyright (C) 2019 Mihai Vasilian
 
     This program is free software; you can redistribute it and/or modify it
     under the terms of the GNU General Public License as published by the
@@ -17,31 +17,32 @@
     contact: grayasm@gmail.com
 */
 
-#ifndef __StrategySMACross_hpp__
-#define __StrategySMACross_hpp__
+#ifndef __StrategyEMACross_hpp__
+#define __StrategyEMACross_hpp__
 
 #include "autoptr.hpp"
 #include "Offer.hpp"
 #include "Transaction.hpp"
 #include "MarketPlugin.hpp"
-#include "SMA.hpp"
+#include "EMA.hpp"
 
 namespace fx
 {
-    class StrategySMACross
+    class StrategyEMACross
     {
     public:
-        typedef stl::autoptr<StrategySMACross> Ptr;
+        typedef stl::autoptr<StrategyEMACross> Ptr;
 
-        StrategySMACross(
+        StrategyEMACross(
             fx::MarketPlugin* plugin,
             const stl::string& instrument,
-            const fx::SMA& sma1,
-            const fx::SMA& sma2);
+            const fx::EMA& ema5,
+            const fx::EMA& ema50,
+            const fx::EMA& ema100);
 
-        ~StrategySMACross();
-        StrategySMACross(const StrategySMACross&) = delete;
-        StrategySMACross& operator=(const StrategySMACross&) = delete;
+        ~StrategyEMACross();
+        StrategyEMACross(const StrategyEMACross&) = delete;
+        StrategyEMACross& operator=(const StrategyEMACross&) = delete;
 
         void Update(const fx::Offer& offer);
         bool IsCancelled() const;
@@ -56,12 +57,11 @@ namespace fx
     private:
         fx::MarketPlugin*       m_plugin;
         stl::string             m_instrument;
-        fx::SMA                 m_sma1;
-        fx::SMA                 m_sma2;
+        fx::EMA                 m_ema5;
+        fx::EMA                 m_ema50;
+        fx::EMA                 m_ema100;
         /// ---------------------------
         fx::Transaction         m_tr;
-        double                  m_prevBid1;
-        double                  m_prevBid2;
         double                  m_closedPL;
         double                  m_closedGPL;
         bool                    m_isCancelled;
@@ -69,4 +69,4 @@ namespace fx
 } // namespace
 
 
-#endif // __StrategySMACross_hpp__
+#endif // __StrategyEMACross_hpp__

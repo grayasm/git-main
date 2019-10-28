@@ -41,8 +41,14 @@ private:
         const stl::string& filePath,
         stl::vector<fx::Offer>& result);
 
+    void LoadEURUSD1900();
     void LoadEURUSD2008();
+    void LoadEURUSD2014();
+    void LoadEURUSD2015();
+    void LoadEURUSD2016();
     void LoadEURUSD2017();
+    void LoadEURUSD2018();
+    void LoadEURUSD2019();
     void LoadEURJPY2017();
     void LoadUSDJPY2017();
     void LoadGBPJPY2017();

@@ -40,12 +40,12 @@ namespace fx
     {                
     public:
         //  types
-        typedef stl::vector<Position>        Positions;
+        typedef stl::vector<Position>       Positions;
         typedef Positions::iterator         PosIt;
         typedef Positions::const_iterator   PosCIt;
         typedef stl::vector<stl::string>    Symbols;
-        typedef Symbols::iterator            SyIt;
-        typedef Symbols::const_iterator        SyCIt;
+        typedef Symbols::iterator           SyIt;
+        typedef Symbols::const_iterator     SyCIt;
 
     private:
         Positions    m_positions;

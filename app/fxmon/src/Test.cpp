@@ -790,6 +790,111 @@ int test11()
     return 0;
 }
 
+int test12()
+{
+    stl::cout << "\n\n\n"
+        "Testing a crossover strategy with 3 exponential moving averages and rsi\n"
+        "EMA(D5), EMA(D50), EMA(D100) and RSI(5) using EUR/USD real tick data.\n"
+        "To calculate the data for the instrument (PipCost,Margin,PointBase,...)\n"
+        "this program will connect to a demo account.\n"
+        "\n";
+    /*  This strategy was described here, like this:
+        https://forums.babypips.com/t/strategy/252434/4
+
+        Price above 100 ema.
+        Price above 50 ema.
+        rsi (5) >= 50
+        D1 current candle is bullish (wait for close)
+        Then place entry buy order at last D1 max+2 pips
+        Cancel the entry if not triggered by the D1 candle.
+        Exit at price crossing the 5ema (both TP/SL)
+        Similar logic for going short.
+        Which pairs and date interval did you test?
+        I can at least confirm the 70% success rate.
+    */
+
+
+    fxcm::LoginParams::Ptr loginParams = new fxcm::LoginParams("monitor.ini");
+    fxcm::IniParams::Ptr iniParams = new fxcm::IniParams("monitor.ini");
+    fxcm::Session session(*loginParams, *iniParams);
+    session.Login();
+
+    MarketPlugin4backtest plugin(&session, *iniParams);
+
+    fx::Offer offer("0", "EUR/USD", 3, 0.01, sys::time(), 0, 0, 0, true);
+    HistdatacomReader oreader(offer, 1900); // 2014 -> 2019
+
+    time_t timeframe = sys::time::daySEC;
+    stl::string instrument("EUR/USD");
+    fx::EMA ema5(instrument, 5, timeframe, fx::SMA::BT_BAR, fx::SMA::PRICE_CLOSE);
+    fx::EMA ema50(instrument, 50, timeframe, fx::SMA::BT_BAR, fx::SMA::PRICE_CLOSE);
+    fx::EMA ema100(instrument, 100, timeframe, fx::SMA::BT_BAR, fx::SMA::PRICE_CLOSE);
+
+
+    if (!oreader.GetOffer(offer))
+        return -1; // cannot get the offer?
+
+    sys::time reftime = offer.GetTime();
+    stl::cout << reftime.tostring().c_str() << std::endl;
+
+    stl::cout << "Initialize EMA indicators\n";
+    // Feed the 2 SMA indicators with quotes until they become valid.
+    while (oreader.GetOffer(offer))
+    {
+        if (reftime.mon_() != offer.GetTime().mon_())
+        {
+            reftime = offer.GetTime();
+            // show some progress, otherwise confusing and very slow
+            stl::cout << reftime.tostring().c_str() << std::endl;
+        }
+
+        if (ema5.IsValid() && ema50.IsValid() && ema100.IsValid())
+            break;
+
+        ema5.Update(offer);
+        ema50.Update(offer);
+        ema100.Update(offer);
+    }
+
+    stl::cout << "Running the strategy\n";
+
+    // initialize the strategy
+    fx::StrategySMACross strategy(
+        &plugin,
+        instrument,
+        sma1,
+        sma2);
+
+    while (oreader.GetOffer(offer))
+    {
+        if (reftime.mon_() != offer.GetTime().mon_())
+        {
+            reftime = offer.GetTime();
+            // show some progress, otherwise confusing and very slow
+            stl::cout << reftime.tostring().c_str() << std::endl;
+        }
+
+        // check for outside trading hours
+        sys::time tnow = offer.GetTime();
+        if ((tnow.wday() == sys::time::SAT) ||
+            (tnow.wday() == sys::time::FRI && tnow.hour_() >= 22) ||
+            (tnow.wday() == sys::time::SUN && tnow.hour_() < 22))
+        {
+            continue;
+        }
+
+        strategy.Update(offer);
+    }
+
+    session.Logout();
+
+    stl::cout << "PL=" << strategy.GetClosedGPL() << std::endl <<
+        "GPL=" << strategy.GetClosedGPL() << std::endl;
+    return 0;
+}
+
+
+
 static void Time2DATE(time_t tt, DATE& dt)
 {
     struct tm *tmNow = gmtime(&tt);
