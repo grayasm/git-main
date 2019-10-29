@@ -32,6 +32,7 @@
 #include "Transaction.hpp"
 #include "ErrorCodes.hpp"
 #include "StrategySMACross.hpp"
+#include "StrategyEMACross.hpp"
 #include "MarketPlugin4backtest.hpp"
 #include "HistoryPricesReader.hpp"
 #include "HistdatacomReader.hpp"
@@ -821,14 +822,14 @@ int test12()
 
     MarketPlugin4backtest plugin(&session, *iniParams);
 
-    fx::Offer offer("0", "EUR/USD", 3, 0.01, sys::time(), 0, 0, 0, true);
+    fx::Offer offer("0", "EUR/USD", 4, 0.0001, sys::time(), 0, 0, 0, true);
     HistdatacomReader oreader(offer, 1900); // 2014 -> 2019
 
     time_t timeframe = sys::time::daySEC;
     stl::string instrument("EUR/USD");
-    fx::EMA ema5(instrument, 5, timeframe, fx::SMA::BT_BAR, fx::SMA::PRICE_CLOSE);
-    fx::EMA ema50(instrument, 50, timeframe, fx::SMA::BT_BAR, fx::SMA::PRICE_CLOSE);
-    fx::EMA ema100(instrument, 100, timeframe, fx::SMA::BT_BAR, fx::SMA::PRICE_CLOSE);
+    fx::EMA ema5(instrument, 5, timeframe, fx::SMA::BT_BAR, fx::SMA::PRICE_CLOSE); //5
+    fx::EMA ema50(instrument, 50, timeframe, fx::SMA::BT_BAR, fx::SMA::PRICE_CLOSE); //50
+    fx::EMA ema100(instrument, 100, timeframe, fx::SMA::BT_BAR, fx::SMA::PRICE_CLOSE); //100
 
 
     if (!oreader.GetOffer(offer))
@@ -859,11 +860,12 @@ int test12()
     stl::cout << "Running the strategy\n";
 
     // initialize the strategy
-    fx::StrategySMACross strategy(
+    fx::StrategyEMACross strategy(
         &plugin,
         instrument,
-        sma1,
-        sma2);
+        ema5,
+        ema50,
+        ema100);
 
     while (oreader.GetOffer(offer))
     {

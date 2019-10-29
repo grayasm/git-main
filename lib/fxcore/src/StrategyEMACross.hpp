@@ -61,6 +61,7 @@ namespace fx
         fx::EMA                 m_ema50;
         fx::EMA                 m_ema100;
         /// ---------------------------
+        fx::BAR                 m_bar;
         fx::Transaction         m_tr;
         double                  m_closedPL;
         double                  m_closedGPL;

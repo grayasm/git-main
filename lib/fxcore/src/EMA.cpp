@@ -139,6 +139,10 @@ namespace fx
     
     bool EMA::IsValid() const
     {
+//TODO: do not initialize with period < 2 !!!!
+//      throw exception
+//      check all other indicators that require m_period > 1
+
         return (m_period > 1 &&
                 m_period == m_emaList.size() &&
                 m_currEMA.GetBuy() > 0 &&

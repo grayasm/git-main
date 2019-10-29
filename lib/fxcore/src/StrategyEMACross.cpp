@@ -54,6 +54,7 @@ namespace fx
         m_ema5 = ema5;
         m_ema50 = ema50;
         m_ema100 = ema100;
+        m_bar = fx::BAR(instrument, 1, ema100.GetTimeframe());
         // m_tr - default
         m_closedPL = 0;
         m_closedGPL = 0;
@@ -90,62 +91,58 @@ namespace fx
         m_ema50.Update(offer);
         m_ema100.Update(offer);
 
+        // update last bar
+        m_bar.Update(offer);
+
+        if (m_bar.GetOHLCList().empty()) // == 1
+            return;
+
         fx::Price ema5P, ema50P, ema100P;
         m_ema5.GetValue(ema5P);
         m_ema50.GetValue(ema50P);
         m_ema100.GetValue(ema100P);
 
-        double buy = offer.GetAsk();
-        double sell= offer.GetBid();
-        bool noTrade = m_tr.IsEmpty();
+        const fx::OHLCPrice& prevbar = *(m_bar.GetOHLCList().begin());
+        const fx::OHLCPrice& currbar = m_bar.GetOHLC();
+       
+        double pipdiff = 2 * offer.GetPointSize();
 
-        if (noTrade)
+        if (m_tr.IsEmpty() &&
+            offer.GetAsk() /*buy*/ > ema100P.GetBuy() &&
+            offer.GetAsk() /*buy*/ > ema50P.GetBuy() &&
+            prevbar.GetAskOpen() < prevbar.GetAskClose() &&
+            offer.GetAsk() > prevbar.GetAskClose() + pipdiff)
         {
-                    
-        }
-
-        /*if (m_prevBid1 == 0)
-        {
-            m_prevBid1 = sma1P.GetSell();
-            m_prevBid2 = sma2P.GetSell();
-            return;
-        }
-*/
-        double bid1 = sma1P.GetSell();
-        double bid2 = sma2P.GetSell();
-
-
-        // check crossing SMA curves
-        //if (m_prevBid1 > m_prevBid2 && bid1 <= bid2)
-        {
-            if (!m_tr.IsEmpty())
-            {
-                fx::Price price(offer.GetAsk(), offer.GetBid());
-                m_closedPL += m_tr.GetPL(m_instrument, price);
-                m_closedGPL += m_tr.GetGPL(m_instrument, price);
-
-                ClosePosition(offer);
-            }
-            
-            OpenPosition(offer, false); // sell
-        }
-        //else if (m_prevBid1 < m_prevBid2 && bid1 >= bid2)
-        {
-            if (!m_tr.IsEmpty())
-            {
-                fx::Price price(offer.GetAsk(), offer.GetBid());
-                m_closedPL += m_tr.GetPL(m_instrument, price);
-                m_closedGPL += m_tr.GetGPL(m_instrument, price);
-
-                ClosePosition(offer);
-            }
-
             OpenPosition(offer, true);    // buy
         }
+        else if (m_tr.IsEmpty() &&
+            offer.GetBid() /*sell*/ < ema100P.GetSell() &&
+            offer.GetBid() /*sell*/ < ema50P.GetSell() &&
+            prevbar.GetBidOpen() > prevbar.GetBidClose() &&
+            offer.GetBid() /*sell*/ < prevbar.GetBidClose() - pipdiff)
+        {
+            OpenPosition(offer, false); // sell
+        }
+        else if (!m_tr.IsEmpty() &&
+            m_tr.GetPositions().at(0).IsBuy() &&
+            offer.GetAsk() /*buy*/ < ema5P.GetBuy())
+        {
+            fx::Price price(offer.GetAsk(), offer.GetBid());
+            m_closedPL += m_tr.GetPL(m_instrument, price);
+            m_closedGPL += m_tr.GetGPL(m_instrument, price);
 
+            ClosePosition(offer);
+        }
+        else if (!m_tr.IsEmpty() &&
+            !m_tr.GetPositions().at(0).IsBuy() &&
+            offer.GetBid() /*sell*/ > ema5P.GetSell())
+        {
+            fx::Price price(offer.GetAsk(), offer.GetBid());
+            m_closedPL += m_tr.GetPL(m_instrument, price);
+            m_closedGPL += m_tr.GetGPL(m_instrument, price);
 
-        //m_prevBid1 = sma1P.GetSell();
-        //m_prevBid2 = sma2P.GetSell();
+            ClosePosition(offer);
+        }
     }
 
     bool StrategyEMACross::IsCancelled() const

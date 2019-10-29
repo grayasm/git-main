@@ -63,13 +63,13 @@ namespace fx
         void Init();
 
     private:
-        stl::string        m_instrument;
-        int                    m_period;
-        time_t                m_timeframe;
+        stl::string         m_instrument;
+        int                 m_period;
+        time_t              m_timeframe;
         // ----------------------------
-        sys::time            m_reftime;
-        fx::OHLCPrice        m_lastOHLC;
-        OHLCPriceList        m_priceList;
+        sys::time           m_reftime;
+        fx::OHLCPrice       m_lastOHLC;
+        OHLCPriceList       m_priceList;
     };
 } // namespace
 
