@@ -105,7 +105,7 @@ namespace fx
         const fx::OHLCPrice& prevbar = *(m_bar.GetOHLCList().begin());
         const fx::OHLCPrice& currbar = m_bar.GetOHLC();
        
-        double pipdiff = 2 * offer.GetPointSize();
+        double pipdiff = 2 * offer.GetPointSize(); // point size = 0.0001 same as pip size
 
         if (m_tr.IsEmpty() &&
             offer.GetAsk() /*buy*/ > ema100P.GetBuy() &&

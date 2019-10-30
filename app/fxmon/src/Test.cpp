@@ -822,8 +822,8 @@ int test12()
 
     MarketPlugin4backtest plugin(&session, *iniParams);
 
-    fx::Offer offer("0", "EUR/USD", 4, 0.0001, sys::time(), 0, 0, 0, true);
-    HistdatacomReader oreader(offer, 1900); // 2014 -> 2019
+    fx::Offer offer("0", "EUR/USD", 5, 0.0001, sys::time(), 0, 0, 0, true);
+    HistdatacomReader oreader(offer, 1900); // 1900=2014 -> 2019
 
     time_t timeframe = sys::time::daySEC;
     stl::string instrument("EUR/USD");
@@ -890,8 +890,27 @@ int test12()
 
     session.Logout();
 
-    stl::cout << "PL=" << strategy.GetClosedGPL() << std::endl <<
+    // Log PnL and GPL values
+    if (iniParams->GetEnableLogging())
+    {
+        FILE *pf = fopen(iniParams->GetLoggingFile().c_str(), "a+");
+        if (pf != NULL)
+        {
+            stl::string msg("PnL=");
+            msg += stl::from_value(strategy.GetClosedPL(), 2);
+            msg += " GPL=";
+            msg += stl::from_value(strategy.GetClosedGPL(), 2);
+            msg += "\n\n";
+
+            fwrite(msg.c_str(), sizeof(char), msg.size(), pf);
+            fclose(pf);
+        }
+    }
+
+    // Output PnL and GPL values
+    stl::cout << "PL=" << strategy.GetClosedPL() << std::endl <<
         "GPL=" << strategy.GetClosedGPL() << std::endl;
+
     return 0;
 }
 
