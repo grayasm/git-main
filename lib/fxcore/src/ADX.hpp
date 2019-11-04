@@ -21,6 +21,7 @@
 #ifndef __ADX_hpp__
 #define __ADX_hpp__
 
+#include "BAR.hpp"
 
 namespace fx
 {

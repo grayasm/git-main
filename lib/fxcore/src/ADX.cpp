@@ -19,6 +19,7 @@
 */
 
 #include "ADX.hpp"
+#include "algorithm.hpp"
 
 namespace fx
 {
@@ -32,9 +33,9 @@ namespace fx
         Init();
 
         m_instrument = instrument;
-        m_period = period + 1;//???
+        m_period = period;
         m_timeframe = sec;
-        m_bar = fx::BAR(instrument, m_period, sec); // use the extra candle??
+        m_bar = fx::BAR(instrument, m_period, sec);
     }
 
     ADX::~ADX()
@@ -67,7 +68,7 @@ namespace fx
 
     int ADX::GetPeriod() const
     {
-        return m_period - 1;
+        return m_period;
     }
 
     ADX::Timeframe ADX::GetTimeframe() const
@@ -85,6 +86,29 @@ namespace fx
         if (m_instrument != offer.GetInstrument())
             throw stl::exception("ATR offer is invalid");
 
+        // offer will paint a new bar?
+        bool isNew = m_bar.IsNew(offer);
+
+        if (!isNew)
+        {
+            m_bar.Update(offer);
+            const fx::OHLCPrice& ohlc = m_bar.GetOHLC();
+            const fx::BAR::OHLCPriceList& ohlcList = m_bar.GetOHLCList();
+
+            if (ohlcList.size() == m_period)
+            {
+                fx::BAR::OHLCPriceList::const_iterator it = ohlcList.begin();
+                const fx::OHLCPrice& prev = *it;
+                for (++it; it != ohlcList.end(); ++it)
+                {
+                    const fx::OHLCPrice& curr = *it;
+
+                }
+            }
+        }
+
+
+        
         const fx::OHLCPrice& prev = m_bar.GetOHLCList().back();
         const fx::OHLCPrice& curr = m_bar.GetOHLC();
 
@@ -92,7 +116,7 @@ namespace fx
         //const fx::OHLCPrice& ohlc = m_bar.GetOHLC();
         //const fx::BARB::OHLCPriceList& ohlcList = m_bar.GetOHLCList();
 
-        // Directional Movement
+        // Directional Movement (DM)
         double DM = 0;
 
         if (prev.GetBidHigh() < curr.GetBidHigh())
@@ -107,7 +131,7 @@ namespace fx
                 DM = dmlow;                                 // negative
         }
 
-        // True Range
+        // True Range (TR)
         double prevC = prev.GetBidClose();
         double currH = curr.GetBidHigh();
         double currL = curr.GetBidLow();
@@ -116,7 +140,12 @@ namespace fx
         double v2 = fabs(currH - prevC);
         double v3 = fabs(currL - prevC);
 
-        double TR = std::max(v1, std::max(v2, v3));
+        double TR = stl::max(v1, stl::max(v2, v3));
+
+        // Directional Indicator (DI)
+        double DI = DM / TR;    // positive or negative
+
+
 
 
 
