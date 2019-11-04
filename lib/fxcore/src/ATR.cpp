@@ -138,7 +138,7 @@ namespace fx
             const fx::OHLCPrice& ohlc = m_bar.GetOHLC();
             const fx::BARB::OHLCPriceList& ohlcList = m_bar.GetOHLCList();
 
-            /*    Current OHLC bar is complete.
+            /*  Current OHLC bar is complete.
                 Calculate a new ATR value if possible.
             */
             if (ohlcList.size() == m_period)

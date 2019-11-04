@@ -57,13 +57,13 @@ namespace fx
         void Init();
 
     private:
-        stl::string        m_instrument;
-        int                    m_period;
-        Timeframe            m_timeframe;
+        stl::string         m_instrument;
+        int                 m_period;
+        Timeframe           m_timeframe;
         // ----------------------------
         fx::BAR             m_bar;
-        double                m_medATR;
-        double                m_ATR;
+        double              m_medATR;
+        double              m_ATR;
     };
 } // namespace
 
