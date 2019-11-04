@@ -52,6 +52,12 @@ namespace fx
         Timeframe           m_timeframe;
         // -----------------------------
         fx::BAR             m_bar;
+        bool                m_useAccumulation;  // update op=(..) copy-ctor, etc
+        double              m_DM_up;        // +DM  (sum for the period)
+        double              m_DM_down;      // -DM  (sum for the period)
+        double              m_TR;           // TR   (sum for the period)
+        double              m_DI_up;        // +DI
+        double              m_DI_down;
     };
 } // namespace
 

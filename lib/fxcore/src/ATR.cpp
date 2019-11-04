@@ -40,6 +40,9 @@ namespace fx
 
     ATR::ATR(const stl::string& instrument, int period, Timeframe sec)
     {
+        if (period < 2)
+            throw stl::exception("period must be greater than 1");
+
         Init();
 
         m_instrument = instrument;
@@ -143,6 +146,14 @@ namespace fx
             */
             if (ohlcList.size() == m_period)
             {
+                /*  TODO:   only the first ATR is sum(TR)/n
+                            The next consecutive ATR(i) are using
+                            the precedent ATR(i-1) and do not calculate it again.
+                */
+
+
+
+
                 /*  Calculate the median ATR
                     TR = max[(currH - currL), abs(currH - prevC), abs(currL - prevC)]
                     ATR = (ATR(t - 1) x (n - 1) + TR(t)) / n        (true average)
