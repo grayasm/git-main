@@ -43,6 +43,7 @@
 #include "BAR.hpp"
 #include "HABAR.hpp"
 #include "LWMA.hpp"
+#include "ADX.hpp"
 #include <list>
 
 
@@ -914,6 +915,18 @@ int test12()
     return 0;
 }
 
+int test13()
+{
+    stl::string instrument("EURUSD");
+    int period = 14;
+    fx::ADX::Timeframe sec = sys::time::daySEC;
+    fx::ADX adx(instrument, period, sec);
+
+    stl::string offerID = "0";
+    sys::time time_;
+
+    fx::Offer offer(offerID, instrument, 4, 1000, time_, 0, 0, 0, true);
+}
 
 
 static void Time2DATE(time_t tt, DATE& dt)

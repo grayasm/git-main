@@ -17,6 +17,8 @@
 
     contact: grayasm@gmail.com
 
+    ADX - Average Directional Movement Index.
+
     James Welles Wilder uses the generic term 'Price' without specifying if it
     is the Ask or Bid value. We need consistency in using only Bid or only Ask.
 
@@ -105,6 +107,8 @@ namespace fx
                 DIRECTIONAL MOVEMENT (DM)
                 TRUE RANGE (TR)                
                 DIRECTIONAL INDICATOR (DI)
+                DIRECTIONAL MOVEMENT INDEX (DX)
+                AVERAGE DIRECTIONAL MOVEMENT INDEX (ADX)
             */
             if (m_bar.GetOHLCList().size() == m_period && !m_useAccumulation)
             {
@@ -283,6 +287,10 @@ namespace fx
 
             // paint a new bar
             m_bar.Update(offer);
+        }
+        else // !isNew
+        {
+            
         }
     }
 
