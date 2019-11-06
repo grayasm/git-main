@@ -24,6 +24,8 @@
 
 #include "ADX.hpp"
 #include "algorithm.hpp"
+#include "numeric.hpp"
+
 
 namespace fx
 {
@@ -99,7 +101,10 @@ namespace fx
         if (isNew)
         {
             /*  Current OHLC bar is complete.
-                Calculate ....
+                Calculate the following data:
+                DIRECTIONAL MOVEMENT (DM)
+                TRUE RANGE (TR)                
+                DIRECTIONAL INDICATOR (DI)
             */
             if (m_bar.GetOHLCList().size() == m_period && !m_useAccumulation)
             {
@@ -123,7 +128,10 @@ namespace fx
 
                 for (; currit != ohlcList.end(); ++previt, ++currit)
                 {
-                    // +DM is for direction up and -DM is for direction down.
+                    /*  pag. 35-36
+                        for an Outside day take the modulo biggest of +DM , -DM
+                        for an Inside day the +DM , -DM are zero
+                    */
                     double dm_up = 0;
                     double dm_down = 0;
 
@@ -151,10 +159,6 @@ namespace fx
                     m_TR += tr;                   // SUM of true ranges values
                 }
 
-                m_DI_up = m_DM_up / m_TR;
-                m_DI_down = m_DM_down / m_TR;
-
-
                 /*  JWW calculation example:
                 
                     Once we have determined the first +DM(14) and -DM(14)
@@ -168,13 +172,22 @@ namespace fx
                     (2) It incorporates a smoothing effect of the DM.
                 */
                 m_useAccumulation = true;
+
+                /*  pag.41 
+                    +DI -DI DI_sum DI_diff DX are not available in the first 14 days
+                    ADX requires 14 days with a valid DX for the first average
+                */
+
             }
             else if (m_useAccumulation)
             {
                 const fx::OHLCPrice& prev = m_bar.GetOHLCList().back();
                 const fx::OHLCPrice& curr = m_bar.GetOHLC();
 
-                // +DM is for direction up and -DM is for direction down.
+                /*  pag. 35-36
+                    for an Outside day take the modulo biggest of +DM , -DM
+                    for an Inside day the +DM , -DM are zero
+                */
                 double dm_up = 0;
                 double dm_down = 0;
 
@@ -206,27 +219,71 @@ namespace fx
                     Today's +DM(14) = Previous +DM(14) - (Previous +DM(14) / 14) + Today's +DM(14)
                     Today's -DM(14) = Previous -DM(14) - (Previous -DM(14) / 14) + Today's -DM(14)
                 */
-                m_DM_up = m_DM_up - m_DM_up / (m_period - 1) + dm_up;
-                m_DM_down = m_DM_down - m_DM_down / (m_period - 1) + dm_down;
+                m_DM_up = m_DM_up - m_DM_up / GetPeriod() + dm_up;
+                m_DM_down = m_DM_down - m_DM_down / GetPeriod() + dm_down;
 
                 /*  JWW formula for the TR:
 
                     Today's TR(14) = Previous TR(14) - (Previous TR(14) / 14) + TR(1)
                 */
-                m_TR = m_TR - m_TR / (m_period - 1) + tr;
+                m_TR = m_TR - m_TR / GetPeriod() + tr;
+
+                /*  pag.39 JWW formula for PLUS/MINUS DIRECTIONAL INDICATOR
+
+                    +DI(14) = [ +DM(14) / TR(14) ] * 100
+                    -DI(14) = [ -DM(14) / TR(14) ] * 100
+                */
+                m_DI_up = (m_DM_up / m_TR) * 100;
+                m_DI_down = (m_DM_down / m_TR) * 100;
+
+                m_DI_diff = fabs(m_DI_up - fabs(m_DI_down));
+                m_DI_add = m_DI_up + fabs(m_DI_down);
+
+                /*  pag.40
+                    Both up moves and down moves are good directional movement
+                    with a high DX resulted value. The turning points will result
+                    in low DX values.
+                    In order to smooth out this action relative to DX, and make
+                    DX indicative of both extreme up and down price movement,
+                    the period for determining DX must be twice the period for
+                    determining +DI(14) and -DI(14). This can be accomplished
+                    simply by using a 14 day average of DX.
+                */
+                double DX = (m_DI_diff / m_DI_add) * 100;
+
+                m_DX_list.push_back(DX);
+                if (m_DX_list.size() > GetPeriod())
+                    m_DX_list.pop_front();
+
+                 /* pag.40
+                    We compute the DX for 14 days and then at that time begin
+                    determining the AVERAGE DIRECITONAL MOVEMENT INDEX (ADX)
+                    from the previous day's ADX.
+                 */
+                if (m_DX_list.size() == GetPeriod())
+                {
+                    if (m_ADX == 0)
+                    {   // use the ADX average
+                        double adx = stl::accumulate(m_DX_list.begin(), m_DX_list.end(), .0);
+                        m_ADX = adx / GetPeriod();
+                    }
+                    else
+                    {
+                        /*  pag.44
+                            To obtain the ADX for the 29th day, we use the moving
+                            average equation because now we are dealing with
+                            averages instead of totals.
+
+                            Today's ADX = (Previous ADX * 13 + Today's DX) / 14
+                        */
+                        m_ADX = (m_ADX * (GetPeriod() - 1) + DX) / GetPeriod();
+                    }
+                }
             }
 
             // paint a new bar
             m_bar.Update(offer);
         }
-
-
-        
-
-
-
-
-
     }
 
     const sys::time& ADX::GetRefTime() const
@@ -242,5 +299,14 @@ namespace fx
         m_timeframe = 0;
         // m_bar - default;
         m_useAccumulation = false;
+        m_DM_up = 0;
+        m_DM_down = 0;
+        m_TR = 0;
+        m_DI_up = 0;
+        m_DI_down = 0;
+        m_DI_diff = 0;
+        m_DI_add = 0;
+        // m_DX_list - empty
+        m_ADX = 0;
     }
 } // namespace

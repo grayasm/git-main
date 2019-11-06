@@ -22,6 +22,7 @@
 #define __ADX_hpp__
 
 #include "BAR.hpp"
+#include "list.hpp"
 
 namespace fx
 {
@@ -53,11 +54,15 @@ namespace fx
         // -----------------------------
         fx::BAR             m_bar;
         bool                m_useAccumulation;  // update op=(..) copy-ctor, etc
-        double              m_DM_up;        // +DM  (sum for the period)
-        double              m_DM_down;      // -DM  (sum for the period)
-        double              m_TR;           // TR   (sum for the period)
-        double              m_DI_up;        // +DI
-        double              m_DI_down;
+        double              m_DM_up;        // +DM directional movement (up)
+        double              m_DM_down;      // -DM directional movement (down)
+        double              m_TR;           // TR true range
+        double              m_DI_up;        // +DI directional indicator (up)
+        double              m_DI_down;      // -DI directional indicator (down)
+        double              m_DI_diff;      // difference abs value between +DI -DI
+        double              m_DI_add;       // sum abs value of +DI -DI
+        stl::list<double>   m_DX_list;      // DX directional movement index (period values)
+        double              m_ADX;          // ADX average directional movement index
     };
 } // namespace
 
