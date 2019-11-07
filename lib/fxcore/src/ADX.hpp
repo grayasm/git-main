@@ -44,6 +44,9 @@ namespace fx
         const sys::time& GetRefTime() const override;
         // --- end of virtual table ---
 
+        double GetADX() const;      // ADX for the given timeframe
+        double GetADX2() const;     // ADX for the latest tick
+
     private:
         void Init();
 
@@ -63,6 +66,7 @@ namespace fx
         double              m_DI_add;       // sum abs value of +DI -DI
         stl::list<double>   m_DX_list;      // DX directional movement index (period values)
         double              m_ADX;          // ADX average directional movement index
+        double              m_adx;          // ADX for the latest tick data
     };
 } // namespace
 

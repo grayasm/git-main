@@ -917,15 +917,29 @@ int test12()
 
 int test13()
 {
-    stl::string instrument("EURUSD");
-    int period = 14;
-    fx::ADX::Timeframe sec = sys::time::daySEC;
-    fx::ADX adx(instrument, period, sec);
+    fx::ADX adx("EURUSD", 14, sys::time::daySEC);
+    sys::time stm("01.01.2019 00:00:00");
+    double price[][] = {
+        274,    272,    272.75,
+        273.25, 270.25, 270.75,
+        272,    269.75, 270,
+        270.75, 268,    269.25,
+        270,    269,    
+        270.50, 268,
+        268.50, 266.50,
+        265.50, 263,
+        262.50, 259,
+        263.50, 260,
+        269.50, 263,
+        267.25, 265,
+        267.50, 265.50,
+        269.75, 266,
 
-    stl::string offerID = "0";
-    sys::time time_;
+    };
 
-    fx::Offer offer(offerID, instrument, 4, 1000, time_, 0, 0, 0, true);
+    fx::Offer offer("0", "EURUSD", 4, 1000, stm, 0, 0, 1, true);
+
+
 }
 
 
