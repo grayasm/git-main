@@ -68,6 +68,17 @@ namespace fx
             m_period = tc.m_period;
             m_timeframe = tc.m_timeframe;
             m_bar = tc.m_bar;
+            m_useAccumulation = tc.m_useAccumulation;
+            m_DM_up = tc.m_DM_up;
+            m_DM_down = tc.m_DM_down;
+            m_TR = tc.m_TR;
+            m_DI_up = tc.m_DI_up;
+            m_DI_down = tc.m_DI_down;
+            m_DI_diff = tc.m_DI_diff;
+            m_DI_add = tc.m_DI_add;
+            m_DX_list = tc.m_DX_list;
+            m_ADX = tc.m_ADX;
+            m_adx = tc.m_adx;
         }
         return *this;
     }
@@ -91,7 +102,7 @@ namespace fx
     {
         return (m_period - 1 > 1 &&
             m_period == m_bar.GetOHLCList().size() &&
-            m_ADX != -1);
+            m_ADX > 0);
     }
 
     void ADX::Update(const fx::Offer& offer)
