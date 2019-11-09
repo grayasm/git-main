@@ -26,7 +26,7 @@
 #ifndef __BARB_hpp__
 #define __BARB_hpp__
 
-#include <list>
+#include "list.hpp"
 #include "autoptr.hpp"
 #include "IND.hpp"
 #include "OHLCPrice.hpp"
@@ -38,7 +38,7 @@ namespace fx
     {
     public:
         typedef stl::autoptr<BARB>          Ptr;
-        typedef std::list<fx::OHLCPrice>    OHLCPriceList;
+        typedef stl::list<fx::OHLCPrice>    OHLCPriceList;
 
         BARB();
         BARB(const BARB&);

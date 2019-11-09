@@ -56,7 +56,7 @@ namespace fx
         Timeframe           m_timeframe;
         // -----------------------------
         fx::BAR             m_bar;
-        bool                m_useAccumulation;  // update op=(..) copy-ctor, etc
+        bool                m_useAccumulation;
         double              m_DM_up;        // +DM directional movement (up)
         double              m_DM_down;      // -DM directional movement (down)
         double              m_TR;           // TR true range

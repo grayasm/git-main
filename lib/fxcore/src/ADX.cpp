@@ -44,9 +44,9 @@ namespace fx
         Init();
 
         m_instrument = instrument;
-        m_period = period + 1;    // the 1st previous close is extra
+        m_period = period;
         m_timeframe = sec;
-        m_bar = fx::BAR(instrument, m_period, sec); // use the extra candle
+        m_bar = fx::BAR(instrument, m_period, sec);
     }
 
     ADX::~ADX()
@@ -90,7 +90,7 @@ namespace fx
 
     int ADX::GetPeriod() const
     {
-        return m_period - 1;
+        return m_period;
     }
 
     ADX::Timeframe ADX::GetTimeframe() const
@@ -100,7 +100,7 @@ namespace fx
 
     bool ADX::IsValid() const
     {
-        return (m_period - 1 > 1 &&
+        return (m_period > 1 &&
             m_period == m_bar.GetOHLCList().size() &&
             m_ADX > 0);
     }
@@ -113,16 +113,14 @@ namespace fx
         // offer will paint a new bar?
         bool isNew = m_bar.IsNew(offer);
 
+        /*  Use the latest tick data.
+            Push the OHLC if new bar is painted.
+        */
+        m_bar.Update(offer);
+
         if (isNew)
         {
-            /*  Current OHLC bar is complete.
-                Calculate the following data:
-                DIRECTIONAL MOVEMENT (DM)
-                TRUE RANGE (TR)                
-                DIRECTIONAL INDICATOR (DI)
-                DIRECTIONAL MOVEMENT INDEX (DX)
-                AVERAGE DIRECTIONAL MOVEMENT INDEX (ADX)
-            */
+            //  Current OHLC list is complete.
             if (m_bar.GetOHLCList().size() == m_period && !m_useAccumulation)
             {
                 const fx::BARB::OHLCPriceList& ohlcList = m_bar.GetOHLCList();
@@ -131,17 +129,12 @@ namespace fx
                 fx::BARB::OHLCPriceList::const_iterator currit = previt;
                 ++currit;
 
-
-                // Directional Movement (DM)
+                // Directional Movement (DM) in total
                 m_DM_up = 0;
                 m_DM_down = 0;
 
-                // True Range (TR)
+                // True Range (TR) in total
                 m_TR = 0;
-
-                // Directional Movement Index (DI)
-                m_DI_up = 0;
-                m_DI_down = 0;
 
                 for (; currit != ohlcList.end(); ++previt, ++currit)
                 {
@@ -173,7 +166,7 @@ namespace fx
                     double v3 = fabs(currL - prevC);
 
                     double tr = stl::max(v1, stl::max(v2, v3));
-                    m_TR += tr;                   // SUM of true ranges values
+                    m_TR += tr;                   // SUM of true range values
                 }
 
                 /*  JWW calculation example:
@@ -194,12 +187,15 @@ namespace fx
                     +DI -DI DI_sum DI_diff DX are not available in the first 14 days
                     ADX requires 14 days with a valid DX for the first average
                 */
-
             }
             else if (m_useAccumulation)
             {
-                const fx::OHLCPrice& prev = m_bar.GetOHLCList().back();
-                const fx::OHLCPrice& curr = m_bar.GetOHLC();
+                fx::BAR::OHLCPriceList::const_reverse_iterator currit = m_bar.GetOHLCList().rbegin();
+                fx::BAR::OHLCPriceList::const_reverse_iterator previt = currit; ++previt;
+                
+                const fx::OHLCPrice& prev = *previt;
+                const fx::OHLCPrice& curr = *currit;
+
 
                 /*  pag. 35-36
                     for an Outside day take the modulo biggest of +DM , -DM
@@ -236,14 +232,14 @@ namespace fx
                     Today's +DM(14) = Previous +DM(14) - (Previous +DM(14) / 14) + Today's +DM(14)
                     Today's -DM(14) = Previous -DM(14) - (Previous -DM(14) / 14) + Today's -DM(14)
                 */
-                m_DM_up = m_DM_up - m_DM_up / (m_period - 1) + dm_up;
-                m_DM_down = m_DM_down - m_DM_down / (m_period - 1) + dm_down;
+                m_DM_up = m_DM_up - m_DM_up / m_period  + dm_up;
+                m_DM_down = m_DM_down - m_DM_down / m_period + dm_down;
 
                 /*  JWW formula for the TR:
 
                     Today's TR(14) = Previous TR(14) - (Previous TR(14) / 14) + TR(1)
                 */
-                m_TR = m_TR - m_TR / (m_period - 1) + tr;
+                m_TR = m_TR - m_TR / m_period + tr;
 
                 /*  pag.39 JWW formula for PLUS/MINUS DIRECTIONAL INDICATOR
 
@@ -269,7 +265,7 @@ namespace fx
                 double DX = (m_DI_diff / m_DI_add) * 100;
 
                 m_DX_list.push_back(DX);
-                if (m_DX_list.size() > (m_period - 1))
+                if (m_DX_list.size() > m_period)
                     m_DX_list.pop_front();
 
                  /* pag.40
@@ -277,12 +273,12 @@ namespace fx
                     determining the AVERAGE DIRECITONAL MOVEMENT INDEX (ADX)
                     from the previous day's ADX.
                  */
-                if (m_DX_list.size() == (m_period - 1))
+                if (m_DX_list.size() == m_period)
                 {
                     if (m_ADX == -1)
                     {   // use the ADX average
                         double adx = stl::accumulate(m_DX_list.begin(), m_DX_list.end(), .0);
-                        m_ADX = adx / (m_period - 1);
+                        m_ADX = adx / m_period;
                     }
                     else
                     {
@@ -293,20 +289,14 @@ namespace fx
 
                             Today's ADX = (Previous ADX * 13 + Today's DX) / 14
                         */
-                        m_ADX = (m_ADX * ((m_period - 1) - 1) + DX) / GetPeriod();
+                        m_ADX = (m_ADX * (m_period - 1) + DX) / m_period;
                     }
                 }
             }
-
-            // paint a new bar
-            m_bar.Update(offer);
         }
         else // !isNew
         {
-            m_bar.Update(offer);
-            
-            /*  Calculate an intermediary ADX if enough data is available.
-            */
+            //  Calculate an intermediary ADX if enough data is available.
             if (m_ADX != -1)
             {
                 const fx::OHLCPrice& prev = m_bar.GetOHLCList().back();
@@ -347,14 +337,14 @@ namespace fx
                     Today's +DM(14) = Previous +DM(14) - (Previous +DM(14) / 14) + Today's +DM(14)
                     Today's -DM(14) = Previous -DM(14) - (Previous -DM(14) / 14) + Today's -DM(14)
                 */
-                double DM_up = m_DM_up - m_DM_up / (m_period - 1) + dm_up;
-                double DM_down = m_DM_down - m_DM_down / (m_period - 1) + dm_down;
+                double DM_up = m_DM_up - m_DM_up / m_period + dm_up;
+                double DM_down = m_DM_down - m_DM_down / m_period + dm_down;
 
                 /*  JWW formula for the TR:
 
                     Today's TR(14) = Previous TR(14) - (Previous TR(14) / 14) + TR(1)
                 */
-                double TR = m_TR - m_TR / (m_period - 1) + tr;
+                double TR = m_TR - m_TR / m_period + tr;
 
                 /*  pag.39 JWW formula for PLUS/MINUS DIRECTIONAL INDICATOR
 
@@ -386,7 +376,7 @@ namespace fx
 
                     Today's ADX = (Previous ADX * 13 + Today's DX) / 14
                 */
-                m_adx = (m_ADX * ((m_period - 1) - 1) + DX) / (m_period - 1);
+                m_adx = (m_ADX * (m_period - 1) + DX) / m_period;
             }
         }
     }

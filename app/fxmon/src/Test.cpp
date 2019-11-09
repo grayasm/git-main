@@ -921,60 +921,60 @@ int test13()
 
     sys::time time_("01.01.2019 00:00:00");
 
-    // High, Low, Close
-    double tab[42][3] = {
-        {   274,    272,    272.75  },
-        {   273.25, 270.25, 270.75  },
-        {   272,    269.75, 270     },
-        {   270.75, 268,    269.25  },
-        {   270,    269,    269.75  },
-        {   270.50, 268,    270     },
-        {   268.50, 266.50, 266.50  },
-        {   265.50, 263,    263.25  },
-        {   262.50, 259,    260.25  },
-        {   263.50, 260,    263     },
-        {   269.50, 263,    266.50  },
-        {   267.25, 265,    267     },
-        {   267.50, 265.50, 265.75  },
-        {   269.75, 266,    268.50  },
+    // pag.41   (my Open), High, Low, Close
+    double tab[42][4] = {
+        {   274,    274,    272,    272.75  },
+        {   272.75, 273.25, 270.25, 270.75  },
+        {   270.75, 272,    269.75, 270     },
+        {   270,    270.75, 268,    269.25  },
+        {   269.25, 270,    269,    269.75  },
+        {   269.75, 270.50, 268,    270     },
+        {   268.50, 268.50, 266.50, 266.50  },
+        {   265.50, 265.50, 263,    263.25  },
+        {   262.50, 262.50, 259,    260.25  },
+        {   260.25, 263.50, 260,    263     },
+        {   263,    269.50, 263,    266.50  },
+        {   266.50, 267.25, 265,    267     },
+        {   267,    267.50, 265.50, 265.75  },
+        {   266,    269.75, 266,    268.50  },
         //totals
-        {   268.25, 263.25, 264.25  },
-        {   264,    261.50, 264     },
-        {   268,    266.25, 266.50  },
-        {   266,    264.25, 265.25  },
-        {   274,    267,    273     },
-        {   277.50, 273.50, 276.75  },
-        {   277,    272.50, 273     },
-        {   272,    269.50, 270.25  },
-        {   267.75, 264,    266.75  },
-        {   269.25, 263,    263     },
-        {   266,    263.50, 265.50  },
-        {   265,    262,    262.25  },
-        {   264.75, 261.50, 262.75  },
-        {   261,    255.50, 255.50  },
+        {   268.25, 268.25, 263.25, 264.25  },
+        {   264,    264,    261.50, 264     },
+        {   266.25, 268,    266.25, 266.50  },
+        {   266,    266,    264.25, 265.25  },
+        {   267,    274,    267,    273     },
+        {   273.50, 277.50, 273.50, 276.75  },
+        {   276.75, 277,    272.50, 273     },
+        {   272,    272,    269.50, 270.25  },
+        {   267.75, 267.75, 264,    266.75  },
+        {   266.75, 269.25, 263,    263     },
+        {   263.50, 266,    263.50, 265.50  },
+        {   265,    265,    262,    262.25  },
+        {   262.25, 264.75, 261.50, 262.75  },
+        {   261,    261,    255.50, 255.50  },
         // total
-        {   257.50, 253,    253     },
-        {   259,    254,    257.50  },
-        {   259.75, 257.50, 257.50  },
-        {   257.25, 250,    250     },
-        {   250,    247,    249.75  },
-        {   254.25, 252.75, 253.75  },
-        {   254,    250.50, 251.25  },
-        {   253.25, 250.25, 250.50  },
-        {   253.25, 251,    253     },
-        {   251.75, 250.50, 251.50  },
-        {   253,    249.50, 250     },
-        {   251.50, 245.25, 245.75  },
-        {   246.25, 240,    242.75  },
-        {   244.25, 241.25, 243.50  }
+        {   255.50, 257.50, 253,    253     },
+        {   254,    259,    254,    257.50  },
+        {   257.50, 259.75, 257.50, 257.50  },
+        {   257.25, 257.25, 250,    250     },
+        {   250,    250,    247,    249.75  },
+        {   252.75, 254.25, 252.75, 253.75  },
+        {   253.75, 254,    250.50, 251.25  },
+        {   251.25, 253.25, 250.25, 250.50  },
+        {   251,    253.25, 251,    253     },
+        {   251.75, 251.75, 250.50, 251.50  },
+        {   251.50, 253,    249.50, 250     },
+        {   250,    251.50, 245.25, 245.75  },
+        {   245.75, 246.25, 240,    242.75  },
+        {   242.75, 244.25, 241.25, 243.50  }
     };
 
     
     fx::Offer offer[4];
-    offer[0] = fx::Offer("0", "EURUSD", 4, 1000, time_,         tab[0][0], tab[0][0] - 0.01, 1, true); // open
-    offer[1] = fx::Offer("0", "EURUSD", 4, 1000, time_ + 20,    tab[0][0], tab[0][0] - 0.01, 1, true); // high
-    offer[2] = fx::Offer("0", "EURUSD", 4, 1000, time_ + 40,    tab[0][1], tab[0][1] - 0.01, 1, true); // low
-    offer[3] = fx::Offer("0", "EURUSD", 4, 1000, time_ + 55,    tab[0][2], tab[0][2] - 0.01, 1, true); // close
+    offer[0] = fx::Offer("0", "EURUSD", 4, 1000, time_,            tab[0][0], tab[0][0] + 0.01, 1, true); // open
+    offer[1] = fx::Offer("0", "EURUSD", 4, 1000, time_ + 60*20,    tab[0][1], tab[0][1] + 0.01, 1, true); // high
+    offer[2] = fx::Offer("0", "EURUSD", 4, 1000, time_ + 60*40,    tab[0][2], tab[0][2] + 0.01, 1, true); // low
+    offer[3] = fx::Offer("0", "EURUSD", 4, 1000, time_ + 60*55,    tab[0][3], tab[0][3] + 0.01, 1, true); // close
 
     adx.Update(offer[0]);
     adx.Update(offer[1]);
@@ -983,21 +983,23 @@ int test13()
 
     for (size_t i = 1; i < 42; ++i)
     {
-        offer[0].SetAsk(tab[i - 1][2]);         // open
-        offer[0].SetBid(tab[i - 1][2] - 0.01);
-        offer[0].SetTime(time_ + i * 3600);
+        sys::time reftime = time_ + i * sys::time::hourSEC;
 
-        offer[1].SetAsk(tab[i][0]);             // high
-        offer[1].SetBid(tab[i][0] - 0.01);
-        offer[1].SetTime(time_ + i * 3600 + 60*20);
+        offer[0].SetBid(tab[i][0]);         // open
+        offer[0].SetAsk(tab[i][0] + 0.01);
+        offer[0].SetTime(reftime);
 
-        offer[2].SetAsk(tab[i][1]);
-        offer[2].SetBid(tab[i][1] - 0.01);      // low
-        offer[1].SetTime(time_ + i * 3600 + 60*40);
+        offer[1].SetBid(tab[i][1]);             // high
+        offer[1].SetAsk(tab[i][1] + 0.01);
+        offer[1].SetTime(reftime + 60 * 20);
 
-        offer[3].SetAsk(tab[i][2]);
-        offer[3].SetBid(tab[i][2] - 0.01);      // close
-        offer[1].SetTime(time_ + i * 3600 + 60*55);
+        offer[2].SetBid(tab[i][2]);
+        offer[2].SetAsk(tab[i][2] + 0.01);      // low
+        offer[2].SetTime(reftime + 60 * 40);
+
+        offer[3].SetBid(tab[i][3]);
+        offer[3].SetAsk(tab[i][3] + 0.01);      // close
+        offer[3].SetTime(reftime + 60 * 55);
 
         adx.Update(offer[0]);
         adx.Update(offer[1]);
@@ -1010,6 +1012,56 @@ int test13()
     return 0;
 }
 
+int test14()
+{
+    fx::Offer offer("0", "EUR/USD", 5, 0.0001, sys::time(), 0, 0, 0, true);
+    HistdatacomReader oreader(offer, 2018);
+
+    time_t timeframe = sys::time::daySEC;
+    fx::ADX adx("EUR/USD", 14, timeframe);
+    fx::BAR bar("EUR/USD", 14, timeframe);
+    
+    stl::string logadx("ADX_2018.txt");
+    
+    FILE* f1 = fopen(logadx.c_str(), "w+");
+    if (f1) fclose(f1);
+    
+    while (oreader.GetOffer(offer))
+    {
+        bool isNew = bar.IsNew(offer);
+
+        if (isNew && adx.IsValid())
+        {
+            f1 = fopen(logadx.c_str(), "a+");
+
+            // write bar data -------------
+            const fx::OHLCPrice& ohlc = bar.GetOHLC();
+            std::stringstream ss;
+            ss << bar.GetRefTime().tostring().c_str() << " ";
+            ss << " BAR";
+            ss << " AO:" << ohlc.GetAskOpen();
+            ss << " AH:" << ohlc.GetAskHigh();
+            ss << " AL:" << ohlc.GetAskLow();
+            ss << " AC:" << ohlc.GetAskClose();
+            ss << " ADX:" << adx.GetADX();
+            ss << " ADX2:" << adx.GetADX2();
+            ss << std::endl;
+            std::string str = ss.str();
+            fwrite(str.c_str(), sizeof(char), str.size(), f1);
+            fclose(f1);
+        }
+        
+        bar.Update(offer);
+        adx.Update(offer);
+
+        if (adx.GetRefTime() != bar.GetRefTime())
+        {
+            throw stl::exception("time is inconsistent");
+        }        
+    }
+
+    return 0;
+}
 
 static void Time2DATE(time_t tt, DATE& dt)
 {

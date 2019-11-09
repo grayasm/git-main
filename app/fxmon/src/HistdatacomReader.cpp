@@ -31,11 +31,15 @@ HistdatacomReader::HistdatacomReader(const fx::Offer& offer, int year)
     const stl::string& instrument = offer.GetInstrument();
     if (instrument == "EUR/USD" && m_year == 1900) LoadEURUSD1900();
     else if (instrument == "EUR/USD" && m_year == 2008) LoadEURUSD2008();
+    else if (instrument == "EUR/USD" && m_year == 2014) LoadEURUSD2014();
+    else if (instrument == "EUR/USD" && m_year == 2015) LoadEURUSD2015();
+    else if (instrument == "EUR/USD" && m_year == 2016) LoadEURUSD2016();
     else if (instrument == "EUR/USD" && m_year == 2017) LoadEURUSD2017();
+    else if (instrument == "EUR/USD" && m_year == 2018) LoadEURUSD2018();
+    else if (instrument == "EUR/USD" && m_year == 2019) LoadEURUSD2019();
     else if (instrument == "EUR/JPY" && m_year == 2017) LoadEURJPY2017();
     else if (instrument == "USD/JPY" && m_year == 2017) LoadUSDJPY2017();
-    else if (instrument == "GBP/JPY" && m_year == 2017) LoadGBPJPY2017();
-    
+    else if (instrument == "GBP/JPY" && m_year == 2017) LoadGBPJPY2017();    
     else
         throw stl::exception("HistdatacomReader unknown instrument");
 

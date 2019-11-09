@@ -21,7 +21,7 @@
 #ifndef __ATR_hpp__
 #define __ATR_hpp__
 
-#include <list>
+#include "list.hpp"
 #include "IND.hpp"
 #include "BAR.hpp"
 #include "Offer.hpp"
@@ -33,7 +33,7 @@ namespace fx
     class ATR : public IND
     {
     public:
-        typedef std::list<fx::OHLCPrice>    OHLCPriceList;
+        typedef stl::list<fx::OHLCPrice>    OHLCPriceList;
         // Timeframe is time_t
 
         ATR();
