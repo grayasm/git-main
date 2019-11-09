@@ -79,6 +79,9 @@ namespace fx
             m_DX_list = tc.m_DX_list;
             m_ADX = tc.m_ADX;
             m_adx = tc.m_adx;
+            m_ADX_list = tc.m_ADX_list;
+            m_ADXR = tc.m_ADXR;
+            m_adxr = tc.m_adxr;
         }
         return *this;
     }
@@ -103,6 +106,7 @@ namespace fx
         return (m_period > 1 &&
             m_period == m_bar.GetOHLCList().size() &&
             m_ADX > 0);
+        // m_ADXR may not be yet valid (-1)
     }
 
     void ADX::Update(const fx::Offer& offer)
@@ -279,6 +283,7 @@ namespace fx
                     {   // use the ADX average
                         double adx = stl::accumulate(m_DX_list.begin(), m_DX_list.end(), .0);
                         m_ADX = adx / m_period;
+                        m_ADX_list.push_back(m_ADX);
                     }
                     else
                     {
@@ -290,6 +295,21 @@ namespace fx
                             Today's ADX = (Previous ADX * 13 + Today's DX) / 14
                         */
                         m_ADX = (m_ADX * (m_period - 1) + DX) / m_period;
+                        
+                        
+                        /*  pag.44
+                            The ADXR is the final number which is used to rate
+                            all commodities, currencies, stocks, etc.,
+                            on a rating scale which is indicative of directional
+                            movement. The ADXR is simply the ADX today plus
+                            the ADX 14 days ago divided by 2.
+                        */
+                        m_ADX_list.push_back(m_ADX);
+                        if (m_ADX_list.size() > m_period)
+                            m_ADX_list.pop_front();
+                        
+                        if (m_ADX_list.size() == m_period)
+                            m_ADXR = (m_ADX_list.front() + m_ADX_list.back()) / 2.;
                     }
                 }
             }
@@ -377,6 +397,12 @@ namespace fx
                     Today's ADX = (Previous ADX * 13 + Today's DX) / 14
                 */
                 m_adx = (m_ADX * (m_period - 1) + DX) / m_period;
+
+                if (m_ADXR != -1)
+                {
+                    double adx_prev = *(++m_ADX_list.begin());
+                    m_adxr = (adx_prev + m_adx) / 2.;
+                }
             }
         }
     }
@@ -396,6 +422,16 @@ namespace fx
         return m_adx;
     }
 
+    double ADX::GetADXR() const
+    {
+        return m_ADXR;
+    }
+
+    double ADX::GetADXR2() const
+    {
+        return m_adxr;
+    }
+
     void ADX::Init()
     {
         m_instrument = "";
@@ -413,5 +449,8 @@ namespace fx
         // m_DX_list - empty
         m_ADX = -1;
         m_adx = -1;
+        // m_ADX_list - empty
+        m_ADXR = -1;
+        m_adxr = -1;
     }
 } // namespace

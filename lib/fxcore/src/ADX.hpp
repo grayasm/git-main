@@ -44,8 +44,10 @@ namespace fx
         const sys::time& GetRefTime() const override;
         // --- end of virtual table ---
 
-        double GetADX() const;      // ADX for the given timeframe
-        double GetADX2() const;     // ADX for the latest tick
+        double GetADX() const;      // ADX for the period
+        double GetADX2() const;     // ADX for the period with the last tick
+        double GetADXR() const;     // ADXR for the period
+        double GetADXR2() const;    // ADXR for the period with the last tick
 
     private:
         void Init();
@@ -67,6 +69,9 @@ namespace fx
         stl::list<double>   m_DX_list;      // DX directional movement index (period values)
         double              m_ADX;          // ADX average directional movement index
         double              m_adx;          // ADX for the latest tick data
+        stl::list<double>   m_ADX_list;     // ADX period values to calculate ADXR
+        double              m_ADXR;         // ADXR average directional movement index rating
+        double              m_adxr;         // ADXR for the latest tick data
     };
 } // namespace
 

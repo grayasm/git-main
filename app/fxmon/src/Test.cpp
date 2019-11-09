@@ -1006,7 +1006,7 @@ int test13()
         adx.Update(offer[2]);
         adx.Update(offer[3]);
 
-        printf("\nADX=%.2f\tadx=%.2f", adx.GetADX(), adx.GetADX2());
+        printf("\nADX=%.2f\tadx=%.2f\tADXR=%.2f\tadxr=%.2f", adx.GetADX(), adx.GetADX2(), adx.GetADXR(), adx.GetADXR2());
     }
 
     return 0;
