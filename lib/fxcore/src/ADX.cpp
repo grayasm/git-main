@@ -432,6 +432,16 @@ namespace fx
         return m_adxr;
     }
 
+    double ADX::GetDIUp() const
+    {
+        return m_DI_up;
+    }
+
+    double ADX::GetDIDown() const
+    {
+        return fabs(m_DI_down);
+    }
+
     void ADX::Init()
     {
         m_instrument = "";

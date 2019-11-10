@@ -1063,6 +1063,123 @@ int test14()
     return 0;
 }
 
+
+int test15()
+{
+    /*  DIRECTIONAL MOVEMENT SYSTEM
+    */
+    fx::Offer offer("0", "EUR/USD", 5, 0.0001, sys::time(), 0, 0, 0, true);
+    HistdatacomReader oreader(offer, 2019);
+
+    fx::BAR bar("EUR/USD", 14, sys::time::hourSEC);
+    fx::ADX adx("EUR/USD", 14, sys::time::hourSEC);
+
+    fx::Position pos;
+    int lots = 1;
+    double totalPL = 0;
+    double totalGPL = 0;
+
+    fx::Price extremp;
+    
+
+
+    while (true)
+    {
+        if (!oreader.GetOffer(offer))
+            break;
+
+        adx.Update(offer);
+        bar.Update(offer);
+
+        if (!adx.IsValid())
+            continue;
+
+        if (adx.GetADXR() < 0)
+            continue;
+        
+        double ADXR = adx.GetADXR();
+
+        bool isopen = pos.IsOpen();
+        bool hasExtreme = (extremp.GetBuy() != 0);
+        bool canClose = hasExtreme && (offer.GetAsk() > extremp.GetBuy());
+
+        if (ADXR < 25 && !isopen)
+            continue;
+        
+        if (ADXR < 25 && isopen && canClose ) // higher than extreme
+        {
+            ClosePosition(offer, pos);
+
+            totalPL += pos.GetPL();
+            stl::cout << "PL=" << pos.GetPL() << " Sum(PL)=" << totalPL << std::endl;
+
+            continue;
+        }
+
+        double DI_up = adx.GetDIUp();
+        double DI_down = adx.GetDIDown();
+
+        if (DI_up > DI_down)
+        {
+            if (isopen && !pos.IsBuy() && canClose)
+            {
+                ClosePosition(offer, pos);
+
+                totalPL += pos.GetPL();
+                stl::cout << "PL=" << pos.GetPL() << " Sum(PL)=" << totalPL << std::endl;
+            }
+
+            if (!pos.IsOpen())
+            {
+                //OpenPosition(offer, 1, true, pos);
+                const fx::OHLCPrice& ohlc = bar.GetOHLC();
+                extremp = fx::Price(ohlc.GetAskHigh(), ohlc.GetBidHigh());
+            }
+        }
+
+        if (DI_up < DI_down)
+        {
+            if (isopen && pos.IsBuy())
+            {
+                ClosePosition(offer, pos);
+
+                totalPL += pos.GetPL();
+                stl::cout << "PL=" << pos.GetPL() << " Sum(PL)=" << totalPL << std::endl;
+            }
+
+            if (!pos.IsOpen())
+            {
+                OpenPosition(offer, 1, false, pos);
+            }
+        }
+    }
+
+    // close if still open
+    if (pos.IsOpen())
+    {
+        ClosePosition(offer, pos);
+
+        totalPL += pos.GetPL();
+        stl::cout << "PL=" << pos.GetPL() << " Sum(PL)=" << totalPL << std::endl;
+    }
+
+
+    FILE *pf = fopen("TradeResult.txt", "a+");
+    if (pf == NULL)
+        return 0;
+
+    stl::string slog;
+    slog += "totalPL=";
+    slog += stl::from_value(totalPL, 2);
+    //slog += " totalGPL=";
+    //slog += stl::from_value(totalGPL, 2);
+    slog += "\n";
+
+    fwrite(slog.c_str(), sizeof(char), slog.size(), pf);
+    fclose(pf);
+    return 0;
+}
+
 static void Time2DATE(time_t tt, DATE& dt)
 {
     struct tm *tmNow = gmtime(&tt);

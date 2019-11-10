@@ -48,6 +48,8 @@ namespace fx
         double GetADX2() const;     // ADX for the period with the last tick
         double GetADXR() const;     // ADXR for the period
         double GetADXR2() const;    // ADXR for the period with the last tick
+        double GetDIUp() const;     // Return m_DI_up
+        double GetDIDown() const;   // Return m_DI_down w/o sign
 
     private:
         void Init();
