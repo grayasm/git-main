@@ -118,7 +118,7 @@ namespace fx
     void ADX::Update(const fx::Offer& offer)
     {
         if (m_instrument != offer.GetInstrument())
-            throw stl::exception("ATR offer is invalid");
+            throw stl::exception("ADX offer is invalid");
 
         // offer will paint a new bar?
         bool isNew = m_bar.IsNew(offer);

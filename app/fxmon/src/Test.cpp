@@ -44,6 +44,7 @@
 #include "HABAR.hpp"
 #include "LWMA.hpp"
 #include "ADX.hpp"
+#include "MF.hpp"
 #include <list>
 
 
@@ -1177,6 +1178,74 @@ int test15()
 
     fwrite(slog.c_str(), sizeof(char), slog.size(), pf);
     fclose(pf);
+    return 0;
+}
+
+int test16()
+{
+    /*  J.W.Wilder The Trend Balance Point System
+        Uses MF Momentum Factor.
+    */
+    fx::MF mf("EURUSD", 2, sys::time::hourSEC);
+
+    sys::time time_("01.01.2019 00:00:00");
+
+    // pag.54  left-bottom example Open,High,Low,Close
+    double tab[10][4] = {
+        { 49.15, 49.25, 49.15, 49.25 }, // up
+        { 49.25, 49.75, 49.25, 49.75 }, // up
+        { 49.75, 50.25, 49.75, 50.25 }, // up
+        { 50.25, 50.75, 50.20, 50.75 }, // up
+        { 50.75, 51.10, 50.75, 51.10 }, // up
+        { 51.10, 51.10, 50.75, 50.75 }, // down
+        { 50.75, 51.00, 50.75, 51.00 }, // up
+        { 51.00, 51.10, 49.75, 49.75 }, // down
+        { 49.75, 49.75, 49.25, 49.25 }, // down
+        { 49.25, 49.50, 49.20, 49.50 }  // up
+    };
+
+
+    fx::Offer offer[4];
+    offer[0] = fx::Offer("0", "EURUSD", 4, 1000, time_,           tab[0][0], tab[0][0] + 0.01, 1, true); // open
+    offer[1] = fx::Offer("0", "EURUSD", 4, 1000, time_ + 60 * 20, tab[0][1], tab[0][1] + 0.01, 1, true); // high
+    offer[2] = fx::Offer("0", "EURUSD", 4, 1000, time_ + 60 * 40, tab[0][2], tab[0][2] + 0.01, 1, true); // low
+    offer[3] = fx::Offer("0", "EURUSD", 4, 1000, time_ + 60 * 55, tab[0][3], tab[0][3] + 0.01, 1, true); // close
+
+    mf.Update(offer[0]);
+    mf.Update(offer[1]);
+    mf.Update(offer[2]);
+    mf.Update(offer[3]);
+
+    for (size_t i = 1; i < 10; ++i)
+    {
+        mf.IsValid();
+
+        sys::time reftime = time_ + i * sys::time::hourSEC;
+
+        offer[0].SetBid(tab[i][0]);         // open
+        offer[0].SetAsk(tab[i][0] + 0.01);
+        offer[0].SetTime(reftime);
+
+        offer[1].SetBid(tab[i][1]);             // high
+        offer[1].SetAsk(tab[i][1] + 0.01);
+        offer[1].SetTime(reftime + 60 * 20);
+
+        offer[2].SetBid(tab[i][2]);
+        offer[2].SetAsk(tab[i][2] + 0.01);      // low
+        offer[2].SetTime(reftime + 60 * 40);
+
+        offer[3].SetBid(tab[i][3]);
+        offer[3].SetAsk(tab[i][3] + 0.01);      // close
+        offer[3].SetTime(reftime + 60 * 55);
+
+        mf.Update(offer[0]);
+        mf.Update(offer[1]);
+        mf.Update(offer[2]);
+        mf.Update(offer[3]);
+
+        printf("\ni=%d MF=%.2f MF2=%.2f", i, mf.GetMF(), mf.GetMF2());
+    }
+
     return 0;
 }
 
