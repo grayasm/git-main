@@ -21,7 +21,13 @@
 
     James Welles Wilder uses the generic term 'Price' without specifying if it
     is the Ask or Bid value. We need consistency in using only Bid or only Ask.
+    I used only the Bid price for calculation here. If different - it's a bug.
 
+    All calculations in this file were compared for correctness with the
+    Daily Work Sheet "DIRECTIONAL MOVEMENT INDEX" page 41.
+
+    e.g.    TR(1),+DM(1),-DM(1),TR(14),+DM(14),-DM(14),+DI(14),-DI(14)
+            DI DIFF,DI SUM,DX,ADX,ADXR,ATR(14)
 */
 
 #include "ADX.hpp"
