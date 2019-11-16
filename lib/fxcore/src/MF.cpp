@@ -33,7 +33,7 @@ namespace fx
     MF::MF(const stl::string& instrument, int period, Timeframe sec)
     {
         if (period < 2)
-            throw stl::exception("period must be greater than 1");
+            throw stl::exception("MF period must be greater than 1");
 
         Init();
 

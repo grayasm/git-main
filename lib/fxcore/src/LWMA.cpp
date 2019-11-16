@@ -50,6 +50,9 @@ namespace fx
         BarType barType,
         PriceOrigin po)
     {
+        if (period < 2)
+            throw stl::exception("LWMA period must be greater than 1");
+
         Init();
 
         m_instrument = instrument;

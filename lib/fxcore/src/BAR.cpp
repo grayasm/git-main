@@ -30,6 +30,9 @@ namespace fx
 
     BAR::BAR(const stl::string& instrument, int period, Timeframe sec)
     {
+        if (period < 2)
+            throw stl::exception("BAR period must be greater than 1");
+
         Init();
 
         m_instrument = instrument;
