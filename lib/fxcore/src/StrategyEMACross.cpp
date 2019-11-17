@@ -47,18 +47,21 @@ namespace fx
         const stl::string& instrument,
         const fx::EMA& ema5,
         const fx::EMA& ema50,
-        const fx::EMA& ema100)
+        const fx::EMA& ema100,
+        const fx::RSI& rsi5)
     {
         m_plugin = plugin;
         m_instrument = instrument;
         m_ema5 = ema5;
         m_ema50 = ema50;
         m_ema100 = ema100;
-        m_bar = fx::BAR(instrument, 1, ema100.GetTimeframe());
+        m_rsi5 = rsi5;
+        m_bar = fx::BAR(instrument, 2, ema100.GetTimeframe());
         // m_tr - default
         m_closedPL = 0;
         m_closedGPL = 0;
         m_isCancelled = false;
+        // m_prevTime - default 0
     }
 
     StrategyEMACross::~StrategyEMACross()
@@ -80,7 +83,10 @@ namespace fx
             return;
 
         // Build all indicators
-        if (!m_ema5.IsValid() || !m_ema50.IsValid() || !m_ema100.IsValid())
+        if (!m_ema5.IsValid() ||
+            !m_ema50.IsValid() || 
+            !m_ema100.IsValid() ||
+            !m_rsi5.IsValid())
         {
             BuildAllIndicators(offer);
             return;
@@ -90,6 +96,7 @@ namespace fx
         m_ema5.Update(offer);
         m_ema50.Update(offer);
         m_ema100.Update(offer);
+        m_rsi5.Update(offer);
 
         // update last bar
         m_bar.Update(offer);
@@ -101,25 +108,37 @@ namespace fx
         m_ema5.GetValue(ema5P);
         m_ema50.GetValue(ema50P);
         m_ema100.GetValue(ema100P);
+        double rsi5 = m_rsi5.GetRSI2(); // current candle
 
-        const fx::OHLCPrice& prevbar = *(m_bar.GetOHLCList().begin());
+        const fx::OHLCPrice& prevbar = m_bar.GetOHLCList().back();
         const fx::OHLCPrice& currbar = m_bar.GetOHLC();
        
         double pipdiff = 2 * offer.GetPointSize(); // point size = 0.0001 same as pip size
+        double ema5dist = 10 * offer.GetPointSize(); // have at least 10 pips from exit
 
         if (m_tr.IsEmpty() &&
-            offer.GetAsk() /*buy*/ > ema100P.GetBuy() &&
-            offer.GetAsk() /*buy*/ > ema50P.GetBuy() &&
+            offer.GetAsk() /*buy*/ > ema100P.GetBuy() &&        // price > ema(100)
+            offer.GetAsk() /*buy*/ > ema50P.GetBuy() &&         // price > ema(50)
+            ema50P.GetBuy() /*buy*/ > ema100P.GetBuy() &&       // ema(50) > ema(100)
             prevbar.GetAskOpen() < prevbar.GetAskClose() &&
-            offer.GetAsk() > prevbar.GetAskClose() + pipdiff)
+            offer.GetAsk() /*buy*/ > prevbar.GetAskClose() + pipdiff &&     // 10 pips to exit
+            rsi5 > 49.99 /*rsi*/ &&                             // rsi > 50
+            offer.GetAsk() > ema5P.GetBuy() + ema5dist /*above ema(5)*/ &&
+            offer.GetTime() > m_prevTime + m_bar.GetTimeframe() /*stop trading on a loosing day*/
+            )
         {
             OpenPosition(offer, true);    // buy
         }
         else if (m_tr.IsEmpty() &&
             offer.GetBid() /*sell*/ < ema100P.GetSell() &&
             offer.GetBid() /*sell*/ < ema50P.GetSell() &&
+            ema50P.GetSell() /*sell*/ < ema100P.GetSell() &&
             prevbar.GetBidOpen() > prevbar.GetBidClose() &&
-            offer.GetBid() /*sell*/ < prevbar.GetBidClose() - pipdiff)
+            offer.GetBid() /*sell*/ < prevbar.GetBidClose() - pipdiff &&
+            rsi5 < 50.00 /*rsi*/ &&
+            offer.GetBid() < ema5P.GetSell() - ema5dist /*below ema(5)*/ &&
+            offer.GetTime() > m_prevTime + m_bar.GetTimeframe() /*1x TF from last loosing trade*/
+            )
         {
             OpenPosition(offer, false); // sell
         }
@@ -132,6 +151,8 @@ namespace fx
             m_closedGPL += m_tr.GetGPL(m_instrument, price);
 
             ClosePosition(offer);
+
+            m_prevTime = m_bar.GetRefTime();
         }
         else if (!m_tr.IsEmpty() &&
             !m_tr.GetPositions().at(0).IsBuy() &&
@@ -142,6 +163,8 @@ namespace fx
             m_closedGPL += m_tr.GetGPL(m_instrument, price);
 
             ClosePosition(offer);
+
+            m_prevTime = m_bar.GetRefTime();
         }
     }
 
@@ -202,13 +225,17 @@ namespace fx
     void StrategyEMACross::BuildAllIndicators(const fx::Offer& offer)
     {
         // may not need to download history data
-        if (m_ema5.IsValid() && m_ema50.IsValid() && m_ema100.IsValid())
+        if (m_ema5.IsValid() &&
+            m_ema50.IsValid() &&
+            m_ema100.IsValid() &&
+            m_rsi5.IsValid())
             return;
 
         stl::vector<fx::IND*> indicators;
         indicators.push_back(&m_ema5);
         indicators.push_back(&m_ema50);
         indicators.push_back(&m_ema100);
+        indicators.push_back(&m_rsi5);
         IndicatorBuilder::Build(m_plugin, offer, indicators);
     }
 } // namespace

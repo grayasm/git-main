@@ -38,5 +38,6 @@ int test14();
 int test15();
 int test16();
 int test17();
+int test18();
 
 #endif // __Test_hpp__

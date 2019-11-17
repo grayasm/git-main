@@ -25,6 +25,7 @@
 #include "Transaction.hpp"
 #include "MarketPlugin.hpp"
 #include "EMA.hpp"
+#include "RSI.hpp"
 
 namespace fx
 {
@@ -38,7 +39,8 @@ namespace fx
             const stl::string& instrument,
             const fx::EMA& ema5,
             const fx::EMA& ema50,
-            const fx::EMA& ema100);
+            const fx::EMA& ema100,
+            const fx::RSI& rsi5);
 
         ~StrategyEMACross();
         StrategyEMACross(const StrategyEMACross&) = delete;
@@ -60,12 +62,14 @@ namespace fx
         fx::EMA                 m_ema5;
         fx::EMA                 m_ema50;
         fx::EMA                 m_ema100;
+        fx::RSI                 m_rsi5;
         /// ---------------------------
         fx::BAR                 m_bar;
         fx::Transaction         m_tr;
         double                  m_closedPL;
         double                  m_closedGPL;
         bool                    m_isCancelled;
+        sys::time               m_prevTime; // time of last bad trade
     };
 } // namespace
 

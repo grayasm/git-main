@@ -17,6 +17,7 @@
   contact: grayasm@gmail.com
 */
 
+#include <list>
 
 #include "unistd.hpp"
 #include "stream.hpp"
@@ -46,7 +47,7 @@
 #include "ADX.hpp"
 #include "MF.hpp"
 #include "RSI.hpp"
-#include <list>
+
 
 
 static void OpenPosition(const fx::Offer& offer, int lots, bool buy, fx::Position& result);
@@ -822,6 +823,9 @@ int test12()
     fxcm::IniParams::Ptr iniParams = new fxcm::IniParams("monitor.ini");
     fxcm::Session session(*loginParams, *iniParams);
     session.Login();
+    int ret = session.GetOffers();
+    if (ret != fxcm::ErrorCodes::ERR_SUCCESS)
+        return -1;
 
     MarketPlugin4backtest plugin(&session, *iniParams);
 
@@ -833,7 +837,8 @@ int test12()
     fx::EMA ema5(instrument, 5, timeframe, fx::SMA::BT_BAR, fx::SMA::PRICE_CLOSE); //5
     fx::EMA ema50(instrument, 50, timeframe, fx::SMA::BT_BAR, fx::SMA::PRICE_CLOSE); //50
     fx::EMA ema100(instrument, 100, timeframe, fx::SMA::BT_BAR, fx::SMA::PRICE_CLOSE); //100
-
+    fx::RSI rsi5(instrument, 14, timeframe); // RSI(5) -> RSI(14)
+    
 
     if (!oreader.GetOffer(offer))
         return -1; // cannot get the offer?
@@ -852,12 +857,16 @@ int test12()
             stl::cout << reftime.tostring().c_str() << std::endl;
         }
 
-        if (ema5.IsValid() && ema50.IsValid() && ema100.IsValid())
+        if (ema5.IsValid() &&
+            ema50.IsValid() &&
+            ema100.IsValid() &&
+            rsi5.IsValid())
             break;
 
         ema5.Update(offer);
         ema50.Update(offer);
         ema100.Update(offer);
+        rsi5.Update(offer);
     }
 
     stl::cout << "Running the strategy\n";
@@ -868,7 +877,8 @@ int test12()
         instrument,
         ema5,
         ema50,
-        ema100);
+        ema100,
+        rsi5);
 
     while (oreader.GetOffer(offer))
     {
@@ -1351,7 +1361,51 @@ int test17()
     return 0;
 }
 
+int test18()
+{
+    fx::Offer offer("0", "EUR/USD", 5, 0.0001, sys::time(), 0, 0, 0, true);
+    HistdatacomReader oreader(offer, 2019);
+    fx::BAR bar("EUR/USD", 14, sys::time::hourSEC);
+    fx::RSI rsi("EUR/USD", 14, sys::time::hourSEC);
 
+    stl::string rsi_log("RSI_2019.txt");
+    time_t timeframe = sys::time::hourSEC;
+
+    FILE* f1 = fopen(rsi_log.c_str(), "w+"); // clean log file
+    if (f1) fclose(f1);
+    
+    while (oreader.GetOffer(offer))
+    {
+        // ---- RSI ----
+        if (bar.IsNew(offer) && rsi.IsValid())
+        {
+            FILE* pf = fopen(rsi_log.c_str(), "a+");
+            if (pf == NULL)
+                continue;
+
+            const sys::time& barOtime = bar.GetRefTime();
+            const fx::OHLCPrice& ohlc = bar.GetOHLC();
+
+            std::stringstream ss;
+            ss << barOtime.tostring().c_str();
+            ss << " O=" << ohlc.GetBidOpen();
+            ss << " H=" << ohlc.GetBidHigh();
+            ss << " L=" << ohlc.GetBidLow();
+            ss << " C=" << ohlc.GetBidClose();
+            ss << " RSI2=" << rsi.GetRSI2();
+            ss << "\n";
+            
+            std::string str = ss.str();
+            fwrite(str.c_str(), sizeof(char), str.size(), pf);
+            fclose(pf);
+        }
+        
+        bar.Update(offer);
+        rsi.Update(offer);
+    }
+
+    return 0;
+}
 
 static void Time2DATE(time_t tt, DATE& dt)
 {

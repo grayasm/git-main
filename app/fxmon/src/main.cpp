@@ -44,12 +44,13 @@ int main(int /*argc*/, char** /*argv*/)
     // RealEngine();
     // TestEngine();
     // OMPEngine();
-    // test12();
+    test12();
     // test13();
     // test14();
     // test15();
     // test16();
-    test17();
+    // test17();
+    // test18();
 
     return 0;
 }
