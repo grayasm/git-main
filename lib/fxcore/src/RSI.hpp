@@ -16,6 +16,15 @@
     51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
     contact: grayasm@gmail.com
+
+
+    J.Welles Wilder Jr. - New Concepts in Technical Trading Systems
+    Section VI / pag.63
+    The Relative Strength Index (RSI)
+
+    The equation for the RSI is:
+    RSI = 100 - [ 100 : (1 + RS) ];  where RS is:
+    RS = Average of 14 day's closes UP : Average of 14 day's close DOWN;    
 */
 
 
@@ -50,6 +59,9 @@ namespace fx
         const sys::time& GetRefTime() const override;
         // --- end of virtual table ---
 
+        double GetRSI() const;      // RSI for the period
+        double GetRSI2() const;     // RSI for the last tick data
+
     private:
         void Init();
 
@@ -59,8 +71,11 @@ namespace fx
         Timeframe           m_timeframe;
         // -----------------------------
         fx::BAR             m_bar;
-        double              m_RS;
-        double              m_RSI;
+        bool                m_useSmoothing; // use the last calculated average
+        double              m_medUp;        // average up difference
+        double              m_medDown;      // average down difference
+        double              m_RSI;          // RSI for the period
+        double              m_rsi;          // RSI for the last tick data
     };
 } // namespace
 

@@ -33,6 +33,7 @@
 #include "ADX.hpp"
 #include "algorithm.hpp"
 #include "numeric.hpp"
+#include <math.h>
 
 
 namespace fx
@@ -130,24 +131,24 @@ namespace fx
 
         if (isNew)
         {
+            const fx::BARB::OHLCPriceList& ohlcList = m_bar.GetOHLCList();
+
             //  Current OHLC list is complete.
-            if (m_bar.GetOHLCList().size() == m_period && !m_useAccumulation)
+            if (ohlcList.size() == m_period && !m_useAccumulation)
             {
-                const fx::BARB::OHLCPriceList& ohlcList = m_bar.GetOHLCList();
-
-                fx::BARB::OHLCPriceList::const_iterator previt = ohlcList.begin();
-                fx::BARB::OHLCPriceList::const_iterator currit = previt;
-                ++currit;
-
-                // Directional Movement (DM) in total
                 m_DM_up = 0;
                 m_DM_down = 0;
+                m_TR = 0;                
 
-                // True Range (TR) in total
-                m_TR = 0;
-
-                for (; currit != ohlcList.end(); ++previt, ++currit)
+                fx::BARB::OHLCPriceList::const_iterator it = ohlcList.begin();
+                for (; it != ohlcList.end(); ++it)
                 {
+                    // safety: if (period == 2) we only loop 1x
+                    fx::BARB::OHLCPriceList::const_iterator next = it;
+                    ++next;
+                    if (next == ohlcList.end())
+                        break;
+
                     /*  pag. 35-36
                         for an Outside day take the modulo biggest of +DM , -DM
                         for an Inside day the +DM , -DM are zero
@@ -155,11 +156,11 @@ namespace fx
                     double dm_up = 0;
                     double dm_down = 0;
 
-                    if (previt->GetBidHigh() < currit->GetBidHigh())
-                        dm_up = currit->GetBidHigh() - previt->GetBidHigh();
+                    if (it->GetBidHigh() < next->GetBidHigh())
+                        dm_up = next->GetBidHigh() - it->GetBidHigh();
                         
-                    if (previt->GetBidLow() > currit->GetBidLow())
-                        dm_down = currit->GetBidLow() - previt->GetBidLow();
+                    if (it->GetBidLow() > next->GetBidLow())
+                        dm_down = next->GetBidLow() - it->GetBidLow();
                     
                     if (dm_up > fabs(dm_down))
                         m_DM_up += dm_up;         // SUM of positive values
@@ -167,9 +168,9 @@ namespace fx
                         m_DM_down += dm_down;     // SUM of negative values
 
                     // TR has same formula as in ATR.cpp
-                    double prevC = previt->GetBidClose();
-                    double currH = currit->GetBidHigh();
-                    double currL = currit->GetBidLow();
+                    double prevC = it->GetBidClose();
+                    double currH = next->GetBidHigh();
+                    double currL = next->GetBidLow();
 
                     double v1 = currH - currL;
                     double v2 = fabs(currH - prevC);

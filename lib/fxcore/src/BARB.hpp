@@ -38,7 +38,7 @@ namespace fx
     {
     public:
         typedef stl::autoptr<BARB>          Ptr;
-        typedef stl::list<fx::OHLCPrice>    OHLCPriceList;
+        typedef stl::list<fx::OHLCPrice>    OHLCPriceList; // requires pop_front()
 
         BARB();
         BARB(const BARB&);

@@ -22,6 +22,7 @@
 */
 
 #include "MF.hpp"
+#include <float.h>
 
 namespace fx
 {

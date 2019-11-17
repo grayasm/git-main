@@ -21,7 +21,6 @@
 #ifndef __BAR_hpp__
 #define __BAR_hpp__
 
-#include <list>
 #include "string.hpp"
 #include "time.hpp"
 #include "BARB.hpp"

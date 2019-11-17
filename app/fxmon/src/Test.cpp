@@ -45,6 +45,7 @@
 #include "LWMA.hpp"
 #include "ADX.hpp"
 #include "MF.hpp"
+#include "RSI.hpp"
 #include <list>
 
 
@@ -1068,6 +1069,7 @@ int test14()
 int test15()
 {
     /*  DIRECTIONAL MOVEMENT SYSTEM
+        ADX Indicator
     */
     fx::Offer offer("0", "EUR/USD", 5, 0.0001, sys::time(), 0, 0, 0, true);
     HistdatacomReader oreader(offer, 2019);
@@ -1248,6 +1250,108 @@ int test16()
 
     return 0;
 }
+
+int test17()
+{
+    /*  J.W.Wilder The Relative Strength Index (RSI)
+    */
+    fx::RSI rsi("EURUSD", 14, sys::time::hourSEC);
+
+    sys::time time_("01.01.2019 00:00:00");
+
+    // pag.66  Open,High,Low,Close
+    double tab[38][4] = {
+        { 54.80, 54.80, 54.80, 54.80 },
+        { 54.80, 56.80, 54.80, 56.80 },
+        { 56.80, 57.85, 56.80, 57.85 },
+        { 57.85, 59.85, 57.85, 59.85 },
+        { 59.85, 60.57, 59.85, 60.57 },
+        { 60.57, 61.10, 60.57, 61.10 },
+        { 61.10, 62.17, 61.10, 62.17 },
+        { 62.17, 62.17, 60.60, 60.60 },
+        { 60.60, 62.35, 60.60, 62.35 },
+        { 62.35, 62.35, 62.15, 62.15 },
+        { 62.15, 62.35, 62.15, 62.35 },
+        { 62.35, 62.35, 61.45, 61.45 },
+        { 61.45, 62.80, 61.45, 62.80 },
+        { 62.80, 62.80, 61.37, 61.37 },
+        { 61.37, 62.50, 61.37, 62.50 },
+        { 62.50, 62.57, 62.50, 62.57 },
+        { 62.57, 62.57, 60.80, 60.80 },
+        { 60.80, 60.80, 59.37, 59.37 },
+        { 59.37, 60.35, 59.37, 60.35 },
+        { 60.35, 62.35, 60.35, 62.35 },
+        { 62.35, 62.35, 62.17, 62.17 },
+        { 62.17, 62.55, 62.17, 62.55 },
+        { 62.55, 64.55, 62.55, 64.55 },
+        { 64.55, 64.55, 64.37, 64.37 },
+        { 64.37, 65.30, 64.37, 65.30 },
+        { 65.30, 65.30, 64.42, 64.42 },
+        { 64.42, 64.42, 62.90, 62.90 },
+        { 62.90, 62.90, 61.60, 61.60 },
+        { 61.60, 62.05, 61.60, 62.05 },
+        { 62.05, 62.05, 60.05, 60.05 },
+        { 60.05, 60.05, 59.70, 59.70 },
+        { 59.70, 60.90, 59.70, 60.90 },
+        { 60.90, 60.90, 60.25, 60.25 },
+        { 60.25, 60.25, 58.27, 58.27 },
+        { 58.27, 58.70, 58.27, 58.70 },
+        { 58.70, 58.70, 57.72, 57.72 },
+        { 57.72, 58.10, 57.72, 58.10 },
+        { 58.10, 58.20, 58.10, 58.20 }
+    };
+
+    fx::Offer offer[4];
+    offer[0] = fx::Offer("0", "EURUSD", 4, 1000, time_, tab[0][0], tab[0][0] + 0.01, 1, true); // open
+    offer[1] = fx::Offer("0", "EURUSD", 4, 1000, time_ + 60 * 20, tab[0][1], tab[0][1] + 0.01, 1, true); // high
+    offer[2] = fx::Offer("0", "EURUSD", 4, 1000, time_ + 60 * 40, tab[0][2], tab[0][2] + 0.01, 1, true); // low
+    offer[3] = fx::Offer("0", "EURUSD", 4, 1000, time_ + 60 * 55, tab[0][3], tab[0][3] + 0.01, 1, true); // close
+
+    rsi.Update(offer[0]);
+    rsi.Update(offer[1]);
+    rsi.Update(offer[2]);
+    rsi.Update(offer[3]);
+
+    size_t i = 1; // need it to print last rsi outside the for loop
+    for (; i < 38; ++i)
+    {
+        bool isValid = rsi.IsValid();
+
+        sys::time reftime = time_ + i * sys::time::hourSEC;
+
+        offer[0].SetBid(tab[i][0]);         // open
+        offer[0].SetAsk(tab[i][0] + 0.01);
+        offer[0].SetTime(reftime);
+
+        offer[1].SetBid(tab[i][1]);             // high
+        offer[1].SetAsk(tab[i][1] + 0.01);
+        offer[1].SetTime(reftime + 60 * 20);
+
+        offer[2].SetBid(tab[i][2]);
+        offer[2].SetAsk(tab[i][2] + 0.01);      // low
+        offer[2].SetTime(reftime + 60 * 40);
+
+        offer[3].SetBid(tab[i][3]);
+        offer[3].SetAsk(tab[i][3] + 0.01);      // close
+        offer[3].SetTime(reftime + 60 * 55);
+
+        rsi.Update(offer[0]);
+
+        // this is a function of time. We can get the value at the close of the
+        // previous candle like this.
+        printf("\ni=%d RSI=%.2f rsi=%.2f", i, rsi.GetRSI(), rsi.GetRSI2());
+
+        rsi.Update(offer[1]);
+        rsi.Update(offer[2]);
+        rsi.Update(offer[3]);    
+    }
+
+    printf("\ni=%d RSI=%.2f rsi=%.2f", i, rsi.GetRSI(), rsi.GetRSI2());
+
+    return 0;
+}
+
+
 
 static void Time2DATE(time_t tt, DATE& dt)
 {
