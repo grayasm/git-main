@@ -1,0 +1,22 @@
+<!--Cap.14 The Window Object
+    This chapter explains techniques for scripting the web browser and covers
+    some important global functions of client-side JavaScript.
+-->
+<html>
+  <head></head>
+  <body>
+    <p>This is a paragraph of HTML</p>
+    <script>
+      function moveon() {
+          // Display a modal dialog to ask the user a question.
+          var answer = confirm("Ready  to move on?");
+          // If they clicked the "OK" button, make the browser load a new page.
+          if (answer)
+              window.location = "http://google.com";
+      }
+      // Run the function defined above 2 seconds (2000 milliseconds) from now.
+      setTimeout(moveon, 2000);
+    </script>
+    <p>Here is more HTML.</p>
+  </body>
+</html>
