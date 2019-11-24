@@ -1,0 +1,27 @@
+<!--Cap.19 The jQuery Library
+    jQuery defines a clever way and easy-to-use API for scripting document
+    content, presentation and behavior. It has been thoroughly tested and works
+    in all major browsers, including old ones like IE6.
+
+    jQuery code is easy to identify because it makes frequent use of a function
+    named $(). Here is what the debug() function used previously looks like
+    when rewritten to use jQuery.
+-->
+<html>
+  <head></head>
+  <body>
+    <p>This is a paragraph of HTML</p>
+    <script>
+      function debug(msg) {
+          var log = $("#debuglog");
+          if (log.length == 0) {
+              log = $("<div id='debuglog'><h1>Debug Log</h1></div>");
+              log.appendTo(document.body);
+          }
+          log.append($("<pre/>").text(msg));
+      }
+      debug("Debug this message");
+    </script>
+    <p>Here is more HTML.</p>
+  </body>
+</html>
