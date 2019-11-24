@@ -1,0 +1,31 @@
+<!--Cap.16 Scripting CSS
+    shows how you can use JavaScript with the CSS styles that define
+    the presentation of that content. This is often done with the style or class
+    attribute of HTML elements.
+-->
+<html>
+  <head></head>
+  <body>
+    <p>This is a paragraph of HTML</p>
+    <p>Here is more HTML.</p>
+    <script>
+      function hide(e, reflow) { // Hide the element e by scripting its style
+          if (reflow) {                      // If 2nd element is true
+              e.style.display = "none";      // hide element and use its space
+          }
+          else {                             // Otherwise
+              e.style.visibility = "hidden"; // make e invisible, but leave its space
+          }
+      }
+
+      function highlight(e) {    // Hightlight e by setting a CSS class
+          // Simply define or append to the HTML class attribute
+          // This assumes that a CSS stylesheet already defines the "hilite" class
+          if (!e.className)
+              e.className = "hilite";
+          else
+              e.className += "hilite";
+      }
+    </script>
+  </body>
+</html>
