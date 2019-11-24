@@ -1,0 +1,36 @@
+<!--Cap.17 Handling Events
+    Here is some more client-side JavaScript code that use events. It registers
+    an event handler for the very important "load" event, and it also
+    demonstrates a more sophisticated way of registering event handler
+    functions for "click" events.
+-->
+<html>
+  <head></head>
+  <body>
+    Hello World
+    <script>
+      // This is the event hander function registered above.
+      function hide(event)
+      {
+          event.target.visibility = "hidden";
+      }
+
+      // The "load" event occurs when a document is fully loaded. Usually we
+      // need to wait for this event before we start running our JavaScript code.
+      window.onload = function() {  // Run this function when the document loads
+          // Find all <img> tags in the document
+          var images = document.getElementsByTagName("img");
+
+          // Loop through them, adding an event handler for "click" events to
+          // each so that clicking on the image hides it.
+          for (var i = 0; i < images.length; i++) {
+              var image = images[i];
+              if (image.addEventListener) // Another way to register a hanlder.
+                  image.addEventListener("click", hide, false);
+              else                        // For compatibility with IE8 and before
+                  image.attachEvent("onclick", hide);
+          }
+      };
+    </script>
+  </body>
+</html>
