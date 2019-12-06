@@ -65,12 +65,40 @@
 
     square(4);                      // => 16: invoke a function
     
-    var myarr = [0, 1, 2, 3];       // "this" keyword refers to the object on
-    myarr.sum = function()          // which the method is defined.
-    {
-        var _s = 0;
-        for (var i = 0; i < this.length; i++)
-            _s += this[i];
-        return _s;
+    points.dist = function()
+    {                               // "this" keyword is the points array.
+        var p1 = this[0];           // First element of the array.
+        var p2 = this[1];           // Second element of the array.
+        var dx = p2.x - p1.x;
+        var dy = p2.y - p1.y;
+        return Math.sqrt(dx*dx + dy*dy);
     }
-    var s = myarr.sum();            // => 6: sum of elements.
+    points.dist();                  // => 1.414: distance between the 2 points.
+
+    // JavaScript control structure elements: if, while, for, do/while
+    function abs(x)
+    {
+        if (x > 0) return x;
+        else return -x;
+    }
+    
+    function factorial(n)
+    {
+        var prod = 1;
+        while(n > 1)
+        {
+            product *= n;
+            n--;
+        }
+        return prod;
+    }
+    
+    function factorial(n)
+    {
+        var i, prod = 1;
+        for (i = 2; i <= n; i++)
+        {
+            prod *= i;
+        }
+        return prod;
+    }
