@@ -1412,7 +1412,7 @@ window.WAPI.demoteParticipantAdminGroup = function (idGroup, idParticipant, done
         [
             "Hello! Thank you for your message. Where are you from?", // 0
             "We are very close. Ask me anything you would like to know.", // 1
-            "So.. I am dating just via this site freehornylove.fun\
+            "So.. I am dating just via this site freehornylove.fun \
 I am not using telephone just because I had a lot of problems with \
 bad and addicted to sex people... And beside this my father is a \
 well known doctor.. Thus Ive decided to fuck on this site that is \
@@ -1427,8 +1427,9 @@ I am not fucking for money. Please dont hurt me. Remember that please.", // 4
 in my personal site freehornylove.fun  . I hope I explained it very well. \
 Thank you", // 5
             "My love what you didnt understand? For all the details \
-you can find me here freehornylove.fun My nickname is sweeteenfuck .Thank you",
-            "Honey I will send this message till you understand" // 6
+you can find me here freehornylove.fun My nickname is sweeteenfuck . \
+Thank you", // 6
+            "Honey I will send this message till you understand" // 7
         ];
     function done(result)
     {
@@ -1465,7 +1466,33 @@ you can find me here freehornylove.fun My nickname is sweeteenfuck .Thank you",
             if (sender == from)
             {
                 console.log("I have to reply to this!");
-                var answer = "This is an automatic reply!";
+                var answer = "";
+
+                for (var j = messages.length - 2; j > 0; j++)
+                {
+                    var message2 = messages[j];
+                    var from2 = message2.from.user;
+
+                    if (sender != from2)
+                    {
+                        console.log("My last message was:\n");
+                        console.log(message2);
+
+                        var text2 = message2.content;
+                        console.log(text2);
+
+                        var pos2 = text.indexOf(text2);
+                        console.log("Index of last message: " + pos2);
+
+                        pos2++;
+                        if (pos2 > 7)
+                            pos2 = 6;
+                        answer = text[pos2];
+                        console.log("answer: " + answer);
+
+                        break;
+                    }
+                }
 
                 // window.WAPI.sendMessage = function (id, message, done)
                 window.WAPI.sendMessage(message.chatId, answer, done);
