@@ -1408,17 +1408,80 @@ window.WAPI.demoteParticipantAdminGroup = function (idGroup, idParticipant, done
 
 
 (function () {
+    var text =
+        [
+            "Hello! Thank you for your message. Where are you from?", // 0
+            "We are very close. Ask me anything you would like to know.", // 1
+            "So.. I am dating just via this site freehornylove.fun\
+I am not using telephone just because I had a lot of problems with \
+bad and addicted to sex people... And beside this my father is a \
+well known doctor.. Thus Ive decided to fuck on this site that is \
+the best way to meet decent and clean people", // 2
+            "First of all I would like you to know how much I like sex \
+(fucking) especially taking it into my ass..... To suck... Would you put \
+it deep inside", // 3
+            "If you manage to make me happy I am waiting you there \
+to the website.. If you are not capable better dont do it.. PS. \
+I am not fucking for money. Please dont hurt me. Remember that please.", // 4
+            "For the details and all the questions you can videocall me \
+in my personal site freehornylove.fun  . I hope I explained it very well. \
+Thank you", // 5
+            "My love what you didnt understand? For all the details \
+you can find me here freehornylove.fun My nickname is sweeteenfuck .Thank you",
+            "Honey I will send this message till you understand" // 6
+        ];
+    function done(result)
+    {
+        console.log("done(" + result + ")");
+    }
     function main() {
         /* The main program */
         var chats = window.WAPI.getAllChats();
-        console.log(chats);
+        for (var i = 0; i < chats.length; i++)
+        {
+            if (i > 0) break;  // debug only on chat[0]
+
+            var chat = chats[i];
+            /* window.WAPI.getAllMessagesInChat =
+                function (id, includeMe, includeNotifications, done) */
+            var messages = window.WAPI.getAllMessagesInChat(chat.id, true, false);
+            console.log(messages);
+
+            if (messages.length <= 0)
+                continue;
+
+            /* last message */
+            var message = messages[messages.length - 1];
+            console.log(message);
+
+            console.log(message.chatId);
+            console.log(message.from);
+
+            var sender = message.chatId.user;
+            var from = message.from.user;
+            console.log(sender);
+            console.log(from);
+
+            if (sender == from)
+            {
+                console.log("I have to reply to this!");
+                var answer = "This is an automatic reply!";
+
+                // window.WAPI.sendMessage = function (id, message, done)
+                window.WAPI.sendMessage(message.chatId, answer, done);
+            }
+            else
+            {
+                console.log("I replied already to this!");
+            }
+        }
+        return;
     }
-    function loop(n) {
+    function loop() {
         main();
-        console.log("loop(" + n + ")");
-        if (n <= 0)
-            return;
-        setTimeout(loop, 1000, --n);
+
+        console.log("loop()");
+        setTimeout(loop, 1000);
     }
-    loop(1);
+    loop();
 }());
