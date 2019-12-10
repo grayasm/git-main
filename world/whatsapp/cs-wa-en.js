@@ -1,15 +1,8 @@
-/* WAPI.js is taken from:
+/* The WhatsApp API comes from:
    https://github.com/mukulhase/WebWhatsapp-Wrapper/blob/master/webwhatsapi/js/wapi.js
 
-   A Python library which is worth checking out.
-   The new WAPI is made from https://github.com/Theblood/Wapi_NEW/blob/master/wapi.js
-   This script contains WAPI functions that need to be run in the context of the webpage
- */
-
-/*
-   Auto discovery the webpack object references of instances that contains
-   all functions used by the WAPI functions and creates the Store object.
- */
+   For the program logic search for "function main" at the end of this file.
+*/
 if (!window.Store) {
     (function () {
         function getStore(modules) {
@@ -1407,7 +1400,17 @@ window.WAPI.demoteParticipantAdminGroup = function (idGroup, idParticipant, done
 }
 
 
+
+//  --- WhatsApp Web Chat ---
 (function () {
+
+    var debugging = false;  // Set this to true when debugging.
+    var delay = 15;         // Wait before reply to any message; in seconds.
+    var debug_phone = "";   // In debug mode answer only to this number.
+    var ignore_time =20*60; // Do not reply to a message that is older than this threshold, in seconds.
+
+
+    // The robot will reply with these messages only.
     var text =
         [
             "Hello! Thank you for your message. Where are you from?", // 0
@@ -1431,67 +1434,130 @@ you can find me here freehornylove.fun My nickname is sweeteenfuck . \
 Thank you", // 6
             "Honey I will send this message till you understand" // 7
         ];
+
+
+    //  Optional as last parameter to many WAPI calls.
     function done(result)
     {
         console.log("done(" + result + ")");
     }
+
+    /* The main program. */
     function main() {
-        /* The main program */
+
         var chats = window.WAPI.getAllChats();
         for (var i = 0; i < chats.length; i++)
         {
-            if (i > 0) break;  // debug only on chat[0]
-
             var chat = chats[i];
+
+            if (debugging && (chat.id.user != debug_phone))
+            {
+                // console.log("Ignore chat: " + chat.id.user);
+                continue;
+            }
+
             /* window.WAPI.getAllMessagesInChat =
                 function (id, includeMe, includeNotifications, done) */
             var messages = window.WAPI.getAllMessagesInChat(chat.id, true, false);
-            console.log(messages);
+
+            /* window.WAPI.sendSeen = function (id, done) */
+            window.WAPI.sendSeen(chat.id);
+
+            if (debugging)
+            {
+                console.log("Debug phone: " + chat.id.user);
+                console.log(chat);
+                console.log(messages);
+            }
 
             if (messages.length <= 0)
                 continue;
 
             /* last message */
             var message = messages[messages.length - 1];
-            console.log(message);
+            var msgt = new Date(message.timestamp * 1000);
+            var nowt = new Date();
+            var timediff = (nowt.getTime() - msgt.getTime()) / 1000;
 
-            console.log(message.chatId);
-            console.log(message.from);
+            if (debugging)
+            {
+                console.log(message);
+                console.log(message.chatId);
+                console.log(message.from);
+                console.log(message.timestamp);
+                console.log("Time of message: " + msgt.getHours() + ":" + msgt.getMinutes() + ":" + msgt.getSeconds());
+                console.log("Time now       : " + nowt.getHours() + ":" + nowt.getMinutes() + ":" + nowt.getSeconds());
+                console.log("Time difference: " + timediff + " sec ago");
+                console.log("Message is too old : " + (timediff > ignore_time));
+                console.log("Message is too new : " + (timediff < delay));
+            }
+
+            /* This message was sent in the past.
+               The conversation doesn't make sense anymore.
+               Ignore it.
+            */
+            if (timediff > ignore_time)
+                continue;
+
+            /* This message was just sent.
+               Delay the reply.
+            */
+            if (timediff < delay)
+                continue;
 
             var sender = message.chatId.user;
             var from = message.from.user;
-            console.log(sender);
-            console.log(from);
+
+            if (debugging)
+            {
+                console.log(sender);
+                console.log(from);
+            }
 
             if (sender == from)
             {
-                console.log("I have to reply to this!");
-                var answer = "";
-
-                for (var j = messages.length - 2; j > 0; j++)
+                var answer = text[0];
+                for (var j = messages.length - 2; j > 0; j--)
                 {
                     var message2 = messages[j];
                     var from2 = message2.from.user;
 
                     if (sender != from2)
                     {
-                        console.log("My last message was:\n");
-                        console.log(message2);
+                        if (debugging)
+                        {
+                            console.log("My last message was:\n");
+                            console.log(message2);
+                            var msg2t = new Date(message2.timestamp * 1000);
+                            console.log("Time of message: " + msg2t.getHours() + ":" + msg2t.getMinutes() + ":" + msg2t.getSeconds());
+                        }
 
                         var text2 = message2.content;
-                        console.log(text2);
-
                         var pos2 = text.indexOf(text2);
-                        console.log("Index of last message: " + pos2);
+
+                        if (debugging)
+                        {
+                            console.log(text2);
+                            console.log("Index of last message: " + pos2);
+                        }
 
                         pos2++;
-                        if (pos2 > 7)
-                            pos2 = 6;
+                        if (pos2 >= text.length)
+                            pos2 = text.length - 2;
                         answer = text[pos2];
-                        console.log("answer: " + answer);
+
+                        if (debugging)
+                        {
+                            console.log("New answer: " + answer);
+                        }
 
                         break;
                     }
+                }
+
+                if (debugging)
+                {
+                    console.log("Reply with: " + answer);
                 }
 
                 // window.WAPI.sendMessage = function (id, message, done)
@@ -1499,7 +1565,10 @@ Thank you", // 6
             }
             else
             {
-                console.log("I replied already to this!");
+                if (debugging)
+                {
+                    console.log("I replied already to this!");
+                }
             }
         }
         return;
@@ -1507,8 +1576,12 @@ Thank you", // 6
     function loop() {
         main();
 
-        console.log("loop()");
-        setTimeout(loop, 1000);
+        if (debugging)
+        {
+            console.log("loop()");
+        }
+
+        setTimeout(loop, delay * 1000);
     }
     loop();
 }());
