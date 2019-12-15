@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>VNC Server</title>
+<link href="main.css" rel="stylesheet" type="text/css" media="all">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+</head>
+<body>
+<a href="index.html">Back to main index</a>
+<h1>VNC Server</h1>
+
+<p>Read about installing 
+<a href="https://www.linuxtechi.com/install-configure-vnc-server-centos-7-rhel-7" target="_blank">tigervnc-server</a>
+ on CentOS7.
+</p>
+<pre>
+yum install tigervnc-server xorg-x11-fonts-Type1
+</pre>
+
+<p>
+Copy the VNC Server config file.<br>
+Use port :3 which is 5903 instead of :0 or 5900
+</p>
+
+<pre>
+cp /lib/systemd/system/vncserver@.service /etc/systemd/system/vncserver@:3.service
+</pre>
+
+<p>
+Replace &lt;USER&gt; with the user name in the service file.<br>
+cat /etc/systemd/system/vncserver@:3.service<br>
+</p>
+
+<pre>
+[Unit]
+Description=Remote desktop service (VNC)
+After=syslog.target network.target
+
+[Service]
+Type=forking
+
+# Clean any existing files in /tmp/.X11-unix environment
+ExecStartPre=/bin/sh -c '/usr/bin/vncserver -kill %i > /dev/null 2&gt;&1 || :'
+ExecStart=/usr/sbin/runuser -l <b>&lt;USER&gt;</b> -c "/usr/bin/vncserver %i"
+PIDFile=/home/<b>&lt;USER&gt;</b>/.vnc/%H%i.pid
+ExecStop=/bin/sh -c '/usr/bin/vncserver -kill %i &gt; /dev/null 2&gt;&1 || :'
+
+[Install]
+WantedBy=multi-user.target
+</pre>
+
+<p>
+VNC connection is not encrypted. We must use a ssh tunnel.<br>
+Open both ports ssh 22 and vnc 5903
+</p>
+<pre>
+iptables -A INPUT -p tcp --dport 22   -j ACCEPT
+iptables -A INPUT -p tcp --dport 5903 -j ACCEPT
+</pre>
+
+<p>
+By default VNC server will start GNOME Desktop session.<br>
+Read 
+<a href="https://www.digitalocean.com/community/tutorials/how-to-install-and-configure-vnc-on-ubuntu-16-04" target="_blank">
+here</a> how to switch to XFCE session.
+</p>
+
+<pre>
+mv ~/.vnc/xstartup ~/.vnc/xstartup.bak
+cat &gt; ~/.vnc/xstartup &lt;&lt; EOF
+#!/bin/bash
+xrdb $HOME/.Xresources
+startxfce4 &
+EOF
+</pre>
+
+<p>Grant executable privilages</p>
+<pre>
+chmod +x ~/.vnc/xstartup
+</pre>
+
+<p>
+If you do this on a headless server then install X11, XFCE and lightdm as on  
+<a href="centos8.html" target="_blank">CentOS-8</a>.<br>
+You have to start XFCE once for the &lt;USER&gt; to create the default desktop.<br>
+</p>
+
+<p>Set the VNC password for the user.</p>
+<pre>
+[mihai@centos: ~]$ vncserver
+
+You will require a password to access your desktops.
+
+Password:
+Verify:
+Would you like to enter a view-only password (y/n)? n
+A view-only password is not used
+
+New 'centos:1 (mihai)' desktop is centos:1
+
+Creating default startup script /home/mihai/.vnc/xstartup
+Creating default config /home/mihai/.vnc/config
+Starting applications specified in /home/mihai/.vnc/xstartup
+Log file is /home/mihai/.vnc/centos:1.log
+
+[mihai@centos: ~]$
+</pre>
+
+<p>Enable the VNC service.</p>
+<pre>
+systemctl daemon-reload
+systemctl start vncserver@:3.service
+systemctl enable vncserver@:3.service
+</pre>
+
+<p>It may be needed to reboot the server once.</p>
+
+<p>
+To connect from a Windows client read 
+<a href="https://helpdeskgeek.com/how-to/tunnel-vnc-over-ssh" target="_blank">here</a> 
+about How to Tunnel VNC over SSH.<br>
+You will need 
+<a href="https://www.putty.org" target="_blank">PuTTY</a> and 
+<a href="https://www.realvnc.com/en/connect/download/viewer" target="_blank">RealVNC</a> for this.<br><br>
+On PuTTY the tunnel must be: L5903  remoteipaddress:5903<br>
+On VNC Client the ip must be: localhost:5903 or 127.0.0.1:5903<br>
+</p>
+
+<a href="index.html">Back to main index</a>
+</body>
+</html>
