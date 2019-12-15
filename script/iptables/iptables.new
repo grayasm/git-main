@@ -6,6 +6,8 @@ iptables -F
 
 iptables -P INPUT   DROP
 # drop invalid headers
+iptables -A INPUT -i lo -j ACCEPT
+iptables -A INPUT -d 127.0.0.0/8 ! -i lo -j REJECT --reject-with icmp-port-unreachable
 iptables -A INPUT -m conntrack --ctstate INVALID -j DROP
 iptables -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
 iptables -A INPUT -p icmp --icmp-type 8 -m conntrack --ctstate NEW -j ACCEPT
@@ -43,6 +45,8 @@ iptables -A INPUT -p udp --dport 8333 -j ACCEPT
 # Open postgresql port for all
 iptables -A INPUT -p tcp --dport 5432 -j ACCEPT
 iptables -A INPUT -p udp --dport 5432 -j ACCEPT
+# Open VNC ports (default 5900) for all
+iptables -A INPUT -p tcp --dport 5900:5910 -j ACCEPT
 # Allow everybody from LAN to connect
 iptables -A INPUT -p tcp -s 192.168.0.1/24 -j ACCEPT
 iptables -A INPUT -p udp -s 192.168.0.1/24 -j ACCEPT
@@ -76,8 +80,10 @@ ip6tables -F
 
 ip6tables -P INPUT   DROP
 # drop invalid headers
+ip6tables -A INPUT -i lo -j ACCEPT
 ip6tables -A INPUT -m conntrack --ctstate INVALID -j DROP
 ip6tables -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+ip6tables -A INPUT -p icmp --icmp-type 8 -m conntrack --ctstate NEW -j ACCEPT
 # Open http,https (Apache) ports for all
 ip6tables -A INPUT -p tcp --dport 80  -j ACCEPT
 ip6tables -A INPUT -p tcp --dport 443 -j ACCEPT
@@ -104,6 +110,8 @@ ip6tables -A INPUT -p udp --dport 51413 -j ACCEPT
 # Open bitcoin-qt port for all
 ip6tables -A INPUT -p tcp --dport 8333 -j ACCEPT
 ip6tables -A INPUT -p udp --dport 8333 -j ACCEPT
+# Open VNC ports (default 5900) for all
+ip6tables -A INPUT -p tcp --dport 5900:5910 -j ACCEPT
 # Open postgresql port for all
 ip6tables -A INPUT -p tcp --dport 5432 -j ACCEPT
 ip6tables -A INPUT -p udp --dport 5432 -j ACCEPT
