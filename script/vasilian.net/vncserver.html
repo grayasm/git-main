@@ -59,27 +59,6 @@ iptables -A INPUT -p tcp --dport 5903 -j ACCEPT
 </pre>
 
 <p>
-By default VNC server will start GNOME Desktop session.<br>
-Read 
-<a href="https://www.digitalocean.com/community/tutorials/how-to-install-and-configure-vnc-on-ubuntu-16-04" target="_blank">
-here</a> how to switch to XFCE session.
-</p>
-
-<pre>
-mv ~/.vnc/xstartup ~/.vnc/xstartup.bak
-cat &gt; ~/.vnc/xstartup &lt;&lt; EOF
-#!/bin/bash
-xrdb $HOME/.Xresources
-startxfce4 &
-EOF
-</pre>
-
-<p>Grant executable privilages</p>
-<pre>
-chmod +x ~/.vnc/xstartup
-</pre>
-
-<p>
 If you do this on a headless server then install X11, XFCE and lightdm as on  
 <a href="centos8.html" target="_blank">CentOS-8</a>.<br>
 You have to start XFCE once for the &lt;USER&gt; to create the default desktop.<br>
@@ -104,6 +83,27 @@ Starting applications specified in /home/mihai/.vnc/xstartup
 Log file is /home/mihai/.vnc/centos:1.log
 
 [mihai@centos: ~]$
+</pre>
+
+<p>
+By default VNC server will start GNOME Desktop session.<br>
+Read 
+<a href="https://www.digitalocean.com/community/tutorials/how-to-install-and-configure-vnc-on-ubuntu-16-04" target="_blank">
+here</a> how to switch to XFCE session.
+</p>
+
+<pre>
+mv ~/.vnc/xstartup ~/.vnc/xstartup.bak
+cat &gt; ~/.vnc/xstartup &lt;&lt; EOF
+#!/bin/bash
+xrdb $HOME/.Xresources
+startxfce4 &
+EOF
+</pre>
+
+<p>Grant executable privilages</p>
+<pre>
+chmod +x ~/.vnc/xstartup
 </pre>
 
 <p>Enable the VNC service.</p>
