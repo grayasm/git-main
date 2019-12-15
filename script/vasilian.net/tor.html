@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Tor browser</title>
+<link href="main.css" rel="stylesheet" type="text/css" media="all">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+</head>
+<body>
+<a href="index.html">Back to main index</a>
+<h1>Tor browser</h1>
+
+<p>Download <a href="https://www.torproject.org/download" target="_blank">Tor browser</a>.</p>
+
+<pre>
+cd $HOME/Downloads
+tar -xvf tor-browser-*.tar.xz
+</pre>
+
+<p>Read about 
+<a href="https://www.linuxquestions.org/questions/linux-security-4/tor-and-iptables-4175594810" target="">tor-and-iptables</a> 
+and check if you allow these:
+</p>
+
+<pre>
+-A INPUT -i lo -j ACCEPT
+-A INPUT -d 127.0.0.0/8 ! -i lo -j REJECT --reject-with icmp-port-unreachable
+</pre>
+
+
+<p>
+To run multiple instances of Tor at the same time check the &lt;SocksPort&gt; and &lt;ControlPort&gt;.<br>
+The section below is documented in: tor-browser_en-US/Browser/start-tor-browser.<br>
+</p>
+
+<pre>
+# SETTING NAME                             VALUE
+# network.security.ports.banned            [...],&lt;SocksPort&gt;,&lt;ControlPort&gt;
+# network.proxy.socks                      127.0.0.1
+# network.proxy.socks_port                 <b>&lt;SocksPort&gt;</b>
+# extensions.torbutton.inserted_button     true
+# extensions.torbutton.launch_warning      false
+# extensions.torbutton.loglevel            2
+# extensions.torbutton.logmethod           0
+# extensions.torlauncher.control_port      <b>&lt;ControlPort&gt;</b>
+# extensions.torlauncher.loglevel          2
+# extensions.torlauncher.logmethod         0
+# extensions.torlauncher.prompt_at_startup false
+# extensions.torlauncher.start_tor         false
+</pre>
+
+<p>
+The default SocksPort=9150 and ControlPort=9151.<br>
+For the second Tor instance set them to 9160 and 9161.<br>
+</p>
+
+<img src="images/tor_browser_socks_port.png" alt="socks_port">
+
+<p>
+If you need to run JavaScript in the page then disable NoScript from Add-ons Manager.<br>
+<br>
+If you plan to use WhatsApp in Tor you must toggle privacy.resistFingerprinting to false to allow the QR Code.<br>
+</p>
+<img src="images/whatsapp_qr_code.png" alt="WhatsApp QR Code"> <br><br>
+
+<a href="index.html">Back to main index</a>
+</body>
+</html>
