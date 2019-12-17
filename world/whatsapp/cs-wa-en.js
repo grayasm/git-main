@@ -1405,7 +1405,8 @@ window.WAPI.demoteParticipantAdminGroup = function (idGroup, idParticipant, done
 (function () {
 
     var debugging = false;  // Set this to true when debugging.
-    var delay = 15;         // Wait before reply to any message; in seconds.
+    var delay = 15;         // Wait before replying to any message - in seconds.
+    var waittm = 10;        // Wait before reading all chats again - in seconds.
     var debug_phone = "";   // In debug mode answer only to this number.
     var ignore_time =20*60; // Do not reply to a message that is older than this threshold, in seconds.
 
@@ -1413,26 +1414,15 @@ window.WAPI.demoteParticipantAdminGroup = function (idGroup, idParticipant, done
     // The robot will reply with these messages only.
     var text =
         [
-            "Hello! Thank you for your message. Where are you from?", // 0
-            "We are very close. Ask me anything you would like to know.", // 1
-            "So.. I am dating just via this site freehornylove.fun \
-I am not using telephone just because I had a lot of problems with \
-bad and addicted to sex people... And beside this my father is a \
-well known doctor.. Thus Ive decided to fuck on this site that is \
-the best way to meet decent and clean people", // 2
-            "First of all I would like you to know how much I like sex \
-(fucking) especially taking it into my ass..... To suck... Would you put \
-it deep inside", // 3
-            "If you manage to make me happy I am waiting you there \
-to the website.. If you are not capable better dont do it.. PS. \
-I am not fucking for money. Please dont hurt me. Remember that please.", // 4
-            "For the details and all the questions you can videocall me \
-in my personal site freehornylove.fun  . I hope I explained it very well. \
-Thank you", // 5
-            "My love what you didnt understand? For all the details \
-you can find me here freehornylove.fun My nickname is sweeteenfuck . \
-Thank you", // 6
-            "Honey I will send this message till you understand" // 7
+            "text 0", // 0
+            "text 1", // 1
+            "text 2", // 2
+            "text 3", // 3
+            "text 4 is \
+spread on 2 rows", // 4
+            "text 5", // 5
+            "text 6 (one before last)", // 6
+            "text 7 (last one)" // 7
         ];
 
 
@@ -1581,7 +1571,7 @@ Thank you", // 6
             console.log("loop()");
         }
 
-        setTimeout(loop, delay * 1000);
+        setTimeout(loop, waittm * 1000);
     }
     loop();
 }());
