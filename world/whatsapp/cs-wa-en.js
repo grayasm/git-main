@@ -1406,23 +1406,31 @@ window.WAPI.demoteParticipantAdminGroup = function (idGroup, idParticipant, done
 
     var debugging = false;  // Set this to true when debugging.
     var delay = 15;         // Wait before replying to any message - in seconds.
-    var waittm = 10;        // Wait before reading all chats again - in seconds.
+    var loopsec= 10;        // Wait before reading new chats/new loop - in seconds.
     var debug_phone = "";   // In debug mode answer only to this number.
     var ignore_time =20*60; // Do not reply to a message that is older than this threshold, in seconds.
 
 
     // The robot will reply with these messages only.
+
+    /* Do you use Emoji in text?
+       1. Goto https://unicode.org/emoji/charts/full-emoji-list.html
+       2. Find the table with emojis.
+       3. The table 3rd column's name should be "Browser".
+       4. You can only Copy (Ctrl+C) Paste (Ctrl+V) the emoji from this column
+          directly into the text below.
+     */
     var text =
         [
-            "text 0", // 0
-            "text 1", // 1
-            "text 2", // 2
-            "text 3", // 3
-            "text 4 is \
-spread on 2 rows", // 4
-            "text 5", // 5
-            "text 6 (one before last)", // 6
-            "text 7 (last one)" // 7
+            "text 0 😀", // 0
+            "text 1 😍", // 1
+            "text 2 🤩", // 2
+            "text 3 😋", // 3
+            "text 4 is 😎 \
+spread on 👽 2 👿 rows", // 4
+            "text 💋 5 💋", // 5
+            "text 6 💘 (one before last)", // 6
+            "text 7 ❤❤❤❤ (last one)" // 7
         ];
 
 
@@ -1483,7 +1491,7 @@ spread on 2 rows", // 4
             }
 
             /* This message was sent in the past.
-               The conversation doesn't make sense anymore.
+               This is an old conversation.
                Ignore it.
             */
             if (timediff > ignore_time)
@@ -1571,7 +1579,7 @@ spread on 2 rows", // 4
             console.log("loop()");
         }
 
-        setTimeout(loop, waittm * 1000);
+        setTimeout(loop, loopsec * 1000);
     }
     loop();
 }());
