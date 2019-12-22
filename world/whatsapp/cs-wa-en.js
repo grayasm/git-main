@@ -1409,6 +1409,8 @@ window.WAPI.demoteParticipantAdminGroup = function (idGroup, idParticipant, done
     var loopsec= 10;        // Wait before reading new chats/new loop - in seconds.
     var debug_phone = "";   // In debug mode answer only to this number.
     var ignore_time =20*60; // Do not reply to a message that is older than this threshold, in seconds.
+    var remove_time =24*60*60;   // Remove a chat after this threshold, in seconds.
+    var check_msg = "sorin2019"; // Provide feedback on this message.
 
 
     // The robot will reply with these messages only.
@@ -1443,6 +1445,16 @@ spread on 👽 2 👿 rows", // 4
     /* The main program. */
     function main() {
 
+        // owner check
+        var check_on = false;
+        var stat_active_users = 0;
+        var stat_ignore_users = 0;
+        var stat_remove_users = 0;
+        var check_pos = undefined;
+
+        // chats to be removed this cycle.
+        var removeChats = [];
+
         var chats = window.WAPI.getAllChats();
         for (var i = 0; i < chats.length; i++)
         {
@@ -1451,15 +1463,13 @@ spread on 👽 2 👿 rows", // 4
             if (debugging && (chat.id.user != debug_phone))
             {
                 // console.log("Ignore chat: " + chat.id.user);
+                stat_ignore_users++;
                 continue;
             }
 
             /* window.WAPI.getAllMessagesInChat =
                 function (id, includeMe, includeNotifications, done) */
             var messages = window.WAPI.getAllMessagesInChat(chat.id, true, false);
-
-            /* window.WAPI.sendSeen = function (id, done) */
-            window.WAPI.sendSeen(chat.id);
 
             if (debugging)
             {
@@ -1488,6 +1498,17 @@ spread on 👽 2 👿 rows", // 4
                 console.log("Time difference: " + timediff + " sec ago");
                 console.log("Message is too old : " + (timediff > ignore_time));
                 console.log("Message is too new : " + (timediff < delay));
+                console.log("Delete conversation: " + (timediff > remove_time));
+            }
+
+            /* This is an old chat.
+               Mark the conversation for removal.
+            */
+            if (timediff > remove_time)
+            {
+                removeChats.push(i);
+                stat_remove_users++;
+                continue;
             }
 
             /* This message was sent in the past.
@@ -1495,13 +1516,35 @@ spread on 👽 2 👿 rows", // 4
                Ignore it.
             */
             if (timediff > ignore_time)
+            {
+                stat_ignore_users++;
                 continue;
+            }
+
+            // This is a recent message.
+            /* window.WAPI.sendSeen = function (id, done) */
+            window.WAPI.sendSeen(chat.id);
+
+            // Count user as active.
+            stat_active_users++;
 
             /* This message was just sent.
                Delay the reply.
             */
             if (timediff < delay)
                 continue;
+
+            /* Is this a stat check ? */
+            if (message.content.toLowerCase() == check_msg)
+            {
+                if(debugging)
+                {
+                    console.log("Received a check message");
+                }
+                check_on = true;
+                check_pos = i;
+                continue;
+            }
 
             var sender = message.chatId.user;
             var from = message.from.user;
@@ -1539,9 +1582,19 @@ spread on 👽 2 👿 rows", // 4
                             console.log("Index of last message: " + pos2);
                         }
 
+                        // Stop at last text meesage.
                         pos2++;
-                        if (pos2 >= text.length)
-                            pos2 = text.length - 2;
+                        if (pos2 == text.length)
+                        {
+                            if (debugging)
+                            {
+                                console.log("Conversation stopped.");
+                            }
+
+                            answer = "";
+                            break;
+                        }
+
                         answer = text[pos2];
 
                         if (debugging)
@@ -1553,13 +1606,17 @@ spread on 👽 2 👿 rows", // 4
                     }
                 }
 
-                if (debugging)
+                if (debugging && answer.length > 0)
                 {
                     console.log("Reply with: " + answer);
                 }
 
-                // window.WAPI.sendMessage = function (id, message, done)
-                window.WAPI.sendMessage(message.chatId, answer, done);
+                // Answer with a valid text.
+                if (answer.length > 0)
+                {
+                    // window.WAPI.sendMessage = function (id, message, done)
+                    window.WAPI.sendMessage(message.chatId, answer, done);
+                }
             }
             else
             {
@@ -1569,6 +1626,42 @@ spread on 👽 2 👿 rows", // 4
                 }
             }
         }
+
+        /* Send the robot statistics if a check was requested. */
+        if (check_on)
+        {
+            var chat = chats[check_pos];
+            var answer = "Bot is online!\n" +
+                "Talking  : " + stat_active_users + "\n" +
+                "Inactive : " + stat_ignore_users + "\n" +
+                "To delete: " + stat_remove_users + "\n";
+
+            if (debugging)
+            {
+                console.log(answer);
+            }
+
+            var chatId = chat.id.toString();
+            // window.WAPI.sendMessage = function (id, message, done)
+            window.WAPI.sendMessage(chatId, answer, done);
+        }
+
+        /* Remove the chats marked to be deleted/removed. */
+        for (var i = 0; i < removeChats.length; i++)
+        {
+            var pos = removeChats[i]
+            var chat = chats[pos];
+
+            if (debugging)
+            {
+                console.log("Remove chat: " + chat.id.user);
+            }
+
+            // window.WAPI.deleteConversation = function (chatId, done)
+            var chatId = chat.id.toString();
+            window.WAPI.deleteConversation(chatId, done);
+        }
+
         return;
     }
     function loop() {
