@@ -1405,7 +1405,7 @@ window.WAPI.demoteParticipantAdminGroup = function (idGroup, idParticipant, done
 (function () {
 
     var debugging = false;  // Set this to true when debugging.
-    var delay = 13;         // Wait before replying to any message - in seconds.
+    var delay = 8;          // Wait before replying to any message - in seconds.
     var loopsec= 7;         // Wait before reading new chats/new loop - in seconds.
     var debug_phone = "";   // In debug mode answer only to this number.
     var ignore_time =20*60; // Do not reply to a message that is older than this threshold, in seconds.
