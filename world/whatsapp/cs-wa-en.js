@@ -1558,6 +1558,8 @@ spread on 👽 2 👿 rows", // 4
             if (sender == from)
             {
                 var answer = text[0];
+                var answerIsValid = true;
+
                 for (var j = messages.length - 2; j > 0; j--)
                 {
                     var message2 = messages[j];
@@ -1582,16 +1584,16 @@ spread on 👽 2 👿 rows", // 4
                             console.log("Index of last message: " + pos2);
                         }
 
-                        // Stop at last text meesage.
+                        // Stop after the last text meesage.
                         pos2++;
-                        if (pos2 == text.length)
+                        if (pos2 >= text.length)
                         {
                             if (debugging)
                             {
                                 console.log("Conversation stopped.");
                             }
 
-                            answer = "";
+                            answerIsValid = false;
                             break;
                         }
 
@@ -1606,13 +1608,13 @@ spread on 👽 2 👿 rows", // 4
                     }
                 }
 
-                if (debugging && answer.length > 0)
+                if (debugging && answerIsValid)
                 {
                     console.log("Reply with: " + answer);
                 }
 
                 // Answer with a valid text.
-                if (answer.length > 0)
+                if (answerIsValid)
                 {
                     // window.WAPI.sendMessage = function (id, message, done)
                     window.WAPI.sendMessage(message.chatId, answer, done);
