@@ -1405,8 +1405,8 @@ window.WAPI.demoteParticipantAdminGroup = function (idGroup, idParticipant, done
 (function () {
 
     var debugging = false;  // Set this to true when debugging.
-    var delay = 15;         // Wait before replying to any message - in seconds.
-    var loopsec= 10;        // Wait before reading new chats/new loop - in seconds.
+    var delay = 13;         // Wait before replying to any message - in seconds.
+    var loopsec= 7;         // Wait before reading new chats/new loop - in seconds.
     var debug_phone = "";   // In debug mode answer only to this number.
     var ignore_time =20*60; // Do not reply to a message that is older than this threshold, in seconds.
     var remove_time =24*60*60;   // Remove a chat after this threshold, in seconds.
@@ -1617,7 +1617,7 @@ spread on 👽 2 👿 rows", // 4
                 if (answerIsValid)
                 {
                     // window.WAPI.sendMessage = function (id, message, done)
-                    window.WAPI.sendMessage(message.chatId, answer, done);
+                    window.WAPI.sendMessage(message.chatId, answer);
                 }
             }
             else
@@ -1645,7 +1645,7 @@ spread on 👽 2 👿 rows", // 4
 
             var chatId = chat.id.toString();
             // window.WAPI.sendMessage = function (id, message, done)
-            window.WAPI.sendMessage(chatId, answer, done);
+            window.WAPI.sendMessage(chatId, answer);
         }
 
         /* Remove the chats marked to be deleted/removed. */
@@ -1661,7 +1661,7 @@ spread on 👽 2 👿 rows", // 4
 
             // window.WAPI.deleteConversation = function (chatId, done)
             var chatId = chat.id.toString();
-            window.WAPI.deleteConversation(chatId, done);
+            window.WAPI.deleteConversation(chatId);
         }
 
         return;
