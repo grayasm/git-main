@@ -1405,8 +1405,8 @@ window.WAPI.demoteParticipantAdminGroup = function (idGroup, idParticipant, done
 (function () {
 
     var debugging = false;  // Set this to true when debugging.
-    var delay = 8.5;        // Wait before replying to any message - in seconds.
-    var loopsec= 5;         // Wait before reading new chats/new loop - in seconds.
+    var delay = 9.9;        // Wait before replying to any message - in seconds.
+    var loopsec= 6;         // Wait before reading new chats/new loop - in seconds.
     var debug_phone = "";   // In debug mode answer only to this number.
     var ignore_time =20*60; // Do not reply to a message that is older than this threshold, in seconds.
     var remove_time =24*60*60;   // Remove a chat after this threshold, in seconds.
@@ -1439,7 +1439,10 @@ spread on 👽 2 👿 rows", // 4
     //  Optional as last parameter to many WAPI calls.
     function done(result)
     {
-        console.log("done(" + result + ")");
+        if (debugging)
+        {
+            console.log("done(" + result + ")");
+        }
     }
 
     /* The main program. */
@@ -1523,7 +1526,7 @@ spread on 👽 2 👿 rows", // 4
 
             // This is a recent message.
             /* window.WAPI.sendSeen = function (id, done) */
-            window.WAPI.sendSeen(chat.id);
+            window.WAPI.sendSeen(chat.id, done);
 
             // Count user as active.
             stat_active_users++;
@@ -1617,7 +1620,7 @@ spread on 👽 2 👿 rows", // 4
                 if (answerIsValid)
                 {
                     // window.WAPI.sendMessage = function (id, message, done)
-                    window.WAPI.sendMessage(message.chatId, answer);
+                    window.WAPI.sendMessage(message.chatId, answer, done);
                 }
             }
             else
@@ -1645,7 +1648,7 @@ spread on 👽 2 👿 rows", // 4
 
             var chatId = chat.id.toString();
             // window.WAPI.sendMessage = function (id, message, done)
-            window.WAPI.sendMessage(chatId, answer);
+            window.WAPI.sendMessage(chatId, answer, done);
         }
 
         /* Remove the chats marked to be deleted/removed. */
@@ -1661,7 +1664,7 @@ spread on 👽 2 👿 rows", // 4
 
             // window.WAPI.deleteConversation = function (chatId, done)
             var chatId = chat.id.toString();
-            window.WAPI.deleteConversation(chatId);
+            window.WAPI.deleteConversation(chatId, done);
         }
 
         return;
