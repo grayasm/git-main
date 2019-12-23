@@ -1405,11 +1405,11 @@ window.WAPI.demoteParticipantAdminGroup = function (idGroup, idParticipant, done
 (function () {
 
     var debugging = false;  // Set this to true when debugging.
-    var delay = 9.9;        // Wait before replying to any message - in seconds.
-    var loopsec= 6;         // Wait before reading new chats/new loop - in seconds.
+    var delay = 10;         // Wait before replying to any message - in seconds.
+    var loopsec= 10;        // Wait before reading new chats/new loop - in seconds.
     var debug_phone = "";   // In debug mode answer only to this number.
     var ignore_time =20*60; // Do not reply to a message that is older than this threshold, in seconds.
-    var remove_time =24*60*60;   // Remove a chat after this threshold, in seconds.
+    var remove_time =12*60*60;   // Remove a chat after this threshold, in seconds.
     var check_msg = "sorin2019"; // Provide feedback on this message.
 
 
@@ -1474,10 +1474,12 @@ spread on 👽 2 👿 rows", // 4
                 function (id, includeMe, includeNotifications, done) */
             var messages = window.WAPI.getAllMessagesInChat(chat.id, true, false);
 
+            /* window.WAPI.sendSeen = function (id, done) */
+            window.WAPI.sendSeen(chat.id);
+
             if (debugging)
             {
                 console.log("Debug phone: " + chat.id.user);
-                console.log(chat);
                 console.log(messages);
             }
 
@@ -1492,10 +1494,6 @@ spread on 👽 2 👿 rows", // 4
 
             if (debugging)
             {
-                console.log(message);
-                console.log(message.chatId);
-                console.log(message.from);
-                console.log(message.timestamp);
                 console.log("Time of message: " + msgt.getHours() + ":" + msgt.getMinutes() + ":" + msgt.getSeconds());
                 console.log("Time now       : " + nowt.getHours() + ":" + nowt.getMinutes() + ":" + nowt.getSeconds());
                 console.log("Time difference: " + timediff + " sec ago");
@@ -1524,10 +1522,6 @@ spread on 👽 2 👿 rows", // 4
                 continue;
             }
 
-            // This is a recent message.
-            /* window.WAPI.sendSeen = function (id, done) */
-            window.WAPI.sendSeen(chat.id, done);
-
             // Count user as active.
             stat_active_users++;
 
@@ -1538,7 +1532,9 @@ spread on 👽 2 👿 rows", // 4
                 continue;
 
             /* Is this a stat check ? */
-            if (message.content.toLowerCase() == check_msg)
+            if (message.content &&
+                typeof message.content == "string" &&
+                message.content.toLowerCase() == check_msg)
             {
                 if(debugging)
                 {
@@ -1601,12 +1597,6 @@ spread on 👽 2 👿 rows", // 4
                         }
 
                         answer = text[pos2];
-
-                        if (debugging)
-                        {
-                            console.log("New answer: " + answer);
-                        }
-
                         break;
                     }
                 }
