@@ -41,8 +41,8 @@ Type=forking
 
 # Clean any existing files in /tmp/.X11-unix environment
 ExecStartPre=/bin/sh -c '/usr/bin/vncserver -kill %i > /dev/null 2&gt;&1 || :'
-ExecStart=/usr/sbin/runuser -l <b>&lt;USER&gt;</b> -c "/usr/bin/vncserver %i"
-PIDFile=/home/<b>&lt;USER&gt;</b>/.vnc/%H%i.pid
+ExecStart=/usr/sbin/runuser -l <b>mihai</b> -c "/usr/bin/vncserver %i"
+PIDFile=/home/<b>mihai</b>/.vnc/%H%i.pid
 ExecStop=/bin/sh -c '/usr/bin/vncserver -kill %i &gt; /dev/null 2&gt;&1 || :'
 
 [Install]
@@ -115,6 +115,44 @@ systemctl enable vncserver@:3.service
 
 <p>It may be needed to reboot the server once.</p>
 
+<p>Download the VNC viewer for Linux from 
+<a href="https://www.realvnc.com/en/connect/download/viewer" target="_blank">realvnc website</a> 
+and install it to /opt
+<p>
+<pre>
+su
+mkdir -pv /opt/vnc-viewer
+mv VNC-Viewer-*-Linux-x64 /opt/vnc-viewer/
+cp -v /home/mihai/Code/git-main/script/realvnc/vnc-viewer.png /opt/vnc-viewer 
+chown -Rv root:root /opt/vnc-viewer
+chcon -Rv -u system_u -t usr_t /opt/vnc-viewer
+</pre>
+<pre>
+cat > /usr/share/applications/realvnc.desktop << EOF
+[Desktop Entry]
+Name=RealVNC
+GenericName=VNC Viewer
+Comment=Control remote computer
+Exec=/opt/vnc-viewer/VNC-Viewer-6.19.1115-Linux-x64
+Terminal=false
+Icon=/opt/vnc-viewer/vnc-viewer.png
+Type=Application
+Categories=Network;
+Version=1.0
+X-Desktop-File-Install-Version=0.23
+EOF
+</pre>
+
+<p>Create the ssh tunnel</p>
+<pre>
+ssh -L 5903:$DIGITALOCEAN:5903 -l mihai $DIGITALOCEAN 
+</pre>
+<p>Start RealVNC</p>
+<img src="images/realvnc-desktop.png" alt="realvnc shortcut">
+
+<p>Add a new connection</p>
+<img src="images/realvnc_new_connection.png" alt="realvnc new connection">
+
 <p>
 To connect from a Windows client read 
 <a href="https://helpdeskgeek.com/how-to/tunnel-vnc-over-ssh" target="_blank">here</a> 
@@ -122,8 +160,6 @@ about How to Tunnel VNC over SSH.<br>
 You will need 
 <a href="https://www.putty.org" target="_blank">PuTTY</a> and 
 <a href="https://www.realvnc.com/en/connect/download/viewer" target="_blank">RealVNC</a> for this.<br><br>
-On PuTTY the tunnel must be: L5903  remoteipaddress:5903<br>
-On VNC Client the ip must be: localhost:5903 or 127.0.0.1:5903<br>
 </p>
 
 <a href="index.html">Back to main index</a>
