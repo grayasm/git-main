@@ -145,8 +145,13 @@ EOF
 
 <p>Create the ssh tunnel</p>
 <pre>
-ssh -L 5903:$DIGITALOCEAN:5903 -l mihai $DIGITALOCEAN 
+ssh -L 5903:$DIGITALOCEAN:5903 -l mihai $DIGITALOCEAN
 </pre>
+<p>or connect using a private key</p>
+<pre>
+ssh -L 5903:$DIGITALOCEAN:5903 -i ~/.ssh/id_rsa_digitalocean -l mihai $DIGITALOCEAN
+</pre>
+
 <p>Start RealVNC</p>
 <img src="images/realvnc-desktop.png" alt="realvnc shortcut">
 

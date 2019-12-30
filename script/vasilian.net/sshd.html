@@ -28,20 +28,21 @@ Protocol 2
 
 <p>
 Configure ssh daemon<br>
-emacs /etc/sshd_config
+emacs /etc/ssh/sshd_config
 </p>
 
 <pre>
 Port 22
 ListenAddress 0.0.0.0
+# HostKey - do not change these lines; Host identity defers a man-in-the-middle attack.
 Protocol 2
 PermitRootLogin no
 MaxAuthTries 6
 MaxSessions 10
+PubkeyAuthentication yes
 PasswordAuthentication no
 ChallengeResponseAuthentication no
 AllowUsers mihai
-Subsystem    sftp    /usr/lib/ssh/sftp-server
 </pre>
 
 <p>
@@ -83,14 +84,31 @@ cat ~/.ssh/id_ecdsa.pub >> ~/.ssh/authorized_keys
 chmod 600 ~/.ssh/authorized_keys
 </pre>
 
-<p>Save both keys id_ecdsa and id_ecdsa.pub (email)</p>
-
+<p>
+Copy the keys from the remote computer to local computer.<br>
+You should <b>not</b> be logged into the remote computer.<br>
+scp does not require a pre-existing ssh connection.<br>
+<a href="https://unix.stackexchange.com/questions/106480/how-to-copy-files-from-one-machine-to-another-using-ssh" target="_blank">scp example 1</a> 
+and 
+<a href="https://www.garron.me/en/articles/scp.html" target="_blank">scp example 2</a>
+</p>
+<pre>
+scp mihai@138.68.68.112:/home/mihai/.ssh/id_ecdsa      /home/mihai
+scp mihai@$DIGITALOCEAN:/home/mihai/.ssh/id_ecdsa.pub  /home/mihai
+</pre>
+<p>You can remove the keys from the server.</p>
 <pre>
 rm ~/.ssh/id_ecdsa
 rm ~/.ssh/id_ecdsa.pub
 </pre>
 
-<p>Download private key (id_ecdsa) from email on client computer (mobile#localdomain)</p>
+<p>Restart ssh to test the new key.</p>
+<pre>
+systemctl restart sshd.service
+systemctl status sshd.service
+</pre>
+
+<p>You have now the private key (id_ecdsa) on client computer (mobile#localdomain)</p>
 
 <pre>
 mv ~/.ssh/id_ecdsa ~/.ssh/id_ecdsa_home_key
@@ -100,14 +118,18 @@ chmod 400 ~/.ssh/id_ecdsa_home_key
 <p>I do not set a ssh-agent as I need to remember always the pass-phrase for my keys</p>
 
 <p>Login into sshd on my home server (192.168.0.128, port 22)</p>
-
 <pre>
 ssh -l mihai -i ~/.ssh/id_ecdsa_home_key 192.168.0.128
 </pre>
 
 <p>ssh login with X11 forwarding</p>
 <pre>
-ssh -X -l mihai -i ~/.ssh/id_rsa  192.168.0.128
+ssh -X -l mihai -i ~/.ssh/id_ecdsa_home_key  192.168.0.128
+</pre>
+
+<p>ssh login with tunnelling to C7 running in virtualbox</p>
+<pre>
+ssh -L 5903:192.168.0.18:5903 -i ~/.ssh/id_rsa_c7 -l mihai 192.168.0.18
 </pre>
 
 <p>Set up a connection alias</p>
