@@ -1,12 +1,8 @@
-/*
-  1. start google-chrome
-  2. type F12 and switch to console tab
-  3. copy-paste this into console
-  4. press Enter to run
-
-  1.1 Core JavaScript, pag.6, a showcase for:
-  Cap.8 Functions
+/* Cap.1 Introduction to JavaScript
+   1.1 Core JavaScript, pag.6, a showcase for:
+       Cap.8 Functions
 */
+
 
 // Functions are parameterized blocks of JavaScript code that we can invoke.
 function plus1(x) {        // Define a function named "plus1" with parameter "x"

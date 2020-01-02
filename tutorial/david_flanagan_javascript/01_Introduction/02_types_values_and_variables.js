@@ -1,12 +1,8 @@
 /*
-  1. start google-chrome
-  2. type F12 and switch to console tab
-  3. copy-paste this into console
-  4. press Enter to run
-
-  1.1 Core JavaScript, pag.4, a showcase for:
-  Cap.2 Lexical Structure
-  Cap.3 Types, Values and Variables
+    Cap.1   Introduction to JavaScript
+    Cap.1.1 Core JavaScript, pag. 4, a showcase for:
+            Cap.2 Lexical Structure
+            Cap.3 Types, Values and Variables
 */
 
 // Anything following double slashes is an English-language content.

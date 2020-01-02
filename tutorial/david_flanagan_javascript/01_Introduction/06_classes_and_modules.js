@@ -1,16 +1,13 @@
-/*
-  1. start google-chrome
-  2. type F12 and switch to console tab
-  3. copy-paste this into console
-  4. press Enter to run
-
-  1.1 Core JavaScript, pag.8, a showcase for:
-  Cap.9 Classes and Modules
+/* Cap.1 Introduction to JavaScript
+   1.1 Core JavaScript, pag.8, a showcase for:
+       Cap.9 Classes and Modules
 */
 
-// Cap.9 is one of the longest chapters in the book. Here is a very simple
-// example that demonstrates how to define a JavaScript class to represent
-// 2D geometric points.
+
+/* Cap.9 is one of the longest chapters in the book. Here is a very simple
+         example that demonstrates how to define a JavaScript class to represent
+         2D geometric points.
+*/
 
 // Define a constructor function to initialize a new Point object.
 function Point(x, y) {     // By convention, constructors start with capitals.

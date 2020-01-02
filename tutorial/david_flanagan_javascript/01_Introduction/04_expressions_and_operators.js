@@ -1,12 +1,8 @@
-/*
-  1. start google-chrome
-  2. type F12 and switch to console tab
-  3. copy-paste this into console
-  4. press Enter to run
-
-  1.1 Core JavaScript, pag.5, a showcase for:
-  Cap.4 Expressions and Operators
+/* Cap.1 Introduction to JavaScript
+   1.1 Core JavaScript, pag.5, a showcase for:
+       Cap.4 Expressions and Operators
 */
+
 
 // Operators act on values (the operands) to produce a new value.
 // Arithmetic operators are the most common:

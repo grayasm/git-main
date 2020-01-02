@@ -57,14 +57,14 @@
     {
         return x + 1;
     }
-    
+
     var square = function(x)        // Functions are values & can be assgigned.
     {
         return x * x;
     };
 
     square(4);                      // => 16: invoke a function
-    
+
     points.dist = function()
     {                               // "this" keyword is the points array.
         var p1 = this[0];           // First element of the array.
@@ -81,7 +81,7 @@
         if (x > 0) return x;
         else return -x;
     }
-    
+
     function factorial(n)
     {
         var prod = 1;
@@ -92,7 +92,7 @@
         }
         return prod;
     }
-    
+
     function factorial(n)
     {
         var i, prod = 1;

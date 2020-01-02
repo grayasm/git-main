@@ -1,13 +1,11 @@
 /*
-  1. start google-chrome
-  2. type F12 and switch to console tab
-  3. copy-paste this into console
-  4. press Enter to run
+    Cap.1   Introduction to JavaScript
+    Cap.1.1 Core JavaScript, pag.5, a showcase for:
+            Cap.6 Objects
+            Cap.7 Arrays
+*/ 
 
-  1.1 Core JavaScript, pag.5, a showcase for:
-  Cap.6 Objects
-  Cap.7 Arrays
-*/
+
 
 // JavaScript's most important data type is the object.
 // An object is a collection of name/value pairs, or a string to value map.
