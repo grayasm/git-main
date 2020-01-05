@@ -81,6 +81,7 @@ ip6tables -F
 ip6tables -P INPUT   DROP
 # drop invalid headers
 ip6tables -A INPUT -i lo -j ACCEPT
+ip6tables -A INPUT -d ::1/128 ! -i lo -j REJECT --reject-with icmp-port-unreachable
 ip6tables -A INPUT -m conntrack --ctstate INVALID -j DROP
 ip6tables -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
 ip6tables -A INPUT -p icmp --icmp-type 8 -m conntrack --ctstate NEW -j ACCEPT
