@@ -1,12 +1,11 @@
-/* Cap.1 Introduction to JavaScript
-   1.1 Core JavaScript, pag.8, a showcase for:
-       Cap.9 Classes and Modules
+/*
+  Classes and Modules, cap.9
 */
 
 
-/* Cap.9 is one of the longest chapters in the book. Here is a very simple
-         example that demonstrates how to define a JavaScript class to represent
-         2D geometric points.
+/* Cap.9 is one of the longest chapters in the book.
+         Here is a very simple example that demonstrates how to define
+         a JavaScript class to represent 2D geometric points.
 */
 
 // Define a constructor function to initialize a new Point object.

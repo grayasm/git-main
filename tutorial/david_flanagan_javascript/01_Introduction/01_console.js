@@ -1,11 +1,10 @@
 /*
-    Cap.1 Introduction to JavaScript, pag.4
-    Fig.1-1 The Firebug debugging console for Firefox
+  The browser debugging console.
 
-    1. start google-chrome
-    2. type F12 and switch to console tab
-    3. copy-paste this into console
-    4. press Enter to run
+  1. start google-chrome.
+  2. type F12 and switch to console tab.
+  3. copy-paste the js text into console.
+  4. press Enter to run.
 */
 
 function factorial(n)

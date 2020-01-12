@@ -1,28 +1,24 @@
 /*
-    Cap.1   Introduction to JavaScript
-    Cap.1.1 Core JavaScript, pag. 4, a showcase for:
-            Cap.2 Lexical Structure
-            Cap.3 Types, Values and Variables
+  Lexical Structure (comments, semicolon, Unicode char set) cap.2
+  Types, Values and Variables (variables and values) cap.3
 */
 
-// Anything following double slashes is an English-language content.
-// Read the comments carefully: they explain the JavaScript code.
+// This is a comment. Wow!
+// End a statement always with ;  (is optional but is good practice)
 
-// variable is a symbolic name for a value.
-// Variables are declared with the var keyword:
-var x;                     // Declare a variable named x.
+/* There are 3 basic types in JavaScript.
+   Numbers, Strings and Booleans.
 
-// Values can be assigned to variables with an = sign
-x = 0;                     // Now the variable x has the value 0
-x                          // => 0: A variable evaluates to its value.
+   Numbers are stored in 64bit floating point format.
+   Strings are single or double quoted.
+   Booleans can be true, false, null or undefined :)
+*/
 
-// JavaScript supports several types of values
-x = 1;                     // Numbers.
-x = 0.01;                  // Just one Number type for integers and reals.
-x = "hello world";         // Strings of text in quotation marks.
-x = 'JavaScript';          // Single quote marks also delimit strings.
-x = true;                  // Boolean values.
-x = false;                 // The other Boolean value.
-
-x = null;                  // Null is a special value that means "no value".
-x = undefined;             // Undefined is like null.
+var x = 0;                     // Just one number type for integers and reals.
+var y = 0.01;                  //
+var z = "Hello World";         // Dougle quote string.
+var w = 'Hello World';         // Single quote string.
+var t = true;                  // A boolean value.
+var f = false;                 // The other boolean value.
+var n = null;                  // Null is a special value that means "no value".
+var u = undefined;             // Undefined is like null.

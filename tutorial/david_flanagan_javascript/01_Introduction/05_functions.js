@@ -1,6 +1,5 @@
-/* Cap.1 Introduction to JavaScript
-   1.1 Core JavaScript, pag.6, a showcase for:
-       Cap.8 Functions
+/*
+  Example of Functions, cap.8
 */
 
 
@@ -18,15 +17,22 @@ var square = function(x) { // Functions are values and can be assigned to vars.
 
 square(plus1(y))           // => 16: invoke two functions in one expression.
 
-// When we combine functions with objects, we get methods.
-// When functions are assigned to the properties of an object, we call
-// them "methods". All JavaScript objects have methods:
+
+
+/*
+  All objects have methods.
+  New methods can be assigned to existing objects.
+*/
 var a = [];                // Create an empty array.
 a.push(1,2,3);             // The push() method adds elements to an array.
 a.reverse();               // Another method: reverse the order of elements.
 
-// We can define our own methods, too. The "this" keyword refers to the object
-// on which the method is defined: in this case, the points array from above.
+
+
+/*
+  We can define our own method "dist" on an array.
+  The "this" keyword refers to array.
+*/
 var points = [
     {x:0, y:0},
     {x:1, y:1}
@@ -42,11 +48,11 @@ points.dist = function() { // Define a method to compute distance between points
 points.dist()              // => 1.414: distance between our 2 points
 
 
-// Now, as promised, here are some functions whose bodies demonstrate common
-// JavaScript control structure statements:
 
-// JavaScript statements include conditionals and loops using the syntax
-// of C, C++, Java and other languages.
+/*
+  JavaScript statements include conditionals and loops using the syntax
+  of C, C++, Java and other languages.
+*/
 function abs(x) {          // A function to compute the absolute value
     if (x >= 0) {          // The if statement...
         return x;          // executes this code if the comparison is true.
