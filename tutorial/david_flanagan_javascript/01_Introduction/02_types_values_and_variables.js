@@ -6,12 +6,13 @@
 // This is a comment. Wow!
 // End a statement always with ;  (is optional but is good practice)
 
-/* There are 3 basic types in JavaScript.
-   Numbers, Strings and Booleans.
+/*
+  Primitive types: numbers,  strings,  booleans
+  Object types   : objects,  arrays,   functions
 
-   Numbers are stored in 64bit floating point format.
-   Strings are single or double quoted.
-   Booleans can be true, false, null or undefined :)
+  Numbers are stored in 64bit floating point format.
+  Strings are single or double quoted.
+  Booleans can be true, false, null or undefined :)
 */
 
 var x = 0;                     // Just one number type for integers and reals.

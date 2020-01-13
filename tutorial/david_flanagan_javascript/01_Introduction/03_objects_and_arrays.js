@@ -4,6 +4,9 @@
 
 
 /*
+  Primitive types: numbers,  strings,  booleans
+  Object types   : objects,  arrays,   functions
+
   JavaScript's most important data type is the object.
   An object is a collection of name/value pairs, or a string to value map.
 */

@@ -58,4 +58,7 @@
      s.length();       // =>  4:    s is wrapped with: new String("test")
      n.toString();     // => "10":  n is wrapped with: new Number(10);
      b.toString();     // => "true: b is wrapped with: new Boolean(true);
- 17) 
+ 17) Mutable objects vs immutable primitives ---------------------------objects
+     var s = "hello";  // Start with some lowercase text
+     s.toUpperCase();  // Returns "HELLO", but doens't alter s
+     s;                // => "hello": the original string has not changed
