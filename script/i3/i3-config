@@ -26,6 +26,10 @@ bar {
 # set desktop background
 exec --no-startup-id feh --bg-scale /usr/share/backgrounds/night.jpg
 
+# access PIA vpn (optional)
+# exec --no-startup-id nm-applet
+
+
 # i3 theme
 # class                 border  backgr. text    indicator child_border
 client.focused          #4c7899 #285577 #ffffff #2e9ef4   #285577
