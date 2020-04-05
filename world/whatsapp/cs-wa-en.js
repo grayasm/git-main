@@ -1,15 +1,23 @@
-/* The WhatsApp API comes from:
-   https://github.com/mukulhase/WebWhatsapp-Wrapper/blob/master/webwhatsapi/js/wapi.js
+/**
+    This script contains WAPI functions that need to be run in the context of the webpage
+    Maintained version:
+    https://github.com/lucas-alberto98/WebWhatApi/blob/my-version/webwhatsapi/js/wapi.js
 
-   For the program logic search for "function main" at the end of this file.
-*/
+    Unmaintained (original) version:
+    https://github.com/mukulhase/WebWhatsapp-Wrapper/blob/master/webwhatsapi/js/wapi.js
+ */
+
+/**
+ * Auto discovery the webpack object references of instances that contains all functions used by the WAPI
+ * functions and creates the Store object.
+ */
 if (!window.Store) {
     (function () {
         function getStore(modules) {
             let foundCount = 0;
             let neededObjects = [
                 { id: "Store", conditions: (module) => (module.Chat && module.Msg) ? module : null },
-                { id: "MediaCollection", conditions: (module) => (module.default && module.default.prototype && module.default.prototype.processFiles !== undefined) ? module.default : null },
+                { id: "MediaCollection", conditions: (module) => (module.default && module.default.prototype && module.default.prototype.processAttachments) ? module.default : null },
                 { id: "MediaProcess", conditions: (module) => (module.BLOB) ? module : null },
                 { id: "Wap", conditions: (module) => (module.createGroup) ? module : null },
                 { id: "ServiceWorker", conditions: (module) => (module.default && module.default.killServiceWorker) ? module : null },
@@ -57,14 +65,26 @@ if (!window.Store) {
                         });
                         window.Store.sendMessage = function (e) {
                             return window.Store.SendTextMsgToChat(this, ...arguments);
-                        }
+                        };
                         return window.Store;
                     }
                 }
             }
         }
 
-        webpackJsonp([], { 'parasite': (x, y, z) => getStore(z) }, ['parasite']);
+        if (typeof webpackJsonp === 'function') {
+            webpackJsonp([], {'parasite': (x, y, z) => getStore(z)}, ['parasite']);
+        } else {
+            webpackJsonp.push([
+                ['parasite'],
+                {
+                    parasite: function (o, e, t) {
+                        getStore(t);
+                    }
+                },
+                [['parasite']]
+            ]);
+        }
     })();
 }
 
@@ -79,7 +99,7 @@ window.WAPI._serializeRawObj = (obj) => {
     return {}
 };
 
-/*
+/**
  * Serializes a chat object
  *
  * @param rawChat Chat object
@@ -195,7 +215,7 @@ window.WAPI.getAllContacts = function (done) {
     return contacts;
 };
 
-/*
+/**
  * Fetches all contact objects from store, filters them
  *
  * @param done Optional callback function for async execution
@@ -207,7 +227,7 @@ window.WAPI.getMyContacts = function (done) {
     return contacts;
 };
 
-/*
+/**
  * Fetches contact object from store by ID
  *
  * @param id ID of contact
@@ -221,7 +241,7 @@ window.WAPI.getContact = function (id, done) {
     return window.WAPI._serializeContactObj(found);
 };
 
-/*
+/**
  * Fetches all chat objects from store
  *
  * @param done Optional callback function for async execution
@@ -245,7 +265,7 @@ window.WAPI.getAllChatsWithNewMsg = function (done) {
     return chats;
 };
 
-/*
+/**
  * Fetches all chat IDs from store
  *
  * @param done Optional callback function for async execution
@@ -258,7 +278,7 @@ window.WAPI.getAllChatIds = function (done) {
     return chatIds;
 };
 
-/*
+/**
  * Fetches all groups objects from store
  *
  * @param done Optional callback function for async execution
@@ -271,7 +291,7 @@ window.WAPI.getAllGroups = function (done) {
     return groups;
 };
 
-/*
+/**
  * Fetches chat object from store by ID
  *
  * @param id ID of chat
@@ -287,7 +307,7 @@ window.WAPI.getChat = function (id, done) {
 }
 
 window.WAPI.getChatByName = function (name, done) {
-    const found = window.Store.Chat.find((chat) => chat.name === name);
+    const found = window.WAPI.getAllChats().find(val => val.name.includes(name))
     if (done !== undefined) done(found);
     return found;
 };
@@ -323,7 +343,7 @@ window.WAPI.sendImageFromDatabasePicBot = function (picId, chatId, caption) {
     return true;
 };
 
-window.WAPI.sendMessageWithThumb = function (thumb, url, title, description, chatId, done) {
+window.WAPI.sendMessageWithThumb = function (thumb, url, title, description, text, chatId, done) {
     var chatSend = WAPI.getChat(chatId);
     if (chatSend === undefined) {
         if (done !== undefined) done(false);
@@ -334,9 +354,13 @@ window.WAPI.sendMessageWithThumb = function (thumb, url, title, description, cha
         description : description,
         matchedText : url,
         title       : title,
-        thumbnail   : thumb
+        thumbnail   : thumb,
+        compose: true
     };
-    chatSend.sendMessage(url, { linkPreview: linkPreview, mentionedJidList: [], quotedMsg: null, quotedMsgAdminGroupJid: null });
+    chatSend.sendMessage(text, { linkPreview: linkPreview,
+                                mentionedJidList: [],
+                                quotedMsg: null,
+                                quotedMsgAdminGroupJid: null });
     if (done !== undefined) done(true);
     return true;
 };
@@ -363,7 +387,7 @@ window.WAPI.getChatById = function (id, done) {
 };
 
 
-/*
+/**
  * I return all unread messages from an asked chat and mark them as read.
  *
  * :param id: chat id
@@ -418,10 +442,11 @@ window.WAPI.getUnreadMessagesInChat = function (id, includeMe, includeNotificati
     if (done !== undefined) done(output);
     // return result list
     return output;
-};
+}
+;
 
 
-/*
+/**
  * Load more messages in chat object from store by ID
  *
  * @param id ID of chat
@@ -439,7 +464,7 @@ window.WAPI.loadEarlierMessages = function (id, done) {
     }
 };
 
-/*
+/**
  * Load more messages in chat object from store by ID
  *
  * @param id ID of chat
@@ -473,7 +498,7 @@ window.WAPI.areAllMessagesLoaded = function (id, done) {
     return true
 };
 
-/*
+/**
  * Load more messages in chat object from store by ID till a particular date
  *
  * @param id ID of chat
@@ -495,7 +520,7 @@ window.WAPI.loadEarlierMessagesTillDate = function (id, lastMessage, done) {
 };
 
 
-/*
+/**
  * Fetches all group metadata objects from store
  *
  * @param done Optional callback function for async execution
@@ -508,7 +533,7 @@ window.WAPI.getAllGroupMetadata = function (done) {
     return groupData;
 };
 
-/*
+/**
  * Fetches group metadata object from store by ID
  *
  * @param id ID of group
@@ -530,7 +555,7 @@ window.WAPI.getGroupMetadata = async function (id, done) {
 };
 
 
-/*
+/**
  * Fetches group participants
  *
  * @param id ID of group
@@ -542,7 +567,7 @@ window.WAPI._getGroupParticipants = async function (id) {
     return metadata.participants;
 };
 
-/*
+/**
  * Fetches IDs of group participants
  *
  * @param id ID of group
@@ -566,7 +591,7 @@ window.WAPI.getGroupAdmins = async function (id, done) {
     return output;
 };
 
-/*
+/**
  * Gets object representing the logged in user
  *
  * @returns {Array|*|$q.all}
@@ -690,7 +715,7 @@ window.WAPI.ReplyMessage = function (idMessage, message, done) {
                     }
                     trials += 1;
                     console.log(trials);
-                    if (trials > 30) {
+                    if (trials > 5) { //30
                         done(true);
                         return;
                     }
@@ -778,7 +803,7 @@ window.WAPI.sendMessage = function (id, message, done) {
                     }
                     trials += 1;
                     console.log(trials);
-                    if (trials > 30) {
+                    if (trials > 5) { //30
                         done(true);
                         return;
                     }
@@ -1076,11 +1101,12 @@ window.WAPI.deleteMessage = function (chatId, messageArray, revoke=false, done) 
     if (!Array.isArray(messageArray)) {
         messageArray = [messageArray];
     }
-
+    let messagesToDelete = messageArray.map(msgId => window.Store.Msg.get(msgId));
+    
     if (revoke) {
-        conversation.sendRevokeMsgs(messageArray, conversation);
+        conversation.sendRevokeMsgs(messagesToDelete, conversation);    
     } else {
-        conversation.sendDeleteMsgs(messageArray, conversation);
+        conversation.sendDeleteMsgs(messagesToDelete, conversation);
     }
 
 
@@ -1109,7 +1135,7 @@ window.WAPI.checkNumberStatus = function (id, done) {
     return true;
 };
 
-/*
+/**
  * New messages observable functions.
  */
 window.WAPI._newMessagesQueue     = [];
@@ -1177,7 +1203,7 @@ window.addEventListener("unload", window.WAPI._unloadInform, false);
 window.addEventListener("beforeunload", window.WAPI._unloadInform, false);
 window.addEventListener("pageunload", window.WAPI._unloadInform, false);
 
-/*
+/**
  * Registers a callback to be called when a new message arrives the WAPI.
  * @param rmCallbackAfterUse - Boolean - Specify if the callback need to be executed only once
  * @param done - function - Callback function to be called when a new message arrives.
@@ -1188,7 +1214,7 @@ window.WAPI.waitNewMessages = function (rmCallbackAfterUse = true, done) {
     return true;
 };
 
-/*
+/**
  * Reads buffered new messages.
  * @param done - function - Callback function to be called contained the buffered messages.
  * @returns {Array}
@@ -1201,7 +1227,7 @@ window.WAPI.getBufferedNewMessages = function (done) {
     }
     return bufferedMessages;
 };
-/* End new messages observable functions */
+/** End new messages observable functions **/
 
 window.WAPI.sendImage = function (imgBase64, chatid, filename, caption, done) {
 //var idUser = new window.Store.UserConstructor(chatid);
@@ -1209,8 +1235,8 @@ var idUser = new window.Store.UserConstructor(chatid, { intentionallyUsePrivateC
 // create new chat
 return Store.Chat.find(idUser).then((chat) => {
     var mediaBlob = window.WAPI.base64ImageToFile(imgBase64, filename);
-    var mc = new Store.MediaCollection();
-    mc.processFiles([mediaBlob], chat, 1).then(() => {
+    var mc = new Store.MediaCollection(chat);
+    mc.processAttachments([{file: mediaBlob}, 1], chat, 1).then(() => {
         var media = mc.models[0];
         media.sendToChat(chat, { caption: caption });
         if (done !== undefined) done(true);
@@ -1232,7 +1258,7 @@ window.WAPI.base64ImageToFile = function (b64Data, filename) {
     return new File([u8arr], filename, {type: mime});
 };
 
-/*
+/**
  * Send contact card to a specific chat using the chat ids
  *
  * @param {string} to '000000000000@c.us'
@@ -1253,7 +1279,7 @@ window.WAPI.sendContact = function (to, contact) {
     }
 };
 
-/*
+/**
  * Create an chat ID based in a cloned one
  *
  * @param {string} chatId '000000000000@c.us'
@@ -1269,7 +1295,7 @@ window.WAPI.getNewMessageId = function (chatId) {
     return newMsgId;
 };
 
-/*
+/**
  * Send Customized VCard without the necessity of contact be a Whatsapp Contact
  *
  * @param {string} chatId '000000000000@c.us'
@@ -1311,9 +1337,7 @@ window.WAPI.sendVCard = function (chatId, vcard) {
 
     chat.addAndSendMsg(tempMsg);
 };
-
-
-/*
+/**
  * Block contact
  * @param {string} id '000000000000@c.us'
  * @param {*} done - function - Callback function to be called when a new message arrives.
@@ -1328,9 +1352,7 @@ window.WAPI.contactBlock = function (id, done) {
     done(false);
     return false;
 }
-
-
-/*
+/**
  * unBlock contact
  * @param {string} id '000000000000@c.us'
  * @param {*} done - function - Callback function to be called when a new message arrives.
@@ -1346,7 +1368,7 @@ window.WAPI.contactUnblock = function (id, done) {
     return false;
 }
 
-/*
+/**
  * Remove participant of Group
  * @param {*} idGroup '0000000000-00000000@g.us'
  * @param {*} idParticipant '000000000000@c.us'
@@ -1362,7 +1384,7 @@ window.WAPI.removeParticipantGroup = function (idGroup, idParticipant, done) {
     })
 }
 
-/*
+/**
  * Promote Participant to Admin in Group
  * @param {*} idGroup '0000000000-00000000@g.us'
  * @param {*} idParticipant '000000000000@c.us'
@@ -1379,7 +1401,7 @@ window.WAPI.promoteParticipantAdminGroup = function (idGroup, idParticipant, don
     })
 }
 
-/*
+/**
  * Demote Admin of Group
  * @param {*} idGroup '0000000000-00000000@g.us'
  * @param {*} idParticipant '000000000000@c.us'
@@ -1407,7 +1429,7 @@ window.WAPI.demoteParticipantAdminGroup = function (idGroup, idParticipant, done
     var debugging = false;  // Set this to true when debugging.
     var delay = 10;         // Wait before replying to any message - in seconds.
     var loopsec= 10;        // Wait before reading new chats/new loop - in seconds.
-    var debug_phone = "";   // In debug mode answer only to this number.
+    var debug_phone = "";   // In debug mode answer only to this number, ex: 49157555123
     var ignore_time =20*60; // Do not reply to a message that is older than this threshold, in seconds.
     var remove_time =12*60*60;   // Remove a chat after this threshold, in seconds.
     var check_msg = "sorin2019"; // Provide feedback on this message.
@@ -1465,7 +1487,7 @@ spread on 👽 2 👿 rows", // 4
 
             if (debugging && (chat.id.user != debug_phone))
             {
-                // console.log("Ignore chat: " + chat.id.user);
+                console.log("Ignore chat: " + chat.id.user);
                 stat_ignore_users++;
                 continue;
             }
