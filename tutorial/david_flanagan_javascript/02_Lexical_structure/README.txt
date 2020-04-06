@@ -46,3 +46,9 @@
      (a+b).toString()    // can also be interpreted as
 
      var y = x + f(a+b).toString();
+
+ 12) Another exception involves ++ and -- operators. Again, use semicolons.
+     x
+     ++
+     y                  // is parsed as x; ++y;
+================================================================================
