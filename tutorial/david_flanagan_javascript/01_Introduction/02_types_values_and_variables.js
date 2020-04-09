@@ -3,7 +3,7 @@
   Types, Values and Variables (variables and values) cap.3
 */
 
-// This is a comment. Wow!
+// This is a comment.
 // End a statement always with ;  (is optional but is good practice)
 
 /*
