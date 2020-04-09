@@ -3,7 +3,9 @@
 ===============================================================================
   1) Primitive types: numbers,  strings,  booleans
      Object types   : objects,  arrays,   functions
-------------------------------------------------------------------------numbers
+
+     Numbers
+     =======
   2) All numbers are stored as 64 bit floating-point in IEEE 754 standard
      minim= +/-5 x 10^-324
      maxim= +/-1.7976931348623157 x 10^308
@@ -22,7 +24,10 @@
   8) No errors for overflow, underflow, or divizion by zero. (see Infinity, NaN)
   9) JavaScript is affected by floating-point rounding errors just like C/C++.
      (.3 - .2) == (.2 - .1); // is false
-------------------------------------------------------------------------strings
+
+
+     Strings
+     =======
  10) var s = 'name="myform"';
      var s = "Wouldn't you prefer O'Reilly's book?";
      var s = "two\nlines";
@@ -35,7 +40,9 @@
      var s = "hello, " + "world";
      var h = s[0];
      var d = s[s.length - 1];
------------------------------------------------------------------------booleans
+
+     Booleans
+     ========
  13) Any JavaScript can be converted to a boolean value.
  14) The folowing values convert to false
      undefined
@@ -46,7 +53,9 @@
      ""
      null ==  undefined;  // is true
      null === undefined;  // is false, strict comparison
-------------------------------------------------------------------------objects
+
+     Objects
+     =======
  15) The global object has functions and properties.
      var a = isFinite(200);         // method of the global object "this"
      var a = this.isFinite(200);
@@ -58,7 +67,7 @@
      s.length();       // =>  4:    s is wrapped with: new String("test")
      n.toString();     // => "10":  n is wrapped with: new Number(10);
      b.toString();     // => "true: b is wrapped with: new Boolean(true);
- 17) Mutable objects vs immutable primitives ---------------------------objects
+ 17) Mutable objects vs immutable primitives
      var s = "hello";  // Start with some lowercase text
      s.toUpperCase();  // Returns "HELLO", but doens't alter s
      s;                // => "hello": the original string has not changed
