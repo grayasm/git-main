@@ -32,9 +32,9 @@ console.log(num4);
 console.log(num5);
 console.log(num6);
 
-// Interesting fact about num3 and num4.
-Math.pow(10,-323) * 0.5;   // 5e-234
-Math.pow(10,-324);         // 0
+// Interesting fact about num3 and num4 (Underflow errors)
 Math.pow(10,-234) * 5;     // 0
+Math.pow(10,-324);         // 0
+Math.pow(10,-323) * 0.5;   // 5e-234
 Math.pow(10,-323) * 0.3;   // 5e-234 ->it cannot be represented anymore
 Math.pow(10,-323) * 0.2;   // 0
