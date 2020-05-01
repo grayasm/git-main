@@ -8,6 +8,23 @@
 
 using namespace std;
 
+void test()
+{
+    int** tab = new int*[5];
+
+    for (int i = 0; i < 5; ++i)
+        tab[i] = new int[5];
+
+    for (int r = 0; r < 5; ++r)
+        for (int c = 0; c < 5; ++c)
+            tab[r][c] = r + c + 10;
+
+    for (int r = 0; r < 5; ++r)
+        for (int c = 0; c < 5; ++c)
+            cout << tab[r][c] << " ";
+}
+
+
 void rotate(int mat[][3])
 {
     int temp[3][3];
@@ -22,6 +39,10 @@ void rotate(int mat[][3])
 
 int main()
 {
+    test();
+    
+
+    
     int mat[][3] = {{0,1,2},{3,4,5},{6,7,8}};
 
     // print top line
