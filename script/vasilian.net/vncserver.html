@@ -167,6 +167,81 @@ You will need
 <a href="https://www.realvnc.com/en/connect/download/viewer" target="_blank">RealVNC</a> for this.<br><br>
 </p>
 
+<p>See which VNC port is currently open</p>
+<pre>
+nmap localhost
+PORT     STATE SERVICE
+22/tcp   open  ssh
+25/tcp   open  smtp
+5903/tcp open  vnc-3
+6003/tcp open  X11:3
+</pre>
+
+<p>Kill a VNC instance</p>
+<pre>
+[sammy@centos-server: ~]$ vncserver -kill :1
+Killing Xvnc process ID 1323
+</pre>
+
+<p>Troubleshoot a VNC service that refuses to start</p>
+<pre>
+systemctl start vncserver@:3.service
+Job for vncserver@:3.service failed. See "systemctl status vncserver@:3.service" and "journalctl -xe" for details.
+
+journalctl -xe
+May 01 15:32:17 centos-server runuser[9207]: pam_unix(runuser-l:session): session opened for user sammy by (uid=0)
+May 01 15:32:17 centos-server runuser[9207]: Warning: centos-server:3 is taken because of <mark>/tmp/.X11-unix/X3</mark>
+May 01 15:32:17 centos-server runuser[9207]: Remove this file if there is no X server centos-server:3
+May 01 15:32:17 centos-server runuser[9207]: A VNC server is already running as :3
+May 01 15:32:21 centos-server runuser[9207]: New 'centos-server:1 (sammy)' desktop is centos-server:1
+May 01 15:32:21 centos-server runuser[9207]: Starting applications specified in /home/sammy/.vnc/xstartup
+May 01 15:32:21 centos-server runuser[9207]: Log file is /home/sammy/.vnc/centos-server:1.log
+May 01 15:32:21 centos-server runuser[9207]: pam_unix(runuser-l:session): session closed for user sammy
+May 01 15:32:21 centos-server systemd[1]: Can't open PID file /home/sammy/.vnc/centos-server:3.pid (yet?) after start: No such file or directory
+May 01 15:32:21 centos-server systemd[1]: Failed to start Remote desktop service (VNC).
+</pre>
+
+<p>Removing temporary (old) directories</p>
+<pre>
+cd /tmp/.X11-unix/
+rmdir X3
+</pre>
+
 <a href="index.html">Back to main index</a>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
