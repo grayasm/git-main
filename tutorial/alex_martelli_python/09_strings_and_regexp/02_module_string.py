@@ -14,18 +14,16 @@
 
 import string
 
-string.ascii_letters
+string.ascii_letters     # 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
 string.ascii_lowercase   # 'abcdefghijklmnopqrstuvwxyz'
 string.ascii_uppercase   # 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 string.digits            # '0123456789'
 string.hexdigits         # '0123456789abcdefABCDEF'
-string.ascii_letters
-string.ascii_lowercase   # 'abcdefghijklmnopqrstuvwxyz'
 string.octdigits         # '01234567'
-string.punctuation
-string.printable
+string.punctuation       # '!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~'
+string.printable         # '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~ \t\n\r\x0b\x0c'
 string.ascii_uppercase   # 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-string.whitespace
+string.whitespace        # ' \t\n\r\x0b\x0c'
 
 # the Unicode equivalent would be:
 no_vowels = dict.fromkeys(ord(x) for x in 'aeiou')
