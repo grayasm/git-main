@@ -23,6 +23,13 @@ l.insert(-1, ['baghdad', 'ankara', 'teheran'])
 pp = pprint.PrettyPrinter(indent=4)  # to spot nesting easier
 pp.pprint(l)
 
+#[   ['new-york', 'mississippi', 'atlanta'],
+#    'michigan',
+#    'detroit',
+#    'chicago',
+#    ['baghdad', 'ankara', 'teheran'],
+#    'sidney']
+
 '''
 pprint.pformat(obj)
 pprint.pprint(obj, stream=sys.stdout)
