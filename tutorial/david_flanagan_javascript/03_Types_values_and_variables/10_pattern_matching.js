@@ -6,6 +6,8 @@
    RegExp object API is complex and the grammar is nontrivial.
    The regular expression literal is contained between a pair of shashes /
 
+   From:
+   https://www.tutorialspoint.com/javascript/javascript_regexp_object.htm
 
    Brackets:
    [...]   Any one character between the brackets.
@@ -149,6 +151,10 @@ var r4 = new RegExp('[a-z].[0-9]', 'i');
 var r5 = new RegExp('^[0-9]{3}-[0-9]{4}$', 'i');
 r5.test('754-3010');                                  // true: Local
 
+
+// From:
+// https://flaviocopes.com/javascript-regular-expressions/
+
 // Capturing Groups: exec will return an Array with each matched group.
 var a0 = /^(\+\d)-(\d{3})-(\d{3}-\d{4})$/.exec('+1-541-754-3010');
 // ["+1-541-754-3010", "+1", "541", "754-3010"] array has 4 items.
@@ -202,4 +208,3 @@ var a2 = /^(?:\+\d)-(\d{3})-(\d{3}-\d{4})$/.exec('+1-541-754-3010');
 /^\p{Emoji}+$/u.test('🙃🙃')            // true
 
 
-// https://flaviocopes.com/javascript-regular-expressions
