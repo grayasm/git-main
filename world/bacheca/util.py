@@ -64,8 +64,9 @@ def set_options(is_headless):
 
 
 def get_chrome_driver(is_headless):
+	chrome_driver = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'chromedriver')
 	chrome_options = set_options(is_headless)
-	driver = webdriver.Chrome('chromedriver', chrome_options=chrome_options)
+	driver = webdriver.Chrome(chrome_driver, chrome_options=chrome_options)
 	driver.implicitly_wait(10)
 	return driver
 
