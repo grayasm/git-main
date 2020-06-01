@@ -1,9 +1,11 @@
-1.  ChromeDriver is required to run selenium
-    https://chromedriver.chromium.org/downloads
-    
-    WARNING: if 'yum update' will update GoogleChrome
-             check what version you have and download same version driver for it.
 
+    ***Installation instructions***
+
+1.  https://chromedriver.chromium.org/downloads
+    Both the browser and the driver must have the same version for compatibility.
+
+    dfn install google-chrome-stable chromedriver
+    
 2. pip3 install selenium
    pip3 install requests
    
@@ -19,7 +21,6 @@
    Copy user, pass and save them in pass.txt
    Change openvpn.ovpn, add full path for ca,cert,key and after line 'proto tcp' add auth-user-pass 'path to pass.txt'.
    
-   
-   
- 
-    
+5. Check util.py:29  CAPTCH_API_KEY=""
+
+

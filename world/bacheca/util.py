@@ -26,7 +26,7 @@ SMAIL_URL="https://smailpro.com/"
 MOAKT_URL="https://www.moakt.com"
 
 # Captcha API Constants
-CAPTCH_API_KEY="980bee3fc7edf9c12c0e14bc09ae8661"
+CAPTCH_API_KEY=""
 DEFAULT_CAPTCH_API_METHOD="userrecaptcha"
 POST_CAPTCHA_URL="https://2captcha.com/in.php"
 GET_CAPTCHA_URL="https://2captcha.com/res.php"
@@ -65,7 +65,7 @@ def set_options(is_headless):
 
 def get_chrome_driver(is_headless):
 	chrome_options = set_options(is_headless)
-	driver = webdriver.Chrome("/home/mihai/Documents/SorinCarbunaru/BOT_BAKECA_V1/chromedriver", chrome_options=chrome_options)
+	driver = webdriver.Chrome('chromedriver', chrome_options=chrome_options)
 	driver.implicitly_wait(10)
 	return driver
 

@@ -1,14 +1,6 @@
 # For logger
 import bot_logger as logging
-
 # For slaves
-#from slaves.tuttoannunci import TuttoannunciSlave
-from slaves.il_mercatone import IlMercatoneSlave
-from slaves.din_contri import DinContriSlave
-from slaves.skokka import SkokkaSlave
-from slaves.bbacheca import BbachecaSlave
-from slaves.incontripro import IncontriproSlave
-from slaves.milanunciosex import MilanuncioSlave
 from slaves.bakeca import BakecaSlave
 # For misc
 import configparser
@@ -117,19 +109,7 @@ def get_slave(context):
         )
 
     # NOTE: If you add new script you must also add it here.
-    if target_website == 'ilmercatone.com':
-       return IlMercatoneSlave(IS_HEADLESS)
-    elif target_website == 'dincontri.com':
-        return DinContriSlave(IS_HEADLESS)
-    elif target_website == 'ch.skokka.com':
-        return SkokkaSlave(IS_HEADLESS)
-    elif target_website == 'bbacheca.com':
-        return BbachecaSlave(IS_HEADLESS)
-    elif target_website == 'milano.incontripro.com':
-        return IncontriproSlave(IS_HEADLESS)
-    elif target_website == 'milanunciosex.com':
-        return MilanuncioSlave(IS_HEADLESS)
-    elif target_website == 'bakecaincontrii.com':
+    if target_website == 'bakecaincontrii.com':
         return BakecaSlave(IS_HEADLESS)
     else:
         raise MasterBotInternalException(
