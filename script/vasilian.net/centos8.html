@@ -163,6 +163,14 @@ dnf --enablerepo=fedora28 install f28-backgrounds-xfce
 dnf remove $(dnf list installed | grep 'fedora28' | awk '{ print $1 }')
 </pre>
 
+<p>Install seahorse from AppStream repo (gnome-keyring related)</p>
+<pre>
+dnf info seahorse
+dnf repoquery --deplist seahorse
+dnf install seahorse
+</pre>
+
+
 <p>I maintain my own C8 repository with SPEC files under 
 <a href="https://github.com/grayasm/git-main/tree/master/script/rpm-el8" 
 target="_blank">https://github.com/grayasm/git-main/tree/master/script/rpm-el8</a>
