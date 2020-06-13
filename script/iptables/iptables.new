@@ -138,8 +138,8 @@ ip6tables -P FORWARD DROP
 ip6tables -L
 # -----------------------------------------------------------------------------
 
-service iptables save
-service ip6tables save
+/usr/libexec/iptables/iptables.init save
+/usr/libexec/iptables/ip6tables.init save
 
 systemctl enable iptables.service
 systemctl enable ip6tables.service
