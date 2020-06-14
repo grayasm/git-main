@@ -72,11 +72,10 @@ alias pip='/usr/bin/pip3'
 
 
 # ssh client
-# alias sshsrv='ssh -X -l mihai -i $HOME/.ssh/id_rsa_home_key $SERVER'
-# alias office='ssh -i $HOME/.ssh/id_dsa_office -l mihai -L 13389:10.1.1.235:3389 $OFFICE'
-alias sshocean='ssh -l root -i $HOME/.ssh/id_rsa_digitalocean2 $DIGITALOCEAN'
-alias sshghost='ssh -L 5902:$DIGITALGHOST:5902 -i $HOME/.ssh/id_rsa_centos8-ghost -l sorin $DIGITALGHOST'
-alias sshsorin='ssh -L 5903:$DIGITALOCEAN2:5903 -i $HOME/.ssh/id_rsa_sorin -l sorin $DIGITALOCEAN2
+# alias sshsrv='ssh -X -l mihai -i $HOME/.ssh/id_rsa_home_key  $SERVER'
+# alias office='ssh -i $HOME/.ssh/id_dsa_office -l mihai -L 13389:10.1.1.235:3389  $OFFICE'
+alias sshocean='ssh -l root -i $HOME/.ssh/id_rsa_digitalocean2  $DIGITALOCEAN'
+alias sshwa0='ssh -L 5903:$DIGITALWA0:5903 -l sorin -i $HOME/.ssh/id_rsa_sorin_wa0  $DIGITALWA0
 
 
 # X11
