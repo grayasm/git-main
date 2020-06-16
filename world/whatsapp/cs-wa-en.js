@@ -1,10 +1,15 @@
 /**
-    This script contains WAPI functions that need to be run in the context of the webpage
-    Maintained version:
-    https://github.com/lucas-alberto98/WebWhatApi/blob/my-version/webwhatsapi/js/wapi.js
-
-    Unmaintained (original) version:
+    Unmaintained (original) version.
     https://github.com/mukulhase/WebWhatsapp-Wrapper/blob/master/webwhatsapi/js/wapi.js
+
+    On mukulhase go to pull requests and search for the fix.
+    https://github.com/lucas-alberto98/WebWhatApi/blob/my-version/webwhatsapi/js/wapi.js
+    https://github.com/felippeefreire/WebWhatsapp-Wrapper/blob/master/webwhatsapi/js/wapi.js
+    https://github.com/mukulhase/WebWhatsapp-Wrapper/issues/902
+*/
+
+/**
+ * This script contains WAPI functions that need to be run in the context of the webpage
  */
 
 /**
@@ -16,7 +21,7 @@ if (!window.Store) {
         function getStore(modules) {
             let foundCount = 0;
             let neededObjects = [
-                { id: "Store", conditions: (module) => (module.Chat && module.Msg) ? module : null },
+                { id: "Store", conditions: (module) => (module.default && module.default.Chat && module.default.Msg) ? module.default : null },
                 { id: "MediaCollection", conditions: (module) => (module.default && module.default.prototype && module.default.prototype.processAttachments) ? module.default : null },
                 { id: "MediaProcess", conditions: (module) => (module.BLOB) ? module : null },
                 { id: "Wap", conditions: (module) => (module.createGroup) ? module : null },
@@ -85,6 +90,7 @@ if (!window.Store) {
                 [['parasite']]
             ]);
         }
+
     })();
 }
 
@@ -715,7 +721,7 @@ window.WAPI.ReplyMessage = function (idMessage, message, done) {
                     }
                     trials += 1;
                     console.log(trials);
-                    if (trials > 5) { //30
+                    if (trials > 30) {
                         done(true);
                         return;
                     }
@@ -803,7 +809,7 @@ window.WAPI.sendMessage = function (id, message, done) {
                     }
                     trials += 1;
                     console.log(trials);
-                    if (trials > 5) { //30
+                    if (trials > 30) {
                         done(true);
                         return;
                     }
@@ -847,6 +853,8 @@ window.WAPI.sendSeen = function (id, done) {
     var chat = window.WAPI.getChat(id);
     if (chat !== undefined) {
         if (done !== undefined) {
+            if (chat.getLastMsgKeyForAction === undefined)
+                chat.getLastMsgKeyForAction = function () { };
             Store.SendSeen(chat, false).then(function () {
                 done(true);
             });
@@ -1102,9 +1110,9 @@ window.WAPI.deleteMessage = function (chatId, messageArray, revoke=false, done) 
         messageArray = [messageArray];
     }
     let messagesToDelete = messageArray.map(msgId => window.Store.Msg.get(msgId));
-    
+
     if (revoke) {
-        conversation.sendRevokeMsgs(messagesToDelete, conversation);    
+        conversation.sendRevokeMsgs(messagesToDelete, conversation);
     } else {
         conversation.sendDeleteMsgs(messagesToDelete, conversation);
     }
