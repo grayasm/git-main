@@ -11,6 +11,7 @@ import random
 import queue
 import os
 import datetime
+from proxy_tools import Proxy
 
 # CONSTANTS
 SCRIPT_DIR = os.path.dirname(os.path.realpath(__name__))
@@ -22,6 +23,11 @@ BAKECA_CREDENTIALS_PATH = os.path.join(CREDENTIALS_DIR, BAKECA_CREDENTIALS_FILE)
 BAKECA_STATE_FILE = "bakeca_state.txt"
 BAKECA_STATE_FILE_DIR = os.path.join(SCRIPT_DIR, "saved_states") + os.sep
 BAKECA_STATE_FILE_PATH = os.path.join(BAKECA_STATE_FILE_DIR, BAKECA_STATE_FILE)
+# TODO: redundant file definition (see default.cfg)
+PROXY_INPUT_PATH = os.path.join(SCRIPT_DIR, "proxy_input.txt")
+PROXY_OUTPUT_OK_PATH = os.path.join(SCRIPT_DIR, "proxy_output_ok.txt")
+PROXY_OUTPUT_NOK_PATH = os.path.join(SCRIPT_DIR, "proxy_output_nok.txt")
+
 
 BAKECA_SUCCESS = 1
 BAKECA_ERROR = 0
@@ -36,6 +42,10 @@ class CaptchaSolverException(Exception):
 
 class TelegramAuthException(Exception):
 	"""Raised for different internal errors"""
+	pass
+
+class ProxyException(Exception):
+	"""Raised for different proxy errors"""
 	pass
 
 ################################################################################
@@ -55,17 +65,26 @@ class BakecaSlave(object):
 	text_file = None
 	image_dir = None
 	is_headless = True
+	use_proxy = False
+	use_lpm = False
+	lpm_address = ""
 	fail_queue = queue.Queue()
 
-	def __init__(self, is_headless):
+	def __init__(self, is_headless, use_proxy, use_lpm, lpm_address):
 		with BakecaSlave.bakeca_lock:
 			self.slave_id = util.random_string(8) + "-" + str(BakecaSlave.slave_index)
 			BakecaSlave.slave_index = BakecaSlave.slave_index + 1
+			if use_proxy:
+				BakecaSlave.proxy = Proxy(PROXY_INPUT_PATH, PROXY_OUTPUT_OK_PATH, PROXY_OUTPUT_NOK_PATH)
+				BakecaSlave.proxy.__enter__()
 		self.logger = logging.get_logger(
 			name=__name__ + '-' + self.slave_id,
 			log_file=__name__ + '-' + self.slave_id
 		)
 		BakecaSlave.is_headless = is_headless
+		BakecaSlave.use_proxy = use_proxy
+		BakecaSlave.use_lpm = use_lpm
+		BakecaSlave.lpm_address = lpm_address
 
 	def parse_context(self, context):
 		# This looks like it was written by a retard @retard_chief(you know who you are)
@@ -83,14 +102,14 @@ class BakecaSlave(object):
 		driver.find_element_by_xpath('/html/body/div/div[2]/table/tbody/tr/td[5]/a').click()
 		# Register button
 		driver.find_element_by_xpath('/html/body/div/div[2]/div[2]/div[2]/a[1]').click()
-		
+
 		# Fill in fields
 		driver.find_element_by_xpath('//*[@id="UserEmail"]').send_keys(email)
 		sleep(2)
 		driver.find_element_by_xpath('//*[@id="UserPassword"]').send_keys(password)
 		sleep(2)
 		driver.find_element_by_xpath('//*[@id="UserPassword2"]').send_keys(password)
-		
+
 		# Solve captcha
 		resp = util.solve_captcha(driver)
 		if(resp == "error"):
@@ -98,7 +117,7 @@ class BakecaSlave(object):
 		# Close captcha response
 		recaptcha_response = driver.find_element_by_id("g-recaptcha-response")
 		driver.execute_script("arguments[0].style.display = 'none';", recaptcha_response)
-		
+
 
 		# Click on register
 		util.scroll_into_view_click(driver, '/html/body/div[1]/div[2]/div[2]/div[2]/form/div[3]/input')
@@ -115,7 +134,7 @@ class BakecaSlave(object):
 		return 0
 
 	def make_website_post(self, driver, city_id, category_id, title, content, images, email):
-		
+
 		# Get category and city
 		city_name = CONSTANTS.CITIES[city_id]
 		category_name = CONSTANTS.CATEGORIES[category_id]
@@ -123,6 +142,9 @@ class BakecaSlave(object):
 		# Click on create announcement
 		# driver.find_element_by_xpath('//*[@id="button-base"]/a').click()
 		driver.find_element_by_xpath('//*[ @ id = "navbarSupportedContent20"] / ul / li[3]').click()
+
+		# Read the terms and conditions
+		sleep(5)
 
 		# Click on accept
 		util.scroll_into_view_click(driver, '//*[@id="accetto"]')
@@ -168,7 +190,8 @@ class BakecaSlave(object):
 		# driver.find_element_by_id('Gallery1Image').send_keys(images[1])
 		# driver.find_element_by_id('Gallery2Image').send_keys(images[2])
 		# Wait for images
-		
+
+
 		# Is CHIUDI reffers to the 'something went wrong with the images' dialog box
 		is_chiudi = False
 		try:
@@ -198,7 +221,7 @@ class BakecaSlave(object):
 		# Close captcha response
 		recaptcha_response = driver.find_element_by_id("g-recaptcha-response")
 		driver.execute_script("arguments[0].style.display = 'none';", recaptcha_response)
-		
+
 		# Click on accept terms
 		util.scroll_into_view_click(driver, '//*[@id="privacy-ins"]')
 
@@ -223,7 +246,7 @@ class BakecaSlave(object):
 		util.scroll_into_view_click(driver, '//*[@id="pub-gratis"]')
 
 		return is_telegram_auth, is_chiudi, loaded_images
-		
+
 
 	def read_last_state(self):
 		"""
@@ -310,6 +333,13 @@ class BakecaSlave(object):
 		logger = self.logger
 		exception_raised = True
 		exception_type = ""
+		proxy_address = ""
+		if BakecaSlave.use_proxy:
+			proxy_address = BakecaSlave.proxy.get_address()
+			if proxy_address is None:
+				raise ProxyException("No more proxies available!")
+		if BakecaSlave.use_lpm:
+			proxy_address = BakecaSlave.lpm_address
 
 		# Try and read last state from file
 		self.read_last_state()
@@ -320,7 +350,7 @@ class BakecaSlave(object):
 		logger.info("Parsed context %s." % str(context))
 
 		# First go and get mail
-		email_driver = util.get_chrome_driver(BakecaSlave.is_headless)
+		email_driver = util.get_chrome_driver(BakecaSlave.is_headless, proxy_address)
 
 		util.go_to_page(driver=email_driver, page_url=util.MOAKT_URL)
 		try:
@@ -338,7 +368,7 @@ class BakecaSlave(object):
 
 			# Go to Site
 			logger.info("Opening website page...")
-			website_driver = util.get_chrome_driver(BakecaSlave.is_headless)
+			website_driver = util.get_chrome_driver(BakecaSlave.is_headless, proxy_address)
 			util.go_to_page(driver=website_driver, page_url=CONSTANTS.WEBSITE_URL)
 
 			# Post without register
@@ -358,7 +388,7 @@ class BakecaSlave(object):
 
 				# Click on accept
 				util.scroll_into_view_click(email_driver, '//*[@id="accetto"]')
-				
+
 				# Get post link
 				logger.info("Getting post url...")
 				announce_link = email_driver.find_element_by_xpath('//*[@id="colonna-unica"]/div[1]/p[1]/a')
@@ -408,6 +438,9 @@ class BakecaSlave(object):
 				email_driver.quit()
 			if website_driver is not None:
 				website_driver.quit()
+			if BakecaSlave.use_proxy:
+				BakecaSlave.proxy.set_valid(False)
+				BakecaSlave.proxy.__exit__(None, None, None)
 			self.write_last_state()
 			if exception_raised:
 				end = time()
@@ -423,7 +456,7 @@ class BakecaSlave(object):
 
 		# Success - save credentials and post url
 		website = "bakeca.com" + "\n" + "City: " + CONSTANTS.CITIES[city_id] + "\n" + "Category: " + CONSTANTS.CATEGORIES[category_id] + "\n" + "Is chiudi: " + str(is_chiudi) + "\n" + "Images loaded: " + str(loaded_images)
-		
+
 		if is_telg_auth:
 			util.save_credentials(BAKECA_CREDENTIALS_PATH, email, password, "FAILED - TELEGRAM AUTH REQUIRED",
 				website, end - start, BakecaSlave.bakeca_lock)
@@ -435,5 +468,9 @@ class BakecaSlave(object):
 
 		logging.close_logger(logger)
 		return_queue.put(BAKECA_SUCCESS)
+
+		if BakecaSlave.use_proxy:
+			BakecaSlave.proxy.set_valid(True)
+			BakecaSlave.proxy.__exit__(None, None, None)
 
 		return BAKECA_SUCCESS
