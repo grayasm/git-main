@@ -144,7 +144,7 @@ class BakecaSlave(object):
 		driver.find_element_by_xpath('//*[ @ id = "navbarSupportedContent20"] / ul / li[3]').click()
 
 		# Read the terms and conditions
-		sleep(5)
+		sleep(4)
 
 		# Click on accept
 		util.scroll_into_view_click(driver, '//*[@id="accetto"]')
@@ -227,6 +227,12 @@ class BakecaSlave(object):
 
 		# Click on accept terms
 		util.scroll_into_view_click(driver, '//*[@id="submit-ins"]')
+
+		# Click on promotion banner
+		try:
+			util.scroll_into_view_click(driver, '//*[@id="content-black-week-promo"]/div[2]/div[2]/div[6]/button')
+		except NoSuchElementException as e:
+			print("---> No promotion banner!")
 
 		# Sleep for loading
 		sleep(5)
