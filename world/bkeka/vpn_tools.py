@@ -67,17 +67,17 @@ def start_openvpn_subprocess(config_file, credentials_file):
 
 def get_config_file(vpn_config_dir):
     vpn_config_files = [path.abspath(path.join(vpn_config_dir, x)) for x in listdir(vpn_config_dir)]
-    shuffle(vpn_config_files)
-
     for x in vpn_config_files:
-        if 'ovpn' in x:
+        if x.endswith('.ovpn'):
             return x
-    #return vpn_config_files[0];
+    return None
 
 def close_vpn_connection():
     global openvpn_process
-    if openvpn_process is not None and openvpn_process.poll() is not None:
-        openvpn_process.kill()
+    if openvpn_process is not None:
+        process = Popen(['sudo', 'killall', OPENVPN_COMMAND], stdout=PIPE, stderr=PIPE, shell=False)
+        if not pipe_no_wait(process):
+            raise OpenVPNProcessExceptions("Failed to set file descriptor non blocking")
         openvpn_process = None
 
 
