@@ -9,7 +9,8 @@
 2. pip3 install selenium
    pip3 install requests
 
-3. sudo in Pycharm debugger does not work. Disable the password temporarily.
+3. sudo in Pycharm debugger does not work.
+   If you use the VPN connection then disable the password temporarily.
    username ALL=(ALL) NOPASSWD:ALL
 
 4. Cyberghost binary creates the tun device but the connection is dead.
