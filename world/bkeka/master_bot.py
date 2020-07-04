@@ -10,6 +10,7 @@ import traceback
 import util
 import queue
 from time import time
+from time import sleep
 import sys
 # For threading
 import concurrent.futures
@@ -36,19 +37,28 @@ VPN_SWITCH_TIME = 21600
 USE_VPN = False
 # Whether to use Headless Browsers or nah
 IS_HEADLESS = True
+# Whether to use a PROXY
+USE_PROXY = False
+PROXY_LIST_FILE = ""
+# Whether to use Luminati Proxy Manager
+USE_LPM = True
+LPM_ADDRESS = ""
 
 # Slave queues
 slave_queue = queue.Queue()
 slave_return_queue = queue.Queue()
 logger = None
 
+
 class MasterBotInternalException(Exception):
-   """Raised for different internal errors"""
-   pass
+    """Raised for different internal errors"""
+    pass
+
 
 class ConfigParseException(Exception):
     """ Raised for different config parsing errors """
     pass
+
 
 def init_parser():
     global CONFIG_PATH
@@ -58,9 +68,10 @@ def init_parser():
     args = parser.parse_args()
     CONFIG_PATH = args.config_path
 
+
 def parse_config():
     global SLAVES_NUMBER, EXCEPTION_THRESHOLD, VPN_CONFIG_DIR, VPN_CREDENTIALS_FILE
-    global VPN_SWITCH_TIME, USE_VPN, IS_HEADLESS
+    global VPN_SWITCH_TIME, USE_VPN, IS_HEADLESS, USE_PROXY, PROXY_LIST_FILE, USE_LPM, LPM_ADDRESS
     config = configparser.ConfigParser()
     config.read(CONFIG_PATH)
     temp_use_vpn = ""
@@ -80,13 +91,25 @@ def parse_config():
         if config.has_option('master', 'use_vpn'):
             temp_use_vpn = config['master']['use_vpn']
         if config.has_option('master', 'headless_browsers'):
-            temp_is_headless = config['master']['headless_browsers']              
+            temp_is_headless = config['master']['headless_browsers']
+        if config.has_option('master', 'use_proxy'):
+            temp_use_proxy = config['master']['use_proxy']
+        if config.has_option('master', 'proxy_list'):
+            PROXY_LIST_FILE = config['master']['proxy_list']
+        if config.has_option('master', 'use_lpm'):
+            temp_use_lpm = config['master']['use_lpm']
+        if config.has_option('master', 'lpm_address'):
+            LPM_ADDRESS = config['master']['lpm_address']
     config.remove_section('master')
 
-    if temp_use_vpn.lower() == "true" or temp_use_vpn == "":
+    if temp_use_vpn.lower() == "true":
         USE_VPN = True
-    if temp_is_headless.lower() == "false" or temp_is_headless == "":
+    if temp_is_headless.lower() == "false":
         IS_HEADLESS = False
+    if temp_use_proxy.lower() == "true":
+        USE_PROXY = True
+    if temp_use_lpm.lower() == "true":
+        USE_LPM = True
 
     for section in config.sections():
         slave_bot = {}
@@ -99,6 +122,7 @@ def parse_config():
             "Not enough slave configs"
         )
 
+
 def get_slave(context):
     global IS_HEADLESS
     try:
@@ -110,11 +134,12 @@ def get_slave(context):
 
     # NOTE: If you add new script you must also add it here.
     if target_website == 'bakecaincontrii.com':
-        return BakecaSlave(IS_HEADLESS)
+        return BakecaSlave(IS_HEADLESS, USE_PROXY, USE_LPM, LPM_ADDRESS)
     else:
         raise MasterBotInternalException(
             "No script for : " + target_website
         )
+
 
 def start_all_slaves(thread_executor):
     threads_started = 0
@@ -125,11 +150,12 @@ def start_all_slaves(thread_executor):
         thread_executor.submit(slave.start, slave_context, slave_return_queue)
         threads_started += 1
 
+
 def switch_vpn_server(vpn_start_time):
     global VPN_SWITCH_TIME, USE_VPN, SLAVES_NUMBER
     global VPN_CONFIG_DIR, VPN_CREDENTIALS_FILE
     slaves_finished = 1
-    
+
     # Check if VPN time expired
     time_now = time()
     time_diff = time_now - vpn_start_time
@@ -139,7 +165,7 @@ def switch_vpn_server(vpn_start_time):
     print("Switching VPN server")
     # Wait for all bots to finish before we switch vpn
     while (slaves_finished < SLAVES_NUMBER):
-        slave_return_queue.get(block=True, timeout=300)
+        slave_return_queue.get(block=True, timeout=600)
         slaves_finished = slaves_finished + 1
 
     # Now connect to different vpn
@@ -150,6 +176,7 @@ def switch_vpn_server(vpn_start_time):
         print("Failed to connect to VPN")
         return 0
     return 1
+
 
 def vpn_connect():
     global USE_VPN, VPN_CONFIG_DIR, VPN_CREDENTIALS_FILE
@@ -195,7 +222,7 @@ def main():
     logger.info("Done vpn_connect()")
 
     # Init thread pool executor
-    executor = concurrent.futures.ThreadPoolExecutor(max_workers = SLAVES_NUMBER)
+    executor = concurrent.futures.ThreadPoolExecutor(max_workers=SLAVES_NUMBER)
 
     # Start first SLAVES_NUMBER threads
     start_all_slaves(executor)
@@ -231,7 +258,8 @@ def main():
     close_vpn_connection()
     return 1
 
-if __name__== "__main__":
+
+if __name__ == "__main__":
     try:
         main()
     except KeyboardInterrupt:
