@@ -36,12 +36,12 @@ VPN_SWITCH_TIME = 21600
 # Whether to use VPN or nah
 USE_VPN = False
 # Whether to use Headless Browsers or nah
-IS_HEADLESS = True
+IS_HEADLESS = False
 # Whether to use a PROXY
 USE_PROXY = False
 PROXY_LIST_FILE = ""
 # Whether to use Luminati Proxy Manager
-USE_LPM = True
+USE_LPM = False
 LPM_ADDRESS = ""
 
 # Slave queues
@@ -102,10 +102,11 @@ def parse_config():
             LPM_ADDRESS = config['master']['lpm_address']
     config.remove_section('master')
 
+    # All must be False by default!
     if temp_use_vpn.lower() == "true":
         USE_VPN = True
-    if temp_is_headless.lower() == "false":
-        IS_HEADLESS = False
+    if temp_is_headless.lower() == "true":
+        IS_HEADLESS = True
     if temp_use_proxy.lower() == "true":
         USE_PROXY = True
     if temp_use_lpm.lower() == "true":
@@ -232,7 +233,9 @@ def main():
     while True:
         try:
             logger.info("Waiting for a slave to finish")
-            slave_return_queue.get(block=True, timeout=300)
+            release_timeout = 300
+            debug_timeout = 600
+            slave_return_queue.get(block=True, timeout=release_timeout)
             # Check if vpn timeout was reached and we have to switch the vpn
             if USE_VPN:
                 rc = switch_vpn_server(vpn_start_time)
