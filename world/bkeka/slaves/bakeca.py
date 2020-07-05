@@ -355,11 +355,11 @@ class BakecaSlave(object):
 		self.parse_context(context)
 		logger.info("Parsed context %s." % str(context))
 
-		# First go and get mail
-		email_driver = util.get_chrome_driver(BakecaSlave.is_headless, proxy_address)
-
-		util.go_to_page(driver=email_driver, page_url=util.MOAKT_URL)
 		try:
+			# First go and get mail
+			email_driver = util.get_chrome_driver(BakecaSlave.is_headless, proxy_address)
+			util.go_to_page(driver=email_driver, page_url=util.MOAKT_URL)
+
 			# Get text from file
 			logger.info("Getting title and content...")
 			title, content = util.parse_text_file(BakecaSlave.text_file)
