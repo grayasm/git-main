@@ -49,6 +49,10 @@ slave_queue = queue.Queue()
 slave_return_queue = queue.Queue()
 logger = None
 
+# Return values valid for all bots
+SLAVE_SUCCESS = 1
+SLAVE_ERROR = 0
+
 
 class MasterBotInternalException(Exception):
     """Raised for different internal errors"""
@@ -152,7 +156,7 @@ def start_all_slaves(thread_executor):
         threads_started += 1
 
 
-def switch_vpn_server(vpn_start_time):
+def switch_vpn_server(vpn_start_time, vpn_force_switch):
     global VPN_SWITCH_TIME, USE_VPN, SLAVES_NUMBER
     global VPN_CONFIG_DIR, VPN_CREDENTIALS_FILE
     slaves_finished = 1
@@ -160,12 +164,14 @@ def switch_vpn_server(vpn_start_time):
     # Check if VPN time expired
     time_now = time()
     time_diff = time_now - vpn_start_time
-    if time_diff < VPN_SWITCH_TIME or USE_VPN is False:
+    if USE_VPN is False:
+        return 1
+    if time_diff < VPN_SWITCH_TIME and vpn_force_switch is False:
         return 1
 
     print("Switching VPN server")
     # Wait for all bots to finish before we switch vpn
-    while (slaves_finished < SLAVES_NUMBER):
+    while slaves_finished < SLAVES_NUMBER:
         slave_return_queue.get(block=True, timeout=600)
         slaves_finished = slaves_finished + 1
 
@@ -233,12 +239,13 @@ def main():
     while True:
         try:
             logger.info("Waiting for a slave to finish")
-            release_timeout = 300
-            debug_timeout = 600
-            slave_return_queue.get(block=True, timeout=release_timeout)
+            release_timeout = 360   #  6 minutes
+            debug_timeout = 600     # 10 minutes
+            slave_return_value = slave_return_queue.get(block=True, timeout=release_timeout)
+            vpn_force_switch = slave_return_value is SLAVE_ERROR
             # Check if vpn timeout was reached and we have to switch the vpn
             if USE_VPN:
-                rc = switch_vpn_server(vpn_start_time)
+                rc = switch_vpn_server(vpn_start_time, vpn_force_switch)
                 if not rc:
                     logger.info("Failed to switch VPN server.")
                     return 0
