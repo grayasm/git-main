@@ -77,13 +77,14 @@ def get_config_file(vpn_config_dir):
 
 def close_vpn_connection():
     global openvpn_process
-    if openvpn_process is not None and openvpn_process.poll() is not None:
+    # kill() does not always closes tun0 device
+    if openvpn_process is not None:
         openvpn_process.kill()
         openvpn_process = None
     # 'sudo killall openvpn' does something nasty to VPN provider connection
-    # process = Popen(['sudo', 'killall', OPENVPN_COMMAND], stdout=PIPE, stderr=PIPE, shell=False)
-    # if not pipe_no_wait(process):
-    #    raise OpenVPNProcessExceptions("Failed to set file descriptor non blocking")
+    process = Popen(['sudo', 'killall', OPENVPN_COMMAND], stdout=PIPE, stderr=PIPE, shell=False)
+    if not pipe_no_wait(process):
+        raise OpenVPNProcessExceptions("Failed to set file descriptor non blocking")
 
 
 def connect_to_vpn(vpn_config_dir, vpn_credentials_file):
