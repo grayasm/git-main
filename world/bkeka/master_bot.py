@@ -181,7 +181,7 @@ def switch_vpn_server(vpn_start_time, vpn_force_switch):
             "Failed to start VPN with config directory %s and credentials file %s."
             % (VPN_CONFIG_DIR, VPN_CREDENTIALS_FILE))
         print("Failed to connect to VPN")
-        return 0
+        raise MasterBotInternalException("Failed to connect to VPN")
     return 1
 
 
@@ -196,9 +196,7 @@ def vpn_connect():
                 "Failed to start VPN with config directory %s and credentials file %s."
                 % (VPN_CONFIG_DIR, VPN_CREDENTIALS_FILE))
             print("Failed to connect to VPN")
-            print("Continue without vpn")
-            USE_VPN = False
-            return 0
+            raise MasterBotInternalException("Failed to connect to VPN")
         else:
             print("Connected to VPN")
             return time()
@@ -274,7 +272,13 @@ if __name__ == "__main__":
         main()
     except KeyboardInterrupt:
         print('Interrupted')
+    except MasterBotInternalException:
+        print('Terminated with exception')
+    except: # catch all
+        print('Unknown master_bot exception')
+    finally:
         close_vpn_connection()
+
     try:
         sys.exit(0)
     except SystemExit:
