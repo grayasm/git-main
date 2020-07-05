@@ -74,11 +74,17 @@ def get_config_file(vpn_config_dir):
 
 def close_vpn_connection():
     global openvpn_process
+    # check if child process has terminated
     if openvpn_process is not None:
-        process = Popen(['sudo', 'killall', OPENVPN_COMMAND], stdout=PIPE, stderr=PIPE, shell=False)
-        if not pipe_no_wait(process):
-            raise OpenVPNProcessExceptions("Failed to set file descriptor non blocking")
-        openvpn_process = None
+        returncode = openvpn_process.poll()
+        if returncode is not None:
+            openvpn_process.kill()
+            openvpn_process = None
+            sleep(3)
+    # zombie openvpn process and open tun devices in the wild
+    process = Popen(['sudo', 'killall', OPENVPN_COMMAND], stdout=PIPE, stderr=PIPE, shell=False)
+    if not pipe_no_wait(process):
+        raise OpenVPNProcessExceptions("Failed to set file descriptor non blocking")
 
 
 def connect_to_vpn(vpn_config_dir, vpn_credentials_file):
@@ -89,6 +95,8 @@ def connect_to_vpn(vpn_config_dir, vpn_credentials_file):
     global openvpn_process
 
     while retry_no < MAX_RETRIES:
+        # Debug openvpn output
+        vpn_output = ""
         # Close any previous openvpn connection
         close_vpn_connection()
         # Get config files path
@@ -105,15 +113,15 @@ def connect_to_vpn(vpn_config_dir, vpn_credentials_file):
         # get the output
         while True:
             try:
-                line = read(openvpn_process.stdout.fileno(), 100000)
-                logger.info(str(line))
+                vpn_output = read(openvpn_process.stdout.fileno(), 100000)
+                logger.info(str(vpn_output))
                 sleep(1)
                 # If success message was read from output, everything is ok
-                if (SUCCESS_MESSAGE in str(line)):
+                if SUCCESS_MESSAGE in str(vpn_output):
                     logger.info("Initialization Complete.")
                     return VPN_SUCCESS
                 # If line is empty, the process exited
-                if line == b'':
+                if vpn_output == b'':
                     break
             except OSError:
                 # the os throws an exception if there is no data
@@ -121,6 +129,8 @@ def connect_to_vpn(vpn_config_dir, vpn_credentials_file):
                 break
 
         retry_no = retry_no + 1
+        # debug openvpn output
+        # vpn_outlen = len(vpn_output)
     logger.info("Failed to start vpn")
 
     return VPN_ERROR
