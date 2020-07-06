@@ -107,7 +107,7 @@ def connect_to_vpn(vpn_config_dir, vpn_credentials_file):
         # Start vpn subprocess
         openvpn_process = start_openvpn_subprocess(vpn_config_file, vpn_credentials_file)
         # Let the openvpn process write output
-        sleep(15)
+        sleep(30)
 
         # get the output
         while True:
