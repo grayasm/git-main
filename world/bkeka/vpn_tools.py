@@ -1,6 +1,5 @@
 import platform
-
-from subprocess import Popen, PIPE
+from subprocess import Popen, PIPE, TimeoutExpired
 from time import sleep
 from os import O_NONBLOCK, read, path, listdir
 import bot_logger as logging
@@ -77,9 +76,13 @@ def get_config_file(vpn_config_dir):
 
 def close_vpn_connection():
     global openvpn_process
-    # kill() does not always closes tun0 device
-    if openvpn_process is not None and openvpn_process.poll() is not None:
-        openvpn_process.kill()
+    if openvpn_process is not None:
+        prc = Popen(['sudo', 'killall', OPENVPN_COMMAND], stdout=PIPE, stderr=PIPE, shell=False)
+        try:
+            outs, errs = prc.communicate(timeout=5)
+        except TimeoutExpired:
+            prc.kill()
+            outs, errs = prc.communicate()
         openvpn_process = None
 
 
