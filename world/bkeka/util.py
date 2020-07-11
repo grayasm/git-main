@@ -69,10 +69,16 @@ def set_options(is_headless, proxy):
 
 
 def get_chrome_driver(is_headless, proxy):
+    # See https://selenium-python.readthedocs.io/
     chrome_driver = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'chromedriver')
     chrome_options = set_options(is_headless, proxy)
     driver = webdriver.Chrome(chrome_driver, chrome_options=chrome_options)
-    driver.implicitly_wait(10)
+    # Tells WebDriver to poll the DOM for a certain amount of time when
+    # trying to find any element not immediately available.
+    driver.implicitly_wait(5)
+    # Set the amount of time to wait for a page load to complete before
+    # throwing an error.
+    driver.set_page_load_timeout(5)
     return driver
 
 
