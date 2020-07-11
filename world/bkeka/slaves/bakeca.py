@@ -144,7 +144,7 @@ class BakecaSlave(object):
 		driver.find_element_by_xpath('//*[ @ id = "navbarSupportedContent20"] / ul / li[3]').click()
 
 		# Read the terms and conditions
-		sleep(4)
+		sleep(2)
 
 		# Click on accept
 		util.scroll_into_view_click(driver, '//*[@id="accetto"]')
@@ -152,7 +152,7 @@ class BakecaSlave(object):
 		# Select city
 		select = Select(driver.find_element_by_id('citta-ins'))
 		select.select_by_visible_text(city_name)
-		# Select cattegory
+		# Select category
 		select = Select(driver.find_element_by_id('categoria-ins'))
 		select.select_by_visible_text(category_name)
 		# Set title
