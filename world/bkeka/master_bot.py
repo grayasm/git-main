@@ -240,7 +240,7 @@ def main():
         return 1
 
     # Init logger
-    logger = bot_logger.get_logger(__file__, os.path.splitext(__file__)[0] + ".log", DISABLE_LOGGING)
+    logger = bot_logger.get_logger(__file__, os.path.splitext(__file__)[0] + ".log")
 
     # Connect to VPN
     vpn_start_time = vpn_connect()
@@ -307,6 +307,9 @@ def main():
             break
 
     close_vpn_connection()
+
+    # Make an exception and keep this log file
+    bot_logger.close_logger(logger, disable_logging=False)
     return 1
 
 

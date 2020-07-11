@@ -58,7 +58,7 @@ class BakecaSlave(object):
 	""" Class that describes how a dincontri.com slave should behave """
 	# Class specific variables
 	# NOTE: Access to those variable should be atomic. We use 'bakeca_lock'
-	# The queue is an asyncronous queue so it has that covered
+	# The queue is an asynchronous queue so it has that covered
 	bakeca_lock = Lock()
 	city_index = 0
 	category_index = 0
@@ -81,9 +81,9 @@ class BakecaSlave(object):
 
 		self.logger = bot_logger.get_logger(
 			name=__name__ + '-' + self.slave_id,
-			log_file=__name__ + '-' + self.slave_id,
-			disable_logging=disable_logging
+			log_file=__name__ + '-' + self.slave_id
 		)
+		self.disable_logging = disable_logging
 		BakecaSlave.is_headless = is_headless
 		BakecaSlave.use_proxy = use_proxy
 		BakecaSlave.use_lpm = use_lpm
@@ -191,8 +191,7 @@ class BakecaSlave(object):
 		# driver.find_element_by_id('Gallery2Image').send_keys(images[2])
 		# Wait for images
 
-
-		# Is CHIUDI reffers to the 'something went wrong with the images' dialog box
+		# CHIUDI refers to 'something went wrong with the images'
 		is_chiudi = False
 		try:
 			# Click on CHIUDI, whatever the fuck that means
@@ -216,7 +215,7 @@ class BakecaSlave(object):
 
 		# Solve captcha
 		resp = util.solve_captcha_iframe(driver, '//*[@id="captcha_post_insert"]/div/div/iframe')
-		if(resp == "error"):
+		if resp == "error":
 			raise CaptchaSolverException("Failed to resolve captcha")
 		# Close captcha response
 		recaptcha_response = driver.find_element_by_id("g-recaptcha-response")
@@ -246,7 +245,7 @@ class BakecaSlave(object):
 		telegram_auth_block = driver.find_element_by_class_name("controllo-eta-container")
 		display_attr = telegram_auth_block.get_attribute("display")
 
-		if ('block' in str(display_attr) or 'Block' in str(display_attr)):
+		if 'block' in str(display_attr) or 'Block' in str(display_attr):
 			is_telegram_auth = True
 			print('----> TELEGRAM AUTH')
 			self.logger.info("----> TELEGRAM AUTH")
@@ -340,6 +339,7 @@ class BakecaSlave(object):
 		website_driver = None
 		email_driver = None
 		logger = self.logger
+		disable_logging = self.disable_logging
 		exception_raised = True
 		exception_type = ""
 		proxy_address = ""
@@ -458,7 +458,7 @@ class BakecaSlave(object):
 				logger.info("BAKECA !!!FAILED!!! For City %s and category %s." % (CONSTANTS.CITIES[city_id], CONSTANTS.CATEGORIES[category_id]))
 				print("------> BAKECA !!!FAILED!!! For City %s and category %s. <------" % (CONSTANTS.CITIES[city_id], CONSTANTS.CATEGORIES[category_id]))
 				self.push_to_fail_queue(city_id, category_id)
-				bot_logger.close_logger(logger)
+				bot_logger.close_logger(logger, disable_logging)
 
 				# if failed to solve captcha simply retry
 				if exception_type is "Failed to solve captcha in time.":
@@ -478,9 +478,11 @@ class BakecaSlave(object):
 			util.save_credentials(BAKECA_CREDENTIALS_PATH, email, password, post_url,
 				website, end - start, BakecaSlave.bakeca_lock)
 
-		logger.info("BAKECA Success For City %s and category %s." % (CONSTANTS.CITIES[city_id], CONSTANTS.CATEGORIES[category_id]))
+		announce_msg = ("BAKECA Success For City %s and category %s." % (CONSTANTS.CITIES[city_id], CONSTANTS.CATEGORIES[category_id]))
+		print(announce_msg)
+		logger.info(announce_msg)
 
-		bot_logger.close_logger(logger)
+		bot_logger.close_logger(logger, disable_logging)
 		return_queue.put(BAKECA_SUCCESS)
 
 		if BakecaSlave.use_proxy:

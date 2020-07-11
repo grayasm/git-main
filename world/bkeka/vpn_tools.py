@@ -87,11 +87,12 @@ def close_vpn_connection():
 
 
 def connect_to_vpn(vpn_config_dir, vpn_credentials_file, disable_logging):
-    logger = bot_logger.get_logger(__name__ + '.log', __name__ + '.log', disable_logging)
+    global openvpn_process
+
+    logger = bot_logger.get_logger(__name__ + '.log', __name__ + '.log')
     vpn_config_file = None
     init_success = False
     retry_no = 0
-    global openvpn_process
 
     while retry_no < MAX_RETRIES:
         # Debug openvpn output
@@ -118,6 +119,7 @@ def connect_to_vpn(vpn_config_dir, vpn_credentials_file, disable_logging):
                 # If success message was read from output, everything is ok
                 if SUCCESS_MESSAGE in str(vpn_output):
                     logger.info("Initialization Complete.")
+                    bot_logger.close_logger(logger, disable_logging)
                     return VPN_SUCCESS
                 # If line is empty, the process exited
                 if vpn_output == b'':
@@ -128,8 +130,8 @@ def connect_to_vpn(vpn_config_dir, vpn_credentials_file, disable_logging):
                 break
 
         retry_no = retry_no + 1
-        # debug openvpn output
-        # vpn_outlen = len(vpn_output)
+
     logger.info("Failed to start vpn")
+    bot_logger.close_logger(logger, disable_logging)
 
     return VPN_ERROR
