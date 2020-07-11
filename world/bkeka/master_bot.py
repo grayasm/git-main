@@ -11,6 +11,7 @@ import util
 import queue
 from time import time
 from time import sleep
+from datetime import datetime
 import sys
 # For threading
 import concurrent.futures
@@ -45,6 +46,8 @@ USE_LPM = False
 LPM_ADDRESS = ""
 # Whether to disable logging. By default is 'false'
 DISABLE_LOGGING = False
+# Whether to stop posting in these time intervals.
+STOP_TIME_INTERVAL = ""
 
 # Slave queues
 slave_queue = queue.Queue()
@@ -78,7 +81,9 @@ def init_parser():
 
 def parse_config():
     global SLAVES_NUMBER, EXCEPTION_THRESHOLD, VPN_CONFIG_DIR, VPN_CREDENTIALS_FILE
-    global VPN_SWITCH_TIME, USE_VPN, IS_HEADLESS, USE_PROXY, PROXY_LIST_FILE, USE_LPM, LPM_ADDRESS, DISABLE_LOGGING
+    global VPN_SWITCH_TIME, USE_VPN, IS_HEADLESS
+    global USE_PROXY, PROXY_LIST_FILE, USE_LPM, LPM_ADDRESS
+    global DISABLE_LOGGING, STOP_TIME_INTERVAL
     config = configparser.ConfigParser()
     config.read(CONFIG_PATH)
     temp_use_vpn = ""
@@ -109,6 +114,8 @@ def parse_config():
             LPM_ADDRESS = config['master']['lpm_address']
         if config.has_option('master', 'disable_logging'):
             temp_disable_logging = config['master']['disable_logging']
+        if config.has_option('master', 'stop_time_interval'):
+            STOP_TIME_INTERVAL = config['master']['stop_time_interval']
     config.remove_section('master')
 
     # All must be False by default!
@@ -163,7 +170,7 @@ def start_all_slaves(thread_executor):
         threads_started += 1
 
 
-def switch_vpn_server(vpn_start_time, vpn_force_switch):
+def switch_vpn_server(vpn_start_time, vpn_force_switch, vpn_force_stop):
     global VPN_SWITCH_TIME, USE_VPN, SLAVES_NUMBER
     global VPN_CONFIG_DIR, VPN_CREDENTIALS_FILE
     global DISABLE_LOGGING
@@ -174,15 +181,21 @@ def switch_vpn_server(vpn_start_time, vpn_force_switch):
     time_diff = time_now - vpn_start_time
     if USE_VPN is False:
         return 1
-    if time_diff < VPN_SWITCH_TIME and vpn_force_switch is False:
+    if time_diff < VPN_SWITCH_TIME and vpn_force_switch is False and vpn_force_stop is False:
         return 1
 
-    print("Switching VPN server")
     # Wait for all bots to finish before we switch vpn
     while slaves_finished < SLAVES_NUMBER:
         slave_return_queue.get(block=True, timeout=600)
         slaves_finished = slaves_finished + 1
 
+    # Close connection and return
+    if vpn_force_stop:
+        print("Stopping VPN server")
+        close_vpn_connection()
+        return 1
+
+    print("Switching VPN server")
     # Now connect to different vpn
     if not connect_to_vpn(VPN_CONFIG_DIR, VPN_CREDENTIALS_FILE, DISABLE_LOGGING):
         logger.info(
@@ -214,7 +227,7 @@ def vpn_connect():
 
 
 def main():
-    global logger, CONFIG_PATH, SLAVES_NUMBER
+    global logger, USE_VPN, CONFIG_PATH, SLAVES_NUMBER, DISABLE_LOGGING
     vpn_start_time = 0
     rc = 0
 
@@ -246,20 +259,43 @@ def main():
             logger.info("Waiting for a slave to finish")
             release_timeout = 360  # 6 minutes
             debug_timeout = 600    # 10 minutes
+            vpn_timeout = 300      # 5 minutes
             slave_return_value = slave_return_queue.get(block=True, timeout=release_timeout)
             vpn_force_switch = slave_return_value is SLAVE_ERROR
+            stop_posting = util.check_stop_time_interval(STOP_TIME_INTERVAL)
+
+            if stop_posting:
+                msg = ("---> Stop posting! Now:%s Interval:%s" % (datetime.now().strftime('%H:%M'), STOP_TIME_INTERVAL))
+                print(msg)
+                logger.info(msg)
+
             # Check if vpn timeout was reached and we have to switch the vpn
             if USE_VPN:
-                rc = switch_vpn_server(vpn_start_time, vpn_force_switch)
+                rc = switch_vpn_server(vpn_start_time, vpn_force_switch, vpn_force_stop=stop_posting)
                 if not rc:
                     logger.info("Failed to switch VPN server.")
                     return 0
+
+                # Wait and reconnect to VPN if necessary!
+                if stop_posting:
+                    while stop_posting:
+                        sleep(vpn_timeout)
+                        stop_posting = util.check_stop_time_interval(STOP_TIME_INTERVAL)
+                    # connect again
+                    vpn_connect()
+
                 vpn_start_time = time()
                 logger.info("Switched VPN server.")
                 # Now start all slaves again.
                 start_all_slaves(executor)
                 # Continue the loop
                 continue
+
+            # Check stop posting condition.
+            if stop_posting:
+                while stop_posting:
+                    sleep(vpn_timeout)
+                    stop_posting = util.check_stop_time_interval(STOP_TIME_INTERVAL)
 
             slave_context = slave_queue.get()
             slave_queue.put(slave_context)

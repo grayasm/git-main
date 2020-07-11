@@ -4,11 +4,9 @@ from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 import string
 import random
 import os
-import datetime
 import re
 import hashlib
-import datetime
-
+from datetime import datetime
 from time import sleep
 
 # For Http Requests
@@ -82,8 +80,8 @@ def go_to_page(driver, page_url):
     return driver.get(page_url)
 
 
-y_elem = int(datetime.datetime.now().year)
-cd_elem = int(datetime.datetime.today().day)
+y_elem = int(datetime.now().year)
+cd_elem = int(datetime.today().day)
 
 
 ################################################################################
@@ -578,7 +576,7 @@ def change_images_hash(image_dir):
 def save_credentials(file_path, email, password, post_url,
                      website, elapsed_time, file_lock):
     # TODO: Save datetime and tell if error.
-    now = datetime.datetime.now()
+    now = datetime.now()
     # NOTE: This is just to prevent error. It is not recommanded since we don't
     # do concurency for this file
     if file_path is None:
@@ -593,7 +591,7 @@ def save_credentials(file_path, email, password, post_url,
 def save_credentials_error(file_path, error_type, website, city,
                            category, elapsed_time, file_lock):
     # TODO: Save datetime and tell if error.
-    now = datetime.datetime.now()
+    now = datetime.now()
     # NOTE: This is just to prevent error. It is not recommanded since we don't
     # do concurency for this file
     if file_path is None:
@@ -606,7 +604,7 @@ def save_credentials_error(file_path, error_type, website, city,
 
 
 def save_screenshot(driver, text):
-    date_str = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+    date_str = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
 
     scr_name = "screens/" + text + "_" + date_str + ".png"
 
@@ -618,3 +616,26 @@ def get_username_from_mail(mail):
     username = re.sub('[^0-9a-zA-Z]+', '', brute_username)
 
     return username
+
+
+def check_stop_time_interval(stop_time_interval):
+    """If bot should stop posting will return True, otherwise False."""
+    time_now = datetime.now()
+
+    # stop_time_interval = '13:50 - 13:56; 14:00 - 15:30'
+    intervals = stop_time_interval.split(';')
+    for interval in intervals:
+        hours = interval.split('-')
+        if len(hours) == 2:
+            hm1 = datetime.strptime(hours[0].strip(), '%H:%M')
+            hm2 = datetime.strptime(hours[1].strip(), '%H:%M')
+            if hm1 >= hm2:
+                msg = ("Invalid time interval: %s-%s" % (hm1.strftime('%H:%M'), hm2.strftime('%H:%M')))
+                print(msg)
+                raise Exception(msg)
+            # Interval is valid
+            t1 = time_now.replace(hour=hm1.hour, minute=hm1.minute, second=hm1.second)
+            t2 = time_now.replace(hour=hm2.hour, minute=hm2.minute, second=hm2.second)
+            if t1 <= time_now < t2:
+                return True
+    return False
