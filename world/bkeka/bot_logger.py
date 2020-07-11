@@ -11,9 +11,11 @@ def get_logger(name, log_file, disable_logging):
     """Function setup as many loggers as you want"""
     logger = None
     if disable_logging is True:
-        logging.basicConfig()
+        log_file_path = os.path.join(DEFAULT_LOG_DIR_PATH, "disabled.log")
+        handler = logging.FileHandler(log_file_path)
         logger = logging.getLogger(name)
         logger.setLevel(logging.INFO)
+        logger.addHandler(handler)
         logging.disable(logging.INFO)
     else:
         log_file_path = os.path.join(DEFAULT_LOG_DIR_PATH, log_file)
