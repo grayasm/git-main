@@ -2,7 +2,7 @@ import platform
 from subprocess import Popen, PIPE, TimeoutExpired
 from time import sleep
 from os import O_NONBLOCK, read, path, listdir
-import bot_logger as logging
+import bot_logger
 from random import shuffle
 
 # Platform specific imports for openvpn process
@@ -86,8 +86,8 @@ def close_vpn_connection():
         openvpn_process = None
 
 
-def connect_to_vpn(vpn_config_dir, vpn_credentials_file):
-    logger = logging.get_logger(__name__ + '.log', __name__ + '.log')
+def connect_to_vpn(vpn_config_dir, vpn_credentials_file, disable_logging):
+    logger = bot_logger.get_logger(__name__ + '.log', __name__ + '.log', disable_logging)
     vpn_config_file = None
     init_success = False
     retry_no = 0

@@ -1,5 +1,5 @@
 # For logger
-import bot_logger as logging
+import bot_logger
 # For slaves
 from slaves.bakeca import BakecaSlave
 # For misc
@@ -43,6 +43,8 @@ PROXY_LIST_FILE = ""
 # Whether to use Luminati Proxy Manager
 USE_LPM = False
 LPM_ADDRESS = ""
+# Whether to disable logging. By default is 'false'
+DISABLE_LOGGING = False
 
 # Slave queues
 slave_queue = queue.Queue()
@@ -76,7 +78,7 @@ def init_parser():
 
 def parse_config():
     global SLAVES_NUMBER, EXCEPTION_THRESHOLD, VPN_CONFIG_DIR, VPN_CREDENTIALS_FILE
-    global VPN_SWITCH_TIME, USE_VPN, IS_HEADLESS, USE_PROXY, PROXY_LIST_FILE, USE_LPM, LPM_ADDRESS
+    global VPN_SWITCH_TIME, USE_VPN, IS_HEADLESS, USE_PROXY, PROXY_LIST_FILE, USE_LPM, LPM_ADDRESS, DISABLE_LOGGING
     config = configparser.ConfigParser()
     config.read(CONFIG_PATH)
     temp_use_vpn = ""
@@ -105,6 +107,8 @@ def parse_config():
             temp_use_lpm = config['master']['use_lpm']
         if config.has_option('master', 'lpm_address'):
             LPM_ADDRESS = config['master']['lpm_address']
+        if config.has_option('master', 'disable_logging'):
+            temp_disable_logging = config['master']['disable_logging']
     config.remove_section('master')
 
     # All must be False by default!
@@ -116,6 +120,8 @@ def parse_config():
         USE_PROXY = True
     if temp_use_lpm.lower() == "true":
         USE_LPM = True
+    if temp_disable_logging.lower() == "true":
+        DISABLE_LOGGING = True
 
     for section in config.sections():
         slave_bot = {}
@@ -130,7 +136,7 @@ def parse_config():
 
 
 def get_slave(context):
-    global IS_HEADLESS
+    global IS_HEADLESS, USE_PROXY, USE_LPM, LPM_ADDRESS, DISABLE_LOGGING
     try:
         target_website = context['website']
     except KeyError:
@@ -140,7 +146,7 @@ def get_slave(context):
 
     # NOTE: If you add new script you must also add it here.
     if target_website == 'bakecaincontrii.com':
-        return BakecaSlave(IS_HEADLESS, USE_PROXY, USE_LPM, LPM_ADDRESS)
+        return BakecaSlave(IS_HEADLESS, USE_PROXY, USE_LPM, LPM_ADDRESS, DISABLE_LOGGING)
     else:
         raise MasterBotInternalException(
             "No script for : " + target_website
@@ -160,6 +166,7 @@ def start_all_slaves(thread_executor):
 def switch_vpn_server(vpn_start_time, vpn_force_switch):
     global VPN_SWITCH_TIME, USE_VPN, SLAVES_NUMBER
     global VPN_CONFIG_DIR, VPN_CREDENTIALS_FILE
+    global DISABLE_LOGGING
     slaves_finished = 1
 
     # Check if VPN time expired
@@ -177,7 +184,7 @@ def switch_vpn_server(vpn_start_time, vpn_force_switch):
         slaves_finished = slaves_finished + 1
 
     # Now connect to different vpn
-    if not connect_to_vpn(VPN_CONFIG_DIR, VPN_CREDENTIALS_FILE):
+    if not connect_to_vpn(VPN_CONFIG_DIR, VPN_CREDENTIALS_FILE, DISABLE_LOGGING):
         logger.info(
             "Failed to start VPN with config directory %s and credentials file %s."
             % (VPN_CONFIG_DIR, VPN_CREDENTIALS_FILE))
@@ -187,11 +194,11 @@ def switch_vpn_server(vpn_start_time, vpn_force_switch):
 
 
 def vpn_connect():
-    global USE_VPN, VPN_CONFIG_DIR, VPN_CREDENTIALS_FILE
+    global USE_VPN, VPN_CONFIG_DIR, VPN_CREDENTIALS_FILE, DISABLE_LOGGING
     rc = 0
 
     if USE_VPN:
-        rc = connect_to_vpn(VPN_CONFIG_DIR, VPN_CREDENTIALS_FILE)
+        rc = connect_to_vpn(VPN_CONFIG_DIR, VPN_CREDENTIALS_FILE, DISABLE_LOGGING)
         if not rc:
             logger.info(
                 "Failed to start VPN with config directory %s and credentials file %s."
@@ -211,17 +218,16 @@ def main():
     vpn_start_time = 0
     rc = 0
 
-    # Init logger
-    logger = logging.get_logger(__file__, __file__ + ".log")
-
     # Parse script arguments
     init_parser()
-
     try:
         parse_config()
     except ConfigParseException as e:
-        logger.exception("Error while parsing config file. %s" % CONFIG_PATH)
+        print("Error while parsing config file. %s" % CONFIG_PATH)
         return 1
+
+    # Init logger
+    logger = bot_logger.get_logger(__file__, os.path.splitext(__file__)[0] + ".log", DISABLE_LOGGING)
 
     # Connect to VPN
     vpn_start_time = vpn_connect()
@@ -238,8 +244,8 @@ def main():
     while True:
         try:
             logger.info("Waiting for a slave to finish")
-            release_timeout = 360   #  6 minutes
-            debug_timeout = 600     # 10 minutes
+            release_timeout = 360  # 6 minutes
+            debug_timeout = 600    # 10 minutes
             slave_return_value = slave_return_queue.get(block=True, timeout=release_timeout)
             vpn_force_switch = slave_return_value is SLAVE_ERROR
             # Check if vpn timeout was reached and we have to switch the vpn
@@ -252,7 +258,7 @@ def main():
                 logger.info("Switched VPN server.")
                 # Now start all slaves again.
                 start_all_slaves(executor)
-                # Reexecute loop
+                # Continue the loop
                 continue
 
             slave_context = slave_queue.get()
@@ -275,7 +281,7 @@ if __name__ == "__main__":
         print('Interrupted')
     except MasterBotInternalException:
         print('Terminated with exception')
-    except: # catch all
+    except:  # catch all
         print('Unknown master_bot exception')
     finally:
         close_vpn_connection()
