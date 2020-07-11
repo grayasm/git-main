@@ -5,7 +5,7 @@ from threading import Lock
 
 import slaves.bakeca_constants as CONSTANTS
 import util
-import bot_logger as logging
+import bot_logger
 import traceback
 import random
 import queue
@@ -71,16 +71,18 @@ class BakecaSlave(object):
 	lpm_address = ""
 	fail_queue = queue.Queue()
 
-	def __init__(self, is_headless, use_proxy, use_lpm, lpm_address):
+	def __init__(self, is_headless, use_proxy, use_lpm, lpm_address, disable_logging):
 		with BakecaSlave.bakeca_lock:
 			self.slave_id = util.random_string(8) + "-" + str(BakecaSlave.slave_index)
 			BakecaSlave.slave_index = BakecaSlave.slave_index + 1
 			if use_proxy:
 				BakecaSlave.proxy = Proxy(PROXY_INPUT_PATH, PROXY_OUTPUT_OK_PATH, PROXY_OUTPUT_NOK_PATH)
 				BakecaSlave.proxy.__enter__()
-		self.logger = logging.get_logger(
+
+		self.logger = bot_logger.get_logger(
 			name=__name__ + '-' + self.slave_id,
-			log_file=__name__ + '-' + self.slave_id
+			log_file=__name__ + '-' + self.slave_id,
+			disable_logging=disable_logging
 		)
 		BakecaSlave.is_headless = is_headless
 		BakecaSlave.use_proxy = use_proxy
@@ -94,7 +96,6 @@ class BakecaSlave(object):
 			with BakecaSlave.bakeca_lock:
 				BakecaSlave.image_dir = context['image_dir']
 				BakecaSlave.text_file = context['text_file']
-
 
 	def register_to_website(self, driver, email, password):
 		# Click on i'm over 18
@@ -113,12 +114,11 @@ class BakecaSlave(object):
 
 		# Solve captcha
 		resp = util.solve_captcha(driver)
-		if(resp == "error"):
+		if resp == "error":
 			raise CaptchaSolverException("Failed to resolve captcha")
 		# Close captcha response
 		recaptcha_response = driver.find_element_by_id("g-recaptcha-response")
 		driver.execute_script("arguments[0].style.display = 'none';", recaptcha_response)
-
 
 		# Click on register
 		util.scroll_into_view_click(driver, '/html/body/div[1]/div[2]/div[2]/div[2]/form/div[3]/input')
@@ -225,6 +225,12 @@ class BakecaSlave(object):
 		# Click on accept terms
 		util.scroll_into_view_click(driver, '//*[@id="privacy-ins"]')
 
+		# Accept cookies before submitting
+		try:
+			util.scroll_into_view_click(driver, '//*[@id="accept-gdpr"]')
+		except NoSuchElementException as e:
+			print("---> No cookies button!")
+
 		# Click on accept terms
 		util.scroll_into_view_click(driver, '//*[@id="submit-ins"]')
 
@@ -298,10 +304,7 @@ class BakecaSlave(object):
 	def write_last_state(self):
 		self.logger.info("Write state to file. City [%d] Category [%d]." % (BakecaSlave.city_index, BakecaSlave.category_index))
 		with open(BAKECA_STATE_FILE_PATH, "w+") as state_file:
-			state_file.write(
-                "City:%d\nCategory:%d"
-                % (BakecaSlave.city_index, BakecaSlave.category_index)
-            )
+			state_file.write("City:%d\nCategory:%d" % (BakecaSlave.city_index, BakecaSlave.category_index))
 
 	def get_additional_data(self):
 		city_id = None
@@ -455,7 +458,7 @@ class BakecaSlave(object):
 				logger.info("BAKECA !!!FAILED!!! For City %s and category %s." % (CONSTANTS.CITIES[city_id], CONSTANTS.CATEGORIES[category_id]))
 				print("------> BAKECA !!!FAILED!!! For City %s and category %s. <------" % (CONSTANTS.CITIES[city_id], CONSTANTS.CATEGORIES[category_id]))
 				self.push_to_fail_queue(city_id, category_id)
-				logging.close_logger(logger)
+				bot_logger.close_logger(logger)
 
 				# if failed to solve captcha simply retry
 				if exception_type is "Failed to solve captcha in time.":
@@ -477,7 +480,7 @@ class BakecaSlave(object):
 
 		logger.info("BAKECA Success For City %s and category %s." % (CONSTANTS.CITIES[city_id], CONSTANTS.CATEGORIES[category_id]))
 
-		logging.close_logger(logger)
+		bot_logger.close_logger(logger)
 		return_queue.put(BAKECA_SUCCESS)
 
 		if BakecaSlave.use_proxy:
