@@ -31,6 +31,7 @@ PROXY_OUTPUT_NOK_PATH = os.path.join(SCRIPT_DIR, "proxy_output_nok.txt")
 
 BAKECA_SUCCESS = 1
 BAKECA_ERROR = 0
+BAKECA_RETRY = -1
 
 class BakecaException(Exception):
 	"""Raised for different internal errors"""
@@ -134,7 +135,6 @@ class BakecaSlave(object):
 		return 0
 
 	def make_website_post(self, driver, city_id, category_id, title, content, images, email):
-
 		# Get category and city
 		city_name = CONSTANTS.CITIES[city_id]
 		category_name = CONSTANTS.CATEGORIES[category_id]
@@ -456,9 +456,14 @@ class BakecaSlave(object):
 				print("------> BAKECA !!!FAILED!!! For City %s and category %s. <------" % (CONSTANTS.CITIES[city_id], CONSTANTS.CATEGORIES[category_id]))
 				self.push_to_fail_queue(city_id, category_id)
 				logging.close_logger(logger)
-				return_queue.put(BAKECA_ERROR)
 
-				return BAKECA_ERROR
+				# if failed to solve captcha simply retry
+				if exception_type is "Failed to solve captcha in time.":
+					return_queue.put(BAKECA_RETRY)
+					return BAKECA_RETRY
+				else:
+					return_queue.put(BAKECA_ERROR)
+					return BAKECA_ERROR
 
 		# Success - save credentials and post url
 		website = "bakeca.com" + "\n" + "City: " + CONSTANTS.CITIES[city_id] + "\n" + "Category: " + CONSTANTS.CATEGORIES[category_id] + "\n" + "Is chiudi: " + str(is_chiudi) + "\n" + "Images loaded: " + str(loaded_images)

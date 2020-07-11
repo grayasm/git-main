@@ -52,6 +52,7 @@ logger = None
 # Return values valid for all bots
 SLAVE_SUCCESS = 1
 SLAVE_ERROR = 0
+SLAVE_RETRY = -1
 
 
 class MasterBotInternalException(Exception):

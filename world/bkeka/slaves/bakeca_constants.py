@@ -35,7 +35,6 @@ CITIES=[
 "Enna",
 "Fermo",
 "Imperia",
-
 "Brescia",
 "Brindisi",
 "Cagliari",
