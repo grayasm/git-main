@@ -75,10 +75,10 @@ def get_chrome_driver(is_headless, proxy):
     driver = webdriver.Chrome(chrome_driver, chrome_options=chrome_options)
     # Tells WebDriver to poll the DOM for a certain amount of time when
     # trying to find any element not immediately available.
-    driver.implicitly_wait(5)
+    driver.implicitly_wait(10)
     # Set the amount of time to wait for a page load to complete before
     # throwing an error.
-    driver.set_page_load_timeout(5)
+    driver.set_page_load_timeout(10)
     return driver
 
 
@@ -311,10 +311,7 @@ def smail_get_email_address(driver):
 
 
 def smail_validate_link(driver):
-    """
-	This may raise ELementNotFoundException if the mail was not sent in the
-	right timeframe.
-	"""
+    """This may raise ELementNotFoundException if the mail was not sent in the right time frame. """
     email_content_link_xpath = '/html/body/div/div[5]/amp-selector/div[4]/amp-list/div[3]/div/a'
     verification_link_xpath = '/html/body/a[2]'
     inbox_tab_xpath = '//*[@id="tab2"]'
