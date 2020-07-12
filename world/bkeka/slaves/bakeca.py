@@ -235,6 +235,7 @@ class BakecaSlave(object):
 
 		# Click on promotion banner
 		try:
+			sleep(2)
 			util.scroll_into_view_click(driver, '//*[@id="content-black-week-promo"]/div[2]/div[2]/div[6]/button')
 		except NoSuchElementException as e:
 			print("---> No promotion banner!")
