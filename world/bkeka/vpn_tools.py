@@ -76,6 +76,9 @@ def get_config_file(vpn_config_dir):
 
 def close_vpn_connection():
     global openvpn_process
+    # if openvpn_process is not None and openvpn_process.poll() is not None:
+    #    openvpn_process.kill()
+    #    openvpn_process = None
     if openvpn_process is not None:
         prc = Popen(['sudo', 'killall', OPENVPN_COMMAND], stdout=PIPE, stderr=PIPE, shell=False)
         try:
