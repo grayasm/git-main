@@ -227,9 +227,12 @@ for entry in os.environ:
                               # etc ...
 
 print ("----------")
-print ("os.getcwd()=", os.getcwd())      # /home/mihai/Code/git-main/tutorial/
-print ("os.getlogin()=", os.getlogin())  # mihai
-print ("os.getuid()=", os.getuid())      # 1000
+print ("os.getcwd()=", os.getcwd())          # /home/mihai/Code/git-main/tutorial/
+print ("os.getlogin()=", os.getlogin())      # mihai
+try:
+    print ("os.getuid()=", os.getuid())      # 1000
+except:
+    print ("os has not attribute getuid()");
 
 print ("os.listdir('.')=\n", os.listdir('.'))  # ['19_module_getpass.py',
                                                #  '01_file_builtin_type.py'

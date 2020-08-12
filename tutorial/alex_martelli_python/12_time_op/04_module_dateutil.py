@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 # first install dateutil module:
-# pip import dateutils
+# pip install dateutils
 
 # The dateutil Module
 # The third-party package dateutil (http://labix.org/python-dateutil) offers
