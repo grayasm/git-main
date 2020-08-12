@@ -244,15 +244,17 @@ class BakecaSlave(object):
 		sleep(5)
 		is_telegram_auth = False
 		telegram_auth_block = driver.find_element_by_class_name("controllo-eta-container")
-		display_attr = telegram_auth_block.get_attribute("display")
-
-		if 'block' in str(display_attr) or 'Block' in str(display_attr):
-			is_telegram_auth = True
-			print('----> TELEGRAM AUTH')
-			self.logger.info("----> TELEGRAM AUTH")
-		else:
-			print('----> NO telegram AUTH')
-			self.logger.info("----> NO telegram AUTH")
+		if telegram_auth_block is not None:
+			text = telegram_auth_block.text
+			if 'telegram' in text.lower():
+				is_telegram_auth = True
+				print('----> TELEGRAM AUTH')
+				self.logger.info("----> TELEGRAM AUTH")
+				# The banner will not allow pub-gratis. Return here for now.
+				return is_telegram_auth, is_chiudi, loaded_images
+			else:
+				print('----> NO telegram AUTH')
+				self.logger.info("----> NO telegram AUTH")
 
 		# Click on publish for free
 		util.scroll_into_view_click(driver, '//*[@id="pub-gratis"]')
@@ -337,6 +339,7 @@ class BakecaSlave(object):
 	def start(self, context, return_queue):
 		# Init script variables
 		start = time()
+		end = time()
 		website_driver = None
 		email_driver = None
 		logger = self.logger
@@ -456,8 +459,9 @@ class BakecaSlave(object):
 				end = time()
 				logger.info("Exception was raised. Writing error to credentials.")
 				util.save_credentials_error(BAKECA_CREDENTIALS_PATH, exception_type, "bakeca.com", CONSTANTS.CITIES[city_id], CONSTANTS.CATEGORIES[category_id], end - start, BakecaSlave.bakeca_lock)
-				logger.info("BAKECA !!!FAILED!!! For City %s and category %s." % (CONSTANTS.CITIES[city_id], CONSTANTS.CATEGORIES[category_id]))
-				print("------> BAKECA !!!FAILED!!! For City %s and category %s. <------" % (CONSTANTS.CITIES[city_id], CONSTANTS.CATEGORIES[category_id]))
+				announce_msg = ("BAKECA !!!FAILED!!! For City %s and category %s." % (CONSTANTS.CITIES[city_id], CONSTANTS.CATEGORIES[category_id]))
+				logger.info(announce_msg)
+				print(announce_msg)
 				self.push_to_fail_queue(city_id, category_id)
 				bot_logger.close_logger(logger, disable_logging)
 
@@ -473,15 +477,17 @@ class BakecaSlave(object):
 		website = "bakeca.com" + "\n" + "City: " + CONSTANTS.CITIES[city_id] + "\n" + "Category: " + CONSTANTS.CATEGORIES[category_id] + "\n" + "Is chiudi: " + str(is_chiudi) + "\n" + "Images loaded: " + str(loaded_images)
 
 		if is_telg_auth:
-			util.save_credentials(BAKECA_CREDENTIALS_PATH, email, password, "FAILED - TELEGRAM AUTH REQUIRED",
-				website, end - start, BakecaSlave.bakeca_lock)
+			util.save_credentials(BAKECA_CREDENTIALS_PATH, email, password, "FAILED - TELEGRAM AUTH REQUIRED", website, end - start, BakecaSlave.bakeca_lock)
+			# The telegram banner blocked the posting. Leave it and switch the city_it.
+			announce_msg = ("BAKECA !!!FAILED-TELEGRAM!!! For City %s and category %s." % (CONSTANTS.CITIES[city_id], CONSTANTS.CATEGORIES[category_id]))
+			print(announce_msg)
+			logger.info(announce_msg)
 		else:
-			util.save_credentials(BAKECA_CREDENTIALS_PATH, email, password, post_url,
-				website, end - start, BakecaSlave.bakeca_lock)
-
-		announce_msg = ("BAKECA Success For City %s and category %s." % (CONSTANTS.CITIES[city_id], CONSTANTS.CATEGORIES[category_id]))
-		print(announce_msg)
-		logger.info(announce_msg)
+			util.save_credentials(BAKECA_CREDENTIALS_PATH, email, password, post_url, website, end - start, BakecaSlave.bakeca_lock)
+			# Post succeeded.
+			announce_msg = ("BAKECA Success For City %s and category %s." % (CONSTANTS.CITIES[city_id], CONSTANTS.CATEGORIES[category_id]))
+			print(announce_msg)
+			logger.info(announce_msg)
 
 		bot_logger.close_logger(logger, disable_logging)
 		return_queue.put(BAKECA_SUCCESS)
