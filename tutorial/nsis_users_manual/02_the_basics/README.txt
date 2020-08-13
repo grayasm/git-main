@@ -35,3 +35,10 @@ Cap.2 The Basics
     Compiler for NSIS is makensis.exe and GUI is makensisw.exe
         08_compiler.bat
         08_compiler.nsi
+    Modern UI has an interface like wizards of recent Windows versions.
+        09_modern_ui.nsi
+    Plug-ins are dlls compiled in C/C++/etc. They export methods with or without
+        parameters and are called from the script file with a syntax like:
+        DLLName::FunctionName "param 1" "param 2" "param 3"
+        10_plugin.nsi (and 10_plugin directory for C++ code)
+    
