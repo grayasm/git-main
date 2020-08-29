@@ -720,7 +720,7 @@ window.WAPI.ReplyMessage = function (idMessage, message, done) {
                         return True;
                     }
                     trials += 1;
-                    console.log(trials);
+                    // console.log(trials);
                     if (trials > 30) {
                         done(true);
                         return;
@@ -808,7 +808,7 @@ window.WAPI.sendMessage = function (id, message, done) {
                         return True;
                     }
                     trials += 1;
-                    console.log(trials);
+                    // console.log(trials);
                     if (trials > 30) {
                         done(true);
                         return;
@@ -1580,8 +1580,8 @@ spread on 👽 2 👿 rows", // 4
 
             if (debugging)
             {
-                console.log(sender);
-                console.log(from);
+                console.log("Sender: " + sender);
+                console.log("From  : " + from);
             }
 
             if (sender == from)
@@ -1611,6 +1611,16 @@ spread on 👽 2 👿 rows", // 4
                         {
                             console.log(text2);
                             console.log("Index of last message: " + pos2);
+                        }
+
+                        // Support interrupting bot text messages midrange.
+                        if (pos2 < 0)
+                        {
+                            if (debugging)
+                            {
+                                console.log("Not a bot message, continue!");
+                            }
+                            continue;
                         }
 
                         // Stop after the last text meesage.
