@@ -4,7 +4,7 @@
 
 InstallDir "$DOCUMENTS\86_attributes_UninstallIcon"
 
-UninstallIcon "86_attributes_icon.ico"
+UninstallIcon "086_attributes_icon.ico"
 
 Section
     SetOutPath $INSTDIR

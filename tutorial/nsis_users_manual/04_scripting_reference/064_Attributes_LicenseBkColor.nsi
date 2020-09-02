@@ -6,7 +6,7 @@
 ; You can also use the Windows OS defined color by using /windows
 
 LicenseBkColor  00FF00
-LicenseData     11_license.txt
+LicenseData     011_license.txt
 
 Page license
 Page instfiles

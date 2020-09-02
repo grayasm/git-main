@@ -6,7 +6,7 @@
 
 
 LicenseText "License"
-LicenseData "11_license.txt"
+LicenseData "011_license.txt"
 
 Page license
 Page instfiles

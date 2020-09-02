@@ -5,8 +5,8 @@
 InstallDir "$DOCUMENTS\89_attributes_WindowIcon"
 
 WindowIcon    on
-Icon          "89_attributes_icon.ico"
-UninstallIcon "89_attributes_icon.ico"
+Icon          "089_attributes_icon.ico"
+UninstallIcon "089_attributes_icon.ico"
 
 Section
     SetOutPath $INSTDIR
