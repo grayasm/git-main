@@ -15,5 +15,5 @@ AddBrandingImage left   0       0
 AddBrandingImage right  0       0
 
 Section
-    SetBrandingImage 40_branding_image.bmp
+    SetBrandingImage 040_branding_image.bmp
 SectionEnd

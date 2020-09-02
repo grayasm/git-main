@@ -10,7 +10,7 @@ Page instfiles
 
 # License page
 LicenseText "Text above the controls, to the right of the installation icon."   "I agree btn"
-LicenseData 07_licdata.txt
+LicenseData 007_licdata.txt
 LicenseForceSelection radiobuttons "I accept" "I decline"
 
 

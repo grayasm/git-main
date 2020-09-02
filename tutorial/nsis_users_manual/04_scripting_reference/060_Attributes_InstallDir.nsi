@@ -9,7 +9,7 @@
 InstallDir "$DESKTOP\DirectoryNotSet"
 
 Function .onInit
-    ReadINIStr $0  "$EXEDIR\60_installdir.ini"  "Settings" "on_desktop_dir"
+    ReadINIStr $0  "$EXEDIR\060_installdir.ini"  "Settings" "on_desktop_dir"
     StrCpy $INSTDIR "$DESKTOP\$0"
 FunctionEnd
 

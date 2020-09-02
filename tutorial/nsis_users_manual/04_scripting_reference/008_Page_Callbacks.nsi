@@ -22,7 +22,7 @@ FunctionEnd
 
 Function customPage
     GetTempFileName $R0
-    File /oname=$R0 08_customPage.ini
+    File /oname=$R0 008_customPage.ini
     InstallOptions::dialog $R0
     Pop $R1
     StrCmp $R1 "cancel" done

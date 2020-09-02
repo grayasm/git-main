@@ -4,11 +4,11 @@
 
 PageEx license
     LicenseText "Readme"
-    LicenseData 11_license.rtf
+    LicenseData 011_license.rtf
 PageExEnd
 
 PageEx license
-    LicenseData 11_license.txt
+    LicenseData 011_license.txt
     LicenseForceSelection checkbox
 PageExEnd
 
