@@ -16,7 +16,8 @@ import sys
 # For threading
 import concurrent.futures
 # VPN tools
-from vpn_tools import connect_to_vpn, close_vpn_connection
+from vpn_tools import openvpn_connect, openvpn_close_connection
+from cyberghost import CyberghostvpnManager, CyberghostvpnException
 
 # Local directory of script
 SCRIPT_DIR = os.path.dirname(os.path.realpath(__file__))
@@ -36,6 +37,9 @@ VPN_CREDENTIALS_FILE = ""
 VPN_SWITCH_TIME = 21600
 # Whether to use VPN or nah
 USE_VPN = False
+# Wheter to use Cyberghost app for linux /usr/bin/cyberghostvpn
+USE_CYBERGHOSTVPN = False
+CYBERGHOSTVPN_COUNTRY = ""
 # Whether to use Headless Browsers or nah
 IS_HEADLESS = False
 # Whether to use a PROXY
@@ -53,6 +57,9 @@ STOP_TIME_INTERVAL = ""
 slave_queue = queue.Queue()
 slave_return_queue = queue.Queue()
 logger = None
+
+# Cyberghost managing object
+cyberghostmanager = None
 
 # Return values valid for all bots
 SLAVE_SUCCESS = 1
@@ -82,11 +89,13 @@ def init_parser():
 def parse_config():
     global SLAVES_NUMBER, EXCEPTION_THRESHOLD, VPN_CONFIG_DIR, VPN_CREDENTIALS_FILE
     global VPN_SWITCH_TIME, USE_VPN, IS_HEADLESS
+    global USE_CYBERGHOSTVPN, CYBERGHOSTVPN_COUNTRY
     global USE_PROXY, PROXY_LIST_FILE, USE_LPM, LPM_ADDRESS
     global DISABLE_LOGGING, STOP_TIME_INTERVAL
     config = configparser.ConfigParser()
     config.read(CONFIG_PATH)
     temp_use_vpn = ""
+    temp_use_cyberghostvpn = ""
 
     # Parse default section
     if config.has_section('master'):
@@ -102,6 +111,10 @@ def parse_config():
             VPN_SWITCH_TIME = int(config['master']['vpn_switch_time'])
         if config.has_option('master', 'use_vpn'):
             temp_use_vpn = config['master']['use_vpn']
+        if config.has_option('master', 'use_cyberghostvpn'):
+            temp_use_cyberghostvpn = config['master']['use_cyberghostvpn']
+        if config.has_option('master', 'cyberghostvpn_country'):
+            CYBERGHOSTVPN_COUNTRY = config['master']['cyberghostvpn_country']
         if config.has_option('master', 'headless_browsers'):
             temp_is_headless = config['master']['headless_browsers']
         if config.has_option('master', 'use_proxy'):
@@ -121,6 +134,8 @@ def parse_config():
     # All must be False by default!
     if temp_use_vpn.lower() == "true":
         USE_VPN = True
+    if temp_use_cyberghostvpn.lower() == "true":
+        USE_CYBERGHOSTVPN = True
     if temp_is_headless.lower() == "true":
         IS_HEADLESS = True
     if temp_use_proxy.lower() == "true":
@@ -172,14 +187,16 @@ def start_all_slaves(thread_executor):
 
 def switch_vpn_server(vpn_start_time, vpn_force_switch, vpn_force_stop):
     global VPN_SWITCH_TIME, USE_VPN, SLAVES_NUMBER
+    global USE_CYBERGHOSTVPN, CYBERGHOSTVPN_COUNTRY
     global VPN_CONFIG_DIR, VPN_CREDENTIALS_FILE
     global DISABLE_LOGGING
+    global logger, cyberghostmanager
     slaves_finished = 1
 
     # Check if VPN time expired
     time_now = time()
     time_diff = time_now - vpn_start_time
-    if USE_VPN is False:
+    if USE_VPN is False and USE_CYBERGHOSTVPN is False:
         return 1
     if time_diff < VPN_SWITCH_TIME and vpn_force_switch is False and vpn_force_stop is False:
         return 1
@@ -190,44 +207,59 @@ def switch_vpn_server(vpn_start_time, vpn_force_switch, vpn_force_stop):
         slaves_finished = slaves_finished + 1
 
     # Close connection and return
-    if vpn_force_stop:
+    if USE_VPN and vpn_force_stop:
         print("Stopping VPN server")
-        close_vpn_connection()
+        openvpn_close_connection()
+        return 1
+    if USE_CYBERGHOSTVPN and vpn_force_stop:
+        print("Stopping CYBERGHOST server")
+        cyberghostmanager.disconnect()
         return 1
 
-    print("Switching VPN server")
-    # Now connect to different vpn
-    if not connect_to_vpn(VPN_CONFIG_DIR, VPN_CREDENTIALS_FILE, DISABLE_LOGGING):
-        logger.info(
-            "Failed to start VPN with config directory %s and credentials file %s."
-            % (VPN_CONFIG_DIR, VPN_CREDENTIALS_FILE))
-        print("Failed to connect to VPN")
-        raise MasterBotInternalException("Failed to connect to VPN")
-    return 1
+    if USE_VPN:
+        print("Switching VPN server")
+        # Now connect to different vpn
+        if not openvpn_connect(VPN_CONFIG_DIR, VPN_CREDENTIALS_FILE, DISABLE_LOGGING):
+            msg = ("Failed to start VPN with config directory %s and credentials file %s."
+                   % (VPN_CONFIG_DIR, VPN_CREDENTIALS_FILE))
+            logger.info(msg)
+            print("Failed to connect to VPN")
+            raise MasterBotInternalException("Failed to connect to VPN")
+        return 1
+    if USE_CYBERGHOSTVPN:
+        print("Switching CYBERGHOST server")
+        cyberghostmanager.switch_vpn()
+        return 1
 
 
 def vpn_connect():
     global USE_VPN, VPN_CONFIG_DIR, VPN_CREDENTIALS_FILE, DISABLE_LOGGING
+    global USE_CYBERGHOSTVPN, CYBERGHOSTVPN_COUNTRY
+    global logger, cyberghostmanager
     rc = 0
 
     if USE_VPN:
-        rc = connect_to_vpn(VPN_CONFIG_DIR, VPN_CREDENTIALS_FILE, DISABLE_LOGGING)
+        rc = openvpn_connect(VPN_CONFIG_DIR, VPN_CREDENTIALS_FILE, DISABLE_LOGGING)
         if not rc:
-            logger.info(
-                "Failed to start VPN with config directory %s and credentials file %s."
-                % (VPN_CONFIG_DIR, VPN_CREDENTIALS_FILE))
+            msg = ("Failed to start VPN with config directory %s and credentials file %s."
+                   % (VPN_CONFIG_DIR, VPN_CREDENTIALS_FILE))
+            logger.info(msg)
             print("Failed to connect to VPN")
             raise MasterBotInternalException("Failed to connect to VPN")
         else:
             print("Connected to VPN")
             return time()
-    else:
-        print("USE_VPN is \"False\". Starting without VPN.")
-        return 0
+    if USE_CYBERGHOSTVPN:
+        cyberghostmanager.switch_vpn()
+        return time()
+
+    print("USE_VPN and USER_CYBERGHOSTVPN are \"False\". Starting without VPN.")
+    return 0
 
 
 def main():
     global logger, USE_VPN, CONFIG_PATH, SLAVES_NUMBER, DISABLE_LOGGING
+    global cyberghostmanager, USE_CYBERGHOSTVPN, CYBERGHOSTVPN_COUNTRY
     vpn_start_time = 0
     rc = 0
 
@@ -241,6 +273,10 @@ def main():
 
     # Init logger
     logger = bot_logger.get_logger(__file__, os.path.splitext(__file__)[0] + ".log")
+
+    # Init cyberghostmanager
+    if USE_CYBERGHOSTVPN and CYBERGHOSTVPN_COUNTRY:
+        cyberghostmanager = CyberghostvpnManager(CYBERGHOSTVPN_COUNTRY)
 
     # Connect to VPN
     vpn_start_time = vpn_connect()
@@ -258,7 +294,7 @@ def main():
         try:
             logger.info("Waiting for a slave to finish")
             release_timeout = 360  # 6 minutes
-            debug_timeout = 600    # 10 minutes
+            debug_timeout = 1800   # 30 minutes
             vpn_timeout = 300      # 5 minutes
             slave_return_value = slave_return_queue.get(block=True, timeout=release_timeout)
             vpn_force_switch = slave_return_value is SLAVE_ERROR
@@ -270,7 +306,7 @@ def main():
                 logger.info(msg)
 
             # Check if vpn timeout was reached and we have to switch the vpn
-            if USE_VPN:
+            if USE_VPN or USE_CYBERGHOSTVPN:
                 rc = switch_vpn_server(vpn_start_time, vpn_force_switch, vpn_force_stop=stop_posting)
                 if not rc:
                     logger.info("Failed to switch VPN server.")
@@ -306,7 +342,10 @@ def main():
             logger.exception("Waited too long. Something is fucky.")
             break
 
-    close_vpn_connection()
+    if USE_VPN:
+        openvpn_close_connection()
+    if USE_CYBERGHOSTVPN:
+        cyberghostmanager.disconnect()
 
     # Make an exception and keep this log file
     bot_logger.close_logger(logger, disable_logging=False)
@@ -320,10 +359,15 @@ if __name__ == "__main__":
         print('Interrupted')
     except MasterBotInternalException:
         print('Terminated with exception')
+    except CyberghostvpnException as e:
+        print('Cyberghost exception: ' % str(e))
     except:  # catch all
         print('Unknown master_bot exception')
     finally:
-        close_vpn_connection()
+        if USE_VPN:
+            openvpn_close_connection()
+        if USE_CYBERGHOSTVPN:
+            cyberghostmanager.disconnect()
 
     try:
         sys.exit(0)
