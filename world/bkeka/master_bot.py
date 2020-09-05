@@ -360,7 +360,7 @@ if __name__ == "__main__":
     except MasterBotInternalException:
         print('Terminated with exception')
     except CyberghostvpnException as e:
-        print('Cyberghost exception: ' % str(e))
+        print('Cyberghost exception: %s' % str(e))
     except:  # catch all
         print('Unknown master_bot exception')
     finally:
