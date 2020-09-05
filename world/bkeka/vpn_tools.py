@@ -56,7 +56,7 @@ def pipe_no_wait(process):
         return True
 
 
-def start_openvpn_subprocess(config_file, credentials_file):
+def openvpn_start_subprocess(config_file, credentials_file):
     # Connect to vpn
     print("----->", config_file)
     process = Popen(['sudo', OPENVPN_COMMAND, config_file], stdout=PIPE, stderr=PIPE, shell=False)
@@ -74,7 +74,7 @@ def get_config_file(vpn_config_dir):
     return None
 
 
-def close_vpn_connection():
+def openvpn_close_connection():
     global openvpn_process
     # if openvpn_process is not None and openvpn_process.poll() is not None:
     #    openvpn_process.kill()
@@ -89,7 +89,7 @@ def close_vpn_connection():
         openvpn_process = None
 
 
-def connect_to_vpn(vpn_config_dir, vpn_credentials_file, disable_logging):
+def openvpn_connect(vpn_config_dir, vpn_credentials_file, disable_logging):
     global openvpn_process
 
     logger = bot_logger.get_logger(__name__ + '.log', __name__ + '.log')
@@ -101,7 +101,7 @@ def connect_to_vpn(vpn_config_dir, vpn_credentials_file, disable_logging):
         # Debug openvpn output
         vpn_output = ""
         # Close any previous openvpn connection
-        close_vpn_connection()
+        openvpn_close_connection()
         # Get config files path
         vpn_config_file = get_config_file(vpn_config_dir)
 
@@ -109,7 +109,7 @@ def connect_to_vpn(vpn_config_dir, vpn_credentials_file, disable_logging):
             "Trying to connect to vpn with config '%s' and credentials '%s'."
             % (vpn_config_file, vpn_credentials_file))
         # Start vpn subprocess
-        openvpn_process = start_openvpn_subprocess(vpn_config_file, vpn_credentials_file)
+        openvpn_process = openvpn_start_subprocess(vpn_config_file, vpn_credentials_file)
         # Let the openvpn process write output
         sleep(30)
 
