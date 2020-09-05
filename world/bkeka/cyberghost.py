@@ -14,6 +14,14 @@ class Cyberghostvpn(object):
         pass
 
     def get_cities(self, country):
+        #cmd = ("echo $USER")
+        #proc = Popen(cmd, stdout=PIPE, stderr=PIPE, shell=True)
+        #out, err = proc.communicate()
+        #print('out=')
+        #print(out)
+        #print('err=')
+        #print(err)
+
         cmd = ("sudo cyberghostvpn --traffic --country-code %s --connection TCP" % country)
         proc = Popen(cmd, stdout=PIPE, stderr=PIPE, shell=True)
         out, err = proc.communicate()
