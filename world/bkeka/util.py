@@ -8,6 +8,8 @@ import re
 import hashlib
 from datetime import datetime
 from time import sleep
+import img_tools
+import shutil
 
 # For Http Requests
 import requests
@@ -480,18 +482,32 @@ def random_string_mobile_number(stringLength=11):
 
 
 def get_images(image_dir):
-    # TODO: This is temporary, but it checks that there are at least 3 images
-    # NOTE: Must be images, we don't check for extension so if they anything else
-    # it will be fucky
+    # Tells how many images have been found
     final_message = ''
+    # Modify image hash by changing a number of pixels
+    change_pixels = 10
+
+    # clean and copy original images into temp location
+    tempdir = os.path.abspath(os.path.join(image_dir, "temp"))
+    if os.path.isdir(tempdir):
+        shutil.rmtree(tempdir)
+    os.mkdir(tempdir)
+    for x in os.listdir(image_dir):
+        img_src = os.path.abspath(os.path.join(image_dir, x))
+        img_dst = os.path.abspath(os.path.join(os.path.join(image_dir, "temp"), x))
+        # skip temp directory
+        if os.path.isdir(img_src):
+            continue
+        shutil.copyfile(img_src, img_dst)
+        img_tools.change_pixels_in_place(img_dst, change_pixels)
 
     # Claudiu: randomly rename all images
-    rename_message = rename_images(image_dir)
+    rename_message = rename_images(tempdir)
 
     # Claudiu: modify images md5
     # hash_message = change_images_hash(image_dir)
 
-    images = [os.path.abspath(os.path.join(image_dir, x)) for x in os.listdir(image_dir)]
+    images = [os.path.abspath(os.path.join(tempdir, x)) for x in os.listdir(tempdir)]
     if len(images) < 5:
         print("EROARE LA IMAGINI! STERGE IMAGINILE DIN FOLDER SI PUNE-LE DIN NOU!!!")
         raise UtilParseError("Not enough images : %d" % (len(images)))
