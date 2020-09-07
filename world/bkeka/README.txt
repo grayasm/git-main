@@ -8,13 +8,19 @@
 
 2. pip3 install selenium
    pip3 install requests
+   yum install python3-pillow
 
 3. sudo in Pycharm debugger does not work.
    If you use the VPN connection then disable the password temporarily.
    username ALL=(ALL) NOPASSWD:ALL
 
-4. Cyberghost binary creates the tun device but the connection is dead.
-   To solve it follow this tutorial:
+4. Cyberghostvpn client must be installed
+    Download cyberghostvpn app for linux (CentOS7)
+    install.sh  -> to install it
+    cyberghostvpn --setup   -> to register client with provider
+    
+4. Legacy openvpn connection:
+   If tun device is not created follow this tutorial:
    https://support.cyberghostvpn.com/hc/en-us/articles/360007929314-How-to-Set-Up-OpenVPN-on-Linux-Ubuntu-via-Network-Manager
 
    Configure new device (Other) w/ Protocol=openvpn, Country=Italy, Server Group=TCP (not UDP)
@@ -24,3 +30,4 @@
 
 5. Check util.py:29  CAPTCH_API_KEY=""
 6. Check default.cfg
+
