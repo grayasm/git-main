@@ -40,6 +40,7 @@ USE_VPN = False
 # Wheter to use Cyberghost app for linux /usr/bin/cyberghostvpn
 USE_CYBERGHOSTVPN = False
 CYBERGHOSTVPN_COUNTRY = ""
+CYBERGHOSTVPN_START_IP = 0
 # Whether to use Headless Browsers or nah
 IS_HEADLESS = False
 # Whether to use a PROXY
@@ -89,7 +90,7 @@ def init_parser():
 def parse_config():
     global SLAVES_NUMBER, EXCEPTION_THRESHOLD, VPN_CONFIG_DIR, VPN_CREDENTIALS_FILE
     global VPN_SWITCH_TIME, USE_VPN, IS_HEADLESS
-    global USE_CYBERGHOSTVPN, CYBERGHOSTVPN_COUNTRY
+    global USE_CYBERGHOSTVPN, CYBERGHOSTVPN_COUNTRY, CYBERGHOSTVPN_START_IP
     global USE_PROXY, PROXY_LIST_FILE, USE_LPM, LPM_ADDRESS
     global DISABLE_LOGGING, STOP_TIME_INTERVAL
     config = configparser.ConfigParser()
@@ -115,6 +116,8 @@ def parse_config():
             temp_use_cyberghostvpn = config['master']['use_cyberghostvpn']
         if config.has_option('master', 'cyberghostvpn_country'):
             CYBERGHOSTVPN_COUNTRY = config['master']['cyberghostvpn_country']
+        if config.has_option('master', 'cyberghostvpn_start_ip'):
+            CYBERGHOSTVPN_START_IP = int(config['master']['cyberghostvpn_start_ip'])
         if config.has_option('master', 'headless_browsers'):
             temp_is_headless = config['master']['headless_browsers']
         if config.has_option('master', 'use_proxy'):
@@ -187,7 +190,7 @@ def start_all_slaves(thread_executor):
 
 def switch_vpn_server(vpn_start_time, vpn_force_switch, vpn_force_stop):
     global VPN_SWITCH_TIME, USE_VPN, SLAVES_NUMBER
-    global USE_CYBERGHOSTVPN, CYBERGHOSTVPN_COUNTRY
+    global USE_CYBERGHOSTVPN, CYBERGHOSTVPN_COUNTRY, CYBERGHOSTVPN_START_IP
     global VPN_CONFIG_DIR, VPN_CREDENTIALS_FILE
     global DISABLE_LOGGING
     global logger, cyberghostmanager
@@ -234,7 +237,7 @@ def switch_vpn_server(vpn_start_time, vpn_force_switch, vpn_force_stop):
 
 def vpn_connect():
     global USE_VPN, VPN_CONFIG_DIR, VPN_CREDENTIALS_FILE, DISABLE_LOGGING
-    global USE_CYBERGHOSTVPN, CYBERGHOSTVPN_COUNTRY
+    global USE_CYBERGHOSTVPN, CYBERGHOSTVPN_COUNTRY, CYBERGHOSTVPN_START_IP
     global logger, cyberghostmanager
     rc = 0
 
@@ -259,7 +262,7 @@ def vpn_connect():
 
 def main():
     global logger, USE_VPN, CONFIG_PATH, SLAVES_NUMBER, DISABLE_LOGGING
-    global cyberghostmanager, USE_CYBERGHOSTVPN, CYBERGHOSTVPN_COUNTRY
+    global cyberghostmanager, USE_CYBERGHOSTVPN, CYBERGHOSTVPN_COUNTRY, CYBERGHOSTVPN_START_IP
     vpn_start_time = 0
     rc = 0
 
@@ -277,7 +280,7 @@ def main():
 
     # Init cyberghostmanager
     if USE_CYBERGHOSTVPN and CYBERGHOSTVPN_COUNTRY:
-        cyberghostmanager = CyberghostvpnManager(CYBERGHOSTVPN_COUNTRY)
+        cyberghostmanager = CyberghostvpnManager(CYBERGHOSTVPN_COUNTRY, CYBERGHOSTVPN_START_IP)
 
     # Connect to VPN
     vpn_start_time = vpn_connect()
