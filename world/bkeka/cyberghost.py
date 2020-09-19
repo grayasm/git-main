@@ -14,13 +14,13 @@ class Cyberghostvpn(object):
         pass
 
     def get_cities(self, country):
-        #cmd = ("echo $USER")
-        #proc = Popen(cmd, stdout=PIPE, stderr=PIPE, shell=True)
-        #out, err = proc.communicate()
-        #print('out=')
-        #print(out)
-        #print('err=')
-        #print(err)
+        # cmd = ("echo $USER")
+        # proc = Popen(cmd, stdout=PIPE, stderr=PIPE, shell=True)
+        # out, err = proc.communicate()
+        # print('out=')
+        # print(out)
+        # print('err=')
+        # print(err)
 
         cmd = ("sudo cyberghostvpn --traffic --country-code %s --connection TCP" % country)
         proc = Popen(cmd, stdout=PIPE, stderr=PIPE, shell=True)
@@ -136,12 +136,14 @@ class Cyberghostvpn(object):
 
 
 class CyberghostvpnManager(object):
-    def __init__(self, country):
+    def __init__(self, country, start_ip):
         # initialize
         self.country = country
+        self.start_ip = start_ip - 1
+        self.repeated = False
         self.cyberghost = Cyberghostvpn()
         self.addresses = []
-        self.current_server = -1
+        self.current_server = self.start_ip
         # get the servers
         cities = self.cyberghost.get_cities(self.country)
         for city in cities:
@@ -158,8 +160,13 @@ class CyberghostvpnManager(object):
         # rewind and start with first server again
         if self.current_server >= len(self.addresses):
             self.current_server = 0
+            self.repeated = True
         # check if connection exists
         self.disconnect()
+        # need to refresh the address list
+        if self.repeated and (self.current_server == self.start_ip + 1):
+            self.refresh()
+            return self.switch_vpn()
         # connect to new server
         address = self.addresses[self.current_server]
         if self.cyberghost.connect(address[0], address[1], address[2]) != 0:
@@ -172,7 +179,8 @@ class CyberghostvpnManager(object):
         self.disconnect()
         # reinitialize
         self.addresses = []
-        self.current_server = -1
+        self.repeated = False
+        self.current_server = self.start_ip
         # get the servers
         cities = self.cyberghost.get_cities(self.country)
         for city in cities:
