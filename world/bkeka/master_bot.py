@@ -272,7 +272,8 @@ def main():
         return 1
 
     # Init logger
-    logger = bot_logger.get_logger(__file__, os.path.splitext(__file__)[0] + ".log")
+    file_name, file_ext = os.path.splitext(os.path.basename(__file__))
+    logger = bot_logger.get_logger(file_name + ".log", file_name + ".log")
 
     # Init cyberghostmanager
     if USE_CYBERGHOSTVPN and CYBERGHOSTVPN_COUNTRY:
@@ -293,9 +294,10 @@ def main():
     while True:
         try:
             logger.info("Waiting for a slave to finish")
-            release_timeout = 360  # 6 minutes
-            debug_timeout = 1800   # 30 minutes
-            vpn_timeout = 300      # 5 minutes
+            release_timeout = 360       # 6 minutes
+            debug_timeout = 1800        # 30 minutes
+            vpn_timeout = 300           # 5 minutes
+            critical_timeout = 3600     # 1 hour
             slave_return_value = slave_return_queue.get(block=True, timeout=release_timeout)
             vpn_force_switch = slave_return_value is SLAVE_ERROR
             stop_posting = util.check_stop_time_interval(STOP_TIME_INTERVAL)
@@ -339,8 +341,15 @@ def main():
             executor.submit(slave.start, slave_context, slave_return_queue)
             logger.info("Started slave with context %s", str(slave_context))
         except queue.Empty as e:
-            logger.exception("Waited too long. Something is fucky.")
-            break
+            msg = ("Slave timeout exception: %s" % str(e))
+            logger.exception(msg)
+            time_diff = time() - vpn_start_time
+            if time_diff > critical_timeout:
+                msg = ("Slave timeout %d sec reached critical timeout %d sec" % (time_diff, critical_timeout))
+                logger.info(msg)
+                print(msg)
+                break
+
 
     if USE_VPN:
         openvpn_close_connection()
