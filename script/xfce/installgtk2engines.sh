@@ -43,7 +43,7 @@ yum --enablerepo=fedora19 install $ENGINE
 THEMES="clearlooks-phenix-common clearlooks-phenix-gtk2-theme \
         clearlooks-phenix-xfwm4-theme xfwm4-themes bluecurve-gtk-themes  \
         zukitwo-gtk2-theme zukitwo-xfwm4-theme \
-	iaora-gnome-theme light-theme-gnome \
+        iaora-gnome-theme light-theme-gnome \
         nodoka-theme-gnome"
 echo "Installing Xfce themes for CentOS"
 yum --enablerepo=fedora19 install $THEMES
@@ -63,7 +63,7 @@ REDHAT_THEMES="bluecurve-cursor-theme bluecurve-icon-theme \
                clearlooks-phenix-gtk2-theme clearlooks-phenix-gtk3-theme \
                clearlooks-phenix-xfwm4-theme fedora-icon-theme \
                gnome-theme-curvylooks gnome-themes gnome-themes-legacy \
-	       gnome-themes-standard humanity-icon-theme \
+               gnome-themes-standard humanity-icon-theme \
                tango-icon-theme xfce4-icon-theme"
 echo "Installing RedHat Artwork for Xfce"
 yum --enablerepo=fedora19 install $REDHAT_THEMES
