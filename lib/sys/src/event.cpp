@@ -21,6 +21,7 @@
 #include "event.hpp"
 #include "exception.hpp"
 #include "unistd.hpp"
+#include "string.hpp"
 
 
 #ifdef _WIN32
@@ -48,7 +49,7 @@ namespace sys
                 NULL, 
                 bManualReset,
                 bSignaled, 
-                "");
+                U(""));
 
         if(m_handle == NULL)
                 throw stl::exception("Cannot create the event!");
