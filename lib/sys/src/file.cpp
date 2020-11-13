@@ -45,7 +45,7 @@ namespace sys
     }
 
     void file::scandir(
-        const char* dir,
+        const stl::string& dir,
         unsigned int flags,
         size_t max_depth,
         scan_callback cb)
@@ -54,7 +54,7 @@ namespace sys
         return scandir_(dir, flags, max_depth, cb, aborting);
     }
 
-    void file::scandir_(const char* dir, unsigned int flags, size_t max_depth, scan_callback cb, bool& aborting)
+    void file::scandir_(const stl::string& dir, unsigned int flags, size_t max_depth, scan_callback cb, bool& aborting)
     {
         // Activate debugging
         static bool logging = false;
@@ -63,7 +63,7 @@ namespace sys
         //  Sanitize the given directory path.
         sys::filename dirfn(dir);
         stl::string allfiles = dirfn.get_directory();
-        allfiles += "*";
+        allfiles += U("*");
 
         // Discovered file
         stl::string filepath;
@@ -120,8 +120,8 @@ namespace sys
             if (aDir)
             {
                 aDotDir =
-                    strcmp(ffd.cFileName, ".") == 0 ||
-                    strcmp(ffd.cFileName, "..") == 0;
+                    _tcscmp(ffd.cFileName, U(".")) == 0 ||
+                    _tcscmp(ffd.cFileName, U("..")) == 0;
 
                 aHiddenDir = ((ffd.dwFileAttributes & FILE_ATTRIBUTE_HIDDEN) == FILE_ATTRIBUTE_HIDDEN);
 

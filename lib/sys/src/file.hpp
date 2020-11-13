@@ -44,14 +44,14 @@ namespace sys
 
         //  Scan an existing directory (no wildcards or regexp strings)
         void scandir(
-            const char* dir,                // "D:\\Github\\Offsers\\"
+            const stl::string& dir,         // "D:\\Github\\Offsers\\"
             unsigned int flags,             // one or more from ScanEnum
             size_t max_depth,               // 0 for no traverse, -1 for maxim
             scan_callback cb);              // callback
 
     private:
         void scandir_(
-            const char* dir,
+            const stl::string& dir,
             unsigned int flags,
             size_t max_depth,
             scan_callback cb,
