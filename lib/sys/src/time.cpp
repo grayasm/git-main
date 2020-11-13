@@ -21,6 +21,7 @@
 
 #include "time.hpp"
 #include "strconv.hpp"
+#include "string.hpp"
 #include <limits.h>
 
 
@@ -100,7 +101,7 @@ namespace sys
 		int mon, day, year, hour, min, sec;
 		mon = day = year = hour = min = sec = -1;
 
-		sscanf(str.c_str(), "%d.%d.%d %d:%d:%d",
+		_stscanf(str.c_str(), U("%d.%d.%d %d:%d:%d"),
 			&mon, &day, &year, &hour, &min, &sec);
 
 		if (year < 1900 || mon < 1 || mon > 12 ||
@@ -210,8 +211,10 @@ namespace sys
 
 	stl::string time::tostring() const
 	{
-		char  smon[12][4]={ "JAN","FEB","MAR","APR","MAY","JUN",
-							"JUL","AUG","SEP","OCT","NOV","DEC"};
+		stl::char_t  smon[12][4]= {
+			U("JAN"),U("FEB"),U("MAR"),U("APR"),U("MAY"),U("JUN"),
+			U("JUL"),U("AUG"),U("SEP"),U("OCT"),U("NOV"),U("DEC")
+		};
 		stl::string stime;
 		stime += stl::from_value( m_tm.tm_year + 1900 );
 		stime += U("-");
@@ -229,8 +232,10 @@ namespace sys
 	
 	stl::string time::tolocaltime() const
 	{
-		char  smon[12][4]={ "JAN","FEB","MAR","APR","MAY","JUN",
-							"JUL","AUG","SEP","OCT","NOV","DEC"};
+		stl::char_t  smon[12][4] = {
+			U("JAN"),U("FEB"),U("MAR"),U("APR"),U("MAY"),U("JUN"),
+			U("JUL"),U("AUG"),U("SEP"),U("OCT"),U("NOV"),U("DEC")
+		};
 		
 		struct tm loctm = *localtime(&m_t);
 		

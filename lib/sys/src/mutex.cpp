@@ -23,7 +23,7 @@
 #include <errno.h>
 #include "exception.hpp"
 #include "algorithm.hpp"
-
+#include "string.hpp"
 
 
 #include <stdio.h> // for printf
@@ -36,7 +36,7 @@ namespace sys
 #ifdef _WIN32
 		// Create a mutex: now owned (unlocked) and unnamed (not shared with
 		// other processes).
-		m_handle = ::CreateMutex(NULL, false, "");
+		m_handle = ::CreateMutex(NULL, false, U(""));
 		if(m_handle == NULL)
 			throw stl::exception("Cannot create the mutex!");					
 #else

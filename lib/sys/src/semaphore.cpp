@@ -20,6 +20,7 @@
 
 #include "semaphore.hpp"
 #include "exception.hpp"
+#include "string.hpp"
 
 #ifdef _WIN32
 #else
@@ -36,7 +37,7 @@ namespace sys
 			throw stl::exception("semaphore maxlocks must be > 0");
 		
 #ifdef _WIN32
-		m_handle = ::CreateSemaphore(NULL, maxlocks, maxlocks, "");
+		m_handle = ::CreateSemaphore(NULL, maxlocks, maxlocks, U(""));
 		if(m_handle == NULL)
 			throw stl::exception("CreateSemaphore error");
 #else
