@@ -94,7 +94,7 @@ namespace stl
     stl::string from_string(const std::wstring& wsrc)
     {
 #if defined UNICODE
-        return stl::string(wsrc) ;
+        return stl::string(wsrc.c_str()) ;
 #else
         return from_wide(wsrc.c_str());
 #endif
