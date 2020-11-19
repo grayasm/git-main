@@ -29,5 +29,3 @@ SectionEnd
 Section Uninstall
     RMDir /r $INSTDIR
 SectionEnd
-
-
