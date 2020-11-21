@@ -77,10 +77,13 @@ To check if SSL certificate is installed correctly use the <a href="https://www.
 
 Now it's time to install postfix and dovecot. The setup will use Maildir format (instead of mbox) and the SSL certificate that was previously generated.<br><br>
 
-I used <a href="https://www.krizna.com/centos/setup-mail-server-centos-7/" target="_blank">this installation guide</a> 
-for postfix and dovecot on CentOS7.<br><br>
+My 1st <a href="https://workaround.org/ispmail/jessie/relaying-smtp-authentication" target="_blank">installation guide</a> 
+explains authentication via STARTTLS on smtp port 25.<br><br>
 
-An <a href="https://www.digitalocean.com/community/tutorials/how-to-set-up-a-postfix-e-mail-server-with-dovecot" target="_blank">additional installation guide</a> 
+A 2nd <a href="https://www.krizna.com/centos/setup-mail-server-centos-7/" target="_blank">installation guide for CentOS7</a> 
+has useful parameters for Dovecot.<br><br>
+
+A 3rd <a href="https://www.digitalocean.com/community/tutorials/how-to-set-up-a-postfix-e-mail-server-with-dovecot" target="_blank">installation guide</a> 
 exists at DigitalOcean for Debian.<br><br>
 
 Also <a href="https://helpdesk.ssls.com/hc/en-us/articles/115000618805-Installing-and-configuring-an-SSL-certificate-on-Postfix-Dovecot-mail-server" target="_blank">here a 3rd guide</a>  
@@ -92,31 +95,26 @@ Here are my final changes for the setup.<br><br>
 </p>
 
 <pre>
+mail_owner = postfix
 myhostname = mail.vasilian.net
 mydomain = vasilian.net
 myorigin = $mydomain
 inet_interfaces = all
+inet_protocols = all
 mydestination = $myhostname, localhost.$mydomain, localhost, $mydomain
 virtual_alias_maps = hash:/etc/postfix/virtual
 mynetworks = 127.0.0.0/8
+relayhost =
 home_mailbox = Maildir/
 smtpd_sasl_type = dovecot
 smtpd_sasl_path = private/auth
-smtpd_sasl_local_domain =
-smtpd_sasl_security_options = noanonymous
-broken_sasl_auth_clients = yes
 smtpd_sasl_auth_enable = yes
-smtpd_recipient_restrictions = permit_sasl_authenticated,permit_mynetworks,reject_unauth_destination
-smtp_tls_security_level = may
 smtpd_tls_security_level = may
-smtp_tls_note_starttls_offer = yes
-smtpd_tls_loglevel = 1
-smtpd_tls_key_file = /etc/letsencrypt/live/vasilian.net/privkey.pem
+smtpd_tls_auth_only = yes
 smtpd_tls_cert_file = /etc/letsencrypt/live/vasilian.net/fullchain.pem
-smtpd_tls_received_header = yes
-smtpd_tls_session_cache_timeout = 3600s
-tls_random_source = dev:/dev/urandom
-smtpd_use_tls = yes
+smtpd_tls_key_file = /etc/letsencrypt/live/vasilian.net/privkey.pem
+local_recipient_maps = proxy:unix:passwd.byname $alias_maps
+smtpd_sender_login_maps = $virtual_alias_maps
 smtpd_tls_session_cache_database = btree:${data_directory}/smtpd_scache
 smtp_tls_session_cache_database = btree:${data_directory}/smtp_scache
 </pre>
@@ -130,20 +128,27 @@ smtp_tls_session_cache_database = btree:${data_directory}/smtp_scache
 #               (yes)   (yes)   (yes)   (never) (100)                                                                         
 # ==========================================================================                                                  
 smtp       inet  n       -       n       -       -       smtpd
-submission inet  n       -       y       -       -       smtpd
-   -o syslog_name=postfix/submission
-   -o smtpd_tls_security_level=may
-   -o smtpd_sasl_auth_enable=yes
-   -o smtpd_reject_unlisted_recipient=yes
-   -o smtpd_recipient_restrictions=permit_sasl_authenticated,reject
-   -o milter_macro_daemon_name=ORIGINATING
-smtps      inet  n       -       y       -       -       smtpd
-   -o syslog_name=postfix/smtps
-   -o smtpd_tls_wrappermode=yes
-   -o smtpd_sasl_auth_enable=yes
-   -o smtpd_reject_unlisted_recipient=yes
-   -o smtpd_recipient_restrictions=permit_sasl_authenticated,reject
-   -o milter_macro_daemon_name=ORIGINATING
+  -o syslog_name=postfix/smtp
+  -o smtpd_tls_security_level=encrypt
+  -o smtpd_sasl_auth_enable=yes
+  -o smtpd_sasl_type=dovecot
+  -o smtpd_sasl_path=private/auth
+  -o smtpd_sasl_local_domain=$myhostname
+  -o smtpd_sender_login_maps=$virtual_alias_maps
+  -o smtpd_sender_restrictions=reject_sender_login_mismatch
+  
+submission inet  n       -       -       -       -       smtpd
+  -o syslog_name=postfix/submission
+  -o smtpd_tls_security_level=encrypt
+  -o smtpd_sasl_auth_enable=yes
+  -o smtpd_sasl_type=dovecot
+  -o smtpd_sasl_path=private/auth
+  -o smtpd_sasl_security_options=noanonymous
+  -o smtpd_sender_login_maps=$virtual_alias_maps
+  -o smtpd_sender_restrictions=reject_sender_login_mismatch
+  -o smtpd_sasl_local_domain=$myhostname
+  -o smtpd_client_restrictions=permit_sasl_authenticated,reject
+  -o smtpd_recipient_restrictions=reject_non_fqdn_recipient,permit_sasl_authenticated,reject
 </pre>
 
 <br>
@@ -172,7 +177,7 @@ postmap /etc/postfix/virtual
 <p>Edit /etc/dovecot/dovecot.conf</p>
 
 <pre>
-protocols = imap pop3 imaps pop3s
+protocols = imap imaps
 </pre>
 
 <p>Edit /etc/dovecot/conf.d/10-auth.conf.orig</p>
@@ -201,8 +206,10 @@ unix_listener /var/spool/postfix/private/auth {
 <p>Edit /etc/dovecot/conf.d/10-ssl.conf.orig</p>
 
 <pre>
+ssl = yes
 ssl_cert = &lt;/etc/letsencrypt/live/vasilian.net/fullchain.pem
 ssl_key  = &lt;/etc/letsencrypt/live/vasilian.net/privkey.pem
+ssl_protocols = !SSLv2 !SSLv3
 </pre>
 
 <p>Edit /etc/dovecot/conf.d/20-pop3.conf.orig</p>
@@ -227,6 +234,103 @@ and DigitalOcean will automatically assign a PTR record for the domain.
 <pre>
 host 138.68.68.112
 112.68.68.138.in-addr.arpa domain name pointer vasilian.net.
+</pre>
+
+<p>Let's check the mail server functionality<br>
+What ports are open?</p>
+<pre>
+nmap vasilian.net
+
+PORT    STATE  SERVICE
+25/tcp  open   smtp
+143/tcp open   imap
+587/tcp open   submission
+993/tcp open   imaps
+</pre>
+
+<table>
+<tr>
+<th>Protocol</th>
+<th>Usage</th>
+<th>Plain text /<br>encrypted session</th>
+<th>Encrypted session only</th>
+</tr>
+<tr>
+<td>POP3</td>
+<td>Incomming mail</td>
+<td>110</td>
+<td>995</td>
+</tr>
+<tr>
+<td>IMAP</td>
+<td>Incomming mail</td>
+<td>143</td>
+<td>993</td>
+</tr>
+<tr>
+<td>SMTP</td>
+<td>Outgoing mail</td>
+<td>25</td>
+<td>465</td>
+</tr>
+<tr>
+<td>Submission</td>
+<td>Outgoing mail</td>
+<td>587</td>
+<td></td>
+</tr>
+</table>
+
+<p>Is AUTH PLAIN LOGIN available unencrypted?</p>
+<pre>
+telnet vasilian.net smtp
+ehlo vasilian.net
+
+250-mail.vasilian.net
+250-PIPELINING
+250-SIZE 10240000
+250-VRFY
+250-ETRN
+<b>250-STARTTLS</b>
+250-ENHANCEDSTATUSCODES
+250-8BITMIME
+250 DSN
+</pre>
+
+<p>Does MAIL FROM: work unencrypted?</p>
+<pre>
+telnet vasilian.net smtp
+MAIL FROM: user@vasilian.net
+<b>530 5.7.0 Must issue a STARTTLS command first</b>
+</pre>
+
+<p>Does encrypted authentication work?</p>
+<pre>
+# use real login data 
+echo -ne '\0user\0password' | base64
+AHVzZXIAcGFzc3dvcmQ=
+
+openssl s_client -connect vasilian.net:25 -starttls smtp
+ehlo vasilian.net
+
+250-mail.vasilian.net
+250-PIPELINING
+250-SIZE 10240000
+250-VRFY
+250-ETRN
+<b>250-AUTH PLAIN LOGIN</b>
+250-ENHANCEDSTATUSCODES
+250-8BITMIME
+250 DSN
+
+<b>AUTH PLAIN</b>
+334 
+AHVzZXIAcGFzc3dvcmQ=
+235 2.7.0 Authentication successful
+
+<b>quit</b>
+221 2.0.0 Bye
+closed
 </pre>
 
 <br>
