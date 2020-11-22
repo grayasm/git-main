@@ -28,7 +28,7 @@ SectionEnd
 
 Function setImage
     GetTempFileName $0
-	File /oname=$0 "${NSISDIR}\Contrib\Graphics\Wizard\nullsoft.bmp"
-	SetBrandingImage /RESIZETOFIT $0
-	Delete $0
+    File /oname=$0 "${NSISDIR}\Contrib\Graphics\Wizard\nullsoft.bmp"
+    SetBrandingImage /RESIZETOFIT $0
+    Delete $0
 FunctionEnd
