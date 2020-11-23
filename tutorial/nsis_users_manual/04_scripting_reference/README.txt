@@ -71,10 +71,15 @@
         FunctionEnd
 
     4.7 Functions
+        ; callbacks
         .onInit
         .onSelChange
         un.onInit
         un.onSelChange
+        
+        ; user defined
+        Function func
+        FunctionEnd
         
     4.8 Installer Attributes
         AddBrandingImage left 100u
