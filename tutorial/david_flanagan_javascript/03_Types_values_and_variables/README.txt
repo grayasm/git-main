@@ -1,7 +1,7 @@
 ===============================================================================
                    Cap.3 Types, Values and Variables
 ===============================================================================
-  1) Primitive types: numbers,  strings,  booleans
+  1) Primitive types: undefined, null, booleans, numbers and  strings
      Object types   : objects,  arrays,   functions
 
      Numbers
@@ -56,10 +56,14 @@
 
      Objects
      =======
- 15) The global object has functions and properties.
+ 15) Node.js global object is "Global"
+     Chrome/FF/IE browsers global object is "Window"
+     The global object has functions and properties.
+
      var a = isFinite(200);         // method of the global object "this"
      var a = this.isFinite(200);
      var p = this.Infinity;         // property
+
  16) Wrapper objects convert behind the scene the primitive types into objects.
      var s = "test";
      var n = 10;
@@ -67,6 +71,7 @@
      s.length();       // =>  4:    s is wrapped with: new String("test")
      n.toString();     // => "10":  n is wrapped with: new Number(10);
      b.toString();     // => "true: b is wrapped with: new Boolean(true);
+
  17) Mutable objects vs immutable primitives
      var s = "hello";  // Start with some lowercase text
      s.toUpperCase();  // Returns "HELLO", but doens't alter s
