@@ -25,4 +25,3 @@ for(var p in o) console.log("p in o", o, "=", o[p]);
 /*    declare a variable more than once with var statement    */
 var i = 0; console.log("i=", i);    // 0
 var i = -5;console.log("i=", i);    //-5
-
