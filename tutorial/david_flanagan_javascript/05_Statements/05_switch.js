@@ -29,3 +29,22 @@ default:
     // Execute code block #4
     break;
 }
+
+
+// You can let the execution "fall through" or use return to break out.
+function convert(x) {
+    switch(typeof(x)) {
+
+    case 'number':
+        return x.toString(16);
+
+    case 'string':
+        return '"' + x + '"';
+
+    default:
+        return String(x);
+    }
+}
+
+console.log(  convert(255)  );    // ff
+console.log(  convert('255'));    // "255"
