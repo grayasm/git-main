@@ -53,6 +53,7 @@
        ,          : discard first operand, return second.
 
     8. Operator precedence: higher to lower, can overwrite it by using (  )
+
     9. Operator associativity:
        > left-to-right var w = 10 - 3 - 2;
        > right-to-left var q = a ? b : c ? d : e;
