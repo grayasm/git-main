@@ -11,7 +11,7 @@
 */
 
 var f = function(x) { return x + 1; } // Expression assigned to a variable
-function f(x) { return x + 1; }
+function f(x) { return x + 1; }       // Statement includes variable name
 
 function hypotenuse(x, y) {
     return Math.sqrt(x*x + y*y);
