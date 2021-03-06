@@ -7,4 +7,4 @@ export OFFICE=
 export SERVER=
 export MWOVPN_PASS=
 export DIGITALOCEAN=
-export DIGITALWA0=
+export THROWMAIL=

@@ -1,9 +1,6 @@
+#
 # .bash_aliases
-# cp $HOME/.bash_aliases $HOME/Code/git-main/script/bash/bash_aliases
-# git status $HOME/Code/git-main
-# git diff   $HOME/Code/git-main
-# git commit $HOME/Code/git-main
-
+#
 
 if [ -f $HOME/.bash_nosave ]; then
    . $HOME/.bash_nosave
@@ -75,8 +72,7 @@ alias pip='/usr/bin/pip3'
 # alias sshsrv='ssh -X -l mihai -i $HOME/.ssh/id_rsa_home_key  $SERVER'
 # alias office='ssh -i $HOME/.ssh/id_dsa_office -l mihai -L 13389:10.1.1.235:3389  $OFFICE'
 alias sshocean='ssh -l root -i $HOME/.ssh/id_rsa_digitalocean2  $DIGITALOCEAN'
-alias sshwa0='ssh -L 5903:$DIGITALWA0:5903 -l sorin -i $HOME/.ssh/id_rsa_sorin_wa0  $DIGITALWA0
-alias sshpo0='ssh -L 5904:$DIGITALWA0:5904 -l sorin -i $HOME/.ssh/id_rsa_sorin_po0  $DIGITALWA0
+alias sshmail='ssh -l root -i $HOME/.ssh/id_rsa_throwmail $THROWMAIL'
 
 
 # X11
