@@ -72,7 +72,9 @@ alias pip='/usr/bin/pip3'
 # alias sshsrv='ssh -X -l mihai -i $HOME/.ssh/id_rsa_home_key  $SERVER'
 # alias office='ssh -i $HOME/.ssh/id_dsa_office -l mihai -L 13389:10.1.1.235:3389  $OFFICE'
 alias sshocean='ssh -l root -i $HOME/.ssh/id_rsa_digitalocean2  $DIGITALOCEAN'
-alias sshmail='ssh -l root -i $HOME/.ssh/id_rsa_throwmail $THROWMAIL'
+alias sshmail='ssh -L 5903:$THROWMAIL:5903 -l mihai -i $HOME/.ssh/id_rsa_throwmail $THROWMAIL'
+# alias sshmail='ssh -l root -i $HOME/.ssh/id_rsa_throwmail $THROWMAIL'
+
 
 
 # X11
