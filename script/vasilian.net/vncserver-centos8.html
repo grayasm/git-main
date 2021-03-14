@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>VNC Server</title>
+<link href="main.css" rel="stylesheet" type="text/css" media="all">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+</head>
+<body>
+<a href="index.html">Back to main index</a>
+<h1>VNC Server for CentOS-8</h1>
+
+<p>Install tigervnc-server</p>
+<pre>
+yum install tigervnc-server xorg-x11-fonts-Type1
+</pre>
+
+<p>Check if the selinux package was installed</p>
+<pre>
+repoquery --requires tigervnc-server
+repoquery --requires tigervnc-server | grep selinux
+dnf list installed | grep tigervnc-selinux
+<b>tigervnc-selinux.noarch</b>      1.10.1-9.el8_3      @ol8_appstream
+</pre>
+
+<p>In C8 tigervnc must be configured and started differently as in C7.</p>
+<pre>less /usr/share/doc/tigervnc/HOWTO.md</pre>
+
+<p>Add a user mapping</p>
+<pre>
+emacs /etc/tigervnc/vncserver.users
+
+<b>:3=mihai</b>
+</pre>
+
+<p>Configure Xvnc options</p>
+<pre>
+emacs /etc/tigervnc/vncserver-config-defaults
+
+securitytypes=vncauth,tlsvnc
+desktop=sandbox
+alwaysshared
+session=<b>xfce</b>
+</pre>
+
+<p>Set VNC password for the user</p>
+<pre>
+[mihai@centos: ~]$ vncpasswd
+</pre>
+
+<p>Check if selinux labels are correct:</p>
+<pre>
+chcon -u system_u -t <b>user_home_dir_t</b> -v $HOME
+chcon -u system_u -r object_r -t <b>xdm_home_t</b> -Rv $HOME/.vnc
+</pre>
+
+<p>Check tigervnc selinux policy module</p>
+<pre>
+repoquery --list tigervnc-selinux.noarch
+<b>/usr/share/selinux/packages/vncsession.pp</b>
+</pre>
+
+<p>Let's unpack the module and see the content</p>
+<pre>
+cd /tmp
+cp /usr/share/selinux/packages/vncsession.pp .
+semodule_unpackage vncsession.pp vncsession.mod
+sedismod vncsession.mod
+
+<b>play with the menu: (m for the menu)</b>
+</pre>
+
+<p>Read <a href="https://wiki.gentoo.org/wiki/SELinux/Tutorials/How_is_the_policy_provided_and_loaded" target="_blank">here</a>
+ about loading and unloading policies.
+</p>
+
+<pre>
+sestatus | grep Loaded
+<b>Loaded policy name:             targeted</b>
+
+semodule -l
+semodule -l | grep vncsession
+</pre>
+
+<p>If vncsession.pp policy is not loaded then:</p>
+<pre>
+cd /usr/share/selinux/packages
+semodule -i vncsession.pp 
+</pre>
+
+<p>Start tigetvnc server</p>
+<pre>
+systemctl enable vncserver@:3
+systemctl start  vncserver@:3
+</pre>
+
+<p>If the vncsession.pp policy is not loaded, the server will return this error</p>
+<pre>
+systemctl start vncserver@:3
+
+Job for vncserver@:3.service failed because the control process exited with error code.
+See "systemctl status vncserver@:3.service" and "journalctl -xe" for details.
+
+
+journalctl -xe
+
+-- Unit vncserver@:3.service has begun starting up.
+Mar 14 16:51:25 centos-s-1vcpu-1gb-ams3-01 systemd[2154]: vncserver@:3.service: Failed to change SELinux context to <mark>system_u:system_r:vnc_session_t:s0:</mark> Operation not permitted
+Mar 14 16:51:25 centos-s-1vcpu-1gb-ams3-01 systemd[2154]: vncserver@:3.service: Failed at step SELINUX_CONTEXT spawning /usr/libexec/vncsession-start: Operation not permitted
+-- Subject: Process /usr/libexec/vncsession-start could not be executed
+-- Defined-By: systemd
+-- Support: https://support.oracle.com
+-- The error number returned by this process is 1.
+Mar 14 16:51:25 centos-s-1vcpu-1gb-ams3-01 systemd[1]: vncserver@:3.service: Control process exited, code=exited status=229
+Mar 14 16:51:25 centos-s-1vcpu-1gb-ams3-01 systemd[1]: vncserver@:3.service: Failed with result 'exit-code'.
+-- The unit vncserver@:3.service has entered the 'failed' state with result 'exit-code'.
+Mar 14 16:51:25 centos-s-1vcpu-1gb-ams3-01 systemd[1]: Failed to start Remote desktop service (VNC).
+-- Subject: Unit vncserver@:3.service has failed
+-- Defined-By: systemd
+-- Support: https://support.oracle.com
+</pre>
+
+<p>If the selinux context is not correct the server will return the following error</p>
+<pre>
+journalctl -xe
+
+/SetroubleshootPrivileged.py[1364]: failed to retrieve rpm info for /var/lib/selinux/targeted/active/modules/400/vncsession
+SELinux is preventing (on-start) from entrypoint access on the file /usr/libexec/vncsession-start.
+For complete SELinux messages run: <b>sealert -l 95553683-515b-405f-9b1a-1437e273df79</b>
+
+*****  Plugin restorecon (99.5 confidence) suggests   ************************
+
+If you want to fix the label. 
+/usr/libexec/vncsession-start default label should be vnc_session_exec_t.
+Then you can run restorecon. 
+The access attempt may have been stopped due to insufficient permissions to access a parent directory in which case try to change the following command accordingly.
+Do
+<mark>/sbin/restorecon -v /usr/libexec/vncsession-start</mark>
+</pre>
+<br>
+<p>
+VNC connection is not encrypted. We must use a ssh tunnel.<br>
+Open both ports ssh 22 and vnc 5903
+</p>
+<pre>
+iptables -A INPUT -p tcp --dport 22   -j ACCEPT
+iptables -A INPUT -p tcp --dport 5903 -j ACCEPT
+</pre>
+
+<p>
+If you do this on a headless server then install X11, XFCE and lightdm as on  
+<a href="centos8.html" target="_blank">CentOS-8</a>.<br>
+You have to start XFCE once for the &lt;USER&gt; to create the default desktop.<br>
+</p>
+
+
+<p>It may be needed to reboot the server once.</p>
+
+<p>Download the VNC viewer for Linux from 
+<a href="https://www.realvnc.com/en/connect/download/viewer" target="_blank">realvnc website</a> 
+and install it to /opt
+<p>
+<pre>
+su
+mkdir -pv /opt/vnc-viewer
+mv VNC-Viewer-*-Linux-x64 /opt/vnc-viewer/
+cp -v /home/mihai/Code/git-main/script/realvnc/vnc-viewer.png /opt/vnc-viewer 
+chown -Rv root:root /opt/vnc-viewer
+chcon -Rv -u system_u -t usr_t /opt/vnc-viewer
+</pre>
+<pre>
+cat > /usr/share/applications/realvnc.desktop << EOF
+[Desktop Entry]
+Name=RealVNC
+GenericName=VNC Viewer
+Comment=Control remote computer
+Exec=/opt/vnc-viewer/VNC-Viewer-6.19.1115-Linux-x64
+Terminal=false
+Icon=/opt/vnc-viewer/vnc-viewer.png
+Type=Application
+Categories=Network;
+Version=1.0
+X-Desktop-File-Install-Version=0.23
+EOF
+</pre>
+
+<p>Create the ssh tunnel</p>
+<pre>
+ssh -L 5903:$DIGITALOCEAN:5903 -l mihai $DIGITALOCEAN
+</pre>
+<p>or connect using a private key</p>
+<pre>
+ssh -L 5903:$DIGITALOCEAN:5903 -i ~/.ssh/id_rsa_digitalocean -l mihai $DIGITALOCEAN
+</pre>
+
+<p>Start RealVNC</p>
+<img src="images/realvnc-desktop.png" alt="realvnc shortcut">
+
+<p>Add a new connection</p>
+<img src="images/realvnc_new_connection.png" alt="realvnc new connection">
+
+<p>
+To connect from a Windows client read 
+<a href="https://helpdeskgeek.com/how-to/tunnel-vnc-over-ssh" target="_blank">here</a> 
+about How to Tunnel VNC over SSH.<br>
+You will need 
+<a href="https://www.putty.org" target="_blank">PuTTY</a> and 
+<a href="https://www.realvnc.com/en/connect/download/viewer" target="_blank">RealVNC</a> for this.<br><br>
+</p>
+
+<p>See which VNC port is currently open</p>
+<pre>
+nmap localhost
+PORT     STATE SERVICE
+22/tcp   open  ssh
+25/tcp   open  smtp
+5903/tcp open  vnc-3
+6003/tcp open  X11:3
+</pre>
+
+<a href="index.html">Back to main index</a>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
