@@ -15,7 +15,7 @@ ENDCOMMANDS
 
 
 # vasilian.net root dir.
-WWWDIR=/srv/http/vasilian.net
+WWWDIR=/var/www/html/vasilian.net
 if [ ! -d $WWWDIR ]; then
     mkdir -pv     $WWWDIR
     chmod -Rv 755 $WWWDIR
@@ -25,8 +25,8 @@ fi
 cp    -afRv  /home/mihai/Code/git-main/script/vasilian.net/*  $WWWDIR
 rm    -v  $WWWDIR/httpd.update
 rm    -v  $WWWDIR/template.html
-chown -v  root:root     /srv/http
 chown -Rv apache:apache $WWWDIR
 
-# on DigitalOcean I disabled SELinux
-# chcon -u system_u -r object_r -t httpd_sys_content_t -Rv /srv/http
+# SELinux
+##chcon -u system_u -r object_r -t httpd_sys_content_t -Rv /var/www/html/vasilian.net
+chcon -t httpd_sys_content_t -Rv /var/www/html/vasilian.net
