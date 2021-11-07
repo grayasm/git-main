@@ -2,9 +2,14 @@
 
 set -x
 
-yum group install "Development Tools"
+if [ `id -u` != 0 ]; then
+    echo "you must be root"
+    exit
+fi
 
-yum install subversion-devel    \
+dnf group install "Development Tools"
+
+dnf install subversion-devel    \
             subversion-tools    \
             gcc                 \
             gcc-c++             \
