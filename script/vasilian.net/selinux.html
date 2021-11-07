@@ -23,7 +23,7 @@ disabled  : turned off
 
 <p>To configure selinux rules from a GUI tool, do:</p>
 <pre>
-yum install policycoreutils-gui  policycoreutils  policycoreutils-python
+dnf install policycoreutils-gui  policycoreutils  policycoreutils-python
 
 system-config-selinux
 </pre>
@@ -38,14 +38,14 @@ sestatus
 <p>Display the security context for a file or folder.</p>
 
 <pre>
-ls -Z /etc/yum.repos.d/
--rw-r--r--. root root system_u:object_r:system_conf_t:s0 CentOS-Base.repo
--rw-r--r--. root root system_u:object_r:system_conf_t:s0 CentOS-CR.repo
--rw-r--r--. root root system_u:object_r:system_conf_t:s0 CentOS-Debuginfo.repo
--rw-r--r--. root root system_u:object_r:system_conf_t:s0 CentOS-fasttrack.repo
--rw-r--r--. root root system_u:object_r:system_conf_t:s0 CentOS-Media.repo
--rw-r--r--. root root system_u:object_r:system_conf_t:s0 CentOS-Sources.repo
--rw-r--r--. root root system_u:object_r:system_conf_t:s0 CentOS-Vault.repo
+ll -Z /etc/yum.repos.d/
+-rw-r--r--.   root root  system_u:object_r:system_conf_t:s0    elrepo.repo
+-rw-r--r--.   root root  system_u:object_r:system_conf_t:s0    epel.repo
+-rw-r--r--.   root root  system_u:object_r:system_conf_t:s0    fedora28.repo
+-rw-r--r--.   root root  system_u:object_r:system_conf_t:s0    Rocky-AppStream.repo
+-rw-r--r--.   root root  system_u:object_r:system_conf_t:s0    Rocky-BaseOS.repo
+-rw-r--r--.   root root  system_u:object_r:system_conf_t:s0    Rocky-Extras.repo
+-rw-r--r--.   root root  system_u:object_r:system_conf_t:s0    vasilian.repo
 </pre>
 
 
@@ -55,7 +55,7 @@ ls -Z /etc/yum.repos.d/
 ps axZ
 </pre>
 
-<p>SELinux security context fields <b>unconfirmed_u:object_r:user_home_t:s0</b> are based on <b>user:role:type:mls</b></p>
+<p>SELinux security context fields <b>unconfined_u:object_r:user_home_t:s0</b> are based on <b>user:role:type:mls</b></p>
 
 <p>SELinux security context of Apache web server.</p>
 
@@ -93,7 +93,7 @@ cat /var/log/messages        | grep avc     # if auditd is not running.
 <p>Analyze log files in human-readable format.</p>
 
 <pre>
-yum install setroubleshoot
+dnf install setroubleshoot
 sealert -b   # gui tool
 sealert -a /var/log/audit/audit.log > /root/mylogfile.txt
 </pre>

@@ -7,11 +7,11 @@
 </head>
 <body>
 <a href="index.html">Back to main index</a>
-<h1>VNC Server for CentOS-8</h1>
+<h1>VNC Server for Rocky-8</h1>
 
 <p>Install tigervnc-server</p>
 <pre>
-yum install tigervnc-server xorg-x11-fonts-Type1
+dnf install tigervnc-server xorg-x11-fonts-Type1
 </pre>
 
 <p>Check if the selinux package was installed</p>
@@ -148,7 +148,7 @@ iptables -A INPUT -p tcp --dport 5903 -j ACCEPT
 
 <p>
 If you do this on a headless server then install X11, XFCE and lightdm as on  
-<a href="centos8.html" target="_blank">CentOS-8</a>.<br>
+<a href="rocky8.html" target="_blank">Rocky-8</a>.<br>
 You have to start XFCE once for the &lt;USER&gt; to create the default desktop.<br>
 </p>
 

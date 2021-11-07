@@ -14,16 +14,16 @@ Grub supports background (RGB 8bit) image via GFXMODE<br><br>
 
 When processing an image in Gimp, set image to RGB 8bit=256 colors via Image->Mode->Indexed and then Export-> as .png<br><br>
 
-For my big screen, download an image 2560x1080, 21:9 aspect ratio<br><br>
+For my screen, download an image 2560x1080, 21:9 aspect ratio<br><br>
 </p>
 
 <pre>
 su
 cd /usr/share/grub
-wget https://sites.google.com/site/grayasm/grub/linux_2560x1080.png
-chown root:root linux_2560x1080.png
-chmod 644 linux_2560x1080.png
-chcon -u system_u -t usr_t linux_2560x1080.png
+wget ftp://vasilian.net/Gtk-Themes/rhel8_8bit_2560x1080.png
+chown root:root rhel8_8bit_2560x1080.png
+chmod 644 rhel8_8bit_2560x1080.png
+chcon -u system_u -t usr_t rhel8_8bit_2560x1080.png
 </pre>
 
 <p>Setup grub default parameters</p>
@@ -32,7 +32,7 @@ chcon -u system_u -t usr_t linux_2560x1080.png
 cat /etc/default/grub
 
 GRUB_TIMEOUT="600"
-GRUB_BACKGROUND="/usr/share/grub/linux_2560x1080.png"
+GRUB_BACKGROUND="/usr/share/grub/rhel8_8bit_2560x1080.png"
 GRUB_DISTRIBUTOR="$(sed 's, release .*$,,g' /etc/system-release)"
 GRUB_DEFAULT="saved"
 GRUB_SAVEDEFAULT="true"

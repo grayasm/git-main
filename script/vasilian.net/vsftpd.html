@@ -16,7 +16,7 @@ Install the server with:
 </p>
 
 <pre>
-yum install vsftpd
+dnf install vsftpd
 </pre>
 
 <p>
@@ -34,7 +34,7 @@ cat /etc/vsftpd/vsftpd.conf
 
 anonymous_enable=YES
 no_anon_password=YES
-anon_root=/srv/ftp
+anon_root=/var/ftp/pub
 
 local_enable=NO
 write_enable=NO
@@ -61,7 +61,6 @@ ls_recurse_enable=NO
 listen=NO
 pam_service_name=vsftpd
 userlist_enable=YES
-tcp_wrappers=YES
 
 
 # passive FTP (PASV command)
@@ -114,7 +113,6 @@ listen=NO
 listen_ipv6=YES
 pam_service_name=vsftpd
 userlist_enable=YES
-tcp_wrappers=YES
 
 # passive FTP (PASV command)
 pasv_enable=YES

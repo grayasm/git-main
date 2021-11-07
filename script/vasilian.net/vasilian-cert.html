@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>vasilian.net certbot</title>
+<link href="main.css" rel="stylesheet" type="text/css" media="all">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+</head>
+<body>
+<a href="index.html">Back to main index</a>
+<h1>Setup certbot</h1>
+
+
+<p>Check the services running on the host:</p>
+<pre>
+nmap $DIGITALOCEAN
+21/tcp  open   ftp
+25/tcp  open   smtp
+80/tcp  open   http
+143/tcp open   imap
+443/tcp open   https
+465/tcp closed smtps
+587/tcp open   submission
+993/tcp open   imaps
+</pre>
+
+www and mail must be running otherwise certbot will error out like:<br>
+<pre>
+"Certbot could not find a VirtualHost for mail.vasilian.net in the Apache configuration.
+Please create a VirtualHost with a ServerName matching <mark>mail.vasilian.net</mark> and try again."
+</pre>
+
+
+<p>
+Read about installing the <a href="https://certbot.eff.org/lets-encrypt/centosrhel8-apache" target="_blank">Let's Encrypt Certbot</a> 
+and how to create a SSL certificate for the domain and subdomains.
+</p>
+<pre>
+dnf install certbot python3-certbot-apache
+certbot --apache
+</pre>
+
+<p>
+This will detect only the www and domain name, but will not show the mail. subdomain<br><br>
+
+You have to re-run with <a href="https://certbot.eff.org/docs/using.html#re-creating-and-updating-existing-certificates" target="_blank">expand option</a> 
+to include also the mail.vasilian.net
+</p>
+
+<pre>
+certbot --expand -d www.vasilian.net,vasilian.net,mail.vasilian.net
+</pre>
+
+<p>Select this option when asked:</p>
+<pre>
+We were unable to find a vhost with a ServerName or Address of mail.vasilian.net.
+Which virtual host would you like to choose?
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+<mark>1: ssl.conf</mark>                       |                       | HTTPS | Enabled
+2: vasilian.net.conf              | Multiple Names        |       | Enabled
+3: vasilian.net-le-ssl.conf       | Multiple Names        | HTTPS | Enabled
+</pre>
+
+<p>
+To check if SSL certificate is installed correctly use the <a href="https://www.ssllabs.com/ssltest/index.html" target="_blank">SSL Server Test page</a>.<br><br>
+</p>
+
+<p>
+Add a crontab job to renew the certificate.<br>
+Use -e option to edit (vi) /var/spool/cron/root
+</p>
+
+<pre>
+crontab -e
+
+# insert next line, save & exit
+* * * * 1 certbot renew >/dev/null 2>&1
+</pre>
+
+<p>
+To list all  
+<a href="https://www.liquidweb.com/kb/how-to-display-list-all-jobs-in-cron-crontab/" target="_blank">crontab jobs</a>  
+</p>
+<pre>
+crontab -l
+* * * * 1 certbot renew >/dev/null 2>&1
+
+crontab -u mihai -l
+no crontab for mihai
+</pre>
+
+<p>
+To check a simple command use <a href="https://crontab-generator.org/" target="_blank">Crontab Generator</a>
+</p>
+
+
+<br>
+<br>
+<a href="index.html">Back to main index</a>
+</body>
+</html>

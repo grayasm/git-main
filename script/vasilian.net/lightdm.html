@@ -8,24 +8,23 @@
 <body>
 <a href="index.html">Back to main index</a>
 <h1>LightDM Display Manager</h1>
-<p>
-Created on: 09-Dec-2018<br>
-Updated on: 09-Dec-2018<br>
-</p>
+
+
 <p>LightDM on archlinux wiki page: 
 <a href="https://wiki.archlinux.org/index.php/LightDM" target="_blank">LightDM</a>
 </p>
-<p>This is how it looks installed on CentOS.</p>
+<p>This is how it looks installed on Rocky-8</p>
 <pre>
-yum list installed | grep lightdm
-lightdm.x86_64                 1.25.0-1.el7     @epel      
-lightdm-gobject.x86_64         1.25.0-1.el7     @epel      
-lightdm-gtk.x86_64             1.8.5-19.el7     @epel      
-lightdm-gtk-common.noarch      1.8.5-19.el7     @epel
+dnf list installed | grep lightdm
+lightdm.x86_64              1.30.0-6.el8      @epel         
+lightdm-gobject.x86_64      1.30.0-6.el8      @epel         
+lightdm-gtk.x86_64          2.0.5-1.fc28      @fedora28
 </pre>
+
+
 <p>Install lightdm packages.</p>
 <pre>
-yum install lightdm lightdm-gtk lightdm-gobject lightdm-gtk-common
+dnf --enablerepo=fedora28 install lightdm
 </pre>
 
 <p>lightdm-gtk-greeter uses a gtk3 css style</p>

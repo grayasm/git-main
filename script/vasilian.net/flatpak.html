@@ -11,22 +11,23 @@
 
 <p>Read about flatpak command reference <a href="http://docs.flatpak.org/en/latest/" target="_blank">here</a> <br><br>
 See <a href="https://flathub.org/home" target="_blank">flathub</a> site for bundled apps and tutorial how to add their repo.<br><br>
-Use flatpak as <b>user</b>, not root.
+Running flatpak commands as user (--user) may return errors.
 </p>
 
 <pre>
-flatpak remote-add --user --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 </pre>
 
 <p>Skype example:</p>
 <pre>
-flatpak remote-ls --user flathub | grep skype
+flatpak remote-ls flathub | grep skype
 com.skype.Client                                  
 com.skype.Client.Debug                            
 com.skype.Client.Sources
 
-flatpak install --user flathub com.skype.Client
+flatpak install flathub com.skype.Client
 </pre>
+
 <br>
 <a href="index.html">Back to main index</a>
 </body>

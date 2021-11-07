@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>email on vasilian.net</title>
+<title>vasilian.net EMail</title>
 <link href="main.css" rel="stylesheet" type="text/css" media="all">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 </head>
 <body>
 <a href="index.html">Back to main index</a>
-<h1>email on vasilian.net</h1>
+<h1>Setup EMail</h1>
 
 <p>
 Start reading <a href="https://www.digitalocean.com/community/tutorials/why-you-may-not-want-to-run-your-own-mail-server" target="_blank">this document</a> 
@@ -19,7 +19,7 @@ I have not yet decided on Spam Filter, AntiVirus and Webmail.<br><br>
 
 Here is <a href="http://shearer.org/MTA_Comparison" target="_blank">an overview</a> about existing MTA programs.<br><br>
 
-Add required DNS entries for the email programs.<br><br>
+The DNS entries below are specific for the email program.<br><br>
 
 Here is <a href="https://www.digitalocean.com/community/tutorials/how-to-create-a-spf-record-for-your-domain-with-google-apps" target="_blank">a guide</a> 
 on why and how to add the SPF record.<br><br>
@@ -41,40 +41,8 @@ Observe the last command:
 dig vasilian.net mx
 </pre>
 
-<p>
-We head now further into installing the <a href="https://certbot.eff.org/lets-encrypt/centosrhel7-apache" target="_blank">Let's Encrypt Certbot</a> 
-and creating a SSL certificate for the domain and subdomains.<br>
-
-<pre>
-certbot --apache
-</pre>
 
 <p>
-This will detect only the www and domain name, but will not show the mail. subdomain<br><br>
-
-You have to re-run with <a href="https://certbot.eff.org/docs/using.html#re-creating-and-updating-existing-certificates" target="_blank">expand option</a> 
-to include also the mail.vasilian.net
-</p>
-
-<pre>
-certbot --expand -d www.vasilian.net,vasilian.net,mail.vasilian.net
-</pre>
-
-<p>
-Here is a page for <a href="https://www.liquidweb.com/kb/how-to-display-list-all-jobs-in-cron-crontab/" target="_blank">crontab commands</a>  
-to list all jobs for current user or for all users.<br><br>
-
-To easily create a crontab job use <a href="https://crontab-generator.org/" target="_blank">this generator.</a>
-</p>
-
-<pre>
-crontab -l
-* * * * 1 certbot renew >/dev/null 2>&1
-</pre>
-
-<p>
-To check if SSL certificate is installed correctly use the <a href="https://www.ssllabs.com/ssltest/index.html" target="_blank">SSL Server Test page</a>.<br><br>
-
 Now it's time to install postfix and dovecot. The setup will use Maildir format (instead of mbox) and the SSL certificate that was previously generated.<br><br>
 
 My 1st <a href="https://workaround.org/ispmail/jessie/relaying-smtp-authentication" target="_blank">installation guide</a> 
@@ -119,7 +87,6 @@ smtpd_tls_session_cache_database = btree:${data_directory}/smtpd_scache
 smtp_tls_session_cache_database = btree:${data_directory}/smtp_scache
 </pre>
 
-<br>
 <p>/etc/postfix/master.cf</p>
 
 <pre>
@@ -151,7 +118,6 @@ submission inet  n       -       -       -       -       smtpd
   -o smtpd_recipient_restrictions=reject_non_fqdn_recipient,permit_sasl_authenticated,reject
 </pre>
 
-<br>
 <p>
 Edit /etc/postfix/virtual <br>
 here replace AT with @ <br>
@@ -160,9 +126,9 @@ here replace AT with @ <br>
 <pre>
 mihaiATvasilian.net    mihai
 rootATvasilian.net     mihai
+alinaATvasilian.net    alina
 </pre>
 
-<br>
 <p>
 Here is <a href="http://www.postfix.org/postconf.5.html#smtpd_reject_unlisted_recipient" target="_blank">a guide on postfix</a> 
 parameters. Of interest here was virtual(5) and $inet_interfaces.<br><br>
@@ -174,26 +140,33 @@ However, after /etc/postfix/virtual file is edited the database must be re-gener
 postmap /etc/postfix/virtual
 </pre>
 
+<p>Start postfix & check the Warnings...</p>
+<pre>
+systemctl enable postfix.service
+systemctl start  postfix.service
+systemctl status postfix.service
+</pre>
+
 <p>Edit /etc/dovecot/dovecot.conf</p>
 
 <pre>
-protocols = imap imaps
+protocols = imap
 </pre>
 
-<p>Edit /etc/dovecot/conf.d/10-auth.conf.orig</p>
+<p>Edit /etc/dovecot/conf.d/10-auth.conf</p>
 
 <pre>
 disable_plaintext_auth = yes
 auth_mechanisms = plain login
 </pre>
 
-<p>Edit /etc/dovecot/conf.d/10-mail.conf.orig</p>
+<p>Edit /etc/dovecot/conf.d/10-mail.conf</p>
 
 <pre>
 mail_location = maildir:~/Maildir
 </pre>
 
-<p>Edit /etc/dovecot/conf.d/10-master.conf.orig</p>
+<p>Edit /etc/dovecot/conf.d/10-master.conf</p>
 
 <pre>
 unix_listener /var/spool/postfix/private/auth {
@@ -203,26 +176,34 @@ unix_listener /var/spool/postfix/private/auth {
 }
 </pre>
 
-<p>Edit /etc/dovecot/conf.d/10-ssl.conf.orig</p>
+<p>Edit /etc/dovecot/conf.d/10-ssl.conf</p>
 
 <pre>
 ssl = yes
 ssl_cert = &lt;/etc/letsencrypt/live/vasilian.net/fullchain.pem
 ssl_key  = &lt;/etc/letsencrypt/live/vasilian.net/privkey.pem
-ssl_protocols = !SSLv2 !SSLv3
+ssl_min_protocol = TLSv1.2
 </pre>
 
-<p>Edit /etc/dovecot/conf.d/20-pop3.conf.orig</p>
+<p>Edit /etc/dovecot/conf.d/20-pop3.conf</p>
 
 <pre>
 pop3_uidl_format = %08Xu%08Xv
+</pre>
+
+
+<p>Start dovecot & check the Warnings..</p>
+<pre>
+systemctl enable dovecot.service
+systemctl start  dovecot.service
+systemctl status dovecot.service
 </pre>
 
 <p>
 <a href="https://serverpilot.io/docs/how-to-set-ptr-records-and-reverse-dns" target="_blank">Here is a guide</a> 
 on how to set the reverse dns for DigitalOcean droplet.<br><br>
 
-Rename the droplet from <b>CentOS7-512MB-FRA1-01</b> to <b>vasilian.net</b><br><br>
+Rename the droplet from <b>Rocky8-512MB-FRA1-01</b> to <b>vasilian.net</b><br><br>
 
 and DigitalOcean will automatically assign a PTR record for the domain.
 </p>
@@ -232,8 +213,8 @@ and DigitalOcean will automatically assign a PTR record for the domain.
 <p>Check if the IP has a reverse dns with:</p>
 
 <pre>
-host 138.68.68.112
-112.68.68.138.in-addr.arpa domain name pointer vasilian.net.
+host 64.227.114.160
+160.114.227.64.in-addr.arpa domain name pointer vasilian.net.
 </pre>
 
 <p>Let's check the mail server functionality<br>
@@ -332,6 +313,18 @@ AHVzZXIAcGFzc3dvcmQ=
 221 2.0.0 Bye
 closed
 </pre>
+
+<p>
+Copy $USER/Maildir from the old server to the new one and adjust the attributes.<br>
+</p>
+<pre>
+sshocean
+cd /home/mihai
+chmod 700 -v Maildir
+chown mihai:mihai -Rv Maildir
+chcon -u system_u -r object_r -t mail_home_rw_t -Rv Maildir
+</pre>
+
 
 <br>
 <br>

@@ -11,7 +11,7 @@
 
 <p>Install openssh with:</p>
 <pre>
-yum install openssh
+dnf install openssh
 </pre>
 
 <p>
@@ -60,27 +60,20 @@ systemctl  start   sshd
 
 <p>Login to server with the user account and generate the ssh keys</p>
 
-<p>Generate an <b>ECDSA</b> (Elliptic Curve Digital Signature Algorithm) on 521 bits - cannot be imported by Putty</p>
-<pre>
-ssh-keygen -b 521 -t ecdsa
-</pre>
-
 <p>Generate a <b>RSA</b> (Rivest-Shamir-Adleman) on 4096 bits -can be imported by Putty</p>
 <pre>
 ssh-keygen -t rsa -b 4096
 </pre>
 
-<p>Use ecdsa or rsa suffix depending on which key was created<br><br>
+<p>The public key id_rsa.pub contains data for the server<br><br>
 
-The public key (id_ecdsa.pub / id_rsa.pub) contains data for the server<br><br>
-
-The private key (id_ecdsa / id_rsa) contains private data for the client (mobile@localdomain)
+The private key id_rsa contains private data for the client (mobile@localdomain)
 </p>
 
 <pre>
-cat ~/.ssh/id_ecdsa.pub
-cat ~/.ssh/id_ecdsa
-cat ~/.ssh/id_ecdsa.pub >> ~/.ssh/authorized_keys
+cat ~/.ssh/id_rsa.pub
+cat ~/.ssh/id_rsa
+cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
 chmod 600 ~/.ssh/authorized_keys
 </pre>
 
@@ -93,38 +86,38 @@ and
 <a href="https://www.garron.me/en/articles/scp.html" target="_blank">scp example 2</a>
 </p>
 <pre>
-scp mihai@138.68.68.112:/home/mihai/.ssh/id_ecdsa      /home/mihai
-scp mihai@$DIGITALOCEAN:/home/mihai/.ssh/id_ecdsa.pub  /home/mihai
+scp mihai@64.227.114.160:/home/mihai/.ssh/id_rsa     /home/mihai
+scp mihai@$DIGITALOCEAN:/home/mihai/.ssh/id_rsa.pub  /home/mihai
 </pre>
 <p>You can remove the keys from the server.</p>
 <pre>
-rm ~/.ssh/id_ecdsa
-rm ~/.ssh/id_ecdsa.pub
+rm ~/.ssh/id_rsa
+rm ~/.ssh/id_rsa.pub
 </pre>
 
 <p>Restart ssh to test the new key.</p>
 <pre>
 systemctl restart sshd.service
-systemctl status sshd.service
+systemctl status  sshd.service
 </pre>
 
-<p>You have now the private key (id_ecdsa) on client computer (mobile#localdomain)</p>
+<p>You have now the private key (id_rsa) on client computer (mobile#localdomain)</p>
 
 <pre>
-mv ~/.ssh/id_ecdsa ~/.ssh/id_ecdsa_home_key
-chmod 400 ~/.ssh/id_ecdsa_home_key
+mv ~/.ssh/id_rsa ~/.ssh/id_rsa_home_key
+chmod 400 ~/.ssh/id_rsa_home_key
 </pre>
 
 <p>I do not set a ssh-agent as I need to remember always the pass-phrase for my keys</p>
 
 <p>Login into sshd on my home server (192.168.0.128, port 22)</p>
 <pre>
-ssh -l mihai -i ~/.ssh/id_ecdsa_home_key 192.168.0.128
+ssh -l mihai -i ~/.ssh/id_rsa_home_key 192.168.0.128
 </pre>
 
 <p>ssh login with X11 forwarding</p>
 <pre>
-ssh -X -l mihai -i ~/.ssh/id_ecdsa_home_key  192.168.0.128
+ssh -X -l mihai -i ~/.ssh/id_rsa_home_key  192.168.0.128
 </pre>
 
 <p>ssh login with tunnelling to C7 running in virtualbox</p>

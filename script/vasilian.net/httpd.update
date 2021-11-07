@@ -28,5 +28,4 @@ rm    -v  $WWWDIR/template.html
 chown -Rv apache:apache $WWWDIR
 
 # SELinux
-##chcon -u system_u -r object_r -t httpd_sys_content_t -Rv /var/www/html/vasilian.net
-chcon -t httpd_sys_content_t -Rv /var/www/html/vasilian.net
+chcon -u system_u -r object_r -t httpd_sys_content_t -Rv /var/www/html/vasilian.net

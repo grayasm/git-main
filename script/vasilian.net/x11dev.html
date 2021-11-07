@@ -9,16 +9,16 @@
 <a href="index.html">Back to main index</a>
 <h1>X11-dev</h1>
 
-<p>Before compiling any program that uses Xlib, you have to install the headers and libraries first.</p>
+<p>Before compiling any program that uses Xlib, you have to install the headers and libraries.</p>
 
 <p>List Xlib related packages.</p>
 <pre>
-yum search libX
+dnf search libX
 </pre>
 
 <p>Install the binaries.</p>
 <pre>
-yum install libXp  libXpm  libXt  libXtst  libXv  libXvMC  libX11 libX11-common \
+dnf install libXp  libXpm  libXt  libXtst  libXv  libXvMC  libX11 libX11-common \
             libXNVCtrl  libXScrnSaver  libXau libXaw  libXcomposite  libXcursor \
             libXdamage  libXdmcp  libXevie  libXext  libXfixes  libXfont libXft \
             libXi  libXinerama  libXmu  libXrandr  libXrender  libXres          \
@@ -29,7 +29,7 @@ yum install libXp  libXpm  libXt  libXtst  libXv  libXvMC  libX11 libX11-common 
 
 <p>Install the development packages.</p>
 <pre>
-yum install libXp-devel  libXpm-devel  libXt-devel  libXtst-devel  libXv-devel  \
+dnf install libXp-devel  libXpm-devel  libXt-devel  libXtst-devel  libXv-devel  \
             libXvMC-devel  libX11-devel  libXNVCtrl-devel  libXScrnSaver-devel  \
             libXau-devel  libXaw-devel libXcomposite-devel  libXcursor-devel    \
             libXdamage-devel  libXdmcp-devel  libXevie-devel  libXext-devel     \

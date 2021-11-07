@@ -1,36 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>Migrate www.vasilian.net to next CentOS</title>
+<title>www.vasilian.net Web</title>
 <link href="main.css" rel="stylesheet" type="text/css" media="all">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 </head>
 <body>
 <a href="index.html">Back to main index</a>
-<h2>Migrate www.vasilian.net to next CentOS</h2>
+<h2>Setup www</h2>
 <p>
-Check <a href="dyndnsvasilian.html" target="_blank">how to set the domain name servers.</a>
+Setup the <a href="dnsvasilian.html" target="_blank">domain.</a><br>
+This guide assumes that DNS records have been setup correctly (A record for ipv4, AAA record for ipv6)
 </p>
 <p>
-After I bought this domain, I used
+I used
 <a href="https://www.digitalocean.com/community/tutorials/how-to-set-up-apache-virtual-hosts-on-centos-7" target="_blank">this guide</a> 
-to setup an Apache virtual host.<br>
-This guide assumes that DNS records have been setup correctly (A record for ipv4, AAA record for ipv6)
+to setup an Apache virtual host.
 </p>
 
 <pre>
 sshocean                          # login to DigitalOcean as root
 yum install httpd httpd-tools     # user & group "apache" get created now
-
-mkdir /srv/http
-chown -v root:root /srv/http      # if this is not on DigitalOcean check SELinux also
-
-mkdir /srv/http/vasilian.net
-chown -v apache:apache /srv/http/vasilian.net
 </pre>
 
-<p>Transfer the website content to host</p>
-
+<p>Transfer the website to host</p>
 <pre>
 su mihai
 cd $HOME/
@@ -44,19 +37,21 @@ cd /home/mihai/Code/git-main/script/vasilian.net
 
 <p>Now continue with the server setup.</p>
 <pre>
-chown -Rv apache:apache /srv/http/vasilian.net
+ls -laZ /var/www/html
+drwxr-xr-x. 3 apache apache unconfined_u:object_r:httpd_sys_content_t:s0 4096 Nov  1 20:03 vasilian.net
+
 cd /etc/httpd
 mkdir -v sites-enabled sites-available
-cd conf
 </pre>
 
 <p>Edit the server configuration.</p>
 <pre>
+cd conf
 emacs httpd.conf
 
 # change as follows:
-DocumentRoot         "/srv/http"
-&lt;Directory           "/srv/http"&gt;
+DocumentRoot         "/var/www/html"
+&lt;Directory           "/var/www/html"&gt;
     AllowOverride    None
     Require          all granted
 &lt;/Directory&gt;
@@ -75,9 +70,9 @@ touch vasilian.net.conf           # end edit
 &lt;VirtualHost    *:80&gt;
     ServerName       www.vasilian.net
     ServerAlias      vasilian.net
-    DocumentRoot     /srv/http/vasilian.net
-    ErrorLog         /srv/http/vasilian.net/error.log
-    CustomLog        /srv/http/vasilian.net/requests.log combined
+    DocumentRoot     /var/www/html/vasilian.net
+    ErrorLog         /var/log/vasilian.net-error.log
+    CustomLog        /var/log/vasilian.net-requests.log combined
 &lt;/VirtualHost&gt;
 </pre>
 
