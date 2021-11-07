@@ -1,13 +1,13 @@
 #!/bin/bash
 
-if [ ! -f /etc/centos-release ]; then
-	echo "centos supported only!"
-	exit
+if [ ! -f /etc/rocky-release ]; then
+    echo "RockyLinux supported only!"
+    exit
 fi
 
 if [ `id -u` -ne 0 ]; then
-	echo "run as root"
-	exit
+    echo "run as root"
+    exit
 fi
 
 X11_DEVEL='libXp-devel  libXpm-devel  libXt-devel  libXtst-devel
@@ -21,4 +21,4 @@ X11_DEVEL='libXp-devel  libXpm-devel  libXt-devel  libXtst-devel
           libxcb-devel  libxdo-devel  libxkbfile-devel  libxklavier-devel
           libxkbcommon-devel'
 
-yum install $X11_DEVEL
+dnf install $X11_DEVEL
