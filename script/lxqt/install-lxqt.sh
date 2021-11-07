@@ -1,13 +1,13 @@
 #!/bin/bash
 
-if [ ! -f /etc/centos-release ]; then
-	echo "packages are for CentOS only"
-	exit
+if [ ! -f /etc/rocky-release ]; then
+    echo "packages are for RockyLinux only"
+    exit
 fi
 
 if [ `id -u` != 0 ]; then
-	echo "you must be root"
-	exit
+    echo "you must be root"
+    exit
 fi
 
 # asking if there are plugins for:
@@ -22,5 +22,5 @@ LXQT="liblxqt liblxqt-mount lxqt-about lxqt-common lxqt-config \
       lxqt-qtplugin lxqt-runner lxqt-session lximage-qt \
       lxqt-sudo pcmanfm-qt"
 
-echo "Installing LXQT for CentOS"
-yum install $LXQT
+echo "Installing LXQT for RockyLinux"
+dnf install $LXQT
