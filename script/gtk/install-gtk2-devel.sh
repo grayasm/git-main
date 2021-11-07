@@ -1,7 +1,7 @@
 #!/bin/bash
 
-if [ ! -f /etc/centos-release ]; then
-    echo "only for centos"
+if [ ! -f /etc/rocky-release ]; then
+    echo "only for rocky"
     exit
 fi
 
