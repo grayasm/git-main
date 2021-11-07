@@ -2,9 +2,5 @@
 # must not be under revision control,
 # or at least not with sensitive data inside.
 
-export GIT_PASS=
-export OFFICE=
-export SERVER=
-export MWOVPN_PASS=
+export GIT_TOKEN=
 export DIGITALOCEAN=
-export THROWMAIL=

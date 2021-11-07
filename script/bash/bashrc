@@ -1,11 +1,8 @@
 # .bashrc
-# cp $HOME/.bashrc  $HOME/Code/git-main/script/bash/bashrc
-# git status $HOME/Code/git-main
-
 
 # Source global definitions
 if [ -f /etc/bashrc ]; then
-	. /etc/bashrc
+    . /etc/bashrc
 fi
 
 # User specific aliases and functions
@@ -15,17 +12,17 @@ fi
 
 
 if [ -f $HOME/.bash_aliases ]; then
-	. $HOME/.bash_aliases
+    . $HOME/.bash_aliases
 fi
 
 if [ -f $HOME/.bash_i3 ]; then
-	. $HOME/.bash_i3
+    . $HOME/.bash_i3
 fi
 
 if [ -f $HOME/.bash_gpg ]; then
-	. $HOME/.bash_gpg
+    . $HOME/.bash_gpg
 fi
 
 if [ -f $HOME/.bash_iptables ]; then
-	. $HOME/.bash_iptables
+    . $HOME/.bash_iptables
 fi

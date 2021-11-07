@@ -5,8 +5,8 @@ set -x
 
 # check location
 if [ "${PWD##*/}" != "bash" ]; then
-	echo "switch to script directory!"
-	exit
+    echo "switch to script directory!"
+    exit
 fi
 
 # copy files

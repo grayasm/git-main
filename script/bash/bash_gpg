@@ -1,8 +1,4 @@
 # .bash_gpg
-# cp $HOME/.bash_gpg $HOME/Code/git-main/script/bash/bash_gpg
-# git status $HOME/Code/git-main
-# git diff   $HOME/Code/git-main
-# git commit $HOME/Code/git-main
 
 # if the system runs the agent, ask how to connect to it.
 # $ gpg-agent --daemon --enable-ssh-support

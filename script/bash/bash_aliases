@@ -1,16 +1,14 @@
-#
 # .bash_aliases
-#
 
 if [ -f $HOME/.bash_nosave ]; then
    . $HOME/.bash_nosave
 fi
 
+# TPUT: https://linuxcommand.org/lc3_adv_tput.php
 
-# If id command returns zero, you've root access.
 if [ $(id -u) -eq 0 ]; then # you are root, set red colour prompt
    # root on the server
-   # PS1="\\[$(tput setaf 1)\\u$(tput bold)$(tput setaf 3)@\\h$(tput sgr0)$(tput setaf 1):\\w #$(tput sgr0)\\] "
+   # PS1="\\[$(tput bold)$(tput setab 1)$(tput setaf 7)\\u@\\h$(tput sgr0):\\w #\\] "
    # root on binary
    PS1="\\[$(tput bold)$(tput setaf 1)\\u@\\h:\\w #$(tput sgr0)\\] "
    alias mv='mv -iv'
@@ -19,9 +17,9 @@ if [ $(id -u) -eq 0 ]; then # you are root, set red colour prompt
    alias emacs='emacs --user=root'
 else
    # user on the server
-   # PS1="[\u$(tput bold)$(tput setaf 3)@\h$(tput sgr0): \W]\$ "
+   # PS1="\\[$(tput bold)$(tput setab 6)$(tput setaf 7)\\u@\\h$(tput sgr0):\\W $\\] "
    # user on binary
-   PS1="[\u@\h: \W]\$ "
+   PS1="\u@\h: \W\$ "
    alias mv='mv -v'
    alias cp='cp -aRv'
    alias rm='rm -v'
@@ -43,56 +41,14 @@ alias ..='cd ..'
 alias ...='cd ..; cd ..'
 alias diff='meld'
 
-# SVN shortcuts
-alias svnlu='svn status | grep ^\?'   # list unversioned
-alias svnru='svn status | grep ^\? | cut -c9- | xargs -d \\n rm -rv'
-alias svnrevd='svn revert --recursive .'
-alias svnrevf='svn revert'
-
-# Python
-alias python='/usr/bin/python3'
-alias pip='/usr/bin/pip3'
-
-
-# Inside a tiling window manager
-# alias jdraw='java -jar /opt/jdraw-1.1.5/jdraw_v1.1.5.jar'
-# alias netbeans='/opt/netbeans-8.0.2/bin/netbeans'
-# alias xfe='xfe-xfe'
-# alias se='/opt/slickedit/bin/vs'
-# alias calc='galculator'
-# alias edit='emacs'
-# alias view='gthumb'
-# alias fileman='thunar'
-# alias term='xterm bash'
-# alias smartgit='/bin/sh /opt/smartgit/bin/smartgit.sh'
-# alias scron='xset -dpms; xset s off'
-
 
 # ssh client
-# alias sshsrv='ssh -X -l mihai -i $HOME/.ssh/id_rsa_home_key  $SERVER'
-# alias office='ssh -i $HOME/.ssh/id_dsa_office -l mihai -L 13389:10.1.1.235:3389  $OFFICE'
-alias sshocean='ssh -l root -i $HOME/.ssh/id_rsa_digitalocean2  $DIGITALOCEAN'
-alias sshmail='ssh -L 5903:$THROWMAIL:5903 -l mihai -i $HOME/.ssh/id_rsa_throwmail $THROWMAIL'
-# alias sshmail='ssh -l root -i $HOME/.ssh/id_rsa_throwmail $THROWMAIL'
+# alias sshocean='ssh -l root -i $HOME/.ssh/id_rsa_do_01112021  $DIGITALOCEAN'
 
-
-
-# X11
-alias xwininfo='xwininfo'   #window info
-
-# alias rdpoffice="/opt/rdesktop-1.8.3/bin/rdesktop -g 95% -u Mihai 10.1.1.235"
 
 # Qt5
-export PATH=/usr/lib64/qt5/bin:$PATH
+# export PATH=/usr/lib64/qt5/bin:$PATH
 
-
-# ----- using gcc-4.9.2 -----
-# export MYPATH=/opt/gcc-4.9.2/bin:/opt/cmake-3.4/bin
-# export MYLIB64=/opt/gcc-4.9.2/lib64
-# export MYLIB=/opt/gcc-4.9.2/lib
-# export PATH=$MYPATH:$PATH
-# export LD_LIBRARY_PATH=.:$MYLIB64:/usr/local/lib64:/usr/lib64:/lib64
-# export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$MYLIB:/usr/local/lib:/usr/lib:/lib
 
 # ----- using gcc-4.9.3 -----
 # export MYPATH=/opt/gcc-4.9.3/bin:/opt/cmake-3.4/bin
@@ -110,7 +66,6 @@ export PATH=/usr/lib64/qt5/bin:$PATH
 # export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/local/lib/pkgconfig:/usr/lib/pkgconfig:/lib/pkgconfig
 
 
-
 # ----- using distcc -----
 # export DISTCC_HOSTS='localhost/3  10.1.1.89/12'
 # export CC="distcc gcc"
@@ -122,4 +77,4 @@ export PATH=/usr/lib64/qt5/bin:$PATH
 
 
 # PostgreSQL-11
-export PATH=/usr/pgsql-11/bin:$PATH
+# export PATH=/usr/pgsql-11/bin:$PATH
