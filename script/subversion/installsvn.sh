@@ -4,14 +4,14 @@
 svn --version 2>&1 >/dev/null
 SVN_IS_AVAILABLE=$?
 if [ $SVN_IS_AVAILABLE -ne 0 ]; then
-	echo "install subversion"
-	exit
+    echo "install subversion"
+    exit
 fi
 
 # need meld from Epel/Fedora (see: https://meldmerge.org/)
 if [ ! -f /usr/bin/meld ]; then
-	echo "install meld from epel or fedora (see: https://meldmerge.org/)"
-	exit
+    echo "install meld from epel or fedora (see: https://meldmerge.org/)"
+    exit
 fi
 
 # svn calls external diff with 7 parameters
