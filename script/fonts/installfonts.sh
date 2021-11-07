@@ -11,4 +11,4 @@ if [ ! -f /etc/yum.repos.d/vasilian.repo ]; then
 	exit 1
 fi
 
-yum --enablerepo=vasilian install win10-fonts
+dnf --enablerepo=vasilian install win10-fonts
