@@ -199,5 +199,3 @@ rm Clearlooks-Xfce-Black.tar.gz
 
 # Continue from top of page :
 # https://www.xfce-look.org/browse/cat/138/page/22/ord/latest/
-
-

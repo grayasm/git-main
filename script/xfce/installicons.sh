@@ -1,8 +1,8 @@
 #!/bin/bash
 
 if [ `id -u` != 0 ]; then
-	echo "you must be root"
-	exit
+    echo "you must be root"
+    exit
 fi
 
 

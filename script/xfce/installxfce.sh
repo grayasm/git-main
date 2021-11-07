@@ -1,13 +1,13 @@
 #!/bin/bash
 
-if [ ! -f /etc/centos-release ]; then
-	echo "packages are for CentOS only"
-	exit
+if [ ! -f /etc/rocky-release ]; then
+    echo "packages are for RockyLinux only"
+    exit
 fi
 
 if [ `id -u` != 0 ]; then
-	echo "you must be root"
-	exit
+    echo "you must be root"
+    exit
 fi
 
 XFCE="f22-backgrounds-xfce gtk-xfce-engine \
@@ -27,9 +27,6 @@ XFCE="f22-backgrounds-xfce gtk-xfce-engine \
       ntfs-3g udisks2 gvfs gvfs-fuse gvfs-gphoto2 gvfs-smb \
       gvfs-archive"
 
-echo "Installing Xfce for CentOS"
-yum group install "Xfce"
-yum install $XFCE
-
-
-
+echo "Installing Xfce for Rocky"
+dnf group install "Xfce"
+dnf install $XFCE

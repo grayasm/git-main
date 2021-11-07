@@ -3,8 +3,8 @@
 # 1) Nevermind, just copy to ftp://vasilian.net/Misc
 
 if [ `id -u` != 0 ]; then
-	echo "you must be root"
-	exit
+    echo "you must be root"
+    exit
 fi
 
 
