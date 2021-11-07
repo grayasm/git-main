@@ -59,7 +59,7 @@ iptables -A INPUT -p tcp -j DROP
 
 
 iptables -P OUTPUT  ACCEPT
-# iptables -A OUTPUT -p tcp -m string --algo bm --string "microsoft.com" -j LOG --log-prefix "Redmond: " --log-level 4
+iptables -A OUTPUT -p tcp -m string --algo bm --string "microsoft.com" -j LOG --log-prefix "Redmond: " --log-level 4
 iptables -A OUTPUT -p tcp -m string --algo bm --string "microsoft.com" -j REJECT
 iptables -A OUTPUT -p tcp -m string --algo bm --string "microsoftstore.com" -j REJECT
 iptables -A OUTPUT -p tcp -m string --algo bm --string "office.com" -j REJECT
@@ -125,7 +125,7 @@ ip6tables -A INPUT -p tcp -j DROP
 
 
 ip6tables -P OUTPUT  ACCEPT
-# ip6tables -A OUTPUT -p tcp -m string --algo bm --string "microsoft.com" -j LOG --log-prefix "Redmond: " --log-level 4
+ip6tables -A OUTPUT -p tcp -m string --algo bm --string "microsoft.com" -j LOG --log-prefix "Redmond: " --log-level 4
 ip6tables -A OUTPUT -p tcp -m string --algo bm --string "microsoft.com" -j REJECT
 ip6tables -A OUTPUT -p tcp -m string --algo bm --string "microsoftstore.com" -j REJECT
 ip6tables -A OUTPUT -p tcp -m string --algo bm --string "office.com" -j REJECT

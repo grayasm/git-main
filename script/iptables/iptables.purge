@@ -1,9 +1,5 @@
 #!/bin/sh
 
-# cp iptables.purge $HOME/Code/svn-trunk/script/iptables/iptables.purge
-# svn status $HOME/Code/svn-trunk
-# svn diff   $HOME/Code/svn-trunk
-# svn commit $HOME/Code/svn-trunk
 
 # ---------------------------- SSH --------------------------------------------
 echo "Stop and disable ip(6)tables services"
