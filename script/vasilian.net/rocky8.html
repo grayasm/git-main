@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Install RockyLinux-8</title>
+<link href="main.css" rel="stylesheet" type="text/css" media="all">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+</head>
+<body>
+<a href="index.html">Back to main index</a>
+<h1>Rocky-8 Installation Instructions</h1>
+
+
+<p>Time and Date: optional <a href="https://www.pool.ntp.org/zone/de" target="_blank">NTP servers</a> in Germany.</p>
+<pre>
+0.de.pool.ntp.org
+1.de.pool.ntp.org
+2.de.pool.ntp.org
+3.de.pool.ntp.org
+</pre>
+
+<p>Software Selection: Minimal install.</p>
+
+<p>Activate laptop <a href="http://unix.stackexchange.com/questions/229711/why-cant-this-centos-7-server-see-wifi-connections" target="_blank">wifi connection</a>.</p>
+<pre>
+rpm -q NetworkManager-wifi
+# plug-in ethernet connection
+dnf install NetworkManager-wifi
+systemctl restart NetworkManager
+# unplug ethernet connection
+nmtui
+</pre>
+
+X Window System
+<pre>
+dnf install xorg-x11-{server-Xorg,server-utils,xinit-session} \
+            xorg-x11-{utils,xauth,drivers,xbitmaps,xkb-utils}
+</pre>
+
+<p>Minimal installation of GNOME Desktop: 
+<a href="https://www.dokuwiki.tachtler.net/doku.php?id=tachtler:centos_8_-_minimal_desktop_installation" target="_blank">tachtler wiki</a>
+</p>
+
+<pre>
+dnf group install base-x Fonts
+
+dnf install nautilus gnome-terminal gnome-terminal-nautilus gnome-tweaks         \
+            gnome-shell-extension-alternate-tab gnome-shell-extension-apps-menu  \
+            gnome-shell-extension-common gnome-shell-extension-desktop-icons     \
+            gnome-shell-extension-launch-new-instance                            \ 
+            gnome-shell-extension-places-menu gnome-shell-extension-user-theme   \
+            gnome-shell-extension-window-list gdm
+
+systemctl set-default graphical.target
+ll /etc/systemd/system/default.target
+
+dnf install xdg-user-dirs
+# Create $HOME template directories, e.g. Documents, Downloads, Music, Trash as $HOME/.local/share/Trash
+# Run as regular <b>user</b>
+xdg-user-dirs-update
+
+</pre>
+
+
+<p>
+YUM is now a symbolic link to DNF.<br>
+DNF <a href="https://dnf.readthedocs.io/en/latest/conf_ref.html" target="_blank">priority option</a> 
+is supported out of the box.<br>
+Add priority=10 to Rocky-BaseOS,Extras,AppStream<br>
+Add priority=20 to Rocky-PowerTools.repo and enabled=1<br>
+</p>
+<pre>
+grep -r 'priority=' /etc/yum.repos.d/
+/etc/yum.repos.d/Rocky-BaseOS.repo:priority=10
+/etc/yum.repos.d/Rocky-Extras.repo:priority=10
+/etc/yum.repos.d/Rocky-AppStream.repo:priority=10
+/etc/yum.repos.d/Rocky-PowerTools.repo:priority=20
+</pre>
+
+<p>
+Install <a href="https://fedoraproject.org/wiki/EPEL" target="_blank">epel repo</a>, the Fedora Special Interest Group, 
+with priority=20
+</p>
+<pre>
+yum install epel-release
+</pre>
+
+<p>
+CentOS-8 is based on Fedora-28.<br>
+It makes sense to add F28 repo for reasons explained later.
+</p>
+
+<pre>
+cd /tmp
+wget https://archives.fedoraproject.org/pub/archive/fedora/linux/releases/28/Everything/x86_64/os/Packages/f/fedora-gpg-keys-28-1.noarch.rpm
+rpm2cpio fedora-gpg-keys-28-1.noarch.rpm | cpio -idmv
+cp etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-28-primary .
+rm -rfv etc
+rm fedora-gpg-keys-28-1.noarch.rpm
+
+# as root
+cp RPM-GPG-KEY-fedora-28-primary /etc/pki/rpm-gpg
+chown -v root:root  /etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-28-primary
+chmod 644 /etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-28-primary
+chcon -u system_u -t cert_t -v /etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-28-primary
+</pre>
+
+<p>Create /etc/yum.repos.d/fedora28.repo</p>
+<pre>
+[fedora28]
+name=Fedora28 beta version for CentOS-$releasever
+baseurl=http://archives.fedoraproject.org/pub/archive/fedora/linux/releases/28/Everything/$basearch/os/
+#mirrorlist=
+enabled=0
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-28-primary
+protect=0
+priority=90
+</pre>
+
+<p>Install Xfce Desktop</p>
+<pre>
+dnf group install "Xfce"
+
+dnf install install xfce4-datetime-plugin xfce4-netload-plugin xfce4-panel xfce4-terminal  \
+                    xfce4-power-manager xfce4-screenshooter xfce4-systemload-plugin exo    \  
+                    xfce4-weather-plugin xfce4-xkb-plugin xfce4-whiskermenu-plugin         \
+                    xfce4-taskmanager xfce4-about xfce4-statusnotifier-plugin              \
+                    xfce4-pulseaudio-plugin mousepad parole
+
+dnf install gnome-calculator ristretto gimp evince brasero mlocate p7zip zip unzip bzip2
+</pre>
+
+<p>Optional packages</p>
+<pre>
+dnf --enablerepo=fedora28 install xfburn
+
+dnf --enablerepo=fedora28 install deepin-icon-theme.noarch elementary-icon-theme.noarch    \
+                                  elementary-xfce-icon-theme.noarch
+
+dnf --enablerepo=fedora28 install gnome-icon-theme-legacy.noarch                           \
+                                  gnome-icon-theme-extras.noarch                           \
+                                  gnome-themes-legacy.noarch monochrome-icon-theme.noarch
+</pre>
+
+<p>Optional Xfce Themes</p>
+<pre>
+dnf --enablerepo=fedora28 install clearlooks-phenix-gtk3-theme gnome-themes                \
+                                  clearlooks-phenix-xfwm4-theme clearlooks-phenix-common   \
+                                  clearlooks-compact-gnome-theme bluecurve-cursor-theme    \
+                                  xfwm4-themes bluebird-xfwm4-theme albatross-xfwm4-theme
+</pre>
+
+<p>Optional Xfce Icons</p>
+<pre>
+dnf --enablerepo=fedora28 install bluecurve-icon-theme fedora-icon-theme \
+                                  humanity-icon-theme tango-icon-theme   \
+                                  elementary-xfce-icon-theme
+</pre>
+
+<p>To revert/uninstall all packages from fedora28.repo use:</p>
+<pre>
+dnf remove $(dnf list installed | grep 'fedora28' | awk '{ print $1 }')
+</pre>
+
+<p>Install seahorse from AppStream repo (gnome-keyring related)</p>
+<pre>
+dnf info seahorse
+dnf repoquery --deplist seahorse
+dnf install seahorse
+</pre>
+
+
+<p>I maintain my own RH8 repository with SPEC files under 
+<a href="https://github.com/grayasm/git-main/tree/master/script/rpm-el8" 
+target="_blank">https://github.com/grayasm/git-main/tree/master/script/rpm-el8</a>
+</p>
+
+<pre>
+[vasilian]
+name=Vasilian packages for CentOS-$releasever-$basearch
+baseurl=ftp://vasilian.net/CentOS/$releasever/extras/$basearch/
+enabled=1
+gpgcheck=1
+gpgkey=ftp://vasilian.net/RPM-GPG-KEY-vasilian
+protect=0
+priority=90
+</pre>
+
+
+<p>Thunar automount feature</p>
+<pre>
+dnf install udisks2 gvfs gvfs-fuse gvfs-gphoto2 gvfs-smb gvfs-archive
+dnf --enablerepo=fedora28 install ntfs-3g
+</pre>
+
+<p>Install LightDM as GDM replacement</p>
+<pre>
+dnf --enablerepo=fedora28 install lightdm
+</pre>
+
+<p>LithDM Gtk+ greeter uses a gtk3 css style</p>
+<pre>
+gedit /etc/lightdm/lightdm.conf &
+greeter-session=lightdm-gtk-greeter
+
+# save & enable the service
+systemctl disable gdm.service
+systemctl enable lightdm.service
+</pre>
+
+Set up the login theme
+<pre>
+cd /usr/share/pixmaps
+wget ftp://vasilian.net/Gtk-Themes/rhel8_2560x1080.jpg
+
+cd /tmp
+wget ftp://vasilian.net/Gtk-Themes/lightdm-gtk-clearlooks-grey.tar.gz
+tar -zxvf lightdm-gtk-clearlooks-grey.tar.gz
+mv lightdm-gtk-clearlooks-grey  /usr/share/themes
+chown -Rv root:root /usr/share/themes/lightdm-gtk-clearlooks-grey
+chcon -Rv -u system_u -t usr_t /usr/share/themes/lightdm-gtk-clearlooks-grey
+</pre>
+
+Set up the greeter settings
+<pre>
+gedit  /etc/lightdm/lightdm-gtk-greeter.conf &
+
+[greeter]
+background=/usr/share/backgrounds/default.png
+# if monitor resolution is 2560x1080 then use:
+# background=/usr/share/pixmaps/rhel8_2560x1080.jpg
+theme-name=lightdm-gtk-clearlooks-grey
+icon-theme-name=Bluecurve
+font-name=DejaVu Sans Condensed:10
+#xft-antialias=
+xft-dpi=96
+#xft-hintstyle=
+#xft-rgba=
+indicators=~ally;~host;~spacer;~clock;~spacer;~language;~session;~power;
+clock-format=%H:%M:%S
+keyboard=us
+position=50%,center 50%,center
+#screensaver-timeout=
+</pre>
+
+<p>Reboot and enjoy the XFCE Desktop.</p>
+
+<p>Set Thunar <a href="https://docs.xfce.org/xfce/thunar/custom-actions" target="_blank">custom actions</a> feature.</p>
+
+<p>Install <a href="http://elrepo.org/tiki/tiki-index.php" target="_blank">elrepo</a> with priority=30 
+for <a href="http://elrepo.org/tiki/kmod-nvidia" target="_blank">kmod-nvidia</a></p>
+
+<p>Install <a href="https://computingforgeeks.com/install-adobe-flash-player-on-rhel-centos-8/" target="_blank">adobe</a> 
+with priority=30.</p>
+
+<p>Read on the <a href="http://hivelogic.com/articles/top-10-programming-fonts/" target="_blank">top 10 programming fonts</a></p>
+
+Optional some popular fonts
+<pre>
+dnf --enablerepo=vasilian install win10-fonts mac-fonts
+</pre>
+
+<p>Optional <a href="https://www.marksimonson.com/fonts/view/anonymous-pro" target="_blank">Anonymous Pro Font</a></p>
+
+<pre>
+cd /tmp
+wget http://www.marksimonson.com/assets/content/fonts/AnonymousPro-1.002.zip
+unzip AnonymousPro-1.002.zip
+mv AnonymousPro-1.002.001  /usr/share/fonts/
+cd /usr/share/fonts
+chown -Rv root:root AnonymousPro-1.002.001
+chcon -u system_u -t fonts_t -Rv AnonymousPro-1.002.001/
+fc-cache /usr/share/fonts/AnonymousPro-1.002.001
+</pre>
+
+<p>Optional Monaco (From OSX)</p>
+<pre>
+cd /usr/share/fonts
+mkdir Monaco && cd Monaco
+wget http://www.gringod.com/wp-upload/MONACO.TTF  # or manually
+chown -Rv root:root Monaco
+chcon -u system_u -t fonts_t -Rv Monaco/
+fc-cache /usr/share/fonts/Monaco
+</pre>
+
+<br>
+<br>
+<a href="index.html">Back to main index</a>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
