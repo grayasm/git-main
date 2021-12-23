@@ -1,5 +1,5 @@
 /* Cap.6 Objects
-   6.
+   6.5 Enumerating Properties
 
-   $ node __node__
+   $ node 11_property_enumerate.js
 */
