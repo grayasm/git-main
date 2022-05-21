@@ -19,7 +19,7 @@ a.push("one", "two");     // Add two more values. a=["zero", "one", "two"]
 // just as you can delete object properties:
 
 a = [1,2,3];
-delete [a];               // a now has no element at index 1
+delete a[1];               // a now has no element at index 1
 1 in a;                   // => false: no array index 1 is defined
 a.length;                 // => 3: delete does not affect array length
 
