@@ -1,4 +1,4 @@
-/* Cap.8
+/* Cap.8 Functions
    8.7.5 The toString() Method
 
    $ node 18_method_toString.js

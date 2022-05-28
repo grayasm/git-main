@@ -1,4 +1,4 @@
-/* Cap.8
+/* Cap.8 Functions
    8.7.4 The bind() Method
 
    $ node 17_method_bind.js

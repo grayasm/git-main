@@ -1,4 +1,4 @@
-/* Cap.8
+/* Cap.8 Functions
    8.4 Functions As Values
 
    $ node 10_function_as_value.js

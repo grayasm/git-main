@@ -1,4 +1,4 @@
-/* Cap.8
+/* Cap.8 Functions
    8.1 Defining Functions
 
    $ node 01_define_a_function.js

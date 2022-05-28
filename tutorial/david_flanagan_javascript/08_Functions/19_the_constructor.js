@@ -1,4 +1,4 @@
-/* Cap.8
+/* Cap.8 Functions
    8.7.6 The Function() Constructor
 
    $ node 19_the_constructor.js

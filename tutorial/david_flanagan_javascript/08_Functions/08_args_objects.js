@@ -1,4 +1,4 @@
-/* Cap.8
+/* Cap.8 Functions
    8.3.3 Using Object Properties As Arguments
 
    $ node 08_args_objects.js

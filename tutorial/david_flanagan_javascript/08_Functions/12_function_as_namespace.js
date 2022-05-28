@@ -1,4 +1,4 @@
-/* Cap.8
+/* Cap.8 Functions
    8.5 Functions As Namespaces
 
    $ node 12_function_as_namespace.js

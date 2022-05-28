@@ -1,4 +1,4 @@
-/* Cap.8
+/* Cap.8 Functions
    8.2.4 Indirect Invocation
 
    $ node 05_invoke_indirect.js

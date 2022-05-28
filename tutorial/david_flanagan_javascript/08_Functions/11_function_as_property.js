@@ -1,4 +1,4 @@
-/* Cap.8
+/* Cap.8 Functions
    8.4.1 Defining Your Own Function Properties
 
    $ node 11_function_as_property.js

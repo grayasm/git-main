@@ -1,4 +1,4 @@
-/* Cap.8
+/* Cap.8 Functions
    8.8.3 Partial Application of Functions
 
    $ node 22_partial_application_of_functions.js

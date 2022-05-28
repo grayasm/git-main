@@ -1,4 +1,4 @@
-/* Cap.8
+/* Cap.8 Functions
    8.7.2 The prototype Property
 
    $ node 15_prop_prototype.js

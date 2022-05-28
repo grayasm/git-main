@@ -1,4 +1,4 @@
-/* Cap.8
+/* Cap.8 Functions
    8.3.4 Argument Types
 
    $ node 09_args_types.js

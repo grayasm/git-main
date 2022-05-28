@@ -1,4 +1,4 @@
-/* Cap.8
+/* Cap.8 Functions
    8.8.1 Processing Arrays with Functions
 
    $ node 20_example_processing_arrays.js

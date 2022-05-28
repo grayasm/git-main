@@ -1,4 +1,4 @@
-/* Cap.8
+/* Cap.8 Functions
    8.3.2 Variable-Length Argument Lists: The Arguments Object
 
    $ node 07_args_variable_length.js

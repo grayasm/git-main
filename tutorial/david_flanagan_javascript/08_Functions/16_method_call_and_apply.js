@@ -1,4 +1,4 @@
-/* Cap.8
+/* Cap.8 Functions
    8.7.3 The call() and apply() Methods
 
    $ node 16_method_call_and_apply.js

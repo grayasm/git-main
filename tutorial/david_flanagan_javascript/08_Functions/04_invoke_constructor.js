@@ -1,4 +1,4 @@
-/* Cap.8
+/* Cap.8 Functions
    8.2.3 Constructor Invocation
 
    $ node 04_invoke_constructor.js

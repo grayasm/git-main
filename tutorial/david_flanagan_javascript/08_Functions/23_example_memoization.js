@@ -1,4 +1,4 @@
-/* Cap.8
+/* Cap.8 Functions
    8.8.4 Memoization
 
    $ node 23_example_memoization.js

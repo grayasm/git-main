@@ -1,4 +1,4 @@
-/* Cap.8
+/* Cap.8 Functions
    8.6 Closures
 
    $ node 13_closures.js

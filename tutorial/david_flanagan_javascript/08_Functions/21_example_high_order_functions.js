@@ -1,4 +1,4 @@
-/* Cap.8
+/* Cap.8 Functions
    8.8.2 Higher-Order Functions
 
    $ node 21_example_high_order_functions.js

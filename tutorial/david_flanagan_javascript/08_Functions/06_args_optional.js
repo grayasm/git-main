@@ -1,4 +1,4 @@
-/* Cap.8
+/* Cap.8 Functions
    8.3.1 Optional Parameters
 
    $ node 06_args_optional.js

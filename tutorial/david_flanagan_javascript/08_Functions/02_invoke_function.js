@@ -1,4 +1,4 @@
-/* Cap.8
+/* Cap.8 Functions
    8.2.1 Function Invocation
 
    $ node 02_invoke_function.js
