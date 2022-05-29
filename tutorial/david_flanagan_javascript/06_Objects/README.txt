@@ -17,7 +17,7 @@
     -------------------------------------------------
     var date = new Date();
 
-    Create and initilaize an object with Object.create() method:
+    Create and initialize an object with Object.create() method:
     -----------------------------------------------------------
     var point = Object.create( {x:1, y:2} );
 
