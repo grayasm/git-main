@@ -28,8 +28,8 @@ Range.prototype = {
 };
 
 
-// Uses of a range object
-var r = new Range(1,3);       // Create a range object
+// Uses of a Range object
+var r = new Range(1,3);       // Create a Range object using "new" keyword
 r.includes(2);                // true
 r.foreach(console.log);       // 1 2 3
 console.log(r);               // (1...3)

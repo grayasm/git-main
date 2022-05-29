@@ -4,13 +4,19 @@
    $ node 01_class_prototype.js
 
    A class is a set of objects that inherit properties from the same prototype.
+
+   The example here avoids:
+       1. using "new" and a class constructor, but uses a factory method,
+          to demonstrate the importance of a prototype versus a constructor;
+       2. naming the prototype "prototype", but uses a different name to show
+          the importance of the inheritance mechanism;
 */
 
 
 /* A class representing a range of values.
 
-   The class is initialized by a factory method (e.g. "range")
-   The class is not initialized by a constructor because:
+   The class in this example is initialized by a factory method (e.g. "range")
+   The class in this example is not initialized by a constructor because:
     a) a constructor always defines the "prototype" object (see .methods object)
     b) a constructor does not create nor return an object (see return r;)
 */
@@ -55,7 +61,7 @@ function inherit(p) {
 
 
 // Here are examples of uses of a range object.
-var r = range(1,3);                   // Create a range object
+var r = range(1,3);                   // Create a range object (not using new!!)
 r.includes(2);                        // true
 r.foreach(console.log);               // 1 2 3
 console.log(r);                       // (1...3)
