@@ -1,5 +1,5 @@
 #
-# CMake file for cplusplus_11 directory
+# CMake file for C++11 directory
 #
 cmake_minimum_required(VERSION 3.0)
 project(cplusplus_11)
