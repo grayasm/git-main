@@ -1,0 +1,3 @@
+# CMakeLists.txt for 13_type_transformation_alias
+
+add_executable(01_traits_vs_type_alias 01_traits_vs_type_alias.cpp)
