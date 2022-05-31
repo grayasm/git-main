@@ -31,6 +31,8 @@
 #include <iostream>
 #include <thread>
 #include <algorithm>
+#include <vector>
+#include <functional>
 
 class Worker
 {

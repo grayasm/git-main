@@ -49,7 +49,7 @@ int main()
 	capture_this();
 
 	// assign lambda to a function pointer
-	void (*f)() = [=] () { };
+	void (*f)() = [] () { };
 	f();
 
 	// assign lambda to an std::function
