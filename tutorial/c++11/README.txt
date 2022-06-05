@@ -33,17 +33,15 @@ this purpose.
 9) explicit conversion functions (12.3)
 10) delegating constructors (12.6)
 11) rvalue references, move semantics, std::move, std::forward (12.8)
-12) variadic templates (14.5)
-13) std::shared_ptr, std::weak_ptr, std::unique_ptr (20.7)
-14) std::thread (30.3), std::mutex(30.4), std::condition_variable(30.5)
-15) future, shared_future, promise, async, packaged_task (30.6)
+12) ref-qualified member functions (13)
+13) variadic templates (14.5)
+14) std::shared_ptr, std::weak_ptr, std::unique_ptr (20.7)
+15) std::thread (30.3), std::mutex(30.4), std::condition_variable(30.5)
+16) future, shared_future, promise, async, packaged_task (30.6)
 
 
 TODO (from https://github.com/AnthonyCalandra/modern-cpp-features):
 -------------------------------------------------------------------
-
-
-ref-qualified member functions
 trailing return types
 raw string literals
 std::to_string
