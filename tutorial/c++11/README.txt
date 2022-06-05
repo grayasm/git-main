@@ -21,8 +21,9 @@ Also the C++11 ISO N3337.pdf is not always the best documentation for
 this purpose.
 -----------------------------------------------------------------------
 
-1) lambda,std::function<..> (5.1.2)  auto,decltype(2.12)
-2) nullptr, noexcept, constexpr (2.12)
+1) keywords: auto,char16_t,char32_t,alignas,alignof,decltype(2.12)
+   constexpr,nullptr,noexcept,static_assert,thread_local,using(2.12)
+2) lambda,std::function<..> (5.1.2)
 3) range-based for loop (6.5.4)
 4) enum class (7.2)
 5) default and delete methods and operators (8.4)
@@ -38,9 +39,9 @@ this purpose.
 
 TODO (from https://github.com/AnthonyCalandra/modern-cpp-features):
 -------------------------------------------------------------------
-forwaring references
-static asertions
-type aliases
+
+
+
 attributes
 user-defined literals
 explicit conversion functions
