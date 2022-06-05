@@ -23,28 +23,26 @@ this purpose.
 
 1) keywords: auto,char16_t,char32_t,alignas,alignof,decltype(2.12)
    constexpr,nullptr,noexcept,static_assert,thread_local,using(2.12)
-2) lambda,std::function<..> (5.1.2)
-3) range-based for loop (6.5.4)
-4) enum class (7.2)
-5) default and delete methods and operators (8.4)
-6) braced-init-list, std::initializer_list (8.5)
-7) override and final (10.3)
-8) delegating constructors (12.6)
-9) rvalue references, move semantics, std::move, std::forward (12.8)
-10) variadic templates (14.5)
-11) std::shared_ptr, std::weak_ptr, std::unique_ptr (20.7)
-12) std::thread (30.3), std::mutex(30.4), std::condition_variable(30.5)
-13) future, shared_future, promise, async, packaged_task (30.6)
+2) user defined literals (2.14)
+3) lambda,std::function<..> (5.1.2)
+4) range-based for loop (6.5.4)
+5) enum class (7.2)
+6) default and delete methods and operators (8.4)
+7) braced-init-list, std::initializer_list (8.5)
+8) override and final (10.3)
+9) explicit conversion functions (12.3)
+10) delegating constructors (12.6)
+11) rvalue references, move semantics, std::move, std::forward (12.8)
+12) variadic templates (14.5)
+13) std::shared_ptr, std::weak_ptr, std::unique_ptr (20.7)
+14) std::thread (30.3), std::mutex(30.4), std::condition_variable(30.5)
+15) future, shared_future, promise, async, packaged_task (30.6)
 
 
 TODO (from https://github.com/AnthonyCalandra/modern-cpp-features):
 -------------------------------------------------------------------
 
 
-
-attributes
-user-defined literals
-explicit conversion functions
 ref-qualified member functions
 trailing return types
 raw string literals
