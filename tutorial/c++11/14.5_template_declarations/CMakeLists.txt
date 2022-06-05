@@ -1,0 +1,20 @@
+# CMakeLists.txt file for 14.5_template_declarations
+
+
+add_executable(01_variadic_class_template       01_variadic_class_template.cpp)
+add_executable(02_variadic_function_template    02_variadic_function_template.cpp)
+add_executable(03_position_of_parameter_pack    03_position_of_parameter_pack.cpp)
+add_executable(04_one_pack_expansion            04_one_pack_expansion.cpp)
+add_executable(05_two_pack_expansion            05_two_pack_expansion.cpp)
+add_executable(06_nested_pack_expansion         06_nested_pack_expansion.cpp)
+add_executable(07_function_argument_expansion   07_function_argument_expansion.cpp)
+add_executable(08_parenthesized_initializers    08_parenthesized_initializers.cpp)
+add_executable(09_brace_enclosed_initializers   09_brace_enclosed_initializers.cpp)
+add_executable(10_template_argument_lists       10_template_argument_lists.cpp)
+add_executable(11_function_parameter_list       11_function_parameter_list.cpp)
+add_executable(12_template_parameter_list       12_template_parameter_list.cpp)
+add_executable(13_base_class_expansion          13_base_class_expansion.cpp)
+add_executable(14_lambda_clause_expansion       14_lambda_clause_expansion.cpp)
+add_executable(15_sizeof_operator               15_sizeof_operator.cpp)
+add_executable(16_throw_expansion               16_throw_expansion.cpp)
+add_executable(17_tprintf_example               17_tprintf_example.cpp)

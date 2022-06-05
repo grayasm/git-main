@@ -25,7 +25,7 @@ main()
        lvalue or rvalue?
     */
 
-    extern void bar(X&); /* cannot be called with rvalues */
+    extern void bar(X&);       /* cannot be called with rvalues */
     extern void bar(const X&); /* can be called with both lvalues and rvalues
                                   but is not possible to distinguish them.
                                */

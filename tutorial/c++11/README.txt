@@ -30,6 +30,29 @@ this purpose.
 7) override and final (10.3)
 8) delegating constructors (12.6)
 9) rvalue references, move semantics, std::move, std::forward (12.8)
-10) shared_ptr, weak_ptr, unique_ptr (20.7)
-11) thread (30.3), mutex(30.4), condition_variable(30.5)
-12) future, shared_future, promise, async, packaged_task (30.6)
+10) variadic templates (14.5)
+11) std::shared_ptr, std::weak_ptr, std::unique_ptr (20.7)
+12) std::thread (30.3), std::mutex(30.4), std::condition_variable(30.5)
+13) future, shared_future, promise, async, packaged_task (30.6)
+
+
+TODO (from https://github.com/AnthonyCalandra/modern-cpp-features):
+-------------------------------------------------------------------
+forwaring references
+static asertions
+type aliases
+attributes
+user-defined literals
+explicit conversion functions
+ref-qualified member functions
+trailing return types
+raw string literals
+std::to_string
+type traits
+std::chrono
+typles; std::tuple, std::tie, std::get
+std::arrray
+unordered cotainers; std::unordered_set, std::unordered_multiset,
+                     std::unordered_map, std::unordered_multimap
+
+std::begin, std::end
