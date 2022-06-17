@@ -24,3 +24,9 @@
 
    ud-suffix:
         identifier
+
+
+   N3337 page 28
+   2.14.5 String literals
+
+   A string literal that has an R in the prefix is a raw string literal.

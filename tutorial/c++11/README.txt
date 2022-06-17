@@ -23,7 +23,7 @@ this purpose.
 
 1) keywords: auto,char16_t,char32_t,alignas,alignof,decltype(2.12)
    constexpr,nullptr,noexcept,static_assert,thread_local,using(2.12)
-2) user defined literals (2.14)
+2) user defined literals, raw literals (2.14)
 3) lambda,std::function<..> (5.1.2)
 4) range-based for loop (6.5.4)
 5) enum class (7.2)
@@ -36,15 +36,14 @@ this purpose.
 12) ref-qualified member functions (13)
 13) variadic templates (14.5)
 14) std::shared_ptr, std::weak_ptr, std::unique_ptr (20.7)
+15) strings library (21)
 15) std::thread (30.3), std::mutex(30.4), std::condition_variable(30.5)
 16) future, shared_future, promise, async, packaged_task (30.6)
 
 
 TODO (from https://github.com/AnthonyCalandra/modern-cpp-features):
 -------------------------------------------------------------------
-trailing return types
-raw string literals
-std::to_string
+
 type traits
 std::chrono
 typles; std::tuple, std::tie, std::get
