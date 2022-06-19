@@ -10,10 +10,10 @@ cd git-playground
 
 printf "\nList current directory:\n" && pwd
 
-printf "\ngit branch\n"
+printf "\nList local branches with: git branch\n"
 
 git branch
 
-printf "\ngit show\n"
+printf "\nShow last commit with: git show\n"
 
 git show

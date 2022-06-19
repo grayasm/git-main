@@ -13,6 +13,8 @@ printf "\nList current directory:\n" && pwd
 
 git switch -c new "origin/v.2022-06-19_1040"
 
+printf "\nRevert all changes and track another branch\n"
+
 git reset --hard origin/v.2022-06-19_1015
 
 # Note that if the current branch head was your only reference to a particular

@@ -10,10 +10,10 @@ fi
 cd git-playground
 
 printf "\nList current directory:\n" && pwd
-printf "\ngit branch\n"
+printf "\nList local branches with: git branch\n"
 
 git branch
 
-printf "\ngit branch -r\n"
+printf "\nList remote branches with: git branch -r\n"
 
 git branch -r
