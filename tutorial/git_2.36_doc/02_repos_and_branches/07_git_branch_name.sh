@@ -33,5 +33,5 @@ git commit -m 'change' main.cpp
 # branch
 git branch v.2022-06-19_1510
 
-# must switch first to see the content; it does not switch automatically
+# must switch first to be on the branch; it does not switch automatically;
 git switch v.2022-06-19_1510
