@@ -2,6 +2,9 @@
 #
 # You can modify the current branch to point to another branch instead
 # using git reset
+#
+# man git-reset
+
 
 if [ ! -d "git-playground" ]; then
 	git clone https://github.com/grayasm/git-playground.git

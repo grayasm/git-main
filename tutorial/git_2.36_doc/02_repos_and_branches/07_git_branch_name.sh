@@ -2,6 +2,9 @@
 #
 # To create a new branch named <branch> referencing the same point in history
 # as the current branch use: git branch <branch>
+#
+# man git-branch
+
 
 if [ ! -d git-playground ]; then
 	git clone https://github.com/grayasm/git-playground.git
