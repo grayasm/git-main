@@ -2,3 +2,43 @@
                               Git 2.36.1 User Manual
                               https://git-scm.com/docs/user-manual
 --------------------------------------------------------------------------------
+
+git clone https://github.com/grayasm/git-playground        # clone a repo
+
+git branch                             # list all local branches
+  main
+* new
+
+git checkout -b v.2022-06-19_1040      # create and switch to new branch
+
+git switch main                        # switch from local branch back to main
+
+git switch v.2022-06-19_1040           # switch from main to local branch
+
+git commit -m "message" .              # commit changes
+
+git push -u origin v.2022-06-19_1040   # push branch to origin
+                                       # use -u to to create branch upstream
+
+git branch -r                          # show remote branches
+  origin/HEAD -> origin/main
+  origin/main
+  origin/v.2022-06-19_1015
+  origin/v.2022-06-19_1040
+
+git switch -c v.2022-06-19_1040  origin/v.2022-06-19_1040  # create new local
+                                                           # branch and track
+                                                           # the origin/branch
+
+git switch -c temp origin/v.2022-06-19_1040                # create new "temp"
+                                                           # branch and track
+                                                           # the origin/branch
+
+git reset --hard origin/v.2022-06-19_1015                  # reset "temp" branch
+                                                           # to point to another
+                                                           # origin/branch
+
+git show                               # show the last commit
+
+git branch v.2022-06-19_1500           # create a new branch from current branch
+git switch v.2022-06-19_1500           # must switch explicitly to new branch
