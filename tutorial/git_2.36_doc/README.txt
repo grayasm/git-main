@@ -41,4 +41,9 @@ git reset --hard origin/v.2022-06-19_1015                  # reset "temp" branch
 git show                               # show the last commit
 
 git branch v.2022-06-19_1500           # create a new branch from current branch
-git switch v.2022-06-19_1500           # must switch explicitly to new branch
+git switch v.2022-06-19_1500           # must switch explicitly to be on it
+
+git switch --detach 0b80141b7313659de4bda6ffe13e01188d519f9e
+                                       # set HEAD as detached and checkout
+                                       # revision 0b80141 which comes from
+                                       # remote  origin/v.2022-06-19_1720
