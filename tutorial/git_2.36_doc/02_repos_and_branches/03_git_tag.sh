@@ -1,5 +1,7 @@
+# https://git-scm.com/docs/user-manual#how-to-check-out
+#
 # Tags like heads are references into the project's history, and can
-# be listed using the git-tab command.
+# be listed using the git tag command.
 
 if [ ! -d "git-playground" ]; then
 	git clone https://github.com/grayasm/git-playground.git
@@ -7,7 +9,8 @@ fi
 
 cd git-playground
 
-echo "list current directory" && pwd
+printf "\nList current directory:\n" && pwd
 
-echo "git tag -l"
+printf "\ngit tag -l\n"
+
 git tag -l

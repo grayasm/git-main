@@ -1,7 +1,6 @@
-# https://git-scm.com/docs/user-manual#how-to-check-out
+# https://git-scm.com/docs/user-manual#understanding-commits
 #
-# git-branch command shows you the list of branch heads
-
+# To show the most recent commit on the current branch use git show.
 
 if [ ! -d "git-playground" ]; then
 	git clone https://github.com/grayasm/git-playground.git
@@ -10,10 +9,11 @@ fi
 cd git-playground
 
 printf "\nList current directory:\n" && pwd
+
 printf "\ngit branch\n"
 
 git branch
 
-printf "\ngit branch -r\n"
+printf "\ngit show\n"
 
-git branch -r
+git show
