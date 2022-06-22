@@ -40,7 +40,7 @@ alias du='du -chs'
 alias ..='cd ..'
 alias ...='cd ..; cd ..'
 alias diff='meld'
-
+alias graph='git log --all --decorate --oneline --graph'
 
 # ssh client
 # alias sshocean='ssh -l root -i $HOME/.ssh/id_rsa_do_01112021  $DIGITALOCEAN'
