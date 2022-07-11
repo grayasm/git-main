@@ -44,7 +44,7 @@ git switch -c v.2022-07-11_1520 staging/v.2022-07-11_1520
 git bisect start
 git bisect good 60d7841
 git bisect bad HEAD
-git bisect visualize
+git bisect visualize           # only to see the range in gitk
 git bisect bad
 git bisect visualize
 git bisect bad
