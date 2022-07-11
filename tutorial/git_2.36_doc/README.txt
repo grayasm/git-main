@@ -47,3 +47,36 @@ git switch --detach 0b80141b7313659de4bda6ffe13e01188d519f9e
                                        # set HEAD as detached and checkout
                                        # revision 0b80141 which comes from
                                        # remote  origin/v.2022-06-19_1720
+
+git switch main                        # prepare for git fetch command
+
+git fetch origin                       # update all from remote origin
+
+git status                             # after fetch, status shows you're behind
+# origin/HEAD -> origin/main       (up to date)
+# origin/main                      (up to date)
+# *main                            (behind origin/main by 1 commit)
+
+git merge origin/main                  # merge to be up to date
+
+git pull                               # does git-fetch & git-merge combination
+
+
+
+
+
+
+
+# from YOUTUBE:
+git remote                             # list the remotes repositories whose
+                                       # branches you track
+*origin
+
+git remote -v                          # verbose
+origin  https://github.com/grayasm/git-playground.git (fetch)
+origin  https://github.com/grayasm/git-playground.git (push)
+
+
+git log --all --decorate --oneline --graph        # shows a pretty log
+                                                  # aliased as "gitlog"
+
