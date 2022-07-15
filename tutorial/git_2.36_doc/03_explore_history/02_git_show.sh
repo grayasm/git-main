@@ -1,6 +1,7 @@
 # https://git-scm.com/docs/user-manual#naming-commits
 #
 # Use git-show to show various type of objects (commits)
+# Use git-rev-parse to convert the small hash into full hash
 #
 # man git-show
 
@@ -32,3 +33,5 @@ git show HEAD~1           # 1st revision behind HEAD "change - 2022-07-11_1546"
 git show HEAD             # show HEAD revision       "change - 2022-07-11_1547"
 
 git show ec97f63          # show HEAD revision       "change - 2022-07-11_1547"
+
+git rev-parse ec97f63     # ec97f631d1089ef04d4f03b366fd9cbdbfcf4844
