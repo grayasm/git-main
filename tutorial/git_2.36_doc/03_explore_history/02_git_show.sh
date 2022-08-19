@@ -4,6 +4,7 @@
 # Use git-rev-parse to convert the small hash into full hash
 #
 # man git-show
+# man git-rev-parse
 
 
 
