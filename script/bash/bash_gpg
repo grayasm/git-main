@@ -1,4 +1,4 @@
-# .bash_gpg
+# ~/.bashrc.d/bash_gpg
 
 # if the system runs the agent, ask how to connect to it.
 # $ gpg-agent --daemon --enable-ssh-support

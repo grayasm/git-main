@@ -1,4 +1,5 @@
-# .bash_nosave
+# ~/.bashrc.d/bash_nosave
+
 # must not be under revision control,
 # or at least not with sensitive data inside.
 
