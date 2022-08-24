@@ -27,7 +27,7 @@ git branch -D v.2022-07-11_1520
 # checkout clean
 git switch -c v.2022-07-11_1520 staging/v.2022-07-11_1520
 
-
+                          # HEAD^2 or HEAD~2 are equivalent
 git show HEAD~3           # 3rd revision behind HEAD "change - 2022-07-11_1544"
 git show HEAD~2           # 2nd revision behind HEAD "change - 2022-07-11_1545"
 git show HEAD~1           # 1st revision behind HEAD "change - 2022-07-11_1546"
