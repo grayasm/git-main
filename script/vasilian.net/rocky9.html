@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NNSN5N589Z"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-NNSN5N589Z');
+</script>
+
+<title>Install RockyLinux-9</title>
+<link href="main.css" rel="stylesheet" type="text/css" media="all">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+</head>
+<body>
+<a href="index.html">Back to main index</a>
+<h1>Install RockyLinux-9</h1>
+
+
+<p>Time and Date: optional <a href="https://www.pool.ntp.org/zone/de" target="_blank">NTP servers</a> in Germany.</p>
+<pre>
+0.de.pool.ntp.org
+1.de.pool.ntp.org
+2.de.pool.ntp.org
+3.de.pool.ntp.org
+</pre>
+
+<p>Activate laptop <a href="http://unix.stackexchange.com/questions/229711/why-cant-this-centos-7-server-see-wifi-connections" target="_blank">wifi connection</a>.</p>
+<pre>
+rpm -q NetworkManager-wifi
+# plug-in ethernet connection
+dnf install NetworkManager-wifi
+systemctl restart NetworkManager
+# unplug ethernet connection
+nmtui
+</pre>
+
+
+
+I use dnf <a href="https://dnf.readthedocs.io/en/latest/conf_ref.html" target="_blank">priority</a> to isolate the core system from 3rd party software.<br>
+It means a 3rd party package cannot upgrade a baseos package.<br>
+Here is my /etc/yum.repos.d/rocky.repo
+<pre>
+[baseos]
+name=Rocky Linux $releasever - BaseOS
+mirrorlist=https://mirrors.rockylinux.org/mirrorlist?arch=$basearch&repo=BaseOS-$releasever$rltype
+gpgcheck=1
+enabled=1
+countme=1
+metadata_expire=6h
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-Rocky-9
+<b>priority=10</b>
+</pre>
+
+<p>
+The rule is that if a [repository] has "enabled=1" then add "priority=X" to establish it's hierarchy among other repos.<br>
+The hierarchy usually is:<br> 
+priority=10 for [baseos]<br>
+priority=20 for [appstream]<br>
+priority=30 for [extras]<br>
+priority=40 for [epel]<br>
+priority=50 for [google-chrome]<br>
+priority=90 for [fedora]<br>
+</p>
+
+
+<p>
+Install <a href="https://fedoraproject.org/wiki/EPEL" target="_blank">epel repo</a>, the Fedora Special Interest Group (with priority=40).
+</p>
+<pre>
+dnf install epel-release
+</pre>
+
+
+
+<p>Install Xfce Desktop</p>
+<pre>
+dnf group install "Xfce"
+
+dnf install lightdm
+systemctl disable gdm.service
+systemctl enable lightdm.service
+
+systemctl set-default graphical.target
+ll /etc/systemd/system/default.target
+
+dnf install xdg-user-dirs
+# Create $HOME template directories, e.g. Documents, Downloads, Music, Trash as $HOME/.local/share/Trash
+# Run as regular <b>user</b>
+xdg-user-dirs-update
+</pre>
+
+<p>Reboot the system and login to Xfce session</p>
+
+<p>
+Add [google-chrome] repository.<br>
+Create and edit the file /etc/yum.repos.d/google-chrome.repo<br>
+</p>
+<pre>
+[google-chrome]
+name=google-chrome
+baseurl=https://dl.google.com/linux/chrome/rpm/stable/x86_64
+enabled=1
+gpgcheck=1
+gpgkey=https://dl.google.com/linux/linux_signing_key.pub
+priority=50
+</pre>
+
+<p>
+Add Fedora-35 repository to Rocky Linux 9<br>
+</p>
+
+<pre>
+cd /tmp
+wget https://archives.fedoraproject.org/pub/archive/fedora/linux/releases/35/Everything/x86_64/os/Packages/f/fedora-gpg-keys-35-1.noarch.rpm
+rpm2cpio fedora-gpg-keys-35-1.noarch.rpm | cpio -idmv
+cp etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-35-primary .
+rm -rfv etc
+rm fedora-gpg-keys-35-1.noarch.rpm
+
+# as root
+cp RPM-GPG-KEY-fedora-35-primary /etc/pki/rpm-gpg
+chown -v root:root  /etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-35-primary
+chmod 644 /etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-35-primary
+chcon -u system_u -t cert_t -v /etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-35-primary
+</pre>
+
+<p>Create /etc/yum.repos.d/fedora35.repo</p>
+<pre>
+[fedora35]
+name=Fedora-35 beta version for RHEL-9
+baseurl=http://archives.fedoraproject.org/pub/archive/fedora/linux/releases/35/Everything/$basearch/os/
+enabled=0
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-35-primary
+protect=0
+priority=90
+</pre>
+
+
+
+<p>Install Xfce extra packages</p>
+<pre>
+dnf install xfce4-datetime-plugin xfce4-screenshooter xfce4-systemload-plugin  \
+            xfce4-weather-plugin xfce4-xkb-plugin xfce4-whiskermenu-plugin     \
+            xfce4-taskmanager xfce4-about mousepad parole
+
+dnf install gnome-calculator ristretto gimp evince brasero mlocate p7zip zip unzip bzip2
+</pre>
+
+<p>Thunar automount feature</p>
+<pre>
+dnf install udisks2 gvfs gvfs-fuse gvfs-gphoto2 gvfs-smb ntfs-3g 
+</pre>
+
+
+<p>Optional Icons</p>
+<pre>
+dnf --enablerepo=fedora35 install \
+            bluecurve-icon-theme.noarch \
+            breeze-icon-theme.noarch \
+            candy-icon-theme.noarch \
+            echo-icon-theme.noarch \
+            elementary-icon-theme.noarch \
+            elementary-icon-theme-gimp-palette.noarch \
+            elementary-icon-theme-inkscape-palette.noarch \
+            elementary-xfce-icon-theme.noarch \
+            faience-icon-theme.noarch \
+            flat-remix-icon-theme.noarch \
+            humanity-icon-theme.noarch \
+            lumina-icons.noarch \
+            luv-icon-theme.noarch \
+            mint-x-icons.noarch \
+            mint-y-icons.noarch \
+            moka-icon-theme.noarch \
+            numix-icon-theme.noarch \
+            numix-icon-theme-circle.noarch \
+            numix-icon-theme-square.noarch \
+            paper-icon-theme.noarch \
+            papirus-icon-theme.noarch \
+            suru-icon-theme.noarch \
+            tango-icon-theme.noarch \
+            tango-icon-theme-extras.noarch \
+            We10X-icon-theme.noarch \
+            yaru-icon-theme.noarch
+</pre>
+
+<p>Optional Xfce Themes</p>
+<pre>
+dnf --enablerepo=fedora35 install \
+            bluecurve-cursor-theme \
+            clearlooks-compact-gnome-theme \ 
+            xfwm4-themes \
+            bluebird-xfwm4-theme \
+            albatross-xfwm4-theme
+</pre>
+
+
+<p>To revert/uninstall all packages from fedora35.repo use:</p>
+<pre>
+dnf remove $(dnf list installed | grep 'fedora35' | awk '{ print $1 }')
+</pre>
+
+<p>Install seahorse (gnome-keyring related)</p>
+<pre>
+dnf info seahorse
+dnf repoquery --deplist seahorse
+dnf install seahorse
+</pre>
+
+
+
+
+
+
+<p>Edit /etc/lightdm/lightdm.conf</p>
+<pre>
+greeter-session=lightdm-gtk-greeter
+</pre>
+
+Set up the gtk3 css theme
+<pre>
+cd /tmp
+wget ftp://vasilian.net/Gtk-Themes/lightdm-gtk-clearlooks-grey.tar.gz
+tar -zxvf lightdm-gtk-clearlooks-grey.tar.gz
+mv lightdm-gtk-clearlooks-grey  /usr/share/themes
+chown -Rv root:root /usr/share/themes/lightdm-gtk-clearlooks-grey
+chcon -Rv -u system_u -t usr_t /usr/share/themes/lightdm-gtk-clearlooks-grey
+</pre>
+
+Set up the greeter settings /etc/lightdm/lightdm-gtk-greeter.conf
+<pre>
+[greeter]
+background=/usr/share/backgrounds/default.png
+theme-name=lightdm-gtk-clearlooks-grey
+icon-theme-name=Bluecurve
+font-name=DejaVu Sans Condensed:10
+#xft-antialias=
+xft-dpi=96
+#xft-hintstyle=
+#xft-rgba=
+indicators=~ally;~host;~spacer;~clock;~spacer;~language;~session;~power;
+clock-format=%H:%M:%S
+keyboard=us
+position=50%,center 50%,center
+#screensaver-timeout=
+</pre>
+
+<p>Set Thunar <a href="https://docs.xfce.org/xfce/thunar/custom-actions" target="_blank">custom actions</a> feature.</p>
+
+<p>Install <a href="http://elrepo.org/tiki/tiki-index.php" target="_blank">elrepo</a> with priority=40 
+for <a href="http://elrepo.org/tiki/kmod-nvidia" target="_blank">kmod-nvidia</a></p>
+
+<p>Install <a href="https://computingforgeeks.com/install-adobe-flash-player-on-rhel-centos-8/" target="_blank">adobe</a> 
+with priority=50.</p>
+
+<p>Read on the <a href="http://hivelogic.com/articles/top-10-programming-fonts/" target="_blank">top 10 programming fonts</a></p>
+
+<!--
+<p>I maintain my own RH8 repository with SPEC files under 
+<a href="https://github.com/grayasm/git-main/tree/master/script/rpm-el8" 
+target="_blank">https://github.com/grayasm/git-main/tree/master/script/rpm-el8</a>
+</p>
+
+<pre>
+[vasilian]
+name=Vasilian packages for CentOS-$releasever-$basearch
+baseurl=ftp://vasilian.net/CentOS/$releasever/extras/$basearch/
+enabled=1
+gpgcheck=1
+gpgkey=ftp://vasilian.net/RPM-GPG-KEY-vasilian
+protect=0
+priority=90
+</pre>
+
+Optional some popular fonts
+<pre>
+dnf --enablerepo=vasilian install win10-fonts mac-fonts
+</pre>
+-->
+
+<p>Optional <a href="https://www.marksimonson.com/fonts/view/anonymous-pro" target="_blank">Anonymous Pro Font</a></p>
+
+<pre>
+cd /tmp
+wget http://www.marksimonson.com/assets/content/fonts/AnonymousPro-1.002.zip
+unzip AnonymousPro-1.002.zip
+mv AnonymousPro-1.002.001  /usr/share/fonts/
+cd /usr/share/fonts
+chown -Rv root:root AnonymousPro-1.002.001
+chcon -u system_u -t fonts_t -Rv AnonymousPro-1.002.001/
+fc-cache /usr/share/fonts/AnonymousPro-1.002.001
+</pre>
+
+<p>Optional Monaco (From OSX)</p>
+<pre>
+cd /usr/share/fonts
+mkdir Monaco && cd Monaco
+wget http://www.gringod.com/wp-upload/MONACO.TTF  # or manually
+chown -Rv root:root Monaco
+chcon -u system_u -t fonts_t -Rv Monaco/
+fc-cache /usr/share/fonts/Monaco
+</pre>
+
+<br>
+<br>
+<a href="index.html">Back to main index</a>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
