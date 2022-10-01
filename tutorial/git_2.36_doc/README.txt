@@ -108,5 +108,3 @@ git tag stable-1 b33d6f7611          # create a tag at given hash
 git log                              # log will display also the tag
 git tag -d stable-1                  # delete a local tag
 git push --delete origin stable-1    # delete a remote tag
-
-
