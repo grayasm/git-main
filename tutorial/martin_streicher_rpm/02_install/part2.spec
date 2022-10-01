@@ -31,6 +31,9 @@ Group:         Development/Tools
 %description
 The GNU part2 dummy program.
 
+# error: Empty %files file debugsourcefiles.list
+%global debug_package %{nil}
+
 %prep
 %setup -q
 
@@ -44,3 +47,7 @@ make -f part2.mk DESTDIR=$RPM_BUILD_ROOT/tmp/part2 install
 %defattr(-,root,root)
 /tmp/part2/bin/part2
 /tmp/part2/share/icons/part2.png
+
+%changelog
+* Sat Oct 1 2022 Mihai Vasilian <grayasm@gmail.com>
+- Add debug_package

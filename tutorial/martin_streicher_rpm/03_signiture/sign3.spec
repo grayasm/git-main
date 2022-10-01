@@ -29,6 +29,9 @@ Group:         Development/Tools
 %description
 The GNU sign3 dummy program.
 
+# error: Empty %files file debugsourcefiles.list
+%global debug_package %{nil}
+
 %prep
 %setup -q
 
@@ -49,5 +52,7 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Sat Oct 1 2022 Mihai Vasilian <grayasm@gmail.com>
+- Add debug_package
 * Sun Aug 14 2016 Mihai Vasilian <grayasm@gmail.com> 0.1-1.el7
 - Initial package with signiture.

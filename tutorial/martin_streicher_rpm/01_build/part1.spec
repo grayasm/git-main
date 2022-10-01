@@ -20,6 +20,9 @@ Group:        Development/Tools
 %description
 The GNU wget program downloads files from the Internet using the command-line.
 
+# error: Empty %files file debugsourcefiles.list
+%global debug_package %{nil}
+
 %prep
 %setup -q
 
@@ -77,3 +80,8 @@ make install prefix=$RPM_BUILD_ROOT/opt/wget
 %doc %attr(0444,root,root)   /opt/wget/share/locale/vi/LC_MESSAGES/wget.mo
 %doc %attr(0444,root,root)   /opt/wget/share/locale/zh_CN/LC_MESSAGES/wget.mo
 %doc %attr(0444,root,root)   /opt/wget/share/locale/zh_TW/LC_MESSAGES/wget.mo
+
+
+%changelog
+* Sat Oct 1 2022 Mihai Vasilian <grayasm@gmail.com>
+- Add debug_package

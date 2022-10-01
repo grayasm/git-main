@@ -25,6 +25,9 @@ Group:       Development/Tools
 %description
 The GNU part2 dummy program.
 
+# error: Empty %files file debugsourcefiles.list
+%global debug_package %{nil}
+
 %prep
 %setup -q
 
@@ -77,6 +80,8 @@ fi
 
 
 %changelog
+* Sat Oct 1 2022 Mihai Vasilian <grayasm@gmail.com>
+- Add debug_package
 * Mon Aug 8 2016 Mihai Vasilian <grayasm@gmail.com> 1.1-1
 - Second release package
 * Sat Aug 6 2016 Mihai Vasilian <grayasm@gmail.com> 0.1-1
