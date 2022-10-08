@@ -16,6 +16,7 @@ tar -cvzf sign3-0.1.tar.gz sign3-0.1
 mv sign3-0.1.tar.gz  SOURCES/
 
 cp sign3.spec  SPECS/
-rpmbuild -v --sign -bb --clean SPECS/sign3.spec
+rpmbuild -v -bb --clean SPECS/sign3.spec
+rpmsign --addsign ./RPMS/x86_64/sign3-0.1-1.el7.x86_64.rpm
 
 find . -iname '*.rpm'

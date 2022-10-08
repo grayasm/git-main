@@ -12,32 +12,58 @@
 
     To setup the rpmbuild to use signiture do the next steps:
 
-    1) setup gpg-agent which manages secret keys for all users:
-    $ gpg-agent --daemon --enable-ssh-support \
-                --write-env-file "${HOME}/.gpg-agent-info"
+    1) Create the gpg secret key
+       See tutorial at: https://docs.github.com/en/authentication/managing-commit-signature-verification/generating-a-new-gpg-key
 
-    2) source the following bash script to export agent environment:
-    if [ -f "${HOME}/.gpg-agent-info" ]; then
-        . "${HOME}/.gpg-agent-info"
-        export GPG_AGENT_INFO
-        export SSH_AUTH_SOCK
-        export SSH_AGENT_PID
-        export GPG_TTY=$(tty)
-        export GPG_TTY
-    fi
+       $ gpg --full-generate-key
 
-    3) use gpg like this:
-    $ gpg --gen-key             ; to generate key
-    $ gpg --list-key            ; to list the key
-    $ gpg --export -a 'Mihai Vasilian' > RPM-GPG-KEY-vasilian   ; to export key
+       Select (1) RSA and RSA (default)
+       Select keysize (3072) (default)
+       Select how long the key should be valid.
+           0 = key does not expire
+
+       Real name: Mihai Vasilian
+       Email address: grayasm@gmail.com
+       Comment: RPM Signing Key
+       You selected this USER-ID:
+           "Mihai Vasilian (RPM Signing Key) <grayasm@gmail.com>"
+
+       Type a secure passphrase.
+       Done.
+
+       $ gpg --list-secret-keys
+       /home/mihai/.gnupg/pubring.kbx
+       ------------------------------
+       sec   rsa3072 2022-10-08 [SC]
+             6EE6BDF08BF51743ABE189E89C03756E10264874
+       uid           [ultimate] Mihai Vasilian (RPM Signing Key) <grayasm@gmail.com>
+       ssb   rsa3072 2022-10-08 [E]
+
+
+       Print the GPG key ID, in ASCII armor format:
+       $ gpg --armor --export 6EE6BDF08BF51743ABE189E89C03756E10264874
+
+       Copy your GPG key, beginning with -----BEGIN PGP PUBLIC KEY BLOCK-----
+       and ending with -----END PGP PUBLIC KEY BLOCK-----
+       and save it as RPM-GPG-KEY-vasilian
+
+    2) The gpg-agent should already be running. Check it with:
+
+       $ gpg-agent --daemon
+       gpg-agent: a gpg-agent is already running - not starting a new one
+
+    3) To remove a secret key for whatever reason use:
+
+       $ gpg --delete-secret-key 6EE6BDF08BF51743ABE189E89C03756E10264874
 
     4) edit $HOME/.rpmmacros and add 3 lines:
-    %_signature    gpg
-    %_gpg_path     /home/mihai/.gnupg
-    %_gpg_name     Mihai Vasilian (Key for RPM) <grayasm@gmail.com>
+       %_signature    gpg
+       %_gpg_path     /home/mihai/.gnupg
+       %_gpg_name     Mihai Vasilian (RPM Signing Key) <grayasm@gmail.com>
 
-    5) build the signed rpm package:
-    $ rpmbuild -v --sign --bb --clean SPECS/sign3.spec
-    Enter pass phrase:
-    Pass phrase is good.
-    Executing(%prep): ....
+    5) build and sign the rpm package:
+
+      $ rpmbuild -v --bb --clean SPECS/sign3.spec
+
+      $ rpmsign --addsign ./RPMS/x86_64/sign3-0.1-1.el7.x86_64.rpm
+
