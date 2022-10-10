@@ -259,28 +259,25 @@ with priority=50.</p>
 
 <p>Read on the <a href="http://hivelogic.com/articles/top-10-programming-fonts/" target="_blank">top 10 programming fonts</a></p>
 
-<!--
-<p>I maintain my own RH8 repository with SPEC files under 
-<a href="https://github.com/grayasm/git-main/tree/master/script/rpm-el8" 
-target="_blank">https://github.com/grayasm/git-main/tree/master/script/rpm-el8</a>
-</p>
+
+<p>Add own RHEL repository.</p>
 
 <pre>
 [vasilian]
-name=Vasilian packages for RockyLinux-$releasever-$basearch
-baseurl=ftp://vasilian.net/RockyLinux/$releasever/extras/$basearch/
-enabled=1
+name=Vasilian packages for RHEL
+baseurl=ftp://vasilian.net/RHEL/$releasever/extras/$basearch/
+enabled=0
 gpgcheck=1
-gpgkey=ftp://vasilian.net/RPM-GPG-KEY/RPM-GPG-KEY-vasilian-rocky9
+gpgkey=ftp://vasilian.net/RHEL/$releasever/RPM-GPG-KEY-vasilian
 protect=0
 priority=90
 </pre>
 
-Optional some popular fonts
+<p>Optional some popular fonts.</p>
 <pre>
 dnf --enablerepo=vasilian install win10-fonts mac-fonts
 </pre>
--->
+
 
 <p>Optional <a href="https://www.marksimonson.com/fonts/view/anonymous-pro" target="_blank">Anonymous Pro Font</a></p>
 
