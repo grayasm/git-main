@@ -129,6 +129,18 @@ install:
 	install -D -m 0644  SFPro_ttf/SFProText-SemiBoldItalic.ttf			$(DESTDIR)/SFPro_ttf/SFProText-SemiBoldItalic.ttf
 	install -D -m 0644  SFPro_ttf/SFProText-Semibold.ttf				$(DESTDIR)/SFPro_ttf/SFProText-Semibold.ttf
 	install -D -m 0644  SFPro_ttf/SFProText-SemiBold.ttf				$(DESTDIR)/SFPro_ttf/SFProText-SemiBold.ttf
+	install -D -m 0644  SFMono/SFMonoBoldItalic.otf						$(DESTDIR)/SFMono/SFMonoBoldItalic.otf
+	install -D -m 0644  SFMono/SFMonoBold.otf							$(DESTDIR)/SFMono/SFMonoBold.otf
+	install -D -m 0644  SFMono/SFMonoHeavyItalic.otf					$(DESTDIR)/SFMono/SFMonoHeavyItalic.otf
+	install -D -m 0644  SFMono/SFMonoHeavy.otf							$(DESTDIR)/SFMono/SFMonoHeavy.otf
+	install -D -m 0644  SFMono/SFMonoLightItalic.otf					$(DESTDIR)/SFMono/SFMonoLightItalic.otf
+	install -D -m 0644  SFMono/SFMonoLight.otf							$(DESTDIR)/SFMono/SFMonoLight.otf
+	install -D -m 0644  SFMono/SFMonoMediumItalic.otf					$(DESTDIR)/SFMono/SFMonoMediumItalic.otf
+	install -D -m 0644  SFMono/SFMonoMedium.otf							$(DESTDIR)/SFMono/SFMonoMedium.otf
+	install -D -m 0644  SFMono/SFMonoRegularItalic.otf					$(DESTDIR)/SFMono/SFMonoRegularItalic.otf
+	install -D -m 0644  SFMono/SFMonoRegular.otf						$(DESTDIR)/SFMono/SFMonoRegular.otf
+	install -D -m 0644  SFMono/SFMonoSemiboldItalic.otf					$(DESTDIR)/SFMono/SFMonoSemiboldItalic.otf
+	install -D -m 0644  SFMono/SFMonoSemibold.otf						$(DESTDIR)/SFMono/SFMonoSemibold.otf
 
 
 .PHONY: all clean install

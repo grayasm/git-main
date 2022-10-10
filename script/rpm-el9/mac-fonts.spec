@@ -181,7 +181,18 @@ fi
 /usr/share/fonts/mac-fonts/SFPro_ttf/SFProText-SemiBoldItalic.ttf
 /usr/share/fonts/mac-fonts/SFPro_ttf/SFProText-Semibold.ttf
 /usr/share/fonts/mac-fonts/SFPro_ttf/SFProText-SemiboldItalic.ttf
-
+/usr/share/fonts/mac-fonts/SFMono/SFMonoBoldItalic.otf
+/usr/share/fonts/mac-fonts/SFMono/SFMonoBold.otf
+/usr/share/fonts/mac-fonts/SFMono/SFMonoHeavyItalic.otf
+/usr/share/fonts/mac-fonts/SFMono/SFMonoHeavy.otf
+/usr/share/fonts/mac-fonts/SFMono/SFMonoLightItalic.otf
+/usr/share/fonts/mac-fonts/SFMono/SFMonoLight.otf
+/usr/share/fonts/mac-fonts/SFMono/SFMonoMediumItalic.otf
+/usr/share/fonts/mac-fonts/SFMono/SFMonoMedium.otf
+/usr/share/fonts/mac-fonts/SFMono/SFMonoRegularItalic.otf
+/usr/share/fonts/mac-fonts/SFMono/SFMonoRegular.otf
+/usr/share/fonts/mac-fonts/SFMono/SFMonoSemiboldItalic.otf
+/usr/share/fonts/mac-fonts/SFMono/SFMonoSemibold.otf
 
 
 %changelog
