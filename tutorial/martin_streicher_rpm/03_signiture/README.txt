@@ -66,4 +66,3 @@
       $ rpmbuild -v --bb --clean SPECS/sign3.spec
 
       $ rpmsign --addsign ./RPMS/x86_64/sign3-0.1-1.el7.x86_64.rpm
-
