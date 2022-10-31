@@ -19,6 +19,7 @@ cd git-playground
 # switch to main before clean up
 git switch main
 
+# this needs new branch here ---
 # delete --force local branch first
 git branch -D v.2022-08-24_1440
 
@@ -27,3 +28,5 @@ git switch -c v.2022-08-24_1440 staging/v.2022-08-24_1440
 
 # git diff 2 branches
 git diff staging/main..staging/v.2022-08-24_1440
+
+
