@@ -26,7 +26,8 @@ git branch -D v.2022-08-24_1440
 # checkout clean
 git switch -c v.2022-08-24_1440 staging/v.2022-08-24_1440
 
-# git diff 2 branches
-git diff staging/main..staging/v.2022-08-24_1440
-
-
+# Before the colon may be anything that names a commit, and after it
+# may be any path to a file tracked by Git.
+git show b33d6f761181:main.cpp
+git show 65da2cf11a8d:main.cpp
+git show HEAD:main.cpp
