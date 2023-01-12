@@ -26,10 +26,10 @@ git branch -D v.2022-08-24_1440
 git switch -c v.2022-08-24_1440 staging/v.2022-08-24_1440
 
 # git diff 2 branches
-git diff staging/main..staging/v.2022-08-24_1440
+git diff staging/v.2022-07-11_1520..staging/v.2022-08-24_1440
 
 # generate instead a set of patches using git-format-patch
-git format-patch staging/main..HEAD
+git format-patch staging/v.2022-07-11_1520..HEAD
 
 # patch files should not be commited
 echo -e "\n!!!!! DO NOT COMMIT THESE .patch FILES !!!!!\n"
