@@ -9,24 +9,7 @@ Copyright (C) 2012 Mihai Vasilian
 #include <cppunit/extensions/TestFactoryRegistry.h>
 #include <cppunit/ui/text/TestRunner.h>
 
-
-#include "test_algorithm.hpp"
-#include "test_autoptr.hpp"
-#include "test_deque.hpp"
-#include "test_exception.hpp"
-#include "test_filename.hpp"
-#include "test_functional.hpp"
-#include "test_generic_array.hpp"
-#include "test_list.hpp"
-#include "test_numeric.hpp"
-#include "test_generic_string.hpp"
-#include "test_vector.hpp"
-#include "test_priority_queue.hpp"
-#include "test_queue.hpp"
-#include "test_stack.hpp"
 #include "test_tree.hpp"
-#include "test_utility.hpp"
-#include "test_vector.hpp"
 
 
 int main(int argc, char** argv)
@@ -36,93 +19,10 @@ int main(int argc, char** argv)
 	
     //http://cppunit.sourceforge.net/doc/lastest/cppunit_cookbook.html
 
-    //////////////////////////////////////////////////////////////////////////
-    //algorithms
-    /*
-      algorithm
-      functional
-      math
-      memmanip
-      memory
-      numeric
-      utility
-    */
-
-#if 1
-    CPPUNIT_TEST_SUITE_REGISTRATION(test_algorithm);
-    CPPUNIT_TEST_SUITE_REGISTRATION(test_functional);
-    CPPUNIT_TEST_SUITE_REGISTRATION(test_numeric);
-    CPPUNIT_TEST_SUITE_REGISTRATION(test_utility);
-#endif
-
-
-    //////////////////////////////////////////////////////////////////////////
-    //containers
-    /*
-      autoptr
-      exception
-      iterator
-      generic_array
-      vector
-      string
-      list
-      stack
-      deque
-      queue
-      priority_queue
-      tree
-    */
 	
 #if 1
-    CPPUNIT_TEST_SUITE_REGISTRATION(test_autoptr);
-    CPPUNIT_TEST_SUITE_REGISTRATION(test_exception);
-    CPPUNIT_TEST_SUITE_REGISTRATION(test_generic_array);
-    CPPUNIT_TEST_SUITE_REGISTRATION(test_vector);
-    CPPUNIT_TEST_SUITE_REGISTRATION(test_generic_string);
-    CPPUNIT_TEST_SUITE_REGISTRATION(test_list);
-    CPPUNIT_TEST_SUITE_REGISTRATION(test_stack);
-    CPPUNIT_TEST_SUITE_REGISTRATION(test_deque);
-    CPPUNIT_TEST_SUITE_REGISTRATION(test_queue);
-    CPPUNIT_TEST_SUITE_REGISTRATION(test_priority_queue);
 //    CPPUNIT_TEST_SUITE_REGISTRATION(test_tree); -- exception test_tree::preorder_it (E)
 #endif
-
-
-    //////////////////////////////////////////////////////////////////////////
-    //misc libraries
-    /*
-      stdio
-      unistd
-      strconv
-      stream
-      filename
-      critical_section
-      mutex
-      semaphore
-      event
-      multi_lock
-      single_lock
-      thread
-      time 
-   */
-
-#if 1
-    CPPUNIT_TEST_SUITE_REGISTRATION(test_filename);
-    //CPPUNIT_TEST_SUITE_REGISTRATION(test_critical_section);
-	//CPPUNIT_TEST_SUITE_REGISTRATION(test_autocritical_section);
-    //CPPUNIT_TEST_SUITE_REGISTRATION(test_mutex);
-    //CPPUNIT_TEST_SUITE_REGISTRATION(test_semaphore);
-    //CPPUNIT_TEST_SUITE_REGISTRATION(test_event);
-    //CPPUNIT_TEST_SUITE_REGISTRATION(test_multi_lock);
-    //CPPUNIT_TEST_SUITE_REGISTRATION(test_single_lock);
-    //CPPUNIT_TEST_SUITE_REGISTRATION(test_thread);
-    //CPPUNIT_TEST_SUITE_REGISTRATION(test_time);
-#endif
-	
-	//
-	//
-	// test bench
-	// CPPUNIT_TEST_SUITE_REGISTRATION(test_multi_lock);
 
 
     //////////////////////////////////////////////////////////////////////////
