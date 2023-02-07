@@ -1,4 +1,6 @@
-
+/*
+Copyright (C) 2017 Mihai Vasilian
+*/
 
 
 #include "TradingPermissions.hpp"
