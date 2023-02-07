@@ -41,8 +41,6 @@ namespace sys
         /* indicate how much resource has been used */
         struct rusage r_usage;
 #endif
-
-
     }; // class
 
 
