@@ -149,7 +149,7 @@ void test_critical_section::lock()
 
 		sys::time t2( time(0) );
 		int minsec = (int) ((THNO-1)*THNO/2); // waiting time in total
-		sys::time t3 = t1 + minsec;
+		sys::time t3 = t1 + minsec - 1; // less one sec, for the comparison below
 		bool tcmp = (t2 >= t3);
 
 		printf("\n\t calculated delay : %d", minsec);

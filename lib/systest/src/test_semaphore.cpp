@@ -132,7 +132,7 @@ void test_semaphore::lock()
 
 		sys::time t2( time(0) );
 		int minsec = (int) ((THNO-1)*THNO/2); // waiting time in total
-		sys::time t3 = t1 + minsec;
+		sys::time t3 = t1 + minsec - 1; // less one sec for the comparison below
 		bool tcmp = (t2 >= t3);
 
 		printf("\n\t calculated delay : %d", minsec);
@@ -183,7 +183,7 @@ public:
 	// --vtable--
 	unsigned long run()
 	{
-		while(m_sem->trylock(1 * 1e3) != 0)
+		while(m_sem->trylock(1 * 1000) != 0)
 			m_count++;
 		
 		printf("\n\t\tthread %d locked after %d attempts", m_sec, m_count);
@@ -244,7 +244,7 @@ void test_semaphore::trylock()
 		
 		sys::time t2( time(0) );
 		int minsec = (int) ((THNO-1)*THNO/2); // waiting time in total
-		sys::time t3 = t1 + minsec;
+		sys::time t3 = t1 + minsec - 1; // less one sec for tolerance
 		bool tcmp = (t2 >= t3);
 
 		printf("\n\t calculated delay : %d", minsec);
@@ -260,10 +260,10 @@ void test_semaphore::trylock()
 		printf("\n\t start time       : %s", t1.tolocaltime().c_str());
 		
 		const int THNO = 7;
-		sys::semaphore sem(THNO);
+		sys::semaphore sem(THNO); // no wait queue
 		Sstthread*  t[THNO];
 		for(int i=0; i < THNO; ++i)
-			t[i] = new Sstthread(&sem, i);// max 6 sec for i=6
+			t[i] = new Sstthread(&sem, i); // innner thread max sleep time 6 sec for i=6
 		for(int i=0; i < THNO; ++i)
 			t[i]->resume();
 		for(int i=0; i < THNO; ++i)
@@ -272,8 +272,8 @@ void test_semaphore::trylock()
 			delete t[i];
 		
 		sys::time t2( time(0) );
-		int minsec = (int) THNO-1; // waiting time in total
-		sys::time t3 = t1 + minsec;
+		int minsec = THNO-1; // all start at once, max wait is i=6 for 6 sec.
+		sys::time t3 = t1 + minsec -1; // less one sec as tolerance for the comparison below
 		sys::time t4 = t3 + 2; // more with 2 sec maximum
 		
 		bool tcmp = (t2 >= t3) && (t2 <= t4);

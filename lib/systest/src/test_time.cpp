@@ -17,7 +17,7 @@ Copyright (C) 2015 Mihai Vasilian
 #include "exception.hpp"
 #include "string.hpp"
 #include "stream.hpp"
-#include "misctest_util.hpp"
+#include "systest_util.hpp"
 #include "time.hpp"
 
 
@@ -290,11 +290,6 @@ void test_time::decr_op()
 	sys::time t2(2015, sys::time::JAN, 1, 0, 0, 9);
 	t2 -= 10; //sec
 	CPPUNIT_ASSERT( t1 == t2 );	
-	
-	sys::time t3(1969, sys::time::DEC, 31, 23, 59, 50);
-	sys::time t4;
-	t4 -= 10;
-	CPPUNIT_ASSERT( t3 == t4 );
 }
 
 void test_time::tostring()

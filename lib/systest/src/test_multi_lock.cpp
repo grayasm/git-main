@@ -57,7 +57,7 @@ void test_multi_lock::ctor()
 		so[3] = &s2;
 		so[4] = &e1;
 		so[5] = &e2;
-		misc::multi_lock ml(so, 6);
+		sys::multi_lock ml(so, 6);
 	}
 	{
 		sys::mutex m1,m2;
@@ -70,7 +70,7 @@ void test_multi_lock::ctor()
 		so[3] = &s2;
 		so[4] = &e1;
 		so[5] = &e2;
-		misc::multi_lock* ml = new misc::multi_lock(so, 6);
+		sys::multi_lock* ml = new sys::multi_lock(so, 6);
 		delete ml;
 	}
 	{
@@ -84,7 +84,7 @@ void test_multi_lock::ctor()
 		so[3] = &s2;
 		so[4] = &e1;
 		so[5] = &e2;
-		misc::multi_lock ml6(so, 6), ml5(so, 5), ml4(so, 4);
+		sys::multi_lock ml6(so, 6), ml5(so, 5), ml4(so, 4);
 	}
 	{
 		sys::mutex m1,m2;
@@ -97,9 +97,9 @@ void test_multi_lock::ctor()
 		so[3] = &s2;
 		so[4] = &e1;
 		so[5] = &e2;
-		misc::multi_lock* ml[6];
+		sys::multi_lock* ml[6];
 		for(size_t i=0; i < 6; ++i)
-			ml[i] = new misc::multi_lock(so, i+1);
+			ml[i] = new sys::multi_lock(so, i+1);
 		for(size_t i=0; i < 6; ++i)
 			delete ml[i];
 	}
@@ -120,7 +120,7 @@ void test_multi_lock::dtor()
 		so[3] = &s2;
 		so[4] = &e1;
 		so[5] = &e2;
-		misc::multi_lock ml(so, 6);
+		sys::multi_lock ml(so, 6);
 	}
 	{
 		sys::mutex m1,m2;
@@ -133,7 +133,7 @@ void test_multi_lock::dtor()
 		so[3] = &s2;
 		so[4] = &e1;
 		so[5] = &e2;
-		misc::multi_lock* ml = new misc::multi_lock(so, 6);
+		sys::multi_lock* ml = new sys::multi_lock(so, 6);
 		delete ml;
 	}
 	{
@@ -147,7 +147,7 @@ void test_multi_lock::dtor()
 		so[3] = &s2;
 		so[4] = &e1;
 		so[5] = &e2;
-		misc::multi_lock ml6(so, 6), ml5(so, 5), ml4(so, 4);
+		sys::multi_lock ml6(so, 6), ml5(so, 5), ml4(so, 4);
 	}
 	{
 		sys::mutex m1,m2;
@@ -160,9 +160,9 @@ void test_multi_lock::dtor()
 		so[3] = &s2;
 		so[4] = &e1;
 		so[5] = &e2;
-		misc::multi_lock* ml[6];
+		sys::multi_lock* ml[6];
 		for(size_t i=0; i < 6; ++i)
-			ml[i] = new misc::multi_lock(so, i+1);
+			ml[i] = new sys::multi_lock(so, i+1);
 		for(size_t i=0; i < 6; ++i)
 			delete ml[i];
 	}
@@ -171,7 +171,7 @@ void test_multi_lock::dtor()
 class MLLockThread : public sys::thread
 {
 public:
-	MLLockThread(misc::multi_lock* ml, int sec, int thID)
+	MLLockThread(sys::multi_lock* ml, int sec, int thID)
 	: m_ml(ml), m_sec(sec), m_thID(thID) {}
 	~MLLockThread() {}
 	unsigned long run()
@@ -184,7 +184,7 @@ public:
 		return m_sec;
 	}
 private:
-	misc::multi_lock*	m_ml;
+	sys::multi_lock*	m_ml;
 	int					m_sec;
 	int					m_thID;
 };
@@ -200,7 +200,7 @@ void test_multi_lock::lock()
 		sys::sync_base* so[2];
 		so[0] = &m1;
 		so[1] = &m2;
-		misc::multi_lock ml(so, 2);
+		sys::multi_lock ml(so, 2);
 		MLLockThread t(&ml, 1, 1);
 		CPPUNIT_ASSERT( t.resume() == 0 );
 		
@@ -221,7 +221,7 @@ void test_multi_lock::lock()
 		sys::sync_base* so[2];
 		so[0] = &m1;
 		so[1] = &e1;
-		misc::multi_lock ml(so, 2);
+		sys::multi_lock ml(so, 2);
 		MLLockThread t(&ml, 1, 1);
 		CPPUNIT_ASSERT( t.resume() == 0 );
 		
@@ -266,7 +266,7 @@ void test_multi_lock::lock()
 		so[13] = &s4;
 		so[14] = &s5;
 		
-		misc::multi_lock ml(so, 15);
+		sys::multi_lock ml(so, 15);
 		MLLockThread t(&ml, 2, 1);
 		CPPUNIT_ASSERT( t.resume() == 0 );
 		
@@ -297,8 +297,8 @@ void test_multi_lock::lock()
 		sys::sync_base* sb[2];
 		sb[0] = &m1;
 		sb[1] = &m2;
-		misc::multi_lock ml1(sb, 2);
-		misc::multi_lock ml2(sb, 2);
+		sys::multi_lock ml1(sb, 2);
+		sys::multi_lock ml2(sb, 2);
 		MLLockThread t1(&ml1, 1, 1);
 		MLLockThread t2(&ml2, 1, 2);
 		CPPUNIT_ASSERT( t1.resume() == 0 );
@@ -317,13 +317,13 @@ void test_multi_lock::lock()
 		so[4] = &m5;
 		so[5] = &m6;
 		
-		misc::multi_lock ml1(so, 6);
+		sys::multi_lock ml1(so, 6);
 		MLLockThread t1(&ml1, 2, 1);
 		
-		misc::multi_lock ml2(&so[2], 2);
+		sys::multi_lock ml2(&so[2], 2);
 		MLLockThread t2(&ml2, 2, 2);
 		
-		misc::multi_lock ml3(&so[4], 2);
+		sys::multi_lock ml3(&so[4], 2);
 		MLLockThread t3(&ml3, 2, 3);
 		
 		CPPUNIT_ASSERT( t1.resume() == 0 );
@@ -345,16 +345,16 @@ void test_multi_lock::lock()
 		so[4] = &m5;
 		so[5] = &m6;
 		
-		misc::multi_lock ml1(so, 3);
+		sys::multi_lock ml1(so, 3);
 		MLLockThread t1(&ml1, 2, 1);
 		
-		misc::multi_lock ml2(&so[1], 3);
+		sys::multi_lock ml2(&so[1], 3);
 		MLLockThread t2(&ml2, 2, 2);
 		
-		misc::multi_lock ml3(&so[2], 3);
+		sys::multi_lock ml3(&so[2], 3);
 		MLLockThread t3(&ml3, 2, 3);
 		
-		misc::multi_lock ml4(&so[3], 3);
+		sys::multi_lock ml4(&so[3], 3);
 		MLLockThread t4(&ml4, 2, 4);
 		
 		CPPUNIT_ASSERT( t1.resume() == 0 );
@@ -389,16 +389,16 @@ void test_multi_lock::lock()
 		so[49] = &s5;
 		
 		// create multi_lock with overlapped ranges	
-		misc::multi_lock ml1(so, 5 + 40 + 2); // 5 mutex, 40 events, 2 sem
+		sys::multi_lock ml1(so, 5 + 40 + 2); // 5 mutex, 40 events, 2 sem
 		MLLockThread t1(&ml1, 3, 1);
 		
-		misc::multi_lock ml2(&so[2], 3 + 40 + 1); // 3 mutex, 40 events, 1 sem
+		sys::multi_lock ml2(&so[2], 3 + 40 + 1); // 3 mutex, 40 events, 1 sem
 		MLLockThread t2(&ml2, 2, 2);
 		
-		misc::multi_lock ml3(&so[3], 2 + 40 + 5); // 2 mutex, 40 events, 5 sem
+		sys::multi_lock ml3(&so[3], 2 + 40 + 5); // 2 mutex, 40 events, 5 sem
 		MLLockThread t3(&ml3, 4, 3);
 		
-		misc::multi_lock ml4(&so[5], 0 + 40 + 3); // 0 mutex, 40 events, 3 sem
+		sys::multi_lock ml4(&so[5], 0 + 40 + 3); // 0 mutex, 40 events, 3 sem
 		MLLockThread t4(&ml4, 5, 4);
 		
 		CPPUNIT_ASSERT( t1.resume() == 0 );
@@ -436,16 +436,16 @@ void test_multi_lock::lock()
 		so[9] = &s5;
 		so[10] = &ev;
 		
-		misc::multi_lock ml1(so, 11);
+		sys::multi_lock ml1(so, 11);
 		MLLockThread t1(&ml1, 3, 1);
 		
-		misc::multi_lock ml2(so, 11);
+		sys::multi_lock ml2(so, 11);
 		MLLockThread t2(&ml2, 3, 2);
 		
-		misc::multi_lock ml3(so, 11);
+		sys::multi_lock ml3(so, 11);
 		MLLockThread t3(&ml3, 3, 3);
 		
-		misc::multi_lock ml4(so, 11);
+		sys::multi_lock ml4(so, 11);
 		MLLockThread t4(&ml4, 3, 4);
 		
 		CPPUNIT_ASSERT( t1.resume() == 0 );
@@ -467,7 +467,7 @@ void test_multi_lock::lock()
 class MLTimedLockThread : public sys::thread
 {
 public:
-	MLTimedLockThread(misc::multi_lock* ml, int sec, int thID)
+	MLTimedLockThread(sys::multi_lock* ml, int sec, int thID)
 	: m_ml(ml), m_sec(sec), m_thID(thID) {}
 	~MLTimedLockThread() {}
 	unsigned long run()
@@ -487,7 +487,7 @@ public:
 		return ret;
 	}
 private:
-	misc::multi_lock*	m_ml;
+	sys::multi_lock*	m_ml;
 	int					m_sec;
 	int					m_thID;
 };
@@ -509,13 +509,13 @@ void test_multi_lock::trylock()
 		for(int i=0; i < MUTNO; ++i)
 			sb[i] = &m[i];
 		
-		misc::multi_lock ml1(sb, MUTNO);
+		sys::multi_lock ml1(sb, MUTNO);
 		MLTimedLockThread t1(&ml1, 10*60, 1); // 10min timeout
 		
-		misc::multi_lock ml2(sb, MUTNO);
+		sys::multi_lock ml2(sb, MUTNO);
 		MLTimedLockThread t2(&ml2, 10*60, 2); // 10min timeout
 		
-		misc::multi_lock ml3(sb, MUTNO);
+		sys::multi_lock ml3(sb, MUTNO);
 		MLTimedLockThread t3(&ml3, 10*60, 3); // 10min timeout
 		
 		CPPUNIT_ASSERT( t1.resume() == 0 );
@@ -557,13 +557,13 @@ void test_multi_lock::trylock()
 		so[9] = &sm4;
 		so[10] = &sm5;
 		
-		misc::multi_lock ml1(so, 11);
+		sys::multi_lock ml1(so, 11);
 		MLTimedLockThread t1(&ml1, 5, 1);
 		
-		misc::multi_lock ml2(so, 11);
+		sys::multi_lock ml2(so, 11);
 		MLTimedLockThread t2(&ml2, 5, 2);
 		
-		misc::multi_lock ml3(so, 11);
+		sys::multi_lock ml3(so, 11);
 		MLTimedLockThread t3(&ml3, 5, 3);
 		
 		CPPUNIT_ASSERT( t1.resume() == 0 );
@@ -597,7 +597,7 @@ void test_multi_lock::trylock()
 		sys::sync_base* so[2];
 		so[0] = &m1;
 		so[1] = &m2;
-		misc::multi_lock ml(so, 2);
+		sys::multi_lock ml(so, 2);
 		MLTimedLockThread t(&ml, 60, 1); //1min
 		CPPUNIT_ASSERT( t.resume() == 0 );
 		
@@ -621,7 +621,7 @@ void test_multi_lock::trylock()
 		sys::sync_base* so[2];
 		so[0] = &m1;
 		so[1] = &e1;
-		misc::multi_lock ml(so, 2);
+		sys::multi_lock ml(so, 2);
 		MLTimedLockThread t(&ml, 60, 1);	// 1min
 		CPPUNIT_ASSERT( t.resume() == 0 );
 		
@@ -670,7 +670,7 @@ void test_multi_lock::trylock()
 		so[13] = &s4;
 		so[14] = &s5;
 		
-		misc::multi_lock ml(so, 15);
+		sys::multi_lock ml(so, 15);
 		MLTimedLockThread t(&ml, 60, 1); // 1min
 		CPPUNIT_ASSERT( t.resume() == 0 );
 		
@@ -706,8 +706,8 @@ void test_multi_lock::trylock()
 		sys::sync_base* sb[2];
 		sb[0] = &m1;
 		sb[1] = &m2;
-		misc::multi_lock ml1(sb, 2);
-		misc::multi_lock ml2(sb, 2);
+		sys::multi_lock ml1(sb, 2);
+		sys::multi_lock ml2(sb, 2);
 		MLTimedLockThread t1(&ml1, 60, 1);	//1min
 		MLTimedLockThread t2(&ml2, 60, 2);	//1min
 		CPPUNIT_ASSERT( t1.resume() == 0 );
@@ -733,13 +733,13 @@ void test_multi_lock::trylock()
 		so[4] = &m5;
 		so[5] = &m6;
 		
-		misc::multi_lock ml1(so, 6);
+		sys::multi_lock ml1(so, 6);
 		MLTimedLockThread t1(&ml1, 120, 1); //2min
 		
-		misc::multi_lock ml2(&so[2], 2);
+		sys::multi_lock ml2(&so[2], 2);
 		MLTimedLockThread t2(&ml2, 120, 2); //2min
 		
-		misc::multi_lock ml3(&so[4], 2);
+		sys::multi_lock ml3(&so[4], 2);
 		MLTimedLockThread t3(&ml3, 120, 3); //2min
 		
 		CPPUNIT_ASSERT( t1.resume() == 0 );
@@ -769,16 +769,16 @@ void test_multi_lock::trylock()
 		so[4] = &m5;
 		so[5] = &m6;
 		
-		misc::multi_lock ml1(so, 3);
+		sys::multi_lock ml1(so, 3);
 		MLTimedLockThread t1(&ml1, 300, 1); //5min
 		
-		misc::multi_lock ml2(&so[1], 3);
+		sys::multi_lock ml2(&so[1], 3);
 		MLTimedLockThread t2(&ml2, 300, 2); //5min
 		
-		misc::multi_lock ml3(&so[2], 3);
+		sys::multi_lock ml3(&so[2], 3);
 		MLTimedLockThread t3(&ml3, 300, 3); //5min
 		
-		misc::multi_lock ml4(&so[3], 3);
+		sys::multi_lock ml4(&so[3], 3);
 		MLTimedLockThread t4(&ml4, 300, 4); //5min
 		
 		CPPUNIT_ASSERT( t1.resume() == 0 );
@@ -824,16 +824,16 @@ void test_multi_lock::trylock()
 		so[49] = &s5;
 		
 		// create multi_lock with overlapped ranges	
-		misc::multi_lock ml1(so, 5 + 40 + 2); // 5 mutex, 40 events, 2 sem
+		sys::multi_lock ml1(so, 5 + 40 + 2); // 5 mutex, 40 events, 2 sem
 		MLTimedLockThread t1(&ml1, 300, 1); //5min
 		
-		misc::multi_lock ml2(&so[2], 3 + 40 + 1); // 3 mutex, 40 events, 1 sem
+		sys::multi_lock ml2(&so[2], 3 + 40 + 1); // 3 mutex, 40 events, 1 sem
 		MLTimedLockThread t2(&ml2, 300, 2); //5min
 		
-		misc::multi_lock ml3(&so[3], 2 + 40 + 5); // 2 mutex, 40 events, 5 sem
+		sys::multi_lock ml3(&so[3], 2 + 40 + 5); // 2 mutex, 40 events, 5 sem
 		MLTimedLockThread t3(&ml3, 300, 3); //5min
 		
-		misc::multi_lock ml4(&so[5], 0 + 40 + 3); // 0 mutex, 40 events, 3 sem
+		sys::multi_lock ml4(&so[5], 0 + 40 + 3); // 0 mutex, 40 events, 3 sem
 		MLTimedLockThread t4(&ml4, 300, 4); //5min
 		
 		CPPUNIT_ASSERT( t1.resume() == 0 );
@@ -881,16 +881,16 @@ void test_multi_lock::trylock()
 		so[9] = &s5;
 		so[10] = &ev;
 		
-		misc::multi_lock ml1(so, 11);
+		sys::multi_lock ml1(so, 11);
 		MLTimedLockThread t1(&ml1, 300, 1); //5min
 		
-		misc::multi_lock ml2(so, 11);
+		sys::multi_lock ml2(so, 11);
 		MLTimedLockThread t2(&ml2, 300, 2); //5min
 		
-		misc::multi_lock ml3(so, 11);
+		sys::multi_lock ml3(so, 11);
 		MLTimedLockThread t3(&ml3, 300, 3); //5min
 		
-		misc::multi_lock ml4(so, 11);
+		sys::multi_lock ml4(so, 11);
 		MLTimedLockThread t4(&ml4, 300, 4); //5min
 		
 		CPPUNIT_ASSERT( t1.resume() == 0 );
@@ -930,7 +930,7 @@ void test_multi_lock::trylock()
 		sys::sync_base* so[2];
 		so[0] = &m1;
 		so[1] = &m2;
-		misc::multi_lock ml(so, 2);
+		sys::multi_lock ml(so, 2);
 		MLTimedLockThread t(&ml, 5, 1); //5sec and timeout
 		
 		
@@ -953,7 +953,7 @@ void test_multi_lock::trylock()
 		sys::sync_base* so[2];
 		so[0] = &m1;
 		so[1] = &e1;
-		misc::multi_lock ml(so, 2);
+		sys::multi_lock ml(so, 2);
 		MLTimedLockThread t(&ml, 3, 1);	// 3sec and timeout
 		
 		CPPUNIT_ASSERT( t.resume() == 0 );
@@ -999,7 +999,7 @@ void test_multi_lock::trylock()
 		so[13] = &s4;
 		so[14] = &s5;
 		
-		misc::multi_lock ml(so, 15);
+		sys::multi_lock ml(so, 15);
 		MLTimedLockThread t(&ml, 5, 1); // 5sec and timeout
 		CPPUNIT_ASSERT( t.resume() == 0 );
 		
@@ -1031,8 +1031,8 @@ void test_multi_lock::trylock()
 		sys::sync_base* sb[2];
 		sb[0] = &m1;
 		sb[1] = &m2;
-		misc::multi_lock ml1(sb, 2);
-		misc::multi_lock ml2(sb, 2);
+		sys::multi_lock ml1(sb, 2);
+		sys::multi_lock ml2(sb, 2);
 		MLTimedLockThread t1(&ml1, 5, 1);	//5sec and timeout
 		MLTimedLockThread t2(&ml2, 5, 2);	//5sec and timeout
 		
@@ -1063,13 +1063,13 @@ void test_multi_lock::trylock()
 		so[4] = &m5;
 		so[5] = &m6;
 		
-		misc::multi_lock ml1(so, 6);
+		sys::multi_lock ml1(so, 6);
 		MLTimedLockThread t1(&ml1, 5, 1); //5sec and timeout
 		
-		misc::multi_lock ml2(&so[2], 2);
+		sys::multi_lock ml2(&so[2], 2);
 		MLTimedLockThread t2(&ml2, 5, 2); //5sec and timeout
 		
-		misc::multi_lock ml3(&so[4], 2);
+		sys::multi_lock ml3(&so[4], 2);
 		MLTimedLockThread t3(&ml3, 5, 3); //5sec and timeout
 		
 		CPPUNIT_ASSERT( so[0]->lock() == 0 ); // get timeout
@@ -1108,16 +1108,16 @@ void test_multi_lock::trylock()
 		so[4] = &m5;
 		so[5] = &m6;
 		
-		misc::multi_lock ml1(so, 3);
+		sys::multi_lock ml1(so, 3);
 		MLTimedLockThread t1(&ml1, 5, 1);	//5sec and timeout
 		
-		misc::multi_lock ml2(&so[1], 3);
+		sys::multi_lock ml2(&so[1], 3);
 		MLTimedLockThread t2(&ml2, 5, 2);	//5sec and timeout
 		
-		misc::multi_lock ml3(&so[2], 3);
+		sys::multi_lock ml3(&so[2], 3);
 		MLTimedLockThread t3(&ml3, 5, 3);	//5sec and timeout
 		
-		misc::multi_lock ml4(&so[3], 3);
+		sys::multi_lock ml4(&so[3], 3);
 		MLTimedLockThread t4(&ml4, 5, 4);	//5sec and timeout
 		
 		CPPUNIT_ASSERT( so[2]->lock() == 0 ); // get timeout
@@ -1171,16 +1171,16 @@ void test_multi_lock::trylock()
 		so[49] = &s5;
 		
 		// create multi_lock with overlapped ranges	
-		misc::multi_lock ml1(so, 5 + 40 + 2); // 5 mutex, 40 events, 2 sem
+		sys::multi_lock ml1(so, 5 + 40 + 2); // 5 mutex, 40 events, 2 sem
 		MLTimedLockThread t1(&ml1, 5, 1); //5sec and timeout
 		
-		misc::multi_lock ml2(&so[2], 3 + 40 + 1); // 3 mutex, 40 events, 1 sem
+		sys::multi_lock ml2(&so[2], 3 + 40 + 1); // 3 mutex, 40 events, 1 sem
 		MLTimedLockThread t2(&ml2, 5, 2); //5sec and timeout
 		
-		misc::multi_lock ml3(&so[3], 2 + 40 + 5); // 2 mutex, 40 events, 5 sem
+		sys::multi_lock ml3(&so[3], 2 + 40 + 5); // 2 mutex, 40 events, 5 sem
 		MLTimedLockThread t3(&ml3, 5, 3);  //5sec and timeout
 		
-		misc::multi_lock ml4(&so[5], 0 + 40 + 3); // 0 mutex, 40 events, 3 sem
+		sys::multi_lock ml4(&so[5], 0 + 40 + 3); // 0 mutex, 40 events, 3 sem
 		MLTimedLockThread t4(&ml4, 5, 4);  //5sec and timeout
 		
 		CPPUNIT_ASSERT( t1.resume() == 0 );
@@ -1225,16 +1225,16 @@ void test_multi_lock::trylock()
 		so[9] = &s5;
 		so[10] = &ev;
 		
-		misc::multi_lock ml1(so, 11);
+		sys::multi_lock ml1(so, 11);
 		MLTimedLockThread t1(&ml1, 5, 1); // 5sec and timeout
 		
-		misc::multi_lock ml2(so, 11);
+		sys::multi_lock ml2(so, 11);
 		MLTimedLockThread t2(&ml2, 5, 2); // 5sec and timeout
 		
-		misc::multi_lock ml3(so, 11);
+		sys::multi_lock ml3(so, 11);
 		MLTimedLockThread t3(&ml3, 5, 3); // 5sec and timeout
 		
-		misc::multi_lock ml4(so, 11);
+		sys::multi_lock ml4(so, 11);
 		MLTimedLockThread t4(&ml4, 5, 4); // 5sec and timeout
 		
 		CPPUNIT_ASSERT( t1.resume() == 0 );

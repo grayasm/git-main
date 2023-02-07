@@ -176,7 +176,7 @@ void test_event::lock()
 			CPPUNIT_ASSERT( t[i]->join() == 0 );
 			CPPUNIT_ASSERT( t[i]->get_exit_code(&retval) == 0 );
 			CPPUNIT_ASSERT( retval == i%6 );
-			printf("\n\tmain: joined thread %lu", i);
+			printf("\n\tmain: joined thread %zu", i);
 		}
 		for(size_t i=0; i < THNO; ++i)
 			delete t[i];
@@ -228,7 +228,7 @@ public:
 	unsigned long run()
 	{
 		printf("\n\t\tthread %d: timedwait", m_sec);
-		if( m_ev->trylock(m_sec*1e3) == 0 )
+		if( m_ev->trylock(m_sec*1000) == 0 )
 		{
 			printf("\n\t\tthread %d: woke up", m_sec);
 			m_signaled = true;
@@ -321,7 +321,7 @@ void test_event::trylock()
 		ESignalEventThread t(&ev, 2);
 		printf("\n\tmain: wait for event");
 		CPPUNIT_ASSERT( t.resume() == 0 );
-		CPPUNIT_ASSERT( ev.trylock(120*1e3) == 0 );
+		CPPUNIT_ASSERT( ev.trylock(120*1000) == 0 );
 		printf("\n\tmain: got the signal");
 		CPPUNIT_ASSERT( t.join() == 0 );
 		printf("\n\tmain: joined thread");
@@ -340,7 +340,7 @@ void test_event::trylock()
 		printf("\n\tmain: waiting for %d signals", THNO);
 		for(int i=0; i < THNO; ++i)
 		{
-			CPPUNIT_ASSERT(ev.trylock(180*1e3) == 0);
+			CPPUNIT_ASSERT(ev.trylock(180*1000) == 0);
 			printf("\n\tmain: signal");
 		}
 		for(int i=0; i < THNO; ++i)

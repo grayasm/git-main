@@ -46,15 +46,15 @@ void test_single_lock::ctor()
     stl::cout << "\n\n\tctor---------------------------------------------------";
 	{
 		sys::event ev;
-		misc::single_lock sl(&ev);
+		sys::single_lock sl(&ev);
 	}
 	{
 		sys::mutex mt;
-		misc::single_lock sl(&mt);
+		sys::single_lock sl(&mt);
 	}
 	{
 		sys::semaphore sem(1);
-		misc::single_lock sl(&sem);
+		sys::single_lock sl(&sem);
 	}
 }
 
@@ -63,22 +63,22 @@ void test_single_lock::dtor()
 	stl::cout << "\n\n\tdtor---------------------------------------------------";
 	{
 		sys::event ev;
-		misc::single_lock sl(&ev);
+		sys::single_lock sl(&ev);
 	}
 	{
 		sys::mutex mt;
-		misc::single_lock sl(&mt);
+		sys::single_lock sl(&mt);
 	}
 	{
 		sys::semaphore sem(1);
-		misc::single_lock sl(&sem);
+		sys::single_lock sl(&sem);
 	}
 }
 
 class SLLockThread : public sys::thread
 {
 public:
-	SLLockThread(misc::single_lock* sl, int sec)
+	SLLockThread(sys::single_lock* sl, int sec)
 	: m_sl(sl), m_sec(sec) {} 
 	~SLLockThread() {}
 	unsigned long run()
@@ -91,7 +91,7 @@ public:
 		return m_sec;
 	}
 private:
-	misc::single_lock*	m_sl;
+	sys::single_lock*	m_sl;
 	int					m_sec;
 };
 
@@ -100,7 +100,7 @@ void test_single_lock::lock()
 	stl::cout << "\n\n\tlock---------------------------------------------------";
 	{
 		sys::mutex mt;
-		misc::single_lock sl(&mt);
+		sys::single_lock sl(&mt);
 		SLLockThread t(&sl, 1);
 		CPPUNIT_ASSERT( sl.lock() == 0 );
 		CPPUNIT_ASSERT( t.resume() == 0 );
@@ -113,7 +113,7 @@ void test_single_lock::lock()
 	{
 		printf("\n\tmain: single_lock(&mutex)");
 		sys::mutex mt;
-		misc::single_lock sl(&mt);
+		sys::single_lock sl(&mt);
 		const int THNO = 10;
 		SLLockThread* t[THNO];
 		for(int i=0; i < THNO; ++i)
@@ -134,7 +134,7 @@ void test_single_lock::lock()
 	{
 		printf("\n\tmain: single_lock(&semaphore)");
 		sys::semaphore sem(10);
-		misc::single_lock sl(&sem);
+		sys::single_lock sl(&sem);
 		const int THNO = 100;
 		SLLockThread* t[THNO];
 		for(int i=0; i < THNO; ++i)
@@ -155,7 +155,7 @@ void test_single_lock::lock()
 	{
 		printf("\n\tmain: single_lock(&event)");
 		sys::event ev;
-		misc::single_lock sl(&ev);
+		sys::single_lock sl(&ev);
 		const int THNO = 100;
 		SLLockThread* t[THNO];
 		for(int i=0; i < THNO; ++i)
@@ -179,7 +179,7 @@ void test_single_lock::lock()
 class SLTrylockThread : public sys::thread
 {
 public:
-	SLTrylockThread(misc::single_lock* sl, int sec)
+	SLTrylockThread(sys::single_lock* sl, int sec)
 	: m_sl(sl), m_sec(sec) {} 
 	~SLTrylockThread() {}
 	unsigned long run()
@@ -198,7 +198,7 @@ public:
 		return m_sec;
 	}
 private:
-	misc::single_lock*	m_sl;
+	sys::single_lock*	m_sl;
 	int					m_sec;
 };
 
@@ -208,7 +208,7 @@ void test_single_lock::trylock()
 	{
 		printf("\n\tmain: single_lock(&mutex)");
 		sys::mutex mt;
-		misc::single_lock sl(&mt);
+		sys::single_lock sl(&mt);
 		const int THNO = 40;
 		SLTrylockThread* t[THNO];
 		for(int i=0; i < THNO; ++i)
@@ -229,7 +229,7 @@ void test_single_lock::trylock()
 	{
 		printf("\n\tmain: single_lock(&semaphore)");
 		sys::semaphore sem(10);
-		misc::single_lock sl(&sem);
+		sys::single_lock sl(&sem);
 		const int THNO = 100;
 		SLTrylockThread* t[THNO];
 		for(int i=0; i < THNO; ++i)
@@ -250,7 +250,7 @@ void test_single_lock::trylock()
 	{
 		printf("\n\tmain: single_lock(&event)");
 		sys::event ev;
-		misc::single_lock sl(&ev);
+		sys::single_lock sl(&ev);
 		const int THNO = 100;
 		SLLockThread* t[THNO];
 		for(int i=0; i < THNO; ++i)
