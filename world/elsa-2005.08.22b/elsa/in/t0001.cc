@@ -1,3 +1,0 @@
-// very simple
-
-int x;

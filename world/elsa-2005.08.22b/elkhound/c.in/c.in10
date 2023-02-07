@@ -1,7 +1,0 @@
-// possible ambiguity in parameters
-
-int foo ( int ( x ) )
-{ }
-
-
-
