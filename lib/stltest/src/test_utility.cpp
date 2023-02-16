@@ -23,7 +23,7 @@ Copyright (C) 2012 Mihai Vasilian
 #include "list.hpp"
 #include "deque.hpp"
 #include "stream.hpp"
-#include "misctest_util.hpp"
+#include "stltest_util.hpp"
 
 
 //###########################BEGIN TEST CLASS ####################################
@@ -46,42 +46,42 @@ void test_utility::pair_ctor()
 	
     typedef stl::pair<int,int> Pair;
     typedef stl::vector<Pair> Vec;
-    typedef misc::list<Pair> Lst;
+    typedef stl::list<Pair> Lst;
 
     
-    stl::cout << "\n\n\tmisc::pair ctor----------------------------------------";
+    stl::cout << "\n\n\tstl::pair ctor----------------------------------------";
 
     pair_ctor<Vec,Pair>("\n\tpair_ctor<stl::vector<stl::pair> >   ");
-    pair_ctor<Lst,Pair>("\n\tpair_ctor<misc::list<stl::pair> >     ");
+    pair_ctor<Lst,Pair>("\n\tpair_ctor<stl::list<stl::pair> >     ");
 }
 
 void test_utility::make_pair()
 {
     typedef stl::pair<int,int> Pair;
     typedef stl::vector<Pair> Vec;
-    typedef misc::list<Pair> Lst;
+    typedef stl::list<Pair> Lst;
 
-    stl::cout << "\n\n\tmisc::make_pair----------------------------------------";
+    stl::cout << "\n\n\tstl::make_pair----------------------------------------";
 
     make_pair<Vec,Pair>("\n\tmake_pair<stl::vector<stl::pair> >   ");
-    make_pair<Lst,Pair>("\n\tmake_pair<misc::list<stl::pair> >     ");
+    make_pair<Lst,Pair>("\n\tmake_pair<stl::list<stl::pair> >     ");
 }
 
 void test_utility::rel_ops()
 {
     typedef stl::pair<int,int> Pair;
     typedef stl::vector<Pair> Vec;
-    typedef misc::list<Pair> Lst;
+    typedef stl::list<Pair> Lst;
 
-    stl::cout << "\n\n\tmisc::rel_ops------------------------------------------";
+    stl::cout << "\n\n\tstl::rel_ops------------------------------------------";
 
     rel_ops<Vec,Pair>("\n\tmake_pair<stl::vector<stl::pair> >   ");
-    rel_ops<Lst,Pair>("\n\tmake_pair<misc::list<stl::pair> >     ");
+    rel_ops<Lst,Pair>("\n\tmake_pair<stl::list<stl::pair> >     ");
 }
 
 void test_utility::it_traits()
 {
-    stl::cout << "\n\n\tmisc::iterator_traits<Iterator>------------------------";
+    stl::cout << "\n\n\tstl::iterator_traits<Iterator>------------------------";
 
     it_traits<stl::vector<bool> >          ("\n\ttraits<stl::vector<bool>>          ");
     it_traits<stl::vector<char> >          ("\n\ttraits<stl::vector<char>>          ");
@@ -101,49 +101,49 @@ void test_utility::it_traits()
 
 void test_utility::if_class()
 {
-    stl::cout << "\n\n\tmisc::If<bool,T1,T2>-----------------------------------";
+    stl::cout << "\n\n\tstl::If<bool,T1,T2>-----------------------------------";
 
     if_class<int, long>("\n\tif_class <int,long>   ");
 }
 
 void test_utility::advance()
 {
-    stl::cout << "\n\n\tmisc::advance------------------------------------------";
+    stl::cout << "\n\n\tstl::advance------------------------------------------";
 
     advance<stl::vector<int> >("\n\tadvance<stl::vector<int> >   ");
-    advance<misc::list<int> >  ("\n\tadvance<misc::list<int> >     ");
+    advance<stl::list<int> >  ("\n\tadvance<stl::list<int> >     ");
 }
 
 void test_utility::distance()
 {
-    stl::cout << "\n\n\tmisc::distance-----------------------------------------";
+    stl::cout << "\n\n\tstl::distance-----------------------------------------";
 
     distance<stl::vector<int> >("\n\tdistance<stl::vector<int> > ");
-    distance<misc::list<int> >  ("\n\tdistance<misc::list<int> >   ");
+    distance<stl::list<int> >  ("\n\tdistance<stl::list<int> >   ");
 }
 
 void test_utility::back_insert_it()
 {
-    stl::cout << "\n\n\tmisc::back_insert_iterator<Container>------------------";
+    stl::cout << "\n\n\tstl::back_insert_iterator<Container>------------------";
 
     back_insert_it<stl::vector<int> >("\n\tback_insert_it<stl::vector<int> > ");
-    back_insert_it<misc::list<int> >  ("\n\tback_insert_it<misc::list<int> >   ");
+    back_insert_it<stl::list<int> >  ("\n\tback_insert_it<stl::list<int> >   ");
 }
 
 void test_utility::front_insert_it()
 {
-    stl::cout << "\n\n\tmisc::front_insert_iterator<Container>-----------------";
+    stl::cout << "\n\n\tstl::front_insert_iterator<Container>-----------------";
 
-    front_insert_it<misc::deque<int> > ("\n\tfront_insert_it<stl::vector<int> > ");
-    front_insert_it<misc::list<int> >  ("\n\tfront_insert_it<misc::list<int> >   ");
+    front_insert_it<stl::deque<int> > ("\n\tfront_insert_it<stl::vector<int> > ");
+    front_insert_it<stl::list<int> >  ("\n\tfront_insert_it<stl::list<int> >   ");
 }
 
 void test_utility::insert_it()
 {
-    stl::cout << "\n\n\tmisc::insert_iterator<Container>-----------------------";
+    stl::cout << "\n\n\tstl::insert_iterator<Container>-----------------------";
 
     insert_it<stl::vector<int> >("\n\tinsert_it<stl::vector<int> > ");
-    insert_it<misc::list<int> >  ("\n\tinsert_it<misc::list<int> >   ");
+    insert_it<stl::list<int> >  ("\n\tinsert_it<stl::list<int> >   ");
 }
 
 
@@ -194,7 +194,7 @@ void test_utility::make_pair(const char* msg)
         size_t i(0);
         for(It it = v0.begin(); it != v0.end(); ++it, ++i)
         {
-            *it = misc::make_pair(FVal(i), SVal(v0.size()-i-1));
+            *it = stl::make_pair(FVal(i), SVal(v0.size()-i-1));
         }
 
         Container v2(v0);
@@ -224,7 +224,7 @@ void test_utility::rel_ops(const char* msg)
         size_t i(0);
         for(It it = v0.begin(); it != v0.end(); ++it, ++i)
         {
-            *it = misc::make_pair(FVal(i), SVal(v0.size()-i-1));
+            *it = stl::make_pair(FVal(i), SVal(v0.size()-i-1));
         }
 
         Container v2(v0);
@@ -233,7 +233,7 @@ void test_utility::rel_ops(const char* msg)
 
         for(It it=v0.begin(), it2=v2.begin() ; it != v0.end(); ++it, ++it2)
         {
-            using namespace misc::rel_ops;
+            using namespace stl::rel_ops;
 
             CPPUNIT_ASSERT(!(it->first != it2->first));
             CPPUNIT_ASSERT(!(it->second > it2->second));
@@ -256,11 +256,11 @@ void test_utility::it_traits(const char* msg)
         Container v0(m_container_size, Cval(0));
 
         It it = v0.begin();
-        typename misc::iterator_traits<It>::value_type val = *it;
-        typename misc::iterator_traits<It>::iterator_category cat, cat2;
-        typename misc::iterator_traits<It>::difference_type diff = &val - &(*it);
-        typename misc::iterator_traits<It>::pointer ptr = &val;
-        typename misc::iterator_traits<It>::reference ref = val;
+        typename stl::iterator_traits<It>::value_type val = *it;
+        typename stl::iterator_traits<It>::iterator_category cat, cat2;
+        typename stl::iterator_traits<It>::difference_type diff = &val - &(*it);
+        typename stl::iterator_traits<It>::pointer ptr = &val;
+        typename stl::iterator_traits<It>::reference ref = val;
         // check compilation
         cat2 = cat;
         CPPUNIT_ASSERT(val == 0);
@@ -279,7 +279,7 @@ void test_utility::if_class(const char* msg)
         time_printer tp(msg, m_print_time);
         T0 t0 = (T0)::rand();
         T2 t2 = (T2)::rand();
-        typename misc::If<1 == 1, T0, T2>::result final = t0;
+        typename stl::If<1 == 1, T0, T2>::result final = t0;
         // result evaluates to T0
         // solve compiler warnings
         t0++;
@@ -303,7 +303,7 @@ void test_utility::advance(const char* msg)
         Container v0(m_container_size, Cval(0));
 
         It it = v0.begin();
-        misc::advance(it, m_container_size, typename misc::iterator_traits<It>::iterator_category());
+        stl::advance(it, m_container_size, typename stl::iterator_traits<It>::iterator_category());
 
         CPPUNIT_ASSERT(it == v0.end());
     }
@@ -321,8 +321,8 @@ void test_utility::distance(const char* msg)
 
         Container v0(m_container_size, Cval(0));
 
-        typename misc::iterator_traits<It>::difference_type diff =
-            misc::distance(v0.begin(), v0.end(), typename misc::iterator_traits<It>::iterator_category());
+        typename stl::iterator_traits<It>::difference_type diff =
+            stl::distance(v0.begin(), v0.end(), typename stl::iterator_traits<It>::iterator_category());
 
         CPPUNIT_ASSERT(diff == m_container_size);
     }
@@ -337,8 +337,8 @@ void test_utility::back_insert_it(const char* msg)
 
         Container v0;
 
-        misc::back_insert_iterator<Container> biIt =
-            misc::back_inserter(v0);
+        stl::back_insert_iterator<Container> biIt =
+            stl::back_inserter(v0);
 
         for(size_t i=0; i < m_container_size; ++i, ++biIt)
         {
@@ -358,8 +358,8 @@ void test_utility::front_insert_it(const char* msg)
 
         Container v0;
 
-        misc::front_insert_iterator<Container> fiIt =
-            misc::front_inserter(v0);
+        stl::front_insert_iterator<Container> fiIt =
+            stl::front_inserter(v0);
 
         for(size_t i=0; i < m_container_size; ++i, ++fiIt)
         {
@@ -379,8 +379,8 @@ void test_utility::insert_it(const char* msg)
 
         Container v0;
 
-        misc::insert_iterator<Container> fiIt =
-            misc::inserter(v0, v0.begin());
+        stl::insert_iterator<Container> fiIt =
+            stl::inserter(v0, v0.begin());
 
         for(size_t i=0; i < m_container_size; ++i, ++fiIt)
         {

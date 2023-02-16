@@ -27,7 +27,7 @@ Copyright (C) 2012 Mihai Vasilian
 //misc
 #include "stream.hpp"
 #include "utility.hpp"//misc::advance
-#include "misctest_util.hpp"
+#include "stltest_util.hpp"
 #include "strconv.hpp"//from_value
 
 
@@ -51,217 +51,217 @@ void test_deque::ctor()
 
 	
 	stl::cout << "\n\n\tctor---------------------------------------------------";
-	ctor<misc::deque<int> >("\n\tmisc::deque ");
+	ctor<stl::deque<int> >("\n\tstl::deque ");
 	ctor<std::deque<int> > ("\n\tstd::deque  ");
 }
 
 void test_deque::dtor()
 {
 	stl::cout << "\n\n\tdtor---------------------------------------------------";
-	dtor<misc::deque<int> >("\n\tmisc::deque ");
-	dtor<misc::deque<int> >("\n\tstd::deque  ");
+	dtor<stl::deque<int> >("\n\tstl::deque ");
+	dtor<std::deque<int> >("\n\tstd::deque  ");
 }
 
 void test_deque::op_assign()
 {
 	stl::cout << "\n\n\top_assign----------------------------------------------";
-	op_assign<misc::deque<int> >("\n\tmisc::deque ");
+	op_assign<stl::deque<int> >("\n\tstl::deque ");
 	op_assign<std::deque<int> > ("\n\tstd::deque  ");	
 }
 
 void test_deque::begin()
 {
 	stl::cout << "\n\n\tbegin--------------------------------------------------";
-	begin<misc::deque<int> >("\n\tmisc::deque ");
+	begin<stl::deque<int> >("\n\tstl::deque ");
 	begin<std::deque<int> > ("\n\tstd::deque  ");
 }
 
 void test_deque::end()
 {
 	stl::cout << "\n\n\tend----------------------------------------------------";
-	end<misc::deque<int> >("\n\tmisc::deque ");
+	end<stl::deque<int> >("\n\tstl::deque ");
 	end<std::deque<int> > ("\n\tstd::deque  ");
 }
 
 void test_deque::rbegin()
 {
 	stl::cout << "\n\n\trbegin-------------------------------------------------";
-	rbegin<misc::deque<int> >("\n\tmisc::deque ");
+	rbegin<stl::deque<int> >("\n\tstl::deque ");
 	rbegin<std::deque<int> > ("\n\tstd::deque  ");
 }
 
 void test_deque::rend()
 {
 	stl::cout << "\n\n\trend---------------------------------------------------";
-	rend<misc::deque<int> >("\n\tmisc::deque ");
+	rend<stl::deque<int> >("\n\tstl::deque ");
 	rend<std::deque<int> > ("\n\tstd::deque  ");
 }
 
 void test_deque::size()
 {
 	stl::cout << "\n\n\tsize---------------------------------------------------";
-	size<misc::deque<int> >("\n\tmisc::deque ");
+	size<stl::deque<int> >("\n\tstl::deque ");
 	size<std::deque<int> > ("\n\tstd::deque  ");
 }
 
 void test_deque::max_size()
 {
 	stl::cout << "\n\n\tmax_size-----------------------------------------------";
-	max_size<misc::deque<int> >("\n\tmisc::deque ");
+	max_size<stl::deque<int> >("\n\tstl::deque ");
 	max_size<std::deque<int> > ("\n\tstd::deque  ");
 }
 
 void test_deque::resize()
 {
 	stl::cout << "\n\n\tresize-------------------------------------------------";
-	resize<misc::deque<unsigned int> >("\n\tmisc::deque ");
+	resize<stl::deque<unsigned int> >("\n\tstl::deque ");
 	resize<std::deque<unsigned int> > ("\n\tstd::deque  ");
 }
 
 void test_deque::empty()
 {
 	stl::cout << "\n\n\tempty--------------------------------------------------";
-	empty<misc::deque<int> >("\n\tmisc::deque ");
+	empty<stl::deque<int> >("\n\tstl::deque ");
 	empty<std::deque<int> > ("\n\tstd::deque  ");
 }
 
 void test_deque::op_acc()
 {
 	stl::cout << "\n\n\top_acc-------------------------------------------------";
-	op_acc<misc::deque<unsigned int> >("\n\tmisc::deque ");
+	op_acc<stl::deque<unsigned int> >("\n\tstl::deque ");
 	op_acc<std::deque<unsigned int> > ("\n\tstd::deque  ");
 }
 
 void test_deque::at()
 {
 	stl::cout << "\n\n\tat-----------------------------------------------------";
-	at<misc::deque<unsigned int> >("\n\tmisc::deque ");
+	at<stl::deque<unsigned int> >("\n\tstl::deque ");
 	at<std::deque<unsigned int> > ("\n\tstd::deque  ");
 }
 
 void test_deque::front()
 {
 	stl::cout << "\n\n\tfront--------------------------------------------------";
-	front<misc::deque<int> >("\n\tmisc::deque ");
+	front<stl::deque<int> >("\n\tstl::deque ");
 	front<std::deque<int> > ("\n\tstd::deque  ");
 }
 
 void test_deque::back()
 {
 	stl::cout << "\n\n\tback---------------------------------------------------";
-	back<misc::deque<int> >("\n\tmisc::deque ");
+	back<stl::deque<int> >("\n\tstl::deque ");
 	back<std::deque<int> > ("\n\tstd::deque  ");
 }
 
 void test_deque::assign()
 {
 	stl::cout << "\n\n\tassign-------------------------------------------------";
-	assign<misc::deque<int> >("\n\tmisc::deque ");
+	assign<stl::deque<int> >("\n\tstl::deque ");
 	assign<std::deque<int> > ("\n\tstd::deque  ");
 }
 
 void test_deque::push_back()
 {
 	stl::cout << "\n\n\tpush_back----------------------------------------------";
-	push_back<misc::deque<int> >("\n\tmisc::deque ");
+	push_back<stl::deque<int> >("\n\tstl::deque ");
 	push_back<std::deque<int> > ("\n\tstd::deque  ");
 }
 
 void test_deque::push_front()
 {
 	stl::cout << "\n\n\tpush_front---------------------------------------------";
-	push_front<misc::deque<int> >("\n\tmisc::deque ");
+	push_front<stl::deque<int> >("\n\tstl::deque ");
 	push_front<std::deque<int> > ("\n\tstd::deque  ");
 }
 
 void test_deque::pop_back()
 {
 	stl::cout << "\n\n\tpop_back-----------------------------------------------";
-	pop_back<misc::deque<int> >("\n\tmisc::deque ");
+	pop_back<stl::deque<int> >("\n\tstl::deque ");
 	pop_back<std::deque<int> > ("\n\tstd::deque  ");
 }
 
 void test_deque::pop_front()
 {
 	stl::cout << "\n\n\tpop_front----------------------------------------------";
-	pop_front<misc::deque<int> >("\n\tmisc::deque ");
+	pop_front<stl::deque<int> >("\n\tstl::deque ");
 	pop_front<std::deque<int> > ("\n\tstd::deque  ");
 }
 
 void test_deque::insert()
 {
 	stl::cout << "\n\n\tinsert-------------------------------------------------";
-	insert<misc::deque<int>, stl::vector<int> >("\n\tmisc::deque ");
+	insert<stl::deque<int>, stl::vector<int> >("\n\tstl::deque ");
 	insert<std::deque<int>, std::vector<int> > ("\n\tstd::deque  ");
 }
 
 void test_deque::erase()
 {
 	stl::cout << "\n\n\terase--------------------------------------------------";
-	erase<misc::deque<unsigned int> >("\n\tmisc::deque ");
+	erase<stl::deque<unsigned int> >("\n\tstl::deque ");
 	erase<std::deque<unsigned int> > ("\n\tstd::deque  ");
 }
 
 void test_deque::swap_ambiguity()
 {
 	stl::cout << "\n\n\tswap---------------------------------------------------";
-	swap_ambiguity<misc::deque<int> >("\n\tmisc::deque ");
+	swap_ambiguity<stl::deque<int> >("\n\tstl::deque ");
 	swap_ambiguity<std::deque<int> > ("\n\tstd::deque  ");
 }
 
 void test_deque::clear()
 {
 	stl::cout << "\n\n\tclear--------------------------------------------------";
-	clear<misc::deque<unsigned int> >("\n\tmisc::deque ");
+	clear<stl::deque<unsigned int> >("\n\tstl::deque ");
 	clear<std::deque<unsigned int> > ("\n\tstd::deque  ");
 }
 
 void test_deque::g_swap()
 {
 	stl::cout << "\n\n\tg_swap-------------------------------------------------";
-	g_swap<misc::deque<int> >("\n\tmisc::deque ");
+	g_swap<stl::deque<int> >("\n\tstl::deque ");
 	g_swap<std::deque<unsigned int> > ("\n\tstd::deque  ");
 }
 
 void test_deque::op_eq()
 {
 	stl::cout << "\n\n\top_eq--------------------------------------------------";
-	op_eq<misc::deque<unsigned int> >("\n\tmisc::deque ");
+	op_eq<stl::deque<unsigned int> >("\n\tstl::deque ");
 	op_eq<std::deque<unsigned int> > ("\n\tstd::deque  ");
 }
 
 void test_deque::op_neq()
 {
 	stl::cout << "\n\n\top_neq-------------------------------------------------";
-	op_neq<misc::deque<unsigned int> >("\n\tmisc::deque ");
+	op_neq<stl::deque<unsigned int> >("\n\tstl::deque ");
 	op_neq<std::deque<unsigned int> > ("\n\tstd::deque  ");
 }
 
 void test_deque::op_lt()
 {
 	stl::cout << "\n\n\top_lt--------------------------------------------------";
-	op_lt<misc::deque<unsigned int> >("\n\tmisc::deque ");
+	op_lt<stl::deque<unsigned int> >("\n\tstl::deque ");
 	op_lt<std::deque<unsigned int> > ("\n\tstd::deque  ");
 }
 
 void test_deque::op_lte()
 {
 	stl::cout << "\n\n\top_lte-------------------------------------------------";
-	op_lte<misc::deque<unsigned int> >("\n\tmisc::deque ");
+	op_lte<stl::deque<unsigned int> >("\n\tstl::deque ");
 	op_lte<std::deque<unsigned int> > ("\n\tstd::deque  ");
 }
 
 void test_deque::op_gt()
 {
 	stl::cout << "\n\n\top_gt--------------------------------------------------";
-	op_gt<misc::deque<unsigned int> >("\n\tmisc::deque ");
+	op_gt<stl::deque<unsigned int> >("\n\tstl::deque ");
 	op_gt<std::deque<unsigned int> > ("\n\tstd::deque  ");
 }
 
 void test_deque::op_gte()
 {
 	stl::cout << "\n\n\top_gte-------------------------------------------------";
-	op_gte<misc::deque<unsigned int> >("\n\tmisc::deque ");
+	op_gte<stl::deque<unsigned int> >("\n\tstl::deque ");
 	op_gte<std::deque<unsigned int> > ("\n\tstd::deque  ");
 }
 

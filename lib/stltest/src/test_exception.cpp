@@ -19,7 +19,7 @@ Copyright (C) 2013 Mihai Vasilian
 
 //libraries
 #include "stream.hpp"
-#include "misctest_util.hpp"
+#include "stltest_util.hpp"
 
 
 

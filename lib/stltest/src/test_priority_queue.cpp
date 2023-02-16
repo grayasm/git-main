@@ -24,7 +24,7 @@ Copyright (C) 2012 Mihai Vasilian
 #include "functional.hpp"
 #include "queue.hpp"
 #include "stream.hpp"
-#include "misctest_util.hpp"
+#include "stltest_util.hpp"
 
 
 
@@ -46,49 +46,49 @@ void test_priority_queue::ctor()
 
     stl::cout << "\n\n\tctor---------------------------------------------------";
     ctor<std::priority_queue<int>, std::less<int> >   ("\n\tctor<std::priority_queue<int>,less<int> >  ");
-    ctor<misc::priority_queue<int>, misc::less<int> > ("\n\tctor<misc::priority_queue<int>,less<int> > ");
+    ctor<stl::priority_queue<int>, stl::less<int> > ("\n\tctor<stl::priority_queue<int>,less<int> > ");
 }
 
 void test_priority_queue::dtor()
 {
     stl::cout << "\n\n\tdtor---------------------------------------------------";
     dtor<std::priority_queue<int>, std::less<int> >  ("\n\tdtor<std::priority_queue<int>,less<int> >  ");
-    dtor<misc::priority_queue<int>, misc::less<int> >("\n\tdtor<misc::priority_queue<int> >,less<int> ");
+    dtor<stl::priority_queue<int>, stl::less<int> >("\n\tdtor<stl::priority_queue<int> >,less<int> ");
 }
 
 void test_priority_queue::empty()
 {
     stl::cout << "\n\n\tempty--------------------------------------------------";
     empty<std::priority_queue<int>, std::less<int> >  ("\n\tempty<std::priority_queue<int>,less<int> >  ");
-    empty<misc::priority_queue<int>, misc::less<int> >("\n\tempty<misc::priority_queue<int>,less<int> > ");
+    empty<stl::priority_queue<int>, stl::less<int> >("\n\tempty<stl::priority_queue<int>,less<int> > ");
 }
 
 void test_priority_queue::size()
 {
     stl::cout << "\n\n\tsize---------------------------------------------------";
     size<std::priority_queue<int>, std::less<int> >  ("\n\tsize<std::priority_queue<int>,less<int> >  ");
-    size<misc::priority_queue<int>, misc::less<int> >("\n\tsize<misc::priority_queue<int>,less<int> > ");
+    size<stl::priority_queue<int>, stl::less<int> >("\n\tsize<stl::priority_queue<int>,less<int> > ");
 }
 
 void test_priority_queue::top()
 {
     stl::cout << "\n\n\ttop----------------------------------------------------";
     top<std::priority_queue<int>, std::less<int> >  ("\n\ttop<std::priority_queue<int>,less<int> >  ");
-    top<misc::priority_queue<int>, misc::less<int> >("\n\ttop<misc::priority_queue<int>,less<int> > ");
+    top<stl::priority_queue<int>, stl::less<int> >("\n\ttop<stl::priority_queue<int>,less<int> > ");
 }
 
 void test_priority_queue::push()
 {
     stl::cout << "\n\n\tpush---------------------------------------------------";
     push<std::priority_queue<int>, std::less<int> >  ("\n\tpush<std::priority_queue<int>,less<int> >  ");
-    push<misc::priority_queue<int>, misc::less<int> >("\n\tpush<misc::priority_queue<int>,less<int> > ");
+    push<stl::priority_queue<int>, stl::less<int> >("\n\tpush<stl::priority_queue<int>,less<int> > ");
 }
 
 void test_priority_queue::pop()
 {
     stl::cout << "\n\n\tpop----------------------------------------------------";
     pop<std::priority_queue<int>, std::less<int> >  ("\n\tpop<std::priority_queue<int>,less<int> >  ");
-    pop<misc::priority_queue<int>, misc::less<int> >("\n\tpop<misc::priority_queue<int>,less<int> > ");
+    pop<stl::priority_queue<int>, stl::less<int> >("\n\tpop<stl::priority_queue<int>,less<int> > ");
 }
 
 //################################################################################

@@ -20,7 +20,7 @@ Copyright (C) 2012 Mihai Vasilian
 #include "string.hpp"
 #include "queue.hpp"
 #include "stream.hpp"
-#include "misctest_util.hpp"
+#include "stltest_util.hpp"
 
 
 //###########################BEGIN TEST CLASS ####################################
@@ -41,98 +41,98 @@ void test_queue::ctor()
 
     stl::cout << "\n\n\tctor---------------------------------------------------";
     ctor<std::queue<int> > ("\n\tctor<std::queue<int> >  ");
-    ctor<misc::queue<int> >("\n\tctor<misc::queue<int> > ");
+    ctor<stl::queue<int> >("\n\tctor<stl::queue<int> > ");
 }
 
 void test_queue::dtor()
 {
     stl::cout << "\n\n\tdtor---------------------------------------------------";
     dtor<std::queue<int> > ("\n\tdtor<std::queue<int> >  ");
-    dtor<misc::queue<int> >("\n\tdtor<misc::queue<int> > ");
+    dtor<stl::queue<int> >("\n\tdtor<stl::queue<int> > ");
 }
 
 void test_queue::empty()
 {
     stl::cout << "\n\n\tempty--------------------------------------------------";
     empty<std::queue<int> > ("\n\tempty<std::queue<int> >  ");
-    empty<misc::queue<int> >("\n\tempty<misc::queue<int> > ");
+    empty<stl::queue<int> >("\n\tempty<stl::queue<int> > ");
 }
 
 void test_queue::size()
 {
     stl::cout << "\n\n\tsize---------------------------------------------------";
     size<std::queue<int> > ("\n\tsize<std::queue<int> >  ");
-    size<misc::queue<int> >("\n\tsize<misc::queue<int> > ");
+    size<stl::queue<int> >("\n\tsize<stl::queue<int> > ");
 }
 
 void test_queue::front()
 {
     stl::cout << "\n\n\tfront--------------------------------------------------";
     front<std::queue<int> > ("\n\tfront<std::queue<int> >  ");
-    front<misc::queue<int> >("\n\tfront<misc::queue<int> > ");
+    front<stl::queue<int> >("\n\tfront<stl::queue<int> > ");
 }
 
 void test_queue::back()
 {
     stl::cout << "\n\n\tback---------------------------------------------------";
     back<std::queue<int> > ("\n\tback<std::queue<int> >  ");
-    back<misc::queue<int> >("\n\tback<misc::queue<int> > ");
+    back<stl::queue<int> >("\n\tback<stl::queue<int> > ");
 }
 
 void test_queue::push()
 {
     stl::cout << "\n\n\tpush---------------------------------------------------";
     push<std::queue<int> > ("\n\tpush<std::queue<int> >  ");
-    push<misc::queue<int> >("\n\tpush<misc::queue<int> > ");
+    push<stl::queue<int> >("\n\tpush<stl::queue<int> > ");
 }
 
 void test_queue::pop()
 {
     stl::cout << "\n\n\tpop----------------------------------------------------";
     pop<std::queue<int> > ("\n\tpop<std::queue<int> >  ");
-    pop<misc::queue<int> >("\n\tpop<misc::queue<int> > ");
+    pop<stl::queue<int> >("\n\tpop<stl::queue<int> > ");
 }
 
 void test_queue::eq_op()
 {
     stl::cout << "\n\n\teq_op--------------------------------------------------";
     eq_op<std::queue<int> > ("\n\teq_op<std::queue<int> >  ");
-    eq_op<misc::queue<int> >("\n\teq_op<misc::queue<int> > ");
+    eq_op<stl::queue<int> >("\n\teq_op<stl::queue<int> > ");
 }
 
 void test_queue::neq_op()
 {
     stl::cout << "\n\n\tneq_op-------------------------------------------------";
     neq_op<std::queue<int> > ("\n\tneq_op<std::queue<int> >  ");
-    neq_op<misc::queue<int> >("\n\tneq_op<misc::queue<int> > ");
+    neq_op<stl::queue<int> >("\n\tneq_op<stl::queue<int> > ");
 }
 
 void test_queue::lt_op()
 {
     stl::cout << "\n\n\tlt_op--------------------------------------------------";
     lt_op<std::queue<int> > ("\n\tlt_op<std::queue<int> >  ");
-    lt_op<misc::queue<int> >("\n\tlt_op<misc::queue<int> > ");
+    lt_op<stl::queue<int> >("\n\tlt_op<stl::queue<int> > ");
 }
 
 void test_queue::gt_op()
 {
     stl::cout << "\n\n\tgt_op--------------------------------------------------";
     gt_op<std::queue<int> > ("\n\tgt_op<std::queue<int> >  ");
-    gt_op<misc::queue<int> >("\n\tgt_op<misc::queue<int> > ");
+    gt_op<stl::queue<int> >("\n\tgt_op<stl::queue<int> > ");
 }
 
 void test_queue::lte_op()
 {
     stl::cout << "\n\n\tlte_op-------------------------------------------------";
     lte_op<std::queue<int> > ("\n\tlte_op<std::queue<int> >  ");
-    lte_op<misc::queue<int> >("\n\tlte_op<misc::queue<int> > ");
+    lte_op<stl::queue<int> >("\n\tlte_op<stl::queue<int> > ");
 }
 
 void test_queue::gte_op()
 {
     stl::cout << "\n\n\tgte_op-------------------------------------------------";
     gte_op<std::queue<int> > ("\n\tgte_op<std::queue<int> >  ");
-    gte_op<misc::queue<int> >("\n\tgte_op<misc::queue<int> > ");
+    gte_op<stl::queue<int> >("\n\tgte_op<stl::queue<int> > ");
 }
 
 

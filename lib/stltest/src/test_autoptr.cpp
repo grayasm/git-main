@@ -25,7 +25,7 @@ Copyright (C) 2009 Mihai Vasilian
 #include "string.hpp"
 #include "exception.hpp"
 #include "stream.hpp"
-#include "misctest_util.hpp"
+#include "stltest_util.hpp"
 
 
 

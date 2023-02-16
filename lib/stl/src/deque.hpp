@@ -24,10 +24,10 @@ namespace stl
 
 	template<typename container>
 	class deque_iterator : 
-		public stl::iterator<misc::random_access_iterator_tag, typename container::value_type>
+		public stl::iterator<stl::random_access_iterator_tag, typename container::value_type>
 	{
 	public:
-		typedef stl::iterator<misc::random_access_iterator_tag, typename container::value_type> base;
+		typedef stl::iterator<stl::random_access_iterator_tag, typename container::value_type> base;
 		typedef typename base::iterator_category    iterator_category;
 		typedef typename base::value_type           value_type;
 		typedef typename base::difference_type      difference_type;
@@ -35,7 +35,7 @@ namespace stl
 		typedef typename base::pointer              pointer;
 		typedef typename base::reference            reference;
 		typedef typename container::size_type       size_type;
-		friend class misc::deque<typename container::value_type, typename container::allocator_type, container::nattributes>;
+		friend class stl::deque<typename container::value_type, typename container::allocator_type, container::nattributes>;
 
 
 	public:
@@ -191,10 +191,10 @@ namespace stl
 
 //########################################################################
 	template<typename container>
-	class deque_const_iterator : public misc::const_iterator<misc::random_access_iterator_tag, typename container::value_type>
+	class deque_const_iterator : public stl::const_iterator<stl::random_access_iterator_tag, typename container::value_type>
 	{
 	public:
-		typedef misc::const_iterator<misc::random_access_iterator_tag, typename container::value_type> base;
+		typedef stl::const_iterator<stl::random_access_iterator_tag, typename container::value_type> base;
 		typedef typename base::iterator_category    iterator_category;
 		typedef typename base::value_type           value_type;
 		typedef typename base::difference_type      difference_type;
@@ -202,7 +202,7 @@ namespace stl
 		typedef typename base::const_pointer        pointer;
 		typedef typename base::const_reference      reference;
 		typedef typename container::size_type       size_type;
-		friend class misc::deque<typename container::value_type, typename container::allocator_type, container::nattributes>;
+		friend class stl::deque<typename container::value_type, typename container::allocator_type, container::nattributes>;
 
 	public:
 		deque_const_iterator()
@@ -358,10 +358,10 @@ namespace stl
 
 //########################################################################
 	template<typename container>
-	class deque_reverse_iterator : public stl::iterator<misc::random_access_iterator_tag, typename container::value_type>
+	class deque_reverse_iterator : public stl::iterator<stl::random_access_iterator_tag, typename container::value_type>
 	{
 	public:
-		typedef stl::iterator<misc::random_access_iterator_tag, typename container::value_type> base;
+		typedef stl::iterator<stl::random_access_iterator_tag, typename container::value_type> base;
 		typedef typename base::iterator_category    iterator_category;
 		typedef typename base::value_type           value_type;
 		typedef typename base::difference_type      difference_type;
@@ -369,7 +369,7 @@ namespace stl
 		typedef typename base::pointer              pointer;
 		typedef typename base::reference            reference;
 		typedef typename container::size_type       size_type;
-		friend class misc::deque<typename container::value_type, typename container::allocator_type, container::nattributes>;
+		friend class stl::deque<typename container::value_type, typename container::allocator_type, container::nattributes>;
 
 	public:
 		deque_reverse_iterator()
@@ -523,10 +523,10 @@ namespace stl
 
 //########################################################################
 	template<typename container>
-	class deque_const_reverse_iterator : public misc::const_iterator<misc::random_access_iterator_tag, typename container::value_type>
+	class deque_const_reverse_iterator : public stl::const_iterator<stl::random_access_iterator_tag, typename container::value_type>
 	{
 	public:
-		typedef misc::const_iterator<misc::random_access_iterator_tag, typename container::value_type> base;
+		typedef stl::const_iterator<stl::random_access_iterator_tag, typename container::value_type> base;
 		typedef typename base::iterator_category    iterator_category;
 		typedef typename base::value_type           value_type;
 		typedef typename base::difference_type      difference_type;
@@ -534,7 +534,7 @@ namespace stl
 		typedef typename base::const_pointer        pointer;
 		typedef typename base::const_reference      reference;
 		typedef typename container::size_type       size_type;
-		friend class misc::deque<typename container::value_type, typename container::allocator_type, container::nattributes>;
+		friend class stl::deque<typename container::value_type, typename container::allocator_type, container::nattributes>;
 
 	public:
 		deque_const_reverse_iterator()
@@ -688,7 +688,7 @@ namespace stl
 
 	//////////////////////////////////////////////////////////////////////////
 	/*deque container*/
-	template<typename T, typename Allocator=misc::allocator<T>, int attributes=0>
+	template<typename T, typename Allocator=stl::allocator<T>, int attributes=0>
 	class deque
 	{
 	public:
@@ -716,9 +716,9 @@ namespace stl
 
 
 	private:
-		typedef typename stl::vector<T,allocator_type,attributes>	int_container;
+		typedef typename stl::vector<T,allocator_type>			int_container;
 		typedef typename stl::pair<bool, int_container>			Pair;
-		typedef misc::list<Pair>									List;
+		typedef stl::list<Pair>									List;
 	
 		List*		m_data;
 		size_t		m_size;	
@@ -1249,7 +1249,7 @@ namespace stl
 				{
 					size_t off = cont.size() - (pos - (count - cont.size()));
 					int_container rcont(first, last);
-					misc::reverse(rcont.begin(), rcont.end());
+					stl::reverse(rcont.begin(), rcont.end());
 					cont.insert(cont.begin() + off, rcont.begin(), rcont.end());
 					m_size += rcont.size();
 				}

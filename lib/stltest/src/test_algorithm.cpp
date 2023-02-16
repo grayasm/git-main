@@ -24,7 +24,7 @@ Copyright (C) 2009 Mihai Vasilian
 #include "utility.hpp"
 #include "vector.hpp"
 #include "stream.hpp"
-#include "misctest_util.hpp"
+#include "stltest_util.hpp"
 
 
 
@@ -50,798 +50,600 @@ void test_algorithm::for_each()
 
 	
 	stl::cout << "\n\n\tfor_each-----------------------------------------------";
-	for_each<std::vector<int> >																		("\n\tstd::vector       ");
-	for_each<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	for_each<stl::vector<int> >																	("\n\tmisc::vector      ");
-	for_each<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	for_each<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
-	for_each<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	for_each<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	for_each<std::vector<int> >							("\n\tstd::vector      ");
+	for_each<std::vector<int, stl::allocator<int> > >	("\n\tstd::vector<A>   ");
+	for_each<stl::vector<int> >							("\n\tstl::vector      ");
+	for_each<stl::vector<int, std::allocator<int> > >	("\n\tstl::vector<A>   ");
 }
 
 void test_algorithm::find()
 {
 	stl::cout << "\n\n\tfind---------------------------------------------------";
-	find2<std::vector<int> >																	("\n\tstd::vector       ");
-	find2<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	find<stl::vector<int> >																	("\n\tmisc::vector      ");
-	find<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	find<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
-	find<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	find<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	find2<std::vector<int> >							("\n\tstd::vector      ");
+	find2<std::vector<int, stl::allocator<int> > >		("\n\tstd::vector<A>   ");
+	find<stl::vector<int> >								("\n\tstl::vector      ");
+	find<stl::vector<int, std::allocator<int> > >		("\n\tstl::vector<A>   ");
 }
 
 void test_algorithm::find_if()
 {
 	stl::cout << "\n\n\tfind_if------------------------------------------------";
-	find_if2<std::vector<int> >																		("\n\tstd::vector       ");
-	find_if2<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	find_if<stl::vector<int> >																		("\n\tmisc::vector      ");
-	find_if<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	find_if<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >				("\n\tmisc::vector<POD> ");
-	find_if<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	find_if<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	find_if2<std::vector<int> >							("\n\tstd::vector      ");
+	find_if2<std::vector<int, stl::allocator<int> > >	("\n\tstd::vector<A>   ");
+	find_if<stl::vector<int> >							("\n\tstl::vector      ");
+	find_if<stl::vector<int, std::allocator<int> > >	("\n\tstl::vector<A>   ");
 }
 
 void test_algorithm::find_end()
 {
 	stl::cout << "\n\n\tfind_end-----------------------------------------------";
-	find_end2<std::vector<int> >																	("\n\tstd::vector      ");
-	find_end2<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>   ");
-	find_end<stl::vector<int> >																	("\n\tmisc::vector      ");
-	find_end<stl::vector<int, std::allocator<int> > >												("\n\tmisc::vector<A>   ");
-	find_end<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
-	find_end<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	find_end<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");		
+	find_end2<std::vector<int> >						("\n\tstd::vector      ");
+	find_end2<std::vector<int, stl::allocator<int> > >	("\n\tstd::vector<A>   ");
+	find_end<stl::vector<int> >							("\n\tstl::vector      ");
+	find_end<stl::vector<int, std::allocator<int> > >	("\n\tstl::vector<A>   ");
 }
 
 void test_algorithm::find_first_of()
 {
 	stl::cout << "\n\n\tfind_first_of------------------------------------------";
-	find_first_of<std::vector<char> >																		("\n\tstd::vector       ");
-	find_first_of<std::vector<char, misc::allocator<char> > >												("\n\tstd::vector<A>    ");
-	find_first_of<stl::vector<char> >																		("\n\tmisc::vector      ");
-	find_first_of<stl::vector<char, std::allocator<char> > >												("\n\tstd::vector       ");
-	find_first_of<stl::vector<char, misc::allocator<char>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >				("\n\tmisc::vector<POD> ");
-	find_first_of<stl::vector<char, misc::allocator<char>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	find_first_of<stl::vector<char, misc::allocator<char>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");	
+	find_first_of<std::vector<char> >							("\n\tstd::vector      ");
+	find_first_of<std::vector<char, stl::allocator<char> > >	("\n\tstd::vector<A>   ");
+	find_first_of<stl::vector<char> >							("\n\tstl::vector      ");
+	find_first_of<stl::vector<char, std::allocator<char> > >	("\n\tstl::vector<A>   ");
 }
 
 void test_algorithm::adjacent_find()
 {
 	stl::cout << "\n\n\tadjacent_find------------------------------------------";
-	adjacent_find<std::vector<int> >																	("\n\tstd::vector       ");
-	adjacent_find<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	adjacent_find<stl::vector<int> >																	("\n\tmisc::vector      ");
-	adjacent_find<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	adjacent_find<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
-	adjacent_find<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	adjacent_find<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");	
-
+	adjacent_find<std::vector<int> >							("\n\tstd::vector      ");
+	adjacent_find<std::vector<int, stl::allocator<int> > >		("\n\tstd::vector<A>   ");
+	adjacent_find<stl::vector<int> >							("\n\tstl::vector      ");
+	adjacent_find<stl::vector<int, std::allocator<int> > >		("\n\tstl::vector<A>   ");
 }
 
 void test_algorithm::count()
 {
 	stl::cout << "\n\n\tcount--------------------------------------------------";
-	count<std::vector<int> >																	("\n\tstd::vector       ");
-	count<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	count<stl::vector<int> >																	("\n\tmisc::vector      ");
-	count<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	count<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
-	count<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	count<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	count<std::vector<int> >							("\n\tstd::vector      ");
+	count<std::vector<int, stl::allocator<int> > >		("\n\tstd::vector<A>   ");
+	count<stl::vector<int> >							("\n\tstl::vector      ");
+	count<stl::vector<int, std::allocator<int> > >		("\n\tstl::vector<A>   ");
 }
 
 void test_algorithm::count_if()
 {
 	stl::cout << "\n\n\tcount_if-----------------------------------------------";
-	count_if<std::vector<int> >																		("\n\tstd::vector       ");
-	count_if<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	count_if<stl::vector<int> >																	("\n\tmisc::vector      ");
-	count_if<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	count_if<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
-	count_if<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	count_if<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	count_if<std::vector<int> >							("\n\tstd::vector      ");
+	count_if<std::vector<int, stl::allocator<int> > >	("\n\tstd::vector<A>   ");
+	count_if<stl::vector<int> >							("\n\tstl::vector      ");
+	count_if<stl::vector<int, std::allocator<int> > >	("\n\tstl::vector<A>   ");
 }
 
 void test_algorithm::mismatch()
 {
 	stl::cout << "\n\n\tmismatch-----------------------------------------------";
-	mismatch<std::vector<int> >																		("\n\tstd::vector       ");
-	mismatch<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	mismatch<stl::vector<int> >																	("\n\tmisc::vector      ");
-	mismatch<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	mismatch<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
-	mismatch<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	mismatch<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	mismatch<std::vector<int> >								("\n\tstd::vector      ");
+	mismatch<std::vector<int, stl::allocator<int> > >		("\n\tstd::vector<A>   ");
+	mismatch<stl::vector<int> >								("\n\tstl::vector      ");
+	mismatch<stl::vector<int, std::allocator<int> > >		("\n\tstl::vector<A>   ");
 }
 
 void test_algorithm::equal()
 {
 	stl::cout << "\n\n\tequal--------------------------------------------------";
-	equal<std::vector<int> >																	("\n\tstd::vector       ");
-	equal<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	equal<stl::vector<int> >																	("\n\tmisc::vector      ");
-	equal<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	equal<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
-	equal<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	equal<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	equal<std::vector<int> >							("\n\tstd::vector      ");
+	equal<std::vector<int, stl::allocator<int> > >		("\n\tstd::vector<A>   ");
+	equal<stl::vector<int> >							("\n\tstl::vector      ");
+	equal<stl::vector<int, std::allocator<int> > >		("\n\tstl::vector<A>   ");
 }
 
 void test_algorithm::search()
 {
 	stl::cout << "\n\n\tsearch-------------------------------------------------";
-	search<std::vector<int> >																		("\n\tstd::vector       ");
-	search<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	search2<stl::vector<int> >																		("\n\tmisc::vector      ");
-	search2<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	search2<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >				("\n\tmisc::vector<POD> ");
-	search2<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	search2<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	search<std::vector<int> >							("\n\tstd::vector      ");
+	search<std::vector<int, stl::allocator<int> > >		("\n\tstd::vector<A>   ");
+	search2<stl::vector<int> >							("\n\tstl::vector      ");
+	search2<stl::vector<int, std::allocator<int> > >	("\n\tstl::vector<A>   ");
 }
 
 void test_algorithm::search_n()
 {
 	stl::cout << "\n\n\tsearch_n-----------------------------------------------";
-	search_n<std::vector<int> >																	    ("\n\tstd::vector       ");
-	search_n<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	search_n2<stl::vector<int> >																	("\n\tmisc::vector      ");
-	search_n2<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	search_n2<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
-	search_n2<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	search_n2<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	search_n<std::vector<int> >							("\n\tstd::vector      ");
+	search_n<std::vector<int, stl::allocator<int> > >	("\n\tstd::vector<A>   ");
+	search_n2<stl::vector<int> >						("\n\tstl::vector      ");
+	search_n2<stl::vector<int, std::allocator<int> > >	("\n\tstl::vector<A>   ");
 }
 
 //Modifying sequence operations:
 void test_algorithm::copy()
 {
 	stl::cout << "\n\n\tcopy---------------------------------------------------";
-	copy<std::vector<int> >																		("\n\tstd::vector       ");
-	copy<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	copy<stl::vector<int> >																	("\n\tmisc::vector      ");
-	copy<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	copy<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
-	copy<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	copy<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	copy<std::vector<int> >								("\n\tstd::vector      ");
+	copy<std::vector<int, stl::allocator<int> > >		("\n\tstd::vector<A>   ");
+	copy<stl::vector<int> >								("\n\tstl::vector      ");
+	copy<stl::vector<int, std::allocator<int> > >		("\n\tstl::vector<A>   ");
 }
 
 void test_algorithm::copy_backward()
 {
 	stl::cout << "\n\n\tcopy_backward------------------------------------------";
-	copy_backward<std::vector<int> >																	("\n\tstd::vector       ");
-	copy_backward<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	copy_backward<stl::vector<int> >																	("\n\tmisc::vector      ");
-	copy_backward<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	copy_backward<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
-	copy_backward<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	copy_backward<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	copy_backward<std::vector<int> >							("\n\tstd::vector      ");
+	copy_backward<std::vector<int, stl::allocator<int> > >		("\n\tstd::vector<A>   ");
+	copy_backward<stl::vector<int> >							("\n\tstl::vector      ");
+	copy_backward<stl::vector<int, std::allocator<int> > >		("\n\tstl::vector<A>   ");
 }
 
 void test_algorithm::swap()
 {
 	stl::cout << "\n\n\tswap---------------------------------------------------";
-	swap<std::vector<int> >																		("\n\tstd::vector       ");
-	swap<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	swap<stl::vector<int> >																	("\n\tmisc::vector      ");
-	swap<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	swap<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
-	swap<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	swap<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	swap<std::vector<int> >										("\n\tstd::vector      ");
+	swap<std::vector<int, stl::allocator<int> > >				("\n\tstd::vector<A>   ");
+	swap<stl::vector<int> >										("\n\tstl::vector      ");
+	swap<stl::vector<int, std::allocator<int> > >				("\n\tstl::vector<A>   ");
 }
 
 void test_algorithm::swap_ranges()
 {
 	stl::cout << "\n\n\tswap_ranges--------------------------------------------";
-	swap_ranges<std::vector<int> >																		("\n\tstd::vector       ");
-	swap_ranges<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	swap_ranges<stl::vector<int> >																		("\n\tmisc::vector      ");
-	swap_ranges<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	swap_ranges<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >				("\n\tmisc::vector<POD> ");
-	swap_ranges<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	swap_ranges<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	swap_ranges<std::vector<int> >								("\n\tstd::vector      ");
+	swap_ranges<std::vector<int, stl::allocator<int> > >		("\n\tstd::vector<A>   ");
+	swap_ranges<stl::vector<int> >								("\n\tstl::vector      ");
+	swap_ranges<stl::vector<int, std::allocator<int> > >		("\n\tstl::vector<A>   ");
 }
 
 void test_algorithm::iter_swap()
 {
 	stl::cout << "\n\n\titer_swap----------------------------------------------";
-	iter_swap<std::vector<int> >																	("\n\tstd::vector       ");
-	iter_swap<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	iter_swap<stl::vector<int> >																	("\n\tmisc::vector      ");
-	iter_swap<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	iter_swap<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
-	iter_swap<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	iter_swap<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	iter_swap<std::vector<int> >								("\n\tstd::vector      ");
+	iter_swap<std::vector<int, stl::allocator<int> > >			("\n\tstd::vector<A>   ");
+	iter_swap<stl::vector<int> >								("\n\tstl::vector      ");
+	iter_swap<stl::vector<int, std::allocator<int> > >			("\n\tstl::vector<A>   ");
 }
 
 void test_algorithm::transform()
 {
 	stl::cout << "\n\n\ttransform----------------------------------------------";
-	transform<std::vector<int> >																	("\n\tstd::vector       ");
-	transform<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	transform<stl::vector<int> >																	("\n\tmisc::vector      ");
-	transform<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	transform<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
-	transform<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	transform<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	transform<std::vector<int> >								("\n\tstd::vector      ");
+	transform<std::vector<int, stl::allocator<int> > >			("\n\tstd::vector<A>   ");
+	transform<stl::vector<int> >								("\n\tstl::vector      ");
+	transform<stl::vector<int, std::allocator<int> > >			("\n\tstl::vector<A>   ");
 }
 
 void test_algorithm::replace()
 {
 	stl::cout << "\n\n\treplace------------------------------------------------";
-	replace<std::vector<int> >																		("\n\tstd::vector       ");
-	replace<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	replace<stl::vector<int> >																		("\n\tmisc::vector      ");
-	replace<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	replace<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >				("\n\tmisc::vector<POD> ");
-	replace<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	replace<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	replace<std::vector<int> >									("\n\tstd::vector      ");
+	replace<std::vector<int, stl::allocator<int> > >			("\n\tstd::vector<A>   ");
+	replace<stl::vector<int> >									("\n\tstl::vector      ");
+	replace<stl::vector<int, std::allocator<int> > >			("\n\tstl::vector<A>   ");
 }
 
 void test_algorithm::replace_if()
 {
 	stl::cout << "\n\n\treplace_if---------------------------------------------";
-	replace_if<std::vector<int> >																		("\n\tstd::vector       ");
-	replace_if<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	replace_if<stl::vector<int> >																		("\n\tmisc::vector      ");
-	replace_if<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	replace_if<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >				("\n\tmisc::vector<POD> ");
-	replace_if<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	replace_if<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	replace_if<std::vector<int> >								("\n\tstd::vector      ");
+	replace_if<std::vector<int, stl::allocator<int> > >			("\n\tstd::vector<A>   ");
+	replace_if<stl::vector<int> >								("\n\tstl::vector      ");
+	replace_if<stl::vector<int, std::allocator<int> > >			("\n\tstl::vector<A>   ");
 }
 
 void test_algorithm::replace_copy()
 {
 	stl::cout << "\n\n\treplace_copy-------------------------------------------";
-	replace_copy<std::vector<int> >																		("\n\tstd::vector       ");
-	replace_copy<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	replace_copy<stl::vector<int> >																	("\n\tmisc::vector      ");
-	replace_copy<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	replace_copy<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
-	replace_copy<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	replace_copy<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	replace_copy<std::vector<int> >								("\n\tstd::vector      ");
+	replace_copy<std::vector<int, stl::allocator<int> > >		("\n\tstd::vector<A>   ");
+	replace_copy<stl::vector<int> >								("\n\tstl::vector      ");
+	replace_copy<stl::vector<int, std::allocator<int> > >		("\n\tstl::vector<A>   ");
 }
 
 void test_algorithm::replace_copy_if()
 {
 	stl::cout << "\n\n\treplace_copy_if----------------------------------------";
-	replace_copy_if<std::vector<int> >																		("\n\tstd::vector       ");
-	replace_copy_if<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	replace_copy_if<stl::vector<int> >																		("\n\tmisc::vector      ");
-	replace_copy_if<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	replace_copy_if<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >				("\n\tmisc::vector<POD> ");
-	replace_copy_if<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	replace_copy_if<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	replace_copy_if<std::vector<int> >							("\n\tstd::vector      ");
+	replace_copy_if<std::vector<int, stl::allocator<int> > >	("\n\tstd::vector<A>   ");
+	replace_copy_if<stl::vector<int> >							("\n\tstl::vector      ");
+	replace_copy_if<stl::vector<int, std::allocator<int> > >	("\n\tstl::vector<A>   ");
 }
 
 void test_algorithm::fill()
 {
 	stl::cout << "\n\n\tfill---------------------------------------------------";
-	fill<std::vector<int> >																		("\n\tstd::vector       ");
-	fill<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	fill<stl::vector<int> >																	("\n\tmisc::vector      ");
-	fill<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	fill<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
-	fill<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	fill<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	fill<std::vector<int> >										("\n\tstd::vector      ");
+	fill<std::vector<int, stl::allocator<int> > >				("\n\tstd::vector<A>   ");
+	fill<stl::vector<int> >										("\n\tstl::vector      ");
+	fill<stl::vector<int, std::allocator<int> > >				("\n\tstl::vector<A>   ");
 }
 
 void test_algorithm::fill_n()
 {
 	stl::cout << "\n\n\tfill_n-------------------------------------------------";
-	fill_n<std::vector<int> >																		("\n\tstd::vector       ");
-	fill_n<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	fill_n<stl::vector<int> >																		("\n\tmisc::vector      ");
-	fill_n<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	fill_n<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >				("\n\tmisc::vector<POD> ");
-	fill_n<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	fill_n<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	fill_n<std::vector<int> >									("\n\tstd::vector      ");
+	fill_n<std::vector<int, stl::allocator<int> > >				("\n\tstd::vector<A>   ");
+	fill_n<stl::vector<int> >									("\n\tstl::vector      ");
+	fill_n<stl::vector<int, std::allocator<int> > >				("\n\tstl::vector<A>   ");
 }
 
 void test_algorithm::generate()
 {
 	stl::cout << "\n\n\tgenerate-----------------------------------------------";
-	generate<std::vector<int> >																		("\n\tstd::vector       ");
-	generate<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	generate<stl::vector<int> >																	("\n\tmisc::vector      ");
-	generate<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	generate<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
-	generate<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	generate<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	generate<std::vector<int> >									("\n\tstd::vector      ");
+	generate<std::vector<int, stl::allocator<int> > >			("\n\tstd::vector<A>   ");
+	generate<stl::vector<int> >									("\n\tstl::vector      ");
+	generate<stl::vector<int, std::allocator<int> > >			("\n\tstl::vector<A>   ");
 }
 
 void test_algorithm::generate_n()
 {
 	stl::cout << "\n\n\tgenerate_n---------------------------------------------";
-	generate_n<std::vector<int> >																		("\n\tstd::vector       ");
-	generate_n<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	generate_n<stl::vector<int> >																		("\n\tmisc::vector      ");
-	generate_n<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	generate_n<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >				("\n\tmisc::vector<POD> ");
-	generate_n<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	generate_n<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	generate_n<std::vector<int> >								("\n\tstd::vector      ");
+	generate_n<std::vector<int, stl::allocator<int> > >			("\n\tstd::vector<A>   ");
+	generate_n<stl::vector<int> >								("\n\tstl::vector      ");
+	generate_n<stl::vector<int, std::allocator<int> > >			("\n\tstl::vector<A>   ");
 }
 
 void test_algorithm::remove()
 {
 	stl::cout << "\n\n\tremove-------------------------------------------------";
-	remove<std::vector<int> >																		("\n\tstd::vector       ");
-	remove<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	remove<stl::vector<int> >																		("\n\tmisc::vector      ");
-	remove<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	remove<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >				("\n\tmisc::vector<POD> ");
-	remove<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	remove<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	remove<std::vector<int> >									("\n\tstd::vector      ");
+	remove<std::vector<int, stl::allocator<int> > >				("\n\tstd::vector<A>   ");
+	remove<stl::vector<int> >									("\n\tstl::vector      ");
+	remove<stl::vector<int, std::allocator<int> > >				("\n\tstl::vector<A>   ");
 }
 
 void test_algorithm::remove_if()
 {
 	stl::cout << "\n\n\tremove_if----------------------------------------------";
-	remove_if2<std::vector<int> >																	("\n\tstd::vector       ");
-	remove_if2<std::vector<int, misc::allocator<int> > >											("\n\tstd::vector<A>    ");
-	remove_if<stl::vector<int> >																	("\n\tmisc::vector      ");
-	remove_if<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	remove_if<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
-	remove_if<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	remove_if<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	remove_if2<std::vector<int> >								("\n\tstd::vector      ");
+	remove_if2<std::vector<int, stl::allocator<int> > >			("\n\tstd::vector<A>   ");
+	remove_if<stl::vector<int> >								("\n\tstl::vector      ");
+	remove_if<stl::vector<int, std::allocator<int> > >			("\n\tstl::vector<A>   ");
 }
 
 void test_algorithm::remove_copy()
 {
 	stl::cout << "\n\n\tremove_copy--------------------------------------------";
-	remove_copy<std::vector<int> >																		("\n\tstd::vector       ");
-	remove_copy<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	remove_copy<stl::vector<int> >																		("\n\tmisc::vector      ");
-	remove_copy<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	remove_copy<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >				("\n\tmisc::vector<POD> ");
-	remove_copy<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	remove_copy<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	remove_copy<std::vector<int> >								("\n\tstd::vector      ");
+	remove_copy<std::vector<int, stl::allocator<int> > >		("\n\tstd::vector<A>   ");
+	remove_copy<stl::vector<int> >								("\n\tstl::vector      ");
+	remove_copy<stl::vector<int, std::allocator<int> > >		("\n\tstl::vector<A>   ");
 }
 
 void test_algorithm::remove_copy_if()
 {
 	stl::cout << "\n\n\tremove_copy_if-----------------------------------------";
-	remove_copy_if<std::vector<int> >																		("\n\tstd::vector       ");
-	remove_copy_if<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	remove_copy_if<stl::vector<int> >																		("\n\tmisc::vector      ");
-	remove_copy_if<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	remove_copy_if<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >				("\n\tmisc::vector<POD> ");
-	remove_copy_if<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	remove_copy_if<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	remove_copy_if<std::vector<int> >							("\n\tstd::vector      ");
+	remove_copy_if<std::vector<int, stl::allocator<int> > >		("\n\tstd::vector<A>   ");
+	remove_copy_if<stl::vector<int> >							("\n\tstl::vector      ");
+	remove_copy_if<stl::vector<int, std::allocator<int> > >		("\n\tstl::vector<A>   ");
 }
 
 void test_algorithm::unique()
 {
 	stl::cout << "\n\n\tunique-------------------------------------------------";
-	unique<std::vector<int> >																		("\n\tstd::vector       ");
-	unique<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	unique<stl::vector<int> >																		("\n\tmisc::vector      ");
-	unique<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	unique<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >				("\n\tmisc::vector<POD> ");
-	unique<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	unique<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	unique<std::vector<int> >								("\n\tstd::vector      ");
+	unique<std::vector<int, stl::allocator<int> > >			("\n\tstd::vector<A>   ");
+	unique<stl::vector<int> >								("\n\tstl::vector      ");
+	unique<stl::vector<int, std::allocator<int> > >			("\n\tstl::vector<A>   ");
 }
 
 void test_algorithm::unique_copy()
 {
 	stl::cout << "\n\n\tunique_copy--------------------------------------------";
-	unique_copy<std::vector<int> >																		("\n\tstd::vector       ");
-	unique_copy<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	unique_copy<stl::vector<int> >																		("\n\tmisc::vector      ");
-	unique_copy<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	unique_copy<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >				("\n\tmisc::vector<POD> ");
-	unique_copy<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	unique_copy<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	unique_copy<std::vector<int> >							("\n\tstd::vector      ");
+	unique_copy<std::vector<int, stl::allocator<int> > >	("\n\tstd::vector<A>   ");
+	unique_copy<stl::vector<int> >							("\n\tstl::vector      ");
+	unique_copy<stl::vector<int, std::allocator<int> > >	("\n\tstl::vector<A>   ");
 }
 
 void test_algorithm::reverse()
 {
 	stl::cout << "\n\n\treverse------------------------------------------------";
-	reverse<std::vector<int> >																		("\n\tstd::vector       ");
-	reverse<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	reverse<stl::vector<int> >																		("\n\tmisc::vector      ");
-	reverse<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	reverse<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >				("\n\tmisc::vector<POD> ");
-	reverse<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	reverse<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	reverse<std::vector<int> >								("\n\tstd::vector      ");
+	reverse<std::vector<int, stl::allocator<int> > >		("\n\tstd::vector<A>   ");
+	reverse<stl::vector<int> >								("\n\tstl::vector      ");
+	reverse<stl::vector<int, std::allocator<int> > >		("\n\tstl::vector<A>   ");
 }
 
 void test_algorithm::reverse_copy()
 {
 	stl::cout << "\n\n\treverse_copy-------------------------------------------";
-	reverse_copy<std::vector<int> >																		("\n\tstd::vector       ");
-	reverse_copy<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	reverse_copy<stl::vector<int> >																	("\n\tmisc::vector      ");
-	reverse_copy<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	reverse_copy<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
-	reverse_copy<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	reverse_copy<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	reverse_copy<std::vector<int> >							("\n\tstd::vector      ");
+	reverse_copy<std::vector<int, stl::allocator<int> > >	("\n\tstd::vector<A>   ");
+	reverse_copy<stl::vector<int> >							("\n\tstl::vector      ");
+	reverse_copy<stl::vector<int, std::allocator<int> > >	("\n\tstl::vector<A>   ");
 }
 
 void test_algorithm::rotate()
 {
 	stl::cout << "\n\n\trotate-------------------------------------------------";
-	rotate<std::vector<int> >																		("\n\tstd::vector       ");
-	rotate<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	rotate<stl::vector<int> >																		("\n\tmisc::vector      ");
-	rotate<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	rotate<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >				("\n\tmisc::vector<POD> ");
-	rotate<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	rotate<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	rotate<std::vector<int> >								("\n\tstd::vector      ");
+	rotate<std::vector<int, stl::allocator<int> > >			("\n\tstd::vector<A>   ");
+	rotate<stl::vector<int> >								("\n\tstl::vector      ");
+	rotate<stl::vector<int, std::allocator<int> > >			("\n\tstl::vector<A>   ");
 }
 
 void test_algorithm::rotate_copy()
 {
 	stl::cout << "\n\n\trotate_copy--------------------------------------------";
-	rotate_copy<std::vector<int> >																		("\n\tstd::vector       ");
-	rotate_copy<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	rotate_copy<stl::vector<int> >																		("\n\tmisc::vector      ");
-	rotate_copy<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	rotate_copy<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >				("\n\tmisc::vector<POD> ");
-	rotate_copy<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	rotate_copy<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	rotate_copy<std::vector<int> >							("\n\tstd::vector      ");
+	rotate_copy<std::vector<int, stl::allocator<int> > >	("\n\tstd::vector<A>   ");
+	rotate_copy<stl::vector<int> >							("\n\tstl::vector      ");
+	rotate_copy<stl::vector<int, std::allocator<int> > >	("\n\tstl::vector<A>   ");
 }
 
 void test_algorithm::random_shuffle()
 {
 	stl::cout << "\n\n\trandom_shuffle-----------------------------------------";
-	random_shuffle<std::vector<int> >																		("\n\tstd::vector       ");
-	random_shuffle<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	random_shuffle<stl::vector<int> >																		("\n\tmisc::vector      ");
-	random_shuffle<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	random_shuffle<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >				("\n\tmisc::vector<POD> ");
-	random_shuffle<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	random_shuffle<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	random_shuffle<std::vector<int> >							("\n\tstd::vector      ");
+	random_shuffle<std::vector<int, stl::allocator<int> > >		("\n\tstd::vector<A>   ");
+	random_shuffle<stl::vector<int> >							("\n\tstl::vector      ");
+	random_shuffle<stl::vector<int, std::allocator<int> > >		("\n\tstl::vector<A>   ");
 }
 
 void test_algorithm::partition()
 {
 	stl::cout << "\n\n\tpartition----------------------------------------------";
-	partition2<std::vector<int> >																	("\n\tstd::vector       ");
-	partition2<std::vector<int, misc::allocator<int> > >											("\n\tstd::vector<A>    ");
-	partition<stl::vector<int> >																	("\n\tmisc::vector      ");
-	partition<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	partition<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
-	partition<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	partition<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	partition2<std::vector<int> >								("\n\tstd::vector      ");
+	partition2<std::vector<int, stl::allocator<int> > >			("\n\tstd::vector<A>   ");
+	partition<stl::vector<int> >								("\n\tstl::vector      ");
+	partition<stl::vector<int, std::allocator<int> > >			("\n\tstl::vector<A>   ");
 }
 
 void test_algorithm::stable_partition()
 {
 	stl::cout << "\n\n\tstable_partition---------------------------------------";	
-	stable_partition<std::vector<int> >																		("\n\tstd::vector       ");
-	stable_partition<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	stable_partition2<stl::vector<int> >																	("\n\tmisc::vector      ");
-	stable_partition2<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	stable_partition2<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
-	stable_partition2<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	stable_partition2<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	stable_partition<std::vector<int> >							("\n\tstd::vector      ");
+	stable_partition<std::vector<int, stl::allocator<int> > >	("\n\tstd::vector<A>   ");
+	stable_partition2<stl::vector<int> >						("\n\tstl::vector      ");
+	stable_partition2<stl::vector<int, std::allocator<int> > >	("\n\tstl::vector<A>   ");
 }
 
 //Sorting:
 void test_algorithm::sort()
 {
 	stl::cout << "\n\n\tsort---------------------------------------------------";
-	sort<std::vector<int> >																		("\n\tstd::vector       ");
-	sort<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	sort<stl::vector<int> >																	("\n\tmisc::vector      ");
-	sort<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	sort<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
-	sort<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	sort<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	sort<std::vector<int> >							("\n\tstd::vector      ");
+	sort<std::vector<int, stl::allocator<int> > >	("\n\tstd::vector<A>   ");
+	sort<stl::vector<int> >							("\n\tstl::vector      ");
+	sort<stl::vector<int, std::allocator<int> > >	("\n\tstl::vector<A>   ");
 }
 
 void test_algorithm::stable_sort()
 {
 	stl::cout << "\n\n\tstable_sort--------------------------------------------";	
-	stable_sort<std::vector<double> >																		("\n\tstd::vector       ");
-	stable_sort2<stl::vector<double> >																		("\n\tmisc::vector      ");
-	stable_sort2<stl::vector<double, std::allocator<double> > >												("\n\tstd::vector       ");
-	stable_sort2<stl::vector<double, misc::allocator<double>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
-	stable_sort2<stl::vector<double, misc::allocator<double>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	stable_sort2<stl::vector<double, misc::allocator<double>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	stable_sort<std::vector<double> >								("\n\tstd::vector      ");
+	stable_sort2<stl::vector<double> >								("\n\tstl::vector      ");
+	stable_sort2<stl::vector<double, std::allocator<double> > >		("\n\tstl::vector<A>   ");
 }
 
 void test_algorithm::partial_sort()
 {
 	stl::cout << "\n\n\tpartial_sort-------------------------------------------";
-	partial_sort<std::vector<int> >																		("\n\tstd::vector       ");
-	partial_sort<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	partial_sort<stl::vector<int> >																	("\n\tmisc::vector      ");
-	partial_sort<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	partial_sort<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
-	partial_sort<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	partial_sort<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	partial_sort<std::vector<int> >									("\n\tstd::vector      ");
+	partial_sort<std::vector<int, stl::allocator<int> > >			("\n\tstd::vector<A>   ");
+	partial_sort<stl::vector<int> >									("\n\tstl::vector      ");
+	partial_sort<stl::vector<int, std::allocator<int> > >			("\n\tstl::vector<A>   ");
 }
 
 void test_algorithm::partial_sort_copy()
 {
 	stl::cout << "\n\n\tpartial_sort_copy--------------------------------------";
-	partial_sort_copy<std::vector<int> >																	("\n\tstd::vector       ");
-	partial_sort_copy<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	partial_sort_copy<stl::vector<int> >																	("\n\tmisc::vector      ");
-	partial_sort_copy<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	partial_sort_copy<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
-	partial_sort_copy<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	partial_sort_copy<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	partial_sort_copy<std::vector<int> >							("\n\tstd::vector      ");
+	partial_sort_copy<std::vector<int, stl::allocator<int> > >		("\n\tstd::vector<A>   ");
+	partial_sort_copy<stl::vector<int> >							("\n\tstl::vector      ");
+	partial_sort_copy<stl::vector<int, std::allocator<int> > >		("\n\tstl::vector<A>   ");
 }
 
 void test_algorithm::nth_element()
 {
 	stl::cout << "\n\n\tnth_element--------------------------------------------";
-	nth_element<std::vector<int> >																		("\n\tstd::vector       ");
-	nth_element<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	nth_element<stl::vector<int> >																		("\n\tmisc::vector      ");
-	nth_element<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	nth_element<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >				("\n\tmisc::vector<POD> ");
-	nth_element<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	nth_element<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	nth_element<std::vector<int> >									("\n\tstd::vector      ");
+	nth_element<std::vector<int, stl::allocator<int> > >			("\n\tstd::vector<A>   ");
+	nth_element<stl::vector<int> >									("\n\tstl::vector      ");
+	nth_element<stl::vector<int, std::allocator<int> > >			("\n\tstl::vector<A>   ");
 }
 
 //Binary search (operating on sorted ranges):
 void test_algorithm::lower_bound()
 {
 	stl::cout << "\n\n\tlower_bound--------------------------------------------";
-	lower_bound2<std::vector<int> >																		("\n\tstd::vector       ");
-	lower_bound2<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	lower_bound<stl::vector<int> >																		("\n\tmisc::vector      ");
-	lower_bound<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	lower_bound<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >				("\n\tmisc::vector<POD> ");
-	lower_bound<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	lower_bound<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	lower_bound2<std::vector<int> >									("\n\tstd::vector      ");
+	lower_bound2<std::vector<int, stl::allocator<int> > >			("\n\tstd::vector<A>   ");
+	lower_bound<stl::vector<int> >									("\n\tstl::vector      ");
+	lower_bound<stl::vector<int, std::allocator<int> > >			("\n\tstl::vector<A>   ");
 }
 
 void test_algorithm::upper_bound()
 {
 	stl::cout << "\n\n\tupper_bound--------------------------------------------";
-	upper_bound<std::vector<int> >																		("\n\tstd::vector       ");
-	upper_bound<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	upper_bound<stl::vector<int> >																		("\n\tmisc::vector      ");
-	upper_bound<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	upper_bound<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >				("\n\tmisc::vector<POD> ");
-	upper_bound<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	upper_bound<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	upper_bound<std::vector<int> >							("\n\tstd::vector      ");
+	upper_bound<std::vector<int, stl::allocator<int> > >	("\n\tstd::vector<A>   ");
+	upper_bound<stl::vector<int> >							("\n\tstl::vector      ");
+	upper_bound<stl::vector<int, std::allocator<int> > >	("\n\tstl::vector<A>   ");
 }
 
 void test_algorithm::equal_range()
 {
 	stl::cout << "\n\n\tequal_range--------------------------------------------";	
-	equal_range2<std::vector<int> >																		("\n\tstd::vector       ");
-	equal_range<stl::vector<int> >																		("\n\tmisc::vector      ");
-	equal_range<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	equal_range<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >				("\n\tmisc::vector<POD> ");
-	equal_range<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	equal_range<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	equal_range2<std::vector<int> >							("\n\tstd::vector      ");
+	equal_range<stl::vector<int> >							("\n\tstl::vector      ");
+	equal_range<stl::vector<int, std::allocator<int> > >	("\n\tstl::vector<A>   ");
 }
 
 void test_algorithm::binary_search()
 {
 	stl::cout << "\n\n\tbinary_search------------------------------------------";
-	binary_search<std::vector<int> >																	("\n\tstd::vector       ");
-	binary_search<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	binary_search2<stl::vector<int> >																	("\n\tmisc::vector      ");
-	binary_search2<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	binary_search2<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
-	binary_search2<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	binary_search2<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	binary_search<std::vector<int> >							("\n\tstd::vector      ");
+	binary_search<std::vector<int, stl::allocator<int> > >		("\n\tstd::vector<A>   ");
+	binary_search2<stl::vector<int> >							("\n\tstl::vector      ");
+	binary_search2<stl::vector<int, std::allocator<int> > >		("\n\tstl::vector<A>   ");
 }
 
 //Merge (operating on sorted ranges):
 void test_algorithm::merge()
 {
 	stl::cout << "\n\n\tmerge--------------------------------------------------";
-	merge<std::vector<int> >																	("\n\tstd::vector       ");
-	merge<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	merge2<stl::vector<int> >																	("\n\tmisc::vector      ");
-	merge2<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	merge2<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
-	merge2<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	merge2<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	merge<std::vector<int> >							("\n\tstd::vector      ");
+	merge<std::vector<int, stl::allocator<int> > >		("\n\tstd::vector<A>   ");
+	merge2<stl::vector<int> >							("\n\tstl::vector      ");
+	merge2<stl::vector<int, std::allocator<int> > >		("\n\tstl::vector<A>   ");
 }
 
 void test_algorithm::inplace_merge()
 {
 	stl::cout << "\n\n\tinplace_merge------------------------------------------";
-	inplace_merge<std::vector<int> >																	("\n\tstd::vector       ");
-	inplace_merge<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	inplace_merge2<stl::vector<int> >																	("\n\tmisc::vector      ");
-	inplace_merge2<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	inplace_merge2<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
-	inplace_merge2<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	inplace_merge2<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	inplace_merge<std::vector<int> >							("\n\tstd::vector      ");
+	inplace_merge<std::vector<int, stl::allocator<int> > >		("\n\tstd::vector<A>   ");
+	inplace_merge2<stl::vector<int> >							("\n\tstl::vector      ");
+	inplace_merge2<stl::vector<int, std::allocator<int> > >		("\n\tstl::vector<A>   ");
 }
 
 void test_algorithm::includes()
 {
 	stl::cout << "\n\n\tincludes-----------------------------------------------";
-	includes<std::vector<int> >																		("\n\tstd::vector       ");
-	includes<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	includes2<stl::vector<int> >																	("\n\tmisc::vector      ");
-	includes2<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	includes2<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
-	includes2<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	includes2<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	includes<std::vector<int> >								("\n\tstd::vector      ");
+	includes<std::vector<int, stl::allocator<int> > >		("\n\tstd::vector<A>   ");
+	includes2<stl::vector<int> >							("\n\tstl::vector      ");
+	includes2<stl::vector<int, std::allocator<int> > >		("\n\tstl::vector<A>   ");
 }
 
 void test_algorithm::set_union()
 {
 	stl::cout << "\n\n\tset_union----------------------------------------------";
-	set_union<std::vector<int> >																	("\n\tstd::vector       ");
-	set_union<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	set_union2<stl::vector<int> >																	("\n\tmisc::vector      ");
-	set_union2<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	set_union2<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
-	set_union2<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	set_union2<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	set_union<std::vector<int> >							("\n\tstd::vector      ");
+	set_union<std::vector<int, stl::allocator<int> > >		("\n\tstd::vector<A>   ");
+	set_union2<stl::vector<int> >							("\n\tstl::vector      ");
+	set_union2<stl::vector<int, std::allocator<int> > >		("\n\tstl::vector<A>   ");
 }
 
 void test_algorithm::set_intersection()
 {
 	stl::cout << "\n\n\tset_intersection---------------------------------------";
-	set_intersection<std::vector<int> >																		("\n\tstd::vector       ");
-	set_intersection<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	set_intersection2<stl::vector<int> >																	("\n\tmisc::vector      ");
-	set_intersection2<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	set_intersection2<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
-	set_intersection2<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	set_intersection2<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	set_intersection<std::vector<int> >							("\n\tstd::vector      ");
+	set_intersection<std::vector<int, stl::allocator<int> > >	("\n\tstd::vector<A>   ");
+	set_intersection2<stl::vector<int> >						("\n\tstl::vector      ");
+	set_intersection2<stl::vector<int, std::allocator<int> > >	("\n\tstl::vector<A>   ");
 }
 
 void test_algorithm::set_difference()
 {
 	stl::cout << "\n\n\tset_difference-----------------------------------------";
-	set_difference<std::vector<int> >																		("\n\tstd::vector       ");
-	set_difference<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	set_difference<stl::vector<int> >																		("\n\tmisc::vector      ");
-	set_difference<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	set_difference<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >				("\n\tmisc::vector<POD> ");
-	set_difference<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	set_difference<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	set_difference<std::vector<int> >							("\n\tstd::vector      ");
+	set_difference<std::vector<int, stl::allocator<int> > >		("\n\tstd::vector<A>   ");
+	set_difference<stl::vector<int> >							("\n\tstl::vector      ");
+	set_difference<stl::vector<int, std::allocator<int> > >		("\n\tstl::vector<A>   ");
 }
 
 void test_algorithm::set_symmetric_difference()
 {
 	stl::cout << "\n\n\tset_symmetric_difference-------------------------------";
-	set_symmetric_difference<std::vector<int> >																		("\n\tstd::vector       ");
-	set_symmetric_difference<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	set_symmetric_difference2<stl::vector<int> >																	("\n\tmisc::vector      ");
-	set_symmetric_difference2<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	set_symmetric_difference2<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
-	set_symmetric_difference2<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	set_symmetric_difference2<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	set_symmetric_difference<std::vector<int> >							("\n\tstd::vector      ");
+	set_symmetric_difference<std::vector<int, stl::allocator<int> > >	("\n\tstd::vector<A>   ");
+	set_symmetric_difference2<stl::vector<int> >						("\n\tstl::vector      ");
+	set_symmetric_difference2<stl::vector<int, std::allocator<int> > >	("\n\tstl::vector<A>   ");
 }
 
 //Heap:
 void test_algorithm::push_heap()
 {
 	stl::cout << "\n\n\tpush_heap----------------------------------------------";
-	push_heap<std::vector<int> >																	("\n\tstd::vector       ");
-	push_heap<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	push_heap2<stl::vector<int> >																	("\n\tmisc::vector      ");
-	push_heap2<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	push_heap2<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
-	push_heap2<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	push_heap2<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	push_heap<std::vector<int> >								("\n\tstd::vector      ");
+	push_heap<std::vector<int, stl::allocator<int> > >			("\n\tstd::vector<A>   ");
+	push_heap2<stl::vector<int> >								("\n\tstl::vector      ");
+	push_heap2<stl::vector<int, std::allocator<int> > >			("\n\tstl::vector<A>   ");
 }
 
 void test_algorithm::pop_heap()
 {
 	stl::cout << "\n\n\tpop_heap-----------------------------------------------";
-	pop_heap<std::vector<int> >																		("\n\tstd::vector       ");
-	pop_heap<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	pop_heap<stl::vector<int> >																	("\n\tmisc::vector      ");
-	pop_heap<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	pop_heap<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
-	pop_heap<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	pop_heap<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	pop_heap<std::vector<int> >								("\n\tstd::vector      ");
+	pop_heap<std::vector<int, stl::allocator<int> > >		("\n\tstd::vector<A>   ");
+	pop_heap<stl::vector<int> >								("\n\tstl::vector      ");
+	pop_heap<stl::vector<int, std::allocator<int> > >		("\n\tstl::vector<A>   ");
 }
 
 void test_algorithm::make_heap()
 {
 	stl::cout << "\n\n\tmake_heap----------------------------------------------";
-	make_heap<std::vector<int> >																	("\n\tstd::vector       ");
-	make_heap<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	make_heap<stl::vector<int> >																	("\n\tmisc::vector      ");
-	make_heap<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	make_heap<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
-	make_heap<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	make_heap<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	make_heap<std::vector<int> >							("\n\tstd::vector      ");
+	make_heap<std::vector<int, stl::allocator<int> > >		("\n\tstd::vector<A>   ");
+	make_heap<stl::vector<int> >							("\n\tstl::vector      ");
+	make_heap<stl::vector<int, std::allocator<int> > >		("\n\tstl::vector<A>   ");
 }
 
 void test_algorithm::sort_heap()
 {
 	stl::cout << "\n\n\tsort_heap----------------------------------------------";
-	sort_heap<std::vector<int> >																	("\n\tstd::vector       ");
-	sort_heap<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	sort_heap<stl::vector<int> >																	("\n\tmisc::vector      ");
-	sort_heap<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	sort_heap<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
-	sort_heap<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	sort_heap<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	sort_heap<std::vector<int> >							("\n\tstd::vector      ");
+	sort_heap<std::vector<int, stl::allocator<int> > >		("\n\tstd::vector<A>   ");
+	sort_heap<stl::vector<int> >							("\n\tstl::vector      ");
+	sort_heap<stl::vector<int, std::allocator<int> > >		("\n\tstl::vector<A>   ");
 }
 
 //Min/max:
 void test_algorithm::min2()
 {
 	stl::cout << "\n\n\tmin----------------------------------------------------";
-	min2<std::vector<int> >																		("\n\tstd::vector       ");
-	min2<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	min2<stl::vector<int> >																	("\n\tmisc::vector      ");
-	min2<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	min2<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
-	min2<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	min2<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	min2<std::vector<int> >								("\n\tstd::vector      ");
+	min2<std::vector<int, stl::allocator<int> > >		("\n\tstd::vector<A>   ");
+	min2<stl::vector<int> >								("\n\tstl::vector      ");
+	min2<stl::vector<int, std::allocator<int> > >		("\n\tstl::vector<A>   ");
 }
 
 void test_algorithm::max2()
 {
 	stl::cout << "\n\n\tmax----------------------------------------------------";
-	max2<std::vector<int> >																		("\n\tstd::vector       ");
-	max2<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	max2<stl::vector<int> >																	("\n\tmisc::vector      ");
-	max2<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	max2<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
-	max2<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	max2<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	max2<std::vector<int> >									("\n\tstd::vector      ");
+	max2<std::vector<int, stl::allocator<int> > >			("\n\tstd::vector<A>   ");
+	max2<stl::vector<int> >									("\n\tstl::vector      ");
+	max2<stl::vector<int, std::allocator<int> > >			("\n\tstl::vector<A>   ");
 }
 
 void test_algorithm::min_element()
 {
 	stl::cout << "\n\n\tmin_element--------------------------------------------";
-	min_element<std::vector<int> >																		("\n\tstd::vector       ");
-	min_element<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	min_element<stl::vector<int> >																		("\n\tmisc::vector      ");
-	min_element<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	min_element<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >				("\n\tmisc::vector<POD> ");
-	min_element<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	min_element<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	min_element<std::vector<int> >								("\n\tstd::vector      ");
+	min_element<std::vector<int, stl::allocator<int> > >		("\n\tstd::vector<A>   ");
+	min_element<stl::vector<int> >								("\n\tstl::vector      ");
+	min_element<stl::vector<int, std::allocator<int> > >		("\n\tstl::vector<A>   ");
 }
 
 void test_algorithm::max_element()
 {
 	stl::cout << "\n\n\tmax_element--------------------------------------------";
-	max_element<std::vector<int> >																		("\n\tstd::vector       ");
-	max_element<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	max_element<stl::vector<int> >																		("\n\tmisc::vector      ");
-	max_element<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	max_element<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >				("\n\tmisc::vector<POD> ");
-	max_element<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	max_element<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	max_element<std::vector<int> >								("\n\tstd::vector      ");
+	max_element<std::vector<int, stl::allocator<int> > >		("\n\tstd::vector<A>   ");
+	max_element<stl::vector<int> >								("\n\tstl::vector      ");
+	max_element<stl::vector<int, std::allocator<int> > >		("\n\tstl::vector<A>   ");
 }
 
 void test_algorithm::lexicographical_compare()
 {
 	stl::cout << "\n\n\tlexicographical_compare--------------------------------";
-	lexicographical_compare<std::vector<char> >																		("\n\tstd::vector       ");
-	lexicographical_compare<std::vector<char, misc::allocator<char> > >												("\n\tstd::vector<A>    ");
-	lexicographical_compare<stl::vector<char> >																	("\n\tmisc::vector      ");
-	lexicographical_compare<stl::vector<char, std::allocator<char> > >												("\n\tstd::vector       ");
-	lexicographical_compare<stl::vector<char, misc::allocator<char>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
-	lexicographical_compare<stl::vector<char, misc::allocator<char>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	lexicographical_compare<stl::vector<char, misc::allocator<char>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	lexicographical_compare<std::vector<char> >								("\n\tstd::vector      ");
+	lexicographical_compare<std::vector<char, stl::allocator<char> > >		("\n\tstd::vector<A>   ");
+	lexicographical_compare<stl::vector<char> >								("\n\tstl::vector      ");
+	lexicographical_compare<stl::vector<char, std::allocator<char> > >		("\n\tstl::vector<A>   ");
+
 }
 
 void test_algorithm::next_permutation()
 {
 	stl::cout << "\n\n\tnext_permutation---------------------------------------";
-	next_permutation<std::vector<int> >																		("\n\tstd::vector       ");
-	next_permutation<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	next_permutation2<stl::vector<int> >																	("\n\tmisc::vector      ");
-	next_permutation2<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	next_permutation2<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
-	next_permutation2<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	next_permutation2<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	next_permutation<std::vector<int> >									("\n\tstd::vector      ");
+	next_permutation<std::vector<int, stl::allocator<int> > >			("\n\tstd::vector<A>   ");
+	next_permutation2<stl::vector<int> >								("\n\tstl::vector      ");
+	next_permutation2<stl::vector<int, std::allocator<int> > >			("\n\tstl::vector<A>   ");
 }
 
 void test_algorithm::prev_permutation()
 {
 	stl::cout << "\n\n\tprev_permutation---------------------------------------";
-	prev_permutation<std::vector<int> >																		("\n\tstd::vector       ");
-	prev_permutation<std::vector<int, misc::allocator<int> > >												("\n\tstd::vector<A>    ");
-	prev_permutation2<stl::vector<int> >																	("\n\tmisc::vector      ");
-	prev_permutation2<stl::vector<int, std::allocator<int> > >												("\n\tstd::vector       ");
-	prev_permutation2<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE> >			("\n\tmisc::vector<POD> ");
-	prev_permutation2<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_POD_TYPE | misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::ve<POD|ITD> ");
-	prev_permutation2<stl::vector<int, misc::allocator<int>, misc::GENERIC_ARRAY_HAS_ITERATOR_DEBUGGING> >	("\n\tmisc::vector<ITD> ");
+	prev_permutation<std::vector<int> >									("\n\tstd::vector      ");
+	prev_permutation<std::vector<int, stl::allocator<int> > >			("\n\tstd::vector<A>   ");
+	prev_permutation2<stl::vector<int> >								("\n\tstl::vector      ");
+	prev_permutation2<stl::vector<int, std::allocator<int> > >			("\n\tstl::vector<A>   ");
 }
 
 //test end
@@ -878,7 +680,7 @@ void test_algorithm::for_each(const char* msg)
 	Container myvector;
 	for(Cval j=10; j < 100000; j+=10)
 		myvector.push_back(j);
-
+	
 
 	//	TEST
 	{
@@ -887,10 +689,10 @@ void test_algorithm::for_each(const char* msg)
 
 		// for_each(InputIterator first, InputIterator last, Function f)
 		myfunction_for_each_integer = 10;
-		misc::for_each<It, Function>(myvector.begin(), myvector.end(), myfunction_for_each);
+		stl::for_each<It, Function>(myvector.begin(), myvector.end(), myfunction_for_each);
 
 		myclass_for_each myobject_for_each;
-		misc::for_each (myvector.begin(), myvector.end(), myobject_for_each);
+		stl::for_each (myvector.begin(), myvector.end(), myobject_for_each);
 
 
 		//	STD
@@ -1019,20 +821,20 @@ void test_algorithm::find_if(const char* msg)
 
 		//MISC
 		// technical
-		it = misc::find_if(v1.begin(), v1.end(), IsOdd_find_if);
+		it = stl::find_if(v1.begin(), v1.end(), IsOdd_find_if);
 		CPPUNIT_ASSERT( *it == 25 );
 
 		v1.erase(it);
-		it = misc::find_if(v1.begin(), v1.end(), IsOdd_find_if);
+		it = stl::find_if(v1.begin(), v1.end(), IsOdd_find_if);
 		CPPUNIT_ASSERT( *it == 55 );
 
 		v1.erase(it);
-		it = misc::find_if(v1.begin(), v1.end(), IsOdd_find_if);
+		it = stl::find_if(v1.begin(), v1.end(), IsOdd_find_if);
 		CPPUNIT_ASSERT( it == v1.end() );
 
 		// performance
 		Struct_find_if<Cval> sfif1(m_container_size - 2);
-		it = misc::find_if(v2.begin(), v2.end(), sfif1);
+		it = stl::find_if(v2.begin(), v2.end(), sfif1);
 
 		CPPUNIT_ASSERT( *(++it) == (m_container_size - 1 ));
 		
@@ -1118,14 +920,14 @@ void test_algorithm::find_end(const char* msg)
 
 			using default comparison:
 		*/
-		it = misc::find_end(v1.begin(), v1.end(), mycheck1, mycheck1 + 3);		
+		it = stl::find_end(v1.begin(), v1.end(), mycheck1, mycheck1 + 3);		
 		//Match found at position 5
 		CPPUNIT_ASSERT( (it-v1.begin()) == 5 );
 
 
 		Cval mycheck2[] = {4,5,1};
 		// using predicate comparison:
-		it = misc::find_end(v1.begin(), v1.end(), mycheck2, mycheck2 + 3, myfunction_find_end);
+		it = stl::find_end(v1.begin(), v1.end(), mycheck2, mycheck2 + 3, myfunction_find_end);
 		//Match last found at position 3
 		CPPUNIT_ASSERT( (it-v1.begin()) == 3 );
 
@@ -1134,10 +936,10 @@ void test_algorithm::find_end(const char* msg)
 		Cval mycheck3[] = { m_container_size - 3, m_container_size - 2, m_container_size - 1 };
 		//v2: 0,1,2,3,4,5
 		//ck: 3,4,5
-		it = misc::find_end(v2.begin(), v2.end(), mycheck3, mycheck3 + 3);
+		it = stl::find_end(v2.begin(), v2.end(), mycheck3, mycheck3 + 3);
 		CPPUNIT_ASSERT( (it - v2.begin()) == m_container_size - 3);
 
-		it = misc::find_end(v2.begin(), v2.end(), mycheck3, mycheck3 + 3, myfunction_find_end);
+		it = stl::find_end(v2.begin(), v2.end(), mycheck3, mycheck3 + 3, myfunction_find_end);
 		CPPUNIT_ASSERT( (it - v2.begin()) == m_container_size - 3);
 		
 		// STD - see find_end2(...)
@@ -1225,17 +1027,17 @@ void test_algorithm::find_first_of(const char* msg)
 
 		//MISC
 		// using default comparison:
-		it = misc::find_first_of (v1.begin(), v1.end(), mycheck, mycheck+3);
+		it = stl::find_first_of (v1.begin(), v1.end(), mycheck, mycheck+3);
 		CPPUNIT_ASSERT(*it == 'A');
 
 		// using predicate comparison:
-		it = misc::find_first_of (v1.begin(), v1.end(), mycheck, mycheck+3, comp_case_insensitive_find_first_of);
+		it = stl::find_first_of (v1.begin(), v1.end(), mycheck, mycheck+3, comp_case_insensitive_find_first_of);
 		CPPUNIT_ASSERT(*it == 'a');
 
-		it = misc::find_first_of (v2.begin(), v2.end(), mycheck, mycheck+3);
+		it = stl::find_first_of (v2.begin(), v2.end(), mycheck, mycheck+3);
 		CPPUNIT_ASSERT(*it == 'A');
 
-		it = misc::find_first_of (v2.begin(), v2.end(), mycheck, mycheck+3, comp_case_insensitive_find_first_of);
+		it = stl::find_first_of (v2.begin(), v2.end(), mycheck, mycheck+3, comp_case_insensitive_find_first_of);
 		CPPUNIT_ASSERT(*it == 'a');
 
 #if !defined(DEBUG)
@@ -1282,12 +1084,12 @@ void test_algorithm::adjacent_find(const char* msg)
 		// MISC
 		//Searches for two adjacent elements that are either equal or satisfy a specified condition.
 		// using default comparison:
-		it = misc::adjacent_find (v1.begin(), v1.end());
+		it = stl::adjacent_find (v1.begin(), v1.end());
 		CPPUNIT_ASSERT(*it == 30);
 		
 		//"the first consecutive repeated elements are: 30"
 		//using predicate comparison:
-		it = misc::adjacent_find (++it, v1.end(), myfunction_adjacent_find);
+		it = stl::adjacent_find (++it, v1.end(), myfunction_adjacent_find);
 		CPPUNIT_ASSERT( *it == 10 );		
 		//"the second consecutive repeated elements are: 10"
 
@@ -1322,17 +1124,17 @@ void test_algorithm::count(const char* msg)
 		// MISC
 		Diff mycount = 0;
 		// counting elements in array:		
-		mycount = misc::count (myints, myints+8, 10);
+		mycount = stl::count (myints, myints+8, 10);
 
 		//cout << "10 appears " << mycount << " times.\n";
 		CPPUNIT_ASSERT(mycount == 3);
 
 		// counting elements in container:
-		mycount = misc::count (v1.begin(), v1.end(), 20);
+		mycount = stl::count (v1.begin(), v1.end(), 20);
 		//cout << "20 appears " << mycount  << " times.\n";
 		CPPUNIT_ASSERT(mycount == 3);
 
-		mycount = misc::count (v2.begin(), v2.end(), m_container_size -1);
+		mycount = stl::count (v2.begin(), v2.end(), m_container_size -1);
 		CPPUNIT_ASSERT(mycount == 1);
 
 #if !defined(DEBUG)
@@ -1375,11 +1177,11 @@ void test_algorithm::count_if(const char* msg)
 		time_printer tp(msg, m_print_time);
 
 		// MISC
-		mycount = misc::count_if (v1.begin(), v1.end(), IsOdd_count_if);
+		mycount = stl::count_if (v1.begin(), v1.end(), IsOdd_count_if);
 		//cout << "v1 contains " << mycount  << " odd values.\n";
 		CPPUNIT_ASSERT(mycount == 5);
 
-		mycount = misc::count_if (v2.begin(), v2.end(), IsOdd_count_if);
+		mycount = stl::count_if (v2.begin(), v2.end(), IsOdd_count_if);
 		CPPUNIT_ASSERT(mycount == m_container_size/2);
 
 #if !defined(DEBUG)
@@ -1438,7 +1240,7 @@ void test_algorithm::mismatch(const char* msg)
 		// Condition: first container.size() <= second container.size();
 
 		// using default comparison:
-		pair1 = misc::mismatch (v1.begin(), v1.end(), myints);
+		pair1 = stl::mismatch (v1.begin(), v1.end(), myints);
 		//cout << "First mismatching elements: " << *pair1.first;
 		CPPUNIT_ASSERT(*pair1.first == 30);
 
@@ -1449,19 +1251,19 @@ void test_algorithm::mismatch(const char* msg)
 		pair1.second++;
 
 		// using predicate comparison:
-		pair1 = misc::mismatch (pair1.first, v1.end(), pair1.second, mypredicate_mismatch);
+		pair1 = stl::mismatch (pair1.first, v1.end(), pair1.second, mypredicate_mismatch);
 		//cout << "Second mismatching elements: " << *pair1.first;
 		CPPUNIT_ASSERT(*pair1.first == 40);
 		//cout << " and " << *pair1.second << endl;;
 		CPPUNIT_ASSERT(*pair1.second == 320);
 
 
-		pair1 = misc::mismatch (v2.begin(), v2.end(), myints);
+		pair1 = stl::mismatch (v2.begin(), v2.end(), myints);
 		CPPUNIT_ASSERT(*pair1.first == 30);
 		CPPUNIT_ASSERT(*pair1.second == 80);
 
 		// condition: first container.size() < second container.size()
-		pair2 = misc::mismatch (v3.begin(), v3.end(), v2.begin());
+		pair2 = stl::mismatch (v3.begin(), v3.end(), v2.begin());
 		CPPUNIT_ASSERT(pair2.first == v3.end());
 		CPPUNIT_ASSERT(*pair2.second == (m_container_size/5) * 10);
 
@@ -1501,18 +1303,18 @@ void test_algorithm::equal(const char* msg)
 
 		// MISC
 		// using default comparison:
-		bool res = misc::equal(v1.begin(), v1.end(), myints);
+		bool res = stl::equal(v1.begin(), v1.end(), myints);
 		CPPUNIT_ASSERT(res);
 
 		v1[3]=81;                            // v1: 20 40 60 81 100
 		// using predicate comparison:
-		res = misc::equal(v1.begin(), v1.end(), myints, mypredicate_equal);
+		res = stl::equal(v1.begin(), v1.end(), myints, mypredicate_equal);
 		CPPUNIT_ASSERT( !res );
 
-		res = misc::equal(v2.begin(), v2.end(), v3.begin());
+		res = stl::equal(v2.begin(), v2.end(), v3.begin());
 		CPPUNIT_ASSERT( res );
 
-		res = misc::equal(v2.begin(), v2.end(), v3.begin(), mypredicate_equal);
+		res = stl::equal(v2.begin(), v2.end(), v3.begin(), mypredicate_equal);
 		CPPUNIT_ASSERT(res);
 
 		// STD
@@ -1627,16 +1429,16 @@ void test_algorithm::search2(const char* msg)
 
 		// MISC
 		// using default comparison:
-		it = misc::search (v1.begin(), v1.end(), match1, match1+4);	
+		it = stl::search (v1.begin(), v1.end(), match1, match1+4);	
 		CPPUNIT_ASSERT( (int)(it - v1.begin()) == 3 );
 		// using predicate comparison:
-		it = misc::search (v1.begin(), v1.end(), match2, match2+3, mypredicate_search);
+		it = stl::search (v1.begin(), v1.end(), match2, match2+3, mypredicate_search);
 		CPPUNIT_ASSERT( it == v1.end() );
 
-		it = misc::search (v2.begin(), v2.end(), v3.begin(), v3.end());	
+		it = stl::search (v2.begin(), v2.end(), v3.begin(), v3.end());	
 		CPPUNIT_ASSERT( (it - v2.begin()) == m_container_size / 2);
 
-		it = misc::search (v2.begin(), v2.end(), match4, match4+3, mypredicate_search);
+		it = stl::search (v2.begin(), v2.end(), match4, match4+3, mypredicate_search);
 		CPPUNIT_ASSERT( (it - v2.begin()) == m_container_size - 3);
 	}
 }
@@ -1719,21 +1521,21 @@ void test_algorithm::search_n2(const char* msg)
 			a relation to that value as specified by a binary predicate.
 		*/
 		// using default comparison:
-		it = misc::search_n (v1.begin(), v1.end(), 2, 30);
+		it = stl::search_n (v1.begin(), v1.end(), 2, 30);
 		//cout << "two 30s found at position 2" << int(it-v1.begin()) << endl;
 		CPPUNIT_ASSERT((int)(it-v1.begin()) == 2);
 
 		// using predicate comparison:
-		it = misc::search_n (v1.begin(), v1.end(), 2, 10, mypredicate_search_n);
+		it = stl::search_n (v1.begin(), v1.end(), 2, 10, mypredicate_search_n);
 		//cout << "two 10s found at position 5" << int(it-v1.begin()) << endl;
 		CPPUNIT_ASSERT((int)(it-v1.begin()) == 5);
 		//Two 30s found at position 2
 		//Two 10s found at position 5
 
-		it = misc::search_n (v2.begin(), v2.end(), 2, m_container_size - 2);	
+		it = stl::search_n (v2.begin(), v2.end(), 2, m_container_size - 2);	
 		CPPUNIT_ASSERT((int)(it-v2.begin()) == m_container_size - 2);
 
-		it = misc::search_n (v2.begin(), v2.end(), 2, m_container_size - 2, mypredicate_search_n);
+		it = stl::search_n (v2.begin(), v2.end(), 2, m_container_size - 2, mypredicate_search_n);
 		CPPUNIT_ASSERT((int)(it-v2.begin()) == m_container_size - 2);
 	}
 }
@@ -1839,7 +1641,7 @@ void test_algorithm::copy_backward(const char* msg)
 			destination range, iterating through the source sequence of 
 			elements and assigning them new positions in a backward direction.
 		*/
-		misc::copy_backward (v1.begin(), v1.begin()+5, v1.end());
+		stl::copy_backward (v1.begin(), v1.begin()+5, v1.end());
 				
 		//cout << "v1 contains:";
 		for (it=v1.begin(); it!=v1.end(); ++it)
@@ -1851,7 +1653,7 @@ void test_algorithm::copy_backward(const char* msg)
 
 		Container vv2(v2);
 		vv2.resize(vv2.size()+m_container_size/2);		
-		misc::copy_backward(vv2.begin(), vv2.begin() + m_container_size/2, vv2.end());
+		stl::copy_backward(vv2.begin(), vv2.begin() + m_container_size/2, vv2.end());
 		it = vv2.begin();
 		for(size_t i=0; i < m_container_size; ++i, ++it)
 		{
@@ -1899,11 +1701,11 @@ void test_algorithm::swap(const char* msg)
 		time_printer tp(msg, m_print_time);
 
 		//	MISC		
-		misc::swap<Cval>(x,y);
+		stl::swap<Cval>(x,y);
 		CPPUNIT_ASSERT(x == Cval(20));
 		CPPUNIT_ASSERT(y == Cval(10));
 		
-		misc::swap(v1,v2);		
+		stl::swap(v1,v2);		
 		for (It it=v1.begin(); it!=v1.end(); ++it)
 		{
 			CPPUNIT_ASSERT(*it == Cval(20));
@@ -1914,7 +1716,7 @@ void test_algorithm::swap(const char* msg)
 			CPPUNIT_ASSERT(*it == Cval(10));
 		}
 
-		misc::swap (v3, v4);
+		stl::swap (v3, v4);
 		for(It it = v3.begin(); it != v3.end(); ++it)
 		{
 			CPPUNIT_ASSERT(*it == Cval(1));
@@ -1975,7 +1777,7 @@ void test_algorithm::swap_ranges(const char* msg)
 		time_printer tp(msg, m_print_time);
 
 		//	MISC
-		misc::swap_ranges(v1.begin()+1, v1.end()-1, v2.begin());
+		stl::swap_ranges(v1.begin()+1, v1.end()-1, v2.begin());
 
 		// print out results of swap:
 		// v1 contains: 10 33 33 33 10		
@@ -1992,7 +1794,7 @@ void test_algorithm::swap_ranges(const char* msg)
 			//cout << " " << *it;
 		}
 
-		misc::swap_ranges(v3.begin()+1, v3.end()-1, v4.begin());
+		stl::swap_ranges(v3.begin()+1, v3.end()-1, v4.begin());
 		for(it = v3.begin(); it != v3.end(); ++it)
 		{
 			if(it == v3.begin()) CPPUNIT_ASSERT(*it == 0);
@@ -2044,10 +1846,10 @@ void test_algorithm::iter_swap(const char* msg)
 		time_printer tp(msg, m_print_time);
 
 		//	MISC
-		misc::iter_swap(myints, v1.begin());      
+		stl::iter_swap(myints, v1.begin());      
 		// myints: [99] 20  30  40  50
 		//     v1: [10] 99  99  99
-		misc::iter_swap(myints + 3, v1.begin() + 2);  
+		stl::iter_swap(myints + 3, v1.begin() + 2);  
 		// myints:  99  20  30 [99]
 		//     v1:  10  99 [40] 99		
 		for (it = v1.begin(); it != v1.end(); ++it)
@@ -2061,7 +1863,7 @@ void test_algorithm::iter_swap(const char* msg)
 		{
 			It it_2 = it2;
 			It it_3 = it3;
-			misc::iter_swap (it_2, it_3);
+			stl::iter_swap (it_2, it_3);
 		}
 		
 		for (It it = v2.begin(); it != v2.end(); ++it)
@@ -2123,10 +1925,10 @@ void test_algorithm::transform(const char* msg)
 			and copies the return values of the function object into 
 			a destination range.
 		*/
-		misc::transform (v1.begin(), v1.end(), v2.begin(), op_increase_transform);
+		stl::transform (v1.begin(), v1.end(), v2.begin(), op_increase_transform);
 		// v2: 11 21 31 41 51
 
-		misc::transform (v1.begin(), v1.end(), v2.begin(), v1.begin(), op_sum_transform);
+		stl::transform (v1.begin(), v1.end(), v2.begin(), v1.begin(), op_sum_transform);
 		//  v1: 21 41 61 81 101		
 		int mycheck[]={21, 41, 61, 81, 101};
 		for (it=v1.begin(); it!=v1.end(); ++it)
@@ -2134,8 +1936,8 @@ void test_algorithm::transform(const char* msg)
 			CPPUNIT_ASSERT(mycheck[it-v1.begin()] == *it);			
 		}		
 
-		misc::transform (v3.begin(), v3.end(), v3.begin(), op_decrease_transform);//v3:-2
-		misc::transform (v3.begin(), v3.end(), v4.begin(), v3.begin(), op_sub_transform);//v3:-3
+		stl::transform (v3.begin(), v3.end(), v3.begin(), op_decrease_transform);//v3:-2
+		stl::transform (v3.begin(), v3.end(), v4.begin(), v3.begin(), op_sub_transform);//v3:-3
 		for (It it = v3.begin(); it != v3.end(); ++it)
 		{
 			CPPUNIT_ASSERT(*it == Cval(-3));
@@ -2185,14 +1987,14 @@ void test_algorithm::replace(const char* msg)
 		time_printer tp(msg, m_print_time);
 		
 		//	MISC
-		misc::replace (v1.begin(), v1.end(), 20, 99);
+		stl::replace (v1.begin(), v1.end(), 20, 99);
 		// v1: 10 99 30 30 99 10 10 99				
 		for (it=v1.begin(); it!=v1.end(); ++it)
 		{
 			CPPUNIT_ASSERT(mycheck[it-v1.begin()] == *it);			
 		}
 
-		misc::replace (v2.begin(), v2.end(), 1, 2);
+		stl::replace (v2.begin(), v2.end(), 1, 2);
 		size_t i2 = 0;
 		for (it = v2.begin(); it != v2.end(); ++it, ++i2)
 		{
@@ -2211,7 +2013,7 @@ void test_algorithm::replace(const char* msg)
 			CPPUNIT_ASSERT(myints[it-v1.begin()] == *it);			
 		}
 
-		misc::replace (v2.begin(), v2.end(), 2, 3);
+		stl::replace (v2.begin(), v2.end(), 2, 3);
 		size_t i3 = 0;
 		for (it = v2.begin(); it != v2.end(); ++it, ++i3)
 		{
@@ -2250,7 +2052,7 @@ void test_algorithm::replace_if(const char* msg)
 		/*	Examines each element in a range and replaces it 
 			if it satisfies a specified predicate.
 		*/
-		misc::replace_if (v1.begin(), v1.end(), IsOdd_replace_if, 0); 
+		stl::replace_if (v1.begin(), v1.end(), IsOdd_replace_if, 0); 
 		// v1: 0 2 0 4 0 6 0 8 0
 
 		Cval mycheck[]={0, 2, 0, 4, 0, 6, 0, 8, 0};
@@ -2259,7 +2061,7 @@ void test_algorithm::replace_if(const char* msg)
 			CPPUNIT_ASSERT(mycheck[it-v1.begin()] == *it);			
 		}
 
-		misc::replace_if (v2.begin(), v2.end(), IsOdd_replace_if, -5);
+		stl::replace_if (v2.begin(), v2.end(), IsOdd_replace_if, -5);
 		size_t i2 = 0;
 		for (it = v2.begin(); it != v2.end(); ++it, ++i2)
 			if( IsOdd_replace_if((int) i2))
@@ -2278,7 +2080,7 @@ void test_algorithm::replace_if(const char* msg)
 			CPPUNIT_ASSERT(mycheck2[it-v1.begin()] == *it);			
 		}
 
-		misc::replace_if (v2.begin(), v2.end(), IsOdd_replace_if, -1);
+		stl::replace_if (v2.begin(), v2.end(), IsOdd_replace_if, -1);
 		i2 = 0;
 		for (it = v2.begin(); it != v2.end(); ++it, ++i2)
 			if( IsOdd_replace_if((int) i2))
@@ -2320,7 +2122,7 @@ void test_algorithm::replace_copy(const char* msg)
 			if it matches a specified value while copying the result 
 			into a new destination range.
 		*/
-		misc::replace_copy (myints, myints+8, v1.begin(), 20, 99);		
+		stl::replace_copy (myints, myints+8, v1.begin(), 20, 99);		
 		//v1: 10 99 30 30 99 10 10 99		
 		for (it=v1.begin(); it!=v1.end(); ++it)
 		{
@@ -2329,7 +2131,7 @@ void test_algorithm::replace_copy(const char* msg)
 
 		//v2: 0, 1, 0, 3, 0, 5
 		//v3:-1, 1,-1, 3,-1, 5
-		misc::replace_copy (v2.begin(), v2.end(), v3.begin(), 0, -1);
+		stl::replace_copy (v2.begin(), v2.end(), v3.begin(), 0, -1);
 		i0 = 0;
 		for (it = v3.begin(); it != v3.end(); ++it, ++i0)
 		{
@@ -2393,7 +2195,7 @@ void test_algorithm::replace_copy_if(const char* msg)
 			if it satisfies a specified predicate while copying the result 
 			into a new destination range.
 		*/
-		misc::replace_copy_if (v1.begin(), v1.end(), v2.begin(), IsOdd_replace_copy_if, Cval(0));
+		stl::replace_copy_if (v1.begin(), v1.end(), v2.begin(), IsOdd_replace_copy_if, Cval(0));
 		//v2: 0 2 0 4 0 6 0 8 0		
 		
 		for (it=v2.begin(); it!=v2.end(); ++it)
@@ -2401,7 +2203,7 @@ void test_algorithm::replace_copy_if(const char* msg)
 			CPPUNIT_ASSERT(mycheck[it-v2.begin()] == *it);			
 		}
 
-		misc::replace_copy_if (v3.begin(), v3.end(), v4.begin(), IsOdd_replace_copy_if, Cval(-5));
+		stl::replace_copy_if (v3.begin(), v3.end(), v4.begin(), IsOdd_replace_copy_if, Cval(-5));
 		for (it = v4.begin(), i0=0; it != v4.end(); ++it, ++i0)
 		{
 			if(i0%2 != 0)	CPPUNIT_ASSERT(*it == Cval(-5));
@@ -2450,8 +2252,8 @@ void test_algorithm::fill(const char* msg)
 		//	MISC
 		/*	Assigns the same new value to every element in a specified range.
 		*/
-		misc::fill (v1.begin(), v1.begin() + 4, Cval(5));   // v1: 5 5 5 5 0 0 0 0
-		misc::fill (v1.begin() + 3, v1.end() - 2, Cval(8)); // v1: 5 5 5 8 8 8 0 0
+		stl::fill (v1.begin(), v1.begin() + 4, Cval(5));   // v1: 5 5 5 5 0 0 0 0
+		stl::fill (v1.begin() + 3, v1.end() - 2, Cval(8)); // v1: 5 5 5 8 8 8 0 0
 
 		//cout << "v1 contains:";
 		Cval mycheck[]={5, 5, 5, 8, 8, 8, 0, 0};
@@ -2460,7 +2262,7 @@ void test_algorithm::fill(const char* msg)
 			CPPUNIT_ASSERT(mycheck[it-v1.begin()] == *it);			
 		}
 		
-		misc::fill (v2.begin(), v2.end(), Cval(-1));
+		stl::fill (v2.begin(), v2.end(), Cval(-1));
 		for (it = v2.begin(); it != v2.end(); ++it)
 			CPPUNIT_ASSERT (*it == Cval(-1));
 
@@ -2504,8 +2306,8 @@ void test_algorithm::fill_n(const char* msg)
 		/*	Assigns a new value to a specified number of elements 
 			in a range beginning with a particular element.
 		*/
-		misc::fill_n (v1.begin(), 4, Cval(20));   // v1: 20 20 20 20 10 10 10 10
-		misc::fill_n (v1.begin()+3, 3, Cval(33)); // v1: 20 20 20 33 33 33 10 10
+		stl::fill_n (v1.begin(), 4, Cval(20));   // v1: 20 20 20 20 10 10 10 10
+		stl::fill_n (v1.begin()+3, 3, Cval(33)); // v1: 20 20 20 33 33 33 10 10
 
 		Cval mycheck[]={20, 20, 20, 33, 33, 33, 10, 10};
 		for (it=v1.begin(); it!=v1.end(); ++it)
@@ -2513,7 +2315,7 @@ void test_algorithm::fill_n(const char* msg)
 			CPPUNIT_ASSERT(mycheck[it-v1.begin()] == *it);
 		}
 
-		misc::fill_n (v2.begin(), m_container_size, Cval(-1));
+		stl::fill_n (v2.begin(), m_container_size, Cval(-1));
 		for (it = v2.begin(); it != v2.end(); ++it)
 			CPPUNIT_ASSERT(*it == Cval(-1));
 
@@ -2568,25 +2370,25 @@ void test_algorithm::generate(const char* msg)
 		time_printer tp(msg, m_print_time);
 
 		//	MISC
-		misc::generate (v1.begin(), v1.end(), RandomNumber_generate);		
+		stl::generate (v1.begin(), v1.end(), RandomNumber_generate);		
 		for (it = v1.begin(); it != v1.end(); ++it)
 		{
 			CPPUNIT_ASSERT(*it > 0 && *it <= 100);	// weak check, cannot predict the value			
 		}
 
-		misc::generate (v1.begin(), v1.end(), UniqueNumber_generate);		
+		stl::generate (v1.begin(), v1.end(), UniqueNumber_generate);		
 		for (it = v1.begin(); it != v1.end(); ++it)
 		{
 			CPPUNIT_ASSERT(*it > 0 && *it <= 100);			
 		}
 
-		misc::generate (v2.begin(), v2.end(), RandomNumber_generate);
+		stl::generate (v2.begin(), v2.end(), RandomNumber_generate);
 		for (it = v2.begin(); it != v2.end(); ++it)
 		{
 			CPPUNIT_ASSERT(*it > 0 && *it <= 100);
 		}
 
-		misc::generate (v2.begin(), v2.end(), UniqueNumber_generate);
+		stl::generate (v2.begin(), v2.end(), UniqueNumber_generate);
 		for (it = v2.begin(); it != v2.end(); ++it)
 		{
 			CPPUNIT_ASSERT(*it > 0 && *it <= 100);
@@ -2635,7 +2437,7 @@ void test_algorithm::generate_n(const char* msg)
 		//	MISC
 		// reset the number generator
 		current_generate_n = 0;
-		misc::generate_n (myarray, 9, UniqueNumber_generate_n);
+		stl::generate_n (myarray, 9, UniqueNumber_generate_n);
 		
 		for (i0 = 0; i0 < 9; ++i0)
 		{
@@ -2643,7 +2445,7 @@ void test_algorithm::generate_n(const char* msg)
 		}
 
 		current_generate_n = 0;	// reset the number generator
-		misc::generate_n (v1.begin(), m_container_size, UniqueNumber_generate_n);
+		stl::generate_n (v1.begin(), m_container_size, UniqueNumber_generate_n);
 
 		for (i0 = 0, it = v1.begin(); it != v1.end(); ++it, ++i0)
 		{
@@ -2701,7 +2503,7 @@ void test_algorithm::remove(const char* msg)
 			the order of the remaining elements and returning the end of a new
 			range free of the specified value.
 		*/
-		pend = misc::remove (pbegin, pend, 20);       // 10 30 30 10 10 ?  ?  ?
+		pend = stl::remove (pbegin, pend, 20);       // 10 30 30 10 10 ?  ?  ?
 		                                              // ^              ^		
 		
 		int mycheck[]={10, 30, 30, 10, 10};
@@ -2710,7 +2512,7 @@ void test_algorithm::remove(const char* msg)
 			CPPUNIT_ASSERT(mycheck[p-pbegin] == *p);			
 		}
 
-		It end1 = misc::remove (v1.begin(), v1.end(), Cval(-1));
+		It end1 = stl::remove (v1.begin(), v1.end(), Cval(-1));
 		CPPUNIT_ASSERT( v1.begin() == end1);		
 
 
@@ -2721,7 +2523,7 @@ void test_algorithm::remove(const char* msg)
 		_InIt std::find<_FwdIt,_Ty>(_InIt,_InIt,const _Ty &)  or:
 		InputIterator stl::find<_FwdIt,_Ty>(InputIterator,InputIterator,const T &)	
 		
-		when using std::remove with iterators belonging to misc::generic_array;
+		when using std::remove with iterators belonging to stl::generic_array;
 */
 
 //		It end2 = std::remove (v2.begin(), v2.end(), Cval(-2));
@@ -2757,7 +2559,7 @@ void test_algorithm::remove_if(const char* msg)
 			without disturbing the order of the remaining elements and 
 			returning the end of a new range free of the specified value.
 		*/
-		pend = misc::remove_if (pbegin, pend, IsOdd_remove_if);  // 2 4 6 8 ? ? ? ? ?
+		pend = stl::remove_if (pbegin, pend, IsOdd_remove_if);  // 2 4 6 8 ? ? ? ? ?
 																 // ^       ^
 
 		// the range contains:
@@ -2767,7 +2569,7 @@ void test_algorithm::remove_if(const char* msg)
 			CPPUNIT_ASSERT(mycheck[p-pbegin] = *p);			
 		}
 
-		It end1 = misc::remove_if (v1.begin(), v1.end(), IsOdd_remove_if);
+		It end1 = stl::remove_if (v1.begin(), v1.end(), IsOdd_remove_if);
 		CPPUNIT_ASSERT(v1.begin() == end1);
 
 		// STD - see remove_if2(...)
@@ -2840,7 +2642,7 @@ void test_algorithm::remove_copy(const char* msg)
 			without disturbing the order of the remaining elements and 
 			returning the end of a new destination range.
 		*/
-		misc::remove_copy (myints, myints + 8, myvector.begin(), 20); // 10 30 30 10 10 0 0 0
+		stl::remove_copy (myints, myints + 8, myvector.begin(), 20); // 10 30 30 10 10 0 0 0
 
 		//cout << "myvector contains:";
 		int mycheck[]={10, 30, 30, 10, 10, 0, 0, 0};
@@ -2849,7 +2651,7 @@ void test_algorithm::remove_copy(const char* msg)
 			CPPUNIT_ASSERT(mycheck[it-myvector.begin()] == *it);			
 		}
 
-		misc::remove_copy (v2.begin(), v2.end(), v3.begin(), Cval(1));
+		stl::remove_copy (v2.begin(), v2.end(), v3.begin(), Cval(1));
 		for (it = v3.begin(); it != v3.end(); ++it)
 			CPPUNIT_ASSERT(*it == Cval(-1));
 
@@ -2893,7 +2695,7 @@ void test_algorithm::remove_copy_if(const char* msg)
 			without disturbing the order of the remaining elements 
 			and returning the end of a new destination range.
 		*/
-		misc::remove_copy_if (myints, myints+9, v1.begin(), IsOdd_remove_copy_if);
+		stl::remove_copy_if (myints, myints+9, v1.begin(), IsOdd_remove_copy_if);
 
 		//cout << "v1 contains:";
 		Cval check[]={2, 4, 6, 8, 0, 0, 0, 0, 0};
@@ -2902,7 +2704,7 @@ void test_algorithm::remove_copy_if(const char* msg)
 			CPPUNIT_ASSERT(check[it-v1.begin()] == *it);			
 		}
 
-		misc::remove_copy_if (v2.begin(), v2.end(), v3.begin(), IsOdd_remove_copy_if);
+		stl::remove_copy_if (v2.begin(), v2.end(), v3.begin(), IsOdd_remove_copy_if);
 		for (it = v3.begin(); it != v3.end(); ++it)
 		{
 			CPPUNIT_ASSERT (*it == Cval(-1));
@@ -2951,11 +2753,11 @@ void test_algorithm::unique(const char* msg)
 			in a specified range.
 		*/
 		// using default comparison:
-		it = misc::unique (v1.begin(), v1.end()); // 10 20 30 20 10 ?  ?  ?  ?		
+		it = stl::unique (v1.begin(), v1.end()); // 10 20 30 20 10 ?  ?  ?  ?		
 		v1.resize(it - v1.begin());               // 10 20 30 20 10
 
 		// using predicate comparison:
-		it = misc::unique (v2.begin(), v2.end(), myfunction_unique);
+		it = stl::unique (v2.begin(), v2.end(), myfunction_unique);
 		v2.resize (it - v2.begin());
 
 		//cout << "v1 contains:";
@@ -2969,10 +2771,10 @@ void test_algorithm::unique(const char* msg)
 			CPPUNIT_ASSERT(mycheck[it-v2.begin()] == *it);			
 		}
 
-		It end3 = misc::unique (v3.begin(), v3.end());
+		It end3 = stl::unique (v3.begin(), v3.end());
 		CPPUNIT_ASSERT(++v3.begin() == end3);
 		v3.resize(m_container_size, Cval(-1));
-		end3 = misc::unique (v3.begin(), v3.end(), myfunction_unique);
+		end3 = stl::unique (v3.begin(), v3.end(), myfunction_unique);
 		CPPUNIT_ASSERT(++v3.begin() == end3);
 
 
@@ -3019,13 +2821,13 @@ void test_algorithm::unique_copy(const char* msg)
 		*/
 		// using default comparison:
 		// v1: 10 20 30 20 10 0  0  0  0
-		it = misc::unique_copy (myints, myints + 9, v1.begin());
+		it = stl::unique_copy (myints, myints + 9, v1.begin());
 				
 		// v1: 10 10 20 20 30 0  0  0  0
 		stl::sort (v1.begin(),it);
 
 		// using predicate comparison:
-		it = misc::unique_copy (v1.begin(), it, v1.begin(), myfunction_unique_copy);
+		it = stl::unique_copy (v1.begin(), it, v1.begin(), myfunction_unique_copy);
 		
 		// 10 20 30 20 30 0  0  0  0
 		//          ^
@@ -3041,7 +2843,7 @@ void test_algorithm::unique_copy(const char* msg)
 			CPPUNIT_ASSERT(mycheck[it-v1.begin()] == *it);			
 		}		
 		
-		it = misc::unique_copy (v2.begin(), v2.end(), v3.begin());
+		it = stl::unique_copy (v2.begin(), v2.end(), v3.begin());
 		CPPUNIT_ASSERT(++v3.begin() == it);
 
 
@@ -3075,7 +2877,7 @@ void test_algorithm::reverse(const char* msg)
 		time_printer tp(msg, m_print_time);
 		//	MISC
 		//	Reverses the order of the elements within a range.
-		misc::reverse(v1.begin(), v1.end()); // 9 8 7 6 5 4 3 2 1
+		stl::reverse(v1.begin(), v1.end()); // 9 8 7 6 5 4 3 2 1
 
 		//cout << "v1 contains:";
 		Cval mycheck[]={9, 8, 7, 6, 5, 4, 3, 2, 1};
@@ -3084,7 +2886,7 @@ void test_algorithm::reverse(const char* msg)
 			CPPUNIT_ASSERT(mycheck[it-v1.begin()] == *it);
 		}		
 
-		misc::reverse (v2.begin(), v2.end());
+		stl::reverse (v2.begin(), v2.end());
 		for (i0 = m_container_size-1, it = v2.begin(); it != v2.end(); ++it, --i0)
 		{
 			CPPUNIT_ASSERT(*it == Cval(i0));
@@ -3093,7 +2895,7 @@ void test_algorithm::reverse(const char* msg)
 
 		//	STD
 		// cannot deduce iterator category in:
-		// void std::_Reverse<misc::generic_array_iterator<container>>(_BidIt,_BidIt,std::bidirectional_iterator_tag)
+		// void std::_Reverse<stl::generic_array_iterator<container>>(_BidIt,_BidIt,std::bidirectional_iterator_tag)
 //		std::reverse (v3.begin(), v3.end());
 //		for (i0 = m_container_size-1, it = v3.begin(); it != v3.end(); ++it, --i0)
 //		{
@@ -3131,7 +2933,7 @@ void test_algorithm::reverse_copy(const char* msg)
 		/*	Reverses the order of the elements within a source range 
 			while copying them into a destination range.
 		*/
-		misc::reverse_copy (myints, myints+9, v1.begin());
+		stl::reverse_copy (myints, myints+9, v1.begin());
 
 		//cout << "v1 contains:";
 		int mycheck[]={9, 8, 7, 6, 5, 4, 3, 2, 1};
@@ -3140,7 +2942,7 @@ void test_algorithm::reverse_copy(const char* msg)
 			CPPUNIT_ASSERT(mycheck[it-v1.begin()] == *it);
 		}
 
-		misc::reverse_copy (v2.begin(), v2.end(), v3.begin());
+		stl::reverse_copy (v2.begin(), v2.end(), v3.begin());
 		for (it = v3.begin(), i0 = m_container_size-1; it != v3.end(); ++it, --i0)
 		{
 			CPPUNIT_ASSERT(*it == Cval(i0));
@@ -3183,7 +2985,7 @@ void test_algorithm::rotate(const char* msg)
 		//	MISC
 
 		//Exchanges the elements in two adjacent ranges.
-		misc::rotate(v1.begin(), v1.begin() + 3, v1.end()); // 4 5 6 7 8 9 1 2 3
+		stl::rotate(v1.begin(), v1.begin() + 3, v1.end()); // 4 5 6 7 8 9 1 2 3
 
 		// v1: 4 5 6 7 8 9 1 2 3
 		Cval mycheck[]={4, 5, 6, 7, 8, 9, 1, 2, 3};
@@ -3194,7 +2996,7 @@ void test_algorithm::rotate(const char* msg)
 
 		It mid = v2.begin();
 		for(i0 = 0; i0 < m_container_size/2; ++i0) ++mid;
-		misc::rotate(v2.begin(), mid, v2.end()); //
+		stl::rotate(v2.begin(), mid, v2.end()); //
 		
 		for(it = v2.begin(), i0 = 0; i0 < m_container_size/2; ++it, ++i0)
 		{
@@ -3249,7 +3051,7 @@ void test_algorithm::rotate_copy(const char* msg)
 			a source range and copies the result to a destination range.
 		*/
 		// v1: 40 50 60 70 10 20 30
-		misc::rotate_copy(myints, myints + 3, myints + 7, v1.begin()); 
+		stl::rotate_copy(myints, myints + 3, myints + 7, v1.begin()); 
 
 		// v1: 40 50 60 70 10 20 30
 		Cval mycheck[]={40, 50, 60, 70, 10, 20, 30};
@@ -3260,7 +3062,7 @@ void test_algorithm::rotate_copy(const char* msg)
 
 		It mid = v2.begin();
 		for(i0 = 0; i0 < m_container_size/2; ++i0) ++mid;
-		misc::rotate_copy(v2.begin(), mid, v2.end(), v3.begin()); //
+		stl::rotate_copy(v2.begin(), mid, v2.end(), v3.begin()); //
 
 		for(it = v3.begin(), i0 = 0; i0 < m_container_size/2; ++it, ++i0)
 		{
@@ -3327,10 +3129,10 @@ void test_algorithm::random_shuffle(const char* msg)
 		*/
 		
 		// using built-in random generator:
-		misc::random_shuffle(v1.begin(), v1.end());
+		stl::random_shuffle(v1.begin(), v1.end());
 
 		// using myrandom:
-		misc::random_shuffle(v1.begin(), v1.end(), p_myrandom);
+		stl::random_shuffle(v1.begin(), v1.end(), p_myrandom);
 		// v1: 3 4 1 6 8 9 2 7 5 .. random sequence
 
 		/*	It's good enough to check if each entry is unique, 
@@ -3338,7 +3140,7 @@ void test_algorithm::random_shuffle(const char* msg)
 		*/
 		for(i0 = 1; i0 < v1.size(); ++i0)
 		{
-			CPPUNIT_ASSERT(misc::count(v1.begin(), v1.end(), i0) == 1);
+			CPPUNIT_ASSERT(stl::count(v1.begin(), v1.end(), i0) == 1);
 		}
 
 #if !defined(DEBUG)
@@ -3348,7 +3150,7 @@ void test_algorithm::random_shuffle(const char* msg)
 
 		for(i0 = 1; i0 < v1.size(); ++i0)
 		{
-			CPPUNIT_ASSERT(misc::count(v2.begin(), v2.end(), i0) == 1);
+			CPPUNIT_ASSERT(stl::count(v2.begin(), v2.end(), i0) == 1);
 		}
 #endif
 	}
@@ -3387,7 +3189,7 @@ void test_algorithm::partition(const char* msg)
 			elements satisfying a unary predicate preceding those that fail 
 			to satisfy it.
 		*/
-		bound = misc::partition(v1.begin(), v1.end(), IsOdd_partition);
+		bound = stl::partition(v1.begin(), v1.end(), IsOdd_partition);
 
 		//cout << "odd members:";
 		Cval mycheck_odd[]={1, 9, 3, 7, 5};
@@ -3405,7 +3207,7 @@ void test_algorithm::partition(const char* msg)
 		//odd members: 1 9 3 7 5
 		//even members: 6 4 8 2
 
-		bound = misc::partition(v2.begin(), v2.end(), IsOdd_partition);
+		bound = stl::partition(v2.begin(), v2.end(), IsOdd_partition);
 		//odd members: 1 199999 3 199997 5 199995
 		for (it = v2.begin(), i0 = 1; it != bound; ++it, ++i0)
 		{
@@ -3607,7 +3409,7 @@ void test_algorithm::stable_partition2(const char* msg)
 			elements satisfying a unary predicate preceding those that fail 
 			to satisfy it, preserving the relative order of equivalent elements.
 		*/
-		bound = misc::stable_partition(v1.begin(), v1.end(), IsOdd_stable_partition);
+		bound = stl::stable_partition(v1.begin(), v1.end(), IsOdd_stable_partition);
 
 		//odd members: 1 3 5 7 9
 		//even members: 2 4 6 8
@@ -3627,7 +3429,7 @@ void test_algorithm::stable_partition2(const char* msg)
 		}
 		
 		//odd members: 1 3 5 7 9 ... 199999
-		bound = misc::stable_partition(v2.begin(), v2.end(), IsOdd_stable_partition);
+		bound = stl::stable_partition(v2.begin(), v2.end(), IsOdd_stable_partition);
 		for(it = v2.begin(), i0 = 1; it != bound; ++it, i0+=2)
 		{
 			CPPUNIT_ASSERT(*it == Cval(i0));
@@ -3807,7 +3609,7 @@ void test_algorithm::stable_sort2(const char* msg)
 		*/
 		
 		// using default comparison:
-		misc::stable_sort(v1.begin(), v1.end());
+		stl::stable_sort(v1.begin(), v1.end());
 		Cval mycheck[]={1.32, 1.41, 1.62, 1.73, 2.58, 2.72, 3.14, 4.67};
 		for (it = v1.begin(), i0 = 0; it != v1.end(); ++it, ++i0)
 		{
@@ -3818,7 +3620,7 @@ void test_algorithm::stable_sort2(const char* msg)
 		v1.assign(mydoubles, mydoubles + 8);		
 
 		// using 'compare_as_ints':
-		misc::stable_sort(v1.begin(), v1.end(), compare_as_ints_stable_sort);
+		stl::stable_sort(v1.begin(), v1.end(), compare_as_ints_stable_sort);
 
 		Cval mycheck2[]={1.41, 1.73, 1.32, 1.62, 2.72, 2.58, 3.14, 4.67};
 		for (it = v1.begin(), i0 = 0; it != v1.end(); ++it, ++i0)
@@ -3826,7 +3628,7 @@ void test_algorithm::stable_sort2(const char* msg)
 			CPPUNIT_ASSERT(mycheck2[it-v1.begin()] == *it);			
 		}
 
-		misc::stable_sort(v2.begin(), v2.end());
+		stl::stable_sort(v2.begin(), v2.end());
 		for(it = v2.begin()+1; it != v2.end(); ++it)
 			CPPUNIT_ASSERT(*it >= *(it-1)); // ::rand may have created duplicates;
 	}	
@@ -3863,14 +3665,14 @@ void test_algorithm::partial_sort(const char* msg)
 		*/
 
 		// using default comparison (operator <):
-		misc::partial_sort(v1.begin(), v1.begin() + 5, v1.end());
+		stl::partial_sort(v1.begin(), v1.begin() + 5, v1.end());
 		for(it = v1.begin(), i0=1; it != v1.begin()+5; ++it, ++i0)
 		{		
 			CPPUNIT_ASSERT(*it == Cval(i0));
 		}
 
 		// using function as comp
-		misc::partial_sort(v1.begin(), v1.begin() + 5, v1.end(), myfunction_partial_sort);
+		stl::partial_sort(v1.begin(), v1.begin() + 5, v1.end(), myfunction_partial_sort);
 
 		//cout << "v1 contains:";
 		Cval mycheck[]={1, 2, 3, 4, 5, 9, 8, 7, 6};
@@ -3880,7 +3682,7 @@ void test_algorithm::partial_sort(const char* msg)
 		}
 		//v1 contains: 1 2 3 4 5 9 8 7 6
 
-		misc::partial_sort(v2.begin(), v2.begin() + m_container_size - 10, v2.end());		
+		stl::partial_sort(v2.begin(), v2.begin() + m_container_size - 10, v2.end());		
 		for(it = v2.begin(), i0 = 1; it != v2.begin() + m_container_size - 10; ++it, ++i0)
 		{
 			CPPUNIT_ASSERT(*it == Cval(i0));
@@ -3930,10 +3732,10 @@ void test_algorithm::partial_sort_copy(const char* msg)
 		*/
 
 		// using default comparison (operator <):
-		misc::partial_sort_copy (myints, myints + 9, v1.begin(), v1.end());
+		stl::partial_sort_copy (myints, myints + 9, v1.begin(), v1.end());
 
 		// using function as comp
-		misc::partial_sort_copy (myints, myints + 9, v1.begin(), v1.end(), myfunction_partial_sort_copy);
+		stl::partial_sort_copy (myints, myints + 9, v1.begin(), v1.end(), myfunction_partial_sort_copy);
 
 		//v1 : 1 2 3 4 5
 		Cval mycheck[]={1, 2, 3, 4, 5};
@@ -3942,7 +3744,7 @@ void test_algorithm::partial_sort_copy(const char* msg)
 			CPPUNIT_ASSERT(mycheck[it-v1.begin()] == *it);			
 		}
 
-		misc::partial_sort_copy(v2.begin(), v2.end(), v3.begin(), v3.end());
+		stl::partial_sort_copy(v2.begin(), v2.end(), v3.begin(), v3.end());
 		for(it = v3.begin(), i0 = 1; it != v3.end(); ++it, ++i0)
 		{
 			CPPUNIT_ASSERT(*it == Cval(i0));
@@ -3980,7 +3782,7 @@ void test_algorithm::nth_element(const char* msg)
 	Container v2(m_container_size);
 	for(it = v2.begin(), i0 = 0; it != v2.end(); ++it, ++i0)
 		*it = Cval(i0);
-	misc::random_shuffle(v2.begin(), v2.end());
+	stl::random_shuffle(v2.begin(), v2.end());
 
 	Container v3(v2);
 
@@ -3994,7 +3796,7 @@ void test_algorithm::nth_element(const char* msg)
 			Obs: thereis no ::seed(..) call, the sequence is always the 
 				same in all implementations.
 		*/
-		misc::random_shuffle(v1.begin(), v1.end());
+		stl::random_shuffle(v1.begin(), v1.end());
 
 		//	nth_element
 		/*	Partitions a range of elements, correctly locating the nth 
@@ -4004,10 +3806,10 @@ void test_algorithm::nth_element(const char* msg)
 		*/
 
 		// using default comparison (operator <):
-		misc::nth_element(v1.begin(), v1.begin() + 5, v1.end());
+		stl::nth_element(v1.begin(), v1.begin() + 5, v1.end());
  
 		// using function as comp
-		misc::nth_element(v1.begin(), v1.begin() + 5, v1.end(), myfunction_nth_element);
+		stl::nth_element(v1.begin(), v1.begin() + 5, v1.end(), myfunction_nth_element);
 
 		i2 = *(v1.begin() + 5);
 		for(it = v1.begin(); it != v1.begin() + 5; ++it)
@@ -4019,7 +3821,7 @@ void test_algorithm::nth_element(const char* msg)
 			CPPUNIT_ASSERT(*it >= i2);
 		}
 
-		misc::nth_element(v2.begin(), v2.begin()+m_container_size/2, v2.end());
+		stl::nth_element(v2.begin(), v2.begin()+m_container_size/2, v2.end());
 		i2 = *(v2.begin() + m_container_size/2);
 		It mid =  v2.begin() + m_container_size/2;
 		for(it = v2.begin(); it != mid; ++it)
@@ -4078,14 +3880,14 @@ void test_algorithm::lower_bound(const char* msg)
 		//	MISC
 		stl::sort(v1.begin(), v1.end()); // 10 10 10 20 20 20 30 30
 
-		low = misc::lower_bound<It, Cval> (v1.begin(), v1.end(), Cval(20)); //4th element
-		up  = misc::upper_bound<It, Cval> (v1.begin(), v1.end(), Cval(20)); //7th element
+		low = stl::lower_bound<It, Cval> (v1.begin(), v1.end(), Cval(20)); //4th element
+		up  = stl::upper_bound<It, Cval> (v1.begin(), v1.end(), Cval(20)); //7th element
 
 		CPPUNIT_ASSERT((low - v1.begin()) == 3);
 		CPPUNIT_ASSERT(( up - v1.begin()) == 6);
 
-		low = misc::lower_bound<It, Cval>(v2.begin(), v2.end(), Cval(m_container_size/2));
-		up = misc::upper_bound<It, Cval>(v2.begin(), v2.end(), Cval(m_container_size/2));
+		low = stl::lower_bound<It, Cval>(v2.begin(), v2.end(), Cval(m_container_size/2));
+		up = stl::upper_bound<It, Cval>(v2.begin(), v2.end(), Cval(m_container_size/2));
 
 
 		Diff d0v2 = low - v2.begin();
@@ -4186,17 +3988,17 @@ void test_algorithm::equal_range(const char* msg)
 			of equivalence or ordering used to establish the positions 
 			in the sequence may be specified by a binary predicate.
 		*/
-		bounds = misc::equal_range<It, Cval>(v1.begin(), v1.end(), 20);
+		bounds = stl::equal_range<It, Cval>(v1.begin(), v1.end(), 20);
 
 		// using "mygreater_equal_range" as comp:
 		stl::sort (v1.begin(), v1.end(), mygreater_equal_range);                                 // 30 30 20 20 20 10 10 10
-		bounds = misc::equal_range<It, Cval>(v1.begin(), v1.end(), 20, mygreater_equal_range);    //       ^        ^
+		bounds = stl::equal_range<It, Cval>(v1.begin(), v1.end(), 20, mygreater_equal_range);    //       ^        ^
 
 		CPPUNIT_ASSERT((int)(bounds.first - v1.begin()) == 2);
 		CPPUNIT_ASSERT((int)(bounds.second - v1.begin()) == 5);
 
 
-		bounds = misc::equal_range<It, Cval>(v2.begin(), v2.end(), m_container_size/2);
+		bounds = stl::equal_range<It, Cval>(v2.begin(), v2.end(), m_container_size/2);
 		CPPUNIT_ASSERT(bounds.first - v2.begin() == m_container_size/2);
 		CPPUNIT_ASSERT(bounds.second - v2.begin() == m_container_size/2+1);
 		// STD - see equal_range2(...)
@@ -4329,19 +4131,19 @@ void test_algorithm::binary_search2(const char* msg)
 		stl::sort(v1.begin(), v1.end());
 
 		//cout << "looking for a 3... ";
-		bool res = misc::binary_search<It, Cval>(v1.begin(), v1.end(), 3);
+		bool res = stl::binary_search<It, Cval>(v1.begin(), v1.end(), 3);
 		CPPUNIT_ASSERT(res);
 
 		// using myfunction as comp:
 		stl::sort(v1.begin(), v1.end(), myfunction_binary_search);
 
 		//cout << "looking for a 6... ";
-		res = misc::binary_search<It, Cval>(v1.begin(), v1.end(), 6, myfunction_binary_search);
+		res = stl::binary_search<It, Cval>(v1.begin(), v1.end(), 6, myfunction_binary_search);
 		CPPUNIT_ASSERT(!res);
 
-		res = misc::binary_search<It, Cval>(v2.begin(), v2.end(), m_container_size/2);
+		res = stl::binary_search<It, Cval>(v2.begin(), v2.end(), m_container_size/2);
 		CPPUNIT_ASSERT(res);
-		res = misc::binary_search<It, Cval>(v2.begin(), v2.end(), 2*m_container_size, myfunction_binary_search);
+		res = stl::binary_search<It, Cval>(v2.begin(), v2.end(), 2*m_container_size, myfunction_binary_search);
 		CPPUNIT_ASSERT(!res);
 	}
 }
@@ -4441,7 +4243,7 @@ void test_algorithm::merge2(const char* msg)
 			criterion may be specified by a binary predicate.
 		*/
 
-		misc::merge (first, first + 5, second, second + 5, v1.begin());
+		stl::merge (first, first + 5, second, second + 5, v1.begin());
 
 		//cout << "The resulting vector contains:";
 		Cval mycheck[]={5, 10, 10, 15, 20, 20, 25, 30, 40, 50};
@@ -4453,7 +4255,7 @@ void test_algorithm::merge2(const char* msg)
 
 		stl::sort(v2.begin(), v2.end());
 		stl::sort(v3.begin(), v3.end());
-		misc::merge(v2.begin(), v2.end(), v3.begin(), v3.end(), v4.begin());
+		stl::merge(v2.begin(), v2.end(), v3.begin(), v3.end(), v4.begin());
 	}
 }
 
@@ -4554,7 +4356,7 @@ void test_algorithm::inplace_merge2(const char* msg)
 			into a single sorted range, where the ordering criterion 
 			may be specified by a binary predicate.
 		*/
-		misc::inplace_merge(v1.begin(), v1.begin() + 5, v1.end());
+		stl::inplace_merge(v1.begin(), v1.begin() + 5, v1.end());
 
 		//cout << "The resulting vector contains:";
 		int mycheck[]={5, 10, 10, 15, 20, 20, 25, 30, 40, 50};
@@ -4568,7 +4370,7 @@ void test_algorithm::inplace_merge2(const char* msg)
 
 		stl::copy(v2.begin(), v2.end(), v4.begin());
 		stl::copy(v3.begin(), v3.end(), v4.begin() + v2.size());
-		misc::inplace_merge(v4.begin(), v4.begin() + m_container_size/2, v4.end());
+		stl::inplace_merge(v4.begin(), v4.begin() + m_container_size/2, v4.end());
 		for(it = v4.begin(), i0 = 0; it != v4.end(); ++it, ++i0)
 			CPPUNIT_ASSERT(*it == Cval(i0));
 	}
@@ -4663,18 +4465,18 @@ void test_algorithm::includes2(const char* msg)
 			criterion between elements may be specified by a binary predicate.
 		*/
 		// using default comparison:
-		res = misc::includes(c1, c1+10, c2, c2+4);
+		res = stl::includes(c1, c1+10, c2, c2+4);
 		CPPUNIT_ASSERT( res );
 		//cout << "c1 includes c2!" << endl;
 		
 		// using myfunction as comp:
-		res = misc::includes(c1, c1+10, c2, c2+4, myfunction_includes);
+		res = stl::includes(c1, c1+10, c2, c2+4, myfunction_includes);
 		CPPUNIT_ASSERT( res );
 
 		//c1 includes c2!
 		//c1 includes c2!
 
-		res = misc::includes(v1.begin(), v1.end(), v2.begin(), v2.end());
+		res = stl::includes(v1.begin(), v1.end(), v2.begin(), v2.end());
 		CPPUNIT_ASSERT( res );
 	}
 }
@@ -4776,7 +4578,7 @@ void test_algorithm::set_union2(const char* msg)
 			sorted source ranges into a single, sorted destination range, 
 			where the ordering criterion may be specified by a binary predicate.
 		*/
-		it = misc::set_union (first, first+5, second, second+5, v1.begin());
+		it = stl::set_union (first, first+5, second, second+5, v1.begin());
 		// 5 10 15 20 25 30 40 50  0  0
 
 		Cval mycheck[]={5, 10, 15, 20, 25, 30, 40, 50,  0,  0};
@@ -4789,7 +4591,7 @@ void test_algorithm::set_union2(const char* msg)
 		CPPUNIT_ASSERT((it-v1.begin()) == 8);
 		//union has 8 elements
 
-		misc::set_union(v2.begin(), v2.end(), v3.begin(), v3.end(), v4.begin());
+		stl::set_union(v2.begin(), v2.end(), v3.begin(), v3.end(), v4.begin());
 		for(it = v4.begin(), i0 = 0; it != v4.end(); ++it, ++i0)
 			CPPUNIT_ASSERT(*it == Cval(i0));
 	}
@@ -4888,7 +4690,7 @@ void test_algorithm::set_intersection2(const char* msg)
 			criterion may be specified by a binary predicate.
 		*/
 
-		it = misc::set_intersection (first, first+5, second, second+5, v1.begin());
+		it = stl::set_intersection (first, first+5, second, second+5, v1.begin());
 		// 10 20 0  0  0  0  0  0  0  0
 
 		Cval mycheck[]={10, 20, 0,  0,  0,  0,  0,  0,  0,  0};
@@ -4902,7 +4704,7 @@ void test_algorithm::set_intersection2(const char* msg)
 		CPPUNIT_ASSERT((int)(it-v1.begin()) == 2);
 		//intersection has 2 elements
 		
-		it = misc::set_intersection(v2.begin(), v2.end(), v3.begin(), v3.end(), v4.begin());
+		it = stl::set_intersection(v2.begin(), v2.end(), v3.begin(), v3.end(), v4.begin());
 		CPPUNIT_ASSERT(it - v4.begin() == m_container_size);
 		for(it = v4.begin(), i0 = 0; it != v4.end(); ++it, ++i0)
 			CPPUNIT_ASSERT(*it == Cval(i0));
@@ -4948,7 +4750,7 @@ void test_algorithm::set_difference(const char* msg)
 			by a binary predicate.
 		*/
 
-		it = misc::set_difference (first, first+5, second, second+5, v1.begin());
+		it = stl::set_difference (first, first+5, second, second+5, v1.begin());
 		// 5 15 25  0  0  0  0  0  0  0
 
 		Cval mycheck[]={5, 15, 25,  0,  0,  0,  0,  0,  0,  0};
@@ -4961,12 +4763,12 @@ void test_algorithm::set_difference(const char* msg)
 		//difference has 3 elements
 
 
-		it = misc::set_difference(v2.begin(), v2.end(), v3.begin(), v3.end(), v4.begin(), misc::less<Cval>());
+		it = stl::set_difference(v2.begin(), v2.end(), v3.begin(), v3.end(), v4.begin(), stl::less<Cval>());
 		for(it2 = v4.begin(), i0 = 1; it2 != it; ++it2, i0 += 2)
 			CPPUNIT_ASSERT(*it2 == Cval(i0));
 
 		//	STD
-		it = misc::set_difference(v2.begin(), v2.end(), v3.begin(), v3.end(), v4.begin(), std::less<Cval>());
+		it = stl::set_difference(v2.begin(), v2.end(), v3.begin(), v3.end(), v4.begin(), std::less<Cval>());
 		for(it2 = v4.begin(), i0 = 1; it2 != it; ++it2, i0 += 2)
 			CPPUNIT_ASSERT(*it2 == Cval(i0));		
 	}
@@ -5070,7 +4872,7 @@ void test_algorithm::set_symmetric_difference2(const char* msg)
 			of the sorted source ranges into a single, sorted destination range,
 			where the ordering criterion may be specified by a binary predicate.
 		*/
-		it = misc::set_symmetric_difference (first, first+5, second, second+5, v1.begin());
+		it = stl::set_symmetric_difference (first, first+5, second, second+5, v1.begin());
 		// 5 15 25 30 40 50  0  0  0  0
 
 		Cval mycheck[]={5, 15, 25, 30, 40, 50,  0,  0,  0,  0};
@@ -5084,7 +4886,7 @@ void test_algorithm::set_symmetric_difference2(const char* msg)
 		CPPUNIT_ASSERT((int)(it-v1.begin()) == 6);
 		//symmetric difference has 6 elements
 
-		it = misc::set_symmetric_difference(v2.begin(), v2.end(), v3.begin(), v3.end(), v4.begin(), misc::less<Cval>());
+		it = stl::set_symmetric_difference(v2.begin(), v2.end(), v3.begin(), v3.end(), v4.begin(), stl::less<Cval>());
 		for(it2 = v4.begin(), i0 = 1; it2 != it; ++it2, i0 += 2)
 			CPPUNIT_ASSERT(*it2 == Cval(i0));
 	}
@@ -5233,7 +5035,7 @@ void test_algorithm::push_heap2(const char* msg)
 		*it = Cval(i0);
 	
 	::srand((unsigned)::time(NULL));
-	misc::random_shuffle(v2.begin(), v2.end());
+	stl::random_shuffle(v2.begin(), v2.end());
 
 	Container v3(v2);
 
@@ -5249,7 +5051,7 @@ void test_algorithm::push_heap2(const char* msg)
 			may be specified with a binary predicate.
 		*/
 
-		misc::make_heap (v1.begin(), v1.end());
+		stl::make_heap (v1.begin(), v1.end());
 		//initial max heap : 30 (10 20 5 15)
 		CPPUNIT_ASSERT(v1.front() == 30);
 
@@ -5258,7 +5060,7 @@ void test_algorithm::push_heap2(const char* msg)
 			the next-to-last position in the range and then forms a new heap 
 			from the remaining elements.
 		*/
-		misc::pop_heap (v1.begin(), v1.end());
+		stl::pop_heap (v1.begin(), v1.end());
 		// v1: 20 (10 5 15 30)
 		v1.pop_back();
 		// v1: 20 (10 5 15)
@@ -5272,14 +5074,14 @@ void test_algorithm::push_heap2(const char* msg)
 			consisting of the prior elements in the range.
 		*/
 		v1.push_back(99);
-		misc::push_heap (v1.begin(), v1.end());
+		stl::push_heap (v1.begin(), v1.end());
 		// v1: 99 (20 10 5 15)
 
 		//cout << "max heap after push: " << v1.front() << endl;
 		CPPUNIT_ASSERT(v1.front() == 99);
 
 		//Converts a heap into a sorted range.
-		misc::sort_heap (v1.begin(), v1.end());
+		stl::sort_heap (v1.begin(), v1.end());
 
 		//cout << "final sorted range :";
 		int mycheck[]={5, 10, 15, 20, 99};
@@ -5291,11 +5093,11 @@ void test_algorithm::push_heap2(const char* msg)
 
 
 		//v2: 0 1 2 3 ... 199999
-		misc::make_heap(v2.begin(), v2.end(), misc::less<Cval>());
+		stl::make_heap(v2.begin(), v2.end(), stl::less<Cval>());
 		//v2: 199999 (0 1 2 3 ... 199998)
 		CPPUNIT_ASSERT(*v2.begin() == Cval(m_container_size-1));
 
-		misc::pop_heap(v2.begin(), v2.end(), misc::less<Cval>());
+		stl::pop_heap(v2.begin(), v2.end(), stl::less<Cval>());
 		//v2: 199998 (0 1 2 3 ... 199999)
 		CPPUNIT_ASSERT(*v2.begin() == m_container_size-2);
 		CPPUNIT_ASSERT(*v2.rbegin() == m_container_size-1);
@@ -5303,21 +5105,21 @@ void test_algorithm::push_heap2(const char* msg)
 		v2.pop_back();
 		//v2: 199998 (0 1 2 3 ... 199997)
 		v2.push_back(m_container_size);
-		misc::push_heap(v2.begin(), v2.end(), misc::less<Cval>());
+		stl::push_heap(v2.begin(), v2.end(), stl::less<Cval>());
 		//v2: 200000 (199998 0 1 2 3 ... 199997)
 		CPPUNIT_ASSERT(v2.front() == Cval(m_container_size));
 
-		misc::sort_heap(v2.begin(), v2.end());
+		stl::sort_heap(v2.begin(), v2.end());
 		//v2: 0 1 2 3 ...
 		for(it = v2.begin()+1; it != v2.end(); ++it)
 			CPPUNIT_ASSERT(*it > *(it-1));
 		
 		//v3: 0 1 2 3 ... 199999
-		misc::make_heap(v3.begin(), v3.end(), misc::less<Cval>());
+		stl::make_heap(v3.begin(), v3.end(), stl::less<Cval>());
 		//v3: 199999 (0 1 2 3 ... 199998)
 		CPPUNIT_ASSERT(*v3.begin() == Cval(m_container_size-1));
 
-		misc::pop_heap(v3.begin(), v3.end(), misc::less<Cval>());
+		stl::pop_heap(v3.begin(), v3.end(), stl::less<Cval>());
 		//v3: 199998 (0 1 2 3 ... 199999)
 		CPPUNIT_ASSERT(*v3.begin() == m_container_size-2);
 		CPPUNIT_ASSERT(*v3.rbegin() == m_container_size-1);
@@ -5325,11 +5127,11 @@ void test_algorithm::push_heap2(const char* msg)
 		v3.pop_back();
 		//v3: 199998 (0 1 2 3 ... 199997)
 		v3.push_back(m_container_size);
-		misc::push_heap(v3.begin(), v3.end(), misc::less<Cval>());
+		stl::push_heap(v3.begin(), v3.end(), stl::less<Cval>());
 		//v3: 200000 (199998 0 1 2 3 ... 199997)
 		CPPUNIT_ASSERT(v3.front() == Cval(m_container_size));
 
-		misc::sort_heap(v3.begin(), v3.end());
+		stl::sort_heap(v3.begin(), v3.end());
 		//v3: 0 1 2 3 ...
 		for(it = v3.begin()+1; it != v3.end(); ++it)
 			CPPUNIT_ASSERT(*it > *(it-1));
@@ -5448,18 +5250,18 @@ void test_algorithm::min_element(const char* msg)
 		*/
 
 		//default
-		CPPUNIT_ASSERT(*misc::min_element(myints,myints+7) == 2);
-		CPPUNIT_ASSERT(*misc::max_element(myints,myints+7) == 9);
+		CPPUNIT_ASSERT(*stl::min_element(myints,myints+7) == 2);
+		CPPUNIT_ASSERT(*stl::max_element(myints,myints+7) == 9);
 
 
 		// using function myfn as comp:
-		CPPUNIT_ASSERT(*misc::min_element(myints,myints+7,myfn_min_element) == 2);
-		CPPUNIT_ASSERT(*misc::max_element(myints,myints+7,myfn_min_element) == 9);
+		CPPUNIT_ASSERT(*stl::min_element(myints,myints+7,myfn_min_element) == 2);
+		CPPUNIT_ASSERT(*stl::max_element(myints,myints+7,myfn_min_element) == 9);
 
 
 		// using object myobj as comp:
-		CPPUNIT_ASSERT(*misc::min_element(myints,myints+7,myobj_min_element) == 2);
-		CPPUNIT_ASSERT(*misc::max_element(myints,myints+7,myobj_min_element) == 9);
+		CPPUNIT_ASSERT(*stl::min_element(myints,myints+7,myobj_min_element) == 2);
+		CPPUNIT_ASSERT(*stl::max_element(myints,myints+7,myobj_min_element) == 9);
 
 
 		//	STD
@@ -5515,16 +5317,16 @@ void test_algorithm::lexicographical_compare(const char* msg)
 
 		//cout << "Using default comparison (operator<): ";
 		// first is less then
-		CPPUNIT_ASSERT(misc::lexicographical_compare(first,first+5,second,second+9));
+		CPPUNIT_ASSERT(stl::lexicographical_compare(first,first+5,second,second+9));
 		// second is not less then
-		CPPUNIT_ASSERT(misc::lexicographical_compare(second,second+9,first,first+5) == false);
+		CPPUNIT_ASSERT(stl::lexicographical_compare(second,second+9,first,first+5) == false);
 
 
 		//cout << "Using mycomp as comparison object: ";
 		// first is not less then (when using mycomp... comparison)
-		CPPUNIT_ASSERT(misc::lexicographical_compare(first,first+5,second,second+9,mycomp_lexicographical_compare) == false);
+		CPPUNIT_ASSERT(stl::lexicographical_compare(first,first+5,second,second+9,mycomp_lexicographical_compare) == false);
 		// second is less then when using mycomp... comparison
-		CPPUNIT_ASSERT(misc::lexicographical_compare(second,second+9,first,first+5,mycomp_lexicographical_compare));
+		CPPUNIT_ASSERT(stl::lexicographical_compare(second,second+9,first,first+5,mycomp_lexicographical_compare));
 		/*
 		  Using default comparison (operator<): Apple is less than apartment
 		  Using mycomp as comparison object: Apple is greater than apartment
@@ -5648,7 +5450,7 @@ void test_algorithm::next_permutation2(const char* msg)
 			i0++;
 			//cout << myints[0] << " " << myints[1] << " " << myints[2] << endl;
 		}
-		while(misc::next_permutation(myints, myints + 3));
+		while(stl::next_permutation(myints, myints + 3));
 
 
 		/*
@@ -5662,8 +5464,8 @@ void test_algorithm::next_permutation2(const char* msg)
 		*/
 
 		//	STD
-		while(misc::next_permutation(v1.begin(), v1.end()) &&
-			  misc::next_permutation(v2.begin(), v2.end()) )
+		while(stl::next_permutation(v1.begin(), v1.end()) &&
+			  stl::next_permutation(v2.begin(), v2.end()) )
 		{
 			It it1 = v1.begin();
 			It it2 = v2.begin();
@@ -5762,7 +5564,7 @@ void test_algorithm::prev_permutation2(const char* msg)
 		
 		//cout << "The 3! possible permutations with 3 elements:\n";
 		stl::sort(myints, myints + 3);
-		misc::reverse(myints, myints + 3);
+		stl::reverse(myints, myints + 3);
 
 		/*	prev_permutation:
 			Reorders the elements in a range so that the original ordering 
@@ -5779,7 +5581,7 @@ void test_algorithm::prev_permutation2(const char* msg)
 			i0++;
 			//cout << myints[0] << " " << myints[1] << " " << myints[2] << endl;
 		}
-		while ( misc::prev_permutation(myints,myints+3) );
+		while ( stl::prev_permutation(myints,myints+3) );
 
 		/*
 		  3 2 1
@@ -5790,8 +5592,8 @@ void test_algorithm::prev_permutation2(const char* msg)
 		  1 2 3
 		*/
 
-		while(misc::prev_permutation(v1.begin(), v1.end()) && 
-			  misc::prev_permutation(v2.begin(), v2.end()) )
+		while(stl::prev_permutation(v1.begin(), v1.end()) && 
+			  stl::prev_permutation(v2.begin(), v2.end()) )
 		{
 			It it1 = v1.begin();
 			It it2 = v2.begin();

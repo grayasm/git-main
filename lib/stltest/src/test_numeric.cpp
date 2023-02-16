@@ -20,7 +20,7 @@ Copyright (C) 2012 Mihai Vasilian
 #include "autoptr.hpp"
 #include "string.hpp"
 #include "stream.hpp"
-#include "misctest_util.hpp"
+#include "stltest_util.hpp"
 #include "numeric.hpp"
 #include "functional.hpp"
 #include "list.hpp"
@@ -46,18 +46,18 @@ void test_numeric::accumulate()
 
     stl::cout << "\n\n\taccumulate---------------------------------------------";
 
-    accumulate<misc::list<int> >                      ("\n\tmisc::list<int> ");
-    accumulate<std::list<int> >                       ("\n\tmisc::list<int> ");
-    accumulate<std::list<int, misc::allocator<int> > >("\n\tstd::list<int,A>");
+    accumulate<stl::list<int> >                      ("\n\tstl::list<int> ");
+    accumulate<std::list<int> >                       ("\n\tstl::list<int> ");
+    accumulate<std::list<int, stl::allocator<int> > >("\n\tstd::list<int,A>");
 }
 
 void test_numeric::adjacent_difference()
 {
     stl::cout << "\n\n\tadjacent_difference------------------------------------";
 
-    adjacent_difference<misc::list<int> >                      ("\n\tmisc::list<int> ");
-    adjacent_difference<std::list<int> >                       ("\n\tmisc::list<int> ");
-    adjacent_difference<std::list<int, misc::allocator<int> > >("\n\tstd::list<int,A>");
+    adjacent_difference<stl::list<int> >                      ("\n\tstl::list<int> ");
+    adjacent_difference<std::list<int> >                       ("\n\tstl::list<int> ");
+    adjacent_difference<std::list<int, stl::allocator<int> > >("\n\tstd::list<int,A>");
 
 }
 
@@ -65,18 +65,18 @@ void test_numeric::inner_product()
 {
     stl::cout << "\n\n\tinner_product------------------------------------------";
 
-    inner_product<misc::list<int> >                      ("\n\tmisc::list<int> ");
-    inner_product<std::list<int> >                       ("\n\tmisc::list<int> ");
-    inner_product<std::list<int, misc::allocator<int> > >("\n\tstd::list<int,A>");
+    inner_product<stl::list<int> >                      ("\n\tstl::list<int> ");
+    inner_product<std::list<int> >                       ("\n\tstl::list<int> ");
+    inner_product<std::list<int, stl::allocator<int> > >("\n\tstd::list<int,A>");
 }
 
 void test_numeric::partial_sum()
 {
     stl::cout << "\n\n\tpartial_sum--------------------------------------------";
 
-    partial_sum<misc::list<int> >                      ("\n\tmisc::list<int> ");
-    partial_sum<std::list<int> >                       ("\n\tmisc::list<int> ");
-    partial_sum<std::list<int, misc::allocator<int> > >("\n\tstd::list<int,A>");
+    partial_sum<stl::list<int> >                      ("\n\tstl::list<int> ");
+    partial_sum<std::list<int> >                       ("\n\tstl::list<int> ");
+    partial_sum<std::list<int, stl::allocator<int> > >("\n\tstd::list<int,A>");
 }
 
 //test end
@@ -96,8 +96,8 @@ void test_numeric::accumulate(const char* msg)
     {
         time_printer tp(msg, m_print_time);
 
-        Cval sum1 = misc::accumulate(list.begin(), list.end(), 5);
-        Cval sum2 = misc::accumulate(list.begin(), list.end(), 5, misc::plus<Cval>());
+        Cval sum1 = stl::accumulate(list.begin(), list.end(), 5);
+        Cval sum2 = stl::accumulate(list.begin(), list.end(), 5, stl::plus<Cval>());
 
         Cval sum0 = m_container_size * (m_container_size + 1)/2;
         CPPUNIT_ASSERT(sum1 == sum0+5);
@@ -122,8 +122,8 @@ void test_numeric::adjacent_difference(const char* msg)
     {
         time_printer tp(msg, m_print_time);
 
-        misc::adjacent_difference(list_0.begin(), list_0.end(), list_2.begin());
-        misc::adjacent_difference(list_0.begin(), list_0.end(), list_3.begin(), misc::minus<Cval>());
+        stl::adjacent_difference(list_0.begin(), list_0.end(), list_2.begin());
+        stl::adjacent_difference(list_0.begin(), list_0.end(), list_3.begin(), stl::minus<Cval>());
 
         for(It it2 = list_2.begin(), it3 = list_3.begin();
             it2 != list_2.end(); ++it2, ++it3)
@@ -149,9 +149,9 @@ void test_numeric::inner_product(const char* msg)
     {
         time_printer tp(msg, m_print_time);
 
-        Cval iprod0 = misc::inner_product(list0.begin(), list0.end(), list2.begin(), 0);
-        Cval iprod2 = misc::inner_product(list0.begin(), list0.end(), list2.begin(),
-                                          0, misc::plus<Cval>(), misc::multiplies<Cval>());
+        Cval iprod0 = stl::inner_product(list0.begin(), list0.end(), list2.begin(), 0);
+        Cval iprod2 = stl::inner_product(list0.begin(), list0.end(), list2.begin(),
+                                          0, stl::plus<Cval>(), stl::multiplies<Cval>());
 
         Cval sum0 = m_container_size * (m_container_size + 1)/2;
         CPPUNIT_ASSERT(iprod0 == sum0 * 2);
@@ -176,8 +176,8 @@ void test_numeric::partial_sum(const char* msg)
     {
         time_printer tp(msg, m_print_time);
 
-        misc::partial_sum(list.begin(), list.end(), test0.begin());
-        misc::partial_sum(list.begin(), list.end(), test2.begin(), misc::plus<Cval>());
+        stl::partial_sum(list.begin(), list.end(), test0.begin());
+        stl::partial_sum(list.begin(), list.end(), test2.begin(), stl::plus<Cval>());
 
         for(It it = list.begin(), it0 = test0.begin(), it2 = test2.begin();
             it0 != test0.end(); ++it, ++it0, ++it2)

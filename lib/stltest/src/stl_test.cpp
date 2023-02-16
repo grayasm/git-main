@@ -12,21 +12,17 @@ Copyright (C) 2012 Mihai Vasilian
 
 #include "test_algorithm.hpp"
 #include "test_autoptr.hpp"
+#include "test_basic_string.hpp"
 #include "test_deque.hpp"
 #include "test_exception.hpp"
 #include "test_functional.hpp"
-#include "test_generic_array.hpp"
 #include "test_list.hpp"
 #include "test_numeric.hpp"
-#include "test_generic_string.hpp"
-#include "test_vector.hpp"
 #include "test_priority_queue.hpp"
 #include "test_queue.hpp"
 #include "test_stack.hpp"
 #include "test_utility.hpp"
-#include "test_basic_string.hpp"
 #include "test_vector.hpp"
-#include "test_list.hpp"
 
 
 
@@ -44,16 +40,14 @@ int main(int argc, char** argv)
     CPPUNIT_TEST_SUITE_REGISTRATION(test_deque);
     CPPUNIT_TEST_SUITE_REGISTRATION(test_exception);
     CPPUNIT_TEST_SUITE_REGISTRATION(test_functional);
-
-    CPPUNIT_TEST_SUITE_REGISTRATION(test_numeric);
-    CPPUNIT_TEST_SUITE_REGISTRATION(test_utility);
-#endif
-
-
-
-    
-    CPPUNIT_TEST_SUITE_REGISTRATION(test_vector);
     CPPUNIT_TEST_SUITE_REGISTRATION(test_list);
+    CPPUNIT_TEST_SUITE_REGISTRATION(test_numeric);
+    CPPUNIT_TEST_SUITE_REGISTRATION(test_priority_queue);
+    CPPUNIT_TEST_SUITE_REGISTRATION(test_queue);
+    CPPUNIT_TEST_SUITE_REGISTRATION(test_stack);
+    CPPUNIT_TEST_SUITE_REGISTRATION(test_utility);
+    CPPUNIT_TEST_SUITE_REGISTRATION(test_vector);
+#endif
 
 
     //////////////////////////////////////////////////////////////////////////
