@@ -293,6 +293,28 @@ namespace stl
         }
     }; // class
     //////////////////////////////////////////////////////////////////////////
+
+    /*  stl::allocator uses the 'hint' member of allocate(size, hint) to resize
+        a memory block in place. This gives a performance boost.
+        However other allocators allocate at a new block address. To adjust for
+        this behavior an stl container needs to know what allocator is in use.
+    */
+    template<typename T>
+    class AllocVisitor
+    {
+    public:
+        virtual bool Visit(const void*) { return false; }
+        virtual bool Visit(const stl::allocator<T>*) { return true; }
+    };
+
+    template<typename Allocator>
+    bool IsStlAllocator(const Allocator& alloc)
+    {
+        AllocVisitor<Allocator::value_type> v;
+        return v.Visit(&alloc);
+    }
+    //////////////////////////////////////////////////////////////////////////
+
 } // namespace
 
 

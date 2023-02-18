@@ -44,9 +44,50 @@ void test_algorithm::tearDown()
 //Non-modifying sequence operations:
 void test_algorithm::for_each()
 {	
+
+
+	// test if a destructor delays what happens?
+	
+
+
     stl::cout << "\n\n\t*******************************************************";
     stl::cout <<   "\n\t* TESTING HEADER: algorithm.hpp                       *";
     stl::cout <<   "\n\t*******************************************************";
+
+	{
+		int* ptr = nullptr;
+		size_t size = 0;
+		size_t cap = 0;
+		std::allocator<int> alloc;
+
+		for(size_t i =0; i < 1000; i++)
+		{
+			if (size == 0 && ptr == nullptr)
+			{
+				size = 0;
+				cap = 2;
+				int* tmp = alloc.allocate(cap);
+				//_ASSERT(_CrtIsValidHeapPointer(tmp));
+				ptr = tmp;
+			}
+			else if(size == cap)
+			{
+				// grow
+				cap = cap*2;
+				int* tmp = alloc.allocate(cap);
+				//_ASSERT(_CrtIsValidHeapPointer(tmp));
+				//::memmove(tmp, ptr, size * sizeof(int));
+				alloc.deallocate(ptr, 0);
+				ptr = tmp;
+			}
+
+			//ptr[i] = (i + 10);
+			size++;
+		}
+
+		//_ASSERT(_CrtIsValidHeapPointer(ptr));
+		alloc.deallocate(ptr, 0);
+	}
 
 	
 	stl::cout << "\n\n\tfor_each-----------------------------------------------";

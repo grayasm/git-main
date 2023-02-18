@@ -557,6 +557,16 @@ namespace stl
         {
             // calls ::realloc underneath - no need to free src (see allocator)
             *dest = allocator.allocate(cap, src);
+
+            /*  stl::allocator uses the 'hint' member of allocate(size, hint)
+                to resize a memory block in place for a performance boost.
+                However std::allocator and others allocate at a new block address.
+            */
+            if (*dest != src && !IsStlAllocator<Allocator>(allocator))
+            {
+                mem_move(*dest, 0, src, size, allocator);
+                allocator.deallocate(src, 0);
+            }
         }
     }
 
@@ -631,7 +641,7 @@ namespace stl
         }
     }
 
-
+    
     template<typename Allocator>
     void mem_realloc(int** dest, size_t cap, int* src, size_t size, Allocator& allocator)
     {
@@ -643,6 +653,16 @@ namespace stl
         {
             // calls ::realloc underneath - no need to free src (see allocator)
             *dest = allocator.allocate(cap, src);
+
+            /*  stl::allocator uses the 'hint' member of allocate(size, hint)
+                to resize a memory block in place for a performance boost.
+                However std::allocator and others allocate at a new block address.
+            */
+            if (*dest != src && !IsStlAllocator<Allocator>(allocator))
+            {
+                ::memmove(*dest, src, size);
+                allocator.deallocate(src, 0);
+            }            
         }
     }
 
@@ -703,6 +723,16 @@ namespace stl
         {
             // calls ::realloc underneath - no need to free src (see allocator)
             *dest = allocator.allocate(cap, src);
+
+            /*  stl::allocator uses the 'hint' member of allocate(size, hint)
+                to resize a memory block in place for a performance boost.
+                However std::allocator and others allocate at a new block address.
+            */
+            if (*dest != src && !IsStlAllocator<Allocator>(allocator))
+            {
+                mem_move(*dest, 0, src, size, allocator);
+                allocator.deallocate(src, 0);
+            }
         }
     }
 
@@ -718,6 +748,16 @@ namespace stl
         {
             // calls ::realloc underneath - no need to free src (see allocator)
             *dest = allocator.allocate(cap, src);
+
+            /*  stl::allocator uses the 'hint' member of allocate(size, hint)
+                to resize a memory block in place for a performance boost.
+                However std::allocator and others allocate at a new block address.
+            */
+            if (*dest != src && !IsStlAllocator<Allocator>(allocator))
+            {
+                mem_move(*dest, 0, src, size, allocator);
+                allocator.deallocate(src, 0);
+            }
         }
     }
 
