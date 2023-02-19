@@ -7,6 +7,7 @@ Copyright (C) 2015 Mihai Vasilian
 #include "time.hpp"
 #include "strconv.hpp"
 #include "string.hpp"
+#include "stdio.hpp"
 #include <limits.h>
 
 
