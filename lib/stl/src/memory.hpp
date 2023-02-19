@@ -310,7 +310,7 @@ namespace stl
     template<typename Allocator>
     bool IsStlAllocator(const Allocator& alloc)
     {
-        AllocVisitor<Allocator::value_type> v;
+        AllocVisitor<typename Allocator::value_type> v;
         return v.Visit(&alloc);
     }
     //////////////////////////////////////////////////////////////////////////
