@@ -34,9 +34,15 @@ Copyright (C) 2009 Mihai Vasilian
 #ifdef _WIN32
 #   ifdef _UNICODE
 #       define access _waccess
-#else
+#   else
 #       define access _access
 #   endif
+#endif
+
+
+#ifdef _WIN32
+#else // linux
+#    define _stscanf sscanf
 #endif
 
 
