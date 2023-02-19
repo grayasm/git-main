@@ -204,7 +204,7 @@ namespace sys
 #else // Linux
 
         struct dirent **namelist;
-        int n = ::scandir(dir, &namelist, NULL, alphasort);
+        int n = ::scandir(dir.c_str(), &namelist, NULL, alphasort);
         if (n < 0)
             return;
 
