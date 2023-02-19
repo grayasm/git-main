@@ -1,5 +1,3 @@
-
-
 #include "acutest.h"
 
 #include <exception>
@@ -13,12 +11,10 @@ class TestException : public std::exception
 
 public:
     virtual const char* what() const throw()
-    {
-        return msg_.c_str();
-    }
+    { return msg_.c_str(); }
 
     explicit TestException(const std::string& msg) throw()
-        : msg_(msg)
+    : msg_(msg)
     {}
 
     virtual ~TestException() throw()
@@ -40,26 +36,26 @@ enum What {
 static void
 some_function(What what, const char* msg = NULL)
 {
-    switch (what) {
-    case NO_THROW:
-        /* noop */
-        break;
+    switch(what) {
+        case NO_THROW:
+            /* noop */
+            break;
 
-    case THROW_TEST_EXC:
-        throw TestException(msg != NULL ? msg : "TestException");
-        break;
+        case THROW_TEST_EXC:
+            throw TestException(msg != NULL ? msg : "TestException");
+            break;
 
-    case THROW_INVALID_ARG:
-        throw std::invalid_argument(msg != NULL ? msg : "std::invalid_argument");
-        break;
+        case THROW_INVALID_ARG:
+            throw std::invalid_argument(msg != NULL ? msg : "std::invalid_argument");
+            break;
 
-    case THROW_CHAR_PTR:
-        throw msg;
-        break;
+        case THROW_CHAR_PTR:
+            throw msg;
+            break;
 
-    case THROW_INT:
-        throw 42;
-        break;
+        case THROW_INT:
+            throw 42;
+            break;
     }
 }
 
@@ -117,9 +113,3 @@ TEST_LIST = {
     { "success", test_success },
     { NULL, NULL }
 };
-
-//
-//int main(int argc, char**)
-//{
-//	return 0;
-//}
