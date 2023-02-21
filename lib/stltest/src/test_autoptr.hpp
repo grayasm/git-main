@@ -3,19 +3,8 @@ Copyright (C) 2009 Mihai Vasilian
 */
 
 
-
-
-
-
-
 #ifndef __autoptr_t_hpp__
 #define __autoptr_t_hpp__
-
-//c++
-//....
-
-//CppUnit
-#include <cppunit/extensions/HelperMacros.h>
 
 
 //libraries
@@ -23,25 +12,14 @@ Copyright (C) 2009 Mihai Vasilian
 
 
 
-class test_autoptr : public CppUnit::TestFixture
+class test_autoptr
 {
 
-    CPPUNIT_TEST_SUITE(test_autoptr);
-    CPPUNIT_TEST(test_assignment_with_different_type);
-    CPPUNIT_TEST(test_assignment_with_different_type1);
-    CPPUNIT_TEST(test_assignment_with_different_type3);
-    CPPUNIT_TEST(test_operator_less);
-    CPPUNIT_TEST(test_operator_great);
-    CPPUNIT_TEST(test_sort);
-    CPPUNIT_TEST(test_derived_operator_less);
-    CPPUNIT_TEST(test_derived_operator_great);
-    CPPUNIT_TEST(test_self_assignament);
-    CPPUNIT_TEST(test_child_assignament);
-    CPPUNIT_TEST_SUITE_END();
-
 public:
-    void setUp();
-    void tearDown();
+    test_autoptr() = default;
+    ~test_autoptr() = default;
+    void run();
+
 	static const int		m_print_time = 1;
 	static const size_t		m_container_size = 2000;
 
@@ -58,8 +36,6 @@ public:
     void test_child_assignament();
     //end test suite
 };
-
-
 
 
 #endif//__autoptr_t_hpp__

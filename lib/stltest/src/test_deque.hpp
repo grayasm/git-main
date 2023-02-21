@@ -11,8 +11,6 @@ Copyright (C) 2012 Mihai Vasilian
 //c
 //c++
 
-//CppUnit
-#include <cppunit/extensions/HelperMacros.h>
 
 //misc
 #include "exception.hpp"
@@ -21,46 +19,14 @@ Copyright (C) 2012 Mihai Vasilian
 
 
 
-class test_deque : public CppUnit::TestFixture
+class test_deque
 {
-    CPPUNIT_TEST_SUITE(test_deque);
-    CPPUNIT_TEST( ctor );
-    CPPUNIT_TEST( dtor );
-    CPPUNIT_TEST( op_assign );
-    CPPUNIT_TEST( begin );
-    CPPUNIT_TEST( end );
-    CPPUNIT_TEST( rbegin );
-    CPPUNIT_TEST( rend );
-    CPPUNIT_TEST( size );
-    CPPUNIT_TEST( max_size );
-    CPPUNIT_TEST( resize );
-    CPPUNIT_TEST( empty );
-    CPPUNIT_TEST( op_acc );
-    CPPUNIT_TEST( at );
-    CPPUNIT_TEST( front );
-    CPPUNIT_TEST( back );
-    CPPUNIT_TEST( assign );
-    CPPUNIT_TEST( push_back );
-    CPPUNIT_TEST( push_front );
-    CPPUNIT_TEST( pop_back );
-    CPPUNIT_TEST( pop_front );
-    CPPUNIT_TEST( insert );
-    CPPUNIT_TEST( erase );
-    CPPUNIT_TEST( swap_ambiguity );
-    CPPUNIT_TEST( clear );
-	CPPUNIT_TEST( g_swap );
-	CPPUNIT_TEST( op_eq );
-	CPPUNIT_TEST( op_neq );
-	CPPUNIT_TEST( op_lt );
-	CPPUNIT_TEST( op_lte );
-	CPPUNIT_TEST( op_gt );
-	CPPUNIT_TEST( op_gte );
-    CPPUNIT_TEST_SUITE_END();
-
-
 public:
-    void setUp();
-    void tearDown();
+    test_deque() = default;
+    ~test_deque() = default;
+    void run();
+
+
 	static const int		m_print_time = 1;
 	static const size_t		m_container_size = 40000;
 
@@ -168,10 +134,6 @@ public:
 
     //////////////////////////////////////////////////////////////////////////
 };//class test_deque
-
-
-
-
 
 
 #endif//__test_deque_hpp__

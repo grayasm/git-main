@@ -10,38 +10,16 @@ Copyright (C) 2012 Mihai Vasilian
 //c++
 //....
 
-//CppUnit
-#include <cppunit/extensions/HelperMacros.h>
 
-
-//libraries
-
-
-
-
-class test_queue : public CppUnit::TestFixture
+class test_queue
 {
-
-    CPPUNIT_TEST_SUITE(test_queue);
-	CPPUNIT_TEST(ctor);
-	CPPUNIT_TEST(dtor);
-	CPPUNIT_TEST(empty);
-	CPPUNIT_TEST(size);
-	CPPUNIT_TEST(front);
-	CPPUNIT_TEST(back);
-	CPPUNIT_TEST(push);
-	CPPUNIT_TEST(pop);
-	CPPUNIT_TEST(eq_op);
-	CPPUNIT_TEST(neq_op);
-	CPPUNIT_TEST(lt_op);
-	CPPUNIT_TEST(gt_op);
-	CPPUNIT_TEST(lte_op);
-	CPPUNIT_TEST(gte_op);
-    CPPUNIT_TEST_SUITE_END();
-
 public:
-    void setUp();
-    void tearDown();
+	test_queue() = default;
+	~test_queue() = default;
+    void run();
+
+
+
 	static const int		m_print_time = 1;
 	static const size_t		m_container_size = 2000;
 

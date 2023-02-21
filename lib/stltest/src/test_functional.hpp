@@ -3,20 +3,12 @@ Copyright (C) 2012 Mihai Vasilian
 */
 
 
-
-
-
-
 #ifndef __test_functional_hpp__
 #define __test_functional_hpp__
 
 
 //c++
 //....
-
-//CppUnit
-#include <cppunit/extensions/HelperMacros.h>
-
 
 //libraries
 #include "exception.hpp"
@@ -26,53 +18,14 @@ Copyright (C) 2012 Mihai Vasilian
 
 
 
-class test_functional : public CppUnit::TestFixture
+class test_functional
 {
-
-    CPPUNIT_TEST_SUITE(test_functional);
-	CPPUNIT_TEST(unary_function);
-	CPPUNIT_TEST(binary_function);
-	CPPUNIT_TEST(plus);
-	CPPUNIT_TEST(minus);
-	CPPUNIT_TEST(multiplies);
-	CPPUNIT_TEST(devides);
-	CPPUNIT_TEST(modulus);
-	CPPUNIT_TEST(negate);	
-	CPPUNIT_TEST(equal_to);
-	CPPUNIT_TEST(not_equal_to);
-	CPPUNIT_TEST(greater);
-	CPPUNIT_TEST(less);
-	CPPUNIT_TEST(greater_equal);
-	CPPUNIT_TEST(less_equal);
-	CPPUNIT_TEST(logical_and);
-	CPPUNIT_TEST(logical_or);
-	CPPUNIT_TEST(logical_not);
-	CPPUNIT_TEST(unary_negate);
-	CPPUNIT_TEST(binary_negate);
-	CPPUNIT_TEST(binder1st);
-	CPPUNIT_TEST(binder2nd);
-	CPPUNIT_TEST(pointer_to_unary_function);
-	CPPUNIT_TEST(pointer_to_binary_function);
-	CPPUNIT_TEST(mem_fun_t);
-	CPPUNIT_TEST(mem_fun1_t);
-	CPPUNIT_TEST(const_mem_fun_t);
-	CPPUNIT_TEST(const_mem_fun1_t);
-	CPPUNIT_TEST(mem_fun_ref_t);
-	CPPUNIT_TEST(mem_fun1_ref_t);
-	CPPUNIT_TEST(const_mem_fun_ref_t);
-	CPPUNIT_TEST(const_mem_fun1_ref_t);
-	CPPUNIT_TEST(not1);
-	CPPUNIT_TEST(not2);
-	CPPUNIT_TEST(bind1st);
-	CPPUNIT_TEST(bind2nd);
-	CPPUNIT_TEST(ptr_fun);
-	CPPUNIT_TEST(mem_fun);
-	CPPUNIT_TEST(mem_fun_ref);
-    CPPUNIT_TEST_SUITE_END();
-
 public:
-    void setUp();
-    void tearDown();
+	test_functional() = default;
+	~test_functional() = default;
+	void run();
+
+
 	static const int		m_print_time; // = 1;
 	static const size_t		m_container_size; // = 2000;
 
@@ -267,7 +220,4 @@ public:
 };
 
 
-
 #endif//__test_functional_hpp__
-
-

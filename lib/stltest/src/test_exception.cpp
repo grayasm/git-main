@@ -3,7 +3,7 @@ Copyright (C) 2013 Mihai Vasilian
 */
 
 
-#if 0
+
 #include "test_exception.hpp"
 
 //c
@@ -11,11 +11,8 @@ Copyright (C) 2013 Mihai Vasilian
 #include <time.h>
 //c++
 
-//CppUnit
-#include <cppunit/CompilerOutputter.h>
-#include <cppunit/extensions/TestFactoryRegistry.h>
-#include <cppunit/ui/text/TestRunner.h>
-
+//acutest
+#include "acutest.h"
 
 //libraries
 #include "stream.hpp"
@@ -24,13 +21,15 @@ Copyright (C) 2013 Mihai Vasilian
 
 
 //###########################DEQUE TEST CLASS ####################################
-void test_exception::setUp()
+void test_exception::run()
 {
+	ctor();
+	dtor();
+
+	// new line before TEST RESULT OUTPUT
+	stl::cout << "\n";
 }
 
-void test_exception::tearDown()
-{
-}
 
 
 //test begin
@@ -91,5 +90,3 @@ void test_exception::dtor(const char* msg)
 
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
-
-#endif

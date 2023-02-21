@@ -12,26 +12,15 @@ Copyright (C) 2012 Mihai Vasilian
 //c++
 //....
 
-//CppUnit
-#include <cppunit/extensions/HelperMacros.h>
 
-
-
-
-
-class test_numeric : public CppUnit::TestFixture
+class test_numeric
 {
-
-    CPPUNIT_TEST_SUITE(test_numeric);
-    CPPUNIT_TEST(accumulate);	
-	CPPUNIT_TEST(adjacent_difference);
-	CPPUNIT_TEST(inner_product);
-	CPPUNIT_TEST(partial_sum);
-    CPPUNIT_TEST_SUITE_END();
-
 public:
-    void setUp();
-    void tearDown();
+	test_numeric() = default;
+	~test_numeric() = default;
+	void run();
+    
+
 	static const int		m_print_time = 1;
 	static const size_t		m_container_size = 40000;
 
@@ -55,7 +44,6 @@ public:
 	void partial_sum(const char* msg);
     //////////////////////////////////////////////////////////////////////////
 };
-
 
 
 #endif//__test_numeric_hpp__

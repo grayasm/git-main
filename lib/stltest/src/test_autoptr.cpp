@@ -4,7 +4,7 @@ Copyright (C) 2009 Mihai Vasilian
 
 
 
-#if 0
+
 
 //this
 #include "test_autoptr.hpp"
@@ -15,11 +15,8 @@ Copyright (C) 2009 Mihai Vasilian
 #include <vector>
 #include <algorithm>
 
-//CppUnit
-#include <cppunit/CompilerOutputter.h>
-#include <cppunit/extensions/TestFactoryRegistry.h>
-#include <cppunit/ui/text/TestRunner.h>
-
+//acutest
+#include "acutest.h"
 
 //libraries
 #include "string.hpp"
@@ -154,13 +151,22 @@ public:
 
 
 
-//###########################BEGIN TEST CLASS ####################################
-void test_autoptr::setUp()
+//############################ BEGIN TEST ######################################
+void test_autoptr::run()
 {	
-}
+	test_assignment_with_different_type();
+	test_assignment_with_different_type1();
+	test_assignment_with_different_type3();
+	test_operator_less();
+	test_operator_great();
+	test_sort();
+	test_derived_operator_less();
+	test_derived_operator_great();
+	test_self_assignament();
+	test_child_assignament();
 
-void test_autoptr::tearDown()
-{	
+	// new line before TEST RESULT OUTPUT
+	stl::cout << "\n";
 }
 
 //##########################BEGIN TEST SUITE######################################
@@ -180,7 +186,7 @@ void test_autoptr::test_assignment_with_different_type()
 		int _91a = pc1->f();
 		int _91b = pc2->f();
 
-		CPPUNIT_ASSERT(_91a == 91 && _91b == 91);
+		TEST_CHECK(_91a == 91 && _91b == 91);
 	}
 }
 
@@ -201,7 +207,7 @@ void test_autoptr::test_assignment_with_different_type1()
 		dv=ap;
 
 		long _10 = dv->getdata() ;
-		CPPUNIT_ASSERT(_10 == 10);
+		TEST_CHECK(_10 == 10);
 	}
 }
 
@@ -229,7 +235,7 @@ void test_autoptr::test_assignment_with_different_type3()
 		{
 			const stl::autoptr<base<long> >& obj = *cbeg;
 			const long& lval = obj->getdata();
-			CPPUNIT_ASSERT(lval == -i);
+			TEST_CHECK(lval == -i);
 		}//for
 	}    
 }
@@ -261,7 +267,7 @@ void test_autoptr::test_operator_less()
 		lblist::iterator min =std::min_element(m_list.begin(), m_list.end(), std_min_element_pred);
 		long lval = (*min)->getdata();
 
-		CPPUNIT_ASSERT(lval == -100);
+		TEST_CHECK(lval == -100);
 	}
 }
 
@@ -286,7 +292,7 @@ void test_autoptr::test_operator_great()
 		lblist::iterator max=std::max_element(m_list.begin(), m_list.end(), std_min_element_pred);
 		long lval = (*max)->getdata();
 
-		CPPUNIT_ASSERT(lval == -4);
+		TEST_CHECK(lval == -4);
 	}
 }
 
@@ -320,7 +326,7 @@ void test_autoptr::test_sort()
 		long min = (*m_list_sort.begin())->getdata();
 		long max = (*(--(m_list_sort.end())))->getdata();
 
-		CPPUNIT_ASSERT(min == -100 && max==-4);
+		TEST_CHECK(min == -100 && max==-4);
 	}    
 }
 
@@ -340,7 +346,7 @@ void test_autoptr::test_derived_operator_less()
 		}
 
 		long min = (*std::min_element(m_tdlist.begin(), m_tdlist.end(), std_min_element_pred))->getdata();
-		CPPUNIT_ASSERT(min == 0);
+		TEST_CHECK(min == 0);
 	}    
 }
 
@@ -360,7 +366,7 @@ void test_autoptr::test_derived_operator_great()
 		}
 
 		long max = (*std::max_element(m_tdlist.begin(), m_tdlist.end(), std_min_element_pred))->getdata();
-		CPPUNIT_ASSERT(max == 20);
+		TEST_CHECK(max == 20);
 	}
 }
 
@@ -374,7 +380,7 @@ void test_autoptr::test_self_assignament()
 		MyClass::Ptr obj01=new MyClass(-1);
 		obj01=obj01;
 		long lval = obj01->getVal();
-		CPPUNIT_ASSERT(lval == -1);
+		TEST_CHECK(lval == -1);
 	}
 }
 
@@ -393,9 +399,7 @@ void test_autoptr::test_child_assignament()
 		a->SetChild( new MyClass(-3) );
 		MyClass::Ptr b = a->GetChild();
 		a=b;    
-		CPPUNIT_ASSERT(a->getVal() == -3);
+		TEST_CHECK(a->getVal() == -3);
 	}    
 }
 
-
-#endif

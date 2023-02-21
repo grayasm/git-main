@@ -3,7 +3,6 @@ Copyright (C) 2012 Mihai Vasilian
 */
 
 
-
 #ifndef __test_vector_hpp__
 #define __test_vector_hpp__
 
@@ -11,42 +10,14 @@ Copyright (C) 2012 Mihai Vasilian
 //c++
 //....
 
-//CppUnit
-#include <cppunit/extensions/HelperMacros.h>
 
-
-
-class test_vector : public CppUnit::TestFixture
+class test_vector
 {
-    CPPUNIT_TEST_SUITE(test_vector);
-	CPPUNIT_TEST(ctor);
-    CPPUNIT_TEST(assign_op);
-    CPPUNIT_TEST(assign);
-    CPPUNIT_TEST(begin);
-    CPPUNIT_TEST(end);
-    CPPUNIT_TEST(rbegin);
-    CPPUNIT_TEST(rend);
-    CPPUNIT_TEST(resize);
-    CPPUNIT_TEST(capacity);
-    CPPUNIT_TEST(reserve);
-    CPPUNIT_TEST(at_and_op);
-    CPPUNIT_TEST(front);
-    CPPUNIT_TEST(back);
-    CPPUNIT_TEST(push_back);
-    CPPUNIT_TEST(pop_back);
-    CPPUNIT_TEST(insert);
-    CPPUNIT_TEST(erase);
-    CPPUNIT_TEST(swap);
-    CPPUNIT_TEST(clear);
-    CPPUNIT_TEST(get_allocator);
-    CPPUNIT_TEST(relational_op);
-    CPPUNIT_TEST(perf1);
-    CPPUNIT_TEST_SUITE_END();
-
-
 public:
-	void setUp();
-	void tearDown();
+    test_vector() = default;
+    ~test_vector() = default;
+	void run();
+
 
     void ctor();
     void assign_op();
@@ -71,7 +42,6 @@ public:
     void relational_op();
     void perf1();
 };
-
 
 
 #endif//__test_vector_hpp__

@@ -2,26 +2,57 @@
 Copyright (C) 2012 Mihai Vasilian
 */
 
-#if 0
+
 #include "test_list.hpp"
 
-//CppUnit
-#include <cppunit/CompilerOutputter.h>
-#include <cppunit/extensions/TestFactoryRegistry.h>
-#include <cppunit/ui/text/TestRunner.h>
-
-
+// c
+// c++
 #include <list>
+
+//acutest
+#include "acutest.h"
+
+
+//libraries
 #include "list.hpp"
+#include "stream.hpp"
 #include "time_printer.hpp"
 
 
-void test_list::setUp()
-{
-}
 
-void test_list::tearDown()
+
+
+void test_list::run()
 {
+    ctor();
+    assign_op();
+    assign();
+    get_allocator();
+    begin();
+    end();
+    rbegin();
+    rend();
+    resize();
+    front();
+    back();
+    push_front();
+    pop_front();
+    push_back();
+    pop_back();
+    insert();
+    erase();
+    swap();
+    clear();
+    splice();
+    remove();
+    unique();
+    merge();
+    sort();
+    reverse();
+    perf1();
+
+    // new line before TEST RESULT OUTPUT
+    stl::cout << "\n";
 }
 
 
@@ -75,13 +106,13 @@ void test_list::ctor()
 
     // list(const Allocator& alloc= Allocator())
     list l01;
-    CPPUNIT_ASSERT(l01.empty());
+    TEST_CHECK(l01.empty());
 
     // list(size_type n, const T& value = T(), const Allocator& alloc = Allocator())
     list l02(400, 100);
-    CPPUNIT_ASSERT(l02.size() == 400);
+    TEST_CHECK(l02.size() == 400);
     for (list::iterator it = l02.begin(); it != l02.end(); ++it)
-        CPPUNIT_ASSERT(*it == 100);
+        TEST_CHECK(*it == 100);
 
     // list(InputIterator first, InputIterator last, const Allocator& alloc = Allocator())
     list l03;
@@ -89,27 +120,27 @@ void test_list::ctor()
         l03.push_back(i);
 
     list l04(l03.begin(), l03.end());
-    CPPUNIT_ASSERT(l04.size() == 400);
+    TEST_CHECK(l04.size() == 400);
     size_t i04 = 0;
     for (list::iterator it = l04.begin(); it != l04.end(); ++it, ++i04)
-        CPPUNIT_ASSERT(*it == i04);
+        TEST_CHECK(*it == i04);
 
     list l05(l03.rbegin(), l03.rend());
-    CPPUNIT_ASSERT(l05.size() == 400);
+    TEST_CHECK(l05.size() == 400);
     size_t i05 = 399;
     for (list::iterator it = l05.begin(); it != l05.end(); ++it, --i05)
-        CPPUNIT_ASSERT(*it == i05);
+        TEST_CHECK(*it == i05);
 
     const list& cl03 = l03;
     list l06(cl03.begin(), cl03.end());
     size_t i06 = 0;
     for (list::iterator it = l06.begin(); it != l06.end(); ++it, ++i06)
-        CPPUNIT_ASSERT(*it == i06);
+        TEST_CHECK(*it == i06);
 
     list l07(cl03.rbegin(), cl03.rend());
     size_t i07 = 399;
     for (list::iterator it = l07.begin(); it != l07.end(); ++it, --i07)
-        CPPUNIT_ASSERT(*it == i07);
+        TEST_CHECK(*it == i07);
 
         
 
@@ -303,4 +334,3 @@ void test_list::reverse()
 void test_list::perf1()
 {
 }
-#endif

@@ -11,27 +11,20 @@ Copyright (C) 2013 Mihai Vasilian
 //c
 //c++
 
-//CppUnit
-#include <cppunit/extensions/HelperMacros.h>
-
-//misc
+//stl
 #include "exception.hpp"
 
 
-class test_exception : public CppUnit::TestFixture
+class test_exception
 {
-	CPPUNIT_TEST_SUITE(test_exception);
-	CPPUNIT_TEST( ctor );
-	CPPUNIT_TEST( dtor );    
-	CPPUNIT_TEST_SUITE_END();
-
-
 public:
-	void setUp();
-	void tearDown();
+	test_exception() = default;
+	~test_exception() = default;
+	void run();
+
+
 	static const int		m_print_time = 1;
 	static const size_t		m_container_size = 40000;
-
 
 	//////////////////////////////////////////////////////////////////////////
 	//test begin

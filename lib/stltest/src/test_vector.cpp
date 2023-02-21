@@ -2,26 +2,50 @@
 Copyright (C) 2009 Mihai Vasilian
 */
 
-#if 0
+
+
 #include "test_vector.hpp"
 
-//CppUnit
-#include <cppunit/CompilerOutputter.h>
-#include <cppunit/extensions/TestFactoryRegistry.h>
-#include <cppunit/ui/text/TestRunner.h>
-
-
+// c
+// c++
 #include <vector>
+
+//acutest
+#include "acutest.h"
+
+// libraries
 #include "vector.hpp"
+#include "stream.hpp"
 #include "time_printer.hpp"
 
 
-void test_vector::setUp()
+void test_vector::run()
 {
-}
+    ctor();
+    assign_op();
+    assign();
+    begin();
+    end();
+    rbegin();
+    rend();
+    resize();
+    capacity();
+    reserve();
+    at_and_op();
+    front();
+    back();
+    push_back();
+    pop_back();
+    insert();
+    erase();
+    swap();
+    clear();
+    get_allocator();
+    relational_op();
+    perf1();
 
-void test_vector::tearDown()
-{
+    // new line before TEST RESULT OUTPUT
+    stl::cout << "\n";
 }
 
 template<typename T>
@@ -77,17 +101,17 @@ void test_vector::ctor()
     for (int i = 0; i < 5; ++i)
     {
         if (v1[i] != -1)
-            CPPUNIT_ASSERT(false);
+            TEST_CHECK(false);
     }
-    CPPUNIT_ASSERT(v1.size() == 5);
+    TEST_CHECK(v1.size() == 5);
 
     Cx c2(-101);
     stl::vector<Cx> v2((size_t)3, c2);
     for (size_t i = 0; i < v2.size(); ++i)
     {
-        CPPUNIT_ASSERT(v2[i] == c2);
+        TEST_CHECK(v2[i] == c2);
     }
-    CPPUNIT_ASSERT(v2.size() == 3);
+    TEST_CHECK(v2.size() == 3);
 
 
     // vector<InputIterator>(InputIterator first, InputIterator last);
@@ -96,17 +120,17 @@ void test_vector::ctor()
     for (int i = 0; i < 5; ++i)
     {
         if (v3[i] != sc1[i])
-            CPPUNIT_ASSERT(false);
+            TEST_CHECK(false);
     }
-    CPPUNIT_ASSERT(v3.size() == 5);
+    TEST_CHECK(v3.size() == 5);
 
     Cx c4[5] = { -1, -2, -3, -4, -5 };
     stl::vector<Cx> v4(c4, c4 + 5);
     for (int i = 0; i < 5; ++i)
     {
-        CPPUNIT_ASSERT(v4[i] == c4[i]);
+        TEST_CHECK(v4[i] == c4[i]);
     }
-    CPPUNIT_ASSERT(v4.size() == 5);
+    TEST_CHECK(v4.size() == 5);
 
 
     // vector(const vector&)
@@ -117,7 +141,7 @@ void test_vector::ctor()
     for (size_t i = 0; i < v5.size(); ++i)
     {
         if (!is_eq(v5[i], v6[i], 1e-4f))
-            CPPUNIT_ASSERT(false);
+            TEST_CHECK(false);
     }
 }
 
@@ -134,9 +158,9 @@ void test_vector::assign_op()
     for (size_t i = 0; i < v1.size(); ++i)
     {
         if (v1[i] != v2[i])
-            CPPUNIT_ASSERT(false);
+            TEST_CHECK(false);
     }
-    CPPUNIT_ASSERT(v2.size() == v1.size());
+    TEST_CHECK(v2.size() == v1.size());
 
     v2 = v2; //self
 }
@@ -153,14 +177,14 @@ void test_vector::assign()
     for (size_t i = 0; i < v1.size(); ++i)
     {
         if (v1[i] != v2[i])
-            CPPUNIT_ASSERT(false);
+            TEST_CHECK(false);
     }
 
     v2.assign(v2); // self
     for (size_t i = 0; i < v1.size(); ++i)
     {
         if (v1[i] != v2[i])
-            CPPUNIT_ASSERT(false);
+            TEST_CHECK(false);
     }
 
     // void assign(size_t, const T&);
@@ -169,17 +193,17 @@ void test_vector::assign()
     for (int i = 0; i < 3; ++i)
     {
         if (v2[i] != 100)
-            CPPUNIT_ASSERT(false);
+            TEST_CHECK(false);
     }
-    CPPUNIT_ASSERT(v2.size() == 3);
+    TEST_CHECK(v2.size() == 3);
 
     v2.assign((size_t)4, v2.front()); // self
     for (int i = 0; i < 4; ++i)
     {
         if (v2[i] != 100)
-            CPPUNIT_ASSERT(false);
+            TEST_CHECK(false);
     }
-    CPPUNIT_ASSERT(v2.size() == 4);
+    TEST_CHECK(v2.size() == 4);
 
     Cx c3[5] = { -1, -2, -3, -4, -5 };
     stl::vector<Cx> v3;
@@ -192,8 +216,8 @@ void test_vector::assign()
     // capacity must be 2; will trigger relocation for 3 and invalidate c3addr
     v3.assign((size_t)3, c3addr);
 
-    CPPUNIT_ASSERT(v3[0] == v3[1] && v3[1] == v3[2] && v3[0] == c3[0]);
-    CPPUNIT_ASSERT(v3.size() == 3);
+    TEST_CHECK(v3[0] == v3[1] && v3[1] == v3[2] && v3[0] == c3[0]);
+    TEST_CHECK(v3.size() == 3);
 
     // void assign_(iterator, iterator);
     stl::vector<Cx> v4, v5;
@@ -201,31 +225,31 @@ void test_vector::assign()
     v5.assign(v4.begin(), v4.end()); // iterator
 
     for (size_t i = 0; i < v4.size(); ++i)
-        CPPUNIT_ASSERT(v5[i] == v4[i]);
-    CPPUNIT_ASSERT(v5.size() == v4.size());
+        TEST_CHECK(v5[i] == v4[i]);
+    TEST_CHECK(v5.size() == v4.size());
 
     const stl::vector<Cx>& cv4_ = v4;
     v5.assign(cv4_.begin(), cv4_.end()); // const_iterator
 
     for (size_t i = 0; i < v4.size(); ++i)
-        CPPUNIT_ASSERT(v5[i] == v4[i]);
-    CPPUNIT_ASSERT(v5.size() == v4.size());
+        TEST_CHECK(v5[i] == v4[i]);
+    TEST_CHECK(v5.size() == v4.size());
 
     v5.assign(v4.rbegin(), v4.rend()); // reverse_iterator
     for (size_t i = 0; i < v4.size(); ++i)
-        CPPUNIT_ASSERT(v5[i] == v4[v4.size() - i - 1]);
-    CPPUNIT_ASSERT(v5.size() == v4.size());
+        TEST_CHECK(v5[i] == v4[v4.size() - i - 1]);
+    TEST_CHECK(v5.size() == v4.size());
 
     v5.assign(cv4_.rbegin(), cv4_.rend()); // const_reverse_iterator
     for (size_t i = 0; i < cv4_.size(); ++i)
-        CPPUNIT_ASSERT(v5[i] == cv4_[cv4_.size() - i - 1]);
-    CPPUNIT_ASSERT(v5.size() == cv4_.size());
+        TEST_CHECK(v5[i] == cv4_[cv4_.size() - i - 1]);
+    TEST_CHECK(v5.size() == cv4_.size());
 
     v5.assign(v4.begin(), v4.end());
     v5.assign(v5.begin() + 2, v5.end()); // iterator (self assignment)
     for (size_t i = 0; i < v5.size(); ++i)
-        CPPUNIT_ASSERT(v5[i] == v4[i + 2]);
-    CPPUNIT_ASSERT(v5.size() == v4.size() - 2);
+        TEST_CHECK(v5[i] == v4[i + 2]);
+    TEST_CHECK(v5.size() == v4.size() - 2);
 
 
     v5.assign(v4.begin(), v4.end());
@@ -233,16 +257,16 @@ void test_vector::assign()
     v5.assign(v5_cib, v5_cie - 2); // const_iterator (self assignment)
 
     for (size_t i = 0; i < v5.size(); ++i)
-        CPPUNIT_ASSERT(v5[i] == v4[i]);
-    CPPUNIT_ASSERT(v5.size() == v4.size() - 2);
+        TEST_CHECK(v5[i] == v4[i]);
+    TEST_CHECK(v5.size() == v4.size() - 2);
 
     v5.assign(v4.begin(), v4.end());
     stl::vector<Cx>::reverse_iterator v5_rib = v5.rbegin(), v5_rie = v5.rend();
     v5.assign(v5_rib + 2, v5_rie); // reverse_iterator (self assignment)
 
     for (size_t i = 0; i < v5.size(); ++i)
-        CPPUNIT_ASSERT(v5[i] == v4[v4.size() - i - 3]);
-    CPPUNIT_ASSERT(v5.size() == v4.size() - 2);
+        TEST_CHECK(v5[i] == v4[v4.size() - i - 3]);
+    TEST_CHECK(v5.size() == v4.size() - 2);
 
     v5.assign(v4.begin(), v4.end());
     stl::vector<Cx>::const_reverse_iterator v5_crib = v5.rbegin(),
@@ -250,15 +274,15 @@ void test_vector::assign()
     v5.assign(v5_crib, v5_crie - 2); // const_reverse_iterator (self assignment)
 
     for (size_t i = 0; i < v5.size(); ++i)
-        CPPUNIT_ASSERT(v5[i] == v4[v4.size() - i - 1]);
-    CPPUNIT_ASSERT(v5.size() == v4.size() - 2);
+        TEST_CHECK(v5[i] == v4[v4.size() - i - 1]);
+    TEST_CHECK(v5.size() == v4.size() - 2);
 
     v5.assign(v4.begin(), v4.end());
     v5.assign(5, v5.front());
 
     for (size_t i = 0; i < v5.size(); ++i)
-        CPPUNIT_ASSERT(v5[i] == v4.front());
-    CPPUNIT_ASSERT(v5.size() == 5);
+        TEST_CHECK(v5[i] == v4.front());
+    TEST_CHECK(v5.size() == 5);
 
     //assign_(InputIterator n, InputIterator value, stl::input_iterator_tag)
     int i6[5] = { -1, -2, -3, -4, -5 };
@@ -267,7 +291,7 @@ void test_vector::assign()
     v6.assign(5, v6.front());
 
     for (size_t i = 0; i < v6.size(); ++i)
-        CPPUNIT_ASSERT(v6[i] == -1);
+        TEST_CHECK(v6[i] == -1);
 
     // void assign_(value_type* first, value_type* last)
     Cx c7[5] = { -1, -2, -3, -4, -5 };
@@ -275,13 +299,13 @@ void test_vector::assign()
     v7.assign(c7, c7 + 5);
 
     for (size_t i = 0; i < v7.size(); ++i)
-        CPPUNIT_ASSERT(v7[i] == c7[i]);
-    CPPUNIT_ASSERT(v7.size() == 5);
+        TEST_CHECK(v7[i] == c7[i]);
+    TEST_CHECK(v7.size() == 5);
 
     v7.assign(&v7.front(), &v7.back()); // self assignment
     for (size_t i = 0; i < v7.size(); ++i)
-        CPPUNIT_ASSERT(v7[i] == c7[i]);
-    CPPUNIT_ASSERT(v7.size() == 4);
+        TEST_CHECK(v7[i] == c7[i]);
+    TEST_CHECK(v7.size() == 4);
 
     // void assign_(const value_type* first, const value_type* last)
     Cx c8[5] = { -1, -2, -3, -4, -5 };
@@ -289,15 +313,15 @@ void test_vector::assign()
     v8.assign((const Cx*)c8, (const Cx*)(c8 + 5));
 
     for (size_t i = 0; i < v8.size(); ++i)
-        CPPUNIT_ASSERT(v8[i] == c8[i]);
-    CPPUNIT_ASSERT(v8.size() == 5);
+        TEST_CHECK(v8[i] == c8[i]);
+    TEST_CHECK(v8.size() == 5);
 
     const stl::vector<Cx>& cv8 = v8;
     v8.assign(&cv8.front(), &cv8.back()); // self assignment
 
     for (size_t i = 0; i < v8.size(); ++i)
-        CPPUNIT_ASSERT(v8[i] == c8[i]);
-    CPPUNIT_ASSERT(v8.size() == 4);
+        TEST_CHECK(v8[i] == c8[i]);
+    TEST_CHECK(v8.size() == 4);
 
     // --- other situations worth testing ---
     // I had the impression that mem_move leaks memory.
@@ -308,7 +332,7 @@ void test_vector::assign()
 
     // const Cx& elem4 = v9[4];
     v9.assign(v9.begin() + 2, v9.end()); // move last 3 in front
-    CPPUNIT_ASSERT(v9.size() == 3); // elem4 is released - OK
+    TEST_CHECK(v9.size() == 3); // elem4 is released - OK
 
     int i10[5] = { -1, -2, -3, -4, -5 };
     stl::vector<int> v10;
@@ -316,7 +340,7 @@ void test_vector::assign()
 
     // int& elem4_1 = v10[4];
     v10.assign(v10.begin() + 2, v10.end()); // most last 3 in front
-    CPPUNIT_ASSERT(v10.size() == 3);
+    TEST_CHECK(v10.size() == 3);
 }
 
 void test_vector::begin()
@@ -331,46 +355,46 @@ void test_vector::begin()
     beg3 = beg;
     const Cx& cx = *beg3;
     const int* pint = beg3->get();
-    CPPUNIT_ASSERT(*pint == -1);
+    TEST_CHECK(*pint == -1);
 
     stl::vector<Cx>::iterator& beg4 = ++beg3;   //operator++()
-    CPPUNIT_ASSERT(*(beg4->get()) == -2);
+    TEST_CHECK(*(beg4->get()) == -2);
 
     stl::vector<Cx>::iterator beg5 = beg4++;    //operator++(int)
-    CPPUNIT_ASSERT(*(beg5->get()) == -2);
-    CPPUNIT_ASSERT(*(beg4->get()) == -3);
+    TEST_CHECK(*(beg5->get()) == -2);
+    TEST_CHECK(*(beg4->get()) == -3);
 
     stl::vector<Cx>::iterator& beg6 = --beg4;   //operator--()
-    CPPUNIT_ASSERT(*(beg6->get()) == -2);
+    TEST_CHECK(*(beg6->get()) == -2);
 
     stl::vector<Cx>::iterator beg7 = beg6--;    //operator--(int)
-    CPPUNIT_ASSERT(*(beg7->get()) == -2);
-    CPPUNIT_ASSERT(*(beg6->get()) == -1);
+    TEST_CHECK(*(beg7->get()) == -2);
+    TEST_CHECK(*(beg6->get()) == -1);
 
     stl::vector<Cx>::iterator& beg8 = (beg6 += 2);  //operator+=(offset)
-    CPPUNIT_ASSERT(*(beg8->get()) == -3);
+    TEST_CHECK(*(beg8->get()) == -3);
 
     stl::vector<Cx>::iterator beg9 = (beg8 + 2);    //operator+()
-    CPPUNIT_ASSERT(*(beg9->get()) == -5);
+    TEST_CHECK(*(beg9->get()) == -5);
     
     stl::vector<Cx>::iterator beg10 = (beg9 -= 2);  //operator-=(offset)
-    CPPUNIT_ASSERT(*(beg10->get()) == -3);
+    TEST_CHECK(*(beg10->get()) == -3);
 
     stl::vector<Cx>::iterator beg11 = (beg10 - 2);  //operator-(offset);
-    CPPUNIT_ASSERT(*(beg11->get()) == -1);
+    TEST_CHECK(*(beg11->get()) == -1);
 
     size_t diff11 = beg10 - beg11;
-    CPPUNIT_ASSERT(diff11 == 2);
+    TEST_CHECK(diff11 == 2);
 
-    CPPUNIT_ASSERT(beg == beg2);
-    CPPUNIT_ASSERT(beg11 != beg10);
-    CPPUNIT_ASSERT(beg11 < beg10);
-    CPPUNIT_ASSERT(beg10 > beg11);
-    CPPUNIT_ASSERT(beg11 <= beg10);
-    CPPUNIT_ASSERT(beg >= beg2);
+    TEST_CHECK(beg == beg2);
+    TEST_CHECK(beg11 != beg10);
+    TEST_CHECK(beg11 < beg10);
+    TEST_CHECK(beg10 > beg11);
+    TEST_CHECK(beg11 <= beg10);
+    TEST_CHECK(beg >= beg2);
     
     const Cx& cx11 = beg11[2];
-    CPPUNIT_ASSERT(beg11[2] == *beg10);     // operator[](offset)
+    TEST_CHECK(beg11[2] == *beg10);     // operator[](offset)
 }
 
 void test_vector::end()
@@ -385,46 +409,46 @@ void test_vector::end()
     end3 = end - 5;
     const Cx& cx = *end3;
     const int* pint = end3->get();
-    CPPUNIT_ASSERT(*pint == -1);
+    TEST_CHECK(*pint == -1);
 
     stl::vector<Cx>::iterator& end4 = ++end3;   //operator++()
-    CPPUNIT_ASSERT(*(end4->get()) == -2);
+    TEST_CHECK(*(end4->get()) == -2);
 
     stl::vector<Cx>::iterator end5 = end4++;    //operator++(int)
-    CPPUNIT_ASSERT(*(end5->get()) == -2);
-    CPPUNIT_ASSERT(*(end4->get()) == -3);
+    TEST_CHECK(*(end5->get()) == -2);
+    TEST_CHECK(*(end4->get()) == -3);
 
     stl::vector<Cx>::iterator& end6 = --end4;   //operator--()
-    CPPUNIT_ASSERT(*(end6->get()) == -2);
+    TEST_CHECK(*(end6->get()) == -2);
 
     stl::vector<Cx>::iterator end7 = end6--;    //operator--(int)
-    CPPUNIT_ASSERT(*(end7->get()) == -2);
-    CPPUNIT_ASSERT(*(end6->get()) == -1);
+    TEST_CHECK(*(end7->get()) == -2);
+    TEST_CHECK(*(end6->get()) == -1);
 
     stl::vector<Cx>::iterator& end8 = (end6 += 2);  //operator+=(offset)
-    CPPUNIT_ASSERT(*(end8->get()) == -3);
+    TEST_CHECK(*(end8->get()) == -3);
 
     stl::vector<Cx>::iterator end9 = (end8 + 2);    //operator+()
-    CPPUNIT_ASSERT(*(end9->get()) == -5);
+    TEST_CHECK(*(end9->get()) == -5);
 
     stl::vector<Cx>::iterator end10 = (end9 -= 2);  //operator-=(offset)
-    CPPUNIT_ASSERT(*(end10->get()) == -3);
+    TEST_CHECK(*(end10->get()) == -3);
 
     stl::vector<Cx>::iterator end11 = (end10 - 2);  //operator-(offset);
-    CPPUNIT_ASSERT(*(end11->get()) == -1);
+    TEST_CHECK(*(end11->get()) == -1);
 
     size_t diff11 = end10 - end11;
-    CPPUNIT_ASSERT(diff11 == 2);
+    TEST_CHECK(diff11 == 2);
 
-    CPPUNIT_ASSERT(end == end2);
-    CPPUNIT_ASSERT(end11 != end10);
-    CPPUNIT_ASSERT(end11 < end10);
-    CPPUNIT_ASSERT(end10 > end11);
-    CPPUNIT_ASSERT(end11 <= end10);
-    CPPUNIT_ASSERT(end >= end2);
+    TEST_CHECK(end == end2);
+    TEST_CHECK(end11 != end10);
+    TEST_CHECK(end11 < end10);
+    TEST_CHECK(end10 > end11);
+    TEST_CHECK(end11 <= end10);
+    TEST_CHECK(end >= end2);
 
     const Cx& cx11 = end11[2];
-    CPPUNIT_ASSERT(end11[2] == *end10);     // operator[](offset)
+    TEST_CHECK(end11[2] == *end10);     // operator[](offset)
 }
 
 void test_vector::rbegin()
@@ -439,46 +463,46 @@ void test_vector::rbegin()
     rbeg3 = rbeg;
     const Cx& cx = *rbeg3;
     const int* pint = rbeg3->get();
-    CPPUNIT_ASSERT(*pint == -5);
+    TEST_CHECK(*pint == -5);
 
     stl::vector<Cx>::reverse_iterator& rbeg4 = ++rbeg3;   //operator++()
-    CPPUNIT_ASSERT(*(rbeg4->get()) == -4);
+    TEST_CHECK(*(rbeg4->get()) == -4);
 
     stl::vector<Cx>::reverse_iterator rbeg5 = rbeg4++;    //operator++(int)
-    CPPUNIT_ASSERT(*(rbeg5->get()) == -4);
-    CPPUNIT_ASSERT(*(rbeg4->get()) == -3);
+    TEST_CHECK(*(rbeg5->get()) == -4);
+    TEST_CHECK(*(rbeg4->get()) == -3);
 
     stl::vector<Cx>::reverse_iterator& rbeg6 = --rbeg4;   //operator--()
-    CPPUNIT_ASSERT(*(rbeg6->get()) == -4);
+    TEST_CHECK(*(rbeg6->get()) == -4);
 
     stl::vector<Cx>::reverse_iterator rbeg7 = rbeg6--;    //operator--(int)
-    CPPUNIT_ASSERT(*(rbeg7->get()) == -4);
-    CPPUNIT_ASSERT(*(rbeg6->get()) == -5);
+    TEST_CHECK(*(rbeg7->get()) == -4);
+    TEST_CHECK(*(rbeg6->get()) == -5);
 
     stl::vector<Cx>::reverse_iterator& rbeg8 = (rbeg6 += 2);  //operator+=(offset)
-    CPPUNIT_ASSERT(*(rbeg8->get()) == -3);
+    TEST_CHECK(*(rbeg8->get()) == -3);
 
     stl::vector<Cx>::reverse_iterator rbeg9 = (rbeg8 + 2);    //operator+()
-    CPPUNIT_ASSERT(*(rbeg9->get()) == -1);
+    TEST_CHECK(*(rbeg9->get()) == -1);
 
     stl::vector<Cx>::reverse_iterator rbeg10 = (rbeg9 -= 2);  //operator-=(offset)
-    CPPUNIT_ASSERT(*(rbeg10->get()) == -3);
+    TEST_CHECK(*(rbeg10->get()) == -3);
 
     stl::vector<Cx>::reverse_iterator rbeg11 = (rbeg10 - 2);  //operator-(offset);
-    CPPUNIT_ASSERT(*(rbeg11->get()) == -5);
+    TEST_CHECK(*(rbeg11->get()) == -5);
 
     size_t diff11 = rbeg10 - rbeg11;
-    CPPUNIT_ASSERT(diff11 == 2);
+    TEST_CHECK(diff11 == 2);
 
-    CPPUNIT_ASSERT(rbeg == rbeg2);
-    CPPUNIT_ASSERT(rbeg11 != rbeg10);
-    CPPUNIT_ASSERT(rbeg11 < rbeg10);
-    CPPUNIT_ASSERT(rbeg10 > rbeg11);
-    CPPUNIT_ASSERT(rbeg11 <= rbeg10);
-    CPPUNIT_ASSERT(rbeg >= rbeg2);
+    TEST_CHECK(rbeg == rbeg2);
+    TEST_CHECK(rbeg11 != rbeg10);
+    TEST_CHECK(rbeg11 < rbeg10);
+    TEST_CHECK(rbeg10 > rbeg11);
+    TEST_CHECK(rbeg11 <= rbeg10);
+    TEST_CHECK(rbeg >= rbeg2);
 
     const Cx& cx11 = rbeg11[2];
-    CPPUNIT_ASSERT(rbeg11[2] == *rbeg10);     // operator[](offset)
+    TEST_CHECK(rbeg11[2] == *rbeg10);     // operator[](offset)
 }
 
 void test_vector::rend()
@@ -493,46 +517,46 @@ void test_vector::rend()
     rend3 = rend - 5;
     const Cx& cx = *rend3;
     const int* pint = rend3->get();
-    CPPUNIT_ASSERT(*pint == -5);
+    TEST_CHECK(*pint == -5);
 
     stl::vector<Cx>::reverse_iterator& rend4 = ++rend3;   //operator++()
-    CPPUNIT_ASSERT(*(rend4->get()) == -4);
+    TEST_CHECK(*(rend4->get()) == -4);
 
     stl::vector<Cx>::reverse_iterator rend5 = rend4++;    //operator++(int)
-    CPPUNIT_ASSERT(*(rend5->get()) == -4);
-    CPPUNIT_ASSERT(*(rend4->get()) == -3);
+    TEST_CHECK(*(rend5->get()) == -4);
+    TEST_CHECK(*(rend4->get()) == -3);
 
     stl::vector<Cx>::reverse_iterator& rend6 = --rend4;   //operator--()
-    CPPUNIT_ASSERT(*(rend6->get()) == -4);
+    TEST_CHECK(*(rend6->get()) == -4);
 
     stl::vector<Cx>::reverse_iterator rend7 = rend6--;    //operator--(int)
-    CPPUNIT_ASSERT(*(rend7->get()) == -4);
-    CPPUNIT_ASSERT(*(rend6->get()) == -5);
+    TEST_CHECK(*(rend7->get()) == -4);
+    TEST_CHECK(*(rend6->get()) == -5);
 
     stl::vector<Cx>::reverse_iterator& rend8 = (rend6 += 2);  //operator+=(offset)
-    CPPUNIT_ASSERT(*(rend8->get()) == -3);
+    TEST_CHECK(*(rend8->get()) == -3);
 
     stl::vector<Cx>::reverse_iterator rend9 = (rend8 + 2);    //operator+()
-    CPPUNIT_ASSERT(*(rend9->get()) == -1);
+    TEST_CHECK(*(rend9->get()) == -1);
 
     stl::vector<Cx>::reverse_iterator rend10 = (rend9 -= 2);  //operator-=(offset)
-    CPPUNIT_ASSERT(*(rend10->get()) == -3);
+    TEST_CHECK(*(rend10->get()) == -3);
 
     stl::vector<Cx>::reverse_iterator rend11 = (rend10 - 2);  //operator-(offset);
-    CPPUNIT_ASSERT(*(rend11->get()) == -5);
+    TEST_CHECK(*(rend11->get()) == -5);
 
     size_t diff11 = rend10 - rend11;
-    CPPUNIT_ASSERT(diff11 == 2);
+    TEST_CHECK(diff11 == 2);
 
-    CPPUNIT_ASSERT(rend == rend2);
-    CPPUNIT_ASSERT(rend11 != rend10);
-    CPPUNIT_ASSERT(rend11 < rend10);
-    CPPUNIT_ASSERT(rend10 > rend11);
-    CPPUNIT_ASSERT(rend11 <= rend10);
-    CPPUNIT_ASSERT(rend >= rend2);
+    TEST_CHECK(rend == rend2);
+    TEST_CHECK(rend11 != rend10);
+    TEST_CHECK(rend11 < rend10);
+    TEST_CHECK(rend10 > rend11);
+    TEST_CHECK(rend11 <= rend10);
+    TEST_CHECK(rend >= rend2);
 
     const Cx& cx11 = rend11[2];
-    CPPUNIT_ASSERT(rend11[2] == *rend10);     // operator[](offset)
+    TEST_CHECK(rend11[2] == *rend10);     // operator[](offset)
 }
 
 void test_vector::resize()
@@ -544,13 +568,13 @@ void test_vector::resize()
 
     v1.resize(3);  // resize to smaller size
     for (size_t i = 0; i < v1.size(); ++i)
-        CPPUNIT_ASSERT(v1[i] == c1[i]);
-    CPPUNIT_ASSERT(v1.size() == 3);
+        TEST_CHECK(v1[i] == c1[i]);
+    TEST_CHECK(v1.size() == 3);
 
     v1.resize(2, c1[0]); // resize to smaller size
     for (size_t i = 0; i < v1.size(); ++i)
-        CPPUNIT_ASSERT(v1[i] == c1[i]);
-    CPPUNIT_ASSERT(v1.size() == 2);
+        TEST_CHECK(v1[i] == c1[i]);
+    TEST_CHECK(v1.size() == 2);
 
 
     v1.assign(c1, c1 + 2);
@@ -558,31 +582,31 @@ void test_vector::resize()
     v1.resize(5, c1[0]); // resize to bigger size (default 2nd param)
 
     for (int i = 0; i < 2; ++i)
-        CPPUNIT_ASSERT(v1[i] == c1[i]);
+        TEST_CHECK(v1[i] == c1[i]);
     for (int i = 2; i < 5; ++i)
-        CPPUNIT_ASSERT(v1[i] == c1[0]);
-    CPPUNIT_ASSERT(v1.size() == 5);
+        TEST_CHECK(v1[i] == c1[0]);
+    TEST_CHECK(v1.size() == 5);
 
     v1.assign(c1, c1 + 5);
     v1.resize(5, v1.front()); // self assignment
     for (size_t i = 0; i < v1.size(); ++i)
-        CPPUNIT_ASSERT(v1[i] == c1[i]);
-    CPPUNIT_ASSERT(v1.size() == 5);
+        TEST_CHECK(v1[i] == c1[i]);
+    TEST_CHECK(v1.size() == 5);
 }
 
 void test_vector::capacity()
 {
     stl::vector<int> v1;
-    CPPUNIT_ASSERT(v1.capacity() == 0);
+    TEST_CHECK(v1.capacity() == 0);
 
     int i2[5] = { -1, -2, -3, -4, -5 };
     stl::vector<int> v2(i2, i2 + 5);
-    CPPUNIT_ASSERT(v2.capacity() == 5);
+    TEST_CHECK(v2.capacity() == 5);
 
     stl::vector<int> v3;
     for (int i = 0; i < 5; ++i)
         v3.push_back(i);
-    CPPUNIT_ASSERT(v3.capacity() == 8);
+    TEST_CHECK(v3.capacity() == 8);
 }
 
 
@@ -590,13 +614,13 @@ void test_vector::reserve()
 {
     stl::vector<int> v1;
     v1.reserve(0);
-    CPPUNIT_ASSERT(v1.capacity() == 0);
+    TEST_CHECK(v1.capacity() == 0);
 
     v1.reserve(5);
-    CPPUNIT_ASSERT(v1.capacity() == 5);
+    TEST_CHECK(v1.capacity() == 5);
 
     v1.reserve(3);
-    CPPUNIT_ASSERT(v1.capacity() == 5);    
+    TEST_CHECK(v1.capacity() == 5);    
 }
 
 void test_vector::at_and_op()
@@ -607,8 +631,8 @@ void test_vector::at_and_op()
 
     for (size_t i = 0; i < v1.size(); ++i)
     {
-        CPPUNIT_ASSERT(v1.at(i) == cx1[i]);
-        CPPUNIT_ASSERT(v1[i] == cx1[i]);
+        TEST_CHECK(v1.at(i) == cx1[i]);
+        TEST_CHECK(v1[i] == cx1[i]);
     }
 }
 
@@ -618,7 +642,7 @@ void test_vector::front()
     stl::vector<Cx> v1;
     v1.assign(cx1, cx1 + 5);
 
-    CPPUNIT_ASSERT(v1.front() == cx1[0]);
+    TEST_CHECK(v1.front() == cx1[0]);
 }
 
 void test_vector::back()
@@ -627,7 +651,7 @@ void test_vector::back()
     stl::vector<Cx> v1;
     v1.assign(cx1, cx1 + 5);
 
-    CPPUNIT_ASSERT(v1.back() == cx1[4]);
+    TEST_CHECK(v1.back() == cx1[4]);
 }
 
 void test_vector::push_back()
@@ -641,24 +665,24 @@ void test_vector::push_back()
     v1.push_back(c1[3]);
     v1.push_back(c1[4]);
     for (size_t i = 0; i < v1.size(); ++i)
-        CPPUNIT_ASSERT(v1[i] == c1[i]);
-    CPPUNIT_ASSERT(v1.size() == 5);
+        TEST_CHECK(v1[i] == c1[i]);
+    TEST_CHECK(v1.size() == 5);
 
     stl::vector<Cx> v2;
     for (int i = 0; i < 5; ++i)
         v2.push_back(c1[i]);
 
     for (int i = 0; i < 5; ++i)
-        CPPUNIT_ASSERT(v2[i] == c1[i]);
-    CPPUNIT_ASSERT(v2.size() == 5);
-    CPPUNIT_ASSERT(v2.capacity() == 8);
+        TEST_CHECK(v2[i] == c1[i]);
+    TEST_CHECK(v2.size() == 5);
+    TEST_CHECK(v2.capacity() == 8);
 
     stl::vector<Cx> v3;
     v3.push_back(Cx(-1));
     v3.push_back(Cx(-2));
     v3.push_back(v3.front()); // test how grow() invalidates v3.front()!!
 
-    CPPUNIT_ASSERT(v3[0] == Cx(-1) && v3[1] == Cx(-2) && v3[2] == Cx(-1));
+    TEST_CHECK(v3[0] == Cx(-1) && v3[1] == Cx(-2) && v3[2] == Cx(-1));
 }
 
 void test_vector::pop_back()
@@ -672,9 +696,9 @@ void test_vector::pop_back()
         v1.pop_back();
 
     for (size_t i = 0; i < v1.size(); ++i)
-        CPPUNIT_ASSERT(v1[i] == c1[i]);
-    CPPUNIT_ASSERT(v1.size() == 2);
-    CPPUNIT_ASSERT(v1.capacity() == 5);
+        TEST_CHECK(v1[i] == c1[i]);
+    TEST_CHECK(v1.size() == 2);
+    TEST_CHECK(v1.capacity() == 5);
 }
 
 void test_vector::insert()
@@ -684,26 +708,26 @@ void test_vector::insert()
     stl::vector<Cx> v1;
     v1.insert(v1.end(), c1[0]);  // other
 
-    CPPUNIT_ASSERT(v1.size() == 1);
-    CPPUNIT_ASSERT(v1.capacity() == 1);
-    CPPUNIT_ASSERT(v1[0] == c1[0]);
+    TEST_CHECK(v1.size() == 1);
+    TEST_CHECK(v1.capacity() == 1);
+    TEST_CHECK(v1[0] == c1[0]);
 
     v1.insert(v1.begin(), v1.front()); // from self
-    CPPUNIT_ASSERT(v1.size() == 2);
-    CPPUNIT_ASSERT(v1[0] == c1[0] && v1[1] == c1[0]);
+    TEST_CHECK(v1.size() == 2);
+    TEST_CHECK(v1[0] == c1[0] && v1[1] == c1[0]);
     
     // void insert(iterator position, size_type n, const T& x)
     stl::vector<Cx> v2;
     v2.assign(c1, c1 + 2); // capacity=2
     v2.insert(v2.begin(), 1, v2.front()); // relocate and invalidate 3rd param
 
-    CPPUNIT_ASSERT(v2[0] == c1[0] && v2[1] == c1[0] && v2[2] == c1[1]);
-    CPPUNIT_ASSERT(v2.size() == 3);
+    TEST_CHECK(v2[0] == c1[0] && v2[1] == c1[0] && v2[2] == c1[1]);
+    TEST_CHECK(v2.size() == 3);
 
     v2.insert(v2.begin(), 1, c1[4]);
-    CPPUNIT_ASSERT(v2[0] == c1[4]);
-    CPPUNIT_ASSERT(v2[1] == c1[0]); //...etc
-    CPPUNIT_ASSERT(v2.size() == 4);
+    TEST_CHECK(v2[0] == c1[4]);
+    TEST_CHECK(v2[1] == c1[0]); //...etc
+    TEST_CHECK(v2.size() == 4);
 
 
     // void insert_(iterator& position, iterator& first, iterator& last)
@@ -712,18 +736,18 @@ void test_vector::insert()
     v3.assign(c3, c3 + 5);
     v4.insert(v4.end(), v3.begin(), v3.end()); // from other
     for (size_t i = 0; i < v4.size(); ++i)
-        CPPUNIT_ASSERT(v3[i] == v4[i] && v4[i] == c3[i]);
-    CPPUNIT_ASSERT(v4.size() == 5);
+        TEST_CHECK(v3[i] == v4[i] && v4[i] == c3[i]);
+    TEST_CHECK(v4.size() == 5);
     v4.insert(v4.begin(), v3.begin(), v3.end());
     for (size_t i = 5; i < v4.size(); ++i)
-        CPPUNIT_ASSERT(v3[i-5] == v4[i] && v4[i] == c3[i-5]);
-    CPPUNIT_ASSERT(v4.size() == 10);
+        TEST_CHECK(v3[i-5] == v4[i] && v4[i] == c3[i-5]);
+    TEST_CHECK(v4.size() == 10);
 
 
     v3.insert(v3.begin(), v3.begin(), v3.end()); // from self
     for (size_t i = 0; i < v3.size(); ++i)
-        CPPUNIT_ASSERT(v3[i] == c3[i % 5]);
-    CPPUNIT_ASSERT(v3.size() == 10);
+        TEST_CHECK(v3[i] == c3[i % 5]);
+    TEST_CHECK(v3.size() == 10);
 
 
     // void insert_(iterator& position, const_iterator& first, const_iterator& last)
@@ -735,19 +759,19 @@ void test_vector::insert()
     v6.insert(v6.end(), cv5.begin() + 2, cv5.end()); // from other
     
     for (size_t i = 0; i < v6.size(); ++i)
-        CPPUNIT_ASSERT(v6[i] == v5[i + 2] && v6[i] == c5[i + 2]);
-    CPPUNIT_ASSERT(v6.size() == 3);
+        TEST_CHECK(v6[i] == v5[i + 2] && v6[i] == c5[i + 2]);
+    TEST_CHECK(v6.size() == 3);
     v6.insert(v6.begin(), cv5.begin(), cv5.end());
     for (size_t i = 0; i < 5; ++i)
-        CPPUNIT_ASSERT(v6[i] == v5[i] && v6[i] == c5[i]);
-    CPPUNIT_ASSERT(v6.size() == 8);
+        TEST_CHECK(v6[i] == v5[i] && v6[i] == c5[i]);
+    TEST_CHECK(v6.size() == 8);
 
     v6.assign(v5);
     v6.insert(v6.end(), cv6.begin(), cv6.end()); // from self
     v6.insert(v6.begin(), cv6.begin(), cv6.end());
     for (size_t i = 0; i < v6.size(); ++i)
-        CPPUNIT_ASSERT(v6[i % 5] == v5[i % 5] && v6[i % 5] == c5[i % 5]);
-    CPPUNIT_ASSERT(v6.size() == 20);
+        TEST_CHECK(v6[i % 5] == v5[i % 5] && v6[i % 5] == c5[i % 5]);
+    TEST_CHECK(v6.size() == 20);
     
 
     // void insert_(iterator& position, InputIterator& first, InputIterator& last, stl::forward_iterator_tag)
@@ -758,17 +782,17 @@ void test_vector::insert()
     v8.insert(v8.begin(), v7.rbegin(), v7.rend()); // from other (moving content)
 
     for (size_t i = 0; i < v8.size(); ++i)
-        CPPUNIT_ASSERT(v8[i] == c7[4 - i % 5]);
-    CPPUNIT_ASSERT(v8.size() == 10);
+        TEST_CHECK(v8[i] == c7[4 - i % 5]);
+    TEST_CHECK(v8.size() == 10);
 
     v8.insert(v8.begin(), v8.rbegin(), v8.rend()); // from self
 
     for (size_t i = 0; i < 10; ++i) // the first 10 are ascending :(
-        CPPUNIT_ASSERT(v8[i] == c7[i % 5]);
+        TEST_CHECK(v8[i] == c7[i % 5]);
 
     for (size_t i = 10; i < 20; ++i) // the following 10 are descending :(
-        CPPUNIT_ASSERT(v8[i] == c7[4 - i % 5]);
-    CPPUNIT_ASSERT(v8.size() == 20); // size = 20!
+        TEST_CHECK(v8[i] == c7[4 - i % 5]);
+    TEST_CHECK(v8.size() == 20); // size = 20!
 
     // void insert_(iterator& position, value_type* first, value_type* last)
     int i9[5] = { -1, -2, -3, -4, -5 };
@@ -777,16 +801,16 @@ void test_vector::insert()
     v9.insert(v9.begin(), i9, i9 + 5); // from other (move content)
 
     for (size_t i = 0; i < v9.size(); ++i)
-        CPPUNIT_ASSERT(v9[i] == i9[i % 5]);
-    CPPUNIT_ASSERT(v9.size() == 10);
+        TEST_CHECK(v9[i] == i9[i % 5]);
+    TEST_CHECK(v9.size() == 10);
 
     v9.insert(v9.begin(), &v9.front(), &v9.back()); // from self
 
     for (int i = 0; i < 9; ++i)
-        CPPUNIT_ASSERT(v9[i] == i9[i % 5]);
+        TEST_CHECK(v9[i] == i9[i % 5]);
     for (int i = 9; i < v9.size(); ++i)
-        CPPUNIT_ASSERT(v9[i] == i9[(i - 9) % 5]);
-    CPPUNIT_ASSERT(v9.size() == 19);
+        TEST_CHECK(v9[i] == i9[(i - 9) % 5]);
+    TEST_CHECK(v9.size() == 19);
 
     Cx c10[5] = { -1, -2, -3, -4, -5 };
     stl::vector<Cx> v10, v11;
@@ -795,13 +819,13 @@ void test_vector::insert()
     v11.insert(v11.begin(), &v10.front(), &v10.back() + 1); // from other
 
     for (size_t i = 0; i < v11.size(); ++i)
-        CPPUNIT_ASSERT(v11[i] == c10[i]);
+        TEST_CHECK(v11[i] == c10[i]);
 
     v11.insert(v11.begin(), &v11.front(), &v11.back() + 1); // from self
 
     for (size_t i = 0; i < v11.size(); ++i)
-        CPPUNIT_ASSERT(v11[i] == c10[i % 5]);
-    CPPUNIT_ASSERT(v11.size() == 10);
+        TEST_CHECK(v11[i] == c10[i % 5]);
+    TEST_CHECK(v11.size() == 10);
 
     // void insert_(iterator& position, const value_type* first, const value_type* last)
     stl::vector<Cx> v12;
@@ -811,8 +835,8 @@ void test_vector::insert()
     v12.insert(v12.begin(), &cv12.front(), &cv12.back() + 1); // from self
 
     for (size_t i = 0; i < v12.size(); ++i)
-        CPPUNIT_ASSERT(v12[i] == c10[i % 5]);
-    CPPUNIT_ASSERT(v12.size() == 10);
+        TEST_CHECK(v12[i] == c10[i % 5]);
+    TEST_CHECK(v12.size() == 10);
 
 
     // void insert_(iterator& position, InputIterator n, InputIterator value, stl::input_iterator_tag)
@@ -821,8 +845,8 @@ void test_vector::insert()
     int& i13val = v13.front();
     v13.insert(v13.begin(), 1, i13val);
 
-    CPPUNIT_ASSERT(v13[0] == -1 && v13[1] == -1);
-    CPPUNIT_ASSERT(v13.size() == 2);
+    TEST_CHECK(v13[0] == -1 && v13[1] == -1);
+    TEST_CHECK(v13.size() == 2);
 }
 
 
@@ -836,8 +860,8 @@ void test_vector::erase()
     v1.erase(v1.end() - 1);     //last
     v1.erase(v1.begin() + 1);   //middle
 
-    CPPUNIT_ASSERT(v1[0] == c1[1] && v1[1] == c1[3]);
-    CPPUNIT_ASSERT(v1.size() == 2);
+    TEST_CHECK(v1[0] == c1[1] && v1[1] == c1[3]);
+    TEST_CHECK(v1.size() == 2);
 
     stl::vector<Cx> v2;
     v2.assign(c1, c1 + 5);
@@ -847,9 +871,9 @@ void test_vector::erase()
 
     v2.assign(c1, c1 + 5);
     it = v2.erase(v2.begin() + 2, v2.end());
-    CPPUNIT_ASSERT(it == v2.end());
-    CPPUNIT_ASSERT(v2[0] == c1[0] && v2[1] == c1[1]);
-    CPPUNIT_ASSERT(v2.size() == 2);
+    TEST_CHECK(it == v2.end());
+    TEST_CHECK(v2[0] == c1[0] && v2[1] == c1[1]);
+    TEST_CHECK(v2.size() == 2);
 }
 
 void test_vector::swap()
@@ -858,24 +882,24 @@ void test_vector::swap()
     stl::vector<Cx> v1, v2;
     v1.assign(cx1, cx1 + 5);
     
-    CPPUNIT_ASSERT(v1.size() == 5);
+    TEST_CHECK(v1.size() == 5);
     for (size_t i = 0; i < v1.size(); ++i)
-        CPPUNIT_ASSERT(v1[i] == cx1[i]);
-    CPPUNIT_ASSERT(v2.size() == 0);
+        TEST_CHECK(v1[i] == cx1[i]);
+    TEST_CHECK(v2.size() == 0);
 
     v2.swap(v1);    // vector.swap(vector)
 
-    CPPUNIT_ASSERT(v2.size() == 5);
+    TEST_CHECK(v2.size() == 5);
     for (size_t i = 0; i < v2.size(); ++i)
-        CPPUNIT_ASSERT(v2[i] == cx1[i]);
-    CPPUNIT_ASSERT(v1.size() == 0);
+        TEST_CHECK(v2[i] == cx1[i]);
+    TEST_CHECK(v1.size() == 0);
 
     stl::swap(v1, v2);  // stl::swap(vector, vector);
 
-    CPPUNIT_ASSERT(v1.size() == 5);
+    TEST_CHECK(v1.size() == 5);
     for (size_t i = 0; i < v1.size(); ++i)
-        CPPUNIT_ASSERT(v1[i] == cx1[i]);
-    CPPUNIT_ASSERT(v2.size() == 0);
+        TEST_CHECK(v1[i] == cx1[i]);
+    TEST_CHECK(v2.size() == 0);
 }
 
 void test_vector::clear()
@@ -884,13 +908,13 @@ void test_vector::clear()
     stl::vector<Cx> v1;
     v1.assign(cx1, cx1 + 5);
 
-    CPPUNIT_ASSERT(v1.size() == 5);
+    TEST_CHECK(v1.size() == 5);
     for (size_t i = 0; i < v1.size(); ++i)
-        CPPUNIT_ASSERT(v1[i] == cx1[i]);
+        TEST_CHECK(v1[i] == cx1[i]);
 
     v1.clear();
-    CPPUNIT_ASSERT(v1.size() == 0);
-    CPPUNIT_ASSERT(v1.capacity() == 5);
+    TEST_CHECK(v1.size() == 0);
+    TEST_CHECK(v1.capacity() == 5);
 }
 
 void test_vector::get_allocator()
@@ -916,12 +940,12 @@ void test_vector::relational_op()
     bool op_lte = foo <= bar;
     bool op_gte = foo >= bar;
 
-    CPPUNIT_ASSERT(!op_eq);
-    CPPUNIT_ASSERT(op_neq);
-    CPPUNIT_ASSERT(op_lt);
-    CPPUNIT_ASSERT(!op_gt);
-    CPPUNIT_ASSERT(op_lte);
-    CPPUNIT_ASSERT(!op_gte);
+    TEST_CHECK(!op_eq);
+    TEST_CHECK(op_neq);
+    TEST_CHECK(op_lt);
+    TEST_CHECK(!op_gt);
+    TEST_CHECK(op_lte);
+    TEST_CHECK(!op_gte);
 }
 
 void test_vector::perf1()
@@ -942,7 +966,9 @@ void test_vector::perf1()
 
     const char* msg1 = "\nstl::vector time=";
     const char* msg2 = "\nstd::vector time=";
-    const size_t ONEMIL = 1000000;
+
+    // if virtualization drags you then change this:
+    const size_t ONEMIL = 10000; // 10000; // 50000; // 100000; // 150000; // 250000; // 1000000;
 
     // stl::vector
     {
@@ -2018,4 +2044,3 @@ void test_vector::perf1()
 
     }
 }
-#endif

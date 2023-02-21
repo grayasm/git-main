@@ -3,18 +3,14 @@ Copyright (C) 2012 Mihai Vasilian
 */
 
 
-
-#if 0
 //this
 #include "test_priority_queue.hpp"
 
 //c++ ...
 #include <queue>
 
-//CppUnit
-#include <cppunit/CompilerOutputter.h>
-#include <cppunit/extensions/TestFactoryRegistry.h>
-#include <cppunit/ui/text/TestRunner.h>
+//acutest
+#include "acutest.h"
 
 //libraries
 #include "exception.hpp"
@@ -29,13 +25,20 @@ Copyright (C) 2012 Mihai Vasilian
 
 
 //###########################BEGIN TEST CLASS ####################################
-void test_priority_queue::setUp()
+void test_priority_queue::run()
 {
+    ctor();
+    dtor();
+    empty();
+    size();
+    top();
+    push();
+    pop();
+
+    // new line before TEST RESULT OUTPUT
+    stl::cout << "\n";
 }
 
-void test_priority_queue::tearDown()
-{
-}
 
 //##########################BEGIN TEST SUITE######################################
 void test_priority_queue::ctor()
@@ -190,7 +193,7 @@ void test_priority_queue::empty(const char* msg)
         TCont aux(m_container_size, CVal(0));
         Container cont(TCmp(), aux);
 
-        CPPUNIT_ASSERT(cont.empty() == false);
+        TEST_CHECK(cont.empty() == false);
 
         size_t sz = 0;
         do
@@ -200,7 +203,7 @@ void test_priority_queue::empty(const char* msg)
 
         } while (sz > 0);
 
-        CPPUNIT_ASSERT(cont.empty() == true);
+        TEST_CHECK(cont.empty() == true);
     }
 }
 
@@ -217,12 +220,12 @@ void test_priority_queue::size(const char* msg)
         TCont aux(m_container_size, CVal(0));
         Container cont(TCmp(), aux);
 
-        CPPUNIT_ASSERT(cont.size() == m_container_size);
+        TEST_CHECK(cont.size() == m_container_size);
 
         while(cont.size() > 0)
             cont.pop();
 
-        CPPUNIT_ASSERT(cont.empty() == true);
+        TEST_CHECK(cont.empty() == true);
     }
 }
 
@@ -236,9 +239,9 @@ void test_priority_queue::top(const char* msg)
         Container cont;
 		for(CVal i=0; i < m_container_size; ++i)
         {
-			CPPUNIT_ASSERT(cont.size() == i);
+			TEST_CHECK(cont.size() == i);
             cont.push(i);
-            CPPUNIT_ASSERT(cont.top() == i);
+            TEST_CHECK(cont.top() == i);
         }
     }
 }
@@ -253,9 +256,9 @@ void test_priority_queue::push(const char* msg)
         Container cont;
 		for(CVal i=0; i < m_container_size; ++i)
         {
-			CPPUNIT_ASSERT(cont.size() == i);
+			TEST_CHECK(cont.size() == i);
             cont.push(i);
-            CPPUNIT_ASSERT(cont.top() == i);
+            TEST_CHECK(cont.top() == i);
         }
     }
 }
@@ -271,20 +274,19 @@ void test_priority_queue::pop(const char* msg)
 		for(CVal i=0; i<m_container_size; ++i)
             cont.push(i);
 
-        CPPUNIT_ASSERT(cont.size() == m_container_size);
+        TEST_CHECK(cont.size() == m_container_size);
 
         size_t i=m_container_size-1;
         while(!cont.empty())
         {
-			CPPUNIT_ASSERT(cont.top() == i);			
+			TEST_CHECK(cont.top() == i);			
             cont.pop();
-            CPPUNIT_ASSERT(cont.size() == i--);
+            TEST_CHECK(cont.size() == i--);
         }
 
-        CPPUNIT_ASSERT(cont.empty() == true);
+        TEST_CHECK(cont.empty() == true);
     }
 }
 
 
 //################################################################################
-#endif

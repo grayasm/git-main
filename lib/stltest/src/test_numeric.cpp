@@ -3,17 +3,15 @@ Copyright (C) 2012 Mihai Vasilian
 */
 
 
-#if 0
+
 //this
 #include "test_numeric.hpp"
 
 //c++ ...
 #include <list>
 
-//CppUnit
-#include <cppunit/CompilerOutputter.h>
-#include <cppunit/extensions/TestFactoryRegistry.h>
-#include <cppunit/ui/text/TestRunner.h>
+//acutest
+#include "acutest.h"
 
 //libraries ...
 #include "exception.hpp"
@@ -27,16 +25,19 @@ Copyright (C) 2012 Mihai Vasilian
 
 
 
-//###########################BEGIN TEST CLASS ####################################
-void test_numeric::setUp()
+//############################# BEGIN TEST #####################################
+void test_numeric::run()
 {
+    accumulate();
+    adjacent_difference();
+    inner_product();
+    partial_sum();
+
+    // new line before TEST RESULT OUTPUT
+    stl::cout << "\n";
 }
 
-void test_numeric::tearDown()
-{
-}
-
-//##########################BEGIN TEST SUITE######################################
+//##############################################################################
 void test_numeric::accumulate()
 {
 
@@ -100,8 +101,8 @@ void test_numeric::accumulate(const char* msg)
         Cval sum2 = stl::accumulate(list.begin(), list.end(), 5, stl::plus<Cval>());
 
         Cval sum0 = m_container_size * (m_container_size + 1)/2;
-        CPPUNIT_ASSERT(sum1 == sum0+5);
-        CPPUNIT_ASSERT(sum2 == sum0+5);
+        TEST_CHECK(sum1 == sum0+5);
+        TEST_CHECK(sum2 == sum0+5);
     }
 }
 
@@ -128,7 +129,7 @@ void test_numeric::adjacent_difference(const char* msg)
         for(It it2 = list_2.begin(), it3 = list_3.begin();
             it2 != list_2.end(); ++it2, ++it3)
         {
-            CPPUNIT_ASSERT(*it2 == Cval(1) && *it3 == Cval(1));
+            TEST_CHECK(*it2 == Cval(1) && *it3 == Cval(1));
         }
     }
 }
@@ -154,8 +155,8 @@ void test_numeric::inner_product(const char* msg)
                                           0, stl::plus<Cval>(), stl::multiplies<Cval>());
 
         Cval sum0 = m_container_size * (m_container_size + 1)/2;
-        CPPUNIT_ASSERT(iprod0 == sum0 * 2);
-        CPPUNIT_ASSERT(iprod2 == sum0 * 2);
+        TEST_CHECK(iprod0 == sum0 * 2);
+        TEST_CHECK(iprod2 == sum0 * 2);
     }
 }
 
@@ -184,11 +185,10 @@ void test_numeric::partial_sum(const char* msg)
         {
             Cval n = *it;
             Cval sum = n*(n+1)/2;
-            CPPUNIT_ASSERT(*it0 == sum);
-            CPPUNIT_ASSERT(*it2 == sum);
+            TEST_CHECK(*it0 == sum);
+            TEST_CHECK(*it2 == sum);
         }
     }
 }
 
 //################################################################################
-#endif

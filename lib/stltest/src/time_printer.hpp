@@ -7,7 +7,7 @@ Copyright (C) 2014 Mihai Vasilian
 #ifndef time_printer_hpp
 #define time_printer_hpp
 
-
+#include <iostream>
 #include "cpu_timer.hpp"
 
 

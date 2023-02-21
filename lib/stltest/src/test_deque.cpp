@@ -3,7 +3,6 @@ Copyright (C) 2012 Mihai Vasilian
 */
 
 
-#if 0
 //this
 #include "test_deque.hpp"
 
@@ -12,16 +11,15 @@ Copyright (C) 2012 Mihai Vasilian
 #include <iostream>
 #include <vector>
 #include <list>
+#include <deque>
 #include <algorithm>
 #include <utility>
 #include <math.h>
 #include <string>
 #include <time.h>//for clock_t but should be removed soon
 
-//CppUnit
-#include <cppunit/CompilerOutputter.h>
-#include <cppunit/extensions/TestFactoryRegistry.h>
-#include <cppunit/ui/text/TestRunner.h>
+//acutest
+#include "acutest.h"
 
 
 //misc
@@ -33,12 +31,42 @@ Copyright (C) 2012 Mihai Vasilian
 
 
 //###########################DEQUE TEST CLASS ####################################
-void test_deque::setUp()
+void test_deque::run()
 {
-}
+	ctor();
+	dtor();
+	op_assign();
+	begin();
+	end();
+	rbegin();
+	rend();
+	size();
+	max_size();
+	resize();
+	empty();
+	op_acc();
+	at();
+	front();
+	back();
+	assign();
+	push_back();
+	push_front();
+	pop_back();
+	pop_front();
+	insert();
+	erase();
+	swap_ambiguity();
+	clear();
+	g_swap();
+	op_eq();
+	op_neq();
+	op_lt();
+	op_lte();
+	op_gt();
+	op_gte();
 
-void test_deque::tearDown()
-{
+	// new line before TEST RESULT OUTPUT
+	stl::cout << "\n";	
 }
 
 
@@ -290,7 +318,7 @@ void test_deque::ctor(const char* msg)
 
 		for (i=0; i < fifth.size(); i++)
 		{
-			CPPUNIT_ASSERT(fifth[i] == myints[i]);
+			TEST_CHECK(fifth[i] == myints[i]);
 		}
 	}
 }
@@ -315,8 +343,8 @@ void test_deque::op_assign(const char* msg)
 		second=first;
 		first=Container();
 
-		CPPUNIT_ASSERT(first.size() == 0);
-		CPPUNIT_ASSERT(second.size() == 3);
+		TEST_CHECK(first.size() == 0);
+		TEST_CHECK(second.size() == 3);
 	}	
 }
 
@@ -342,7 +370,7 @@ void test_deque::begin(const char* msg)
 		i = 1;
 		while (it != mydeque.end())
 		{
-			CPPUNIT_ASSERT(*it++ == i++);
+			TEST_CHECK(*it++ == i++);
 		}
 	}
 }
@@ -366,7 +394,7 @@ void test_deque::end(const char* msg)
 		i = 1;
 		while (it != mydeque.end() )
 		{
-			CPPUNIT_ASSERT(*it++ == i++);
+			TEST_CHECK(*it++ == i++);
 		}
 	}	
 }
@@ -391,7 +419,7 @@ void test_deque::rbegin(const char* msg)
 		i = 5;
 		while ( rit < mydeque.rend() )
 		{
-			CPPUNIT_ASSERT(*rit == i);
+			TEST_CHECK(*rit == i);
 			++rit;
 			--i;
 		}
@@ -417,7 +445,7 @@ void test_deque::rend(const char* msg)
 		i = 5;
 		while ( rit < mydeque.rend() )
 		{
-			CPPUNIT_ASSERT(*rit == i);
+			TEST_CHECK(*rit == i);
 
 			++rit;
 			--i;
@@ -433,16 +461,16 @@ void test_deque::size(const char* msg)
 		time_printer tp(msg, m_print_time);
 
 		Container myints;
-		CPPUNIT_ASSERT(myints.size() == 0);
+		TEST_CHECK(myints.size() == 0);
 
 		for (int i=0; i<5; i++) myints.push_back(i);
-		CPPUNIT_ASSERT(myints.size() == 5);
+		TEST_CHECK(myints.size() == 5);
 
 		myints.insert (myints.begin(), (size_t)5,100);
-		CPPUNIT_ASSERT(myints.size() == 10);
+		TEST_CHECK(myints.size() == 10);
 
 		myints.pop_back();
-		CPPUNIT_ASSERT(myints.size() == 9);
+		TEST_CHECK(myints.size() == 9);
 	}
 }
 
@@ -456,7 +484,7 @@ void test_deque::max_size(const char* msg)
 		Container mydeque;
 		mydeque.resize(10);
 
-		CPPUNIT_ASSERT( mydeque.size() <  mydeque.max_size());
+		TEST_CHECK( mydeque.size() <  mydeque.max_size());
 	}
 }
 
@@ -486,7 +514,7 @@ void test_deque::resize(const char* msg)
 		i = 0;
 		for (it=mydeque.begin(); it<mydeque.end(); ++it, ++i)
 		{
-			CPPUNIT_ASSERT(*it == myints[i]);
+			TEST_CHECK(*it == myints[i]);
 		}
 	}
 }
@@ -509,7 +537,7 @@ void test_deque::empty(const char* msg)
 			mydeque.pop_front();
 		}
 
-		CPPUNIT_ASSERT(sum == 55);
+		TEST_CHECK(sum == 55);
 	}
 }
 
@@ -542,7 +570,7 @@ void test_deque::op_acc(const char* msg)
 
 		for (i=0; i<sz; i++)
 		{
-			CPPUNIT_ASSERT(mydeque[i] == myints[i]);
+			TEST_CHECK(mydeque[i] == myints[i]);
 		}
 	}
 }
@@ -565,7 +593,7 @@ void test_deque::at(const char* msg)
 
 		for (i=0; i<mydeque.size(); i++)
 		{
-			CPPUNIT_ASSERT(mydeque.at(i) == myints[i]);
+			TEST_CHECK(mydeque.at(i) == myints[i]);
 		}
 	}
 }
@@ -584,7 +612,7 @@ void test_deque::front(const char* msg)
 
 		mydeque.front() -= mydeque.back();
 
-		CPPUNIT_ASSERT(mydeque.front() == 61);
+		TEST_CHECK(mydeque.front() == 61);
 	}
 }
 
@@ -607,7 +635,7 @@ void test_deque::back(const char* msg)
 		int myints[] = { 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 };
 
 		for (unsigned i=0; i<mydeque.size() ; i++)
-			CPPUNIT_ASSERT(mydeque[i] == myints[i]);
+			TEST_CHECK(mydeque[i] == myints[i]);
 	}
 }
 
@@ -632,9 +660,9 @@ void test_deque::assign(const char* msg)
 		int myints[] = {1776,7,4};
 		third.assign (myints,myints+3);   // assigning from array.
 
-		CPPUNIT_ASSERT(first.size() == 7);
-		CPPUNIT_ASSERT(second.size() == 5);
-		CPPUNIT_ASSERT(third.size() == 3);
+		TEST_CHECK(first.size() == 7);
+		TEST_CHECK(second.size() == 5);
+		TEST_CHECK(third.size() == 3);
 	}
 }
 
@@ -650,9 +678,9 @@ void test_deque::push_back(const char* msg)
 			mydeque.push_back(i);
 
 		for(int i=0; i<10; i++)
-			CPPUNIT_ASSERT(mydeque[i] == i);
+			TEST_CHECK(mydeque[i] == i);
 
-		CPPUNIT_ASSERT(mydeque.size() == 10);
+		TEST_CHECK(mydeque.size() == 10);
 	}
 }
 
@@ -667,10 +695,10 @@ void test_deque::push_front(const char* msg)
 		mydeque.push_front (200);
 		mydeque.push_front (300);
 
-		CPPUNIT_ASSERT(mydeque[0] == 300);
-		CPPUNIT_ASSERT(mydeque[1] == 200);
-		CPPUNIT_ASSERT(mydeque[2] == 100);
-		CPPUNIT_ASSERT(mydeque[3] == 100);
+		TEST_CHECK(mydeque[0] == 300);
+		TEST_CHECK(mydeque[1] == 200);
+		TEST_CHECK(mydeque[2] == 100);
+		TEST_CHECK(mydeque[3] == 100);
 	}
 }
 
@@ -693,7 +721,7 @@ void test_deque::pop_back(const char* msg)
 			mydeque.pop_back();
 		}
 
-		CPPUNIT_ASSERT(sum == 60);
+		TEST_CHECK(sum == 60);
 	}
 }
 
@@ -714,7 +742,7 @@ void test_deque::pop_front(const char* msg)
 		int i = 0;
 		while (!mydeque.empty())
 		{
-			CPPUNIT_ASSERT(mydeque.front() == myints[i++]);
+			TEST_CHECK(mydeque.front() == myints[i++]);
 			mydeque.pop_front();
 		}
 	}
@@ -753,7 +781,7 @@ void test_deque::insert(const char* msg)
 		int i = 0;
 		for (it=mydeque.begin(); it<mydeque.end(); ++it)
 		{
-			CPPUNIT_ASSERT(*it == myints[i++]);
+			TEST_CHECK(*it == myints[i++]);
 		}
 	}
 }
@@ -780,7 +808,7 @@ void test_deque::erase(const char* msg)
 		unsigned int myints[] = {4, 5, 7, 8, 9, 10};
 		for (i=0; i<mydeque.size(); i++)
 		{
-			CPPUNIT_ASSERT(mydeque[i] == myints[i]);
+			TEST_CHECK(mydeque[i] == myints[i]);
 		}
 	}
 }
@@ -800,10 +828,10 @@ void test_deque::swap_ambiguity(const char* msg)
 
 
 		for (i=0; i<first.size(); i++)
-			CPPUNIT_ASSERT(first[i] == 200);
+			TEST_CHECK(first[i] == 200);
 
 		for (i=0; i<second.size(); i++)
-			CPPUNIT_ASSERT(second[i] == 100);
+			TEST_CHECK(second[i] == 100);
 	}
 }
 
@@ -824,7 +852,7 @@ void test_deque::clear(const char* msg)
 
 		for (i=0; i<mydeque.size(); i++)
 		{
-			CPPUNIT_ASSERT(mydeque[i] == (i+1)*100);
+			TEST_CHECK(mydeque[i] == (i+1)*100);
 		}
 
 		mydeque.clear();
@@ -834,7 +862,7 @@ void test_deque::clear(const char* msg)
 
 		for (i=0; i<mydeque.size(); i++)
 		{
-			CPPUNIT_ASSERT(mydeque[i] == (i+1)*1101);
+			TEST_CHECK(mydeque[i] == (i+1)*1101);
 		}
 	}
 }
@@ -853,10 +881,10 @@ void test_deque::g_swap(const char* msg)
 		swap(first, second);
 
 		for (i=0; i<first.size(); i++)
-			CPPUNIT_ASSERT(first[i] == 200);
+			TEST_CHECK(first[i] == 200);
 
 		for (i=0; i<second.size(); i++)
-			CPPUNIT_ASSERT(second[i] == 100);
+			TEST_CHECK(second[i] == 100);
 	}
 }
 
@@ -882,7 +910,7 @@ void test_deque::op_eq(const char* msg)
 		}
 
 		Container c2(c0);
-		CPPUNIT_ASSERT(c0 == c2);
+		TEST_CHECK(c0 == c2);
 	}
 }
 
@@ -909,7 +937,7 @@ void test_deque::op_neq(const char* msg)
 
 		Container c2(c0);
 		c2.pop_back();
-		CPPUNIT_ASSERT(c0 != c2);
+		TEST_CHECK(c0 != c2);
 	}
 }
 
@@ -936,7 +964,7 @@ void test_deque::op_lt(const char* msg)
 
 		Container c2(c0);
 		c0.pop_back();
-		CPPUNIT_ASSERT(c0 < c2);
+		TEST_CHECK(c0 < c2);
 	}
 }
 
@@ -963,11 +991,11 @@ void test_deque::op_lte(const char* msg)
 
 		Container c2(c0);
 
-		CPPUNIT_ASSERT(c0 <= c2);
+		TEST_CHECK(c0 <= c2);
 
 		c0.pop_back();
 
-		CPPUNIT_ASSERT(c0 < c2);
+		TEST_CHECK(c0 < c2);
 	}
 }
 
@@ -994,7 +1022,7 @@ void test_deque::op_gt(const char* msg)
 
 		Container c2(c0);
 		c2.pop_back();
-		CPPUNIT_ASSERT(c0 > c2);
+		TEST_CHECK(c0 > c2);
 	}
 }
 
@@ -1021,11 +1049,10 @@ void test_deque::op_gte(const char* msg)
 
 		Container c2(c0);
 
-		CPPUNIT_ASSERT(c0 >= c2);
+		TEST_CHECK(c0 >= c2);
 
 		c2.pop_back();
 
-		CPPUNIT_ASSERT(c0 > c2);
+		TEST_CHECK(c0 > c2);
 	}
 }
-#endif
