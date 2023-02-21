@@ -9,6 +9,7 @@ Copyright (C) 2014 Mihai Vasilian
 
 
 #include "cpu_timer.hpp"
+#include "stream.hpp"
 
 
 

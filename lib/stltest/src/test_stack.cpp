@@ -2,6 +2,7 @@
 Copyright (C) 2012 Mihai Vasilian
 */
 
+#if 0
 //this
 #include "test_stack.hpp"
 
@@ -440,3 +441,4 @@ void test_stack::gte_op(const char* msg)
 
 
 //////////////////////////////////////////////////////////////////////////
+#endif

@@ -4,7 +4,7 @@ Copyright (C) 2012 Mihai Vasilian
 
 
 
-
+#if 0
 //this
 #include "test_priority_queue.hpp"
 
@@ -287,3 +287,4 @@ void test_priority_queue::pop(const char* msg)
 
 
 //################################################################################
+#endif

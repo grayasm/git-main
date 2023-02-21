@@ -15,9 +15,9 @@ Copyright (C) 2009 Mihai Vasilian
 
 
 //CppUnit
-#include <cppunit/CompilerOutputter.h>
-#include <cppunit/extensions/TestFactoryRegistry.h>
-#include <cppunit/ui/text/TestRunner.h>
+//#include <cppunit/CompilerOutputter.h>
+//#include <cppunit/extensions/TestFactoryRegistry.h>
+//#include <cppunit/ui/text/TestRunner.h>
 
 //libraries ...
 #include "algorithm.hpp"
@@ -29,14 +29,82 @@ Copyright (C) 2009 Mihai Vasilian
 
 
 //###########################BEGIN TEST CLASS ####################################
-void test_algorithm::setUp()
-{	
+//void test_algorithm::setUp()
+//{	
+//}
+//
+//void test_algorithm::tearDown()
+//{	
+//}
+void test_algorithm::run()
+{
+	for_each();
+	find();
+	find_if();
+	find_end();
+	find_first_of();
+	adjacent_find();
+	count();
+	count_if();
+	mismatch();
+	equal();
+	search();
+	search_n();
+	copy();
+	copy_backward();
+	swap();
+	swap_ranges();
+	iter_swap();
+	transform();
+	replace();
+	replace_if();
+	replace_copy();
+	replace_copy_if();
+	fill();
+	fill_n();
+	generate();
+	generate_n();
+	remove();
+	remove_if();
+	remove_copy();
+	remove_copy_if();
+	unique();
+	unique_copy();
+	reverse();
+	reverse_copy();
+	rotate();
+	rotate_copy();
+	random_shuffle();
+	partition();
+	stable_partition();
+	sort();
+	stable_sort();
+	partial_sort();
+	partial_sort_copy();
+	nth_element();
+	upper_bound();
+	lower_bound();
+	equal_range();
+	binary_search();
+	merge();
+	inplace_merge();
+	includes();
+	set_union();
+	set_intersection();
+	set_difference();
+	set_symmetric_difference();
+	push_heap();
+	pop_heap();
+	make_heap();
+	sort_heap();
+	min2();
+	max2();
+	min_element();
+	max_element();
+	lexicographical_compare();
+	next_permutation();
+	prev_permutation();
 }
-
-void test_algorithm::tearDown()
-{	
-}
-
 //##########################BEGIN TEST SUITE######################################
 
 //////////////////////////////////////////////////////////////////////////
@@ -696,7 +764,7 @@ void test_algorithm::prev_permutation()
 int myfunction_for_each_integer = 10;
 void myfunction_for_each (int i)
 {
-	CPPUNIT_ASSERT(i == myfunction_for_each_integer);
+	TEST_CHECK(i == myfunction_for_each_integer);
 	myfunction_for_each_integer += 10;
 }
 
@@ -705,7 +773,7 @@ struct myclass_for_each
 	myclass_for_each():m_count(10){}
 	void operator() (int i)
 	{
-		CPPUNIT_ASSERT(i == m_count);
+		TEST_CHECK(i == m_count);
 		m_count += 10;
 	}
 	int m_count;
@@ -770,7 +838,7 @@ void test_algorithm::find(const char* msg)
 		// pointer to array element:
 		p = stl::find(mytable, mytable + m_container_size, m_container_size - 2);
 		++p;
-		CPPUNIT_ASSERT(*p == (m_container_size - 1));
+		TEST_CHECK(*p == (m_container_size - 1));
 
 
 		It it;
@@ -778,7 +846,7 @@ void test_algorithm::find(const char* msg)
 		it = stl::find(myvector.begin(), myvector.end(), Cval(m_container_size - 2));
 		it++;
 
-		CPPUNIT_ASSERT(*it == (m_container_size - 1));
+		TEST_CHECK(*it == (m_container_size - 1));
 		
 		// STD - see find2(...)
 	}
@@ -809,7 +877,7 @@ void test_algorithm::find2(const char* msg)
 		// pointer to array element:
 		p = std::find(mytable, mytable + m_container_size, m_container_size - 2);
 		++p;
-		CPPUNIT_ASSERT(*p == (m_container_size - 1));
+		TEST_CHECK(*p == (m_container_size - 1));
 
 
 		It it;
@@ -817,7 +885,7 @@ void test_algorithm::find2(const char* msg)
 		it = std::find(myvector.begin(), myvector.end(), Cval(m_container_size - 2));
 		it++;
 
-		CPPUNIT_ASSERT(*it == (m_container_size - 1));
+		TEST_CHECK(*it == (m_container_size - 1));
 	}
 
 	delete[] mytable;
@@ -863,21 +931,21 @@ void test_algorithm::find_if(const char* msg)
 		//MISC
 		// technical
 		it = stl::find_if(v1.begin(), v1.end(), IsOdd_find_if);
-		CPPUNIT_ASSERT( *it == 25 );
+		TEST_CHECK( *it == 25 );
 
 		v1.erase(it);
 		it = stl::find_if(v1.begin(), v1.end(), IsOdd_find_if);
-		CPPUNIT_ASSERT( *it == 55 );
+		TEST_CHECK( *it == 55 );
 
 		v1.erase(it);
 		it = stl::find_if(v1.begin(), v1.end(), IsOdd_find_if);
-		CPPUNIT_ASSERT( it == v1.end() );
+		TEST_CHECK( it == v1.end() );
 
 		// performance
 		Struct_find_if<Cval> sfif1(m_container_size - 2);
 		it = stl::find_if(v2.begin(), v2.end(), sfif1);
 
-		CPPUNIT_ASSERT( *(++it) == (m_container_size - 1 ));
+		TEST_CHECK( *(++it) == (m_container_size - 1 ));
 		
 		// STD - see find_if2(...)
 	}
@@ -908,21 +976,21 @@ void test_algorithm::find_if2(const char* msg)
 		// STD
 		// technical
 		it = std::find_if(v1.begin(), v1.end(), IsOdd_find_if);
-		CPPUNIT_ASSERT( *it == 25 );
+		TEST_CHECK( *it == 25 );
 
 		v1.erase(it);
 		it = std::find_if(v1.begin(), v1.end(), IsOdd_find_if);
-		CPPUNIT_ASSERT( *it == 55 );
+		TEST_CHECK( *it == 55 );
 
 		v1.erase(it);
 		it = std::find_if(v1.begin(), v1.end(), IsOdd_find_if);
-		CPPUNIT_ASSERT( it == v1.end() );
+		TEST_CHECK( it == v1.end() );
 
 		// performance
 		Struct_find_if<Cval> sfif1(m_container_size - 2);
 		it = std::find_if(v2.begin(), v2.end(), sfif1);
 
-		CPPUNIT_ASSERT( *(++it) == (m_container_size - 1 ));
+		TEST_CHECK( *(++it) == (m_container_size - 1 ));
 	}
 }
 
@@ -963,14 +1031,14 @@ void test_algorithm::find_end(const char* msg)
 		*/
 		it = stl::find_end(v1.begin(), v1.end(), mycheck1, mycheck1 + 3);		
 		//Match found at position 5
-		CPPUNIT_ASSERT( (it-v1.begin()) == 5 );
+		TEST_CHECK( (it-v1.begin()) == 5 );
 
 
 		Cval mycheck2[] = {4,5,1};
 		// using predicate comparison:
 		it = stl::find_end(v1.begin(), v1.end(), mycheck2, mycheck2 + 3, myfunction_find_end);
 		//Match last found at position 3
-		CPPUNIT_ASSERT( (it-v1.begin()) == 3 );
+		TEST_CHECK( (it-v1.begin()) == 3 );
 
 
 
@@ -978,10 +1046,10 @@ void test_algorithm::find_end(const char* msg)
 		//v2: 0,1,2,3,4,5
 		//ck: 3,4,5
 		it = stl::find_end(v2.begin(), v2.end(), mycheck3, mycheck3 + 3);
-		CPPUNIT_ASSERT( (it - v2.begin()) == m_container_size - 3);
+		TEST_CHECK( (it - v2.begin()) == m_container_size - 3);
 
 		it = stl::find_end(v2.begin(), v2.end(), mycheck3, mycheck3 + 3, myfunction_find_end);
-		CPPUNIT_ASSERT( (it - v2.begin()) == m_container_size - 3);
+		TEST_CHECK( (it - v2.begin()) == m_container_size - 3);
 		
 		// STD - see find_end2(...)
 	}
@@ -1019,14 +1087,14 @@ void test_algorithm::find_end2(const char* msg)
 		
 		it = std::find_end(v1.begin(), v1.end(), mycheck1, mycheck1 + 3);		
 		//Match found at position 5
-		CPPUNIT_ASSERT( (it-v1.begin()) == 5 );
+		TEST_CHECK( (it-v1.begin()) == 5 );
 
 
 		Cval mycheck2[] = {4,5,1};
 		// using predicate comparison:
 		it = std::find_end(v1.begin(), v1.end(), mycheck2, mycheck2 + 3, myfunction_find_end);
 		//Match last found at position 3
-		CPPUNIT_ASSERT( (it-v1.begin()) == 3 );
+		TEST_CHECK( (it-v1.begin()) == 3 );
 
 
 
@@ -1034,10 +1102,10 @@ void test_algorithm::find_end2(const char* msg)
 		//v2: 0,1,2,3,4,5
 		//ck: 3,4,5
 		it = std::find_end(v2.begin(), v2.end(), mycheck3, mycheck3 + 3);
-		CPPUNIT_ASSERT( (it - v2.begin()) == m_container_size - 3);
+		TEST_CHECK( (it - v2.begin()) == m_container_size - 3);
 
 		it = std::find_end(v2.begin(), v2.end(), mycheck3, mycheck3 + 3, myfunction_find_end);
-		CPPUNIT_ASSERT( (it - v2.begin()) == m_container_size - 3);		
+		TEST_CHECK( (it - v2.begin()) == m_container_size - 3);		
 	}
 }
 //////////////////////////////////////////////////////////////////////////
@@ -1069,31 +1137,31 @@ void test_algorithm::find_first_of(const char* msg)
 		//MISC
 		// using default comparison:
 		it = stl::find_first_of (v1.begin(), v1.end(), mycheck, mycheck+3);
-		CPPUNIT_ASSERT(*it == 'A');
+		TEST_CHECK(*it == 'A');
 
 		// using predicate comparison:
 		it = stl::find_first_of (v1.begin(), v1.end(), mycheck, mycheck+3, comp_case_insensitive_find_first_of);
-		CPPUNIT_ASSERT(*it == 'a');
+		TEST_CHECK(*it == 'a');
 
 		it = stl::find_first_of (v2.begin(), v2.end(), mycheck, mycheck+3);
-		CPPUNIT_ASSERT(*it == 'A');
+		TEST_CHECK(*it == 'A');
 
 		it = stl::find_first_of (v2.begin(), v2.end(), mycheck, mycheck+3, comp_case_insensitive_find_first_of);
-		CPPUNIT_ASSERT(*it == 'a');
+		TEST_CHECK(*it == 'a');
 
 #if !defined(DEBUG)
 		//STD
 		it = std::find_first_of (v1.begin(), v1.end(), mycheck, mycheck+3);
-		CPPUNIT_ASSERT(*it == 'A');
+		TEST_CHECK(*it == 'A');
 
 		it = std::find_first_of (v1.begin(), v1.end(), mycheck, mycheck+3, comp_case_insensitive_find_first_of);
-		CPPUNIT_ASSERT(*it == 'a');
+		TEST_CHECK(*it == 'a');
 
 		it = std::find_first_of (v2.begin(), v2.end(), mycheck, mycheck+3);
-		CPPUNIT_ASSERT(*it == 'A');
+		TEST_CHECK(*it == 'A');
 
 		it = std::find_first_of (v2.begin(), v2.end(), mycheck, mycheck+3, comp_case_insensitive_find_first_of);
-		CPPUNIT_ASSERT(*it == 'a');
+		TEST_CHECK(*it == 'a');
 #endif
 	}
 }
@@ -1126,21 +1194,21 @@ void test_algorithm::adjacent_find(const char* msg)
 		//Searches for two adjacent elements that are either equal or satisfy a specified condition.
 		// using default comparison:
 		it = stl::adjacent_find (v1.begin(), v1.end());
-		CPPUNIT_ASSERT(*it == 30);
+		TEST_CHECK(*it == 30);
 		
 		//"the first consecutive repeated elements are: 30"
 		//using predicate comparison:
 		it = stl::adjacent_find (++it, v1.end(), myfunction_adjacent_find);
-		CPPUNIT_ASSERT( *it == 10 );		
+		TEST_CHECK( *it == 10 );		
 		//"the second consecutive repeated elements are: 10"
 
 #if !defined(DEBUG)  //std::_Debug_range2
 		// STD
 		it = std::adjacent_find (v1.begin(), v1.end());
-		CPPUNIT_ASSERT(*it == 30);
+		TEST_CHECK(*it == 30);
 
 		it = std::adjacent_find (++it, v1.end(), myfunction_adjacent_find);
-		CPPUNIT_ASSERT( *it == 10 );
+		TEST_CHECK( *it == 10 );
 #endif
 	}
 }
@@ -1168,27 +1236,27 @@ void test_algorithm::count(const char* msg)
 		mycount = stl::count (myints, myints+8, 10);
 
 		//cout << "10 appears " << mycount << " times.\n";
-		CPPUNIT_ASSERT(mycount == 3);
+		TEST_CHECK(mycount == 3);
 
 		// counting elements in container:
 		mycount = stl::count (v1.begin(), v1.end(), 20);
 		//cout << "20 appears " << mycount  << " times.\n";
-		CPPUNIT_ASSERT(mycount == 3);
+		TEST_CHECK(mycount == 3);
 
 		mycount = stl::count (v2.begin(), v2.end(), m_container_size -1);
-		CPPUNIT_ASSERT(mycount == 1);
+		TEST_CHECK(mycount == 1);
 
 #if !defined(DEBUG)
 		// STD
 		mycount = std::count (myints, myints+8, 10);
-		CPPUNIT_ASSERT(mycount == 3);
+		TEST_CHECK(mycount == 3);
 
 		mycount = std::count (v1.begin(), v1.end(), 20);
 		//cout << "20 appears " << mycount  << " times.\n";
-		CPPUNIT_ASSERT(mycount == 3);
+		TEST_CHECK(mycount == 3);
 
 		mycount = std::count (v2.begin(), v2.end(), m_container_size -1);
-		CPPUNIT_ASSERT(mycount == 1);
+		TEST_CHECK(mycount == 1);
 #endif
 	}	
 
@@ -1220,19 +1288,19 @@ void test_algorithm::count_if(const char* msg)
 		// MISC
 		mycount = stl::count_if (v1.begin(), v1.end(), IsOdd_count_if);
 		//cout << "v1 contains " << mycount  << " odd values.\n";
-		CPPUNIT_ASSERT(mycount == 5);
+		TEST_CHECK(mycount == 5);
 
 		mycount = stl::count_if (v2.begin(), v2.end(), IsOdd_count_if);
-		CPPUNIT_ASSERT(mycount == m_container_size/2);
+		TEST_CHECK(mycount == m_container_size/2);
 
 #if !defined(DEBUG)
 		// STD
 		mycount = std::count_if (v1.begin(), v1.end(), IsOdd_count_if);
 		//cout << "v1 contains " << mycount  << " odd values.\n";
-		CPPUNIT_ASSERT(mycount == 5);
+		TEST_CHECK(mycount == 5);
 
 		mycount = std::count_if (v2.begin(), v2.end(), IsOdd_count_if);
-		CPPUNIT_ASSERT(mycount == m_container_size/2);
+		TEST_CHECK(mycount == m_container_size/2);
 #endif
 	}
 }
@@ -1283,10 +1351,10 @@ void test_algorithm::mismatch(const char* msg)
 		// using default comparison:
 		pair1 = stl::mismatch (v1.begin(), v1.end(), myints);
 		//cout << "First mismatching elements: " << *pair1.first;
-		CPPUNIT_ASSERT(*pair1.first == 30);
+		TEST_CHECK(*pair1.first == 30);
 
 		//cout << " and " << *pair1.second << endl;;
-		CPPUNIT_ASSERT(*pair1.second == 80);
+		TEST_CHECK(*pair1.second == 80);
 
 		pair1.first++;
 		pair1.second++;
@@ -1294,26 +1362,26 @@ void test_algorithm::mismatch(const char* msg)
 		// using predicate comparison:
 		pair1 = stl::mismatch (pair1.first, v1.end(), pair1.second, mypredicate_mismatch);
 		//cout << "Second mismatching elements: " << *pair1.first;
-		CPPUNIT_ASSERT(*pair1.first == 40);
+		TEST_CHECK(*pair1.first == 40);
 		//cout << " and " << *pair1.second << endl;;
-		CPPUNIT_ASSERT(*pair1.second == 320);
+		TEST_CHECK(*pair1.second == 320);
 
 
 		pair1 = stl::mismatch (v2.begin(), v2.end(), myints);
-		CPPUNIT_ASSERT(*pair1.first == 30);
-		CPPUNIT_ASSERT(*pair1.second == 80);
+		TEST_CHECK(*pair1.first == 30);
+		TEST_CHECK(*pair1.second == 80);
 
 		// condition: first container.size() < second container.size()
 		pair2 = stl::mismatch (v3.begin(), v3.end(), v2.begin());
-		CPPUNIT_ASSERT(pair2.first == v3.end());
-		CPPUNIT_ASSERT(*pair2.second == (m_container_size/5) * 10);
+		TEST_CHECK(pair2.first == v3.end());
+		TEST_CHECK(*pair2.second == (m_container_size/5) * 10);
 
 #if !defined(DEBUG)
 		// STD
 		// the only test that compiles with _WIN32
 		pair4 = std::mismatch (v3.begin(), v3.end(), v2.begin());
-		CPPUNIT_ASSERT(pair4.first == v3.end());
-		CPPUNIT_ASSERT(*pair4.second == (m_container_size/5) * 10);
+		TEST_CHECK(pair4.first == v3.end());
+		TEST_CHECK(*pair4.second == (m_container_size/5) * 10);
 #endif
 	}
 }
@@ -1345,18 +1413,18 @@ void test_algorithm::equal(const char* msg)
 		// MISC
 		// using default comparison:
 		bool res = stl::equal(v1.begin(), v1.end(), myints);
-		CPPUNIT_ASSERT(res);
+		TEST_CHECK(res);
 
 		v1[3]=81;                            // v1: 20 40 60 81 100
 		// using predicate comparison:
 		res = stl::equal(v1.begin(), v1.end(), myints, mypredicate_equal);
-		CPPUNIT_ASSERT( !res );
+		TEST_CHECK( !res );
 
 		res = stl::equal(v2.begin(), v2.end(), v3.begin());
-		CPPUNIT_ASSERT( res );
+		TEST_CHECK( res );
 
 		res = stl::equal(v2.begin(), v2.end(), v3.begin(), mypredicate_equal);
-		CPPUNIT_ASSERT(res);
+		TEST_CHECK(res);
 
 		// STD
 		// update equal2(..)
@@ -1384,18 +1452,18 @@ void test_algorithm::equal2(const char* msg)
 		// MISC
 		// using default comparison:
 		bool res = std::equal(v1.begin(), v1.end(), myints);
-		CPPUNIT_ASSERT(res);
+		TEST_CHECK(res);
 
 		v1[3]=81;                            // v1: 20 40 60 81 100
 		// using predicate comparison:
 		res = std::equal(v1.begin(), v1.end(), myints, mypredicate_equal);
-		CPPUNIT_ASSERT( !res );
+		TEST_CHECK( !res );
 
 		res = std::equal(v2.begin(), v2.end(), v3.begin());
-		CPPUNIT_ASSERT( res );
+		TEST_CHECK( res );
 
 		res = std::equal(v2.begin(), v2.end(), v3.begin(), mypredicate_equal);
-		CPPUNIT_ASSERT(res);
+		TEST_CHECK(res);
 	}	
 }
 
@@ -1432,16 +1500,16 @@ void test_algorithm::search(const char* msg)
 		// STD
 		// using default comparison:
 		it = std::search (v1.begin(), v1.end(), match1, match1+4);	
-		CPPUNIT_ASSERT( (int)(it - v1.begin()) == 3 );
+		TEST_CHECK( (int)(it - v1.begin()) == 3 );
 		// using predicate comparison:
 		it = std::search (v1.begin(), v1.end(), match2, match2+3, mypredicate_search);
-		CPPUNIT_ASSERT( it == v1.end() );
+		TEST_CHECK( it == v1.end() );
 
 		it = std::search (v2.begin(), v2.end(), v3.begin(), v3.end());	
-		CPPUNIT_ASSERT( (it - v2.begin()) == m_container_size / 2);
+		TEST_CHECK( (it - v2.begin()) == m_container_size / 2);
 
 		it = std::search (v2.begin(), v2.end(), match4, match4+3, mypredicate_search);
-		CPPUNIT_ASSERT( (it - v2.begin()) == m_container_size - 3);
+		TEST_CHECK( (it - v2.begin()) == m_container_size - 3);
 	}
 }
 
@@ -1471,16 +1539,16 @@ void test_algorithm::search2(const char* msg)
 		// MISC
 		// using default comparison:
 		it = stl::search (v1.begin(), v1.end(), match1, match1+4);	
-		CPPUNIT_ASSERT( (int)(it - v1.begin()) == 3 );
+		TEST_CHECK( (int)(it - v1.begin()) == 3 );
 		// using predicate comparison:
 		it = stl::search (v1.begin(), v1.end(), match2, match2+3, mypredicate_search);
-		CPPUNIT_ASSERT( it == v1.end() );
+		TEST_CHECK( it == v1.end() );
 
 		it = stl::search (v2.begin(), v2.end(), v3.begin(), v3.end());	
-		CPPUNIT_ASSERT( (it - v2.begin()) == m_container_size / 2);
+		TEST_CHECK( (it - v2.begin()) == m_container_size / 2);
 
 		it = stl::search (v2.begin(), v2.end(), match4, match4+3, mypredicate_search);
-		CPPUNIT_ASSERT( (it - v2.begin()) == m_container_size - 3);
+		TEST_CHECK( (it - v2.begin()) == m_container_size - 3);
 	}
 }
 //////////////////////////////////////////////////////////////////////////
@@ -1516,20 +1584,20 @@ void test_algorithm::search_n(const char* msg)
 		// using default comparison:
 		it = std::search_n (v1.begin(), v1.end(), 2, 30);
 		//cout << "two 30s found at position 2" << int(it-v1.begin()) << endl;
-		CPPUNIT_ASSERT((int)(it-v1.begin()) == 2);
+		TEST_CHECK((int)(it-v1.begin()) == 2);
 
 		// using predicate comparison:
 		it = std::search_n (v1.begin(), v1.end(), 2, 10, mypredicate_search_n);
 		//cout << "two 10s found at position 5" << int(it-v1.begin()) << endl;
-		CPPUNIT_ASSERT((int)(it-v1.begin()) == 5);
+		TEST_CHECK((int)(it-v1.begin()) == 5);
 		//Two 30s found at position 2
 		//Two 10s found at position 5
 
 		it = std::search_n (v2.begin(), v2.end(), 2, m_container_size - 2);		
-		CPPUNIT_ASSERT((int)(it-v2.begin()) == m_container_size - 2);
+		TEST_CHECK((int)(it-v2.begin()) == m_container_size - 2);
 
 		it = std::search_n (v2.begin(), v2.end(), 2, m_container_size - 2, mypredicate_search_n);
-		CPPUNIT_ASSERT((int)(it-v2.begin()) == m_container_size - 2);
+		TEST_CHECK((int)(it-v2.begin()) == m_container_size - 2);
 	}
 }
 
@@ -1564,20 +1632,20 @@ void test_algorithm::search_n2(const char* msg)
 		// using default comparison:
 		it = stl::search_n (v1.begin(), v1.end(), 2, 30);
 		//cout << "two 30s found at position 2" << int(it-v1.begin()) << endl;
-		CPPUNIT_ASSERT((int)(it-v1.begin()) == 2);
+		TEST_CHECK((int)(it-v1.begin()) == 2);
 
 		// using predicate comparison:
 		it = stl::search_n (v1.begin(), v1.end(), 2, 10, mypredicate_search_n);
 		//cout << "two 10s found at position 5" << int(it-v1.begin()) << endl;
-		CPPUNIT_ASSERT((int)(it-v1.begin()) == 5);
+		TEST_CHECK((int)(it-v1.begin()) == 5);
 		//Two 30s found at position 2
 		//Two 10s found at position 5
 
 		it = stl::search_n (v2.begin(), v2.end(), 2, m_container_size - 2);	
-		CPPUNIT_ASSERT((int)(it-v2.begin()) == m_container_size - 2);
+		TEST_CHECK((int)(it-v2.begin()) == m_container_size - 2);
 
 		it = stl::search_n (v2.begin(), v2.end(), 2, m_container_size - 2, mypredicate_search_n);
-		CPPUNIT_ASSERT((int)(it-v2.begin()) == m_container_size - 2);
+		TEST_CHECK((int)(it-v2.begin()) == m_container_size - 2);
 	}
 }
 
@@ -1614,16 +1682,16 @@ void test_algorithm::copy(const char* msg)
 		//cout << "v1 contains:";
 		for (it=v1.begin(); it!=v1.end(); ++it)
 		{
-			CPPUNIT_ASSERT(myints[it-v1.begin()] == *it);
+			TEST_CHECK(myints[it-v1.begin()] == *it);
 			//cout << " " << *it;
 		}
 		//myvector contains: 10 20 30 40 50 60 70
 
 		stl::copy (v2.begin(), v2.end(), v3.begin());
-		CPPUNIT_ASSERT(v3.size() == v2.size());
+		TEST_CHECK(v3.size() == v2.size());
 		for(size_t i = 0; i < v3.size(); ++i)
 		{
-			CPPUNIT_ASSERT((int)v3[i] == i);
+			TEST_CHECK((int)v3[i] == i);
 		}
 
 
@@ -1639,16 +1707,16 @@ void test_algorithm::copy(const char* msg)
 		//cout << "v1 contains:";
 		for (it=v4.begin(); it!=v4.end(); ++it)
 		{
-			CPPUNIT_ASSERT(myints[it-v4.begin()] == *it);
+			TEST_CHECK(myints[it-v4.begin()] == *it);
 			//cout << " " << *it;
 		}
 		//myvector contains: 10 20 30 40 50 60 70
 
 		std::copy (v2.begin(), v2.end(), v5.begin());
-		CPPUNIT_ASSERT(v5.size() == v2.size());
+		TEST_CHECK(v5.size() == v2.size());
 		for(size_t i = 0; i < v5.size(); ++i)
 		{
-			CPPUNIT_ASSERT((int)v5[i] == i);
+			TEST_CHECK((int)v5[i] == i);
 		}
 #endif
 	}	
@@ -1687,7 +1755,7 @@ void test_algorithm::copy_backward(const char* msg)
 		//cout << "v1 contains:";
 		for (it=v1.begin(); it!=v1.end(); ++it)
 		{
-			CPPUNIT_ASSERT(myints[it-v1.begin()] == *it);
+			TEST_CHECK(myints[it-v1.begin()] == *it);
 			//cout << " " << *it;
 		}
 		//v1 contains: 10 20 30 10 20 30 40 50
@@ -1698,11 +1766,11 @@ void test_algorithm::copy_backward(const char* msg)
 		it = vv2.begin();
 		for(size_t i=0; i < m_container_size; ++i, ++it)
 		{
-			CPPUNIT_ASSERT(*it == Cval(i));
+			TEST_CHECK(*it == Cval(i));
 		}
 		for(size_t i=0; i < m_container_size/2; ++i, ++it)
 		{
-			CPPUNIT_ASSERT(*it == Cval(i));
+			TEST_CHECK(*it == Cval(i));
 		}
 
 #if !defined(DEBUG)		//std::_Debug_range2 debug iterator _WIN32
@@ -1713,11 +1781,11 @@ void test_algorithm::copy_backward(const char* msg)
 		it = vv3.begin();
 		for(size_t i=0; i < m_container_size; ++i, ++it)
 		{
-			CPPUNIT_ASSERT(*it == Cval(i));
+			TEST_CHECK(*it == Cval(i));
 		}
 		for(size_t i=0; i < m_container_size/2; ++i, ++it)
 		{
-			CPPUNIT_ASSERT(*it == Cval(i));
+			TEST_CHECK(*it == Cval(i));
 		}
 #endif
 	}
@@ -1743,53 +1811,53 @@ void test_algorithm::swap(const char* msg)
 
 		//	MISC		
 		stl::swap<Cval>(x,y);
-		CPPUNIT_ASSERT(x == Cval(20));
-		CPPUNIT_ASSERT(y == Cval(10));
+		TEST_CHECK(x == Cval(20));
+		TEST_CHECK(y == Cval(10));
 		
 		stl::swap(v1,v2);		
 		for (It it=v1.begin(); it!=v1.end(); ++it)
 		{
-			CPPUNIT_ASSERT(*it == Cval(20));
+			TEST_CHECK(*it == Cval(20));
 		}
 
 		for (It it=v2.begin(); it!=v2.end(); ++it)
 		{
-			CPPUNIT_ASSERT(*it == Cval(10));
+			TEST_CHECK(*it == Cval(10));
 		}
 
 		stl::swap (v3, v4);
 		for(It it = v3.begin(); it != v3.end(); ++it)
 		{
-			CPPUNIT_ASSERT(*it == Cval(1));
+			TEST_CHECK(*it == Cval(1));
 		}
 		for(It it = v4.begin(); it != v4.end(); ++it)
 		{
-			CPPUNIT_ASSERT(*it == Cval(0));
+			TEST_CHECK(*it == Cval(0));
 		}
 
 		//	STD
 		std::swap(x,y);
-		CPPUNIT_ASSERT(x == Cval(10));
-		CPPUNIT_ASSERT(y == Cval(20));
+		TEST_CHECK(x == Cval(10));
+		TEST_CHECK(y == Cval(20));
 		
 		std::swap(v1,v2);		
 		for (It it=v1.begin(); it!=v1.end(); ++it)
 		{
-			CPPUNIT_ASSERT(*it == Cval(10));
+			TEST_CHECK(*it == Cval(10));
 		}
 		for (It it=v2.begin(); it!=v2.end(); ++it)
 		{
-			CPPUNIT_ASSERT(*it == Cval(20));
+			TEST_CHECK(*it == Cval(20));
 		}
 
 		std::swap (v3, v4);
 		for(It it = v3.begin(); it != v3.end(); ++it)
 		{
-			CPPUNIT_ASSERT(*it == Cval(0));
+			TEST_CHECK(*it == Cval(0));
 		}
 		for(It it = v4.begin(); it != v4.end(); ++it)
 		{
-			CPPUNIT_ASSERT(*it == Cval(1));
+			TEST_CHECK(*it == Cval(1));
 		}
 	}
 
@@ -1824,23 +1892,23 @@ void test_algorithm::swap_ranges(const char* msg)
 		// v1 contains: 10 33 33 33 10		
 		for (it=v1.begin(); it!=v1.end(); ++it)
 		{
-			CPPUNIT_ASSERT(myints1[it-v1.begin()] == *it);
+			TEST_CHECK(myints1[it-v1.begin()] == *it);
 			//cout << " " << *it;
 		}
 				
 		// v2 contains: 10 10 10 33 33
 		for (it=v2.begin(); it!=v2.end(); ++it)
 		{
-			CPPUNIT_ASSERT(myints2[it-v2.begin()] == *it);
+			TEST_CHECK(myints2[it-v2.begin()] == *it);
 			//cout << " " << *it;
 		}
 
 		stl::swap_ranges(v3.begin()+1, v3.end()-1, v4.begin());
 		for(it = v3.begin(); it != v3.end(); ++it)
 		{
-			if(it == v3.begin()) CPPUNIT_ASSERT(*it == 0);
-			else if(it == v3.end()-1) CPPUNIT_ASSERT(*it == 0);
-			else CPPUNIT_ASSERT(*it == 1);
+			if(it == v3.begin()) TEST_CHECK(*it == 0);
+			else if(it == v3.end()-1) TEST_CHECK(*it == 0);
+			else TEST_CHECK(*it == 1);
 		}
 
 
@@ -1849,17 +1917,17 @@ void test_algorithm::swap_ranges(const char* msg)
 		std::swap_ranges(v2.begin(), v2.begin()+3, v1.begin()+1);
 		for(it = v1.begin(); it != v1.end(); ++it)
 		{
-			CPPUNIT_ASSERT(*it == 10);
+			TEST_CHECK(*it == 10);
 		}
 		for(it = v2.begin(); it != v2.end(); ++it)
 		{
-			CPPUNIT_ASSERT(*it == 33);
+			TEST_CHECK(*it == 33);
 		}
 
 		std::swap_ranges(v3.begin()+1, v3.end()-1, v4.begin());
 		for(it = v4.begin(); it != v4.end(); ++it)
 		{
-			CPPUNIT_ASSERT(*it == 1);
+			TEST_CHECK(*it == 1);
 		}
 #endif
 	}
@@ -1895,7 +1963,7 @@ void test_algorithm::iter_swap(const char* msg)
 		//     v1:  10  99 [40] 99		
 		for (it = v1.begin(); it != v1.end(); ++it)
 		{
-			CPPUNIT_ASSERT(mycheck[it-v1.begin()] == *it);			
+			TEST_CHECK(mycheck[it-v1.begin()] == *it);			
 		}
 
 		It it2 = v2.begin();
@@ -1909,7 +1977,7 @@ void test_algorithm::iter_swap(const char* msg)
 		
 		for (It it = v2.begin(); it != v2.end(); ++it)
 		{
-			CPPUNIT_ASSERT(*it == Cval(1));
+			TEST_CHECK(*it == Cval(1));
 		}
 		
 
@@ -1926,7 +1994,7 @@ void test_algorithm::iter_swap(const char* msg)
 
 		for (It it = v2.begin(); it != v2.end(); ++it)
 		{
-			CPPUNIT_ASSERT(*it == Cval(0));
+			TEST_CHECK(*it == Cval(0));
 		}
 	}	
 }
@@ -1974,14 +2042,14 @@ void test_algorithm::transform(const char* msg)
 		int mycheck[]={21, 41, 61, 81, 101};
 		for (it=v1.begin(); it!=v1.end(); ++it)
 		{
-			CPPUNIT_ASSERT(mycheck[it-v1.begin()] == *it);			
+			TEST_CHECK(mycheck[it-v1.begin()] == *it);			
 		}		
 
 		stl::transform (v3.begin(), v3.end(), v3.begin(), op_decrease_transform);//v3:-2
 		stl::transform (v3.begin(), v3.end(), v4.begin(), v3.begin(), op_sub_transform);//v3:-3
 		for (It it = v3.begin(); it != v3.end(); ++it)
 		{
-			CPPUNIT_ASSERT(*it == Cval(-3));
+			TEST_CHECK(*it == Cval(-3));
 		}
 
 
@@ -1993,14 +2061,14 @@ void test_algorithm::transform(const char* msg)
 		size_t stdck = 10;
 		for (It it = v1.begin(); it != v1.end(); ++it, stdck += 10)
 		{
-			CPPUNIT_ASSERT(*it == stdck);			
+			TEST_CHECK(*it == stdck);			
 		}
 
 		std::transform (v3.begin(), v3.end(), v3.begin(), op_increase_transform);//v3:-2
 		std::transform (v3.begin(), v3.end(), v4.begin(), v3.begin(), op_sum_transform);//v3:-1
 		for (It it = v3.begin(); it != v3.end(); ++it)
 		{
-			CPPUNIT_ASSERT(*it == Cval(-1));
+			TEST_CHECK(*it == Cval(-1));
 		}
 #endif
 	}
@@ -2032,7 +2100,7 @@ void test_algorithm::replace(const char* msg)
 		// v1: 10 99 30 30 99 10 10 99				
 		for (it=v1.begin(); it!=v1.end(); ++it)
 		{
-			CPPUNIT_ASSERT(mycheck[it-v1.begin()] == *it);			
+			TEST_CHECK(mycheck[it-v1.begin()] == *it);			
 		}
 
 		stl::replace (v2.begin(), v2.end(), 1, 2);
@@ -2040,9 +2108,9 @@ void test_algorithm::replace(const char* msg)
 		for (it = v2.begin(); it != v2.end(); ++it, ++i2)
 		{
 			if(i2%2)
-				CPPUNIT_ASSERT(*it == Cval(2));
+				TEST_CHECK(*it == Cval(2));
 			else
-				CPPUNIT_ASSERT(*it == Cval(0));
+				TEST_CHECK(*it == Cval(0));
 		}
 
 #if !defined(DEBUG)
@@ -2051,7 +2119,7 @@ void test_algorithm::replace(const char* msg)
 		// v1: 10 20 30 30 20 10 10 20
 		for (it=v1.begin(); it!=v1.end(); ++it)
 		{
-			CPPUNIT_ASSERT(myints[it-v1.begin()] == *it);			
+			TEST_CHECK(myints[it-v1.begin()] == *it);			
 		}
 
 		stl::replace (v2.begin(), v2.end(), 2, 3);
@@ -2059,9 +2127,9 @@ void test_algorithm::replace(const char* msg)
 		for (it = v2.begin(); it != v2.end(); ++it, ++i3)
 		{
 			if(i3%2)
-				CPPUNIT_ASSERT(*it == Cval(3));
+				TEST_CHECK(*it == Cval(3));
 			else
-				CPPUNIT_ASSERT(*it == Cval(0));
+				TEST_CHECK(*it == Cval(0));
 		}
 #endif
 	}
@@ -2099,16 +2167,16 @@ void test_algorithm::replace_if(const char* msg)
 		Cval mycheck[]={0, 2, 0, 4, 0, 6, 0, 8, 0};
 		for (it = v1.begin(); it != v1.end(); ++it)
 		{
-			CPPUNIT_ASSERT(mycheck[it-v1.begin()] == *it);			
+			TEST_CHECK(mycheck[it-v1.begin()] == *it);			
 		}
 
 		stl::replace_if (v2.begin(), v2.end(), IsOdd_replace_if, -5);
 		size_t i2 = 0;
 		for (it = v2.begin(); it != v2.end(); ++it, ++i2)
 			if( IsOdd_replace_if((int) i2))
-				CPPUNIT_ASSERT(*it == Cval(-5));
+				TEST_CHECK(*it == Cval(-5));
 			else
-				CPPUNIT_ASSERT(*it == Cval(i2));		
+				TEST_CHECK(*it == Cval(i2));		
 		
 #if !defined(DEBUG)
 		//	STD
@@ -2118,16 +2186,16 @@ void test_algorithm::replace_if(const char* msg)
 		Cval mycheck2[]={-1, 2, -1, 4, -1, 6, -1, 8, -1};
 		for (it = v1.begin(); it != v1.end(); ++it)
 		{
-			CPPUNIT_ASSERT(mycheck2[it-v1.begin()] == *it);			
+			TEST_CHECK(mycheck2[it-v1.begin()] == *it);			
 		}
 
 		stl::replace_if (v2.begin(), v2.end(), IsOdd_replace_if, -1);
 		i2 = 0;
 		for (it = v2.begin(); it != v2.end(); ++it, ++i2)
 			if( IsOdd_replace_if((int) i2))
-				CPPUNIT_ASSERT(*it == Cval(-1));
+				TEST_CHECK(*it == Cval(-1));
 			else
-				CPPUNIT_ASSERT(*it == Cval(i2));
+				TEST_CHECK(*it == Cval(i2));
 #endif
 	}	
 }
@@ -2167,7 +2235,7 @@ void test_algorithm::replace_copy(const char* msg)
 		//v1: 10 99 30 30 99 10 10 99		
 		for (it=v1.begin(); it!=v1.end(); ++it)
 		{
-			CPPUNIT_ASSERT(mycheck[it-v1.begin()] == *it);			
+			TEST_CHECK(mycheck[it-v1.begin()] == *it);			
 		}
 
 		//v2: 0, 1, 0, 3, 0, 5
@@ -2176,8 +2244,8 @@ void test_algorithm::replace_copy(const char* msg)
 		i0 = 0;
 		for (it = v3.begin(); it != v3.end(); ++it, ++i0)
 		{
-			if(i0%2)	CPPUNIT_ASSERT(*it == Cval(i0));
-			else		CPPUNIT_ASSERT(*it == Cval(-1));
+			if(i0%2)	TEST_CHECK(*it == Cval(i0));
+			else		TEST_CHECK(*it == Cval(-1));
 		}		
 
 #if !defined(DEBUG)
@@ -2186,7 +2254,7 @@ void test_algorithm::replace_copy(const char* msg)
 		//v1: 10 20 30 30 20 10 10 20
 		for (it=v1.begin(); it!=v1.end(); ++it)
 		{
-			CPPUNIT_ASSERT(myints[it-v1.begin()] == *it);			
+			TEST_CHECK(myints[it-v1.begin()] == *it);			
 		}
 
 		//v3:-1, 1,-1, 3,-1, 5
@@ -2195,8 +2263,8 @@ void test_algorithm::replace_copy(const char* msg)
 		i0 = 0;
 		for (it = v2.begin(); it != v2.end(); ++it, ++i0)
 		{
-			if(i0%2)	CPPUNIT_ASSERT(*it == Cval(i0));
-			else		CPPUNIT_ASSERT(*it == Cval(-3));
+			if(i0%2)	TEST_CHECK(*it == Cval(i0));
+			else		TEST_CHECK(*it == Cval(-3));
 		}
 #endif
 	}
@@ -2241,14 +2309,14 @@ void test_algorithm::replace_copy_if(const char* msg)
 		
 		for (it=v2.begin(); it!=v2.end(); ++it)
 		{
-			CPPUNIT_ASSERT(mycheck[it-v2.begin()] == *it);			
+			TEST_CHECK(mycheck[it-v2.begin()] == *it);			
 		}
 
 		stl::replace_copy_if (v3.begin(), v3.end(), v4.begin(), IsOdd_replace_copy_if, Cval(-5));
 		for (it = v4.begin(), i0=0; it != v4.end(); ++it, ++i0)
 		{
-			if(i0%2 != 0)	CPPUNIT_ASSERT(*it == Cval(-5));
-			else			CPPUNIT_ASSERT(*it == Cval(i0));
+			if(i0%2 != 0)	TEST_CHECK(*it == Cval(-5));
+			else			TEST_CHECK(*it == Cval(i0));
 		}
 		
 #if !defined(DEBUG)
@@ -2257,15 +2325,15 @@ void test_algorithm::replace_copy_if(const char* msg)
 		//v1: -1 2 -1 4 -1 6 -1 8 -1				
 		for (it = v1.begin(), i0 = 1; it != v1.end(); ++it, ++i0)
 		{
-			if(i0%2 == 0)	CPPUNIT_ASSERT(*it == Cval(i0));
-			else			CPPUNIT_ASSERT(*it == Cval(-1));
+			if(i0%2 == 0)	TEST_CHECK(*it == Cval(i0));
+			else			TEST_CHECK(*it == Cval(-1));
 		}
 
 		std::replace_copy_if (v4.begin(), v4.end(), v3.begin(), IsOdd_replace_copy_if, Cval(-1));
 		for (it = v3.begin(), i0=0; it != v3.end(); ++it, ++i0)
 		{
-			if(i0%2 != 0)	CPPUNIT_ASSERT(*it == Cval(-1));
-			else			CPPUNIT_ASSERT(*it == Cval(i0));
+			if(i0%2 != 0)	TEST_CHECK(*it == Cval(-1));
+			else			TEST_CHECK(*it == Cval(i0));
 		}
 #endif
 	}
@@ -2300,12 +2368,12 @@ void test_algorithm::fill(const char* msg)
 		Cval mycheck[]={5, 5, 5, 8, 8, 8, 0, 0};
 		for ( it=v1.begin(); it!=v1.end(); ++it)
 		{
-			CPPUNIT_ASSERT(mycheck[it-v1.begin()] == *it);			
+			TEST_CHECK(mycheck[it-v1.begin()] == *it);			
 		}
 		
 		stl::fill (v2.begin(), v2.end(), Cval(-1));
 		for (it = v2.begin(); it != v2.end(); ++it)
-			CPPUNIT_ASSERT (*it == Cval(-1));
+			TEST_CHECK (*it == Cval(-1));
 
 
 #if !defined(DEBUG)
@@ -2315,12 +2383,12 @@ void test_algorithm::fill(const char* msg)
 				
 		for ( it=v1.begin(); it!=v1.end(); ++it)
 		{
-			CPPUNIT_ASSERT(-1 * mycheck[it-v1.begin()] == *it);			
+			TEST_CHECK(-1 * mycheck[it-v1.begin()] == *it);			
 		}
 
 		std::fill (v2.begin(), v2.end(), Cval(-2));
 		for (it = v2.begin(); it != v2.end(); ++it)
-			CPPUNIT_ASSERT (*it == Cval(-2));
+			TEST_CHECK (*it == Cval(-2));
 #endif
 	}
 }
@@ -2353,12 +2421,12 @@ void test_algorithm::fill_n(const char* msg)
 		Cval mycheck[]={20, 20, 20, 33, 33, 33, 10, 10};
 		for (it=v1.begin(); it!=v1.end(); ++it)
 		{
-			CPPUNIT_ASSERT(mycheck[it-v1.begin()] == *it);
+			TEST_CHECK(mycheck[it-v1.begin()] == *it);
 		}
 
 		stl::fill_n (v2.begin(), m_container_size, Cval(-1));
 		for (it = v2.begin(); it != v2.end(); ++it)
-			CPPUNIT_ASSERT(*it == Cval(-1));
+			TEST_CHECK(*it == Cval(-1));
 
 #if !defined(DEBUG)
 		//	STD
@@ -2368,12 +2436,12 @@ void test_algorithm::fill_n(const char* msg)
 		Cval mycheck2[]={2, 2, 2, 3, 3, 3, 10, 10};
 		for (it = v1.begin(); it != v1.end(); ++it)
 		{
-			CPPUNIT_ASSERT(mycheck2[it-v1.begin()] == *it);
+			TEST_CHECK(mycheck2[it-v1.begin()] == *it);
 		}
 
 		std::fill_n (v2.begin(), m_container_size, Cval(-6));
 		for (it = v2.begin(); it != v2.end(); ++it)
-			CPPUNIT_ASSERT(*it == Cval(-6));
+			TEST_CHECK(*it == Cval(-6));
 #endif
 	}
 }
@@ -2414,25 +2482,25 @@ void test_algorithm::generate(const char* msg)
 		stl::generate (v1.begin(), v1.end(), RandomNumber_generate);		
 		for (it = v1.begin(); it != v1.end(); ++it)
 		{
-			CPPUNIT_ASSERT(*it > 0 && *it <= 100);	// weak check, cannot predict the value			
+			TEST_CHECK(*it > 0 && *it <= 100);	// weak check, cannot predict the value			
 		}
 
 		stl::generate (v1.begin(), v1.end(), UniqueNumber_generate);		
 		for (it = v1.begin(); it != v1.end(); ++it)
 		{
-			CPPUNIT_ASSERT(*it > 0 && *it <= 100);			
+			TEST_CHECK(*it > 0 && *it <= 100);			
 		}
 
 		stl::generate (v2.begin(), v2.end(), RandomNumber_generate);
 		for (it = v2.begin(); it != v2.end(); ++it)
 		{
-			CPPUNIT_ASSERT(*it > 0 && *it <= 100);
+			TEST_CHECK(*it > 0 && *it <= 100);
 		}
 
 		stl::generate (v2.begin(), v2.end(), UniqueNumber_generate);
 		for (it = v2.begin(); it != v2.end(); ++it)
 		{
-			CPPUNIT_ASSERT(*it > 0 && *it <= 100);
+			TEST_CHECK(*it > 0 && *it <= 100);
 		}
 		
 #if !defined(DEBUG)
@@ -2440,13 +2508,13 @@ void test_algorithm::generate(const char* msg)
 		std::generate (v2.begin(), v2.end(), RandomNumber_generate);
 		for (it = v2.begin(); it != v2.end(); ++it)
 		{
-			CPPUNIT_ASSERT(*it > 0 && *it <= 100);
+			TEST_CHECK(*it > 0 && *it <= 100);
 		}
 
 		std::generate (v2.begin(), v2.end(), UniqueNumber_generate);
 		for (it = v2.begin(); it != v2.end(); ++it)
 		{
-			CPPUNIT_ASSERT(*it > 0 && *it <= 100);
+			TEST_CHECK(*it > 0 && *it <= 100);
 		}
 #endif
 	}
@@ -2482,7 +2550,7 @@ void test_algorithm::generate_n(const char* msg)
 		
 		for (i0 = 0; i0 < 9; ++i0)
 		{
-			CPPUNIT_ASSERT(myarray[i0] == Cval(i0+1));
+			TEST_CHECK(myarray[i0] == Cval(i0+1));
 		}
 
 		current_generate_n = 0;	// reset the number generator
@@ -2490,7 +2558,7 @@ void test_algorithm::generate_n(const char* msg)
 
 		for (i0 = 0, it = v1.begin(); it != v1.end(); ++it, ++i0)
 		{
-			CPPUNIT_ASSERT(*it == Cval(i0+1));
+			TEST_CHECK(*it == Cval(i0+1));
 		}
 		
 
@@ -2501,7 +2569,7 @@ void test_algorithm::generate_n(const char* msg)
 
 		for (i0 = 0; i0 < 9; ++i0)
 		{
-			CPPUNIT_ASSERT(myarray[i0] == Cval(i0+1));
+			TEST_CHECK(myarray[i0] == Cval(i0+1));
 		}
 
 		current_generate_n = 0;	// reset the number generator
@@ -2509,7 +2577,7 @@ void test_algorithm::generate_n(const char* msg)
 
 		for (i0 = 0, it = v1.begin(); it != v1.end(); ++it, ++i0)
 		{
-			CPPUNIT_ASSERT(*it == Cval(i0+1));
+			TEST_CHECK(*it == Cval(i0+1));
 		}
 #endif
 	}
@@ -2550,11 +2618,11 @@ void test_algorithm::remove(const char* msg)
 		int mycheck[]={10, 30, 30, 10, 10};
 		for (int* p=pbegin; p!=pend; ++p)
 		{
-			CPPUNIT_ASSERT(mycheck[p-pbegin] == *p);			
+			TEST_CHECK(mycheck[p-pbegin] == *p);			
 		}
 
 		It end1 = stl::remove (v1.begin(), v1.end(), Cval(-1));
-		CPPUNIT_ASSERT( v1.begin() == end1);		
+		TEST_CHECK( v1.begin() == end1);		
 
 
 
@@ -2568,7 +2636,7 @@ void test_algorithm::remove(const char* msg)
 */
 
 //		It end2 = std::remove (v2.begin(), v2.end(), Cval(-2));
-//		CPPUNIT_ASSERT( v2.begin() == end2);
+//		TEST_CHECK( v2.begin() == end2);
 	}
 }
 
@@ -2607,11 +2675,11 @@ void test_algorithm::remove_if(const char* msg)
 		Cval mycheck[]={2, 4, 6, 8};
 		for (Cval* p = pbegin; p != pend; ++p)
 		{
-			CPPUNIT_ASSERT(mycheck[p-pbegin] = *p);			
+			TEST_CHECK(mycheck[p-pbegin] = *p);			
 		}
 
 		It end1 = stl::remove_if (v1.begin(), v1.end(), IsOdd_remove_if);
-		CPPUNIT_ASSERT(v1.begin() == end1);
+		TEST_CHECK(v1.begin() == end1);
 
 		// STD - see remove_if2(...)
 	}
@@ -2649,11 +2717,11 @@ void test_algorithm::remove_if2(const char* msg)
 		Cval mycheck[]={2, 4, 6, 8};
 		for (Cval* p = pbegin; p != pend; ++p)
 		{
-			CPPUNIT_ASSERT(mycheck[p-pbegin] = *p);			
+			TEST_CHECK(mycheck[p-pbegin] = *p);			
 		}
 
 		It end1 = std::remove_if (v1.begin(), v1.end(), IsOdd_remove_if);
-		CPPUNIT_ASSERT(v1.begin() == end1);
+		TEST_CHECK(v1.begin() == end1);
 	}
 }
 
@@ -2689,18 +2757,18 @@ void test_algorithm::remove_copy(const char* msg)
 		int mycheck[]={10, 30, 30, 10, 10, 0, 0, 0};
 		for (it=myvector.begin(); it!=myvector.end(); ++it)
 		{
-			CPPUNIT_ASSERT(mycheck[it-myvector.begin()] == *it);			
+			TEST_CHECK(mycheck[it-myvector.begin()] == *it);			
 		}
 
 		stl::remove_copy (v2.begin(), v2.end(), v3.begin(), Cval(1));
 		for (it = v3.begin(); it != v3.end(); ++it)
-			CPPUNIT_ASSERT(*it == Cval(-1));
+			TEST_CHECK(*it == Cval(-1));
 
 #if !defined (DEBUG) // std::_Debug_range2
 		//	STD
 		std::remove_copy (v2.begin(), v2.end(), v3.begin(), Cval(1));
 		for (it = v3.begin(); it != v3.end(); ++it)
-			CPPUNIT_ASSERT(*it == Cval(-1));
+			TEST_CHECK(*it == Cval(-1));
 #endif
 	}
 }
@@ -2742,13 +2810,13 @@ void test_algorithm::remove_copy_if(const char* msg)
 		Cval check[]={2, 4, 6, 8, 0, 0, 0, 0, 0};
 		for (it=v1.begin(); it!=v1.end(); ++it)
 		{
-			CPPUNIT_ASSERT(check[it-v1.begin()] == *it);			
+			TEST_CHECK(check[it-v1.begin()] == *it);			
 		}
 
 		stl::remove_copy_if (v2.begin(), v2.end(), v3.begin(), IsOdd_remove_copy_if);
 		for (it = v3.begin(); it != v3.end(); ++it)
 		{
-			CPPUNIT_ASSERT (*it == Cval(-1));
+			TEST_CHECK (*it == Cval(-1));
 		}
 		
 #if !defined (DEBUG)
@@ -2756,7 +2824,7 @@ void test_algorithm::remove_copy_if(const char* msg)
 		std::remove_copy_if (v2.begin(), v2.end(), v3.begin(), IsOdd_remove_copy_if);
 		for (it = v3.begin(); it != v3.end(); ++it)
 		{
-			CPPUNIT_ASSERT (*it == Cval(-1));
+			TEST_CHECK (*it == Cval(-1));
 		}
 #endif
 	}
@@ -2805,27 +2873,27 @@ void test_algorithm::unique(const char* msg)
 		Cval mycheck[]={10, 20, 30, 20, 10};
 		for (it = v1.begin(); it != v1.end(); ++it)
 		{
-			CPPUNIT_ASSERT(mycheck[it-v1.begin()] == *it);			
+			TEST_CHECK(mycheck[it-v1.begin()] == *it);			
 		}
 		for (it = v2.begin(); it != v2.end(); ++it)
 		{
-			CPPUNIT_ASSERT(mycheck[it-v2.begin()] == *it);			
+			TEST_CHECK(mycheck[it-v2.begin()] == *it);			
 		}
 
 		It end3 = stl::unique (v3.begin(), v3.end());
-		CPPUNIT_ASSERT(++v3.begin() == end3);
+		TEST_CHECK(++v3.begin() == end3);
 		v3.resize(m_container_size, Cval(-1));
 		end3 = stl::unique (v3.begin(), v3.end(), myfunction_unique);
-		CPPUNIT_ASSERT(++v3.begin() == end3);
+		TEST_CHECK(++v3.begin() == end3);
 
 
 		//	STD
 #if !defined (DEBUG)
 		It end4 = std::unique (v4.begin(), v4.end());
-		CPPUNIT_ASSERT(++v4.begin() == end4);
+		TEST_CHECK(++v4.begin() == end4);
 		v4.resize(m_container_size, Cval(-1));
 		end4 = std::unique (v4.begin(), v4.end(), myfunction_unique);
-		CPPUNIT_ASSERT(++v4.begin() == end4);
+		TEST_CHECK(++v4.begin() == end4);
 #endif
 	}	
 }
@@ -2881,18 +2949,18 @@ void test_algorithm::unique_copy(const char* msg)
 		int mycheck[]={10, 20, 30};
 		for (it=v1.begin(); it!=v1.end(); ++it)
 		{
-			CPPUNIT_ASSERT(mycheck[it-v1.begin()] == *it);			
+			TEST_CHECK(mycheck[it-v1.begin()] == *it);			
 		}		
 		
 		it = stl::unique_copy (v2.begin(), v2.end(), v3.begin());
-		CPPUNIT_ASSERT(++v3.begin() == it);
+		TEST_CHECK(++v3.begin() == it);
 
 
 		//	STD
 		// cannot deduce the iterator category
 		// std::_Unique_copy : none of the 4 overloads could convert all the argument types
 //		it = std::unique_copy (v2.begin(), v2.end(), v3.begin());
-//		CPPUNIT_ASSERT(++v3.begin() == it);
+//		TEST_CHECK(++v3.begin() == it);
 	}
 }
 
@@ -2924,13 +2992,13 @@ void test_algorithm::reverse(const char* msg)
 		Cval mycheck[]={9, 8, 7, 6, 5, 4, 3, 2, 1};
 		for (it=v1.begin(); it!=v1.end(); ++it)
 		{
-			CPPUNIT_ASSERT(mycheck[it-v1.begin()] == *it);
+			TEST_CHECK(mycheck[it-v1.begin()] == *it);
 		}		
 
 		stl::reverse (v2.begin(), v2.end());
 		for (i0 = m_container_size-1, it = v2.begin(); it != v2.end(); ++it, --i0)
 		{
-			CPPUNIT_ASSERT(*it == Cval(i0));
+			TEST_CHECK(*it == Cval(i0));
 		}
 
 
@@ -2940,7 +3008,7 @@ void test_algorithm::reverse(const char* msg)
 //		std::reverse (v3.begin(), v3.end());
 //		for (i0 = m_container_size-1, it = v3.begin(); it != v3.end(); ++it, --i0)
 //		{
-//			CPPUNIT_ASSERT(*it == Cval(i0));
+//			TEST_CHECK(*it == Cval(i0));
 //		}
 	}
 }
@@ -2980,13 +3048,13 @@ void test_algorithm::reverse_copy(const char* msg)
 		int mycheck[]={9, 8, 7, 6, 5, 4, 3, 2, 1};
 		for (it=v1.begin(); it!=v1.end(); ++it)
 		{
-			CPPUNIT_ASSERT(mycheck[it-v1.begin()] == *it);
+			TEST_CHECK(mycheck[it-v1.begin()] == *it);
 		}
 
 		stl::reverse_copy (v2.begin(), v2.end(), v3.begin());
 		for (it = v3.begin(), i0 = m_container_size-1; it != v3.end(); ++it, --i0)
 		{
-			CPPUNIT_ASSERT(*it == Cval(i0));
+			TEST_CHECK(*it == Cval(i0));
 		}
 
 #if !defined (DEBUG)	// std::_Debug_range2
@@ -2994,7 +3062,7 @@ void test_algorithm::reverse_copy(const char* msg)
 		std::reverse_copy (v2.begin(), v2.end(), v3.begin());
 		for (it = v3.begin(), i0 = m_container_size-1; it != v3.end(); ++it, --i0)
 		{
-			CPPUNIT_ASSERT(*it == Cval(i0));
+			TEST_CHECK(*it == Cval(i0));
 		}
 #endif
 	}	
@@ -3032,7 +3100,7 @@ void test_algorithm::rotate(const char* msg)
 		Cval mycheck[]={4, 5, 6, 7, 8, 9, 1, 2, 3};
 		for (it=v1.begin(); it!=v1.end(); ++it)
 		{
-			CPPUNIT_ASSERT(mycheck[it-v1.begin()] == *it);			
+			TEST_CHECK(mycheck[it-v1.begin()] == *it);			
 		}
 
 		It mid = v2.begin();
@@ -3041,11 +3109,11 @@ void test_algorithm::rotate(const char* msg)
 		
 		for(it = v2.begin(), i0 = 0; i0 < m_container_size/2; ++it, ++i0)
 		{
-			CPPUNIT_ASSERT(*it == Cval(m_container_size/2 + i0));
+			TEST_CHECK(*it == Cval(m_container_size/2 + i0));
 		}
 		for(; i0 < m_container_size; ++it, ++i0)
 		{
-			CPPUNIT_ASSERT(*it == Cval(i0 - m_container_size/2));
+			TEST_CHECK(*it == Cval(i0 - m_container_size/2));
 		}
 
 		
@@ -3054,10 +3122,10 @@ void test_algorithm::rotate(const char* msg)
 	/*
 		std::rotate(v3.begin(), ++v3.begin(), v3.end()); // 199999 1 2 3 4 ... 
 		it = v3.begin();
-		CPPUNIT_ASSERT(*it = Cval(m_container_size-1));
+		TEST_CHECK(*it = Cval(m_container_size-1));
 		for(i0 = 0; it != v3.end(); ++it, ++i0)
 		{
-			CPPUNIT_ASSERT(*it == Cval(i0));
+			TEST_CHECK(*it == Cval(i0));
 		}
 	*/
 	}
@@ -3098,7 +3166,7 @@ void test_algorithm::rotate_copy(const char* msg)
 		Cval mycheck[]={40, 50, 60, 70, 10, 20, 30};
 		for (it=v1.begin(); it!=v1.end(); ++it)
 		{
-			CPPUNIT_ASSERT(mycheck[it-v1.begin()] == *it);			
+			TEST_CHECK(mycheck[it-v1.begin()] == *it);			
 		}
 
 		It mid = v2.begin();
@@ -3107,11 +3175,11 @@ void test_algorithm::rotate_copy(const char* msg)
 
 		for(it = v3.begin(), i0 = 0; i0 < m_container_size/2; ++it, ++i0)
 		{
-			CPPUNIT_ASSERT(*it == Cval(m_container_size/2 + i0));
+			TEST_CHECK(*it == Cval(m_container_size/2 + i0));
 		}
 		for(; i0 < m_container_size; ++it, ++i0)
 		{
-			CPPUNIT_ASSERT(*it == Cval(i0 - m_container_size/2));
+			TEST_CHECK(*it == Cval(i0 - m_container_size/2));
 		}
 		
 
@@ -3123,11 +3191,11 @@ void test_algorithm::rotate_copy(const char* msg)
 
 		for(it = v3.begin(), i0 = 0; i0 < m_container_size/2; ++it, ++i0)
 		{
-			CPPUNIT_ASSERT(*it == Cval(m_container_size/2 + i0));
+			TEST_CHECK(*it == Cval(m_container_size/2 + i0));
 		}
 		for(; i0 < m_container_size; ++it, ++i0)
 		{
-			CPPUNIT_ASSERT(*it == Cval(i0 - m_container_size/2));
+			TEST_CHECK(*it == Cval(i0 - m_container_size/2));
 		}
 #endif
 	}	
@@ -3181,7 +3249,7 @@ void test_algorithm::random_shuffle(const char* msg)
 		*/
 		for(i0 = 1; i0 < v1.size(); ++i0)
 		{
-			CPPUNIT_ASSERT(stl::count(v1.begin(), v1.end(), i0) == 1);
+			TEST_CHECK(stl::count(v1.begin(), v1.end(), i0) == 1);
 		}
 
 #if !defined(DEBUG)
@@ -3191,7 +3259,7 @@ void test_algorithm::random_shuffle(const char* msg)
 
 		for(i0 = 1; i0 < v1.size(); ++i0)
 		{
-			CPPUNIT_ASSERT(stl::count(v2.begin(), v2.end(), i0) == 1);
+			TEST_CHECK(stl::count(v2.begin(), v2.end(), i0) == 1);
 		}
 #endif
 	}
@@ -3236,14 +3304,14 @@ void test_algorithm::partition(const char* msg)
 		Cval mycheck_odd[]={1, 9, 3, 7, 5};
 		for(it = v1.begin(), i0 = 0; it != bound; ++it, ++i0)
 		{
-			CPPUNIT_ASSERT(mycheck_odd[i0] == *it);			
+			TEST_CHECK(mycheck_odd[i0] == *it);			
 		}
 
 		//cout << "\neven members:";
 		Cval mycheck_even[]={6, 4, 8, 2};
 		for (it = bound, i0 = 0; it != v1.end(); ++it, ++i0)
 		{
-			CPPUNIT_ASSERT(mycheck_even[i0] == *it);			
+			TEST_CHECK(mycheck_even[i0] == *it);			
 		}
 		//odd members: 1 9 3 7 5
 		//even members: 6 4 8 2
@@ -3254,11 +3322,11 @@ void test_algorithm::partition(const char* msg)
 		{
 			if(i0%2)
 			{
-				CPPUNIT_ASSERT(*it == Cval(i0));				
+				TEST_CHECK(*it == Cval(i0));				
 			}
 			else
 			{
-				CPPUNIT_ASSERT(*it == Cval(m_container_size - i0 + 1));
+				TEST_CHECK(*it == Cval(m_container_size - i0 + 1));
 			}
 		}
 
@@ -3267,11 +3335,11 @@ void test_algorithm::partition(const char* msg)
 		{
 			if(i0%2)
 			{
-				CPPUNIT_ASSERT(*it == Cval(m_container_size - i0 + 1));
+				TEST_CHECK(*it == Cval(m_container_size - i0 + 1));
 			}
 			else
 			{
-				CPPUNIT_ASSERT(*it == Cval(i0));
+				TEST_CHECK(*it == Cval(i0));
 			}
 		}
 		// STD - see partition2(...)
@@ -3315,14 +3383,14 @@ void test_algorithm::partition2(const char* msg)
 		Cval mycheck_odd[]={1, 9, 3, 7, 5};
 		for(it = v1.begin(), i0 = 0; it != bound; ++it, ++i0)
 		{
-			CPPUNIT_ASSERT(mycheck_odd[i0] == *it);			
+			TEST_CHECK(mycheck_odd[i0] == *it);			
 		}
 
 		//cout << "\neven members:";
 		Cval mycheck_even[]={6, 4, 8, 2};
 		for (it = bound, i0 = 0; it != v1.end(); ++it, ++i0)
 		{
-			CPPUNIT_ASSERT(mycheck_even[i0] == *it);			
+			TEST_CHECK(mycheck_even[i0] == *it);			
 		}
 		//odd members: 1 9 3 7 5
 		//even members: 6 4 8 2
@@ -3333,11 +3401,11 @@ void test_algorithm::partition2(const char* msg)
 		{
 			if(i0%2)
 			{
-				CPPUNIT_ASSERT(*it == Cval(i0));				
+				TEST_CHECK(*it == Cval(i0));				
 			}
 			else
 			{
-				CPPUNIT_ASSERT(*it == Cval(m_container_size - i0 + 1));
+				TEST_CHECK(*it == Cval(m_container_size - i0 + 1));
 			}
 		}
 
@@ -3346,11 +3414,11 @@ void test_algorithm::partition2(const char* msg)
 		{
 			if(i0%2)
 			{
-				CPPUNIT_ASSERT(*it == Cval(m_container_size - i0 + 1));
+				TEST_CHECK(*it == Cval(m_container_size - i0 + 1));
 			}
 			else
 			{
-				CPPUNIT_ASSERT(*it == Cval(i0));
+				TEST_CHECK(*it == Cval(i0));
 			}
 		}
 	}
@@ -3397,26 +3465,26 @@ void test_algorithm::stable_partition(const char* msg)
 		Cval mycheck_odd[]={1, 3, 5, 7, 9};
 		for (it=v1.begin(), i0 = 0; it != bound; ++it, ++i0)
 		{
-			CPPUNIT_ASSERT(mycheck_odd[i0] == *it);
+			TEST_CHECK(mycheck_odd[i0] == *it);
 		}
 
 		//even members:
 		Cval mycheck_even[]={2, 4, 6, 8};
 		for (it = bound, i0 = 0; it != v1.end(); ++it, ++i0)
 		{
-			CPPUNIT_ASSERT(mycheck_even[i0] == *it);			
+			TEST_CHECK(mycheck_even[i0] == *it);			
 		}
 		
 		//odd members: 1 3 5 7 9 ... 199999
 		bound = std::stable_partition(v2.begin(), v2.end(), IsOdd_stable_partition);
 		for(it = v2.begin(), i0 = 1; it != bound; ++it, i0+=2)
 		{
-			CPPUNIT_ASSERT(*it == Cval(i0));
+			TEST_CHECK(*it == Cval(i0));
 		}
 		//even members: 2 4 6 8 ... 200000
 		for(it = bound, i0 = 2; it != v2.end(); ++it, i0+=2)
 		{
-			CPPUNIT_ASSERT(*it == Cval(i0));
+			TEST_CHECK(*it == Cval(i0));
 		}
 	}
 }
@@ -3459,26 +3527,26 @@ void test_algorithm::stable_partition2(const char* msg)
 		Cval mycheck_odd[]={1, 3, 5, 7, 9};
 		for (it=v1.begin(), i0 = 0; it != bound; ++it, ++i0)
 		{
-			CPPUNIT_ASSERT(mycheck_odd[i0] == *it);
+			TEST_CHECK(mycheck_odd[i0] == *it);
 		}
 
 		//even members:
 		Cval mycheck_even[]={2, 4, 6, 8};
 		for (it = bound, i0 = 0; it != v1.end(); ++it, ++i0)
 		{
-			CPPUNIT_ASSERT(mycheck_even[i0] == *it);			
+			TEST_CHECK(mycheck_even[i0] == *it);			
 		}
 		
 		//odd members: 1 3 5 7 9 ... 199999
 		bound = stl::stable_partition(v2.begin(), v2.end(), IsOdd_stable_partition);
 		for(it = v2.begin(), i0 = 1; it != bound; ++it, i0+=2)
 		{
-			CPPUNIT_ASSERT(*it == Cval(i0));
+			TEST_CHECK(*it == Cval(i0));
 		}
 		//even members: 2 4 6 8 ... 200000
 		for(it = bound, i0 = 2; it != v2.end(); ++it, i0+=2)
 		{
-			CPPUNIT_ASSERT(*it == Cval(i0));
+			TEST_CHECK(*it == Cval(i0));
 		}
 	}
 }
@@ -3535,20 +3603,20 @@ void test_algorithm::sort(const char* msg)
 		int mycheck[]={12, 26, 32, 33, 45, 53, 71, 80};
 		for (it=v1.begin(); it!=v1.end(); ++it)
 		{
-			CPPUNIT_ASSERT(mycheck[it-v1.begin()] == *it);
+			TEST_CHECK(mycheck[it-v1.begin()] == *it);
 		}
 
 		stl::sort(v2.begin() + m_container_size/2, v2.end(), myfunction_sort);
 		stl::sort(v2.begin(), v2.end());
 		for(it = v2.begin() + 1; it != v2.end(); ++it)
-			CPPUNIT_ASSERT(*it >= *(it - 1)); // used ::rand() so equal may exist.
+			TEST_CHECK(*it >= *(it - 1)); // used ::rand() so equal may exist.
 
 #if !defined (DEBUG)
 		//	STD
 		std::sort(v3.begin() + m_container_size/2, v3.end(), myfunction_sort);
 		std::sort(v3.begin(), v3.end());		
 		for(it = v3.begin() + 1; it != v3.end(); ++it)
-			CPPUNIT_ASSERT(*it >= *(it - 1));
+			TEST_CHECK(*it >= *(it - 1));
 #endif
 	}
 }
@@ -3596,7 +3664,7 @@ void test_algorithm::stable_sort(const char* msg)
 		Cval mycheck[]={1.32, 1.41, 1.62, 1.73, 2.58, 2.72, 3.14, 4.67};
 		for (it = v1.begin(), i0 = 0; it != v1.end(); ++it, ++i0)
 		{
-			CPPUNIT_ASSERT(mycheck[i0] == *it);			
+			TEST_CHECK(mycheck[i0] == *it);			
 		}
 
 		// reset to initial vaues
@@ -3608,12 +3676,12 @@ void test_algorithm::stable_sort(const char* msg)
 		Cval mycheck2[]={1.41, 1.73, 1.32, 1.62, 2.72, 2.58, 3.14, 4.67};
 		for (it = v1.begin(), i0 = 0; it != v1.end(); ++it, ++i0)
 		{
-			CPPUNIT_ASSERT(mycheck2[it-v1.begin()] == *it);			
+			TEST_CHECK(mycheck2[it-v1.begin()] == *it);			
 		}
 
 		std::stable_sort(v2.begin(), v2.end());
 		for(it = v2.begin()+1; it != v2.end(); ++it)
-			CPPUNIT_ASSERT(*it >= *(it-1)); // ::rand may have created duplicates;
+			TEST_CHECK(*it >= *(it-1)); // ::rand may have created duplicates;
 	}	
 }
 
@@ -3654,7 +3722,7 @@ void test_algorithm::stable_sort2(const char* msg)
 		Cval mycheck[]={1.32, 1.41, 1.62, 1.73, 2.58, 2.72, 3.14, 4.67};
 		for (it = v1.begin(), i0 = 0; it != v1.end(); ++it, ++i0)
 		{
-			CPPUNIT_ASSERT(mycheck[i0] == *it);			
+			TEST_CHECK(mycheck[i0] == *it);			
 		}
 
 		// reset to initial values
@@ -3666,12 +3734,12 @@ void test_algorithm::stable_sort2(const char* msg)
 		Cval mycheck2[]={1.41, 1.73, 1.32, 1.62, 2.72, 2.58, 3.14, 4.67};
 		for (it = v1.begin(), i0 = 0; it != v1.end(); ++it, ++i0)
 		{
-			CPPUNIT_ASSERT(mycheck2[it-v1.begin()] == *it);			
+			TEST_CHECK(mycheck2[it-v1.begin()] == *it);			
 		}
 
 		stl::stable_sort(v2.begin(), v2.end());
 		for(it = v2.begin()+1; it != v2.end(); ++it)
-			CPPUNIT_ASSERT(*it >= *(it-1)); // ::rand may have created duplicates;
+			TEST_CHECK(*it >= *(it-1)); // ::rand may have created duplicates;
 	}	
 }
 
@@ -3709,7 +3777,7 @@ void test_algorithm::partial_sort(const char* msg)
 		stl::partial_sort(v1.begin(), v1.begin() + 5, v1.end());
 		for(it = v1.begin(), i0=1; it != v1.begin()+5; ++it, ++i0)
 		{		
-			CPPUNIT_ASSERT(*it == Cval(i0));
+			TEST_CHECK(*it == Cval(i0));
 		}
 
 		// using function as comp
@@ -3719,14 +3787,14 @@ void test_algorithm::partial_sort(const char* msg)
 		Cval mycheck[]={1, 2, 3, 4, 5, 9, 8, 7, 6};
 		for (it=v1.begin(), i0 = 0; it != v1.end(); ++it, ++i0)
 		{
-			CPPUNIT_ASSERT(mycheck[i0] == *it);			
+			TEST_CHECK(mycheck[i0] == *it);			
 		}
 		//v1 contains: 1 2 3 4 5 9 8 7 6
 
 		stl::partial_sort(v2.begin(), v2.begin() + m_container_size - 10, v2.end());		
 		for(it = v2.begin(), i0 = 1; it != v2.begin() + m_container_size - 10; ++it, ++i0)
 		{
-			CPPUNIT_ASSERT(*it == Cval(i0));
+			TEST_CHECK(*it == Cval(i0));
 		}
 
 #if !defined(DEBUG)
@@ -3734,7 +3802,7 @@ void test_algorithm::partial_sort(const char* msg)
 		std::partial_sort(v3.begin(), v3.begin() + m_container_size - 10, v3.end());		
 		for(it = v3.begin(), i0 = 1; it != v3.begin() + m_container_size - 10; ++it, ++i0)
 		{
-			CPPUNIT_ASSERT(*it == Cval(i0));
+			TEST_CHECK(*it == Cval(i0));
 		}
 #endif
 	}
@@ -3782,13 +3850,13 @@ void test_algorithm::partial_sort_copy(const char* msg)
 		Cval mycheck[]={1, 2, 3, 4, 5};
 		for (it = v1.begin(); it != v1.end(); ++it)
 		{
-			CPPUNIT_ASSERT(mycheck[it-v1.begin()] == *it);			
+			TEST_CHECK(mycheck[it-v1.begin()] == *it);			
 		}
 
 		stl::partial_sort_copy(v2.begin(), v2.end(), v3.begin(), v3.end());
 		for(it = v3.begin(), i0 = 1; it != v3.end(); ++it, ++i0)
 		{
-			CPPUNIT_ASSERT(*it == Cval(i0));
+			TEST_CHECK(*it == Cval(i0));
 		}
 
 #if !defined(DEBUG)
@@ -3796,7 +3864,7 @@ void test_algorithm::partial_sort_copy(const char* msg)
 		std::partial_sort_copy(v2.begin(), v2.end(), v3.begin(), v3.end());
 		for(it = v3.begin(), i0 = 1; it != v3.end(); ++it, ++i0)
 		{
-			CPPUNIT_ASSERT(*it == Cval(i0));
+			TEST_CHECK(*it == Cval(i0));
 		}
 #endif
 	}
@@ -3855,11 +3923,11 @@ void test_algorithm::nth_element(const char* msg)
 		i2 = *(v1.begin() + 5);
 		for(it = v1.begin(); it != v1.begin() + 5; ++it)
 		{
-			CPPUNIT_ASSERT(*it < i2);
+			TEST_CHECK(*it < i2);
 		}
 		for(it = v1.begin() + 5; it != v1.end(); ++it)
 		{
-			CPPUNIT_ASSERT(*it >= i2);
+			TEST_CHECK(*it >= i2);
 		}
 
 		stl::nth_element(v2.begin(), v2.begin()+m_container_size/2, v2.end());
@@ -3867,11 +3935,11 @@ void test_algorithm::nth_element(const char* msg)
 		It mid =  v2.begin() + m_container_size/2;
 		for(it = v2.begin(); it != mid; ++it)
 		{
-			CPPUNIT_ASSERT(*it < i2);
+			TEST_CHECK(*it < i2);
 		}
 		for(it = mid; it != v2.end(); ++it)
 		{
-			CPPUNIT_ASSERT(*it >= i2);
+			TEST_CHECK(*it >= i2);
 		}
 
 #if !defined(DEBUG)
@@ -3882,11 +3950,11 @@ void test_algorithm::nth_element(const char* msg)
 		mid = v3.begin() + m_container_size/2;
 		for(it = v3.begin(); it != mid; ++it)
 		{
-			CPPUNIT_ASSERT(*it < i2);
+			TEST_CHECK(*it < i2);
 		}
 		for(it = mid; it != v3.end(); ++it)
 		{
-			CPPUNIT_ASSERT(*it >= i2);
+			TEST_CHECK(*it >= i2);
 		}
 #endif
 	}
@@ -3924,8 +3992,8 @@ void test_algorithm::lower_bound(const char* msg)
 		low = stl::lower_bound<It, Cval> (v1.begin(), v1.end(), Cval(20)); //4th element
 		up  = stl::upper_bound<It, Cval> (v1.begin(), v1.end(), Cval(20)); //7th element
 
-		CPPUNIT_ASSERT((low - v1.begin()) == 3);
-		CPPUNIT_ASSERT(( up - v1.begin()) == 6);
+		TEST_CHECK((low - v1.begin()) == 3);
+		TEST_CHECK(( up - v1.begin()) == 6);
 
 		low = stl::lower_bound<It, Cval>(v2.begin(), v2.end(), Cval(m_container_size/2));
 		up = stl::upper_bound<It, Cval>(v2.begin(), v2.end(), Cval(m_container_size/2));
@@ -3933,8 +4001,8 @@ void test_algorithm::lower_bound(const char* msg)
 
 		Diff d0v2 = low - v2.begin();
 		Diff d2v2 = up - v2.begin();
-		CPPUNIT_ASSERT( d0v2 == m_container_size/2 - 1 );
-		CPPUNIT_ASSERT( d2v2 == m_container_size/2 );
+		TEST_CHECK( d0v2 == m_container_size/2 - 1 );
+		TEST_CHECK( d2v2 == m_container_size/2 );
 
 		// STD - see lower_bound2(...)
 	}
@@ -3972,8 +4040,8 @@ void test_algorithm::lower_bound2(const char* msg)
 		low = std::lower_bound<It, Cval> (v1.begin(), v1.end(), Cval(20)); //4th element
 		up  = std::upper_bound<It, Cval> (v1.begin(), v1.end(), Cval(20)); //7th element
 
-		CPPUNIT_ASSERT((low - v1.begin()) == 3);
-		CPPUNIT_ASSERT(( up - v1.begin()) == 6);
+		TEST_CHECK((low - v1.begin()) == 3);
+		TEST_CHECK(( up - v1.begin()) == 6);
 
 		low = std::lower_bound<It, Cval>(v2.begin(), v2.end(), Cval(m_container_size/2));
 		up = std::upper_bound<It, Cval>(v2.begin(), v2.end(), Cval(m_container_size/2));
@@ -3981,8 +4049,8 @@ void test_algorithm::lower_bound2(const char* msg)
 
 		Diff d0v2 = low - v2.begin();
 		Diff d2v2 = up - v2.begin();
-		CPPUNIT_ASSERT( d0v2 == m_container_size/2 - 1 );
-		CPPUNIT_ASSERT( d2v2 == m_container_size/2 );
+		TEST_CHECK( d0v2 == m_container_size/2 - 1 );
+		TEST_CHECK( d2v2 == m_container_size/2 );
 	}
 }
 
@@ -4035,13 +4103,13 @@ void test_algorithm::equal_range(const char* msg)
 		stl::sort (v1.begin(), v1.end(), mygreater_equal_range);                                 // 30 30 20 20 20 10 10 10
 		bounds = stl::equal_range<It, Cval>(v1.begin(), v1.end(), 20, mygreater_equal_range);    //       ^        ^
 
-		CPPUNIT_ASSERT((int)(bounds.first - v1.begin()) == 2);
-		CPPUNIT_ASSERT((int)(bounds.second - v1.begin()) == 5);
+		TEST_CHECK((int)(bounds.first - v1.begin()) == 2);
+		TEST_CHECK((int)(bounds.second - v1.begin()) == 5);
 
 
 		bounds = stl::equal_range<It, Cval>(v2.begin(), v2.end(), m_container_size/2);
-		CPPUNIT_ASSERT(bounds.first - v2.begin() == m_container_size/2);
-		CPPUNIT_ASSERT(bounds.second - v2.begin() == m_container_size/2+1);
+		TEST_CHECK(bounds.first - v2.begin() == m_container_size/2);
+		TEST_CHECK(bounds.second - v2.begin() == m_container_size/2+1);
 		// STD - see equal_range2(...)
 	}
 }
@@ -4086,13 +4154,13 @@ void test_algorithm::equal_range2(const char* msg)
 		stl::sort (v1.begin(), v1.end(), mygreater_equal_range);                                 // 30 30 20 20 20 10 10 10
 		bounds = std::equal_range<It, Cval>(v1.begin(), v1.end(), 20, mygreater_equal_range);    //       ^        ^
 
-		CPPUNIT_ASSERT((int)(bounds.first - v1.begin()) == 2);
-		CPPUNIT_ASSERT((int)(bounds.second - v1.begin()) == 5);
+		TEST_CHECK((int)(bounds.first - v1.begin()) == 2);
+		TEST_CHECK((int)(bounds.second - v1.begin()) == 5);
 
 
 		bounds = std::equal_range<It, Cval>(v2.begin(), v2.end(), m_container_size/2);
-		CPPUNIT_ASSERT(bounds.first - v2.begin() == m_container_size/2);
-		CPPUNIT_ASSERT(bounds.second - v2.begin() == m_container_size/2+1);
+		TEST_CHECK(bounds.first - v2.begin() == m_container_size/2);
+		TEST_CHECK(bounds.second - v2.begin() == m_container_size/2+1);
 	}
 }
 
@@ -4129,19 +4197,19 @@ void test_algorithm::binary_search(const char* msg)
 
 		//cout << "looking for a 3... ";
 		bool res = std::binary_search<It, Cval>(v1.begin(), v1.end(), 3);
-		CPPUNIT_ASSERT(res);
+		TEST_CHECK(res);
 
 		// using myfunction as comp:
 		std::sort(v1.begin(), v1.end(), myfunction_binary_search);
 
 		//cout << "looking for a 6... ";
 		res = std::binary_search<It, Cval>(v1.begin(), v1.end(), 6, myfunction_binary_search);
-		CPPUNIT_ASSERT(!res);
+		TEST_CHECK(!res);
 
 		res = std::binary_search<It, Cval>(v2.begin(), v2.end(), m_container_size/2);
-		CPPUNIT_ASSERT(res);
+		TEST_CHECK(res);
 		res = std::binary_search<It, Cval>(v2.begin(), v2.end(), 2*m_container_size, myfunction_binary_search);
-		CPPUNIT_ASSERT(!res);
+		TEST_CHECK(!res);
 	}
 }
 
@@ -4173,19 +4241,19 @@ void test_algorithm::binary_search2(const char* msg)
 
 		//cout << "looking for a 3... ";
 		bool res = stl::binary_search<It, Cval>(v1.begin(), v1.end(), 3);
-		CPPUNIT_ASSERT(res);
+		TEST_CHECK(res);
 
 		// using myfunction as comp:
 		stl::sort(v1.begin(), v1.end(), myfunction_binary_search);
 
 		//cout << "looking for a 6... ";
 		res = stl::binary_search<It, Cval>(v1.begin(), v1.end(), 6, myfunction_binary_search);
-		CPPUNIT_ASSERT(!res);
+		TEST_CHECK(!res);
 
 		res = stl::binary_search<It, Cval>(v2.begin(), v2.end(), m_container_size/2);
-		CPPUNIT_ASSERT(res);
+		TEST_CHECK(res);
 		res = stl::binary_search<It, Cval>(v2.begin(), v2.end(), 2*m_container_size, myfunction_binary_search);
-		CPPUNIT_ASSERT(!res);
+		TEST_CHECK(!res);
 	}
 }
 
@@ -4235,7 +4303,7 @@ void test_algorithm::merge(const char* msg)
 		Cval mycheck[]={5, 10, 10, 15, 20, 20, 25, 30, 40, 50};
 		for(it = v1.begin(), i0 = 0; it != v1.end(); ++it, ++i0)
 		{
-			CPPUNIT_ASSERT(mycheck[i0] == *it);
+			TEST_CHECK(mycheck[i0] == *it);
 		}
 		//The resulting vector contains: 5 10 10 15 20 20 25 30 40 50
 
@@ -4290,7 +4358,7 @@ void test_algorithm::merge2(const char* msg)
 		Cval mycheck[]={5, 10, 10, 15, 20, 20, 25, 30, 40, 50};
 		for(it = v1.begin(), i0 = 0; it != v1.end(); ++it, ++i0)
 		{
-			CPPUNIT_ASSERT(mycheck[i0] == *it);
+			TEST_CHECK(mycheck[i0] == *it);
 		}
 		//The resulting vector contains: 5 10 10 15 20 20 25 30 40 50
 
@@ -4345,7 +4413,7 @@ void test_algorithm::inplace_merge(const char* msg)
 		int mycheck[]={5, 10, 10, 15, 20, 20, 25, 30, 40, 50};
 		for (it=v1.begin(); it!=v1.end(); ++it)
 		{
-			CPPUNIT_ASSERT(mycheck[it-v1.begin()] == *it);
+			TEST_CHECK(mycheck[it-v1.begin()] == *it);
 			//cout << " " << *it;
 		}
 		//The resulting vector contains: 5 10 10 15 20 20 25 30 40 50
@@ -4355,7 +4423,7 @@ void test_algorithm::inplace_merge(const char* msg)
 		std::copy(v3.begin(), v3.end(), v4.begin() + v2.size());
 		std::inplace_merge(v4.begin(), v4.begin() + m_container_size/2, v4.end());
 		for(it = v4.begin(), i0 = 0; it != v4.end(); ++it, ++i0)
-			CPPUNIT_ASSERT(*it == Cval(i0));
+			TEST_CHECK(*it == Cval(i0));
 	}
 }
 
@@ -4403,7 +4471,7 @@ void test_algorithm::inplace_merge2(const char* msg)
 		int mycheck[]={5, 10, 10, 15, 20, 20, 25, 30, 40, 50};
 		for (it=v1.begin(); it!=v1.end(); ++it)
 		{
-			CPPUNIT_ASSERT(mycheck[it-v1.begin()] == *it);
+			TEST_CHECK(mycheck[it-v1.begin()] == *it);
 			//cout << " " << *it;
 		}
 		//The resulting vector contains: 5 10 10 15 20 20 25 30 40 50
@@ -4413,7 +4481,7 @@ void test_algorithm::inplace_merge2(const char* msg)
 		stl::copy(v3.begin(), v3.end(), v4.begin() + v2.size());
 		stl::inplace_merge(v4.begin(), v4.begin() + m_container_size/2, v4.end());
 		for(it = v4.begin(), i0 = 0; it != v4.end(); ++it, ++i0)
-			CPPUNIT_ASSERT(*it == Cval(i0));
+			TEST_CHECK(*it == Cval(i0));
 	}
 }
 
@@ -4456,18 +4524,18 @@ void test_algorithm::includes(const char* msg)
 		*/
 		// using default comparison:
 		res = std::includes(c1, c1+10, c2, c2+4);
-		CPPUNIT_ASSERT( res );
+		TEST_CHECK( res );
 		//cout << "c1 includes c2!" << endl;
 		
 		// using myfunction as comp:
 		res = std::includes(c1, c1+10, c2, c2+4, myfunction_includes);
-		CPPUNIT_ASSERT( res );
+		TEST_CHECK( res );
 
 		//c1 includes c2!
 		//c1 includes c2!
 
 		res = std::includes(v1.begin(), v1.end(), v2.begin(), v2.end());
-		CPPUNIT_ASSERT( res );
+		TEST_CHECK( res );
 	}
 }
 
@@ -4507,18 +4575,18 @@ void test_algorithm::includes2(const char* msg)
 		*/
 		// using default comparison:
 		res = stl::includes(c1, c1+10, c2, c2+4);
-		CPPUNIT_ASSERT( res );
+		TEST_CHECK( res );
 		//cout << "c1 includes c2!" << endl;
 		
 		// using myfunction as comp:
 		res = stl::includes(c1, c1+10, c2, c2+4, myfunction_includes);
-		CPPUNIT_ASSERT( res );
+		TEST_CHECK( res );
 
 		//c1 includes c2!
 		//c1 includes c2!
 
 		res = stl::includes(v1.begin(), v1.end(), v2.begin(), v2.end());
-		CPPUNIT_ASSERT( res );
+		TEST_CHECK( res );
 	}
 }
 
@@ -4567,16 +4635,16 @@ void test_algorithm::set_union(const char* msg)
 		Cval mycheck[]={5, 10, 15, 20, 25, 30, 40, 50,  0,  0};
 		for(size_t i=0; i < v1.size(); ++i)
 		{
-			CPPUNIT_ASSERT(mycheck[i] == v1[i]);
+			TEST_CHECK(mycheck[i] == v1[i]);
 		}
 
 		//cout << "union has " << int(it - v1.begin()) << " elements.\n";
-		CPPUNIT_ASSERT((it-v1.begin()) == 8);
+		TEST_CHECK((it-v1.begin()) == 8);
 		//union has 8 elements
 
 		std::set_union(v2.begin(), v2.end(), v3.begin(), v3.end(), v4.begin());
 		for(it = v4.begin(), i0 = 0; it != v4.end(); ++it, ++i0)
-			CPPUNIT_ASSERT(*it == Cval(i0));
+			TEST_CHECK(*it == Cval(i0));
 	}
 }
 
@@ -4625,16 +4693,16 @@ void test_algorithm::set_union2(const char* msg)
 		Cval mycheck[]={5, 10, 15, 20, 25, 30, 40, 50,  0,  0};
 		for(size_t i=0; i < v1.size(); ++i)
 		{
-			CPPUNIT_ASSERT(mycheck[i] == v1[i]);
+			TEST_CHECK(mycheck[i] == v1[i]);
 		}
 
 		//cout << "union has " << int(it - v1.begin()) << " elements.\n";
-		CPPUNIT_ASSERT((it-v1.begin()) == 8);
+		TEST_CHECK((it-v1.begin()) == 8);
 		//union has 8 elements
 
 		stl::set_union(v2.begin(), v2.end(), v3.begin(), v3.end(), v4.begin());
 		for(it = v4.begin(), i0 = 0; it != v4.end(); ++it, ++i0)
-			CPPUNIT_ASSERT(*it == Cval(i0));
+			TEST_CHECK(*it == Cval(i0));
 	}
 }
 
@@ -4681,17 +4749,17 @@ void test_algorithm::set_intersection(const char* msg)
 
 		for(size_t i=0; i < v1.size(); ++i)
 		{
-			CPPUNIT_ASSERT(mycheck[i] == v1[i]);
+			TEST_CHECK(mycheck[i] == v1[i]);
 		}
 
 		//cout << "intersection has " << int(it - v1.begin()) << " elements.\n";
-		CPPUNIT_ASSERT((int)(it-v1.begin()) == 2);
+		TEST_CHECK((int)(it-v1.begin()) == 2);
 		//intersection has 2 elements
 		
 		it = std::set_intersection(v2.begin(), v2.end(), v3.begin(), v3.end(), v4.begin());
-		CPPUNIT_ASSERT(it - v4.begin() == m_container_size);
+		TEST_CHECK(it - v4.begin() == m_container_size);
 		for(it = v4.begin(), i0 = 0; it != v4.end(); ++it, ++i0)
-			CPPUNIT_ASSERT(*it == Cval(i0));
+			TEST_CHECK(*it == Cval(i0));
 	}
 }
 
@@ -4738,17 +4806,17 @@ void test_algorithm::set_intersection2(const char* msg)
 
 		for(size_t i=0; i < v1.size(); ++i)
 		{
-			CPPUNIT_ASSERT(mycheck[i] == v1[i]);
+			TEST_CHECK(mycheck[i] == v1[i]);
 		}
 
 		//cout << "intersection has " << int(it - v1.begin()) << " elements.\n";
-		CPPUNIT_ASSERT((int)(it-v1.begin()) == 2);
+		TEST_CHECK((int)(it-v1.begin()) == 2);
 		//intersection has 2 elements
 		
 		it = stl::set_intersection(v2.begin(), v2.end(), v3.begin(), v3.end(), v4.begin());
-		CPPUNIT_ASSERT(it - v4.begin() == m_container_size);
+		TEST_CHECK(it - v4.begin() == m_container_size);
 		for(it = v4.begin(), i0 = 0; it != v4.end(); ++it, ++i0)
-			CPPUNIT_ASSERT(*it == Cval(i0));
+			TEST_CHECK(*it == Cval(i0));
 	}
 }
 
@@ -4797,21 +4865,21 @@ void test_algorithm::set_difference(const char* msg)
 		Cval mycheck[]={5, 15, 25,  0,  0,  0,  0,  0,  0,  0};
 		for(size_t i=0; i<v1.size(); ++i)
 		{
-			CPPUNIT_ASSERT(mycheck[i] == v1[i]);
+			TEST_CHECK(mycheck[i] == v1[i]);
 		}
 		//cout << "difference has " << int(it - v1.begin()) << " elements.\n";
-		CPPUNIT_ASSERT((int)(it-v1.begin()) == 3);
+		TEST_CHECK((int)(it-v1.begin()) == 3);
 		//difference has 3 elements
 
 
 		it = stl::set_difference(v2.begin(), v2.end(), v3.begin(), v3.end(), v4.begin(), stl::less<Cval>());
 		for(it2 = v4.begin(), i0 = 1; it2 != it; ++it2, i0 += 2)
-			CPPUNIT_ASSERT(*it2 == Cval(i0));
+			TEST_CHECK(*it2 == Cval(i0));
 
 		//	STD
 		it = stl::set_difference(v2.begin(), v2.end(), v3.begin(), v3.end(), v4.begin(), std::less<Cval>());
 		for(it2 = v4.begin(), i0 = 1; it2 != it; ++it2, i0 += 2)
-			CPPUNIT_ASSERT(*it2 == Cval(i0));		
+			TEST_CHECK(*it2 == Cval(i0));		
 	}
 }
 
@@ -4860,17 +4928,17 @@ void test_algorithm::set_symmetric_difference(const char* msg)
 		Cval mycheck[]={5, 15, 25, 30, 40, 50,  0,  0,  0,  0};
 		for(size_t i=0; i<v1.size(); ++i)
 		{
-			CPPUNIT_ASSERT(mycheck[i] == v1[i]);
+			TEST_CHECK(mycheck[i] == v1[i]);
 		}
 
 		//cout << "symmetric difference has " << int(it - v1.begin()) << " elements.\n";
 
-		CPPUNIT_ASSERT((int)(it-v1.begin()) == 6);
+		TEST_CHECK((int)(it-v1.begin()) == 6);
 		//symmetric difference has 6 elements
 
 		it = std::set_symmetric_difference(v2.begin(), v2.end(), v3.begin(), v3.end(), v4.begin(), std::less<Cval>());
 		for(it2 = v4.begin(), i0 = 1; it2 != it; ++it2, i0 += 2)
-			CPPUNIT_ASSERT(*it2 == Cval(i0));
+			TEST_CHECK(*it2 == Cval(i0));
 	}
 }
 
@@ -4919,17 +4987,17 @@ void test_algorithm::set_symmetric_difference2(const char* msg)
 		Cval mycheck[]={5, 15, 25, 30, 40, 50,  0,  0,  0,  0};
 		for(size_t i=0; i<v1.size(); ++i)
 		{
-			CPPUNIT_ASSERT(mycheck[i] == v1[i]);
+			TEST_CHECK(mycheck[i] == v1[i]);
 		}
 
 		//cout << "symmetric difference has " << int(it - v1.begin()) << " elements.\n";
 
-		CPPUNIT_ASSERT((int)(it-v1.begin()) == 6);
+		TEST_CHECK((int)(it-v1.begin()) == 6);
 		//symmetric difference has 6 elements
 
 		it = stl::set_symmetric_difference(v2.begin(), v2.end(), v3.begin(), v3.end(), v4.begin(), stl::less<Cval>());
 		for(it2 = v4.begin(), i0 = 1; it2 != it; ++it2, i0 += 2)
-			CPPUNIT_ASSERT(*it2 == Cval(i0));
+			TEST_CHECK(*it2 == Cval(i0));
 	}
 }
 
@@ -4972,7 +5040,7 @@ void test_algorithm::push_heap(const char* msg)
 
 		std::make_heap (v1.begin(), v1.end());
 		//initial max heap : 30 (10 20 5 15)
-		CPPUNIT_ASSERT(v1.front() == 30);
+		TEST_CHECK(v1.front() == 30);
 
 		/*	pop_heap
 			Removes the largest element from the front of a heap to 
@@ -4985,7 +5053,7 @@ void test_algorithm::push_heap(const char* msg)
 		// v1: 20 (10 5 15)
 
 		//cout << "max heap after pop : " << v1.front() << endl;
-		CPPUNIT_ASSERT(v1.front() == 20);
+		TEST_CHECK(v1.front() == 20);
 
 
 		/*	push_heap
@@ -4997,7 +5065,7 @@ void test_algorithm::push_heap(const char* msg)
 		// v1: 99 (20 10 5 15)
 
 		//cout << "max heap after push: " << v1.front() << endl;
-		CPPUNIT_ASSERT(v1.front() == 99);
+		TEST_CHECK(v1.front() == 99);
 
 		//Converts a heap into a sorted range.
 		std::sort_heap (v1.begin(), v1.end());
@@ -5006,7 +5074,7 @@ void test_algorithm::push_heap(const char* msg)
 		int mycheck[]={5, 10, 15, 20, 99};
 		for (unsigned i=0; i<v1.size(); i++)
 		{
-			CPPUNIT_ASSERT(mycheck[i] == v1[i]);
+			TEST_CHECK(mycheck[i] == v1[i]);
 			//cout << " " << v[i];
 		}
 
@@ -5014,46 +5082,46 @@ void test_algorithm::push_heap(const char* msg)
 		//v2: 0 1 2 3 ... 199999
 		std::make_heap(v2.begin(), v2.end(), std::less<Cval>());
 		//v2: 199999 (0 1 2 3 ... 199998)
-		CPPUNIT_ASSERT(*v2.begin() == Cval(m_container_size-1));
+		TEST_CHECK(*v2.begin() == Cval(m_container_size-1));
 
 		std::pop_heap(v2.begin(), v2.end(), std::less<Cval>());
 		//v2: 199998 (0 1 2 3 ... 199999)
-		CPPUNIT_ASSERT(*v2.begin() == m_container_size-2);
-		CPPUNIT_ASSERT(*v2.rbegin() == m_container_size-1);
+		TEST_CHECK(*v2.begin() == m_container_size-2);
+		TEST_CHECK(*v2.rbegin() == m_container_size-1);
 
 		v2.pop_back();
 		//v2: 199998 (0 1 2 3 ... 199997)
 		v2.push_back(m_container_size);
 		std::push_heap(v2.begin(), v2.end(), std::less<Cval>());
 		//v2: 200000 (199998 0 1 2 3 ... 199997)
-		CPPUNIT_ASSERT(v2.front() == Cval(m_container_size));
+		TEST_CHECK(v2.front() == Cval(m_container_size));
 
 		std::sort_heap(v2.begin(), v2.end());
 		//v2: 0 1 2 3 ...
 		for(it = v2.begin()+1; it != v2.end(); ++it)
-			CPPUNIT_ASSERT(*it > *(it-1));
+			TEST_CHECK(*it > *(it-1));
 
 		//v3: 0 1 2 3 ... 199999
 		std::make_heap(v3.begin(), v3.end(), std::less<Cval>());
 		//v3: 199999 (0 1 2 3 ... 199998)
-		CPPUNIT_ASSERT(*v3.begin() == Cval(m_container_size-1));
+		TEST_CHECK(*v3.begin() == Cval(m_container_size-1));
 
 		std::pop_heap(v3.begin(), v3.end(), std::less<Cval>());
 		//v3: 199998 (0 1 2 3 ... 199999)
-		CPPUNIT_ASSERT(*v3.begin() == m_container_size-2);
-		CPPUNIT_ASSERT(*v3.rbegin() == m_container_size-1);
+		TEST_CHECK(*v3.begin() == m_container_size-2);
+		TEST_CHECK(*v3.rbegin() == m_container_size-1);
 
 		v3.pop_back();
 		//v3: 199998 (0 1 2 3 ... 199997)
 		v3.push_back(m_container_size);
 		std::push_heap(v3.begin(), v3.end(), std::less<Cval>());
 		//v3: 200000 (199998 0 1 2 3 ... 199997)
-		CPPUNIT_ASSERT(v3.front() == Cval(m_container_size));
+		TEST_CHECK(v3.front() == Cval(m_container_size));
 
 		std::sort_heap(v3.begin(), v3.end());
 		//v3: 0 1 2 3 ...
 		for(it = v3.begin()+1; it != v3.end(); ++it)
-			CPPUNIT_ASSERT(*it > *(it-1));
+			TEST_CHECK(*it > *(it-1));
 	}
 }
 
@@ -5094,7 +5162,7 @@ void test_algorithm::push_heap2(const char* msg)
 
 		stl::make_heap (v1.begin(), v1.end());
 		//initial max heap : 30 (10 20 5 15)
-		CPPUNIT_ASSERT(v1.front() == 30);
+		TEST_CHECK(v1.front() == 30);
 
 		/*	pop_heap
 			Removes the largest element from the front of a heap to 
@@ -5107,7 +5175,7 @@ void test_algorithm::push_heap2(const char* msg)
 		// v1: 20 (10 5 15)
 
 		//cout << "max heap after pop : " << v1.front() << endl;
-		CPPUNIT_ASSERT(v1.front() == 20);
+		TEST_CHECK(v1.front() == 20);
 
 
 		/*	push_heap
@@ -5119,7 +5187,7 @@ void test_algorithm::push_heap2(const char* msg)
 		// v1: 99 (20 10 5 15)
 
 		//cout << "max heap after push: " << v1.front() << endl;
-		CPPUNIT_ASSERT(v1.front() == 99);
+		TEST_CHECK(v1.front() == 99);
 
 		//Converts a heap into a sorted range.
 		stl::sort_heap (v1.begin(), v1.end());
@@ -5128,7 +5196,7 @@ void test_algorithm::push_heap2(const char* msg)
 		int mycheck[]={5, 10, 15, 20, 99};
 		for (unsigned i=0; i<v1.size(); i++)
 		{
-			CPPUNIT_ASSERT(mycheck[i] == v1[i]);
+			TEST_CHECK(mycheck[i] == v1[i]);
 			//cout << " " << v[i];
 		}
 
@@ -5136,46 +5204,46 @@ void test_algorithm::push_heap2(const char* msg)
 		//v2: 0 1 2 3 ... 199999
 		stl::make_heap(v2.begin(), v2.end(), stl::less<Cval>());
 		//v2: 199999 (0 1 2 3 ... 199998)
-		CPPUNIT_ASSERT(*v2.begin() == Cval(m_container_size-1));
+		TEST_CHECK(*v2.begin() == Cval(m_container_size-1));
 
 		stl::pop_heap(v2.begin(), v2.end(), stl::less<Cval>());
 		//v2: 199998 (0 1 2 3 ... 199999)
-		CPPUNIT_ASSERT(*v2.begin() == m_container_size-2);
-		CPPUNIT_ASSERT(*v2.rbegin() == m_container_size-1);
+		TEST_CHECK(*v2.begin() == m_container_size-2);
+		TEST_CHECK(*v2.rbegin() == m_container_size-1);
 
 		v2.pop_back();
 		//v2: 199998 (0 1 2 3 ... 199997)
 		v2.push_back(m_container_size);
 		stl::push_heap(v2.begin(), v2.end(), stl::less<Cval>());
 		//v2: 200000 (199998 0 1 2 3 ... 199997)
-		CPPUNIT_ASSERT(v2.front() == Cval(m_container_size));
+		TEST_CHECK(v2.front() == Cval(m_container_size));
 
 		stl::sort_heap(v2.begin(), v2.end());
 		//v2: 0 1 2 3 ...
 		for(it = v2.begin()+1; it != v2.end(); ++it)
-			CPPUNIT_ASSERT(*it > *(it-1));
+			TEST_CHECK(*it > *(it-1));
 		
 		//v3: 0 1 2 3 ... 199999
 		stl::make_heap(v3.begin(), v3.end(), stl::less<Cval>());
 		//v3: 199999 (0 1 2 3 ... 199998)
-		CPPUNIT_ASSERT(*v3.begin() == Cval(m_container_size-1));
+		TEST_CHECK(*v3.begin() == Cval(m_container_size-1));
 
 		stl::pop_heap(v3.begin(), v3.end(), stl::less<Cval>());
 		//v3: 199998 (0 1 2 3 ... 199999)
-		CPPUNIT_ASSERT(*v3.begin() == m_container_size-2);
-		CPPUNIT_ASSERT(*v3.rbegin() == m_container_size-1);
+		TEST_CHECK(*v3.begin() == m_container_size-2);
+		TEST_CHECK(*v3.rbegin() == m_container_size-1);
 
 		v3.pop_back();
 		//v3: 199998 (0 1 2 3 ... 199997)
 		v3.push_back(m_container_size);
 		stl::push_heap(v3.begin(), v3.end(), stl::less<Cval>());
 		//v3: 200000 (199998 0 1 2 3 ... 199997)
-		CPPUNIT_ASSERT(v3.front() == Cval(m_container_size));
+		TEST_CHECK(v3.front() == Cval(m_container_size));
 
 		stl::sort_heap(v3.begin(), v3.end());
 		//v3: 0 1 2 3 ...
 		for(it = v3.begin()+1; it != v3.end(); ++it)
-			CPPUNIT_ASSERT(*it > *(it-1));
+			TEST_CHECK(*it > *(it-1));
 	}
 }
 
@@ -5218,19 +5286,19 @@ void test_algorithm::min2(const char* msg)
 		time_printer tp(msg, m_print_time);
 		
 		//	MISC
-		CPPUNIT_ASSERT( stl::min<Cval>(1,2) == 1 );
-		CPPUNIT_ASSERT( stl::min<int>(1,2) == 1 );
-		CPPUNIT_ASSERT( stl::min<int>(2,1) == 1 );
-		CPPUNIT_ASSERT( stl::min<char>('a','z') == 'a' );
-		CPPUNIT_ASSERT( stl::min<double>(3.14,2.72) == 2.72 );   
+		TEST_CHECK( stl::min<Cval>(1,2) == 1 );
+		TEST_CHECK( stl::min<int>(1,2) == 1 );
+		TEST_CHECK( stl::min<int>(2,1) == 1 );
+		TEST_CHECK( stl::min<char>('a','z') == 'a' );
+		TEST_CHECK( stl::min<double>(3.14,2.72) == 2.72 );   
 
 
 		//	STD
-		CPPUNIT_ASSERT( std::min<Cval>(1,2) == 1 );
-		CPPUNIT_ASSERT( std::min<int>(1,2) == 1 );
-		CPPUNIT_ASSERT( std::min<int>(2,1) == 1 );
-		CPPUNIT_ASSERT( std::min<char>('a','z') == 'a' );
-		CPPUNIT_ASSERT( std::min<double>(3.14,2.72) == 2.72 ); 
+		TEST_CHECK( std::min<Cval>(1,2) == 1 );
+		TEST_CHECK( std::min<int>(1,2) == 1 );
+		TEST_CHECK( std::min<int>(2,1) == 1 );
+		TEST_CHECK( std::min<char>('a','z') == 'a' );
+		TEST_CHECK( std::min<double>(3.14,2.72) == 2.72 ); 
 	}	
 }
 
@@ -5244,18 +5312,18 @@ void test_algorithm::max2(const char* msg)
 	{
 		time_printer tp(msg, m_print_time);
 		//	MISC
-		CPPUNIT_ASSERT( stl::max<Cval>(1,2) == 2 );
-		CPPUNIT_ASSERT( stl::max<int>(1,2) == 2 );
-		CPPUNIT_ASSERT( stl::max<long>(2,1) == 2 );
-		CPPUNIT_ASSERT( stl::max<char>('a','z') == 'z' );
-		CPPUNIT_ASSERT( stl::max<double>(3.14,2.72) == 3.14 );
+		TEST_CHECK( stl::max<Cval>(1,2) == 2 );
+		TEST_CHECK( stl::max<int>(1,2) == 2 );
+		TEST_CHECK( stl::max<long>(2,1) == 2 );
+		TEST_CHECK( stl::max<char>('a','z') == 'z' );
+		TEST_CHECK( stl::max<double>(3.14,2.72) == 3.14 );
 
 		//	STD
-		CPPUNIT_ASSERT( std::max<Cval>(1,2) == 2 );
-		CPPUNIT_ASSERT( std::max<int>(1,2) == 2 );
-		CPPUNIT_ASSERT( std::max<long>(2,1) == 2 );
-		CPPUNIT_ASSERT( std::max<char>('a','z') == 'z' );
-		CPPUNIT_ASSERT( std::max<double>(3.14,2.72) == 3.14 );
+		TEST_CHECK( std::max<Cval>(1,2) == 2 );
+		TEST_CHECK( std::max<int>(1,2) == 2 );
+		TEST_CHECK( std::max<long>(2,1) == 2 );
+		TEST_CHECK( std::max<char>('a','z') == 'z' );
+		TEST_CHECK( std::max<double>(3.14,2.72) == 3.14 );
 	} 
 }
 
@@ -5291,34 +5359,34 @@ void test_algorithm::min_element(const char* msg)
 		*/
 
 		//default
-		CPPUNIT_ASSERT(*stl::min_element(myints,myints+7) == 2);
-		CPPUNIT_ASSERT(*stl::max_element(myints,myints+7) == 9);
+		TEST_CHECK(*stl::min_element(myints,myints+7) == 2);
+		TEST_CHECK(*stl::max_element(myints,myints+7) == 9);
 
 
 		// using function myfn as comp:
-		CPPUNIT_ASSERT(*stl::min_element(myints,myints+7,myfn_min_element) == 2);
-		CPPUNIT_ASSERT(*stl::max_element(myints,myints+7,myfn_min_element) == 9);
+		TEST_CHECK(*stl::min_element(myints,myints+7,myfn_min_element) == 2);
+		TEST_CHECK(*stl::max_element(myints,myints+7,myfn_min_element) == 9);
 
 
 		// using object myobj as comp:
-		CPPUNIT_ASSERT(*stl::min_element(myints,myints+7,myobj_min_element) == 2);
-		CPPUNIT_ASSERT(*stl::max_element(myints,myints+7,myobj_min_element) == 9);
+		TEST_CHECK(*stl::min_element(myints,myints+7,myobj_min_element) == 2);
+		TEST_CHECK(*stl::max_element(myints,myints+7,myobj_min_element) == 9);
 
 
 		//	STD
 		//default
-		CPPUNIT_ASSERT(*std::min_element(myints,myints+7) == 2);
-		CPPUNIT_ASSERT(*std::max_element(myints,myints+7) == 9);
+		TEST_CHECK(*std::min_element(myints,myints+7) == 2);
+		TEST_CHECK(*std::max_element(myints,myints+7) == 9);
 
 
 		// using function myfn as comp:
-		CPPUNIT_ASSERT(*std::min_element(myints,myints+7,myfn_min_element) == 2);
-		CPPUNIT_ASSERT(*std::max_element(myints,myints+7,myfn_min_element) == 9);
+		TEST_CHECK(*std::min_element(myints,myints+7,myfn_min_element) == 2);
+		TEST_CHECK(*std::max_element(myints,myints+7,myfn_min_element) == 9);
 
 
 		// using object myobj as comp:
-		CPPUNIT_ASSERT(*std::min_element(myints,myints+7,myobj_min_element) == 2);
-		CPPUNIT_ASSERT(*std::max_element(myints,myints+7,myobj_min_element) == 9);
+		TEST_CHECK(*std::min_element(myints,myints+7,myobj_min_element) == 2);
+		TEST_CHECK(*std::max_element(myints,myints+7,myobj_min_element) == 9);
 	}
 }
 
@@ -5358,26 +5426,26 @@ void test_algorithm::lexicographical_compare(const char* msg)
 
 		//cout << "Using default comparison (operator<): ";
 		// first is less then
-		CPPUNIT_ASSERT(stl::lexicographical_compare(first,first+5,second,second+9));
+		TEST_CHECK(stl::lexicographical_compare(first,first+5,second,second+9));
 		// second is not less then
-		CPPUNIT_ASSERT(stl::lexicographical_compare(second,second+9,first,first+5) == false);
+		TEST_CHECK(stl::lexicographical_compare(second,second+9,first,first+5) == false);
 
 
 		//cout << "Using mycomp as comparison object: ";
 		// first is not less then (when using mycomp... comparison)
-		CPPUNIT_ASSERT(stl::lexicographical_compare(first,first+5,second,second+9,mycomp_lexicographical_compare) == false);
+		TEST_CHECK(stl::lexicographical_compare(first,first+5,second,second+9,mycomp_lexicographical_compare) == false);
 		// second is less then when using mycomp... comparison
-		CPPUNIT_ASSERT(stl::lexicographical_compare(second,second+9,first,first+5,mycomp_lexicographical_compare));
+		TEST_CHECK(stl::lexicographical_compare(second,second+9,first,first+5,mycomp_lexicographical_compare));
 		/*
 		  Using default comparison (operator<): Apple is less than apartment
 		  Using mycomp as comparison object: Apple is greater than apartment
 		*/
 
 		//	STD
-		CPPUNIT_ASSERT(std::lexicographical_compare(first,first+5,second,second+9));
-		CPPUNIT_ASSERT(std::lexicographical_compare(second,second+9,first,first+5) == false);
-		CPPUNIT_ASSERT(std::lexicographical_compare(first,first+5,second,second+9,mycomp_lexicographical_compare) == false);
-		CPPUNIT_ASSERT(std::lexicographical_compare(second,second+9,first,first+5,mycomp_lexicographical_compare));
+		TEST_CHECK(std::lexicographical_compare(first,first+5,second,second+9));
+		TEST_CHECK(std::lexicographical_compare(second,second+9,first,first+5) == false);
+		TEST_CHECK(std::lexicographical_compare(first,first+5,second,second+9,mycomp_lexicographical_compare) == false);
+		TEST_CHECK(std::lexicographical_compare(second,second+9,first,first+5,mycomp_lexicographical_compare));
 	}
 }
 
@@ -5417,9 +5485,9 @@ void test_algorithm::next_permutation(const char* msg)
 		i0 = 0;
 		do
 		{
-			CPPUNIT_ASSERT(mycheck[i0][0] == myints[0]);
-			CPPUNIT_ASSERT(mycheck[i0][1] == myints[1]);
-			CPPUNIT_ASSERT(mycheck[i0][2] == myints[2]);
+			TEST_CHECK(mycheck[i0][0] == myints[0]);
+			TEST_CHECK(mycheck[i0][1] == myints[1]);
+			TEST_CHECK(mycheck[i0][2] == myints[2]);
 			i0++;
 			//cout << myints[0] << " " << myints[1] << " " << myints[2] << endl;
 		}
@@ -5443,7 +5511,7 @@ void test_algorithm::next_permutation(const char* msg)
 			It it1 = v1.begin();
 			It it2 = v2.begin();
 			for(; it1 != v1.end(); ++it1, ++it2)
-				CPPUNIT_ASSERT(*it1 == *it2);
+				TEST_CHECK(*it1 == *it2);
 		}
 	}
 }
@@ -5485,9 +5553,9 @@ void test_algorithm::next_permutation2(const char* msg)
 		i0 = 0;
 		do
 		{
-			CPPUNIT_ASSERT(mycheck[i0][0] == myints[0]);
-			CPPUNIT_ASSERT(mycheck[i0][1] == myints[1]);
-			CPPUNIT_ASSERT(mycheck[i0][2] == myints[2]);
+			TEST_CHECK(mycheck[i0][0] == myints[0]);
+			TEST_CHECK(mycheck[i0][1] == myints[1]);
+			TEST_CHECK(mycheck[i0][2] == myints[2]);
 			i0++;
 			//cout << myints[0] << " " << myints[1] << " " << myints[2] << endl;
 		}
@@ -5511,7 +5579,7 @@ void test_algorithm::next_permutation2(const char* msg)
 			It it1 = v1.begin();
 			It it2 = v2.begin();
 			for(; it1 != v1.end(); ++it1, ++it2)
-				CPPUNIT_ASSERT(*it1 == *it2);
+				TEST_CHECK(*it1 == *it2);
 		}
 	}
 }
@@ -5552,9 +5620,9 @@ void test_algorithm::prev_permutation(const char* msg)
 		i0 = 0;
 		do
 		{
-			CPPUNIT_ASSERT(mycheck[i0][0] == myints[0]);
-			CPPUNIT_ASSERT(mycheck[i0][1] == myints[1]);
-			CPPUNIT_ASSERT(mycheck[i0][2] == myints[2]);
+			TEST_CHECK(mycheck[i0][0] == myints[0]);
+			TEST_CHECK(mycheck[i0][1] == myints[1]);
+			TEST_CHECK(mycheck[i0][2] == myints[2]);
 			i0++;
 			//cout << myints[0] << " " << myints[1] << " " << myints[2] << endl;
 		}
@@ -5575,7 +5643,7 @@ void test_algorithm::prev_permutation(const char* msg)
 			It it1 = v1.begin();
 			It it2 = v2.begin();
 			for(; it1 != v1.end(); ++it1, ++it2)
-				CPPUNIT_ASSERT(*it1 == *it2);
+				TEST_CHECK(*it1 == *it2);
 		}
 	}
 }
@@ -5616,9 +5684,9 @@ void test_algorithm::prev_permutation2(const char* msg)
 		i0 = 0;
 		do
 		{
-			CPPUNIT_ASSERT(mycheck[i0][0] == myints[0]);
-			CPPUNIT_ASSERT(mycheck[i0][1] == myints[1]);
-			CPPUNIT_ASSERT(mycheck[i0][2] == myints[2]);
+			TEST_CHECK(mycheck[i0][0] == myints[0]);
+			TEST_CHECK(mycheck[i0][1] == myints[1]);
+			TEST_CHECK(mycheck[i0][2] == myints[2]);
 			i0++;
 			//cout << myints[0] << " " << myints[1] << " " << myints[2] << endl;
 		}
@@ -5639,7 +5707,7 @@ void test_algorithm::prev_permutation2(const char* msg)
 			It it1 = v1.begin();
 			It it2 = v2.begin();
 			for(; it1 != v1.end(); ++it1, ++it2)
-				CPPUNIT_ASSERT(*it1 == *it2);
+				TEST_CHECK(*it1 == *it2);
 		}
 	}
 }

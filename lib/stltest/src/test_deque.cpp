@@ -3,7 +3,7 @@ Copyright (C) 2012 Mihai Vasilian
 */
 
 
-
+#if 0
 //this
 #include "test_deque.hpp"
 
@@ -1028,3 +1028,4 @@ void test_deque::op_gte(const char* msg)
 		CPPUNIT_ASSERT(c0 > c2);
 	}
 }
+#endif

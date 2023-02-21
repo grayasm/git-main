@@ -3,7 +3,7 @@ Copyright (C) 2012 Mihai Vasilian
 */
 
 
-
+#if 0
 //this
 #include "test_numeric.hpp"
 
@@ -191,3 +191,4 @@ void test_numeric::partial_sum(const char* msg)
 }
 
 //################################################################################
+#endif
