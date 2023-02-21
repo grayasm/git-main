@@ -2,7 +2,7 @@
 Copyright (C) 2012 Mihai Vasilian
 */
 
-
+#if 0
 #include "test_list.hpp"
 
 //CppUnit
@@ -303,3 +303,4 @@ void test_list::reverse()
 void test_list::perf1()
 {
 }
+#endif

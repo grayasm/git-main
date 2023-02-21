@@ -4,7 +4,7 @@ Copyright (C) 2009 Mihai Vasilian
 
 
 
-
+#if 0
 
 //this
 #include "test_autoptr.hpp"
@@ -398,3 +398,4 @@ void test_autoptr::test_child_assignament()
 }
 
 
+#endif

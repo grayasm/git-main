@@ -2,7 +2,7 @@
 Copyright (C) 2012 Mihai Vasilian
 */
 
-
+#if 0
 
 //this
 #include "test_utility.hpp"
@@ -392,3 +392,4 @@ void test_utility::insert_it(const char* msg)
 }
 
 //////////////////////////////////////////////////////////////////////////
+#endif

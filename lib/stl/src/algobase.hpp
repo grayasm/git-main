@@ -2183,7 +2183,7 @@ namespace stl
 				first += two_step;
 			}
 
-			step = stl::algobase::min(Dist (last - first), step);
+			step = stl::algobase::min<Dist>(Dist (last - first), step);
 
 			stl::algobase::merge(first, first+step, first+step, last, res, comp);
 		}
@@ -2310,7 +2310,7 @@ namespace stl
 				}
 				else
 				{
-					Dist len = stl::algobase::min(Dist(p.second), Dist(last - first));
+					Dist len = stl::algobase::min<Dist>(Dist(p.second), Dist(last - first));
 					stl::algobase::copy(
 						first, first + len,
 						stl::raw_storage_iterator<TypeT*, TypeT>(p.first));
@@ -3147,7 +3147,7 @@ namespace stl
 				}
 				else
 				{
-					Dist dist = stl::algobase::min(pair.second, dist1 + dist2);
+					Dist dist = stl::algobase::min<Dist>(pair.second, dist1 + dist2);
 
 					stl::algobase::fill_n(
 						stl::raw_storage_iterator<TypeT*, TypeT>(pair.first),

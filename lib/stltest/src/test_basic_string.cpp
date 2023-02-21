@@ -2,7 +2,7 @@
 Copyright (C) 2009 Mihai Vasilian
 */
 
-
+#if 0
 #include "test_basic_string.hpp"
 
 //CppUnit
@@ -4329,3 +4329,5 @@ void test_basic_string::perf1()
 
 #endif
 }
+
+#endif

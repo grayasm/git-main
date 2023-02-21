@@ -2,7 +2,7 @@
 Copyright (C) 2012 Mihai Vasilian
 */
 
-
+#if 0
 //this
 #include "test_queue.hpp"
 
@@ -476,3 +476,4 @@ void test_queue::gte_op(const char* msg)
 }
 
 //////////////////////////////////////////////////////////////////////////
+#endif

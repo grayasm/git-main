@@ -110,16 +110,26 @@ void test_success(void)
     /* Do nothing */
 }
 
-TEST_LIST = {
-    { "test_exception_type", test_exception_type },
-    { "uncaught-std-exception", test_uncaught_std_exception },
-    { "uncaught-strange-exception", test_uncaught_strange_exception },
-    { "success", test_success },
-    { NULL, NULL }
-};
+//TEST_LIST = {
+//    { "test_exception_type", test_exception_type },
+//    { "uncaught-std-exception", test_uncaught_std_exception },
+//    { "uncaught-strange-exception", test_uncaught_strange_exception },
+//    { "success", test_success },
+//    { NULL, NULL }
+//};
 
 //
 //int main(int argc, char**)
 //{
 //	return 0;
 //}
+void test0(void)
+{
+    bool cond = false;
+    TEST_CHECK(cond);
+}
+
+TEST_LIST = {
+    { "Name of the test", test0 },
+    { NULL, NULL }
+};

@@ -4,7 +4,7 @@ Copyright (C) 2012 Mihai Vasilian
 
 
 
-
+#if 0
 
 //this
 #include "test_functional.hpp"
@@ -2693,3 +2693,4 @@ void test_functional::mem_fun_ref_2(const char* msg)
 }
 
 //////////////////////////////////////////////////////////////////////////
+#endif

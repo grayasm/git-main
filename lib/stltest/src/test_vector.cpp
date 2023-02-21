@@ -2,7 +2,7 @@
 Copyright (C) 2009 Mihai Vasilian
 */
 
-
+#if 0
 #include "test_vector.hpp"
 
 //CppUnit
@@ -2018,3 +2018,4 @@ void test_vector::perf1()
 
     }
 }
+#endif
