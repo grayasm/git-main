@@ -4,6 +4,8 @@ file(GLOB stltest_SRC "src/*.hpp" "src/*.cpp")
 add_executable(stltest ${stltest_SRC})
 
 # --- compiling ---
+target_include_directories(stltest PRIVATE "../../world/acutest/include")
+
 if(MSVC)
 	target_compile_options(stltest PRIVATE /bigobj)
 endif(MSVC)
@@ -15,7 +17,7 @@ endif(UNIX)
 
 
 # --- linking ---
-target_link_libraries(stltest PRIVATE stl misc sys cppunit)
+target_link_libraries(stltest PRIVATE stl misc sys) # cppunit
 
 if (UNIX)
 	target_link_libraries(stltest PRIVATE pthread dl m)
