@@ -6,12 +6,6 @@ Copyright (C) 2012 Mihai Vasilian
 #ifndef __test_algorithm_hpp__
 #define __test_algorithm_hpp__
 
-//c++
-//....
-
-//CppUnit
-//#include <cppunit/extensions/HelperMacros.h>
-#include "acutest.h"
 
 //libraries
 #include "exception.hpp"
@@ -20,84 +14,14 @@ Copyright (C) 2012 Mihai Vasilian
 
 
 
-class test_algorithm //: public CppUnit::TestFixture
+class test_algorithm
 {
-	//CPPUNIT_TEST_SUITE(test_algorithm);
-	//CPPUNIT_TEST(for_each);
-	//CPPUNIT_TEST(find);
-	//CPPUNIT_TEST(find_if);
-	//CPPUNIT_TEST(find_end);
-	//CPPUNIT_TEST(find_first_of);
-	//CPPUNIT_TEST(adjacent_find);
-	//CPPUNIT_TEST(count);
-	//CPPUNIT_TEST(count_if);
-	//CPPUNIT_TEST(mismatch);
-	//CPPUNIT_TEST(equal);
-	//CPPUNIT_TEST(search);
-	//CPPUNIT_TEST(search_n);
-	//CPPUNIT_TEST(copy);
-	//CPPUNIT_TEST(copy_backward);
-	//CPPUNIT_TEST(swap);
-	//CPPUNIT_TEST(swap_ranges);
-	//CPPUNIT_TEST(iter_swap);
-	//CPPUNIT_TEST(transform);
-	//CPPUNIT_TEST(replace);
-	//CPPUNIT_TEST(replace_if);
-	//CPPUNIT_TEST(replace_copy);
-	//CPPUNIT_TEST(replace_copy_if);
-	//CPPUNIT_TEST(fill);
-	//CPPUNIT_TEST(fill_n);
-	//CPPUNIT_TEST(generate);
-	//CPPUNIT_TEST(generate_n);
-	//CPPUNIT_TEST(remove);
-	//CPPUNIT_TEST(remove_if);
-	//CPPUNIT_TEST(remove_copy);
-	//CPPUNIT_TEST(remove_copy_if);
-	//CPPUNIT_TEST(unique);
-	//CPPUNIT_TEST(unique_copy);
-	//CPPUNIT_TEST(reverse);
-	//CPPUNIT_TEST(reverse_copy);
-	//CPPUNIT_TEST(rotate);
-	//CPPUNIT_TEST(rotate_copy);
-	//CPPUNIT_TEST(random_shuffle);
-	//CPPUNIT_TEST(partition);
-	//CPPUNIT_TEST(stable_partition);
-	//CPPUNIT_TEST(sort);
-	//CPPUNIT_TEST(stable_sort);
-	//CPPUNIT_TEST(partial_sort);
-	//CPPUNIT_TEST(partial_sort_copy);
-	//CPPUNIT_TEST(nth_element);
-	//CPPUNIT_TEST(upper_bound);
-	//CPPUNIT_TEST(lower_bound);
-	//CPPUNIT_TEST(equal_range);
-	//CPPUNIT_TEST(binary_search);
-	//CPPUNIT_TEST(merge);
-	//CPPUNIT_TEST(inplace_merge);
-	//CPPUNIT_TEST(includes);
-	//CPPUNIT_TEST(set_union);
-	//CPPUNIT_TEST(set_intersection);
-	//CPPUNIT_TEST(set_difference);
-	//CPPUNIT_TEST(set_symmetric_difference);
-	//CPPUNIT_TEST(push_heap);
-	//CPPUNIT_TEST(pop_heap);
-	//CPPUNIT_TEST(make_heap);
-	//CPPUNIT_TEST(sort_heap);
-	//CPPUNIT_TEST(min2);
-	//CPPUNIT_TEST(max2);
-	//CPPUNIT_TEST(min_element);
-	//CPPUNIT_TEST(max_element);
-	//CPPUNIT_TEST(lexicographical_compare);
-	//CPPUNIT_TEST(next_permutation);
-	//CPPUNIT_TEST(prev_permutation);
-	//CPPUNIT_TEST_SUITE_END();
-
 public:
 	test_algorithm() = default;
 	~test_algorithm() = default;
 	void run();
 
-	//void setUp();
-	//void tearDown();
+
 	static const int		m_print_time = 1;
 	static const size_t		m_container_size = 40000;
 
