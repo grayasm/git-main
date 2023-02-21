@@ -2,26 +2,50 @@
 Copyright (C) 2009 Mihai Vasilian
 */
 
-#if 0
 #include "test_basic_string.hpp"
 
-//CppUnit
-#include <cppunit/CompilerOutputter.h>
-#include <cppunit/extensions/TestFactoryRegistry.h>
-#include <cppunit/ui/text/TestRunner.h>
-
-
+//c++
 #include <string>
+
+//acutest
+#include "acutest.h"
+
+// libraries
 #include "basic_string.hpp"
 #include "time_printer.hpp"
+#include "stream.hpp"
 
 
-void test_basic_string::setUp()
+void test_basic_string::run()
 {
-}
+    correctness();
+    ctor();
+    assign_op();
+    size();
+    resize();
+    reserve();
+    clear();
+    append_op();
+    append();
+    push_back();
+    assign();
+    insert();
+    erase();
+    replace();
+    copy();
+    swap();
+    find();
+    rfind();
+    find_first_of();
+    find_last_of();
+    find_first_not_of();
+    find_last_not_of();
+    substr();
+    compare();
+    perf1();
 
-void test_basic_string::tearDown()
-{
+    // new line before TEST RESULT OUTPUT
+    stl::cout << "\n";
 }
 
 void test_basic_string::correctness()
@@ -52,103 +76,103 @@ void test_basic_string::ctor()
 
     //  basic_string(const container& str)
     string s1(s0);
-    CPPUNIT_ASSERT(::strcmp(s1.c_str(), "") == 0 && s1.size() == 0 && s1.empty());
+    TEST_CHECK(::strcmp(s1.c_str(), "") == 0 && s1.size() == 0 && s1.empty());
 
     char c2[] = "a string";
     string s2(c2, c2 + 8);
     string s3(s2);
-    CPPUNIT_ASSERT(::strcmp(s3.c_str(), "a string") == 0);
+    TEST_CHECK(::strcmp(s3.c_str(), "a string") == 0);
 
     //  basic_string(const container& s, size_type pos, size_type sublen = npos)
     string s4(s0, 0, 0);
-    CPPUNIT_ASSERT(::strcmp(s4.c_str(), "") == 0 && s4.size() == 0 && s4.empty());
+    TEST_CHECK(::strcmp(s4.c_str(), "") == 0 && s4.size() == 0 && s4.empty());
 
     string s5(s3, 2, -1);
-    CPPUNIT_ASSERT(::strcmp(s5.c_str(), "string") == 0);
+    TEST_CHECK(::strcmp(s5.c_str(), "string") == 0);
 
     //  basic_string(const value_type* ptr)
     string s6("");
-    CPPUNIT_ASSERT(::strcmp(s6.c_str(), "") == 0 && s6.size() == 0 && s6.empty());
+    TEST_CHECK(::strcmp(s6.c_str(), "") == 0 && s6.size() == 0 && s6.empty());
 
     string s7("a string");
-    CPPUNIT_ASSERT(::strcmp(s7.c_str(), "a string") == 0);
+    TEST_CHECK(::strcmp(s7.c_str(), "a string") == 0);
 
     
     //  basic_string(const value_type* ptr, size_type n)
     string s8("", 0);
-    CPPUNIT_ASSERT(::strcmp(s8.c_str(), "") == 0);
+    TEST_CHECK(::strcmp(s8.c_str(), "") == 0);
 
     string s9("a string", 5);
-    CPPUNIT_ASSERT(::strcmp(s9.c_str(), "a str") == 0);
+    TEST_CHECK(::strcmp(s9.c_str(), "a str") == 0);
 
     //  basic_string(size_type n, value_type c)
     string s10((size_t)0, (char)'c');
-    CPPUNIT_ASSERT(::strcmp(s10.c_str(), "") == 0 && s10.size() == 0 && s10.empty());
+    TEST_CHECK(::strcmp(s10.c_str(), "") == 0 && s10.size() == 0 && s10.empty());
 
     string s11((size_t)10, '?');
-    CPPUNIT_ASSERT(::strcmp(s11.c_str(), "??????????") == 0);
+    TEST_CHECK(::strcmp(s11.c_str(), "??????????") == 0);
 
 
     //  basic_string(iterator first, iterator last)
     string s12(s0.begin(), s0.end());//(iterator,iterator)
-    CPPUNIT_ASSERT(::strcmp(s12.c_str(), "") == 0);
+    TEST_CHECK(::strcmp(s12.c_str(), "") == 0);
 
     string s13("the string");
     string s14(s13.begin(), s13.end());
-    CPPUNIT_ASSERT(::strcmp(s14.c_str(), "the string") == 0);
+    TEST_CHECK(::strcmp(s14.c_str(), "the string") == 0);
 
     //  basic_string(const_iterator first, const_iterator last)
     const string& s0c = s0;
     string s15(s0c.begin(), s0c.end());
-    CPPUNIT_ASSERT(::strcmp(s15.c_str(), "") == 0);
+    TEST_CHECK(::strcmp(s15.c_str(), "") == 0);
 
     const string& s13c = s13;
     string s16(s13c.begin(), s13c.end());
-    CPPUNIT_ASSERT(::strcmp(s16.c_str(), "the string") == 0);
+    TEST_CHECK(::strcmp(s16.c_str(), "the string") == 0);
 
     //  basic_string(char* first, char* last)
     char c17[] = "";
     string s17(c17, c17 + 0);
-    CPPUNIT_ASSERT(::strcmp(s17.c_str(), "") == 0);
+    TEST_CHECK(::strcmp(s17.c_str(), "") == 0);
 
     char c18[] = "0123456789";
     string s18(c18, c18 + 10);
-    CPPUNIT_ASSERT(::strcmp(s18.c_str(), "0123456789") == 0);
+    TEST_CHECK(::strcmp(s18.c_str(), "0123456789") == 0);
 
     //  basic_string(const char* first, const char* last)
     const char c19[] = "";
     string s19(c19, c19 + 0);
-    CPPUNIT_ASSERT(::strcmp(s19.c_str(), "") == 0);
+    TEST_CHECK(::strcmp(s19.c_str(), "") == 0);
 
     const char c20[] = "0123456789";
     string s20(c20, c20 + 10);
-    CPPUNIT_ASSERT(::strcmp(s20.c_str(), "0123456789") == 0);
+    TEST_CHECK(::strcmp(s20.c_str(), "0123456789") == 0);
 
     //  basic_string(reverse_iterator first, reverse_iterator last)
     string s21(s0.rbegin(), s0.rend());
-    CPPUNIT_ASSERT(::strcmp(s21.c_str(), "") == 0);
+    TEST_CHECK(::strcmp(s21.c_str(), "") == 0);
 
     string s22(s20.rbegin() + 1, s20.rend() - 1);
-    CPPUNIT_ASSERT(::strcmp(s22.c_str(), "87654321") == 0);
+    TEST_CHECK(::strcmp(s22.c_str(), "87654321") == 0);
 
     //  basic_string(const_reverse_iterator first, ..);
     string s23(s0c.rbegin(), s0c.rend());
-    CPPUNIT_ASSERT(::strcmp(s23.c_str(), "") == 0);
+    TEST_CHECK(::strcmp(s23.c_str(), "") == 0);
 
     const string& s20c = s20;
     string s24(s20c.rbegin() + 1, s20c.rend() - 1);
-    CPPUNIT_ASSERT(::strcmp(s24.c_str(), "87654321") == 0);
+    TEST_CHECK(::strcmp(s24.c_str(), "87654321") == 0);
 
     // basic_string(InputIterator n, InputIterator value)
     char n = 0;
     char c = '\0';
     string s25(n, c);
-    CPPUNIT_ASSERT(::strcmp(s25.c_str(), "") == 0);
+    TEST_CHECK(::strcmp(s25.c_str(), "") == 0);
 
     n = 5;
     c = '?';
     string s26(n, c);
-    CPPUNIT_ASSERT(::strcmp(s26.c_str(), "?????") == 0);
+    TEST_CHECK(::strcmp(s26.c_str(), "?????") == 0);
 }
 
 void test_basic_string::assign_op()
@@ -164,9 +188,9 @@ void test_basic_string::assign_op()
     for (size_t i = 0; i < s1.size(); ++i)
     {
         if (s1[i] != s2[i])
-            CPPUNIT_ASSERT(false);
+            TEST_CHECK(false);
     }
-    CPPUNIT_ASSERT(s2.size() == s1.size());
+    TEST_CHECK(s2.size() == s1.size());
 
     s2 = s2; //self
 
@@ -174,26 +198,26 @@ void test_basic_string::assign_op()
     const char c3[] = "0123456789";
     stl::basic_string<char> s3;
     s3 = c3;
-    CPPUNIT_ASSERT(::strcmp(s3.c_str(), "0123456789") == 0);
+    TEST_CHECK(::strcmp(s3.c_str(), "0123456789") == 0);
 
     const char c4 = 'c';
     stl::basic_string<char> s4;
     s4 = c4;
-    CPPUNIT_ASSERT(s4.size() == 1 && s4[0] == 'c');
+    TEST_CHECK(s4.size() == 1 && s4[0] == 'c');
 }
 
 void test_basic_string::size()
 {
     stl::basic_string<char> s1;
-    CPPUNIT_ASSERT(s1.size() == 0);
-    CPPUNIT_ASSERT(s1.length() == 0);
-    CPPUNIT_ASSERT(s1.capacity() == 1);
+    TEST_CHECK(s1.size() == 0);
+    TEST_CHECK(s1.length() == 0);
+    TEST_CHECK(s1.capacity() == 1);
 
     const char c2[] = "0123456789";
     stl::basic_string<char> s2(c2);
-    CPPUNIT_ASSERT(s2.size() == 10);
-    CPPUNIT_ASSERT(s2.length() == 10);
-    CPPUNIT_ASSERT(s2.capacity() == 11);
+    TEST_CHECK(s2.size() == 10);
+    TEST_CHECK(s2.length() == 10);
+    TEST_CHECK(s2.capacity() == 11);
 }
 
 void test_basic_string::resize()
@@ -205,29 +229,29 @@ void test_basic_string::resize()
 
     s1.resize(8);  // resize to smaller size
     for (size_t i = 0; i < s1.size(); ++i)
-        CPPUNIT_ASSERT(s1[i] == c1[i]);
-    CPPUNIT_ASSERT(s1.size() == 8);
+        TEST_CHECK(s1[i] == c1[i]);
+    TEST_CHECK(s1.size() == 8);
 
     s1.resize(6, c1[0]); // resize to smaller size
     for (size_t i = 0; i < s1.size(); ++i)
-        CPPUNIT_ASSERT(s1[i] == c1[i]);
-    CPPUNIT_ASSERT(s1.size() == 6);
+        TEST_CHECK(s1[i] == c1[i]);
+    TEST_CHECK(s1.size() == 6);
 
 
     s1.assign(c1, c1 + 3);
     s1.resize(8, c1[0]); // resize to bigger size (default 2nd param)
 
     for (int i = 0; i < 3; ++i)
-        CPPUNIT_ASSERT(s1[i] == c1[i]);
+        TEST_CHECK(s1[i] == c1[i]);
     for (int i = 4; i < 8; ++i)
-        CPPUNIT_ASSERT(s1[i] == c1[0]);
-    CPPUNIT_ASSERT(s1.size() == 8);
+        TEST_CHECK(s1[i] == c1[0]);
+    TEST_CHECK(s1.size() == 8);
 
     s1.assign(c1, c1 + 5);
     s1.resize(5, s1[0]); // self assignment
     for (size_t i = 0; i < s1.size(); ++i)
-        CPPUNIT_ASSERT(s1[i] == c1[i]);
-    CPPUNIT_ASSERT(s1.size() == 5);
+        TEST_CHECK(s1[i] == c1[i]);
+    TEST_CHECK(s1.size() == 5);
 }
 
 void test_basic_string::reserve()
@@ -236,21 +260,21 @@ void test_basic_string::reserve()
     stl::basic_string<char> s1;
     s1.reserve(10);
     s1.assign(c1, c1 + 10);
-    CPPUNIT_ASSERT(s1.capacity() == 11);
-    CPPUNIT_ASSERT(::strcmp(s1.c_str(), "0123456789") == 0);
+    TEST_CHECK(s1.capacity() == 11);
+    TEST_CHECK(::strcmp(s1.c_str(), "0123456789") == 0);
 }
 
 void test_basic_string::clear()
 {
     char c1[] = "0123456789";
     stl::basic_string<char> s1(c1);
-    CPPUNIT_ASSERT(::strcmp(s1.c_str(), c1) == 0);
+    TEST_CHECK(::strcmp(s1.c_str(), c1) == 0);
 
     s1.clear();
-    CPPUNIT_ASSERT(::strcmp(s1.c_str(), "") == 0);
-    CPPUNIT_ASSERT(s1.size() == 0);
-    CPPUNIT_ASSERT(s1.capacity() == 11);
-    CPPUNIT_ASSERT(s1.empty());
+    TEST_CHECK(::strcmp(s1.c_str(), "") == 0);
+    TEST_CHECK(s1.size() == 0);
+    TEST_CHECK(s1.capacity() == 11);
+    TEST_CHECK(s1.empty());
 }
 
 void test_basic_string::append_op()
@@ -261,19 +285,19 @@ void test_basic_string::append_op()
     //  container& operator+=(const container& str)
     stl::basic_string<char> s2;
     s2 += s1;
-    CPPUNIT_ASSERT(::strcmp(s2.c_str(), s1.c_str()) == 0);
+    TEST_CHECK(::strcmp(s2.c_str(), s1.c_str()) == 0);
 
     //  container& operator+=(const value_type* ptr)
     stl::basic_string<char> s3;
     s3 += c1;
-    CPPUNIT_ASSERT(::strcmp(s3.c_str(), c1) == 0);
+    TEST_CHECK(::strcmp(s3.c_str(), c1) == 0);
 
     //  container& operator+=(value_type ch)
     stl::basic_string<char> s4;
     for (size_t i = 0; i < 10; ++i)
         s4 += c1[i];
 
-    CPPUNIT_ASSERT(::strcmp(s4.c_str(), c1) == 0);
+    TEST_CHECK(::strcmp(s4.c_str(), c1) == 0);
 }
 
 void test_basic_string::append()
@@ -282,56 +306,56 @@ void test_basic_string::append()
     char c1[] = "0123456789";
     stl::basic_string<char> s1(c1, c1 + 10);
     s1.append(s1);  // from self
-    CPPUNIT_ASSERT(::strcmp(s1.c_str(), "01234567890123456789") == 0);
+    TEST_CHECK(::strcmp(s1.c_str(), "01234567890123456789") == 0);
 
     stl::basic_string<char> s2;
     s2.append(s1);  // from other
-    CPPUNIT_ASSERT(::strcmp(s2.c_str(), "01234567890123456789") == 0);
+    TEST_CHECK(::strcmp(s2.c_str(), "01234567890123456789") == 0);
 
     //  container& append(const container& str, size_type p2, size_type n2)
     stl::basic_string<char> s3;
     s3.append(s2, 10, 10);  // from other
-    CPPUNIT_ASSERT(::strcmp(s3.c_str(), "0123456789") == 0);
+    TEST_CHECK(::strcmp(s3.c_str(), "0123456789") == 0);
     s3.append(s3, 0, 10);   // from self
-    CPPUNIT_ASSERT(::strcmp(s3.c_str(), "01234567890123456789") == 0);
+    TEST_CHECK(::strcmp(s3.c_str(), "01234567890123456789") == 0);
     
     stl::basic_string<char> s4;
     s4.append(s3, 10, -1);  // with npos
-    CPPUNIT_ASSERT(::strcmp(s4.c_str(), "0123456789") == 0);
+    TEST_CHECK(::strcmp(s4.c_str(), "0123456789") == 0);
 
     //  container& append(const value_type* ptr, size_type n2)
     char c5[] = "0123456789";
     stl::basic_string<char> s5;
     s5.append(c5, 10);
-    CPPUNIT_ASSERT(::strcmp(s5.c_str(), "0123456789") == 0);
+    TEST_CHECK(::strcmp(s5.c_str(), "0123456789") == 0);
 
     s5.append(s5.c_str(), s5.size());   // from self
-    CPPUNIT_ASSERT(::strcmp(s5.c_str(), "01234567890123456789") == 0);
+    TEST_CHECK(::strcmp(s5.c_str(), "01234567890123456789") == 0);
 
     //  container& append(const value_type* ptr)
     s5.resize(10);
     s5.append(s5.c_str());
-    CPPUNIT_ASSERT(::strcmp(s5.c_str(), "01234567890123456789") == 0);
+    TEST_CHECK(::strcmp(s5.c_str(), "01234567890123456789") == 0);
 
     //  container& append(size_type n, value_type value)
     stl::basic_string<char> s6;
     s6.append(5, '9');
-    CPPUNIT_ASSERT(::strcmp(s6.c_str(), "99999") == 0);
+    TEST_CHECK(::strcmp(s6.c_str(), "99999") == 0);
     s6.append(5, s6[0]);
-    CPPUNIT_ASSERT(::strcmp(s6.c_str(), "9999999999") == 0);
+    TEST_CHECK(::strcmp(s6.c_str(), "9999999999") == 0);
 
     //  inline container& append_(iterator& first, iterator& last)
     char c7[] = "0123456789";
     stl::basic_string<char> s7(c7, c7 + 10);
     stl::basic_string<char> s8;
     s8.append(s7.begin(), s7.end());
-    CPPUNIT_ASSERT(::strcmp(s8.c_str(), "0123456789") == 0);
+    TEST_CHECK(::strcmp(s8.c_str(), "0123456789") == 0);
     
     const stl::basic_string<char>::iterator& s7b = s7.begin();
     const stl::basic_string<char>::iterator& s7e = s7.end();
     stl::basic_string<char> s9;
     s9.append(s7b, s7e);
-    CPPUNIT_ASSERT(::strcmp(s9.c_str(), "0123456789") == 0);
+    TEST_CHECK(::strcmp(s9.c_str(), "0123456789") == 0);
 
     //  inline container& append_(const_iterator& first, const_iterator& last)
     char c10[] = "0123456789";
@@ -340,54 +364,54 @@ void test_basic_string::append()
     const stl::basic_string<char>::const_iterator& s10e = s10.end();
     stl::basic_string<char> s11;
     s11.append(s10b, s10e);
-    CPPUNIT_ASSERT(::strcmp(s11.c_str(), "0123456789") == 0);
+    TEST_CHECK(::strcmp(s11.c_str(), "0123456789") == 0);
     
     //  inline container& append_(value_type* first, value_type* last)
     char c12[] = "0123456789";
     stl::basic_string<char> s12;
     s12.append(c12, c12 + 10);      // from C array
-    CPPUNIT_ASSERT(::strcmp(s12.c_str(), "0123456789") == 0);
+    TEST_CHECK(::strcmp(s12.c_str(), "0123456789") == 0);
 
     stl::basic_string<char> s13;
     s13.append(s12.c_str(), s12.c_str() + 10);  // from other
-    CPPUNIT_ASSERT(::strcmp(s13.c_str(), "0123456789") == 0);
+    TEST_CHECK(::strcmp(s13.c_str(), "0123456789") == 0);
 
     s13.append(s13.c_str(), s13.c_str() + 10);  // from self
-    CPPUNIT_ASSERT(::strcmp(s13.c_str(), "01234567890123456789") == 0);
+    TEST_CHECK(::strcmp(s13.c_str(), "01234567890123456789") == 0);
 
     //  inline container& append_(const value_type* first, const value_type* last)
     const char c14[] = "0123456789";
     stl::basic_string<char> s14;
     s14.append(c14, c14 + 10);
-    CPPUNIT_ASSERT(::strcmp(s14.c_str(), "0123456789") == 0);
+    TEST_CHECK(::strcmp(s14.c_str(), "0123456789") == 0);
 
     const stl::basic_string<char>& s14a = s14;
     s14.append(s14a.c_str(), s14a.c_str() + 8);
-    CPPUNIT_ASSERT(::strcmp(s14.c_str(), "012345678901234567") == 0);
+    TEST_CHECK(::strcmp(s14.c_str(), "012345678901234567") == 0);
 
     //  inline container& append_(InputIterator& first, InputIterator& last, stl::forward_iterator_tag)
     char c15[] = "0123456789";
     stl::basic_string<char> s15(c15, c15 + 10);
     stl::basic_string<char> s16;
     s16.append(s15.rbegin() + 2, s15.rend() - 2);   // reverse_iterator -- from other
-    CPPUNIT_ASSERT(::strcmp(s16.c_str(), "765432") == 0);
+    TEST_CHECK(::strcmp(s16.c_str(), "765432") == 0);
 
 //TODO: search again in this file and maybe in test_vector, and run additional
 //      tests where for .begin() add also .begin() + 2 or
 //      or where for .rbegin() add also .rbegin() + 2, .rend() - 2 or so.
 
     s16.append(s16.rbegin() + 2, s16.rend() - 2);   // reverse_iterator -- from self
-    CPPUNIT_ASSERT(::strcmp(s16.c_str(), "76543245") == 0);
+    TEST_CHECK(::strcmp(s16.c_str(), "76543245") == 0);
 
     stl::basic_string<char> s17(c15, c15 + 10);
     const stl::basic_string<char>& s17a = s17;
     stl::basic_string<char> s18;
     s18.append(s17a.rbegin() + 1, s17a.rend() - 1); // reverse_iterator -- from other
-    CPPUNIT_ASSERT(::strcmp(s18.c_str(), "87654321") == 0);
+    TEST_CHECK(::strcmp(s18.c_str(), "87654321") == 0);
 
     const stl::basic_string<char>& s18a = s18;
     s18.append(s18a.rbegin() + 1, s18a.rend() - 1); // reverse_iterator -- from self
-    CPPUNIT_ASSERT(::strcmp(s18.c_str(), "87654321234567") == 0);
+    TEST_CHECK(::strcmp(s18.c_str(), "87654321234567") == 0);
 
     //  inline container& append_(InputIterator n, InputIterator value, stl::input_iterator_tag)
     stl::basic_string<char> s19;
@@ -395,7 +419,7 @@ void test_basic_string::append()
     s19.append(2, '2');
     s19.append(3, '3');
     s19.append(5, s19[0]);
-    CPPUNIT_ASSERT(::strcmp(s19.c_str(), "02233300000") == 0);
+    TEST_CHECK(::strcmp(s19.c_str(), "02233300000") == 0);
 }
 
 void test_basic_string::push_back()
@@ -408,7 +432,7 @@ void test_basic_string::push_back()
     for (int i = 0; i < 10; ++i)
         s1.push_back(s1[i]);
 
-    CPPUNIT_ASSERT(::strcmp(s1.c_str(), "01234567890123456789") == 0);
+    TEST_CHECK(::strcmp(s1.c_str(), "01234567890123456789") == 0);
 }
 
 void test_basic_string::assign()
@@ -418,62 +442,62 @@ void test_basic_string::assign()
     stl::basic_string<char> s1(c1, c1 + 10);
     stl::basic_string<char> s2;
     s2.assign(s1);      // from other
-    CPPUNIT_ASSERT(::strcmp(s2.c_str(), c1) == 0);
+    TEST_CHECK(::strcmp(s2.c_str(), c1) == 0);
 
     s2.assign(s2);      // from self
-    CPPUNIT_ASSERT(::strcmp(s2.c_str(), "0123456789") == 0);
+    TEST_CHECK(::strcmp(s2.c_str(), "0123456789") == 0);
     
     //  container& assign(const container& str, size_type off, size_type n)
     char c3[] = "0123456789";
     stl::basic_string<char> s3(c3, c3 + 10);
     stl::basic_string<char> s4;
     s4.assign(s3, 0, 0);
-    CPPUNIT_ASSERT(s4.size() == 0);
-    CPPUNIT_ASSERT(::strcmp(s4.c_str(), "") == 0);
+    TEST_CHECK(s4.size() == 0);
+    TEST_CHECK(::strcmp(s4.c_str(), "") == 0);
 
     s4.assign(s3, 0, 10);
-    CPPUNIT_ASSERT(::strcmp(s4.c_str(), c3) == 0);
+    TEST_CHECK(::strcmp(s4.c_str(), c3) == 0);
 
     stl::basic_string<char> s5;
     s5.assign(s3, 0, -1);
-    CPPUNIT_ASSERT(::strcmp(s5.c_str(), c3) == 0);
+    TEST_CHECK(::strcmp(s5.c_str(), c3) == 0);
 
     stl::basic_string<char> s6;
     s6.assign(s3, 4, 6);
-    CPPUNIT_ASSERT(::strcmp(s6.c_str(), "456789") == 0);
+    TEST_CHECK(::strcmp(s6.c_str(), "456789") == 0);
 
 //TODO: check the returned type if not void for all in test_basic_string and test_vector
     s6.assign(s6, 0, 4);    // from self
     s6.assign(s6, 2, 2);
-    CPPUNIT_ASSERT(::strcmp(s6.c_str(), "67") == 0);
+    TEST_CHECK(::strcmp(s6.c_str(), "67") == 0);
 
     //  container& assign(const value_type* ptr, size_type n)
     char c7[] = "0123456789";
     stl::basic_string<char> s7;
     s7.assign(c7, 10);
 
-    CPPUNIT_ASSERT(::strcmp(s7.c_str(), c7) == 0);
+    TEST_CHECK(::strcmp(s7.c_str(), c7) == 0);
 
     s7.assign(s7.c_str() + 3, s7.size() - 3);   // from self
-    CPPUNIT_ASSERT(::strcmp(s7.c_str(), "3456789") == 0);
+    TEST_CHECK(::strcmp(s7.c_str(), "3456789") == 0);
     
     //  container& assign(const value_type* ptr)
     char c8[] = "0123456789";
     stl::basic_string<char> s8;
     s8.assign(c8);
-    CPPUNIT_ASSERT(::strcmp(s8.c_str(), c8) == 0);
+    TEST_CHECK(::strcmp(s8.c_str(), c8) == 0);
     
     s8.assign(s8.c_str());
-    CPPUNIT_ASSERT(::strcmp(s8.c_str(), c8) == 0);
+    TEST_CHECK(::strcmp(s8.c_str(), c8) == 0);
 
     s8.assign(s8.c_str() + 5);
-    CPPUNIT_ASSERT(::strcmp(s8.c_str(), "56789") == 0);
+    TEST_CHECK(::strcmp(s8.c_str(), "56789") == 0);
 
     //  container& assign(size_type n, const value_type& c)
     stl::basic_string<char> s9;
     s9.assign(3, '3');
     s9.assign(4, '4').c_str();
-    CPPUNIT_ASSERT(::strcmp(s9.c_str(), "4444") == 0);
+    TEST_CHECK(::strcmp(s9.c_str(), "4444") == 0);
     
     //  container& assign(InputIterator first, InputIterator last)
     //  inline container& assign_(iterator& first, iterator& last)
@@ -481,58 +505,58 @@ void test_basic_string::assign()
     stl::basic_string<char> s10(c10, c10 + 10);
     stl::basic_string<char> s11;
     s11.assign(s10.begin(), s10.end());     // from other
-    CPPUNIT_ASSERT(::strcmp(s10.c_str(), c10) == 0);
+    TEST_CHECK(::strcmp(s10.c_str(), c10) == 0);
 
     s11.assign(s11.begin() + 1, s11.end() - 1); // from self
-    CPPUNIT_ASSERT(::strcmp(s11.c_str(), "12345678") == 0);
+    TEST_CHECK(::strcmp(s11.c_str(), "12345678") == 0);
     
     //  inline container& assign_(const_iterator& first, const_iterator& last)
     const stl::basic_string<char>& s11c = s11;
     stl::basic_string<char> s12;
     s12.assign(s11c.begin(), s11c.end());   // from other
-    CPPUNIT_ASSERT(::strcmp(s12.c_str(), "12345678") == 0);
+    TEST_CHECK(::strcmp(s12.c_str(), "12345678") == 0);
     
     const stl::basic_string<char>& s12c = s12;
     s12.assign(s12c.begin() + 1, s12c.end() - 1); // from self
-    CPPUNIT_ASSERT(::strcmp(s12.c_str(), "234567") == 0);
+    TEST_CHECK(::strcmp(s12.c_str(), "234567") == 0);
 
     //  inline container& assign_(value_type* first, value_type* last)
     char c13[] = "0123456789";
     stl::basic_string<char> s13;
     s13.assign(c13, c13 + 10);  // from other
     s13.assign(c13, c13 + 10).c_str();  // check the return type
-    CPPUNIT_ASSERT(::strcmp(s13.c_str(), c13) == 0);
+    TEST_CHECK(::strcmp(s13.c_str(), c13) == 0);
 
     s13.assign(&s13[0], &s13[0] + 10);  // from self
-    CPPUNIT_ASSERT(::strcmp(s13.c_str(), c13) == 0);
+    TEST_CHECK(::strcmp(s13.c_str(), c13) == 0);
 
     //  inline container& assign_(const value_type* first, const value_type* last)
     const char c14[] = "0123456789";
     stl::basic_string<char> s14;
     s14.assign(c14, c14 + 8);   // from other
     s14.assign(c14, c14 + 10).c_str();
-    CPPUNIT_ASSERT(::strcmp(s14.c_str(), c14) == 0);
+    TEST_CHECK(::strcmp(s14.c_str(), c14) == 0);
 
     const stl::basic_string<char>& s14c = s14;
     s14.assign(&s14c[0], &s14c[0] + 10);    // from self
-    CPPUNIT_ASSERT(::strcmp(s14.c_str(), c14) == 0);
+    TEST_CHECK(::strcmp(s14.c_str(), c14) == 0);
 
     //  inline container& assign_(InputIterator& first, InputIterator& last, stl::forward_iterator_tag)
     char c15[] = "0123456789";
     stl::basic_string<char> s15(c15, c15 + 10);
     stl::basic_string<char> s16;
     s16.assign(s15.rbegin() + 1, s15.rend() - 1);   // from other
-    CPPUNIT_ASSERT(::strcmp(s16.c_str(), "87654321") == 0);
+    TEST_CHECK(::strcmp(s16.c_str(), "87654321") == 0);
 
     s16.assign(s16.rbegin() + 1, s16.rend() - 1).c_str(); // from self
-    CPPUNIT_ASSERT(::strcmp(s16.c_str(), "234567") == 0);
+    TEST_CHECK(::strcmp(s16.c_str(), "234567") == 0);
 
     //  inline container& assign_(InputIterator count, InputIterator value, stl::input_iterator_tag)
     stl::basic_string<char> s17;
     char count = 5;
     char value = '5';
     s17.assign(count, value).c_str();
-    CPPUNIT_ASSERT(::strcmp(s17.c_str(), "55555") == 0);
+    TEST_CHECK(::strcmp(s17.c_str(), "55555") == 0);
 }
 
 void test_basic_string::insert()
@@ -544,15 +568,15 @@ void test_basic_string::insert()
     s2.insert(2, s1);                       // in 2
     s3.insert(s3.size(), s1).c_str();       // in end() + test the return type
     
-    CPPUNIT_ASSERT(::strcmp(s2.c_str(), "ABABCabcCabc") == 0);
-    CPPUNIT_ASSERT(::strcmp(s3.c_str(), "ABCabcABCabc") == 0);
+    TEST_CHECK(::strcmp(s2.c_str(), "ABABCabcCabc") == 0);
+    TEST_CHECK(::strcmp(s3.c_str(), "ABCabcABCabc") == 0);
 
     stl::basic_string<char> s4("0123456789"), s5("0123456789");
     s4.insert(5, s4);
     s5.insert(s5.size(), s5);
 
-    CPPUNIT_ASSERT(::strcmp(s4.c_str(), "01234012345678956789") == 0);
-    CPPUNIT_ASSERT(::strcmp(s5.c_str(), "01234567890123456789") == 0);
+    TEST_CHECK(::strcmp(s4.c_str(), "01234012345678956789") == 0);
+    TEST_CHECK(::strcmp(s5.c_str(), "01234567890123456789") == 0);
 
 
     //  container& insert(size_type pos, const container& str, size_type off, size_type n)
@@ -563,9 +587,9 @@ void test_basic_string::insert()
     s8.insert(2, s6, 1, -1);                // n = npos
     s9.insert(s9.size(), s6, 3, 3).c_str(); // in end() position + return type
 
-    CPPUNIT_ASSERT(::strcmp(s7.c_str(), "ABCabc") == 0);
-    CPPUNIT_ASSERT(::strcmp(s8.c_str(), "ABBCabcCabc") == 0);
-    CPPUNIT_ASSERT(::strcmp(s9.c_str(), "ABCabcabc") == 0);
+    TEST_CHECK(::strcmp(s7.c_str(), "ABCabc") == 0);
+    TEST_CHECK(::strcmp(s8.c_str(), "ABBCabcCabc") == 0);
+    TEST_CHECK(::strcmp(s9.c_str(), "ABCabcabc") == 0);
 
 
     char c10[] = "ABCDefgh";
@@ -574,9 +598,9 @@ void test_basic_string::insert()
     s11.insert(2, s11, 2, 4);           // from self w/ overlapping
     s12.insert(2, s12, 4, 4).c_str();   // from self testing return type
 
-    CPPUNIT_ASSERT(::strcmp(s10.c_str(), "ABABCDCDefgh") == 0);
-    CPPUNIT_ASSERT(::strcmp(s11.c_str(), "ABCDefCDefgh") == 0);
-    CPPUNIT_ASSERT(::strcmp(s12.c_str(), "ABefghCDefgh") == 0);
+    TEST_CHECK(::strcmp(s10.c_str(), "ABABCDCDefgh") == 0);
+    TEST_CHECK(::strcmp(s11.c_str(), "ABCDefCDefgh") == 0);
+    TEST_CHECK(::strcmp(s12.c_str(), "ABefghCDefgh") == 0);
 
 
     //  container& insert(size_type pos, const value_type* ptr)
@@ -587,9 +611,9 @@ void test_basic_string::insert()
     s15.insert(5, "01234");             // in middle
     s16.insert(s16.size(), "01234");    // in end() position
 
-    CPPUNIT_ASSERT(::strcmp(s14.c_str(), "01234ABCDefgh") == 0);
-    CPPUNIT_ASSERT(::strcmp(s15.c_str(), "ABCDe01234fgh") == 0);
-    CPPUNIT_ASSERT(::strcmp(s16.c_str(), "ABCDefgh01234") == 0);
+    TEST_CHECK(::strcmp(s14.c_str(), "01234ABCDefgh") == 0);
+    TEST_CHECK(::strcmp(s15.c_str(), "ABCDe01234fgh") == 0);
+    TEST_CHECK(::strcmp(s16.c_str(), "ABCDefgh01234") == 0);
 
 
     size_t sz13 = s13.size();
@@ -598,9 +622,9 @@ void test_basic_string::insert()
     s18.insert(4, s18.c_str() + sz13 - 4);
     s19.insert(6, s19.c_str() + sz13 - 6);
 
-    CPPUNIT_ASSERT(::strcmp(s17.c_str(), "ABghCDefgh") == 0);
-    CPPUNIT_ASSERT(::strcmp(s18.c_str(), "ABCDefghefgh") == 0);
-    CPPUNIT_ASSERT(::strcmp(s19.c_str(), "ABCDefCDefghgh") == 0);
+    TEST_CHECK(::strcmp(s17.c_str(), "ABghCDefgh") == 0);
+    TEST_CHECK(::strcmp(s18.c_str(), "ABCDefghefgh") == 0);
+    TEST_CHECK(::strcmp(s19.c_str(), "ABCDefCDefghgh") == 0);
 
     //  container& insert(size_type pos, const value_type* ptr, size_type n)
     stl::basic_string<char> s20("ABCDefgh"), s21("ABCDefgh"), s22("ABCDefgh");
@@ -610,9 +634,9 @@ void test_basic_string::insert()
     s21.insert(4, "01234", 2);
     s22.insert(s22.size(), "012345", 3);
 
-    CPPUNIT_ASSERT(::strcmp(s20.c_str(), "01234ABCDefgh") == 0);
-    CPPUNIT_ASSERT(::strcmp(s21.c_str(), "ABCD01efgh") == 0);
-    CPPUNIT_ASSERT(::strcmp(s22.c_str(), "ABCDefgh012") == 0);
+    TEST_CHECK(::strcmp(s20.c_str(), "01234ABCDefgh") == 0);
+    TEST_CHECK(::strcmp(s21.c_str(), "ABCD01efgh") == 0);
+    TEST_CHECK(::strcmp(s22.c_str(), "ABCDefgh012") == 0);
 
     stl::basic_string<char> s23("ABCDefgh"), s24("ABCDefgh"), s25("ABCDefgh");
 
@@ -620,9 +644,9 @@ void test_basic_string::insert()
     s24.insert(7, s24.c_str() + 2, 2);
     s25.insert(1, s25.c_str() + 5, 2);
 
-    CPPUNIT_ASSERT(::strcmp(s23.c_str(), "ABghCDefgh") == 0);
-    CPPUNIT_ASSERT(::strcmp(s24.c_str(), "ABCDefgCDh") == 0);
-    CPPUNIT_ASSERT(::strcmp(s25.c_str(), "AfgBCDefgh") == 0);
+    TEST_CHECK(::strcmp(s23.c_str(), "ABghCDefgh") == 0);
+    TEST_CHECK(::strcmp(s24.c_str(), "ABCDefgCDh") == 0);
+    TEST_CHECK(::strcmp(s25.c_str(), "AfgBCDefgh") == 0);
 
     //  container& insert(size_type pos, size_type n, value_type c)
     stl::basic_string<char> s26("ABCabc"), s27("ABCabc"), s28("ABCabc");
@@ -631,9 +655,9 @@ void test_basic_string::insert()
     s27.insert(3, 3, '0');                  // in middle position
     s28.insert(s28.size(), 3, '0').c_str(); // in end() position
 
-    CPPUNIT_ASSERT(::strcmp(s26.c_str(), "000ABCabc") == 0);
-    CPPUNIT_ASSERT(::strcmp(s27.c_str(), "ABC000abc") == 0);
-    CPPUNIT_ASSERT(::strcmp(s28.c_str(), "ABCabc000") == 0);
+    TEST_CHECK(::strcmp(s26.c_str(), "000ABCabc") == 0);
+    TEST_CHECK(::strcmp(s27.c_str(), "ABC000abc") == 0);
+    TEST_CHECK(::strcmp(s28.c_str(), "ABCabc000") == 0);
 
     stl::basic_string<char> s29, s30, s31;
     s29.insert(0, 5, '5');
@@ -641,9 +665,9 @@ void test_basic_string::insert()
     for (int i = 0; i < 5; ++i)
         s31.insert(0, 1, '0' + i);
 
-    CPPUNIT_ASSERT(::strcmp(s29.c_str(), "55555") == 0);
-    CPPUNIT_ASSERT(::strcmp(s30.c_str(), "55555") == 0);
-    CPPUNIT_ASSERT(::strcmp(s31.c_str(), "43210") == 0);
+    TEST_CHECK(::strcmp(s29.c_str(), "55555") == 0);
+    TEST_CHECK(::strcmp(s30.c_str(), "55555") == 0);
+    TEST_CHECK(::strcmp(s31.c_str(), "43210") == 0);
 
     //  void insert(iterator position, size_type n, value_type c)
     stl::basic_string<char> s32("ABCabc"), s33("ABCabc"), s34("ABCabc");
@@ -652,9 +676,9 @@ void test_basic_string::insert()
     s33.insert(s33.begin() + 3, 3, '0');    // in middle position
     s34.insert(s34.end(), 3, '0');          // in end() position
 
-    CPPUNIT_ASSERT(::strcmp(s32.c_str(), "000ABCabc") == 0);
-    CPPUNIT_ASSERT(::strcmp(s33.c_str(), "ABC000abc") == 0);
-    CPPUNIT_ASSERT(::strcmp(s34.c_str(), "ABCabc000") == 0);
+    TEST_CHECK(::strcmp(s32.c_str(), "000ABCabc") == 0);
+    TEST_CHECK(::strcmp(s33.c_str(), "ABC000abc") == 0);
+    TEST_CHECK(::strcmp(s34.c_str(), "ABCabc000") == 0);
 
     stl::basic_string<char> s35, s36, s37;      // repeat but with empty strings
     s35.insert(s35.begin(), 5, '5');
@@ -662,9 +686,9 @@ void test_basic_string::insert()
     for (int i = 0; i < 5; ++i)
         s37.insert(s37.begin(), (size_t)1, (char)'0' + i);
 
-    CPPUNIT_ASSERT(::strcmp(s35.c_str(), "55555") == 0);
-    CPPUNIT_ASSERT(::strcmp(s36.c_str(), "55555") == 0);
-    CPPUNIT_ASSERT(::strcmp(s37.c_str(), "43210") == 0);
+    TEST_CHECK(::strcmp(s35.c_str(), "55555") == 0);
+    TEST_CHECK(::strcmp(s36.c_str(), "55555") == 0);
+    TEST_CHECK(::strcmp(s37.c_str(), "43210") == 0);
 
 
     //  iterator insert(iterator position, value_type c)
@@ -673,7 +697,7 @@ void test_basic_string::insert()
     s38.insert(s38.end(), 'c');
     s38.insert(s38.begin(), 'a');
 
-    CPPUNIT_ASSERT(::strcmp(s38.c_str(), "abc") == 0);
+    TEST_CHECK(::strcmp(s38.c_str(), "abc") == 0);
 
     //  inline void insert_(iterator& position, iterator& first, iterator& last)
     stl::basic_string<char> s39("ABCDefgh");
@@ -684,9 +708,9 @@ void test_basic_string::insert()
     s41.insert(s41.begin() + 6, s39.begin() + 2, s39.begin() + 4);  // ABCDefCDgh
     s42.insert(s42.begin() + 4, s39.begin() + 3, s39.begin() + 5);  // ABCDDeefgh
 
-    CPPUNIT_ASSERT(::strcmp(s40.c_str(), "ABghCDefgh") == 0);
-    CPPUNIT_ASSERT(::strcmp(s41.c_str(), "ABCDefCDgh") == 0);
-    CPPUNIT_ASSERT(::strcmp(s42.c_str(), "ABCDDeefgh") == 0);
+    TEST_CHECK(::strcmp(s40.c_str(), "ABghCDefgh") == 0);
+    TEST_CHECK(::strcmp(s41.c_str(), "ABCDefCDgh") == 0);
+    TEST_CHECK(::strcmp(s42.c_str(), "ABCDDeefgh") == 0);
 
 
             // insert from self
@@ -695,9 +719,9 @@ void test_basic_string::insert()
     s44.insert(s44.begin() + 6, s44.begin() + 2, s44.begin() + 4);
     s45.insert(s45.begin() + 4, s45.begin() + 3, s45.begin() + 5);
 
-    CPPUNIT_ASSERT(::strcmp(s43.c_str(), "ABghCDefgh") == 0);
-    CPPUNIT_ASSERT(::strcmp(s44.c_str(), "ABCDefCDgh") == 0);
-    CPPUNIT_ASSERT(::strcmp(s45.c_str(), "ABCDDeefgh") == 0);
+    TEST_CHECK(::strcmp(s43.c_str(), "ABghCDefgh") == 0);
+    TEST_CHECK(::strcmp(s44.c_str(), "ABCDefCDgh") == 0);
+    TEST_CHECK(::strcmp(s45.c_str(), "ABCDDeefgh") == 0);
     
     //  inline void insert_(iterator& position, const_iterator& first, const_iterator& last)
     const stl::basic_string<char> s46("ABCDefgh");
@@ -708,9 +732,9 @@ void test_basic_string::insert()
     s48.insert(s48.begin() + 6, s46.begin() + 2, s46.begin() + 4);  // ABCDefCDgh
     s49.insert(s49.begin() + 4, s46.begin() + 3, s46.begin() + 5);  // ABCDDeefgh
 
-    CPPUNIT_ASSERT(::strcmp(s47.c_str(), "ABghCDefgh") == 0);
-    CPPUNIT_ASSERT(::strcmp(s48.c_str(), "ABCDefCDgh") == 0);
-    CPPUNIT_ASSERT(::strcmp(s49.c_str(), "ABCDDeefgh") == 0);
+    TEST_CHECK(::strcmp(s47.c_str(), "ABghCDefgh") == 0);
+    TEST_CHECK(::strcmp(s48.c_str(), "ABCDefCDgh") == 0);
+    TEST_CHECK(::strcmp(s49.c_str(), "ABCDDeefgh") == 0);
 
             // insert from self
     stl::basic_string<char> s50(s46), s51(s46), s52(s46);
@@ -721,9 +745,9 @@ void test_basic_string::insert()
     s51.insert(s51.begin() + 6, s51a.begin() + 2, s51a.begin() + 4);
     s52.insert(s52.begin() + 4, s52a.begin() + 3, s52a.begin() + 5);
 
-    CPPUNIT_ASSERT(::strcmp(s50.c_str(), "ABghCDefgh") == 0);
-    CPPUNIT_ASSERT(::strcmp(s51.c_str(), "ABCDefCDgh") == 0);
-    CPPUNIT_ASSERT(::strcmp(s52.c_str(), "ABCDDeefgh") == 0);
+    TEST_CHECK(::strcmp(s50.c_str(), "ABghCDefgh") == 0);
+    TEST_CHECK(::strcmp(s51.c_str(), "ABCDefCDgh") == 0);
+    TEST_CHECK(::strcmp(s52.c_str(), "ABCDDeefgh") == 0);
 
     //  inline void insert_(iterator& position, value_type* first, value_type* last)
     char c53[] = "ABCDefgh";
@@ -732,18 +756,18 @@ void test_basic_string::insert()
     s54.insert(s54.end(), c53, c53 + 8);
     s55.insert(s55.begin() + 4, c53, c53 + 8);
 
-    CPPUNIT_ASSERT(::strcmp(s53.c_str(), "ABCDefgh") == 0);
-    CPPUNIT_ASSERT(::strcmp(s54.c_str(), "ABCDefgh") == 0);
-    CPPUNIT_ASSERT(::strcmp(s55.c_str(), "ABCDABCDefghefgh") == 0);
+    TEST_CHECK(::strcmp(s53.c_str(), "ABCDefgh") == 0);
+    TEST_CHECK(::strcmp(s54.c_str(), "ABCDefgh") == 0);
+    TEST_CHECK(::strcmp(s55.c_str(), "ABCDABCDefghefgh") == 0);
 
     stl::basic_string<char> s56("ABCDefgh"), s57("ABCDefgh"), s58("ABCDefgh");
     s56.insert(s56.begin() + 2, &*s56.begin() + 6, &*s56.begin() + 8);
     s57.insert(s57.begin() + 6, &*s57.begin() + 2, &*s57.begin() + 4);
     s58.insert(s58.begin() + 4, &*s58.begin() + 3, &*s58.begin() + 5);
 
-    CPPUNIT_ASSERT(::strcmp(s56.c_str(), "ABghCDefgh") == 0);
-    CPPUNIT_ASSERT(::strcmp(s57.c_str(), "ABCDefCDgh") == 0);
-    CPPUNIT_ASSERT(::strcmp(s58.c_str(), "ABCDDeefgh") == 0);
+    TEST_CHECK(::strcmp(s56.c_str(), "ABghCDefgh") == 0);
+    TEST_CHECK(::strcmp(s57.c_str(), "ABCDefCDgh") == 0);
+    TEST_CHECK(::strcmp(s58.c_str(), "ABCDDeefgh") == 0);
 
     //  inline void insert_(iterator& position, const value_type* first, const value_type* last)
     const char c60[] = "ABCDefgh";
@@ -752,9 +776,9 @@ void test_basic_string::insert()
     s61.insert(s61.end(), c60, c60 + 8);
     s62.insert(s62.begin() + 4, c60, c60 + 8);
 
-    CPPUNIT_ASSERT(::strcmp(s60.c_str(), "ABCDefgh") == 0);
-    CPPUNIT_ASSERT(::strcmp(s61.c_str(), "ABCDefgh") == 0);
-    CPPUNIT_ASSERT(::strcmp(s62.c_str(), "ABCDABCDefghefgh") == 0);
+    TEST_CHECK(::strcmp(s60.c_str(), "ABCDefgh") == 0);
+    TEST_CHECK(::strcmp(s61.c_str(), "ABCDefgh") == 0);
+    TEST_CHECK(::strcmp(s62.c_str(), "ABCDABCDefghefgh") == 0);
 
     stl::basic_string<char> s63("ABCDefgh"), s64("ABCDefgh"), s65("ABCDefgh");
     const stl::basic_string<char>& s63a = s63;
@@ -765,9 +789,9 @@ void test_basic_string::insert()
     s64.insert(s64.begin() + 6, &*s64a.begin() + 2, &*s64a.begin() + 4);
     s65.insert(s65.begin() + 4, &*s65a.begin() + 3, &*s65a.begin() + 5);
 
-    CPPUNIT_ASSERT(::strcmp(s63.c_str(), "ABghCDefgh") == 0);
-    CPPUNIT_ASSERT(::strcmp(s64.c_str(), "ABCDefCDgh") == 0);
-    CPPUNIT_ASSERT(::strcmp(s65.c_str(), "ABCDDeefgh") == 0);
+    TEST_CHECK(::strcmp(s63.c_str(), "ABghCDefgh") == 0);
+    TEST_CHECK(::strcmp(s64.c_str(), "ABCDefCDgh") == 0);
+    TEST_CHECK(::strcmp(s65.c_str(), "ABCDDeefgh") == 0);
 
     //  inline void insert_(iterator& position, InputIterator& first, InputIterator& last, stl::forward_iterator_tag)
     char c66[] = "ABCDefgh";
@@ -777,18 +801,18 @@ void test_basic_string::insert()
     s68.insert(s68.begin() + 6, s66.rbegin() + 4, s66.rbegin() + 6);
     s69.insert(s69.begin() + 4, s66.rbegin() + 3, s66.rbegin() + 5);
 
-    CPPUNIT_ASSERT(::strcmp(s67.c_str(), "ABhgCDefgh") == 0);
-    CPPUNIT_ASSERT(::strcmp(s68.c_str(), "ABCDefDCgh") == 0);
-    CPPUNIT_ASSERT(::strcmp(s69.c_str(), "ABCDeDefgh") == 0);
+    TEST_CHECK(::strcmp(s67.c_str(), "ABhgCDefgh") == 0);
+    TEST_CHECK(::strcmp(s68.c_str(), "ABCDefDCgh") == 0);
+    TEST_CHECK(::strcmp(s69.c_str(), "ABCDeDefgh") == 0);
 
     stl::basic_string<char> s70(c66), s71(c66), s72(c66);
     s70.insert(s70.begin() + 2, s70.rbegin(), s70.rbegin() + 2);
     s71.insert(s71.begin() + 6, s71.rbegin() + 4, s71.rbegin() + 6);
     s72.insert(s72.begin() + 4, s72.rbegin() + 3, s72.rbegin() + 5);
 
-    CPPUNIT_ASSERT(::strcmp(s70.c_str(), "ABhgCDefgh") == 0);
-    CPPUNIT_ASSERT(::strcmp(s71.c_str(), "ABCDefDCgh") == 0);
-    CPPUNIT_ASSERT(::strcmp(s72.c_str(), "ABCDeDefgh") == 0);
+    TEST_CHECK(::strcmp(s70.c_str(), "ABhgCDefgh") == 0);
+    TEST_CHECK(::strcmp(s71.c_str(), "ABCDefDCgh") == 0);
+    TEST_CHECK(::strcmp(s72.c_str(), "ABCDeDefgh") == 0);
 
     //  inline void insert_(iterator& position, InputIterator n, InputIterator value, stl::input_iterator_tag)
     char c73[] = "ABCDefgh";
@@ -798,16 +822,16 @@ void test_basic_string::insert()
     s74.insert(s74.end(), 5, 0 + '5');          // in end() position
     s75.insert(s75.begin() + 4, 5, 0 + '5');    // in middle position
 
-    CPPUNIT_ASSERT(::strcmp(s73.c_str(), "55555") == 0);
-    CPPUNIT_ASSERT(::strcmp(s74.c_str(), "55555") == 0);
-    CPPUNIT_ASSERT(::strcmp(s75.c_str(), "ABCD55555efgh") == 0);
+    TEST_CHECK(::strcmp(s73.c_str(), "55555") == 0);
+    TEST_CHECK(::strcmp(s74.c_str(), "55555") == 0);
+    TEST_CHECK(::strcmp(s75.c_str(), "ABCD55555efgh") == 0);
 
     //  Trying to persuade an insert from self, with both char& arguments.
     stl::basic_string<char> s76("!start:");
     char& n76 = s76[0]; // '!' is 33
     char& c76 = s76[0]; // '!'
     s76.insert(s76.begin() + 3, n76, c76);
-    CPPUNIT_ASSERT(::strcmp(s76.c_str(), "!st!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!art:") == 0);
+    TEST_CHECK(::strcmp(s76.c_str(), "!st!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!art:") == 0);
 }
 
 
@@ -817,13 +841,13 @@ void test_basic_string::erase()
     stl::basic_string<char> s1("ABCD----efgh----01234");
     s1.erase(4, 4);
     s1.erase(8, 4);
-    CPPUNIT_ASSERT(::strcmp(s1.c_str(), "ABCDefgh01234") == 0);
+    TEST_CHECK(::strcmp(s1.c_str(), "ABCDefgh01234") == 0);
     
     s1.erase(8, -1);
-    CPPUNIT_ASSERT(::strcmp(s1.c_str(), "ABCDefgh") == 0);
+    TEST_CHECK(::strcmp(s1.c_str(), "ABCDefgh") == 0);
 
     s1.erase(0, 4);
-    CPPUNIT_ASSERT(::strcmp(s1.c_str(), "efgh") == 0);
+    TEST_CHECK(::strcmp(s1.c_str(), "efgh") == 0);
 
     //  iterator erase(iterator position)
     stl::basic_string<char> s2("ABCD----efgh----01234");
@@ -832,7 +856,7 @@ void test_basic_string::erase()
     for (int i = 0; i < 4; ++i)
         s2.erase(s2.begin() + 4);
 
-    CPPUNIT_ASSERT(::strcmp(s2.c_str(), "ABCDefgh01234") == 0);
+    TEST_CHECK(::strcmp(s2.c_str(), "ABCDefgh01234") == 0);
 
     // iterator erase(iterator first, iterator last)
     stl::basic_string<char> s3("ABCD----efgh----01234");
@@ -840,7 +864,7 @@ void test_basic_string::erase()
     s3.erase(s3.begin() + 8, s3.begin() + 12);
     s3.erase(s3.begin() + 8, s3.end());
 
-    CPPUNIT_ASSERT(::strcmp(s3.c_str(), "ABCDefgh") == 0);
+    TEST_CHECK(::strcmp(s3.c_str(), "ABCDefgh") == 0);
 }
 
 void test_basic_string::replace()
@@ -856,7 +880,7 @@ void test_basic_string::replace()
     s1.replace(0, 4, string(""));      //0efghh
     s1.replace(5, -1, string("1234")); //0efgh1234
 
-    CPPUNIT_ASSERT(::strcmp(s1.c_str(), "0efgh1234") == 0);
+    TEST_CHECK(::strcmp(s1.c_str(), "0efgh1234") == 0);
 
     //  inline container& replace(iterator first, iterator last, const container& str)
     typedef stl::basic_string<char> string;
@@ -868,7 +892,7 @@ void test_basic_string::replace()
     s2.replace(s2.begin(), s2.begin() + 4, string(""));     //0efghh
     s2.replace(s2.begin() + 5, s2.end(), string("1234"));   //0efgh1234
 
-    CPPUNIT_ASSERT(::strcmp(s2.c_str(), "0efgh1234") == 0);
+    TEST_CHECK(::strcmp(s2.c_str(), "0efgh1234") == 0);
 
     //  container& replace(size_type pos, size_type len, const container& str, size_type subpos, size_type sublen)
     string s3("ABCDefghijk123456789");
@@ -883,60 +907,60 @@ void test_basic_string::replace()
     s3.replace(8, 0, s3, 0, 4);                         //abcdEFGHabcd1234
     s3.replace(0, 4, s3, 0, 0);                         //EFGHabcd1234
 
-    CPPUNIT_ASSERT(::strcmp(s3.c_str(), "EFGHabcd1234") == 0);
+    TEST_CHECK(::strcmp(s3.c_str(), "EFGHabcd1234") == 0);
 
         // try to test as many as possible combinations
     s3.assign("ABCDefgh1234");          //ABCDefgh1234
     s3.replace(1, 2, s3, 8, 4);         //A1234Defgh1234
-    CPPUNIT_ASSERT(::strcmp(s3.c_str(), "A1234Defgh1234") == 0);
+    TEST_CHECK(::strcmp(s3.c_str(), "A1234Defgh1234") == 0);
 
     s3.assign("ABCDefgh1234");          //ABCDefgh1234
     s3.replace(1, 4, s3, 8, 2);         //A12fgh1234
-    CPPUNIT_ASSERT(::strcmp(s3.c_str(), "A12fgh1234") == 0);
+    TEST_CHECK(::strcmp(s3.c_str(), "A12fgh1234") == 0);
 
     s3.assign("ABCDefgh1234");          //ABCDefgh1234
     s3.replace(2, 4, s3, 4, 6);         //ABefgh12gh1234
-    CPPUNIT_ASSERT(::strcmp(s3.c_str(), "ABefgh12gh1234") == 0);
+    TEST_CHECK(::strcmp(s3.c_str(), "ABefgh12gh1234") == 0);
 
     s3.assign("ABCDefgh1234");          //ABCDefgh1234
     s3.replace(2, 4, s3, 4, 2);         //ABefgh1234
-    CPPUNIT_ASSERT(::strcmp(s3.c_str(), "ABefgh1234") == 0);
+    TEST_CHECK(::strcmp(s3.c_str(), "ABefgh1234") == 0);
 
     s3.assign("ABCDefgh1234");          //ABCDefgh1234
     s3.replace(4, 4, s3, 4, 2);         //ABCDef1234
-    CPPUNIT_ASSERT(::strcmp(s3.c_str(), "ABCDef1234") == 0);
+    TEST_CHECK(::strcmp(s3.c_str(), "ABCDef1234") == 0);
 
     s3.assign("ABCDefgh1234");          //ABCDefgh1234
     s3.replace(4, 4, s3, 4, 4);         //ABCDefgh1234
-    CPPUNIT_ASSERT(::strcmp(s3.c_str(), "ABCDefgh1234") == 0);
+    TEST_CHECK(::strcmp(s3.c_str(), "ABCDefgh1234") == 0);
 
     s3.assign("ABCDefgh1234");          //ABCDefgh1234
     s3.replace(4, 4, s3, 4, 6);         //ABCDefgh121234
-    CPPUNIT_ASSERT(::strcmp(s3.c_str(), "ABCDefgh121234") == 0);
+    TEST_CHECK(::strcmp(s3.c_str(), "ABCDefgh121234") == 0);
 
     s3.assign("ABCDefgh1234");          //ABCDefgh1234
     s3.replace(4, 4, s3, 2, 8);         //ABCDCDefgh121234
-    CPPUNIT_ASSERT(::strcmp(s3.c_str(), "ABCDCDefgh121234") == 0);
+    TEST_CHECK(::strcmp(s3.c_str(), "ABCDCDefgh121234") == 0);
 
     s3.assign("ABCDefgh1234");          //ABCDefgh1234
     s3.replace(4, 4, s3, 2, 6);         //ABCDCDefgh1234
-    CPPUNIT_ASSERT(::strcmp(s3.c_str(), "ABCDCDefgh1234") == 0);
+    TEST_CHECK(::strcmp(s3.c_str(), "ABCDCDefgh1234") == 0);
 
     s3.assign("ABCDefgh1234");          //ABCDefgh1234
     s3.replace(4, 4, s3, 2, 4);         //ABCDCDef1234
-    CPPUNIT_ASSERT(::strcmp(s3.c_str(), "ABCDCDef1234") == 0);
+    TEST_CHECK(::strcmp(s3.c_str(), "ABCDCDef1234") == 0);
 
     s3.assign("ABCDefgh1234");          //ABCDefgh1234
     s3.replace(4, 4, s3, 2, 2);         //ABCDCD1234
-    CPPUNIT_ASSERT(::strcmp(s3.c_str(), "ABCDCD1234") == 0);
+    TEST_CHECK(::strcmp(s3.c_str(), "ABCDCD1234") == 0);
 
     s3.assign("ABCDefgh1234");          //ABCDefgh1234
     s3.replace(4, 4, s3, 1, 2);         //ABCDBC1234
-    CPPUNIT_ASSERT(::strcmp(s3.c_str(), "ABCDBC1234") == 0);
+    TEST_CHECK(::strcmp(s3.c_str(), "ABCDBC1234") == 0);
     
     s3.assign("ABCDefgh1234");          //ABCDefgh1234
     s3.replace(0, 12, s3, 0, 0);        //ABCDBC1234
-    CPPUNIT_ASSERT(::strcmp(s3.c_str(), "") == 0);
+    TEST_CHECK(::strcmp(s3.c_str(), "") == 0);
 
 
 
@@ -954,7 +978,7 @@ void test_basic_string::replace()
     s4.replace(0, 4, s4.c_str() + 20);                  //EFGH12341234xyzw
     s4.replace(8, -1, s4.c_str() + 12);                 //EFGH1234xyzw
 
-    CPPUNIT_ASSERT(::strcmp(s4.c_str(), "EFGH1234xyzw") == 0);
+    TEST_CHECK(::strcmp(s4.c_str(), "EFGH1234xyzw") == 0);
 
     // container& replace(iterator first, iterator last, const value_type* ptr)
     string s5("abcd1234");
@@ -964,7 +988,7 @@ void test_basic_string::replace()
     s5.replace(s5.begin() + 4, s5.begin() + 8, s5.c_str() + 4); //xyzwABCD56785678
     s5.replace(s5.begin() + 8, s5.end(), s5.c_str() + 12);      //xyzwABCD5678
 
-    CPPUNIT_ASSERT(::strcmp(s5.c_str(), "xyzwABCD5678") == 0);
+    TEST_CHECK(::strcmp(s5.c_str(), "xyzwABCD5678") == 0);
 
     // container& replace(size_type pos, size_type len, const value_type* ptr, size_type n)
     string s6("....xxxx????");                  //....xxxx????
@@ -976,7 +1000,7 @@ void test_basic_string::replace()
     s6.replace(8, -1, s6.c_str() + 8);          //1234EFGHEFGH
     s6.replace(8, 5, s6.c_str() + 12);          //1234EFGH
 
-    CPPUNIT_ASSERT(::strcmp(s6.c_str(), "1234EFGH") == 0);
+    TEST_CHECK(::strcmp(s6.c_str(), "1234EFGH") == 0);
 
     //  container& replace(iterator first, iterator last, const value_type* ptr, size_type n)
     string s7("abcd1234");                                  //abcd1234
@@ -986,7 +1010,7 @@ void test_basic_string::replace()
     s7.replace(s7.begin() + 4, s7.begin() + 8, s7.c_str() + 4, s7.size() - 4);  //xyzwABCD56785678
     s7.replace(s7.begin() + 8, s7.end(), s7.c_str() + 12, -1);                  //xyzwABCD5678
 
-    CPPUNIT_ASSERT(::strcmp(s7.c_str(), "xyzwABCD5678") == 0);
+    TEST_CHECK(::strcmp(s7.c_str(), "xyzwABCD5678") == 0);
 
     //  container& replace(size_type pos, size_type len, size_type n, value_type c)
     string s8("ABCDefgh1234");
@@ -996,7 +1020,7 @@ void test_basic_string::replace()
     s8.replace(0, 4, 4, s8.c_str()[0]);     //eeee!!!!
     s8.replace(4, -1, 4, s8.c_str()[0]);    //eeeeeeee
 
-    CPPUNIT_ASSERT(::strcmp(s8.c_str(), "eeeeeeee") == 0);
+    TEST_CHECK(::strcmp(s8.c_str(), "eeeeeeee") == 0);
 
     // container& replace(iterator first, iterator last, size_type n, value_type c)
     string s9("ABCDefgh1234");
@@ -1006,7 +1030,7 @@ void test_basic_string::replace()
     s9.replace(s9.begin(), s9.begin() + 4, 4, s9.c_str()[0]);   //eeee!!!!
     s9.replace(s9.begin() + 4, s9.end(), 4, s9.c_str()[0]);     //eeeeeeee
 
-    CPPUNIT_ASSERT(::strcmp(s9.c_str(), "eeeeeeee") == 0);
+    TEST_CHECK(::strcmp(s9.c_str(), "eeeeeeee") == 0);
 
 
     // inline container& replace_(iterator& first, iterator& last, iterator& first2, iterator& last2)
@@ -1021,7 +1045,7 @@ void test_basic_string::replace()
 
     s10.replace(s10.begin(), s10.begin(), s10.begin() + 4, s10.begin() + 4);//1234EFGH
 
-    CPPUNIT_ASSERT(::strcmp(s10.c_str(), "1234EFGH") == 0);
+    TEST_CHECK(::strcmp(s10.c_str(), "1234EFGH") == 0);
 
     // inline container& replace_(iterator& first, iterator& last, const_iterator& first2, const_iterator& last2)
     string s12("abcd....1234....efgh");
@@ -1036,7 +1060,7 @@ void test_basic_string::replace()
 
     s12.replace(s12.begin(), s12.begin(), s12a.begin() + 4, s12a.begin() + 4);//1234EFGH
 
-    CPPUNIT_ASSERT(::strcmp(s12.c_str(), "1234EFGH") == 0);
+    TEST_CHECK(::strcmp(s12.c_str(), "1234EFGH") == 0);
 
     // inline container& replace_(iterator& first, iterator& last, value_type* first2, value_type* last2)
     string s14("abcd....1234....efgh");
@@ -1050,7 +1074,7 @@ void test_basic_string::replace()
 
     s14.replace(s14.begin(), s14.begin(), s14.c_str() + 4, s14.c_str() + 4);        //1234EFGH
 
-    CPPUNIT_ASSERT(::strcmp(s14.c_str(), "1234EFGH") == 0);
+    TEST_CHECK(::strcmp(s14.c_str(), "1234EFGH") == 0);
 
     // inline container& replace_(iterator& first, iterator& last, const value_type* first2, const value_type* last2)
     string s16("abcd....1234....efgh");
@@ -1065,7 +1089,7 @@ void test_basic_string::replace()
 
     s16.replace(s16.begin(), s16.begin(), s16a.c_str() + 4, s16a.c_str() + 4);        //1234EFGH
 
-    CPPUNIT_ASSERT(::strcmp(s16.c_str(), "1234EFGH") == 0);
+    TEST_CHECK(::strcmp(s16.c_str(), "1234EFGH") == 0);
 
     // inline container& replace_(iterator& first, iterator& last, InputIterator& first2, InputIterator& last2, stl::forward_iterator_tag)
     string s18("ABCD....efgh....1234....");
@@ -1077,7 +1101,7 @@ void test_basic_string::replace()
     s18.replace(s18.begin(), s18.begin() + 4, s18.rbegin() + 12, s18.rend());       //abcdefgh....4321
     s18.replace(s18.begin() + 8, s18.end(), s18.rbegin(), s18.rbegin() + 4);        //abcdefgh1234
 
-    CPPUNIT_ASSERT(::strcmp(s18.c_str(), "abcdefgh1234") == 0);
+    TEST_CHECK(::strcmp(s18.c_str(), "abcdefgh1234") == 0);
 
     // inline container& replace_(iterator& first, iterator& last, InputIterator n, InputIterator value, stl::input_iterator_tag)
     string s20("abcd....efgh....1234....");                 //abcd....efgh....1234....
@@ -1086,7 +1110,7 @@ void test_basic_string::replace()
     
     s20.replace(s20.begin() + 8, s20.begin() + 12, 0, 0 + '0'); //AAAAefgh1234ZZZZ
 
-    CPPUNIT_ASSERT(::strcmp(s20.c_str(), "AAAAefgh1234ZZZZ") == 0);
+    TEST_CHECK(::strcmp(s20.c_str(), "AAAAefgh1234ZZZZ") == 0);
 }
 
 void test_basic_string::copy()
@@ -1099,14 +1123,14 @@ void test_basic_string::copy()
     s1.copy(c1 + 4, 4, 4);  // c1="abcdEFGH1234"
     s1.copy(c1 + 8, -1, 8); // c1="abcdEFGH5678"
 
-    CPPUNIT_ASSERT(::strcmp(s1.c_str(), "abcdEFGH5678") == 0);
+    TEST_CHECK(::strcmp(s1.c_str(), "abcdEFGH5678") == 0);
 
     string s2("0123456789");
     s2.copy((char*)s2.c_str(), 2, 8);           //8923456789
     s2.copy((char*)s2.c_str() + 2, 4, 6);       //8967896789
     s2.copy((char*)s2.c_str() + 2, -1, 8);      //8989896789
 
-    CPPUNIT_ASSERT(::strcmp(s2.c_str(), "8989896789") == 0);
+    TEST_CHECK(::strcmp(s2.c_str(), "8989896789") == 0);
 }
 
 void test_basic_string::swap()
@@ -1129,11 +1153,11 @@ void test_basic_string::swap()
     
     s1.swap(s2);
 
-    CPPUNIT_ASSERT(::strcmp(s1.c_str(), c2) == 0 &&
+    TEST_CHECK(::strcmp(s1.c_str(), c2) == 0 &&
                    s1.capacity() == c2cap &&
                    s1.size() == c2sz);
 
-    CPPUNIT_ASSERT(::strcmp(s2.c_str(), c1) == 0 &&
+    TEST_CHECK(::strcmp(s2.c_str(), c1) == 0 &&
                    s2.capacity() == c1cap &&
                    s2.size() == c1sz);
 }
@@ -1145,86 +1169,86 @@ void test_basic_string::find()
     // size_type find(const container& str, size_type pos = 0) const
     string s1("ABCefgh1234");
     size_t ret = s1.find(string(""), 2);
-    CPPUNIT_ASSERT(ret == 2);
+    TEST_CHECK(ret == 2);
 
     ret = s1.find(string("ABC"), 1);
-    CPPUNIT_ASSERT(ret == string::npos);
+    TEST_CHECK(ret == string::npos);
 
     ret = s1.find(string("efgh12"), 3);
-    CPPUNIT_ASSERT(ret == 3);
+    TEST_CHECK(ret == 3);
 
     ret = s1.find(string("e"), 10);
-    CPPUNIT_ASSERT(ret == (size_t)-1);
+    TEST_CHECK(ret == (size_t)-1);
 
     string s1a("");
     ret = s1a.find(string(""));
-    CPPUNIT_ASSERT(ret == (size_t)-1);
+    TEST_CHECK(ret == (size_t)-1);
 
     string s1b("");
     ret = s1b.find(string("333"));
-    CPPUNIT_ASSERT(ret == (size_t)-1);
+    TEST_CHECK(ret == (size_t)-1);
 
 
     // size_type find(const value_type* ptr, size_type pos = 0) const
     string s2("ABCefgh1234");
     ret = s2.find("", 2);
-    CPPUNIT_ASSERT(ret == 2);
+    TEST_CHECK(ret == 2);
 
     ret = s2.find("ABC", 1);
-    CPPUNIT_ASSERT(ret == (size_t)-1);
+    TEST_CHECK(ret == (size_t)-1);
 
     ret = s2.find("efgh12", 3);
-    CPPUNIT_ASSERT(ret == 3);
+    TEST_CHECK(ret == 3);
 
     ret = s2.find("e", 10);
-    CPPUNIT_ASSERT(ret == (size_t)-1);
+    TEST_CHECK(ret == (size_t)-1);
 
     string s2a("");
     ret = s2a.find("");
-    CPPUNIT_ASSERT(ret == (size_t)-1);
+    TEST_CHECK(ret == (size_t)-1);
 
     string s2b("");
     ret = s2b.find("333");
-    CPPUNIT_ASSERT(ret == (size_t)-1);
+    TEST_CHECK(ret == (size_t)-1);
 
 
     // size_type find(const value_type* ptr, size_type pos, size_type n) const
     string s3("ABCefgh1234");
     ret = s3.find("", 2, 0);
-    CPPUNIT_ASSERT(ret == 2);
+    TEST_CHECK(ret == 2);
 
     ret = s3.find("ABC", 1, 3);
-    CPPUNIT_ASSERT(ret == (size_t)-1);
+    TEST_CHECK(ret == (size_t)-1);
 
     ret = s3.find("efgh12", 3, 6);
-    CPPUNIT_ASSERT(ret == 3);
+    TEST_CHECK(ret == 3);
 
     ret = s3.find("e", 10, 1);
-    CPPUNIT_ASSERT(ret == (size_t)-1);
+    TEST_CHECK(ret == (size_t)-1);
 
     string s3a("");
     ret = s3a.find("", 0, 0);
-    CPPUNIT_ASSERT(ret == (size_t)-1);
+    TEST_CHECK(ret == (size_t)-1);
 
     string s3b("");
     ret = s3b.find("333", 0, 3);
-    CPPUNIT_ASSERT(ret == (size_t)-1);
+    TEST_CHECK(ret == (size_t)-1);
 
 
     // size_type find(value_type ch, size_type pos = 0) const
     string s4("ABCefgh1234");
     ret = s4.find('A', 1);
-    CPPUNIT_ASSERT(ret == (size_t)-1);
+    TEST_CHECK(ret == (size_t)-1);
 
     ret = s4.find('e', 3);
-    CPPUNIT_ASSERT(ret == 3);
+    TEST_CHECK(ret == 3);
 
     ret = s4.find('e', 10);
-    CPPUNIT_ASSERT(ret == (size_t)-1);
+    TEST_CHECK(ret == (size_t)-1);
 
     string s4a("");
     ret = s4a.find((char)0);
-    CPPUNIT_ASSERT(ret == (size_t)-1);
+    TEST_CHECK(ret == (size_t)-1);
 }
 
 void test_basic_string::rfind()
@@ -1235,44 +1259,44 @@ void test_basic_string::rfind()
     //size_type rfind(const container& str, size_type pos = npos) const
     string s1("");
     ret = s1.rfind(string(""));
-    CPPUNIT_ASSERT(ret == 0);
+    TEST_CHECK(ret == 0);
 
     ret = s1.rfind(string(""), 0);
-    CPPUNIT_ASSERT(ret == 0);
+    TEST_CHECK(ret == 0);
 
     string s2("1234....1234....");
     ret = s2.rfind(string("...."), 8);
-    CPPUNIT_ASSERT(ret == 4);
+    TEST_CHECK(ret == 4);
 
     ret = s2.rfind(string("...."), 14);
-    CPPUNIT_ASSERT(ret == 12);
+    TEST_CHECK(ret == 12);
 
     ret = s2.rfind(string("...."), 3);
-    CPPUNIT_ASSERT(ret == (size_t)-1);
+    TEST_CHECK(ret == (size_t)-1);
 
     ret = s2.rfind(string("e"));
-    CPPUNIT_ASSERT(ret == (size_t)-1);
+    TEST_CHECK(ret == (size_t)-1);
 
     //size_type rfind(const value_type* ptr, size_type pos = npos) const
     string s3("");
     ret = s3.rfind("");
-    CPPUNIT_ASSERT(ret == 0);
+    TEST_CHECK(ret == 0);
 
     ret = s3.rfind("", 0);
-    CPPUNIT_ASSERT(ret == 0);
+    TEST_CHECK(ret == 0);
 
     string s4("1234....1234....");
     ret = s4.rfind("....", 8);
-    CPPUNIT_ASSERT(ret == 4);
+    TEST_CHECK(ret == 4);
 
     ret = s4.rfind("....", 14);
-    CPPUNIT_ASSERT(ret == 12);
+    TEST_CHECK(ret == 12);
 
     ret = s4.rfind("....", 3);
-    CPPUNIT_ASSERT(ret == (size_t)-1);
+    TEST_CHECK(ret == (size_t)-1);
 
     ret = s4.rfind("e");
-    CPPUNIT_ASSERT(ret == (size_t)-1);
+    TEST_CHECK(ret == (size_t)-1);
 
     //size_type rfind(const value_type* ptr, size_type pos, size_type n) const
     char c5[] = "rap\0" "rap";
@@ -1281,45 +1305,45 @@ void test_basic_string::rfind()
     s5.append(c5, c5 + 8);
 
     ret = s5.rfind(c5, -1, 7);  // ignore '\0' at [3] and [11]
-    CPPUNIT_ASSERT(ret == 8);
+    TEST_CHECK(ret == 8);
 
     string s6("");
     ret = s6.rfind("", -1, 0);
-    CPPUNIT_ASSERT(ret == 0);
+    TEST_CHECK(ret == 0);
 
     ret = s6.rfind("", -1, 0);
-    CPPUNIT_ASSERT(ret == 0);
+    TEST_CHECK(ret == 0);
 
     string s7("1234....1234....");
     ret = s7.rfind("....", 8, 4);
-    CPPUNIT_ASSERT(ret == 4);
+    TEST_CHECK(ret == 4);
 
     ret = s7.rfind("....", 14, 4);
-    CPPUNIT_ASSERT(ret == 12);
+    TEST_CHECK(ret == 12);
 
     ret = s7.rfind("....", 3, 4);
-    CPPUNIT_ASSERT(ret == (size_t)-1);
+    TEST_CHECK(ret == (size_t)-1);
 
     ret = s7.rfind("e", -1, 1);
-    CPPUNIT_ASSERT(ret == (size_t)-1);
+    TEST_CHECK(ret == (size_t)-1);
 
     // size_type rfind(value_type c, size_type pos = npos) const
     string s8("");
     ret = s8.rfind((char)0, -1);
-    CPPUNIT_ASSERT(ret == (size_t)-1);
+    TEST_CHECK(ret == (size_t)-1);
 
     string s9("1234....1234....");
     ret = s9.rfind('.', 8);
-    CPPUNIT_ASSERT(ret == 7);
+    TEST_CHECK(ret == 7);
 
     ret = s9.rfind('.', 14);
-    CPPUNIT_ASSERT(ret == 14);
+    TEST_CHECK(ret == 14);
 
     ret = s9.rfind('.', 3);
-    CPPUNIT_ASSERT(ret == (size_t)-1);
+    TEST_CHECK(ret == (size_t)-1);
 
     ret = s9.rfind('e', -1);
-    CPPUNIT_ASSERT(ret == (size_t)-1);
+    TEST_CHECK(ret == (size_t)-1);
 }
 
 void test_basic_string::find_first_of()
@@ -1331,56 +1355,56 @@ void test_basic_string::find_first_of()
     string s1("remove all vowels");
     while ((ret = s1.find_first_of(string("aeiou"), ret)) != (size_t)-1)
         s1[ret] = '*';
-    CPPUNIT_ASSERT(::strcmp(s1.c_str(), "r*m*v* *ll v*w*ls") == 0);
+    TEST_CHECK(::strcmp(s1.c_str(), "r*m*v* *ll v*w*ls") == 0);
 
     string s2("");
     ret = s2.find_first_of(string(""));
-    CPPUNIT_ASSERT(ret == (size_t)-1);
+    TEST_CHECK(ret == (size_t)-1);
 
     string s2a("");
     ret = s2a.find_first_of(string("aeiou"));
-    CPPUNIT_ASSERT(ret == (size_t)-1);
+    TEST_CHECK(ret == (size_t)-1);
 
     // size_type find_first_of(const value_type* ptr, size_type pos = 0) const
     string s3("remove all vowels");
     ret = 0;
     while ((ret = s3.find_first_of("aeiou", ret)) != (size_t)-1)
         s3[ret] = '*';
-    CPPUNIT_ASSERT(::strcmp(s3.c_str(), "r*m*v* *ll v*w*ls") == 0);
+    TEST_CHECK(::strcmp(s3.c_str(), "r*m*v* *ll v*w*ls") == 0);
 
     string s4("");
     ret = s4.find_first_of("");
-    CPPUNIT_ASSERT(ret == (size_t)-1);
+    TEST_CHECK(ret == (size_t)-1);
 
     ret = s4.find_first_of("aeiou");
-    CPPUNIT_ASSERT(ret == (size_t)-1);
+    TEST_CHECK(ret == (size_t)-1);
 
     // size_type find_first_of(const value_type* ptr, size_type pos, size_type n) const
     string s5("remove all vowels");
     ret = 0;
     while ((ret = s5.find_first_of("aeiou", ret, 5)) != (size_t)-1)
         s5[ret] = '*';
-    CPPUNIT_ASSERT(::strcmp(s5.c_str(), "r*m*v* *ll v*w*ls") == 0);
+    TEST_CHECK(::strcmp(s5.c_str(), "r*m*v* *ll v*w*ls") == 0);
 
     string s6("");
     ret = s6.find_first_of("", 0, 0);
-    CPPUNIT_ASSERT(ret == (size_t)-1);
+    TEST_CHECK(ret == (size_t)-1);
 
     ret = s6.find_first_of("aeiou", 0, 5);
-    CPPUNIT_ASSERT(ret == (size_t)-1);
+    TEST_CHECK(ret == (size_t)-1);
 
 
     // size_type find_first_of(value_type c, size_type pos = 0) const
     string s7("");
     ret = s7.find_first_of((char)0);
-    CPPUNIT_ASSERT(ret == (size_t)-1);
+    TEST_CHECK(ret == (size_t)-1);
 
     ret = s7.find_first_of('c');
-    CPPUNIT_ASSERT(ret == (size_t)-1);
+    TEST_CHECK(ret == (size_t)-1);
 
     string s8("remove all vowels");
     ret = s8.find_first_of('s');
-    CPPUNIT_ASSERT(ret == 16);
+    TEST_CHECK(ret == 16);
 }
 
 void test_basic_string::find_last_of()
@@ -1392,56 +1416,56 @@ void test_basic_string::find_last_of()
     string s1("remove all vowels");
     while ((ret = s1.find_last_of(string("aeiou"), ret)) != (size_t)-1)
         s1[ret] = '*';
-    CPPUNIT_ASSERT(::strcmp(s1.c_str(), "r*m*v* *ll v*w*ls") == 0);
+    TEST_CHECK(::strcmp(s1.c_str(), "r*m*v* *ll v*w*ls") == 0);
 
     string s2("");
     ret = s2.find_last_of(string(""));
-    CPPUNIT_ASSERT(ret == (size_t)-1);
+    TEST_CHECK(ret == (size_t)-1);
 
     string s2a("");
     ret = s2a.find_last_of(string("aeiou"));
-    CPPUNIT_ASSERT(ret == (size_t)-1);
+    TEST_CHECK(ret == (size_t)-1);
 
     // size_type find_last_of(const value_type* ptr, size_type pos = 0) const
     string s3("remove all vowels");
     ret = (size_t)-1;
     while ((ret = s3.find_last_of("aeiou", ret)) != (size_t)-1)
         s3[ret] = '*';
-    CPPUNIT_ASSERT(::strcmp(s3.c_str(), "r*m*v* *ll v*w*ls") == 0);
+    TEST_CHECK(::strcmp(s3.c_str(), "r*m*v* *ll v*w*ls") == 0);
 
     string s4("");
     ret = s4.find_last_of("");
-    CPPUNIT_ASSERT(ret == (size_t)-1);
+    TEST_CHECK(ret == (size_t)-1);
 
     ret = s4.find_last_of("aeiou");
-    CPPUNIT_ASSERT(ret == (size_t)-1);
+    TEST_CHECK(ret == (size_t)-1);
 
     // size_type find_last_of(const value_type* ptr, size_type pos, size_type n) const
     string s5("remove all vowels");
     ret = (size_t)-1;
     while ((ret = s5.find_last_of("aeiou", ret, 5)) != (size_t)-1)
         s5[ret] = '*';
-    CPPUNIT_ASSERT(::strcmp(s5.c_str(), "r*m*v* *ll v*w*ls") == 0);
+    TEST_CHECK(::strcmp(s5.c_str(), "r*m*v* *ll v*w*ls") == 0);
 
     string s6("");
     ret = s6.find_last_of("", -1, 0);
-    CPPUNIT_ASSERT(ret == (size_t)-1);
+    TEST_CHECK(ret == (size_t)-1);
 
     ret = s6.find_last_of("aeiou", -1, 5);
-    CPPUNIT_ASSERT(ret == (size_t)-1);
+    TEST_CHECK(ret == (size_t)-1);
 
 
     // size_type find_last_of(value_type c, size_type pos = 0) const
     string s7("");
     ret = s7.find_last_of((char)0);
-    CPPUNIT_ASSERT(ret == (size_t)-1);
+    TEST_CHECK(ret == (size_t)-1);
 
     ret = s7.find_last_of('c');
-    CPPUNIT_ASSERT(ret == (size_t)-1);
+    TEST_CHECK(ret == (size_t)-1);
 
     string s8("remove all vowels");
     ret = s8.find_last_of('s');
-    CPPUNIT_ASSERT(ret == 16);
+    TEST_CHECK(ret == 16);
 }
 
 
@@ -1454,56 +1478,56 @@ void test_basic_string::find_first_not_of()
     string s1("remove all vowels");
     while ((ret = s1.find_first_not_of(string("aeiou "), ret)) != (size_t)-1)
         s1[ret++] = '*';
-    CPPUNIT_ASSERT(::strcmp(s1.c_str(), "*e*o*e a** *o*e**") == 0);
+    TEST_CHECK(::strcmp(s1.c_str(), "*e*o*e a** *o*e**") == 0);
 
     string s2("");
     ret = s2.find_first_not_of(string(""));
-    CPPUNIT_ASSERT(ret == (size_t)-1);
+    TEST_CHECK(ret == (size_t)-1);
 
     string s2a("");
     ret = s2a.find_first_not_of(string("aeiou "));
-    CPPUNIT_ASSERT(ret == (size_t)-1);
+    TEST_CHECK(ret == (size_t)-1);
 
     // size_type find_first_not_of(const value_type* ptr, size_type pos = 0) const
     string s3("remove all vowels");
     ret = 0;
     while ((ret = s3.find_first_not_of("aeiou ", ret)) != (size_t)-1)
         s3[ret++] = '*';
-    CPPUNIT_ASSERT(::strcmp(s3.c_str(), "*e*o*e a** *o*e**") == 0);
+    TEST_CHECK(::strcmp(s3.c_str(), "*e*o*e a** *o*e**") == 0);
 
     string s4("");
     ret = s4.find_first_not_of("");
-    CPPUNIT_ASSERT(ret == (size_t)-1);
+    TEST_CHECK(ret == (size_t)-1);
 
     ret = s4.find_first_not_of("aeiou");
-    CPPUNIT_ASSERT(ret == (size_t)-1);
+    TEST_CHECK(ret == (size_t)-1);
 
     // size_type find_first_not_of(const value_type* ptr, size_type pos, size_type n) const
     string s5("remove all vowels");
     ret = 0;
     while ((ret = s5.find_first_not_of("aeiou ", ret, 6)) != (size_t)-1)
         s5[ret++] = '*';
-    CPPUNIT_ASSERT(::strcmp(s5.c_str(), "*e*o*e a** *o*e**") == 0);
+    TEST_CHECK(::strcmp(s5.c_str(), "*e*o*e a** *o*e**") == 0);
 
     string s6("");
     ret = s6.find_first_not_of("", 0, 0);
-    CPPUNIT_ASSERT(ret == (size_t)-1);
+    TEST_CHECK(ret == (size_t)-1);
 
     ret = s6.find_first_not_of("aeiou ", 0, 6);
-    CPPUNIT_ASSERT(ret == (size_t)-1);
+    TEST_CHECK(ret == (size_t)-1);
 
 
     // size_type find_first_not_of(value_type c, size_type pos = 0) const
     string s7("");
     ret = s7.find_first_not_of((char)0);
-    CPPUNIT_ASSERT(ret == (size_t)-1);
+    TEST_CHECK(ret == (size_t)-1);
 
     ret = s7.find_first_not_of('c');
-    CPPUNIT_ASSERT(ret == (size_t)-1);
+    TEST_CHECK(ret == (size_t)-1);
 
     string s8("remove all vowels");
     ret = s8.find_first_not_of('s');
-    CPPUNIT_ASSERT(ret == 0);
+    TEST_CHECK(ret == 0);
 }
 
 void test_basic_string::find_last_not_of()
@@ -1515,56 +1539,56 @@ void test_basic_string::find_last_not_of()
     string s1("remove all vowels");
     while ((ret = s1.find_last_not_of(string("aeiou *"), ret)) != (size_t)-1)
         s1[ret] = '*';
-    CPPUNIT_ASSERT(::strcmp(s1.c_str(), "*e*o*e a** *o*e**") == 0);
+    TEST_CHECK(::strcmp(s1.c_str(), "*e*o*e a** *o*e**") == 0);
 
     string s2("");
     ret = s2.find_last_not_of(string(""));
-    CPPUNIT_ASSERT(ret == (size_t)-1);
+    TEST_CHECK(ret == (size_t)-1);
 
     string s2a("");
     ret = s2a.find_last_not_of(string("aeiou *"));
-    CPPUNIT_ASSERT(ret == (size_t)-1);
+    TEST_CHECK(ret == (size_t)-1);
 
     // size_type find_last_not_of(const value_type* ptr, size_type pos = 0) const
     string s3("remove all vowels");
     ret = (size_t)-1;
     while ((ret = s3.find_last_not_of("aeiou *", ret)) != (size_t)-1)
         s3[ret] = '*';
-    CPPUNIT_ASSERT(::strcmp(s3.c_str(), "*e*o*e a** *o*e**") == 0);
+    TEST_CHECK(::strcmp(s3.c_str(), "*e*o*e a** *o*e**") == 0);
 
     string s4("");
     ret = s4.find_last_not_of("");
-    CPPUNIT_ASSERT(ret == (size_t)-1);
+    TEST_CHECK(ret == (size_t)-1);
 
     ret = s4.find_last_not_of("aeiou *");
-    CPPUNIT_ASSERT(ret == (size_t)-1);
+    TEST_CHECK(ret == (size_t)-1);
 
     // size_type find_last_not_of(const value_type* ptr, size_type pos, size_type n) const
     string s5("remove all vowels");
     ret = (size_t)-1;
     while ((ret = s5.find_last_not_of("aeiou *", ret, 7)) != (size_t)-1)
         s5[ret] = '*';
-    CPPUNIT_ASSERT(::strcmp(s5.c_str(), "*e*o*e a** *o*e**") == 0);
+    TEST_CHECK(::strcmp(s5.c_str(), "*e*o*e a** *o*e**") == 0);
 
     string s6("");
     ret = s6.find_last_not_of("", -1, 0);
-    CPPUNIT_ASSERT(ret == (size_t)-1);
+    TEST_CHECK(ret == (size_t)-1);
 
     ret = s6.find_last_not_of("aeiou *", -1, 7);
-    CPPUNIT_ASSERT(ret == (size_t)-1);
+    TEST_CHECK(ret == (size_t)-1);
 
 
     // size_type find_last_not_of(value_type c, size_type pos = 0) const
     string s7("");
     ret = s7.find_last_not_of((char)0);
-    CPPUNIT_ASSERT(ret == (size_t)-1);
+    TEST_CHECK(ret == (size_t)-1);
 
     ret = s7.find_last_not_of('c');
-    CPPUNIT_ASSERT(ret == (size_t)-1);
+    TEST_CHECK(ret == (size_t)-1);
 
     string s8("remove all vowels");
     ret = s8.find_last_not_of('s');
-    CPPUNIT_ASSERT(ret == 15);
+    TEST_CHECK(ret == 15);
 }
 
 
@@ -1574,7 +1598,7 @@ void test_basic_string::substr()
 
     string s1;
     string subs1 = s1.substr(0);
-    CPPUNIT_ASSERT(::strcmp(subs1.c_str(), "") == 0);
+    TEST_CHECK(::strcmp(subs1.c_str(), "") == 0);
 
     string s2("Returns a newly constructed string object with its value"
               "initialized to a copy of a substring of this object."
@@ -1584,7 +1608,7 @@ void test_basic_string::substr()
 
     size_t ret = s2.find("The substring");
     string subs2 = s2.substr(ret, 13);
-    CPPUNIT_ASSERT(::strcmp(subs2.c_str(), "The substring") == 0);
+    TEST_CHECK(::strcmp(subs2.c_str(), "The substring") == 0);
 }
 
 
@@ -1596,97 +1620,97 @@ void test_basic_string::compare()
     //  int compare(const container& str) const
     string s1;
     ret = s1.compare(string(""));
-    CPPUNIT_ASSERT(ret == 0);
+    TEST_CHECK(ret == 0);
 
     string s2;
     string s3("some");
-    CPPUNIT_ASSERT(s2.compare(s3) == -1);
-    CPPUNIT_ASSERT(s3.compare(s2) == 1);
+    TEST_CHECK(s2.compare(s3) == -1);
+    TEST_CHECK(s3.compare(s2) == 1);
 
     const char c4[] = "str\0";
     string s4(c4, c4 + 4);      // with extra '\0'
     string s5("str");           // w/o extra  '\0'
     ret = s4.compare(s5);
-    CPPUNIT_ASSERT(ret == 1);
+    TEST_CHECK(ret == 1);
 
     string s6("apple");
     string s7("ppl");
     ret = s6.compare(s7);
-    CPPUNIT_ASSERT(ret == -1);
+    TEST_CHECK(ret == -1);
 
 
     // int compare(size_type pos, size_type len, const container& str) const
     string s8;
     string s9;
     ret = s8.compare(0, 0, s9);
-    CPPUNIT_ASSERT(ret == 0);
+    TEST_CHECK(ret == 0);
 
     string s10("ABCDefgh1234");
     string s11("efgh1234");
     ret = s10.compare(0, -1, s11);
-    CPPUNIT_ASSERT(ret == -1);
+    TEST_CHECK(ret == -1);
 
     ret = s10.compare(4, 9, s11);
-    CPPUNIT_ASSERT(ret == 0);
+    TEST_CHECK(ret == 0);
 
     ret = s10.compare(4, 8, s11);
-    CPPUNIT_ASSERT(ret == 0);
+    TEST_CHECK(ret == 0);
 
     ret = s10.compare(4, 7, s11);
-    CPPUNIT_ASSERT(ret == -1);
+    TEST_CHECK(ret == -1);
 
 
     // int compare(size_type pos, size_type len, const container& str, size_type subpos, size_type sublen) const
     string s12;
     string s13;
     ret = s12.compare(0, 0, s13, 0, 0);
-    CPPUNIT_ASSERT(ret == 0);
+    TEST_CHECK(ret == 0);
 
     string s14("ABCDefgh1234");
     string s15("efgh1234");
     ret = s14.compare(0, -1, s15, 0, 8);
-    CPPUNIT_ASSERT(ret == -1);
+    TEST_CHECK(ret == -1);
 
     ret = s14.compare(4, 9, s15, 0, 9);
-    CPPUNIT_ASSERT(ret == 0);
+    TEST_CHECK(ret == 0);
 
     ret = s14.compare(4, 8, s15, 0, 8);
-    CPPUNIT_ASSERT(ret == 0);
+    TEST_CHECK(ret == 0);
 
     ret = s14.compare(4, 7, s15, 0, 7);
-    CPPUNIT_ASSERT(ret == 0);
+    TEST_CHECK(ret == 0);
 
     // int compare(const value_type* ptr) const
     string s16;
     ret = s16.compare("");
-    CPPUNIT_ASSERT(ret == 0);
+    TEST_CHECK(ret == 0);
 
     s16.assign("this string");
     ret = s16.compare("t");
-    CPPUNIT_ASSERT(ret == 1);
+    TEST_CHECK(ret == 1);
 
     ret = s16.compare("this string");
-    CPPUNIT_ASSERT(ret == 0);
+    TEST_CHECK(ret == 0);
 
     ret = s16.compare("this string is");
-    CPPUNIT_ASSERT(ret == -1);
+    TEST_CHECK(ret == -1);
 
     // int compare(size_type pos, size_type len, const value_type* ptr) const
     string s17;
     ret = s17.compare(0, 0, "");
-    CPPUNIT_ASSERT(ret == 0);
+    TEST_CHECK(ret == 0);
 
     s17.assign("ass");
     ret = s17.compare(0, -1, "asm");
-    CPPUNIT_ASSERT(ret == 1);
+    TEST_CHECK(ret == 1);
     
     // int compare(size_type pos, size_type len, const value_type* ptr, size_type n) const
     ret = s17.compare(0, -1, "ass\0", 3);
-    CPPUNIT_ASSERT(ret == 0);
+    TEST_CHECK(ret == 0);
 
     s17.append(1, '\0');
     ret = s17.compare(0, -1, "ass\0", 4);
-    CPPUNIT_ASSERT(ret == 0);
+    TEST_CHECK(ret == 0);
 }
 
 void test_basic_string::perf1()
@@ -4330,4 +4354,3 @@ void test_basic_string::perf1()
 #endif
 }
 
-#endif

@@ -11,33 +11,15 @@ Copyright (C) 2012 Mihai Vasilian
 //c++
 //....
 
-//CppUnit
-#include <cppunit/extensions/HelperMacros.h>
 
-
-//libraries
-
-
-
-class test_utility : public CppUnit::TestFixture
+class test_utility
 {
-
-    CPPUNIT_TEST_SUITE(test_utility);
-    CPPUNIT_TEST(pair_ctor);
-	CPPUNIT_TEST(make_pair);
-	CPPUNIT_TEST(rel_ops);
-	CPPUNIT_TEST(it_traits);
-	CPPUNIT_TEST(if_class);
-	CPPUNIT_TEST(advance);
-	CPPUNIT_TEST(distance);
-	CPPUNIT_TEST(back_insert_it);
-	CPPUNIT_TEST(front_insert_it);
-	CPPUNIT_TEST(insert_it);
-    CPPUNIT_TEST_SUITE_END();
-
 public:
-    void setUp();
-    void tearDown();
+	test_utility() = default;
+	~test_utility() = default;
+    void run();
+
+
 	static const int		m_print_time = 1;
 	static const size_t		m_container_size = 40000;
 
@@ -80,8 +62,6 @@ public:
 
 	//////////////////////////////////////////////////////////////////////////
 };
-
-
 
 
 #endif//__test_utility_hpp__

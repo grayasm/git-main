@@ -2,7 +2,7 @@
 Copyright (C) 2012 Mihai Vasilian
 */
 
-#if 0
+
 //this
 #include "test_stack.hpp"
 
@@ -10,10 +10,9 @@ Copyright (C) 2012 Mihai Vasilian
 #include <stack>
 
 
-//CppUnit
-#include <cppunit/CompilerOutputter.h>
-#include <cppunit/extensions/TestFactoryRegistry.h>
-#include <cppunit/ui/text/TestRunner.h>
+//acutest
+#include "acutest.h"
+
 
 //libraries ...
 #include "exception.hpp"
@@ -25,15 +24,28 @@ Copyright (C) 2012 Mihai Vasilian
 
 
 //###########################BEGIN TEST CLASS ####################################
-void test_stack::setUp()
+void test_stack::run()
 {
+    ctor();
+    dtor();
+    empty();
+    size();
+    top();
+    push();
+    pop();
+    eq_op();
+    neq_op();
+    lt_op();
+    gt_op();
+    lte_op();
+    gte_op();
+
+    // new line before TEST RESULT OUTPUT
+    stl::cout << "\n";
 }
 
-void test_stack::tearDown()
-{
-}
 
-//##########################BEGIN TEST SUITE######################################
+//##############################################################################
 void test_stack::ctor()
 {
     stl::cout << "\n\n\t*******************************************************";
@@ -220,12 +232,12 @@ void test_stack::empty(const char* msg)
         TCont aux(m_container_size, CVal(0));
         Container cont(aux);
 
-        CPPUNIT_ASSERT(cont.empty() == false);
+        TEST_CHECK(cont.empty() == false);
 
         while(!cont.empty())
             cont.pop();
 
-        CPPUNIT_ASSERT(cont.empty() == true);
+        TEST_CHECK(cont.empty() == true);
     }
 }
 
@@ -241,12 +253,12 @@ void test_stack::size(const char* msg)
         TCont aux(m_container_size, CVal(0));
         Container cont(aux);
 
-        CPPUNIT_ASSERT(cont.size() == m_container_size);
+        TEST_CHECK(cont.size() == m_container_size);
 
         while(cont.size() > 0)
             cont.pop();
 
-        CPPUNIT_ASSERT(cont.empty() == true);
+        TEST_CHECK(cont.empty() == true);
     }
 }
 
@@ -262,16 +274,16 @@ void test_stack::top(const char* msg)
 		for(CVal i=0; i < m_container_size; ++i)
             cont.push(i);
 
-        CPPUNIT_ASSERT(cont.size() == m_container_size);
+        TEST_CHECK(cont.size() == m_container_size);
 
         for(CVal i=m_container_size; i>0; --i)
         {
-            CPPUNIT_ASSERT(cont.top() == (i-1));
-			CPPUNIT_ASSERT(cont.size() == i);
+            TEST_CHECK(cont.top() == (i-1));
+			TEST_CHECK(cont.size() == i);
             cont.pop();
         }
 
-        CPPUNIT_ASSERT(cont.empty() == true);
+        TEST_CHECK(cont.empty() == true);
     }
 }
 
@@ -287,16 +299,16 @@ void test_stack::push(const char* msg)
 		for(CVal i=0; i<m_container_size; ++i)
             cont.push(i);
 
-        CPPUNIT_ASSERT(cont.size() == m_container_size);
+        TEST_CHECK(cont.size() == m_container_size);
 
         for(CVal i=m_container_size; i>0; --i)
         {
-            CPPUNIT_ASSERT(cont.top() == (i-1));
-			CPPUNIT_ASSERT(cont.size() == i);
+            TEST_CHECK(cont.top() == (i-1));
+			TEST_CHECK(cont.size() == i);
             cont.pop();
         }
 
-        CPPUNIT_ASSERT(cont.empty() == true);
+        TEST_CHECK(cont.empty() == true);
     }
 }
 
@@ -312,16 +324,16 @@ void test_stack::pop(const char* msg)
 		for(CVal i=0; i<m_container_size; ++i)
             cont.push(i);
 
-        CPPUNIT_ASSERT(cont.size() == m_container_size);
+        TEST_CHECK(cont.size() == m_container_size);
 
         for(CVal i=m_container_size; i>0; --i)
         {
-            CPPUNIT_ASSERT(cont.top() == (i-1));
-			CPPUNIT_ASSERT(cont.size() == i);
+            TEST_CHECK(cont.top() == (i-1));
+			TEST_CHECK(cont.size() == i);
             cont.pop();
         }
 
-        CPPUNIT_ASSERT(cont.empty() == true);
+        TEST_CHECK(cont.empty() == true);
     }
 }
 
@@ -338,7 +350,7 @@ void test_stack::eq_op(const char* msg)
             cont.push(i);
         Container cont2(cont);
 
-        CPPUNIT_ASSERT(cont == cont2);
+        TEST_CHECK(cont == cont2);
     }
 }
 
@@ -356,7 +368,7 @@ void test_stack::neq_op(const char* msg)
         Container cont2(cont);
         cont2.pop();
 
-        CPPUNIT_ASSERT(cont != cont2);
+        TEST_CHECK(cont != cont2);
     }
 }
 
@@ -375,7 +387,7 @@ void test_stack::lt_op(const char* msg)
 
         cont.pop();
 
-        CPPUNIT_ASSERT(cont < cont2);
+        TEST_CHECK(cont < cont2);
     }
 }
 
@@ -393,7 +405,7 @@ void test_stack::gt_op(const char* msg)
         Container cont2(cont);
         cont2.pop();
 
-        CPPUNIT_ASSERT(cont > cont2);
+        TEST_CHECK(cont > cont2);
     }
 }
 
@@ -410,11 +422,11 @@ void test_stack::lte_op(const char* msg)
             cont.push(i);
         Container cont2(cont);
 
-        CPPUNIT_ASSERT(cont <= cont2);
+        TEST_CHECK(cont <= cont2);
 
         cont.pop();
 
-        CPPUNIT_ASSERT(cont < cont2);
+        TEST_CHECK(cont < cont2);
     }
 }
 
@@ -431,14 +443,12 @@ void test_stack::gte_op(const char* msg)
             cont.push(i);
         Container cont2(cont);
 
-        CPPUNIT_ASSERT(cont >= cont2);
+        TEST_CHECK(cont >= cont2);
 
         cont2.pop();
 
-        CPPUNIT_ASSERT(cont > cont2);
+        TEST_CHECK(cont > cont2);
     }
 }
 
-
 //////////////////////////////////////////////////////////////////////////
-#endif

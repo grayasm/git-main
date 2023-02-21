@@ -11,46 +11,14 @@ Copyright (C) 2012 Mihai Vasilian
 //c++
 //....
 
-//CppUnit
-#include <cppunit/extensions/HelperMacros.h>
 
-
-
-class test_list : public CppUnit::TestFixture
+class test_list
 {
-    CPPUNIT_TEST_SUITE(test_list);
-    CPPUNIT_TEST(ctor);
-    CPPUNIT_TEST(assign_op);
-    CPPUNIT_TEST(assign);
-    CPPUNIT_TEST(get_allocator);
-    CPPUNIT_TEST(begin);
-    CPPUNIT_TEST(end);
-    CPPUNIT_TEST(rbegin);
-    CPPUNIT_TEST(rend);
-    CPPUNIT_TEST(resize);
-    CPPUNIT_TEST(front);
-    CPPUNIT_TEST(back);
-    CPPUNIT_TEST(push_front);
-    CPPUNIT_TEST(pop_front);
-    CPPUNIT_TEST(push_back);
-    CPPUNIT_TEST(pop_back);
-    CPPUNIT_TEST(insert);
-    CPPUNIT_TEST(erase);
-    CPPUNIT_TEST(swap);
-    CPPUNIT_TEST(clear);
-    CPPUNIT_TEST(splice);
-    CPPUNIT_TEST(remove);
-    CPPUNIT_TEST(unique);
-    CPPUNIT_TEST(merge);
-    CPPUNIT_TEST(sort);
-    CPPUNIT_TEST(reverse);
-    CPPUNIT_TEST(perf1);
-    CPPUNIT_TEST_SUITE_END();
-
-
 public:
-    void setUp();
-    void tearDown();
+    test_list() = default;
+    ~test_list() = default;
+    void run();
+    
 
     void ctor();
     void assign_op();

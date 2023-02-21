@@ -2,7 +2,7 @@
 Copyright (C) 2012 Mihai Vasilian
 */
 
-#if 0
+
 
 //this
 #include "test_utility.hpp"
@@ -12,10 +12,8 @@ Copyright (C) 2012 Mihai Vasilian
 #include <list>
 #include <vector>
 
-//CppUnit
-#include <cppunit/CompilerOutputter.h>
-#include <cppunit/extensions/TestFactoryRegistry.h>
-#include <cppunit/ui/text/TestRunner.h>
+//acutest
+#include "acutest.h"
 
 //libraries ...
 #include "utility.hpp"
@@ -27,12 +25,21 @@ Copyright (C) 2012 Mihai Vasilian
 
 
 //###########################BEGIN TEST CLASS ####################################
-void test_utility::setUp()
+void test_utility::run()
 {
-}
+    pair_ctor();
+    make_pair();
+    rel_ops();
+    it_traits();
+    if_class();
+    advance();
+    distance();
+    back_insert_it();
+    front_insert_it();
+    insert_it();
 
-void test_utility::tearDown()
-{
+    // new line before TEST RESULT OUTPUT
+    stl::cout << "\n";
 }
 
 //##########################BEGIN TEST SUITE######################################
@@ -169,12 +176,12 @@ void test_utility::pair_ctor(const char* msg)
 
         Container v2(v0);
 
-        CPPUNIT_ASSERT(v0.size() == v2.size());
+        TEST_CHECK(v0.size() == v2.size());
 
         for(It it=v0.begin(), it2=v2.begin() ; it != v0.end(); ++it, ++it2)
         {
-            CPPUNIT_ASSERT(it->first == it2->first);
-            CPPUNIT_ASSERT(it->second == it2->second);
+            TEST_CHECK(it->first == it2->first);
+            TEST_CHECK(it->second == it2->second);
         }
     }
 }
@@ -199,12 +206,12 @@ void test_utility::make_pair(const char* msg)
 
         Container v2(v0);
 
-        CPPUNIT_ASSERT(v0.size() == v2.size());
+        TEST_CHECK(v0.size() == v2.size());
 
         for(It it=v0.begin(), it2=v2.begin() ; it != v0.end(); ++it, ++it2)
         {
-            CPPUNIT_ASSERT(it->first == it2->first);
-            CPPUNIT_ASSERT(it->second == it2->second);
+            TEST_CHECK(it->first == it2->first);
+            TEST_CHECK(it->second == it2->second);
         }
     }
 }
@@ -229,16 +236,16 @@ void test_utility::rel_ops(const char* msg)
 
         Container v2(v0);
 
-        CPPUNIT_ASSERT(v0.size() == v2.size());
+        TEST_CHECK(v0.size() == v2.size());
 
         for(It it=v0.begin(), it2=v2.begin() ; it != v0.end(); ++it, ++it2)
         {
             using namespace stl::rel_ops;
 
-            CPPUNIT_ASSERT(!(it->first != it2->first));
-            CPPUNIT_ASSERT(!(it->second > it2->second));
-            CPPUNIT_ASSERT(it->first <= it2->first);
-            CPPUNIT_ASSERT(it->first >= it2->first);
+            TEST_CHECK(!(it->first != it2->first));
+            TEST_CHECK(!(it->second > it2->second));
+            TEST_CHECK(it->first <= it2->first);
+            TEST_CHECK(it->first >= it2->first);
         }
     }
 }
@@ -263,11 +270,11 @@ void test_utility::it_traits(const char* msg)
         typename stl::iterator_traits<It>::reference ref = val;
         // check compilation
         cat2 = cat;
-        CPPUNIT_ASSERT(val == 0);
-        CPPUNIT_ASSERT(diff != 0);
-        CPPUNIT_ASSERT(*ptr == 0);
-        CPPUNIT_ASSERT(ref == 0);
-        CPPUNIT_ASSERT(true);
+        TEST_CHECK(val == 0);
+        TEST_CHECK(diff != 0);
+        TEST_CHECK(*ptr == 0);
+        TEST_CHECK(ref == 0);
+        TEST_CHECK(true);
     }
 }
 
@@ -286,7 +293,7 @@ void test_utility::if_class(const char* msg)
         t2++;
         final++;
 
-        CPPUNIT_ASSERT(true);
+        TEST_CHECK(true);
     }
 }
 
@@ -305,7 +312,7 @@ void test_utility::advance(const char* msg)
         It it = v0.begin();
         stl::advance(it, m_container_size, typename stl::iterator_traits<It>::iterator_category());
 
-        CPPUNIT_ASSERT(it == v0.end());
+        TEST_CHECK(it == v0.end());
     }
 }
 
@@ -324,7 +331,7 @@ void test_utility::distance(const char* msg)
         typename stl::iterator_traits<It>::difference_type diff =
             stl::distance(v0.begin(), v0.end(), typename stl::iterator_traits<It>::iterator_category());
 
-        CPPUNIT_ASSERT(diff == m_container_size);
+        TEST_CHECK(diff == m_container_size);
     }
 }
 
@@ -345,7 +352,7 @@ void test_utility::back_insert_it(const char* msg)
             biIt = i;
         }
 
-        CPPUNIT_ASSERT(v0.size() == m_container_size);
+        TEST_CHECK(v0.size() == m_container_size);
     }
 }
 
@@ -366,7 +373,7 @@ void test_utility::front_insert_it(const char* msg)
             fiIt = i;
         }
 
-        CPPUNIT_ASSERT(v0.size() == m_container_size);
+        TEST_CHECK(v0.size() == m_container_size);
     }
 }
 
@@ -387,9 +394,8 @@ void test_utility::insert_it(const char* msg)
             fiIt = i;
         }
 
-        CPPUNIT_ASSERT(v0.size() == m_container_size);
+        TEST_CHECK(v0.size() == m_container_size);
     }
 }
 
 //////////////////////////////////////////////////////////////////////////
-#endif
