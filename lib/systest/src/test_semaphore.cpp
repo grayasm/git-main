@@ -7,14 +7,11 @@ Copyright (C) 2013 Mihai Vasilian
 #include "test_semaphore.hpp"
 
 
-
 //c++
 #include <iostream>
 
-//CppUnit
-#include <cppunit/CompilerOutputter.h>
-#include <cppunit/extensions/TestFactoryRegistry.h>
-#include <cppunit/ui/text/TestRunner.h>
+//acutest
+#include "acutest.h"
 
 
 //libraries
@@ -27,13 +24,15 @@ Copyright (C) 2013 Mihai Vasilian
 
 
 //###########################BEGIN TEST CLASS ####################################
-void test_semaphore::setUp()
+void test_semaphore::run()
 {
+	ctor();
+	dtor();
+	lock();
+	trylock();
+	unlock();
 }
 
-void test_semaphore::tearDown()
-{
-}
 
 //##########################BEGIN TEST SUITE######################################
 void test_semaphore::ctor()
@@ -46,12 +45,12 @@ void test_semaphore::ctor()
 	
 	{
 		sys::semaphore s(1);
-		CPPUNIT_ASSERT( true );
+		TEST_CHECK( true );
 	}
 	{
 		sys::semaphore* s = new sys::semaphore(1);
 		delete s;
-		CPPUNIT_ASSERT( true );
+		TEST_CHECK( true );
 	}
 }
 
@@ -61,12 +60,12 @@ void test_semaphore::dtor()
 	
 	{
 		sys::semaphore s(1);
-		CPPUNIT_ASSERT( s.lock() == 0 );
+		TEST_CHECK( s.lock() == 0 );
 		// destroy a locked semaphore
 	}
 	{
 		sys::semaphore* s = new sys::semaphore(1);
-		CPPUNIT_ASSERT( s->lock() == 0 );
+		TEST_CHECK( s->lock() == 0 );
 		delete s;
 		// destroy a locked semaphore
 	}
@@ -108,7 +107,7 @@ void test_semaphore::lock()
 		{
 			cond = true;
 		}
-		CPPUNIT_ASSERT( cond );
+		TEST_CHECK( cond );
 	}
 	{
 		// concurrent threads locking a semaphore and waiting for a no of seconds.
@@ -139,7 +138,7 @@ void test_semaphore::lock()
 		printf("\n\t calculated time  : %s", t3.tolocaltime().c_str());
 		printf("\n\t real end   time  : %s", t2.tolocaltime().c_str());	
 
-		CPPUNIT_ASSERT( tcmp );
+		TEST_CHECK( tcmp );
 	}
 	{
 		// concurrent threads locking a semaphore with large locks number
@@ -170,7 +169,7 @@ void test_semaphore::lock()
 		printf("\n\t calculated time  : %s", t3.tolocaltime().c_str());
 		printf("\n\t real end   time  : %s", t2.tolocaltime().c_str());	
 
-		CPPUNIT_ASSERT( tcmp );
+		TEST_CHECK( tcmp );
 	}
 }
 
@@ -206,14 +205,14 @@ void test_semaphore::trylock()
 	stl::cout << "\n\n\t trylock ---------------------------------------------";
 	{
 		sys::semaphore sem(1);
-		CPPUNIT_ASSERT( sem.trylock(2 * 1e3) == 0 );
-		CPPUNIT_ASSERT( sem.trylock(2 * 1e3) == 1 );
+		TEST_CHECK( sem.trylock(2 * 1e3) == 0 );
+		TEST_CHECK( sem.trylock(2 * 1e3) == 1 );
 	}
 	{
 		sys::semaphore sem(2);
-		CPPUNIT_ASSERT( sem.trylock(2 * 1e3) == 0 );
-		CPPUNIT_ASSERT( sem.trylock(2 * 1e3) == 0 );
-		CPPUNIT_ASSERT( sem.trylock(2 * 1e3) == 1 );
+		TEST_CHECK( sem.trylock(2 * 1e3) == 0 );
+		TEST_CHECK( sem.trylock(2 * 1e3) == 0 );
+		TEST_CHECK( sem.trylock(2 * 1e3) == 1 );
 	}
 	{
 		sys::time t1( time(0) );
@@ -227,18 +226,18 @@ void test_semaphore::trylock()
 			t[i] = new Sstthread(&sem, i);
 		
 		
-		CPPUNIT_ASSERT( sem.lock() == 0 );// get at least 1 trylock in each thread
+		TEST_CHECK( sem.lock() == 0 );// get at least 1 trylock in each thread
 		
 		for(int i=0; i < THNO; ++i)
 			t[i]->resume();
 		
 		sleep(2);		
-		CPPUNIT_ASSERT( sem.unlock() == 0 ); // let threads run now
+		TEST_CHECK( sem.unlock() == 0 ); // let threads run now
 		
 		for(int i=0; i < THNO; ++i)
 			t[i]->join();
 		for(int i=0; i < THNO; ++i)
-			CPPUNIT_ASSERT( t[i]->get_count() > 0 );
+			TEST_CHECK( t[i]->get_count() > 0 );
 		for(int i=0; i < THNO; ++i)
 			delete t[i];
 		
@@ -251,7 +250,7 @@ void test_semaphore::trylock()
 		printf("\n\t calculated time  : %s", t3.tolocaltime().c_str());
 		printf("\n\t real end   time  : %s", t2.tolocaltime().c_str());	
 
-		CPPUNIT_ASSERT( tcmp );		
+		TEST_CHECK( tcmp );		
 	}
 	{
 		// semaphore with more locks will allow multiple threads to run
@@ -283,7 +282,7 @@ void test_semaphore::trylock()
 		printf("\n\t maximum    time  : %s", t4.tolocaltime().c_str());
 		printf("\n\t real end   time  : %s", t2.tolocaltime().c_str());	
 
-		CPPUNIT_ASSERT( tcmp );		
+		TEST_CHECK( tcmp );		
 	}
 }
 
@@ -293,26 +292,24 @@ void test_semaphore::unlock()
 	{
 		// releasing an unlocked semaphore
 		sys::semaphore sem(1);
-		CPPUNIT_ASSERT(sem.trylock() == 0);
-		CPPUNIT_ASSERT(sem.unlock() == 0);
-		CPPUNIT_ASSERT(sem.lock() == 0);
-		CPPUNIT_ASSERT(sem.trylock(2*1e3) == 1);
-		CPPUNIT_ASSERT(sem.unlock() == 0);
+		TEST_CHECK(sem.trylock() == 0);
+		TEST_CHECK(sem.unlock() == 0);
+		TEST_CHECK(sem.lock() == 0);
+		TEST_CHECK(sem.trylock(2*1e3) == 1);
+		TEST_CHECK(sem.unlock() == 0);
 		/*
 		This is a pretty strange behavior for sem_t (linux sempahore)
 		look inside sem.unlock() -- linux section.
 		
-		CPPUNIT_ASSERT( sem.unlock() == 0 ); // sem value=2
-		CPPUNIT_ASSERT( sem.unlock() == 0 ); // sem value=3
-		CPPUNIT_ASSERT( sem.trylock() == 0 );// sem value=2
-		CPPUNIT_ASSERT( sem.lock() == 0 );	// sem value=1
-		CPPUNIT_ASSERT( sem.lock() == 0 ); // sem value =0
-		CPPUNIT_ASSERT( sem.trylock(2*1e3) == 1); // sem locked		
+		TEST_CHECK( sem.unlock() == 0 ); // sem value=2
+		TEST_CHECK( sem.unlock() == 0 ); // sem value=3
+		TEST_CHECK( sem.trylock() == 0 );// sem value=2
+		TEST_CHECK( sem.lock() == 0 );	// sem value=1
+		TEST_CHECK( sem.lock() == 0 ); // sem value =0
+		TEST_CHECK( sem.trylock(2*1e3) == 1); // sem locked		
 		*/
 
 	}
 }
 
-
 //##########################END  TEST  SUITE######################################
-

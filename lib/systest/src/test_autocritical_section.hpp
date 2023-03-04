@@ -7,27 +7,17 @@ Copyright (C) 2013 Mihai Vasilian
 #define __test_autocritical_section_hpp__
 
 
-//c++
-//....
-
-//CppUnit
-#include <cppunit/extensions/HelperMacros.h>
-
-
 //libraries
 #include "autocritical_section.hpp"
 
 
-class test_autocritical_section : public CppUnit::TestFixture
+class test_autocritical_section
 {
-	CPPUNIT_TEST_SUITE(test_autocritical_section);
-	CPPUNIT_TEST(ctor);
-	CPPUNIT_TEST(dtor);
-	CPPUNIT_TEST_SUITE_END();
-
 public:
-	void setUp();
-	void tearDown();
+	test_autocritical_section() = default;
+	~test_autocritical_section() = default;
+
+	void run();
 
 	//begin test suite
 	void ctor();

@@ -10,10 +10,8 @@ Copyright (C) 2013 Mihai Vasilian
 //c++
 #include <iostream>
 
-//CppUnit
-#include <cppunit/CompilerOutputter.h>
-#include <cppunit/extensions/TestFactoryRegistry.h>
-#include <cppunit/ui/text/TestRunner.h>
+//acutest
+#include "acutest.h"
 
 
 //libraries
@@ -26,12 +24,13 @@ Copyright (C) 2013 Mihai Vasilian
 
 
 //###########################BEGIN TEST CLASS ####################################
-void test_mutex::setUp()
+void test_mutex::run()
 {
-}
-
-void test_mutex::tearDown()
-{
+	ctor();
+	dtor();
+	lock();
+	trylock();
+	unlock();
 }
 
 //##########################BEGIN TEST SUITE######################################
@@ -45,23 +44,23 @@ void test_mutex::ctor()
 	
 	{
 		sys::mutex m; // ctor
-		CPPUNIT_ASSERT( true );
+		TEST_CHECK( true );
 	}
 	{
 		sys::mutex* m = new sys::mutex();
 		delete m;
-		CPPUNIT_ASSERT( true );
+		TEST_CHECK( true );
 	}
 	{
 		sys::mutex m[3];
 		(m[0]);
-		CPPUNIT_ASSERT( true );			
+		TEST_CHECK( true );			
 	}
 	{
 		sys::mutex* m[3];
 		for(int i=0; i < 3; ++i) m[i] = new sys::mutex();
 		for(int i=0; i < 3; ++i) delete m[i];
-		CPPUNIT_ASSERT( true );
+		TEST_CHECK( true );
 	}
 }
 
@@ -70,23 +69,23 @@ void test_mutex::dtor()
 	stl::cout << "\n\n\t dtor ------------------------------------------------";
 	{
 		sys::mutex m; // ctor
-		CPPUNIT_ASSERT( true );
+		TEST_CHECK( true );
 	}
 	{
 		sys::mutex* m = new sys::mutex();
 		delete m;
-		CPPUNIT_ASSERT( true );
+		TEST_CHECK( true );
 	}
 	{
 		sys::mutex m[3];
 		(m[0]);
-		CPPUNIT_ASSERT( true );			
+		TEST_CHECK( true );			
 	}
 	{
 		sys::mutex* m[3];
 		for(int i=0; i < 3; ++i) m[i] = new sys::mutex();
 		for(int i=0; i < 3; ++i) delete m[i];
-		CPPUNIT_ASSERT( true );
+		TEST_CHECK( true );
 	}
 }
 
@@ -118,19 +117,19 @@ void test_mutex::lock()
 	stl::cout << "\n\n\t lock ------------------------------------------------";
 	{
 		sys::mutex m;
-		CPPUNIT_ASSERT( m.lock() == 0 );
+		TEST_CHECK( m.lock() == 0 );
 		// legit to destroy a locked mutex
 	}
 	{
 		sys::mutex* m = new sys::mutex();
-		CPPUNIT_ASSERT (m->lock() == 0);
+		TEST_CHECK (m->lock() == 0);
 		delete m;
 	}
 	{
 		sys::mutex m[3];
 		for(int i=0; i < 3; ++i)
 		{
-			CPPUNIT_ASSERT( m[i].lock() == 0 );
+			TEST_CHECK( m[i].lock() == 0 );
 		}
 		// destroy mutex array while in locked state.
 	}
@@ -139,7 +138,7 @@ void test_mutex::lock()
 		for(int i=0; i < 3; ++i)
 			m[i] = new sys::mutex();
 		for(int i=0; i < 3; ++i)
-			CPPUNIT_ASSERT( m[i]->lock() == 0 );
+			TEST_CHECK( m[i]->lock() == 0 );
 		// destroy mutex array while in locked state
 		for(int i=0; i < 3; ++i)
 			delete m[i];
@@ -148,15 +147,15 @@ void test_mutex::lock()
 		// recursive lock on the same mutex
 		sys::mutex m;
 		for(int i=0; i < 100; ++i)
-			CPPUNIT_ASSERT( m.lock() == 0 );
+			TEST_CHECK( m.lock() == 0 );
 		for(int i=0; i < 100; ++i)
-			CPPUNIT_ASSERT( m.unlock() == 0 );
+			TEST_CHECK( m.unlock() == 0 );
 	}
 	{
 		// lock mutex in a separate thread and unlock it in this thread (exception)
 		sys::mutex m;
 		Mlthread t(&m, 5);
-		CPPUNIT_ASSERT( t.resume() == 0 );
+		TEST_CHECK( t.resume() == 0 );
 		sleep(2);
 		bool cond = false;
 		try 
@@ -166,8 +165,8 @@ void test_mutex::lock()
 		{
 			cond = true;
 		}
-		CPPUNIT_ASSERT( cond );
-		CPPUNIT_ASSERT( t.join() == 0 );
+		TEST_CHECK( cond );
+		TEST_CHECK( t.join() == 0 );
 	}
 	{
 		// concurrent threads locking a mutex and waiting for a no of seconds.
@@ -197,7 +196,7 @@ void test_mutex::lock()
 		printf("\n\t calculated time  : %s", t3.tolocaltime().c_str());
 		printf("\n\t real end   time  : %s", t2.tolocaltime().c_str());	
 
-		CPPUNIT_ASSERT( tcmp );
+		TEST_CHECK( tcmp );
 	}
 }
 
@@ -232,19 +231,19 @@ void test_mutex::trylock()
 	stl::cout << "\n\n\t trylock ---------------------------------------------";
 	{
 		sys::mutex m;
-		CPPUNIT_ASSERT( m.trylock() == 0 );
+		TEST_CHECK( m.trylock() == 0 );
 		// legit to destroy a locked mutex
 	}
 	{
 		sys::mutex* m = new sys::mutex();
-		CPPUNIT_ASSERT (m->trylock() == 0);
+		TEST_CHECK (m->trylock() == 0);
 		delete m;
 	}
 	{
 		sys::mutex m[3];
 		for(int i=0; i < 3; ++i)
 		{
-			CPPUNIT_ASSERT( m[i].trylock() == 0 );
+			TEST_CHECK( m[i].trylock() == 0 );
 		}
 		// destroy mutex array while in locked state.
 	}
@@ -253,7 +252,7 @@ void test_mutex::trylock()
 		for(int i=0; i < 3; ++i) 
 			m[i] = new sys::mutex();
 		for(int i=0; i < 3; ++i)
-			CPPUNIT_ASSERT( m[i]->lock() == 0 );
+			TEST_CHECK( m[i]->lock() == 0 );
 		// destroy mutex array while in locked state
 		for(int i=0; i < 3; ++i) 
 			delete m[i];
@@ -263,7 +262,7 @@ void test_mutex::trylock()
 		// then unlock it from main thread
 		sys::mutex m;
 		Mtrythread t(&m, 5);
-		CPPUNIT_ASSERT( t.resume() == 0 );
+		TEST_CHECK( t.resume() == 0 );
 		sleep(2);
 		bool cond = false;
 		try
@@ -273,9 +272,9 @@ void test_mutex::trylock()
 		{
 			cond = true;
 		}
-		CPPUNIT_ASSERT( cond );
-		CPPUNIT_ASSERT( t.join() == 0 );
-		CPPUNIT_ASSERT( t.get_count() == 0 );
+		TEST_CHECK( cond );
+		TEST_CHECK( t.join() == 0 );
+		TEST_CHECK( t.get_count() == 0 );
 	}
 	{
 		// concurrent threads will attempt to unsuccessfully trylock at least
@@ -313,14 +312,14 @@ void test_mutex::trylock()
 		printf("\n\t calculated time  : %s", t3.tolocaltime().c_str());
 		printf("\n\t real end   time  : %s", t2.tolocaltime().c_str());	
 		
-		CPPUNIT_ASSERT( tcmp );
+		TEST_CHECK( tcmp );
 
 		// check each thread counter
 		for(int i=0; i < THNO; ++i)
 		{
 			int cnt = t[i]->get_count();
 			printf("\n\t thread %d tried %d times", i, cnt);
-			CPPUNIT_ASSERT(cnt > 0);
+			TEST_CHECK(cnt > 0);
 		}
 	}
 }
@@ -331,8 +330,8 @@ void test_mutex::unlock()
 	{
 		// lock + unlock mutex
 		sys::mutex m;
-		CPPUNIT_ASSERT( m.lock() == 0 );
-		CPPUNIT_ASSERT( m.unlock() == 0 );
+		TEST_CHECK( m.lock() == 0 );
+		TEST_CHECK( m.unlock() == 0 );
 	}
 	{
 		// unlock a not owned mutex: error
@@ -345,13 +344,13 @@ void test_mutex::unlock()
 		{
 			cond = true;
 		}
-		CPPUNIT_ASSERT( cond );
+		TEST_CHECK( cond );
 	}
 	{
 		// attempt to unlock a mutex not locked by this thread
 		sys::mutex m;
 		Mlthread t(&m, 5);
-		CPPUNIT_ASSERT( t.resume() == 0 );
+		TEST_CHECK( t.resume() == 0 );
 		sleep(2);
 		bool cond = false;
 		try
@@ -361,8 +360,8 @@ void test_mutex::unlock()
 		{
 			cond = true;
 		}
-		CPPUNIT_ASSERT( cond );
-		CPPUNIT_ASSERT( t.join() == 0 );
+		TEST_CHECK( cond );
+		TEST_CHECK( t.join() == 0 );
 	}
 }
 

@@ -17,7 +17,7 @@ endif(UNIX)
 
 
 # --- linking ---
-target_link_libraries(stltest PRIVATE stl misc sys) # cppunit
+target_link_libraries(stltest PRIVATE stl misc sys)
 
 if (UNIX)
 	target_link_libraries(stltest PRIVATE pthread dl m)

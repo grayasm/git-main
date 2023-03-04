@@ -10,10 +10,8 @@ Copyright (C) 2013 Mihai Vasilian
 //c++
 #include <iostream>
 
-//CppUnit
-#include <cppunit/CompilerOutputter.h>
-#include <cppunit/extensions/TestFactoryRegistry.h>
-#include <cppunit/ui/text/TestRunner.h>
+//acutest
+#include "acutest.h"
 
 
 //libraries
@@ -26,16 +24,17 @@ Copyright (C) 2013 Mihai Vasilian
 
 
 
-//###########################BEGIN TEST CLASS ####################################
-void test_critical_section::setUp()
+//############################## BEGIN TEST ####################################
+void test_critical_section::run()
 {
+	ctor();
+	dtor();
+	lock();
+	unlock();
 }
 
-void test_critical_section::tearDown()
-{
-}
 
-//##########################BEGIN TEST SUITE######################################
+//############################ BEGIN TEST ######################################
 void test_critical_section::ctor()
 {
     stl::cout << "\n\n\t*******************************************************";
@@ -45,19 +44,19 @@ void test_critical_section::ctor()
 	stl::cout << "\n\n\tctor---------------------------------------------------";
 	{
 		sys::critical_section cs;
-		CPPUNIT_ASSERT( true );
+		TEST_CHECK( true );
 	}
 	{
 		sys::critical_section* cs;
 		cs = new sys::critical_section();
-		CPPUNIT_ASSERT( cs != 0 );
+		TEST_CHECK( cs != 0 );
 		delete cs;
 	}
 	{
 		const int CSNO=6;
 		sys::critical_section cs[CSNO];
 		(cs[0]);
-		CPPUNIT_ASSERT( true );
+		TEST_CHECK( true );
 	}
 	{
 		const int CSNO=6;
@@ -65,7 +64,7 @@ void test_critical_section::ctor()
 		for(int i=0; i < CSNO; ++i)
 			cs[i] = new sys::critical_section();
 		for(int i=0; i < CSNO; ++i)
-			CPPUNIT_ASSERT( cs[i] != 0 );
+			TEST_CHECK( cs[i] != 0 );
 		for(int i=0; i < CSNO; ++i)
 			delete cs[i];
 	}
@@ -103,19 +102,19 @@ void test_critical_section::lock()
 	stl::cout << "\n\n\tlock---------------------------------------------------";
 	{
 		sys::critical_section cs;
-		CPPUNIT_ASSERT( cs.lock() == 0 );
+		TEST_CHECK( cs.lock() == 0 );
 		// destroy a locked critical section
 	}
 	{
 		sys::critical_section* cs = new sys::critical_section();
-		CPPUNIT_ASSERT (cs->lock() == 0);
+		TEST_CHECK (cs->lock() == 0);
 		delete cs;
 	}
 	{
 		sys::critical_section cs[3];
 		for(int i=0; i < 3; ++i)
 		{
-			CPPUNIT_ASSERT( cs[i].lock() == 0 );
+			TEST_CHECK( cs[i].lock() == 0 );
 		}
 		// destroy critical_section array while in locked state.
 	}
@@ -124,7 +123,7 @@ void test_critical_section::lock()
 		for(int i=0; i < 3; ++i)
 			cs[i] = new sys::critical_section();
 		for(int i=0; i < 3; ++i)
-			CPPUNIT_ASSERT( cs[i]->lock() == 0 );
+			TEST_CHECK( cs[i]->lock() == 0 );
 		// destroy critical_section array while in locked state
 		for(int i=0; i < 3; ++i)
 			delete cs[i];
@@ -156,7 +155,7 @@ void test_critical_section::lock()
 		printf("\n\t calculated time  : %s", t3.tolocaltime().c_str());
 		printf("\n\t real end   time  : %s", t2.tolocaltime().c_str());	
 
-		CPPUNIT_ASSERT( tcmp );
+		TEST_CHECK( tcmp );
 	}
 }
 
@@ -165,5 +164,4 @@ void test_critical_section::unlock()
 	
 }
 
-
-//##########################END  TEST  SUITE######################################
+//############################ END  TEST  ######################################
