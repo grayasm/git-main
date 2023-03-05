@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NNSN5N589Z"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-NNSN5N589Z');
+</script>
+
+<title>Samba Server</title>
+<link href="main.css" rel="stylesheet" type="text/css" media="all">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+</head>
+<body>
+<a href="index.html">Back to main index</a>
+<h1>Samba Server</h1>
+
+<p>
+For more options read the full tutorial 
+<a href="https://www.tecmint.com/install-samba-rhel-rocky-linux-and-almalinux/" target="_blank">here</a>
+</p>
+
+Install Samba
+<pre>
+dnf install samba samba-common samba-client
+</pre>
+
+Setup the share location
+<pre>
+mkdir -pv /mnt/sdb1/1TBsamba
+chmod -Rv 755 /mnt/sdb1/1TBsamba
+chown -Rv nobody:nobody /mnt/sdb1/1TBsamba
+chcon -u system_u -t samba_share_t -v /mnt/sdb1/1TBsamba
+</pre>
+
+
+Backup existing configuration
+<pre>
+mv /etc/samba/smb.conf /etc/samba/smb.conf.bak
+</pre>
+
+Edit the file /etc/samba/smb.conf
+<pre>
+[global]
+workgroup = WORKGROUP
+server string = Samba Server %v
+netbios name = rocky-9
+security = user
+map to guest = bad user
+dns proxy = no
+ntlm auth = true
+
+
+[Public]
+path =  /mnt/sdb1/1TBsamba
+browsable =yes
+writable = yes
+guest ok = yes
+read only = no
+</pre>
+
+Check if smb.conf is correct with: 
+<pre>
+testparm
+</pre>
+
+
+Activate the services
+<pre>
+systemctl start smb.service
+systemctl start nmb.service
+
+systemctl enable smb.service
+systemctl enable nmb.service
+
+systemctl status smb.service
+systemctl status nmb.service
+</pre>
+
+Allow samba ports in iptables
+<pre>
+# Open Samba ports for everybody from LAN
+iptables -A INPUT -s 192.168.0.0/16 -p udp -m udp --dport 137 -j ACCEPT
+iptables -A INPUT -s 192.168.0.0/16 -p udp -m udp --dport 138 -j ACCEPT
+iptables -A INPUT -s 192.168.0.0/16 -p tcp -m tcp --dport 139 -j ACCEPT
+iptables -A INPUT -s 192.168.0.0/16 -p tcp -m tcp --dport 445 -j ACCEPT
+
+i6ptables -A INPUT -s fe80::/10 -p udp -m udp --dport 137 -j ACCEPT
+ip6tables -A INPUT -s fe80::/10 -p udp -m udp --dport 138 -j ACCEPT
+ip6tables -A INPUT -s fe80::/10 -p tcp -m tcp --dport 139 -j ACCEPT
+ip6tables -A INPUT -s fe80::/10 -p tcp -m tcp --dport 445 -j ACCEPT
+</pre>
+
+<p>
+<br>
+Access the share on Windows with: \\192.168.178.20
+<br>
+<img src="images/samba_windows_client.png" alt="samba windows client" width="350">
+</p>
+
+
+<p>
+<br>
+Access the share on Linux with: smb://192.168.178.20
+<br>
+<img src="images/samba_linux_client.png" alt="samba linux client" width="350">
+</p>
+
+<p>
+<br>
+Access the share on Android with:
+<br>
+<img src="images/samba_android_client.png" alt="samba android client" width="350">
+</p>
+
+
+<p>
+<br>
+To share a Private folder and protect it with a password, read the second part of the  
+<a href="https://www.tecmint.com/install-samba-rhel-rocky-linux-and-almalinux/" target="_blank">tutorial</a>
+<br>
+</p>
+
+
+
+
+<br>
+<a href="index.html">Back to main index</a>
+<br>
+<br>
+</body>
+</html>
