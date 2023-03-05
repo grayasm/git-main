@@ -3,20 +3,14 @@ Copyright (C) 2009 Mihai Vasilian
 */
 
 
-
 //this
 #include "test_filename.hpp"
 
+//acutest
+#include "acutest.h"
 
 //c++
 #include <iostream>
-
-
-//CppUnit
-#include <cppunit/CompilerOutputter.h>
-#include <cppunit/extensions/TestFactoryRegistry.h>
-#include <cppunit/ui/text/TestRunner.h>
-
 
 //libraries
 #include "stream.hpp"
@@ -24,22 +18,24 @@ Copyright (C) 2009 Mihai Vasilian
 
 
 //###########################FILENAME TEST CLASS ####################################
-void test_filename::setUp()
+void test_filename::run()
 {
+    test0();
+    test1();
+    test2();
+    test3();
+    test4();
+    test5();
+    test6();
+    test7();
+    test8();
 }
 
-void test_filename::tearDown()
-{
-}
 
-
-
-
-
-//CPPUNIT_ASSERT( a==b );
-//CPPUNIT_ASSERT_EQUAL(it,ip);
-//CPPUNIT_ASSERT(it==ip);
-//CPPUNIT_ASSERT_EQUAL(t,p);
+//TEST_CHECK( a==b );
+//TEST_CHECK_EQUAL(it,ip);
+//TEST_CHECK(it==ip);
+//TEST_CHECK_EQUAL(t,p);
 
 
 void test_filename::test0()
@@ -60,41 +56,41 @@ void test_filename::test0()
 
     sys::filename filename(filepath);
 
-    CPPUNIT_ASSERT(filename.get_directory()==dir &&
+    TEST_CHECK(filename.get_directory()==dir &&
                    filename.get_core_name()==fil &&
                    filename.get_extension()==ext);
 
     filename=sys::filename(dir, fil, ext);//constr(x,y,z);
 
-    CPPUNIT_ASSERT(filename.get_directory()==dir &&
+    TEST_CHECK(filename.get_directory()==dir &&
                    filename.get_core_name()==fil &&
                    filename.get_extension()==ext);
 
     sys::filename filename_0(filename);//copy constr
 
-    CPPUNIT_ASSERT(filename_0.get_directory()==dir &&
+    TEST_CHECK(filename_0.get_directory()==dir &&
                    filename_0.get_core_name()==fil &&
                    filename_0.get_extension()==ext);
 
     sys::filename filename_1 ;
     filename_1 = filename_0 ;//operator =
 
-    CPPUNIT_ASSERT(filename_1.get_directory()==dir &&
+    TEST_CHECK(filename_1.get_directory()==dir &&
                    filename_1.get_core_name()==fil &&
                    filename_1.get_extension()==ext);
 
-    CPPUNIT_ASSERT(filename_0 == filename_1);//operator ==
-    CPPUNIT_ASSERT( !(filename_0 != filename_1) );//operator !=
+    TEST_CHECK(filename_0 == filename_1);//operator ==
+    TEST_CHECK( !(filename_0 != filename_1) );//operator !=
 
 
     //2nd PART ALTERING THE PATH
-    CPPUNIT_ASSERT(filename.get_path()==filepath);
+    TEST_CHECK(filename.get_path()==filepath);
     filename.set_directory(dir);
     filename.set_core_name(fil);
     filename.set_extension(ext);
-    CPPUNIT_ASSERT(filename.get_path()==filepath);
+    TEST_CHECK(filename.get_path()==filepath);
     filename.set_path(filepath);
-    CPPUNIT_ASSERT(filename.get_path()==filepath);
+    TEST_CHECK(filename.get_path()==filepath);
 
     // PREFIX /predir . 1/predir ..2/  -> /predir . 1/predir ..2/
     stl::string pre_dir1(
@@ -116,7 +112,7 @@ void test_filename::test0()
     stl::string dump_file1a = filepath_1;
     stl::string filename_path = filename.get_path();
 
-    CPPUNIT_ASSERT(filename_path == filepath_1);
+    TEST_CHECK(filename_path == filepath_1);
 
     // POSTFIX  /post .fake.ext/ -> /predir . 1/predir ..2/  + dir +   /post .fake.ext/
     // -> /predir . 1/predir ..2/post .fake.ext/
@@ -144,7 +140,7 @@ void test_filename::test0()
             fil+(ext.empty() == true ? U(""):U("."))+
             ext;
     }//else
-    CPPUNIT_ASSERT(filename.get_path()==filepath_2);
+    TEST_CHECK(filename.get_path()==filepath_2);
 
     //substract /predir ..2/ + dir + /post .fake.ext/
     sys::filename filename_3 = filename.substract_prefix_directory();
@@ -155,7 +151,7 @@ void test_filename::test0()
         fil+
         (ext.empty()==true ? U(""):U("."))+
         ext;
-    CPPUNIT_ASSERT(filename_3.get_path()==filepath_3);
+    TEST_CHECK(filename_3.get_path()==filepath_3);
 
     //substract POSTFIX -> /predir ..2/ + dir
     sys::filename filename_4 = filename_3.substract_postfix_directory();
@@ -168,7 +164,7 @@ void test_filename::test0()
 
     stl::string dump_file4=filename_4.get_path();
     stl::string dump_file4a=filepath_4;
-    CPPUNIT_ASSERT(filename_4.get_path()==filepath_4);
+    TEST_CHECK(filename_4.get_path()==filepath_4);
 
 
 
@@ -179,7 +175,7 @@ void test_filename::test0()
         fil+
         (ext.empty()==true ? U(""):U("."))+
         ext;
-    CPPUNIT_ASSERT(filename_5.get_path()==filepath_5);
+    TEST_CHECK(filename_5.get_path()==filepath_5);
 
 }
 
@@ -195,43 +191,43 @@ void test_filename::test1()
 
     sys::filename filename(filepath);
 
-    CPPUNIT_ASSERT(filename.get_directory()==dir &&
+    TEST_CHECK(filename.get_directory()==dir &&
                    filename.get_core_name()==fil &&
                    filename.get_extension()==ext);
 
     filename=sys::filename(dir, fil, ext);//constr(x,y,z);
 
-    CPPUNIT_ASSERT(filename.get_directory()==dir &&
+    TEST_CHECK(filename.get_directory()==dir &&
                    filename.get_core_name()==fil &&
                    filename.get_extension()==ext);
 
     sys::filename filename_0(filename);//copy constr
 
-    CPPUNIT_ASSERT(filename_0.get_directory()==dir &&
+    TEST_CHECK(filename_0.get_directory()==dir &&
                    filename_0.get_core_name()==fil &&
                    filename_0.get_extension()==ext);
 
     sys::filename filename_1 ;
     filename_1 = filename_0 ;//operator =
 
-    CPPUNIT_ASSERT(filename_1.get_directory()==dir &&
+    TEST_CHECK(filename_1.get_directory()==dir &&
                    filename_1.get_core_name()==fil &&
                    filename_1.get_extension()==ext);
 
 
-    CPPUNIT_ASSERT(filename_0 == filename_1);//operator ==
-    CPPUNIT_ASSERT( !(filename_0 != filename_1) );//operator !=
+    TEST_CHECK(filename_0 == filename_1);//operator ==
+    TEST_CHECK( !(filename_0 != filename_1) );//operator !=
 
 
 
     //2nd PART ALTERING THE PATH
-    CPPUNIT_ASSERT(filename.get_path()==filepath);
+    TEST_CHECK(filename.get_path()==filepath);
     filename.set_directory(dir);
     filename.set_core_name(fil);
     filename.set_extension(ext);
-    CPPUNIT_ASSERT(filename.get_path()==filepath);
+    TEST_CHECK(filename.get_path()==filepath);
     filename.set_path(filepath);
-    CPPUNIT_ASSERT(filename.get_path()==filepath);
+    TEST_CHECK(filename.get_path()==filepath);
 
     // PREFIX /predir . 1/predir ..2/  -> /predir . 1/predir ..2/
     stl::string pre_dir1(
@@ -252,7 +248,7 @@ void test_filename::test1()
     stl::string dump_file1=filename.get_path();
     stl::string dump_file1a=filepath_1;
 
-    CPPUNIT_ASSERT(filename.get_path()==filepath_1);
+    TEST_CHECK(filename.get_path()==filepath_1);
 
     // POSTFIX  /post .fake.ext/ -> /predir . 1/predir ..2/  + dir +   /post .fake.ext/
     // -> /predir . 1/predir ..2/post .fake.ext/
@@ -280,7 +276,7 @@ void test_filename::test1()
             fil+(ext.empty() == true ? U(""):U("."))+
             ext;
     }//else
-    CPPUNIT_ASSERT(filename.get_path()==filepath_2);
+    TEST_CHECK(filename.get_path()==filepath_2);
 
     //substract /predir ..2/ + dir + /post .fake.ext/
     sys::filename filename_3 = filename.substract_prefix_directory();
@@ -291,7 +287,7 @@ void test_filename::test1()
         fil+
         (ext.empty()==true ? U(""):U("."))+
         ext;
-    CPPUNIT_ASSERT(filename_3.get_path()==filepath_3);
+    TEST_CHECK(filename_3.get_path()==filepath_3);
 
     //substract POSTFIX -> /predir ..2/ + dir
     sys::filename filename_4 = filename_3.substract_postfix_directory();
@@ -304,7 +300,7 @@ void test_filename::test1()
 
     stl::string dump_file4=filename_4.get_path();
     stl::string dump_file4a=filepath_4;
-    CPPUNIT_ASSERT(filename_4.get_path()==filepath_4);
+    TEST_CHECK(filename_4.get_path()==filepath_4);
 
 
 
@@ -315,7 +311,7 @@ void test_filename::test1()
         fil+
         (ext.empty()==true ? U(""):U("."))+
         ext;
-    CPPUNIT_ASSERT(filename_5.get_path()==filepath_5);
+    TEST_CHECK(filename_5.get_path()==filepath_5);
 
 
 
@@ -333,44 +329,44 @@ void test_filename::test2()
 
     sys::filename filename(filepath);
 
-    CPPUNIT_ASSERT(filename.get_directory()==dir &&
+    TEST_CHECK(filename.get_directory()==dir &&
                    filename.get_core_name()==fil &&
                    filename.get_extension()==ext);
 
     filename=sys::filename(dir, fil, ext);//constr(x,y,z);
 
-    CPPUNIT_ASSERT(filename.get_directory()==dir &&
+    TEST_CHECK(filename.get_directory()==dir &&
                    filename.get_core_name()==fil &&
                    filename.get_extension()==ext);
 
     sys::filename filename_0(filename);//copy constr
 
-    CPPUNIT_ASSERT(filename_0.get_directory()==dir &&
+    TEST_CHECK(filename_0.get_directory()==dir &&
                    filename_0.get_core_name()==fil &&
                    filename_0.get_extension()==ext);
 
     sys::filename filename_1 ;
     filename_1 = filename_0 ;//operator =
 
-    CPPUNIT_ASSERT(filename_1.get_directory()==dir &&
+    TEST_CHECK(filename_1.get_directory()==dir &&
                    filename_1.get_core_name()==fil &&
                    filename_1.get_extension()==ext);
 
-    CPPUNIT_ASSERT(filename_0 == filename_1);//operator ==
-    CPPUNIT_ASSERT( !(filename_0 != filename_1) );//operator !=
+    TEST_CHECK(filename_0 == filename_1);//operator ==
+    TEST_CHECK( !(filename_0 != filename_1) );//operator !=
 
 
 
 
 
     //2nd PART ALTERING THE PATH
-    CPPUNIT_ASSERT(filename.get_path()==filepath);
+    TEST_CHECK(filename.get_path()==filepath);
     filename.set_directory(dir);
     filename.set_core_name(fil);
     filename.set_extension(ext);
-    CPPUNIT_ASSERT(filename.get_path()==filepath);
+    TEST_CHECK(filename.get_path()==filepath);
     filename.set_path(filepath);
-    CPPUNIT_ASSERT(filename.get_path()==filepath);
+    TEST_CHECK(filename.get_path()==filepath);
 
     // PREFIX /predir . 1/predir ..2/  -> /predir . 1/predir ..2/
     stl::string pre_dir1(
@@ -391,7 +387,7 @@ void test_filename::test2()
     stl::string dump_file1=filename.get_path();
     stl::string dump_file1a=filepath_1;
 
-    CPPUNIT_ASSERT(filename.get_path()==filepath_1);
+    TEST_CHECK(filename.get_path()==filepath_1);
 
     // POSTFIX  /post .fake.ext/ -> /predir . 1/predir ..2/  + dir +   /post .fake.ext/
     // -> /predir . 1/predir ..2/post .fake.ext/
@@ -419,7 +415,7 @@ void test_filename::test2()
             fil+(ext.empty() == true ? U(""):U("."))+
             ext;
     }//else
-    CPPUNIT_ASSERT(filename.get_path()==filepath_2);
+    TEST_CHECK(filename.get_path()==filepath_2);
 
     //substract /predir ..2/ + dir + /post .fake.ext/
     sys::filename filename_3 = filename.substract_prefix_directory();
@@ -430,7 +426,7 @@ void test_filename::test2()
         fil+
         (ext.empty()==true ? U(""):U("."))+
         ext;
-    CPPUNIT_ASSERT(filename_3.get_path()==filepath_3);
+    TEST_CHECK(filename_3.get_path()==filepath_3);
 
     //substract POSTFIX -> /predir ..2/ + dir
     sys::filename filename_4 = filename_3.substract_postfix_directory();
@@ -443,7 +439,7 @@ void test_filename::test2()
 
     stl::string dump_file4=filename_4.get_path();
     stl::string dump_file4a=filepath_4;
-    CPPUNIT_ASSERT(filename_4.get_path()==filepath_4);
+    TEST_CHECK(filename_4.get_path()==filepath_4);
 
 
 
@@ -454,7 +450,7 @@ void test_filename::test2()
         fil+
         (ext.empty()==true ? U(""):U("."))+
         ext;
-    CPPUNIT_ASSERT(filename_5.get_path()==filepath_5);
+    TEST_CHECK(filename_5.get_path()==filepath_5);
 
 
 }
@@ -472,7 +468,7 @@ void test_filename::test3()
 
     sys::filename filename(filepath);
 
-    CPPUNIT_ASSERT(filename.get_directory()==dir &&
+    TEST_CHECK(filename.get_directory()==dir &&
                    filename.get_core_name()==fil &&
                    filename.get_extension()==ext);
 
@@ -481,32 +477,32 @@ void test_filename::test3()
 
     sys::filename filename_0(filename);//copy constr
 
-    CPPUNIT_ASSERT(filename_0.get_directory()==dir &&
+    TEST_CHECK(filename_0.get_directory()==dir &&
                    filename_0.get_core_name()==fil &&
                    filename_0.get_extension()==ext);
 
     sys::filename filename_1 ;
     filename_1 = filename_0 ;//operator =
 
-    CPPUNIT_ASSERT(filename_1.get_directory()==dir &&
+    TEST_CHECK(filename_1.get_directory()==dir &&
                    filename_1.get_core_name()==fil &&
                    filename_1.get_extension()==ext);
 
-    CPPUNIT_ASSERT(filename_0 == filename_1);//operator ==
-    CPPUNIT_ASSERT( !(filename_0 != filename_1) );//operator !=
+    TEST_CHECK(filename_0 == filename_1);//operator ==
+    TEST_CHECK( !(filename_0 != filename_1) );//operator !=
 
 
 
 
 
     //2nd PART ALTERING THE PATH
-    CPPUNIT_ASSERT(filename.get_path()==filepath);
+    TEST_CHECK(filename.get_path()==filepath);
     filename.set_directory(dir);
     filename.set_core_name(fil);
     filename.set_extension(ext);
-    CPPUNIT_ASSERT(filename.get_path()==filepath);
+    TEST_CHECK(filename.get_path()==filepath);
     filename.set_path(filepath);
-    CPPUNIT_ASSERT(filename.get_path()==filepath);
+    TEST_CHECK(filename.get_path()==filepath);
 
     // PREFIX /predir . 1/predir ..2/  -> /predir . 1/predir ..2/
     stl::string pre_dir1(
@@ -527,7 +523,7 @@ void test_filename::test3()
     stl::string dump_file1=filename.get_path();
     stl::string dump_file1a=filepath_1;
 
-    CPPUNIT_ASSERT(filename.get_path()==filepath_1);
+    TEST_CHECK(filename.get_path()==filepath_1);
 
     // POSTFIX  /post .fake.ext/ -> /predir . 1/predir ..2/  + dir +   /post .fake.ext/
     // -> /predir . 1/predir ..2/post .fake.ext/
@@ -555,7 +551,7 @@ void test_filename::test3()
             fil+(ext.empty() == true ? U(""):U("."))+
             ext;
     }//else
-    CPPUNIT_ASSERT(filename.get_path()==filepath_2);
+    TEST_CHECK(filename.get_path()==filepath_2);
 
     //substract /predir ..2/ + dir + /post .fake.ext/
     sys::filename filename_3 = filename.substract_prefix_directory();
@@ -566,7 +562,7 @@ void test_filename::test3()
         fil+
         (ext.empty()==true ? U(""):U("."))+
         ext;
-    CPPUNIT_ASSERT(filename_3.get_path()==filepath_3);
+    TEST_CHECK(filename_3.get_path()==filepath_3);
 
     //substract POSTFIX -> /predir ..2/ + dir
     sys::filename filename_4 = filename_3.substract_postfix_directory();
@@ -579,7 +575,7 @@ void test_filename::test3()
 
     stl::string dump_file4=filename_4.get_path();
     stl::string dump_file4a=filepath_4;
-    CPPUNIT_ASSERT(filename_4.get_path()==filepath_4);
+    TEST_CHECK(filename_4.get_path()==filepath_4);
 
 
 
@@ -590,7 +586,7 @@ void test_filename::test3()
         fil+
         (ext.empty()==true ? U(""):U("."))+
         ext;
-    CPPUNIT_ASSERT(filename_5.get_path()==filepath_5);
+    TEST_CHECK(filename_5.get_path()==filepath_5);
 
 
 }
@@ -608,21 +604,21 @@ void test_filename::test4()
 
     sys::filename filename(filepath);
 
-    CPPUNIT_ASSERT(filename.get_directory()==dir &&
+    TEST_CHECK(filename.get_directory()==dir &&
                    filename.get_core_name()==fil &&
                    filename.get_extension()==ext);
 
 
     filename=sys::filename(dir, fil, ext);//constr(x,y,z);
 
-    CPPUNIT_ASSERT(filename.get_directory()==dir &&
+    TEST_CHECK(filename.get_directory()==dir &&
                    filename.get_core_name()==fil &&
                    filename.get_extension()==ext);
 
 
     sys::filename filename_0(filename);//copy constr
 
-    CPPUNIT_ASSERT(filename_0.get_directory()==dir &&
+    TEST_CHECK(filename_0.get_directory()==dir &&
                    filename_0.get_core_name()==fil &&
                    filename_0.get_extension()==ext);
 
@@ -630,13 +626,13 @@ void test_filename::test4()
     sys::filename filename_1 ;
     filename_1 = filename_0 ;//operator =
 
-    CPPUNIT_ASSERT(filename_1.get_directory()==dir &&
+    TEST_CHECK(filename_1.get_directory()==dir &&
                    filename_1.get_core_name()==fil &&
                    filename_1.get_extension()==ext);
 
 
-    CPPUNIT_ASSERT(filename_0 == filename_1);//operator ==
-    CPPUNIT_ASSERT( !(filename_0 != filename_1) );//operator !=
+    TEST_CHECK(filename_0 == filename_1);//operator ==
+    TEST_CHECK( !(filename_0 != filename_1) );//operator !=
 
 
 
@@ -644,13 +640,13 @@ void test_filename::test4()
 
 
     //2nd PART ALTERING THE PATH
-    CPPUNIT_ASSERT(filename.get_path()==filepath);
+    TEST_CHECK(filename.get_path()==filepath);
     filename.set_directory(dir);
     filename.set_core_name(fil);
     filename.set_extension(ext);
-    CPPUNIT_ASSERT(filename.get_path()==filepath);
+    TEST_CHECK(filename.get_path()==filepath);
     filename.set_path(filepath);
-    CPPUNIT_ASSERT(filename.get_path()==filepath);
+    TEST_CHECK(filename.get_path()==filepath);
 
     // PREFIX /predir . 1/predir ..2/  -> /predir . 1/predir ..2/
     stl::string pre_dir1(
@@ -671,7 +667,7 @@ void test_filename::test4()
     stl::string dump_file1=filename.get_path();
     stl::string dump_file1a=filepath_1;
 
-    CPPUNIT_ASSERT(filename.get_path()==filepath_1);
+    TEST_CHECK(filename.get_path()==filepath_1);
 
     // POSTFIX  /post .fake.ext/ -> /predir . 1/predir ..2/  + dir +   /post .fake.ext/
     // -> /predir . 1/predir ..2/post .fake.ext/
@@ -699,7 +695,7 @@ void test_filename::test4()
             fil+(ext.empty() == true ? U(""):U("."))+
             ext;
     }//else
-    CPPUNIT_ASSERT(filename.get_path()==filepath_2);
+    TEST_CHECK(filename.get_path()==filepath_2);
 
     //substract /predir ..2/ + dir + /post .fake.ext/
     sys::filename filename_3 = filename.substract_prefix_directory();
@@ -710,7 +706,7 @@ void test_filename::test4()
         fil+
         (ext.empty()==true ? U(""):U("."))+
         ext;
-    CPPUNIT_ASSERT(filename_3.get_path()==filepath_3);
+    TEST_CHECK(filename_3.get_path()==filepath_3);
 
     //substract POSTFIX -> /predir ..2/ + dir
     sys::filename filename_4 = filename_3.substract_postfix_directory();
@@ -723,7 +719,7 @@ void test_filename::test4()
 
     stl::string dump_file4=filename_4.get_path();
     stl::string dump_file4a=filepath_4;
-    CPPUNIT_ASSERT(filename_4.get_path()==filepath_4);
+    TEST_CHECK(filename_4.get_path()==filepath_4);
 
 
 
@@ -734,7 +730,7 @@ void test_filename::test4()
         fil+
         (ext.empty()==true ? U(""):U("."))+
         ext;
-    CPPUNIT_ASSERT(filename_5.get_path()==filepath_5);
+    TEST_CHECK(filename_5.get_path()==filepath_5);
 
 }
 
@@ -754,21 +750,21 @@ void test_filename::test5()
 
     sys::filename filename(filepath);
 
-    CPPUNIT_ASSERT(filename.get_directory()==dir &&
+    TEST_CHECK(filename.get_directory()==dir &&
                    filename.get_core_name()==fil &&
                    filename.get_extension()==ext);
 
 
     filename=sys::filename(dir, fil, ext);//constr(x,y,z);
 
-    CPPUNIT_ASSERT(filename.get_directory()==dir &&
+    TEST_CHECK(filename.get_directory()==dir &&
                    filename.get_core_name()==fil &&
                    filename.get_extension()==ext);
 
 
     sys::filename filename_0(filename);//copy constr
 
-    CPPUNIT_ASSERT(filename_0.get_directory()==dir &&
+    TEST_CHECK(filename_0.get_directory()==dir &&
                    filename_0.get_core_name()==fil &&
                    filename_0.get_extension()==ext);
 
@@ -776,26 +772,26 @@ void test_filename::test5()
     sys::filename filename_1 ;
     filename_1 = filename_0 ;//operator =
 
-    CPPUNIT_ASSERT(filename_1.get_directory()==dir &&
+    TEST_CHECK(filename_1.get_directory()==dir &&
                    filename_1.get_core_name()==fil &&
                    filename_1.get_extension()==ext);
 
 
-    CPPUNIT_ASSERT(filename_0 == filename_1);//operator ==
-    CPPUNIT_ASSERT( !(filename_0 != filename_1) );//operator !=
+    TEST_CHECK(filename_0 == filename_1);//operator ==
+    TEST_CHECK( !(filename_0 != filename_1) );//operator !=
 
 
 
 
 
     //2nd PART ALTERING THE PATH
-    CPPUNIT_ASSERT(filename.get_path()==filepath);
+    TEST_CHECK(filename.get_path()==filepath);
     filename.set_directory(dir);
     filename.set_core_name(fil);
     filename.set_extension(ext);
-    CPPUNIT_ASSERT(filename.get_path()==filepath);
+    TEST_CHECK(filename.get_path()==filepath);
     filename.set_path(filepath);
-    CPPUNIT_ASSERT(filename.get_path()==filepath);
+    TEST_CHECK(filename.get_path()==filepath);
 
     // PREFIX /predir . 1/predir ..2/  -> /predir . 1/predir ..2/
     stl::string pre_dir1(
@@ -821,7 +817,7 @@ void test_filename::test5()
     stl::string dump_file1=filename.get_path();
     stl::string dump_file1a=filepath_1;
 
-    CPPUNIT_ASSERT(filename.get_path()==filepath_1);
+    TEST_CHECK(filename.get_path()==filepath_1);
 
     // POSTFIX  /post .fake.ext/ -> /predir . 1/predir ..2/  + dir +   /post .fake.ext/
     // -> /predir . 1/predir ..2/post .fake.ext/
@@ -849,7 +845,7 @@ void test_filename::test5()
             fil+(ext.empty() == true ? U(""):U("."))+
             ext;
     }//else
-    CPPUNIT_ASSERT(filename.get_path()==filepath_2);
+    TEST_CHECK(filename.get_path()==filepath_2);
 
     //substract /predir ..2/ + dir + /post .fake.ext/
     sys::filename filename_3 = filename.substract_prefix_directory();
@@ -860,7 +856,7 @@ void test_filename::test5()
         fil+
         (ext.empty()==true ? U(""):U("."))+
         ext;
-    CPPUNIT_ASSERT(filename_3.get_path()==filepath_3);
+    TEST_CHECK(filename_3.get_path()==filepath_3);
 
     //substract POSTFIX -> /predir ..2/ + dir
     sys::filename filename_4 = filename_3.substract_postfix_directory();
@@ -873,7 +869,7 @@ void test_filename::test5()
 
     stl::string dump_file4=filename_4.get_path();
     stl::string dump_file4a=filepath_4;
-    CPPUNIT_ASSERT(filename_4.get_path()==filepath_4);
+    TEST_CHECK(filename_4.get_path()==filepath_4);
 
 
 
@@ -884,7 +880,7 @@ void test_filename::test5()
         fil+
         (ext.empty()==true ? U(""):U("."))+
         ext;
-    CPPUNIT_ASSERT(filename_5.get_path()==filepath_5);
+    TEST_CHECK(filename_5.get_path()==filepath_5);
 
 }
 
@@ -902,21 +898,21 @@ void test_filename::test6()
 
     sys::filename filename(filepath);
 
-    CPPUNIT_ASSERT(filename.get_directory()==dir &&
+    TEST_CHECK(filename.get_directory()==dir &&
                    filename.get_core_name()==fil &&
                    filename.get_extension()==ext);
 
 
     filename=sys::filename(dir, fil, ext);//constr(x,y,z);
 
-    CPPUNIT_ASSERT(filename.get_directory()==dir &&
+    TEST_CHECK(filename.get_directory()==dir &&
                    filename.get_core_name()==fil &&
                    filename.get_extension()==ext);
 
 
     sys::filename filename_0(filename);//copy constr
 
-    CPPUNIT_ASSERT(filename_0.get_directory()==dir &&
+    TEST_CHECK(filename_0.get_directory()==dir &&
                    filename_0.get_core_name()==fil &&
                    filename_0.get_extension()==ext);
 
@@ -924,13 +920,13 @@ void test_filename::test6()
     sys::filename filename_1 ;
     filename_1 = filename_0 ;//operator =
 
-    CPPUNIT_ASSERT(filename_1.get_directory()==dir &&
+    TEST_CHECK(filename_1.get_directory()==dir &&
                    filename_1.get_core_name()==fil &&
                    filename_1.get_extension()==ext);
 
 
-    CPPUNIT_ASSERT(filename_0 == filename_1);//operator ==
-    CPPUNIT_ASSERT( !(filename_0 != filename_1) );//operator !=
+    TEST_CHECK(filename_0 == filename_1);//operator ==
+    TEST_CHECK( !(filename_0 != filename_1) );//operator !=
 
 
 
@@ -938,13 +934,13 @@ void test_filename::test6()
 
 
     //2nd PART ALTERING THE PATH
-    CPPUNIT_ASSERT(filename.get_path()==filepath);
+    TEST_CHECK(filename.get_path()==filepath);
     filename.set_directory(dir);
     filename.set_core_name(fil);
     filename.set_extension(ext);
-    CPPUNIT_ASSERT(filename.get_path()==filepath);
+    TEST_CHECK(filename.get_path()==filepath);
     filename.set_path(filepath);
-    CPPUNIT_ASSERT(filename.get_path()==filepath);
+    TEST_CHECK(filename.get_path()==filepath);
 
     // PREFIX /predir . 1/predir ..2/  -> /predir . 1/predir ..2/
     stl::string pre_dir1(
@@ -965,7 +961,7 @@ void test_filename::test6()
     stl::string dump_file1=filename.get_path();
     stl::string dump_file1a=filepath_1;
 
-    CPPUNIT_ASSERT(filename.get_path()==filepath_1);
+    TEST_CHECK(filename.get_path()==filepath_1);
 
     // POSTFIX  /post .fake.ext/ -> /predir . 1/predir ..2/  + dir +   /post .fake.ext/
     // -> /predir . 1/predir ..2/post .fake.ext/
@@ -993,7 +989,7 @@ void test_filename::test6()
             fil+(ext.empty() == true ? U(""):U("."))+
             ext;
     }//else
-    CPPUNIT_ASSERT(filename.get_path()==filepath_2);
+    TEST_CHECK(filename.get_path()==filepath_2);
 
     //substract /predir ..2/ + dir + /post .fake.ext/
     sys::filename filename_3 = filename.substract_prefix_directory();
@@ -1004,7 +1000,7 @@ void test_filename::test6()
         fil+
         (ext.empty()==true ? U(""):U("."))+
         ext;
-    CPPUNIT_ASSERT(filename_3.get_path()==filepath_3);
+    TEST_CHECK(filename_3.get_path()==filepath_3);
 
     //substract POSTFIX -> /predir ..2/ + dir
     sys::filename filename_4 = filename_3.substract_postfix_directory();
@@ -1017,7 +1013,7 @@ void test_filename::test6()
 
     stl::string dump_file4=filename_4.get_path();
     stl::string dump_file4a=filepath_4;
-    CPPUNIT_ASSERT(filename_4.get_path()==filepath_4);
+    TEST_CHECK(filename_4.get_path()==filepath_4);
 
 
 
@@ -1028,7 +1024,7 @@ void test_filename::test6()
         fil+
         (ext.empty()==true ? U(""):U("."))+
         ext;
-    CPPUNIT_ASSERT(filename_5.get_path()==filepath_5);
+    TEST_CHECK(filename_5.get_path()==filepath_5);
 
 }
 
@@ -1049,20 +1045,20 @@ void test_filename::test7()
     sys::filename filename(filepath);
 
     //a workaround file core name that is identified as extension /home/.file -> /home/ 0 .file as extension.
-    CPPUNIT_ASSERT(filename.get_directory()==dir &&
+    TEST_CHECK(filename.get_directory()==dir &&
                    filename.get_core_name()==U("") &&
                    filename.get_extension()==fil.substr(1, fil.size()-1));
 
 
     filename=sys::filename(dir, fil, ext);//constr(x,y,z);
 
-    CPPUNIT_ASSERT(filename.get_directory()==dir &&
+    TEST_CHECK(filename.get_directory()==dir &&
                    filename.get_core_name()==fil &&
                    filename.get_extension()==ext);
 
     sys::filename filename_0(filename);//copy constr
 
-    CPPUNIT_ASSERT(filename_0.get_directory()==dir &&
+    TEST_CHECK(filename_0.get_directory()==dir &&
                    filename_0.get_core_name()==fil &&
                    filename_0.get_extension()==ext);
 
@@ -1070,12 +1066,12 @@ void test_filename::test7()
     sys::filename filename_1 ;
     filename_1 = filename_0 ;//operator =
 
-    CPPUNIT_ASSERT(filename_1.get_directory()==dir &&
+    TEST_CHECK(filename_1.get_directory()==dir &&
                    filename_1.get_core_name()==fil &&
                    filename_1.get_extension()==ext);
 
-    CPPUNIT_ASSERT(filename_0 == filename_1);//operator ==
-    CPPUNIT_ASSERT( !(filename_0 != filename_1) );//operator !=
+    TEST_CHECK(filename_0 == filename_1);//operator ==
+    TEST_CHECK( !(filename_0 != filename_1) );//operator !=
 
 
 
@@ -1083,13 +1079,13 @@ void test_filename::test7()
 
 
     //2nd PART ALTERING THE PATH
-    CPPUNIT_ASSERT(filename.get_path()==filepath);
+    TEST_CHECK(filename.get_path()==filepath);
     filename.set_directory(dir);
     filename.set_core_name(fil);
     filename.set_extension(ext);
-    CPPUNIT_ASSERT(filename.get_path()==filepath);
+    TEST_CHECK(filename.get_path()==filepath);
     filename.set_path(filepath);
-    CPPUNIT_ASSERT(filename.get_path()==filepath);
+    TEST_CHECK(filename.get_path()==filepath);
 
     // PREFIX /predir . 1/predir ..2/  -> /predir . 1/predir ..2/
     stl::string pre_dir1(
@@ -1110,7 +1106,7 @@ void test_filename::test7()
     stl::string dump_file1=filename.get_path();
     stl::string dump_file1a=filepath_1;
 
-    CPPUNIT_ASSERT(filename.get_path()==filepath_1);
+    TEST_CHECK(filename.get_path()==filepath_1);
 
     // POSTFIX  /post .fake.ext/ -> /predir . 1/predir ..2/  + dir +   /post .fake.ext/
     // -> /predir . 1/predir ..2/post .fake.ext/
@@ -1138,7 +1134,7 @@ void test_filename::test7()
             fil+(ext.empty() == true ? U(""):U("."))+
             ext;
     }//else
-    CPPUNIT_ASSERT(filename.get_path()==filepath_2);
+    TEST_CHECK(filename.get_path()==filepath_2);
 
     //substract /predir ..2/ + dir + /post .fake.ext/
     sys::filename filename_3 = filename.substract_prefix_directory();
@@ -1149,7 +1145,7 @@ void test_filename::test7()
         fil+
         (ext.empty()==true ? U(""):U("."))+
         ext;
-    CPPUNIT_ASSERT(filename_3.get_path()==filepath_3);
+    TEST_CHECK(filename_3.get_path()==filepath_3);
 
     //substract POSTFIX -> /predir ..2/ + dir
     sys::filename filename_4 = filename_3.substract_postfix_directory();
@@ -1162,7 +1158,7 @@ void test_filename::test7()
 
     stl::string dump_file4=filename_4.get_path();
     stl::string dump_file4a=filepath_4;
-    CPPUNIT_ASSERT(filename_4.get_path()==filepath_4);
+    TEST_CHECK(filename_4.get_path()==filepath_4);
 
 
 
@@ -1173,7 +1169,7 @@ void test_filename::test7()
         fil+
         (ext.empty()==true ? U(""):U("."))+
         ext;
-    CPPUNIT_ASSERT(filename_5.get_path()==filepath_5);
+    TEST_CHECK(filename_5.get_path()==filepath_5);
 
 }
 
@@ -1192,31 +1188,31 @@ void test_filename::test8()
 
     sys::filename filename(filepath);
 
-    CPPUNIT_ASSERT(filename.get_directory()==dir &&
+    TEST_CHECK(filename.get_directory()==dir &&
                    filename.get_core_name()==fil &&
                    filename.get_extension()==ext);
 
     filename=sys::filename(dir, fil, ext);//constr(x,y,z);
 
-    CPPUNIT_ASSERT(filename.get_directory()==dir &&
+    TEST_CHECK(filename.get_directory()==dir &&
                    filename.get_core_name()==fil &&
                    filename.get_extension()==ext);
 
     sys::filename filename_0(filename);//copy constr
 
-    CPPUNIT_ASSERT(filename_0.get_directory()==dir &&
+    TEST_CHECK(filename_0.get_directory()==dir &&
                    filename_0.get_core_name()==fil &&
                    filename_0.get_extension()==ext);
 
     sys::filename filename_1 ;
     filename_1 = filename_0 ;//operator =
 
-    CPPUNIT_ASSERT(filename_1.get_directory()==dir &&
+    TEST_CHECK(filename_1.get_directory()==dir &&
                    filename_1.get_core_name()==fil &&
                    filename_1.get_extension()==ext);
 
-    CPPUNIT_ASSERT(filename_0 == filename_1);//operator ==
-    CPPUNIT_ASSERT( !(filename_0 != filename_1) );//operator !=
+    TEST_CHECK(filename_0 == filename_1);//operator ==
+    TEST_CHECK( !(filename_0 != filename_1) );//operator !=
 
 
 
@@ -1224,13 +1220,13 @@ void test_filename::test8()
 
 
     //2nd PART ALTERING THE PATH
-    CPPUNIT_ASSERT(filename.get_path()==filepath);
+    TEST_CHECK(filename.get_path()==filepath);
     filename.set_directory(dir);
     filename.set_core_name(fil);
     filename.set_extension(ext);
-    CPPUNIT_ASSERT(filename.get_path()==filepath);
+    TEST_CHECK(filename.get_path()==filepath);
     filename.set_path(filepath);
-    CPPUNIT_ASSERT(filename.get_path()==filepath);
+    TEST_CHECK(filename.get_path()==filepath);
 
     // PREFIX /predir . 1/predir ..2/  -> /predir . 1/predir ..2/
     stl::string pre_dir1(
@@ -1251,7 +1247,7 @@ void test_filename::test8()
     stl::string dump_file1=filename.get_path();
     stl::string dump_file1a=filepath_1;
 
-    CPPUNIT_ASSERT(filename.get_path()==filepath_1);
+    TEST_CHECK(filename.get_path()==filepath_1);
 
     // POSTFIX  /post .fake.ext/ -> /predir . 1/predir ..2/  + dir +   /post .fake.ext/
     // -> /predir . 1/predir ..2/post .fake.ext/
@@ -1279,7 +1275,7 @@ void test_filename::test8()
             fil+(ext.empty() == true ? U(""):U("."))+
             ext;
     }//else
-    CPPUNIT_ASSERT(filename.get_path()==filepath_2);
+    TEST_CHECK(filename.get_path()==filepath_2);
 
     //substract /predir ..2/ + dir + /post .fake.ext/
     sys::filename filename_3 = filename.substract_prefix_directory();
@@ -1290,7 +1286,7 @@ void test_filename::test8()
         fil+
         (ext.empty()==true ? U(""):U("."))+
         ext;
-    CPPUNIT_ASSERT(filename_3.get_path()==filepath_3);
+    TEST_CHECK(filename_3.get_path()==filepath_3);
 
     //substract POSTFIX -> /predir ..2/ + dir
     sys::filename filename_4 = filename_3.substract_postfix_directory();
@@ -1303,7 +1299,7 @@ void test_filename::test8()
 
     stl::string dump_file4=filename_4.get_path();
     stl::string dump_file4a=filepath_4;
-    CPPUNIT_ASSERT(filename_4.get_path()==filepath_4);
+    TEST_CHECK(filename_4.get_path()==filepath_4);
 
 
 
@@ -1314,7 +1310,7 @@ void test_filename::test8()
         fil+
         (ext.empty()==true ? U(""):U("."))+
         ext;
-    CPPUNIT_ASSERT(filename_5.get_path()==filepath_5);
+    TEST_CHECK(filename_5.get_path()==filepath_5);
 
 }
 

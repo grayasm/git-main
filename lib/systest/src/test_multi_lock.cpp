@@ -3,16 +3,15 @@ Copyright (C) 2013 Mihai Vasilian
 */
 
 
+
 //this
 #include "test_multi_lock.hpp"
 
 //c++
 #include <iostream>
 
-//CppUnit
-#include <cppunit/CompilerOutputter.h>
-#include <cppunit/extensions/TestFactoryRegistry.h>
-#include <cppunit/ui/text/TestRunner.h>
+//acutest
+#include "acutest.h"
 
 
 //libraries
@@ -30,12 +29,13 @@ Copyright (C) 2013 Mihai Vasilian
 
 
 //###########################BEGIN TEST CLASS ####################################
-void test_multi_lock::setUp()
+void test_multi_lock::run()
 {
-}
-
-void test_multi_lock::tearDown()
-{
+	ctor();
+	dtor();
+	lock();
+	trylock();
+	unlock();
 }
 
 //##########################BEGIN TEST SUITE######################################
@@ -195,42 +195,42 @@ void test_multi_lock::lock()
 	{
 		stl::cout << "\n\n\t main:2 locked mutex";
 		sys::mutex m1, m2;
-		CPPUNIT_ASSERT( m1.lock() == 0 );
-		CPPUNIT_ASSERT( m2.lock() == 0 );
+		TEST_CHECK( m1.lock() == 0 );
+		TEST_CHECK( m2.lock() == 0 );
 		sys::sync_base* so[2];
 		so[0] = &m1;
 		so[1] = &m2;
 		sys::multi_lock ml(so, 2);
 		MLLockThread t(&ml, 1, 1);
-		CPPUNIT_ASSERT( t.resume() == 0 );
+		TEST_CHECK( t.resume() == 0 );
 		
 		printf("\n\t main: sleep(2) before releasing objects");
 		sleep(2);
 		
-		CPPUNIT_ASSERT( m1.unlock() == 0 );
-		CPPUNIT_ASSERT( m2.unlock() == 0 );	
-		CPPUNIT_ASSERT( t.join() == 0 );
+		TEST_CHECK( m1.unlock() == 0 );
+		TEST_CHECK( m2.unlock() == 0 );	
+		TEST_CHECK( t.join() == 0 );
 		printf("\n\t main: thread joined");
 	}
 	{
 		stl::cout << "\n\n\t main:1 mutex, 1 event";
 		sys::mutex m1;
 		sys::event e1;
-		CPPUNIT_ASSERT( m1.lock() == 0 );
+		TEST_CHECK( m1.lock() == 0 );
 		
 		sys::sync_base* so[2];
 		so[0] = &m1;
 		so[1] = &e1;
 		sys::multi_lock ml(so, 2);
 		MLLockThread t(&ml, 1, 1);
-		CPPUNIT_ASSERT( t.resume() == 0 );
+		TEST_CHECK( t.resume() == 0 );
 		
 		printf("\n\t main: sleep(2) before releasing objects");
 		sleep(2);
 		
-		CPPUNIT_ASSERT( m1.unlock() == 0 );
-		CPPUNIT_ASSERT( e1.setevent() == 0 );	
-		CPPUNIT_ASSERT( t.join() == 0 );
+		TEST_CHECK( m1.unlock() == 0 );
+		TEST_CHECK( e1.setevent() == 0 );	
+		TEST_CHECK( t.join() == 0 );
 		printf("\n\t main: thread joined");
 	}
 	{
@@ -239,13 +239,13 @@ void test_multi_lock::lock()
 		sys::event e1, e2, e3, e4, e5;
 		sys::semaphore s1(1), s2(2), s3(3), s4(4), s5(5);
 				
-		CPPUNIT_ASSERT( m1.lock() == 0 );
-		CPPUNIT_ASSERT( m2.lock() == 0 );
-		CPPUNIT_ASSERT( m3.lock() == 0 );
-		CPPUNIT_ASSERT( m4.lock() == 0 );
-		CPPUNIT_ASSERT( m5.lock() == 0 );
+		TEST_CHECK( m1.lock() == 0 );
+		TEST_CHECK( m2.lock() == 0 );
+		TEST_CHECK( m3.lock() == 0 );
+		TEST_CHECK( m4.lock() == 0 );
+		TEST_CHECK( m5.lock() == 0 );
 		
-		CPPUNIT_ASSERT( s1.lock() == 0 );
+		TEST_CHECK( s1.lock() == 0 );
 		
 		sys::sync_base* so[15];
 		so[0] = &m1;
@@ -268,26 +268,26 @@ void test_multi_lock::lock()
 		
 		sys::multi_lock ml(so, 15);
 		MLLockThread t(&ml, 2, 1);
-		CPPUNIT_ASSERT( t.resume() == 0 );
+		TEST_CHECK( t.resume() == 0 );
 		
 		printf("\n\t main: sleep(2) before releasing objects");
 		sleep(2);
 		
-		CPPUNIT_ASSERT( m1.unlock() == 0 );
-		CPPUNIT_ASSERT( m2.unlock() == 0 );
-		CPPUNIT_ASSERT( m3.unlock() == 0 );
-		CPPUNIT_ASSERT( m4.unlock() == 0 );
-		CPPUNIT_ASSERT( m5.unlock() == 0 );
+		TEST_CHECK( m1.unlock() == 0 );
+		TEST_CHECK( m2.unlock() == 0 );
+		TEST_CHECK( m3.unlock() == 0 );
+		TEST_CHECK( m4.unlock() == 0 );
+		TEST_CHECK( m5.unlock() == 0 );
 		
-		CPPUNIT_ASSERT( e1.unlock() == 0 );
-		CPPUNIT_ASSERT( e2.unlock() == 0 );
-		CPPUNIT_ASSERT( e3.unlock() == 0 );
-		CPPUNIT_ASSERT( e4.unlock() == 0 );
-		CPPUNIT_ASSERT( e5.unlock() == 0 );
+		TEST_CHECK( e1.unlock() == 0 );
+		TEST_CHECK( e2.unlock() == 0 );
+		TEST_CHECK( e3.unlock() == 0 );
+		TEST_CHECK( e4.unlock() == 0 );
+		TEST_CHECK( e5.unlock() == 0 );
 		
-		CPPUNIT_ASSERT( s1.unlock() == 0 );
+		TEST_CHECK( s1.unlock() == 0 );
 		
-		CPPUNIT_ASSERT( t.join() == 0 );
+		TEST_CHECK( t.join() == 0 );
 		printf("\n\t main: thread joined");
 	}
 	{
@@ -301,10 +301,10 @@ void test_multi_lock::lock()
 		sys::multi_lock ml2(sb, 2);
 		MLLockThread t1(&ml1, 1, 1);
 		MLLockThread t2(&ml2, 1, 2);
-		CPPUNIT_ASSERT( t1.resume() == 0 );
-		CPPUNIT_ASSERT( t2.resume() == 0 );
-		CPPUNIT_ASSERT( t1.join() == 0 );
-		CPPUNIT_ASSERT( t2.join() == 0 );
+		TEST_CHECK( t1.resume() == 0 );
+		TEST_CHECK( t2.resume() == 0 );
+		TEST_CHECK( t1.join() == 0 );
+		TEST_CHECK( t2.join() == 0 );
 	}
 	{
 		stl::cout << "\n\n\t main: 3 concurent multilocks on 6,2,2, non-overlapping objects";
@@ -326,13 +326,13 @@ void test_multi_lock::lock()
 		sys::multi_lock ml3(&so[4], 2);
 		MLLockThread t3(&ml3, 2, 3);
 		
-		CPPUNIT_ASSERT( t1.resume() == 0 );
-		CPPUNIT_ASSERT( t2.resume() == 0 );
-		CPPUNIT_ASSERT( t3.resume() == 0 );
+		TEST_CHECK( t1.resume() == 0 );
+		TEST_CHECK( t2.resume() == 0 );
+		TEST_CHECK( t3.resume() == 0 );
 		
-		CPPUNIT_ASSERT( t1.join() == 0 );
-		CPPUNIT_ASSERT( t2.join() == 0 );
-		CPPUNIT_ASSERT( t3.join() == 0 );
+		TEST_CHECK( t1.join() == 0 );
+		TEST_CHECK( t2.join() == 0 );
+		TEST_CHECK( t3.join() == 0 );
 	}
  	{
 		stl::cout << "\n\n\t main: 4 concurent multi_lock on 3 objects with 2 overlapped";
@@ -357,15 +357,15 @@ void test_multi_lock::lock()
 		sys::multi_lock ml4(&so[3], 3);
 		MLLockThread t4(&ml4, 2, 4);
 		
-		CPPUNIT_ASSERT( t1.resume() == 0 );
-		CPPUNIT_ASSERT( t2.resume() == 0 );
-		CPPUNIT_ASSERT( t3.resume() == 0 );
-		CPPUNIT_ASSERT( t4.resume() == 0 );
+		TEST_CHECK( t1.resume() == 0 );
+		TEST_CHECK( t2.resume() == 0 );
+		TEST_CHECK( t3.resume() == 0 );
+		TEST_CHECK( t4.resume() == 0 );
 		
-		CPPUNIT_ASSERT( t1.join() == 0 );
-		CPPUNIT_ASSERT( t2.join() == 0 );
-		CPPUNIT_ASSERT( t3.join() == 0 );
-		CPPUNIT_ASSERT( t4.join() == 0 );
+		TEST_CHECK( t1.join() == 0 );
+		TEST_CHECK( t2.join() == 0 );
+		TEST_CHECK( t3.join() == 0 );
+		TEST_CHECK( t4.join() == 0 );
 	}
 	{
 		stl::cout << "\n\n\t main: concurent multi_lock with 4 overlapped objects";
@@ -401,21 +401,21 @@ void test_multi_lock::lock()
 		sys::multi_lock ml4(&so[5], 0 + 40 + 3); // 0 mutex, 40 events, 3 sem
 		MLLockThread t4(&ml4, 5, 4);
 		
-		CPPUNIT_ASSERT( t1.resume() == 0 );
-		CPPUNIT_ASSERT( t2.resume() == 0 );
-		CPPUNIT_ASSERT( t3.resume() == 0 );
-		CPPUNIT_ASSERT( t4.resume() == 0 );
+		TEST_CHECK( t1.resume() == 0 );
+		TEST_CHECK( t2.resume() == 0 );
+		TEST_CHECK( t3.resume() == 0 );
+		TEST_CHECK( t4.resume() == 0 );
 		
 		stl::cout << "\n\n\t main: wait 3 seconds for multi_lock cocktail";
 		sleep(3);
 		
 		for(int i=0; i < 40; ++i)
-			CPPUNIT_ASSERT( ev[i].setevent() == 0 );
+			TEST_CHECK( ev[i].setevent() == 0 );
 			
-		CPPUNIT_ASSERT( t1.join() == 0 );
-		CPPUNIT_ASSERT( t2.join() == 0 );
-		CPPUNIT_ASSERT( t3.join() == 0 );
-		CPPUNIT_ASSERT( t4.join() == 0 );
+		TEST_CHECK( t1.join() == 0 );
+		TEST_CHECK( t2.join() == 0 );
+		TEST_CHECK( t3.join() == 0 );
+		TEST_CHECK( t4.join() == 0 );
 	}
 	{
 		stl::cout << "\n\n\t main: concurent multi_lock on 10 objects";
@@ -448,19 +448,19 @@ void test_multi_lock::lock()
 		sys::multi_lock ml4(so, 11);
 		MLLockThread t4(&ml4, 3, 4);
 		
-		CPPUNIT_ASSERT( t1.resume() == 0 );
-		CPPUNIT_ASSERT( t2.resume() == 0 );
-		CPPUNIT_ASSERT( t3.resume() == 0 );
-		CPPUNIT_ASSERT( t4.resume() == 0 );
+		TEST_CHECK( t1.resume() == 0 );
+		TEST_CHECK( t2.resume() == 0 );
+		TEST_CHECK( t3.resume() == 0 );
+		TEST_CHECK( t4.resume() == 0 );
 		
 		stl::cout << "\n\t main: resummed 4 threads, in 2 sec comes the event";
 		sleep(2);
-		CPPUNIT_ASSERT( ev.setevent() == 0 );		
+		TEST_CHECK( ev.setevent() == 0 );		
 		
-		CPPUNIT_ASSERT( t1.join() == 0 );
-		CPPUNIT_ASSERT( t2.join() == 0 );
-		CPPUNIT_ASSERT( t3.join() == 0 );
-		CPPUNIT_ASSERT( t4.join() == 0 );		
+		TEST_CHECK( t1.join() == 0 );
+		TEST_CHECK( t2.join() == 0 );
+		TEST_CHECK( t3.join() == 0 );
+		TEST_CHECK( t4.join() == 0 );		
 	}
 }
 
@@ -503,7 +503,7 @@ void test_multi_lock::trylock()
 		const int MUTNO=10;
 		sys::mutex m[ MUTNO ];
 		for(int i=0; i < MUTNO; ++i)
-			CPPUNIT_ASSERT( m[i].lock() == 0 );
+			TEST_CHECK( m[i].lock() == 0 );
 		
 		sys::sync_base* sb[MUTNO];
 		for(int i=0; i < MUTNO; ++i)
@@ -518,24 +518,24 @@ void test_multi_lock::trylock()
 		sys::multi_lock ml3(sb, MUTNO);
 		MLTimedLockThread t3(&ml3, 10*60, 3); // 10min timeout
 		
-		CPPUNIT_ASSERT( t1.resume() == 0 );
-		CPPUNIT_ASSERT( t2.resume() == 0 );
-		CPPUNIT_ASSERT( t3.resume() == 0 );
+		TEST_CHECK( t1.resume() == 0 );
+		TEST_CHECK( t2.resume() == 0 );
+		TEST_CHECK( t3.resume() == 0 );
 		
 		stl::cout << "\n\t main: all threads running, good luck!";
 		sleep(2);
 		
 		for(int i=0; i < MUTNO; ++i)
-			CPPUNIT_ASSERT( m[i].unlock() == 0 );
+			TEST_CHECK( m[i].unlock() == 0 );
 		
-		CPPUNIT_ASSERT( t1.join() == 0 );
-		CPPUNIT_ASSERT( t2.join() == 0 );
-		CPPUNIT_ASSERT( t3.join() == 0 );
+		TEST_CHECK( t1.join() == 0 );
+		TEST_CHECK( t2.join() == 0 );
+		TEST_CHECK( t3.join() == 0 );
 		
 		unsigned long retval = 0;
-		t1.get_exit_code(&retval); CPPUNIT_ASSERT( retval == 0 );
-		t2.get_exit_code(&retval); CPPUNIT_ASSERT( retval == 0 );
-		t3.get_exit_code(&retval); CPPUNIT_ASSERT( retval == 0 );		
+		t1.get_exit_code(&retval); TEST_CHECK( retval == 0 );
+		t2.get_exit_code(&retval); TEST_CHECK( retval == 0 );
+		t3.get_exit_code(&retval); TEST_CHECK( retval == 0 );		
 	}
 	{
 		// 5 mutexes, 5 semaphores, 1 not-signaled event => multi_lock timeout
@@ -566,23 +566,23 @@ void test_multi_lock::trylock()
 		sys::multi_lock ml3(so, 11);
 		MLTimedLockThread t3(&ml3, 5, 3);
 		
-		CPPUNIT_ASSERT( t1.resume() == 0 );
-		CPPUNIT_ASSERT( t2.resume() == 0 );
-		CPPUNIT_ASSERT( t3.resume() == 0 );
+		TEST_CHECK( t1.resume() == 0 );
+		TEST_CHECK( t2.resume() == 0 );
+		TEST_CHECK( t3.resume() == 0 );
 		
-		CPPUNIT_ASSERT( t1.join() == 0 );
-		CPPUNIT_ASSERT( t2.join() == 0 );
-		CPPUNIT_ASSERT( t3.join() == 0 );
+		TEST_CHECK( t1.join() == 0 );
+		TEST_CHECK( t2.join() == 0 );
+		TEST_CHECK( t3.join() == 0 );
 		
 		unsigned long retval=0;
-		CPPUNIT_ASSERT( t1.get_exit_code(&retval) == 0 );
-		CPPUNIT_ASSERT( retval == 1 );
+		TEST_CHECK( t1.get_exit_code(&retval) == 0 );
+		TEST_CHECK( retval == 1 );
 		
-		CPPUNIT_ASSERT( t2.get_exit_code(&retval) == 0 );
-		CPPUNIT_ASSERT( retval == 1 );
+		TEST_CHECK( t2.get_exit_code(&retval) == 0 );
+		TEST_CHECK( retval == 1 );
 		
-		CPPUNIT_ASSERT( t3.get_exit_code(&retval) == 0 );
-		CPPUNIT_ASSERT( retval == 1 );
+		TEST_CHECK( t3.get_exit_code(&retval) == 0 );
+		TEST_CHECK( retval == 1 );
 	}
 	///////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////
@@ -592,50 +592,50 @@ void test_multi_lock::trylock()
 	{
 		stl::cout << "\n\n\t main(3):2 locked mutex";
 		sys::mutex m1, m2;
-		CPPUNIT_ASSERT( m1.lock() == 0 );
-		CPPUNIT_ASSERT( m2.lock() == 0 );
+		TEST_CHECK( m1.lock() == 0 );
+		TEST_CHECK( m2.lock() == 0 );
 		sys::sync_base* so[2];
 		so[0] = &m1;
 		so[1] = &m2;
 		sys::multi_lock ml(so, 2);
 		MLTimedLockThread t(&ml, 60, 1); //1min
-		CPPUNIT_ASSERT( t.resume() == 0 );
+		TEST_CHECK( t.resume() == 0 );
 		
 		sleep(2);
 		
-		CPPUNIT_ASSERT( m1.unlock() == 0 );
-		CPPUNIT_ASSERT( m2.unlock() == 0 );	
-		CPPUNIT_ASSERT( t.join() == 0 );
+		TEST_CHECK( m1.unlock() == 0 );
+		TEST_CHECK( m2.unlock() == 0 );	
+		TEST_CHECK( t.join() == 0 );
 		
 		unsigned long retval = 0;
-		CPPUNIT_ASSERT( t.get_exit_code(&retval) == 0 );	// finished
-		CPPUNIT_ASSERT( retval == 0 );						// trylock succeeded
+		TEST_CHECK( t.get_exit_code(&retval) == 0 );	// finished
+		TEST_CHECK( retval == 0 );						// trylock succeeded
 		printf("\n\t main: thread joined");
 	}
 	{
 		stl::cout << "\n\n\t main(4):1 mutex, 1 event";
 		sys::mutex m1;
 		sys::event e1;
-		CPPUNIT_ASSERT( m1.lock() == 0 );
+		TEST_CHECK( m1.lock() == 0 );
 		
 		sys::sync_base* so[2];
 		so[0] = &m1;
 		so[1] = &e1;
 		sys::multi_lock ml(so, 2);
 		MLTimedLockThread t(&ml, 60, 1);	// 1min
-		CPPUNIT_ASSERT( t.resume() == 0 );
+		TEST_CHECK( t.resume() == 0 );
 		
 		printf("\n\t main: sleep(2) before releasing objects");
 		sleep(2);
 		
-		CPPUNIT_ASSERT( m1.unlock() == 0 );
-		CPPUNIT_ASSERT( e1.setevent() == 0 );	
-		CPPUNIT_ASSERT( t.join() == 0 );
+		TEST_CHECK( m1.unlock() == 0 );
+		TEST_CHECK( e1.setevent() == 0 );	
+		TEST_CHECK( t.join() == 0 );
 		printf("\n\t main: thread joined");
 		
 		unsigned long retval = 0;
-		CPPUNIT_ASSERT( t.get_exit_code(&retval) == 0 );	// finished
-		CPPUNIT_ASSERT( retval == 0 );						// trylock succeeded
+		TEST_CHECK( t.get_exit_code(&retval) == 0 );	// finished
+		TEST_CHECK( retval == 0 );						// trylock succeeded
 	}
 	{
 		stl::cout << "\n\n\t main(5): 15 objects";
@@ -643,13 +643,13 @@ void test_multi_lock::trylock()
 		sys::event e1, e2, e3, e4, e5;
 		sys::semaphore s1(1), s2(2), s3(3), s4(4), s5(5);
 				
-		CPPUNIT_ASSERT( m1.lock() == 0 );
-		CPPUNIT_ASSERT( m2.lock() == 0 );
-		CPPUNIT_ASSERT( m3.lock() == 0 );
-		CPPUNIT_ASSERT( m4.lock() == 0 );
-		CPPUNIT_ASSERT( m5.lock() == 0 );
+		TEST_CHECK( m1.lock() == 0 );
+		TEST_CHECK( m2.lock() == 0 );
+		TEST_CHECK( m3.lock() == 0 );
+		TEST_CHECK( m4.lock() == 0 );
+		TEST_CHECK( m5.lock() == 0 );
 		
-		CPPUNIT_ASSERT( s1.lock() == 0 );
+		TEST_CHECK( s1.lock() == 0 );
 		
 		sys::sync_base* so[15];
 		so[0] = &m1;
@@ -672,31 +672,31 @@ void test_multi_lock::trylock()
 		
 		sys::multi_lock ml(so, 15);
 		MLTimedLockThread t(&ml, 60, 1); // 1min
-		CPPUNIT_ASSERT( t.resume() == 0 );
+		TEST_CHECK( t.resume() == 0 );
 		
 		printf("\n\t main: sleep(2) before releasing objects");
 		sleep(2);
 		
-		CPPUNIT_ASSERT( m1.unlock() == 0 );
-		CPPUNIT_ASSERT( m2.unlock() == 0 );
-		CPPUNIT_ASSERT( m3.unlock() == 0 );
-		CPPUNIT_ASSERT( m4.unlock() == 0 );
-		CPPUNIT_ASSERT( m5.unlock() == 0 );
+		TEST_CHECK( m1.unlock() == 0 );
+		TEST_CHECK( m2.unlock() == 0 );
+		TEST_CHECK( m3.unlock() == 0 );
+		TEST_CHECK( m4.unlock() == 0 );
+		TEST_CHECK( m5.unlock() == 0 );
 		
-		CPPUNIT_ASSERT( e1.unlock() == 0 );
-		CPPUNIT_ASSERT( e2.unlock() == 0 );
-		CPPUNIT_ASSERT( e3.unlock() == 0 );
-		CPPUNIT_ASSERT( e4.unlock() == 0 );
-		CPPUNIT_ASSERT( e5.unlock() == 0 );
+		TEST_CHECK( e1.unlock() == 0 );
+		TEST_CHECK( e2.unlock() == 0 );
+		TEST_CHECK( e3.unlock() == 0 );
+		TEST_CHECK( e4.unlock() == 0 );
+		TEST_CHECK( e5.unlock() == 0 );
 		
-		CPPUNIT_ASSERT( s1.unlock() == 0 );
+		TEST_CHECK( s1.unlock() == 0 );
 		
-		CPPUNIT_ASSERT( t.join() == 0 );
+		TEST_CHECK( t.join() == 0 );
 		
 		
 		unsigned long retval = 0;
-		CPPUNIT_ASSERT( t.get_exit_code(&retval) == 0 );	// finished
-		CPPUNIT_ASSERT( retval == 0 );						//trylock succeeded
+		TEST_CHECK( t.get_exit_code(&retval) == 0 );	// finished
+		TEST_CHECK( retval == 0 );						//trylock succeeded
 		printf("\n\t main: thread joined");
 	}
 	{
@@ -710,16 +710,16 @@ void test_multi_lock::trylock()
 		sys::multi_lock ml2(sb, 2);
 		MLTimedLockThread t1(&ml1, 60, 1);	//1min
 		MLTimedLockThread t2(&ml2, 60, 2);	//1min
-		CPPUNIT_ASSERT( t1.resume() == 0 );
-		CPPUNIT_ASSERT( t2.resume() == 0 );
-		CPPUNIT_ASSERT( t1.join() == 0 );
-		CPPUNIT_ASSERT( t2.join() == 0 );
+		TEST_CHECK( t1.resume() == 0 );
+		TEST_CHECK( t2.resume() == 0 );
+		TEST_CHECK( t1.join() == 0 );
+		TEST_CHECK( t2.join() == 0 );
 		
 		unsigned long retval = 0;
-		CPPUNIT_ASSERT( t1.get_exit_code(&retval) == 0 );	// finished
-		CPPUNIT_ASSERT( retval == 0 );						// trylock succeeded
-		CPPUNIT_ASSERT( t2.get_exit_code(&retval) == 0 );	// finished
-		CPPUNIT_ASSERT( retval == 0 );						// trylock succeeded
+		TEST_CHECK( t1.get_exit_code(&retval) == 0 );	// finished
+		TEST_CHECK( retval == 0 );						// trylock succeeded
+		TEST_CHECK( t2.get_exit_code(&retval) == 0 );	// finished
+		TEST_CHECK( retval == 0 );						// trylock succeeded
 		
 	}
 	{
@@ -742,21 +742,21 @@ void test_multi_lock::trylock()
 		sys::multi_lock ml3(&so[4], 2);
 		MLTimedLockThread t3(&ml3, 120, 3); //2min
 		
-		CPPUNIT_ASSERT( t1.resume() == 0 );
-		CPPUNIT_ASSERT( t2.resume() == 0 );
-		CPPUNIT_ASSERT( t3.resume() == 0 );
+		TEST_CHECK( t1.resume() == 0 );
+		TEST_CHECK( t2.resume() == 0 );
+		TEST_CHECK( t3.resume() == 0 );
 		
-		CPPUNIT_ASSERT( t1.join() == 0 );
-		CPPUNIT_ASSERT( t2.join() == 0 );
-		CPPUNIT_ASSERT( t3.join() == 0 );
+		TEST_CHECK( t1.join() == 0 );
+		TEST_CHECK( t2.join() == 0 );
+		TEST_CHECK( t3.join() == 0 );
 		
 		unsigned long retval = 0;
-		CPPUNIT_ASSERT( t1.get_exit_code(&retval) == 0 );	// finished
-		CPPUNIT_ASSERT( retval == 0 );						//trylock succeeded
-		CPPUNIT_ASSERT( t2.get_exit_code(&retval) == 0 );	// finished
-		CPPUNIT_ASSERT( retval == 0 );						//trylock succeeded
-		CPPUNIT_ASSERT( t3.get_exit_code(&retval) == 0 );	// finished
-		CPPUNIT_ASSERT( retval == 0 );						//trylock succeeded
+		TEST_CHECK( t1.get_exit_code(&retval) == 0 );	// finished
+		TEST_CHECK( retval == 0 );						//trylock succeeded
+		TEST_CHECK( t2.get_exit_code(&retval) == 0 );	// finished
+		TEST_CHECK( retval == 0 );						//trylock succeeded
+		TEST_CHECK( t3.get_exit_code(&retval) == 0 );	// finished
+		TEST_CHECK( retval == 0 );						//trylock succeeded
 	}
  	{
 		stl::cout << "\n\n\t main(8): 4 concurent multi_lock on 3 objects with 2 overlapped";
@@ -781,25 +781,25 @@ void test_multi_lock::trylock()
 		sys::multi_lock ml4(&so[3], 3);
 		MLTimedLockThread t4(&ml4, 300, 4); //5min
 		
-		CPPUNIT_ASSERT( t1.resume() == 0 );
-		CPPUNIT_ASSERT( t2.resume() == 0 );
-		CPPUNIT_ASSERT( t3.resume() == 0 );
-		CPPUNIT_ASSERT( t4.resume() == 0 );
+		TEST_CHECK( t1.resume() == 0 );
+		TEST_CHECK( t2.resume() == 0 );
+		TEST_CHECK( t3.resume() == 0 );
+		TEST_CHECK( t4.resume() == 0 );
 		
-		CPPUNIT_ASSERT( t1.join() == 0 );
-		CPPUNIT_ASSERT( t2.join() == 0 );
-		CPPUNIT_ASSERT( t3.join() == 0 );
-		CPPUNIT_ASSERT( t4.join() == 0 );
+		TEST_CHECK( t1.join() == 0 );
+		TEST_CHECK( t2.join() == 0 );
+		TEST_CHECK( t3.join() == 0 );
+		TEST_CHECK( t4.join() == 0 );
 		
 		unsigned long retval = 0;
-		CPPUNIT_ASSERT( t1.get_exit_code(&retval) == 0 );	// finished
-		CPPUNIT_ASSERT( retval == 0 );						//trylock succeeded
-		CPPUNIT_ASSERT( t2.get_exit_code(&retval) == 0 );	// finished
-		CPPUNIT_ASSERT( retval == 0 );						//trylock succeeded
-		CPPUNIT_ASSERT( t3.get_exit_code(&retval) == 0 );	// finished
-		CPPUNIT_ASSERT( retval == 0 );						//trylock succeeded
-		CPPUNIT_ASSERT( t4.get_exit_code(&retval) == 0 );	// finished
-		CPPUNIT_ASSERT( retval == 0 );						//trylock succeeded
+		TEST_CHECK( t1.get_exit_code(&retval) == 0 );	// finished
+		TEST_CHECK( retval == 0 );						//trylock succeeded
+		TEST_CHECK( t2.get_exit_code(&retval) == 0 );	// finished
+		TEST_CHECK( retval == 0 );						//trylock succeeded
+		TEST_CHECK( t3.get_exit_code(&retval) == 0 );	// finished
+		TEST_CHECK( retval == 0 );						//trylock succeeded
+		TEST_CHECK( t4.get_exit_code(&retval) == 0 );	// finished
+		TEST_CHECK( retval == 0 );						//trylock succeeded
 		
 	}
 	{
@@ -836,31 +836,31 @@ void test_multi_lock::trylock()
 		sys::multi_lock ml4(&so[5], 0 + 40 + 3); // 0 mutex, 40 events, 3 sem
 		MLTimedLockThread t4(&ml4, 300, 4); //5min
 		
-		CPPUNIT_ASSERT( t1.resume() == 0 );
-		CPPUNIT_ASSERT( t2.resume() == 0 );
-		CPPUNIT_ASSERT( t3.resume() == 0 );
-		CPPUNIT_ASSERT( t4.resume() == 0 );
+		TEST_CHECK( t1.resume() == 0 );
+		TEST_CHECK( t2.resume() == 0 );
+		TEST_CHECK( t3.resume() == 0 );
+		TEST_CHECK( t4.resume() == 0 );
 		
 		stl::cout << "\n\n\t main: wait 3 seconds for multi_lock cocktail";
 		sleep(3);
 		
 		for(int i=0; i < 40; ++i)
-			CPPUNIT_ASSERT( ev[i].setevent() == 0 );
+			TEST_CHECK( ev[i].setevent() == 0 );
 			
-		CPPUNIT_ASSERT( t1.join() == 0 );
-		CPPUNIT_ASSERT( t2.join() == 0 );
-		CPPUNIT_ASSERT( t3.join() == 0 );
-		CPPUNIT_ASSERT( t4.join() == 0 );
+		TEST_CHECK( t1.join() == 0 );
+		TEST_CHECK( t2.join() == 0 );
+		TEST_CHECK( t3.join() == 0 );
+		TEST_CHECK( t4.join() == 0 );
 		
 		unsigned long retval = 0;
-		CPPUNIT_ASSERT( t1.get_exit_code(&retval) == 0 );	// finished
-		CPPUNIT_ASSERT( retval == 0 );						//trylock succeeded
-		CPPUNIT_ASSERT( t2.get_exit_code(&retval) == 0 );	// finished
-		CPPUNIT_ASSERT( retval == 0 );						//trylock succeeded
-		CPPUNIT_ASSERT( t3.get_exit_code(&retval) == 0 );	// finished
-		CPPUNIT_ASSERT( retval == 0 );						//trylock succeeded
-		CPPUNIT_ASSERT( t4.get_exit_code(&retval) == 0 );	// finished
-		CPPUNIT_ASSERT( retval == 0 );						//trylock succeeded
+		TEST_CHECK( t1.get_exit_code(&retval) == 0 );	// finished
+		TEST_CHECK( retval == 0 );						//trylock succeeded
+		TEST_CHECK( t2.get_exit_code(&retval) == 0 );	// finished
+		TEST_CHECK( retval == 0 );						//trylock succeeded
+		TEST_CHECK( t3.get_exit_code(&retval) == 0 );	// finished
+		TEST_CHECK( retval == 0 );						//trylock succeeded
+		TEST_CHECK( t4.get_exit_code(&retval) == 0 );	// finished
+		TEST_CHECK( retval == 0 );						//trylock succeeded
 	}
 	{
 		stl::cout << "\n\n\t main(10): concurent multi_lock on 10 objects";
@@ -893,29 +893,29 @@ void test_multi_lock::trylock()
 		sys::multi_lock ml4(so, 11);
 		MLTimedLockThread t4(&ml4, 300, 4); //5min
 		
-		CPPUNIT_ASSERT( t1.resume() == 0 );
-		CPPUNIT_ASSERT( t2.resume() == 0 );
-		CPPUNIT_ASSERT( t3.resume() == 0 );
-		CPPUNIT_ASSERT( t4.resume() == 0 );
+		TEST_CHECK( t1.resume() == 0 );
+		TEST_CHECK( t2.resume() == 0 );
+		TEST_CHECK( t3.resume() == 0 );
+		TEST_CHECK( t4.resume() == 0 );
 		
 		stl::cout << "\n\t main: resumed 4 threads, in 2 sec comes the event";
 		sleep(2);
-		CPPUNIT_ASSERT( ev.setevent() == 0 );		
+		TEST_CHECK( ev.setevent() == 0 );		
 		
-		CPPUNIT_ASSERT( t1.join() == 0 );
-		CPPUNIT_ASSERT( t2.join() == 0 );
-		CPPUNIT_ASSERT( t3.join() == 0 );
-		CPPUNIT_ASSERT( t4.join() == 0 );	
+		TEST_CHECK( t1.join() == 0 );
+		TEST_CHECK( t2.join() == 0 );
+		TEST_CHECK( t3.join() == 0 );
+		TEST_CHECK( t4.join() == 0 );	
 		
 		unsigned long retval = 0;
-		CPPUNIT_ASSERT( t1.get_exit_code(&retval) == 0 );	// finished
-		CPPUNIT_ASSERT( retval == 0 );						//trylock succeeded
-		CPPUNIT_ASSERT( t2.get_exit_code(&retval) == 0 );	// finished
-		CPPUNIT_ASSERT( retval == 0 );						//trylock succeeded
-		CPPUNIT_ASSERT( t3.get_exit_code(&retval) == 0 );	// finished
-		CPPUNIT_ASSERT( retval == 0 );						//trylock succeeded
-		CPPUNIT_ASSERT( t4.get_exit_code(&retval) == 0 );	// finished
-		CPPUNIT_ASSERT( retval == 0 );						//trylock succeeded
+		TEST_CHECK( t1.get_exit_code(&retval) == 0 );	// finished
+		TEST_CHECK( retval == 0 );						//trylock succeeded
+		TEST_CHECK( t2.get_exit_code(&retval) == 0 );	// finished
+		TEST_CHECK( retval == 0 );						//trylock succeeded
+		TEST_CHECK( t3.get_exit_code(&retval) == 0 );	// finished
+		TEST_CHECK( retval == 0 );						//trylock succeeded
+		TEST_CHECK( t4.get_exit_code(&retval) == 0 );	// finished
+		TEST_CHECK( retval == 0 );						//trylock succeeded
 	}
 	///////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////
@@ -925,8 +925,8 @@ void test_multi_lock::trylock()
 	{
 		stl::cout << "\n\n\t main(11):2 locked mutex";
 		sys::mutex m1, m2;
-		CPPUNIT_ASSERT( m1.lock() == 0 );
-		CPPUNIT_ASSERT( m2.lock() == 0 );
+		TEST_CHECK( m1.lock() == 0 );
+		TEST_CHECK( m2.lock() == 0 );
 		sys::sync_base* so[2];
 		so[0] = &m1;
 		so[1] = &m2;
@@ -934,15 +934,15 @@ void test_multi_lock::trylock()
 		MLTimedLockThread t(&ml, 5, 1); //5sec and timeout
 		
 		
-		CPPUNIT_ASSERT( t.resume() == 0 );
-		CPPUNIT_ASSERT( t.join() == 0 );
+		TEST_CHECK( t.resume() == 0 );
+		TEST_CHECK( t.join() == 0 );
 		
 		m1.unlock();
 		m2.unlock();		
 		
 		unsigned long retval = 0;
-		CPPUNIT_ASSERT( t.get_exit_code(&retval) == 0 );	// finished
-		CPPUNIT_ASSERT( retval == 1 );						// failed, timeout
+		TEST_CHECK( t.get_exit_code(&retval) == 0 );	// finished
+		TEST_CHECK( retval == 1 );						// failed, timeout
 		printf("\n\t main: thread joined");
 	}
 	{
@@ -956,15 +956,15 @@ void test_multi_lock::trylock()
 		sys::multi_lock ml(so, 2);
 		MLTimedLockThread t(&ml, 3, 1);	// 3sec and timeout
 		
-		CPPUNIT_ASSERT( t.resume() == 0 );
+		TEST_CHECK( t.resume() == 0 );
 		
-		// CPPUNIT_ASSERT( e1.setevent() == 0 ); - get timeout
-		CPPUNIT_ASSERT( t.join() == 0 );
+		// TEST_CHECK( e1.setevent() == 0 ); - get timeout
+		TEST_CHECK( t.join() == 0 );
 		printf("\n\t main: thread joined");
 		
 		unsigned long retval = 0;
-		CPPUNIT_ASSERT( t.get_exit_code(&retval) == 0 );	// finished
-		CPPUNIT_ASSERT( retval == 1 );						// trylock succeeded
+		TEST_CHECK( t.get_exit_code(&retval) == 0 );	// finished
+		TEST_CHECK( retval == 1 );						// trylock succeeded
 	}
 	{
 		stl::cout << "\n\n\t main(13): 15 objects";
@@ -972,13 +972,13 @@ void test_multi_lock::trylock()
 		sys::event e1, e2, e3, e4, e5;
 		sys::semaphore s1(1), s2(2), s3(3), s4(4), s5(5);
 				
-		CPPUNIT_ASSERT( m1.lock() == 0 );
-		CPPUNIT_ASSERT( m2.lock() == 0 );
-		CPPUNIT_ASSERT( m3.lock() == 0 );
-		CPPUNIT_ASSERT( m4.lock() == 0 );
-		CPPUNIT_ASSERT( m5.lock() == 0 );
+		TEST_CHECK( m1.lock() == 0 );
+		TEST_CHECK( m2.lock() == 0 );
+		TEST_CHECK( m3.lock() == 0 );
+		TEST_CHECK( m4.lock() == 0 );
+		TEST_CHECK( m5.lock() == 0 );
 		
-		CPPUNIT_ASSERT( s1.lock() == 0 );
+		TEST_CHECK( s1.lock() == 0 );
 		
 		sys::sync_base* so[15];
 		so[0] = &m1;
@@ -1001,27 +1001,27 @@ void test_multi_lock::trylock()
 		
 		sys::multi_lock ml(so, 15);
 		MLTimedLockThread t(&ml, 5, 1); // 5sec and timeout
-		CPPUNIT_ASSERT( t.resume() == 0 );
+		TEST_CHECK( t.resume() == 0 );
 		
-		CPPUNIT_ASSERT( m1.unlock() == 0 );
-		CPPUNIT_ASSERT( m2.unlock() == 0 );
-		CPPUNIT_ASSERT( m3.unlock() == 0 );
-		CPPUNIT_ASSERT( m4.unlock() == 0 );
-		CPPUNIT_ASSERT( m5.unlock() == 0 );
+		TEST_CHECK( m1.unlock() == 0 );
+		TEST_CHECK( m2.unlock() == 0 );
+		TEST_CHECK( m3.unlock() == 0 );
+		TEST_CHECK( m4.unlock() == 0 );
+		TEST_CHECK( m5.unlock() == 0 );
 		
-		// CPPUNIT_ASSERT( e1.unlock() == 0 ); - get timeout
-		CPPUNIT_ASSERT( e2.unlock() == 0 );
-		CPPUNIT_ASSERT( e3.unlock() == 0 );
-		CPPUNIT_ASSERT( e4.unlock() == 0 );
-		CPPUNIT_ASSERT( e5.unlock() == 0 );
+		// TEST_CHECK( e1.unlock() == 0 ); - get timeout
+		TEST_CHECK( e2.unlock() == 0 );
+		TEST_CHECK( e3.unlock() == 0 );
+		TEST_CHECK( e4.unlock() == 0 );
+		TEST_CHECK( e5.unlock() == 0 );
 		
-		CPPUNIT_ASSERT( s1.unlock() == 0 );
+		TEST_CHECK( s1.unlock() == 0 );
 		
-		CPPUNIT_ASSERT( t.join() == 0 );
+		TEST_CHECK( t.join() == 0 );
 
 		unsigned long retval = 0;
-		CPPUNIT_ASSERT( t.get_exit_code(&retval) == 0 );	// finished
-		CPPUNIT_ASSERT( retval == 1 );						// failed, timeout
+		TEST_CHECK( t.get_exit_code(&retval) == 0 );	// finished
+		TEST_CHECK( retval == 1 );						// failed, timeout
 		printf("\n\t main: thread joined");
 	}
 	{
@@ -1036,20 +1036,20 @@ void test_multi_lock::trylock()
 		MLTimedLockThread t1(&ml1, 5, 1);	//5sec and timeout
 		MLTimedLockThread t2(&ml2, 5, 2);	//5sec and timeout
 		
-		CPPUNIT_ASSERT( m2.lock() == 0 );	// - get timeout
+		TEST_CHECK( m2.lock() == 0 );	// - get timeout
 		
-		CPPUNIT_ASSERT( t1.resume() == 0 );
-		CPPUNIT_ASSERT( t2.resume() == 0 );
-		CPPUNIT_ASSERT( t1.join() == 0 );
-		CPPUNIT_ASSERT( t2.join() == 0 );
+		TEST_CHECK( t1.resume() == 0 );
+		TEST_CHECK( t2.resume() == 0 );
+		TEST_CHECK( t1.join() == 0 );
+		TEST_CHECK( t2.join() == 0 );
 		
 		m2.unlock();
 		
 		unsigned long retval = 0;
-		CPPUNIT_ASSERT( t1.get_exit_code(&retval) == 0 );	// finished
-		CPPUNIT_ASSERT( retval == 1 );						// trylock succeeded
-		CPPUNIT_ASSERT( t2.get_exit_code(&retval) == 0 );	// finished
-		CPPUNIT_ASSERT( retval == 1 );						// trylock succeeded
+		TEST_CHECK( t1.get_exit_code(&retval) == 0 );	// finished
+		TEST_CHECK( retval == 1 );						// trylock succeeded
+		TEST_CHECK( t2.get_exit_code(&retval) == 0 );	// finished
+		TEST_CHECK( retval == 1 );						// trylock succeeded
 		
 	}
 	{
@@ -1072,30 +1072,30 @@ void test_multi_lock::trylock()
 		sys::multi_lock ml3(&so[4], 2);
 		MLTimedLockThread t3(&ml3, 5, 3); //5sec and timeout
 		
-		CPPUNIT_ASSERT( so[0]->lock() == 0 ); // get timeout
-		CPPUNIT_ASSERT( so[2]->lock() == 0 ); // get timeout
-		CPPUNIT_ASSERT( so[4]->lock() == 0 ); // get timeout
+		TEST_CHECK( so[0]->lock() == 0 ); // get timeout
+		TEST_CHECK( so[2]->lock() == 0 ); // get timeout
+		TEST_CHECK( so[4]->lock() == 0 ); // get timeout
 		
-		CPPUNIT_ASSERT( t1.resume() == 0 );
-		CPPUNIT_ASSERT( t2.resume() == 0 );
-		CPPUNIT_ASSERT( t3.resume() == 0 );
+		TEST_CHECK( t1.resume() == 0 );
+		TEST_CHECK( t2.resume() == 0 );
+		TEST_CHECK( t3.resume() == 0 );
 		
-		CPPUNIT_ASSERT( t1.join() == 0 );
-		CPPUNIT_ASSERT( t2.join() == 0 );
-		CPPUNIT_ASSERT( t3.join() == 0 );
+		TEST_CHECK( t1.join() == 0 );
+		TEST_CHECK( t2.join() == 0 );
+		TEST_CHECK( t3.join() == 0 );
 		
-		CPPUNIT_ASSERT( so[0]->unlock() == 0 );
-		CPPUNIT_ASSERT( so[2]->unlock() == 0 );
-		CPPUNIT_ASSERT( so[4]->unlock() == 0 );	
+		TEST_CHECK( so[0]->unlock() == 0 );
+		TEST_CHECK( so[2]->unlock() == 0 );
+		TEST_CHECK( so[4]->unlock() == 0 );	
 		
 		
 		unsigned long retval = 0;
-		CPPUNIT_ASSERT( t1.get_exit_code(&retval) == 0 );	// finished
-		CPPUNIT_ASSERT( retval == 1 );						//trylock succeeded
-		CPPUNIT_ASSERT( t2.get_exit_code(&retval) == 0 );	// finished
-		CPPUNIT_ASSERT( retval == 1 );						//trylock succeeded
-		CPPUNIT_ASSERT( t3.get_exit_code(&retval) == 0 );	// finished
-		CPPUNIT_ASSERT( retval == 1 );						//trylock succeeded
+		TEST_CHECK( t1.get_exit_code(&retval) == 0 );	// finished
+		TEST_CHECK( retval == 1 );						//trylock succeeded
+		TEST_CHECK( t2.get_exit_code(&retval) == 0 );	// finished
+		TEST_CHECK( retval == 1 );						//trylock succeeded
+		TEST_CHECK( t3.get_exit_code(&retval) == 0 );	// finished
+		TEST_CHECK( retval == 1 );						//trylock succeeded
 	}
  	{
 		stl::cout << "\n\n\t main(16): 4 concurent multi_lock on 3 objects with 2 overlapped";
@@ -1120,33 +1120,33 @@ void test_multi_lock::trylock()
 		sys::multi_lock ml4(&so[3], 3);
 		MLTimedLockThread t4(&ml4, 5, 4);	//5sec and timeout
 		
-		CPPUNIT_ASSERT( so[2]->lock() == 0 ); // get timeout
-		CPPUNIT_ASSERT( so[5]->lock() == 0 ); // get timeout
+		TEST_CHECK( so[2]->lock() == 0 ); // get timeout
+		TEST_CHECK( so[5]->lock() == 0 ); // get timeout
 		
 		
-		CPPUNIT_ASSERT( t1.resume() == 0 );
-		CPPUNIT_ASSERT( t2.resume() == 0 );
-		CPPUNIT_ASSERT( t3.resume() == 0 );
-		CPPUNIT_ASSERT( t4.resume() == 0 );
+		TEST_CHECK( t1.resume() == 0 );
+		TEST_CHECK( t2.resume() == 0 );
+		TEST_CHECK( t3.resume() == 0 );
+		TEST_CHECK( t4.resume() == 0 );
 		
-		CPPUNIT_ASSERT( t1.join() == 0 );
-		CPPUNIT_ASSERT( t2.join() == 0 );
-		CPPUNIT_ASSERT( t3.join() == 0 );
-		CPPUNIT_ASSERT( t4.join() == 0 );
+		TEST_CHECK( t1.join() == 0 );
+		TEST_CHECK( t2.join() == 0 );
+		TEST_CHECK( t3.join() == 0 );
+		TEST_CHECK( t4.join() == 0 );
 		
-		CPPUNIT_ASSERT( so[2]->unlock() == 0 );
-		CPPUNIT_ASSERT( so[5]->unlock() == 0 );
+		TEST_CHECK( so[2]->unlock() == 0 );
+		TEST_CHECK( so[5]->unlock() == 0 );
 
 		
 		unsigned long retval = 0;
-		CPPUNIT_ASSERT( t1.get_exit_code(&retval) == 0 );	// finished
-		CPPUNIT_ASSERT( retval == 1 );						// failed, timeout
-		CPPUNIT_ASSERT( t2.get_exit_code(&retval) == 0 );	// finished
-		CPPUNIT_ASSERT( retval == 1 );						// failed, timeout
-		CPPUNIT_ASSERT( t3.get_exit_code(&retval) == 0 );	// finished
-		CPPUNIT_ASSERT( retval == 1 );						// failed, timeout
-		CPPUNIT_ASSERT( t4.get_exit_code(&retval) == 0 );	// finished
-		CPPUNIT_ASSERT( retval == 1 );						// failed, timeout
+		TEST_CHECK( t1.get_exit_code(&retval) == 0 );	// finished
+		TEST_CHECK( retval == 1 );						// failed, timeout
+		TEST_CHECK( t2.get_exit_code(&retval) == 0 );	// finished
+		TEST_CHECK( retval == 1 );						// failed, timeout
+		TEST_CHECK( t3.get_exit_code(&retval) == 0 );	// finished
+		TEST_CHECK( retval == 1 );						// failed, timeout
+		TEST_CHECK( t4.get_exit_code(&retval) == 0 );	// finished
+		TEST_CHECK( retval == 1 );						// failed, timeout
 		
 	}
 	{
@@ -1183,28 +1183,28 @@ void test_multi_lock::trylock()
 		sys::multi_lock ml4(&so[5], 0 + 40 + 3); // 0 mutex, 40 events, 3 sem
 		MLTimedLockThread t4(&ml4, 5, 4);  //5sec and timeout
 		
-		CPPUNIT_ASSERT( t1.resume() == 0 );
-		CPPUNIT_ASSERT( t2.resume() == 0 );
-		CPPUNIT_ASSERT( t3.resume() == 0 );
-		CPPUNIT_ASSERT( t4.resume() == 0 );
+		TEST_CHECK( t1.resume() == 0 );
+		TEST_CHECK( t2.resume() == 0 );
+		TEST_CHECK( t3.resume() == 0 );
+		TEST_CHECK( t4.resume() == 0 );
 		
 		for(int i=0; i < 39; ++i)			// one event less - get timeout
-			CPPUNIT_ASSERT( ev[i].setevent() == 0 );
+			TEST_CHECK( ev[i].setevent() == 0 );
 			
-		CPPUNIT_ASSERT( t1.join() == 0 );
-		CPPUNIT_ASSERT( t2.join() == 0 );
-		CPPUNIT_ASSERT( t3.join() == 0 );
-		CPPUNIT_ASSERT( t4.join() == 0 );
+		TEST_CHECK( t1.join() == 0 );
+		TEST_CHECK( t2.join() == 0 );
+		TEST_CHECK( t3.join() == 0 );
+		TEST_CHECK( t4.join() == 0 );
 		
 		unsigned long retval = 0;
-		CPPUNIT_ASSERT( t1.get_exit_code(&retval) == 0 );	// finished
-		CPPUNIT_ASSERT( retval == 1 );						// failed, timeout
-		CPPUNIT_ASSERT( t2.get_exit_code(&retval) == 0 );	// finished
-		CPPUNIT_ASSERT( retval == 1 );						// failed, timeout
-		CPPUNIT_ASSERT( t3.get_exit_code(&retval) == 0 );	// finished
-		CPPUNIT_ASSERT( retval == 1 );						// failed, timeout
-		CPPUNIT_ASSERT( t4.get_exit_code(&retval) == 0 );	// finished
-		CPPUNIT_ASSERT( retval == 1 );						// failed, timeout
+		TEST_CHECK( t1.get_exit_code(&retval) == 0 );	// finished
+		TEST_CHECK( retval == 1 );						// failed, timeout
+		TEST_CHECK( t2.get_exit_code(&retval) == 0 );	// finished
+		TEST_CHECK( retval == 1 );						// failed, timeout
+		TEST_CHECK( t3.get_exit_code(&retval) == 0 );	// finished
+		TEST_CHECK( retval == 1 );						// failed, timeout
+		TEST_CHECK( t4.get_exit_code(&retval) == 0 );	// finished
+		TEST_CHECK( retval == 1 );						// failed, timeout
 	}
 	{
 		stl::cout << "\n\n\t main(18): concurent multi_lock on 10 objects";
@@ -1237,27 +1237,27 @@ void test_multi_lock::trylock()
 		sys::multi_lock ml4(so, 11);
 		MLTimedLockThread t4(&ml4, 5, 4); // 5sec and timeout
 		
-		CPPUNIT_ASSERT( t1.resume() == 0 );
-		CPPUNIT_ASSERT( t2.resume() == 0 );
-		CPPUNIT_ASSERT( t3.resume() == 0 );
-		CPPUNIT_ASSERT( t4.resume() == 0 );
+		TEST_CHECK( t1.resume() == 0 );
+		TEST_CHECK( t2.resume() == 0 );
+		TEST_CHECK( t3.resume() == 0 );
+		TEST_CHECK( t4.resume() == 0 );
 		
-		// CPPUNIT_ASSERT( ev.setevent() == 0 ); - get timeout
+		// TEST_CHECK( ev.setevent() == 0 ); - get timeout
 		
-		CPPUNIT_ASSERT( t1.join() == 0 );
-		CPPUNIT_ASSERT( t2.join() == 0 );
-		CPPUNIT_ASSERT( t3.join() == 0 );
-		CPPUNIT_ASSERT( t4.join() == 0 );	
+		TEST_CHECK( t1.join() == 0 );
+		TEST_CHECK( t2.join() == 0 );
+		TEST_CHECK( t3.join() == 0 );
+		TEST_CHECK( t4.join() == 0 );	
 		
 		unsigned long retval = 0;
-		CPPUNIT_ASSERT( t1.get_exit_code(&retval) == 0 );	// finished
-		CPPUNIT_ASSERT( retval == 1 );						// failed, timeout
-		CPPUNIT_ASSERT( t2.get_exit_code(&retval) == 0 );	// finished
-		CPPUNIT_ASSERT( retval == 1 );						// failed, timeout
-		CPPUNIT_ASSERT( t3.get_exit_code(&retval) == 0 );	// finished
-		CPPUNIT_ASSERT( retval == 1 );						// failed, timeout
-		CPPUNIT_ASSERT( t4.get_exit_code(&retval) == 0 );	// finished
-		CPPUNIT_ASSERT( retval == 1 );						// failed, timeout
+		TEST_CHECK( t1.get_exit_code(&retval) == 0 );	// finished
+		TEST_CHECK( retval == 1 );						// failed, timeout
+		TEST_CHECK( t2.get_exit_code(&retval) == 0 );	// finished
+		TEST_CHECK( retval == 1 );						// failed, timeout
+		TEST_CHECK( t3.get_exit_code(&retval) == 0 );	// finished
+		TEST_CHECK( retval == 1 );						// failed, timeout
+		TEST_CHECK( t4.get_exit_code(&retval) == 0 );	// finished
+		TEST_CHECK( retval == 1 );						// failed, timeout
 	}
 }
 
@@ -1266,4 +1266,3 @@ void test_multi_lock::unlock()
 	stl::cout << "\n\n\tunlock ------------------------------------------------";
 }
 //##########################END  TEST  SUITE######################################
-

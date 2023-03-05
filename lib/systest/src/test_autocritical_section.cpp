@@ -10,11 +10,8 @@ Copyright (C) 2013 Mihai Vasilian
 //c++
 #include <iostream>
 
-//CppUnit
-#include <cppunit/CompilerOutputter.h>
-#include <cppunit/extensions/TestFactoryRegistry.h>
-#include <cppunit/ui/text/TestRunner.h>
-
+//acutest
+#include "acutest.h"
 
 //libraries
 #include "string.hpp"
@@ -26,16 +23,14 @@ Copyright (C) 2013 Mihai Vasilian
 
 
 
-//###########################BEGIN TEST CLASS ####################################
-void test_autocritical_section::setUp()
+//########################### BEGIN TEST #######################################
+void test_autocritical_section::run()
 {
+	ctor();
+	dtor();
 }
 
-void test_autocritical_section::tearDown()
-{
-}
-
-//##########################BEGIN TEST SUITE######################################
+//############################ BEGIN TEST ######################################
 void test_autocritical_section::ctor()
 {
     stl::cout << "\n\n\t*******************************************************";
@@ -46,13 +41,13 @@ void test_autocritical_section::ctor()
 	{
 		sys::critical_section cs;
 		sys::autocritical_section acs(cs);
-		CPPUNIT_ASSERT( true );
+		TEST_CHECK( true );
 	}
 	{
 		sys::critical_section cs;
 		sys::autocritical_section* acs;
 		acs = new sys::autocritical_section(cs);
-		CPPUNIT_ASSERT( acs != 0 );
+		TEST_CHECK( acs != 0 );
 		delete acs;
 	}
 	{
@@ -62,7 +57,7 @@ void test_autocritical_section::ctor()
 		for(int i=0; i < CSNO; ++i)
 			acs[i] = new sys::autocritical_section(cs[i]);
 		for(int i=0; i < CSNO; ++i)
-			CPPUNIT_ASSERT( acs[i] != 0 );
+			TEST_CHECK( acs[i] != 0 );
 		for(int i=0; i < CSNO; ++i)
 			delete acs[i];
 	}
@@ -75,4 +70,4 @@ void test_autocritical_section::dtor()
 
 
 
-//##########################END  TEST  SUITE######################################
+//############################ END  TEST  ######################################

@@ -10,10 +10,8 @@ Copyright (C) 2013 Mihai Vasilian
 //c++
 #include <iostream>
 
-//CppUnit
-#include <cppunit/CompilerOutputter.h>
-#include <cppunit/extensions/TestFactoryRegistry.h>
-#include <cppunit/ui/text/TestRunner.h>
+//acutest
+#include "acutest.h"
 
 
 //libraries
@@ -27,13 +25,16 @@ Copyright (C) 2013 Mihai Vasilian
 
 
 //###########################BEGIN TEST CLASS ####################################
-void test_thread::setUp()
+void test_thread::run_()
 {
+	ctor();
+	dtor();
+	run();
+	resume();
+	join();
+	get_exit_code();
 }
 
-void test_thread::tearDown()
-{
-}
 
 //##########################BEGIN TEST SUITE######################################
 class Ttthread : public sys::thread
@@ -93,23 +94,23 @@ void test_thread::ctor()
 	{
 		// default ctor - thread is not running.
 		Ttthread t0, t1, t2;
-		CPPUNIT_ASSERT(t0.geta() == -1);
-		CPPUNIT_ASSERT(t0.getstarted() == false);
-		CPPUNIT_ASSERT(t1.geta() == -1);
-		CPPUNIT_ASSERT(t1.getstarted() == false);
-		CPPUNIT_ASSERT(t2.geta() == -1);
-		CPPUNIT_ASSERT(t2.getstarted() == false);
+		TEST_CHECK(t0.geta() == -1);
+		TEST_CHECK(t0.getstarted() == false);
+		TEST_CHECK(t1.geta() == -1);
+		TEST_CHECK(t1.getstarted() == false);
+		TEST_CHECK(t2.geta() == -1);
+		TEST_CHECK(t2.getstarted() == false);
 		// no join for not started thread
 	}
 	{
 		// parameterized ctor - thread is not running.
 		Ttthread t0(0), t1(1), t2(2);
-		CPPUNIT_ASSERT(t0.geta() == 0);
-		CPPUNIT_ASSERT(t0.getstarted() == false);
-		CPPUNIT_ASSERT(t1.geta() == 1);
-		CPPUNIT_ASSERT(t1.getstarted() == false);
-		CPPUNIT_ASSERT(t2.geta() == 2);
-		CPPUNIT_ASSERT(t2.getstarted() == false);
+		TEST_CHECK(t0.geta() == 0);
+		TEST_CHECK(t0.getstarted() == false);
+		TEST_CHECK(t1.geta() == 1);
+		TEST_CHECK(t1.getstarted() == false);
+		TEST_CHECK(t2.geta() == 2);
+		TEST_CHECK(t2.getstarted() == false);
 		// no join for not started thread
 	}
 	{
@@ -121,8 +122,8 @@ void test_thread::ctor()
 		
 		for(int i=0; i < THMAX; ++i)
 		{
-			CPPUNIT_ASSERT( t[i]->geta() == i );
-			CPPUNIT_ASSERT( t[i]->getstarted() == false );
+			TEST_CHECK( t[i]->geta() == i );
+			TEST_CHECK( t[i]->getstarted() == false );
 		}
 		
 		// deallocate the memory
@@ -141,12 +142,12 @@ void test_thread::dtor()
 	{
 		// on the stack
 		Ttthread t0, t1, t2;
-		CPPUNIT_ASSERT(t0.geta() == -1);
-		CPPUNIT_ASSERT(t0.getstarted() == false);
-		CPPUNIT_ASSERT(t1.geta() == -1);
-		CPPUNIT_ASSERT(t1.getstarted() == false);
-		CPPUNIT_ASSERT(t2.geta() == -1);
-		CPPUNIT_ASSERT(t2.getstarted() == false);
+		TEST_CHECK(t0.geta() == -1);
+		TEST_CHECK(t0.getstarted() == false);
+		TEST_CHECK(t1.geta() == -1);
+		TEST_CHECK(t1.getstarted() == false);
+		TEST_CHECK(t2.geta() == -1);
+		TEST_CHECK(t2.getstarted() == false);
 		// no join for not started thread
 	}
 	{
@@ -158,8 +159,8 @@ void test_thread::dtor()
 		
 		for(int i=0; i < THMAX; ++i)
 		{
-			CPPUNIT_ASSERT( t[i]->geta() == i );
-			CPPUNIT_ASSERT( t[i]->getstarted() == false );
+			TEST_CHECK( t[i]->geta() == i );
+			TEST_CHECK( t[i]->getstarted() == false );
 		}
 		
 		// call destructor
@@ -180,22 +181,22 @@ void test_thread::run()
 	
 	{
 		Ttthread t0, t1, t2;
-		CPPUNIT_ASSERT( t0.resume() == 0 );
-		CPPUNIT_ASSERT( t1.resume() == 0 );
-		CPPUNIT_ASSERT( t2.resume() == 0 );
+		TEST_CHECK( t0.resume() == 0 );
+		TEST_CHECK( t1.resume() == 0 );
+		TEST_CHECK( t2.resume() == 0 );
 		
 		sleep(2);//wait for threads to resume
 		
-		CPPUNIT_ASSERT(t0.geta() == -1);
-		CPPUNIT_ASSERT(t0.getstarted() == true);
-		CPPUNIT_ASSERT(t1.geta() == -1);
-		CPPUNIT_ASSERT(t1.getstarted() == true);
-		CPPUNIT_ASSERT(t2.geta() == -1);
-		CPPUNIT_ASSERT(t2.getstarted() == true);
+		TEST_CHECK(t0.geta() == -1);
+		TEST_CHECK(t0.getstarted() == true);
+		TEST_CHECK(t1.geta() == -1);
+		TEST_CHECK(t1.getstarted() == true);
+		TEST_CHECK(t2.geta() == -1);
+		TEST_CHECK(t2.getstarted() == true);
 
-		CPPUNIT_ASSERT( t0.join() == 0 );
-		CPPUNIT_ASSERT( t1.join() == 0 );
-		CPPUNIT_ASSERT( t2.join() == 0 );
+		TEST_CHECK( t0.join() == 0 );
+		TEST_CHECK( t1.join() == 0 );
+		TEST_CHECK( t2.join() == 0 );
 	}
 	{
 		// dynamic allocated
@@ -206,13 +207,13 @@ void test_thread::run()
 		
 		for(int i=0; i < THMAX; ++i)
 		{
-			CPPUNIT_ASSERT( t[i]->geta() == i%6 );
-			CPPUNIT_ASSERT( t[i]->getstarted() == false );
+			TEST_CHECK( t[i]->geta() == i%6 );
+			TEST_CHECK( t[i]->getstarted() == false );
 		}
 		
 		for(int i=0; i < THMAX; ++i)
 		{
-			CPPUNIT_ASSERT( t[i]->resume() == 0 );
+			TEST_CHECK( t[i]->resume() == 0 );
 			printf("\n\t\t\tresumed thread %d", i);
 		}
 		
@@ -221,14 +222,14 @@ void test_thread::run()
 		
 		for(int i=0; i < THMAX; ++i)
 		{
-			CPPUNIT_ASSERT(t[i]->geta() == i%6);
-			CPPUNIT_ASSERT(t[i]->getstarted() == true);
+			TEST_CHECK(t[i]->geta() == i%6);
+			TEST_CHECK(t[i]->getstarted() == true);
 		}
 		
 		// call destructor
 		for(int i=0; i < THMAX; ++i)
 		{
-			CPPUNIT_ASSERT(t[i]->join() == 0);
+			TEST_CHECK(t[i]->join() == 0);
 			delete t[i];
 			printf("\n\t\t\tjoined thread %d", i);
 		}
@@ -240,23 +241,23 @@ void test_thread::resume()
 	stl::cout << "\n\n\t resume ----------------------------------------------";
 	{
 		Ttthread t0(0), t1(1), t2(2);
-		CPPUNIT_ASSERT( t0.resume() == 0 );
-		CPPUNIT_ASSERT( t1.resume() == 0 );
-		CPPUNIT_ASSERT( t2.resume() == 0 );
+		TEST_CHECK( t0.resume() == 0 );
+		TEST_CHECK( t1.resume() == 0 );
+		TEST_CHECK( t2.resume() == 0 );
 		
 		printf("\n\t\t\tsleep(1)");
 		sleep(1); // wait for threads to resume		
 
-		CPPUNIT_ASSERT( t0.join() == 0 );
-		CPPUNIT_ASSERT( t1.join() == 0 );
-		CPPUNIT_ASSERT( t2.join() == 0 );
+		TEST_CHECK( t0.join() == 0 );
+		TEST_CHECK( t1.join() == 0 );
+		TEST_CHECK( t2.join() == 0 );
 		
-		CPPUNIT_ASSERT(t0.geta() == 0);
-		CPPUNIT_ASSERT(t0.getstarted() == true);
-		CPPUNIT_ASSERT(t1.geta() == 1);
-		CPPUNIT_ASSERT(t1.getstarted() == true);
-		CPPUNIT_ASSERT(t2.geta() == 2);
-		CPPUNIT_ASSERT(t2.getstarted() == true);
+		TEST_CHECK(t0.geta() == 0);
+		TEST_CHECK(t0.getstarted() == true);
+		TEST_CHECK(t1.geta() == 1);
+		TEST_CHECK(t1.getstarted() == true);
+		TEST_CHECK(t2.geta() == 2);
+		TEST_CHECK(t2.getstarted() == true);
 	}
 	{
 		// dynamic allocated
@@ -267,13 +268,13 @@ void test_thread::resume()
 		
 		for(int i=0; i < THMAX; ++i)
 		{
-			CPPUNIT_ASSERT( t[i]->geta() == i%6 );
-			CPPUNIT_ASSERT( t[i]->getstarted() == false );
+			TEST_CHECK( t[i]->geta() == i%6 );
+			TEST_CHECK( t[i]->getstarted() == false );
 		}
 		
 		for(int i=0; i < THMAX; ++i)
 		{
-			CPPUNIT_ASSERT( t[i]->resume() == 0 );
+			TEST_CHECK( t[i]->resume() == 0 );
 			printf("\n\t\t\tresumed thread %d", i);
 		}
 		
@@ -282,14 +283,14 @@ void test_thread::resume()
 		
 		for(int i=0; i < THMAX; ++i)
 		{
-			CPPUNIT_ASSERT(t[i]->geta() == i%6);
-			CPPUNIT_ASSERT(t[i]->getstarted() == true);
+			TEST_CHECK(t[i]->geta() == i%6);
+			TEST_CHECK(t[i]->getstarted() == true);
 		}
 		
 		// call destructor
 		for(int i=0; i < THMAX; ++i)
 		{
-			CPPUNIT_ASSERT( t[i]->join() == 0 );
+			TEST_CHECK( t[i]->join() == 0 );
 			delete t[i];
 			printf("\n\t\t\tjoined thread %d", i);
 		}
@@ -301,26 +302,26 @@ void test_thread::resume()
 		for(int i=0; i < THNO; ++i)
 			thvec.push_back(new Ttthread(i%5));
 		for(int i=0; i < THNO; ++i)
-			CPPUNIT_ASSERT( thvec[i]->resume() == 0 );
+			TEST_CHECK( thvec[i]->resume() == 0 );
 
 		for(int i=0; i < THNO; ++i)
 		{
-			CPPUNIT_ASSERT( thvec[i]->join() == 0 );
-			CPPUNIT_ASSERT( thvec[i]->geta() == i%5 );
+			TEST_CHECK( thvec[i]->join() == 0 );
+			TEST_CHECK( thvec[i]->geta() == i%5 );
 			printf("\n\t\t\tjoined thread %d", i);
 		}
 
 		for(int i=0; i < THNO; ++i)
 		{
 			thvec[i]->seta(i%5+6);
-			CPPUNIT_ASSERT( thvec[i]->resume() == 0 );
+			TEST_CHECK( thvec[i]->resume() == 0 );
 			printf("\n\t\t\tresumed thread %d", i);
 		}
 
 		for(int i=0; i < THNO; ++i)
 		{
-			CPPUNIT_ASSERT( thvec[i]->join() == 0 );
-			CPPUNIT_ASSERT( thvec[i]->geta() == i%5+6 );
+			TEST_CHECK( thvec[i]->join() == 0 );
+			TEST_CHECK( thvec[i]->geta() == i%5+6 );
 			printf("\n\t\t\tjoined thread %d", i);
 		}		
 	}
@@ -333,7 +334,7 @@ void test_thread::resume()
 			thvec.push_back(new Ttthread(i%3+5));
 		for(int i=0; i < THNO; ++i)
 		{
-			CPPUNIT_ASSERT( thvec[i]->resume() == 0 );
+			TEST_CHECK( thvec[i]->resume() == 0 );
 			printf("\n\t\t\tresumed thread %d", i);
 			bool _2ndresume_fail = false;
 			try
@@ -344,12 +345,12 @@ void test_thread::resume()
 			{
 				_2ndresume_fail = true;
 			}
-			CPPUNIT_ASSERT( _2ndresume_fail == true );
+			TEST_CHECK( _2ndresume_fail == true );
 		}
 		for(int i=0; i < THNO; ++i)
 		{
-			CPPUNIT_ASSERT( thvec[i]->join() == 0 );
-			CPPUNIT_ASSERT( thvec[i]->geta() == i%3+5 );
+			TEST_CHECK( thvec[i]->join() == 0 );
+			TEST_CHECK( thvec[i]->geta() == i%3+5 );
 			printf("\n\t\t\tjoined thread %d", i);
 		}		
 	}
@@ -362,30 +363,30 @@ void test_thread::join()
 	{
 		// sleep 10 sec and join TIMEOUT
 		Ttthread t(5);
-		CPPUNIT_ASSERT( t.resume() == 0 );
-		CPPUNIT_ASSERT( t.join(1000) != 0 ); // TIMEOUT
-		CPPUNIT_ASSERT( t.join() == 0 );
-		CPPUNIT_ASSERT( t.geta() == 5 );
-		CPPUNIT_ASSERT( t.getstarted() == true );		
+		TEST_CHECK( t.resume() == 0 );
+		TEST_CHECK( t.join(1000) != 0 ); // TIMEOUT
+		TEST_CHECK( t.join() == 0 );
+		TEST_CHECK( t.geta() == 5 );
+		TEST_CHECK( t.getstarted() == true );		
 	}
 	stl::cout << "\n\t\t join TIMEOUT (ok)";
 	{
 		// sleep 5 sec and join @20 sec ok
 		Ttthread t(5);
-		CPPUNIT_ASSERT( t.resume() == 0 );
+		TEST_CHECK( t.resume() == 0 );
 		sleep(2); // let it be scheduled
-		CPPUNIT_ASSERT( t.join(20000) == 0 ); // OK
-		CPPUNIT_ASSERT( t.geta() == 5 );
-		CPPUNIT_ASSERT( t.getstarted() == true );
+		TEST_CHECK( t.join(20000) == 0 ); // OK
+		TEST_CHECK( t.geta() == 5 );
+		TEST_CHECK( t.getstarted() == true );
 	}
 	stl::cout << "\n\t\t join @20sec (ok)";
 	{
 		// sleep 5 sec and join INFINITE ok
 		Ttthread t(5);
-		CPPUNIT_ASSERT( t.resume() == 0 );
-		CPPUNIT_ASSERT( t.join(-1) == 0 ); // OK
-		CPPUNIT_ASSERT( t.geta() == 5 );
-		CPPUNIT_ASSERT( t.getstarted() == true );
+		TEST_CHECK( t.resume() == 0 );
+		TEST_CHECK( t.join(-1) == 0 ); // OK
+		TEST_CHECK( t.geta() == 5 );
+		TEST_CHECK( t.getstarted() == true );
 	}
 	stl::cout << "\n\t\t join @INFINITE (ok)";
 	
@@ -399,18 +400,18 @@ void test_thread::join()
 		// check thread is not running
 		for(int i=0; i < THMAX; ++i)
 		{
-			CPPUNIT_ASSERT( t[i]->geta() == i ); // 5 sec space to run
-			CPPUNIT_ASSERT( t[i]->getstarted() == false );
+			TEST_CHECK( t[i]->geta() == i ); // 5 sec space to run
+			TEST_CHECK( t[i]->getstarted() == false );
 		}
 		
 		// check start all threads
 		for(int i=0; i < THMAX; ++i)
 		{
-			CPPUNIT_ASSERT( t[i]->resume() == 0 );
+			TEST_CHECK( t[i]->resume() == 0 );
 			if(i > 3)
 			{
 				msleep(500);
-				CPPUNIT_ASSERT( t[i]->join(0) != 0 );
+				TEST_CHECK( t[i]->join(0) != 0 );
 				stl::cout << "\n\t\t th: " << i << " join timeout";
 			}
 		}
@@ -418,7 +419,7 @@ void test_thread::join()
 		// check finished threads
 		for(int i=0; i < THMAX; ++i)
 		{
-			CPPUNIT_ASSERT( t[i]->join( (THMAX+10) * 1e3 ) == 0 );
+			TEST_CHECK( t[i]->join( (THMAX+10) * 1e3 ) == 0 );
 			stl::cout << "\n\t\t th: " << i << " joined";
 		}
 		
@@ -436,36 +437,36 @@ void test_thread::get_exit_code()
 		// sleep 10 sec and join TIMEOUT
 		Ttthread t(10);
 		unsigned long retval = 0;
-		CPPUNIT_ASSERT( t.resume() == 0 );
-		CPPUNIT_ASSERT( t.join(3 * 1e3) != 0 ); // TIMEOUT
-		CPPUNIT_ASSERT( t.get_exit_code(&retval) != 0 ); // STILL RUNNING
-		CPPUNIT_ASSERT( t.geta() == 10 );
-		CPPUNIT_ASSERT( t.getstarted() == true );
-		CPPUNIT_ASSERT( t.join() == 0 );
+		TEST_CHECK( t.resume() == 0 );
+		TEST_CHECK( t.join(3 * 1e3) != 0 ); // TIMEOUT
+		TEST_CHECK( t.get_exit_code(&retval) != 0 ); // STILL RUNNING
+		TEST_CHECK( t.geta() == 10 );
+		TEST_CHECK( t.getstarted() == true );
+		TEST_CHECK( t.join() == 0 );
 	}
 	stl::cout << "\n\t\t exitcode @TIMEOUT (ok)";
 	{
 		// sleep 5 sec and join @20 sec ok
 		Ttthread t(5);
 		unsigned long retval = 0;
-		CPPUNIT_ASSERT( t.resume() == 0 );
-		CPPUNIT_ASSERT( t.join(20*1e3) == 0 ); // OK
-		CPPUNIT_ASSERT( t.get_exit_code(&retval) == 0 ); // OK
-		CPPUNIT_ASSERT( retval == 5 ); // OK
-		CPPUNIT_ASSERT( t.geta() == 5 );
-		CPPUNIT_ASSERT( t.getstarted() == true );
+		TEST_CHECK( t.resume() == 0 );
+		TEST_CHECK( t.join(20*1e3) == 0 ); // OK
+		TEST_CHECK( t.get_exit_code(&retval) == 0 ); // OK
+		TEST_CHECK( retval == 5 ); // OK
+		TEST_CHECK( t.geta() == 5 );
+		TEST_CHECK( t.getstarted() == true );
 	}
 	stl::cout << "\n\t\t exitcode @20sec (ok)";
 	{
 		// sleep 5 sec and join INFINITE ok
 		Ttthread t(5);
 		unsigned long retval = 0;
-		CPPUNIT_ASSERT( t.resume() == 0 );
-		CPPUNIT_ASSERT( t.join(-1) == 0 ); // OK
-		CPPUNIT_ASSERT( t.get_exit_code(&retval) == 0 ); // OK
-		CPPUNIT_ASSERT( retval == 5 ); // OK
-		CPPUNIT_ASSERT( t.geta() == 5 );
-		CPPUNIT_ASSERT( t.getstarted() == true );
+		TEST_CHECK( t.resume() == 0 );
+		TEST_CHECK( t.join(-1) == 0 ); // OK
+		TEST_CHECK( t.get_exit_code(&retval) == 0 ); // OK
+		TEST_CHECK( retval == 5 ); // OK
+		TEST_CHECK( t.geta() == 5 );
+		TEST_CHECK( t.getstarted() == true );
 	}
 	stl::cout << "\n\t\t exitcode @INFINITE (ok)";
 	
@@ -479,19 +480,19 @@ void test_thread::get_exit_code()
 		// check thread is not running
 		for(int i=0; i < THMAX; ++i)
 		{
-			CPPUNIT_ASSERT( t[i]->geta() == i );
-			CPPUNIT_ASSERT( t[i]->getstarted() == false );
+			TEST_CHECK( t[i]->geta() == i );
+			TEST_CHECK( t[i]->getstarted() == false );
 		}
 		
 		// check start all threads
 		for(int i=0; i < THMAX; ++i)
 		{
-			CPPUNIT_ASSERT( t[i]->resume() == 0 );
+			TEST_CHECK( t[i]->resume() == 0 );
 			unsigned long retval = 0;
 			if(i > 2)
 			{
-				CPPUNIT_ASSERT( t[i]->join(0) != 0 );
-				CPPUNIT_ASSERT( t[i]->get_exit_code(&retval) != 0 );
+				TEST_CHECK( t[i]->join(0) != 0 );
+				TEST_CHECK( t[i]->get_exit_code(&retval) != 0 );
 				stl::cout << "\n\t\t th: " << i << " no exit code";
 			}
 		}
@@ -500,9 +501,9 @@ void test_thread::get_exit_code()
 		for(int i=0; i < THMAX; ++i)
 		{
 			unsigned long retval = 0;
-			CPPUNIT_ASSERT( t[i]->join((THMAX+20)*1e3) == 0 );
-			CPPUNIT_ASSERT( t[i]->get_exit_code(&retval) == 0 );
-			CPPUNIT_ASSERT( retval == (unsigned long) i );
+			TEST_CHECK( t[i]->join((THMAX+20)*1e3) == 0 );
+			TEST_CHECK( t[i]->get_exit_code(&retval) == 0 );
+			TEST_CHECK( retval == (unsigned long) i );
 			stl::cout << "\n\t\t th: " << i << " exit code: " << retval;
 		}
 		
@@ -512,4 +513,3 @@ void test_thread::get_exit_code()
 	}
 }
 //##########################END  TEST  SUITE######################################
-

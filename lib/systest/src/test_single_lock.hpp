@@ -7,27 +7,15 @@ Copyright (C) 2013 Mihai Vasilian
 #define __test_single_lock_hpp__
 
 
-//c++
-//...
-//CppUnit
-#include <cppunit/extensions/HelperMacros.h>
-
 //libraries
 #include "single_lock.hpp"
 
-class test_single_lock : public CppUnit::TestFixture
+class test_single_lock
 {
-	CPPUNIT_TEST_SUITE(test_single_lock);
-	CPPUNIT_TEST(ctor);
-	CPPUNIT_TEST(dtor);
-	CPPUNIT_TEST(lock);
-	CPPUNIT_TEST(trylock);
-	CPPUNIT_TEST(unlock);
-	CPPUNIT_TEST_SUITE_END();
-
 public:
-	void setUp();
-	void tearDown();
+	test_single_lock() = default;
+	~test_single_lock() = default;
+	void run();
 
 	// begin test suite
 	void ctor();
