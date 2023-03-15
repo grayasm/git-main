@@ -13,45 +13,61 @@ iptables -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
 iptables -A INPUT -p icmp --icmp-type 8 -m conntrack --ctstate NEW -j ACCEPT
 
 # Open http,https (Apache) ports for all
-iptables -A INPUT -p tcp --dport 80  -j ACCEPT
-iptables -A INPUT -p tcp --dport 443 -j ACCEPT
+# iptables -A INPUT -p tcp --dport 80  -j ACCEPT
+# iptables -A INPUT -p tcp --dport 443 -j ACCEPT
 
 # Open vsftpd port 21 (ftp-connection) and 20 (ftp-data) for all.
 # vsftpd must be able to open passive session (PASV command) on port 40000:40099
 # with maxim 100 clients allowed
-iptables -A INPUT -p tcp --dport 20 -j ACCEPT
-iptables -A INPUT -p tcp --dport 21 -j ACCEPT
-iptables -A INPUT -p tcp --dport 40000:40099 -j ACCEPT
+# iptables -A INPUT -p tcp --dport 20 -j ACCEPT
+# iptables -A INPUT -p tcp --dport 21 -j ACCEPT
+# iptables -A INPUT -p tcp --dport 40000:40099 -j ACCEPT
+
 # Open ssh (secure shell) port for all
-iptables -A INPUT -p tcp --dport 22 -j ACCEPT
-iptables -A INPUT -p udp --dport 22 -j ACCEPT
+# iptables -A INPUT -p tcp --dport 22 -j ACCEPT
+# iptables -A INPUT -p udp --dport 22 -j ACCEPT
 
 # Open smtp,smtps (postfix) ports for all
-iptables -A INPUT -p tcp --match multiport --dports 25,465 -j ACCEPT
-# Open pop3,pop3s (dovecot) ports for all
-iptables -A INPUT -p tcp --match multiport --dports 110,995 -j ACCEPT
-# Open imap,imaps (dovecot) ports for all
-iptables -A INPUT -p tcp --match multiport --dports 143,993 -j ACCEPT
-# Open submission (postfix) port for all
-iptables -A INPUT -p tcp --dport 587 -j ACCEPT
+# iptables -A INPUT -p tcp --match multiport --dports 25,465 -j ACCEPT
 
+# Open pop3,pop3s (dovecot) ports for all
+# iptables -A INPUT -p tcp --match multiport --dports 110,995 -j ACCEPT
+
+# Open imap,imaps (dovecot) ports for all
+# iptables -A INPUT -p tcp --match multiport --dports 143,993 -j ACCEPT
+
+# Open submission (postfix) port for all
+# iptables -A INPUT -p tcp --dport 587 -j ACCEPT
+
+# Open Samba ports for everybody from LAN
+# my current IPv4=192.168.178.20
+# https://www.lifewire.com/private-ip-address-range-818387
+# 192.168.0.0/16 ranges between [192.168.0.0, 192.168.255.255] = 65534 hosts
+# 192.168.0.0/18 ranges between [192.168.0.0, 192.168.63.255 ] = 16382 hosts
+# 192.168.0.0/24 ranges between [192.168.0.0, 192.168.0.255  ] =   254 hosts
+# iptables -A INPUT -s 192.168.0.0/16 -p udp -m udp --dport 137 -j ACCEPT
+# iptables -A INPUT -s 192.168.0.0/16 -p udp -m udp --dport 138 -j ACCEPT
+# iptables -A INPUT -s 192.168.0.0/16 -p tcp -m tcp --dport 139 -j ACCEPT
+# iptables -A INPUT -s 192.168.0.0/16 -p tcp -m tcp --dport 445 -j ACCEPT
 
 # Open transmission-qt port for all
-iptables -A INPUT -p tcp --dport 51413 -j ACCEPT
-iptables -A INPUT -p udp --dport 51413 -j ACCEPT
+# iptables -A INPUT -p tcp --dport 51413 -j ACCEPT
+# iptables -A INPUT -p udp --dport 51413 -j ACCEPT
+
 # Open bitcoin-qt port for all
-iptables -A INPUT -p tcp --dport 8333 -j ACCEPT
-iptables -A INPUT -p udp --dport 8333 -j ACCEPT
+# iptables -A INPUT -p tcp --dport 8333 -j ACCEPT
+# iptables -A INPUT -p udp --dport 8333 -j ACCEPT
+
 # Open postgresql port for all
-iptables -A INPUT -p tcp --dport 5432 -j ACCEPT
-iptables -A INPUT -p udp --dport 5432 -j ACCEPT
+# iptables -A INPUT -p tcp --dport 5432 -j ACCEPT
+# iptables -A INPUT -p udp --dport 5432 -j ACCEPT
+
 # Open VNC ports (default 5900) for all
-iptables -A INPUT -p tcp --dport 5900:5910 -j ACCEPT
+# iptables -A INPUT -p tcp --dport 5900:5910 -j ACCEPT
+
 # Allow everybody from LAN to connect
-iptables -A INPUT -p tcp -s 192.168.0.1/24 -j ACCEPT
-iptables -A INPUT -p udp -s 192.168.0.1/24 -j ACCEPT
-# tv-maxe static ports
-iptables -A INPUT -p tcp --dport 10320:10321 -j ACCEPT
+# iptables -A INPUT -p tcp -s 192.168.0.0/16 -j ACCEPT
+# iptables -A INPUT -p udp -s 192.168.0.0/16 -j ACCEPT
 
 # Everything else on INPUT is dropped!!!
 iptables -A INPUT -p udp -j DROP
@@ -59,13 +75,13 @@ iptables -A INPUT -p tcp -j DROP
 
 
 iptables -P OUTPUT  ACCEPT
-iptables -A OUTPUT -p tcp -m string --algo bm --string "microsoft.com" -j LOG --log-prefix "Redmond: " --log-level 4
-iptables -A OUTPUT -p tcp -m string --algo bm --string "microsoft.com" -j REJECT
-iptables -A OUTPUT -p tcp -m string --algo bm --string "microsoftstore.com" -j REJECT
-iptables -A OUTPUT -p tcp -m string --algo bm --string "office.com" -j REJECT
-iptables -A OUTPUT -p tcp -m string --algo bm --string "live.com" -j REJECT
-iptables -A OUTPUT -p tcp -m string --algo bm --string "onenote.com" -j REJECT
-iptables -A OUTPUT -p tcp -m string --algo bm --string "xbox.com" -j REJECT
+# iptables -A OUTPUT -p tcp -m string --algo bm --string "microsoft.com" -j LOG --log-prefix "Redmond: " --log-level 4
+# iptables -A OUTPUT -p tcp -m string --algo bm --string "microsoft.com" -j REJECT
+# iptables -A OUTPUT -p tcp -m string --algo bm --string "microsoftstore.com" -j REJECT
+# iptables -A OUTPUT -p tcp -m string --algo bm --string "office.com" -j REJECT
+# iptables -A OUTPUT -p tcp -m string --algo bm --string "live.com" -j REJECT
+# iptables -A OUTPUT -p tcp -m string --algo bm --string "onenote.com" -j REJECT
+# iptables -A OUTPUT -p tcp -m string --algo bm --string "xbox.com" -j REJECT
 
 
 iptables -P FORWARD DROP
@@ -85,39 +101,62 @@ ip6tables -A INPUT -d ::1/128 ! -i lo -j REJECT --reject-with icmp-port-unreacha
 ip6tables -A INPUT -m conntrack --ctstate INVALID -j DROP
 ip6tables -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
 ip6tables -A INPUT -p icmp --icmp-type 8 -m conntrack --ctstate NEW -j ACCEPT
+
 # Open http,https (Apache) ports for all
-ip6tables -A INPUT -p tcp --dport 80  -j ACCEPT
-ip6tables -A INPUT -p tcp --dport 443 -j ACCEPT
+# ip6tables -A INPUT -p tcp --dport 80  -j ACCEPT
+# ip6tables -A INPUT -p tcp --dport 443 -j ACCEPT
+
 # Open vsftpd port 21 (ftp-connection) and 20 (ftp-data) for all.
 # vsftpd must be able to open passive session (PASV command) on port 40000:40099
 # with maxim 100 clients allowed
-ip6tables -A INPUT -p tcp --dport 20 -j ACCEPT
-ip6tables -A INPUT -p tcp --dport 21 -j ACCEPT
-ip6tables -A INPUT -p tcp --dport 40000:40099 -j ACCEPT
+# ip6tables -A INPUT -p tcp --dport 20 -j ACCEPT
+# ip6tables -A INPUT -p tcp --dport 21 -j ACCEPT
+# ip6tables -A INPUT -p tcp --dport 40000:40099 -j ACCEPT
+
 # Open ssh (secure shell) port for all
-ip6tables -A INPUT -p tcp --dport 22 -j ACCEPT
-ip6tables -A INPUT -p udp --dport 22 -j ACCEPT
+# ip6tables -A INPUT -p tcp --dport 22 -j ACCEPT
+# ip6tables -A INPUT -p udp --dport 22 -j ACCEPT
+
 # Open smtp,smtps (postfix) ports for all
-ip6tables -A INPUT -p tcp --match multiport --dports 25,465 -j ACCEPT
+# ip6tables -A INPUT -p tcp --match multiport --dports 25,465 -j ACCEPT
+
 # Open pop3,pop3s (dovecot) ports for all
-ip6tables -A INPUT -p tcp --match multiport --dports 110,995 -j ACCEPT
+# ip6tables -A INPUT -p tcp --match multiport --dports 110,995 -j ACCEPT
+
 # Open imap,imaps (dovecot) ports for all
-ip6tables -A INPUT -p tcp --match multiport --dports 143,993 -j ACCEPT
+# ip6tables -A INPUT -p tcp --match multiport --dports 143,993 -j ACCEPT
+
 # Open submission (postfix) port for all
-ip6tables -A INPUT -p tcp --dport 587 -j ACCEPT
+# ip6tables -A INPUT -p tcp --dport 587 -j ACCEPT
+
 # Open transmission-qt port for
-ip6tables -A INPUT -p tcp --dport 51413 -j ACCEPT
-ip6tables -A INPUT -p udp --dport 51413 -j ACCEPT
+# ip6tables -A INPUT -p tcp --dport 51413 -j ACCEPT
+# ip6tables -A INPUT -p udp --dport 51413 -j ACCEPT
+
 # Open bitcoin-qt port for all
-ip6tables -A INPUT -p tcp --dport 8333 -j ACCEPT
-ip6tables -A INPUT -p udp --dport 8333 -j ACCEPT
+# ip6tables -A INPUT -p tcp --dport 8333 -j ACCEPT
+# ip6tables -A INPUT -p udp --dport 8333 -j ACCEPT
+
 # Open VNC ports (default 5900) for all
-ip6tables -A INPUT -p tcp --dport 5900:5910 -j ACCEPT
+# ip6tables -A INPUT -p tcp --dport 5900:5910 -j ACCEPT
+
 # Open postgresql port for all
-ip6tables -A INPUT -p tcp --dport 5432 -j ACCEPT
-ip6tables -A INPUT -p udp --dport 5432 -j ACCEPT
-# tv-maxe static ports
-ip6tables -A INPUT -p tcp --dport 10320:10321 -j ACCEPT
+# ip6tables -A INPUT -p tcp --dport 5432 -j ACCEPT
+# ip6tables -A INPUT -p udp --dport 5432 -j ACCEPT
+
+# Open Samba ports for everybody from LAN
+# this machine IPv6=fe80::a388:71db:3ee0:9f5f
+# fe80::/10 is the local-scoped unicast used for link-local adresses
+# https://www.quora.com/Is-there-any-range-in-the-private-IP-address-of-IPv6
+# i6ptables -A INPUT -s fe80::/10 -p udp -m udp --dport 137 -j ACCEPT
+# ip6tables -A INPUT -s fe80::/10 -p udp -m udp --dport 138 -j ACCEPT
+# ip6tables -A INPUT -s fe80::/10 -p tcp -m tcp --dport 139 -j ACCEPT
+# ip6tables -A INPUT -s fe80::/10 -p tcp -m tcp --dport 445 -j ACCEPT
+
+# Allow everybody from LAN to connect
+# also: https://www.rfc-editor.org/rfc/rfc2460
+# ip6tables -A INPUT -p tcp -s fe80::/10 -j ACCEPT
+# ip6tables -A INPUT -p udp -s fe80::/10 -j ACCEPT
 
 # Everything else on INPUT is dropped!!!
 ip6tables -A INPUT -p udp -j DROP
@@ -125,13 +164,13 @@ ip6tables -A INPUT -p tcp -j DROP
 
 
 ip6tables -P OUTPUT  ACCEPT
-ip6tables -A OUTPUT -p tcp -m string --algo bm --string "microsoft.com" -j LOG --log-prefix "Redmond: " --log-level 4
-ip6tables -A OUTPUT -p tcp -m string --algo bm --string "microsoft.com" -j REJECT
-ip6tables -A OUTPUT -p tcp -m string --algo bm --string "microsoftstore.com" -j REJECT
-ip6tables -A OUTPUT -p tcp -m string --algo bm --string "office.com" -j REJECT
-ip6tables -A OUTPUT -p tcp -m string --algo bm --string "live.com" -j REJECT
-ip6tables -A OUTPUT -p tcp -m string --algo bm --string "onenote.com" -j REJECT
-ip6tables -A OUTPUT -p tcp -m string --algo bm --string "xbox.com" -j REJECT
+# ip6tables -A OUTPUT -p tcp -m string --algo bm --string "microsoft.com" -j LOG --log-prefix "Redmond: " --log-level 4
+# ip6tables -A OUTPUT -p tcp -m string --algo bm --string "microsoft.com" -j REJECT
+# ip6tables -A OUTPUT -p tcp -m string --algo bm --string "microsoftstore.com" -j REJECT
+# ip6tables -A OUTPUT -p tcp -m string --algo bm --string "office.com" -j REJECT
+# ip6tables -A OUTPUT -p tcp -m string --algo bm --string "live.com" -j REJECT
+# ip6tables -A OUTPUT -p tcp -m string --algo bm --string "onenote.com" -j REJECT
+# ip6tables -A OUTPUT -p tcp -m string --algo bm --string "xbox.com" -j REJECT
 
 ip6tables -P FORWARD DROP
 
