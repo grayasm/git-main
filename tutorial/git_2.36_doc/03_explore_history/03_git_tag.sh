@@ -1,6 +1,6 @@
 # https://git-scm.com/docs/user-manual#creating-tags
 #
-# Use git tag to create, list, delete or verity a tag object signed with GPG
+# Use git tag to create, list, delete or verify a tag object signed with GPG
 #
 # man git-tag
 

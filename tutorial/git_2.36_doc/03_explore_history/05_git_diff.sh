@@ -36,4 +36,5 @@ echo -e "\n!!!!! DO NOT COMMIT THESE .patch FILES !!!!!\n"
 git status .
 
 # clean up
+printf "\nI will remove all *.patch files now\n"
 rm -v 00*.patch
