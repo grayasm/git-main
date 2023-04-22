@@ -1,10 +1,8 @@
-# https://git-scm.com/docs/user-manual#Finding-commits-With-given-Content
+# https://git-scm.com/docs/user-manual#telling-git-your-name
 #
-# See:
-# man git-log
-# man git-diff-tree
-# man git-hash-object
-
+# Use git-config to introduce yourself to git
+#
+# man git-config
 
 if [ ! -d git-playground ]; then
 	git clone  https://github.com/grayasm/git-playground.git
@@ -26,7 +24,8 @@ git branch -D v.2023-04-06_0500
 git switch -c v.2023-04-06_0500 staging/v.2023-04-06_0500
 
 
+git config --local user.name 'Mihai Vasilian'
+git config --local user.email 'grayasm@gmail.com'
 
-git log --raw --abbrev=40 --pretty=oneline | grep -B 1 `git hash-object main.cpp`
-# dc4a598e3e826626ed1a14ca330ba065025c701b change at 2023-04-06 05:42
-# :100644 100644 83550823426ab681bfafe5145bf81bbc054cce4f 14b9a5d85a91f6c68f2f4350fd4be6d474837a28 M	main.cpp
+# check [user] section
+cat .git/config

@@ -1,7 +1,7 @@
 # https://git-scm.com/docs/user-manual#counting-commits-on-a-branch
 #
-# git log      <branch>..<branch>
-# git rev-list <branch>..<branch>
+# Suppose you want to know how many commits you’ve made on a branch since
+# it diverged from origin:
 
 if [ ! -d git-playground ]; then
     git clone  https://github.com/grayasm/git-playground.git
@@ -13,25 +13,20 @@ fi
 
 cd git-playground
 
-# switch away from dirty branch
+
+# switch to main before clean up
 git switch main
 
-# remove dirty branch
-git branch -D v.2022-08-24_1440
+# this needs new branch here ---
+# delete --force local branch first
+git branch -D v.2023-04-04_1837
 
-git switch -c v.2022-08-24_1440 staging/v.2022-08-24_1440
+# checkout clean
+git switch -c v.2023-04-04_1837 staging/v.2023-04-04_1837
 
-# show commits on a branch
-echo "git log --pretty=oneline main..v.2022-08-24_1440"
-git log --pretty=oneline main..v.2022-08-24_1440
+# counting the number of commits on a branch
+git log --pretty=oneline main..v.2023-04-04_1837 | wc -l
+#2
 
-# count the commits
-echo "count the commits"
-git log --pretty=oneline main..v.2022-08-24_1440 | wc -l
-
-# alternativly you may use git rev-list
-echo "git rev-list main..v.2022-08-24_1440"
-git rev-list main..v.2022-08-24_1440
-
-echo "count the commits"
-git rev-list main..v.2022-08-24_1440 | wc -l
+git rev-list main..v.2023-04-04_1837 | wc -l
+#2
