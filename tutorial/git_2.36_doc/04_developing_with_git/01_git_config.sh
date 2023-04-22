@@ -26,3 +26,6 @@ git switch -c v.2023-04-06_0500 staging/v.2023-04-06_0500
 
 git config --local user.name 'Mihai Vasilian'
 git config --local user.email 'grayasm@gmail.com'
+
+# check [user] section
+cat .git/config
