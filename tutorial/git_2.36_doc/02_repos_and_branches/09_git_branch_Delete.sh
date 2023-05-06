@@ -1,8 +1,7 @@
 # https://git-scm.com/docs/user-manual#manipulating-branches
 #
-# git branch -D <branch>
-#
-# delete the branch <branch> irrespective of its merged status.
+# git branch -D <branch>    --delete the branch <branch> irrespective of
+#                             its merged status.
 #
 # man git-branch
 

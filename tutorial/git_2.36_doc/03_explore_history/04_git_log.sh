@@ -1,6 +1,6 @@
 # https://git-scm.com/docs/user-manual#browsing-revisions
 #
-# git log can show a list of commits.
+# git log     --can show a list of commits.
 
 # man git-log
 

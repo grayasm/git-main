@@ -1,19 +1,19 @@
 # https://git-scm.com/docs/user-manual#naming-commits
 #
-# Use git-show to show various type of objects (commits)
-# Use git-rev-parse to convert the small hash into full hash
+# git show <commit>       --to show various type of objects (commits)
+#
+# git rev-parse <commit>  --to convert the small hash into full hash
 #
 # man git-show
 # man git-rev-parse
 
 
-
 if [ ! -d git-playground ]; then
-	git clone  https://github.com/grayasm/git-playground.git
-	cd git-playground
-	git remote add staging https://github.com/grayasm/git-forkground.git
-	git fetch staging
-	cd ..
+    git clone  https://github.com/grayasm/git-playground.git
+    cd git-playground
+    git remote add staging https://github.com/grayasm/git-forkground.git
+    git fetch staging
+    cd ..
 fi
 
 cd git-playground

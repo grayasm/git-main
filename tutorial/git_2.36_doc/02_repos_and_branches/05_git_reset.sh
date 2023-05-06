@@ -1,7 +1,7 @@
 # https://git-scm.com/docs/user-manual#how-to-check-out
 #
-# You can modify the current branch to point to another branch instead
-# using git reset
+# git reset    --you can modify the current branch to point to another branch
+#                instead using git reset
 #
 # man git-reset
 

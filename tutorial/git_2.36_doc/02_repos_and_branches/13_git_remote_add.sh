@@ -1,12 +1,18 @@
 # https://git-scm.com/docs/user-manual#fetching-branches
 #
-# You can also track branches from repositories other than the one you cloned
-# from, using git-remote
+# git remote add <name> <.git address>    --to add a remote repository
+#
+# git remote remove <name>                --to remove a remote repository
+#
+#
+# Important: You can also track branches from repositories other than the one
+#            you cloned from, using git-remote.
 #
 # man git-remote
 
+
 if [ ! -d git-playground ]; then
-	git clone https://github.com/grayasm/git-playground.git
+    git clone https://github.com/grayasm/git-playground.git
 fi
 
 cd git-playground

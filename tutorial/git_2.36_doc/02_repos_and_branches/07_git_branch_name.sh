@@ -1,7 +1,7 @@
 # https://git-scm.com/docs/user-manual#manipulating-branches
 #
-# To create a new branch named <branch> referencing the same point in history
-# as the current branch use: git branch <branch>
+# git branch <branch>    --to create a new branch named <branch> referencing
+#                          the same point in history as the current branch
 #
 # man git-branch
 

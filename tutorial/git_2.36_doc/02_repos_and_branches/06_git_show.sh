@@ -1,6 +1,9 @@
 # https://git-scm.com/docs/user-manual#understanding-commits
 #
-# To show the most recent commit on the current branch use git show.
+# git show    --to show the most recent commit on the current branch
+#               use git show.
+#
+# man git-show
 
 if [ ! -d "git-playground" ]; then
 	git clone https://github.com/grayasm/git-playground.git

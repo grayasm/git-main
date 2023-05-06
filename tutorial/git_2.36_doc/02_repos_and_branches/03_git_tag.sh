@@ -1,7 +1,8 @@
 # https://git-scm.com/docs/user-manual#how-to-check-out
 #
-# Tags like heads are references into the project's history, and can
-# be listed using the git tag command.
+# git tag    --tags like heads are references into the project's history,
+#              and can be listed using the git tag command.
+#
 
 if [ ! -d "git-playground" ]; then
 	git clone https://github.com/grayasm/git-playground.git

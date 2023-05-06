@@ -1,6 +1,6 @@
 # https://git-scm.com/docs/user-manual#examining-remote-branches
 #
-# You can view the remote branches using: git branch -r
+# git branch -r    --you can view the remote branches
 #
 # man git-branch
 

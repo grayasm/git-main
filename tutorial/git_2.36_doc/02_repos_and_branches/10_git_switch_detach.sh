@@ -1,14 +1,17 @@
 # https://git-scm.com/docs/user-manual#detached-head
 #
-# The "git switch" command normally expects a branch head, but will also
-# accept an arbitrary commit when invoked with --detach; for example, you
-# can check out the commit referenced by a tag.
+# git switch <branch>            --the "git switch" command normally expects
+#                                  a branch head, but will also accept an
+#
+# git switch --detach <commit>     arbitrary commit when invoked with --detach;
+#                                  for example, you can check out the commit
+#                                  referenced by a tag.
 #
 # man git-switch
 
 
 if [ ! -d git-playground ]; then
-	git clone https://github.com/grayasm/git-playground.git
+    git clone https://github.com/grayasm/git-playground.git
 fi
 
 cd git-playground

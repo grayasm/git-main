@@ -1,7 +1,8 @@
 # https://git-scm.com/docs/user-manual#using-bisect
 #
-# Use git-bisect to perform a brute-force search through the project's
-# history to find the particular commit that caused the problem
+# git bisect    --use git-bisect to perform a brute-force search through
+#                 the project's history to find the particular commit that
+#                 caused the problem
 #
 # man git-bisect
 #
@@ -22,12 +23,13 @@
 # git bisect reset
 #
 
+
 if [ ! -d git-playground ]; then
-	git clone  https://github.com/grayasm/git-playground.git
-	cd git-playground
-	git remote add staging https://github.com/grayasm/git-forkground.git
-	git fetch staging
-	cd ..
+    git clone  https://github.com/grayasm/git-playground.git
+    cd git-playground
+    git remote add staging https://github.com/grayasm/git-forkground.git
+    git fetch staging
+    cd ..
 fi
 
 cd git-playground

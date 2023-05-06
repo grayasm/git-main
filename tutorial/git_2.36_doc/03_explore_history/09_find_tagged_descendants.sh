@@ -19,11 +19,11 @@
 
 
 if [ ! -d git-playground ]; then
-	git clone  https://github.com/grayasm/git-playground.git
-	cd git-playground
-	git remote add staging https://github.com/grayasm/git-forkground.git
-	git fetch staging
-	cd ..
+    git clone  https://github.com/grayasm/git-playground.git
+    cd git-playground
+    git remote add staging https://github.com/grayasm/git-forkground.git
+    git fetch staging
+    cd ..
 fi
 
 cd git-playground
@@ -83,4 +83,3 @@ git show-branch 74531c7d48f4cfcdbd6c82777c0929b7542a983d main
 # +  [74531c7d48f4cfcdbd6c82777c0929b7542a983d] change at 2023-04-04 18:48
 # +  [74531c7d48f4cfcdbd6c82777c0929b7542a983d^] change at 2023-04-04 18:47
 # ++ [main] 3rd change
-

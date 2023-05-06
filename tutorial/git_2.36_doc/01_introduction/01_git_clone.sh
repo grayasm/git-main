@@ -5,7 +5,7 @@
 #
 # man git-clone
 # git help clone
-# 
+#
 
 echo "Use the manual to get help (e.g. on \"clone\" command)"
 echo "man git-clone"

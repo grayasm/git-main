@@ -1,12 +1,14 @@
 # https://git-scm.com/docs/user-manual#manipulating-branches
 #
-# git branch -d <branch>
+# git branch -d <branch>    --delete the branch <branch>
+#                             if the branch is not fully merged in its upstream
+#                             branch or contained in the current branch,
+#                             this command will fail with a warning.
 #
-# delete the branch <branch>; if the branch is not fully merged in its upstream
-# branch or contained in the current branch, this command will fail
-# with a warning.
+# git branch -D <branch>   --to force delete a branch
 #
 # man git-branch
+
 
 if [ ! -d git-playground ]; then
 	git clone https://github.com/grayasm/git-playground.git

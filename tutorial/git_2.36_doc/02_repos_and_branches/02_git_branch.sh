@@ -1,6 +1,6 @@
 # https://git-scm.com/docs/user-manual#how-to-check-out
 #
-# git-branch command shows you the list of branch heads
+# git branch    --git-branch command shows you the list of branch heads
 
 
 if [ ! -d "git-playground" ]; then

@@ -1,7 +1,7 @@
 # https://git-scm.com/docs/user-manual#how-to-check-out
 #
-# Create a new branch head pointing to one of these versions and check it out
-# using git switch
+# git switch    --create a new branch head pointing to one of these versions and
+#                 check it out using git switch
 #
 # man git-switch
 

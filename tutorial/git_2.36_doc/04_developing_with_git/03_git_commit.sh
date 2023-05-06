@@ -2,11 +2,14 @@
 #
 # git diff --cached    difference between HEAD and the index; what
 #                      will be committed if you ran "commit" now
+#
 # git diff             difference between the index file and your
 #                      working directory; changes that would not
 #                      be included if you ran "commit" now
+#
 # git diff HEAD        difference between HEAD and working tree; what
 #                      would be committed if you ran "commit -a" now
+#
 # git status           a brief per-file summary of the above
 
 
