@@ -1,0 +1,12 @@
+﻿<Window x:Class="CustomPanels.OverlapWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:CustomPanels"
+        Title="Four Buttons in an OverlapPanel">
+    <local:OverlapPanel>
+        <Button FontSize="40" Content="1" Background="Red"/>
+        <Button FontSize="40" Content="2" Background="Orange"/>
+        <Button FontSize="40" Content="3" Background="Yellow"/>
+        <Button FontSize="40" Content="4" Background="Lime"/>
+    </local:OverlapPanel>
+</Window>

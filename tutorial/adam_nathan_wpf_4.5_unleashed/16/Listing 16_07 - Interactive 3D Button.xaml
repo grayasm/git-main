@@ -1,0 +1,25 @@
+<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+  <Grid>
+    <Viewport3D>
+    <Viewport3D.Camera>
+      <PerspectiveCamera Position="0.2,0.1,1" LookDirection="-0.2,-.1,-1" FieldOfView="120"/>
+    </Viewport3D.Camera>
+    <Viewport3D.Children>
+      <ModelVisual3D>
+      <ModelVisual3D.Content>
+        <DirectionalLight Direction="-0.3,-0.4,-0.5" />
+      </ModelVisual3D.Content>
+      </ModelVisual3D>
+      <Viewport2DVisual3D>
+      <Viewport2DVisual3D.Geometry>
+        <MeshGeometry3D Positions="-1,1,0 -1,-1,0 1,-1,0 1,1,0" TextureCoordinates="0,0 0,1 1,1 1,0" TriangleIndices="0 1 2 0 2 3" />
+      </Viewport2DVisual3D.Geometry>
+      <Viewport2DVisual3D.Material>
+        <DiffuseMaterial Viewport2DVisual3D.IsVisualHostMaterial="True" />
+      </Viewport2DVisual3D.Material>
+        <Button>Hello, 3D</Button>
+      </Viewport2DVisual3D>
+    </Viewport3D.Children>
+    </Viewport3D>
+  </Grid>
+</Window>

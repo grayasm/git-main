@@ -1,0 +1,29 @@
+﻿<Application x:Class="PhotoGallery.App"
+xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+StartupUri="MainWindow.xaml">
+    <JumpList.JumpList>
+        <JumpList>
+            <JumpTask Title="Magnifier"
+                        Description="Open the Windows Magnifier."
+                        ApplicationPath="%WINDIR%\system32\magnify.exe"/>
+            <JumpTask/>
+            <JumpTask Title="Calculator"
+                        Description="Open the Windows Calculator."
+                        ApplicationPath="%WINDIR%\system32\calc.exe"
+                        IconResourcePath="%WINDIR%\system32\calc.exe"/>
+            <JumpTask Title="Notepad"
+                        Description="Open Notepad."
+                        ApplicationPath="%WINDIR%\system32\notepad.exe"
+                        IconResourcePath="%WINDIR%\system32\notepad.exe"
+                        WorkingDirectory="%HOMEDRIVE%%HOMEPATH%"/>
+            <JumpTask/>
+            <JumpTask Title="Internet Explorer (No Add-Ons)"
+                        Description="Start without ActiveX controls or extensions."
+                        ApplicationPath="%PROGRAMFILES%\Internet Explorer\iexplore.exe"
+                        IconResourcePath="%PROGRAMFILES%\Internet Explorer\iexplore.exe"
+                        WorkingDirectory="%HOMEDRIVE%%HOMEPATH%"
+                        IconResourceIndex="8" Arguments="-extoff"/>
+        </JumpList>
+    </JumpList.JumpList>
+</Application>

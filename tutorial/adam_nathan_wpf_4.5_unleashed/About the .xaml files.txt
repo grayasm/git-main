@@ -1,0 +1,4 @@
+Many of the simple .xaml files can be double-clicked and viewed in Internet Explorer.
+Others cannot (under default security policy) due to using features such as a Window.
+To view these, you should paste the content into Visual Studio or any XAML-viewing tool mentioned in the book.
+For examples that reference images, you'll need to update the path so they can be found.

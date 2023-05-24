@@ -1,0 +1,19 @@
+﻿<Window x:Class="SpinThePrizeWheel.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Spin the Prize Wheel">
+    <Window.Background>
+        <LinearGradientBrush>
+            <GradientStop Color="White"/>
+            <GradientStop Color="Orange" Offset="1"/>
+        </LinearGradientBrush>
+    </Window.Background>
+    <Grid Name="grid" IsManipulationEnabled="True">
+        <Image Name="prizeWheel" RenderTransformOrigin="0.5,0.5" Source="prizewheel.png" Margin="0 30 0 0">
+            <Image.RenderTransform>
+                <RotateTransform/>
+            </Image.RenderTransform>
+        </Image>
+        <Image Source="arrow.png" VerticalAlignment="Top" Stretch="None"/>
+    </Grid>
+</Window>

@@ -1,0 +1,16 @@
+<Image xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+  <Image.Source>
+    <DrawingImage>
+      <DrawingImage.Drawing>
+        <GeometryDrawing Brush="Orange">
+          <GeometryDrawing.Pen>
+            <Pen Brush="Black" Thickness="10"/>
+          </GeometryDrawing.Pen>
+          <GeometryDrawing.Geometry>
+            <EllipseGeometry RadiusX="100" RadiusY="50"/>
+          </GeometryDrawing.Geometry>
+        </GeometryDrawing>
+      </DrawingImage.Drawing>
+    </DrawingImage>
+  </Image.Source>
+</Image>

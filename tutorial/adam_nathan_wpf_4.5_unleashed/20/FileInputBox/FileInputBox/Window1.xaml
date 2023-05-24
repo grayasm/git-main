@@ -1,0 +1,8 @@
+﻿<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:my="clr-namespace:Chapter20" 
+    Title="Window Hosting FileInputBox">
+  <StackPanel Margin="20">
+    <my:FileInputBox/>
+  </StackPanel>
+</Window>

@@ -1,0 +1,97 @@
+<FlowDocument xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <Section LineHeight="2" Foreground="White" Background="Black">
+    <Paragraph FontSize="18">WPF Unleashed</Paragraph>
+    <Paragraph FontSize="30" FontWeight="Bold">Notes from Chapter 1</Paragraph>
+  </Section>
+  <Paragraph>Here are some highlights of WPF:</Paragraph>
+  <List>
+    <ListItem>
+      <Paragraph>Broad integration</Paragraph>
+    </ListItem>
+    <ListItem>
+      <Paragraph>Resolution independence</Paragraph>
+    </ListItem>
+    <ListItem>
+      <Paragraph>Hardware acceleration</Paragraph>
+    </ListItem>
+    <ListItem>
+      <Paragraph>Declarative programming</Paragraph>
+    </ListItem>
+    <ListItem>
+      <Paragraph>Rich composition and customization</Paragraph>
+    </ListItem>
+  </List>
+  <BlockUIContainer>
+    <Viewbox>
+      <StackPanel Orientation="Horizontal">
+        <Image Source="diagram.jpg" Margin="5"/>
+        <TextBlock VerticalAlignment="Center" Width="100" TextWrapping="Wrap">
+          The technologies in the .NET Framework 3.0.
+        </TextBlock>
+      </StackPanel>
+    </Viewbox>
+  </BlockUIContainer>
+  <Paragraph>
+    Here's another version of the diagram, as a Table:
+  </Paragraph>
+  <Table CellSpacing="5" Padding="15" FontFamily="Segoe UI">
+    <Table.Background>
+      <LinearGradientBrush>
+        <GradientStop Color="Yellow" Offset="0"/>
+        <GradientStop Color="Orange" Offset="1"/>
+      </LinearGradientBrush>
+    </Table.Background>
+    <!-- Define four columns: -->
+    <Table.Columns>
+      <TableColumn/>
+      <TableColumn/>
+      <TableColumn/>
+      <TableColumn/>
+    </Table.Columns>
+    <!-- Create three rows: -->
+    <TableRowGroup>
+      <TableRow>
+        <TableCell ColumnSpan="4" TextAlignment="Center">
+          <Paragraph FontWeight="Bold">.NET Framework 3.0</Paragraph>
+        </TableCell>
+      </TableRow>
+      <TableRow>
+        <TableCell BorderBrush="Black" BorderThickness="2" Background="LightGray"
+        TextAlignment="Center" LineHeight="70">
+          <Paragraph FontWeight="Bold">WPF</Paragraph>
+        </TableCell>
+        <TableCell BorderBrush="Black" BorderThickness="2" Background="LightGray"
+        TextAlignment="Center">
+          <Paragraph FontWeight="Bold">WCF</Paragraph>
+        </TableCell>
+        <TableCell BorderBrush="Black" BorderThickness="2" Background="LightGray"
+        TextAlignment="Center">
+          <Paragraph FontWeight="Bold">WF</Paragraph>
+        </TableCell>
+        <TableCell BorderBrush="Black" BorderThickness="2" Background="LightGray"
+        TextAlignment="Center">
+          <Paragraph FontWeight="Bold">WCS</Paragraph>
+        </TableCell>
+      </TableRow>
+      <TableRow>
+        <TableCell BorderBrush="Black" BorderThickness="2" Background="LightGray"
+        TextAlignment="Center">
+          <Paragraph FontWeight="Bold">ADO.NET</Paragraph>
+        </TableCell>
+        <TableCell BorderBrush="Black" BorderThickness="2" Background="LightGray"
+        TextAlignment="Center">
+          <Paragraph FontWeight="Bold">ASP.NET</Paragraph>
+        </TableCell>
+        <TableCell BorderBrush="Black" BorderThickness="2" Background="LightGray"
+        TextAlignment="Center">
+          <Paragraph FontWeight="Bold">Windows Forms</Paragraph>
+        </TableCell>
+        <TableCell BorderBrush="Black" BorderThickness="2" Background="LightGray"
+        TextAlignment="Center">
+          <Paragraph FontWeight="Bold">...</Paragraph>
+        </TableCell>
+      </TableRow>
+    </TableRowGroup>
+  </Table>
+</FlowDocument>

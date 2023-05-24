@@ -1,0 +1,17 @@
+<Canvas xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+  <Button>
+    OK
+    <Button.Triggers>
+      <EventTrigger RoutedEvent="Button.Click">
+        <EventTrigger.Actions>
+          <BeginStoryboard>
+            <Storyboard TargetProperty="Width">
+              <DoubleAnimation From="50" To="100"
+                Duration="0:0:5" AutoReverse="True"/>
+            </Storyboard>
+          </BeginStoryboard>
+        </EventTrigger.Actions>
+      </EventTrigger>
+    </Button.Triggers>
+  </Button>
+</Canvas>

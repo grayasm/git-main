@@ -1,0 +1,6 @@
+<ListBox xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+<ListBox.Items>
+  <ListBoxItem Content="Item 1"/>
+  <ListBoxItem Content="Item 2"/>
+</ListBox.Items>
+</ListBox>

@@ -1,0 +1,46 @@
+<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+Title="DrawingBrush as the Background">
+  <Window.Background>
+    <DrawingBrush>
+      <DrawingBrush.Drawing>
+        <DrawingGroup>
+
+          <!-- The body -->
+          <GeometryDrawing Brush="Blue" Geometry="M 240,250
+            C 200,375 200,250 175,200
+            C 100,400 100,250 100,200
+            C 0,350 0,250 30,130
+            C 75,0 100,0 150,0
+            C 200,0 250,0 250,150 Z"/>
+
+          <!-- The eyes -->
+          <GeometryDrawing Brush="Black">
+            <GeometryDrawing.Pen>
+              <Pen Brush="White" Thickness="10"/>
+            </GeometryDrawing.Pen>
+            <GeometryDrawing.Geometry>
+              <GeometryGroup>
+                <!-- Left eye -->
+                <EllipseGeometry RadiusX="15" RadiusY="15" Center="95,95"/>
+                <!-- Right eye -->
+                <EllipseGeometry RadiusX="15" RadiusY="15" Center="170,105"/>
+              </GeometryGroup>
+            </GeometryDrawing.Geometry>
+          </GeometryDrawing>
+
+          <!-- The mouth -->
+          <GeometryDrawing>
+            <GeometryDrawing.Pen>
+              <Pen Brush="Black" StartLineCap="Round" EndLineCap="Round"
+              Thickness="10"/>
+            </GeometryDrawing.Pen>
+            <GeometryDrawing.Geometry>
+              <LineGeometry StartPoint="75,160" EndPoint="175,150"/>
+            </GeometryDrawing.Geometry>
+          </GeometryDrawing>
+
+        </DrawingGroup>
+      </DrawingBrush.Drawing>
+    </DrawingBrush>
+  </Window.Background>
+</Window>

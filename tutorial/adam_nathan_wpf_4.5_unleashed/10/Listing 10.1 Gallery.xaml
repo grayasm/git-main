@@ -1,0 +1,28 @@
+<Canvas xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <ComboBox>
+    <!-- Item #1 -->
+    <StackPanel Orientation="Horizontal" Margin="5">
+      <Image Source="CurtainCall.bmp"/>
+      <StackPanel Width="200">
+        <TextBlock Margin="5,0" FontSize="14" FontWeight="Bold"
+        VerticalAlignment="center">Curtain Call</TextBlock>
+        <TextBlock Margin="5" VerticalAlignment="center" TextWrapping="Wrap">
+          Whimsical, with a red curtain background that represents a stage.
+        </TextBlock>
+      </StackPanel>
+    </StackPanel>
+    <!-- Item #2 -->
+    <StackPanel Orientation="Horizontal" Margin="5">
+      <Image Source="Fireworks.bmp"/>
+      <StackPanel Width="200">
+        <TextBlock Margin="5,0" FontSize="14" FontWeight="Bold"
+        VerticalAlignment="center">Fireworks</TextBlock>
+        <TextBlock Margin="5" VerticalAlignment="center" TextWrapping="Wrap">
+          Sleek, with a black sky containing fireworks. When you need to
+          celebrate PowerPoint-style, this design is for you!
+        </TextBlock>
+      </StackPanel>
+    </StackPanel>
+
+  </ComboBox>
+</Canvas>

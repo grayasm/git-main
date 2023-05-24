@@ -1,0 +1,49 @@
+<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  Title="Simple Window">
+  <Window.Resources>
+    <SolidColorBrush x:Key="backgroundBrush">Yellow</SolidColorBrush>
+    <SolidColorBrush x:Key="borderBrush">Red</SolidColorBrush>
+  </Window.Resources>
+  <Window.Background>
+    <StaticResource ResourceKey="backgroundBrush"/>
+  </Window.Background>
+  <DockPanel>
+    <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal"
+      HorizontalAlignment="Center">
+      <Button Background="{StaticResource backgroundBrush}"
+        BorderBrush="{StaticResource borderBrush}" Margin="5">
+        <Image Height="21" Source="zoom.gif"/>
+      </Button>
+      <Button Background="{StaticResource backgroundBrush}"
+        BorderBrush="{StaticResource borderBrush}" Margin="5">
+        <Image Height="21" Source="defaultThumbnailSize.gif"/>
+      </Button>
+      <Button Background="{StaticResource backgroundBrush}"
+        BorderBrush="{StaticResource borderBrush}" Margin="5">
+        <Image Height="21" Source="previous.gif"/>
+      </Button>
+      <Button Background="{StaticResource backgroundBrush}"
+        BorderBrush="{StaticResource borderBrush}" Margin="5">
+        <Image Height="21" Source="slideshow.gif"/>
+      </Button>
+      <Button Background="{StaticResource backgroundBrush}"
+        BorderBrush="{StaticResource borderBrush}" Margin="5">
+        <Image Height="21" Source="next.gif"/>
+      </Button>
+      <Button Background="{StaticResource backgroundBrush}"
+        BorderBrush="{StaticResource borderBrush}" Margin="5">
+        <Image Height="21" Source="counterclockwise.gif"/>
+      </Button>
+      <Button Background="{StaticResource backgroundBrush}"
+        BorderBrush="{StaticResource borderBrush}" Margin="5">
+        <Image Height="21" Source="clockwise.gif"/>
+      </Button>
+      <Button Background="{StaticResource backgroundBrush}"
+        BorderBrush="{StaticResource borderBrush}" Margin="5">
+        <Image Height="21" Source="delete.gif"/>
+      </Button>
+    </StackPanel>
+    <ListBox/>
+  </DockPanel>
+</Window>

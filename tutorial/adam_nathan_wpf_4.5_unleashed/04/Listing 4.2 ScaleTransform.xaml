@@ -1,0 +1,23 @@
+<Canvas xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <StackPanel Width="100">
+    <Button Background="Red">No Scaling</Button>
+    <Button Background="Orange">
+      <Button.RenderTransform>
+        <ScaleTransform ScaleX="2"/>
+      </Button.RenderTransform>
+      X
+    </Button>
+    <Button Background="Yellow">
+      <Button.RenderTransform>
+        <ScaleTransform ScaleX="2" ScaleY="2"/>
+      </Button.RenderTransform>
+      X + Y
+    </Button>
+    <Button Background="Lime">
+      <Button.RenderTransform>
+        <ScaleTransform ScaleY="2"/>
+      </Button.RenderTransform>
+      Y
+    </Button>
+  </StackPanel>
+</Canvas>

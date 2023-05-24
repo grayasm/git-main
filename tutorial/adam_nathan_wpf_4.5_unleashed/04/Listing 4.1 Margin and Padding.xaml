@@ -1,0 +1,40 @@
+<Canvas xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+  <!-- NOTE: To see individual shapes, be sure to comment out the others! -->
+
+  <!-- PADDING: -->
+
+  <!-- 1 value: The same padding on all four sides: -->
+  <Label Padding="0" Background="Orange">0</Label>
+  <Label Padding="10" Background="Orange">10</Label>
+
+  <!-- 2 values: Left & Right get the 1st value,
+                 Top & Bottom get the 2nd value: -->
+  <Label Padding="20,5" Background="Orange">20,5</Label>
+
+  <!-- 4 values: Left,Top,Right,Bottom: -->
+  <Label Padding="0,10,20,30" Background="Orange">0,10,20,30</Label>
+
+  <!-- MARGIN: -->
+
+  <Border BorderBrush="Black" BorderThickness="1">
+    <!-- No margin: -->
+    <Label Background="Aqua">0</Label>
+  </Border>
+
+  <Border BorderBrush="Black" BorderThickness="1">
+    <!-- 1 value: The same margin on all four sides: -->
+    <Label Margin="10" Background="Aqua">10</Label>
+  </Border>
+
+  <Border BorderBrush="Black" BorderThickness="1">
+    <!-- 2 values: Left & Right get the 1st value,
+                   Top & Bottom get the 2nd value: -->
+    <Label Margin="20,5" Background="Aqua">20,5</Label>
+  </Border>
+
+  <Border BorderBrush="Black" BorderThickness="1">
+    <!-- 4 values: Left,Top,Right,Bottom: -->
+    <Label Margin="0,10,20,30" Background="Aqua">0,10,20,30</Label>
+  </Border>
+</Canvas>

@@ -1,0 +1,42 @@
+<Canvas xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <ToolBar>
+    <Button RenderOptions.BitmapScalingMode="NearestNeighbor">
+      <Image Source="copy.gif"/>
+    </Button>
+    <Separator/>
+    <ToggleButton RenderOptions.BitmapScalingMode="NearestNeighbor">
+      <Image Source="bold.gif"/>
+    </ToggleButton>
+    <ToggleButton RenderOptions.BitmapScalingMode="NearestNeighbor">
+      <Image Source="italic.gif"/>
+    </ToggleButton>
+    <ToggleButton RenderOptions.BitmapScalingMode="NearestNeighbor">
+      <Image Source="underline.gif"/>
+    </ToggleButton>
+    <Separator/>
+    <ToggleButton RenderOptions.BitmapScalingMode="NearestNeighbor">
+      <Image Source="left.gif"/>
+    </ToggleButton>
+    <ToggleButton RenderOptions.BitmapScalingMode="NearestNeighbor">
+      <Image Source="right.gif"/>
+    </ToggleButton>
+    <ToggleButton RenderOptions.BitmapScalingMode="NearestNeighbor">
+      <Image Source="justify.gif"/>
+    </ToggleButton>
+    <Separator/>
+    <Label>Zoom</Label>
+    <ComboBox SelectedIndex="0">
+      <ComboBoxItem>100%</ComboBoxItem>
+      <ComboBoxItem>75%</ComboBoxItem>
+      <ComboBoxItem>50%</ComboBoxItem>
+      <ComboBoxItem>25%</ComboBoxItem>
+    </ComboBox>
+    <Separator/>
+    <Button RenderOptions.BitmapScalingMode="NearestNeighbor">
+      <Image Source="superscript.gif"/>
+    </Button>
+    <Button RenderOptions.BitmapScalingMode="NearestNeighbor">
+      <Image Source="subscript.gif"/>
+    </Button>
+  </ToolBar>
+</Canvas>

@@ -1,0 +1,36 @@
+<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+Title="XML Data Binding">
+  <Window.Resources>
+    <HierarchicalDataTemplate DataType="GameStats"
+    ItemsSource="{Binding XPath=*}">
+      <TextBlock FontStyle="Italic" Text="All Game Stats"/>
+    </HierarchicalDataTemplate>
+    <HierarchicalDataTemplate DataType="GameStat" ItemsSource="{Binding XPath=*}">
+      <TextBlock FontWeight="Bold" FontSize="20" Text="{Binding XPath=@Type}"/>
+    </HierarchicalDataTemplate>
+    <DataTemplate DataType="HighScore">
+      <TextBlock Foreground="Blue" Text="{Binding XPath=.}"/>
+    </DataTemplate>
+    <XmlDataProvider x:Key="dataProvider" XPath="GameStats">
+      <x:XData>
+        <GameStats xmlns="">
+          <!-- One stat per game type -->
+          <GameStat Type="Beginner">
+            <HighScore>1203</HighScore>
+          </GameStat>
+          <GameStat Type="Intermediate">
+            <HighScore>1089</HighScore>
+          </GameStat>
+          <GameStat Type="Advanced">
+            <HighScore>541</HighScore>
+          </GameStat>
+        </GameStats>
+      </x:XData>
+    </XmlDataProvider>
+  </Window.Resources>
+  <Grid>
+    <TreeView ItemsSource="{Binding Source={StaticResource dataProvider},
+XPath=.}" />
+  </Grid>
+</Window>

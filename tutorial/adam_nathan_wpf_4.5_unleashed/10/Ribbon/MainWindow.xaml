@@ -1,0 +1,78 @@
+﻿<RibbonWindow xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+              x:Class="Chapter10.MainWindow">
+    <Grid>
+        <Ribbon Name="Ribbon" Title="My Ribbon">
+            <Ribbon.ApplicationMenu>
+                <RibbonApplicationMenu SmallImageSource="Star.png">
+                    <RibbonApplicationMenu.AuxiliaryPaneContent>
+                        <Button>Auxiliary</Button>
+                    </RibbonApplicationMenu.AuxiliaryPaneContent>
+                    <RibbonApplicationMenu.FooterPaneContent>
+                        <Button>Footer</Button>
+                    </RibbonApplicationMenu.FooterPaneContent>
+                    <RibbonApplicationMenuItem Header="Simple Menu Item"/>
+                    <RibbonApplicationSplitMenuItem Header="Split Menu Item">
+                        <RibbonApplicationMenuItem Header="one"/>
+                        <RibbonApplicationMenuItem Header="two"/>
+                        <RibbonApplicationMenuItem Header="three"/>
+                    </RibbonApplicationSplitMenuItem>
+                    <RibbonApplicationMenuItem Header="Menu Item with Items">
+                        <RibbonApplicationMenuItem Header="one"/>
+                        <RibbonApplicationMenuItem Header="two"/>
+                        <RibbonApplicationMenuItem Header="three"/>
+                    </RibbonApplicationMenuItem>
+                </RibbonApplicationMenu>
+            </Ribbon.ApplicationMenu>
+            <Ribbon.QuickAccessToolBar>
+                <RibbonQuickAccessToolBar>
+                    <RibbonButton QuickAccessToolBarId="cut" SmallImageSource="Cut.png" Label="Cut" KeyTip="X"/>
+                    <RibbonButton QuickAccessToolBarId="copy" SmallImageSource="Copy.png" Label="Copy" KeyTip="C"/>
+                </RibbonQuickAccessToolBar>
+            </Ribbon.QuickAccessToolBar>
+            <RibbonTab Header="Home" KeyTip="H">
+                <RibbonGroup Header="Clipboard" SmallImageSource="Clipboard.png" QuickAccessToolBarId="clip">
+                    <RibbonSplitButton LargeImageSource="Paste.png" Label="Paste"
+                             KeyTip="V">
+                        <RibbonMenuItem Header="Paste _Special..." />
+                        <RibbonMenuItem Header="Set Def_ault Paste..." />
+                    </RibbonSplitButton>
+                    <RibbonButton QuickAccessToolBarId="cut" SmallImageSource="Cut.png" Label="Cut" KeyTip="X"/>
+                    <RibbonButton QuickAccessToolBarId="copy" SmallImageSource="Copy.png" Label="Copy" KeyTip="C"/>
+                    <RibbonButton SmallImageSource="FormatPainter.png" Label="Format Painter" 
+                                  KeyTip="FP">
+                      <RibbonButton.ToolTip>
+                        <RibbonToolTip 
+                            Title="Format Painter (Ctrl+Shift+C)"
+                            Description="Copy formatting from one place and apply it to another."
+                            ImageSource="FormatPainter.png"
+                            FooterTitle="Press F1 for more help."
+                            FooterDescription="This will open your web browser."
+                            FooterImageSource="Help.png" />
+                      </RibbonButton.ToolTip>
+                    </RibbonButton>
+                </RibbonGroup>
+                <RibbonGroup Header="Font" QuickAccessToolBarId="font">
+                    <RibbonComboBox>
+                        <RibbonGallery MinColumnCount="2">
+                            <RibbonGalleryCategory Header="Theme Fonts">
+                                <RibbonGalleryItem FontFamily="Cambria">Cambria</RibbonGalleryItem>
+                                <RibbonGalleryItem FontFamily="Calibri">Calibri</RibbonGalleryItem>
+                            </RibbonGalleryCategory>
+                            <RibbonGalleryCategory Header="Recently Used Fonts">
+                                <RibbonGalleryItem FontFamily="Tw Cen MT Condensed">Tw Cen MT Condensed</RibbonGalleryItem>
+                                <RibbonGalleryItem FontFamily="Courier New">Courier New</RibbonGalleryItem>
+                            </RibbonGalleryCategory>
+                            <RibbonGalleryCategory Header="All Fonts">
+                                <RibbonGalleryItem FontFamily="Arial">Arial</RibbonGalleryItem>
+                                <RibbonGalleryItem FontFamily="Arial Black">Arial Black</RibbonGalleryItem>
+                                <RibbonGalleryItem FontFamily="Arial Narrow">Arial Narrow</RibbonGalleryItem>
+                                <RibbonGalleryItem FontFamily="Arial Rounded MT Bold">Arial Rounded MT Bold</RibbonGalleryItem>
+                            </RibbonGalleryCategory>
+                        </RibbonGallery>
+                    </RibbonComboBox>
+                </RibbonGroup>
+            </RibbonTab>
+        </Ribbon>
+    </Grid>
+</RibbonWindow>

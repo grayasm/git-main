@@ -1,0 +1,21 @@
+<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  Title="About WPF 4.5 Unleashed" SizeToContent="WidthAndHeight"
+  Background="OrangeRed">
+  <StackPanel>
+    <Label FontWeight="Bold" FontSize="20" Foreground="White">
+      WPF 4.5 Unleashed
+    </Label>
+    <Label>© 2013 SAMS Publishing</Label>
+    <Label>Installed Chapters:</Label>
+    <ListBox>
+      <ListBoxItem>Chapter 1</ListBoxItem>
+      <ListBoxItem>Chapter 2</ListBoxItem>
+    </ListBox>
+    <StackPanel TextElement.FontSize="30" TextElement.FontStyle="Italic"
+      Orientation="Horizontal" HorizontalAlignment="Center">
+      <Button MinWidth="75" Margin="10">Help</Button>
+      <Button MinWidth="75" Margin="10">OK</Button>
+    </StackPanel>
+    <StatusBar>You have successfully registered this product.</StatusBar>
+  </StackPanel>
+</Window>

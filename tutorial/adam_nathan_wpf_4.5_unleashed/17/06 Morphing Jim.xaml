@@ -1,0 +1,14 @@
+<Grid xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+  <Grid.Triggers>
+    <EventTrigger RoutedEvent="Grid.Loaded">
+      <BeginStoryboard>
+        <Storyboard TargetName="jim2" TargetProperty="Opacity">
+          <DoubleAnimation From="1" To="0" Duration="0:0:4"
+          AutoReverse="True" RepeatBehavior="Forever"/>
+        </Storyboard>
+      </BeginStoryboard>
+    </EventTrigger>
+  </Grid.Triggers>
+  <Image Name="jim1" Source="jim1.gif"/>
+  <Image Name="jim2" Source="jim2.gif"/>
+</Grid>

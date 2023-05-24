@@ -1,0 +1,21 @@
+<Canvas xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<CheckBox>
+  CheckBox
+  <CheckBox.ToolTip>
+    <StackPanel>
+      <Label FontWeight="Bold" Background="Blue" Foreground="White">
+        The CheckBox
+      </Label>
+      <TextBlock Padding="10" TextWrapping="WrapWithOverflow" Width="200">
+        CheckBox is a familiar control. But in WPF, it's not much
+        more than a ToggleButton styled differently!
+      </TextBlock>
+      <Line Stroke="Black" StrokeThickness="1" X2="200"/>
+      <StackPanel Orientation="Horizontal">
+        <Image Margin="2" Source="help.png"/>
+        <Label FontWeight="Bold">Press F1 for more help.</Label>
+      </StackPanel>
+    </StackPanel>
+  </CheckBox.ToolTip>
+</CheckBox>
+</Canvas>

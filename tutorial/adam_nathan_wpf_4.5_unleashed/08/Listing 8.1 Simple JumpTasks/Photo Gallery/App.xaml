@@ -1,0 +1,17 @@
+﻿<Application x:Class="PhotoGallery.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+    </Application.Resources>
+    <JumpList.JumpList>
+        <JumpList>
+            <JumpTask Title="Launch another instance" 
+                      Description="Launches another instance of this program."/>
+            <JumpTask Title="Task #1" Arguments="-task1"
+                      Description="Perform task #1."/>
+            <JumpTask Title="Task #2" Arguments="-task2" 
+                      Description="Perform task #2."/>
+        </JumpList>
+    </JumpList.JumpList>
+</Application>

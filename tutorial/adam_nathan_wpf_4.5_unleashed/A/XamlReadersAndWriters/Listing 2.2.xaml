@@ -1,0 +1,16 @@
+﻿<StackPanel xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <!-- Set names two different ways -->
+    <Button Name="okButton" Click="okButton_Click">OK</Button>
+    <Button x:Name="cancelButton">Cancel</Button>
+    <ListBox>
+        <!-- Set content three different ways -->
+        <ListBoxItem Content="Item 1"/>
+        <ListBoxItem>Item 2</ListBoxItem>
+        <ListBoxItem>
+            <ListBoxItem.Content>
+                Item 3
+            </ListBoxItem.Content>
+        </ListBoxItem>
+    </ListBox>
+</StackPanel>

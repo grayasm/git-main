@@ -1,0 +1,39 @@
+﻿<Window x:Class="WpfDirectX.MainWindow"
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:interop="clr-namespace:System.Windows.Interop;assembly=PresentationCore"
+  Title="Mixing DirectX with WPF" Height="350" Width="400">
+    <Window.Background>
+        <ImageBrush>
+            <ImageBrush.ImageSource>
+                <interop:D3DImage x:Name="d3dImage" IsFrontBufferAvailableChanged="d3dImage_IsFrontBufferAvailableChanged"/>
+            </ImageBrush.ImageSource>
+        </ImageBrush>
+    </Window.Background>
+    <Grid Margin="20" Opacity=".7" TextBlock.Foreground="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <TextBlock FontSize="30" Grid.ColumnSpan="2" Margin="0 0 0 10">Tiger Order Form</TextBlock>
+        <TextBlock Grid.Row="1" FontWeight="Bold" VerticalAlignment="Center">Quantity:</TextBlock>
+        <ComboBox Grid.Row="1" Grid.Column="1" Margin="10" HorizontalAlignment="Left">
+            <ComboBoxItem>1</ComboBoxItem>
+            <ComboBoxItem>2</ComboBoxItem>
+            <ComboBoxItem>3</ComboBoxItem>
+        </ComboBox>
+        <TextBlock Grid.Row="2" FontWeight="Bold" VerticalAlignment="Center">Shipping:</TextBlock>
+        <StackPanel Grid.Row="2" Grid.Column="1" Margin="10">
+            <RadioButton Foreground="White">Standard</RadioButton>
+            <RadioButton Foreground="White">Express</RadioButton>
+            <RadioButton Foreground="White">Overnight</RadioButton>
+        </StackPanel>
+        <Button Grid.Row="3" Grid.Column="1" Padding="30 10 30 10" HorizontalAlignment="Right" VerticalAlignment="Bottom">Order</Button>
+    </Grid>
+</Window>

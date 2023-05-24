@@ -1,0 +1,14 @@
+<Canvas xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+  <Path Fill="Blue" Data="M 240,250
+    C 200,375 200,250 175,200
+    C 100,400 100,250 100,200
+    C 0,350 0,250 30,130
+    C 75,0 100,0 150,0
+    C 200,0 250,0 250,150 Z"/>
+  <Ellipse Fill="Black" Stroke="White" StrokeThickness="10"
+    Width="40" Height="40" Canvas.Left="75" Canvas.Top="75"/>
+  <Ellipse Fill="Black" Stroke="White" StrokeThickness="10"
+    Width="40" Height="40" Canvas.Left="150" Canvas.Top="85"/>
+  <Line X1="75" Y1="160" X2="175" Y2="150" StrokeStartLineCap="Round"
+    StrokeEndLineCap="Round" Stroke="Black" StrokeThickness="10"/>
+</Canvas>

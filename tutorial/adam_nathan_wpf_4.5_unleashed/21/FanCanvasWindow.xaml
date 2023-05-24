@@ -1,0 +1,23 @@
+﻿<Window x:Class="CustomPanels.FanPanelWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:CustomPanels"
+        xmlns:c="clr-namespace:Chapter21"
+        Background="Green" 
+        Title="Elements in a FanCanvas" mc:Ignorable="d" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" d:DesignHeight="264" d:DesignWidth="449" SizeToContent="WidthAndHeight">
+    <local:FanCanvas Margin="100 20">
+        <c:PlayingCard Width="100" Height="140" Face="HA"/>
+        <c:PlayingCard Width="100" Height="140" Face="H2"/>
+        <c:PlayingCard Width="100" Height="140" Face="H3"/>
+        <c:PlayingCard Width="100" Height="140" Face="H4"/>
+        <c:PlayingCard Width="100" Height="140" Face="H5"/>
+        <c:PlayingCard Width="100" Height="140" Face="H6"/>
+        <c:PlayingCard Width="100" Height="140" Face="H7"/>
+        <c:PlayingCard Width="100" Height="140" Face="H8"/>
+        <c:PlayingCard Width="100" Height="140" Face="H9"/>
+        <c:PlayingCard Width="100" Height="140" Face="H10"/>
+        <c:PlayingCard Width="100" Height="140" Face="HJ"/>
+        <c:PlayingCard Width="100" Height="140" Face="HQ"/>
+        <c:PlayingCard Width="100" Height="140" Face="HK"/>
+    </local:FanCanvas>
+</Window>

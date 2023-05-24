@@ -1,0 +1,12 @@
+﻿<Window x:Class="ManipulationEvents.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Manipulation Events">
+    <Canvas Name="canvas" IsManipulationEnabled="True">
+        <Image Name="photo" Source="photo.jpg">
+            <Image.RenderTransform>
+                <MatrixTransform/>
+            </Image.RenderTransform>
+        </Image>
+    </Canvas>
+</Window>

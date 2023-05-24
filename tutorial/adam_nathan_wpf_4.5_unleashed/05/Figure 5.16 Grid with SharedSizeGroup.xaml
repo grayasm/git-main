@@ -1,0 +1,20 @@
+<Grid xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" IsSharedSizeScope="True">
+  <Grid.ColumnDefinitions>
+    <ColumnDefinition Width="Auto" SharedSizeGroup="myGroup"/>
+    <ColumnDefinition/>
+    <ColumnDefinition SharedSizeGroup="myGroup"/>
+  </Grid.ColumnDefinitions>
+  <Label Grid.Column="0" Background="Red"
+  HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+    1
+  </Label>
+  <GridSplitter Grid.Column="0" Width="5"/>
+  <Label Grid.Column="1" Background="Orange"
+  HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+    2
+  </Label>
+  <Label Grid.Column="2" Background="Yellow"
+  HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+    3
+  </Label>
+</Grid>

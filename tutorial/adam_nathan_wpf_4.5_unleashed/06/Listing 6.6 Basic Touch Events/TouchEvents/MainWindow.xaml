@@ -1,0 +1,13 @@
+﻿<Window x:Class="TouchEvents.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Touch Events">
+    <Canvas Name="canvas">
+        <Canvas.Background>
+            <LinearGradientBrush>
+                <GradientStop Color="Black"/>
+                <GradientStop Color="Red" Offset="1"/>
+            </LinearGradientBrush>
+        </Canvas.Background>
+    </Canvas>
+</Window>

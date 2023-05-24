@@ -1,0 +1,16 @@
+<Canvas xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+  <Button>A Button With Sounds
+    <Button.Triggers>
+      <EventTrigger RoutedEvent="Button.Click">
+        <EventTrigger.Actions>
+          <SoundPlayerAction Source="click.wav"/>
+        </EventTrigger.Actions>
+      </EventTrigger>
+      <EventTrigger RoutedEvent="Button.MouseEnter">
+        <EventTrigger.Actions>
+          <SoundPlayerAction Source="hover.wav"/>
+        </EventTrigger.Actions>
+      </EventTrigger>
+    </Button.Triggers>
+  </Button>
+</Canvas>

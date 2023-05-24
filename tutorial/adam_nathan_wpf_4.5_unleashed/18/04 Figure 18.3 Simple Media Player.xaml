@@ -1,0 +1,32 @@
+<Grid xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <Grid.Triggers>
+    <EventTrigger RoutedEvent="Button.Click" SourceName="playButton">
+      <EventTrigger.Actions>
+        <BeginStoryboard Name="beginStoryboard">
+          <Storyboard>
+            <MediaTimeline Source="C:\Users\Public\Videos\Sample Videos\butterfly.wmv"
+            Storyboard.TargetName="video"/>
+          </Storyboard>
+        </BeginStoryboard>
+      </EventTrigger.Actions>
+    </EventTrigger>
+    <EventTrigger RoutedEvent="Button.Click" SourceName="pauseButton">
+      <EventTrigger.Actions>
+        <PauseStoryboard BeginStoryboardName="beginStoryboard"/>
+      </EventTrigger.Actions>
+    </EventTrigger>
+    <EventTrigger RoutedEvent="Button.Click" SourceName="resumeButton">
+      <EventTrigger.Actions>
+        <ResumeStoryboard BeginStoryboardName="beginStoryboard"/>
+      </EventTrigger.Actions>
+    </EventTrigger>
+  </Grid.Triggers>
+  <MediaElement x:Name="video"/>
+  <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom">
+    <Button x:Name="playButton" Background="#55FFFFFF" Height="40">Play</Button>
+    <Button x:Name="pauseButton" Background="#55FFFFFF" Height="40">Pause</Button>
+    <Button x:Name="resumeButton" Background="#55FFFFFF" Height="40">
+      Resume
+    </Button>
+  </StackPanel>
+</Grid>

@@ -1,0 +1,36 @@
+<Grid Background="LightBlue" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+
+  <!-- Define four rows: -->
+  <Grid.RowDefinitions>
+    <RowDefinition Height="Auto"/>
+    <RowDefinition/>
+    <RowDefinition/>
+    <RowDefinition/>
+  </Grid.RowDefinitions>
+
+  <!-- Define two columns: -->
+  <Grid.ColumnDefinitions>
+    <ColumnDefinition Width="Auto"/>
+    <ColumnDefinition/>
+  </Grid.ColumnDefinitions>
+
+  <!-- Arrange the children: -->
+  <Label    Grid.Row="0" Grid.Column="0" Background="Blue" Foreground="White"
+            HorizontalContentAlignment="Center"
+            Grid.ColumnSpan="2">Start Page</Label>
+  <GroupBox Grid.Row="1" Grid.Column="0" Background="White"
+            Header="Recent Projects">...</GroupBox>
+  <GroupBox Grid.Row="2" Grid.Column="0" Background="White"
+            Header="Getting Started">...</GroupBox>
+  <GroupBox Grid.Row="3" Grid.Column="0" Background="White"
+            Header="Headlines">...</GroupBox>
+  <GroupBox Grid.Row="1" Grid.Column="1" Background="White"
+            Header="Online Articles" Grid.RowSpan="3">
+    <ListBox>
+      <ListBoxItem>Article #1</ListBoxItem>
+      <ListBoxItem>Article #2</ListBoxItem>
+      <ListBoxItem>Article #3</ListBoxItem>
+      <ListBoxItem>Article #4</ListBoxItem>
+    </ListBox>
+  </GroupBox>
+</Grid>

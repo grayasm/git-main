@@ -1,0 +1,29 @@
+//NOTE: This file is not meant to be compiled!
+
+public class Button : ButtonBase
+{
+    // The dependency property
+    public static readonly DependencyProperty IsDefaultProperty;
+
+    static Button()
+    {
+        // Register the property
+        Button.IsDefaultProperty = DependencyProperty.Register("IsDefault",
+        typeof(bool), typeof(Button),
+        new FrameworkPropertyMetadata(false,
+        new PropertyChangedCallback(OnIsDefaultChanged)));
+        …
+    }
+
+    // A .NET property wrapper (optional)
+    public bool IsDefault
+    {
+        get { return (bool)GetValue(Button.IsDefaultProperty); }
+        set { SetValue(Button.IsDefaultProperty, value); }
+    }
+
+    // A property changed callback (optional)
+    private static void OnIsDefaultChanged(
+        DependencyObject o, DependencyPropertyChangedEventArgs e) { … }
+    …
+}

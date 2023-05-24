@@ -1,0 +1,16 @@
+<StackPanel xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+       xmlns:sys="clr-namespace:System;assembly=mscorlib"
+       xmlns:interop=
+         "clr-namespace:System.Runtime.InteropServices;assembly=mscorlib">
+<Label Foreground="Blue" FontWeight="Bold" FontSize="16">
+  <sys:Guid x:FactoryMethod="sys:Guid.NewGuid"/>
+</Label>
+<Label Foreground="Orange" FontWeight="Bold" FontSize="16">
+  <sys:Exception x:FactoryMethod="interop:Marshal.GetExceptionForHR">
+  <x:Arguments>
+    <x:Int32>0x80004001</x:Int32>
+  </x:Arguments>
+  </sys:Exception>
+</Label>
+</StackPanel>

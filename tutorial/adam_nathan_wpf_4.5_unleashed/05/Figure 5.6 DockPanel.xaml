@@ -1,0 +1,7 @@
+<DockPanel xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+  <Button DockPanel.Dock="Top" Background="Red">1 (Top)</Button>
+  <Button DockPanel.Dock="Left" Background="Orange">2 (Left)</Button>
+  <Button DockPanel.Dock="Right" Background="Yellow">3 (Right)</Button>
+  <Button DockPanel.Dock="Bottom" Background="Lime">4 (Bottom)</Button>
+  <Button Background="Aqua">5</Button>
+</DockPanel>

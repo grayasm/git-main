@@ -1,0 +1,33 @@
+<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  Title="Simple Window" Background="Yellow">
+  <DockPanel>
+    <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal"
+      HorizontalAlignment="Center">
+      <Button Background="Yellow" BorderBrush="Red" Margin="5">
+        <Image Height="21" Source="zoom.gif"/>
+      </Button>
+      <Button Background="Yellow" BorderBrush="Red" Margin="5">
+        <Image Height="21" Source="defaultThumbnailSize.gif"/>
+      </Button>
+      <Button Background="Yellow" BorderBrush="Red" Margin="5">
+        <Image Height="21" Source="previous.gif"/>
+      </Button>
+      <Button Background="Yellow" BorderBrush="Red" Margin="5">
+        <Image Height="21" Source="slideshow.gif"/>
+      </Button>
+      <Button Background="Yellow" BorderBrush="Red" Margin="5">
+        <Image Height="21" Source="next.gif"/>
+      </Button>
+      <Button Background="Yellow" BorderBrush="Red" Margin="5">
+        <Image Height="21" Source="counterclockwise.gif"/>
+      </Button>
+      <Button Background="Yellow" BorderBrush="Red" Margin="5">
+        <Image Height="21" Source="clockwise.gif"/>
+      </Button>
+      <Button Background="Yellow" BorderBrush="Red" Margin="5">
+        <Image Height="21" Source="delete.gif"/>
+      </Button>
+    </StackPanel>
+    <ListBox/>
+  </DockPanel>
+</Window>

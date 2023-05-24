@@ -1,0 +1,21 @@
+<Page Background="Black"
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <Image>
+    <Image.Source>
+      <DrawingImage>
+        <DrawingImage.Drawing>
+          <DrawingGroup x:Name="House">
+            <GeometryDrawing x:Name="Front" Brush="Red"
+              Geometry="M0,260 L0,600 L110,670 L110,500 L190,550 L190,710 L300,775
+                L300,430 L150,175" />
+            <GeometryDrawing x:Name="Side" Brush="Green"
+              Geometry="M300,430 L300,775 L600,600 L600,260" />
+            <GeometryDrawing x:Name="Roof" Brush="Blue"
+              Geometry="M150,175 L300,430 L600,260 L450,0" />
+          </DrawingGroup>
+        </DrawingImage.Drawing>
+      </DrawingImage>
+    </Image.Source>
+  </Image>
+</Page>

@@ -1,0 +1,5 @@
+<Button xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+<Button.Content>
+<Rectangle Height="40" Width="40" Fill="Black"/>
+</Button.Content>
+</Button>

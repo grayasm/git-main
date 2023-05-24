@@ -1,0 +1,127 @@
+﻿<Window x:Class="PhotoGallery.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Title="Photo Gallery" Loaded="Window_Loaded">
+    <Window.Resources>
+    <LinearGradientBrush x:Key="shinyBrush" StartPoint="0,0" EndPoint="0,1">
+      <GradientStop Offset="0" Color="White"/>
+            <GradientStop Offset="0.5" Color="#EEF5FC"/>
+            <GradientStop Offset="0.5" Color="#E7EEF8"/>
+            <GradientStop Offset="0.5" Color="#CDDAEA"/>
+            <GradientStop Offset="0.9" Color="#E7EEF8"/>
+            <GradientStop Offset="0.9" Color="#CDDAEA"/>
+      <GradientStop Offset="1" Color="#A0AFC3"/>
+    </LinearGradientBrush>
+        <LinearGradientBrush x:Key="footerBrush" StartPoint="0,0" EndPoint="0,1">
+            <GradientStop Offset="0" Color="#C0CDDE"/>
+            <GradientStop Offset="0.15" Color="#E8F0F8"/>
+            <GradientStop Offset="0.15" Color="#EBF2FA"/>
+            <GradientStop Offset="1" Color="#E5EEF8"/>
+        </LinearGradientBrush>
+    </Window.Resources>
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="35"/>
+      <RowDefinition/>
+      <RowDefinition Height="35"/>
+    </Grid.RowDefinitions>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="200"/>
+      <ColumnDefinition Width="Auto"/>
+      <ColumnDefinition/>
+    </Grid.ColumnDefinitions>
+    <Rectangle Grid.ColumnSpan="3" Fill="{StaticResource shinyBrush}"/>
+    <Rectangle Grid.Row="2" Grid.ColumnSpan="3" Fill="{StaticResource footerBrush}"/>
+
+    <Menu Background="Transparent" Name="menu1" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.ColumnSpan="3">
+      <MenuItem Header="_File" Foreground="#1E395B" Padding="20 8 20 8">
+        <MenuItem x:Name="favoritesMenu" Header="Add Current Folder to Fa_vorites" Click="favoritesMenu_Click" Foreground="Black" />
+        <MenuItem x:Name="deleteMenu" IsEnabled="False" Header="De_lete" Click="deleteMenu_Click" Foreground="Black" />
+        <MenuItem x:Name="renameMenu" IsEnabled="False" Header="Rena_me" Click="renameMenu_Click" Foreground="Black" />
+        <Separator/>
+        <MenuItem Header="_Refresh" Click="refreshMenu_Click" Foreground="Black" />
+        <Separator/>
+        <MenuItem Header="E_xit" Click="exitMenu_Click" Foreground="Black" />
+      </MenuItem>
+      <MenuItem x:Name="fixMenu"  Foreground="#1E395B" Padding="20 8 20 8" IsEnabled="False" Click="fixMenu_Click" Header="Fi_x"/>
+      <MenuItem x:Name="printMenu" Foreground="#1E395B" Padding="20 8 20 8" Click="printMenu_Click" IsEnabled="False" Header="_Print"/>
+      <MenuItem x:Name="editMenu"  Foreground="#1E395B" Padding="20 8 20 8" IsEnabled="False" Header="_Edit" Click="editMenu_Click" />
+    </Menu>
+    <Button x:Name="backButton" Click="backButton_Click" Visibility="Hidden">Back To Gallery</Button>
+
+    <!-- Layer #1 -->
+    <TreeView x:Name="treeView" Grid.Row="1" BorderBrush="Transparent" SelectedItemChanged="folders_SelectedItemChanged">
+      <TreeViewItem x:Name="favoritesItem" IsExpanded="True" Header="Favorites"/>
+      <TreeViewItem x:Name="foldersItem" Header="Folders"/>
+    </TreeView>
+    <GridSplitter Grid.Row="1" Grid.Column="1" Width="2" Background="Transparent" ResizeBehavior="PreviousAndNext"/>
+    <ListBox x:Name="pictureBox" BorderBrush="Transparent" SelectionChanged="pictureBox_SelectionChanged" Grid.Row="1" Grid.Column="2" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+      <ListBox.ItemsPanel>
+        <ItemsPanelTemplate>
+          <WrapPanel/>
+        </ItemsPanelTemplate>
+      </ListBox.ItemsPanel>
+    </ListBox>
+
+    <!-- Layer #2 -->
+    <DockPanel x:Name="imageView" Background="White" Visibility="Hidden" SnapsToDevicePixels="True" Grid.Row="1" Grid.ColumnSpan="3">
+      <StackPanel x:Name="fixBar" DockPanel.Dock="Right">
+        <Button Click="fix_RotateClockwise_Click" Margin="20">Rotate Clockwise</Button>
+        <Button Click="fix_RotateCounterclockwise_Click" Margin="20">Rotate Counterclockwise</Button>
+        <Button Click="fix_Save_Click" Margin="20">Save</Button>
+      </StackPanel>
+      <Grid>
+        <Image VerticalAlignment="Center" x:Name="image">
+          <Image.LayoutTransform>
+            <RotateTransform/>
+          </Image.LayoutTransform>
+        </Image>
+      </Grid>
+    </DockPanel>
+
+    <Grid Grid.Row="2" Grid.ColumnSpan="3" HorizontalAlignment="Right" Margin="0 0 10 0">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition/>
+        <ColumnDefinition Width="Auto"/>
+        <ColumnDefinition/>
+      </Grid.ColumnDefinitions>
+      <StackPanel Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Right">
+        <Button VerticalAlignment="Center" x:Name="zoomButton" Click="zoomButton_Click" ClickMode="Press" ToolTip="Change the Display Size" Margin="1 0 1 0" Background="Transparent" BorderBrush="Transparent">
+          <Image RenderOptions.BitmapScalingMode="NearestNeighbor" Height="22" Source="images\zoom.gif"/>
+        </Button>
+        <Popup x:Name="zoomPopup" MouseLeave="zoomPopup_MouseLeave" PlacementTarget="{Binding ElementName=zoomButton}" Placement="Center" StaysOpen="False">
+          <Grid Background="White">
+            <Border BorderBrush="Black" BorderThickness="1">
+              <Slider Margin="20" Orientation="Vertical" x:Name="zoomSlider" Value="3" Minimum="1" Maximum="10" Height="100" ValueChanged="zoomSlider_ValueChanged"/>
+            </Border>
+          </Grid>
+        </Popup>
+        <Button x:Name="defaultSizeButton" Click="defaultSizeButton_Click" VerticalAlignment="Center" ToolTip="Set Default Thumbnail Size" Margin="1 0 1 0" Background="Transparent" BorderBrush="Transparent">
+          <Image RenderOptions.BitmapScalingMode="NearestNeighbor" Height="22" Source="images\defaultThumbnailSize.gif"/>
+        </Button>
+      </StackPanel>
+      <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center">
+        <Button x:Name="previousButton" Click="previousButton_Click" VerticalAlignment="Center" IsEnabled="False" Opacity=".5" ToolTip="Previous (Left Arrow)" Margin="1 0 1 0" Background="Transparent" BorderBrush="Transparent">
+          <Image RenderOptions.BitmapScalingMode="NearestNeighbor" Height="22" Source="images\previous.gif"/>
+        </Button>
+        <Button x:Name="slideshowButton" Click="slideshowButton_Click" VerticalAlignment="Center" ToolTip="Play Slide Show" Margin="1 0 1 0" Background="Transparent" BorderBrush="Transparent">
+          <Image RenderOptions.BitmapScalingMode="NearestNeighbor" Height="22" Source="images\slideshow.gif"/>
+        </Button>
+        <Button x:Name="nextButton" Click="nextButton_Click" VerticalAlignment="Center" IsEnabled="False" Opacity=".5" ToolTip="Next (Right Arrow)" Margin="1 0 1 0" Background="Transparent" BorderBrush="Transparent">
+          <Image RenderOptions.BitmapScalingMode="NearestNeighbor" Height="22" Source="images\next.gif"/>
+        </Button>
+      </StackPanel>
+      <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Left">
+        <Button x:Name="counterclockwiseButton" Click="counterclockwiseButton_Click" IsEnabled="False" Opacity=".5" VerticalAlignment="Center" ToolTip="Rotate Counterclockwise" Margin="1 0 1 0" Background="Transparent" BorderBrush="Transparent">
+          <Image RenderOptions.BitmapScalingMode="NearestNeighbor" Height="22" Source="images\counterclockwise.gif"/>
+        </Button>
+        <Button x:Name="clockwiseButton" Click="clockwiseButton_Click" IsEnabled="False" Opacity=".5" VerticalAlignment="Center" ToolTip="Rotate Clockwise" Margin="1 0 1 0" Background="Transparent" BorderBrush="Transparent">
+          <Image RenderOptions.BitmapScalingMode="NearestNeighbor" Height="22" Source="images\clockwise.gif"/>
+        </Button>
+        <Button x:Name="deleteButton" Click="deleteButton_Click" IsEnabled="False" Opacity=".5" VerticalAlignment="Center" ToolTip="Delete (Del)" Margin="1 0 1 0" Background="Transparent" BorderBrush="Transparent">
+          <Image RenderOptions.BitmapScalingMode="NearestNeighbor" Height="22" Source="images\delete.gif"/>
+        </Button>
+      </StackPanel>
+    </Grid>
+  </Grid>
+</Window>

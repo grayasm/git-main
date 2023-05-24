@@ -1,0 +1,43 @@
+using System;
+using System.Windows.Controls;
+using System.Windows.Threading;
+using System.Deployment.Application;
+
+public partial class Page1 : Page
+{
+    public Page1()
+    {
+        InitializeComponent();
+    }
+
+    protected override void OnInitialized(EventArgs e)
+    {
+        base.OnInitialized(e);
+        if (ApplicationDeployment.IsNetworkDeployed)
+        {
+            // Handle the event that is raised when the download of files
+            // in MyGroup is complete.
+            ApplicationDeployment.CurrentDeployment.DownloadFileGroupCompleted +=
+            delegate
+            {
+                // We’re on a different thread, so invoke GotoPage2 on the UI thread
+                Dispatcher.BeginInvoke(DispatcherPriority.Send,
+                new DispatcherOperationCallback(GotoPage2), null);
+            };
+            ApplicationDeployment.CurrentDeployment.DownloadFileGroupAsync("MyGroup");
+        }
+        else
+        {
+            // We’re not running in the context of ClickOnce (perhaps because
+            // we’re being debugged), so just go directly to Page2.
+            GotoPage2(null);
+        }
+    }
+ 
+    // Navigates to Page2 when ready. Accepts and returns an object simply
+    // to match the signature of DispatcherOperationCallback
+    private object GotoPage2(object o)
+    {
+        return NavigationService.Navigate(new Uri("Page2.xaml", UriKind.Relative));
+    }
+}

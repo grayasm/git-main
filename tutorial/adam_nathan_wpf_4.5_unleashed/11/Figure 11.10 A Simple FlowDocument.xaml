@@ -1,0 +1,105 @@
+<FlowDocument xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+  <Paragraph FontSize="22" FontWeight="Bold">Chapter 1</Paragraph>
+  <Paragraph FontSize="35" FontWeight="Bold">Why WPF?</Paragraph>
+  <Paragraph>
+    In movies and on TV, the main characters are typically
+    an exaggeration of the people you encounter in real life.
+    They're more attractive, they react quicker, and they
+    somehow always know exactly what to do. The same could
+    be said about the software they use.
+  </Paragraph>
+  <Paragraph>
+    This first struck me back in 1994 when watching the movie
+    Disclosure, starring Michael Douglas, Demi Moore, and an
+    email program that looks nothing like Microsoft Outlook!
+    Throughout the movie, we're treated to various visual
+    features of the program: a spinning three-dimensional "e,"
+    messages that unfold when you open them and crumple
+    when you delete them, hints of inking support, and slick
+    animations when you print messages. (The email program
+    isn't even the most unrealistic software in the movie. I'll
+    just say "virtual reality database" and leave it at that.)
+  </Paragraph>
+  <Paragraph>
+    Usability issues aside, Hollywood has been telling us for a
+    long time that software in the real world isn't as
+    compelling as it should be. You can probably think of
+    several examples on your own of TV shows and movies
+    with comically unrealistic software. But real-world software
+    is starting to catch up to Hollywood's standards! You can
+    already see it in traditional operating systems (such as Mac
+    OS and more recently Windows Vista), in software for
+    devices such as TiVo or Xbox, and on the Web thanks to
+    Adobe Flash. Users have increasing expectations for the
+    experience of using software, and companies are spending
+    a great deal of time and money on user interfaces that
+    differentiate themselves from the competition.
+  </Paragraph>
+  <Paragraph>
+    Microsoft now has a solution for helping people create 21st-century software that meets
+    these high demands, using less time and less money. This solution is Windows
+    Presentation Foundation (WPF).
+  </Paragraph>
+  <Paragraph>...</Paragraph>
+  <Paragraph>...</Paragraph>
+  <Paragraph>...</Paragraph>
+  <Paragraph>...</Paragraph>
+  <Paragraph>...</Paragraph>
+  <Paragraph>...</Paragraph>
+  <Paragraph>...</Paragraph>
+  <Paragraph>...</Paragraph>
+  <Paragraph>...</Paragraph>
+  <Paragraph>...</Paragraph>
+  <Paragraph>...</Paragraph>
+  <Paragraph>...</Paragraph>
+  <Paragraph>...</Paragraph>
+  <Paragraph>...</Paragraph>
+  <Paragraph>...</Paragraph>
+  <Paragraph>...</Paragraph>
+  <Paragraph>...</Paragraph>
+  <Paragraph>...</Paragraph>
+  <Paragraph>...</Paragraph>
+  <Paragraph>...</Paragraph>
+  <Paragraph>...</Paragraph>
+  <Paragraph>...</Paragraph>
+  <Paragraph>...</Paragraph>
+  <Paragraph>...</Paragraph>
+  <Paragraph>...</Paragraph>
+  <Paragraph>...</Paragraph>
+  <Paragraph>...</Paragraph>
+  <Paragraph>...</Paragraph>
+  <Paragraph>...</Paragraph>
+  <Paragraph>...</Paragraph>
+  <Paragraph>...</Paragraph>
+  <Paragraph>...</Paragraph>
+  <Paragraph>...</Paragraph>
+  <Paragraph>...</Paragraph>
+  <Paragraph>...</Paragraph>
+  <Paragraph>...</Paragraph>
+  <Paragraph>...</Paragraph>
+  <Paragraph>...</Paragraph>
+  <Paragraph>...</Paragraph>
+  <Paragraph>...</Paragraph>
+  <Paragraph>...</Paragraph>
+  <Paragraph>...</Paragraph>
+  <Paragraph>...</Paragraph>
+  <Paragraph>...</Paragraph>
+  <Paragraph>...</Paragraph>
+  <Paragraph>...</Paragraph>
+  <Paragraph>...</Paragraph>
+  <Paragraph>...</Paragraph>
+  <Paragraph>...</Paragraph>
+  <Paragraph>...</Paragraph>
+  <Paragraph>...</Paragraph>
+  <Paragraph>...</Paragraph>
+  <Paragraph>...</Paragraph>
+  <Paragraph>...</Paragraph>
+  <Paragraph>...</Paragraph>
+  <Paragraph>...</Paragraph>
+  <Paragraph>...</Paragraph>
+  <Paragraph>...</Paragraph>
+  <Paragraph>...</Paragraph>
+  <Paragraph>...</Paragraph>
+  <Paragraph>...</Paragraph>
+  <Paragraph>...</Paragraph>
+</FlowDocument>

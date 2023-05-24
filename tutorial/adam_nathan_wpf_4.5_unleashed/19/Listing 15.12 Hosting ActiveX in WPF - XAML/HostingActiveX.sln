@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HostingActiveX", "HostingActiveX\HostingActiveX.csproj", "{3A6FEFDE-B034-4515-9474-8CAE2C4C0EC5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3A6FEFDE-B034-4515-9474-8CAE2C4C0EC5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3A6FEFDE-B034-4515-9474-8CAE2C4C0EC5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3A6FEFDE-B034-4515-9474-8CAE2C4C0EC5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3A6FEFDE-B034-4515-9474-8CAE2C4C0EC5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

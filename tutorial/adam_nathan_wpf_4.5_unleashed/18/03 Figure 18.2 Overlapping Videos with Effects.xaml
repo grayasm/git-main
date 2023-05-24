@@ -1,0 +1,17 @@
+<Canvas xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <MediaElement Source="C:\Users\Public\Videos\Sample Videos\butterfly.wmv"
+  Opacity="0.5">
+    <MediaElement.Clip>
+      <EllipseGeometry Center="220,220" RadiusX="220" RadiusY="220"/>
+    </MediaElement.Clip>
+    <MediaElement.LayoutTransform>
+      <RotateTransform Angle="180"/>
+    </MediaElement.LayoutTransform>
+  </MediaElement>
+  <MediaElement Source="C:\Users\Public\Videos\Sample Videos\butterfly.wmv"
+  Opacity="0.5">
+    <MediaElement.Clip>
+      <EllipseGeometry Center="220,220" RadiusX="220" RadiusY="220"/>
+    </MediaElement.Clip>
+  </MediaElement>
+</Canvas>

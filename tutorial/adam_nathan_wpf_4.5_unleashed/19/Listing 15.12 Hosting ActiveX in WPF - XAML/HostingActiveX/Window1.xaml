@@ -1,0 +1,15 @@
+﻿<Window x:Class="HostingActiveX.Window1"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:ax="clr-namespace:AxMSTSCLib;assembly=AxMSTSCLib"
+    Title="Hosting the Terminal Services ActiveX Control">
+      <DockPanel Name="panel" Margin="10">
+        <StackPanel Margin="0,0,0,10" DockPanel.Dock="Top" Orientation="Horizontal">
+          <TextBox x:Name="serverBox" Width="200" Margin="0,0,10,0"/>
+          <Button x:Name="connectButton" Click="connectButton_Click">Connect</Button>
+        </StackPanel>
+      <WindowsFormsHost>
+        <ax:AxMsTscAxNotSafeForScripting x:Name="termServ"/>
+      </WindowsFormsHost>
+      </DockPanel>
+</Window>

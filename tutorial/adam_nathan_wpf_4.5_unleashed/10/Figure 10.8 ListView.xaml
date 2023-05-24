@@ -1,0 +1,12 @@
+<ListView xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:sys="clr-namespace:System;assembly=mscorlib">
+<ListView.View>
+  <GridView>
+    <GridViewColumn Header="Date"/>
+    <GridViewColumn Header="Day of Week" DisplayMemberBinding="{Binding DayOfWeek}"/>
+    <GridViewColumn Header="Year" DisplayMemberBinding="{Binding Year}"/>
+  </GridView>
+</ListView.View>
+  <sys:DateTime>1/1/2012</sys:DateTime>
+  <sys:DateTime>1/2/2012</sys:DateTime>
+  <sys:DateTime>1/3/2012</sys:DateTime>
+</ListView>

@@ -1,0 +1,34 @@
+<Image xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+  <Image.Source>
+    <DrawingImage>
+      <DrawingImage.Drawing>
+        <GeometryDrawing Brush="Orange">
+          <GeometryDrawing.Pen>
+            <Pen Brush="Black" Thickness="10"/>
+          </GeometryDrawing.Pen>
+          <GeometryDrawing.Geometry>
+            <GeometryGroup>
+              <!-- Triangle #1 -->
+              <PathGeometry>
+                <PathFigure IsClosed="True">
+                  <LineSegment Point="0,100" IsSmoothJoin="True"/>
+                  <LineSegment Point="100,100" IsSmoothJoin="True"/>
+                </PathFigure>
+              </PathGeometry>
+              <!-- Triangle #2 -->
+              <PathGeometry>
+                <PathGeometry.Transform>
+                  <RotateTransform Angle="25"/>
+                </PathGeometry.Transform>
+                <PathFigure IsClosed="True">
+                  <LineSegment Point="0,100" IsSmoothJoin="True"/>
+                  <LineSegment Point="100,100" IsSmoothJoin="True"/>
+                </PathFigure>
+              </PathGeometry>
+            </GeometryGroup>
+          </GeometryDrawing.Geometry>
+        </GeometryDrawing>
+      </DrawingImage.Drawing>
+    </DrawingImage>
+  </Image.Source>
+</Image>

@@ -1,0 +1,28 @@
+<Canvas xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+  <Button Padding="30">
+    OK
+    <Button.Background>
+      <LinearGradientBrush>
+        <GradientStop Color="Blue" Offset="0"/>
+        <GradientStop Color="Black" Offset="0.5"/>
+        <GradientStop Color="Blue" Offset="1"/>
+      </LinearGradientBrush>
+    </Button.Background>
+    <Button.Triggers>
+      <EventTrigger RoutedEvent="Button.Loaded">
+        <EventTrigger.Actions>
+          <BeginStoryboard>
+            <Storyboard>
+              <ColorAnimation From="Black" To="White" Duration="0:0:2"
+              Storyboard.TargetProperty="Background.GradientStops[1].Color"
+              AutoReverse="True" RepeatBehavior="Forever"/>
+              <DoubleAnimation From="0" To="1" Duration="0:0:2"
+              Storyboard.TargetProperty="Background.GradientStops[1].Offset"
+              AutoReverse="True" RepeatBehavior="Forever"/>
+            </Storyboard>
+          </BeginStoryboard>
+        </EventTrigger.Actions>
+      </EventTrigger>
+    </Button.Triggers>
+  </Button>
+</Canvas>

@@ -1,0 +1,26 @@
+﻿<Window x:Class="DataGrid.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="DataGrid with Inline Content" Height="350" Width="525">
+    <DataGrid IsReadOnly="True" xmlns:local="clr-namespace:DataGrid" xmlns:sys="clr-namespace:System;assembly=mscorlib">
+        <!-- Support for showing all genders in the DataGridComboBoxColumn: -->
+        <DataGrid.Resources>
+            <ObjectDataProvider x:Key="genderEnum" MethodName="GetValues" ObjectType="{x:Type sys:Enum}">
+                <ObjectDataProvider.MethodParameters>
+                    <x:Type Type="local:Gender"/>
+                </ObjectDataProvider.MethodParameters>
+            </ObjectDataProvider>
+        </DataGrid.Resources>
+        <!-- The columns: -->
+        <DataGrid.Columns>
+            <DataGridTextColumn Header="First Name" Binding="{Binding FirstName}"/>
+            <DataGridTextColumn Header="Last Name" Binding="{Binding LastName}"/>
+            <DataGridHyperlinkColumn Header="Website" Binding="{Binding Website}"/>
+            <DataGridCheckBoxColumn Header="Billionaire?" Binding="{Binding IsBillionaire}"/>
+            <DataGridComboBoxColumn Header="Gender" SelectedItemBinding="{Binding Gender}" ItemsSource="{Binding Source={StaticResource genderEnum}}"/>
+        </DataGrid.Columns>
+        <!-- The data: -->
+        <local:Record FirstName="Adam" LastName="Nathan" Website="http://twitter.com/adamnathan" Gender="Male"/>
+        <local:Record FirstName="Bill" LastName="Gates" Website="http://twitter.com/billgates" IsBillionaire="True" Gender="Male"/>
+    </DataGrid>
+</Window>

@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlayingCard", "PlayingCard\PlayingCard.csproj", "{408BB68F-6323-46D3-9678-3B1A5C648EAC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{408BB68F-6323-46D3-9678-3B1A5C648EAC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{408BB68F-6323-46D3-9678-3B1A5C648EAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{408BB68F-6323-46D3-9678-3B1A5C648EAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{408BB68F-6323-46D3-9678-3B1A5C648EAC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

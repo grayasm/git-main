@@ -1,0 +1,27 @@
+﻿<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+x:Class="AboutDialog"
+Title="About WPF 4.5 Unleashed" SizeToContent="WidthAndHeight"
+Background="OrangeRed">
+  <Window.CommandBindings>
+    <CommandBinding Command="Help"
+    CanExecute="HelpCanExecute" Executed="HelpExecuted"/>
+  </Window.CommandBindings>
+  <StackPanel>
+    <Label FontWeight="Bold" FontSize="20" Foreground="White">
+      WPF 4.5 Unleashed
+    </Label>
+    <Label>© 2013 SAMS Publishing</Label>
+    <Label>Installed Chapters:</Label>
+    <ListBox>
+      <ListBoxItem>Chapter 1</ListBoxItem>
+      <ListBoxItem>Chapter 2</ListBoxItem>
+    </ListBox>
+    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+      <Button MinWidth="75" Margin="10" Command="Help" Content=
+"{Binding RelativeSource={RelativeSource Self}, Path=Command.Text}"/>
+      <Button MinWidth="75" Margin="10">OK</Button>
+    </StackPanel>
+    <StatusBar>You have successfully registered this product.</StatusBar>
+  </StackPanel>
+</Window>

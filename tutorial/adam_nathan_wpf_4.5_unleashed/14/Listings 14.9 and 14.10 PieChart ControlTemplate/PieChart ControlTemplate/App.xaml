@@ -1,0 +1,87 @@
+﻿<Application xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+xmlns:local="clr-namespace:WindowsApplication1"
+StartupUri="Window1.xaml">
+  <Application.Resources>
+
+    <LinearGradientBrush x:Key="foregroundBrush" StartPoint="0,0" EndPoint="1,1">
+      <GradientStop Offset="0" Color="LightGreen"/>
+      <GradientStop Offset="1" Color="DarkGreen"/>
+    </LinearGradientBrush>
+    
+    <ControlTemplate x:Key="progressPie" TargetType="{x:Type ProgressBar}">
+
+      <!-- Resources -->
+      <ControlTemplate.Resources>
+        <local:ValueMinMaxToPointConverter x:Key="converter1"/>
+        <local:ValueMinMaxToIsLargeArcConverter x:Key="converter2"/>
+      </ControlTemplate.Resources>
+
+      <!-- Visual Tree -->
+      <Viewbox>
+        <Grid Width="20" Height="20">
+          <Ellipse x:Name="background" Stroke="{TemplateBinding BorderBrush}"
+          StrokeThickness="{TemplateBinding BorderThickness}"
+          Width="20" Height="20" Fill="{TemplateBinding Background}"/>
+          <Path x:Name="pie" Fill="{TemplateBinding Foreground}">
+            <Path.Data>
+              <PathGeometry>
+                <PathFigure StartPoint="10,10" IsClosed="True">
+                  <LineSegment Point="10,0"/>
+                  <ArcSegment Size="10,10" SweepDirection="Clockwise">
+                    <ArcSegment.Point>
+                      <MultiBinding Converter="{StaticResource converter1}">
+                        <Binding RelativeSource="{RelativeSource TemplatedParent}"
+                        Path="Value"/>
+                        <Binding RelativeSource="{RelativeSource TemplatedParent}"
+                        Path="Minimum"/>
+                        <Binding RelativeSource="{RelativeSource TemplatedParent}"
+                        Path="Maximum"/>
+                      </MultiBinding>
+                    </ArcSegment.Point>
+                    <ArcSegment.IsLargeArc>
+                      <MultiBinding Converter="{StaticResource converter2}">
+                        <Binding RelativeSource="{RelativeSource TemplatedParent}"
+                        Path="Value"/>
+                        <Binding RelativeSource="{RelativeSource TemplatedParent}"
+                        Path="Minimum"/>
+                        <Binding RelativeSource="{RelativeSource TemplatedParent}"
+                        Path="Maximum"/>
+                      </MultiBinding>
+                    </ArcSegment.IsLargeArc>
+                  </ArcSegment>
+                </PathFigure>
+              </PathGeometry>
+            </Path.Data>
+          </Path>
+        </Grid>
+      </Viewbox>
+
+      <!-- Triggers -->
+      <ControlTemplate.Triggers>
+        <Trigger Property="IsIndeterminate" Value="True">
+          <Setter TargetName="pie" Property="Visibility" Value="Hidden"/>
+          <Setter TargetName="background" Property="Fill">
+            <Setter.Value>
+              <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                <GradientStop Offset="0" Color="Yellow"/>
+                <GradientStop Offset="1" Color="Brown"/>
+              </LinearGradientBrush>
+            </Setter.Value>
+          </Setter>
+        </Trigger>
+        <Trigger Property="IsEnabled" Value="False">
+          <Setter TargetName="pie" Property="Fill">
+            <Setter.Value>
+              <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                <GradientStop Offset="0" Color="Gray"/>
+                <GradientStop Offset="1" Color="White"/>
+              </LinearGradientBrush>
+            </Setter.Value>
+          </Setter>
+        </Trigger>
+      </ControlTemplate.Triggers>
+    </ControlTemplate>
+    
+  </Application.Resources>
+</Application>

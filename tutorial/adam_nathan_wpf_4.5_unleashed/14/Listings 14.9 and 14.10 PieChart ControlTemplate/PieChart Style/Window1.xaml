@@ -1,0 +1,15 @@
+﻿<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+x:Class="WindowsApplication1.Window1">
+  <StackPanel Orientation="Horizontal">
+
+    <!-- Use the default gradient fill -->
+    <ProgressBar Style="{StaticResource pieStyle}"
+      Width="100" Height="100" Value="10" Margin="10"/>
+
+    <!-- Use a solid red fill instead -->
+    <ProgressBar Style="{StaticResource pieStyle}" Foreground="Red"
+      Width="100" Height="100" Value="10" Margin="10"/>
+
+  </StackPanel>
+</Window>

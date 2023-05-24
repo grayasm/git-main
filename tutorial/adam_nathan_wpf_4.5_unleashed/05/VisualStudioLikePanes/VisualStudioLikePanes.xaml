@@ -1,0 +1,145 @@
+﻿<Window x:Class="MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Title="Application with Collapsible, Dockable, Resizable Panes"
+    >
+	<DockPanel>
+		<Menu DockPanel.Dock="Top">
+			<MenuItem Header="FILE"/>
+			<MenuItem Header="EDIT"/>
+			<MenuItem Header="VIEW"/>
+			<MenuItem Header="PROJECT"/>
+			<MenuItem Header="BUILD"/>
+			<MenuItem Header="DEBUG"/>
+			<MenuItem Header="TOOLS"/>
+			<MenuItem Header="TEST"/>
+			<MenuItem Header="WINDOW"/>
+			<MenuItem Header="HELP"/>
+		</Menu>
+
+		<StackPanel Name="buttonBar" Orientation="Horizontal" DockPanel.Dock="Right">
+			<StackPanel.LayoutTransform>
+				<RotateTransform Angle="90"/>
+			</StackPanel.LayoutTransform>
+			<Button Name="pane1Button" MouseEnter="pane1Button_MouseEnter">
+				Toolbox
+			</Button>
+			<Button Name="pane2Button" MouseEnter="pane2Button_MouseEnter">
+				Solution Explorer
+			</Button>
+		</StackPanel>
+
+		<Grid Name="parentGrid" Grid.IsSharedSizeScope="True">
+
+			<Grid Name="layer0" MouseEnter="layer0_MouseEnter">
+				<!-- Define four rows: -->
+				<Grid.RowDefinitions>
+					<RowDefinition Height="Auto"/>
+					<RowDefinition/>
+					<RowDefinition/>
+					<RowDefinition/>
+				</Grid.RowDefinitions>
+
+				<!-- Define two columns: -->
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="Auto"/>
+					<ColumnDefinition/>
+				</Grid.ColumnDefinitions>
+
+				<!-- Arrange the children: -->
+				<Label    Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Background="Black" Foreground="White"
+						  HorizontalContentAlignment="Center">
+					<Label.LayoutTransform>
+						<ScaleTransform ScaleX="2" ScaleY="2" />
+					</Label.LayoutTransform>
+					Start Page
+				</Label>
+				<GroupBox Grid.Row="1" Grid.Column="0" Background="White"
+						  Header="Start">...</GroupBox>
+				<GroupBox Grid.Row="2" Grid.Column="0" Background="White"
+						  Header="Recent">...</GroupBox>
+				<GroupBox Grid.Row="3" Grid.Column="0" Background="White" Header="Options">...</GroupBox>
+				<GroupBox Grid.Row="1" Grid.Column="1" Grid.RowSpan="3" Background="White" Header="Get Started">
+					<ListBox>
+						<ListBoxItem>Article #1</ListBoxItem>
+						<ListBoxItem>Article #2</ListBoxItem>
+						<ListBoxItem>Article #3</ListBoxItem>
+						<ListBoxItem>Article #4</ListBoxItem>
+					</ListBox>
+				</GroupBox>
+			</Grid>
+
+			<Grid Name="layer1" Visibility="Collapsed">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition/>
+					<ColumnDefinition SharedSizeGroup="column1" Width="auto"/>
+				</Grid.ColumnDefinitions>
+
+				<Grid Grid.Column="1" MouseEnter="pane1_MouseEnter"
+	Background="{DynamicResource {x:Static SystemColors.ActiveCaptionBrushKey}}" >
+					<Grid.RowDefinitions>
+						<RowDefinition Height="auto"/>
+						<RowDefinition/>
+					</Grid.RowDefinitions>
+
+					<DockPanel Grid.Row="0">
+						<Button Width="26" Name="pane1Pin" DockPanel.Dock="Right" Click="pane1Pin_Click" Background="White">
+							<Image Name="pane1PinImage" Source="pinHorizontal.gif"/>
+						</Button>
+						<TextBlock Padding="8" TextTrimming="CharacterEllipsis" Foreground="{DynamicResource {x:Static SystemColors.ActiveCaptionTextBrushKey}}" DockPanel.Dock="Left">Toolbox</TextBlock>
+					</DockPanel>
+					<ListBox Padding="10" Grid.Row="1">
+						<ListBoxItem>Button</ListBoxItem>
+						<ListBoxItem>CheckBox</ListBoxItem>
+						<ListBoxItem>ComboBox</ListBoxItem>
+						<ListBoxItem>Label</ListBoxItem>
+						<ListBoxItem>ListBox</ListBoxItem>
+					</ListBox>
+				</Grid>
+
+				<GridSplitter Width="5" Grid.Column="1" HorizontalAlignment="Left"/>
+			</Grid>
+
+			<Grid Name="layer2" Visibility="Collapsed">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition/>
+					<ColumnDefinition SharedSizeGroup="column2" Width="auto"/>
+				</Grid.ColumnDefinitions>
+
+				<Grid Grid.Column="1" MouseEnter="pane2_MouseEnter" Background="{DynamicResource {x:Static SystemColors.ActiveCaptionBrushKey}}">
+					<Grid.RowDefinitions>
+						<RowDefinition Height="auto"/>
+						<RowDefinition Height="auto"/>
+						<RowDefinition/>
+					</Grid.RowDefinitions>
+					<DockPanel Grid.Row="0">
+						<Button Width="26" Name="pane2Pin" DockPanel.Dock="Right" Click="pane2Pin_Click" Background="White">
+							<Image Name="pane2PinImage" Source="pinHorizontal.gif"/>
+						</Button>
+						<TextBlock Padding="8" TextTrimming="CharacterEllipsis" Foreground="{DynamicResource {x:Static SystemColors.ActiveCaptionTextBrushKey}}" DockPanel.Dock="Left">Solution Explorer</TextBlock>
+					</DockPanel>
+					<ToolBar Background="White" Grid.Row="1">
+						<Button>
+							<Image Source="iconVSproperties.bmp"/>
+						</Button>
+						<Button>
+							<Image Source="iconVSshowall.bmp"/>
+						</Button>
+						<Button>
+							<Image Source="iconVSrefresh.bmp"/>
+						</Button>
+					</ToolBar>
+					<TreeView Grid.Row="2">
+						<TreeViewItem Header="My Solution">
+							<TreeViewItem Header="Project #1"/>
+							<TreeViewItem Header="Project #2"/>
+							<TreeViewItem Header="Project #3"/>
+						</TreeViewItem>
+					</TreeView>
+				</Grid>
+
+				<GridSplitter Width="5" Grid.Column="1" HorizontalAlignment="Left"/>
+			</Grid>
+		</Grid>
+	</DockPanel>
+</Window>

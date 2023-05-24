@@ -1,0 +1,20 @@
+﻿<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+x:Class="WindowsApplication1.Window1">
+  <StackPanel Orientation="Horizontal">
+    <ProgressBar Foreground="{StaticResource foregroundBrush}" Width="100"
+      Height="100" Value="0" Template="{StaticResource progressPie}" Margin="10"/>
+    <ProgressBar Foreground="{StaticResource foregroundBrush}" Width="100"
+      Height="100" Value="10" Template="{StaticResource progressPie}" Margin="10"/>
+    <ProgressBar Foreground="{StaticResource foregroundBrush}" Width="100"
+      Height="100" Value="50" Template="{StaticResource progressPie}" Margin="10"/>
+    <ProgressBar Foreground="{StaticResource foregroundBrush}" Width="100"
+      Height="100" Value="75" Template="{StaticResource progressPie}" Margin="10"/>
+    <ProgressBar Foreground="{StaticResource foregroundBrush}" Width="100"
+      Height="100" Value="100" Template="{StaticResource progressPie}" Margin="10"/>
+    <ProgressBar Foreground="{StaticResource foregroundBrush}" Width="100"
+      Height="100" Value="10" IsEnabled="False" Template="{StaticResource progressPie}" Margin="10"/>
+    <ProgressBar Foreground="{StaticResource foregroundBrush}" Width="100"
+      Height="100" Value="10" IsIndeterminate="True" Template="{StaticResource progressPie}" Margin="10"/>
+  </StackPanel>
+</Window>

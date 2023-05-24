@@ -1,0 +1,15 @@
+<StackPanel xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  Orientation="Horizontal" Height="25">
+  <Button Command="Cut" CommandTarget="{Binding ElementName=textBox}"
+    Content="{Binding RelativeSource={RelativeSource Self}, Path=Command.Text}"/>
+  <Button Command="Copy" CommandTarget="{Binding ElementName=textBox}"
+    Content="{Binding RelativeSource={RelativeSource Self}, Path=Command.Text}"/>
+  <Button Command="Paste" CommandTarget="{Binding ElementName=textBox}"
+    Content="{Binding RelativeSource={RelativeSource Self}, Path=Command.Text}"/>
+  <Button Command="Undo" CommandTarget="{Binding ElementName=textBox}"
+    Content="{Binding RelativeSource={RelativeSource Self}, Path=Command.Text}"/>
+  <Button Command="Redo" CommandTarget="{Binding ElementName=textBox}"
+    Content="{Binding RelativeSource={RelativeSource Self}, Path=Command.Text}"/>
+  <TextBox x:Name="textBox" Width="200"/>
+</StackPanel>
