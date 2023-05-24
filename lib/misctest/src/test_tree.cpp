@@ -12,10 +12,8 @@ Copyright (C) 2012 Mihai Vasilian
 #include <iostream>
 
 
-//CppUnit
-#include <cppunit/CompilerOutputter.h>
-#include <cppunit/extensions/TestFactoryRegistry.h>
-#include <cppunit/ui/text/TestRunner.h>
+//acutest
+#include "acutest.h"
 
 //libraries
 #include "exception.hpp"
@@ -27,16 +25,124 @@ Copyright (C) 2012 Mihai Vasilian
 
 
 
-void test_tree::setUp()
+void test_tree::run()
 {
-}
+	test_90();
+	test_00();
+	preorder_it();
+	preorder_const_it();
+	postorder_it();
+	postorder_const_it();
+	first_branch_it();
+	first_branch_const_it();
+	child_it();
+	child_const_it();
 
-void test_tree::tearDown()
-{
+	ctor();
+	dtor();
+	copy_ctor();
+	copy_op();
+	get_it();
+	push_back_val();
+	push_front_val();
+	insert_sibling_before_val();
+	insert_sibling_after_val();
+	push_back_child_val();
+	push_front_child_val();
+	push_back_tree();
+	push_front_tree();
+	insert_sibling_before_tree();
+	insert_sibling_after_tree();
+	push_back_child_tree();
+	push_front_child_tree();
+	preorder_begin();
+	preorder_end();
+	preorder_begin_it();
+	preorder_end_it();
+
+	postorder_begin();
+	postorder_end();
+	postorder_begin_it();
+	postorder_end_it();
+
+	first_branch_begin();
+	first_branch_end();
+	first_branch_begin_it();
+	first_branch_end_it();
+
+	child_begin();
+	child_end();
+	child_begin_it();
+	child_end_it();
+
+	siblings_begin();
+	siblings_end();
+	siblings_begin_it();
+	siblings_end_it();
+
+	empty();
+	size();
+	clear();
+	erase();	
 }
 
 //########################################################################
 // test suite
+void test_tree::test_90()
+{
+	typedef misc::tree<int> Tree;
+	typedef Tree::iterator It;
+	Tree mtree1;
+	typedef misc::tree<int>::preorder_iterator preIt;
+	typedef misc::tree<int>::preorder_const_iterator preCIt;
+
+
+
+	int tree_data[] = { 1, 4, 5, 6, 7 };
+
+	/*
+				  root
+   			        |
+					1
+					|
+			   4 ------- 7
+			   |      
+		   5 ----- 6    
+			
+			
+
+	*/
+
+	It i1 = mtree1.push_back(1);
+
+	It i4 = mtree1.push_back_child(i1, 4);
+	It i7 = mtree1.push_back_child(i1, 7);
+
+	It i5 = mtree1.push_back_child(i4, 5);
+	It i6 = mtree1.push_back_child(i4, 6);
+
+
+
+
+	size_t i = 0;
+
+	//////////////////////////////////////////////////////////////////////////
+	//begin tests
+
+	const Tree ctree1 = mtree1;
+
+
+	preCIt cbeg = ctree1.preorder_begin();
+	preCIt cend = ctree1.preorder_end();
+
+	// const_preorder_iterator& operator++();
+	for (i = 0; cbeg != cend && i < 5; ++cbeg, ++i)
+	{
+		bool res = (*cbeg == tree_data[i]);
+		TEST_CHECK(res);
+	}//for
+
+}
 
 void test_tree::test_00()
 {
@@ -108,14 +214,14 @@ void test_tree::test_00()
 	for(i=0; cbeg != cend && i < 7; ++cbeg, ++i)
 	{
 		bool res = (*cbeg == tree_data[i]);
-		CPPUNIT_ASSERT(res);
+		TEST_CHECK(res);
 	}//for
 
 	// const_preorder_iterator operator++(int);
 	for(; cbeg != cend; cbeg++, ++i)
 	{
 		bool res = ((*cbeg) == tree_data[i]);
-		CPPUNIT_ASSERT(res); 
+		TEST_CHECK(res); 
 	}//for
 
 	--cbeg;
@@ -126,7 +232,7 @@ void test_tree::test_00()
 	for(; cbeg != cbeg2 && i > 7; --cbeg, --i)
 	{
 		bool res = ((*cbeg) == tree_data[i]);
-		CPPUNIT_ASSERT(res);
+		TEST_CHECK(res);
 	}//for
 
 
@@ -134,10 +240,10 @@ void test_tree::test_00()
 	for(; cbeg != cbeg2; cbeg--, --i)
 	{
 		bool res = (*cbeg == tree_data[i]);
-		CPPUNIT_ASSERT(res);
+		TEST_CHECK(res);
 	}//for
 
-	CPPUNIT_ASSERT(i == 0 && *cbeg == tree_data[i] && *cbeg == *cbeg2);
+	TEST_CHECK(i == 0 && *cbeg == tree_data[i] && *cbeg == *cbeg2);
 
 	//////////////////////////////////////////////////////////////////////////
 
@@ -151,14 +257,14 @@ void test_tree::test_00()
 	for(i=0; beg != end && i < 7; ++beg, ++i)
 	{
 		bool res = ((*beg) == tree_data[i]);
-		CPPUNIT_ASSERT(res);
+		TEST_CHECK(res);
 	}//for
 
 	// preorder_iterator operator++(int);
 	for(; beg != end; beg++, ++i)
 	{
 		bool res = ((*beg) == tree_data[i]);
-		CPPUNIT_ASSERT(res);
+		TEST_CHECK(res);
 	}//for
 
 	--beg;
@@ -169,7 +275,7 @@ void test_tree::test_00()
 	for(; beg != beg2 && i > 7; --beg, --i)
 	{
 		bool res = ((*beg) == tree_data[i]);
-		CPPUNIT_ASSERT(res);
+		TEST_CHECK(res);
 	}//for
 
 
@@ -177,10 +283,10 @@ void test_tree::test_00()
 	for(; beg != beg2; beg--, --i)
 	{
 		bool res = ((*beg) == tree_data[i]);
-		CPPUNIT_ASSERT(res);
+		TEST_CHECK(res);
 	}//for
 
-	CPPUNIT_ASSERT(i == 0 && *beg == tree_data[i] && *beg == *beg2);
+	TEST_CHECK(i == 0 && *beg == tree_data[i] && *beg == *beg2);
 
 
 	/*
@@ -197,7 +303,7 @@ void test_tree::test_00()
 	for(; beg != end; ++beg, ++i)
 	{
 		bool res = (*beg == recursive_data2[i]);
-		CPPUNIT_ASSERT(res);
+		TEST_CHECK(res);
 	}//for
 
 	--beg;
@@ -205,7 +311,7 @@ void test_tree::test_00()
 	for(; beg != beg2; --beg, --i)
 	{
 		bool res = (*beg == recursive_data2[i]);
-		CPPUNIT_ASSERT(res);
+		TEST_CHECK(res);
 	}//for
 
 
@@ -218,8 +324,8 @@ void test_tree::test_00()
 //TODO: "gcc error: no match for ‘operator!=’ (operand types are ‘misc::podstring<char>’ and ‘misc::podstring<char>’ "
 #define FIXED_CAN_REMOVE_THIS
 #ifdef FIXED_CAN_REMOVE_THIS
-	CPPUNIT_ASSERT(mtree2 == mtree1);
-	CPPUNIT_ASSERT(mtree3 == mtree2);
+	TEST_CHECK(mtree2 == mtree1);
+	TEST_CHECK(mtree3 == mtree2);
 #endif
 
 
@@ -237,7 +343,7 @@ void test_tree::test_00()
 	for(; fbbeg != fbend; ++fbbeg, ++i)
 	{
 		bool res = (*fbbeg == first_branch_data[i]);
-		CPPUNIT_ASSERT(res);
+		TEST_CHECK(res);
 	}//for
 
 	/*
@@ -248,7 +354,7 @@ void test_tree::test_00()
 	for(; fbbeg != fbbeg2; --fbbeg, --i)
 	{
 		bool res = (*fbbeg == first_branch_data[i]);
-		CPPUNIT_ASSERT(res);
+		TEST_CHECK(res);
 	}//for
 
 
@@ -263,7 +369,7 @@ void test_tree::test_00()
 	for(i=0; fbbeg != fbend; fbbeg++, i++)
 	{
 		bool res = (*fbbeg == first_branch_data2[i]);
-		CPPUNIT_ASSERT(res);
+		TEST_CHECK(res);
 	}//for
 
 	fbbeg--;
@@ -273,7 +379,7 @@ void test_tree::test_00()
 	for(; fbbeg != fbbeg2; fbbeg--, i--)
 	{
 		bool res = (*fbbeg == first_branch_data2[i]);
-		CPPUNIT_ASSERT(res);
+		TEST_CHECK(res);
 	}//for
 
 
@@ -286,7 +392,7 @@ void test_tree::test_00()
 	for(i=0; fbbeg != fbend; ++fbbeg, ++i)
 	{
 		bool res = (*fbbeg == first_branch_data3[i]);
-		CPPUNIT_ASSERT(res);
+		TEST_CHECK(res);
 	}//for
 
 	--fbbeg;
@@ -297,7 +403,7 @@ void test_tree::test_00()
 	*/
 	for(; fbbeg != fbbeg2; --fbbeg, --i)
 	{
-		CPPUNIT_ASSERT(*fbbeg == first_branch_data3[i]);
+		TEST_CHECK(*fbbeg == first_branch_data3[i]);
 	}//for
 
 
@@ -311,7 +417,7 @@ void test_tree::test_00()
 	*/
 	for(i=0; fbbeg != fbend; fbbeg++, i++)
 	{
-		CPPUNIT_ASSERT(*fbbeg == first_branch_data4[i]);
+		TEST_CHECK(*fbbeg == first_branch_data4[i]);
 	}//for
 
 	fbbeg--;
@@ -322,7 +428,7 @@ void test_tree::test_00()
 	*/
 	for(; fbbeg != fbbeg2; fbbeg--, i--)
 	{
-		CPPUNIT_ASSERT(*fbbeg == first_branch_data4[i]);
+		TEST_CHECK(*fbbeg == first_branch_data4[i]);
 	}//for
 
 
@@ -336,7 +442,7 @@ void test_tree::test_00()
 	*/
 	for(i=0; fbbeg != fbend; ++fbbeg, ++i)
 	{
-		CPPUNIT_ASSERT(*fbbeg == first_branch_data5[i]);
+		TEST_CHECK(*fbbeg == first_branch_data5[i]);
 	}//for
 
 	--fbbeg;
@@ -347,7 +453,7 @@ void test_tree::test_00()
 	*/
 	for(; fbbeg != fbbeg2; --fbbeg, --i)
 	{
-		CPPUNIT_ASSERT(*fbbeg == first_branch_data5[i]);
+		TEST_CHECK(*fbbeg == first_branch_data5[i]);
 	}//for
 
 
@@ -356,7 +462,7 @@ void test_tree::test_00()
 	Tree::postorder_iterator rriend = mtree1.postorder_end();
 	for(i=0; rribeg != rriend; ++rribeg, ++i)
 	{
-		CPPUNIT_ASSERT(*rribeg == rev_rec_data1[i]);
+		TEST_CHECK(*rribeg == rev_rec_data1[i]);
 	}//for
 }
 
@@ -814,7 +920,7 @@ void test_tree::preorder_it(const char* msg)
 
 
 	// tree complete
-	CPPUNIT_ASSERT(tree0.size() == 14);
+	TEST_CHECK(tree0.size() == 14);
 
 	// checking preorder_iterator functions
 	Tval ctrlVal[] =
@@ -836,7 +942,7 @@ void test_tree::preorder_it(const char* msg)
 
 	for(size_t i=0; i < tree0.size() && pob0 != poe0; pob0++, i++)//post-increment
 	{
-		CPPUNIT_ASSERT(*pob0 == ctrlVal[i]);
+		TEST_CHECK(*pob0 == ctrlVal[i]);
 	}
 	
 	// increment operator
@@ -844,14 +950,14 @@ void test_tree::preorder_it(const char* msg)
 	typename Tree::preorder_iterator poe2 = tree0.preorder_end();
 	for(size_t i=0; i < tree0.size() && pob2 != poe2; ++pob2, ++i)//pre-increment
 	{
-		CPPUNIT_ASSERT(*pob2 == ctrlVal[i]);
+		TEST_CHECK(*pob2 == ctrlVal[i]);
 	}
 
 	typename Tree::preorder_iterator pob3 = tree0.preorder_begin();
 	typename Tree::preorder_iterator poe3 = tree0.preorder_end();
 	for(size_t i=0; i < tree0.size() && !(pob3 == poe3); ++pob3, ++i)//equal operator
 	{
-		CPPUNIT_ASSERT(*pob3 == ctrlVal[i]);
+		TEST_CHECK(*pob3 == ctrlVal[i]);
 	}
 
 
@@ -862,7 +968,7 @@ void test_tree::preorder_it(const char* msg)
 	--poe4;
 	for(int i=tree0.size()-1; i >= 0 && poe4 != pob4; pob4--, i--)//post-decrement
 	{
-		CPPUNIT_ASSERT(*poe4 == ctrlVal[i]);
+		TEST_CHECK(*poe4 == ctrlVal[i]);
 	}
 
 	typename Tree::preorder_iterator pob5 = tree0.preorder_begin();
@@ -870,22 +976,22 @@ void test_tree::preorder_it(const char* msg)
 	--poe5;
 	for(int i=tree0.size()-1; i >=0 && !(poe5 == pob5); --poe5, --i)//pre-decrement
 	{
-		CPPUNIT_ASSERT(*poe5 == ctrlVal[i]);
-		CPPUNIT_ASSERT(*(poe5.operator->()) == ctrlVal[i]);
+		TEST_CHECK(*poe5 == ctrlVal[i]);
+		TEST_CHECK(*(poe5.operator->()) == ctrlVal[i]);
 	}
 
 	typename Tree::preorder_iterator pob6 = tree0.preorder_begin();
 	for(size_t i=0; i < tree0.size() && pob6 != tree0.preorder_end(); ++pob6, ++i)
 	{
-		CPPUNIT_ASSERT(*pob6 == ctrlVal[i]);
+		TEST_CHECK(*pob6 == ctrlVal[i]);
 
 		typename Tree::iterator ib6 = tree0.get_iterator(pob6);
 		typename Tree::preorder_iterator pob6_2(ib6);
-		CPPUNIT_ASSERT(pob6_2 == pob6);
+		TEST_CHECK(pob6_2 == pob6);
 	}
 
-	CPPUNIT_ASSERT(pob6 == pob6);
-	CPPUNIT_ASSERT(pob6 == tree0.preorder_end());
+	TEST_CHECK(pob6 == pob6);
+	TEST_CHECK(pob6 == tree0.preorder_end());
 }
 
 template<typename container>

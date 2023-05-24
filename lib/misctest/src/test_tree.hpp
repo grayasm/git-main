@@ -3,92 +3,23 @@ Copyright (C) 2012 Mihai Vasilian
 */
 
 
-
 #ifndef __tree_t_hpp__
 #define __tree_t_hpp__
 
 
 
-
-//c++
-//....
-
-//CppUnit
-#include <cppunit/extensions/HelperMacros.h>
-
-//libraries
-
-
-
-
-class test_tree : public CppUnit::TestFixture
+class test_tree
 {
-    CPPUNIT_TEST_SUITE(test_tree);
-    CPPUNIT_TEST(test_00);
-	CPPUNIT_TEST(preorder_it);
-	CPPUNIT_TEST(preorder_const_it);
-	CPPUNIT_TEST(postorder_it);
-	CPPUNIT_TEST(postorder_const_it);
-	CPPUNIT_TEST(first_branch_it);
-	CPPUNIT_TEST(first_branch_const_it);
-	CPPUNIT_TEST(child_it);
-	CPPUNIT_TEST(child_const_it);
-
-	CPPUNIT_TEST(ctor);
-	CPPUNIT_TEST(dtor);
-	CPPUNIT_TEST(copy_ctor);
-	CPPUNIT_TEST(copy_op);
-	CPPUNIT_TEST(get_it);
-	CPPUNIT_TEST(push_back_val);
-	CPPUNIT_TEST(push_front_val);
-	CPPUNIT_TEST(insert_sibling_before_val);
-	CPPUNIT_TEST(insert_sibling_after_val);
-	CPPUNIT_TEST(push_back_child_val);
-	CPPUNIT_TEST(push_front_child_val);
-	CPPUNIT_TEST(push_back_tree);
-	CPPUNIT_TEST(push_front_tree);
-	CPPUNIT_TEST(insert_sibling_before_tree);
-	CPPUNIT_TEST(insert_sibling_after_tree);
-	CPPUNIT_TEST(push_back_child_tree);
-	CPPUNIT_TEST(push_front_child_tree);
-	CPPUNIT_TEST(preorder_begin);
-	CPPUNIT_TEST(preorder_end);
-	CPPUNIT_TEST(preorder_begin_it);
-	CPPUNIT_TEST(preorder_end_it);
-
-	CPPUNIT_TEST(postorder_begin);
-	CPPUNIT_TEST(postorder_end);
-	CPPUNIT_TEST(postorder_begin_it);
-	CPPUNIT_TEST(postorder_end_it);
-
-	CPPUNIT_TEST(first_branch_begin);
-	CPPUNIT_TEST(first_branch_end);
-	CPPUNIT_TEST(first_branch_begin_it);
-	CPPUNIT_TEST(first_branch_end_it);
-
-	CPPUNIT_TEST(child_begin);
-	CPPUNIT_TEST(child_end);
-	CPPUNIT_TEST(child_begin_it);
-	CPPUNIT_TEST(child_end_it);
-
-	CPPUNIT_TEST(siblings_begin);
-	CPPUNIT_TEST(siblings_end);
-	CPPUNIT_TEST(siblings_begin_it);
-	CPPUNIT_TEST(siblings_end_it);	
-
-	CPPUNIT_TEST(empty);
-	CPPUNIT_TEST(size);
-	CPPUNIT_TEST(clear);
-	CPPUNIT_TEST(erase);
-    CPPUNIT_TEST_SUITE_END();
-
 public:
-    void setUp();
-    void tearDown();
+	test_tree() = default;
+	~test_tree() = default;
+    void run();
+
 	static const int		m_print_time = 1;
 	static const size_t		m_container_size = 2000;
 
     //test suite begin
+	void test_90();
     void test_00();
 	// -- iterators --
 	void preorder_it();

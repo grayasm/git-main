@@ -35,7 +35,7 @@ public:
 private:
     const char* m_msg;
     bool m_print_time;
-    misc::cpu_timer m_clck;
+    sys::cpu_timer m_clck;
 }; // class
 
 

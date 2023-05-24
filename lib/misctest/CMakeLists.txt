@@ -4,6 +4,8 @@ file(GLOB misctest_SRC "src/*.hpp" "src/*.cpp")
 add_executable(misctest ${misctest_SRC})
 
 # --- compiling ---
+target_include_directories(misctest PRIVATE "../../world/acutest/include")
+
 if(MSVC)
 	target_compile_options(misctest PRIVATE /bigobj)
 endif(MSVC)
@@ -15,7 +17,7 @@ endif(UNIX)
 
 
 # --- linking ---
-target_link_libraries(misctest PRIVATE misc cppunit)
+target_link_libraries(misctest PRIVATE misc stl sys)
 
 if (UNIX)
 	target_link_libraries(misctest PRIVATE pthread dl m)

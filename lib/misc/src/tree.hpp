@@ -14,10 +14,17 @@ Copyright (C) 2009 Mihai Vasilian
 #include "autoptr.hpp"
 #include "list.hpp"
 
+//#include "iterator.hpp"
+//#include "exception.hpp"
+//#include "memory.hpp"
+//#include "memmanip.hpp"
+//#include "algorithm.hpp"
+
+
 
 namespace misc
 {
-	template<typename T, typename Allocator, int attributes>
+	template<typename T, typename Allocator>
 	class tree;
 
     /*
@@ -45,10 +52,10 @@ namespace misc
 
 	template<typename container>
 	class Preorder_Iterator : 
-		public misc::iterator<misc::bidirectional_iterator_tag, typename container::value_type>
+		public stl::iterator<stl::bidirectional_iterator_tag, typename container::value_type>
 	{
 	public:
-		typedef misc::iterator<misc::bidirectional_iterator_tag, typename container::value_type> base;
+		typedef stl::iterator<stl::bidirectional_iterator_tag, typename container::value_type> base;
 		typedef typename base::iterator_category	iterator_category;
 		typedef typename base::value_type			value_type;
 		typedef typename base::difference_type		difference_type;
@@ -57,7 +64,7 @@ namespace misc
 		typedef typename base::reference			reference;
 
 		typedef typename container::iterator		Iterator;
-		friend class misc::tree<typename container::value_type, typename container::allocator_type, container::nattributes>;
+		friend class misc::tree<typename container::value_type, typename container::allocator_type>;
 
 	private:
 		Iterator	m_it;
@@ -82,10 +89,10 @@ namespace misc
 	template<typename container>
 	class Preorder_Const_Iterator : 
 		private Preorder_Iterator<container>,
-		public misc::const_iterator<misc::bidirectional_iterator_tag, typename container::value_type>
+		public stl::const_iterator<stl::bidirectional_iterator_tag, typename container::value_type>
 	{
 	public:
-		typedef misc::const_iterator<misc::bidirectional_iterator_tag, typename container::value_type> base;
+		typedef stl::const_iterator<stl::bidirectional_iterator_tag, typename container::value_type> base;
 		typedef typename base::iterator_category	iterator_category;
 		typedef typename base::value_type			value_type;
 		typedef typename base::difference_type		difference_type;
@@ -95,7 +102,7 @@ namespace misc
 
 		typedef Preorder_Iterator<container>		base2;
 		typedef typename base2::Iterator			Iterator;
-		friend class misc::tree<typename container::value_type, typename container::allocator_type, container::nattributes>;
+		friend class misc::tree<typename container::value_type, typename container::allocator_type>;
 
 	public:
 		Preorder_Const_Iterator();
@@ -138,10 +145,10 @@ namespace misc
     */
 	template<typename container>
 	class Postorder_Iterator : 
-		public misc::iterator<misc::bidirectional_iterator_tag, typename container::value_type>
+		public stl::iterator<stl::bidirectional_iterator_tag, typename container::value_type>
 	{
 	public:
-		typedef misc::iterator<misc::bidirectional_iterator_tag, typename container::value_type> base;
+		typedef stl::iterator<stl::bidirectional_iterator_tag, typename container::value_type> base;
 		typedef typename base::iterator_category   iterator_category;
 		typedef typename base::value_type          value_type;
 		typedef typename base::difference_type     difference_type;
@@ -150,7 +157,7 @@ namespace misc
 		typedef typename base::reference           reference;
 
 		typedef typename container::iterator Iterator;
-		friend class misc::tree<typename container::value_type, typename container::allocator_type, container::nattributes>;
+		friend class misc::tree<typename container::value_type, typename container::allocator_type>;
 
 	private:
 		Iterator	m_it;
@@ -175,10 +182,10 @@ namespace misc
 	template<typename container>
 	class Postorder_Const_Iterator :
 		private Postorder_Iterator<container>,
-		public misc::const_iterator<misc::bidirectional_iterator_tag, typename container::value_type>
+		public stl::const_iterator<stl::bidirectional_iterator_tag, typename container::value_type>
 	{
 	public:
-		typedef misc::const_iterator<misc::bidirectional_iterator_tag, typename container::value_type> base;
+		typedef stl::const_iterator<stl::bidirectional_iterator_tag, typename container::value_type> base;
 		typedef typename base::iterator_category	iterator_category;
 		typedef typename base::value_type			value_type;
 		typedef typename base::difference_type		difference_type;
@@ -188,7 +195,7 @@ namespace misc
 
 		typedef Postorder_Iterator<container>		base2;
 		typedef typename base2::Iterator			Iterator;
-		friend class misc::tree<typename container::value_type, typename container::allocator_type, container::nattributes>;
+		friend class misc::tree<typename container::value_type, typename container::allocator_type>;
 
 	public:
 		Postorder_Const_Iterator();
@@ -228,10 +235,10 @@ namespace misc
     */
 	template<typename container>
 	class First_Branch_Iterator : 
-		public misc::iterator<misc::bidirectional_iterator_tag, typename container::value_type>
+		public stl::iterator<stl::bidirectional_iterator_tag, typename container::value_type>
 	{
 	public:
-		typedef misc::iterator<misc::bidirectional_iterator_tag, typename container::value_type> base;
+		typedef stl::iterator<stl::bidirectional_iterator_tag, typename container::value_type> base;
 		typedef typename base::iterator_category	iterator_category;
 		typedef typename base::value_type			value_type;
 		typedef typename base::difference_type		difference_type;
@@ -240,7 +247,7 @@ namespace misc
 		typedef typename base::reference			reference;
 
 		typedef typename container::iterator		Iterator;
-		friend class misc::tree<typename container::value_type, typename container::allocator_type, container::nattributes>;
+		friend class misc::tree<typename container::value_type, typename container::allocator_type>;
 
 	private:
 		Iterator	m_it;
@@ -265,10 +272,10 @@ namespace misc
 	template<typename container>
 	class First_Branch_Const_Iterator : 
 		private First_Branch_Iterator<container>,
-		public misc::const_iterator<misc::bidirectional_iterator_tag, typename container::value_type>
+		public stl::const_iterator<stl::bidirectional_iterator_tag, typename container::value_type>
 	{
 	public:
-		typedef misc::const_iterator<misc::bidirectional_iterator_tag, typename container::value_type> base;
+		typedef stl::const_iterator<stl::bidirectional_iterator_tag, typename container::value_type> base;
 		typedef typename base::iterator_category	iterator_category;
 		typedef typename base::value_type			value_type;
 		typedef typename base::difference_type		difference_type;
@@ -317,10 +324,10 @@ namespace misc
 
 	template<typename container>
 	class Child_Iterator : 
-		public misc::iterator<misc::bidirectional_iterator_tag, typename container::value_type>
+		public stl::iterator<stl::bidirectional_iterator_tag, typename container::value_type>
 	{
 	public:
-		typedef misc::iterator<misc::bidirectional_iterator_tag, typename container::value_type> base;
+		typedef stl::iterator<stl::bidirectional_iterator_tag, typename container::value_type> base;
 		typedef typename base::iterator_category	iterator_category;
 		typedef typename base::value_type			value_type;
 		typedef typename base::difference_type		difference_type;
@@ -329,7 +336,7 @@ namespace misc
 		typedef typename base::reference			reference;
 
 		typedef typename container::iterator		Iterator;
-		friend class misc::tree<typename container::value_type, typename container::allocator_type, container::nattributes>;
+		friend class misc::tree<typename container::value_type, typename container::allocator_type>;
 
 	private:
 		Iterator	m_it;
@@ -353,10 +360,10 @@ namespace misc
 	template<typename container>
 	class Child_Const_Iterator : 
 		private Child_Iterator<container>,
-		public misc::const_iterator<misc::bidirectional_iterator_tag, typename container::value_type>
+		public stl::const_iterator<stl::bidirectional_iterator_tag, typename container::value_type>
 	{
 	public:
-		typedef misc::const_iterator<misc::bidirectional_iterator_tag, typename container::value_type> base;
+		typedef stl::const_iterator<stl::bidirectional_iterator_tag, typename container::value_type> base;
 		typedef typename base::iterator_category	iterator_category;
 		typedef typename base::value_type			value_type;
 		typedef typename base::difference_type		difference_type;
@@ -366,7 +373,7 @@ namespace misc
 
 		typedef Child_Iterator<container>			base2;
 		typedef typename base2::Iterator			Iterator;
-		friend class misc::tree<typename container::value_type, typename container::allocator_type, container::nattributes>;
+		friend class misc::tree<typename container::value_type, typename container::allocator_type>;
 
 	public:
 		Child_Const_Iterator();
@@ -388,8 +395,11 @@ namespace misc
 	class tree_node
 	{
 	public:
-		typedef T                       value_type;
-		typedef misc::list<tree_node>   List;
+		typedef T								value_type;
+		typedef stl::list<tree_node>			List;
+		typedef typename List::iterator			iterator;
+		typedef typename List::const_iterator	const_iterator;
+
 	public:
 		tree_node();
 		tree_node(tree_node* owner, const value_type& val);
@@ -403,18 +413,18 @@ namespace misc
 
 	public:
 		List						m_list;
-		typename List::iterator		m_it;
+		iterator					m_it;
 		tree_node*					m_owner;
 		value_type*					m_T;
 	};  // tree_node
 
 
 
-	template<typename T, typename Allocator = misc::allocator<T>, int attributes = 0>
+	template<typename T, typename Allocator = stl::allocator<T> >
 	class tree
 	{
 	public:
-		typedef tree<T, Allocator, attributes> container;
+		typedef tree<T, Allocator>						container;
 		typedef typename Allocator::reference			reference;
 		typedef typename Allocator::const_reference		const_reference;
 		typedef typename Allocator::pointer				pointer;
@@ -428,18 +438,21 @@ namespace misc
 		typedef stl::autoptr<container>					Ptr;
 
 		//Iterators
-		typedef typename misc::tree_node<T>::List			List;
-		typedef typename List::iterator						iterator;
-		typedef Preorder_Iterator<container>				preorder_iterator;
-		typedef Preorder_Const_Iterator<container>			preorder_const_iterator;
-		typedef Postorder_Iterator<container>				postorder_iterator;
-		typedef Postorder_Const_Iterator<container>			postorder_const_iterator;
-		typedef First_Branch_Iterator<container>			first_branch_iterator;
-		typedef First_Branch_Const_Iterator<container>		first_branch_const_iterator;
-		typedef Child_Iterator<container>					child_iterator;
-		typedef Child_Const_Iterator<container>				child_const_iterator;
+		typedef typename misc::tree_node<T>::List		List;
+		typedef typename List::iterator					iterator;
+		typedef Preorder_Iterator<container>			preorder_iterator;
+		typedef Preorder_Const_Iterator<container>		preorder_const_iterator;
+		typedef Postorder_Iterator<container>			postorder_iterator;
+		typedef Postorder_Const_Iterator<container>		postorder_const_iterator;
+		typedef First_Branch_Iterator<container>		first_branch_iterator;
+		typedef First_Branch_Const_Iterator<container>	first_branch_const_iterator;
+		typedef Child_Iterator<container>				child_iterator;
+		typedef Child_Const_Iterator<container>			child_const_iterator;
 
-		static const int nattributes = attributes;
+
+	private:
+		void deep_copy_node(tree_node<T>& dest, const tree_node<T>& src);
+		void deep_copy_tree(const container& tc);
 
 	private:
 		tree_node<T>	m_root;
@@ -590,7 +603,8 @@ namespace misc
 			//when t comes from a preexisting list, this copying is not valid.
 			//in this case, owner needs to be updated to new owner of this tree_node.
 			m_owner = t.m_owner;
-			m_T = new value_type(*(t.m_T));
+			if (t.m_T)
+				m_T = new value_type(*(t.m_T));
 		}
 		return *this;
 	}
@@ -1722,30 +1736,85 @@ namespace misc
 
 	//////////////////////////////////////////////////////////////////////////
 	//tree class
-	template<typename T, typename Allocator, int attributes>
-	tree<T, Allocator, attributes>::tree()
+	template<typename T, typename Allocator>
+	tree<T, Allocator>::tree()
 	{
 		m_size=0;
 	}
 
 
-	template<typename T, typename Allocator, int attributes>
-	tree<T, Allocator, attributes>::~tree()
+	template<typename T, typename Allocator>
+	tree<T, Allocator>::~tree()
 	{
 	}
 
 
-	template<typename T, typename Allocator, int attributes>
-	tree<T, Allocator, attributes>::tree(const tree& t)
+	template<typename T, typename Allocator>
+	tree<T, Allocator>::tree(const tree& t)
 	{
+		m_size = 0;
 		*this=t;
 	}
 
-	template<typename T, typename Allocator, int attributes>
-	tree<T, Allocator, attributes>& 
-		tree<T, Allocator, attributes>::operator=(const tree& t)
+
+	template<typename T, typename Allocator>
+	void tree<T, Allocator>::deep_copy_node(tree_node<T>& dest, const tree_node<T>& src)
 	{
-		if(this==&t) return *this;
+		//List							m_list;
+		//typename List::iterator		m_it;
+		//tree_node*					m_owner;
+		//value_type*					m_T;
+
+		dest.m_T = new T(*src.m_T);
+		for (tree_node<T>::const_iterator it = src.m_list.begin(); it != src.m_list.end(); ++it)
+		{
+			dest.m_list.push_back(tree_node<T>());
+			m_size++;
+
+			const tree_node<T>& nr = *it;
+			tree_node<T>& nl = dest.m_list.back();
+			nl.m_it = --(dest.m_list.end());
+			nl.m_owner = &nl;
+
+			deep_copy_node(nl, nr);
+		}
+	}
+
+	template<typename T, typename Allocator>
+	void tree<T, Allocator>::deep_copy_tree(const tree& tc)
+	{
+		if (tc.m_size == 0)
+			return;
+
+		//List							m_list;
+		//typename List::iterator		m_it;
+		//tree_node*					m_owner;
+		//value_type*					m_T;
+
+		for (tree_node<T>::const_iterator it = tc.m_root.m_list.begin(); it != tc.m_root.m_list.end(); ++it)
+		{
+			m_root.m_list.push_back(tree_node<T>());
+			m_size++;
+
+			const tree_node<T>& nr = *it;
+			tree_node<T>& nl = m_root.m_list.back();
+			nl.m_it = --(m_root.m_list.end());
+			nl.m_owner = &nl;
+
+			deep_copy_node(nl, nr);
+		}
+	}
+
+	template<typename T, typename Allocator>
+	tree<T, Allocator>&
+		tree<T, Allocator>::operator=(const tree& t)
+	{
+		if(this==&t)
+			return *this;
+
+		deep_copy_tree(t);
+		return *this;
+#if 0
 
 		//copy tree structure (nodes list, iterators, owners, values)
 		//post copy update required for iterators and owners
@@ -1782,11 +1851,12 @@ namespace misc
 		}//while
 
 		return *this;
+#endif
 	}
 
 
-	template<typename T, typename Allocator, int attributes>
-	bool tree<T, Allocator, attributes>::operator==(const tree& t) const
+	template<typename T, typename Allocator>
+	bool tree<T, Allocator>::operator==(const tree& t) const
 	{
 		if(this != &t)
 		{
@@ -1813,75 +1883,75 @@ namespace misc
 	}
 
 
-	template<typename T, typename Allocator, int attributes>
-	bool tree<T, Allocator, attributes>::operator!=(const tree& t) const
+	template<typename T, typename Allocator>
+	bool tree<T, Allocator>::operator!=(const tree& t) const
 	{
 		return !(*this==t);
 	}
 
 
-	template<typename T, typename Allocator, int attributes>
-	typename tree<T, Allocator, attributes>::iterator 
-		tree<T, Allocator, attributes>::get_iterator(preorder_iterator it) const
+	template<typename T, typename Allocator>
+	typename tree<T, Allocator>::iterator 
+		tree<T, Allocator>::get_iterator(preorder_iterator it) const
 	{
 		return it.m_it;
 	}
 
 
-	template<typename T, typename Allocator, int attributes>
-	typename tree<T, Allocator, attributes>::iterator 
-		tree<T, Allocator, attributes>::get_iterator(preorder_const_iterator it) const
+	template<typename T, typename Allocator>
+	typename tree<T, Allocator>::iterator 
+		tree<T, Allocator>::get_iterator(preorder_const_iterator it) const
 	{
 		return it.m_it;
 	}
 
-	template<typename T, typename Allocator, int attributes>
-	typename tree<T, Allocator, attributes>::iterator 
-		tree<T, Allocator, attributes>::get_iterator(postorder_iterator it) const
+	template<typename T, typename Allocator>
+	typename tree<T, Allocator>::iterator 
+		tree<T, Allocator>::get_iterator(postorder_iterator it) const
 	{
 		return it.m_it;
 	}
 
-	template<typename T, typename Allocator, int attributes>
-	typename tree<T, Allocator, attributes>::iterator 
-		tree<T, Allocator, attributes>::get_iterator(postorder_const_iterator it) const
+	template<typename T, typename Allocator>
+	typename tree<T, Allocator>::iterator 
+		tree<T, Allocator>::get_iterator(postorder_const_iterator it) const
 	{
 		return it.m_it;
 	}
 
-	template<typename T, typename Allocator, int attributes>
-	typename tree<T, Allocator, attributes>::iterator 
-		tree<T, Allocator, attributes>::get_iterator(first_branch_iterator it) const
+	template<typename T, typename Allocator>
+	typename tree<T, Allocator>::iterator 
+		tree<T, Allocator>::get_iterator(first_branch_iterator it) const
 	{
 		return it.m_it;
 	}
 
-	template<typename T, typename Allocator, int attributes>
-	typename tree<T, Allocator, attributes>::iterator 
-		tree<T, Allocator, attributes>::get_iterator(first_branch_const_iterator it) const
+	template<typename T, typename Allocator>
+	typename tree<T, Allocator>::iterator 
+		tree<T, Allocator>::get_iterator(first_branch_const_iterator it) const
 	{
 		return it.m_it;
 	}
 
-	template<typename T, typename Allocator, int attributes>
-	typename tree<T, Allocator, attributes>::iterator 
-		tree<T, Allocator, attributes>::get_iterator(child_iterator it) const
+	template<typename T, typename Allocator>
+	typename tree<T, Allocator>::iterator 
+		tree<T, Allocator>::get_iterator(child_iterator it) const
 	{
 		return it.m_it;
 	}
 
-	template<typename T, typename Allocator, int attributes>
-	typename tree<T, Allocator, attributes>::iterator 
-		tree<T, Allocator, attributes>::get_iterator(child_const_iterator it) const
+	template<typename T, typename Allocator>
+	typename tree<T, Allocator>::iterator 
+		tree<T, Allocator>::get_iterator(child_const_iterator it) const
 	{
 		return it.m_it;
 	}
 
 
 
-	template<typename T, typename Allocator, int attributes>
-	typename tree<T, Allocator, attributes>::iterator 
-		tree<T, Allocator, attributes>::push_back(const value_type& val)
+	template<typename T, typename Allocator>
+	typename tree<T, Allocator>::iterator 
+		tree<T, Allocator>::push_back(const value_type& val)
 	{
 		tree_node<T> nod(&m_root, val);
 		iterator it = m_root.m_list.insert(m_root.m_list.end(), nod);
@@ -1890,9 +1960,9 @@ namespace misc
 		return it;
 	}
 
-	template<typename T, typename Allocator, int attributes>
-	typename tree<T, Allocator, attributes>::iterator 
-		tree<T, Allocator, attributes>::push_front(const value_type& val)
+	template<typename T, typename Allocator>
+	typename tree<T, Allocator>::iterator 
+		tree<T, Allocator>::push_front(const value_type& val)
 	{
 		tree_node<T> nod(&m_root, val);
 		iterator it = m_root.m_list.insert(m_root.m_list.begin(), nod);
@@ -1902,9 +1972,9 @@ namespace misc
 	}
 
 
-	template<typename T, typename Allocator, int attributes>
-	typename tree<T, Allocator, attributes>::iterator 
-		tree<T, Allocator, attributes>::insert_sibling_before(iterator i, const value_type& val)
+	template<typename T, typename Allocator>
+	typename tree<T, Allocator>::iterator 
+		tree<T, Allocator>::insert_sibling_before(iterator i, const value_type& val)
 	{
 		tree_node<T>* owner = i->m_owner ;
 		tree_node<T> nod(owner, val);
@@ -1914,9 +1984,9 @@ namespace misc
 		return it;
 	}
 
-	template<typename T, typename Allocator, int attributes>
-	typename tree<T, Allocator, attributes>::iterator 
-		tree<T, Allocator, attributes>::insert_sibling_after(iterator i, const value_type& val)
+	template<typename T, typename Allocator>
+	typename tree<T, Allocator>::iterator 
+		tree<T, Allocator>::insert_sibling_after(iterator i, const value_type& val)
 	{
 		tree_node<T>* owner = i->m_owner ;
 		tree_node<T> nod(owner, val);
@@ -1927,9 +1997,9 @@ namespace misc
 		return it;
 	}
 
-	template<typename T, typename Allocator, int attributes>
-	typename tree<T, Allocator, attributes>::iterator 
-		tree<T, Allocator, attributes>::push_back_child(iterator i, const value_type& val)
+	template<typename T, typename Allocator>
+	typename tree<T, Allocator>::iterator 
+		tree<T, Allocator>::push_back_child(iterator i, const value_type& val)
 	{
 		tree_node<T>& owner = *i;
 		tree_node<T> nod(&owner, val);
@@ -1939,9 +2009,9 @@ namespace misc
 		return it;
 	}
 
-	template<typename T, typename Allocator, int attributes>
-	typename tree<T, Allocator, attributes>::iterator 
-		tree<T, Allocator, attributes>::push_front_child(iterator i, const value_type& val)
+	template<typename T, typename Allocator>
+	typename tree<T, Allocator>::iterator 
+		tree<T, Allocator>::push_front_child(iterator i, const value_type& val)
 	{
 		tree_node<T>& owner = *i;
 		tree_node<T> nod(&owner, val);
@@ -1951,8 +2021,8 @@ namespace misc
 		return it;
 	}
 
-	template<typename T, typename Allocator, int attributes>
-	void tree<T, Allocator, attributes>::push_back(const tree& t)
+	template<typename T, typename Allocator>
+	void tree<T, Allocator>::push_back(const tree& t)
 	{
 		iterator beg = t.m_root.m_list.begin(), end = t.m_root.m_list.end();
 		for(; beg != end; ++beg)
@@ -1964,8 +2034,8 @@ namespace misc
 		}//for
 	}
 
-	template<typename T, typename Allocator, int attributes>
-	void tree<T, Allocator, attributes>::push_front(const tree& t)
+	template<typename T, typename Allocator>
+	void tree<T, Allocator>::push_front(const tree& t)
 	{
 		throw stl::exception("not debugged");
 
@@ -1979,8 +2049,8 @@ namespace misc
 		}//for
 	}
 
-	template<typename T, typename Allocator, int attributes>
-	void tree<T, Allocator, attributes>::insert_sibling_before(iterator i, const tree& t)
+	template<typename T, typename Allocator>
+	void tree<T, Allocator>::insert_sibling_before(iterator i, const tree& t)
 	{
 		throw stl::exception("not debugged");
 
@@ -1996,8 +2066,8 @@ namespace misc
 		}//for
 	}
 
-	template<typename T, typename Allocator, int attributes>
-	void tree<T, Allocator, attributes>::insert_sibling_after(iterator i, const tree& t)
+	template<typename T, typename Allocator>
+	void tree<T, Allocator>::insert_sibling_after(iterator i, const tree& t)
 	{
 		throw stl::exception("not debugged");
 
@@ -2013,8 +2083,8 @@ namespace misc
 		}//for
 	}
 
-	template<typename T, typename Allocator, int attributes>
-	void tree<T, Allocator, attributes>::push_back_child(iterator i, const tree& t)
+	template<typename T, typename Allocator>
+	void tree<T, Allocator>::push_back_child(iterator i, const tree& t)
 	{
 		throw stl::exception("not debugged");
 
@@ -2028,8 +2098,8 @@ namespace misc
 		}//for
 	}
 
-	template<typename T, typename Allocator, int attributes>
-	void tree<T, Allocator, attributes>::push_front_child(iterator i, const tree& t)
+	template<typename T, typename Allocator>
+	void tree<T, Allocator>::push_front_child(iterator i, const tree& t)
 	{
 		throw stl::exception("not debugged");
 
@@ -2044,32 +2114,32 @@ namespace misc
 	}
 
 
-	template<typename T, typename Allocator, int attributes>
-	typename tree<T, Allocator, attributes>::preorder_iterator 
-		tree<T, Allocator, attributes>::preorder_begin()
+	template<typename T, typename Allocator>
+	typename tree<T, Allocator>::preorder_iterator 
+		tree<T, Allocator>::preorder_begin()
 	{
 		return preorder_iterator(m_root.m_list.begin());
 	}
 
 
-	template<typename T, typename Allocator, int attributes>
-	typename tree<T, Allocator, attributes>::preorder_iterator 
-		tree<T, Allocator, attributes>::preorder_end()
+	template<typename T, typename Allocator>
+	typename tree<T, Allocator>::preorder_iterator 
+		tree<T, Allocator>::preorder_end()
 	{
 		return preorder_iterator(m_root.m_list.end());
 	}
 
 
-	template<typename T, typename Allocator, int attributes>
-	typename tree<T, Allocator, attributes>::preorder_iterator 
-		tree<T, Allocator, attributes>::preorder_begin(iterator it)
+	template<typename T, typename Allocator>
+	typename tree<T, Allocator>::preorder_iterator 
+		tree<T, Allocator>::preorder_begin(iterator it)
 	{
 		return preorder_iterator(it);
 	}
 
-	template<typename T, typename Allocator, int attributes>
-	typename tree<T, Allocator, attributes>::preorder_iterator 
-		tree<T, Allocator, attributes>::preorder_end(iterator it)
+	template<typename T, typename Allocator>
+	typename tree<T, Allocator>::preorder_iterator 
+		tree<T, Allocator>::preorder_end(iterator it)
 	{
 		//has siblings
 		iterator sibl = it;
@@ -2108,41 +2178,41 @@ namespace misc
 	}
 
 
-	template<typename T, typename Allocator, int attributes>
-	typename tree<T, Allocator, attributes>::preorder_const_iterator 
-		tree<T, Allocator, attributes>::preorder_begin() const
+	template<typename T, typename Allocator>
+	typename tree<T, Allocator>::preorder_const_iterator 
+		tree<T, Allocator>::preorder_begin() const
 	{
 		List& nlist = const_cast<List&>(m_root.m_list);
 		return preorder_const_iterator( nlist.begin() );
 	}
 
 
-	template<typename T, typename Allocator, int attributes>
-	typename tree<T, Allocator, attributes>::preorder_const_iterator 
-		tree<T, Allocator, attributes>::preorder_end() const
+	template<typename T, typename Allocator>
+	typename tree<T, Allocator>::preorder_const_iterator 
+		tree<T, Allocator>::preorder_end() const
 	{
 		List& nlist = const_cast<List&>(m_root.m_list);
 		return preorder_const_iterator(nlist.end());
 	}
 
 
-	template<typename T, typename Allocator, int attributes>
-	typename tree<T, Allocator, attributes>::preorder_const_iterator 
-		tree<T, Allocator, attributes>::preorder_begin(iterator it) const
+	template<typename T, typename Allocator>
+	typename tree<T, Allocator>::preorder_const_iterator 
+		tree<T, Allocator>::preorder_begin(iterator it) const
 	{
 
 	}
 
-	template<typename T, typename Allocator, int attributes>
-	typename tree<T, Allocator, attributes>::preorder_const_iterator
-		tree<T, Allocator, attributes>::preorder_end(iterator it) const
+	template<typename T, typename Allocator>
+	typename tree<T, Allocator>::preorder_const_iterator
+		tree<T, Allocator>::preorder_end(iterator it) const
 	{
 	}
 
 
-	template<typename T, typename Allocator, int attributes>
-	typename tree<T, Allocator, attributes>::postorder_iterator 
-		tree<T, Allocator, attributes>::postorder_begin()
+	template<typename T, typename Allocator>
+	typename tree<T, Allocator>::postorder_iterator 
+		tree<T, Allocator>::postorder_begin()
 	{
 		iterator m_it = m_root.m_list.begin();
 		while(!m_it->m_list.empty())
@@ -2151,25 +2221,25 @@ namespace misc
 	}
 
 
-	template<typename T, typename Allocator, int attributes>
-	typename tree<T, Allocator, attributes>::postorder_iterator 
-		tree<T, Allocator, attributes>::postorder_end()
+	template<typename T, typename Allocator>
+	typename tree<T, Allocator>::postorder_iterator 
+		tree<T, Allocator>::postorder_end()
 	{
 		return postorder_iterator(m_root.m_list.end());
 	}
 
-	template<typename T, typename Allocator, int attributes>
-	typename tree<T, Allocator, attributes>::postorder_iterator
-		tree<T, Allocator, attributes>::postorder_begin(iterator it)
+	template<typename T, typename Allocator>
+	typename tree<T, Allocator>::postorder_iterator
+		tree<T, Allocator>::postorder_begin(iterator it)
 	{
 		while( !it->m_list.empty() )
 			it = it->m_list.begin();
 		return postorder_iterator(it);
 	}
 
-	template<typename T, typename Allocator, int attributes>
-	typename tree<T, Allocator, attributes>::postorder_iterator 
-		tree<T, Allocator, attributes>::postorder_end(iterator it)
+	template<typename T, typename Allocator>
+	typename tree<T, Allocator>::postorder_iterator 
+		tree<T, Allocator>::postorder_end(iterator it)
 	{
 		postorder_iterator rrit(it);
 		++rrit;
@@ -2178,16 +2248,16 @@ namespace misc
 
 
 
-	template<typename T, typename Allocator, int attributes>
-	typename tree<T, Allocator, attributes>::first_branch_iterator 
-		tree<T, Allocator, attributes>::first_branch_begin()
+	template<typename T, typename Allocator>
+	typename tree<T, Allocator>::first_branch_iterator 
+		tree<T, Allocator>::first_branch_begin()
 	{
 		return first_branch_iterator(m_root.m_list.begin());
 	}
 
-	template<typename T, typename Allocator, int attributes>
-	typename tree<T, Allocator, attributes>::first_branch_iterator 
-		tree<T, Allocator, attributes>::first_branch_end()
+	template<typename T, typename Allocator>
+	typename tree<T, Allocator>::first_branch_iterator 
+		tree<T, Allocator>::first_branch_end()
 	{
 		first_branch_iterator fbit(m_root.m_list.begin());
 		while(fbit.m_outside==0)
@@ -2195,16 +2265,16 @@ namespace misc
 		return fbit;
 	}
 
-	template<typename T, typename Allocator, int attributes>
-	typename tree<T, Allocator, attributes>::first_branch_iterator 
-		tree<T, Allocator, attributes>::first_branch_begin(iterator it)
+	template<typename T, typename Allocator>
+	typename tree<T, Allocator>::first_branch_iterator 
+		tree<T, Allocator>::first_branch_begin(iterator it)
 	{
 		return first_branch_iterator(it);
 	}
 
-	template<typename T, typename Allocator, int attributes>
-	typename tree<T, Allocator, attributes>::first_branch_iterator 
-		tree<T, Allocator, attributes>::first_branch_end(iterator it)
+	template<typename T, typename Allocator>
+	typename tree<T, Allocator>::first_branch_iterator 
+		tree<T, Allocator>::first_branch_end(iterator it)
 	{
 		first_branch_iterator fbend(it);
 		while(fbend.m_outside==0)
@@ -2213,16 +2283,16 @@ namespace misc
 	}
 
 
-	template<typename T, typename Allocator, int attributes>
-	typename tree<T, Allocator, attributes>::first_branch_const_iterator 
-		tree<T, Allocator, attributes>::first_branch_begin() const
+	template<typename T, typename Allocator>
+	typename tree<T, Allocator>::first_branch_const_iterator 
+		tree<T, Allocator>::first_branch_begin() const
 	{
 		return first_branch_const_iterator(m_root.m_list.begin());
 	}
 
-	template<typename T, typename Allocator, int attributes>
-	typename tree<T, Allocator, attributes>::first_branch_const_iterator 
-		tree<T, Allocator, attributes>::first_branch_end() const
+	template<typename T, typename Allocator>
+	typename tree<T, Allocator>::first_branch_const_iterator 
+		tree<T, Allocator>::first_branch_end() const
 	{
 		first_branch_const_iterator fbit(m_root.m_list.begin());
 		while(fbit.m_outside==0)
@@ -2230,16 +2300,16 @@ namespace misc
 		return fbit;
 	}
 
-	template<typename T, typename Allocator, int attributes>
-	typename tree<T, Allocator, attributes>::first_branch_const_iterator 
-		tree<T, Allocator, attributes>::first_branch_begin(iterator it) const
+	template<typename T, typename Allocator>
+	typename tree<T, Allocator>::first_branch_const_iterator 
+		tree<T, Allocator>::first_branch_begin(iterator it) const
 	{
 		return first_branch_const_iterator(it);
 	}
 
-	template<typename T, typename Allocator, int attributes>
-	typename tree<T, Allocator, attributes>::first_branch_const_iterator 
-		tree<T, Allocator, attributes>::first_branch_end(iterator it) const
+	template<typename T, typename Allocator>
+	typename tree<T, Allocator>::first_branch_const_iterator 
+		tree<T, Allocator>::first_branch_end(iterator it) const
 	{
 		first_branch_const_iterator fbend(it);
 		while(fbend.m_outside==0)
@@ -2249,89 +2319,89 @@ namespace misc
 
 
 
-	template<typename T, typename Allocator, int attributes>
-	typename tree<T, Allocator, attributes>::child_iterator 
-		tree<T, Allocator, attributes>::child_begin()
+	template<typename T, typename Allocator>
+	typename tree<T, Allocator>::child_iterator 
+		tree<T, Allocator>::child_begin()
 	{
 		return child_iterator(m_root.m_list.begin());
 	}
 
-	template<typename T, typename Allocator, int attributes>
-	typename tree<T, Allocator, attributes>::child_iterator 
-		tree<T, Allocator, attributes>::child_end()
+	template<typename T, typename Allocator>
+	typename tree<T, Allocator>::child_iterator 
+		tree<T, Allocator>::child_end()
 	{
 		return child_iterator(m_root.m_list.end());
 	}
 
-	template<typename T, typename Allocator, int attributes>
-	typename tree<T, Allocator, attributes>::child_iterator 
-		tree<T, Allocator, attributes>::child_begin(iterator it)
+	template<typename T, typename Allocator>
+	typename tree<T, Allocator>::child_iterator 
+		tree<T, Allocator>::child_begin(iterator it)
 	{
 		return child_iterator(it->m_list.begin());
 	}
 
-	template<typename T, typename Allocator, int attributes>
-	typename tree<T, Allocator, attributes>::child_iterator 
-		tree<T, Allocator, attributes>::child_end(iterator it)
+	template<typename T, typename Allocator>
+	typename tree<T, Allocator>::child_iterator 
+		tree<T, Allocator>::child_end(iterator it)
 	{
 		return child_iterator(it->m_list.end());
 	}
 
 
-	template<typename T, typename Allocator, int attributes>
-	typename tree<T, Allocator, attributes>::child_const_iterator 
-		tree<T, Allocator, attributes>::child_begin() const
+	template<typename T, typename Allocator>
+	typename tree<T, Allocator>::child_const_iterator 
+		tree<T, Allocator>::child_begin() const
 	{
 		return child_const_iterator(m_root.m_list.begin());
 	}
 
-	template<typename T, typename Allocator, int attributes>
-	typename tree<T, Allocator, attributes>::child_const_iterator 
-		tree<T, Allocator, attributes>::child_end() const
+	template<typename T, typename Allocator>
+	typename tree<T, Allocator>::child_const_iterator 
+		tree<T, Allocator>::child_end() const
 	{
 		return child_const_iterator(m_root.m_list.end());
 	}
 
-	template<typename T, typename Allocator, int attributes>
-	typename tree<T, Allocator, attributes>::child_const_iterator 
-		tree<T, Allocator, attributes>::child_begin(iterator it) const
+	template<typename T, typename Allocator>
+	typename tree<T, Allocator>::child_const_iterator 
+		tree<T, Allocator>::child_begin(iterator it) const
 	{
 		return child_const_iterator(it->m_list.begin());
 	}
 
-	template<typename T, typename Allocator, int attributes>
-	typename tree<T, Allocator, attributes>::child_const_iterator 
-		tree<T, Allocator, attributes>::child_end(iterator it) const
+	template<typename T, typename Allocator>
+	typename tree<T, Allocator>::child_const_iterator 
+		tree<T, Allocator>::child_end(iterator it) const
 	{
 		return child_const_iterator(it->m_list.end());
 	}
 
 
-	template<typename T, typename Allocator, int attributes>
-	typename tree<T, Allocator, attributes>::child_iterator 
-		tree<T, Allocator, attributes>::siblings_begin(iterator it)
+	template<typename T, typename Allocator>
+	typename tree<T, Allocator>::child_iterator 
+		tree<T, Allocator>::siblings_begin(iterator it)
 	{
 		return child_iterator(it->m_owner->m_list.begin());
 	}
 
-	template<typename T, typename Allocator, int attributes>
-	typename tree<T, Allocator, attributes>::child_iterator 
-		tree<T, Allocator, attributes>::siblings_end(iterator it)
+	template<typename T, typename Allocator>
+	typename tree<T, Allocator>::child_iterator 
+		tree<T, Allocator>::siblings_end(iterator it)
 	{
 		return child_iterator(it->m_owner->m_list.end());
 	}
 
 
-	template<typename T, typename Allocator, int attributes>
-	typename tree<T, Allocator, attributes>::child_const_iterator 
-		tree<T, Allocator, attributes>::siblings_begin(iterator it) const
+	template<typename T, typename Allocator>
+	typename tree<T, Allocator>::child_const_iterator 
+		tree<T, Allocator>::siblings_begin(iterator it) const
 	{
 		return child_const_iterator(it->m_owner->m_list.begin());
 	}
 
-	template<typename T, typename Allocator, int attributes>
-	typename tree<T, Allocator, attributes>::child_const_iterator 
-		tree<T, Allocator, attributes>::siblings_end(iterator it) const
+	template<typename T, typename Allocator>
+	typename tree<T, Allocator>::child_const_iterator 
+		tree<T, Allocator>::siblings_end(iterator it) const
 	{
 		return child_const_iterator(it->m_owner->m_list.end());
 	}
@@ -2339,29 +2409,29 @@ namespace misc
 
 
 
-	template<typename T, typename Allocator, int attributes>
-	bool tree<T, Allocator, attributes>::empty() const
+	template<typename T, typename Allocator>
+	bool tree<T, Allocator>::empty() const
 	{
 		return m_root.m_list.empty();
 	}
 
-	template<typename T, typename Allocator, int attributes>
-	size_t tree<T, Allocator, attributes>::size() const
+	template<typename T, typename Allocator>
+	size_t tree<T, Allocator>::size() const
 	{
 		return m_size;
 	}
 
-	template<typename T, typename Allocator, int attributes>
-	void tree<T, Allocator, attributes>::clear()
+	template<typename T, typename Allocator>
+	void tree<T, Allocator>::clear()
 	{
 		m_root.m_list.clear();
 		m_size=0;
 	}
 
 
-	template<typename T, typename Allocator, int attributes>
-	typename tree<T, Allocator, attributes>::iterator 
-		tree<T, Allocator, attributes>::erase(iterator it)
+	template<typename T, typename Allocator>
+	typename tree<T, Allocator>::iterator 
+		tree<T, Allocator>::erase(iterator it)
 	{
 		return it->m_owner->m_list.erase(it);
 	}
