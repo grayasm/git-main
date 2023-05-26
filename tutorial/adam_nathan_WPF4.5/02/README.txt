@@ -17,3 +17,55 @@
 		Some links are:
 		https://learn.microsoft.com/en-us/dotnet/desktop/wpf/advanced/xaml-syntax-in-detail?view=netframeworkdesktop-4.8
 		https://www.w3.org/TR/REC-xml-names/
+
+	Namespaces
+		The mapping of WPF namespaces is hard-coded inside WPF assemblies.
+		The root object element in a XAML file must specify at least one XML namespace.
+		Additional XML namespaces can be declared on root or on children,
+		but each must be given a distinct prefix.
+
+		xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+			is the primary namespace and maps all the following .NET namespaces
+		
+			System.Windows
+			System.Windows.Automation
+			System.Windows.Controls
+			System.Windows.Controls.Primitives
+			System.Windows.Data
+			System.Windows.Documents
+			System.Windows.Forms.Integration
+			System.Windows.Ink
+			System.Windows.Input
+			System.Windows.Media
+			System.Windows.Media.Animation
+			System.Windows.Media.Effects
+			System.Windows.Media.Imaging
+			System.Windows.Media.Media3D
+			System.Windows.Media.TextFormatting
+			System.Windows.Navigation
+			System.Windows.Shapes
+			System.Windows.Shell
+		
+		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" is
+			the secondary namespace, defines some special compiler/parser
+			directives and maps to types in the
+			
+			System.Windows.Markup
+		
+		WPF 3.0 shipped with support for:
+		http://schemas.microsoft.com/winfx/2006/xaml/presentation
+		
+		WPF 3.5 defined a new XML namespace:
+		http://schemas.microsoft.com/netfx/2007/xaml/presentation
+		
+		WPF 4.0 defined a new XML namespace 
+		http://schemas.microsoft.com/netfx/2009/xaml/presentation
+
+		WPF 4.5 did not add a new XML namespace.
+
+
+		The winfx/2006 namespace means version 3.0 or later.
+		The netfx/2007 namespace means version 3.5 or later.
+		The netfx/2009 namespace means version 4.0 or later.
+		
+	
