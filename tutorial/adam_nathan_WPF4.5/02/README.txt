@@ -94,3 +94,34 @@
 		Background="{x:Null}" 
 		x:Null maps to System.Windows.Markup.NullExtension
 
+	clr-namespace
+		This directive enables you to place a .NET namespace in XAML
+		xmlsn:collections="clr-namespace:System.Collections;assembly=mscorlib"
+		xmlns:sys="clr-namespace:System;assembly=mscorlib"
+		<sys:Int32 x:Key="key1">7</sys:Int32>
+		
+	BAML
+		BAML stands for Binary Application Markup Language and is simply
+		XAML that has been parsed, tokenized, and converted into binary form.
+		It is faster to load and parse.
+	
+	CAML
+		CAML stands for Compiled Application Markup Language and was obsoleted
+		in favor of BAML.
+	
+	Code inside XAML
+		XAML supports an obscure "code-inside" feature, with the help of Code
+		keyword in XAML language namspace, as follows:
+
+
+		<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+				xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			x:Class="MyNamespace.MyWindow">
+			<Button Click="button_Click">OK</Button>
+			<x:Code><![CDATA[
+				void button_Click(object sender, RoutedEventArgs e)
+				{
+					this.Close();
+				}
+				]]></x:Code>
+		</Window>
