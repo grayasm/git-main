@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.33214.272
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MarkupExtension", "MarkupExtension.csproj", "{B82A47FA-F2A0-49C2-B721-24821072192A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B82A47FA-F2A0-49C2-B721-24821072192A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B82A47FA-F2A0-49C2-B721-24821072192A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B82A47FA-F2A0-49C2-B721-24821072192A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B82A47FA-F2A0-49C2-B721-24821072192A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D5EAEA86-4A12-4CF5-89A9-6323D8F49F41}
+	EndGlobalSection
+EndGlobal
