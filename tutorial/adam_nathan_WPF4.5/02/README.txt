@@ -68,4 +68,33 @@
 		The netfx/2007 namespace means version 3.5 or later.
 		The netfx/2009 namespace means version 4.0 or later.
 		
+	TypeConverter
+		See "13_TypeConverter" for using TypeConverter in procedural code.
+		XAML find the appropriate type converter by looking at the
+		System.ComponentModel.TypeConverterAttribute on the property definition
+		See bellow Brush custom attribute
+
+		namespace System.Windows.Media
+		{
+			//
+			// Summary:
+			//     Defines objects used to paint graphical objects. 
+			//     Classes that derive from System.Windows.Media.Brush
+			//     describe how the area is painted.
+			[Localizability(LocalizationCategory.None, Readability = Readability.Unreadable)]
+			[TypeConverter(typeof(BrushConverter))]
+			[ValueSerializer(typeof(BrushValueSerializer))]
+			public abstract class Brush : Animatable, IFormattable, IResource
+			{...}
+		}
 	
+	Markup Extensions
+		See 14_MarkupExtension MainWindow.xaml for the examplanation on
+		mapping the XAML items to WPF classes as for ex:
+		Background="{x:Null}" 
+		x:Null maps to System.Windows.Markup.NullExtension
+
+
+
+	Children of Object Elements
+		
