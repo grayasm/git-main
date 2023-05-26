@@ -94,7 +94,3 @@
 		Background="{x:Null}" 
 		x:Null maps to System.Windows.Markup.NullExtension
 
-
-
-	Children of Object Elements
-		

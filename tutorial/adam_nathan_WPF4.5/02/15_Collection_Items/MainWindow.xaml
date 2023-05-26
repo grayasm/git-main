@@ -7,6 +7,12 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        
+        <!-- Example of a Collection Items in XAML -->
+        <ListBox xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+            <ListBox.Items>
+                <ListBoxItem Content="Item1"/>
+                <ListBoxItem Content="Item2"/>
+            </ListBox.Items>
+        </ListBox>
     </Grid>
 </Window>
