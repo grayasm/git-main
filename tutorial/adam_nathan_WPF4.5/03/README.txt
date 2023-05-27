@@ -61,3 +61,18 @@
 		ContentElement: 	a base class similar to UIElement but for document-related
 							pieces of content that don't have rendering behaviour of their won.
 		FrameworkContentElement: the analog to FrameworkElement for content.
+
+	
+	
+	Logical and Visual Trees
+		In WPF, user interfaces are constructed from a tree of objects known
+		as a logical tree.
+		Every aspect of WPF (properties, events, resources and so on) has
+		behavior tied to the logical tree.
+
+	Dependency Properties
+		WPF introduces a type of property called a "dependency property"
+		Enables styling, automatic data binding, animation and more.
+		It depends on providers to determine its value.
+		It has built-in ability to provide change notifications.
+		See "01_DependencyProperty"

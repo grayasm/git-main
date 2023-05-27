@@ -25,4 +25,32 @@ namespace DependencyPropertyApp
             InitializeComponent();
         }
     }
+
+
+    // A Standard Dependency Property Implementation
+    public class BButton : DependencyObject
+    {
+        // the dependency property
+        public static readonly DependencyProperty IsDefaultProperty;
+
+        static BButton()
+        {
+            // register the property
+            BButton.IsDefaultProperty = 
+                DependencyProperty.Register("IsDefault", typeof(bool), typeof(BButton),
+                    new FrameworkPropertyMetadata(false, new PropertyChangedCallback(OnIsDefaultChanged)));
+        }
+
+        // a .NET property wrapper (optional)
+        public bool IsDefault
+        {
+            get { return (bool)GetValue(BButton.IsDefaultProperty); }
+            set { SetValue(BButton.IsDefaultProperty, value); }
+        }
+
+        // a property changed callback (optional)
+        private static void OnIsDefaultChanged(DependencyObject o, DependencyPropertyChangedEventArgs e) 
+        {
+        }
+    }
 }
