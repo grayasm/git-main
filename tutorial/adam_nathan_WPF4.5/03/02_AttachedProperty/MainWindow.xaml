@@ -1,12 +1,23 @@
-﻿<Window x:Class="AttachedProperty.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:AttachedProperty"
-        mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        
-    </Grid>
-</Window>
+﻿<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+Title="About WPF 4.5 Unleashed" SizeToContent="WidthAndHeight"
+Background="OrangeRed">
+    <StackPanel>
+        <Label FontWeight="Bold" FontSize="20" Foreground="White">
+            WPF 4.5 Unleashed
+        </Label>
+        <Label>© 2013 SAMS Publishing</Label>
+        <Label>Installed Chapters:</Label>
+        <ListBox>
+            <ListBoxItem>Chapter 1</ListBoxItem>
+            <ListBoxItem>Chapter 2</ListBoxItem>
+        </ListBox>
+        <!-- StackPanel doesn't have any font related properties on its own.
+             Instead you must use the FontSize attached property of class TextElement-->
+        <StackPanel TextElement.FontSize="30" TextElement.FontStyle="Italic"
+                    Orientation="Horizontal" HorizontalAlignment="Center">
+            <Button MinWidth="75" Margin="10">Help</Button>
+            <Button MinWidth="75" Margin="10">OK</Button>
+        </StackPanel>
+        <StatusBar>You have successfully registered this product.</StatusBar>
+    </StackPanel>
+</Window>

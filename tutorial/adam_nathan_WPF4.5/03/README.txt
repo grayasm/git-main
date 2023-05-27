@@ -122,4 +122,5 @@
 		
 		<StackPanel FontSize="30" 				--Not OK
 		<StackPanel TextElement.FontSize="30" 	--OK
+		Sample "02_AttachedProperty"
 
