@@ -75,4 +75,51 @@
 		Enables styling, automatic data binding, animation and more.
 		It depends on providers to determine its value.
 		It has built-in ability to provide change notifications.
-		See "01_DependencyProperty"
+		Example "01_DependencyProperty" compiles the code from "Listing 3.3 Standard Dependency Property.cs.txt"
+		
+		Say you want a Button to change its color when the mouse hovers over it:
+			Without property triggers:
+			
+			<Button MouseEnter="Button_MouseEnter" MouseLeave="Button_MouseLeave"
+					MinWidth="75" Margin="10">Help</Button>
+		
+			void Button_MouseEnter(object sender, MouseEventArgs e)
+			{
+				Button b = sender as Button;
+				if (b != null) b.Foreground = Brushes.Blue;
+			}
+
+			With a property trigger:
+			
+			<Trigger Property="IsMouseOver" Value="True">
+				<Setter Property="Foreground" Value="Blue"/>
+			</Trigger>
+
+
+	Support for Multiple Providers
+		WPF follows a well defined mechanism to calculate a property final value.
+		
+		(1)	             (2)                   (3)           (4)        (5)
+		Determine   ->   Evaluate           -> Apply      -> Coerce  -> Validate
+		Base Value      (if an Expression)     Animations
+		
+		(1) Base Value's 10 Providers in order from highest to lowest precedence:
+		1. Local value
+		2. Parent template trigger
+		3. Parent template
+		4. Style triggers
+		5. Template triggers
+		6. Style setters
+		7. Theme style triggers
+		8. Theme style setters
+		9. Property value inheritance
+		10. Default value
+
+	Attached Properties
+		Setting FontSize for the StackPanel element doesn't work because StackPanel
+		doesn't have any font-related properties of its own. Instead you must use
+		the FontSize attached property on class TextElement.
+		
+		<StackPanel FontSize="30" 				--Not OK
+		<StackPanel TextElement.FontSize="30" 	--OK
+

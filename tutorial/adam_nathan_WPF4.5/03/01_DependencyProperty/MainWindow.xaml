@@ -7,6 +7,22 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        
+
+        <!-- Page 110. -->
+        <!-- Explanation
+             Some elements (such as Button) cannot be assigned triggers directly.
+             For such a case, there is a trick in assigning the trigger as follows: -->
+        <Button MaxWidth="75" MaxHeight="75">
+            <Button.Style>
+                <Style TargetType="{x:Type Button}">
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Foreground" Value="Yellow"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Button.Style>
+            OK
+        </Button>
     </Grid>
 </Window>
