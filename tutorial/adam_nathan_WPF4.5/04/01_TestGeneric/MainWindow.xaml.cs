@@ -22,7 +22,7 @@ namespace _01_TestGeneric
     {
         public MainWindow()
         {
-            // InitializeComponent();
+            InitializeComponent();
         }
     }
 }
