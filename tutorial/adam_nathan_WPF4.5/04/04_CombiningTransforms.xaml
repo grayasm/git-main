@@ -3,11 +3,15 @@
     <Grid>
         <StackPanel Width="400">
             <Button Background="Red">No Scaling</Button>
-            <Button Background="Orange">
+            <Button RenderTransformOrigin="0.5,0.5" Background="Orange">
                 <Button.RenderTransform>
-                    <RotateTransform Angle="45"/>
+                    <TransformGroup>
+                        <RotateTransform Angle="45" />
+                        <ScaleTransform ScaleX="5" ScaleY="1" />
+                        <SkewTransform AngleX="30" />
+                    </TransformGroup>                    
                 </Button.RenderTransform>
-                This is Transformed
+                OK
             </Button>
             <Button Background="Yellow">No Scalling</Button>
         </StackPanel>

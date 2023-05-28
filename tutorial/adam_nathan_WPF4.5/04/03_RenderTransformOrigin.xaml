@@ -3,9 +3,15 @@
     <Grid>
         <StackPanel Width="400">
             <Button Background="Red">No Scaling</Button>
-            <Button Background="Orange">
+            <!-- RenderTransformOrigin possible values are:
+                (0,0)-the default value
+                (1,0)-top-right corner
+                (0,1)-bottom-left corner
+                (1,1)-bottom-right corner
+            -->
+            <Button RenderTransformOrigin="0.5,0.5" Background="Orange">
                 <Button.RenderTransform>
-                    <RotateTransform Angle="45"/>
+                    <RotateTransform Angle="45" />
                 </Button.RenderTransform>
                 This is Transformed
             </Button>
