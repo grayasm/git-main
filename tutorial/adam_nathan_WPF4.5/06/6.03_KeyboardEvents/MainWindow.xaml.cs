@@ -23,6 +23,19 @@ namespace KeyboardEvents
         public MainWindow()
         {
             InitializeComponent();
+
+            this.KeyDown += OnKeyDown;
+        }
+        private void OnKeyDown(object sender, KeyEventArgs e)
+        {
+            if ((e.KeyboardDevice.Modifiers & ModifierKeys.Alt) == ModifierKeys.Alt &&
+                 (e.Key == Key.A || e.SystemKey == Key.A))
+            {
+                // Alt+A has been pressed, potentially also with Ctrl,Shift and/or Windows
+                MessageBox.Show("Alt + A was pressed!");
+            }
+
+            base.OnKeyDown(e);
         }
     }
 }
