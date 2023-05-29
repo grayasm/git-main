@@ -1,0 +1,16 @@
+<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="Test.MainWindow"
+  Title="Buttons in a DockPanel">
+    <DockPanel>
+        <Button DockPanel.Dock="Top" HorizontalAlignment="Right"
+                Background="Red">1 (Top, Align=Right)</Button>
+        <Button DockPanel.Dock="Left" VerticalAlignment="Bottom"
+                Background="Orange">2 (Left, Align=Bottom)</Button>
+        <Button DockPanel.Dock="Right" VerticalAlignment="Bottom"
+                Background="Yellow">3 (Right, Align=Bottom)</Button>
+        <Button DockPanel.Dock="Bottom" HorizontalAlignment="Right"
+                Background="Lime">4 (Bottom, Align=Right)</Button>
+        <Button Background="Aqua">5</Button>
+    </DockPanel>
+</Window>
