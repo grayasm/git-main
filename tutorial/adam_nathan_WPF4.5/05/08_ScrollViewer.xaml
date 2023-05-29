@@ -1,0 +1,19 @@
+<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="Test.MainWindow"
+  Title="Buttons in a StackPanel">
+    <ScrollViewer>
+        <StackPanel Background="LightCyan">
+            <Button Background="Red" Height="30">One</Button>
+            <Button Background="Orange" Height="30">Two</Button>
+            <Button Background="Yellow" Height="30">Three</Button>
+            <Button Background="Green" Height="30">4</Button>
+            <Button Background="Lightblue" Height="30">5</Button>
+            <Button Background="Magenta" Height="30">6</Button>
+            <Button Background="Cyan" Height="30">Seven</Button>
+            <Button Background="Gray" Height="30">Eitgh</Button>
+            <Button Background="LightGray" Height="30">Nein</Button>
+            <Button Background="Black" Foreground="White" Height="30">Ten</Button>
+        </StackPanel>
+    </ScrollViewer>
+</Window>
