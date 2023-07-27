@@ -121,24 +121,24 @@ void test_list::ctor()
 
     list l04(l03.begin(), l03.end());
     TEST_CHECK(l04.size() == 400);
-    size_t i04 = 0;
+    int i04 = 0;
     for (list::iterator it = l04.begin(); it != l04.end(); ++it, ++i04)
         TEST_CHECK(*it == i04);
 
     list l05(l03.rbegin(), l03.rend());
     TEST_CHECK(l05.size() == 400);
-    size_t i05 = 399;
+    int i05 = 399;
     for (list::iterator it = l05.begin(); it != l05.end(); ++it, --i05)
         TEST_CHECK(*it == i05);
 
     const list& cl03 = l03;
     list l06(cl03.begin(), cl03.end());
-    size_t i06 = 0;
+    int i06 = 0;
     for (list::iterator it = l06.begin(); it != l06.end(); ++it, ++i06)
         TEST_CHECK(*it == i06);
 
     list l07(cl03.rbegin(), cl03.rend());
-    size_t i07 = 399;
+    int i07 = 399;
     for (list::iterator it = l07.begin(); it != l07.end(); ++it, --i07)
         TEST_CHECK(*it == i07);
 

@@ -109,7 +109,8 @@ void test_priority_queue::ctor(const char* msg)
 	chtab[254]=0;
 	for(size_t i = 0; i < 254; ++i)
 	{
-		chtab[i] = Cval(i+1); // we iterate also with float,double,etc			
+		chtab[i] = Cval(i+1);	// we iterate also with float,double,etc
+		(void)chtab[i];			// g++ warning 'chtab' set but not used
 	}
 
     // measure only the time for constructors
@@ -148,12 +149,13 @@ void test_priority_queue::dtor(const char* msg)
     typedef typename Container::container_type TCont;
     typedef Compare                     TCmp;
 
-	// initialization data		
-	Cval chtab[255]; /*NULL terminated*/ chtab[254]=0;
-	for(size_t i = 0; i < 254; ++i)
-	{
-		chtab[i] = Cval(i+1); // we iterate also with float,double,etc			
-	}
+    // initialization data
+    Cval chtab[255]; /*NULL terminated*/ chtab[254]=0;
+    for(size_t i = 0; i < 254; ++i)
+    {
+        chtab[i] = Cval(i+1);   // we iterate also with float,double,etc
+        (void)chtab[i];	        // g++ warning 'chtab' set but not used.
+    }
 
     stl::vector<Container*> store;
 
@@ -237,11 +239,11 @@ void test_priority_queue::top(const char* msg)
         time_printer tp(msg, m_print_time);
 
         Container cont;
-		for(CVal i=0; i < m_container_size; ++i)
+        for(size_t i=0; i < m_container_size; ++i)
         {
-			TEST_CHECK(cont.size() == i);
-            cont.push(i);
-            TEST_CHECK(cont.top() == i);
+            TEST_CHECK(cont.size() == i);
+            cont.push(CVal(i));
+            TEST_CHECK(cont.top() == CVal(i));
         }
     }
 }
@@ -254,11 +256,11 @@ void test_priority_queue::push(const char* msg)
         time_printer tp(msg, m_print_time);
 
         Container cont;
-		for(CVal i=0; i < m_container_size; ++i)
+        for(size_t i=0; i < m_container_size; ++i)
         {
-			TEST_CHECK(cont.size() == i);
-            cont.push(i);
-            TEST_CHECK(cont.top() == i);
+            TEST_CHECK(cont.size() == i);
+            cont.push(CVal(i));
+            TEST_CHECK(cont.top() == CVal(i));
         }
     }
 }
@@ -271,15 +273,15 @@ void test_priority_queue::pop(const char* msg)
         time_printer tp(msg, m_print_time);
 
         Container cont;
-		for(CVal i=0; i<m_container_size; ++i)
-            cont.push(i);
+        for(size_t i=0; i<m_container_size; ++i)
+            cont.push(CVal(i));
 
         TEST_CHECK(cont.size() == m_container_size);
 
         size_t i=m_container_size-1;
         while(!cont.empty())
         {
-			TEST_CHECK(cont.top() == i);			
+            TEST_CHECK(cont.top() == CVal(i));
             cont.pop();
             TEST_CHECK(cont.size() == i--);
         }

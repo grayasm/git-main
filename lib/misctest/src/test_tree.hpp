@@ -6,7 +6,7 @@ Copyright (C) 2012 Mihai Vasilian
 #ifndef __tree_t_hpp__
 #define __tree_t_hpp__
 
-
+#include <stdlib.h>
 
 class test_tree
 {

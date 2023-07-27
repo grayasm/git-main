@@ -1766,7 +1766,8 @@ namespace misc
 		//value_type*					m_T;
 
 		dest.m_T = new T(*src.m_T);
-		for (tree_node<T>::const_iterator it = src.m_list.begin(); it != src.m_list.end(); ++it)
+		for (typename tree_node<T>::const_iterator it = src.m_list.begin();
+			it != src.m_list.end(); ++it)
 		{
 			dest.m_list.push_back(tree_node<T>());
 			m_size++;
@@ -1791,7 +1792,8 @@ namespace misc
 		//tree_node*					m_owner;
 		//value_type*					m_T;
 
-		for (tree_node<T>::const_iterator it = tc.m_root.m_list.begin(); it != tc.m_root.m_list.end(); ++it)
+		for (typename tree_node<T>::const_iterator it = tc.m_root.m_list.begin();
+			it != tc.m_root.m_list.end(); ++it)
 		{
 			m_root.m_list.push_back(tree_node<T>());
 			m_size++;

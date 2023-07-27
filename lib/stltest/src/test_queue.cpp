@@ -160,7 +160,8 @@ void test_queue::ctor(const char* msg)
 	Cval chtab[255]; /*NULL terminated*/ chtab[254]=0;
 	for(size_t i = 0; i < 254; ++i)
 	{
-		chtab[i] = Cval(i+1); // we iterate also with float,double,etc			
+		chtab[i] = Cval(i+1); // we iterate also with float,double,etc
+		(void)chtab[i];			// g++ warning 'chtab' set but not used
 	}
 
     // measure only the time for constructors
@@ -202,7 +203,8 @@ void test_queue::dtor(const char* msg)
 	Cval chtab[255]; /*NULL terminated*/ chtab[254]=0;
 	for(size_t i = 0; i < 254; ++i)
 	{
-		chtab[i] = Cval(i+1); // we iterate also with float,double,etc			
+		chtab[i] = Cval(i+1); // we iterate also with float,double,etc
+		(void)chtab[i];			// g++ warning 'chtab' set but not used
 	}
 
     stl::vector<Container*> store;
@@ -275,21 +277,22 @@ void test_queue::size(const char* msg)
 template<typename Container>
 void test_queue::front(const char* msg)
 {
-	typedef typename Container::container_type	TCont;
+	// g++ warning typedef TCont locally defined but not used
+	// typedef typename Container::container_type	TCont;
     typedef typename Container::value_type       CVal;
 
     {
         time_printer tp(msg, m_print_time);
 
         Container cont;
-		for(CVal i=0; i < m_container_size; ++i)
-            cont.push(i);
+		for(size_t i=0; i < m_container_size; ++i)
+            cont.push(CVal(i));
 
         TEST_CHECK(cont.size() == m_container_size);
 
-		for(CVal i=0; i < m_container_size; ++i)
+		for(size_t i=0; i < m_container_size; ++i)
         {
-            TEST_CHECK(cont.front() == i);
+            TEST_CHECK(cont.front() == CVal(i));
             TEST_CHECK(cont.size() == m_container_size-i);
             cont.pop();
         }
@@ -301,18 +304,19 @@ void test_queue::front(const char* msg)
 template<typename Container>
 void test_queue::back(const char* msg)
 {
-	typedef typename Container::container_type	TCont;
+	// g++ warning: typedef ‘TCont’ locally defined but not used
+	// typedef typename Container::container_type	TCont;
     typedef typename Container::value_type       CVal;
 
     {
         time_printer tp(msg, m_print_time);
 
         Container cont;
-		for(CVal i=0; i < m_container_size; ++i)
+		for(size_t i=0; i < m_container_size; ++i)
         {
 			TEST_CHECK(cont.size() == i);
-            cont.push(i);
-            TEST_CHECK(cont.back() == i);
+            cont.push(CVal(i));
+            TEST_CHECK(cont.back() == CVal(i));
         }
     }
 }
@@ -320,18 +324,19 @@ void test_queue::back(const char* msg)
 template<typename Container>
 void test_queue::push(const char* msg)
 {
-	typedef typename Container::container_type	TCont;
+	// g++ warning: typedef ‘TCont’ locally defined but not used
+	// typedef typename Container::container_type	TCont;
     typedef typename Container::value_type       CVal;
 
     {
         time_printer tp(msg, m_print_time);
 
         Container cont;
-		for(CVal i=0; i < m_container_size; ++i)
+		for(size_t i=0; i < m_container_size; ++i)
         {
 			TEST_CHECK(cont.size() == i);
-            cont.push(i);
-            TEST_CHECK(cont.back() == i);
+            cont.push(CVal(i));
+            TEST_CHECK(cont.back() == CVal(i));
         }
     }
 }
@@ -339,21 +344,22 @@ void test_queue::push(const char* msg)
 template<typename Container>
 void test_queue::pop(const char* msg)
 {
-	typedef typename Container::container_type	TCont;
+	// g++ warning: typedef ‘TCont’ locally defined but not used
+	// typedef typename Container::container_type	TCont;
     typedef typename Container::value_type       CVal;
 
     {
         time_printer tp(msg, m_print_time);
 
         Container cont;
-		for(CVal i=0; i<m_container_size; ++i)
-            cont.push(i);
+		for(size_t i=0; i<m_container_size; ++i)
+            cont.push(CVal(i));
 
         TEST_CHECK(cont.size() == m_container_size);
 
-		for(CVal i=0; i < m_container_size; ++i)
+		for(size_t i=0; i < m_container_size; ++i)
         {
-            TEST_CHECK(cont.front() == i);
+            TEST_CHECK(cont.front() == CVal(i));
             cont.pop();
         }
 
@@ -364,15 +370,16 @@ void test_queue::pop(const char* msg)
 template<typename Container>
 void test_queue::eq_op(const char* msg)
 {
-	typedef typename Container::container_type	TCont;
+	// g++ warning: typedef ‘TCont’ locally defined but not used
+	// typedef typename Container::container_type	TCont;
     typedef typename Container::value_type       CVal;
 
     {
         time_printer tp(msg, m_print_time);
 
         Container cont;
-		for(CVal i=0; i<m_container_size; ++i)
-            cont.push(i);
+		for(size_t i=0; i<m_container_size; ++i)
+            cont.push(CVal(i));
         Container cont2(cont);
 
         TEST_CHECK(cont == cont2);
@@ -382,15 +389,16 @@ void test_queue::eq_op(const char* msg)
 template<typename Container>
 void test_queue::neq_op(const char* msg)
 {
-	typedef typename Container::container_type	TCont;
+	// g++ warning: typedef ‘TCont’ locally defined but not used
+	// typedef typename Container::container_type	TCont;
     typedef typename Container::value_type       CVal;
 
     {
         time_printer tp(msg, m_print_time);
 
         Container cont;
-		for(CVal i=0; i<m_container_size; ++i)
-            cont.push(i);
+		for(size_t i=0; i<m_container_size; ++i)
+            cont.push(CVal(i));
         Container cont2(cont);
         cont2.pop();
 
@@ -401,15 +409,16 @@ void test_queue::neq_op(const char* msg)
 template<typename Container>
 void test_queue::lt_op(const char* msg)
 {
-	typedef typename Container::container_type	TCont;
+	// g++ warning: typedef ‘TCont’ locally defined but not used
+	// typedef typename Container::container_type	TCont;
     typedef typename Container::value_type       CVal;
 
     {
         time_printer tp(msg, m_print_time);
 
         Container cont;
-		for(CVal i=0; i<m_container_size; ++i)
-            cont.push(i);
+		for(size_t i=0; i<m_container_size; ++i)
+            cont.push(CVal(i));
         Container cont2(cont);
         cont2.pop();
 
@@ -421,15 +430,16 @@ void test_queue::lt_op(const char* msg)
 template<typename Container>
 void test_queue::gt_op(const char* msg)
 {
-	typedef typename Container::container_type	TCont;
+	// g++ warning: typedef ‘TCont’ locally defined but not used
+	// typedef typename Container::container_type	TCont;
     typedef typename Container::value_type       CVal;
 
     {
         time_printer tp(msg, m_print_time);
 
         Container cont;
-		for(CVal i=0; i<m_container_size; ++i)
-            cont.push(i);
+		for(size_t i=0; i<m_container_size; ++i)
+            cont.push(CVal(i));
         Container cont2(cont);
         cont.pop();
 
@@ -441,15 +451,16 @@ void test_queue::gt_op(const char* msg)
 template<typename Container>
 void test_queue::lte_op(const char* msg)
 {
-	typedef typename Container::container_type	TCont;
+	// g++ warning: typedef ‘TCont’ locally defined but not used
+	// typedef typename Container::container_type	TCont;
     typedef typename Container::value_type       CVal;
 
     {
         time_printer tp(msg, m_print_time);
 
         Container cont;
-		for(CVal i=0; i<m_container_size; ++i)
-            cont.push(i);
+		for(size_t i=0; i<m_container_size; ++i)
+            cont.push(CVal(i));
         Container cont2(cont);
 
         // equal
@@ -466,15 +477,16 @@ void test_queue::lte_op(const char* msg)
 template<typename Container>
 void test_queue::gte_op(const char* msg)
 {
-	typedef typename Container::container_type	TCont;
+	// g++ warning: typedef ‘TCont’ locally defined but not used
+	// typedef typename Container::container_type	TCont;
     typedef typename Container::value_type     CVal;
 
     {
         time_printer tp(msg, m_print_time);
 
         Container cont;
-		for(CVal i=0; i<m_container_size; ++i)
-            cont.push(i);
+		for(size_t i=0; i<m_container_size; ++i)
+            cont.push(CVal(i));
         Container cont2(cont);
 
         // lexicographical compared: cont[1,2,3..] & cont2[0,1,2...]

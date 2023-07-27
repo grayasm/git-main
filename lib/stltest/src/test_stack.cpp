@@ -271,14 +271,14 @@ void test_stack::top(const char* msg)
         time_printer tp(msg, m_print_time);
 
         Container cont;
-		for(CVal i=0; i < m_container_size; ++i)
-            cont.push(i);
+		for(size_t i=0; i < m_container_size; ++i)
+            cont.push(CVal(i));
 
         TEST_CHECK(cont.size() == m_container_size);
 
-        for(CVal i=m_container_size; i>0; --i)
+        for(size_t i=m_container_size; i>0; --i)
         {
-            TEST_CHECK(cont.top() == (i-1));
+            TEST_CHECK(cont.top() == CVal(i-1));
 			TEST_CHECK(cont.size() == i);
             cont.pop();
         }
@@ -296,14 +296,14 @@ void test_stack::push(const char* msg)
         time_printer tp(msg, m_print_time);
 
         Container cont;
-		for(CVal i=0; i<m_container_size; ++i)
-            cont.push(i);
+		for(size_t i=0; i<m_container_size; ++i)
+            cont.push(CVal(i));
 
         TEST_CHECK(cont.size() == m_container_size);
 
-        for(CVal i=m_container_size; i>0; --i)
+        for(size_t i=m_container_size; i>0; --i)
         {
-            TEST_CHECK(cont.top() == (i-1));
+            TEST_CHECK(cont.top() == CVal(i-1));
 			TEST_CHECK(cont.size() == i);
             cont.pop();
         }
@@ -321,14 +321,14 @@ void test_stack::pop(const char* msg)
         time_printer tp(msg, m_print_time);
 
         Container cont;
-		for(CVal i=0; i<m_container_size; ++i)
-            cont.push(i);
+		for(size_t i=0; i<m_container_size; ++i)
+            cont.push(CVal(i));
 
         TEST_CHECK(cont.size() == m_container_size);
 
-        for(CVal i=m_container_size; i>0; --i)
+        for(size_t i=m_container_size; i>0; --i)
         {
-            TEST_CHECK(cont.top() == (i-1));
+            TEST_CHECK(cont.top() == CVal(i-1));
 			TEST_CHECK(cont.size() == i);
             cont.pop();
         }
@@ -346,8 +346,8 @@ void test_stack::eq_op(const char* msg)
         time_printer tp(msg, m_print_time);
 
         Container cont;
-		for(CVal i=0; i<m_container_size; ++i)
-            cont.push(i);
+		for(size_t i=0; i<m_container_size; ++i)
+            cont.push(CVal(i));
         Container cont2(cont);
 
         TEST_CHECK(cont == cont2);
@@ -363,8 +363,8 @@ void test_stack::neq_op(const char* msg)
         time_printer tp(msg, m_print_time);
 
         Container cont;
-		for(CVal i=0; i<m_container_size; ++i)
-            cont.push(i);
+		for(size_t i=0; i<m_container_size; ++i)
+            cont.push(CVal(i));
         Container cont2(cont);
         cont2.pop();
 
@@ -381,8 +381,8 @@ void test_stack::lt_op(const char* msg)
         time_printer tp(msg, m_print_time);
 
         Container cont;
-		for(CVal i=0; i<m_container_size; ++i)
-            cont.push(i);
+		for(size_t i=0; i<m_container_size; ++i)
+            cont.push(CVal(i));
         Container cont2(cont);
 
         cont.pop();
@@ -400,8 +400,8 @@ void test_stack::gt_op(const char* msg)
         time_printer tp(msg, m_print_time);
 
         Container cont;
-		for(CVal i=0; i<m_container_size; ++i)
-            cont.push(i);
+		for(size_t i=0; i<m_container_size; ++i)
+            cont.push(CVal(i));
         Container cont2(cont);
         cont2.pop();
 
@@ -418,8 +418,8 @@ void test_stack::lte_op(const char* msg)
         time_printer tp(msg, m_print_time);
 
         Container cont;
-		for(CVal i=0; i<m_container_size; ++i)
-            cont.push(i);
+		for(size_t i=0; i<m_container_size; ++i)
+            cont.push(CVal(i));
         Container cont2(cont);
 
         TEST_CHECK(cont <= cont2);
@@ -439,8 +439,8 @@ void test_stack::gte_op(const char* msg)
         time_printer tp(msg, m_print_time);
 
         Container cont;
-		for(CVal i=0; i<m_container_size; ++i)
-            cont.push(i);
+		for(size_t i=0; i<m_container_size; ++i)
+            cont.push(CVal(i));
         Container cont2(cont);
 
         TEST_CHECK(cont >= cont2);

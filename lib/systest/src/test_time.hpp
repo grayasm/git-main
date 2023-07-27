@@ -5,6 +5,7 @@ Copyright (C) 2015 Mihai Vasilian
 #ifndef __test_time_hpp__
 #define __test_time_hpp__
 
+#include <stdlib.h>
 
 
 class test_time

@@ -93,7 +93,8 @@ void test_tree::test_90()
 	typedef misc::tree<int> Tree;
 	typedef Tree::iterator It;
 	Tree mtree1;
-	typedef misc::tree<int>::preorder_iterator preIt;
+	// g++ warning typedef 'preIt' locally defined but not used
+	// typedef misc::tree<int>::preorder_iterator preIt;
 	typedef misc::tree<int>::preorder_const_iterator preCIt;
 
 

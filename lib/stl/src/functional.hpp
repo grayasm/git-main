@@ -257,6 +257,8 @@ namespace stl
     };
 
 
+    // WARNING: binder1st and binder2nd are deprecated in C++11 and removed in C++17;
+
     //binder1st   Generate function object class with 1st parameter bound (class template )
     template <typename Operation>
     class binder1st
@@ -520,7 +522,7 @@ namespace stl
         return binary_negate<Predicate>(pred);
     }
 
-
+    // WARNING: binder1st and binder2nd are deprecated in C++11 and removed in C++17;
     //Parameter binders
     //////////////////////////////////////////////////////////////////////////
 

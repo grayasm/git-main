@@ -984,7 +984,7 @@ void test_algorithm::find(const char* msg)
 
 		// STL
 		// pointer to array element:
-		p = stl::find(mytable, mytable + m_container_size, m_container_size - 2);
+		p = stl::find(mytable, mytable + m_container_size, Cval(m_container_size - 2));
 		++p;
 		TEST_CHECK(*p == (m_container_size - 1));
 
@@ -1391,7 +1391,7 @@ void test_algorithm::count(const char* msg)
 		//cout << "20 appears " << mycount  << " times.\n";
 		TEST_CHECK(mycount == 3);
 
-		mycount = stl::count (v2.begin(), v2.end(), m_container_size -1);
+		mycount = stl::count (v2.begin(), v2.end(), Cval(m_container_size -1));
 		TEST_CHECK(mycount == 1);
 
 #if !defined(DEBUG)
@@ -1403,7 +1403,7 @@ void test_algorithm::count(const char* msg)
 		//cout << "20 appears " << mycount  << " times.\n";
 		TEST_CHECK(mycount == 3);
 
-		mycount = std::count (v2.begin(), v2.end(), m_container_size -1);
+		mycount = std::count (v2.begin(), v2.end(), CVal(m_container_size -1));
 		TEST_CHECK(mycount == 1);
 #endif
 	}	
@@ -1789,7 +1789,7 @@ void test_algorithm::search_n2(const char* msg)
 		//Two 30s found at position 2
 		//Two 10s found at position 5
 
-		it = stl::search_n (v2.begin(), v2.end(), 2, m_container_size - 2);	
+		it = stl::search_n (v2.begin(), v2.end(), 2, Cval(m_container_size - 2));
 		TEST_CHECK((int)(it-v2.begin()) == m_container_size - 2);
 
 		it = stl::search_n (v2.begin(), v2.end(), 2, m_container_size - 2, mypredicate_search_n);
@@ -1839,7 +1839,7 @@ void test_algorithm::copy(const char* msg)
 		TEST_CHECK(v3.size() == v2.size());
 		for(size_t i = 0; i < v3.size(); ++i)
 		{
-			TEST_CHECK((int)v3[i] == i);
+			TEST_CHECK(v3[i] == (int)i);
 		}
 
 
@@ -3397,7 +3397,7 @@ void test_algorithm::random_shuffle(const char* msg)
 		*/
 		for(i0 = 1; i0 < v1.size(); ++i0)
 		{
-			TEST_CHECK(stl::count(v1.begin(), v1.end(), i0) == 1);
+			TEST_CHECK(stl::count(v1.begin(), v1.end(), Cval(i0)) == 1);
 		}
 
 #if !defined(DEBUG)
@@ -3407,7 +3407,7 @@ void test_algorithm::random_shuffle(const char* msg)
 
 		for(i0 = 1; i0 < v1.size(); ++i0)
 		{
-			TEST_CHECK(stl::count(v2.begin(), v2.end(), i0) == 1);
+			TEST_CHECK(stl::count(v2.begin(), v2.end(), Cval(i0)) == 1);
 		}
 #endif
 	}
