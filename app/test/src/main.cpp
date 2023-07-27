@@ -1,6 +1,6 @@
 
 
-#include "acutest.h"
+#include "acutest.c"
 
 #include <exception>
 #include <stdexcept>
