@@ -64,16 +64,17 @@ namespace misc
 		typedef typename base::reference			reference;
 
 		typedef typename container::iterator		Iterator;
+		typedef typename misc::tree<typename container::value_type, typename container::allocator_type> Tree;
 		friend class misc::tree<typename container::value_type, typename container::allocator_type>;
 
 	private:
 		Iterator	m_it;
-		int			m_outside;
+		Tree*		m_tree;
 
 	public:
 		Preorder_Iterator();
 		~Preorder_Iterator();
-		Preorder_Iterator(const Iterator& it);
+		Preorder_Iterator(const Iterator& it, const Tree& tr);
 		Preorder_Iterator(const Preorder_Iterator& rit);
 		bool operator==(const Preorder_Iterator& it) const;
 		bool operator!=(const Preorder_Iterator& it) const;
@@ -83,7 +84,14 @@ namespace misc
 		Preorder_Iterator operator++(int);
 		Preorder_Iterator& operator--();
 		Preorder_Iterator operator--(int);
+
+	private:
+		// Wrap List::operator==(..) in a try/catch to avoid exceptions in DEBUG
+		// This may happen when comparing 2 iterators of 2 different stl::list.
+		// This is possible while walking up and down the tree node's list.
+		bool Eq(const Iterator& itl, const Iterator& itr) const;
 	};
+
 
 
 	template<typename container>
@@ -100,14 +108,15 @@ namespace misc
 		typedef typename base::const_pointer		pointer;
 		typedef typename base::const_reference		reference;
 
-		typedef Preorder_Iterator<container>		base2;
-		typedef typename base2::Iterator			Iterator;
+		typedef Preorder_Iterator<container>		baseIt;
+		typedef typename baseIt::Iterator			Iterator;
+		typedef typename misc::tree<typename container::value_type, typename container::allocator_type> Tree;
 		friend class misc::tree<typename container::value_type, typename container::allocator_type>;
 
 	public:
 		Preorder_Const_Iterator();
 		~Preorder_Const_Iterator();
-		Preorder_Const_Iterator(const Iterator& it);
+		Preorder_Const_Iterator(const Iterator& it, const Tree& tr);
 		Preorder_Const_Iterator(const Preorder_Const_Iterator& rit);
 		Preorder_Const_Iterator(const Preorder_Iterator<container>& it);
 		bool operator==(const Preorder_Const_Iterator& it) const;
@@ -157,16 +166,17 @@ namespace misc
 		typedef typename base::reference           reference;
 
 		typedef typename container::iterator Iterator;
+		typedef typename misc::tree<typename container::value_type, typename container::allocator_type> Tree;
 		friend class misc::tree<typename container::value_type, typename container::allocator_type>;
 
 	private:
 		Iterator	m_it;
-		int			m_outside;
+		Tree*		m_tree;
 
 	public:
 		Postorder_Iterator();
 		~Postorder_Iterator();
-		Postorder_Iterator(const Iterator& it);
+		Postorder_Iterator(const Iterator& it, const Tree& tr);
 		Postorder_Iterator(const Postorder_Iterator& rit);
 		bool operator==(const Postorder_Iterator& it) const;
 		bool operator!=(const Postorder_Iterator& it) const;
@@ -176,6 +186,11 @@ namespace misc
 		Postorder_Iterator operator++(int);
 		Postorder_Iterator& operator--();
 		Postorder_Iterator operator--(int);
+	private:
+		// Wrap List::operator==(..) in a try/catch to avoid exceptions in DEBUG
+		// This may happen when comparing 2 iterators of 2 different stl::list.
+		// This is possible while walking up and down the tree node's list.
+		bool Eq(const Iterator& lhs, const Iterator& rhs) const;
 	};
 
 
@@ -195,13 +210,15 @@ namespace misc
 
 		typedef Postorder_Iterator<container>		base2;
 		typedef typename base2::Iterator			Iterator;
+		typedef typename misc::tree<typename container::value_type, typename container::allocator_type> Tree;
 		friend class misc::tree<typename container::value_type, typename container::allocator_type>;
 
 	public:
 		Postorder_Const_Iterator();
 		~Postorder_Const_Iterator();
-		Postorder_Const_Iterator(const Iterator& it);
+		Postorder_Const_Iterator(const Iterator& it, const Tree& tr);
 		Postorder_Const_Iterator(const Postorder_Const_Iterator& rit);
+		Postorder_Const_Iterator(const Postorder_Iterator<container>& it);
 		bool operator==(const Postorder_Const_Iterator& it) const;
 		bool operator!=(const Postorder_Const_Iterator& it) const;
 		const value_type& operator*() const;
@@ -247,16 +264,17 @@ namespace misc
 		typedef typename base::reference			reference;
 
 		typedef typename container::iterator		Iterator;
+		typedef typename misc::tree<typename container::value_type, typename container::allocator_type> Tree;
 		friend class misc::tree<typename container::value_type, typename container::allocator_type>;
 
 	private:
 		Iterator	m_it;
-		int			m_outside;
+		Tree*		m_tree;
 
 	public:
 		First_Branch_Iterator();
 		~First_Branch_Iterator();
-		First_Branch_Iterator(const Iterator& it);
+		First_Branch_Iterator(const Iterator& it, const Tree& tr);
 		First_Branch_Iterator(const First_Branch_Iterator& fit);
 		bool operator==(const First_Branch_Iterator& it) const;
 		bool operator!=(const First_Branch_Iterator& it) const;
@@ -266,6 +284,12 @@ namespace misc
 		First_Branch_Iterator operator++(int);
 		First_Branch_Iterator& operator--();
 		First_Branch_Iterator operator--(int);
+
+	private:
+		// Wrap List::operator==(..) in a try/catch to avoid exceptions in DEBUG
+		// This may happen when comparing 2 iterators of 2 different stl::list.
+		// This is possible while walking up and down the tree node's list.
+		bool Eq(const Iterator& lhs, const Iterator& rhs) const;
 	};
 
 
@@ -285,11 +309,13 @@ namespace misc
 
 		typedef First_Branch_Iterator<container>	base2;
 		typedef typename base2::Iterator			Iterator;
+		typedef typename misc::tree<typename container::value_type, typename container::allocator_type> Tree;
+		friend class misc::tree<typename container::value_type, typename container::allocator_type>;
 
 	public:
 		First_Branch_Const_Iterator();
 		~First_Branch_Const_Iterator();
-		First_Branch_Const_Iterator(const Iterator& it);
+		First_Branch_Const_Iterator(const Iterator& it, const Tree& tr);
 		First_Branch_Const_Iterator(const First_Branch_Const_Iterator& fit);
 		bool operator==(const First_Branch_Const_Iterator& it) const;
 		bool operator!=(const First_Branch_Const_Iterator& it) const;
@@ -336,15 +362,17 @@ namespace misc
 		typedef typename base::reference			reference;
 
 		typedef typename container::iterator		Iterator;
+		typedef typename misc::tree<typename container::value_type, typename container::allocator_type> Tree;
 		friend class misc::tree<typename container::value_type, typename container::allocator_type>;
 
 	private:
 		Iterator	m_it;
+		Tree*		m_tree;
 
 	public:
 		Child_Iterator();
 		~Child_Iterator();
-		Child_Iterator(const Iterator& it);
+		Child_Iterator(const Iterator& it, const Tree& tr);
 		Child_Iterator(const Child_Iterator& fit);
 		bool operator==(const Child_Iterator& it) const;
 		bool operator!=(const Child_Iterator& it) const;
@@ -354,6 +382,8 @@ namespace misc
 		Child_Iterator operator++(int);
 		Child_Iterator& operator--();
 		Child_Iterator operator--(int);
+	private:
+		bool Eq(const Iterator& lhs, const Iterator& rhs) const;
 	};
 
 
@@ -373,12 +403,13 @@ namespace misc
 
 		typedef Child_Iterator<container>			base2;
 		typedef typename base2::Iterator			Iterator;
+		typedef typename misc::tree<typename container::value_type, typename container::allocator_type> Tree;
 		friend class misc::tree<typename container::value_type, typename container::allocator_type>;
 
 	public:
 		Child_Const_Iterator();
 		~Child_Const_Iterator();
-		Child_Const_Iterator(const Iterator& it);
+		Child_Const_Iterator(const Iterator& it, const Tree& tr);
 		Child_Const_Iterator(const Child_Const_Iterator& fit);
 		bool operator==(const Child_Const_Iterator& it) const;
 		bool operator!=(const Child_Const_Iterator& it) const;
@@ -449,6 +480,16 @@ namespace misc
 		typedef Child_Iterator<container>				child_iterator;
 		typedef Child_Const_Iterator<container>			child_const_iterator;
 
+	public:
+		// If an iterator points to tree's end position it cannot be dereferenced
+		// and it cannot be decremented safely without access to tree->m_root.list
+		// Tree's end position is tree->m_root.m_list.end()
+		// Iterators need access to tree->m_root.m_list to safely decrement.
+		// Hence this friendship below.
+		friend class Preorder_Iterator<misc::tree<T, Allocator> >;
+		friend class Postorder_Iterator<misc::tree<T, Allocator> >;
+		friend class First_Branch_Iterator<misc::tree<T, Allocator> >;
+		friend class Child_Iterator<misc::tree<T, Allocator> >;
 
 	private:
 		void deep_copy_node(tree_node<T>& dest, const tree_node<T>& src);
@@ -486,37 +527,20 @@ namespace misc
 		iterator push_front_child(iterator i, const value_type& val);
 
 
-		void push_back(const tree& t);
-		void push_front(const tree& t);
-		void insert_sibling_before(iterator i, const tree& t);
-		void insert_sibling_after(iterator i, const tree& t);
-		void push_back_child(iterator i, const tree& t);
-		void push_front_child(iterator i, const tree& t);
-
-
-
 		preorder_iterator preorder_begin();
 		preorder_iterator preorder_end();
-		preorder_iterator preorder_begin(iterator it);
-		preorder_iterator preorder_end(iterator it);
-
 		preorder_const_iterator preorder_begin() const;
 		preorder_const_iterator preorder_end() const;
-		preorder_const_iterator preorder_begin(iterator it) const;
-		preorder_const_iterator preorder_end(iterator it) const;
-
 
 		postorder_iterator postorder_begin();
 		postorder_iterator postorder_end();
-		postorder_iterator postorder_begin(iterator it);
-		postorder_iterator postorder_end(iterator it);
-
+		postorder_const_iterator postorder_begin() const;
+		postorder_const_iterator postorder_end() const;
 
 		first_branch_iterator first_branch_begin();
 		first_branch_iterator first_branch_end();
 		first_branch_iterator first_branch_begin(iterator it);
 		first_branch_iterator first_branch_end(iterator it);
-
 
 		first_branch_const_iterator first_branch_begin() const;
 		first_branch_const_iterator first_branch_end() const;
@@ -540,7 +564,6 @@ namespace misc
 		child_iterator siblings_end(iterator it);
 		child_const_iterator siblings_begin(iterator it) const;
 		child_const_iterator siblings_end(iterator it) const;
-
 
 
 		bool empty() const;
@@ -567,7 +590,7 @@ namespace misc
 	tree_node<T>::tree_node(tree_node* owner, const value_type& val)
 	{
 		init();
-		m_owner=owner;
+		m_owner = owner;
 		m_T = new value_type(val);
 	}
 
@@ -636,7 +659,7 @@ namespace misc
 	template<typename container>
 	Preorder_Iterator<container>::Preorder_Iterator()
 	{
-		m_outside=0;
+		m_tree = 0;
 	}
 
 
@@ -647,23 +670,23 @@ namespace misc
 
 
 	template<typename container>
-	Preorder_Iterator<container>::Preorder_Iterator(const Iterator& it)
+	Preorder_Iterator<container>::Preorder_Iterator(const Iterator& it, const Tree& tr)
 	{
 		m_it = it;
-		m_outside = 0;
+		m_tree = const_cast<Tree*>(&tr);
 	}
 
 	template<typename container>
 	Preorder_Iterator<container>::Preorder_Iterator(const Preorder_Iterator& rit)
 	{
 		m_it = rit.m_it;
-		m_outside = rit.m_outside;
+		m_tree = rit.m_tree;
 	}
 
 	template<typename container>
 	bool Preorder_Iterator<container>::operator==(const Preorder_Iterator& it) const
 	{
-		return m_it == it.m_it ;
+		return Eq(m_it, it.m_it);
 	}
 
 	template<typename container>
@@ -671,7 +694,6 @@ namespace misc
 	{
 		return !(*this==it);
 	}
-
 
 	template<typename container>
 	typename Preorder_Iterator<container>::value_type&
@@ -693,14 +715,6 @@ namespace misc
 	template<typename container>
 	Preorder_Iterator<container>& Preorder_Iterator<container>::operator++()
 	{
-		if(m_outside!=0)
-		{
-			++m_it;
-			++m_outside;
-			return *this;
-		}
-
-
 		//has children
 		if( !m_it->m_list.empty() )
 		{
@@ -710,7 +724,7 @@ namespace misc
 
 		//has siblings
 		Iterator sibl = m_it;
-		if( ++sibl != m_it->m_owner->m_list.end() )
+		if( ++sibl != m_it->m_owner->m_list.end() )	// same list, no throw
 		{
 			m_it = sibl;
 			return *this;
@@ -720,80 +734,39 @@ namespace misc
 		Iterator up = m_it;
 		while(up->m_owner != 0)
 		{
+			//end of tree
 			if(up->m_owner->m_owner == 0)
-				break;
+			{
+				// any further dereference of this iterator will throw
+				m_it = up->m_owner->m_list.end();
+				return *this;
+			}
 
+			//valid sibling
 			up = up->m_owner->m_it;
 			sibl = up;
 			++sibl;
-			if(sibl != up->m_owner->m_list.end())
+			if(sibl != up->m_owner->m_list.end())	// same list, no throw
 			{
 				m_it = sibl;
 				return *this;
 			}
 
+			//invalid sibling, go up
 			m_it = up;
 		}
 
-
-		//out of valid range
-		++m_it;
-		++m_outside;
-
-		return *this;
+		throw stl::exception("iterator out of valid range");
 	}
 
 
 	template<typename container>
 	Preorder_Iterator<container> Preorder_Iterator<container>::operator++(int)
 	{
-		Preorder_Iterator temp(m_it);
+		Preorder_Iterator temp(*this);
 
-		if(m_outside!=0)
-		{
-			++m_it;
-			++m_outside;
-			return temp;
-		}
+		this->operator++();
 
-
-		//has children
-		if( !m_it->m_list.empty() )
-		{
-			m_it = m_it->m_list.begin();
-			return temp;
-		}
-
-		//has siblings
-		Iterator sibl = m_it;
-		if( ++sibl != m_it->m_owner->m_list.end() )
-		{
-			m_it = sibl;
-			return temp;
-		}
-
-		//go up to next valid sibling
-		Iterator up = m_it;
-		while(up->m_owner != 0)
-		{
-			if(up->m_owner->m_owner == 0)
-				break;
-
-			up = up->m_owner->m_it;
-			sibl = up;
-			++sibl;
-			if(sibl != up->m_owner->m_list.end())
-			{
-				m_it = sibl;
-				return temp;
-			}
-
-			m_it = up;
-		}
-
-		//out of valid range
-		++m_it;
-		++m_outside;
 		return temp;
 	}
 
@@ -801,52 +774,52 @@ namespace misc
 	template<typename container>
 	Preorder_Iterator<container>& Preorder_Iterator<container>::operator--()
 	{
-		//iterator outside valid range?
-		if(m_outside!=0)
+		//end of tree
+		if (Eq(m_it, m_tree->m_root.m_list.end()))	// throws in DEBUG
 		{
-			--m_it;
-			--m_outside;
-
-			//when iterator is valid go down-left in loop
-			if(m_outside==0)
+			//empty tree
+			if (m_tree->m_root.m_list.empty())
 			{
-				Iterator down = m_it;
-				while( !down->m_list.empty() )
-				{
-					down = --down->m_list.end();
-				}
-
-				m_it = down ;
+				throw stl::exception("iterator out of valid range");
 			}
+
+			//when sibling available go left-down in loop
+			Iterator down = --m_tree->m_root.m_list.end();
+			while( !down->m_list.empty() )
+			{
+				down = --down->m_list.end();
+			}
+
+			m_it = down;
 
 			return *this;
 		}
 
 		//if sibling not available go up
-		Iterator prev = m_it;
-		if(prev == prev->m_owner->m_list.begin())
+		Iterator up = m_it;
+		if(up == up->m_owner->m_list.begin())	// same list, no throw
 		{
-			if(prev->m_owner->m_owner == 0)
+			//end of the road
+			if(up->m_owner->m_owner == 0)
 			{
-				--m_it;
-				--m_outside;
+				throw stl::exception("iterator out of valid range");
 			}
-			else
-			{
-				m_it = prev->m_owner->m_it;
-			}
+
+			//up
+			m_it = up->m_owner->m_it;
 
 			return *this;
 		}
 
-		//when sibling available go down-left in loop
-		Iterator down = --prev;
+		// when sibling available go left-down in loop
+		Iterator down = --up;
 		while( !down->m_list.empty() )
 		{
 			down = --down->m_list.end();
 		}
 
 		m_it = down ;
+
 		return *this;
 	}
 
@@ -856,59 +829,42 @@ namespace misc
 	{
 		Preorder_Iterator temp(*this);
 
-		//iterator outside valid range?
-		if(m_outside!=0)
-		{
-			--m_it;
-			--m_outside;
+		// TODO: check this, it's maybe worth it to spare a copy
+		this->operator--();
 
-			//when iterator is valid go down-left in loop
-			if(m_outside==0)
-			{
-				Iterator down = m_it;
-				while( !down->m_list.empty() )
-				{
-					down = --down->m_list.end();
-				}
-
-				m_it = down ;
-			}
-
-			return temp;
-		}
-
-		//if sibling not available go up
-		Iterator prev = m_it;
-		if(prev == prev->m_owner->m_list.begin())
-		{
-			if(prev->m_owner->m_owner == 0)
-			{
-				--m_it;
-				--m_outside;
-			}
-			else
-			{
-				m_it = prev->m_owner->m_it;
-			}
-
-			return temp;
-		}
-
-		//when sibling available go down-left in loop
-		Iterator down = --prev;
-		while( !down->m_list.empty() )
-		{
-			down = --down->m_list.end();
-		}
-
-		m_it = down ;
 		return temp;
 	}
+
+	template<typename container>
+	bool Preorder_Iterator<container>::Eq(const Iterator& lhs, const Iterator& rhs) const
+	{
+#ifdef DEBUG
+		// The underlying list container will throw an exception (in DEBUG only)
+		// when two iterators from different lists are compared for equality.
+		// It's not possible to check in advance, because 'm_it' can point
+		// to the tree's end() iterator (e.g. m_root->m_list.end()) and
+		// any attempt to dereference it will throw.
+		// If it cannot be safely dereferenced, m_it->m_owner or m_it->m_list
+		// cannot be checked. The only solution is to try/catch it.
+		try
+		{
+			return lhs == rhs;
+		}
+		catch(stl::exception&)
+		{
+			return false;
+		}
+#else
+		return lhs == rhs;
+#endif
+	}
+
 
 	//////////////////////////////////////////////////////////////////////////
 	//Preorder_Const_Iterator class
 	template<typename container>
 	Preorder_Const_Iterator<container>::Preorder_Const_Iterator()
+		: Preorder_Iterator<container>()
 	{
 	}
 
@@ -920,14 +876,14 @@ namespace misc
 
 
 	template<typename container>
-	Preorder_Const_Iterator<container>::Preorder_Const_Iterator(const Iterator& it)
-		: Preorder_Iterator<container>(it)
+	Preorder_Const_Iterator<container>::Preorder_Const_Iterator(const Iterator& it, const Tree& tr)
+		: Preorder_Iterator<container>(it, tr)
 	{
 	}
 
 	template<typename container>
-	Preorder_Const_Iterator<container>::Preorder_Const_Iterator(const Preorder_Const_Iterator& rit)
-		: Preorder_Iterator<container>(rit)
+	Preorder_Const_Iterator<container>::Preorder_Const_Iterator(const Preorder_Const_Iterator& it)
+		: Preorder_Iterator<container>(it)
 	{
 	}
 
@@ -1001,7 +957,7 @@ namespace misc
 	template<typename container>
 	Postorder_Iterator<container>::Postorder_Iterator()
 	{
-		m_outside=0;
+		m_tree = 0;
 	}
 
 	template<typename container>
@@ -1010,23 +966,23 @@ namespace misc
 	}
 
 	template<typename container>
-	Postorder_Iterator<container>::Postorder_Iterator(const Iterator& it)
+	Postorder_Iterator<container>::Postorder_Iterator(const Iterator& it, const Tree& tr)
 	{
 		m_it = it;
-		m_outside = 0;
+		m_tree = const_cast<Tree*>(&tr);
 	}
 
 	template<typename container>
 	Postorder_Iterator<container>::Postorder_Iterator(const Postorder_Iterator& it)
 	{
 		m_it = it.m_it;
-		m_outside = it.m_outside;
+		m_tree = it.m_tree;
 	}
 
 	template<typename container>
 	bool Postorder_Iterator<container>::operator==(const Postorder_Iterator& it) const
 	{
-		return m_it == it.m_it;
+		return Eq(m_it, it.m_it);
 	}
 
 	template<typename container>
@@ -1054,33 +1010,23 @@ namespace misc
 	template<typename container>
 	Postorder_Iterator<container>& Postorder_Iterator<container>::operator++()
 	{
-		if(m_outside!=0)
-		{
-			++m_it;
-			++m_outside;
-			if(m_outside!=0)
-				return *this;
-
-			//m_outside==0
-			Iterator down = m_it;
-			while( !down->m_list.empty() )
-				down = down->m_list.begin();
-			m_it = down;
-			return *this;
-
-		}
-
+		//TODO: check going over root
+		//TODO: check against m_root.m_list.end() ??
+		//TODO: when does it reach the end of tree??
 
 		//check sibling
 		Iterator sibl = m_it;
 		++sibl;
-		if(sibl != m_it->m_owner->m_list.end())
+		if(sibl != m_it->m_owner->m_list.end())	// same list, no throw
 		{
 			//when sibling available go down-right in loop
 			while( !sibl->m_list.empty() )
+			{
 				sibl = sibl->m_list.begin();
+			}
 
 			m_it = sibl;
+
 			return *this;
 		}
 
@@ -1091,11 +1037,7 @@ namespace misc
 			return *this;
 		}
 
-		//outside valid range
-		++m_it;
-		++m_outside;
-
-		return *this;
+		throw stl::exception("iterator out of valid range");
 	}
 
 	template<typename container>
@@ -1103,45 +1045,7 @@ namespace misc
 	{
 		Postorder_Iterator temp(*this);
 
-		if(m_outside!=0)
-		{
-			++m_it;
-			++m_outside;
-			if(m_outside!=0)
-				return temp;
-
-			//m_outside==0
-			Iterator down = m_it;
-			while( !down->m_list.empty() )
-				down = down->m_list.begin();
-			m_it = down;
-			return temp;
-
-		}
-
-
-		//check sibling
-		Iterator sibl = m_it;
-		++sibl;
-		if(sibl != m_it->m_owner->m_list.end())
-		{
-			while( !sibl->m_list.empty() )
-				sibl = sibl->m_list.begin();
-
-			m_it = sibl;
-			return temp;
-		}
-
-		//check parent
-		if(m_it->m_owner->m_owner != 0)
-		{
-			m_it = m_it->m_owner->m_it;
-			return temp;
-		}
-
-		//outside valid range
-		++m_it;
-		++m_outside;
+		this->operator++();
 
 		return temp;
 	}
@@ -1149,14 +1053,6 @@ namespace misc
 	template<typename container>
 	Postorder_Iterator<container>& Postorder_Iterator<container>::operator--()
 	{
-		if(m_outside!=0)
-		{
-			--m_it;
-			--m_outside;
-			return *this;
-		}
-
-
 		//check children
 		if( !m_it->m_list.empty() )
 		{
@@ -1165,7 +1061,7 @@ namespace misc
 		}
 
 		//check sibling
-		if(m_it != m_it->m_owner->m_list.begin())
+		if(m_it != m_it->m_owner->m_list.begin())	// same list, no throw
 		{
 			--m_it;
 			return *this;
@@ -1176,7 +1072,10 @@ namespace misc
 		while(up->m_owner != 0)
 		{
 			if(up->m_owner->m_owner == 0)
+			{
+				//TODO: where is the end of this?
 				break;
+			}
 
 			up = up->m_owner->m_it;
 			if(up != up->m_owner->m_list.begin())
@@ -1188,11 +1087,7 @@ namespace misc
 			m_it = up;
 		}
 
-		//outside valid range
-		--m_it;
-		--m_outside;
-
-		return *this;
+		throw stl::exception("iterator out of valid range");
 	}
 
 	template<typename container>
@@ -1200,55 +1095,41 @@ namespace misc
 	{
 		Postorder_Iterator temp(*this);
 
-		if(m_outside!=0)
-		{
-			--m_it;
-			--m_outside;
-			return temp;
-		}
-
-		//check children
-		if( !m_it->m_list.empty() )
-		{
-			m_it = --m_it->m_list.end();
-			return temp;
-		}
-
-		//check sibling
-		if(m_it != m_it->m_owner->m_list.begin())
-		{
-			--m_it;
-			return temp;
-		}
-
-		//check parent's sibling
-		Iterator up = m_it;
-		while(up->m_owner != 0)
-		{
-			if(up->m_owner->m_owner == 0)
-				break;
-
-			up = up->m_owner->m_it;
-			if(up != up->m_owner->m_list.begin())
-			{
-				m_it = --up;
-				return temp;
-			}
-
-			m_it = up;
-		}
-
-		//outside valid range
-		--m_it;
-		--m_outside;
+		this->operator--();
 
 		return temp;
+	}
+
+
+	template<typename container>
+	bool Postorder_Iterator<container>::Eq(const Iterator& lhs, const Iterator& rhs) const
+	{
+#ifdef DEBUG
+		// The underlying list container will throw an exception (in DEBUG only)
+		// when two iterators from different lists are compared for equality.
+		// It's not possible to check in advance, because 'm_it' can point
+		// to the tree's end() iterator (e.g. m_root->m_list.end()) and
+		// any attempt to dereference it will throw.
+		// If it cannot be safely dereferenced, m_it->m_owner or m_it->m_list
+		// cannot be checked. The only solution is to try/catch it.
+		try
+		{
+			return lhs == rhs;
+		}
+		catch(stl::exception&)
+		{
+			return false;
+		}
+#else
+		return lhs == rhs;
+#endif
 	}
 
 	//////////////////////////////////////////////////////////////////////////
 	//Postorder_Iterator class
 	template<typename container>
 	Postorder_Const_Iterator<container>::Postorder_Const_Iterator()
+		: Postorder_Iterator<container>()
 	{
 	}
 
@@ -1258,13 +1139,19 @@ namespace misc
 	}
 
 	template<typename container>
-	Postorder_Const_Iterator<container>::Postorder_Const_Iterator(const Iterator& it)
-		: Postorder_Iterator<container>(it)
+	Postorder_Const_Iterator<container>::Postorder_Const_Iterator(const Iterator& it, const Tree& tr)
+		: Postorder_Iterator<container>(it, tr)
 	{
 	}
 
 	template<typename container>
 	Postorder_Const_Iterator<container>::Postorder_Const_Iterator(const Postorder_Const_Iterator& it)
+		: Postorder_Iterator<container>(it)
+	{
+	}
+
+	template<typename container>
+	Postorder_Const_Iterator<container>::Postorder_Const_Iterator(const Postorder_Iterator<container>& it)
 		: Postorder_Iterator<container>(it)
 	{
 	}
@@ -1327,7 +1214,7 @@ namespace misc
 	template<typename container>
 	First_Branch_Iterator<container>::First_Branch_Iterator()
 	{
-		m_outside=0;
+		m_tree = 0;
 	}
 
 	template<typename container>
@@ -1336,23 +1223,23 @@ namespace misc
 	}
 
 	template<typename container>
-	First_Branch_Iterator<container>::First_Branch_Iterator(const Iterator& it)
+	First_Branch_Iterator<container>::First_Branch_Iterator(const Iterator& it, const Tree& tr)
 	{
 		m_it=it;
-		m_outside=0;
+		m_tree = const_cast<Tree*>(&tr);
 	}
 
 	template<typename container>
 	First_Branch_Iterator<container>::First_Branch_Iterator(const First_Branch_Iterator& fit)
 	{
 		m_it = fit.m_it;
-		m_outside = fit.m_outside;
+		m_tree = fit.m_tree;
 	}
 
 	template<typename container>
 	bool First_Branch_Iterator<container>::operator==(const First_Branch_Iterator& it) const
 	{
-		return m_it == it.m_it;
+		return Eq(m_it, it.m_it);
 	}
 
 	template<typename container>
@@ -1382,14 +1269,6 @@ namespace misc
 	template<typename container>
 	First_Branch_Iterator<container>& First_Branch_Iterator<container>::operator++()
 	{
-		//is outside?
-		if(m_outside!=0)
-		{
-			++m_it;
-			++m_outside;
-			return *this;
-		}
-
 		//has children
 		if( !m_it->m_list.empty() )
 		{
@@ -1397,11 +1276,7 @@ namespace misc
 			return *this;
 		}
 
-		//set end
-		++m_it;
-		++m_outside;
-		return *this;
-
+		throw stl::exception("iterator out of valid range");
 	}
 
 	template<typename container>
@@ -1409,55 +1284,28 @@ namespace misc
 	{
 		First_Branch_Iterator temp(*this);
 
-		//is outside?
-		if(m_outside!=0)
-		{
-			++m_it;
-			++m_outside;
-			return temp;
-		}
+		this->operator++();
 
-		//has children
-		if( !m_it->m_list.empty() )
-		{
-			m_it = m_it->m_list.begin();
-			return temp;
-		}
-
-		//set end
-		++m_it;
-		++m_outside;
 		return temp;
 	}
 
 	template<typename container>
 	First_Branch_Iterator<container>& First_Branch_Iterator<container>::operator--()
 	{
-		//is outside?
-		if(m_outside!=0)
-		{
-			--m_outside;
-			--m_it;
-			return *this;
-		}
-
 		//check branch begin
 		if(m_it != m_it->m_owner->m_list.begin())
 		{
-			--m_it;
-			--m_outside;
-			return *this;
+			throw stl::exception("iterator out of valid range");
 		}
 
 		//check upper limit
 		if(m_it->m_owner->m_owner == 0)
 		{
-			--m_it;
-			--m_outside;
-			return *this;
+			throw stl::exception("iterator out of valid range");
 		}
 
-		m_it = m_it->m_owner->m_it;
+		m_it = m_it->m_owner->m_it; // TODO: this doesn't look right
+
 		return *this;
 	}
 
@@ -1465,32 +1313,34 @@ namespace misc
 	First_Branch_Iterator<container> First_Branch_Iterator<container>::operator--(int)
 	{
 		First_Branch_Iterator temp(*this);
-		//is outside?
-		if(m_outside!=0)
-		{
-			--m_outside;
-			--m_it;
-			return temp;
-		}
 
-		//check branch begin
-		if(m_it != m_it->m_owner->m_list.begin())
-		{
-			--m_it;
-			--m_outside;
-			return temp;
-		}
+		this->operator--();
 
-		//check upper limit
-		if(m_it->m_owner->m_owner == 0)
-		{
-			--m_it;
-			--m_outside;
-			return temp;
-		}
-
-		m_it = m_it->m_owner->m_it;
 		return temp;
+	}
+
+	template<typename container>
+	bool First_Branch_Iterator<container>::Eq(const Iterator& lhs, const Iterator& rhs) const
+	{
+#ifdef DEBUG
+		// The underlying list container will throw an exception (in DEBUG only)
+		// when two iterators from different lists are compared for equality.
+		// It's not possible to check in advance, because 'm_it' can point
+		// to the tree's end() iterator (e.g. m_root->m_list.end()) and
+		// any attempt to dereference it will throw.
+		// If it cannot be safely dereferenced, m_it->m_owner or m_it->m_list
+		// cannot be checked. The only solution is to try/catch it.
+		try
+		{
+			return lhs == rhs;
+		}
+		catch(stl::exception&)
+		{
+			return false;
+		}
+#else
+		return lhs == rhs;
+#endif
 	}
 
 
@@ -1498,6 +1348,7 @@ namespace misc
 	//First_Branch_Const_Iterator class
 	template<typename container>
 	First_Branch_Const_Iterator<container>::First_Branch_Const_Iterator()
+		: First_Branch_Iterator<container>()
 	{
 	}
 
@@ -1507,8 +1358,8 @@ namespace misc
 	}
 
 	template<typename container>
-	First_Branch_Const_Iterator<container>::First_Branch_Const_Iterator(const Iterator& it)
-		: First_Branch_Iterator<container>(it)
+	First_Branch_Const_Iterator<container>::First_Branch_Const_Iterator(const Iterator& it, const Tree& tr)
+		: First_Branch_Iterator<container>(it, tr)
 	{
 	}
 
@@ -1577,6 +1428,7 @@ namespace misc
 	template<typename container>
 	Child_Iterator<container>::Child_Iterator()
 	{
+		m_tree = 0;
 	}
 
 	template<typename container>
@@ -1585,21 +1437,23 @@ namespace misc
 	}
 
 	template<typename container>
-	Child_Iterator<container>::Child_Iterator(const Iterator& it)
+	Child_Iterator<container>::Child_Iterator(const Iterator& it, const Tree& tr)
 	{
 		m_it=it;
+		m_tree = const_cast<Tree*>(&tr);
 	}
 
 	template<typename container>
 	Child_Iterator<container>::Child_Iterator(const Child_Iterator& fit)
 	{
 		m_it = fit.m_it;
+		m_tree = fit.m_tree;
 	}
 
 	template<typename container>
 	bool Child_Iterator<container>::operator==(const Child_Iterator& it) const
 	{
-		return m_it == it.m_it;
+		return Eq(m_it, it.m_it);
 	}
 
 	template<typename container>
@@ -1654,11 +1508,36 @@ namespace misc
 		return temp;
 	}
 
+	template<typename container>
+	bool Child_Iterator<container>::Eq(const Iterator& lhs, const Iterator& rhs) const
+	{
+#ifdef DEBUG
+		// The underlying list container will throw an exception (in DEBUG only)
+		// when two iterators from different lists are compared for equality.
+		// It's not possible to check in advance, because 'm_it' can point
+		// to the tree's end() iterator (e.g. m_root->m_list.end()) and
+		// any attempt to dereference it will throw.
+		// If it cannot be safely dereferenced, m_it->m_owner or m_it->m_list
+		// cannot be checked. The only solution is to try/catch it.
+		try
+		{
+			return lhs == rhs;
+		}
+		catch(stl::exception&)
+		{
+			return false;
+		}
+#else
+		return lhs == rhs;
+#endif
+	}
+
 
 	//////////////////////////////////////////////////////////////////////////
 	//Child_Const_Iterator class
 	template<typename container>
 	Child_Const_Iterator<container>::Child_Const_Iterator()
+		: Child_Iterator<container>()
 	{
 	}
 
@@ -1668,8 +1547,8 @@ namespace misc
 	}
 
 	template<typename container>
-	Child_Const_Iterator<container>::Child_Const_Iterator(const Iterator& it)
-		: Child_Iterator<container>(it)
+	Child_Const_Iterator<container>::Child_Const_Iterator(const Iterator& it, const Tree& tr)
+		: Child_Iterator<container>(it, tr)
 	{
 	}
 
@@ -1815,6 +1694,7 @@ namespace misc
 			return *this;
 
 		deep_copy_tree(t);
+
 		return *this;
 #if 0
 
@@ -2023,104 +1903,12 @@ namespace misc
 		return it;
 	}
 
-	template<typename T, typename Allocator>
-	void tree<T, Allocator>::push_back(const tree& t)
-	{
-		iterator beg = t.m_root.m_list.begin(), end = t.m_root.m_list.end();
-		for(; beg != end; ++beg)
-		{
-			iterator it = m_root.m_list.insert(m_root.m_list.end(), (*beg));
-			it->m_it = it;
-			it->m_owner = &m_root;
-			++m_size;
-		}//for
-	}
-
-	template<typename T, typename Allocator>
-	void tree<T, Allocator>::push_front(const tree& t)
-	{
-		throw stl::exception("not debugged");
-
-		typename List::reverse_iterator rbeg = t.m_root.m_list.rbegin(), rend = t.m_root.m_list.rend();
-		for(; rbeg != rend; ++rbeg)
-		{
-			iterator it = m_root.m_list.insert(m_root.m_list.begin(), (*rbeg));
-			it->m_it = it;
-			it->m_owner = &m_root;
-			++m_size;
-		}//for
-	}
-
-	template<typename T, typename Allocator>
-	void tree<T, Allocator>::insert_sibling_before(iterator i, const tree& t)
-	{
-		throw stl::exception("not debugged");
-
-		typename List::reverse_iterator rbeg = t.m_root.m_list.rbegin(), rend = t.m_root.m_list.rend();
-		iterator ipos = i;
-		for(; rbeg != rend; ++rbeg)
-		{
-			iterator it = m_root.m_list.insert(ipos, (*rbeg));
-			it->m_it = it;
-			it->m_owner = &m_root;
-			++m_size;
-			ipos = it;
-		}//for
-	}
-
-	template<typename T, typename Allocator>
-	void tree<T, Allocator>::insert_sibling_after(iterator i, const tree& t)
-	{
-		throw stl::exception("not debugged");
-
-		typename List::reverse_iterator rbeg = t.m_root.m_list.rbegin(), rend = t.m_root.m_list.rend();
-		iterator ipos = ++i;
-		for(; rbeg != rend; ++rbeg)
-		{
-			iterator it = m_root.m_list.insert(ipos, (*rbeg));
-			it->m_it = it;
-			it->m_owner = &m_root;
-			++m_size;
-			ipos = it;
-		}//for
-	}
-
-	template<typename T, typename Allocator>
-	void tree<T, Allocator>::push_back_child(iterator i, const tree& t)
-	{
-		throw stl::exception("not debugged");
-
-		iterator beg = t.m_root.m_list.begin(), end = t.m_root.m_list.end();
-		for(; beg != end; ++beg)
-		{
-			iterator it = i->m_list.insert(i->m_list.end(), (*beg));
-			it->m_it = it;
-			it->m_owner = &m_root;
-			++m_size;
-		}//for
-	}
-
-	template<typename T, typename Allocator>
-	void tree<T, Allocator>::push_front_child(iterator i, const tree& t)
-	{
-		throw stl::exception("not debugged");
-
-		typename List::reverse_iterator rbeg = t.m_root.m_list.rbegin(), rend = t.m_root.m_list.rend();
-		for(; rbeg != rend; ++rbeg)
-		{
-			iterator it = i->m_list.insert(i->m_list.begin(), (*rbeg));
-			it->m_it = it;
-			it->m_owner = &m_root;
-			++m_size;
-		}//for
-	}
-
 
 	template<typename T, typename Allocator>
 	typename tree<T, Allocator>::preorder_iterator 
 		tree<T, Allocator>::preorder_begin()
 	{
-		return preorder_iterator(m_root.m_list.begin());
+		return preorder_iterator(m_root.m_list.begin(), *this);
 	}
 
 
@@ -2128,55 +1916,7 @@ namespace misc
 	typename tree<T, Allocator>::preorder_iterator 
 		tree<T, Allocator>::preorder_end()
 	{
-		return preorder_iterator(m_root.m_list.end());
-	}
-
-
-	template<typename T, typename Allocator>
-	typename tree<T, Allocator>::preorder_iterator 
-		tree<T, Allocator>::preorder_begin(iterator it)
-	{
-		return preorder_iterator(it);
-	}
-
-	template<typename T, typename Allocator>
-	typename tree<T, Allocator>::preorder_iterator 
-		tree<T, Allocator>::preorder_end(iterator it)
-	{
-		//has siblings
-		iterator sibl = it;
-		if( ++sibl != it->m_owner->m_list.end())
-		{
-			it = sibl;
-			preorder_iterator rend(it);
-			return rend;
-		}
-
-		//go up next valid sibling
-		iterator up = it;
-		while(up->m_owner != 0)
-		{
-			if(up->m_owner->m_owner == 0)
-				break;
-
-			up = up->m_owner->m_it;
-			sibl = up;
-			++sibl;
-			if(sibl != up->m_owner->m_list.end())
-			{
-				it = sibl;
-				preorder_iterator rend(it);
-				return rend;
-			}
-
-			it = up;
-		}
-
-		++it;
-		preorder_iterator rend(it);
-		++rend.m_outside;
-
-		return rend;
+		return preorder_iterator(m_root.m_list.end(), *this);
 	}
 
 
@@ -2185,7 +1925,7 @@ namespace misc
 		tree<T, Allocator>::preorder_begin() const
 	{
 		List& nlist = const_cast<List&>(m_root.m_list);
-		return preorder_const_iterator( nlist.begin() );
+		return preorder_const_iterator(nlist.begin(), *this);
 	}
 
 
@@ -2194,21 +1934,7 @@ namespace misc
 		tree<T, Allocator>::preorder_end() const
 	{
 		List& nlist = const_cast<List&>(m_root.m_list);
-		return preorder_const_iterator(nlist.end());
-	}
-
-
-	template<typename T, typename Allocator>
-	typename tree<T, Allocator>::preorder_const_iterator 
-		tree<T, Allocator>::preorder_begin(iterator it) const
-	{
-
-	}
-
-	template<typename T, typename Allocator>
-	typename tree<T, Allocator>::preorder_const_iterator
-		tree<T, Allocator>::preorder_end(iterator it) const
-	{
+		return preorder_const_iterator(nlist.end(), *this);
 	}
 
 
@@ -2217,9 +1943,13 @@ namespace misc
 		tree<T, Allocator>::postorder_begin()
 	{
 		iterator m_it = m_root.m_list.begin();
+
 		while(!m_it->m_list.empty())
+		{
 			m_it = m_it->m_list.begin();
-		return postorder_iterator(m_it);
+		}
+
+		return postorder_iterator(m_it, *this);
 	}
 
 
@@ -2227,61 +1957,39 @@ namespace misc
 	typename tree<T, Allocator>::postorder_iterator 
 		tree<T, Allocator>::postorder_end()
 	{
-		return postorder_iterator(m_root.m_list.end());
+		return postorder_iterator(m_root.m_list.end(), *this);
 	}
-
-	template<typename T, typename Allocator>
-	typename tree<T, Allocator>::postorder_iterator
-		tree<T, Allocator>::postorder_begin(iterator it)
-	{
-		while( !it->m_list.empty() )
-			it = it->m_list.begin();
-		return postorder_iterator(it);
-	}
-
-	template<typename T, typename Allocator>
-	typename tree<T, Allocator>::postorder_iterator 
-		tree<T, Allocator>::postorder_end(iterator it)
-	{
-		postorder_iterator rrit(it);
-		++rrit;
-		return rrit;
-	}
-
-
 
 	template<typename T, typename Allocator>
 	typename tree<T, Allocator>::first_branch_iterator 
 		tree<T, Allocator>::first_branch_begin()
 	{
-		return first_branch_iterator(m_root.m_list.begin());
+		return first_branch_iterator(m_root.m_list.begin(), *this);
 	}
 
 	template<typename T, typename Allocator>
 	typename tree<T, Allocator>::first_branch_iterator 
 		tree<T, Allocator>::first_branch_end()
 	{
-		first_branch_iterator fbit(m_root.m_list.begin());
-		while(fbit.m_outside==0)
-			++fbit;
-		return fbit;
+		//TODO: would this make sense? e.g. to point the last end tree's end()?
+		return first_branch_iterator(m_root.m_list.end(), *this);
 	}
 
 	template<typename T, typename Allocator>
 	typename tree<T, Allocator>::first_branch_iterator 
 		tree<T, Allocator>::first_branch_begin(iterator it)
 	{
-		return first_branch_iterator(it);
+		return first_branch_iterator(it, *this);
 	}
 
 	template<typename T, typename Allocator>
 	typename tree<T, Allocator>::first_branch_iterator 
 		tree<T, Allocator>::first_branch_end(iterator it)
 	{
-		first_branch_iterator fbend(it);
-		while(fbend.m_outside==0)
-			++fbend;
-		return fbend;
+		//return first_branch_iterator(it, *this);
+
+		//TODO: where should the end position be ??
+		throw stl::exception("operation is invalid");
 	}
 
 
@@ -2289,34 +1997,32 @@ namespace misc
 	typename tree<T, Allocator>::first_branch_const_iterator 
 		tree<T, Allocator>::first_branch_begin() const
 	{
-		return first_branch_const_iterator(m_root.m_list.begin());
+		return first_branch_const_iterator(m_root.m_list.begin(), *this);
 	}
 
 	template<typename T, typename Allocator>
 	typename tree<T, Allocator>::first_branch_const_iterator 
 		tree<T, Allocator>::first_branch_end() const
 	{
-		first_branch_const_iterator fbit(m_root.m_list.begin());
-		while(fbit.m_outside==0)
-			++fbit;
-		return fbit;
+		//TODO: to be tested, but makes sense to put fbi end to tree's end, or??
+		return first_branch_const_iterator(m_root.m_list.end(), *this);
 	}
 
 	template<typename T, typename Allocator>
 	typename tree<T, Allocator>::first_branch_const_iterator 
 		tree<T, Allocator>::first_branch_begin(iterator it) const
 	{
-		return first_branch_const_iterator(it);
+		return first_branch_const_iterator(it, *this);
 	}
 
 	template<typename T, typename Allocator>
 	typename tree<T, Allocator>::first_branch_const_iterator 
 		tree<T, Allocator>::first_branch_end(iterator it) const
 	{
-		first_branch_const_iterator fbend(it);
-		while(fbend.m_outside==0)
-			++fbend;
-		return fbend;
+		// first_branch_const_iterator fbend(it);
+
+		//TODO: where should this be??
+		throw stl::exception("operation is invalid");
 	}
 
 
@@ -2325,28 +2031,28 @@ namespace misc
 	typename tree<T, Allocator>::child_iterator 
 		tree<T, Allocator>::child_begin()
 	{
-		return child_iterator(m_root.m_list.begin());
+		return child_iterator(m_root.m_list.begin(), *this);
 	}
 
 	template<typename T, typename Allocator>
 	typename tree<T, Allocator>::child_iterator 
 		tree<T, Allocator>::child_end()
 	{
-		return child_iterator(m_root.m_list.end());
+		return child_iterator(m_root.m_list.end(), *this);
 	}
 
 	template<typename T, typename Allocator>
 	typename tree<T, Allocator>::child_iterator 
 		tree<T, Allocator>::child_begin(iterator it)
 	{
-		return child_iterator(it->m_list.begin());
+		return child_iterator(it->m_list.begin(), *this);
 	}
 
 	template<typename T, typename Allocator>
 	typename tree<T, Allocator>::child_iterator 
 		tree<T, Allocator>::child_end(iterator it)
 	{
-		return child_iterator(it->m_list.end());
+		return child_iterator(it->m_list.end(), *this);
 	}
 
 
@@ -2354,28 +2060,28 @@ namespace misc
 	typename tree<T, Allocator>::child_const_iterator 
 		tree<T, Allocator>::child_begin() const
 	{
-		return child_const_iterator(m_root.m_list.begin());
+		return child_const_iterator(m_root.m_list.begin(), *this);
 	}
 
 	template<typename T, typename Allocator>
 	typename tree<T, Allocator>::child_const_iterator 
 		tree<T, Allocator>::child_end() const
 	{
-		return child_const_iterator(m_root.m_list.end());
+		return child_const_iterator(m_root.m_list.end(), *this);
 	}
 
 	template<typename T, typename Allocator>
 	typename tree<T, Allocator>::child_const_iterator 
 		tree<T, Allocator>::child_begin(iterator it) const
 	{
-		return child_const_iterator(it->m_list.begin());
+		return child_const_iterator(it->m_list.begin(), *this);
 	}
 
 	template<typename T, typename Allocator>
 	typename tree<T, Allocator>::child_const_iterator 
 		tree<T, Allocator>::child_end(iterator it) const
 	{
-		return child_const_iterator(it->m_list.end());
+		return child_const_iterator(it->m_list.end(), *this);
 	}
 
 
@@ -2383,14 +2089,14 @@ namespace misc
 	typename tree<T, Allocator>::child_iterator 
 		tree<T, Allocator>::siblings_begin(iterator it)
 	{
-		return child_iterator(it->m_owner->m_list.begin());
+		return child_iterator(it->m_owner->m_list.begin(), *this);
 	}
 
 	template<typename T, typename Allocator>
 	typename tree<T, Allocator>::child_iterator 
 		tree<T, Allocator>::siblings_end(iterator it)
 	{
-		return child_iterator(it->m_owner->m_list.end());
+		return child_iterator(it->m_owner->m_list.end(), *this);
 	}
 
 
@@ -2398,18 +2104,18 @@ namespace misc
 	typename tree<T, Allocator>::child_const_iterator 
 		tree<T, Allocator>::siblings_begin(iterator it) const
 	{
-		return child_const_iterator(it->m_owner->m_list.begin());
+		return child_const_iterator(it->m_owner->m_list.begin(), *this);
 	}
 
 	template<typename T, typename Allocator>
 	typename tree<T, Allocator>::child_const_iterator 
 		tree<T, Allocator>::siblings_end(iterator it) const
 	{
-		return child_const_iterator(it->m_owner->m_list.end());
+		return child_const_iterator(it->m_owner->m_list.end(), *this);
 	}
 
-
-
+	//////////////////////////////////////////////////////////////////////////
+	// tree implementation
 
 	template<typename T, typename Allocator>
 	bool tree<T, Allocator>::empty() const
