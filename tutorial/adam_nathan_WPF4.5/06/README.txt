@@ -5,8 +5,10 @@
 	Routed Events
 		Tunneling - the event travels from the root down the tree until the
 					source element is reached, or until the event is handled.
+					(e.g. PreviewMouseMove)
 		Bubbling  - the event travels from the source element up the tree until
 					the root is reached, or until the event is handled.
+					(e.g. MouseMove)
 		Direct    - the event is raised only on the source element.
 
 	Attached Events
@@ -89,7 +91,29 @@
 		TouchMove, PreviewTouchMove
 		TouchDown, TouchUp, PreviewTouchDown, PreviewTouchUp
 		GotTouchCapture, LostTouchCapture
-		
 		GetTouchPoint - gets the point relative to passed-in element.
 		GetIntermediateTouchPoints - similar with GetStylusPoints
 		TouchDevice - returns an instance of TouchDevice.
+
+	Panning,Rotating and Zooming manipulation events
+		The one-finger swipe is a simple gesture to detect, but two-fingers
+		rotation or zoom gesture is very difficult with the previously
+		discussed events. WPF provides higher-level manipulation events
+		that make it easy to support panning,rotating and zooming.
+		
+		ManipulationStarting, ManipulationStarted (due to TouchDown)
+		ManipulationDelta                         (due to TouchMove)
+		ManipulationCompleted                     (due to TouchUp)
+
+
+	Inertia
+		Objects inertia makes them gradually slow to a stop when a gesture
+		is done rather then stopping instantly.
+		ManipulationInertiaStarting, ManipulationCompleted
+
+
+	Commands
+		Canonical example of commands are: Cut, Copy and Paste.
+		
+		Built-in Commands
+			Any object implementing ICommand interface from System.Windows.Input
