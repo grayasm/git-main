@@ -356,6 +356,7 @@ void test_vector::begin()
     const Cx& cx = *beg3;
     const int* pint = beg3->get();
     TEST_CHECK(*pint == -1);
+    (void)cx;	// g++ warning: unused variable ‘cx’ [-Wunused-variable]
 
     stl::vector<Cx>::iterator& beg4 = ++beg3;   //operator++()
     TEST_CHECK(*(beg4->get()) == -2);
@@ -395,6 +396,7 @@ void test_vector::begin()
     
     const Cx& cx11 = beg11[2];
     TEST_CHECK(beg11[2] == *beg10);     // operator[](offset)
+    (void)cx11;		// g++ warning: unused variable ‘cx11’ [-Wunused-variable]
 }
 
 void test_vector::end()
@@ -410,6 +412,7 @@ void test_vector::end()
     const Cx& cx = *end3;
     const int* pint = end3->get();
     TEST_CHECK(*pint == -1);
+    (void)cx;		// g++ warning: unused variable ‘cx’ [-Wunused-variable]
 
     stl::vector<Cx>::iterator& end4 = ++end3;   //operator++()
     TEST_CHECK(*(end4->get()) == -2);
@@ -449,6 +452,8 @@ void test_vector::end()
 
     const Cx& cx11 = end11[2];
     TEST_CHECK(end11[2] == *end10);     // operator[](offset)
+
+    (void)cx11;		// g++ warning: unused variable ‘cx11’ [-Wunused-variable]
 }
 
 void test_vector::rbegin()
@@ -464,6 +469,8 @@ void test_vector::rbegin()
     const Cx& cx = *rbeg3;
     const int* pint = rbeg3->get();
     TEST_CHECK(*pint == -5);
+
+    (void)cx;	// g++ warning: unused variable ‘cx’ [-Wunused-variable]
 
     stl::vector<Cx>::reverse_iterator& rbeg4 = ++rbeg3;   //operator++()
     TEST_CHECK(*(rbeg4->get()) == -4);
@@ -503,6 +510,8 @@ void test_vector::rbegin()
 
     const Cx& cx11 = rbeg11[2];
     TEST_CHECK(rbeg11[2] == *rbeg10);     // operator[](offset)
+
+    (void)cx11;		// g++ warning: unused variable ‘cx11’ [-Wunused-variable]
 }
 
 void test_vector::rend()
@@ -518,6 +527,7 @@ void test_vector::rend()
     const Cx& cx = *rend3;
     const int* pint = rend3->get();
     TEST_CHECK(*pint == -5);
+    (void)cx;	// g++ warning: unused variable ‘cx’ [-Wunused-variable]
 
     stl::vector<Cx>::reverse_iterator& rend4 = ++rend3;   //operator++()
     TEST_CHECK(*(rend4->get()) == -4);
@@ -557,6 +567,8 @@ void test_vector::rend()
 
     const Cx& cx11 = rend11[2];
     TEST_CHECK(rend11[2] == *rend10);     // operator[](offset)
+
+    (void)cx11;		// g++ warning: unused variable ‘cx11’ [-Wunused-variable]
 }
 
 void test_vector::resize()
@@ -806,9 +818,9 @@ void test_vector::insert()
 
     v9.insert(v9.begin(), &v9.front(), &v9.back()); // from self
 
-    for (int i = 0; i < 9; ++i)
+    for (size_t i = 0; i < 9; ++i)
         TEST_CHECK(v9[i] == i9[i % 5]);
-    for (int i = 9; i < v9.size(); ++i)
+    for (size_t i = 9; i < v9.size(); ++i)
         TEST_CHECK(v9[i] == i9[(i - 9) % 5]);
     TEST_CHECK(v9.size() == 19);
 
@@ -1187,6 +1199,9 @@ void test_vector::perf1()
             const Cx& cx = *beg3;
             const int* pint = beg3->get();
 
+            (void)cx;	// g++ warning: unused variable ‘cx’ [-Wunused-variable]
+            (void)pint;
+
             vector::iterator& beg4 = ++beg3;        //operator++()
             vector::iterator beg5 = beg4++;         //operator++(int)
             vector::iterator& beg6 = --beg4;        //operator--()
@@ -1195,6 +1210,7 @@ void test_vector::perf1()
             vector::iterator beg9 = (beg8 + 2);     //operator+()
             vector::iterator beg10 = (beg9 -= 2);   //operator-=(offset)
             vector::iterator beg11 = (beg10 - 2);   //operator-(offset);
+
             size_t diff11 = beg10 - beg11;
             bool eq = (beg == beg2);
             bool neq = (beg11 != beg10);
@@ -1203,6 +1219,15 @@ void test_vector::perf1()
             bool lte = (beg11 <= beg10);
             bool gte = (beg >= beg2);
             const Cx& cx11 = beg11[2];
+
+            (void)diff11;	// g++ warning: unused variable ‘diff11’ [-Wunused-variable]
+            (void)eq;
+            (void)neq;
+            (void)lt;
+            (void)gt;
+            (void)lte;
+            (void)gte;
+            (void)cx11;
         }
 
         // rbegin() + rend()
@@ -1219,6 +1244,9 @@ void test_vector::perf1()
             const Cx& cx = *beg3;
             const int* pint = beg3->get();
 
+            (void)cx;	// g++ warning: unused variable ‘cx’ [-Wunused-variable]
+            (void)pint;
+
             vector::reverse_iterator& beg4 = ++beg3;   //operator++()
             vector::reverse_iterator beg5 = beg4++;    //operator++(int)
             vector::reverse_iterator& beg6 = --beg4;   //operator--()
@@ -1227,6 +1255,7 @@ void test_vector::perf1()
             vector::reverse_iterator beg9 = (beg8 + 2);    //operator+()
             vector::reverse_iterator beg10 = (beg9 -= 2);  //operator-=(offset)
             vector::reverse_iterator beg11 = (beg10 - 2);  //operator-(offset);
+
             size_t diff11 = beg10 - beg11;
             bool eq = (beg == beg2);
             bool neq = (beg11 != beg10);
@@ -1235,6 +1264,15 @@ void test_vector::perf1()
             bool lte = (beg11 <= beg10);
             bool gte = (beg >= beg2);
             const Cx& cx11 = beg11[2];
+
+            (void)diff11;	// g++ warning: unused variable ‘diff11’ [-Wunused-variable]
+            (void)eq;
+            (void)neq;
+            (void)lt;
+            (void)gt;
+            (void)lte;
+            (void)gte;
+            (void)cx11;
         }
 
         // void resize(size_type n, value_type val = value_type())
@@ -1274,6 +1312,12 @@ void test_vector::perf1()
             const Cx& c3 = v1[i % 99];
             const Cx& c4 = v1[i % 99];
             const Cx& c5 = v1[i % 99];
+
+            (void)c1;	// g++ warning: unused variable ‘c1’ [-Wunused-variable]
+            (void)c2;
+            (void)c3;
+            (void)c4;
+            (void)c5;
         }
 
         // const_reference at(size_type n) const
@@ -1287,6 +1331,12 @@ void test_vector::perf1()
             const Cx& c3 = v1.at(i % 99);
             const Cx& c4 = v1.at(i % 99);
             const Cx& c5 = v1.at(i % 99);
+
+            (void)c1;	// g++ warning: unused variable ‘c1’ [-Wunused-variable]
+            (void)c2;
+            (void)c3;
+            (void)c4;
+            (void)c5;
         }
 
         // front() + back()
@@ -1296,6 +1346,9 @@ void test_vector::perf1()
             vector v1(cx0, cx0 + 100);
             const Cx& f = v1.front();
             const Cx& b = v1.back();
+
+            (void)f;	// g++ warning: unused variable ‘f’ [-Wunused-variable]
+            (void)b;
         }
 
         // void push_back(const value_type& val)
@@ -1724,6 +1777,9 @@ void test_vector::perf1()
             const Cx& cx = *beg3;
             const int* pint = beg3->get();
 
+            (void)cx;	// g++ warning: unused variable ‘cx’ [-Wunused-variable]
+            (void)pint;
+
             vector::iterator& beg4 = ++beg3;        //operator++()
             vector::iterator beg5 = beg4++;         //operator++(int)
             vector::iterator& beg6 = --beg4;        //operator--()
@@ -1732,6 +1788,7 @@ void test_vector::perf1()
             vector::iterator beg9 = (beg8 + 2);     //operator+()
             vector::iterator beg10 = (beg9 -= 2);   //operator-=(offset)
             vector::iterator beg11 = (beg10 - 2);   //operator-(offset);
+
             size_t diff11 = beg10 - beg11;
             bool eq = (beg == beg2);
             bool neq = (beg11 != beg10);
@@ -1740,6 +1797,15 @@ void test_vector::perf1()
             bool lte = (beg11 <= beg10);
             bool gte = (beg >= beg2);
             const Cx& cx11 = beg11[2];
+
+            (void)diff11;	// g++ warning: unused variable ‘diff11’ [-Wunused-variable]
+            (void)eq;
+            (void)neq;
+            (void)lt;
+            (void)gt;
+            (void)lte;
+            (void)gte;
+            (void)cx11;
         }
 
         // rbegin() + rend()
@@ -1755,6 +1821,9 @@ void test_vector::perf1()
             beg3 = beg;
             const Cx& cx = *beg3;
             const int* pint = beg3->get();
+
+            (void)cx;
+            (void)pint;
 
             vector::reverse_iterator& beg4 = ++beg3;   //operator++()
             vector::reverse_iterator beg5 = beg4++;    //operator++(int)
@@ -1772,6 +1841,15 @@ void test_vector::perf1()
             bool lte = (beg11 <= beg10);
             bool gte = (beg >= beg2);
             const Cx& cx11 = beg11[2];
+
+            (void)diff11;
+            (void)eq;	// g++ warning: unused variable ‘eq’ [-Wunused-variable]
+            (void)neq;
+            (void)lt;
+            (void)gt;
+            (void)lte;
+            (void)gte;
+            (void)cx11;
         }
 
         // void resize(size_type n, value_type val = value_type())
@@ -1811,6 +1889,12 @@ void test_vector::perf1()
             const Cx& c3 = v1[i % 99];
             const Cx& c4 = v1[i % 99];
             const Cx& c5 = v1[i % 99];
+
+            (void)c1;	// g++ warning: unused variable ‘c1’ [-Wunused-variable]
+            (void)c2;
+            (void)c3;
+            (void)c4;
+            (void)c5;
         }
 
         // const_reference at(size_type n) const
@@ -1824,6 +1908,11 @@ void test_vector::perf1()
             const Cx& c3 = v1.at(i % 99);
             const Cx& c4 = v1.at(i % 99);
             const Cx& c5 = v1.at(i % 99);
+            (void)c1;	// g++ warning: unused variable ‘c1’ [-Wunused-variable]
+            (void)c2;
+            (void)c3;
+            (void)c4;
+            (void)c5;
         }
 
         // front() + back()
@@ -1833,6 +1922,8 @@ void test_vector::perf1()
             vector v1(cx0, cx0 + 100);
             const Cx& f = v1.front();
             const Cx& b = v1.back();
+            (void)f; // g++ unused variable 'f'
+            (void)b; // g++ unused variable 'b'
         }
 
         // void push_back(const value_type& val)

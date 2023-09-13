@@ -8,7 +8,7 @@ Copyright (C) 2018 Mihai Vasilian
 #include "unistd.hpp"
 #include "filename.hpp"
 #include "stream.hpp"
-
+#include <cmath>		// for fabs(..) on linux
 
 HistoryPricesReader::HistoryPricesReader(const stl::string& instrument)
 {

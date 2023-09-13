@@ -5,6 +5,7 @@ Copyright (C) 2018 Mihai Vasilian
 #include "IndicatorBuilder.hpp"
 #include "stream.hpp"
 #include "TimeUtils.hpp"
+#include <cmath>		// for ceil(..) on linux
 
 
 namespace fx

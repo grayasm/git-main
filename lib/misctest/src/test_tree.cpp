@@ -92,13 +92,22 @@ void test_tree::test_90()
 {
 	typedef misc::tree<int> Tree;
 	typedef Tree::iterator It;
-	Tree mtree1;
-	typedef misc::tree<int>::preorder_iterator preIt;
+	Tree tr1;
+
 	typedef misc::tree<int>::preorder_const_iterator preCIt;
+	typedef misc::tree<int>::preorder_iterator preIt;
+	typedef misc::tree<int>::postorder_const_iterator postCIt;
+	typedef misc::tree<int>::postorder_iterator postIt;
+	typedef misc::tree<int>::first_branch_const_iterator fbCIt;
+	typedef misc::tree<int>::first_branch_iterator fbIt;
+	typedef misc::tree<int>::child_const_iterator cCIt;
+	typedef misc::tree<int>::child_iterator cIt;
 
+	int preorder_data[] = { 1, 4, 5, 6, 7 };
+	int postorder_data[] = { 5, 6, 4, 7, 1 };
+	int first_branch_data[] = { 1, 4, 5 };
+	int child_data[] = { 4, 7 }; // of iterator (1)
 
-
-	int tree_data[] = { 1, 4, 5, 6, 7 };
 
 	/*
 				  root
@@ -113,34 +122,81 @@ void test_tree::test_90()
 
 	*/
 
-	It i1 = mtree1.push_back(1);
-
-	It i4 = mtree1.push_back_child(i1, 4);
-	It i7 = mtree1.push_back_child(i1, 7);
-
-	It i5 = mtree1.push_back_child(i4, 5);
-	It i6 = mtree1.push_back_child(i4, 6);
 
 
+	It i1 = tr1.push_back(1);
+
+	It i4 = tr1.push_back_child(i1, 4);
+	It i7 = tr1.push_back_child(i1, 7);
+
+	It i5 = tr1.push_back_child(i4, 5);
+	It i6 = tr1.push_back_child(i4, 6);
 
 
-	size_t i = 0;
-
-	//////////////////////////////////////////////////////////////////////////
-	//begin tests
-
-	const Tree ctree1 = mtree1;
-
-
-	preCIt cbeg = ctree1.preorder_begin();
-	preCIt cend = ctree1.preorder_end();
-
-	// const_preorder_iterator& operator++();
-	for (i = 0; cbeg != cend && i < 5; ++cbeg, ++i)
+	// preorder_iterator
 	{
-		bool res = (*cbeg == tree_data[i]);
-		TEST_CHECK(res);
-	}//for
+		// int preorder_data[] = { 1, 4, 5, 6, 7 };
+
+		size_t i = 0;
+		preIt ib1 = tr1.preorder_begin();
+		preIt ie1 = tr1.preorder_end();
+
+		// Incrementing
+		// preorder_iterator& operator++();
+		for (i = 0; ib1 != ie1 && i < 5; ++ib1, ++i)	// pre increment
+		//for (i = 0; ib1 != ie1 && i < 5; ib1++, ++i)  //post increment
+		{
+			bool res = (*ib1 == preorder_data[i]);
+			TEST_CHECK(res);
+		}//for
+
+		// Decrementing
+		// const_preorder_iterator& operator--();
+		preCIt ib2 = tr1.preorder_begin();
+		preCIt ie2 = tr1.preorder_end();
+		for (i = 4, --ie2; ib2 != ie2 && i >= 0; --ie2, --i)	// pre decrement
+		// for (i = 4, --ie2; ib2 != ie2 && i >= 0; ie2--, --i)	// post decrement
+		{
+			bool res = (*ie2 == preorder_data[i]);
+			TEST_CHECK(res);
+		}
+	}
+
+	// postorder_iterator
+	{
+		// int postorder_data[] = { 5, 6, 4, 7, 1 };
+
+		postIt ib1 = tr1.postorder_begin();
+		postIt ie1 = tr1.postorder_end();
+
+		for(size_t i = 0; ib1 != ie1; ++ib1, ++i)	// pre incr
+		// for(size_t i = 0; ib1 != ie1; ib1++, ++i)	// post incr
+		{
+			bool res = (*ib1 == postorder_data[i]);
+			TEST_CHECK(res);
+		}
+
+		postCIt ib2 = tr1.postorder_begin();
+		postCIt ie2 = tr1.postorder_end();
+		--ie2;
+		for(size_t i = 4; ie2 != ib2; --ie2, --i)
+		{
+			bool res = (*ie2 == postorder_data[i]);
+			TEST_CHECK(res);
+		}
+	}
+
+	// first_branch_iterator
+	{
+		int first_branch_data[] = { 1, 4, 5 };
+
+
+	}
+
+	// child_iterator
+	{
+		int child_data[] = { 4, 7 }; // of iterator (1)
+	}
 
 }
 
@@ -295,24 +351,25 @@ void test_tree::test_00()
 	*/
 
 
-	stl::string recursive_data2[]={U("3"), U("12"), U("13"), U("14")};
-	beg = mtree1.preorder_begin(i3);
-	beg2 = mtree1.preorder_begin(i3);
-	end = mtree1.preorder_end(i3);
-	i=0;
-	for(; beg != end; ++beg, ++i)
-	{
-		bool res = (*beg == recursive_data2[i]);
-		TEST_CHECK(res);
-	}//for
-
-	--beg;
-	--i;
-	for(; beg != beg2; --beg, --i)
-	{
-		bool res = (*beg == recursive_data2[i]);
-		TEST_CHECK(res);
-	}//for
+	//TODO: removed the preorder iteration from a position/iterator
+//	stl::string recursive_data2[]={U("3"), U("12"), U("13"), U("14")};
+//	beg = mtree1.preorder_begin(i3);
+//	beg2 = mtree1.preorder_begin(i3);
+//	end = mtree1.preorder_end(i3);
+//	i=0;
+//	for(; beg != end; ++beg, ++i)
+//	{
+//		bool res = (*beg == recursive_data2[i]);
+//		TEST_CHECK(res);
+//	}//for
+//
+//	--beg;
+//	--i;
+//	for(; beg != beg2; --beg, --i)
+//	{
+//		bool res = (*beg == recursive_data2[i]);
+//		TEST_CHECK(res);
+//	}//for
 
 
 
@@ -986,7 +1043,7 @@ void test_tree::preorder_it(const char* msg)
 		TEST_CHECK(*pob6 == ctrlVal[i]);
 
 		typename Tree::iterator ib6 = tree0.get_iterator(pob6);
-		typename Tree::preorder_iterator pob6_2(ib6);
+		typename Tree::preorder_iterator pob6_2(ib6, tree0);
 		TEST_CHECK(pob6_2 == pob6);
 	}
 

@@ -11,6 +11,7 @@ Copyright (C) 2012 Mihai Vasilian
 
 //c++
 //....
+#include <stdlib.h>
 
 
 class test_numeric

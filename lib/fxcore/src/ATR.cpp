@@ -16,6 +16,7 @@ Copyright (C) 2018 Mihai Vasilian
 
 #include "ATR.hpp"
 #include <algorithm>
+#include <cmath>		// for fabs(..) on linux
 
 namespace fx
 {
