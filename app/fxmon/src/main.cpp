@@ -29,7 +29,8 @@ int main(int /*argc*/, char** /*argv*/)
     // RealEngine();
     // TestEngine();
     // OMPEngine();
-    test12();
+    test4();
+    // test12();
     // test13();
     // test14();
     // test15();

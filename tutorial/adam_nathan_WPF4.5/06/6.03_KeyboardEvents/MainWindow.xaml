@@ -1,0 +1,7 @@
+﻿<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="KeyboardEvents.MainWindow">
+    <Grid>
+        <Label Content="Detect if ALT+A was pressed" FontSize="20" />
+    </Grid>
+</Window>

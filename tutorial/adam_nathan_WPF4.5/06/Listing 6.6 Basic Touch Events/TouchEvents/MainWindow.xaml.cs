@@ -16,9 +16,14 @@ namespace TouchEvents
         public MainWindow()
         {
             InitializeComponent();
+
+            this.TouchDown += OnTouchDown;
+            this.TouchMove += OnTouchMove;
+            this.TouchUp += OnTouchUp;
         }
 
-        protected override void OnTouchDown(TouchEventArgs e)
+        //protected override void OnTouchDown(TouchEventArgs e)
+        private void OnTouchDown(object sender, TouchEventArgs e)
         {
             base.OnTouchDown(e);
 
@@ -37,7 +42,8 @@ namespace TouchEvents
             canvas.Children.Add(fingerprint);
         }
 
-        protected override void OnTouchMove(TouchEventArgs e)
+        // protected override void OnTouchMove(TouchEventArgs e)
+        private void OnTouchMove(object sender, TouchEventArgs e)
         {
             base.OnTouchMove(e);
 
@@ -54,7 +60,8 @@ namespace TouchEvents
             }
         }
 
-        protected override void OnTouchUp(TouchEventArgs e)
+        // protected override void OnTouchUp(TouchEventArgs e)
+        private void OnTouchUp(object sender, TouchEventArgs e)
         {
             base.OnTouchUp(e);
 
