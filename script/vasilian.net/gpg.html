@@ -11,7 +11,7 @@
   gtag('config', 'G-NNSN5N589Z');
 </script>
 
-<title>Template page</title>
+<title>GPG and RPM</title>
 <link href="main.css" rel="stylesheet" type="text/css" media="all">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 </head>
@@ -74,27 +74,62 @@ and save it as RPM-GPG-KEY-vasilian<br>
 </p>
 
 
-4. Check if the gpg-agent is running:
+4. To remove a secret key use:
+<pre>
+$ gpg --delete-secret-key 6EE6BDF08BF51743ABE189E89C03756E10264874
+</pre>
+
+5. Install old GPG keys on a new machine:
+<p>
+If you already have the keys in the email then saving them in ~/.gnupg is enough<br>
+to make gnupg import the keys automatically.
+</p>
+
+<pre>
+mkdir ~/.gnupg
+cd ~/.gnupg
+mv ~/Downloads/pubring.gpg .
+mv ~/Downloads/secring.gpg .
+chcon -t gpg_secret_t -v pubring.gpg
+chcon -t gpg_secret_t -v secring.gpg
+cd ~
+gpg --list-keys
+gpg --list-secret-keys
+</pre>
+
+6. Get GPG keys from an old computer: 
+<p>
+If you forgot to save the keys but still have the computer where the keys were<br>
+generated then export them as indicated 
+<a href="https://unix.stackexchange.com/questions/481939/how-to-export-a-gpg-private-key-and-public-key-to-a-file" target="_blank">here</a>
+ with:
+</p>
+
+<pre>
+gpg --output pubring.gpg --armor --export grayasm@gmail.com
+gpg --output secring.gpg --armor --export-secret-key grayasm@gmail.com
+</pre>
+
+
+7. Check if the gpg-agent is running:
 
 <pre>
 $ gpg-agent --daemon
 gpg-agent: a gpg-agent is already running - not starting a new one
 </pre>
 
-5. To remove a secret key use:
-<pre>
-$ gpg --delete-secret-key 6EE6BDF08BF51743ABE189E89C03756E10264874
-</pre>
 
-6. Set the secret key for rpmbuild<br>
-edit $HOME/.rpmmacros and add 3 lines:    
+8. Set the secret key for rpmbuild
+<p>
+edit $HOME/.rpmmacros and add 3 lines:
+</p>    
 <pre>
 %_signature    gpg
 %_gpg_path     /home/mihai/.gnupg
 %_gpg_name     Mihai Vasilian (RPM Signing Key) &lt;grayasm@gmail.com&gt;
 </pre>
 
-7. Build and sign the rpm package using:
+9. Build and sign the rpm package using:
 <pre>
 $ rpmbuild -v --bb --clean SPECS/sign3.spec
 $ rpmsign --addsign ./RPMS/x86_64/sign3-0.1-1.el7.x86_64.rpm
