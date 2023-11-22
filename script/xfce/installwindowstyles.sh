@@ -197,5 +197,16 @@ chown -Rv root:root /usr/share/themes/Clearlooks-Xfce-Black
 chcon -Rv -u system_u -r object_r -t usr_t /usr/share/themes/Clearlooks-Xfce-Black
 rm Clearlooks-Xfce-Black.tar.gz
 
+
+# Window decorations: Clearlooks-Xfce-Black-Big themes for xfwm4
+# modified Clearlooks-Xfce-Black titlebar height from 24 to 31 pixels (proportional)
+wget ftp://vasilian.net/Gtk-Themes/Clearlooks-Xfce-Black-Big.tar.gz
+tar zxvf Clearlooks-Xfce-Black-Big.tar.gz
+rm -rfv /usr/share/themes/Clearlooks-Xfce-Black-Big
+mv Clearlooks-Xfce-Black-Big /usr/share/themes/
+chown -Rv root:root /usr/share/themes/Clearlooks-Xfce-Black-Big
+chcon -Rv -u system_u -r object_r -t usr_t /usr/share/themes/Clearlooks-Xfce-Black-Big
+rm Clearlooks-Xfce-Black-Big.tar.gz
+
 # Continue from top of page :
 # https://www.xfce-look.org/browse/cat/138/page/22/ord/latest/
