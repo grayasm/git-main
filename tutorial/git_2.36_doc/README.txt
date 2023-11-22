@@ -106,5 +106,8 @@ git bisect reset                     # to go back to HEAD
 # How to create and delete a tag
 git tag stable-1 b33d6f7611          # create a tag at given hash
 git log                              # log will display also the tag
+git push origin stable-1             # push a tag to remote
 git tag -d stable-1                  # delete a local tag
 git push --delete origin stable-1    # delete a remote tag
+
+
