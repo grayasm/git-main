@@ -1,8 +1,9 @@
 #!/bin/bash
 
-# $0                            is the actual command
-# $1 $2 .. $9 ${10} ${11}..     are positional parameters
-# $1 $2 .. $9 ${10} ${11}..     in a function are function arguments
+# $0                            is the name of the script itself
+# $1 $2 ..                      is the 1st argument, 2nd argument and so on
+# ${10} ${11} ${12}             after $9 the arguments must be enclosed in { }
+# $1 $2 .. $9 ${10} ${11}..     inside a function are function arguments
 
 
 # Call this script with 10 parameters as:

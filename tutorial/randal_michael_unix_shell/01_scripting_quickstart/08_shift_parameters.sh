@@ -3,6 +3,7 @@
 # The shift command is used to move positional parameters > $0 to the left;
 # $2 becomes $1 and previous $1 is discarded
 # shift 3 moves $4 to $1 and previous $1 $2 $3 are discarded
+# The shift command does not change $0
 
 # Test this script with few parameters
 
