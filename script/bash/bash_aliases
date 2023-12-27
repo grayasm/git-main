@@ -8,16 +8,16 @@ fi
 
 if [ $(id -u) -eq 0 ]; then # you are root, set red colour prompt
    # root on the server
-   # PS1="\\[$(tput bold)$(tput setab 1)$(tput setaf 7)\\u@\\h$(tput sgr0):\\w #\\] "
+   # PS1="\[$(tput bold)$(tput setab 1)$(tput setaf 7)\u@\h$(tput sgr0):\w #\] "
    # root on binary
-   PS1="\\[$(tput bold)$(tput setaf 1)\\u@\\h:\\w #$(tput sgr0)\\] "
+   PS1="\[$(tput bold)$(tput setaf 1)\u@\h:\w #$(tput sgr0)\] "
    alias mv='mv -iv'
    alias cp='cp -aRiv'
    alias rm='rm -iv'
    alias emacs='emacs --user=root'
 else
    # user on the server
-   # PS1="\\[$(tput bold)$(tput setab 6)$(tput setaf 7)\\u@\\h$(tput sgr0):\\W $\\] "
+   # PS1="\[$(tput bold)$(tput setab 6)$(tput setaf 7)\u@\h$(tput sgr0):\W $\] "
    # user on binary
    PS1="\u@\h: \W\$ "
    alias mv='mv -v'
