@@ -31,10 +31,10 @@ dnf install samba samba-common samba-client
 
 Setup the share location
 <pre>
-mkdir -pv /mnt/sdb1/1TBsamba
-chmod -Rv 755 /mnt/sdb1/1TBsamba
-chown -Rv nobody:nobody /mnt/sdb1/1TBsamba
-chcon -u system_u -t samba_share_t -v /mnt/sdb1/1TBsamba
+mkdir -pv /mnt/ssd1/1TBsamba
+chmod -Rv 755 /mnt/ssd1/1TBsamba
+chown -Rv nobody:nobody /mnt/ssd1/1TBsamba
+chcon -u system_u -t samba_share_t -v /mnt/ssd1/1TBsamba
 </pre>
 
 
@@ -45,8 +45,7 @@ mv /etc/samba/smb.conf /etc/samba/smb.conf.bak
 
 Edit the file /etc/samba/smb.conf
 <pre>
-# This configuration is taken from:
-# https://wiki.samba.org/index.php/Setting_up_Samba_as_a_Standalone_Server#Creating_a_Basic_guest_only_smb.conf_File
+# This configuration is taken from <a href="https://wiki.samba.org/index.php/Setting_up_Samba_as_a_Standalone_Server#Creating_a_Basic_guest_only_smb.conf_File" target="_blank">here</a>
 
 [global]
 map to guest = Bad User
@@ -58,7 +57,7 @@ server role = standalone server
 server string = Samba Server %v
 
 [Public]
-path = /mnt/sdb1/1TBsamba
+path = /mnt/ssd1/1TBsamba
 read only = no
 guest ok = yes
 guest only = yes
